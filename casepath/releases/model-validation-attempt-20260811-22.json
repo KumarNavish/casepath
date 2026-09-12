@@ -1,0 +1,220 @@
+{
+  "contract": "casepath.model-validation-evidence/1.0.0",
+  "release_id": "casepath-v20-reference-20260811",
+  "attempt_id": "production-flagship-20260812-22",
+  "status": "failed_closed",
+  "acceptance_passed": false,
+  "model_backed_release_evidence": false,
+  "requested_runtime": {
+    "mode": "openrouter_nemotron",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b"
+  },
+  "execution_observation": {
+    "source_commit": "0db743a2a7a06c56bd5f011cc5928ef39efe424d",
+    "frontend_service_id": "srv-d9q3ndvavr4c73ao86r0",
+    "frontend_deploy_id": "dep-d9ualqbncjis73assnog",
+    "frontend_deploy_outcome": "live",
+    "frontend_deploy_created_at": "2026-08-12T17:18:33.798778Z",
+    "frontend_deploy_started_at": "2026-08-12T17:18:33.796903Z",
+    "frontend_deploy_finished_at": "2026-08-12T17:18:55.090691Z",
+    "api_service_id": "srv-d9r4v4e417fc73bda92g",
+    "api_deploy_id": "dep-d9ualqpt0dsc73cvfnt0",
+    "api_deploy_outcome": "live",
+    "api_deploy_created_at": "2026-08-12T17:18:35.257734Z",
+    "api_deploy_started_at": "2026-08-12T17:18:35.228664Z",
+    "api_deploy_finished_at": "2026-08-12T17:20:15.515529Z",
+    "qa_service_id": "srv-d9se2bh42hec73c54sjg",
+    "qa_deploy_id": "dep-d9uanerm8hqs73evh5cg",
+    "qa_deploy_outcome": "live",
+    "qa_deploy_created_at": "2026-08-12T17:22:03.933177Z",
+    "qa_deploy_started_at": "2026-08-12T17:22:03.89764Z",
+    "qa_deploy_finished_at": "2026-08-12T17:29:16.10728Z",
+    "deterministic_preflight_status": "passed",
+    "deterministic_preflight_passed_checks": 197,
+    "deterministic_preflight_failed_checks": 0,
+    "production_browser_status": "passed",
+    "production_browser_passed_checks": 218,
+    "production_browser_failed_checks": 0,
+    "flagship_cold_run_id": "run_f898edf7d200e517",
+    "flagship_cold_orchestration_id": "orch_ed9f4aeda23d5d6f",
+    "flagship_warm_run_id": "run_cecf63ac0c835d66",
+    "flagship_warm_orchestration_id": "orch_86967420e366c6ab",
+    "later_cold_run_id": "run_3160b04fb5678903",
+    "later_cold_orchestration_id": "orch_050ac02b596a966a",
+    "later_warm_run_id": "run_2c628520b8635f56",
+    "later_warm_orchestration_id": "orch_cf62a1a41c34b4a5",
+    "network_call_count": 12,
+    "cache_hit_count": 12,
+    "global_ledger_record_count": 24,
+    "deterministic_gate_receipts": 6,
+    "deterministic_gate_ids": [
+      "deterministic_process_gate",
+      "deterministic_evidence_gate",
+      "whole_playbook_gate"
+    ]
+  },
+  "provider_observation": {
+    "provider": "openrouter",
+    "provider_outcome": "twelve_network_calls_succeeded",
+    "requested_model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "upstream_provider": "DeepInfra",
+    "network_call_count": 12,
+    "actual_cost_usd": 0.0459277,
+    "actual_cost_complete": true,
+    "unknown_cost_call_count": 0,
+    "prompt_tokens": 58845,
+    "completion_tokens": 7642,
+    "total_tokens": 66487,
+    "outcomes": {
+      "succeeded": 8,
+      "succeeded_with_guarded_fallback": 4
+    },
+    "global_ledger_summary": {
+      "records": 24,
+      "network_calls": 12,
+      "prompt_tokens": 58845,
+      "completion_tokens": 7642,
+      "total_tokens": 66487,
+      "actual_cost_usd": 0.0459277,
+      "actual_cost_complete": true,
+      "unknown_cost_call_count": 0,
+      "outcomes": {
+        "cache_hit": 12,
+        "succeeded": 8,
+        "succeeded_with_guarded_fallback": 4
+      }
+    },
+    "physical_provider_max_in_flight": 1,
+    "application_retry_count": 0,
+    "orchestration_summaries": [
+      {
+        "surface": "visible_flagship_cold",
+        "run_id": "run_f898edf7d200e517",
+        "orchestration_id": "orch_ed9f4aeda23d5d6f",
+        "network_calls": 6,
+        "cache_hits": 0
+      },
+      {
+        "surface": "isolated_flagship_warm",
+        "run_id": "run_cecf63ac0c835d66",
+        "orchestration_id": "orch_86967420e366c6ab",
+        "network_calls": 0,
+        "cache_hits": 6
+      },
+      {
+        "surface": "held_out_later_cold",
+        "run_id": "run_3160b04fb5678903",
+        "orchestration_id": "orch_050ac02b596a966a",
+        "network_calls": 6,
+        "cache_hits": 0
+      },
+      {
+        "surface": "held_out_later_warm",
+        "run_id": "run_2c628520b8635f56",
+        "orchestration_id": "orch_cf62a1a41c34b4a5",
+        "network_calls": 0,
+        "cache_hits": 6
+      }
+    ]
+  },
+  "accepted_ledger_record": null,
+  "application_result": {
+    "outcome": "accepted",
+    "successful_ledger_calls_bound": true,
+    "required_model_roles_complete": true,
+    "cold_model_call_count": 12,
+    "warm_cache_hit_count": 12,
+    "deterministic_gates_complete": true,
+    "complete_deterministic_gate_ids": [
+      "deterministic_process_gate",
+      "deterministic_evidence_gate",
+      "whole_playbook_gate"
+    ],
+    "full_orchestration_accepted": true,
+    "runtime_acceptance_established": false
+  },
+  "warm_cache_result": {
+    "outcome": "accepted",
+    "provider_network_call_count": 0,
+    "cache_hit_count": 12,
+    "exact_origin_lineage": true,
+    "flagship_cold_orchestration_id": "orch_ed9f4aeda23d5d6f",
+    "flagship_warm_orchestration_id": "orch_86967420e366c6ab",
+    "later_cold_orchestration_id": "orch_050ac02b596a966a",
+    "later_warm_orchestration_id": "orch_cf62a1a41c34b4a5",
+    "runtime_acceptance_established": false
+  },
+  "qa_result": {
+    "outcome": "rejected",
+    "failure_type": "authoritative_runtime_verifier_contract_drift",
+    "browser_report_status": "passed",
+    "browser_report_passed": 218,
+    "browser_report_failed": 0,
+    "retained_json_count": 15,
+    "retained_png_count": 14,
+    "retained_webm_count": 1,
+    "current_report_retained": true,
+    "current_evidence_manifest_retained": true,
+    "runtime_acceptance_established": false
+  },
+  "capture_provenance": {
+    "capture_mode": "retained_public_exact_bundle_and_read_only_render_receipts",
+    "captured_at": "2026-08-12T17:28:43.326Z",
+    "render_workspace_id": "tea-d9q2kkht0dsc73c50jog",
+    "report": {
+      "path": "/report.json",
+      "bytes": 448188,
+      "sha256": "0cf3d1ee2efec1e4bd78a82c2a70dcffe637aa198535445e48b26222332ed5f9",
+      "status": "passed",
+      "passed": 218,
+      "failed": 0,
+      "checked_at": "2026-08-12T17:28:43.326Z"
+    },
+    "evidence_manifest": {
+      "path": "/evidence-manifest.json",
+      "bytes": 6440,
+      "sha256": "215279d8d2b7a4fbf31536a288c496ae4e1f8ba983a539fdfdd8fc6d0b51bbf8",
+      "source_commit": "0db743a2a7a06c56bd5f011cc5928ef39efe424d",
+      "retained_before_session_reset": true
+    },
+    "model_ledger": {
+      "path": "/model-ledger.json",
+      "bytes": 55986,
+      "sha256": "1ef4fd5c73c6c2c47c15a13eb2f87a63dd347bfbb2fa619177ee85ae9f84b84f",
+      "records": 24,
+      "network_calls": 12,
+      "cache_hits": 12
+    },
+    "retained_run_sha256": {
+      "flagship_run": "afd27bb6305aa9a79bcfa453b320578d8a6895f3d30819b886ff6d79458aaf00",
+      "flagship_warm_run": "25f58d1c93cc28b96206d73259be4ef1a67996289913d38c0ea64ea4570c3a6a",
+      "later_cold_run": "5db4f555880a72eacc606247ac09c8490e05f6de492032e77393751259b8c4c9",
+      "later_warm_run": "079c59e0a42b3b2607d73366181869a17974698577e8777465645b032db6d295",
+      "flagship_cache_lineage": "9bbff9ae13786807624d6e7081432332181e26f955b837f98bd7f872353706b0"
+    },
+    "retained_inventory": {
+      "json": 15,
+      "png": 14,
+      "webm": 1,
+      "total": 30,
+      "missing": 0,
+      "empty": 0
+    },
+    "published_verifier_result": "rejected_valid_bundle_due_to_contract_drift",
+    "published_verifier_root_causes": [
+      "global_instead_of_claim_specific_fact_order",
+      "non_exact_required_check_handling",
+      "primary_owner_only_checklist_projection",
+      "integer_float_hash_normalization_drift",
+      "full_run_and_semantic_learning_hash_conflation",
+      "obsolete_seven_field_learning_snapshot",
+      "incomplete_manifest_bound_json_verification"
+    ]
+  },
+  "sanitization": {
+    "private_reference_included": false,
+    "provider_credential_included": false,
+    "raw_output_included": false,
+    "raw_prompt_included": false
+  }
+}

@@ -1,0 +1,64 @@
+# HISTORICAL TEST FIXTURE ONLY. DO NOT IMPORT OR DEPLOY.
+# This records an older source line and existing service identities. The
+# standalone repository intentionally has no active root Render Blueprint.
+#
+# Render matches existing resources by service name, not by the dashboard IDs
+# recorded below. Review the Blueprint diff before importing it, and do not
+# import these services if another Blueprint already manages them.
+services:
+  # Existing service ID: srv-d9q3ndvavr4c73ao86r0
+  - type: web
+    name: casepath-swiss-claim-lab
+    runtime: static
+    repo: https://github.com/KumarNavish/KumarNavish.github.io
+    branch: master
+    buildCommand: python3 casepath/tools/build_static_site.py --require-known-commit
+    staticPublishPath: casepath-public
+    autoDeployTrigger: commit
+
+  # Existing service ID: srv-d9r4v4e417fc73bda92g
+  - type: web
+    name: casepath-agentic-api
+    runtime: python
+    repo: https://github.com/KumarNavish/KumarNavish.github.io
+    branch: master
+    region: frankfurt
+    plan: free
+    buildCommand: bash casepath-api/render-build.sh
+    startCommand: bash casepath-api/start.sh
+    healthCheckPath: /readyz
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.9
+      - key: CASEPATH_MODEL_MODE
+        value: openrouter_nemotron
+      - key: CASEPATH_AGENT_RUNTIME_PROFILE
+        value: nemotron_langgraph_multi_agent_hybrid_guarded
+      - key: CASEPATH_RELEASE_ID
+        value: casepath-v20-reference-20260811
+      - key: CASEPATH_MODEL_CUMULATIVE_USD_CAP
+        value: "25"
+      - key: LANGSMITH_TRACING
+        value: "false"
+      - key: OPENROUTER_API_KEY
+        sync: false
+
+  # Existing service ID: srv-d9se2bh42hec73c54sjg
+  - type: web
+    name: casepath-guided-canonical-qa
+    runtime: node
+    repo: https://github.com/KumarNavish/KumarNavish.github.io
+    branch: master
+    region: frankfurt
+    plan: free
+    buildCommand: cd casepath-qa && npm ci --no-audit --no-fund && npx playwright install chromium && cd .. && bash casepath-qa/run-definitive-v20.sh
+    startCommand: node casepath-qa/serve-evidence.mjs
+    autoDeployTrigger: "off"
+    envVars:
+      - key: NODE_VERSION
+        value: 24.14.1
+      - key: PYTHON_VERSION
+        value: 3.13.9
+      - key: CASEPATH_ALLOW_PRODUCTION_MUTATION
+        value: "1"

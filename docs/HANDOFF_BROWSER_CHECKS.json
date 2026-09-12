@@ -1,0 +1,45 @@
+{
+  "schema": "casepath.handoff-browser-checks/1.0.0",
+  "date": "2026-09-12",
+  "runtime": "Isolated local Uvicorn API and curated UI on port4377; temporary SQLite journal",
+  "model_mode": "deterministic_reference",
+  "source_asset_sha256": "d2373524d81f554430d9f60df67451c014760462395b01e699a77e58c66e8484",
+  "public_claims": 60,
+  "checks": {
+    "claim_search": "PASS",
+    "assignment_and_reload_persistence": "PASS",
+    "original_artifact_matches_corpus_hash": "PASS",
+    "initial_assessment_and_workbench_creation": "PASS",
+    "unsupported_evidence_rejected_with_no_observation": "PASS",
+    "pending_replan_recovery": "PASS",
+    "admissible_evidence_committed_once": "PASS",
+    "next_obligation_and_checklist_updated": "PASS",
+    "desktop_keyboard_reverse_and_forward_wrap": "PASS",
+    "mobile_keyboard_reverse_and_forward_wrap": "PASS",
+    "mobile_horizontal_overflow_absent": "PASS"
+  },
+  "witness": {
+    "claim_id": "clm_0e11979130681bd0",
+    "before_node": "lt_intake",
+    "after_node": "lt_deadline",
+    "after_revision": 4,
+    "received_evidence_items": 1,
+    "resolved_evidence_items": 1,
+    "total_evidence_items": 10
+  },
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1000
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "limitations": [
+    "Focused workflow smoke check, not the full historical150claim acceptance protocol.",
+    "The optional Source review panel is unavailable for these generic public claims in this provider-free runtime.",
+    "No hosted deployment or paid inference was tested."
+  ]
+}

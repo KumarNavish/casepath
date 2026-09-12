@@ -1,0 +1,3 @@
+    disposal=2,
+)
+print({'path':str(OUT),'frames':len(quantized),'duration_s':round(len(quantized)*FRAME_MS/1000,1),'bytes':OUT.stat().st_size})

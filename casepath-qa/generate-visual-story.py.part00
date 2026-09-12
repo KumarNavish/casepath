@@ -1,0 +1,75 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Callable
+import sys
+
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
+
+W, H = 960, 540
+FPS = 5
+FRAME_MS = int(1000 / FPS)
+OUT = Path(sys.argv[1] if len(sys.argv) > 1 else 'guided-v13-smoke-out/casepath-flagship-demo.gif')
+OUT.parent.mkdir(parents=True, exist_ok=True)
+
+BG = '#ffffff'
+INK = '#15171a'
+MUTED = '#66707a'
+QUIET = '#9aa2aa'
+LINE = '#dfe4e8'
+CANVAS = '#f6f7f8'
+RED = '#d92d2d'
+RED_SOFT = '#fdecec'
+GREEN = '#167a59'
+GREEN_SOFT = '#e8f5ef'
+BLUE = '#2f64c7'
+BLUE_SOFT = '#edf3ff'
+AMBER = '#b87813'
+AMBER_SOFT = '#fff5df'
+
+FONT_DIR = Path('/usr/share/fonts/truetype/dejavu')
+REG = str(FONT_DIR / 'DejaVuSans.ttf')
+MED = str(FONT_DIR / 'DejaVuSans.ttf')
+BOLD = str(FONT_DIR / 'DejaVuSans-Bold.ttf')
+
+F = {
+    'xs': ImageFont.truetype(REG, 11),
+    'sm': ImageFont.truetype(REG, 13),
+    'md': ImageFont.truetype(REG, 16),
+    'lg': ImageFont.truetype(BOLD, 21),
+    'xl': ImageFont.truetype(BOLD, 30),
+    'xxl': ImageFont.truetype(BOLD, 39),
+    'label': ImageFont.truetype(BOLD, 10),
+    'bold_sm': ImageFont.truetype(BOLD, 13),
+    'bold_md': ImageFont.truetype(BOLD, 16),
+}
+
+
+def lerp(a: float, b: float, t: float) -> float:
+    return a + (b - a) * max(0.0, min(1.0, t))
+
+
+def ease(t: float) -> float:
+    t = max(0.0, min(1.0, t))
+    return 1 - (1 - t) ** 3
+
+
+def alpha_color(hex_color: str, alpha: int) -> tuple[int, int, int, int]:
+    hex_color = hex_color.lstrip('#')
+    return tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4)) + (alpha,)
+
+
+def text(draw: ImageDraw.ImageDraw, xy, value: str, font, fill=INK, anchor=None):
+    draw.text(xy, value, font=font, fill=fill, anchor=anchor)
+
+
+def rounded(draw: ImageDraw.ImageDraw, box, radius=14, fill=BG, outline=None, width=1):
+    draw.rounded_rectangle(box, radius=radius, fill=fill, outline=outline, width=width)
+
+
+def shadow_box(img: Image.Image, box, radius=16, fill=BG, outline=LINE, shadow=18, offset=(0, 5)):
+    layer = Image.new('RGBA', img.size, (0, 0, 0, 0))
+    ld = ImageDraw.Draw(layer)
+    x0, y0, x1, y1 = box
+    sx, sy = offset

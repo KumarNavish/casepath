@@ -1,0 +1,269 @@
+{
+  "calls": [
+    {
+      "call_id": "initial_read",
+      "input": {
+        "path": "calls/initial-input.json",
+        "sha256": "7b58c1e9cf3b3b0dc221fafa24d1c3beaaf89c401349d84f4ad0cc89e429a150",
+        "size_bytes": 8825
+      },
+      "kind": "native_reader",
+      "messages_sha256": "edc1661e43ecbae09db328e8a2ef0ff313c0104f273081fd355e7db283e5a555",
+      "observed_at": "2025-05-24T13:10:00+02:00",
+      "output": {
+        "path": "calls/initial-output.json",
+        "sha256": "3bd3d513f32a6a8a1a9feca887844a1facf97ff4366270299b71e518ecef270f",
+        "size_bytes": 3718
+      },
+      "source_keys": [
+        "original_message",
+        "original_image",
+        "initial_report"
+      ]
+    },
+    {
+      "call_id": "generic_refinement",
+      "instruction": {
+        "path": "calls/refinement-instruction.txt",
+        "sha256": "7b110f6b0af2f3af38a7886e41ba8046c67675f1a4c1039aeed1783c461e2f6a",
+        "size_bytes": 857
+      },
+      "kind": "generic_self_refinement",
+      "observed_at": "2025-05-24T13:10:00+02:00",
+      "output": {
+        "path": "calls/refined-output.json",
+        "sha256": "d71f3a65b2d085d7345e5adb1a9853cb96a20001bba747bf4256d2bc303bcbf8",
+        "size_bytes": 3496
+      },
+      "previous_output_canonical_sha256": "bde20394f7414587b6850d3d909fe824007bae95235f7bb42c42c9d244d4d80b",
+      "source_input": {
+        "path": "calls/initial-input.json",
+        "sha256": "7b58c1e9cf3b3b0dc221fafa24d1c3beaaf89c401349d84f4ad0cc89e429a150",
+        "size_bytes": 8825
+      },
+      "source_keys": [
+        "original_message",
+        "original_image",
+        "initial_report"
+      ],
+      "stdin": {
+        "path": "calls/refinement-stdin.txt",
+        "sha256": "63816a573cb4ef1a9420716ef9ba24cf9d64384ac13b1ad02236b069d1996476",
+        "size_bytes": 8225
+      }
+    },
+    {
+      "call_id": "after_response",
+      "input": {
+        "path": "calls/after-response-input.json",
+        "sha256": "47773c2803752d9bb9d04a31e6eb861b070f1986e7c609ef383ed328f2cf1e2a",
+        "size_bytes": 14686
+      },
+      "kind": "native_reader",
+      "messages_sha256": "ca2806c308fa3583806d763af707d33a70a8d6717da61f79d6ceaa257a82350d",
+      "observed_at": "2025-05-25T15:30:00+02:00",
+      "output": {
+        "path": "calls/after-response-output.json",
+        "sha256": "a346d0db3fbb47e9e086cea29d11c444386e94bf8c6299d4a939309a82143f7a",
+        "size_bytes": 3830
+      },
+      "source_keys": [
+        "original_message",
+        "original_image",
+        "initial_report",
+        "requested_response"
+      ]
+    },
+    {
+      "call_id": "after_correction",
+      "input": {
+        "path": "calls/after-correction-input.json",
+        "sha256": "f052fabb85727a1f4a436d6d7f9d64e75b54b4f6552251dfc13ff27b223c8933",
+        "size_bytes": 17005
+      },
+      "kind": "native_reader",
+      "messages_sha256": "7b1561d54dfb5a9110e1c5b73c05e2dc05881db988030c6d04e13d4ca27c5491",
+      "observed_at": "2025-05-26T15:30:00+02:00",
+      "output": {
+        "path": "calls/after-correction-output.json",
+        "sha256": "0b60f10c868f441617cbfbd707b6068cf6530e304382075b5867f5587e5e5023",
+        "size_bytes": 4212
+      },
+      "source_keys": [
+        "original_message",
+        "original_image",
+        "initial_report",
+        "requested_response",
+        "unrelated_correction"
+      ]
+    },
+    {
+      "call_id": "correction_target",
+      "input": {
+        "path": "calls/correction-target-input.json",
+        "sha256": "7d4ca30ea8b8d42831d17a48c025e89d99046a0a017b72d7ab969d2a238e9caa",
+        "size_bytes": 26430
+      },
+      "kind": "source_correction_target",
+      "messages_sha256": "0eef1cf9a87fa2479f2e681f3a34a4cf4a5c7f9276361f1362879a7550428ad9",
+      "observed_at": "2025-05-26T15:30:00+02:00",
+      "output": {
+        "path": "calls/correction-target-output.json",
+        "sha256": "b807e873ce2460adee7febf9f0edf2ea5823d809ab5dc1f2ae7e42a996aead50",
+        "size_bytes": 630
+      },
+      "source_keys": [
+        "original_message",
+        "original_image",
+        "initial_report",
+        "requested_response",
+        "unrelated_correction"
+      ]
+    }
+  ],
+  "claim_binding": {
+    "binding_sha256": "0846d88797534edb24b46340ac5d596d5fd952c1d85ed482661e5f9b8000d373",
+    "claim_sha256": "1a3e6b0dcbb3319460d5c465e6e10d3c2fa30d21a155465cb3c742b8385f4305",
+    "original_image_sha256": "653894c9f4bd01095b8d26cabbc593b24f26bfe4a08461d2e532484d5af9a757",
+    "original_message_sha256": "f877fc5bd65e45a0d5505b541727aa13740fe3b398b0e207eab239f8c763f721",
+    "source_registry_canonical_sha256": "63ec6b201ff5d7eb6533d13d0cdbd2d0d3d1da3bca734c1cc2f8a29b21b87900"
+  },
+  "claim_id": "clm_e262801f9368bc12",
+  "contains_expected_world_state": false,
+  "contains_private_controls": false,
+  "contract": "casepath.recorded-native-workspace-trace/1.0.0",
+  "limits": [
+    "Recorded development replay, not fresh model performance.",
+    "Source and model semantics are provisional; no original-world truth, legal sufficiency, or certified readiness.",
+    "The fifth correction-target invocation is its own exact continuation2-prefix call and is not transplanted from r3."
+  ],
+  "package": {
+    "coordinator_dependency": false,
+    "historical_paths_inside_recorded_model_input": "retained_verbatim_and_rebound_before_transport",
+    "path_semantics": "manifest_relative_transport_paths"
+  },
+  "research_mode": "recorded-replay-v1",
+  "selected_trajectory": {
+    "actor_calls": 4,
+    "actor_trajectory": "metered-frontier-refinement-r1",
+    "correction_target_calls": 1,
+    "correction_target_invocation": "frontier-correction-target-r1",
+    "cost": {
+      "actor_cached_tokens": 0,
+      "actor_calls": 4,
+      "actor_input_tokens": 99399,
+      "actor_output_tokens": 16002,
+      "actor_reasoning_output_tokens": 11882,
+      "actor_wall_seconds": 340.719769458,
+      "correction_target_calls": 1,
+      "correction_target_wall_seconds": 15.988
+    },
+    "fresh_inference": false,
+    "selection_reason": "r3 actor emitted no explicit source-assertion target; use one intact recorded trajectory and its own separately recorded exact-prefix correction-target invocation"
+  },
+  "sources": [
+    {
+      "artifact_id": "com_f182ccb67285f004",
+      "authority": "public_corpus",
+      "observed_at": "2025-05-24T13:10:00+02:00",
+      "raw": {
+        "media_type": "text/plain; charset=utf-8",
+        "path": "source/original-message.txt",
+        "sha256": "f877fc5bd65e45a0d5505b541727aa13740fe3b398b0e207eab239f8c763f721",
+        "size_bytes": 1481
+      },
+      "rendered": null,
+      "source_ids": [
+        "source_001"
+      ],
+      "source_key": "original_message"
+    },
+    {
+      "artifact_id": "doc_336f88b3a077b170",
+      "authority": "public_corpus",
+      "observed_at": "2025-05-24T13:10:00+02:00",
+      "raw": {
+        "media_type": "image/jpeg",
+        "path": "source/original-image.jpg",
+        "sha256": "653894c9f4bd01095b8d26cabbc593b24f26bfe4a08461d2e532484d5af9a757",
+        "size_bytes": 90715
+      },
+      "rendered": {
+        "media_type": "image/jpeg",
+        "path": "source/original-image.jpg",
+        "same_as_raw": true,
+        "sha256": "653894c9f4bd01095b8d26cabbc593b24f26bfe4a08461d2e532484d5af9a757",
+        "size_bytes": 90715
+      },
+      "source_ids": [
+        "source_001_attachment_01"
+      ],
+      "source_key": "original_image"
+    },
+    {
+      "authority": "recorded_server_artifact",
+      "observed_at": "2025-05-24T13:10:00+02:00",
+      "raw": {
+        "media_type": "application/pdf",
+        "path": "source/initial-report.pdf",
+        "sha256": "a45f6c98e064816b0d92cf20b8def5788949dfa9a7bbd940c2997c93857708a4",
+        "size_bytes": 2460
+      },
+      "rendered": {
+        "media_type": "image/png",
+        "path": "source/initial-report-page-1.png",
+        "sha256": "a3361e9931eded0ec4104410aaee16f10eee9f83dd0c8452a03cfe987ee29595",
+        "size_bytes": 53033
+      },
+      "source_ids": [
+        "research_source_f9b294949fe7ba"
+      ],
+      "source_key": "initial_report"
+    },
+    {
+      "authority": "recorded_server_artifact",
+      "observed_at": "2025-05-25T15:30:00+02:00",
+      "raw": {
+        "media_type": "application/pdf",
+        "path": "source/requested-response.pdf",
+        "sha256": "4c9aeed50f45afd9c8a4afad78f392d22d948d9355e29658faf26bdc5d7f52a7",
+        "size_bytes": 2681
+      },
+      "rendered": {
+        "media_type": "image/png",
+        "path": "source/requested-response-page-1.png",
+        "sha256": "b1446b5e96d8a74b57a883fba97f550ac990bc459af6bf87e62197f8f2b9d0d1",
+        "size_bytes": 56894
+      },
+      "source_ids": [
+        "research_source_9467a257f77238"
+      ],
+      "source_key": "requested_response"
+    },
+    {
+      "authority": "recorded_server_artifact",
+      "observed_at": "2025-05-26T15:30:00+02:00",
+      "raw": {
+        "media_type": "application/pdf",
+        "path": "source/unrelated-correction.pdf",
+        "sha256": "3b885547590c1556b88eeb2805b25725f2ec4a3896fdc401cb657c295bddc7d9",
+        "size_bytes": 2504
+      },
+      "rendered": {
+        "media_type": "image/png",
+        "path": "source/unrelated-correction-page-1.png",
+        "sha256": "80d3f242fc38328ada322fe88af0c873b568a16e281b208f5d7d69f45fbcfb4a",
+        "size_bytes": 57335
+      },
+      "source_ids": [
+        "research_source_18262005cacae2"
+      ],
+      "source_key": "unrelated_correction"
+    }
+  ],
+  "trajectory_policy": {
+    "path": "trajectory-policy.json",
+    "sha256": "1416e9f6956a4bb796b9f1cbbd5a9d34629756a94e24d9bce0ad8acc00a3368e",
+    "size_bytes": 30561
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "contract": "casepath.model-validation-evidence/1.0.0",
+  "release_id": "casepath-v20-reference-20260811",
+  "attempt_id": "production-flagship-20260811-09",
+  "status": "failed_closed",
+  "acceptance_passed": false,
+  "model_backed_release_evidence": false,
+  "requested_runtime": {
+    "mode": "openrouter_nemotron",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b"
+  },
+  "execution_observation": {
+    "source_commit": "1464e482503f2b22bebffaa01a9cff84e70113ff",
+    "qa_deploy_id": "dep-d9tp3fjncjis739pbnrg",
+    "qa_deploy_outcome": "build_failed",
+    "qa_deploy_created_at": "2026-08-11T21:18:54.833304Z",
+    "qa_deploy_finished_at": "2026-08-11T21:19:50.743049Z",
+    "qa_run_id": "run_3abf4f5dcf955488",
+    "ledger_created_at": "2026-08-11T21:19:16.695619+00:00",
+    "ledger_updated_at": "2026-08-11T21:19:45.558899+00:00",
+    "orchestration_id": "orch_16fbcb9e76eaff90",
+    "failed_agent_id": "canonical_facts",
+    "network_call_count": 1,
+    "downstream_model_calls": 0
+  },
+  "provider_observation": {
+    "provider": "openrouter",
+    "provider_outcome": "upstream_rejected",
+    "requested_model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "response_identity_status": "upstream_request_only_no_generation",
+    "routing_diagnosis": {
+      "attempt_09_policy": "default_provider_routing",
+      "prior_deepinfra_request_status": 200,
+      "exact_internal_provider_error_message_observed": false
+    },
+    "upstream_request_log_observation": {
+      "read_only": true,
+      "displayed_at_local": "2026-08-11 23:19 Europe/Zurich",
+      "request_id": "gen-1786483159-hyYthqPv76o6PHXpGLzl",
+      "final_provider": "Together",
+      "upstream_status": 400,
+      "router_attempts": 2,
+      "router_latency_ms": 759
+    },
+    "generation_metadata_lookup": {
+      "read_only": true,
+      "request_id": "gen-1786483159-hyYthqPv76o6PHXpGLzl",
+      "http_status": 404,
+      "generation_recovered": false
+    },
+    "synchronous_usage_cost_present": false,
+    "openrouter_upstream_request_log_observed": true,
+    "new_openrouter_log_generation_observed": false,
+    "openrouter_log_check_performed": true,
+    "provider_cache_replay_assessment": "not_applicable_upstream_rejected",
+    "charge_status": "unknown_unconfirmed",
+    "charge_included_in_known_aggregate": false,
+    "estimated_cost_reservation_usd": 0.027645,
+    "estimated_reservation_is_actual_charge": false,
+    "latency_ms": 28858.701
+  },
+  "accepted_ledger_record": null,
+  "application_result": {
+    "outcome": "rejected",
+    "failure_type": "provider_response_envelope",
+    "error_type": "ModelResponseError",
+    "error_invariant": "provider_response_envelope",
+    "successful_ledger_call_bound": false,
+    "ledger_call_id": "modelcall_eda1fe14d069e2d4",
+    "ledger_outcome": "failed",
+    "canonical_result_accepted": false,
+    "response_identity_retained": false,
+    "usage_metadata_retained": false,
+    "accepted_generation_recovered": false,
+    "contribution_diagnostics_retained": false
+  },
+  "sanitization": {
+    "raw_prompt_included": false,
+    "raw_output_included": false,
+    "provider_credential_included": false,
+    "private_reference_included": false
+  }
+}

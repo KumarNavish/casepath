@@ -1,0 +1,75 @@
+
+
+def scene_evidence(frame,t):
+    d=ImageDraw.Draw(frame)
+    stage_header(d,'Law and evidence attach to the decisions they shape','The checklist grows from the process instead of from a generic template.')
+    # compact process left
+    x=48; y=154
+    labels=[('Scope','done',1,2),('Notification','done',1,2),('Causation','current',2,3),('Responsibility','blocked',2,1),('Remedy','blocked',1,2)]
+    for i,(label,state,law,evid) in enumerate(labels):
+        yy=y+i*64
+        if i: line_arrow(d,(158,yy-20),(158,yy-3),fill=LINE,width=2,head=5)
+        process_node(d,x,yy,label,state,w=220,h=44,law=law if t>.15 else 0,evidence=evid if t>.35 else 0)
+    # selected decision detail
+    shadow_box(frame,(320,150,925,495),18,BG,LINE,shadow=14)
+    text(d,(344,174),'WHAT THIS DECISION REQUIRES',F['label'],fill=RED)
+    text(d,(344,198),'What caused the recurring mould?',F['lg'])
+    steps=[
+        ('1','Fact to establish','Likely technical cause'),
+        ('2','Evidence that can establish it','Independent technical assessment'),
+        ('3','Useful if inspection is unclear','Moisture measurements'),
+        ('4','Conditional—not requested yet','Building-envelope assessment'),
+    ]
+    show=max(1,int(lerp(1,4,ease(t))))
+    for i,(num,label,value) in enumerate(steps[:show]):
+        yy=242+i*55
+        rounded(d,(344,yy,372,yy+28),9,fill=RED_SOFT if i==0 else CANVAS,outline=RED if i==0 else LINE)
+        text(d,(358,yy+14),num,F['bold_sm'],fill=RED if i==0 else MUTED,anchor='mm')
+        text(d,(386,yy+1),label,F['label'],fill=QUIET)
+        text(d,(386,yy+18),value,F['bold_sm'])
+        if i<show-1: d.line((358,yy+29,358,yy+54),fill=LINE,width=2)
+    rounded(d,(744,174,900,204),10,fill=BLUE_SOFT,outline=BLUE)
+    text(d,(822,189),'§ Swiss-law source linked',ImageFont.truetype(BOLD,9),fill=BLUE,anchor='mm')
+
+
+def scene_experience(frame,t):
+    d=ImageDraw.Draw(frame)
+    stage_header(d,'Organizational experience joins at the difficult branch','Reviewed claims appear where an experienced colleague would use them.')
+    # causation node
+    process_node(d,60,215,'Causation assessment','current',w=250,h=54,law=2,evidence=3)
+    text(d,(75,278),'Cause remains unresolved',F['xs'],fill=RED)
+    line_arrow(d,(310,242),(392,242),fill=GREEN,width=2,head=8)
+    text(d,(350,219),'Historical Claims Agent',F['label'],fill=GREEN,anchor='mm')
+    cases=[('BS-017','Façade moisture confirmed'),('BS-044','Ventilation hypothesis overturned'),('ZH-028','Inspection resolved evidence gap')]
+    show=max(1,int(lerp(1,3,ease(t))))
+    for i,(cid,why) in enumerate(cases[:show]):
+        yy=160+i*100
+        shadow_box(frame,(410,yy,900,yy+76),14,BG,LINE,shadow=10)
+        rounded(d,(428,yy+17,485,yy+44),9,fill=GREEN_SOFT,outline=GREEN)
+        text(d,(456,yy+30),cid,ImageFont.truetype(BOLD,9),fill=GREEN,anchor='mm')
+        text(d,(505,yy+16),why,F['bold_sm'])
+        text(d,(505,yy+39),'Same process branch · reviewed evidence order',F['xs'],fill=MUTED)
+    text(d,(560,480),'“These are the cases I would look at here.”',F['sm'],fill=MUTED,anchor='mm')
+
+
+def scene_review(frame,t):
+    d=ImageDraw.Draw(frame)
+    stage_header(d,'An expert corrects the reasoning artifact itself','One choice updates the process, evidence order, and next action together.')
+    # left graph
+    process_node(d,44,180,'Causation assessment','current',w=260,h=52,law=2,evidence=3)
+    line_arrow(d,(174,232),(174,264),fill=RED,width=2,head=7)
+    rounded(d,(44,266,304,328),12,fill=RED_SOFT,outline=RED,width=2)
+    text(d,(60,280),'EXPERT CHOICE',F['label'],fill=RED)
+    text(d,(60,301),'Neutral assessment first',F['bold_md'])
+    line_arrow(d,(174,328),(174,360),fill=GREEN,width=2,head=7)
+    process_node(d,44,362,'Responsibility','blocked',w=260,h=44)
+    process_node(d,44,420,'Remedy','blocked',w=260,h=44)
+    # right propagation
+    shadow_box(frame,(350,150,920,495),18,BG,LINE,shadow=14)
+    text(d,(374,174),'CORRECTION PROPAGATION',F['label'],fill=RED)
+    items=[('Process','Add “test ventilation allegation” after inspection'),('Evidence','Building-envelope testing becomes conditional'),('Next action','Arrange one neutral technical assessment')]
+    show=max(1,int(lerp(1,3,ease(t))))
+    for i,(label,value) in enumerate(items[:show]):
+        yy=220+i*82
+        rounded(d,(374,yy,406,yy+32),10,fill=RED_SOFT if i==0 else GREEN_SOFT,outline=RED if i==0 else GREEN)
+        text(d,(390,yy+16),str(i+1),F['bold_sm'],fill=RED if i==0 else GREEN,anchor='mm')

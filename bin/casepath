@@ -1,0 +1,3345 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repository_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+invocation_directory="${CASEPATH_INVOCATION_DIRECTORY:-$(pwd -P)}"
+cd "$repository_root"
+export PYTHONDONTWRITEBYTECODE=1
+runtime_root="$repository_root/.runtime/casepath-dev-v2"
+data_root="$repository_root/.runtime/casepath-data-v1"
+legacy_data_root="$repository_root/.runtime/casepath-dev-v1"
+venv_root="$runtime_root/venv"
+python_command="$venv_root/bin/python"
+uv_command="${CASEPATH_UV:-}"
+port="4173"
+url="http://127.0.0.1:${port}/"
+child_pid=""
+
+ensure_private_runtime_root() {
+  local mutable_parent="$repository_root/.runtime"
+  local candidate=""
+  for candidate in "$mutable_parent" "$runtime_root"; do
+    if [[ -L "$candidate" ]]; then
+      printf 'CasePath command failed: mutable runtime boundary is a symlink\n' >&2
+      exit 2
+    fi
+  done
+  (umask 077; /bin/mkdir -p "$runtime_root")
+  /bin/chmod 0700 "$mutable_parent" "$runtime_root"
+  for candidate in "$mutable_parent" "$runtime_root"; do
+    if [[ ! -d "$candidate" || -L "$candidate" ]]; then
+      printf 'CasePath command failed: mutable runtime boundary is not private\n' >&2
+      exit 2
+    fi
+  done
+}
+
+ensure_private_runtime_directories() {
+  local directories=(
+    "$runtime_root/home"
+    "$runtime_root/tmp"
+    "$runtime_root/pycache"
+    "$runtime_root/boots"
+    "$runtime_root/boot-staging"
+  )
+  local candidate=""
+  ensure_private_runtime_root
+  for candidate in "${directories[@]}"; do
+    if [[ -L "$candidate" ]]; then
+      printf 'CasePath command failed: mutable runtime directory is a symlink\n' >&2
+      exit 2
+    fi
+  done
+  (umask 077; /bin/mkdir -p "${directories[@]}")
+  /bin/chmod 0700 "${directories[@]}"
+  for candidate in "${directories[@]}"; do
+    if [[ ! -d "$candidate" || -L "$candidate" ]]; then
+      printf 'CasePath command failed: mutable runtime directory is not private\n' >&2
+      exit 2
+    fi
+  done
+}
+
+run_clean_stdlib_python() {
+  /usr/bin/env -i \
+    HOME="$runtime_root/home" \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    PATH="$venv_root/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+    PYTHONHASHSEED=0 \
+    PYTHONNOUSERSITE=1 \
+    PYTHONSAFEPATH=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPYCACHEPREFIX="$runtime_root/pycache" \
+    TZ=UTC \
+    "$python_command" -I -S -B -P "$@"
+}
+
+verify_sealed_source_tree() {
+  local verification_mode="${1:-complete}"
+  run_clean_stdlib_python - "$repository_root" "$verification_mode" <<'PY'
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+import re
+import stat
+import subprocess
+import sys
+
+repository = Path(sys.argv[1]).resolve()
+verification_mode = sys.argv[2]
+if verification_mode not in {"source-only", "complete"}:
+    raise SystemExit("CasePath sealed source verification mode is invalid")
+manifest_path = repository / "casepath/source-manifest.json"
+if manifest_path.is_symlink() or not manifest_path.is_file():
+    raise SystemExit("CasePath sealed source manifest is not regular")
+try:
+    manifest_raw = manifest_path.read_bytes()
+    manifest = json.loads(manifest_raw)
+except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    raise SystemExit("CasePath sealed source manifest is invalid") from exc
+rows = manifest.get("files") if isinstance(manifest, dict) else None
+source_roots = ["casepath", "casepath-api", "casepath-qa", "docs", "examples"]
+extra_files = [
+    ".gitattributes",
+    ".gitignore",
+    "AGENTS.md",
+    "bin/casepath",
+    "CONTRIBUTING.md",
+    "LICENSE",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md",
+    "CASEPATH_MASTER_KNOWLEDGE_TRANSFER.md",
+]
+if (
+    not isinstance(manifest, dict)
+    or set(manifest)
+    != {
+        "artifact_manifest",
+        "contract",
+        "file_count",
+        "files",
+        "gate_count",
+        "gates",
+        "inventory_policy",
+        "release_id",
+    }
+    or manifest.get("contract") != "casepath.source-manifest/2.1.0"
+    or manifest.get("release_id") != "casepath-v20-reference-20260811"
+    or manifest.get("inventory_policy")
+    != {
+        "includes_nonignored_pending_files": True,
+        "roots": [*source_roots, *extra_files],
+        "self_output_excluded": "casepath/source-manifest.json",
+    }
+    or not isinstance(rows, list)
+    or manifest.get("file_count") != len(rows)
+):
+    raise SystemExit("CasePath sealed source manifest is invalid")
+paths: list[str] = []
+row_by_path: dict[str, dict[str, object]] = {}
+for row in rows:
+    if (
+        not isinstance(row, dict)
+        or set(row) != {"executable", "path", "sha256", "size_bytes"}
+        or type(row.get("executable")) is not bool
+        or not isinstance(row.get("path"), str)
+        or not row["path"]
+        or Path(row["path"]).is_absolute()
+        or Path(row["path"]).as_posix() != row["path"]
+        or any(part in {"", ".", ".."} for part in Path(row["path"]).parts)
+        or not isinstance(row.get("sha256"), str)
+        or len(row["sha256"]) != 64
+        or type(row.get("size_bytes")) is not int
+        or row["size_bytes"] < 0
+        or row["path"] in row_by_path
+    ):
+        raise SystemExit("CasePath sealed source manifest row is invalid")
+    path = repository / row["path"]
+    try:
+        metadata = path.lstat()
+    except OSError as exc:
+        raise SystemExit("CasePath sealed source file is absent") from exc
+    if path.is_symlink() or not stat.S_ISREG(metadata.st_mode):
+        raise SystemExit("CasePath sealed source file is not regular")
+    raw = path.read_bytes()
+    if row != {
+        "executable": bool(metadata.st_mode & stat.S_IXUSR),
+        "path": row["path"],
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "size_bytes": len(raw),
+    }:
+        raise SystemExit("CasePath sealed source file identity differs from disk")
+    paths.append(row["path"])
+    row_by_path[row["path"]] = row
+if paths != sorted(paths):
+    raise SystemExit("CasePath sealed source roster is not canonical")
+git_authority = repository / ".git"
+if git_authority.is_symlink() or (
+    git_authority.exists() and not git_authority.is_dir()
+):
+    raise SystemExit("CasePath canonical Git source authority is invalid")
+if git_authority.is_dir():
+    try:
+        candidates = subprocess.check_output(
+            [
+                "/usr/bin/git",
+                "ls-files",
+                "--cached",
+                "--others",
+                "--exclude-standard",
+                "--",
+                *source_roots,
+                *extra_files,
+            ],
+            cwd=repository,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).splitlines()
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise SystemExit("CasePath sealed source inventory cannot be resolved") from exc
+else:
+    candidates = []
+    for root_name in source_roots:
+        root = repository / root_name
+        if root.is_symlink() or not root.is_dir():
+            raise SystemExit("CasePath archive source root is invalid")
+        for path in root.rglob("*"):
+            metadata = path.lstat()
+            if path.is_symlink() or (
+                not stat.S_ISREG(metadata.st_mode)
+                and not stat.S_ISDIR(metadata.st_mode)
+            ):
+                raise SystemExit("CasePath archive source inventory is invalid")
+            if stat.S_ISREG(metadata.st_mode):
+                candidates.append(path.relative_to(repository).as_posix())
+    candidates.extend(extra_files)
+actual_paths = []
+for candidate in candidates:
+    normalized = Path(candidate).as_posix()
+    if (
+        normalized in {"casepath/deployment.json", "casepath/source-manifest.json"}
+        or normalized.startswith("casepath-api/artifacts/")
+        or "__pycache__" in Path(normalized).parts
+        or Path(normalized).suffix in {".pyc", ".pyo"}
+    ):
+        continue
+    candidate_path = repository / normalized
+    try:
+        candidate_metadata = candidate_path.lstat()
+    except OSError as exc:
+        raise SystemExit("CasePath sealed source inventory contains an absent path") from exc
+    if candidate_path.is_symlink() or not stat.S_ISREG(candidate_metadata.st_mode):
+        raise SystemExit("CasePath sealed source inventory contains a non-regular path")
+    actual_paths.append(normalized)
+if paths != sorted(set(actual_paths)):
+    raise SystemExit("CasePath sealed source roster is incomplete")
+artifact = manifest.get("artifact_manifest")
+artifact_path = repository / "casepath-api/artifacts/artifact-manifest.json"
+if (
+    not isinstance(artifact, dict)
+    or set(artifact) != {"model_visible_files", "path", "sha256"}
+    or artifact.get("path") != "casepath-api/artifacts/artifact-manifest.json"
+    or (
+        verification_mode == "complete"
+        and (
+            artifact_path.is_symlink()
+            or not artifact_path.is_file()
+            or artifact.get("sha256")
+            != hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        )
+    )
+):
+    raise SystemExit("CasePath sealed artifact authority is invalid")
+expected_gates = [
+    {"path": path, "sha256": row_by_path[path]["sha256"]}
+    for path in paths
+    if path.startswith("casepath-qa/")
+    and Path(path).suffix in {".mjs", ".py"}
+    and Path(path).name.startswith(("browser-", "check-", "reset-", "patch_"))
+]
+if (
+    manifest.get("gates") != expected_gates
+    or manifest.get("gate_count") != len(expected_gates)
+):
+    raise SystemExit("CasePath sealed gate authority is invalid")
+print(hashlib.sha256(manifest_raw).hexdigest())
+PY
+}
+
+materialize_sealed_source_capsule() {
+  local expected_manifest_sha256="$1"
+  run_clean_stdlib_python - "$repository_root" "$runtime_root" \
+    "$expected_manifest_sha256" <<'PY'
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import stat
+import subprocess
+import sys
+import uuid
+
+repository = Path(sys.argv[1]).resolve()
+runtime = Path(sys.argv[2]).resolve()
+expected_manifest_sha256 = sys.argv[3]
+capsules = runtime / "source-capsules"
+
+
+def durable_mkdir(path: Path, mode: int = 0o700) -> None:
+    missing = []
+    candidate = path
+    while not candidate.exists():
+        missing.append(candidate)
+        candidate = candidate.parent
+    for directory in reversed(missing):
+        directory.mkdir(mode=mode)
+        parent_descriptor = os.open(directory.parent, os.O_RDONLY)
+        try:
+            os.fsync(parent_descriptor)
+        finally:
+            os.close(parent_descriptor)
+    descriptor = os.open(path, os.O_RDONLY)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+
+
+durable_mkdir(capsules)
+if capsules.is_symlink() or not capsules.is_dir():
+    raise SystemExit("CasePath source capsule root is invalid")
+
+
+def canonical(value: object) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def digest(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def read_regular(path: Path) -> tuple[bytes, os.stat_result]:
+    descriptor = os.open(
+        path,
+        os.O_RDONLY
+        | getattr(os, "O_NOFOLLOW", 0)
+        | getattr(os, "O_NONBLOCK", 0),
+    )
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise SystemExit(f"CasePath capsule source is not regular: {path}")
+        chunks = []
+        while True:
+            chunk = os.read(descriptor, 1024 * 1024)
+            if not chunk:
+                return b"".join(chunks), metadata
+            chunks.append(chunk)
+    finally:
+        os.close(descriptor)
+
+
+def write_file(path: Path, raw: bytes, *, executable: bool) -> None:
+    path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        view = memoryview(raw)
+        while view:
+            written = os.write(descriptor, view)
+            if written <= 0:
+                raise SystemExit("CasePath capsule publication made no progress")
+            view = view[written:]
+        os.fchmod(descriptor, 0o755 if executable else 0o644)
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+    os.utime(path, (1786406400, 1786406400), follow_symlinks=False)
+
+
+def validate_row(row: object) -> dict[str, object]:
+    if (
+        not isinstance(row, dict)
+        or set(row) != {"executable", "path", "sha256", "size_bytes"}
+        or type(row.get("executable")) is not bool
+        or not isinstance(row.get("path"), str)
+        or not row["path"]
+        or Path(row["path"]).is_absolute()
+        or Path(row["path"]).as_posix() != row["path"]
+        or any(part in {"", ".", ".."} for part in Path(row["path"]).parts)
+        or not isinstance(row.get("sha256"), str)
+        or len(row["sha256"]) != 64
+        or type(row.get("size_bytes")) is not int
+        or row["size_bytes"] < 0
+    ):
+        raise SystemExit("CasePath capsule source row is invalid")
+    return row
+
+
+manifest_raw, _ = read_regular(repository / "casepath/source-manifest.json")
+if digest(manifest_raw) != expected_manifest_sha256:
+    raise SystemExit("CasePath source changed after sealed preflight")
+try:
+    manifest = json.loads(manifest_raw)
+except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    raise SystemExit("CasePath capsule source manifest is invalid") from exc
+rows_raw = manifest.get("files") if isinstance(manifest, dict) else None
+if not isinstance(rows_raw, list):
+    raise SystemExit("CasePath capsule source manifest is invalid")
+rows = [validate_row(row) for row in rows_raw]
+if [row["path"] for row in rows] != sorted(row["path"] for row in rows):
+    raise SystemExit("CasePath capsule source roster is not canonical")
+
+artifact_binding = manifest.get("artifact_manifest")
+artifact_manifest_path = repository / "casepath-api/artifacts/artifact-manifest.json"
+artifact_manifest_raw, _ = read_regular(artifact_manifest_path)
+if (
+    not isinstance(artifact_binding, dict)
+    or artifact_binding.get("path")
+    != "casepath-api/artifacts/artifact-manifest.json"
+    or artifact_binding.get("sha256") != digest(artifact_manifest_raw)
+):
+    raise SystemExit("CasePath capsule artifact authority differs from source")
+try:
+    artifact_manifest = json.loads(artifact_manifest_raw)
+except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    raise SystemExit("CasePath capsule artifact manifest is invalid") from exc
+artifact_rows = artifact_manifest.get("files") if isinstance(artifact_manifest, dict) else None
+if (
+    not isinstance(artifact_rows, list)
+    or artifact_manifest.get("file_count") != len(artifact_rows)
+):
+    raise SystemExit("CasePath capsule artifact manifest is invalid")
+
+static_root = repository / "casepath-public"
+if static_root.is_symlink() or not static_root.is_dir():
+    raise SystemExit("CasePath capsule built product is invalid")
+static_rows = []
+for path in sorted(static_root.rglob("*")):
+    if path.is_symlink() or (not path.is_file() and not path.is_dir()):
+        raise SystemExit("CasePath capsule built product contains an invalid entry")
+    if path.is_file():
+        raw, metadata = read_regular(path)
+        static_rows.append(
+            {
+                "path": path.relative_to(static_root).as_posix(),
+                "sha256": digest(raw),
+                "size_bytes": len(raw),
+                "executable": bool(metadata.st_mode & stat.S_IXUSR),
+            }
+        )
+if not static_rows:
+    raise SystemExit("CasePath capsule built product is empty")
+
+source_roster_sha256 = digest(canonical(rows))
+static_inventory_sha256 = digest(canonical(static_rows))
+target = capsules / expected_manifest_sha256
+receipt_path = target / "CAPSULE_RECEIPT.json"
+
+
+def validate_capsule() -> None:
+    acl_present = False
+    if sys.platform == "darwin":
+        try:
+            acl_listing = "\n".join(
+                (
+                    subprocess.check_output(
+                        ["/bin/ls", "-lde", "--", str(target)],
+                        text=True,
+                        stderr=subprocess.STDOUT,
+                    ),
+                    subprocess.check_output(
+                        ["/bin/ls", "-lAeR", "--", str(target)],
+                        text=True,
+                        stderr=subprocess.STDOUT,
+                    ),
+                )
+            )
+        except (OSError, subprocess.CalledProcessError) as exc:
+            raise SystemExit(
+                "CasePath existing source capsule ACL authority is unavailable"
+            ) from exc
+        acl_present = bool(
+            __import__("re").search(
+                r"^[bcdlps-][rwxStTs-]{9}\+", acl_listing, __import__("re").MULTILINE
+            )
+            or __import__("re").search(
+                r"^\s*\d+:\s", acl_listing, __import__("re").MULTILINE
+            )
+        )
+    elif sys.platform.startswith("linux"):
+        try:
+            acl_present = any(
+                attribute
+                in {"system.posix_acl_access", "system.posix_acl_default"}
+                for attribute in os.listxattr(target, follow_symlinks=False)
+            )
+        except OSError as exc:
+            raise SystemExit(
+                "CasePath existing source capsule ACL authority is unavailable"
+            ) from exc
+    if (
+        stat.S_IMODE(target.stat().st_mode) != 0o500
+        or acl_present
+    ):
+        raise SystemExit("CasePath existing source capsule is writable")
+    receipt_raw, _ = read_regular(receipt_path)
+    try:
+        receipt = json.loads(receipt_raw)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise SystemExit("CasePath existing source capsule receipt is invalid") from exc
+    semantic = dict(receipt) if isinstance(receipt, dict) else {}
+    stated = semantic.pop("receipt_sha256", None)
+    if (
+        not isinstance(receipt, dict)
+        or set(receipt)
+        != {
+            "contract",
+            "source_manifest_file_sha256",
+            "source_roster_sha256",
+            "source_file_count",
+            "artifact_manifest_file_sha256",
+            "artifact_file_count",
+            "static_inventory_sha256",
+            "static_file_count",
+            "receipt_sha256",
+        }
+        or receipt.get("contract") != "casepath.sealed-source-capsule/1.0.0"
+        or receipt.get("source_manifest_file_sha256")
+        != expected_manifest_sha256
+        or receipt.get("source_roster_sha256") != source_roster_sha256
+        or receipt.get("source_file_count") != len(rows)
+        or receipt.get("artifact_manifest_file_sha256")
+        != digest(artifact_manifest_raw)
+        or receipt.get("artifact_file_count") != len(artifact_rows)
+        or receipt.get("static_inventory_sha256") != static_inventory_sha256
+        or receipt.get("static_file_count") != len(static_rows)
+        or stated != digest(canonical(semantic))
+    ):
+        raise SystemExit("CasePath existing source capsule receipt is invalid")
+    expected = {
+        row["path"]: row for row in rows
+    }
+    expected["casepath/source-manifest.json"] = {
+        "executable": False,
+        "path": "casepath/source-manifest.json",
+        "sha256": expected_manifest_sha256,
+        "size_bytes": len(manifest_raw),
+    }
+    expected["casepath-api/artifacts/artifact-manifest.json"] = {
+        "executable": False,
+        "path": "casepath-api/artifacts/artifact-manifest.json",
+        "sha256": digest(artifact_manifest_raw),
+        "size_bytes": len(artifact_manifest_raw),
+    }
+    for artifact_row in artifact_rows:
+        if (
+            not isinstance(artifact_row, dict)
+            or not isinstance(artifact_row.get("path"), str)
+            or Path(artifact_row["path"]).is_absolute()
+            or ".." in Path(artifact_row["path"]).parts
+            or not isinstance(artifact_row.get("sha256"), str)
+            or type(artifact_row.get("size_bytes")) is not int
+        ):
+            raise SystemExit("CasePath capsule artifact row is invalid")
+        relative = f"casepath-api/artifacts/{artifact_row['path']}"
+        expected[relative] = {
+            "executable": False,
+            "path": relative,
+            "sha256": artifact_row["sha256"],
+            "size_bytes": artifact_row["size_bytes"],
+        }
+    for static_row in static_rows:
+        relative = f"casepath-public/{static_row['path']}"
+        expected[relative] = {**static_row, "path": relative}
+    actual = []
+    actual_directories = []
+    for candidate in sorted(target.rglob("*")):
+        if candidate.is_symlink() or (
+            not candidate.is_file() and not candidate.is_dir()
+        ):
+            raise SystemExit("CasePath existing source capsule has an invalid entry")
+        candidate_metadata = candidate.stat()
+        if sys.platform.startswith("linux"):
+            try:
+                candidate_acl = any(
+                    attribute
+                    in {"system.posix_acl_access", "system.posix_acl_default"}
+                    for attribute in os.listxattr(
+                        candidate, follow_symlinks=False
+                    )
+                )
+            except OSError as exc:
+                raise SystemExit(
+                    "CasePath existing source capsule ACL authority is unavailable"
+                ) from exc
+            if candidate_acl:
+                raise SystemExit(
+                    "CasePath existing source capsule contains an ACL"
+                )
+        if candidate.is_file():
+            if candidate_metadata.st_nlink != 1:
+                raise SystemExit(
+                    "CasePath existing source capsule contains a linked file"
+                )
+            actual.append(candidate.relative_to(target).as_posix())
+        if candidate.is_dir():
+            if stat.S_IMODE(candidate_metadata.st_mode) != 0o500:
+                raise SystemExit(
+                    "CasePath existing source capsule directory mode is invalid"
+                )
+            actual_directories.append(candidate.relative_to(target).as_posix())
+    actual.sort()
+    if actual != sorted([*expected, "CAPSULE_RECEIPT.json"]):
+        raise SystemExit("CasePath existing source capsule roster is not exact")
+    expected_directories = set()
+    for relative in [*expected, "CAPSULE_RECEIPT.json"]:
+        parts = Path(relative).parts
+        for index in range(1, len(parts)):
+            expected_directories.add(Path(*parts[:index]).as_posix())
+    if sorted(actual_directories) != sorted(expected_directories):
+        raise SystemExit(
+            "CasePath existing source capsule directory roster is not exact"
+        )
+    for relative, row in expected.items():
+        raw, metadata = read_regular(target / relative)
+        expected_mode = 0o555 if row["executable"] else 0o444
+        if row != {
+            "executable": bool(metadata.st_mode & stat.S_IXUSR),
+            "path": relative,
+            "sha256": digest(raw),
+            "size_bytes": len(raw),
+        } or stat.S_IMODE(metadata.st_mode) != expected_mode:
+            raise SystemExit("CasePath existing source capsule differs from authority")
+
+
+if target.exists():
+    if target.is_symlink() or not target.is_dir():
+        raise SystemExit("CasePath source capsule destination is invalid")
+    validate_capsule()
+    print(target)
+    raise SystemExit(0)
+
+staging = capsules / f".{expected_manifest_sha256}.{os.getpid()}.{uuid.uuid4()}.tmp"
+try:
+    staging.mkdir(mode=0o700)
+    for row in rows:
+        raw, metadata = read_regular(repository / row["path"])
+        if row != {
+            "executable": bool(metadata.st_mode & stat.S_IXUSR),
+            "path": row["path"],
+            "sha256": digest(raw),
+            "size_bytes": len(raw),
+        }:
+            raise SystemExit("CasePath source changed while capsule was captured")
+        write_file(staging / row["path"], raw, executable=row["executable"])
+    write_file(
+        staging / "casepath/source-manifest.json",
+        manifest_raw,
+        executable=False,
+    )
+    write_file(
+        staging / "casepath-api/artifacts/artifact-manifest.json",
+        artifact_manifest_raw,
+        executable=False,
+    )
+    copied_artifact_paths = []
+    for artifact_row in artifact_rows:
+        if (
+            not isinstance(artifact_row, dict)
+            or not isinstance(artifact_row.get("path"), str)
+            or Path(artifact_row["path"]).is_absolute()
+            or ".." in Path(artifact_row["path"]).parts
+            or not isinstance(artifact_row.get("sha256"), str)
+            or type(artifact_row.get("size_bytes")) is not int
+            or artifact_row["path"] in copied_artifact_paths
+        ):
+            raise SystemExit("CasePath capsule artifact row is invalid")
+        raw, _ = read_regular(
+            repository / "casepath-api/artifacts" / artifact_row["path"]
+        )
+        if (
+            artifact_row["sha256"] != digest(raw)
+            or artifact_row["size_bytes"] != len(raw)
+        ):
+            raise SystemExit("CasePath artifact changed while capsule was captured")
+        write_file(
+            staging / "casepath-api/artifacts" / artifact_row["path"],
+            raw,
+            executable=False,
+        )
+        copied_artifact_paths.append(artifact_row["path"])
+    if copied_artifact_paths != sorted(copied_artifact_paths):
+        raise SystemExit("CasePath capsule artifact roster is not canonical")
+    for static_row in static_rows:
+        raw, metadata = read_regular(static_root / static_row["path"])
+        if static_row != {
+            "path": static_row["path"],
+            "sha256": digest(raw),
+            "size_bytes": len(raw),
+            "executable": bool(metadata.st_mode & stat.S_IXUSR),
+        }:
+            raise SystemExit("CasePath built product changed during capsule capture")
+        write_file(
+            staging / "casepath-public" / static_row["path"],
+            raw,
+            executable=static_row["executable"],
+        )
+    material = {
+        "contract": "casepath.sealed-source-capsule/1.0.0",
+        "source_manifest_file_sha256": expected_manifest_sha256,
+        "source_roster_sha256": source_roster_sha256,
+        "source_file_count": len(rows),
+        "artifact_manifest_file_sha256": digest(artifact_manifest_raw),
+        "artifact_file_count": len(artifact_rows),
+        "static_inventory_sha256": static_inventory_sha256,
+        "static_file_count": len(static_rows),
+    }
+    receipt = {**material, "receipt_sha256": digest(canonical(material))}
+    write_file(
+        staging / "CAPSULE_RECEIPT.json",
+        json.dumps(receipt, indent=2, ensure_ascii=False, sort_keys=True).encode()
+        + b"\n",
+        executable=False,
+    )
+    for file_path in sorted(path for path in staging.rglob("*") if path.is_file()):
+        os.chmod(
+            file_path,
+            0o555 if file_path.stat().st_mode & stat.S_IXUSR else 0o444,
+        )
+        descriptor = os.open(
+            file_path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+        )
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+    for directory in sorted(
+        (path for path in staging.rglob("*") if path.is_dir()), reverse=True
+    ):
+        os.chmod(directory, 0o500)
+        descriptor = os.open(directory, os.O_RDONLY)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+    os.chmod(staging, 0o500)
+    descriptor = os.open(staging, os.O_RDONLY)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+    os.rename(staging, target)
+    descriptor = os.open(capsules, os.O_RDONLY)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+    validate_capsule()
+finally:
+    if staging.exists():
+        for candidate in [staging, *staging.rglob("*")]:
+            try:
+                os.chmod(
+                    candidate,
+                    stat.S_IMODE(candidate.stat().st_mode) | 0o200,
+                )
+            except OSError:
+                pass
+        shutil.rmtree(staging)
+print(target)
+PY
+}
+
+run_clean_locked_python() {
+  /usr/bin/env -i \
+    HOME="$runtime_root/home" \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    PATH="$venv_root/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+    PYTHONHASHSEED=0 \
+    PYTHONNOUSERSITE=1 \
+    PYTHONSAFEPATH=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPYCACHEPREFIX="$runtime_root/pycache" \
+    SOURCE_DATE_EPOCH=1786406400 \
+    TMPDIR="$runtime_root/tmp" \
+    TZ=UTC \
+    CASEPATH_LAUNCH_FAULT_POINT="${CASEPATH_LAUNCH_FAULT_POINT:-}" \
+    CASEPATH_SOURCE_COMMIT="${CASEPATH_SOURCE_COMMIT:-}" \
+    CASEPATH_SOURCE_BRANCH="${CASEPATH_SOURCE_BRANCH:-}" \
+    "$python_command" -I -B -P "$@"
+}
+
+# Capture the executable inputs that the product and the Gate 2 permutation
+# subprocess can actually load.  This deliberately makes no whole-host or
+# whole-CPython-install claim: the closed surface is the immutable application
+# capsule, the active interpreter identity, and the complete venv site-packages
+# tree together with its distribution RECORD authority.
+capture_runtime_closure() {
+  local execution_root="$1"
+  local output_path="$2"
+  run_clean_stdlib_python - "$repository_root" "$runtime_root" \
+    "$execution_root" "$python_command" "$output_path" \
+    "$CASEPATH_SOURCE_COMMIT" <<'PY'
+from __future__ import annotations
+
+import base64
+import csv
+from email import policy
+from email.parser import BytesParser
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import posixpath
+import platform
+import re
+import stat
+import subprocess
+import sys
+
+
+repository = Path(sys.argv[1]).resolve()
+runtime = Path(sys.argv[2]).resolve()
+execution_root = Path(sys.argv[3]).resolve()
+python_stated = Path(os.path.abspath(sys.argv[4]))
+output_path = Path(sys.argv[5])
+source_commit = sys.argv[6]
+venv = runtime / "venv"
+
+
+def canonical(value: object) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def digest(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def read_regular(path: Path) -> tuple[bytes, os.stat_result]:
+    descriptor = os.open(
+        path,
+        os.O_RDONLY
+        | getattr(os, "O_CLOEXEC", 0)
+        | getattr(os, "O_NOFOLLOW", 0)
+        | getattr(os, "O_NONBLOCK", 0),
+    )
+    try:
+        before = os.fstat(descriptor)
+        if not stat.S_ISREG(before.st_mode) or before.st_nlink != 1:
+            raise SystemExit(f"CasePath runtime closure file is not single-link regular: {path}")
+        chunks: list[bytes] = []
+        while True:
+            chunk = os.read(descriptor, 1024 * 1024)
+            if not chunk:
+                break
+            chunks.append(chunk)
+        after = os.fstat(descriptor)
+        identity_before = (
+            before.st_dev,
+            before.st_ino,
+            before.st_mode,
+            before.st_uid,
+            before.st_gid,
+            before.st_size,
+            before.st_mtime_ns,
+        )
+        identity_after = (
+            after.st_dev,
+            after.st_ino,
+            after.st_mode,
+            after.st_uid,
+            after.st_gid,
+            after.st_size,
+            after.st_mtime_ns,
+        )
+        if identity_before != identity_after:
+            raise SystemExit(f"CasePath runtime closure file changed while read: {path}")
+        raw = b"".join(chunks)
+        if len(raw) != before.st_size:
+            raise SystemExit(f"CasePath runtime closure file size changed while read: {path}")
+        return raw, before
+    finally:
+        os.close(descriptor)
+
+
+def entry(path: Path, display_path: str) -> dict[str, object]:
+    before = path.lstat()
+    common = {
+        "gid": before.st_gid,
+        "mode": stat.S_IMODE(before.st_mode),
+        "path": display_path,
+        "uid": before.st_uid,
+    }
+    if stat.S_ISDIR(before.st_mode):
+        return {"kind": "directory", **common}
+    if stat.S_ISREG(before.st_mode):
+        raw, metadata = read_regular(path)
+        return {
+            "kind": "file",
+            **common,
+            "sha256": digest(raw),
+            "size_bytes": len(raw),
+        }
+    if stat.S_ISLNK(before.st_mode):
+        target = os.readlink(path)
+        after = path.lstat()
+        if (
+            before.st_dev,
+            before.st_ino,
+            before.st_mode,
+            before.st_uid,
+            before.st_gid,
+        ) != (
+            after.st_dev,
+            after.st_ino,
+            after.st_mode,
+            after.st_uid,
+            after.st_gid,
+        ):
+            raise SystemExit(f"CasePath runtime closure symlink changed while read: {path}")
+        target_raw = os.fsencode(target)
+        return {
+            "kind": "symlink",
+            **common,
+            "target": target,
+            "target_sha256": digest(target_raw),
+            "target_size_bytes": len(target_raw),
+        }
+    raise SystemExit(f"CasePath runtime closure contains a special entry: {path}")
+
+
+def close_section(material: dict[str, object]) -> dict[str, object]:
+    return {**material, "closure_sha256": digest(canonical(material))}
+
+
+def tree_section(root: Path) -> dict[str, object]:
+    if root.is_symlink() or not root.is_dir() or root.resolve() != root:
+        raise SystemExit(f"CasePath runtime closure tree root is invalid: {root}")
+    roster = [entry(root, ".")]
+    for candidate in sorted(root.rglob("*"), key=lambda value: value.relative_to(root).as_posix()):
+        roster.append(entry(candidate, candidate.relative_to(root).as_posix()))
+    material = {
+        "root": str(root),
+        "entry_count": len(roster),
+        "roster": roster,
+        "roster_sha256": digest(canonical(roster)),
+    }
+    return close_section(material)
+
+
+probe_environment = {
+    "HOME": str(runtime / "home"),
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": ":".join(
+        (str(venv / "bin"), "/usr/bin", "/bin", "/usr/sbin", "/sbin")
+    ),
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": str(runtime / "pycache"),
+    "TZ": "UTC",
+}
+probe_program = r'''
+import importlib.util,json,os,platform,site,sys
+names=("fastapi","pydantic","uvicorn")
+origins={}
+for name in names:
+    spec=importlib.util.find_spec(name)
+    origins[name]=None if spec is None else spec.origin
+value={
+    "argv":sys.argv,
+    "base_exec_prefix":sys.base_exec_prefix,
+    "base_prefix":sys.base_prefix,
+    "enable_user_site":site.ENABLE_USER_SITE,
+    "environment":dict(os.environ),
+    "exec_prefix":sys.exec_prefix,
+    "executable":sys.executable,
+    "flags":{
+        "dont_write_bytecode":bool(sys.flags.dont_write_bytecode),
+        "ignore_environment":bool(sys.flags.ignore_environment),
+        "isolated":bool(sys.flags.isolated),
+        "no_site":bool(sys.flags.no_site),
+        "no_user_site":bool(sys.flags.no_user_site),
+        "safe_path":bool(sys.flags.safe_path),
+    },
+    "implementation":sys.implementation.name,
+    "cache_tag":sys.implementation.cache_tag,
+    "module_origins":origins,
+    "path":sys.path,
+    "prefix":sys.prefix,
+    "python_build":list(platform.python_build()),
+    "python_compiler":platform.python_compiler(),
+    "python_version":platform.python_version(),
+    "version_info":[
+        sys.version_info.major,sys.version_info.minor,sys.version_info.micro,
+        sys.version_info.releaselevel,sys.version_info.serial,
+    ],
+}
+print(json.dumps(value,ensure_ascii=False,allow_nan=False,sort_keys=True,separators=(",",":")))
+'''.strip()
+completed = subprocess.run(
+    [str(python_stated), "-I", "-B", "-P", "-c", probe_program],
+    cwd=execution_root,
+    env=probe_environment,
+    check=False,
+    capture_output=True,
+    timeout=60,
+)
+if completed.returncode != 0 or completed.stderr:
+    raise SystemExit("CasePath isolated runtime probe failed")
+try:
+    probe = json.loads(completed.stdout)
+except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    raise SystemExit("CasePath isolated runtime probe is invalid") from exc
+if not isinstance(probe, dict):
+    raise SystemExit("CasePath isolated runtime probe is invalid")
+python_real = python_stated.resolve()
+base_prefix = Path(probe.get("base_prefix", "")).resolve()
+version_tag = f"python{sys.version_info.major}.{sys.version_info.minor}"
+site_packages = venv / "lib" / version_tag / "site-packages"
+expected_probe_paths = [
+    str(base_prefix / "lib" / f"python{sys.version_info.major}{sys.version_info.minor}.zip"),
+    str(base_prefix / "lib" / version_tag),
+    str(base_prefix / "lib" / version_tag / "lib-dynload"),
+    str(site_packages),
+]
+expected_environment_keys = sorted(
+    [*probe_environment]
+    + (["__CF_USER_TEXT_ENCODING"] if sys.platform == "darwin" else [])
+)
+if (
+    probe.get("argv") != ["-c"]
+    or probe.get("executable") != str(python_stated)
+    or probe.get("prefix") != str(venv)
+    or probe.get("exec_prefix") != str(venv)
+    or probe.get("base_prefix") != str(base_prefix)
+    or probe.get("base_exec_prefix") != str(base_prefix)
+    or probe.get("enable_user_site") is not False
+    or probe.get("path") != expected_probe_paths
+    or sorted((probe.get("environment") or {}).keys()) != expected_environment_keys
+    or any(
+        (probe.get("environment") or {}).get(key) != value
+        for key, value in probe_environment.items()
+    )
+    or probe.get("flags")
+    != {
+        "dont_write_bytecode": True,
+        "ignore_environment": True,
+        "isolated": True,
+        "no_site": False,
+        "no_user_site": True,
+        "safe_path": True,
+    }
+    or probe.get("implementation") != "cpython"
+    or probe.get("cache_tag") != "cpython-313"
+    or probe.get("python_version") != "3.13.9"
+    or probe.get("version_info") != [3, 13, 9, "final", 0]
+    or not isinstance(probe.get("python_build"), list)
+    or len(probe["python_build"]) != 2
+    or not all(isinstance(value, str) and value for value in probe["python_build"])
+    or not isinstance(probe.get("python_compiler"), str)
+    or not probe["python_compiler"]
+):
+    raise SystemExit("CasePath isolated runtime path or environment is not closed")
+for origin in (probe.get("module_origins") or {}).values():
+    if not isinstance(origin, str):
+        raise SystemExit("CasePath isolated runtime module is unavailable")
+    try:
+        Path(origin).resolve().relative_to(venv)
+    except ValueError as exc:
+        raise SystemExit("CasePath isolated runtime module escaped the venv") from exc
+isolated_probe = close_section(
+    {
+        "contract": "casepath.isolated-python-path-environment-probe/1.0.0",
+        "command": [str(python_stated), "-I", "-B", "-P", "-c", probe_program],
+        "cwd": str(execution_root),
+        "expected_environment": probe_environment,
+        "observation": probe,
+        "stdout_sha256": digest(completed.stdout),
+    }
+)
+
+
+capsule = tree_section(execution_root)
+capsule_files = [
+    row["path"]
+    for row in capsule["roster"]
+    if row["kind"] == "file"
+]
+if capsule_files.count("CAPSULE_RECEIPT.json") != 1:
+    raise SystemExit("CasePath active capsule receipt roster is invalid")
+
+site_packages_section = tree_section(site_packages)
+if any(row["kind"] == "symlink" for row in site_packages_section["roster"]):
+    raise SystemExit("CasePath site-packages contains a symlink")
+try:
+    python_real.relative_to(base_prefix)
+except ValueError as exc:
+    raise SystemExit("CasePath resolved Python escaped its reported CPython base") from exc
+
+if python_stated.parent.resolve() != python_stated.parent:
+    raise SystemExit("CasePath Python entry has a symlinked venv path")
+symlink_chain: list[dict[str, object]] = []
+visited_links: set[str] = set()
+chain_path = python_stated
+while chain_path.is_symlink():
+    chain_key = str(chain_path)
+    if chain_key in visited_links:
+        raise SystemExit("CasePath Python entry symlink chain contains a cycle")
+    visited_links.add(chain_key)
+    symlink_chain.append(entry(chain_path, chain_key))
+    target = os.readlink(chain_path)
+    chain_path = Path(
+        os.path.normpath(
+            target if os.path.isabs(target) else os.path.join(chain_path.parent, target)
+        )
+    )
+if not symlink_chain or chain_path.resolve() != python_real:
+    raise SystemExit("CasePath Python entry symlink chain is not exact")
+python_runtime = close_section(
+    {
+        "contract": "casepath.python-runtime-identity/1.0.0",
+        "stated_path": str(python_stated),
+        "symlink_chain": symlink_chain,
+        "symlink_chain_sha256": digest(canonical(symlink_chain)),
+        "real_path": str(python_real),
+        "real_file": entry(python_real, str(python_real)),
+        "base_prefix": str(base_prefix),
+        "pyvenv_config": entry(venv / "pyvenv.cfg", str(venv / "pyvenv.cfg")),
+        "interpreter_argv_flags": ["-I", "-B", "-P"],
+        "implementation": probe["implementation"],
+        "cache_tag": probe["cache_tag"],
+        "python_version": probe["python_version"],
+        "version_info": probe["version_info"],
+        "python_build": probe["python_build"],
+        "python_compiler": probe["python_compiler"],
+    }
+)
+
+
+def normalize_distribution(value: str) -> str:
+    return re.sub(r"[-_.]+", "-", value).lower()
+
+
+requirements_raw, _ = read_regular(execution_root / "casepath-api/requirements.lock")
+locked_pins: dict[str, str] = {}
+for raw_line in requirements_raw.decode("utf-8").splitlines():
+    line = raw_line.strip()
+    if not line or line.startswith("#"):
+        continue
+    if line.count("==") != 1:
+        raise SystemExit("CasePath requirements lock contains an unpinned row")
+    name, version = line.split("==", 1)
+    normalized = normalize_distribution(name)
+    if normalized in locked_pins or not normalized or not version:
+        raise SystemExit("CasePath requirements lock contains an invalid package row")
+    locked_pins[normalized] = version
+
+direct_dist_info = sorted(site_packages.glob("*.dist-info"))
+captured_dist_info = sorted(
+    row["path"]
+    for row in site_packages_section["roster"]
+    if row["kind"] == "directory" and row["path"].endswith(".dist-info")
+)
+if captured_dist_info != [candidate.name for candidate in direct_dist_info]:
+    raise SystemExit("CasePath venv contains a noncanonical dist-info instance")
+instances: list[dict[str, object]] = []
+ownership: dict[str, str] = {}
+normalized_instances: set[str] = set()
+site_prefix = site_packages.relative_to(venv).as_posix()
+site_file_rows = {
+    posixpath.join(site_prefix, row["path"]): row
+    for row in site_packages_section["roster"]
+    if row["kind"] == "file"
+}
+for dist_info in direct_dist_info:
+    metadata_raw, _ = read_regular(dist_info / "METADATA")
+    record_raw, _ = read_regular(dist_info / "RECORD")
+    message = BytesParser(policy=policy.default).parsebytes(metadata_raw)
+    name = message.get("Name")
+    version = message.get("Version")
+    if not isinstance(name, str) or not isinstance(version, str):
+        raise SystemExit("CasePath dist-info metadata lacks a name or version")
+    normalized_name = normalize_distribution(name)
+    if normalized_name in normalized_instances:
+        raise SystemExit("CasePath venv contains duplicate normalized distributions")
+    normalized_instances.add(normalized_name)
+    if locked_pins.get(normalized_name) != version:
+        raise SystemExit("CasePath dist-info instance differs from requirements.lock")
+    record_rows: list[dict[str, object]] = []
+    record_paths: set[str] = set()
+    record_relative = (dist_info / "RECORD").relative_to(venv).as_posix()
+    try:
+        decoded_record = record_raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise SystemExit("CasePath dist-info RECORD is not UTF-8") from exc
+    for csv_row in csv.reader(decoded_record.splitlines()):
+        if len(csv_row) != 3:
+            raise SystemExit("CasePath dist-info RECORD row is malformed")
+        relative, hash_field, size_field = csv_row
+        if not relative or "\\" in relative or PurePosixPath(relative).is_absolute():
+            raise SystemExit("CasePath dist-info RECORD path is invalid")
+        normalized_path = posixpath.normpath(
+            posixpath.join(site_packages.relative_to(venv).as_posix(), relative)
+        )
+        if normalized_path == ".." or normalized_path.startswith("../"):
+            raise SystemExit("CasePath dist-info RECORD path escapes the venv")
+        if normalized_path in record_paths or normalized_path in ownership:
+            raise SystemExit("CasePath dist-info RECORD ownership is duplicated")
+        record_paths.add(normalized_path)
+        target = venv / normalized_path
+        captured_target = site_file_rows.get(normalized_path)
+        if captured_target is None:
+            if target.is_symlink() or not target.is_file():
+                raise SystemExit("CasePath dist-info RECORD target is not regular")
+            target_raw, _ = read_regular(target)
+            target_sha256 = digest(target_raw)
+            target_size = len(target_raw)
+        else:
+            target_raw = None
+            target_sha256 = str(captured_target["sha256"])
+            target_size = int(captured_target["size_bytes"])
+        if normalized_path == record_relative:
+            if hash_field or size_field:
+                raise SystemExit("CasePath dist-info RECORD self-row is not canonical")
+        else:
+            if not hash_field.startswith("sha256=") or not size_field.isdecimal():
+                raise SystemExit("CasePath dist-info RECORD row lacks SHA-256 authority")
+            expected_hash = base64.urlsafe_b64encode(
+                bytes.fromhex(target_sha256)
+            ).rstrip(b"=").decode("ascii")
+            if hash_field != f"sha256={expected_hash}" or int(size_field) != target_size:
+                raise SystemExit("CasePath dist-info RECORD target differs from authority")
+        ownership[normalized_path] = dist_info.name
+        record_rows.append(
+            {
+                "hash": hash_field,
+                "path": normalized_path,
+                "size": size_field,
+            }
+        )
+    record_rows.sort(key=lambda row: row["path"])
+    instances.append(
+        {
+            "dist_info": dist_info.relative_to(site_packages).as_posix(),
+            "metadata_sha256": digest(metadata_raw),
+            "name": name,
+            "normalized_name": normalized_name,
+            "record_entry_count": len(record_rows),
+            "record_roster_sha256": digest(canonical(record_rows)),
+            "record_sha256": digest(record_raw),
+            "version": version,
+        }
+    )
+instances.sort(key=lambda row: (row["normalized_name"], row["version"], row["dist_info"]))
+if len(instances) != len(locked_pins) or [
+    row["normalized_name"] for row in instances
+] != sorted(locked_pins):
+    raise SystemExit("CasePath dist-info instances are not exact")
+
+site_regular_paths = {
+    posixpath.join(site_prefix, row["path"])
+    for row in site_packages_section["roster"]
+    if row["kind"] == "file"
+}
+bootstrap_unowned = {
+    f"lib/{version_tag}/site-packages/_virtualenv.pth",
+    f"lib/{version_tag}/site-packages/_virtualenv.py",
+}
+unowned = sorted(site_regular_paths - set(ownership))
+unowned_bytecode = sorted(
+    relative
+    for relative in unowned
+    if "/__pycache__/" in f"/{relative}" and relative.endswith(".pyc")
+)
+for relative in unowned_bytecode:
+    pure = PurePosixPath(relative)
+    cache_index = pure.parts.index("__pycache__")
+    filename = pure.name
+    match = re.fullmatch(
+        r"(.+)\.cpython-313(?:(?:\.opt-[12])|(?:-pytest-[0-9]+\.[0-9]+\.[0-9]+))?\.pyc",
+        filename,
+    )
+    if match is None:
+        raise SystemExit("CasePath venv contains noncanonical unowned bytecode")
+    source = PurePosixPath(*pure.parts[:cache_index], f"{match.group(1)}.py").as_posix()
+    if source not in ownership and source != f"{site_prefix}/_virtualenv.py":
+        raise SystemExit("CasePath venv contains unowned bytecode without source authority")
+if set(unowned) != bootstrap_unowned | set(unowned_bytecode):
+    raise SystemExit("CasePath venv contains an unowned non-bootstrap file")
+pth_path = site_packages / "_virtualenv.pth"
+pth_raw, pth_metadata = read_regular(pth_path)
+if pth_raw != b"import _virtualenv":
+    raise SystemExit("CasePath _virtualenv.pth is not exact")
+all_entries = site_packages_section["roster"]
+injection_paths = []
+for row in all_entries:
+    relative = str(row["path"])
+    lowered = relative.lower()
+    basename = PurePosixPath(relative).name.lower()
+    parts = PurePosixPath(lowered).parts
+    if (
+        lowered.endswith(".egg-link")
+        or any(part.endswith(".egg") for part in parts)
+        or ".egg-info/" in lowered
+        or lowered.endswith(".egg-info")
+        or basename.startswith("__editable__")
+        or basename == "direct_url.json"
+        or basename == "easy-install.pth"
+        or (lowered.endswith(".pth") and relative != "_virtualenv.pth")
+        or any(part in {".git", ".hg", ".svn"} for part in parts)
+        or any(
+            part in {"sitecustomize", "usercustomize"}
+            or part.startswith("sitecustomize.")
+            or part.startswith("usercustomize.")
+            for part in parts
+        )
+        or "casepath-eval" in lowered
+        or "casepath_eval" in lowered
+    ):
+        injection_paths.append(relative)
+if injection_paths:
+    raise SystemExit("CasePath venv contains an injection or editable-install artifact")
+ownership_rows = [
+    {"dist_info": owner, "path": relative}
+    for relative, owner in sorted(ownership.items())
+]
+distributions = sorted(
+    [f"{row['name']}=={row['version']}" for row in instances],
+    key=lambda value: (value.casefold(), value),
+)
+distribution_integrity = close_section(
+    {
+        "contract": "casepath.python-distribution-record-closure/1.0.0",
+        "site_packages": str(site_packages),
+        "locked_pins": [
+            {"name": name, "version": version}
+            for name, version in sorted(locked_pins.items())
+        ],
+        "dist_info_instance_count": len(instances),
+        "dist_info_instances": instances,
+        "dist_info_instances_sha256": digest(canonical(instances)),
+        "record_owned_path_count": len(ownership_rows),
+        "record_ownership": ownership_rows,
+        "record_ownership_sha256": digest(canonical(ownership_rows)),
+        "allowed_unowned_bytecode_count": len(unowned_bytecode),
+        "allowed_unowned_bytecode_sha256": digest(canonical(unowned_bytecode)),
+        "bootstrap_unowned_paths": sorted(bootstrap_unowned),
+        "bootstrap_unowned_paths_sha256": digest(canonical(sorted(bootstrap_unowned))),
+        "virtualenv_pth": {
+            "path": pth_path.relative_to(venv).as_posix(),
+            "mode": stat.S_IMODE(pth_metadata.st_mode),
+            "uid": pth_metadata.st_uid,
+            "gid": pth_metadata.st_gid,
+            "sha256": digest(pth_raw),
+            "size_bytes": len(pth_raw),
+            "exact_utf8": "import _virtualenv",
+        },
+        "installed_distributions": distributions,
+        "installed_distributions_sha256": digest(canonical(distributions)),
+        "provenance_boundary": (
+            "installed_bytes_and_dist_info_RECORD_sha256_only;"
+            "original_wheel_archive_hashes_not_captured"
+        ),
+    }
+)
+
+if not isinstance(source_commit, str) or re.fullmatch(r"[0-9a-f]{40}", source_commit) is None:
+    raise SystemExit("CasePath runtime source commit is invalid")
+data_root = repository / ".runtime/casepath-data-v1"
+child_environment = {
+    "HOME": str(runtime / "home"),
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": ":".join(
+        (str(venv / "bin"), "/usr/local/bin", "/usr/bin", "/bin", "/usr/sbin", "/sbin")
+    ),
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": str(runtime / "pycache"),
+    "PYTHONSAFEPATH": "1",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "TMPDIR": str(runtime / "tmp"),
+    "TZ": "UTC",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": source_commit,
+    "CASEPATH_DB_PATH": str(data_root / "casepath.db"),
+    "CASEPATH_ARTIFACT_REGISTRY_PATH": str(data_root / "artifact-registry"),
+    "CASEPATH_LOCAL_STATIC_ROOT": str(execution_root / "casepath-public"),
+    "CASEPATH_LOCAL_RUNTIME_RECEIPT": str(runtime / "runtime-boot-receipt.json"),
+    "LANGSMITH_TRACING": "false",
+    "LANGCHAIN_TRACING": "false",
+    "LANGCHAIN_TRACING_V2": "false",
+}
+service_argv = [
+    str(python_stated), "-I", "-B", "-P", "-m", "uvicorn", "casepath_api.app:app",
+    "--app-dir", str(execution_root / "casepath-api"),
+    "--host", "127.0.0.1", "--port", "4173", "--no-access-log",
+]
+permutation_bootstrap = (
+    'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); '
+    'runpy.run_path(sys.argv.pop(1),run_name="__main__")'
+)
+permutation_environment = {
+    "HOME": str(runtime / "home"),
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": ":".join((str(venv / "bin"), "/usr/bin", "/bin", "/usr/sbin", "/sbin")),
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TZ": "UTC",
+}
+permutation_helper = execution_root / "casepath-qa/production-projection-permutation-v1.py"
+launch_context = close_section(
+    {
+        "contract": "casepath.closed-launch-context/1.0.0",
+        "service": {
+            "argv": service_argv,
+            "cwd": str(repository),
+            "app_dir": str(execution_root / "casepath-api"),
+            "environment": child_environment,
+            "environment_sha256": digest(canonical(child_environment)),
+        },
+        "permutation_subprocess": {
+            "argv": [
+                str(python_stated), "-B", "-I", "-P", "-c", permutation_bootstrap,
+                str(execution_root / "casepath-api"), str(permutation_helper),
+            ],
+            "cwd": str(repository),
+            "environment": permutation_environment,
+            "environment_sha256": digest(canonical(permutation_environment)),
+            "helper": entry(permutation_helper, str(permutation_helper)),
+        },
+    }
+)
+
+sections = {
+    "capsule": capsule,
+    "distribution_integrity": distribution_integrity,
+    "isolated_probe": isolated_probe,
+    "launch_context": launch_context,
+    "python_runtime": python_runtime,
+    "site_packages": site_packages_section,
+}
+subordinate = {
+    name: section["closure_sha256"] for name, section in sorted(sections.items())
+}
+material = {
+    "contract": "casepath.executable-runtime-closure/1.1.0",
+    "claim_boundary": (
+        "exact_active_capsule_python_entry_real_executable_isolated_path_environment_"
+        "and_complete_site_packages;cpython_stdlib_tree_and_original_wheel_archives_"
+        "not_captured"
+    ),
+    "sections": sections,
+    "subordinate_closure_sha256": subordinate,
+}
+closure = {**material, "closure_sha256": digest(canonical(material))}
+encoded = json.dumps(
+    closure,
+    ensure_ascii=False,
+    allow_nan=False,
+    sort_keys=True,
+    separators=(",", ":"),
+).encode("utf-8") + b"\n"
+descriptor = os.open(
+    output_path,
+    os.O_WRONLY | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0),
+)
+try:
+    metadata = os.fstat(descriptor)
+    if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+        raise SystemExit("CasePath runtime closure output is not regular")
+    remaining = memoryview(encoded)
+    while remaining:
+        written = os.write(descriptor, remaining)
+        if written <= 0:
+            raise SystemExit("CasePath runtime closure output made no progress")
+        remaining = remaining[written:]
+    os.fsync(descriptor)
+finally:
+    os.close(descriptor)
+PY
+}
+
+run_repository_script() {
+  local script="$1"
+  shift
+  run_clean_locked_python -c \
+    'import runpy,sys; from pathlib import Path; script=sys.argv.pop(1); sys.path.insert(0,str(Path(script).resolve().parent)); sys.argv[0]=script; runpy.run_path(script,run_name="__main__")' \
+    "$script" "$@"
+}
+
+resolve_source_identity() {
+  local supplied_commit="${CASEPATH_SOURCE_COMMIT:-}"
+  local git_top_level=""
+  CASEPATH_SOURCE_COMMIT=""
+  CASEPATH_SOURCE_BRANCH="source-archive"
+  if command -v git >/dev/null 2>&1; then
+    git_top_level="$(git -C "$repository_root" rev-parse --show-toplevel 2>/dev/null || true)"
+    if [[ -n "$git_top_level" \
+      && "$(cd -- "$git_top_level" 2>/dev/null && pwd -P)" == "$repository_root" ]]; then
+      CASEPATH_SOURCE_COMMIT="$(git -C "$repository_root" rev-parse --verify HEAD 2>/dev/null || true)"
+      CASEPATH_SOURCE_BRANCH="$(git -C "$repository_root" branch --show-current 2>/dev/null || true)"
+    fi
+  fi
+  if [[ ! "$CASEPATH_SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+    if [[ ! "$supplied_commit" =~ ^[0-9a-f]{40}$ ]]; then
+      printf 'CasePath command failed: source archive requires CASEPATH_SOURCE_COMMIT\n' >&2
+      exit 2
+    fi
+    CASEPATH_SOURCE_COMMIT="$supplied_commit"
+    CASEPATH_SOURCE_BRANCH="source-archive"
+  elif [[ -z "$CASEPATH_SOURCE_BRANCH" ]]; then
+    CASEPATH_SOURCE_BRANCH="detached-head"
+  fi
+  export CASEPATH_SOURCE_COMMIT CASEPATH_SOURCE_BRANCH
+}
+
+build_local_static_output() {
+  run_repository_script \
+    "$repository_root/casepath/tools/build_static_site.py" \
+    --require-known-commit >/dev/null
+}
+
+prepare_generated_outputs() {
+  run_repository_script \
+    "$repository_root/casepath-api/generate_artifacts.py" >/dev/null
+  run_repository_script \
+    "$repository_root/casepath-api/replace_photographic_evidence.py" \
+    "$repository_root" >/dev/null
+  build_local_static_output
+  run_repository_script \
+    "$repository_root/casepath/tools/casepath_release.py" \
+    prepare-artifacts >/dev/null
+}
+
+read_bundled_corpus_identity() {
+  local execution_root="$1"
+  run_clean_stdlib_python - "$execution_root/casepath-api" <<'PY'
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(sys.argv[1])))
+from casepath_api.workspace_corpus import PublicCorpus, default_public_corpus_root
+
+corpus = PublicCorpus(default_public_corpus_root())
+corpus_id = corpus.manifest["corpus_id"]
+claim_count = corpus.identity["claim_count"]
+print(f"{corpus_id}\t{claim_count}")
+PY
+}
+
+verify_release_capsule() {
+  local capsule_root="$1"
+  run_clean_stdlib_python - "$capsule_root/casepath/source-manifest.json" <<'PY'
+import json
+from pathlib import Path
+import sys
+
+manifest = json.loads(Path(sys.argv[1]).read_bytes())
+if (
+    manifest.get("release_id") != "casepath-v20-reference-20260811"
+    or manifest.get("contract") != "casepath.source-manifest/2.1.0"
+):
+    raise SystemExit("CasePath capsule release identity is invalid")
+PY
+  run_repository_script \
+    "$repository_root/casepath/tools/casepath_release.py" verify >/dev/null
+  run_repository_script \
+    "$capsule_root/casepath/tools/casepath_release.py" verify >/dev/null
+}
+
+assert_origin_idle() {
+  run_clean_stdlib_python - "$port" <<'PY'
+import socket
+import sys
+import time
+
+port = int(sys.argv[1])
+for _ in range(40):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.settimeout(0.25)
+        if probe.connect_ex(("127.0.0.1", port)) != 0:
+            break
+    time.sleep(0.25)
+else:
+    raise SystemExit(
+        f"CasePath launch failed: 127.0.0.1:{port} has a live listener"
+    )
+PY
+}
+
+bootstrap_data_root() {
+  local controller_root="$1"
+  local expected_manifest_sha256="$2"
+  env -i \
+    HOME="$runtime_root/home" \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    PATH="$venv_root/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+    PYTHONHASHSEED=0 \
+    PYTHONNOUSERSITE=1 \
+    PYTHONSAFEPATH=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPYCACHEPREFIX="$runtime_root/pycache" \
+    TZ=UTC \
+    CASEPATH_DATA_ROOT_FAULT_POINT="${CASEPATH_DATA_ROOT_FAULT_POINT:-}" \
+    "$python_command" -I -S -B -P - "$controller_root" "$legacy_data_root" \
+      "$data_root" "$expected_manifest_sha256" <<'PY'
+import hashlib
+import json
+import os
+from pathlib import Path
+import stat
+import subprocess
+import sys
+import types
+
+repository = Path(sys.argv[1]).resolve()
+manifest_path = repository / "casepath/source-manifest.json"
+module_path = repository / "casepath-api/casepath_api/local_data_root.py"
+expected_manifest_sha256 = sys.argv[4]
+
+
+def read_regular_nofollow(path: Path) -> bytes:
+    descriptor = os.open(
+        path,
+        os.O_RDONLY
+        | getattr(os, "O_NOFOLLOW", 0)
+        | getattr(os, "O_NONBLOCK", 0),
+    )
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise SystemExit("CasePath durable-data controller is not regular")
+        chunks = []
+        while True:
+            chunk = os.read(descriptor, 1024 * 1024)
+            if not chunk:
+                return b"".join(chunks)
+            chunks.append(chunk)
+    finally:
+        os.close(descriptor)
+
+
+try:
+    manifest_raw = read_regular_nofollow(manifest_path)
+    manifest = json.loads(manifest_raw)
+except (UnicodeDecodeError, json.JSONDecodeError, OSError) as exc:
+    raise SystemExit("CasePath durable-data source authority is invalid") from exc
+if hashlib.sha256(manifest_raw).hexdigest() != expected_manifest_sha256:
+    raise SystemExit("CasePath durable-data source authority changed after preflight")
+rows = manifest.get("files") if isinstance(manifest, dict) else None
+if not isinstance(rows, list):
+    raise SystemExit("CasePath durable-data source authority is invalid")
+matches = [
+    row
+    for row in rows
+    if isinstance(row, dict)
+    and row.get("path") == "casepath-api/casepath_api/local_data_root.py"
+]
+try:
+    module_raw = read_regular_nofollow(module_path)
+except OSError as exc:
+    raise SystemExit("CasePath durable-data controller is unavailable") from exc
+if len(matches) != 1 or matches[0] != {
+    "executable": False,
+    "path": "casepath-api/casepath_api/local_data_root.py",
+    "sha256": hashlib.sha256(module_raw).hexdigest(),
+    "size_bytes": len(module_raw),
+}:
+    raise SystemExit("CasePath durable-data controller differs from sealed source")
+module = types.ModuleType("casepath_sealed_local_data_root")
+module.__file__ = str(module_path)
+module.__package__ = ""
+sys.modules[module.__name__] = module
+try:
+    exec(compile(module_raw, str(module_path), "exec"), module.__dict__)
+except Exception as exc:
+    raise SystemExit("CasePath durable-data controller cannot be loaded") from exc
+controller = getattr(module, "bootstrap_data_root", None)
+if not callable(controller):
+    raise SystemExit("CasePath durable-data controller is incomplete")
+
+
+def validate_staged_database(database_path: Path) -> None:
+    validator_environment = {
+        key: os.environ[key]
+        for key in (
+            "HOME",
+            "LANG",
+            "LC_ALL",
+            "PATH",
+            "PYTHONHASHSEED",
+            "PYTHONNOUSERSITE",
+            "PYTHONSAFEPATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "PYTHONPYCACHEPREFIX",
+            "TZ",
+        )
+    }
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-I",
+            "-B",
+            "-P",
+            "-c",
+            (
+                "import runpy,sys;sys.path.insert(0,sys.argv.pop(1));"
+                "sys.argv[0]='validate_journal';"
+                "runpy.run_module('casepath_api.validate_journal',"
+                "run_name='__main__',alter_sys=True)"
+            ),
+            str(repository / "casepath-api"),
+            str(database_path),
+        ],
+        cwd=repository,
+        env=validator_environment,
+        check=False,
+        capture_output=True,
+        timeout=180,
+    )
+    if completed.returncode != 0:
+        raise SystemExit("CasePath staged durable journal is invalid")
+    try:
+        validator_receipt = json.loads(completed.stdout)
+        validator_material = dict(validator_receipt)
+        validator_stated = validator_material.pop("receipt_sha256")
+    except (UnicodeDecodeError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        raise SystemExit(
+            "CasePath staged durable journal receipt is invalid"
+        ) from exc
+    validator_encoded = json.dumps(
+        validator_material,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode()
+    if (
+        validator_receipt.get("contract")
+        != "casepath.read-only-journal-validation/1.0.0"
+        or validator_receipt.get("database_path")
+        != str(database_path.resolve())
+        or validator_stated != hashlib.sha256(validator_encoded).hexdigest()
+    ):
+        raise SystemExit("CasePath staged durable journal receipt is invalid")
+
+
+fault = os.environ.get("CASEPATH_DATA_ROOT_FAULT_POINT") or None
+receipt = controller(
+    sys.argv[2],
+    sys.argv[3],
+    fault_point=fault,
+    staged_database_validator=validate_staged_database,
+)
+print(json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+PY
+}
+
+validate_durable_journal() {
+  local sealed_root="$1"
+  local database_path="${2:-$data_root/casepath.db}"
+  /usr/bin/env -i \
+    HOME="$runtime_root/home" \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    PATH="$venv_root/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+    PYTHONHASHSEED=0 \
+    PYTHONNOUSERSITE=1 \
+    PYTHONSAFEPATH=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPYCACHEPREFIX="$runtime_root/pycache" \
+    SOURCE_DATE_EPOCH=1786406400 \
+    TMPDIR="$runtime_root/tmp" \
+    TZ=UTC \
+    "$python_command" -I -B -P -c \
+    'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); sys.argv[0]="validate_journal"; runpy.run_module("casepath_api.validate_journal",run_name="__main__",alter_sys=True)' \
+    "$sealed_root/casepath-api" "$database_path"
+}
+
+# Provider and tracing credentials are outside the local product capability.
+# Remove their names before importing any CasePath module or build verifier.
+unset OPENROUTER_API_KEY LANGSMITH_API_KEY LANGCHAIN_API_KEY \
+  LANGSMITH_TRACING LANGCHAIN_TRACING LANGCHAIN_TRACING_V2 \
+  RENDER_GIT_COMMIT
+
+usage() {
+  cat <<'EOF'
+Usage:
+  ./bin/casepath dev
+  ./bin/casepath prepare
+  ./bin/casepath seed --corpus synthetic-dev-60
+  ./bin/casepath test
+  ./bin/casepath replay <claim-id>
+  ./bin/casepath adapter-check examples/local_source_adapter.py
+
+Starts the deterministic CasePath product on one persistent localhost origin.
+The command owns its locked Python environment, sealed-static verification, SQLite journal,
+artifact registry, readiness gate, and child process. Press Ctrl-C to stop it.
+EOF
+}
+
+operation="${1:-}"
+if [[ "$operation" == "dev" && "$#" -ne 1 ]]; then
+  usage >&2
+  exit 2
+fi
+if [[ "$operation" != "dev" && "$operation" != "prepare" && "$operation" != "seed" && "$operation" != "test" && "$operation" != "replay" && "$operation" != "adapter-check" ]]; then
+  usage >&2
+  exit 2
+fi
+
+ensure_private_runtime_root
+
+if [[ -z "$uv_command" ]]; then
+  uv_command="$(command -v uv || true)"
+fi
+if [[ -z "$uv_command" || ! -x "$uv_command" ]]; then
+  printf 'CasePath launch failed: install uv or set CASEPATH_UV to its executable path\n' >&2
+  exit 2
+fi
+
+# Every command shares one pinned environment.  Hold a kernel lease for the
+# complete command lifetime so no sibling command can run `uv pip sync` while
+# the server or test interpreter is using that environment.  The test command
+# deliberately invokes this launcher from inside pytest; that child may reuse
+# the environment only when the same exact lockf/flock owner remains a live
+# ancestor and the outer launcher has already completed dependency sync.
+environment_lock_path="$runtime_root/environment.lock"
+lock_owner_operating_system="$(/usr/bin/uname -s)"
+case "$lock_owner_operating_system" in
+  Darwin)
+    trusted_lock_executable="/usr/bin/lockf"
+    trusted_lock_name="lockf"
+    ;;
+  Linux)
+    trusted_lock_executable="/usr/bin/flock"
+    trusted_lock_name="flock"
+    ;;
+  *)
+    printf 'CasePath command failed: unsupported kernel-lock platform\n' >&2
+    exit 2
+    ;;
+esac
+if [[ ! -x "$trusted_lock_executable" ]]; then
+  printf 'CasePath command failed: trusted kernel-lock executable is unavailable\n' >&2
+  exit 2
+fi
+process_is_trusted_lock_owner() {
+  local process_id="$1"
+  case "$lock_owner_operating_system" in
+    Darwin)
+      /usr/sbin/lsof -n -a -p "$process_id" -d txt -Fn 2>/dev/null \
+        | /usr/bin/grep -Fx "n$trusted_lock_executable" >/dev/null
+      ;;
+    Linux)
+      [[ "$(/usr/bin/readlink -f "/proc/$process_id/exe" 2>/dev/null || true)" \
+        == "$(/usr/bin/readlink -f "$trusted_lock_executable")" ]]
+      ;;
+  esac
+}
+process_holds_exact_lock_file() {
+  local process_id="$1"
+  local lock_path="$2"
+  local operating_system=""
+  local target_identity=""
+  local descriptor=""
+  operating_system="$lock_owner_operating_system"
+  case "$operating_system" in
+    Darwin)
+      if [[ ! -x /usr/sbin/lsof ]]; then
+        return 1
+      fi
+      /usr/sbin/lsof -n -a -p "$process_id" -Fn -- "$lock_path" 2>/dev/null \
+        | /usr/bin/grep -Fx "n$lock_path" >/dev/null
+      ;;
+    Linux)
+      if [[ ! -d "/proc/$process_id/fd" ]]; then
+        return 1
+      fi
+      target_identity="$(/usr/bin/stat -Lc '%d:%i' "$lock_path" 2>/dev/null || true)"
+      if [[ -z "$target_identity" ]]; then
+        return 1
+      fi
+      for descriptor in "/proc/$process_id/fd/"*; do
+        if [[ "$(/usr/bin/stat -Lc '%d:%i' "$descriptor" 2>/dev/null || true)" == "$target_identity" ]]; then
+          return 0
+        fi
+      done
+      return 1
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+has_exact_lock_owner_ancestor() {
+  local lock_path="$1"
+  local ancestor="$PPID"
+  local ancestor_name=""
+  local next_ancestor=""
+  while [[ "$ancestor" =~ ^[0-9]+$ ]] && (( ancestor > 1 )); do
+    ancestor_name="$(/bin/ps -p "$ancestor" -o comm= 2>/dev/null || true)"
+    ancestor_name="${ancestor_name##*/}"
+    if [[ "$ancestor_name" == "$trusted_lock_name" ]] \
+      && process_is_trusted_lock_owner "$ancestor" \
+      && process_holds_exact_lock_file "$ancestor" "$lock_path"; then
+      return 0
+    fi
+    next_ancestor="$(/bin/ps -p "$ancestor" -o ppid= 2>/dev/null | /usr/bin/tr -d '[:space:]')"
+    if [[ -z "$next_ancestor" || "$next_ancestor" == "$ancestor" ]]; then
+      break
+    fi
+    ancestor="$next_ancestor"
+  done
+  return 1
+}
+if [[ "${CASEPATH_ENV_LOCK_HELD:-}" == "1" ]]; then
+  if ! has_exact_lock_owner_ancestor "$environment_lock_path"; then
+    printf 'CasePath command failed: environment lease marker has no exact kernel lock owner\n' >&2
+    exit 2
+  fi
+else
+  if [[ "$lock_owner_operating_system" == "Darwin" ]]; then
+    exec "$trusted_lock_executable" -k -t 0 "$environment_lock_path" \
+      /usr/bin/env CASEPATH_ENV_LOCK_HELD=1 CASEPATH_ENV_READY=0 \
+      CASEPATH_INVOCATION_DIRECTORY="$invocation_directory" "$0" "$@"
+  else
+    exec "$trusted_lock_executable" -n "$environment_lock_path" \
+      /usr/bin/env CASEPATH_ENV_LOCK_HELD=1 CASEPATH_ENV_READY=0 \
+      CASEPATH_INVOCATION_DIRECTORY="$invocation_directory" "$0" "$@"
+  fi
+fi
+
+# Seed, replay, and the serving process share one durable-data election. This
+# covers first-copy publication, schema migration, and all later journal use;
+# two launchers can never race a partially published data root.
+if [[ "$operation" == "dev" || "$operation" == "seed" || "$operation" == "replay" ]]; then
+  mkdir -p "$repository_root/.runtime"
+  if [[ "${CASEPATH_DATA_LOCK_HELD:-}" != "1" ]]; then
+    if [[ "$lock_owner_operating_system" == "Darwin" ]]; then
+      exec "$trusted_lock_executable" -k -t 0 "$repository_root/.runtime/casepath-data-v1.lock" \
+        /usr/bin/env CASEPATH_DATA_LOCK_HELD=1 "$0" "$@"
+    else
+      exec "$trusted_lock_executable" -n "$repository_root/.runtime/casepath-data-v1.lock" \
+        /usr/bin/env CASEPATH_DATA_LOCK_HELD=1 "$0" "$@"
+    fi
+  fi
+  # Public environment markers are never lock authority. Require an exact
+  # open-file identity in a live lockf/flock ancestor, including nested dev
+  # re-entry after the launch lock is acquired.
+  if [[ "${CASEPATH_DATA_LOCK_HELD:-}" == "1" ]] \
+    && ! has_exact_lock_owner_ancestor "$repository_root/.runtime/casepath-data-v1.lock"; then
+    printf 'CasePath command failed: data lease marker has no exact kernel lock owner\n' >&2
+    exit 2
+  fi
+fi
+
+# Non-serving commands use the same pinned interpreter, dependency lock, local
+# database, closed credential environment, and product modules as `dev`.
+if [[ "$operation" != "dev" ]]; then
+  cli_arguments=("$@")
+  if [[ "$operation" == "adapter-check" && "${2:-}" != /* ]]; then
+    cli_arguments=("adapter-check" "$invocation_directory/${2:-}")
+  fi
+  ensure_private_runtime_directories
+  if [[ "${CASEPATH_ENV_READY:-}" != "1" && ! -x "$python_command" ]]; then
+    "$uv_command" venv --python 3.13.9 "$venv_root"
+  fi
+  if [[ "$(run_clean_stdlib_python -c 'import platform; print(platform.python_version())')" != "3.13.9" ]]; then
+    printf 'CasePath command failed: runtime Python must be 3.13.9\n' >&2
+    exit 2
+  fi
+  if [[ "$operation" == "prepare" ]]; then
+    source_only_manifest_sha256="$(verify_sealed_source_tree source-only)"
+  else
+    preflight_source_manifest_sha256="$(verify_sealed_source_tree)"
+  fi
+  if [[ "${CASEPATH_ENV_READY:-}" != "1" ]]; then
+    "$uv_command" pip sync --python "$python_command" "$repository_root/casepath-api/requirements.lock" >/dev/null
+    export CASEPATH_ENV_READY=1
+  fi
+  resolve_source_identity
+  if [[ "$operation" == "prepare" ]]; then
+    prepare_generated_outputs
+    preflight_source_manifest_sha256="$(verify_sealed_source_tree)"
+    if [[ "$preflight_source_manifest_sha256" != "$source_only_manifest_sha256" ]]; then
+      printf 'CasePath command failed: source manifest drifted during preparation\n' >&2
+      exit 2
+    fi
+  elif [[ "$operation" != "adapter-check" ]]; then
+    build_local_static_output
+  fi
+  if [[ "$operation" == "prepare" ]]; then
+    # Materialize and verify the exact read-only source capsule without
+    # opening durable product data or requiring the live origin to stop.
+    # This is the safe pre-cutover producer consumed by the append-only
+    # publisher; it has no CLI/domain side effect.
+    execution_root="$(
+      materialize_sealed_source_capsule "$preflight_source_manifest_sha256"
+    )"
+    verify_release_capsule "$execution_root"
+    printf '%s\n' "$execution_root"
+    exit 0
+  fi
+  if [[ "$operation" == "seed" || "$operation" == "replay" ]]; then
+    assert_origin_idle
+    execution_root="$(
+      materialize_sealed_source_capsule "$preflight_source_manifest_sha256"
+    )"
+    verify_release_capsule "$execution_root"
+    if [[ -e "$data_root/casepath.db" || -L "$data_root/casepath.db" ]]; then
+      # Existing durable bytes must be semantically valid before the history
+      # reconciler is allowed to promote any prepared receipt or pointer.
+      validate_durable_journal "$execution_root" >/dev/null
+    elif [[ -e "$legacy_data_root/casepath.db" || -L "$legacy_data_root/casepath.db" ]]; then
+      # A first migration must never publish a reducer-invalid legacy journal.
+      # Validate the exact migration source before any durable successor exists.
+      validate_durable_journal \
+        "$execution_root" "$legacy_data_root/casepath.db" >/dev/null
+    fi
+    run_clean_stdlib_python \
+      "$execution_root/casepath/tools/validate_local_runtime_history.py" \
+      "$runtime_root" "$data_root" "$repository_root"
+    bootstrap_data_root "$execution_root" "$preflight_source_manifest_sha256"
+    validate_durable_journal "$execution_root" >/dev/null
+  else
+    execution_root="$repository_root"
+  fi
+  if [[ "$operation" == "seed" || "$operation" == "replay" ]]; then
+    command_database="$data_root/casepath.db"
+    command_registry="$data_root/artifact-registry"
+  else
+    command_database="$runtime_root/tmp/${operation}-outer-$$.db"
+    command_registry="$runtime_root/tmp/${operation}-outer-artifacts-$$"
+  fi
+  cd "$repository_root"
+  exec /usr/bin/env -i \
+    HOME="$runtime_root/home" \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    PATH="$venv_root/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+    PYTHONHASHSEED=0 \
+    PYTHONNOUSERSITE=1 \
+    PYTHONSAFEPATH=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONPYCACHEPREFIX="$runtime_root/pycache" \
+    SOURCE_DATE_EPOCH=1786406400 \
+    TMPDIR="$runtime_root/tmp" \
+    TZ=UTC \
+    CASEPATH_MODEL_MODE=deterministic_reference \
+    CASEPATH_SOURCE_COMMIT="$CASEPATH_SOURCE_COMMIT" \
+    CASEPATH_DB_PATH="$command_database" \
+    CASEPATH_ARTIFACT_REGISTRY_PATH="$command_registry" \
+    CASEPATH_ENV_LOCK_HELD=1 \
+    CASEPATH_ENV_READY=1 \
+    CASEPATH_UV_RESOLVED="$uv_command" \
+    "$python_command" -I -B -P -c \
+    'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); sys.argv[0]="casepath"; runpy.run_module("casepath_api.cli",run_name="__main__",alter_sys=True)' \
+    "$execution_root/casepath-api" "${cli_arguments[@]}"
+fi
+
+ensure_private_runtime_root
+
+# Hold one kernel-backed launch lease across build, serve, and shutdown. This
+# closes the check-then-bind race between two simultaneous `casepath dev`
+# invocations; the fixed-port probe below remains a separate foreign-listener
+# guard. lockf releases the lease on every process exit, including crashes.
+if [[ "${CASEPATH_LAUNCH_LOCK_HELD:-}" != "1" ]]; then
+  if [[ "$lock_owner_operating_system" == "Darwin" ]]; then
+    exec "$trusted_lock_executable" -k -t 0 "$runtime_root/launcher.lock" \
+      /usr/bin/env CASEPATH_LAUNCH_LOCK_HELD=1 "$0" "$@"
+  else
+    exec "$trusted_lock_executable" -n "$runtime_root/launcher.lock" \
+      /usr/bin/env CASEPATH_LAUNCH_LOCK_HELD=1 "$0" "$@"
+  fi
+fi
+if ! has_exact_lock_owner_ancestor "$runtime_root/launcher.lock"; then
+  printf 'CasePath launch failed: runtime lease marker has no kernel lock owner\n' >&2
+  exit 2
+fi
+
+ensure_private_runtime_directories
+
+# The reconciliation controller is deliberately the same pinned interpreter
+# that later validates and serves the product. Materialize and verify it before
+# the first controller invocation so a genuinely clean checkout has no hidden
+# system-Python dependency and cannot fail before `uv venv` has run.
+if [[ ! -x "$python_command" ]]; then
+  "$uv_command" venv --python 3.13.9 "$venv_root"
+fi
+
+actual_python="$(run_clean_stdlib_python -c 'import platform; print(platform.python_version())')"
+if [[ "$actual_python" != "3.13.9" ]]; then
+  printf 'CasePath launch failed: runtime Python is %s, expected 3.13.9\n' "$actual_python" >&2
+  exit 2
+fi
+
+# Publish authority directories durably before any crash-injection boundary can
+# publish a boot receipt inside them.  Fsync both each directory and its parent
+# so a fresh-machine restart cannot lose an otherwise fsynced history entry.
+run_clean_stdlib_python - "$runtime_root" <<'PY'
+import os
+from pathlib import Path
+import sys
+
+runtime = Path(sys.argv[1]).resolve()
+for directory in (
+    runtime,
+    runtime / "boots",
+    runtime / "boot-staging",
+):
+    if directory.is_symlink() or not directory.is_dir():
+        raise SystemExit("CasePath runtime authority directory is invalid")
+    for target in (directory, directory.parent):
+        descriptor = os.open(target, os.O_RDONLY)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+PY
+preflight_source_manifest_sha256="$(verify_sealed_source_tree)"
+resolve_source_identity
+build_local_static_output
+execution_root="$(
+  materialize_sealed_source_capsule "$preflight_source_manifest_sha256"
+)"
+
+# Recover a fully published history receipt that survived a crash before the
+# mutable current pointer was replaced. History files are immutable, so the
+# only lawful recovery is to validate the single append-only chain and advance
+# the pointer to its unique tip. Incomplete staging files are never authority.
+run_clean_stdlib_python - "$runtime_root" "$data_root" <<'PY'
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import sys
+import uuid
+
+runtime = Path(sys.argv[1]).resolve()
+data_root = Path(sys.argv[2]).resolve()
+boots = runtime / "boots"
+current = runtime / "runtime-boot-receipt.json"
+boot_name = re.compile(r"boot-[A-Za-z0-9TZ-]+\.json")
+sha_pattern = re.compile(r"[0-9a-f]{64}")
+
+
+def canonical(value: object) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def digest(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def validate_receipt(path: Path) -> tuple[bytes, dict[str, object], str]:
+    if path.is_symlink() or not path.is_file() or not boot_name.fullmatch(path.name):
+        raise SystemExit(f"CasePath boot history contains a noncanonical entry: {path.name}")
+    raw = path.read_bytes()
+    try:
+        value = json.loads(raw)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"CasePath boot history is not valid JSON: {path.name}") from exc
+    if not isinstance(value, dict):
+        raise SystemExit(f"CasePath boot history is not an object: {path.name}")
+    semantic = dict(value)
+    receipt_sha = semantic.pop("receipt_sha256", None)
+    prior = value.get("prior_boot_receipt_file_sha256")
+    if (
+        value.get("contract")
+        not in {
+            "casepath.local-runtime-boot/2.0.0",
+            "casepath.local-runtime-boot/2.1.0",
+            "casepath.local-runtime-boot/2.2.0",
+        }
+        or value.get("boot_id") != path.stem
+        or receipt_sha != digest(canonical(semantic))
+        or (prior is not None and (not isinstance(prior, str) or not sha_pattern.fullmatch(prior)))
+    ):
+        raise SystemExit(f"CasePath boot history receipt is invalid: {path.name}")
+    return raw, value, digest(raw)
+
+
+entries: dict[str, tuple[bytes, dict[str, object], Path]] = {}
+for candidate in sorted(boots.iterdir()):
+    raw, receipt, file_sha = validate_receipt(candidate)
+    if file_sha in entries:
+        raise SystemExit(f"CasePath boot history duplicates receipt bytes: {file_sha}")
+    entries[file_sha] = (raw, receipt, candidate)
+
+if entries:
+    roots = [file_sha for file_sha, (_, value, _) in entries.items() if value.get("prior_boot_receipt_file_sha256") is None]
+    if len(roots) != 1:
+        raise SystemExit("CasePath boot history does not have exactly one root")
+    children: dict[str, list[str]] = {}
+    for file_sha, (_, value, _) in entries.items():
+        prior = value.get("prior_boot_receipt_file_sha256")
+        if prior is not None:
+            if prior not in entries:
+                raise SystemExit(f"CasePath boot history is missing prior receipt: {prior}")
+            children.setdefault(prior, []).append(file_sha)
+    chain = [roots[0]]
+    while children.get(chain[-1]):
+        successors = children[chain[-1]]
+        if len(successors) != 1:
+            raise SystemExit("CasePath boot history contains a fork")
+        chain.append(successors[0])
+    if set(chain) != set(entries):
+        raise SystemExit("CasePath boot history contains an unreachable receipt")
+    current_sha = None
+    if current.exists():
+        if current.is_symlink() or not current.is_file():
+            raise SystemExit("CasePath current boot receipt is not a regular file")
+        current_sha = digest(current.read_bytes())
+        if current_sha not in entries:
+            raise SystemExit("CasePath current boot receipt is outside the history chain")
+    tip_sha = chain[-1]
+    tip_receipt = entries[tip_sha][1]
+    tip_runtime = tip_receipt.get("runtime")
+    provenance = data_root / "DATA_ROOT_PROVENANCE.json"
+    if (
+        not isinstance(tip_runtime, dict)
+        or tip_runtime.get("data_root") != str(data_root)
+        or tip_runtime.get("database_path") != str(data_root / "casepath.db")
+        or tip_runtime.get("artifact_registry_path")
+        != str(data_root / "artifact-registry")
+        or not isinstance(
+            tip_runtime.get("data_root_provenance_file_sha256"), str
+        )
+        or not sha_pattern.fullmatch(
+            tip_runtime["data_root_provenance_file_sha256"]
+        )
+        or data_root.is_symlink()
+        or not data_root.is_dir()
+        or provenance.is_symlink()
+        or not provenance.is_file()
+        or digest(provenance.read_bytes())
+        != tip_runtime["data_root_provenance_file_sha256"]
+    ):
+        raise SystemExit(
+            "CasePath durable data root differs from the accepted boot lineage"
+        )
+    # Pointer promotion is intentionally deferred to the full capsule-bound
+    # verifier below.  This structural pass must never make a receipt current.
+elif current.exists():
+    raise SystemExit("CasePath current boot receipt exists without immutable history")
+PY
+
+if [[ "${CASEPATH_ENV_READY:-}" != "1" ]]; then
+  "$uv_command" pip sync \
+    --python "$python_command" \
+    "$repository_root/casepath-api/requirements.lock" >/dev/null
+  export CASEPATH_ENV_READY=1
+fi
+
+runtime_closure_after_sync_path="$(
+  /usr/bin/mktemp "$runtime_root/tmp/runtime-closure-after-sync.XXXXXX"
+)"
+runtime_closure_before_child_path="$(
+  /usr/bin/mktemp "$runtime_root/tmp/runtime-closure-before-child.XXXXXX"
+)"
+runtime_closure_after_ready_path="$(
+  /usr/bin/mktemp "$runtime_root/tmp/runtime-closure-after-ready.XXXXXX"
+)"
+capture_runtime_closure "$execution_root" "$runtime_closure_after_sync_path"
+
+# When a durable database already exists, replay it through the captured
+# production reducer before the history controller may promote a recovered
+# receipt. Fresh roots are replayed immediately after bootstrap below.
+if [[ -e "$data_root/casepath.db" || -L "$data_root/casepath.db" ]]; then
+  validate_durable_journal "$execution_root" >/dev/null
+elif [[ -e "$legacy_data_root/casepath.db" || -L "$legacy_data_root/casepath.db" ]]; then
+  # The legacy root is a migration input, not a trusted exception. Replay it
+  # through the same sealed reducers before bootstrap can publish new bytes.
+  validate_durable_journal \
+    "$execution_root" "$legacy_data_root/casepath.db" >/dev/null
+fi
+
+# The controller itself is captured in the sealed capsule. After semantic
+# replay succeeds, it validates every historical receipt against that receipt's
+# own capsule and may atomically promote the unique append-only tip.
+run_clean_stdlib_python \
+  "$execution_root/casepath/tools/validate_local_runtime_history.py" \
+  "$runtime_root" "$data_root" "$repository_root"
+
+# Refuse before fixture or static materialization when another process is
+# actually accepting connections on the product origin. Do not use an
+# exclusive probe bind here: macOS may retain the previous socket in TIME_WAIT
+# after a crash-safe shutdown even though no process owns the port. Uvicorn's
+# own bind remains the authoritative race-closing operation.
+assert_origin_idle
+
+export SOURCE_DATE_EPOCH=1786406400
+
+# Launch is a consumer of a sealed source tree, never a source generator.
+# Maintainers explicitly generate artifacts and the source manifest before a
+# release; the normal user command only verifies those exact bytes.
+run_repository_script "$repository_root/casepath/tools/casepath_release.py" verify >/dev/null
+run_repository_script "$execution_root/casepath/tools/casepath_release.py" verify >/dev/null
+source_manifest_before_child_sha256="$(
+  run_clean_stdlib_python - "$repository_root/casepath/source-manifest.json" <<'PY'
+import hashlib
+from pathlib import Path
+import sys
+print(hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest())
+PY
+)"
+if [[ "$source_manifest_before_child_sha256" != "$preflight_source_manifest_sha256" ]]; then
+  printf 'CasePath launch failed: source changed after sealed capsule capture\n' >&2
+  exit 2
+fi
+static_inventory_before_child_sha256="$(
+  run_clean_locked_python - "$execution_root" "$CASEPATH_SOURCE_COMMIT" <<'PY'
+import hashlib
+import json
+from pathlib import Path
+import sys
+repository = Path(sys.argv[1])
+source_commit = sys.argv[2]
+root = repository / "casepath-public"
+sys.path.insert(0, str(repository / "casepath/tools"))
+from build_static_site import verify_inventory
+verify_inventory(root)
+rows = [
+    {
+        "path": path.relative_to(root).as_posix(),
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "bytes": path.stat().st_size,
+    }
+    for path in sorted(root.rglob("*"))
+    if path.is_file()
+]
+for row in rows:
+    if row["path"] == "deployment.json":
+        continue
+    authored = repository / "casepath" / row["path"]
+    if not authored.is_file() or authored.is_symlink():
+        raise SystemExit(f"built file lacks an authored regular source: {row['path']}")
+    authored_bytes = authored.read_bytes()
+    if hashlib.sha256(authored_bytes).hexdigest() != row["sha256"] or len(authored_bytes) != row["bytes"]:
+        raise SystemExit(f"built file differs from authored source: {row['path']}")
+deployment = json.loads((root / "deployment.json").read_text())
+release = json.loads((repository / "casepath/release.json").read_text())
+if not (
+    deployment.get("contract") == "casepath.deployment-identity/1.0.0"
+    and deployment.get("alignment_eligible") is True
+    and deployment.get("source_commit") == source_commit
+    and deployment.get("release_id") == release.get("release_id")
+    and deployment.get("component_version") == release.get("components", {}).get("frontend", {}).get("version")
+    and deployment.get("component_contract") == release.get("components", {}).get("frontend", {}).get("contract")
+):
+    raise SystemExit("built deployment identity differs from source/release authority")
+encoded = json.dumps(rows, ensure_ascii=False, allow_nan=False, sort_keys=True, separators=(",", ":")).encode()
+print(hashlib.sha256(encoded).hexdigest())
+PY
+)"
+
+# Only a completely verified source/static snapshot may perform the one-time
+# durable migration or open the product database.
+bootstrap_data_root "$execution_root" "$preflight_source_manifest_sha256"
+validate_durable_journal "$execution_root" >/dev/null
+
+# A prior successful boot is a monotonic durability checkpoint. The mutable
+# database may legitimately gain events and the immutable registry may gain
+# artifacts, but neither may lose or rewrite anything previously attested.
+run_clean_stdlib_python - "$runtime_root" "$data_root" <<'PY'
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import sqlite3
+import stat
+import sys
+
+runtime = Path(sys.argv[1]).resolve()
+data_root = Path(sys.argv[2]).resolve()
+current = runtime / "runtime-boot-receipt.json"
+if not current.exists():
+    raise SystemExit(0)
+if current.is_symlink() or not current.is_file():
+    raise SystemExit("CasePath durability checkpoint is not regular")
+try:
+    receipt = json.loads(current.read_bytes())
+except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    raise SystemExit("CasePath durability checkpoint is invalid") from exc
+if receipt.get("contract") == "casepath.local-runtime-boot/2.0.0":
+    raise SystemExit(0)
+if receipt.get("contract") not in {
+    "casepath.local-runtime-boot/2.1.0",
+    "casepath.local-runtime-boot/2.2.0",
+}:
+    raise SystemExit("CasePath durability checkpoint contract is invalid")
+attestation = receipt.get("attestation")
+if not isinstance(attestation, dict):
+    raise SystemExit("CasePath durability checkpoint attestation is invalid")
+
+
+def canonical(value: object) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+prior_events = attestation.get("durable_event_roster")
+prior_registry = attestation.get("durable_registry_inventory")
+if (
+    not isinstance(prior_events, list)
+    or attestation.get("durable_event_count") != len(prior_events)
+    or attestation.get("durable_event_roster_sha256")
+    != hashlib.sha256(canonical(prior_events)).hexdigest()
+    or not isinstance(prior_registry, list)
+    or attestation.get("durable_registry_file_count") != len(prior_registry)
+    or attestation.get("durable_registry_inventory_sha256")
+    != hashlib.sha256(canonical(prior_registry)).hexdigest()
+):
+    raise SystemExit("CasePath durability checkpoint roster is invalid")
+
+database = data_root / "casepath.db"
+descriptor = os.open(
+    database,
+    os.O_RDONLY
+    | getattr(os, "O_CLOEXEC", 0)
+    | getattr(os, "O_NOFOLLOW", 0)
+    | getattr(os, "O_NONBLOCK", 0),
+)
+try:
+    metadata = os.fstat(descriptor)
+    if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+        raise SystemExit("CasePath durable database identity is invalid")
+finally:
+    os.close(descriptor)
+with sqlite3.connect(f"file:{database.as_posix()}?mode=ro", uri=True) as connection:
+    if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+        raise SystemExit("CasePath durable database failed integrity check")
+    current_events = [
+        {
+            "session_id": row[0],
+            "loop_id": row[1],
+            "sequence": row[2],
+            "event_sha256": row[3],
+            "event_json_sha256": hashlib.sha256(row[4].encode("utf-8")).hexdigest(),
+        }
+        for row in connection.execute(
+            """SELECT session_id,loop_id,sequence,event_sha256,event_json
+            FROM claim_loop_events
+            ORDER BY session_id,loop_id,sequence"""
+        )
+    ]
+current_event_by_key = {
+    (row["session_id"], row["loop_id"], row["sequence"]): row
+    for row in current_events
+}
+if any(
+    current_event_by_key.get(
+        (row.get("session_id"), row.get("loop_id"), row.get("sequence"))
+    )
+    != row
+    for row in prior_events
+):
+    raise SystemExit("CasePath durable event journal rolled back")
+
+registry = data_root / "artifact-registry"
+if registry.is_symlink() or not registry.is_dir():
+    raise SystemExit("CasePath durable registry is invalid")
+current_registry = []
+for path in sorted(registry.rglob("*")):
+    metadata = path.lstat()
+    if path.is_symlink() or (
+        not stat.S_ISREG(metadata.st_mode)
+        and not stat.S_ISDIR(metadata.st_mode)
+    ):
+        raise SystemExit("CasePath durable registry contains an invalid entry")
+    if stat.S_ISREG(metadata.st_mode):
+        if metadata.st_nlink != 1:
+            raise SystemExit("CasePath durable registry contains a linked file")
+        raw = path.read_bytes()
+        current_registry.append(
+            {
+                "path": path.relative_to(registry).as_posix(),
+                "sha256": hashlib.sha256(raw).hexdigest(),
+                "size_bytes": len(raw),
+            }
+        )
+current_registry_by_path = {row["path"]: row for row in current_registry}
+if any(
+    current_registry_by_path.get(row.get("path")) != row
+    for row in prior_registry
+):
+    raise SystemExit("CasePath durable artifact registry rolled back")
+PY
+
+# A first local launch must open a useful product, not an empty shell that asks
+# the user to coordinate another command. The exact corpus import is itself
+# idempotent, journal-authoritative, outcome-blind, and uses the same database
+# and closed environment as the serving process.
+IFS=$'\t' read -r bundled_corpus_id bundled_claim_count <<<"$(
+  read_bundled_corpus_identity "$execution_root"
+)"
+seed_receipt="$runtime_root/latest-workspace-seed-receipt.json"
+seed_receipt_staging="$runtime_root/.latest-workspace-seed-receipt.$$.tmp"
+env -i \
+  HOME="$runtime_root/home" \
+  LANG=C.UTF-8 \
+  LC_ALL=C.UTF-8 \
+  PATH="$venv_root/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+  PYTHONHASHSEED=0 \
+  PYTHONNOUSERSITE=1 \
+  PYTHONDONTWRITEBYTECODE=1 \
+  PYTHONPYCACHEPREFIX="$runtime_root/pycache" \
+  PYTHONSAFEPATH=1 \
+  TMPDIR="$runtime_root/tmp" \
+  TZ=UTC \
+  CASEPATH_DB_PATH="$data_root/casepath.db" \
+  CASEPATH_ARTIFACT_REGISTRY_PATH="$data_root/artifact-registry" \
+  "$python_command" -I -B -P -c \
+  'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); sys.argv[0]="casepath"; runpy.run_module("casepath_api.cli",run_name="__main__",alter_sys=True)' \
+  "$execution_root/casepath-api" seed --corpus "$bundled_corpus_id" \
+  >"$seed_receipt_staging"
+run_clean_stdlib_python - "$seed_receipt_staging" "$seed_receipt" <<'PY'
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import sys
+
+staging = Path(sys.argv[1])
+destination = Path(sys.argv[2])
+
+
+def canonical(value: object) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def digest(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+if staging.is_symlink() or not staging.is_file():
+    raise SystemExit("CasePath workspace seed staging receipt is not regular")
+raw = staging.read_bytes()
+try:
+    receipt = json.loads(raw)
+except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    raise SystemExit("CasePath workspace seed receipt is invalid") from exc
+semantic = dict(receipt) if isinstance(receipt, dict) else {}
+stated = semantic.pop("receipt_sha256", None)
+if (
+    set(receipt) != {"contract", "seed_receipt", "source_authority", "receipt_sha256"}
+    or receipt.get("contract") != "casepath.sealed-workspace-seed/1.0.0"
+    or stated != digest(canonical(semantic))
+):
+    raise SystemExit("CasePath workspace seed receipt is invalid")
+with staging.open("rb") as stream:
+    os.fsync(stream.fileno())
+if destination.is_symlink() or (destination.exists() and not destination.is_file()):
+    raise SystemExit("CasePath workspace seed receipt destination is invalid")
+os.replace(staging, destination)
+descriptor = os.open(destination.parent, os.O_RDONLY)
+try:
+    os.fsync(descriptor)
+finally:
+    os.close(descriptor)
+PY
+
+shutdown() {
+  local signal="${1:-TERM}"
+  if [[ -n "$child_pid" ]] && kill -0 "$child_pid" 2>/dev/null; then
+    kill "-$signal" "$child_pid" 2>/dev/null || kill -"$signal" "$child_pid" 2>/dev/null || true
+    wait "$child_pid" 2>/dev/null || true
+  fi
+}
+shutdown_after_interrupt() {
+  if [[ -z "$child_pid" ]]; then
+    return
+  fi
+  # An interactive Ctrl-C is delivered to the full foreground process group,
+  # so give Uvicorn the signal it already received instead of immediately
+  # sending a duplicate interrupt through the launcher. A parent-only INT is
+  # still bounded: after one second the launcher terminates its child.
+  for _ in {1..10}; do
+    if ! kill -0 "$child_pid" 2>/dev/null; then
+      wait "$child_pid" 2>/dev/null || true
+      return
+    fi
+    sleep 0.1
+  done
+  shutdown TERM
+}
+trap 'shutdown TERM' EXIT
+trap 'shutdown_after_interrupt; exit 130' INT
+trap 'shutdown TERM; exit 143' TERM
+
+capture_runtime_closure "$execution_root" "$runtime_closure_before_child_path"
+
+env -i \
+  HOME="$runtime_root/home" \
+  LANG=C.UTF-8 \
+  LC_ALL=C.UTF-8 \
+  PATH="$venv_root/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin" \
+  PYTHONHASHSEED=0 \
+  PYTHONNOUSERSITE=1 \
+  PYTHONDONTWRITEBYTECODE=1 \
+  PYTHONPYCACHEPREFIX="$runtime_root/pycache" \
+  PYTHONSAFEPATH=1 \
+  SOURCE_DATE_EPOCH=1786406400 \
+  TMPDIR="$runtime_root/tmp" \
+  TZ=UTC \
+  CASEPATH_MODEL_MODE=deterministic_reference \
+  CASEPATH_SOURCE_COMMIT="$CASEPATH_SOURCE_COMMIT" \
+  CASEPATH_DB_PATH="$data_root/casepath.db" \
+  CASEPATH_ARTIFACT_REGISTRY_PATH="$data_root/artifact-registry" \
+  CASEPATH_LOCAL_STATIC_ROOT="$execution_root/casepath-public" \
+  CASEPATH_LOCAL_RUNTIME_RECEIPT="$runtime_root/runtime-boot-receipt.json" \
+  LANGSMITH_TRACING=false \
+  LANGCHAIN_TRACING=false \
+  LANGCHAIN_TRACING_V2=false \
+  "$python_command" -I -B -P -m uvicorn casepath_api.app:app \
+    --app-dir "$execution_root/casepath-api" \
+    --host 127.0.0.1 \
+    --port "$port" \
+    --no-access-log &
+child_pid="$!"
+
+run_clean_stdlib_python - "$url" "$child_pid" "$execution_root" \
+  "$CASEPATH_SOURCE_COMMIT" "$bundled_claim_count" <<'PY'
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+import sys
+import time
+from urllib.request import Request, urlopen
+
+base = sys.argv[1].rstrip("/")
+pid = int(sys.argv[2])
+repository = Path(sys.argv[3])
+source_commit = sys.argv[4]
+expected_claim_count = int(sys.argv[5])
+release = json.loads((repository / "casepath/release.json").read_text())
+deployment = json.loads((repository / "casepath-public/deployment.json").read_text())
+last_error: Exception | None = None
+for _ in range(240):
+    try:
+        os.kill(pid, 0)
+        with urlopen(Request(f"{base}/healthz", headers={"Accept": "application/json"}), timeout=1) as response:
+            health = json.load(response)
+        with urlopen(Request(f"{base}/readyz", headers={"Accept": "application/json"}), timeout=1) as response:
+            readiness = json.load(response)
+        with urlopen(Request(f"{base}/api/model-ledger", headers={"Accept": "application/json"}), timeout=1) as response:
+            ledger = json.load(response)
+        with urlopen(Request(f"{base}/api/claim-loops/v1/workspace/claims?limit=1", headers={"Accept": "application/json"}), timeout=3) as response:
+            workspace = json.load(response)
+        with urlopen(Request(f"{base}/", headers={"Accept": "text/html"}), timeout=1) as response:
+            html = response.read()
+        summary = ledger.get("summary") or {}
+        if (
+            readiness.get("status") == "ready"
+            and readiness.get("model_budget", {}).get("credential_configured") is False
+            and health.get("source_commit") == source_commit
+            and health.get("source_commit_aligned") is True
+            and health.get("source_commit_conflict") is False
+            and health.get("release_id") == release.get("release_id")
+            and health.get("release") == release.get("components", {}).get("api", {}).get("version")
+            and health.get("pipeline_release") == release.get("components", {}).get("pipeline", {}).get("version")
+            and deployment.get("alignment_eligible") is True
+            and deployment.get("source_commit") == source_commit
+            and deployment.get("release_id") == release.get("release_id")
+            and deployment.get("component_version") == release.get("components", {}).get("frontend", {}).get("version")
+            and deployment.get("component_contract") == release.get("components", {}).get("frontend", {}).get("contract")
+            and summary.get("network_calls") == 0
+            and ledger.get("items") == []
+            and workspace.get("total_count") == expected_claim_count
+            and workspace.get("authority") == "claim_loop_events"
+            and b"CasePath" in html
+        ):
+            break
+    except Exception as exc:
+        last_error = exc
+    time.sleep(0.25)
+else:
+    raise SystemExit(f"CasePath launch failed readiness: {last_error}")
+PY
+
+# Recompute the release contract against live source bytes after the child is
+# ready. A source mutation during launch therefore fails before the runtime is
+# advertised or a boot receipt is published.
+run_repository_script "$repository_root/casepath/tools/casepath_release.py" verify >/dev/null
+source_manifest_after_ready_sha256="$(verify_sealed_source_tree)"
+if [[ "$source_manifest_after_ready_sha256" != "$source_manifest_before_child_sha256" ]]; then
+  printf 'CasePath launch failed: source manifest drifted during startup\n' >&2
+  exit 2
+fi
+static_inventory_after_ready_sha256="$(
+  run_clean_locked_python - "$repository_root" <<'PY'
+import hashlib
+import json
+from pathlib import Path
+import sys
+repository = Path(sys.argv[1])
+root = repository / "casepath-public"
+sys.path.insert(0, str(repository / "casepath/tools"))
+from build_static_site import verify_inventory
+verify_inventory(root)
+rows = [
+    {
+        "path": path.relative_to(root).as_posix(),
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "bytes": path.stat().st_size,
+    }
+    for path in sorted(root.rglob("*"))
+    if path.is_file()
+]
+encoded = json.dumps(rows, ensure_ascii=False, allow_nan=False, sort_keys=True, separators=(",", ":")).encode()
+print(hashlib.sha256(encoded).hexdigest())
+PY
+)"
+if [[ "$static_inventory_after_ready_sha256" != "$static_inventory_before_child_sha256" ]]; then
+  printf 'CasePath launch failed: built product drifted during startup\n' >&2
+  exit 2
+fi
+
+capture_runtime_closure "$execution_root" "$runtime_closure_after_ready_path"
+
+lsof_command="$(command -v lsof || true)"
+if [[ -z "$lsof_command" ]]; then
+  printf 'CasePath launch failed: listener ownership requires lsof on this platform\n' >&2
+  exit 2
+fi
+listener_pids="$($lsof_command -nP -iTCP:"$port" -sTCP:LISTEN -t | sort -u)"
+listener_pid="$(printf '%s\n' "$listener_pids" | head -n 1)"
+if [[ "$(printf '%s\n' "$listener_pids" | sed '/^$/d' | wc -l | tr -d ' ')" != "1" ]]; then
+  printf 'CasePath launch failed: listener ownership is not unique\n' >&2
+  exit 2
+fi
+if [[ "$listener_pid" != "$child_pid" ]]; then
+  printf 'CasePath launch failed: listener owner %s differs from child %s\n' \
+    "${listener_pid:-<none>}" "$child_pid" >&2
+  exit 2
+fi
+
+run_clean_locked_python - "$repository_root" "$runtime_root" "$data_root" "$child_pid" "$listener_pid" \
+  "$source_manifest_before_child_sha256" "$source_manifest_after_ready_sha256" \
+  "$static_inventory_before_child_sha256" "$static_inventory_after_ready_sha256" \
+  "$python_command" "$CASEPATH_SOURCE_COMMIT" "$CASEPATH_SOURCE_BRANCH" \
+  "$execution_root" "$runtime_closure_after_sync_path" \
+  "$runtime_closure_before_child_path" "$runtime_closure_after_ready_path" \
+  "$bundled_claim_count" <<'PY'
+from __future__ import annotations
+
+import base64
+from datetime import datetime, timezone
+import hashlib
+from importlib import metadata
+import json
+import os
+from pathlib import Path
+import platform
+import re
+import sqlite3
+import stat
+import sys
+import uuid
+from urllib.request import Request, urlopen
+
+repository = Path(sys.argv[1]).resolve()
+runtime = Path(sys.argv[2]).resolve()
+data_root = Path(sys.argv[3]).resolve()
+pid = int(sys.argv[4])
+listener_pid = int(sys.argv[5])
+source_manifest_before_child_sha256 = sys.argv[6]
+source_manifest_after_ready_sha256 = sys.argv[7]
+static_inventory_before_child_sha256 = sys.argv[8]
+static_inventory_after_ready_sha256 = sys.argv[9]
+python_stated = Path(sys.argv[10]).absolute()
+python = python_stated.resolve()
+source_commit = sys.argv[11]
+source_branch = sys.argv[12]
+execution_root = Path(sys.argv[13]).resolve()
+runtime_closure_after_sync_path = Path(sys.argv[14])
+runtime_closure_before_child_path = Path(sys.argv[15])
+runtime_closure_after_ready_path = Path(sys.argv[16])
+expected_claim_count = int(sys.argv[17])
+base = "http://127.0.0.1:4173"
+
+
+def digest_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def digest_file(path: Path) -> str:
+    return digest_bytes(path.read_bytes())
+
+
+def canonical(value: object) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+
+
+def response(path: str) -> tuple[bytes, object]:
+    with urlopen(
+        Request(f"{base}{path}", headers={"Accept": "application/json"}),
+        timeout=5,
+    ) as value:
+        raw = value.read()
+    return raw, json.loads(raw)
+
+
+health_raw, health = response("/healthz")
+ready_raw, ready = response("/readyz")
+ledger_raw, ledger = response("/api/model-ledger")
+workspace_raw, workspace = response(
+    "/api/claim-loops/v1/workspace/claims?limit=1"
+)
+with urlopen(Request(f"{base}/", headers={"Accept": "text/html"}), timeout=5) as value:
+    root_raw = value.read()
+
+seed_receipt_path = runtime / "latest-workspace-seed-receipt.json"
+if seed_receipt_path.is_symlink() or not seed_receipt_path.is_file():
+    raise SystemExit("CasePath post-ready workspace seed receipt is not regular")
+seed_raw = seed_receipt_path.read_bytes()
+try:
+    seed_wrapper = json.loads(seed_raw)
+except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    raise SystemExit("CasePath post-ready workspace seed receipt is invalid") from exc
+seed_wrapper_semantic = dict(seed_wrapper) if isinstance(seed_wrapper, dict) else {}
+seed_wrapper_sha = seed_wrapper_semantic.pop("receipt_sha256", None)
+seed = seed_wrapper.get("seed_receipt") if isinstance(seed_wrapper, dict) else None
+source_authority = (
+    seed_wrapper.get("source_authority") if isinstance(seed_wrapper, dict) else None
+)
+seed_semantic = dict(seed) if isinstance(seed, dict) else {}
+seed_sha = seed_semantic.pop("receipt_sha256", None)
+workspace_semantic = dict(workspace) if isinstance(workspace, dict) else {}
+workspace_projection_sha = workspace_semantic.pop("projection_sha256", None)
+if (
+    not isinstance(seed_wrapper, dict)
+    or set(seed_wrapper)
+    != {"contract", "seed_receipt", "source_authority", "receipt_sha256"}
+    or seed_wrapper.get("contract") != "casepath.sealed-workspace-seed/1.0.0"
+    or seed_wrapper_sha != digest_bytes(canonical(seed_wrapper_semantic))
+    or not isinstance(source_authority, dict)
+    or set(source_authority)
+    != {
+        "contract",
+        "source_manifest_file_sha256",
+        "source_manifest_roster_sha256",
+    }
+    or source_authority.get("contract")
+    != "casepath.sealed-seed-source-authority/1.0.0"
+    or source_authority.get("source_manifest_file_sha256")
+    != digest_file(repository / "casepath/source-manifest.json")
+    or not re.fullmatch(
+        r"[0-9a-f]{64}",
+        str(source_authority.get("source_manifest_roster_sha256", "")),
+    )
+    or not isinstance(seed, dict)
+    or set(seed)
+    != {
+        "contract",
+        "corpus_identity",
+        "claim_count",
+        "new_import_count",
+        "replayed_import_count",
+        "event_roster_sha256",
+        "timestamp",
+        "model_calls",
+        "provider_calls",
+        "credential_reads",
+        "cost_usd",
+        "receipt_sha256",
+    }
+    or seed.get("contract") != "casepath.claim-workspace-seed/1.0.0"
+    or seed_sha != digest_bytes(canonical(seed_semantic))
+    or seed.get("claim_count") != expected_claim_count
+    or seed.get("new_import_count", -1) + seed.get("replayed_import_count", -1)
+    != expected_claim_count
+    or not re.fullmatch(r"[0-9a-f]{64}", str(seed.get("event_roster_sha256", "")))
+    or any(
+        seed.get(field) != 0
+        for field in ("model_calls", "provider_calls", "credential_reads", "cost_usd")
+    )
+    or workspace.get("contract") != "casepath.claim-queue-projection/2.0.0"
+    or workspace_projection_sha != digest_bytes(canonical(workspace_semantic))
+    or workspace.get("total_count") != expected_claim_count
+    or workspace.get("page_count") != 1
+    or workspace.get("authority") != "claim_loop_events"
+    or workspace.get("corpus_identity") != seed.get("corpus_identity")
+):
+    raise SystemExit("CasePath post-ready workspace authority attestation failed")
+
+summary = ledger.get("summary") or {}
+if (
+    health.get("model_mode") != "deterministic_reference"
+    or ready.get("status") != "ready"
+    or ready.get("model_budget", {}).get("credential_configured") is not False
+    or summary.get("records") != 0
+    or summary.get("network_calls") != 0
+    or ledger.get("items") != []
+):
+    raise SystemExit("CasePath post-ready zero-provider attestation failed")
+
+static_rows = []
+for path in sorted((execution_root / "casepath-public").rglob("*")):
+    if path.is_file():
+        static_rows.append(
+            {
+                "path": path.relative_to(
+                    execution_root / "casepath-public"
+                ).as_posix(),
+                "sha256": digest_file(path),
+                "bytes": path.stat().st_size,
+            }
+        )
+
+distributions = sorted(
+    {
+        f"{distribution.metadata['Name']}=={distribution.version}"
+        for distribution in metadata.distributions()
+        if distribution.metadata.get("Name")
+    },
+    key=lambda value: (value.casefold(), value),
+)
+normalize_name = lambda value: re.sub(r"[-_.]+", "-", value).lower()
+installed_pins = {
+    normalize_name(value.rsplit("==", 1)[0]): value.rsplit("==", 1)[1]
+    for value in distributions
+}
+locked_pins = {}
+for line in (repository / "casepath-api/requirements.lock").read_text().splitlines():
+    line = line.strip()
+    if not line or line.startswith("#"):
+        continue
+    if line.count("==") != 1:
+        raise SystemExit("CasePath requirements lock contains an unpinned row")
+    name, version = line.split("==", 1)
+    locked_pins[normalize_name(name)] = version
+if installed_pins != locked_pins:
+    raise SystemExit("CasePath installed environment differs from requirements.lock")
+
+database_path = data_root / "casepath.db"
+database_descriptor = os.open(
+    database_path,
+    os.O_RDONLY
+    | getattr(os, "O_CLOEXEC", 0)
+    | getattr(os, "O_NOFOLLOW", 0)
+    | getattr(os, "O_NONBLOCK", 0),
+)
+try:
+    database_metadata = os.fstat(database_descriptor)
+    if (
+        not stat.S_ISREG(database_metadata.st_mode)
+        or database_metadata.st_nlink != 1
+    ):
+        raise SystemExit("CasePath durable database identity is invalid")
+finally:
+    os.close(database_descriptor)
+with sqlite3.connect(
+    f"file:{database_path.as_posix()}?mode=ro", uri=True
+) as connection:
+    if connection.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+        raise SystemExit("CasePath durable database failed integrity check")
+    durable_event_roster = [
+        {
+            "session_id": row[0],
+            "loop_id": row[1],
+            "sequence": row[2],
+            "event_sha256": row[3],
+            "event_json_sha256": digest_bytes(row[4].encode("utf-8")),
+        }
+        for row in connection.execute(
+            """SELECT session_id,loop_id,sequence,event_sha256,event_json
+            FROM claim_loop_events
+            ORDER BY session_id,loop_id,sequence"""
+        )
+    ]
+registry_path = data_root / "artifact-registry"
+if registry_path.is_symlink() or not registry_path.is_dir():
+    raise SystemExit("CasePath durable registry identity is invalid")
+durable_registry_inventory = []
+for candidate in sorted(registry_path.rglob("*")):
+    candidate_metadata = candidate.lstat()
+    if candidate.is_symlink() or (
+        not stat.S_ISREG(candidate_metadata.st_mode)
+        and not stat.S_ISDIR(candidate_metadata.st_mode)
+    ):
+        raise SystemExit("CasePath durable registry has an invalid entry")
+    if stat.S_ISREG(candidate_metadata.st_mode):
+        if candidate_metadata.st_nlink != 1:
+            raise SystemExit("CasePath durable registry has a linked file")
+        candidate_raw = candidate.read_bytes()
+        durable_registry_inventory.append(
+            {
+                "path": candidate.relative_to(registry_path).as_posix(),
+                "sha256": digest_bytes(candidate_raw),
+                "size_bytes": len(candidate_raw),
+            }
+        )
+current_receipt = runtime / "runtime-boot-receipt.json"
+prior_receipt_file_sha256 = (
+    digest_file(current_receipt) if current_receipt.is_file() else None
+)
+boot_id = f"boot-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')}-{uuid.uuid4()}"
+child_environment = {
+    "HOME": str(runtime / "home"),
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": ":".join(
+        (
+            str(runtime / "venv" / "bin"),
+            "/usr/local/bin",
+            "/usr/bin",
+            "/bin",
+            "/usr/sbin",
+            "/sbin",
+        )
+    ),
+    "CASEPATH_ARTIFACT_REGISTRY_PATH": str(data_root / "artifact-registry"),
+    "CASEPATH_DB_PATH": str(data_root / "casepath.db"),
+    "CASEPATH_LOCAL_RUNTIME_RECEIPT": str(runtime / "runtime-boot-receipt.json"),
+    "CASEPATH_LOCAL_STATIC_ROOT": str(execution_root / "casepath-public"),
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": source_commit,
+    "LANGCHAIN_TRACING": "false",
+    "LANGCHAIN_TRACING_V2": "false",
+    "LANGSMITH_TRACING": "false",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONPYCACHEPREFIX": str(runtime / "pycache"),
+    "PYTHONSAFEPATH": "1",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "TMPDIR": str(runtime / "tmp"),
+    "TZ": "UTC",
+}
+
+
+def load_runtime_closure(path: Path) -> dict[str, object]:
+    descriptor = os.open(
+        path,
+        os.O_RDONLY
+        | getattr(os, "O_CLOEXEC", 0)
+        | getattr(os, "O_NOFOLLOW", 0)
+        | getattr(os, "O_NONBLOCK", 0),
+    )
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+            raise SystemExit("CasePath runtime closure capture is not regular")
+        chunks = []
+        while True:
+            chunk = os.read(descriptor, 1024 * 1024)
+            if not chunk:
+                break
+            chunks.append(chunk)
+    finally:
+        os.close(descriptor)
+    try:
+        value = json.loads(b"".join(chunks))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise SystemExit("CasePath runtime closure capture is invalid") from exc
+    if (
+        not isinstance(value, dict)
+        or set(value)
+        != {
+            "contract",
+            "claim_boundary",
+            "sections",
+            "subordinate_closure_sha256",
+            "closure_sha256",
+        }
+        or value.get("contract") != "casepath.executable-runtime-closure/1.1.0"
+        or value.get("claim_boundary")
+        != (
+            "exact_active_capsule_python_entry_real_executable_isolated_path_environment_"
+            "and_complete_site_packages;cpython_stdlib_tree_and_original_wheel_archives_"
+            "not_captured"
+        )
+    ):
+        raise SystemExit("CasePath runtime closure capture schema is invalid")
+    semantic = dict(value)
+    stated = semantic.pop("closure_sha256")
+    if stated != digest_bytes(canonical(semantic)):
+        raise SystemExit("CasePath runtime closure capture self-hash is invalid")
+    sections = value.get("sections")
+    subordinate = value.get("subordinate_closure_sha256")
+    expected_names = {
+        "capsule",
+        "distribution_integrity",
+        "isolated_probe",
+        "launch_context",
+        "python_runtime",
+        "site_packages",
+    }
+    if (
+        not isinstance(sections, dict)
+        or set(sections) != expected_names
+        or not isinstance(subordinate, dict)
+        or set(subordinate) != expected_names
+    ):
+        raise SystemExit("CasePath runtime subordinate closure roster is invalid")
+    for name in sorted(expected_names):
+        section = sections[name]
+        if not isinstance(section, dict):
+            raise SystemExit("CasePath runtime subordinate closure is invalid")
+        section_semantic = dict(section)
+        section_stated = section_semantic.pop("closure_sha256", None)
+        if (
+            section_stated != digest_bytes(canonical(section_semantic))
+            or subordinate.get(name) != section_stated
+        ):
+            raise SystemExit("CasePath runtime subordinate closure hash is invalid")
+    return value
+
+
+closure_captures = [
+    ("after_sync", load_runtime_closure(runtime_closure_after_sync_path)),
+    ("before_child", load_runtime_closure(runtime_closure_before_child_path)),
+    ("after_ready", load_runtime_closure(runtime_closure_after_ready_path)),
+]
+baseline_closure = closure_captures[0][1]
+baseline_sha = baseline_closure["closure_sha256"]
+baseline_subordinate = baseline_closure["subordinate_closure_sha256"]
+if any(
+    value["closure_sha256"] != baseline_sha
+    or value["subordinate_closure_sha256"] != baseline_subordinate
+    for _, value in closure_captures[1:]
+):
+    raise SystemExit("CasePath executable runtime closure drifted during startup")
+runtime_closure = {
+    "contract": "casepath.boot-runtime-closure/1.0.0",
+    "baseline": baseline_closure,
+    "baseline_closure_sha256": baseline_sha,
+    "phases": [
+        {
+            "phase": phase,
+            "closure_sha256": value["closure_sha256"],
+            "subordinate_closure_sha256": value["subordinate_closure_sha256"],
+        }
+        for phase, value in closure_captures
+    ],
+    "phase_closure_equality": True,
+}
+payload = {
+    "contract": "casepath.local-runtime-boot/2.2.0",
+    "boot_id": boot_id,
+    "ready_at_utc": datetime.now(timezone.utc).isoformat(),
+    "prior_boot_receipt_file_sha256": prior_receipt_file_sha256,
+    "url": f"{base}/",
+    "topology": "single_fastapi_same_origin_static_api_and_in_process_worker",
+    "launcher": {
+        "path": "bin/casepath",
+        "sha256": digest_file(execution_root / "bin/casepath"),
+        "bytes": (execution_root / "bin/casepath").stat().st_size,
+    },
+    "process": {
+        "pid": pid,
+        "listener_owner_pid": listener_pid,
+        "cwd": str(repository),
+        "argv": [
+            str(python_stated), "-I", "-B", "-P", "-m", "uvicorn", "casepath_api.app:app",
+            "--app-dir", str(execution_root / "casepath-api"),
+            "--host", "127.0.0.1", "--port", "4173", "--no-access-log",
+        ],
+        "workers": 1,
+    },
+    "environment": {
+        "values": child_environment,
+        "provider_credential_names_present": [],
+    },
+    "runtime_closure": runtime_closure,
+    "source": {
+        "repository": str(repository),
+        "git_branch": source_branch,
+        "git_head": child_environment["CASEPATH_SOURCE_COMMIT"],
+        "execution_root": str(execution_root),
+        "source_capsule_receipt_file_sha256": digest_file(
+            execution_root / "CAPSULE_RECEIPT.json"
+        ),
+        "source_manifest_path": "casepath/source-manifest.json",
+        "source_manifest_before_child_sha256": (
+            source_manifest_before_child_sha256
+        ),
+        "source_manifest_file_sha256": digest_file(
+            repository / "casepath/source-manifest.json"
+        ),
+        "source_manifest_after_ready_sha256": (
+            source_manifest_after_ready_sha256
+        ),
+        "artifact_manifest_file_sha256": digest_file(
+            execution_root / "casepath-api/artifacts/artifact-manifest.json"
+        ),
+    },
+    "runtime": {
+        "python_path": str(python_stated),
+        "python_real_path": str(python),
+        "python_file_sha256": digest_file(python),
+        "python_version": platform.python_version(),
+        "requirements_lock_sha256": digest_file(
+            execution_root / "casepath-api/requirements.lock"
+        ),
+        "installed_distributions": distributions,
+        "installed_distributions_sha256": digest_bytes(canonical(distributions)),
+        "data_root": str(data_root),
+        "data_root_provenance_file_sha256": digest_file(
+            data_root / "DATA_ROOT_PROVENANCE.json"
+        ),
+        "database_path": str(data_root / "casepath.db"),
+        "artifact_registry_path": str(data_root / "artifact-registry"),
+    },
+    "static": {
+        "inventory": static_rows,
+        "inventory_sha256": digest_bytes(canonical(static_rows)),
+        "inventory_before_child_sha256": static_inventory_before_child_sha256,
+        "inventory_after_ready_sha256": static_inventory_after_ready_sha256,
+        "deployment_file_sha256": digest_file(
+            execution_root / "casepath-public/deployment.json"
+        ),
+    },
+    "attestation": {
+        "health_response_sha256": digest_bytes(health_raw),
+        "ready_response_sha256": digest_bytes(ready_raw),
+        "model_ledger_response_sha256": digest_bytes(ledger_raw),
+        "root_html_sha256": digest_bytes(root_raw),
+        "workspace_seed_receipt_file_sha256": digest_bytes(seed_raw),
+        "workspace_seed_receipt_base64": base64.b64encode(seed_raw).decode("ascii"),
+        "workspace_seed_receipt_sha256": seed_wrapper_sha,
+        "workspace_seed_event_roster_sha256": seed["event_roster_sha256"],
+        "workspace_response_sha256": digest_bytes(workspace_raw),
+        "workspace_response_base64": base64.b64encode(workspace_raw).decode("ascii"),
+        "workspace_projection_sha256": workspace_projection_sha,
+        "workspace_state_roster_sha256": workspace["state_roster_sha256"],
+        "workspace_total_count": workspace["total_count"],
+        "workspace_authority": workspace["authority"],
+        "workspace_corpus_identity_sha256": digest_bytes(
+            canonical(workspace["corpus_identity"])
+        ),
+        "durable_event_count": len(durable_event_roster),
+        "durable_event_roster": durable_event_roster,
+        "durable_event_roster_sha256": digest_bytes(
+            canonical(durable_event_roster)
+        ),
+        "durable_registry_file_count": len(durable_registry_inventory),
+        "durable_registry_inventory": durable_registry_inventory,
+        "durable_registry_inventory_sha256": digest_bytes(
+            canonical(durable_registry_inventory)
+        ),
+        "credential_configured": False,
+        "model_ledger_records": 0,
+        "model_ledger_network_calls": 0,
+        "source_reverified_after_ready": True,
+    },
+}
+receipt = {**payload, "receipt_sha256": digest_bytes(canonical(payload))}
+encoded = json.dumps(receipt, indent=2, ensure_ascii=False, sort_keys=True).encode("utf-8") + b"\n"
+fault_point = os.environ.get("CASEPATH_LAUNCH_FAULT_POINT") or None
+if fault_point not in (None, "after_staging_fsync", "after_history_link", "after_current_replace"):
+    raise SystemExit(f"CasePath launch fault point is invalid: {fault_point}")
+history = runtime / "boots" / f"{boot_id}.json"
+staging = runtime / "boot-staging" / f".{boot_id}.{os.getpid()}.{uuid.uuid4()}.tmp"
+with staging.open("xb") as stream:
+    stream.write(encoded)
+    stream.flush()
+    os.fsync(stream.fileno())
+os.chmod(staging, 0o444)
+descriptor = os.open(staging, os.O_RDONLY)
+try:
+    os.fsync(descriptor)
+finally:
+    os.close(descriptor)
+if fault_point == "after_staging_fsync":
+    raise SystemExit("CasePath injected crash after staging fsync")
+os.link(staging, history)
+descriptor = os.open(runtime / "boots", os.O_RDONLY)
+try:
+    os.fsync(descriptor)
+finally:
+    os.close(descriptor)
+staging.unlink()
+descriptor = os.open(runtime / "boot-staging", os.O_RDONLY)
+try:
+    os.fsync(descriptor)
+finally:
+    os.close(descriptor)
+if fault_point == "after_history_link":
+    raise SystemExit("CasePath injected crash after immutable history publication")
+temporary = runtime / f".runtime-boot-receipt.{os.getpid()}.{uuid.uuid4()}.tmp"
+with temporary.open("xb") as stream:
+    stream.write(encoded)
+    stream.flush()
+    os.fsync(stream.fileno())
+os.replace(temporary, current_receipt)
+for directory in (runtime,):
+    descriptor = os.open(directory, os.O_RDONLY)
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+if fault_point == "after_current_replace":
+    raise SystemExit("CasePath injected crash after current receipt replacement")
+PY
+
+/bin/rm -f -- "$runtime_closure_after_sync_path" \
+  "$runtime_closure_before_child_path" "$runtime_closure_after_ready_path"
+
+printf '\nCasePath is ready: %s\n' "$url"
+printf 'Deterministic local mode · one origin · zero provider credentials\n'
+printf 'Press Ctrl-C to stop. State persists in .runtime/casepath-data-v1.\n\n'
+
+wait "$child_pid"

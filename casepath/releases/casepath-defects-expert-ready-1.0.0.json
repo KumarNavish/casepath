@@ -1,0 +1,80 @@
+{
+  "contract": "casepath.external-archive-release-record/1.0.0",
+  "recorded_on": "2026-08-11",
+  "archive": {
+    "filename": "CasePath_Defects_Expert_Ready_Complete_v1.zip",
+    "stored_in_repository": false,
+    "size_bytes": 6517136,
+    "sha256": "770ef2e68222aa237c71ad273628d306211de3290b075d408cbb978516c14533",
+    "zip_entries": 2582,
+    "zip_crc_verified": true
+  },
+  "internal_manifest": {
+    "contract": "ARCHIVE_CONTENT_MANIFEST.json",
+    "files_excluding_manifest": 2581,
+    "hashes_verified": 2581,
+    "hash_mismatches": 0,
+    "size_mismatches": 0,
+    "unlisted_files": 0
+  },
+  "declared_identity": {
+    "release_version": "1.0.0",
+    "benchmark_version": "1.1.0",
+    "schema_version": "2.0.0",
+    "source_commit": "372d4b8f348eba221becba269cd9513b482d7b6a"
+  },
+  "source_commit_resolution": {
+    "status": "unresolved",
+    "note": "The declared commit was not found in the canonical repository or the historical repositories inspected on 2026-08-11; the verified archive bytes remain the reproducible source snapshot."
+  },
+  "verification": {
+    "tests_collected": 1721,
+    "tests_passed": 1721,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "browser_checks": 15,
+    "browser_checks_passed": 15
+  },
+  "clean_environment_reproduction": {
+    "pytest": {
+      "tests_collected": 1721,
+      "tests_passed": 1721,
+      "status": "passed"
+    },
+    "manifest_reverification": {
+      "command": "python scripts/run_all.py --validate-only --verify-manifest",
+      "exit_code": 1,
+      "reviewer_facing_files_leakage_scanned": 298,
+      "core_manifest_verifier": {
+        "expected_files": 2567,
+        "current_files": 2567,
+        "missing_files": 0,
+        "unexpected_files": 0,
+        "hash_mismatches": 195,
+        "all_mismatches_are_png": true
+      },
+      "archive_content_manifest_comparison": {
+        "entries": 2581,
+        "missing_files": 0,
+        "hash_mismatches": 195,
+        "all_mismatches_are_png": true
+      },
+      "status": "failed",
+      "reason": "The validation command altered a 195-PNG reviewer-preview subset before checking the frozen manifests. Both verifiers report the same 195 hash mismatches with no missing or unexpected project files."
+    },
+    "overall_status": "blocked_on_non_idempotent_preview_rendering"
+  },
+  "truth": {
+    "generated_and_simulated_evidence_only": true,
+    "model_provider_call_completed": false,
+    "independent_expert_review_completed": false,
+    "blind_review_completed": false,
+    "legal_approval": false,
+    "operational_validation": false,
+    "production_approved": false
+  },
+  "distribution": {
+    "archive_sidecar": "CasePath_Defects_Expert_Ready_Complete_v1.zip.sha256",
+    "instruction": "Distribute this record and the SHA-256 sidecar beside the external archive; this repository does not contain a copy of the ZIP."
+  }
+}

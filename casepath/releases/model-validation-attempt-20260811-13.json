@@ -1,0 +1,108 @@
+{
+  "contract": "casepath.model-validation-evidence/1.0.0",
+  "release_id": "casepath-v20-reference-20260811",
+  "attempt_id": "production-flagship-20260812-13",
+  "status": "failed_closed",
+  "acceptance_passed": false,
+  "model_backed_release_evidence": false,
+  "requested_runtime": {
+    "mode": "openrouter_nemotron",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b"
+  },
+  "execution_observation": {
+    "source_commit": "690f99e63a6eab4120ad75b83671cffe0f9e62af",
+    "qa_service_id": "srv-d9se2bh42hec73c54sjg",
+    "qa_deploy_id": "dep-d9ts68ht0dsc73c0nj5g",
+    "qa_deploy_outcome": "build_failed",
+    "qa_deploy_created_at": "2026-08-12T00:49:39.049742Z",
+    "qa_deploy_started_at": "2026-08-12T00:49:39.025093Z",
+    "qa_deploy_finished_at": "2026-08-12T00:50:00.690848Z",
+    "orchestration_id": "orch_bbf7ee808dc04f57",
+    "failed_agent_id": "canonical_facts",
+    "network_call_count": 1,
+    "completed_model_calls": 0,
+    "failed_model_calls": 1,
+    "downstream_model_calls_after_failure": 0,
+    "downstream_agent_receipts": 0,
+    "deterministic_gate_receipts": 0
+  },
+  "provider_observation": {
+    "provider": "openrouter",
+    "provider_outcome": "deepinfra_http_429",
+    "requested_model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "upstream_provider": "DeepInfra",
+    "network_call_count": 1,
+    "response_identity_status": "upstream_request_only_no_generation",
+    "synchronous_usage_cost_present": false,
+    "new_openrouter_log_generation_observed": false,
+    "openrouter_log_check_performed": true,
+    "openrouter_upstream_request_log_observed": true,
+    "provider_cache_replay_assessment": "not_applicable_upstream_rejected",
+    "charge_status": "unknown_unconfirmed",
+    "charge_included_in_known_aggregate": false,
+    "actual_cost_complete": false,
+    "unknown_cost_call_count": 1,
+    "upstream_request_log_observation": {
+      "read_only": true,
+      "displayed_at_local": "2026-08-12 02:49 Europe/Zurich",
+      "request_id": "gen-1786495797-wwTpDFx93vAismEWwWvY",
+      "final_provider": "DeepInfra",
+      "upstream_status": 429,
+      "router_attempts": 1,
+      "router_latency_ms": 235
+    },
+    "application_ledger_observation": {
+      "call_id": "modelcall_f97afa2a05079468",
+      "orchestration_id": "orch_bbf7ee808dc04f57",
+      "agent_id": "canonical_facts",
+      "outcome": "failed",
+      "error_type": "TooManyRequestsResponseError",
+      "latency_ms": 2777.996,
+      "response_identity_retained": false,
+      "response_model_retained": false,
+      "upstream_provider_retained": false,
+      "provider_error_code_retained": false,
+      "usage_metadata_retained": false,
+      "actual_cost_retained": false
+    },
+    "failure_attribution": {
+      "classification": "external_deepinfra_http_429",
+      "cause_detail": "unknown",
+      "router_origin_established": false,
+      "key_or_account_hard_limit_reached": false
+    },
+    "key_account_capacity_observation": {
+      "read_only": true,
+      "configured_key_limit_usd": 25,
+      "key_used_percent": 0.6536316,
+      "key_hard_limit_reached": false,
+      "account_credit_status": "healthy"
+    }
+  },
+  "accepted_ledger_record": null,
+  "application_result": {
+    "outcome": "rejected",
+    "failure_type": "external_deepinfra_http_429",
+    "error_type": "TooManyRequestsResponseError",
+    "error_invariant_retained": false,
+    "successful_ledger_call_bound": false,
+    "ledger_call_id": "modelcall_f97afa2a05079468",
+    "ledger_outcome": "failed",
+    "canonical_result_accepted": false,
+    "canonical_stage_completed": false,
+    "response_identity_retained": false,
+    "usage_metadata_retained": false,
+    "actual_cost_retained": false,
+    "full_orchestration_accepted": false,
+    "runtime_acceptance_established": false,
+    "downstream_execution_started": false,
+    "deterministic_gates_started": false,
+    "external_cause_detail": "unknown"
+  },
+  "sanitization": {
+    "raw_prompt_included": false,
+    "raw_output_included": false,
+    "provider_credential_included": false,
+    "private_reference_included": false
+  }
+}

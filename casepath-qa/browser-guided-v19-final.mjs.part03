@@ -1,0 +1,89 @@
+  await waitVisible('#auditDrawer[open]');
+  const audit = await page.locator('#auditContent').innerText();
+  check('Unified audit contains all specialists', /Attachment Parsing Agent/i.test(audit) && /Claim Understanding Agent/i.test(audit) && /Legal Research Agent/i.test(audit) && /Process Discovery Agent/i.test(audit) && /Document Requirements Agent/i.test(audit) && /Historical Claims Agent/i.test(audit) && /Verification Agent/i.test(audit));
+  check('Audit contains expert feedback and knowledge consolidation', /Expert Feedback Agent/i.test(audit) && /Knowledge Consolidation Agent/i.test(audit));
+  check('Audit links the v19 guided evidence and standalone GIF', /v19/i.test(await page.locator('#browserEvidenceLink').innerText()) && (await page.locator('#visualStoryLink').getAttribute('href'))?.includes('casepath-flagship-demo.gif'));
+  await screenshot('14-complete-audit-trail.png');
+  await page.locator('#closeAudit').click();
+
+  for (const viewport of [
+    { width: 390, height: 844, name: '390' },
+    { width: 320, height: 700, name: '320' },
+  ]) {
+    await page.setViewportSize(viewport);
+    await sleep(300);
+    await waitVisible('.v19-team-rail', 30000);
+    const overflow = await horizontalOverflow();
+    check(`${viewport.name}px has no page-level horizontal overflow`, overflow <= 1, `overflow=${overflow}`);
+    check(`${viewport.name}px keeps the claim available`, await page.locator('.submission-pane').isVisible());
+    check(`${viewport.name}px keeps one next action`, await page.locator('#journeyNext').count() === 1);
+    check(`${viewport.name}px keeps active-team context`, await page.locator('.v19-team-rail').isVisible());
+    await screenshot(`15-mobile-${viewport.name}.png`, true);
+  }
+
+  check('Skip link is present', await page.locator('.skip-link').count() === 1);
+  check('Visible icon controls have accessible names', await page.evaluate(() => [...document.querySelectorAll('button.icon-button:not([hidden]),a.icon-button:not([hidden])')].every(node => node.getAttribute('aria-label') || node.textContent.trim())));
+  check('No browser console errors', failures.console.length === 0, JSON.stringify(failures.console));
+  check('No page errors', failures.page.length === 0, JSON.stringify(failures.page));
+  check('No public request failures', failures.request.length === 0, JSON.stringify(failures.request));
+
+  await context.close();
+  context = null;
+  await sleep(150);
+  check('No late browser console errors after context shutdown', failures.console.length === 0, JSON.stringify(failures.console));
+
+  const resetAfterRun = await getJson(`${API}/api/demo/reset`, { method: 'POST' });
+  const knowledge = await getJson(`${API}/api/knowledge`);
+  check('Demo resets to v3 after QA', resetAfterRun.active_playbook === 'mould-playbook-v3' && knowledge.active_playbook?.version === 'mould-playbook-v3');
+
+  const videoPath = await video.path();
+  await fs.copyFile(videoPath, path.join(OUT, 'uninterrupted-demo.webm'));
+  await execFileAsync('python3', ['-m', 'pip', 'install', 'Pillow', '--quiet', '--break-system-packages'], { timeout: 180000 });
+  await execFileAsync('python3', ['generate-visual-story.py', path.join(OUT, 'casepath-flagship-demo.gif')], { timeout: 180000 });
+  const gifBytes = new Uint8Array(await fs.readFile(path.join(OUT, 'casepath-flagship-demo.gif')));
+  check('Self-contained premium GIF is generated and published', gifBytes.length > 500000 && String.fromCharCode(...gifBytes.slice(0, 6)).startsWith('GIF89'), `bytes=${gifBytes.length}`);
+  await browser.close();
+  browser = null;
+
+  const report = {
+    status: 'passed',
+    release: '19.0.0',
+    checkedAt: new Date().toISOString(),
+    baseUrl: BASE,
+    apiUrl: API,
+    passed: checks.length,
+    failed: 0,
+    checks,
+    failures,
+    runIds,
+  };
+  await fs.writeFile(path.join(OUT, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
+  const images = [
+    '01-customer-submission.png','02-actual-pdf-open.png','03-actual-photo-open.png','04-live-team-reading.png',
+    '05-claim-understanding-source-trace.png','06-law-shapes-process.png','07-process-emerging-live.png',
+    '08-evidence-attached-to-process.png','09-precedents-at-decision.png','10-playbook-ready.png',
+    '11-expert-correction-on-graph.png','12-organizational-learning.png','13-later-claim-improved.png',
+    '14-complete-audit-trail.png','15-mobile-390.png','15-mobile-320.png',
+  ];
+  await fs.writeFile(path.join(OUT, 'index.html'), `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>CasePath v19 production QA</title><style>body{font:15px system-ui;max-width:1160px;margin:40px auto;padding:0 20px;color:#15171a}li{margin:6px 0;color:#18744f}img{max-width:100%;border:1px solid #dde2e7;margin:8px 0 34px}code{background:#f1f3f5;padding:2px 5px;border-radius:4px}</style><h1>CasePath v19 production QA: passed</h1><p><strong>${checks.length}</strong> checks passed against <code>${BASE}</code> and <code>${API}</code>.</p><p><a href="uninterrupted-demo.webm">Open uninterrupted screen recording</a> · <a href="casepath-flagship-demo.gif">Open self-contained GIF</a></p><ul>${checks.map(item => `<li>✓ ${item.name}</li>`).join('')}</ul>${images.map(image => `<h2>${image}</h2><img src="${image}" alt="${image}">`).join('')}`);
+  console.log(JSON.stringify(report, null, 2));
+}
+
+main().catch(async error => {
+  await fs.mkdir(OUT, { recursive: true });
+  if (page) await page.screenshot({ path: path.join(OUT, 'failure.png'), fullPage: true }).catch(() => null);
+  const report = {
+    status: 'failed',
+    release: '19.0.0',
+    checkedAt: new Date().toISOString(),
+    baseUrl: BASE,
+    apiUrl: API,
+    passed: checks.filter(item => item.passed).length,
+    failed: 1,
+    checks,
+    failures,
+    runIds,
+    error: error instanceof Error ? error.stack : String(error),
+  };
+  await fs.writeFile(path.join(OUT, 'report.json'), `${JSON.stringify(report, null, 2)}\n`);
+  console.error(report.error);

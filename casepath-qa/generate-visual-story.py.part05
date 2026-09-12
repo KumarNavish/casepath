@@ -1,0 +1,78 @@
+    labels=[('PROCESS','Every decision is visible'),('EVIDENCE','Needed facts attach to decisions'),('EXPERIENCE','Law and reviewed cases add context')]
+    for x,(a,b) in zip(xs,labels):
+        rounded(d,(x-120,285,x+120,365),16,fill=BG,outline=LINE)
+        text(d,(x,306),a,F['label'],fill=RED if a=='PROCESS' else BLUE if a=='EVIDENCE' else GREEN,anchor='mm')
+        text(d,(x,338),b,F['bold_sm'],anchor='mm')
+    line_arrow(d,(480,384),(480,423),fill=GREEN,width=3,head=9)
+    rounded(d,(250,435,710,492),16,fill=GREEN_SOFT,outline=GREEN,width=2)
+    text(d,(480,463),'Validated knowledge improves the next claim',F['lg'],fill=GREEN,anchor='mm')
+
+
+@dataclass
+class Segment:
+    seconds: float
+    renderer: Callable[[Image.Image, float], None]
+
+
+segments=[
+    Segment(1.8,scene_claim),
+    Segment(2.0,scene_workspace),
+    Segment(2.1,scene_process),
+    Segment(2.1,scene_evidence),
+    Segment(1.7,scene_experience),
+    Segment(1.8,scene_review),
+    Segment(1.8,scene_learning),
+    Segment(2.0,scene_reuse),
+    Segment(1.6,scene_outcome),
+]
+
+
+def render_segment(seg: Segment) -> list[Image.Image]:
+    n=max(2,round(seg.seconds*FPS))
+    frames=[]
+    for i in range(n):
+        t=i/(n-1)
+        im=Image.new('RGBA',(W,H),BG)
+        seg.renderer(im,t)
+        frames.append(im.convert('RGB'))
+    return frames
+
+
+def crossfade(a: Image.Image,b: Image.Image,n=1):
+    white=Image.new('RGB',a.size,BG)
+    outgoing=[Image.blend(a,white,(i+1)/(n+1)) for i in range(n)]
+    incoming=[Image.blend(white,b,(i+1)/(n+1)) for i in range(n)]
+    return outgoing+incoming
+
+all_frames=[]
+keyframes=[]
+for idx,seg in enumerate(segments):
+    current=render_segment(seg)
+    keyframes.append(current[len(current)//2])
+    if all_frames:
+        all_frames.extend(crossfade(all_frames[-1],current[0],1))
+    all_frames.extend(current)
+
+# hold final, then fade through white back to the first scene for a clean loop
+all_frames.extend([all_frames[-1].copy() for _ in range(4)])
+all_frames.extend(crossfade(all_frames[-1],all_frames[0],2))
+
+# Global palette from a representative contact sheet for coherent, compact color.
+contact=Image.new('RGB',(W*3,H*3),BG)
+for i,im in enumerate(keyframes[:9]):
+    contact.paste(im,((i%3)*W,(i//3)*H))
+contact.thumbnail((960,540))
+palette_source=contact.quantize(colors=96,method=Image.Quantize.MEDIANCUT)
+palette=palette_source.getpalette()
+quantized=[]
+for im in all_frames:
+    q=im.quantize(palette=palette_source,dither=Image.Dither.FLOYDSTEINBERG)
+    quantized.append(q)
+
+quantized[0].save(
+    OUT,
+    save_all=True,
+    append_images=quantized[1:],
+    duration=FRAME_MS,
+    loop=0,
+    optimize=True,

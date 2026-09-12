@@ -1,0 +1,88 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { chromium } from 'playwright';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+
+const BASE = (process.env.BASE_URL || 'https://casepath-guided-v13-preview.onrender.com').replace(/\/$/, '');
+const API = (process.env.API_URL || 'https://casepath-agentic-api.onrender.com').replace(/\/$/, '');
+const OUT = path.resolve('guided-v13-smoke-out');
+const checks = [];
+const failures = { console: [], page: [], request: [] };
+const runIds = [];
+let browser;
+let context;
+let page;
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const execFileAsync = promisify(execFile);
+
+function check(name, condition, detail = '') {
+  const item = { name, passed: Boolean(condition), detail };
+  checks.push(item);
+  if (!item.passed) throw new Error(`${name}: ${detail || 'failed'}`);
+}
+
+async function getJson(url, options = {}) {
+  const response = await fetch(url, options);
+  if (!response.ok) throw new Error(`${options.method || 'GET'} ${url}: ${response.status}`);
+  return response.json();
+}
+
+async function waitVisible(selector, timeout = 180000) {
+  await page.locator(selector).first().waitFor({ state: 'visible', timeout });
+}
+
+async function waitText(selector, pattern, timeout = 180000) {
+  await page.waitForFunction(({ selector, source, flags }) => {
+    const node = document.querySelector(selector);
+    return node && new RegExp(source, flags).test(node.textContent || '');
+  }, { selector, source: pattern.source, flags: pattern.flags }, { timeout });
+}
+
+async function screenshot(name, fullPage = false) {
+  await page.screenshot({ path: path.join(OUT, name), fullPage });
+}
+
+async function awaitRun(runId) {
+  const deadline = Date.now() + 180000;
+  while (Date.now() < deadline) {
+    const run = await getJson(`${API}/api/runs/${encodeURIComponent(runId)}`);
+    if (run.status === 'complete') return run;
+    if (run.status === 'failed') throw new Error(run.error || 'run failed');
+    await sleep(250);
+  }
+  throw new Error(`run ${runId} timed out`);
+}
+
+async function horizontalOverflow() {
+  return page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - innerWidth);
+}
+
+async function main() {
+  await fs.rm(OUT, { recursive: true, force: true });
+  await fs.mkdir(path.join(OUT, 'video-tmp'), { recursive: true });
+
+  const health = await getJson(`${API}/healthz`);
+  check('API is healthy', health.status === 'ok' && health.pipeline_release === '15.0.0', JSON.stringify(health));
+  const reset = await getJson(`${API}/api/demo/reset`, { method: 'POST' });
+  check('Demo starts from playbook v3', reset.active_playbook === 'mould-playbook-v3', JSON.stringify(reset));
+
+  browser = await chromium.launch({ headless: true, args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+  context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    deviceScaleFactor: 1,
+    recordVideo: { dir: path.join(OUT, 'video-tmp'), size: { width: 1440, height: 900 } },
+  });
+  page = await context.newPage();
+  const video = page.video();
+
+  page.on('console', message => {
+    if (message.type() === 'error') {
+      const location = message.location();
+      failures.console.push(`${message.text()}${location?.url ? ` @ ${location.url}:${location.lineNumber || 0}` : ''}`);
+    }
+  });
+  page.on('pageerror', error => failures.page.push(String(error)));
+  page.on('requestfailed', request => {
+    if (request.url().startsWith(BASE) || request.url().startsWith(API)) {

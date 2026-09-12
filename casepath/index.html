@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en" data-casepath-release="20.0.0">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="A journal-backed claims workspace that shows what is known, what blocks a claim, and the next bounded action without inventing readiness.">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="casepath-release" content="20.0.0">
+  <link rel="icon" href="data:,">
+  <title>CasePath — Claims workspace</title>
+  <script>
+    if (location.protocol === 'file:') document.documentElement.dataset.casepathFileEntry = 'true';
+    // Begin the read-only demo hydration while the static claim shell renders.
+    // This wakes the free service early, performs no model work, and is reused
+    // by the application instead of issuing a duplicate startup request.
+    if (location.protocol === 'http:' || location.protocol === 'https:') {
+      try {
+        const bootParams = new URLSearchParams(location.search);
+        // The product is a single-origin application. No URL parameter,
+        // ambient global, or hosted fallback may redirect claim authority.
+        window.CASEPATH_API = location.origin;
+        const foundationMode = bootParams.get('foundation') === 'live-v1';
+        const legacyJourney = ['legacy-v20', 'insurance-v1'].includes(bootParams.get('journey'));
+        const workspaceMode = !foundationMode && !legacyJourney;
+        if (workspaceMode) document.documentElement.dataset.claimsWorkspace = 'true';
+        const wakeBase = location.origin;
+        const sessionKey = foundationMode ? 'casepath:foundation-session' : 'casepath:demo-session';
+        let sessionId = bootParams.get('foundation_session') || sessionStorage.getItem(sessionKey);
+        if (!/^[A-Za-z0-9][A-Za-z0-9._:-]{7,127}$/.test(sessionId || '')) {
+          const token = crypto.randomUUID?.() || `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+          sessionId = `ui-${token}`;
+          sessionStorage.setItem(sessionKey, sessionId);
+        }
+        const wakePath = foundationMode ? '/healthz' : '/api/demo';
+        window.__CASEPATH_DEMO_REQUEST = workspaceMode
+          ? Promise.resolve(null)
+          : fetch(`${wakeBase.replace(/\/$/, '')}${wakePath}`, {
+              cache: 'no-store',
+              headers: { 'X-CasePath-Session': sessionId },
+            }).then(response => response.ok ? response.json() : null).catch(() => null);
+      } catch (_) {
+        window.__CASEPATH_DEMO_REQUEST = Promise.resolve(null);
+      }
+    }
+  </script>
+  <style>
+    #localFileLaunch{display:none}
+    html[data-casepath-file-entry="true"]{background:#f6f6f4;color:#202226;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    html[data-casepath-file-entry="true"] body{min-height:100vh;margin:0;background:radial-gradient(circle at 50% 24%,#fff 0,#f8f8f6 48%,#f2f2ef 100%)}
+    html[data-casepath-file-entry="true"] body>:not(#localFileLaunch){display:none!important}
+    html[data-casepath-file-entry="true"] #localFileLaunch{display:grid;min-height:100vh;box-sizing:border-box;place-items:center;padding:32px}
+    .local-file-launch-card{width:min(540px,100%);box-sizing:border-box;padding:38px 40px;border:1px solid #dedfdf;border-radius:18px;background:rgba(255,255,255,.96);box-shadow:0 24px 70px rgba(21,24,29,.08)}
+    .local-file-launch-brand{display:flex;align-items:center;gap:11px;margin-bottom:34px;font-size:17px;font-weight:760;letter-spacing:-.02em}
+    .local-file-launch-mark{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#a81f22;color:#fff;font-size:11px;letter-spacing:.02em}
+    .local-file-launch-card small{display:block;margin-bottom:8px;color:#8f1924;font-size:10px;font-weight:760;letter-spacing:.07em;text-transform:uppercase}
+    .local-file-launch-card h1{max-width:440px;margin:0;color:#202226;font-size:clamp(30px,5vw,44px);line-height:1.02;letter-spacing:-.045em}
+    .local-file-launch-card p{max-width:440px;margin:18px 0 0;color:#656b73;font-size:14px;line-height:1.6}
+    .local-file-launch-card>a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;margin-top:26px;padding:0 18px;border-radius:8px;background:#a81f22;color:#fff;font-size:13px;font-weight:720;text-decoration:none}
+    .local-file-launch-command{margin-top:25px;padding-top:20px;border-top:1px solid #e5e6e7;color:#777d85;font-size:11px;line-height:1.5}
+    .local-file-launch-command code{display:block;overflow:auto;margin-top:7px;padding:10px 12px;border-radius:7px;background:#f4f4f2;color:#34383e;font:10px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap}
+  </style>
+  <link rel="stylesheet" href="assets/live-v16.css?sha256=c7b2ccc1b84d6eb68034af2f91a8e1ada641b8462d17a831dcb88ba8ba34b3df">
+  <link rel="stylesheet" href="assets/live-v17.css?sha256=6ef90ed94b07f557480103dcbf4dba978aa47daf7352b65301797a8d0c3a271a">
+  <link rel="stylesheet" href="assets/live-v17-continuity.css?sha256=c24fa5322ae9bec1cec9c08116ba45ba085bb563660876f7b54c64ee2597a818">
+  <link rel="stylesheet" href="assets/live-v18.css?sha256=ef5b42ee1539a81d53d4909527e175c0190f79e89a447cdfbacb7364a5b6e012">
+  <link rel="stylesheet" href="assets/live-v19.css?sha256=7da2e0500edc81a9c2aff735bb93d478267cda7dfe186b27ce3a061ea812d499">
+  <link rel="stylesheet" href="assets/live-v20-focus.css?sha256=1031632a3d77054a66503122f0cf733ca3549067d149f88e5eded278382ad963">
+  <link rel="stylesheet" href="assets/insurance-protocol-v1.css?sha256=209f4bfb8feeba78752a6b08f5a71c384280f5a4ac0617be7bb7e5f79d44fcf3">
+  <link rel="stylesheet" href="assets/process-story.css?sha256=028f57c0f811924598ad3dd1c44e0a822f1835c34d8751a5ca88b866d0d2cbf2">
+  <link rel="stylesheet" href="assets/artifact-canvas.css?sha256=c950fd42abbe15c3e49269a6f9f9adaca81e4e07b648232fb3364d16a879c097">
+  <link rel="stylesheet" href="assets/foundation-live.css?sha256=7a506bf437a3c0659ced9c4788ca9707d7f37e050ecc4592e534b18321070400">
+  <link rel="stylesheet" href="assets/claims-workspace-v1.css?sha256=d210f3499f9fec1b3ca2fe8f1dca5a9f348e44e1f2f72d8a918f9fb022ec903d">
+</head>
+<body>
+  <section id="localFileLaunch" aria-labelledby="localFileLaunchTitle">
+    <div class="local-file-launch-card">
+      <div class="local-file-launch-brand"><span class="local-file-launch-mark" aria-hidden="true">CP</span><span>CasePath</span></div>
+      <small>Local demo</small>
+      <h1 id="localFileLaunchTitle">Open CasePath through its local web address.</h1>
+      <p>This file was opened directly. CasePath needs a small local web server so its design, source previews, and API connection can load correctly.</p>
+      <a href="http://127.0.0.1:4173/">Open local product</a>
+      <div class="local-file-launch-command">From the <strong>casepath-canonical</strong> repository folder, run this once in Terminal and keep the window open:<code>./bin/casepath dev</code></div>
+    </div>
+  </section>
+  <a class="skip-link" href="#casepathWork">Skip to CasePath</a>
+
+  <header class="appbar">
+    <a class="brand" href="#" aria-label="CasePath demo home">
+      <span class="brand-mark" aria-hidden="true">CP</span>
+      <span>CasePath</span>
+    </a>
+    <div class="appbar-context">
+      <strong id="headerClaimTitle">Bedroom condition keeps returning</strong>
+      <span id="headerClaimId">DEF-027-E0-DEMO · EN · received 1 Aug 2026, 11:03</span>
+      <span class="visually-hidden">Opening claim…</span>
+    </div>
+    <button class="text-button" id="openAudit" type="button" disabled>How it worked</button>
+  </header>
+
+  <main class="claim-workspace" id="casepathWork">
+    <aside class="submission-pane" aria-labelledby="submissionHeading" data-source-rail-contract="casepath.source-rail/1.0.0" data-source-rail-list>
+      <header class="submission-head">
+        <div>
+          <span class="quiet-label">Sources</span>
+          <span class="source-rail-count" data-source-rail-count>7</span>
+          <h1 id="submissionHeading">What arrived</h1>
+        </div>
+        <button class="v21-source-summary-toggle" id="toggleSource" type="button" aria-label="Open customer message" data-source-rail-item data-source-id="message">
+          <span class="v21-source-icon" data-source-icon-kind="mail"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m5 7 7 5 7-5"/></svg></span>
+          <span class="v21-source-summary-copy"><strong data-source-name>Claim message</strong><small data-source-meta>Bedroom condition keeps returning</small></span>
+          <span class="v21-source-status" data-source-status>Ready</span>
+        </button>
+      </header>
+      <div class="submission-scroll" id="submissionContent">
+        <article class="customer-email" id="customerEmail" aria-label="Customer email" aria-busy="true">
+          <header class="email-head">
+            <h2 class="email-subject">Bedroom condition keeps returning</h2>
+            <div class="email-meta">
+              <strong>From</strong><span>Alex Morgan</span>
+              <strong>Address</strong><span>Feldbergstrasse 114, 4057 Basel</span>
+              <strong>Policy</strong><span>LP-2024-08317</span>
+              <strong>Received</strong><span>1 Aug 2026, 11:03</span>
+            </div>
+          </header>
+          <div class="email-body">Hello,
+
+The mould in the external corner of our bedroom keeps coming back. I first noticed it around 20 March. We clean it and it returns. The radiator works and we air the room every morning and evening.
+
+I notified the property manager by email on 15 July. They replied that the cause was insufficient ventilation and said they would not arrange an inspection. I disagree because the problem keeps returning. There are no current health symptoms and no urgent deadline. I can provide access after 17:30.
+
+Please tell me what should happen next. I want the cause clarified and the defect repaired.
+
+Kind regards,
+Alex Morgan</div>
+          <div class="v20-source-skeleton" aria-hidden="true" hidden>
+            <span class="v20-skeleton-line medium"></span>
+            <span class="v20-skeleton-line short"></span>
+            <span class="v20-skeleton-line medium"></span>
+            <span class="v20-skeleton-block"></span>
+          </div>
+        </article>
+        <section class="attachments-block" aria-labelledby="attachmentsHeading">
+          <header><h2 id="attachmentsHeading">Attachments</h2><span id="attachmentCount">6 files</span></header>
+          <div class="attachment-list" id="attachmentList">
+            <button class="attachment-row" type="button" data-artifact-id="art_lease" aria-disabled="true">
+              <span class="attachment-thumb"><span>PDF</span></span>
+              <span><span class="attachment-title">Residential lease agreement</span><span class="attachment-meta">lease-agreement.pdf · PDF · 6 pages</span></span>
+              <span class="attachment-open">Open</span>
+            </button>
+            <button class="attachment-row" type="button" data-artifact-id="art_notification" aria-disabled="true">
+              <span class="attachment-thumb"><span>EML</span></span>
+              <span><span class="attachment-title">Email notifying the property manager</span><span class="attachment-meta">notification-email.eml · Email</span></span>
+              <span class="attachment-open">Open</span>
+            </button>
+            <button class="attachment-row" type="button" data-artifact-id="art_management_reply" aria-disabled="true">
+              <span class="attachment-thumb"><span>EML</span></span>
+              <span><span class="attachment-title">Management reply</span><span class="attachment-meta">management-reply.eml · Email</span></span>
+              <span class="attachment-open">Open</span>
+            </button>
+            <button class="attachment-row" type="button" data-artifact-id="art_photo" aria-disabled="true">
+              <span class="attachment-thumb"><span>IMG</span></span>
+              <span><span class="attachment-title">Bedroom photograph</span><span class="attachment-meta">bedroom-corner-2026-07-27.jpg · Image</span></span>
+              <span class="attachment-open">Open</span>
+            </button>
+            <button class="attachment-row" type="button" data-artifact-id="art_timeline" aria-disabled="true">
+              <span class="attachment-thumb"><span>PDF</span></span>
+              <span><span class="attachment-title">Defect timeline</span><span class="attachment-meta">defect-timeline.pdf · PDF · 2 pages</span></span>
+              <span class="attachment-open">Open</span>
+            </button>
+            <button class="attachment-row" type="button" data-artifact-id="art_delivery" aria-disabled="true">
+              <span class="attachment-thumb"><span>PDF</span></span>
+              <span><span class="attachment-title">Email delivery receipt</span><span class="attachment-meta">delivery-receipt.pdf · PDF</span></span>
+              <span class="attachment-open">Open</span>
+            </button>
+            <div class="v20-attachment-skeleton" aria-hidden="true" hidden>
+              <div class="v20-skeleton-row"><span class="v20-skeleton-thumb"></span><span><span class="v20-skeleton-line medium"></span><span class="v20-skeleton-line short"></span></span></div>
+              <div class="v20-skeleton-row"><span class="v20-skeleton-thumb"></span><span><span class="v20-skeleton-line medium"></span><span class="v20-skeleton-line short"></span></span></div>
+              <div class="v20-skeleton-row"><span class="v20-skeleton-thumb"></span><span><span class="v20-skeleton-line medium"></span><span class="v20-skeleton-line short"></span></span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <section class="work-pane" aria-live="polite">
+      <section class="start-state" id="startState">
+        <div class="start-copy">
+          <span class="quiet-label">Flagship claim</span>
+          <h2>What should CasePath do with this claim?</h2>
+          <article class="start-claim-source" data-opening-claim-source="message" aria-label="Claim message excerpt">
+            <header><span>Claim message</span><small>Alex Morgan · 1 Aug 2026, 11:03</small></header>
+            <strong>Bedroom condition keeps returning</strong>
+            <blockquote>The mould in the external corner of our bedroom keeps coming back.</blockquote>
+            <p>Please tell me what should happen next. I want the cause clarified and the defect repaired.</p>
+          </article>
+        </div>
+        <button class="primary-button" id="runCasePath" type="button" disabled>
+          <span>Analyse claim</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <label class="insurance-mode-choice" for="insuranceProtocolMode">
+          <input id="insuranceProtocolMode" type="checkbox" checked>
+          <span><strong>Evidence registration journey</strong><small>Use the model-free, receipt-verified workflow for the generated claim.</small></span>
+        </label>
+        <p class="research-boundary">Generated fictional research claim. No coverage or legal decision is made, and the simulated review is not expert approval.</p>
+      </section>
+
+      <section class="live-workspace" id="liveWorkspace" hidden>
+        <header class="orchestrator-bar" id="orchestratorBar">
+          <div class="orchestrator-mark" aria-hidden="true"><span></span><i></i></div>
+          <div>
+            <span class="quiet-label" id="orchestratorLabel">Orchestration status</span>
+            <strong id="orchestratorStatus">Opening one shared claim context</strong>
+          </div>
+          <span class="live-chip" id="liveChip" data-orchestration-mode="working">Working</span>
+        </header>
+
+        <section class="orchestration-proof" id="orchestrationProof" aria-labelledby="orchestrationProofTitle" hidden>
+          <h2 class="visually-hidden" id="orchestrationProofTitle">Returned agent activity and deterministic proof</h2>
+        </section>
+
+        <nav class="agent-progress" id="agentProgress" aria-label="Active CasePath specialist"></nav>
+
+        <div class="stage-canvas" id="stageCanvas" aria-busy="false" tabindex="0" aria-label="CasePath work canvas"></div>
+
+        <footer class="journey-actions" id="journeyActions" hidden>
+          <button class="secondary-button" id="journeyBack" type="button">Back</button>
+          <button class="primary-button" id="journeyNext" type="button"><span>Continue</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </footer>
+      </section>
+    </section>
+  </main>
+
+  <dialog class="source-viewer" id="sourceViewer" aria-labelledby="sourceViewerTitle" aria-busy="false">
+    <div class="source-viewer-shell">
+      <header class="source-viewer-head">
+        <div>
+          <span class="quiet-label" id="sourceViewerKind">Original attachment</span>
+          <h2 id="sourceViewerTitle">Attachment</h2>
+          <p id="sourceViewerMeta"></p>
+        </div>
+        <div class="viewer-actions">
+          <button class="icon-button" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+          <span id="zoomValue">100%</span>
+          <button class="icon-button" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+          <a class="icon-button" id="openOriginal" href="#" target="_blank" rel="noopener" aria-label="Open original file in a new tab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M13 11l6-6M19 13v6H5V5h6"/></svg></a>
+          <button class="icon-button" id="closeSourceViewer" type="button" aria-label="Close source viewer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+        </div>
+      </header>
+      <div class="source-viewer-tabs" role="tablist" aria-label="Attachment representation">
+        <button id="sourceTabOriginal" type="button" role="tab" aria-selected="true" aria-controls="sourceStage" tabindex="0" data-source-tab="original">Original attachment</button>
+        <button id="sourceTabExtraction" type="button" role="tab" aria-selected="false" aria-controls="sourceStage" tabindex="-1" data-source-tab="extraction">What CasePath extracted</button>
+      </div>
+      <div class="source-viewer-tools">
+        <form class="source-search" id="sourceSearchForm" role="search">
+          <label for="sourceSearch">Search extracted text</label>
+          <div><input id="sourceSearch" type="search" autocomplete="off" placeholder="Find words in this source"><button type="submit">Find</button></div>
+          <p id="sourceSearchStatus" role="status" aria-live="polite"></p>
+          <div class="source-search-results" id="sourceSearchResults"></div>
+        </form>
+        <nav class="source-gallery-nav" id="sourceGalleryNav" aria-label="Image attachments" hidden>
+          <button class="text-button" id="sourcePrevious" type="button">Previous image</button>
+          <span id="sourcePosition"></span>
+          <button class="text-button" id="sourceNext" type="button">Next image</button>
+        </nav>
+      </div>
+      <div class="source-viewer-body">
+        <aside class="page-thumbnails" id="pageThumbnails" aria-label="Document pages"></aside>
+        <div class="source-stage" id="sourceStage" role="tabpanel" aria-labelledby="sourceTabOriginal" aria-busy="false" tabindex="0"></div>
+        <aside class="source-evidence" id="sourceEvidence" aria-label="Grounding links for this source"></aside>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="audit-drawer" id="auditDrawer" aria-labelledby="auditTitle">
+    <div class="audit-shell">
+      <header>
+        <div><span class="quiet-label">Research detail</span><h2 id="auditTitle">Audit trail</h2><p>Returned actor type, handoff, source, model identity, validator, and artifact fields from this run.</p></div>
+        <span class="release-evidence-status" id="browserEvidenceLink" role="status" aria-live="polite" data-evidence-state="pending">Current release evidence pending</span>
+        <button class="icon-button" id="closeAudit" type="button" aria-label="Close audit trail"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </header>
+      <div class="audit-content" id="auditContent" tabindex="0" aria-label="CasePath audit details"></div>
+    </div>
+  </dialog>
+
+  <dialog class="precedent-viewer" id="precedentViewer" aria-labelledby="precedentTitle">
+    <div class="precedent-shell">
+      <header><div><span class="quiet-label" id="precedentViewerKind">Reference precedent</span><h2 id="precedentTitle">Previous claim</h2></div><button class="icon-button" id="closePrecedent" type="button" aria-label="Close previous claim"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+      <div id="precedentContent"></div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="assets/claims-workspace-v1.js?sha256=d2373524d81f554430d9f60df67451c014760462395b01e699a77e58c66e8484"></script>
+  <script src="assets/live-v16.js?sha256=30d38ef66e44312fbfd75bb2d3584bd0b59ac1e45c1f1e5c604167863de647d2"></script>
+  <script src="assets/live-v16-stability.js?sha256=9852b45f35c949b0e89caa62814394c99e97ee744ba0763f19e1156f4630162a"></script>
+  <script src="assets/live-v18-insertion-guard.js?sha256=56c93edcbc77709a857ec8753e0fab9d705dc78d32ba51a572290d4beefc5ce9"></script>
+  <script src="assets/live-v17.js?sha256=4d5390e5b9a527d245ec06d913c1baf86a3946a0d1717a9305e7c26714192acb"></script>
+  <script src="assets/live-v18.js?sha256=ecf53e63ed0d04ed40331ed753103ac6c924d825f029ef7372bf5bd6f3929007"></script>
+  <script src="assets/live-v18-handoff.js?sha256=981a73ead14b34f7b33a59739639da775bf767b6b8cb6ce7e28a7cfe4cca5687"></script>
+  <script src="assets/live-v19-active-stage.js?sha256=b0507d378aaed616795707be7f456d6b3b76794abb70faf9ba5e233b8030da69"></script>
+  <script src="assets/live-v20-focus.js?sha256=c45e354fb399a1f7edfc3c1b52d3dc6ebb1fb8b9d92438651757580a01c3cce5"></script>
+  <script src="assets/process-story.js?sha256=8a0fac57fc6802421fc2741ab92c2be164adfdb0c20523eb600280372a33259b"></script>
+  <script src="assets/artifact-canvas.js?sha256=e9cd895fcd3b7a50949b203df5efdec620b47e2db12106dc532c384a32b1967e"></script>
+  <script src="assets/foundation-live.js?sha256=6d66be1472fdeae083eba68f93e8ce11ef538afa0ebc560a11044ece193b9c80"></script>
+  <script src="assets/insurance-protocol-v1.js?sha256=d25e80b28d8f0b4460221d050c804da6170dc8d95d17bbd3aeb520bf7cb02818"></script>
+</body>
+</html>

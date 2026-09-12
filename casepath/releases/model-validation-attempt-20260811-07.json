@@ -1,0 +1,62 @@
+{
+  "contract": "casepath.model-validation-evidence/1.0.0",
+  "release_id": "casepath-v20-reference-20260811",
+  "attempt_id": "production-flagship-20260811-07",
+  "status": "failed_closed",
+  "acceptance_passed": false,
+  "model_backed_release_evidence": false,
+  "requested_runtime": {
+    "mode": "openrouter_nemotron",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b"
+  },
+  "execution_observation": {
+    "source_commit": "7e87f40bc866444f16fd837fa3e6a999faa1c7e0",
+    "frontend_deploy_id": "dep-d9to4r942hec738ntcdg",
+    "api_deploy_id": "dep-d9to4qqjnfac73cc5seg",
+    "qa_deploy_id": "dep-d9to5onavr4c73c9lh3g",
+    "qa_deploy_outcome": "build_failed",
+    "qa_run_id": "run_a4ce02e0125690b2",
+    "orchestration_id": "orch_60c6c6a9508c39f9",
+    "failed_agent_id": "canonical_facts",
+    "provider_response_count": 1,
+    "downstream_model_calls": 0,
+    "deterministic_gate_receipts": 0
+  },
+  "provider_observation": {
+    "provider": "openrouter",
+    "provider_outcome": "http_200_response_schema_rejected_by_sdk",
+    "response_http_status": 200,
+    "sdk": "openrouter",
+    "sdk_version": "0.11.46",
+    "sdk_error_type": "ResponseValidationError",
+    "response_identity_status": "unknown_unverified",
+    "synchronous_usage_cost_present": false,
+    "new_openrouter_log_generation_observed": false,
+    "openrouter_log_check_performed": false,
+    "provider_cache_replay_assessment": "not_assessed",
+    "charge_status": "unknown_unconfirmed",
+    "charge_included_in_known_aggregate": false,
+    "estimated_cost_reservation_usd": 0.027645,
+    "estimated_reservation_is_actual_charge": false,
+    "latency_ms": 28814.669
+  },
+  "accepted_ledger_record": null,
+  "application_result": {
+    "outcome": "rejected",
+    "failure_type": "openrouter_sdk_chat_result_response_validation",
+    "error_type": "ResponseValidationError",
+    "successful_ledger_call_bound": false,
+    "ledger_call_id": "modelcall_2c6614b3bc53305b",
+    "ledger_outcome": "failed",
+    "canonical_result_accepted": false,
+    "response_identity_retained": false,
+    "usage_metadata_retained": false,
+    "contribution_diagnostics_retained": false
+  },
+  "sanitization": {
+    "raw_prompt_included": false,
+    "raw_output_included": false,
+    "provider_credential_included": false,
+    "private_reference_included": false
+  }
+}

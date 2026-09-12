@@ -1,0 +1,85 @@
+  check('Full process graph is in the main canvas', await page.locator('#stageCanvas .process-node').count() === 11 && await page.locator('dialog[open] .process-layout').count() === 0);
+  check('Current and blocked states overlay the graph', await page.locator('.process-node.current').count() === 1 && await page.locator('.process-node.blocked').count() >= 2);
+  check('Legal sources are marked directly on process nodes', await page.locator('.v19-node-signal[data-kind="law"]').count() >= 4);
+  check('Later stages are progressively disclosed', await page.locator('.process-node.v19-deferred').count() === 2 && await page.locator('.v19-later-toggle').count() === 1);
+  check('Alternative causation branches start collapsed', await page.locator('.branch-options[hidden]').count() === 1);
+  check('Accepted backend artifact—not fake decision counting—drives the reveal', /accepted from the backend/i.test(await page.locator('.v17-build-state').innerText()) && !/Reconstructing decision \d+ of \d+/i.test(await page.locator('#stageCanvas').innerText()));
+  await screenshot('07-process-emerging-live.png');
+
+  await waitText('#stageCanvas', /Evidence now follows directly from the process/i);
+  await waitVisible('.v18-progress-focus[data-active-stage="evidence"]');
+  await waitVisible('.v17-evidence-chain');
+  await page.waitForFunction(() => document.querySelectorAll('.v19-node-signal[data-kind="evidence"]').length >= 5, null, { timeout: 30000 });
+  check('Decision → fact → evidence → current submission is visible', await page.locator('.v17-evidence-chain .v17-chain-step').count() === 4);
+  check('Evidence status is visible directly on graph nodes', await page.locator('.v19-node-signal[data-kind="evidence"]').count() >= 5);
+  check('Selected decision explains evidence and current status', /What this decision requires/i.test(await page.locator('.decision-inspector').innerText()) && /Missing|Conditional|Available|Needs stronger evidence/i.test(await page.locator('.decision-inspector').innerText()));
+  await screenshot('08-evidence-attached-to-process.png');
+
+  await waitText('#stageCanvas', /Previous cases are helping with the difficult decision/i);
+  await waitVisible('.v18-progress-focus[data-active-stage="experience"]');
+  check('Three reviewed precedents appear at the relevant decision', await page.locator('.precedent-mini').count() === 3);
+  check('Each precedent explains why it helps', await page.locator('.precedent-mini p').count() === 3);
+  check('Retrieval timing is explained in context', /unresolved branch|evidence gap/i.test(await page.locator('.v17-experience-note').innerText()));
+  await screenshot('09-precedents-at-decision.png');
+
+  await waitText('#journeyNext', /Review the proposed playbook/i);
+  await waitVisible('.v18-ready-artifacts[data-v19-product-copy="true"]');
+  await waitVisible('.v17-derived-checklist[data-v18-condensed="true"]');
+  const synthesis = await page.locator('.v18-ready-artifacts').innerText();
+  check('Finished moment synthesizes process, evidence, and experience', await page.locator('.v18-ready-artifacts article').count() === 3);
+  check('Finished copy explains usefulness instead of leading with counts', /mapped from intake to closure/i.test(synthesis) && /Every decision carries the facts and evidence/i.test(synthesis) && /Reviewed cases appear at the branch/i.test(synthesis));
+  check('Checklist remains minimal until expanded', await page.locator('.v17-checklist-group').count() === 4 && await page.locator('.v18-checklist-details:not([open])').count() >= 3);
+  await screenshot('10-playbook-ready.png', true);
+
+  await page.locator('[data-toggle-branches]').click();
+  check('Four causation outcomes reveal on demand', await page.locator('.branch-option').count() === 4);
+  await page.locator('.v19-later-toggle').click();
+  check('Later handling stages reveal on demand', await page.locator('.process-layout[data-later-expanded="true"] .process-node.v19-deferred').count() === 2);
+
+  await page.locator('#journeyNext').click();
+  await waitVisible('#reviewForm');
+  await waitVisible('.v19-review-branch-preview[data-mode="conditional"]');
+  check('Expert review edits beside the generated process', await page.locator('.review-layout .process-layout').count() === 1);
+  check('Review focuses on one consequential choice', await page.locator('.review-choice').count() === 2 && await page.locator('#reviewForm button[type="submit"]').count() === 1);
+  check('The graph itself previews the selected reasoning path', /Neutral assessment first/i.test(await page.locator('.v19-review-branch-preview').innerText()) && /conditional/i.test(await page.locator('.v19-review-branch-preview').innerText()));
+  await page.locator('input[value="required_now"]').check();
+  await waitVisible('.v19-review-branch-preview[data-mode="required_now"]');
+  check('Changing the expert choice changes the graph preview', /broader building testing now/i.test(await page.locator('.v19-review-branch-preview').innerText()));
+  await page.locator('input[value="conditional"]').check();
+  await waitVisible('.v19-review-branch-preview[data-mode="conditional"]');
+  await screenshot('11-expert-correction-on-graph.png', true);
+
+  await page.locator('#reviewForm button[type="submit"]').click();
+  await waitVisible('#knowledgeResult .knowledge-flow');
+  await waitVisible('.v18-memory-boundary');
+  await waitVisible('.v19-support-meter');
+  const knowledgeText = await page.locator('#stageCanvas').innerText();
+  check('Reviewed case memory is separated from shared-rule release', /Available immediately/i.test(await page.locator('.v18-memory-boundary').innerText()) && /Shared only after gates/i.test(await page.locator('.v18-memory-boundary').innerText()));
+  check('Repeated compatible evidence is shown explicitly', /reviewed cases support/i.test(await page.locator('.v19-support-meter').innerText()) && await page.locator('.v19-support-dots i[data-supported="true"]').count() >= 1);
+  check('Support, regression, release, and rollback are visible', await page.locator('.knowledge-step').count() === 5 && /Protected cases checked/i.test(knowledgeText) && /rollback/i.test(knowledgeText));
+  await screenshot('12-organizational-learning.png', true);
+
+  await page.locator('#journeyNext').click();
+  await waitVisible('#laterAgentStream');
+  await waitText('#journeyNext', /Restart the demo/i);
+  await waitVisible('#laterResult .before-after');
+  await waitVisible('.v18-reuse-proof .v17-reuse-thread');
+  const laterText = await page.locator('#stageCanvas').innerText();
+  check('Unseen claim uses new organizational knowledge', /New organizational knowledge used/i.test(laterText));
+  check('Before/after isolates the meaningful process and evidence change', /Test the ventilation allegation/i.test(laterText) && /Building-envelope assessment/i.test(laterText) && /conditional/i.test(laterText));
+  check('Reuse trace runs from reviewed memory to evidence effect', await page.locator('.v17-reuse-thread article').count() === 4);
+  await screenshot('13-later-claim-improved.png', true);
+
+  check('Public UI created two real claim runs', runIds.length === 2, JSON.stringify(runIds));
+  const flagship = await awaitRun(runIds[0]);
+  const later = await awaitRun(runIds[1]);
+  check('Flagship created an eleven-stage process', flagship.result?.process?.main_spine?.length === 11);
+  check('Flagship created process-grounded evidence', flagship.result?.checklist?.items?.length >= 20 && flagship.result.checklist.items.every(item => item.node_id && item.fact_id && item.why));
+  check('Flagship retrieved exactly three reviewed precedents', flagship.result?.precedents?.length === 3);
+  check('Expert review released playbook v4', flagship.candidate?.status === 'approved' && flagship.candidate?.new_version === 'mould-playbook-v4');
+  check('Later run uses playbook v4', later.result?.playbook?.version === 'mould-playbook-v4');
+  check('Later run adds the ventilation-dispute decision', later.result?.process?.nodes?.some(node => node.node_id === 'ventilation_dispute'));
+  check('Later building-envelope assessment is conditional', later.result?.checklist?.items?.some(item => item.item_id === 'building_envelope' && item.status === 'conditional'));
+  check('Reviewed flagship is the first later precedent', later.result?.precedents?.[0]?.claim_id === 'DEF-027-E0-DEMO');
+
+  await page.locator('#openAudit').click();

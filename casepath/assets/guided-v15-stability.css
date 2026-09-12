@@ -1,0 +1,5 @@
+/* Keep the expert action hidden for the single animation frame in which the base
+   step has rendered but the lifecycle explanation has not yet been attached. */
+#guideStage .guide-stage-inner:not(:has(.v15-review-impact)) #guidedReviewForm{
+  visibility:hidden;
+}

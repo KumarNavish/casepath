@@ -1,0 +1,7 @@
+#sourceViewer[open]{display:block!important}
+#sourceViewer[open] .source-viewer-shell{display:grid!important;visibility:visible!important;opacity:1!important}
+#sourceViewer[open] .source-viewer-body{display:grid!important;visibility:visible!important;opacity:1!important;min-height:0}
+#sourceViewer[open] .source-stage{display:flex!important;visibility:visible!important;opacity:1!important;min-width:1px;min-height:1px}
+#sourceViewer[open] .source-stage>.extraction-pages{display:block!important;visibility:visible!important;opacity:1!important;width:min(800px,100%);min-width:1px;min-height:1px}
+#sourceViewer[open] .source-stage .extraction-page,
+#sourceViewer[open] .source-stage pre{display:block!important;visibility:visible!important;opacity:1!important;min-width:1px;min-height:1px}

@@ -1,0 +1,213 @@
+{
+  "$schema": "./release.schema.json",
+  "contract": "casepath.release-contract/2.2.0",
+  "schema_version": "2.2.0",
+  "release_id": "casepath-v20-reference-20260811",
+  "released_on": "2026-08-11",
+  "product": "CasePath focused claim-handling reference workspace",
+  "components": {
+    "frontend": {
+      "version": "20.0.0",
+      "contract": "focused-claim-workspace-v20"
+    },
+    "api": {
+      "version": "15.2.0",
+      "contract": "casepath-langgraph-agentic-api-v15.2"
+    },
+    "pipeline": {
+      "version": "15.2.0",
+      "profile": "nemotron-langgraph-multi-agent-hybrid-guarded"
+    },
+    "qa": {
+      "version": "20.0.0",
+      "gate": "focused-flagship-journey-v20"
+    }
+  },
+  "claims": {
+    "flagship": "DEF-027-E0-DEMO",
+    "later_claim": "DEMO-MOULD-002"
+  },
+  "agentic_runtime": {
+    "runtime_profile": "nemotron_langgraph_multi_agent_hybrid_guarded",
+    "execution_mode": "openrouter_nemotron",
+    "provider": "openrouter",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b",
+    "orchestration_schema": "casepath.nemotron-agent-dag/1.0.0",
+    "authority_mode": "multi_agent_hybrid_guarded",
+    "implementation": "langgraph_stategraph_langchain_openrouter",
+    "framework": {
+      "langchain": "1.3.14",
+      "langgraph": "1.2.9",
+      "langchain_openrouter": "0.2.7"
+    },
+    "model_agents": [
+      {
+        "agent_id": "canonical_facts",
+        "role": "Guarded Canonical Facts Agent",
+        "stage": "canonicalization"
+      },
+      {
+        "agent_id": "orchestrator_plan",
+        "role": "Nemotron Orchestrator",
+        "stage": "orchestration_plan"
+      },
+      {
+        "agent_id": "document_source_integrity",
+        "role": "Document and Source Integrity Agent",
+        "stage": "parallel_specialist"
+      },
+      {
+        "agent_id": "process_decision_mapping",
+        "role": "Process Decision Mapping Agent",
+        "stage": "parallel_specialist"
+      },
+      {
+        "agent_id": "evidence_checklist",
+        "role": "Evidence and Checklist Agent",
+        "stage": "post_process_gate"
+      },
+      {
+        "agent_id": "final_claim_brief_audit",
+        "role": "Final Claim Brief Agent",
+        "stage": "post_evidence_gate"
+      }
+    ],
+    "deterministic_gates": [
+      {
+        "gate_id": "deterministic_process_gate",
+        "role": "Deterministic Process Contract Gate"
+      },
+      {
+        "gate_id": "deterministic_evidence_gate",
+        "role": "Deterministic Evidence Contract Gate"
+      },
+      {
+        "gate_id": "whole_playbook_gate",
+        "role": "Deterministic Whole-Playbook Gate"
+      }
+    ],
+    "parallel_groups": [
+      [
+        "document_source_integrity",
+        "process_decision_mapping"
+      ]
+    ],
+    "safety": {
+      "deterministic_safety_authority": true,
+      "external_tracing": false,
+      "provider_max_in_flight": 1,
+      "prompt_storage": false,
+      "raw_output_storage": false
+    }
+  },
+  "source_identity": {
+    "authority": "dynamic_same_commit_qa_artifacts",
+    "source_contract_embeds_commit": false,
+    "runtime_environment_variable": "RENDER_GIT_COMMIT",
+    "unknown_semantics": "A dynamic production acceptance result must fail when any service or evidence artifact reports an absent, unknown, or malformed source commit."
+  },
+  "truth": {
+    "generated_data_only": true,
+    "deterministic_build": {
+      "status": "passed",
+      "execution_mode": "deterministic_reference",
+      "model_calls": 0,
+      "model_backed": false
+    },
+    "production_runtime_acceptance": {
+      "verdict_authority": "dynamic_same_commit_qa_artifacts",
+      "source_contract_embeds_runtime_verdict": false,
+      "dynamic_evidence": {
+        "qa_gate": "focused-flagship-journey-v20",
+        "report_path": "report.json",
+        "evidence_manifest_path": "evidence-manifest.json",
+        "evidence_manifest_contract": "casepath.qa-evidence-manifest/1.0.0",
+        "required_report_status": "passed",
+        "requires_release_id_match": true,
+        "requires_non_unknown_source_commit": true,
+        "requires_same_source_commit": true
+      },
+      "required_mode": "openrouter_nemotron",
+      "required_model": "nvidia/nemotron-3-ultra-550b-a55b",
+      "model_acceptance_scope": "visible_browser_flagship",
+      "learning_comparison_authority": "deterministic_application_tool",
+      "requires_learning_comparison_zero_model_activity": true,
+      "required_final_model_ledger_records": 12,
+      "required_final_model_network_calls": 6,
+      "required_final_cache_hits": 6,
+      "required_provider_max_in_flight": 1,
+      "required_runtime_profile": "nemotron_langgraph_multi_agent_hybrid_guarded",
+      "requires_successful_call_binding": true,
+      "requires_positive_actual_cost": true,
+      "requires_positive_token_counts": true,
+      "requires_single_orchestration_binding": true,
+      "requires_complete_required_agent_set": true,
+      "requires_distinct_call_ids": true,
+      "requires_distinct_response_ids": true,
+      "requires_positive_accepted_contribution_per_agent": true,
+      "requires_accepted_majority_per_agent": true,
+      "requires_cold_network_run": true,
+      "requires_deterministic_gate_passes": true,
+      "requires_guarded_fallback_disclosure": true,
+      "requires_source_reference_projection_disclosure": true,
+      "requires_grounded_causal_artifact_recomputation": true,
+      "requires_learning_replay_proof": true
+    },
+    "historical_model_validation": {
+      "scope": "failed_closed_history_only",
+      "evidence_records": [
+        "casepath/releases/model-validation-attempt-20260811-01.json",
+        "casepath/releases/model-validation-attempt-20260811-02.json",
+        "casepath/releases/model-validation-attempt-20260811-03.json",
+        "casepath/releases/model-validation-attempt-20260811-04.json",
+        "casepath/releases/model-validation-attempt-20260811-05.json",
+        "casepath/releases/model-validation-attempt-20260811-06.json",
+        "casepath/releases/model-validation-attempt-20260811-07.json",
+        "casepath/releases/model-validation-attempt-20260811-08.json",
+        "casepath/releases/model-validation-attempt-20260811-09.json",
+        "casepath/releases/model-validation-attempt-20260811-10.json",
+        "casepath/releases/model-validation-attempt-20260811-11.json",
+        "casepath/releases/model-validation-attempt-20260811-12.json",
+        "casepath/releases/model-validation-attempt-20260811-13.json",
+        "casepath/releases/model-validation-attempt-20260811-14.json",
+        "casepath/releases/model-validation-attempt-20260811-15.json",
+        "casepath/releases/model-validation-attempt-20260811-16.json",
+        "casepath/releases/model-validation-attempt-20260811-17.json",
+        "casepath/releases/model-validation-attempt-20260811-18.json",
+        "casepath/releases/model-validation-attempt-20260811-19.json",
+        "casepath/releases/model-validation-attempt-20260811-20.json",
+        "casepath/releases/model-validation-attempt-20260811-21.json",
+        "casepath/releases/model-validation-attempt-20260811-22.json",
+        "casepath/releases/model-validation-attempt-20260811-23.json",
+        "casepath/releases/model-validation-attempt-20260811-24.json"
+      ],
+      "establishes_current_runtime_acceptance": false
+    },
+    "independent_expert_review": false,
+    "blind_review_completed": false,
+    "legal_approval": false,
+    "operational_validation": false,
+    "real_claims_approved": false
+  },
+  "compatibility": {
+    "component_versions_are_independent": true,
+    "acceptance_rule": "Frontend, API, and QA must report the same release_id and the same non-unknown source commit; component semantic versions are intentionally distinct."
+  },
+  "artifact_policy": {
+    "public_disclosure_location": "application shell",
+    "evaluated_artifact_bytes_contain_disclosure_markers": false,
+    "artifact_hash_manifest": "casepath-api/artifacts/artifact-manifest.json",
+    "source_manifest": "source-manifest.json",
+    "deployment_identity": "deployment.json",
+    "scenario_dates": {
+      "flagship_received_on": "2026-08-01",
+      "later_photo_on": "2026-08-08",
+      "later_claim_received_on": "2026-08-10"
+    }
+  },
+  "services": {
+    "frontend": "https://casepath.kumarnavish.chatgpt.site",
+    "api": "https://casepath-agentic-api.onrender.com",
+    "qa": "https://casepath-guided-canonical-qa.onrender.com"
+  }
+}

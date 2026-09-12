@@ -1,0 +1,87 @@
+      failures.request.push(`${request.failure()?.errorText || 'failed'} ${request.url()}`);
+    }
+  });
+  page.on('response', async response => {
+    try {
+      const url = new URL(response.url());
+      if (response.request().method() === 'POST' && url.origin === new URL(API).origin && url.pathname === '/api/runs' && response.ok()) {
+        const value = await response.json();
+        if (value.run_id && !runIds.includes(value.run_id)) runIds.push(value.run_id);
+      }
+    } catch (_) {}
+  });
+
+  const response = await page.goto(`${BASE}/?api=${encodeURIComponent(API)}&qa=${Date.now()}`, {
+    waitUntil: 'domcontentloaded',
+    timeout: 120000,
+  });
+  check('Public product returns HTTP 200', response?.status() === 200, `status=${response?.status()}`);
+  await waitVisible('#runCasePath');
+  await page.waitForFunction(() => document.querySelectorAll('.attachment-row').length === 6, null, { timeout: 120000 });
+  await page.waitForFunction(() => document.body.dataset.casepathRelease === '19.0.0', null, { timeout: 120000 });
+  check('CasePath v19 is loaded', await page.evaluate(() => document.body.dataset.casepathRelease === '19.0.0' && window.CASEPATH_EXPERIENCE_RELEASE === '19.0.0'));
+  check('Original message and six attachments are visible', await page.locator('#customerEmail .email-body').isVisible() && await page.locator('.attachment-row').count() === 6);
+  check('One primary action starts the journey', await page.locator('#runCasePath').count() === 1);
+  check('Old report structures remain absent', await page.locator('.guide-section,.detail-dialog,.v15-stage-inner').count() === 0);
+  await screenshot('01-customer-submission.png');
+
+  await page.locator('[data-artifact-id="art_lease"]').click();
+  await waitVisible('#sourceViewer[open]');
+  await waitVisible('#documentPage');
+  const lease = await page.locator('#documentPage').evaluate(node => ({ src: node.src, width: node.naturalWidth, height: node.naturalHeight }));
+  check('Actual six-page lease renders', await page.locator('.page-thumb').count() === 6 && lease.src.includes('/art_lease/pages/1') && lease.width > 500 && lease.height > 700, JSON.stringify(lease));
+  await page.locator('#zoomIn').click();
+  check('PDF zoom works', String(await page.locator('#documentPage').getAttribute('style')).includes('1.15'));
+  await page.locator('[data-source-tab="extraction"]').click();
+  await waitVisible('#sourceStage pre');
+  check('Original and extraction stay separate', await page.locator('[data-source-tab="original"][aria-selected="false"]').count() === 1);
+  await screenshot('02-actual-pdf-open.png');
+  await page.locator('#closeSourceViewer').click();
+
+  await page.locator('[data-artifact-id="art_photo"]').click();
+  await waitVisible('#sourceImage');
+  const photo = await page.locator('#sourceImage').evaluate(node => ({ src: node.src, width: node.naturalWidth, height: node.naturalHeight }));
+  check('Actual source photograph renders', photo.src.includes('/api/artifacts/art_photo') && photo.width >= 1000 && photo.height >= 700, JSON.stringify(photo));
+  await screenshot('03-actual-photo-open.png');
+  await page.locator('#closeSourceViewer').click();
+
+  await page.locator('#runCasePath').click();
+  await waitVisible('#liveWorkspace');
+  await waitVisible('.v19-team-rail');
+  check('Claim stays visible while agents work', await page.locator('.submission-pane').isVisible() && await page.locator('#orchestratorBar').isVisible());
+  check('One orchestrator and one active specialist are visible', await page.locator('#orchestratorBar').count() === 1 && await page.locator('.v18-progress-focus').count() === 1);
+
+  await waitText('#stageCanvas', /original submission is in the shared claim context/i);
+  await waitVisible('.v18-progress-focus[data-active-stage="read"]');
+  await waitVisible('.v19-team-history li[data-state="active"]');
+  check('Reading exposes source-level events', await page.locator('#stageCanvas .event-row').count() >= 6);
+  await page.waitForFunction(() => !/Open one shared claim context/i.test(document.querySelector('.v19-team-mission strong')?.textContent || ''), null, { timeout: 30000 });
+  check('Orchestrator mission comes from the active run', (await page.locator('.v19-team-mission strong').innerText()).trim().length > 20);
+  check('Team rail shows completed, active, or next work without seven equal panels', await page.locator('.v19-team-history li').count() <= 5 && await page.locator('.agent-step').count() === 0);
+  await screenshot('04-live-team-reading.png');
+
+  await waitText('#stageCanvas', /separated what is known from what is still open/i);
+  await waitVisible('.v18-progress-focus[data-active-stage="understand"]');
+  check('Facts and unknowns are separated', await page.locator('.fact-row').count() >= 7 && await page.locator('.fact-row.unknown').count() >= 1);
+  check('Facts retain exact source links', await page.locator('#stageCanvas [data-source-ref]').count() >= 5);
+  const factSource = page.locator('#stageCanvas [data-source-ref]').first();
+  const sourceId = await factSource.getAttribute('data-source-ref');
+  await factSource.click();
+  await waitVisible('#sourceViewer[open]');
+  check('Selecting a conclusion highlights its source artifact', await page.locator(`.attachment-row[data-artifact-id="${sourceId}"]`).evaluate(node => node.classList.contains('v19-source-pulse')));
+  await page.locator('#closeSourceViewer').click();
+  await screenshot('05-claim-understanding-source-trace.png');
+
+  await waitText('#stageCanvas', /Swiss law has become handling questions/i);
+  await waitVisible('.v18-progress-focus[data-active-stage="research"]');
+  await waitVisible('.v17-law-map[data-v18-backed="true"]');
+  check('Swiss-law sources visibly connect to process decisions', await page.locator('.v17-law-link').count() >= 3 && await page.locator('.v17-law-target').count() >= 3);
+  await page.waitForFunction(() => document.querySelectorAll('.v17-law-details:not([open])').length === 1, null, { timeout: 30000 });
+  check('Full legal questions remain secondary', await page.locator('.v17-law-details:not([open])').count() === 1);
+  await screenshot('06-law-shapes-process.png');
+
+  await waitText('#stageCanvas', /complete handling process is taking shape/i);
+  await waitVisible('.v18-progress-focus[data-active-stage="process"]');
+  await waitVisible('.process-layout');
+  await waitVisible('.v17-build-state[data-v18-backed="true"][data-output-artifact="process_graph"]');
+  await page.waitForFunction(() => document.querySelectorAll('.v19-node-signal[data-kind="law"]').length >= 4, null, { timeout: 30000 });

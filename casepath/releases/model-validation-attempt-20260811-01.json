@@ -1,0 +1,34 @@
+{
+  "contract": "casepath.model-validation-evidence/1.0.0",
+  "release_id": "casepath-v20-reference-20260811",
+  "attempt_id": "authorized-smoke-20260811-01",
+  "status": "failed_closed",
+  "acceptance_passed": false,
+  "model_backed_release_evidence": false,
+  "requested_runtime": {
+    "mode": "openrouter_nemotron",
+    "model": "nvidia/nemotron-3-ultra-550b-a55b"
+  },
+  "provider_observation": {
+    "canonical_model_id": "nvidia/nemotron-3-ultra-550b-a55b-20260604",
+    "upstream_provider": "DeepInfra",
+    "actual_cost_usd": 0.00756,
+    "prompt_tokens": 3629,
+    "completion_tokens": 2625,
+    "total_tokens": 6254,
+    "finish_reason": "stop"
+  },
+  "accepted_ledger_record": null,
+  "application_result": {
+    "outcome": "rejected",
+    "failure_type": "exact_private_reference_mismatch",
+    "successful_ledger_call_bound": false,
+    "ledger_call_id": null
+  },
+  "sanitization": {
+    "raw_prompt_included": false,
+    "raw_output_included": false,
+    "provider_credential_included": false,
+    "private_reference_included": false
+  }
+}

@@ -1,0 +1,3 @@
+# Evidence fixtures are byte-addressed; preserve CRLF and PDF bytes.
+casepath-api/casepath_api/corpora/** -text -diff
+casepath-api/tests/fixtures/** -text -diff

@@ -1,0 +1,403 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://casepath.invalid/schemas/release-contract-2.2.0.json",
+  "title": "CasePath release contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract",
+    "schema_version",
+    "release_id",
+    "released_on",
+    "product",
+    "components",
+    "claims",
+    "agentic_runtime",
+    "source_identity",
+    "truth",
+    "compatibility",
+    "artifact_policy",
+    "services"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "contract": { "const": "casepath.release-contract/2.2.0" },
+    "schema_version": { "const": "2.2.0" },
+    "release_id": { "type": "string", "pattern": "^casepath-[a-z0-9-]+$" },
+    "released_on": { "type": "string", "format": "date" },
+    "product": { "type": "string", "minLength": 1 },
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frontend", "api", "pipeline", "qa"],
+      "properties": {
+        "frontend": { "$ref": "#/$defs/versionedComponent" },
+        "api": { "$ref": "#/$defs/versionedComponent" },
+        "pipeline": { "$ref": "#/$defs/versionedComponent" },
+        "qa": { "$ref": "#/$defs/versionedComponent" }
+      }
+    },
+    "claims": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["flagship", "later_claim"],
+      "properties": {
+        "flagship": { "const": "DEF-027-E0-DEMO" },
+        "later_claim": { "const": "DEMO-MOULD-002" }
+      }
+    },
+    "agentic_runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "runtime_profile",
+        "execution_mode",
+        "provider",
+        "model",
+        "orchestration_schema",
+        "authority_mode",
+        "implementation",
+        "framework",
+        "model_agents",
+        "deterministic_gates",
+        "parallel_groups",
+        "safety"
+      ],
+      "properties": {
+        "runtime_profile": { "const": "nemotron_langgraph_multi_agent_hybrid_guarded" },
+        "execution_mode": { "const": "openrouter_nemotron" },
+        "provider": { "const": "openrouter" },
+        "model": { "const": "nvidia/nemotron-3-ultra-550b-a55b" },
+        "orchestration_schema": { "const": "casepath.nemotron-agent-dag/1.0.0" },
+        "authority_mode": { "const": "multi_agent_hybrid_guarded" },
+        "implementation": { "const": "langgraph_stategraph_langchain_openrouter" },
+        "framework": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["langchain", "langgraph", "langchain_openrouter"],
+          "properties": {
+            "langchain": { "const": "1.3.14" },
+            "langgraph": { "const": "1.2.9" },
+            "langchain_openrouter": { "const": "0.2.7" }
+          }
+        },
+        "model_agents": {
+          "const": [
+            {
+              "agent_id": "canonical_facts",
+              "role": "Guarded Canonical Facts Agent",
+              "stage": "canonicalization"
+            },
+            {
+              "agent_id": "orchestrator_plan",
+              "role": "Nemotron Orchestrator",
+              "stage": "orchestration_plan"
+            },
+            {
+              "agent_id": "document_source_integrity",
+              "role": "Document and Source Integrity Agent",
+              "stage": "parallel_specialist"
+            },
+            {
+              "agent_id": "process_decision_mapping",
+              "role": "Process Decision Mapping Agent",
+              "stage": "parallel_specialist"
+            },
+            {
+              "agent_id": "evidence_checklist",
+              "role": "Evidence and Checklist Agent",
+              "stage": "post_process_gate"
+            },
+            {
+              "agent_id": "final_claim_brief_audit",
+              "role": "Final Claim Brief Agent",
+              "stage": "post_evidence_gate"
+            }
+          ]
+        },
+        "deterministic_gates": {
+          "const": [
+            {
+              "gate_id": "deterministic_process_gate",
+              "role": "Deterministic Process Contract Gate"
+            },
+            {
+              "gate_id": "deterministic_evidence_gate",
+              "role": "Deterministic Evidence Contract Gate"
+            },
+            {
+              "gate_id": "whole_playbook_gate",
+              "role": "Deterministic Whole-Playbook Gate"
+            }
+          ]
+        },
+        "parallel_groups": {
+          "const": [["document_source_integrity", "process_decision_mapping"]]
+        },
+        "safety": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "deterministic_safety_authority",
+            "external_tracing",
+            "provider_max_in_flight",
+            "prompt_storage",
+            "raw_output_storage"
+          ],
+          "properties": {
+            "deterministic_safety_authority": { "const": true },
+            "external_tracing": { "const": false },
+            "provider_max_in_flight": { "const": 1 },
+            "prompt_storage": { "const": false },
+            "raw_output_storage": { "const": false }
+          }
+        }
+      }
+    },
+    "source_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority",
+        "source_contract_embeds_commit",
+        "runtime_environment_variable",
+        "unknown_semantics"
+      ],
+      "properties": {
+        "authority": { "const": "dynamic_same_commit_qa_artifacts" },
+        "source_contract_embeds_commit": { "const": false },
+        "runtime_environment_variable": { "const": "RENDER_GIT_COMMIT" },
+        "unknown_semantics": { "type": "string", "minLength": 1 }
+      }
+    },
+    "truth": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "generated_data_only",
+        "deterministic_build",
+        "production_runtime_acceptance",
+        "historical_model_validation",
+        "independent_expert_review",
+        "blind_review_completed",
+        "legal_approval",
+        "operational_validation",
+        "real_claims_approved"
+      ],
+      "properties": {
+        "generated_data_only": { "const": true },
+        "deterministic_build": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status", "execution_mode", "model_calls", "model_backed"],
+          "properties": {
+            "status": { "const": "passed" },
+            "execution_mode": { "const": "deterministic_reference" },
+            "model_calls": { "const": 0 },
+            "model_backed": { "const": false }
+          }
+        },
+        "production_runtime_acceptance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "verdict_authority",
+            "source_contract_embeds_runtime_verdict",
+            "dynamic_evidence",
+            "required_mode",
+            "required_model",
+            "model_acceptance_scope",
+            "learning_comparison_authority",
+            "requires_learning_comparison_zero_model_activity",
+            "required_final_model_ledger_records",
+            "required_final_model_network_calls",
+            "required_final_cache_hits",
+            "required_provider_max_in_flight",
+            "required_runtime_profile",
+            "requires_successful_call_binding",
+            "requires_positive_actual_cost",
+            "requires_positive_token_counts",
+            "requires_single_orchestration_binding",
+            "requires_complete_required_agent_set",
+            "requires_distinct_call_ids",
+            "requires_distinct_response_ids",
+            "requires_positive_accepted_contribution_per_agent",
+            "requires_accepted_majority_per_agent",
+            "requires_cold_network_run",
+            "requires_deterministic_gate_passes",
+            "requires_guarded_fallback_disclosure",
+            "requires_source_reference_projection_disclosure",
+            "requires_grounded_causal_artifact_recomputation",
+            "requires_learning_replay_proof"
+          ],
+          "properties": {
+            "verdict_authority": { "const": "dynamic_same_commit_qa_artifacts" },
+            "source_contract_embeds_runtime_verdict": { "const": false },
+            "dynamic_evidence": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "qa_gate",
+                "report_path",
+                "evidence_manifest_path",
+                "evidence_manifest_contract",
+                "required_report_status",
+                "requires_release_id_match",
+                "requires_non_unknown_source_commit",
+                "requires_same_source_commit"
+              ],
+              "properties": {
+                "qa_gate": { "const": "focused-flagship-journey-v20" },
+                "report_path": { "const": "report.json" },
+                "evidence_manifest_path": { "const": "evidence-manifest.json" },
+                "evidence_manifest_contract": {
+                  "const": "casepath.qa-evidence-manifest/1.0.0"
+                },
+                "required_report_status": { "const": "passed" },
+                "requires_release_id_match": { "const": true },
+                "requires_non_unknown_source_commit": { "const": true },
+                "requires_same_source_commit": { "const": true }
+              }
+            },
+            "required_mode": { "const": "openrouter_nemotron" },
+            "required_model": { "const": "nvidia/nemotron-3-ultra-550b-a55b" },
+            "model_acceptance_scope": { "const": "visible_browser_flagship" },
+            "learning_comparison_authority": {
+              "const": "deterministic_application_tool"
+            },
+            "requires_learning_comparison_zero_model_activity": { "const": true },
+            "required_final_model_ledger_records": { "const": 12 },
+            "required_final_model_network_calls": { "const": 6 },
+            "required_final_cache_hits": { "const": 6 },
+            "required_provider_max_in_flight": { "const": 1 },
+            "required_runtime_profile": {
+              "const": "nemotron_langgraph_multi_agent_hybrid_guarded"
+            },
+            "requires_successful_call_binding": { "const": true },
+            "requires_positive_actual_cost": { "const": true },
+            "requires_positive_token_counts": { "const": true },
+            "requires_single_orchestration_binding": { "const": true },
+            "requires_complete_required_agent_set": { "const": true },
+            "requires_distinct_call_ids": { "const": true },
+            "requires_distinct_response_ids": { "const": true },
+            "requires_positive_accepted_contribution_per_agent": { "const": true },
+            "requires_accepted_majority_per_agent": { "const": true },
+            "requires_cold_network_run": { "const": true },
+            "requires_deterministic_gate_passes": { "const": true },
+            "requires_guarded_fallback_disclosure": { "const": true },
+            "requires_source_reference_projection_disclosure": { "const": true },
+            "requires_grounded_causal_artifact_recomputation": { "const": true },
+            "requires_learning_replay_proof": { "const": true }
+          }
+        },
+        "historical_model_validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scope",
+            "evidence_records",
+            "establishes_current_runtime_acceptance"
+          ],
+          "properties": {
+            "scope": { "const": "failed_closed_history_only" },
+            "evidence_records": {
+              "const": [
+                "casepath/releases/model-validation-attempt-20260811-01.json",
+                "casepath/releases/model-validation-attempt-20260811-02.json",
+                "casepath/releases/model-validation-attempt-20260811-03.json",
+                "casepath/releases/model-validation-attempt-20260811-04.json",
+                "casepath/releases/model-validation-attempt-20260811-05.json",
+                "casepath/releases/model-validation-attempt-20260811-06.json",
+                "casepath/releases/model-validation-attempt-20260811-07.json",
+                "casepath/releases/model-validation-attempt-20260811-08.json",
+                "casepath/releases/model-validation-attempt-20260811-09.json",
+                "casepath/releases/model-validation-attempt-20260811-10.json",
+                "casepath/releases/model-validation-attempt-20260811-11.json",
+                "casepath/releases/model-validation-attempt-20260811-12.json",
+                "casepath/releases/model-validation-attempt-20260811-13.json",
+                "casepath/releases/model-validation-attempt-20260811-14.json",
+                "casepath/releases/model-validation-attempt-20260811-15.json",
+                "casepath/releases/model-validation-attempt-20260811-16.json",
+                "casepath/releases/model-validation-attempt-20260811-17.json",
+                "casepath/releases/model-validation-attempt-20260811-18.json",
+                "casepath/releases/model-validation-attempt-20260811-19.json",
+                "casepath/releases/model-validation-attempt-20260811-20.json",
+                "casepath/releases/model-validation-attempt-20260811-21.json",
+                "casepath/releases/model-validation-attempt-20260811-22.json",
+                "casepath/releases/model-validation-attempt-20260811-23.json",
+                "casepath/releases/model-validation-attempt-20260811-24.json"
+              ]
+            },
+            "establishes_current_runtime_acceptance": { "const": false }
+          }
+        },
+        "independent_expert_review": { "const": false },
+        "blind_review_completed": { "const": false },
+        "legal_approval": { "const": false },
+        "operational_validation": { "const": false },
+        "real_claims_approved": { "const": false }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_versions_are_independent", "acceptance_rule"],
+      "properties": {
+        "component_versions_are_independent": { "const": true },
+        "acceptance_rule": { "type": "string", "minLength": 1 }
+      }
+    },
+    "artifact_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "public_disclosure_location",
+        "evaluated_artifact_bytes_contain_disclosure_markers",
+        "artifact_hash_manifest",
+        "source_manifest",
+        "deployment_identity",
+        "scenario_dates"
+      ],
+      "properties": {
+        "public_disclosure_location": { "const": "application shell" },
+        "evaluated_artifact_bytes_contain_disclosure_markers": { "const": false },
+        "artifact_hash_manifest": { "type": "string" },
+        "source_manifest": { "type": "string" },
+        "deployment_identity": { "const": "deployment.json" },
+        "scenario_dates": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["flagship_received_on", "later_photo_on", "later_claim_received_on"],
+          "properties": {
+            "flagship_received_on": { "type": "string", "format": "date" },
+            "later_photo_on": { "type": "string", "format": "date" },
+            "later_claim_received_on": { "type": "string", "format": "date" }
+          }
+        }
+      }
+    },
+    "services": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frontend", "api", "qa"],
+      "properties": {
+        "frontend": { "type": "string", "format": "uri" },
+        "api": { "type": "string", "format": "uri" },
+        "qa": { "type": "string", "format": "uri" }
+      }
+    }
+  },
+  "$defs": {
+    "versionedComponent": {
+      "type": "object",
+      "required": ["version"],
+      "properties": {
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "contract": { "type": "string" },
+        "profile": { "type": "string" },
+        "gate": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

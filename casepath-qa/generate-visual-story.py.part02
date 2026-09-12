@@ -1,0 +1,75 @@
+    elif state=='blocked': fill=CANVAS; outline=QUIET; accent=QUIET
+    rounded(draw, (x, y, x+w, y+h), 11, fill=fill, outline=outline, width=2 if state=='current' else 1)
+    text(draw, (x+14, y+13), title, F['bold_sm'])
+    if law:
+        rounded(draw, (x+w-58, y+9, x+w-34, y+29), 7, fill=BLUE_SOFT, outline=BLUE)
+        text(draw, (x+w-46, y+19), f'§{law}', ImageFont.truetype(BOLD, 8), fill=BLUE, anchor='mm')
+    if evidence:
+        rounded(draw, (x+w-31, y+9, x+w-8, y+29), 7, fill=AMBER_SOFT, outline=AMBER)
+        text(draw, (x+w-19, y+19), str(evidence), ImageFont.truetype(BOLD, 8), fill=AMBER, anchor='mm')
+    return (x, y, x+w, y+h)
+
+
+def scene_claim(frame, t):
+    d = ImageDraw.Draw(frame)
+    stage_header(d, 'A messy claim arrives', 'Messages, PDFs, photos, and disputed facts arrive together.')
+    draw_email_panel(frame, 34, 158, 360, 340, selected=int(t*6)%6 if t<0.9 else None)
+    # problem side
+    x=440
+    text(d, (x, 170), 'Today', F['label'], fill=QUIET)
+    labels=[('Read everything by hand',RED),('Rebuild the process from memory',RED),('Ask for documents without context',RED),('Lessons remain inside one case',RED)]
+    for i,(label,c) in enumerate(labels):
+        yy=202+i*67
+        rounded(d,(x,yy,900,yy+48),12,fill=CANVAS,outline=LINE)
+        rounded(d,(x+14,yy+13,x+36,yy+35),7,fill=RED_SOFT)
+        text(d,(x+25,yy+24),'×',F['bold_sm'],fill=c,anchor='mm')
+        text(d,(x+50,yy+15),label,F['bold_sm'])
+    text(d,(670,487),'Slow · inconsistent · hard to learn from',F['sm'],fill=MUTED,anchor='mm')
+
+
+def scene_workspace(frame, t):
+    d=ImageDraw.Draw(frame)
+    stage_header(d,'CasePath opens one shared claim workspace','The original evidence stays visible while specialists work beside it.')
+    draw_email_panel(frame,34,150,300,345,selected=min(5,int(t*6)))
+    shadow_box(frame,(365,150,926,495),18,BG,LINE,shadow=14)
+    rounded(d,(385,170,906,222),12,fill=CANVAS,outline=LINE)
+    rounded(d,(401,183,427,209),8,fill=RED)
+    text(d,(414,196),'CP',ImageFont.truetype(BOLD,8),fill='white',anchor='mm')
+    text(d,(441,181),'CASEPATH ORCHESTRATOR',F['label'],fill=QUIET)
+    text(d,(441,198),'Build a shared understanding of this claim.',F['bold_sm'])
+    agents=['Read','Understand','Law','Process','Evidence','Experience','Verify']
+    for i,a in enumerate(agents):
+        state='done' if i<int(t*7) else 'active' if i==min(6,int(t*7)) else 'future'
+        agent_chip(d,385+(i%4)*126,245+(i//4)*52,a,state,w=114)
+    # current contribution
+    idx=min(6,int(t*7))
+    contributions=['6 source files preserved','Supported facts separated','Swiss-law questions linked','Handling path accepted','Evidence attached to decisions','3 reviewed cases found','Playbook verified']
+    rounded(d,(385,365,906,468),14,fill=BG,outline=LINE)
+    text(d,(405,385),'LIVE CONTRIBUTION',F['label'],fill=RED)
+    text(d,(405,410),contributions[idx],F['lg'])
+    text(d,(405,442),'Every specialist adds one grounded artifact to the same claim context.',F['xs'],fill=MUTED)
+
+
+def scene_process(frame,t):
+    d=ImageDraw.Draw(frame)
+    stage_header(d,'The handling process takes shape','The graph is the map of the claim—not a report hidden after the run.')
+    draw_email_panel(frame,34,150,245,345,selected=None)
+    x=320; y=148; step=39; node_h=31
+    nodes=[('Claim intake','done'),('Tenant-law scope','done'),('Dispute exists','done'),('Urgency','done'),('Landlord notified','done'),('What caused the mould?','current'),('Responsibility','blocked'),('Remedy','blocked')]
+    visible=max(1,int(lerp(1,len(nodes),ease(t))))
+    boxes=[]
+    for i,(label,state) in enumerate(nodes[:visible]):
+        yy=y+i*step
+        if i>0: line_arrow(d,(425,yy-8),(425,yy-2),fill=LINE,width=2,head=5)
+        boxes.append(process_node(d,x,yy,label,state,w=220,h=node_h))
+    if visible>=6:
+        by=y+5*step-4
+        labels=['Building defect','Use-related','Mixed cause','Insufficient evidence']
+        reveal=max(1,int(lerp(1,4,ease((t-.55)/.45))))
+        d.line((540,by+15,558,by+15),fill=RED,width=2)
+        for j,label in enumerate(labels[:reveal]):
+            yy=by+(j-1)*34
+            line_arrow(d,(558,by+15),(575,yy+15),fill=LINE,width=1,head=4)
+            rounded(d,(575,yy,900,yy+29),9,fill=RED_SOFT if j==3 else BG,outline=RED if j==3 else LINE)
+            text(d,(590,yy+8),label,ImageFont.truetype(BOLD,10),fill=INK)
+    text(d,(738,474),'Current claim: causation unresolved',F['bold_sm'],fill=RED,anchor='mm')

@@ -1,0 +1,75 @@
+    ld.rounded_rectangle((x0+sx, y0+sy, x1+sx, y1+sy), radius=radius, fill=(18, 25, 32, shadow))
+    layer = layer.filter(ImageFilter.GaussianBlur(8))
+    img.alpha_composite(layer)
+    d = ImageDraw.Draw(img)
+    d.rounded_rectangle(box, radius=radius, fill=fill, outline=outline, width=1)
+
+
+def line_arrow(draw, start, end, fill=LINE, width=2, head=7):
+    x0, y0 = start; x1, y1 = end
+    draw.line((x0, y0, x1, y1), fill=fill, width=width)
+    if abs(x1-x0) >= abs(y1-y0):
+        s = 1 if x1 >= x0 else -1
+        draw.polygon([(x1, y1), (x1-s*head, y1-head//2), (x1-s*head, y1+head//2)], fill=fill)
+    else:
+        s = 1 if y1 >= y0 else -1
+        draw.polygon([(x1, y1), (x1-head//2, y1-s*head), (x1+head//2, y1-s*head)], fill=fill)
+
+
+def brand(draw):
+    rounded(draw, (34, 25, 70, 61), radius=10, fill=RED)
+    text(draw, (52, 43), 'CP', F['bold_sm'], fill='white', anchor='mm')
+    text(draw, (82, 43), 'CasePath', F['bold_md'])
+
+
+def stage_header(draw, title: str, subtitle: str = ''):
+    brand(draw)
+    text(draw, (34, 92), title, F['xl'])
+    if subtitle:
+        text(draw, (34, 128), subtitle, F['sm'], fill=MUTED)
+
+
+def draw_email_panel(img, x=34, y=150, w=300, h=345, opacity=255, selected=None):
+    d = ImageDraw.Draw(img)
+    shadow_box(img, (x, y, x+w, y+h), 18, BG, LINE, shadow=14)
+    text(d, (x+20, y+20), 'CUSTOMER SUBMISSION', F['label'], fill=QUIET)
+    text(d, (x+20, y+45), 'Recurring mould after repair', F['bold_md'])
+    text(d, (x+20, y+72), 'From: Elena M.  ·  Basel', F['xs'], fill=MUTED)
+    d.line((x+20, y+94, x+w-20, y+94), fill=LINE, width=1)
+    lines = [
+        'The mould has returned beside the window.',
+        'Management says we do not ventilate enough,',
+        'but the windows were replaced last winter.',
+        'Please help us understand what happens next.'
+    ]
+    for i, s in enumerate(lines):
+        text(d, (x+20, y+112+i*22), s, F['xs'], fill=INK if i < 3 else MUTED)
+    text(d, (x+20, y+213), '6 ATTACHMENTS', F['label'], fill=QUIET)
+    names = [('Lease.pdf','PDF'),('Notice.pdf','PDF'),('Reply.eml','EML'),('Photo.jpg','IMG'),('Timeline.pdf','PDF'),('Delivery.pdf','PDF')]
+    for i, (name, kind) in enumerate(names):
+        yy = y+236+i*16
+        active = selected == i
+        if active:
+            rounded(d, (x+14, yy-3, x+w-14, yy+14), 6, fill=RED_SOFT)
+        rounded(d, (x+20, yy, x+44, yy+12), 3, fill=CANVAS, outline=LINE)
+        text(d, (x+32, yy+6), kind, ImageFont.truetype(BOLD, 7), fill=RED if kind=='PDF' else BLUE, anchor='mm')
+        text(d, (x+54, yy+1), name, ImageFont.truetype(REG, 9), fill=INK)
+    return (x, y, x+w, y+h)
+
+
+def agent_chip(draw, x, y, label, state='future', w=104):
+    fill = BG; outline = LINE; color = MUTED
+    if state == 'active':
+        fill = RED_SOFT; outline = RED; color = RED
+    elif state == 'done':
+        fill = GREEN_SOFT; outline = GREEN; color = GREEN
+    rounded(draw, (x, y, x+w, y+34), 10, fill=fill, outline=outline)
+    dot = '✓' if state == 'done' else '●' if state == 'active' else '○'
+    text(draw, (x+13, y+17), dot, F['xs'], fill=color, anchor='mm')
+    text(draw, (x+28, y+9), label, ImageFont.truetype(BOLD, 9), fill=INK)
+
+
+def process_node(draw, x, y, title, state='future', w=210, h=42, law=0, evidence=0):
+    fill=BG; outline=LINE; accent=MUTED
+    if state=='done': fill=GREEN_SOFT; outline=GREEN; accent=GREEN
+    elif state=='current': fill=RED_SOFT; outline=RED; accent=RED

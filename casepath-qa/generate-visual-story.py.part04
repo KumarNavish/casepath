@@ -1,0 +1,75 @@
+        text(d,(424,yy+2),label.upper(),F['label'],fill=QUIET)
+        text(d,(424,yy+22),value,F['bold_sm'])
+        if i<show-1: d.line((390,yy+33,390,yy+80),fill=LINE,width=2)
+    # toggled evidence status
+    rounded(d,(374,454,889,480),8,fill=AMBER_SOFT,outline=AMBER)
+    text(d,(632,467),'Building-envelope assessment  →  CONDITIONAL',ImageFont.truetype(BOLD,10),fill=AMBER,anchor='mm')
+
+
+def scene_learning(frame,t):
+    d=ImageDraw.Draw(frame)
+    stage_header(d,'CasePath turns validation into organizational memory','A reviewed case is immediate. Shared rules still pass support and regression gates.')
+    # two lanes
+    shadow_box(frame,(40,160,420,440),18,BG,LINE,shadow=12)
+    text(d,(64,185),'AVAILABLE IMMEDIATELY',F['label'],fill=GREEN)
+    text(d,(64,214),'Reviewed claim memory',F['lg'])
+    rounded(d,(64,255,390,315),12,fill=GREEN_SOFT,outline=GREEN)
+    text(d,(84,270),'✓ Expert correction stored',F['bold_sm'],fill=GREEN)
+    text(d,(84,292),'Future agents can retrieve this case.',F['xs'],fill=MUTED)
+    line_arrow(d,(420,300),(500,300),fill=LINE,width=2,head=8)
+    shadow_box(frame,(500,160,920,440),18,BG,LINE,shadow=12)
+    text(d,(524,185),'SHARED ONLY AFTER GATES',F['label'],fill=RED)
+    text(d,(524,214),'Candidate playbook update',F['lg'])
+    gates=['3 / 3 reviewed cases','6 / 6 target tests','12 / 12 protected cases']
+    show=max(1,int(lerp(1,3,ease(t))))
+    for i,g in enumerate(gates[:show]):
+        yy=255+i*48
+        rounded(d,(524,yy,892,yy+34),10,fill=CANVAS,outline=LINE)
+        rounded(d,(536,yy+7,556,yy+27),7,fill=GREEN_SOFT,outline=GREEN)
+        text(d,(546,yy+17),'✓',ImageFont.truetype(BOLD,9),fill=GREEN,anchor='mm')
+        text(d,(568,yy+9),g,F['bold_sm'])
+    p=ease(max(0,(t-.45)/.55))
+    text(d,(610,416),'v3',F['lg'],fill=QUIET,anchor='mm')
+    line_arrow(d,(642,416),(776,416),fill=RED,width=3,head=9)
+    text(d,(816,416),'v4',F['lg'],fill=RED,anchor='mm')
+
+
+def scene_reuse(frame,t):
+    d=ImageDraw.Draw(frame)
+    stage_header(d,'The next claim starts smarter','Reviewed memory and playbook v4 change only the meaningful decision and evidence order.')
+    # new claim left
+    shadow_box(frame,(40,155,318,465),18,BG,LINE,shadow=12)
+    text(d,(62,178),'UNSEEN CLAIM',F['label'],fill=QUIET)
+    text(d,(62,204),'Mould beside replaced window',F['bold_md'])
+    text(d,(62,232),'Management alleges poor ventilation.',F['xs'],fill=MUTED)
+    rounded(d,(62,270,296,316),11,fill=CANVAS,outline=LINE)
+    text(d,(78,283),'Before v4',F['label'],fill=QUIET)
+    text(d,(78,300),'Broad testing requested now',F['bold_sm'])
+    # memory pipeline
+    line_arrow(d,(318,310),(390,310),fill=GREEN,width=3,head=9)
+    rounded(d,(390,270,535,350),14,fill=GREEN_SOFT,outline=GREEN,width=2)
+    text(d,(412,284),'REVIEWED MEMORY',F['label'],fill=GREEN)
+    text(d,(412,307),'BS-017 + playbook v4',F['bold_sm'])
+    text(d,(412,328),'Evidence order validated',F['xs'],fill=MUTED)
+    line_arrow(d,(535,310),(605,310),fill=GREEN,width=3,head=9)
+    # improved result
+    shadow_box(frame,(605,155,920,465),18,BG,LINE,shadow=12)
+    text(d,(629,178),'NEW ORGANIZATIONAL KNOWLEDGE USED',F['label'],fill=GREEN)
+    process_node(d,629,215,'Neutral inspection','done',w=260,h=44)
+    line_arrow(d,(759,259),(759,282),fill=LINE,width=2,head=6)
+    process_node(d,629,286,'Test ventilation allegation','current',w=260,h=48,law=1,evidence=1)
+    line_arrow(d,(759,334),(759,357),fill=LINE,width=2,head=6)
+    rounded(d,(629,362,889,414),12,fill=AMBER_SOFT,outline=AMBER)
+    text(d,(647,374),'Building-envelope assessment',F['bold_sm'])
+    text(d,(647,394),'Conditional—not requested yet',F['xs'],fill=AMBER)
+    text(d,(762,447),'One reviewed claim → better next claim',F['bold_sm'],fill=GREEN,anchor='mm')
+
+
+def scene_outcome(frame,t):
+    d=ImageDraw.Draw(frame)
+    brand(d)
+    text(d,(480,120),'Messy claim',F['xl'],fill=INK,anchor='mm')
+    line_arrow(d,(480,155),(480,195),fill=LINE,width=3,head=9)
+    text(d,(480,226),'Coordinated agents build a grounded playbook',F['xl'],fill=INK,anchor='mm')
+    # core three artifacts
+    xs=[190,480,770]
