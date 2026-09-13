@@ -418,6 +418,7 @@
   const ui = window.CasePathPresentation;
   if (!ui) throw new Error('The claim presentation could not be loaded.');
   const state = {
+    workbenchTab:"overview",viewScroll:{},inspectorOpen:false,overviewLoading:false,overviewQueued:false,overviewSummary:null,
     cursor: null,
     items: [],
     total: 0,
@@ -1224,8 +1225,9 @@
     }
     history.replaceState(history.state,'',url);
     $('#cwClearFilters').hidden=!hasQueueFilters();
-    const selected=$('#cwFailure').value==='true'?'attention':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':!hasQueueFilters()?'all':null;
+    const selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
     root.querySelectorAll('[data-queue-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.queueView===selected)));
+    updateQueueHeading();
   }
   function restoreQueueFilters() {
     const query=new URLSearchParams(location.search);
@@ -1238,13 +1240,16 @@
   }
   function clearQueueFilters() { queueFilterFields.forEach(([,id])=>$(id).value=''); $('#cwSort').value='priority'; saveQueueFilters(); void loadQueue(); }
   function selectQueueView(name) {
-    for(const id of ['#cwState','#cwReadiness','#cwFailure','#cwPendingEvidence','#cwOwner']) $(id).value='';
-    if(name==='evidence') { $('#cwReadiness').value='blocked'; $('#cwPendingEvidence').value='some'; }
-    if(name==='ready') $('#cwReadiness').value='decision_ready';
-    if(name==='attention') $('#cwFailure').value='true';
-    if(name==='unassigned') $('#cwOwner').value='unassigned';
-    saveQueueFilters(); void loadQueue();
+    if(!$('#cwDetail').hidden){closeDetail({fromHistory:true,refresh:false});history.replaceState(null,'',location.pathname+location.search);}
+    for(const [,id] of queueFilterFields) $(id).value='';
+    if(name==='evidence'){$('#cwReadiness').value='blocked';$('#cwPendingEvidence').value='some';}
+    if(name==='ready')$('#cwReadiness').value='decision_ready';
+    if(name==='attention')$('#cwFailure').value='true';
+    if(name==='urgent')$('#cwUrgency').value='high';
+    if(name==='unassigned')$('#cwOwner').value='unassigned';
+    saveQueueFilters();void loadQueue();
   }
+
   function renderRows() {
     const focusedRow=$('#cwTable').contains(document.activeElement) ? document.activeElement.closest('tr[data-claim-id]')?.dataset.claimId : null;
     $('#cwTotal').textContent=state.total.toLocaleString();
@@ -1284,7 +1289,7 @@
         select.replaceChildren(new Option(first,''),...choices.map(v=>new Option(id==='#cwOwner'&&v!=='unassigned'?v:ui.label(v),v)));
         select.value=selected;
       }
-      renderRows(); hydrateOpenPriority(); saveQueueFilters();
+      renderRows(); hydrateOpenPriority(); saveQueueFilters();setAdjacentClaims();void loadWorkspaceOverview();
     } catch(error) {
       if(filterKey!==queryString()){state.queuedLoad={append:false};return;}
       if(state.items.length && state.loadedQuery===filterKey) {
@@ -1320,6 +1325,9 @@
     }
     list.innerHTML = priorityList(priority);
     section.querySelector('[data-priority-status]').hidden = true;
+    const urgency=$('#cpClaimUrgency'),deadline=$('#cpClaimDeadline');
+    if(urgency)urgency.hidden=priority.urgency!=='high';
+    if(deadline){deadline.hidden=!priority.deadline_at;deadline.textContent=priority.deadline_at?'Due '+ui.date(priority.deadline_at):'';}
   }
 
   async function loadOpenPriority(claimId, detailStateSha, context, signal) {
@@ -1489,7 +1497,7 @@
     const pendingAdvance=storedCommandIdentity('advance',id);
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
     return ui.workbench(loop,workspaceState,{
-      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,
+      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,detail:state.detail,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
       change:state.change?.claimId===id?state.change:null,
@@ -1498,16 +1506,19 @@
   }
 
   async function openClaim(claimId) {
+    savePresentation();
+    if($("#cwDetail").hidden)state.queueScrollY=window.scrollY;
     // A click may precede the search debounce. Bind filters to the queue entry
     // before adding the claim entry so Back and reload preserve the same view.
     if ($('#cwDetail').hidden) { clearTimeout(state.filterTimer); saveQueueFilters(); }
-    state.headerObserver?.disconnect();
+    state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     const epoch = ++state.detailEpoch;
     releaseSourcePreview(); state.sourceSelection=null; state.change=null;
     if (claimIdFromLocation() !== claimId) history.pushState({casepathClaim:claimId,casepathFromQueue:true},'',`${location.pathname}${location.search}#claim=${encodeURIComponent(claimId)}`);
     state.mutationBusy = null;
     state.correctionPreview = null;
     state.nativeInvestigation = null;
+    recoverPresentation(claimId);
     state.detailController?.abort();
     const controller = new AbortController();
     state.detailController = controller;
@@ -1549,7 +1560,7 @@
     } catch (error) {
       if (error.name === 'AbortError' || epoch !== state.detailEpoch) return;
       panel.innerHTML = `<div class="cw-error"><h2>Claim unavailable</h2><p>${esc(error.message)}</p><div class="cw-actions"><button class="cw-button" data-retry-claim="${esc(claimId)}">Try again</button><button class="cw-button" data-close-detail>Back to claims</button></div></div>`;
-      panel.querySelector('[data-close-detail]')?.addEventListener('click', closeDetail);
+
       panel.focus();
     }
   }
@@ -1560,7 +1571,7 @@
     const pendingStart = storedCommandIdentity('start', value.claim_id);
     if (pendingStart && !pendingStart.invalid && value.intake_assessment && value.workflow_state === 'in_review') {
       clearCommandIdentity('start', value.claim_id);
-      recoveredCommand = 'Recovered the committed assessment from the authoritative journal after a lost response.';
+      recoveredCommand = 'Your saved review has been recovered.';
     }
     const pendingStartUnresolved = Boolean(pendingStart && !pendingStart.invalid && !(value.intake_assessment && value.workflow_state === 'in_review'));
     let invalidPendingCommand = Boolean(pendingStart?.invalid);
@@ -1574,7 +1585,7 @@
       }
       if (pendingAssignBody && value.owner === pendingAssignBody.owner) {
         clearCommandIdentity('assign', value.claim_id);
-        recoveredCommand = 'Recovered the committed assignment from the authoritative journal after a lost response.';
+        recoveredCommand = 'Your saved handler assignment has been recovered.';
         pendingAssignBody = null;
       }
     }
@@ -1615,13 +1626,14 @@
         </details>` : '';
     const panel=$('#cwDetailPanel');
     const sameClaim=panel.dataset.openClaimId===value.claim_id;
-    const previousScroll=panel.scrollTop;
+    const previousScroll=panel.querySelector(".cp-work-column")?.scrollTop||0;
     const focusedId=document.activeElement?.id;
     const openDetails=sameClaim?[...panel.querySelectorAll('details[open][id]')].map(el=>el.id):[];
     const commandStatus=invalidPendingCommand?'A recovery record could not be verified. Actions are locked; reload the saved claim before continuing.':loopCommandPending?'An action outcome is still being checked. Use the recovery action above; do not create a second request.':pendingAssignBody?'The assignment outcome is unknown. Recovery uses the same saved request.':pendingStartUnresolved?'The assessment outcome is unknown. Recovery uses the same saved request.':'';
     panel.innerHTML=ui.detail(detail,state.loop,{
       commandStatus,
-      workbench:loopWorkbenchMarkup(state.loop,value,{invalid:invalidPendingCommand,pendingStart:pendingStartUnresolved})+assessmentMarkup,
+      workbench:loopWorkbenchMarkup(state.loop,value,{invalid:invalidPendingCommand,pendingStart:pendingStartUnresolved}),
+      technicalMarkup:assessmentMarkup,
       ownerValue:pendingAssignBody?.owner||value.owner||'',
       ownerReadonly:Boolean(pendingAssignBody||invalidPendingCommand||loopCommandPending),
       ownerDisabled:invalidPendingCommand||loopCommandPending,
@@ -1629,7 +1641,7 @@
       priority,priorityMarkup:priority?priorityList(priority):'',
     });
     panel.dataset.openClaimId=value.claim_id;
-    state.headerObserver?.disconnect();
+    state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     const measuredHeader=panel.querySelector('.cw-detail-head');
     const measureHeader=()=>{
       if(measuredHeader?.isConnected && panel.contains(measuredHeader)) panel.style.setProperty('--cw-head-height',`${measuredHeader.getBoundingClientRect().height}px`);
@@ -1638,7 +1650,7 @@
     for(const id of openDetails){const disclosure=panel.querySelector('#'+CSS.escape(id));if(disclosure) disclosure.open=true;}
     if(state.nativeInvestigation) $('#cwEvidenceInvestigationMount').innerHTML=evidenceInvestigationMarkup(state.nativeInvestigation,state.loop);
 
-    root.querySelectorAll('[data-close-detail]').forEach(button => button.addEventListener('click', closeDetail));
+
     $('#cwOwnerForm').addEventListener('submit', event => { event.preventDefault(); void runWorkspaceCommand(assignOwner); });
     $('#cwStart')?.addEventListener('click', () => runWorkspaceCommand(startClaim));
     $('#cwReconcile')?.addEventListener('click', () => runWorkspaceCommand(reconcileClaim));
@@ -1652,8 +1664,9 @@
     if (recoveredCommand) $('#cwCommandStatus').textContent = recoveredCommand;
     if (state.mutationBusy) setLoopMutationBusy(true,'',state.mutationBusy);
     restoreSourceSelection();
-    if (sameClaim) { panel.scrollTop=previousScroll; if(focusedId) panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true}); }
-    else { panel.scrollTop=0; panel.focus({preventScroll:true}); }
+    restoreWorkbenchPresentation();
+    if(sameClaim){$('.cp-work-column').scrollTop=previousScroll;if(focusedId)panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true});}
+    else panel.focus({preventScroll:true});
     if (!priority) void loadOpenPriority(value.claim_id, value.state_sha256, activeDetailContext(), state.detailController?.signal);
   }
 
@@ -1931,7 +1944,7 @@
       outcome:fresh.outcome,
     });
     clearCommandIdentity('advance', loop.claim_id);
-    return {loop:fresh, status};
+    return {loop:fresh,status,baseline,recovered:Boolean(existingPending)};
   }
 
   async function commitLoopObservation() {
@@ -1948,7 +1961,8 @@
       const advance = await advanceClaimLoop(context, loop);
       if (!advance || !isActiveDetail(context)) return;
       ({loop} = advance);
-      state.change = ui.compareLoops(beforeLoop,loop);
+      state.change = ui.advanceChange(beforeLoop,loop,advance.baseline,advance.recovered);
+      if(state.change?.sourceItem)state.sourceSelection={kind:'evidence',id:state.change.sourceItem};
       state.loop = loop;
       await loadQueue();
       if (!isActiveDetail(context)) return;
@@ -1982,7 +1996,7 @@
     const loop = state.loop;
     const candidate = loop.correction_candidates?.[0];
     if (!candidate) return;
-    setLoopMutationBusy(true, 'Verifying the exact source, scope, rollback, and unchanged unrelated facts…', context);
+    setLoopMutationBusy(true, 'Preparing the correction preview…', context);
     try {
       const body = {
         candidate_sha256: candidate.candidate_sha256,
@@ -1994,7 +2008,7 @@
       if (!isActiveDetail(context)) return;
       state.correctionPreview = {claimId:loop.claim_id,value:response};
       renderDetail(state.detail);
-      $('#cwCommandStatus').textContent = 'Correction preview verified. The claim journal is unchanged until explicit confirmation.';
+      $('#cwCommandStatus').textContent='';$('.cp-work-column').scrollTop=0;requestAnimationFrame(()=>$('#cwCorrectionConfirm')?.focus({preventScroll:true}));
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {
@@ -2012,7 +2026,7 @@
     clearCommandIdentity('correction-preview', state.loop.claim_id);
     state.correctionPreview = null;
     renderDetail(state.detail);
-    $('#cwCommandStatus').textContent = 'Correction cancelled. The authoritative claim journal was not changed.';
+    $('#cwCommandStatus').textContent='Current finding kept. Nothing changed.';$('#cwLoopCommit')?.focus({preventScroll:true});
   }
 
   async function applyWorkspaceCorrection() {
@@ -2020,7 +2034,7 @@
     const context = activeDetailContext();
     const loop = state.loop;
     const preview = state.correctionPreview.value;
-    setLoopMutationBusy(true, 'Applying one scoped correction and rerunning six roles and three gates…', context);
+    setLoopMutationBusy(true, 'Applying the correction and updating the claim…', context);
     try {
       const body = {correction_id:preview.correction_id};
       const pending = commandIdentity('correction-apply', loop.claim_id, body);
@@ -2071,7 +2085,7 @@
   async function reconcileClaim() {
     const detail = state.detail;
     const context = activeDetailContext();
-    $('#cwCommandStatus').textContent = 'Reconciling the durable unknown effect…';
+    $('#cwCommandStatus').textContent = 'Checking the saved action outcome…';
     try {
       const body = {expected_revision:detail.state.revision};
       const pending = commandIdentity('reconcile', detail.state.claim_id, body);
@@ -2152,17 +2166,139 @@
     }
   }
 
+  const claimViews=['overview','evidence','process','activity'];
+  const compactWorkbench=matchMedia('(max-width:1100px)');
+  function savePresentation(){
+    if(!state.detail)return;
+    const value={tab:state.workbenchTab||'overview',source:state.sourceSelection||null,scroll:state.viewScroll||{}};
+    try{sessionStorage.setItem('casepath:presentation:'+state.detail.state.claim_id,JSON.stringify(value));}catch(_){/* A blocked preference store never blocks claim work. */}
+  }
+  function recoverPresentation(claimId){
+    let saved={};try{saved=JSON.parse(sessionStorage.getItem('casepath:presentation:'+claimId)||'{}');}catch(_){}
+    const requested=new URLSearchParams(location.hash.slice(1)).get('view');
+    state.workbenchTab=claimViews.includes(requested)?requested:claimViews.includes(saved?.tab)?saved.tab:'overview';
+    state.viewScroll=saved?.scroll&&typeof saved.scroll==='object'?saved.scroll:{};
+    state.sourceSelection=saved?.source&&['evidence','process','artifact'].includes(saved.source.kind)?saved.source:null;
+    state.inspectorOpen=!compactWorkbench.matches;
+  }
+  function setWorkbenchTab(name,{focus=false,remember=true}={}){
+    if(!claimViews.includes(name)||!state.detail)return;
+    const col=$('.cp-work-column');
+    if(state.workbenchTab!==name&&col){state.viewScroll ||= {};state.viewScroll[state.workbenchTab]=col.scrollTop;}
+    state.workbenchTab=name;
+    root.querySelectorAll('[role="tab"][data-workbench-tab]').forEach(button=>{const chosen=button.dataset.workbenchTab===name;button.setAttribute('aria-selected',String(chosen));button.tabIndex=chosen?0:-1;});
+    for(const key of claimViews){const panel=$('#cpPanel-'+key);if(panel)panel.hidden=key!==name;}
+    if(col)col.scrollTop=Number.isFinite(state.viewScroll?.[name])?state.viewScroll[name]:0;
+    if(focus)$('#cpTab-'+name)?.focus({preventScroll:true});
+    if(remember){const url=new URL(location.href);url.hash=new URLSearchParams({claim:state.detail.state.claim_id,...(name!=='overview'?{view:name}:{})}).toString();history.replaceState(history.state,'',url);savePresentation();}
+  }
+  function applyInspectorState(){
+    const panel=$('#cwDetailPanel'),rail=$('.cp-source-rail');if(!rail)return;
+    panel.dataset.inspectorOpen=String(Boolean(state.inspectorOpen));
+    rail.inert=!state.inspectorOpen;
+    const modal=compactWorkbench.matches&&state.inspectorOpen;
+    $('.cp-work-column').inert=Boolean(modal);$('.cp-sidebar').inert=Boolean(modal);
+    if(modal){rail.setAttribute('role','dialog');rail.setAttribute('aria-modal','true');}else{rail.setAttribute('role','complementary');rail.removeAttribute('aria-modal');}
+    root.querySelectorAll('.cp-source-toggle').forEach(b=>b.setAttribute('aria-expanded',String(Boolean(state.inspectorOpen))));
+  }
+  function openInspector({focus=true,toggle=false}={}){
+    if(!state.detail)return;
+    if(toggle&&state.inspectorOpen){closeInspector();return;}
+    if(focus)state.inspectorReturnFocus=document.activeElement;
+    state.inspectorOpen=true;applyInspectorState();
+    if(focus)$('#cwSourceInspector')?.focus({preventScroll:true});
+  }
+  function closeInspector(){state.inspectorOpen=false;applyInspectorState();const target=state.inspectorReturnFocus?.isConnected?state.inspectorReturnFocus:$('.cp-source-toggle');target?.focus({preventScroll:true});}
+  function openTechnical(){const dialog=$('#cpTechnicalDialog');if(!dialog)return;$('#cpTechnicalLoop').innerHTML=ui.technicalLoop(state.loop);dialog.showModal();}
+  function openAssignment(){const dialog=$('#cpOwnerDialog');if(!dialog)return;dialog.showModal();$('#cwOwnerInput')?.focus();}
+  function setAdjacentClaims(){
+    const index=state.items.findIndex(i=>i.claim_id===state.detail?.state.claim_id);
+    root.querySelectorAll('[data-adjacent-claim]').forEach(button=>{const to=index+(button.dataset.adjacentClaim==='previous'?-1:1);button.disabled=index<0||!state.items[to]||Boolean(state.mutationBusy);button.dataset.targetClaim=state.items[to]?.claim_id||'';});
+  }
+  function restoreWorkbenchPresentation(){
+    setWorkbenchTab(state.workbenchTab||'overview',{remember:false});applyInspectorState();setAdjacentClaims();
+    const col=$('.cp-work-column'),id=state.detail.state.claim_id;
+    state.actionObserver?.disconnect();
+    const action=$('#cwLoopWorkbench .cw-button-primary'),jump=$('[data-return-next]');
+    if(action&&jump){state.actionObserver=new IntersectionObserver(entries=>{if(action.isConnected&&col.contains(action))jump.hidden=entries[0]?.isIntersecting!==false;},{root:col,threshold:0.5});state.actionObserver.observe(action);}
+
+    col?.addEventListener('scroll',()=>{if(state.detail?.state.claim_id!==id)return;state.viewScroll ||= {};state.viewScroll[state.workbenchTab||'overview']=col.scrollTop;clearTimeout(state.presentationSaveTimer);state.presentationSaveTimer=setTimeout(savePresentation,120);},{passive:true});
+  }
+  compactWorkbench.addEventListener('change',()=>{if(!state.detail)return;state.inspectorOpen=!compactWorkbench.matches;applyInspectorState();});
+  window.addEventListener('beforeunload',savePresentation);
+  function updateQueueHeading(){
+    const search=$('#cwSearch').value.trim(),selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
+    const names={all:'All claims',urgent:'Urgent claims',evidence:'Waiting for evidence',ready:'Ready for review',attention:'Action issues',unassigned:'Unassigned claims'};
+    const descriptions={all:'All incoming claims, with the next step in view.',urgent:'High-urgency claims to look at first.',evidence:'The current handling path needs more evidence.',ready:'Ready for a separate claim review, not automatic approval.',attention:'Check these action outcomes before continuing.',unassigned:'Choose a handler to take the next step.'};
+    $('#cpQueueTitle').textContent=search?'Search results':names[selected];
+    $('#cpQueueSubtitle').textContent=search?'Matching claims and handlers.':descriptions[selected];
+  }
+  async function loadWorkspaceOverview(){
+    if(state.overviewLoading){state.overviewQueued=true;return;}
+    state.overviewLoading=true;
+    try{
+      let cursor=null,roster=null,rows=[],total=0;
+      for(let pageIndex=0;pageIndex<100;pageIndex++){
+        const query=new URLSearchParams({limit:'100',sort:'priority'});if(cursor)query.set('cursor',cursor);
+        const page=await requireVerifiedResponse(validateQueueResponse(await request('/api/claim-loops/v1/workspace/claims?'+query)));
+        if(roster&&roster!==page.state_roster_sha256)throw new Error('Workspace changed during overview');
+        roster=page.state_roster_sha256;rows=rows.concat(page.items);total=page.total_count;cursor=page.next_cursor;
+        if(!cursor)break;
+      }
+      if(cursor||rows.length!==total||new Set(rows.map(r=>r.claim_id)).size!==total)throw new Error('Incomplete workspace overview');
+      const summary=ui.queueSummary(rows);state.overviewSummary=summary;
+      root.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
+      $('#cpOverviewState').textContent=summary.unassessed?`${summary.unassessed} awaiting review`:'Overview up to date';
+      $('#cpOverviewState').removeAttribute('data-stale');
+      $('#cpActionIssuesSummary').hidden=summary.attention===0;
+    }catch(_){$('#cpOverviewState').textContent=state.overviewSummary?'Overview not refreshed':'Overview unavailable';$('#cpOverviewState').dataset.stale='true';}
+    finally{state.overviewLoading=false;if(state.overviewQueued){state.overviewQueued=false;void loadWorkspaceOverview();}}
+  }
+  function presentationClick(button){
+    if(button.matches('[data-close-detail]')){closeDetail();return true;}
+    if(button.hasAttribute('data-workbench-tab')){setWorkbenchTab(button.dataset.workbenchTab,{focus:button.getAttribute('role')==='tab'});return true;}
+    if(button.hasAttribute('data-open-inspector')){openInspector({toggle:button.matches('.cp-source-toggle')});return true;}
+    if(button.hasAttribute('data-close-inspector')){closeInspector();return true;}
+    if(button.hasAttribute('data-return-next')){const action=$('#cwLoopWorkbench .cw-button-primary');if(action){action.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'});action.focus({preventScroll:true});}return true;}
+    if(button.hasAttribute('data-open-technical')){openTechnical();return true;}
+    if(button.hasAttribute('data-edit-owner')){openAssignment();return true;}
+    if(button.hasAttribute('data-close-dialog')){button.closest('dialog')?.close();return true;}
+    if(button.hasAttribute('data-source-reset-open')){resetSource();return true;}
+    if(button.hasAttribute('data-correct-source')){if(state.loop?.correction_candidates?.[0]?.target_fact_id===button.dataset.correctSource){if(compactWorkbench.matches&&state.inspectorOpen)closeInspector();void previewWorkspaceCorrection();}return true;}
+    if(button.hasAttribute('data-adjacent-claim')){if(button.dataset.targetClaim&&!button.disabled)void openClaim(button.dataset.targetClaim);return true;}
+    return false;
+  }
+  function visibleFocusables(container){return [...container.querySelectorAll('button,input,select,textarea,a[href],summary,[tabindex]')].filter(el=>{
+    if(el.tabIndex<0||el.matches(':disabled')||el.closest('[inert]')||!el.getClientRects().length)return false;
+    for(let p=el.parentElement;p&&p!==container;p=p.parentElement){if(p.tagName==='DETAILS'&&!p.open&&!p.querySelector(':scope>summary')?.contains(el))return false;}
+    return getComputedStyle(el).visibility!=='hidden';
+  });}
+  function workspaceKeyboard(event){
+    if(event.defaultPrevented)return;
+    if(event.key==='/'&&$('#cwDetail').hidden&&!event.target.matches('input,textarea,select,[contenteditable]')){event.preventDefault();$('#cwSearch').focus();return;}
+    if($('#cwDetail').hidden)return;
+    if(root.querySelector('dialog[open]'))return;
+    if(event.key==='Escape'){event.preventDefault();if(compactWorkbench.matches&&state.inspectorOpen)closeInspector();else if($('#cpClaimMenu')?.open)$('#cpClaimMenu').open=false;else closeDetail();return;}
+    if(event.target.matches('[role="tab"]')&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
+      event.preventDefault();const at=claimViews.indexOf(event.target.dataset.workbenchTab),to=event.key==='Home'?0:event.key==='End'?3:(at+(event.key==='ArrowRight'?1:3))%4;setWorkbenchTab(claimViews[to],{focus:true});return;
+    }
+    if(event.key==='Tab'&&compactWorkbench.matches&&state.inspectorOpen){const rail=$('.cp-source-rail'),controls=visibleFocusables(rail),first=controls[0],last=controls.at(-1);if(!controls.includes(document.activeElement)||event.shiftKey&&document.activeElement===first||!event.shiftKey&&document.activeElement===last){event.preventDefault();(event.shiftKey?last:first)?.focus();}}
+  }
+
   function releaseSourcePreview() {
     state.sourceRequest=(state.sourceRequest||0)+1;
     state.sourceController?.abort(); state.sourceController=null;
     if(state.sourceUrl){URL.revokeObjectURL(state.sourceUrl);state.sourceUrl=null;}
   }
   function focusSource(focus=true) {
-    const inspector=$('#cwSourceInspector'); if(!inspector) return;
-    $('.cw-source-rail').scrollTop=0;
-    if(focus){if(matchMedia('(max-width:760px)').matches) inspector.scrollIntoView({block:'start'});inspector.focus({preventScroll:true});}
+    const inspector=$('#cwSourceInspector');if(!inspector)return;
+    if(focus)openInspector({focus:true});
+    $('.cp-source-rail').scrollTop=0;
     root.querySelectorAll('[data-source-reset]').forEach(b=>b.hidden=!state.sourceSelection);
+    root.querySelectorAll('[data-evidence-source]').forEach(b=>b.classList.toggle('cp-source-selected',state.sourceSelection?.kind==='evidence'&&b.dataset.evidenceSource===state.sourceSelection.id));
+    if(focus)savePresentation();
   }
+
   function resetSource(focus=true) {
     releaseSourcePreview(); state.sourceSelection=null;
     if(!state.detail || !$('#cwSourceContent')) return;
@@ -2193,7 +2329,7 @@
     releaseSourcePreview();state.sourceSelection={kind:'artifact',index};
     const ticket=state.sourceRequest, claimId=detail.state.claim_id;
     const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
-    $('#cwSourceHeading').textContent=artifact.file_name;
+    $('#cwSourceHeading').textContent=ui.fileTitle(artifact);
     $('#cwSourceContent').innerHTML='<p class="cw-source-loading" role="status">Loading and verifying the original file…</p>';
     focusSource(focus);
     const controller=new AbortController();state.sourceController=controller;
@@ -2234,7 +2370,10 @@
     else if(selection?.kind==='artifact') void showSourceArtifact(selection.index,false);
   }
   function handleWorkspaceClick(event) {
-    const button=event.target.closest('button,a');if(!button) return;
+    const button=event.target.closest('button,a');if(!button)return;
+    const menu=button.closest('.cp-actions-menu');if(menu)menu.open=false;
+    if(presentationClick(button))return;
+    const picker=button.closest('.cp-file-picker');if(picker)picker.open=false;
     if(button.matches('[data-clear-filters]')) clearQueueFilters();
     if(button.matches('[data-retry-queue]')) void loadQueue();
     if(button.dataset.queueView) selectQueueView(button.dataset.queueView);
@@ -2242,9 +2381,9 @@
     if(button.dataset.processNode) showProcessSource(button.dataset.processNode);
     if(button.hasAttribute('data-source-artifact')) void showSourceArtifact(Number(button.dataset.sourceArtifact));
     if(button.hasAttribute('data-source-reset')) resetSource();
-    if(button.hasAttribute('data-show-investigation')) { const section=$('#cwSavedInvestigation'); if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});} }
+    if(button.hasAttribute('data-show-investigation')){setWorkbenchTab('activity');const section=$('#cwSavedInvestigation');if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});}}
     if(button.id==='cwClearFilters') clearQueueFilters();
-    if(button.hasAttribute('data-show-evidence')) {const section=$('#cwEvidenceClasses');section?.scrollIntoView({block:'start'});section?.setAttribute('tabindex','-1');section?.focus({preventScroll:true});}
+    if(button.hasAttribute('data-show-evidence'))setWorkbenchTab('evidence',{focus:true});
     if(button.hasAttribute('data-dismiss-change')) {state.change=null;$('#cwReplanDelta')?.remove();$('#cwLoopWorkbench')?.setAttribute('tabindex','-1');$('#cwLoopWorkbench')?.focus({preventScroll:true});}
     if(button.hasAttribute('data-refresh-claim')) void refreshOpen().catch(error=>{if($('#cwCommandStatus')) $('#cwCommandStatus').textContent='Could not refresh this claim. '+error.message;});
     if(button.dataset.retryClaim) void openClaim(button.dataset.retryClaim);
@@ -2268,9 +2407,10 @@
     $('#cwCommandStatus').textContent='Showing the latest saved claim record.';
   }
 
-  function closeDetail({fromHistory=false} = {}) {
+  function closeDetail({fromHistory=false,refresh=true} = {}) {
+    savePresentation();$(".cp-sidebar").inert=false;
     state.queueFocusReturn=state.returnClaimId;
-    state.headerObserver?.disconnect();
+    state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     releaseSourcePreview(); state.sourceSelection=null; state.change=null;
     state.detailEpoch += 1;
     state.mutationBusy = null;
@@ -2292,20 +2432,19 @@
     (currentRow || (state.returnFocus?.isConnected ? state.returnFocus : null))?.focus?.();
     state.returnFocus = null;
     state.returnClaimId = null;
-    void loadQueue();
+    window.scrollTo({top:state.queueScrollY||0,behavior:"instant"});
+    if(refresh)void loadQueue();
   }
 
   function claimIdFromLocation() {
-    const match = location.hash.match(/^#claim=([^&]+)$/);
-    if (!match) return null;
-    try { return decodeURIComponent(match[1]); }
-    catch (_) { return null; }
+    const query=new URLSearchParams(location.hash.slice(1));
+    const claim=query.get('claim');return claim||null;
   }
 
   function syncClaimFromLocation() {
     const claimId = claimIdFromLocation();
     if (claimId) {
-      if (!$('#cwDetail').hidden && state.returnClaimId === claimId) return;
+      if(!$('#cwDetail').hidden&&state.returnClaimId===claimId){const view=new URLSearchParams(location.hash.slice(1)).get('view')||'overview';if(view!==state.workbenchTab)setWorkbenchTab(view,{remember:false});return;}
       void openClaim(claimId);
       return;
     }
@@ -2318,41 +2457,8 @@
   root.addEventListener('click',handleWorkspaceClick);
   $('#cwRefresh').addEventListener('click', () => loadQueue());
   $('#cwMore').addEventListener('click', () => loadQueue({append:true}));
-  root.querySelector('[data-close-detail]').addEventListener('click', closeDetail);
-  document.addEventListener('keydown', event => {
-    if ($('#cwDetail').hidden || event.defaultPrevented) return;
-    if (event.key === 'Escape') { closeDetail(); return; }
-    if (event.key !== 'Tab') return;
-    const panel = $('#cwDetailPanel');
-    // Collapsed evidence sections and hidden controls must not become trap endpoints.
-    const focusable = [...panel.querySelectorAll('button,input,select,textarea,a[href],summary,[tabindex],[contenteditable="true"]')].filter(control => {
-      // Chromium may report rectangles for content inside closed details.
-      for (let parent = control.parentElement; parent && parent !== panel; parent = parent.parentElement) {
-        if (parent.tagName === 'DETAILS' && !parent.open) {
-          const summary = [...parent.children].find(child => child.tagName === 'SUMMARY');
-          if (!summary?.contains(control)) return false;
-        }
-      }
-      const style = getComputedStyle(control);
-      return control.tabIndex >= 0
-        && !control.matches(':disabled')
-        && !control.closest('[inert]')
-        && control.getClientRects().length > 0
-        && style.visibility !== 'hidden'
-        && style.visibility !== 'collapse';
-    });
-    if (!focusable.length) { event.preventDefault(); panel.focus(); return; }
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (!focusable.includes(document.activeElement)) {
-      event.preventDefault();
-      (event.shiftKey ? last : first).focus();
-    } else if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault(); last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault(); first.focus();
-    }
-  });
+
+  document.addEventListener('keydown',workspaceKeyboard);
 
   window.addEventListener('hashchange', syncClaimFromLocation);
   window.addEventListener('popstate',()=>{restoreQueueFilters();syncClaimFromLocation();void loadQueue();});

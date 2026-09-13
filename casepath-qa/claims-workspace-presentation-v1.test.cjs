@@ -60,7 +60,7 @@ test('queue activation is confined to queue rows, not the claim panel',()=>{
 });
 test('scrollable source text remains reachable by keyboard',()=>{
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/claims-workspace-presentation-v1.js'),'utf8');
- assert.match(source,/class="cw-message" tabindex="0"/);
+ assert.match(source,/class="cw-message(?: [^"]+)?" tabindex="0"/);
 });
 test('PDFs open the verified original instead of an unusable sandboxed plug-in',()=>{
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');

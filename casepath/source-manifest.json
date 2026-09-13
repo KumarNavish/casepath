@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 568,
+  "file_count": 570,
   "files": [
     {
       "executable": false,
@@ -2693,8 +2693,8 @@
     {
       "executable": false,
       "path": "casepath-qa/claims-workspace-presentation-v1.test.cjs",
-      "sha256": "56361f41b7708408740adb6e215453fce2ede86e2dd20ec90964b3826e058579",
-      "size_bytes": 5634
+      "sha256": "9a7680e601f59eecd60eebc4df5d81ebb848fae7508c09fdc24ca2ec44a85e17",
+      "size_bytes": 5645
     },
     {
       "executable": false,
@@ -2803,6 +2803,12 @@
       "path": "casepath-qa/patch_browser_assertion.py",
       "sha256": "574a3a317ba93fd0cedefd980b00386588f34f5850bcd9e2f5f483a53ebc937c",
       "size_bytes": 1332
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/premium-presentation-v1.test.cjs",
+      "sha256": "89a20530028e129ad151d58392570ad1b4065791c38fed8b58df59552f6f8e96",
+      "size_bytes": 6188
     },
     {
       "executable": false,
@@ -2933,26 +2939,26 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.css",
-      "sha256": "15568e07ce7a8446c009a3bcfff0e37e4f718701ab39ef3fa857576b28b94016",
-      "size_bytes": 21965
+      "sha256": "29baf00147759afe701a920f2b695be146c8810ddef3ea6f0930ca1e29c1fead",
+      "size_bytes": 37221
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.js",
-      "sha256": "6115928e189fa4a8b1e7e4a46a4ef3a38c5e8e304750605c56aa5a51f4f74e38",
-      "size_bytes": 36400
+      "sha256": "b0591ae1e47a60d743ad6ab02064b8f50e651bd2b054c550629f64b5eb9f8558",
+      "size_bytes": 45732
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.css",
-      "sha256": "d210f3499f9fec1b3ca2fe8f1dca5a9f348e44e1f2f72d8a918f9fb022ec903d",
-      "size_bytes": 23171
+      "sha256": "dca3a81b6a87691bb20f39d8838fb896d1dd103d31fbad85efd032de9d116974",
+      "size_bytes": 3285
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.js",
-      "sha256": "112c9796bf518b859d5fa5912890885e84c69b45594d25d4d1fa00b333661273",
-      "size_bytes": 154251
+      "sha256": "1bfbc2ba56ff3a04e50bf85b84ca442c1771ba4b951cf7e148f7d7cc5e95aa70",
+      "size_bytes": 164819
     },
     {
       "executable": false,
@@ -3173,7 +3179,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "159aefd8eedddbcb5225820d5c3e0b3311f66f4c1f3c4ad244db95e4ff1976e0",
+      "sha256": "0489d00f8d4dcc2d091d8d8df1c9d3f3fc083c5efa253eafc7f694ce21e4bd23",
       "size_bytes": 23099
     },
     {
@@ -3427,6 +3433,12 @@
       "path": "docs/HANDOFF_VALIDATION.md",
       "sha256": "3ca6f60763628a5d7321eb1533354ffd28c6003974016100ef55b2711c7cf579",
       "size_bytes": 6331
+    },
+    {
+      "executable": false,
+      "path": "docs/PREMIUM_WORKSPACE.md",
+      "sha256": "c974e5b7ee9beb84ca26e662cf84a684b3dcf76e6a594eb46bda46d3974f15f3",
+      "size_bytes": 2118
     },
     {
       "executable": false,
