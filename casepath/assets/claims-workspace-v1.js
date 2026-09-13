@@ -2346,12 +2346,12 @@
       if(!current()) return;
       const media=artifact.media_type.split(';')[0].trim().toLowerCase();
       let content='';
-      if(media.startsWith('text/')||media==='application/json') {
+      if(media.startsWith('text/')||media==='application/json'||media==='message/rfc822') {
         let text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);
         if(media==='application/json') {
           try {const value=JSON.parse(text);if(typeof value.body==='string') text=(value.subject?value.subject+'\n\n':'')+value.body;} catch(_) { /* Preserve source text when it is not a message object. */ }
         }
-        content=`<div class="cw-message" tabindex="0" role="region" aria-label="Source text">${esc(text)}</div>`;
+        content=ui.textSourceMarkup(text,media);
       } else if(['image/png','image/jpeg','image/gif','image/webp','application/pdf'].includes(media)) {
         state.sourceUrl=URL.createObjectURL(new Blob([bytes],{type:media}));
         content=media==='application/pdf'?`<div class="cw-pdf-open"><p>This is the original PDF, with its pages and formatting preserved.</p><a class="cw-button cw-button-primary" href="${esc(url.href)}" target="_blank" rel="noopener noreferrer" data-open-original-pdf>Open full PDF ${ui.icon('next')}</a><p class="cw-note">Opens in a separate tab. This claim stays open here.</p></div>`:`<img class="cw-document-preview" alt="${esc(artifact.file_name)}" src="${esc(state.sourceUrl)}">`;
