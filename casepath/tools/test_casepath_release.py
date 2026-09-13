@@ -284,18 +284,28 @@ def test_local_real_nemotron_acceptance_is_explicit_fresh_and_single_pass() -> N
     assert "graph replay is not visibly labelled as returned work" in browser_gate
 
 
-def test_sites_delivery_is_same_origin_and_streaming_proxy_safe() -> None:
+def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, monkeypatch) -> None:
     worker = (
         release_tool.REPOSITORY / "casepath" / "tools" / "sites_worker.mjs"
     ).read_text(encoding="utf-8")
     builder = (
         release_tool.REPOSITORY / "casepath" / "tools" / "build_sites_site.py"
     ).read_text(encoding="utf-8")
-    hosting = release_tool.load_json(
-        release_tool.REPOSITORY / ".openai" / "hosting.json"
-    )
-
-    assert hosting["project_id"] == "appgprj_6a7f8320f8388191ba2caf9b1bbbeebb"
+    # This standalone repository has no hosting installation. Validate the
+    # bundle in a temporary local fixture without inventing a deployment target.
+    import build_sites_site as sites
+    import build_static_site as static
+    public = tmp_path / "casepath-public"
+    monkeypatch.setattr(static, "DEFAULT_OUTPUT", public)
+    static.build_static_site(public, {})
+    monkeypatch.setattr(sites, "REPOSITORY", tmp_path)
+    monkeypatch.setattr(sites, "PUBLIC_ROOT", public)
+    monkeypatch.setattr(sites, "OUTPUT_ROOT", tmp_path / "dist")
+    sites.build()
+    assert (tmp_path / "dist/server/index.js").read_text() == worker
+    assert sites.API_CONFIGURATION in (tmp_path / "dist/client/index.html").read_text()
+    assert static.inventory(tmp_path / "dist/client")[0] == static.PUBLIC_INVENTORY
+    assert not (tmp_path / ".openai").exists()
     assert "https://casepath-agentic-api.onrender.com" in worker
     assert 'pathname.startsWith("/api/")' in worker
     assert '"/healthz"' in worker and '"/readyz"' in worker

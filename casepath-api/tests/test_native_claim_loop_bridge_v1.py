@@ -570,11 +570,10 @@ if (!qualified.includes('fallible proposal')) process.exit(5);
     subprocess.run(["node", "-e", node_program], check=True)
     source = script.read_text(encoding="utf-8")
     assert "Verified: 6 roles · 3 gates · zero provider calls." not in source
-    assert "Provisional-plan coverage receipt" in source
-    assert "Fallible proposed follow-up · no dispatch" in source
-    assert "does not certify that the customer goal is fulfilled" in source
-    assert "This source-relative inquiry remains provisional" in source
-    assert "proposedAction?.enabled ? 'Proposed next step'" in source
+    # Presentation placement is not authority. Exercise the actual renderer,
+    # including visible follow-up contents, retired requests, escaping and scope.
+    renderer_test = Path(__file__).parents[2] / "casepath-qa" / "native-proposal-presentation-v1.test.cjs"
+    subprocess.run(["node", "--test", str(renderer_test)], check=True)
 
 
 def test_r56_joint_arrival_runs_real_six_role_cycle_and_preserves_each_source(

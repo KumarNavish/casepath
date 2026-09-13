@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 563,
+  "file_count": 568,
   "files": [
     {
       "executable": false,
@@ -2477,8 +2477,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_native_claim_loop_bridge_v1.py",
-      "sha256": "19d68cf2f47a624551396e80c3f89c4ce1355a5ec655ed42d05b2299a3e876d5",
-      "size_bytes": 62942
+      "sha256": "892497edae0bf150fe45f416a4501370ec6e278d66aa04cf1b87cd01e4bbd69b",
+      "size_bytes": 62938
     },
     {
       "executable": false,
@@ -2692,6 +2692,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-qa/claims-workspace-presentation-v1.test.cjs",
+      "sha256": "56361f41b7708408740adb6e215453fce2ede86e2dd20ec90964b3826e058579",
+      "size_bytes": 5634
+    },
+    {
+      "executable": false,
       "path": "casepath-qa/claims-workspace-state-hash-v1.test.cjs",
       "sha256": "96a6f8e4449042dcc78790662daa9cc8e711726f525a125196b8ce072572c520",
       "size_bytes": 2955
@@ -2773,6 +2779,12 @@
       "path": "casepath-qa/independent-claim-loop-replay-v1.mjs",
       "sha256": "29b4e32e12c348471a00809222825a9ec5803483a851a008e0aed4a4077834a0",
       "size_bytes": 85462
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/native-proposal-presentation-v1.test.cjs",
+      "sha256": "a9be66063b30a391f4863f89166ac50e9c03476a1510b15c314a956135e752dc",
+      "size_bytes": 3309
     },
     {
       "executable": false,
@@ -2920,6 +2932,18 @@
     },
     {
       "executable": false,
+      "path": "casepath/assets/claims-workspace-presentation-v1.css",
+      "sha256": "15568e07ce7a8446c009a3bcfff0e37e4f718701ab39ef3fa857576b28b94016",
+      "size_bytes": 21965
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/claims-workspace-presentation-v1.js",
+      "sha256": "6115928e189fa4a8b1e7e4a46a4ef3a38c5e8e304750605c56aa5a51f4f74e38",
+      "size_bytes": 36400
+    },
+    {
+      "executable": false,
       "path": "casepath/assets/claims-workspace-v1.css",
       "sha256": "d210f3499f9fec1b3ca2fe8f1dca5a9f348e44e1f2f72d8a918f9fb022ec903d",
       "size_bytes": 23171
@@ -2927,8 +2951,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.js",
-      "sha256": "d2373524d81f554430d9f60df67451c014760462395b01e699a77e58c66e8484",
-      "size_bytes": 164133
+      "sha256": "112c9796bf518b859d5fa5912890885e84c69b45594d25d4d1fa00b333661273",
+      "size_bytes": 154251
     },
     {
       "executable": false,
@@ -3149,8 +3173,8 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "339491e8ef273e4b9126fa8c07ddfca3b6aaded02883dcb2b01f18c35af6fdb3",
-      "size_bytes": 22809
+      "sha256": "159aefd8eedddbcb5225820d5c3e0b3311f66f4c1f3c4ad244db95e4ff1976e0",
+      "size_bytes": 23099
     },
     {
       "executable": false,
@@ -3341,8 +3365,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "98e2972f9163eb5f16381b0ac3dbd3c16f4ba50d470e4187af66e4de1969cb39",
-      "size_bytes": 9638
+      "sha256": "81997b62ef573a889c7ab28776205eb10a167bf49052067f1ea3c8283587f1d5",
+      "size_bytes": 9840
     },
     {
       "executable": false,
@@ -3365,14 +3389,14 @@
     {
       "executable": false,
       "path": "casepath/tools/test_build_deployment_identity.py",
-      "sha256": "384871415cd41f02e19ac25d2ea34af63c062a4930b26b4065217e8b6093d0b4",
-      "size_bytes": 9012
+      "sha256": "c6a922228cb467877e41ecf967094650735746a871d2506726fd91b130bfadce",
+      "size_bytes": 9126
     },
     {
       "executable": false,
       "path": "casepath/tools/test_casepath_release.py",
-      "sha256": "290402b54847db972d5a5dc96dd990557a53ebd66c44684c0807d6ae9724b7bf",
-      "size_bytes": 426524
+      "sha256": "4c9d3303c767abda19a16e97177684d2eb12e1324884a818afd466d7754f43d5",
+      "size_bytes": 427219
     },
     {
       "executable": false,
@@ -3415,6 +3439,12 @@
       "path": "docs/README.md",
       "sha256": "efd6736e17bf96742e5a559915961039c5b545063ac8d8be5101bfad8e8f0214",
       "size_bytes": 1257
+    },
+    {
+      "executable": false,
+      "path": "docs/UI_UX_RELEASE.md",
+      "sha256": "ea3f3b039adffcb008ad22e0c8531d2e10a13e2481f04f791f255024fdbf1747",
+      "size_bytes": 3763
     },
     {
       "executable": false,

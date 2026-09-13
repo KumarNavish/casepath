@@ -415,6 +415,8 @@
   document.documentElement.dataset.claimsWorkspace = 'true';
 
   const api = location.origin;
+  const ui = window.CasePathPresentation;
+  if (!ui) throw new Error('The claim presentation could not be loaded.');
   const state = {
     cursor: null,
     items: [],
@@ -432,6 +434,7 @@
     mutationBusy: null,
     correctionPreview: null,
     nativeInvestigation: null,
+    change: null, sourceSelection: null, sourceRequest: 0, sourceUrl: null, sourceController: null, loadedQuery: null,
   };
   const EXPECTED_AGENT_IDS = ['canonical_facts','orchestrator_plan','document_source_integrity','process_decision_mapping','evidence_checklist','final_claim_brief_audit'];
   const EXPECTED_GATE_IDS = ['deterministic_process_gate','deterministic_evidence_gate','whole_playbook_gate'];
@@ -440,42 +443,7 @@
 
   const root = document.createElement('div');
   root.id = 'claimsWorkspace';
-  root.innerHTML = `
-    <div class="cw-shell">
-      <header class="cw-topbar">
-        <div class="cw-brand"><span class="cw-mark">CP</span><span>CasePath</span></div>
-        <div class="cw-topbar-title"><strong>Claims workspace</strong><span>Journal-backed readiness and the safest next action</span></div>
-        <button class="cw-button" id="cwRefresh" type="button">Refresh</button>
-      </header>
-      <main class="cw-main">
-        <section class="cw-hero">
-          <div><p class="cw-eyebrow">Active work</p><h1>Know what blocks every claim.</h1><p>Open the source record, see the honest readiness state, and take only a bounded, replayable action. Unknown values stay unknown until evidence supports them.</p></div>
-          <div class="cw-summary"><strong id="cwTotal">—</strong><span>claims in view</span></div>
-        </section>
-        <section class="cw-filter-card" aria-label="Claims filters">
-          <form class="cw-filters" id="cwFilters">
-            <div class="cw-field"><label for="cwSearch">Search</label><input id="cwSearch" type="search" placeholder="Claim ID, subject, or owner" autocomplete="off"></div>
-            <div class="cw-field"><label for="cwState">State</label><select id="cwState"><option value="">All states</option><option value="received">Received</option><option value="in_review">In review</option><option value="waiting">Waiting</option><option value="waiting_for_evidence">Waiting for evidence</option><option value="dispatching">Dispatching</option><option value="decision_ready">Decision ready</option><option value="safe_abstention">Safe abstention</option><option value="failed">Failed</option></select></div>
-            <div class="cw-field"><label for="cwReadiness">Readiness</label><select id="cwReadiness"><option value="">All readiness</option><option value="not_assessed">Not assessed</option><option value="blocked">Blocked</option><option value="decision_ready">Decision ready</option><option value="safe_abstention">Safe abstention</option></select></div>
-            <div class="cw-field"><label for="cwSort">Sort</label><select id="cwSort"><option value="priority">Explainable priority</option><option value="urgency">Urgency</option><option value="oldest_waiting">Oldest waiting</option><option value="nearest_deadline">Nearest deadline</option><option value="most_decision_ready">Most decision-ready</option><option value="latest_update">Latest update</option></select></div>
-            <details class="cw-advanced-filters"><summary>More filters</summary><div class="cw-advanced-filter-grid">
-              <div class="cw-field"><label for="cwClaimType">Claim type</label><select id="cwClaimType"><option value="">All claim types</option><option value="unclassified_intake">Unclassified intake</option></select></div>
-              <div class="cw-field"><label for="cwOwner">Owner</label><select id="cwOwner"><option value="">All owners</option><option value="unassigned">Unassigned</option></select></div>
-              <div class="cw-field"><label for="cwUrgency">Urgency</label><select id="cwUrgency"><option value="">All urgency</option><option value="high">High</option><option value="elevated">Elevated</option><option value="normal">Normal</option></select></div>
-              <div class="cw-field"><label for="cwFailure">Effects</label><select id="cwFailure"><option value="">All effect states</option><option value="true">Failed or unknown</option><option value="false">No unknown effect</option></select></div>
-              <div class="cw-field"><label for="cwPendingEvidence">Pending evidence</label><select id="cwPendingEvidence"><option value="">All evidence states</option><option value="unknown">Not assessed</option><option value="none">None pending</option><option value="some">Evidence pending</option></select></div>
-            </div></details>
-          </form>
-        </section>
-        <section class="cw-table-card" aria-live="polite">
-          <div id="cwTable"></div>
-          <div class="cw-table-foot"><span id="cwPageStatus">Loading claims…</span><button class="cw-button" id="cwMore" type="button" hidden>Load more</button></div>
-        </section>
-      </main>
-    </div>
-    <section class="cw-detail" id="cwDetail" hidden aria-label="Claim workbench" aria-modal="true" role="dialog">
-      <div class="cw-detail-scrim" data-close-detail></div><article class="cw-detail-panel" id="cwDetailPanel" tabindex="-1"></article>
-    </section>`;
+  root.innerHTML = ui.shell();
   document.body.appendChild(root);
 
   const $ = selector => root.querySelector(selector);
@@ -1246,62 +1214,90 @@
     return `<div class="cw-progress" data-progress-percent="${percent}" role="progressbar" aria-label="Evidence readiness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><span style="width:${percent}%"></span></div><small class="cw-progress-copy">${esc(detail)}</small>`;
   }
 
+  const queueFilterFields = [['q','#cwSearch'],['state','#cwState'],['readiness','#cwReadiness'],['claim_type','#cwClaimType'],['owner','#cwOwner'],['urgency','#cwUrgency'],['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence']];
+  function hasQueueFilters() { return queueFilterFields.some(([,id])=>$(id).value.trim()); }
+  function saveQueueFilters() {
+    const url=new URL(location.href);
+    for(const [key,id] of [...queueFilterFields,['sort','#cwSort']]) {
+      const value=$(id).value.trim();
+      if(value && !(key==='sort'&&value==='priority')) url.searchParams.set(key,value); else url.searchParams.delete(key);
+    }
+    history.replaceState(history.state,'',url);
+    $('#cwClearFilters').hidden=!hasQueueFilters();
+    const selected=$('#cwFailure').value==='true'?'attention':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':!hasQueueFilters()?'all':null;
+    root.querySelectorAll('[data-queue-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.queueView===selected)));
+  }
+  function restoreQueueFilters() {
+    const query=new URLSearchParams(location.search);
+    for(const [key,id] of [...queueFilterFields,['sort','#cwSort']]) {
+      const value=query.get(key)||(key==='sort'?'priority':''); const input=$(id);
+      if(input.tagName==='SELECT' && value && !Array.from(input.options).some(o=>o.value===value)) input.add(new Option(ui.label(value),value));
+      input.value=value;
+    }
+    saveQueueFilters();
+  }
+  function clearQueueFilters() { queueFilterFields.forEach(([,id])=>$(id).value=''); $('#cwSort').value='priority'; saveQueueFilters(); void loadQueue(); }
+  function selectQueueView(name) {
+    for(const id of ['#cwState','#cwReadiness','#cwFailure','#cwPendingEvidence','#cwOwner']) $(id).value='';
+    if(name==='evidence') { $('#cwReadiness').value='blocked'; $('#cwPendingEvidence').value='some'; }
+    if(name==='ready') $('#cwReadiness').value='decision_ready';
+    if(name==='attention') $('#cwFailure').value='true';
+    if(name==='unassigned') $('#cwOwner').value='unassigned';
+    saveQueueFilters(); void loadQueue();
+  }
   function renderRows() {
-    $('#cwTotal').textContent = state.total.toLocaleString();
-    $('#cwPageStatus').textContent = state.items.length ? `Showing ${state.items.length} of ${state.total}` : 'No claims match these filters';
-    $('#cwMore').hidden = !state.cursor;
-    if (!state.items.length) {
-      $('#cwTable').innerHTML = `<div class="cw-empty"><h2>${state.total === 0 ? 'Seed the local workspace' : 'No matching claims'}</h2><p>${state.total === 0 ? 'The authoritative journal is empty. Import the bundled public-safe synthetic claims once, then refresh.' : 'Adjust a filter or search term. No authoritative state was changed.'}</p>${state.total === 0 ? '<code>./bin/casepath seed --corpus synthetic-dev-60</code>' : ''}</div>`;
+    const focusedRow=$('#cwTable').contains(document.activeElement) ? document.activeElement.closest('tr[data-claim-id]')?.dataset.claimId : null;
+    $('#cwTotal').textContent=state.total.toLocaleString();
+    $('#cwPageStatus').textContent=state.items.length?`Showing ${state.items.length} of ${state.total} claims`:'No claims in this view';
+    $('#cwMore').hidden=!state.cursor;
+    if(!state.items.length) {
+      const filtered=hasQueueFilters();
+      $('#cwTable').innerHTML=`<div class="cw-empty"><h2>${filtered?'No matching claims':'No claims yet'}</h2><p>${filtered?'Try a different search or clear your filters. Your claims have not changed.':'No claim records are present in this workspace.'}</p><div class="cw-actions"><button type="button" class="cw-button" ${filtered?'data-clear-filters':'data-retry-queue'}>${filtered?'Clear filters':'Refresh workspace'}</button></div>${filtered?'':'<details><summary>Development setup</summary><code>./bin/casepath seed --corpus synthetic-dev-60</code></details>'}</div>`;
       return;
     }
-    $('#cwTable').innerHTML = `<div class="cw-table-scroll"><table class="cw-table"><thead><tr><th>Claim</th><th>Handler</th><th>Time</th><th>State</th><th>Evidence and blocker</th><th>Next safe action</th><th>Updated</th></tr></thead><tbody>${state.items.map(item => `
-      <tr tabindex="0" data-claim-id="${esc(item.claim_id)}" aria-label="Open ${esc(item.claim_id)}">
-        <td class="cw-claim-cell"><strong>${esc(item.subject)}</strong><span>${esc(item.claim_id)}</span></td>
-        <td data-label="Handler"><strong>${esc(item.owner || 'Unassigned')}</strong><small>${esc(item.received_age_days)} days open</small></td>
-        <td data-label="Time"><strong>${esc(item.deadline_at ? stamp(item.deadline_at) : 'No declared deadline')}</strong><small>${esc(label(item.urgency))} urgency</small></td>
-        <td data-label="State"><span class="cw-pill" data-tone="${tone(item)}">${esc(item.operational_projection.readiness_scope === 'provisional_plan' && item.readiness_state === 'decision_ready' ? 'Provisional plan covered' : label(item.readiness_state))}</span><small>${esc(item.operational_projection.readiness_scope === 'provisional_plan' && item.workflow_state === 'decision_ready' ? 'Inner cycle complete' : label(item.workflow_state))}</small>${item.failure_or_unknown_effect ? '<span class="cw-effect-warning">Unknown effect</span>' : item.operational_projection.readiness_scope === 'provisional_plan' ? '' : '<span class="cw-effect-clear">Effect known</span>'}</td>
-        <td data-label="Evidence"><strong>${item.pending_evidence_count == null ? 'Not assessed' : `${esc(item.pending_evidence_count)} current mandatory`}</strong>${evidenceProgressMarkup(item.operational_projection, {compact:true})}<small>${esc(item.principal_blocker)}</small></td>
-        <td data-label="Next action"><strong>${esc(item.next_safe_action)}</strong></td>
-        <td data-label="Updated">${esc(stamp(item.last_authoritative_update))}</td>
-      </tr>`).join('')}</tbody></table></div>`;
-    root.querySelectorAll('[data-claim-id]').forEach(row => {
-      const open = () => openClaim(row.dataset.claimId);
-      row.addEventListener('click', open);
-      row.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); } });
+    $('#cwTable').innerHTML=ui.queueRows(state.items);
+    $('#cwTable').querySelectorAll('tr[data-claim-id]').forEach(row=>{
+      row.addEventListener('click',()=>openClaim(row.dataset.claimId));
+      row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openClaim(row.dataset.claimId);}});
     });
+    const returnId=state.queueFocusReturn || focusedRow;
+    if(returnId && $('#cwDetail').hidden) { $('#cwTable').querySelector(`tr[data-claim-id="${CSS.escape(returnId)}"]`)?.focus({preventScroll:true}); state.queueFocusReturn=null; }
   }
-
-  async function loadQueue({append = false} = {}) {
-    if (state.loading) { state.queuedLoad = {append}; return; }
-    state.loading = true;
-    $('#cwPageStatus').textContent = 'Loading authoritative journal projection…';
+  async function loadQueue({append=false}={}) {
+    if(state.loading){state.queuedLoad={append};return;}
+    state.loading=true;
+    if($('#cwDetail').hidden && $('#cwTable').contains(document.activeElement)) state.queueFocusReturn=document.activeElement.closest('tr[data-claim-id]')?.dataset.claimId;
+    const filterKey=queryString();
+    $('#cwPageStatus').textContent=append?'Loading more claims…':'Refreshing claims…';
+    $('#cwTable').setAttribute('aria-busy','true');
+    $('#cwRefresh').disabled=true; $('#cwMore').disabled=true;
+    $('#cwQueueNotice').hidden=true;
+    if(!state.items.length || state.loadedQuery!==filterKey) $('#cwTable').innerHTML=ui.skeleton();
     try {
-      const page = await requireVerifiedResponse(validateQueueResponse(await request(`/api/claim-loops/v1/workspace/claims?${queryString(append ? state.cursor : null)}`)));
-      state.items = append ? state.items.concat(page.items) : page.items;
-      state.total = page.total_count;
-      state.cursor = page.next_cursor;
-      renderRows();
-      hydrateOpenPriority();
-      const ownerSelect = $('#cwOwner');
-      const selected = ownerSelect.value;
-      const owners = Array.isArray(page.facets?.owners) ? page.facets.owners : [];
-      ownerSelect.innerHTML = '<option value="">All owners</option><option value="unassigned">Unassigned</option>' + owners.map(owner => `<option value="${esc(owner)}">${esc(owner)}</option>`).join('');
-      ownerSelect.value = selected;
-      const typeSelect = $('#cwClaimType');
-      const selectedType = typeSelect.value;
-      const claimTypes = Array.isArray(page.facets?.claim_types) ? page.facets.claim_types : [];
-      typeSelect.innerHTML = '<option value="">All claim types</option>' + claimTypes.map(value => `<option value="${esc(value)}">${esc(label(value))}</option>`).join('');
-      typeSelect.value = selectedType;
-    } catch (error) {
-      $('#cwTable').innerHTML = `<div class="cw-error"><h2>Workspace unavailable</h2><p>${esc(error.message)}</p></div>`;
-      $('#cwPageStatus').textContent = 'Failed closed; no claim state changed';
-    } finally {
-      state.loading = false;
-      if (state.queuedLoad) {
-        const queued = state.queuedLoad;
-        state.queuedLoad = null;
-        void loadQueue(queued);
+      const page=await requireVerifiedResponse(validateQueueResponse(await request(`/api/claim-loops/v1/workspace/claims?${queryString(append?state.cursor:null)}`)));
+      if(filterKey!==queryString()){state.queuedLoad={append:false};return;}
+      state.items=append?state.items.concat(page.items):page.items;
+      state.total=page.total_count; state.cursor=page.next_cursor; state.loadedQuery=filterKey;
+      for(const [id,values,first] of [['#cwOwner',['unassigned',...(page.facets?.owners||[])],'All handlers'],['#cwClaimType',page.facets?.claim_types||[],'All types']]) {
+        const select=$(id), selected=select.value;
+        const choices=[...new Set([...values,...(selected?[selected]:[])])];
+        select.replaceChildren(new Option(first,''),...choices.map(v=>new Option(id==='#cwOwner'&&v!=='unassigned'?v:ui.label(v),v)));
+        select.value=selected;
       }
+      renderRows(); hydrateOpenPriority(); saveQueueFilters();
+    } catch(error) {
+      if(filterKey!==queryString()){state.queuedLoad={append:false};return;}
+      if(state.items.length && state.loadedQuery===filterKey) {
+        renderRows(); $('#cwQueueNotice').hidden=false;
+        $('#cwQueueNotice').innerHTML='Could not refresh. Showing the last loaded records. <button class="cw-text-button" type="button" data-retry-queue>Try again</button>';
+      } else {
+        $('#cwTotal').textContent='—';
+        $('#cwTable').innerHTML=`<div class="cw-error"><h2>Could not load the workspace</h2><p>Your saved claims have not changed. Check the connection and try again.</p><div class="cw-actions"><button class="cw-button" type="button" data-retry-queue>Try again</button></div><details><summary>Error details</summary><p>${esc(error.message)}</p></details></div>`;
+      }
+      state.cursor=null; $('#cwMore').hidden=true; $('#cwPageStatus').textContent='Refresh unavailable';
+    } finally {
+      state.loading=false; $('#cwTable').setAttribute('aria-busy','false'); $('#cwRefresh').disabled=false; $('#cwMore').disabled=false;
+      if(state.queuedLoad){const queued=state.queuedLoad;state.queuedLoad=null;void loadQueue(queued);}
     }
   }
 
@@ -1486,125 +1482,29 @@
     </section>`;
   }
 
-  function loopWorkbenchMarkup(loop, workspaceState) {
-    if (!loop) {
-      return workspaceState.workflow_state === 'in_review' ? `
-        <section class="cw-section cw-loop cw-decision-card" id="cwLoopWorkbench">
-          <p class="cw-eyebrow">Current decision</p>
-          <h2>Evidence review has not started</h2>
-          <p class="cw-status">Choose how to review the admitted sources, then keep every accepted observation in the same claim journal.</p>
-          <div class="cw-actions"><button class="cw-button cw-button-primary" id="cwEnsureLoop" type="button">Open evidence workbench</button></div>
-        </section>` : '';
-    }
-    const value = loop.loop_state;
-    const provisionalPlan = inquiryRecord(loop.provisional_source_binding);
-    const action = value.selected_action;
-    const staged = loop.stage_receipt;
-    const pendingIntent = storedCommandIdentity('evidence-intent', loop.claim_id);
-    const pendingStage = storedCommandIdentity('evidence', loop.claim_id);
-    const pendingAdvance = storedCommandIdentity('advance', loop.claim_id);
-    const pendingInvalid = Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid);
-    const operational = loop.operational_projection;
-    const evidenceClasses = ['received','missing','insufficient','conditional','irrelevant','unknown'];
-    const evidenceClassMarkup = evidenceClasses.map(name => {
-      const items = operational.evidence_items.filter(item => item.evidence_class === name);
-      return `<section class="cw-evidence-class" data-evidence-class="${esc(name)}"><header><h3>${esc(label(name))}</h3><span>${items.length}</span></header><ul>${items.length ? items.map(item => `<li data-evidence-item-id="${esc(item.evidence_item_id)}" data-fact-id="${esc(item.fact_id)}" data-fact-state="${esc(item.fact_state)}" data-raw-status="${esc(item.raw_status)}" data-obligation-status="${esc(item.obligation_status)}" data-mandatory-now="${esc(String(item.mandatory_now))}" data-current-path="${esc(String(item.current_path))}" data-source-ref-ids="${esc(canonicalJson(item.source_ref_ids))}" data-provenance-edge-sha256s="${esc(canonicalJson(item.provenance_edge_sha256s))}"><strong>${esc(item.title)}</strong><small>${esc(label(item.fact_state))} fact · ${esc(label(item.obligation_status))}${item.mandatory_now ? ' · mandatory now' : ''}</small></li>`).join('') : '<li class="cw-muted">None</li>'}</ul></section>`;
-    }).join('');
-    const observations = Array.isArray(value.observations) ? value.observations : [];
-    const observationEvidence = observations.length
-      ? observations.map(observation => {
-        const ref = observation.source_refs?.[0];
-        const evidenceCopy = ref?.sanitized_excerpt || observation.value;
-        return `<li data-observation-sha256="${esc(observation.observation_sha256)}" data-fact-id="${esc(observation.fact_id)}" data-evidence-item-id="${esc(observation.evidence_item_id)}" data-fact-state="${esc(observation.fact_state)}" data-normalized-value="${esc(observation.normalized_value ?? '')}" data-evidence-status="${esc(observation.evidence_status)}" data-source-ref="${esc(canonicalJson(ref || null))}"><strong>${esc(observation.explanation || 'Accepted source observation')}</strong><blockquote>${esc(evidenceCopy)}</blockquote><span>Immutable source SHA ${esc((ref?.source_sha256 || '').slice(0, 16))}…</span></li>`;
-      }).join('')
-      : '<li class="cw-muted">No decision-bearing observation has been committed yet.</li>';
-    const correctionCandidate = loop.correction_candidates?.[0] || null;
-    const correctionPreview = state.correctionPreview?.claimId === loop.claim_id ? state.correctionPreview.value : null;
-    const latestCorrection = loop.latest_correction;
-    const nativeCorrection = Boolean(provisionalPlan && latestCorrection);
-    const correctionMarkup = latestCorrection ? `
-      <section class="cw-correction" id="cwCorrectionResult">
-        <p class="cw-eyebrow">Scoped correction applied</p>
-        <h3>${nativeCorrection ? 'One provisional source-backed answer was extended' : 'One evidence assertion was withdrawn'}</h3>
-        <p>${nativeCorrection ? 'A later record changed only the selected provisional answer. This does not certify claim truth or completeness, and unrelated facts stayed byte-identical.' : 'The target returned to <strong>unknown / insufficient</strong>. No replacement truth was supplied and unrelated facts stayed byte-identical.'}</p>
-        <div class="cw-correction-semantics" data-before-semantics="${esc(canonicalJson(latestCorrection.before_semantics))}" data-after-semantics="${esc(canonicalJson(latestCorrection.after_semantics))}"><p><strong>Before</strong> <code>${esc(canonicalJson(latestCorrection.before_semantics))}</code></p><p><strong>After</strong> <code>${esc(canonicalJson(latestCorrection.after_semantics))}</code></p></div>
-        <dl class="cw-hash-delta"><div><dt>Fact</dt><dd><code>${esc(latestCorrection.before_fact_sha256.slice(0,12))}… → ${esc(latestCorrection.after_fact_sha256.slice(0,12))}…</code></dd></div><div><dt>Evidence</dt><dd><code>${esc(latestCorrection.before_evidence_sha256.slice(0,12))}… → ${esc(latestCorrection.after_evidence_sha256.slice(0,12))}…</code></dd></div><div><dt>Unrelated facts</dt><dd><code>${esc(latestCorrection.unrelated_facts_after_sha256.slice(0,16))}… unchanged</code></dd></div></dl>
-        <p class="cw-stage-receipt" data-delta-sha256="${esc(latestCorrection.delta_sha256)}">Correction receipt <code>${esc(latestCorrection.delta_sha256.slice(0,16))}…</code></p>
-      </section>` : correctionPreview ? `
-      <section class="cw-correction" id="cwCorrectionPreview">
-        <p class="cw-eyebrow">Preview only · journal unchanged</p>
-        <h3>Withdraw this evidence assertion?</h3>
-        <p>This changes only <strong>${esc(label(correctionPreview.effect.fact_id))}</strong> and <strong>${esc(label(correctionPreview.effect.evidence_item_id))}</strong> to unknown / insufficient. It does not create a new fact.</p>
-        <dl class="cw-hash-delta"><div><dt>Fact</dt><dd><code>${esc(correctionPreview.preview.before_fact_sha256.slice(0,12))}… → ${esc(correctionPreview.preview.expected_after_fact_sha256.slice(0,12))}…</code></dd></div><div><dt>Evidence</dt><dd><code>${esc(correctionPreview.preview.before_evidence_sha256.slice(0,12))}… → ${esc(correctionPreview.preview.expected_after_evidence_sha256.slice(0,12))}…</code></dd></div><div><dt>Unrelated facts</dt><dd><code>${esc(correctionPreview.preview.unrelated_facts_after_sha256.slice(0,16))}… unchanged</code></dd></div></dl>
-        <div class="cw-actions"><button class="cw-button cw-button-primary" id="cwCorrectionConfirm" type="button">Confirm scoped correction</button><button class="cw-button" id="cwCorrectionCancel" type="button">Cancel</button></div>
-      </section>` : correctionCandidate ? `
-      <section class="cw-correction" id="cwCorrectionOption">
-        <p class="cw-eyebrow">Case-local correction</p>
-        <h3>Evidence no longer supports this finding?</h3>
-        <p>Preview an exact, reversible withdrawal. Scope, source, and effect are server-owned; the browser cannot change them.</p>
-        <div class="cw-actions"><button class="cw-button" id="cwCorrectionReview" type="button">${storedCommandIdentity('correction-preview', loop.claim_id) ? 'Recover correction preview' : 'Review scoped correction'}</button></div>
-      </section>` : '';
-    const outcomeCopy = loop.outcome === 'decision_ready'
-      ? provisionalPlan
-        ? 'The inner cycle covers every inquiry in this fallible source plan. Claim completeness remains unverified.'
-        : 'The six-role traversal and three deterministic gates certify a decision-ready packet.'
-      : loop.outcome === 'abstain'
-        ? `The system abstained safely: ${esc(value.abstain_reason || 'the required evidence is unresolved')}`
-        : action
-          ? provisionalPlan
-            ? 'This source-relative inquiry remains provisional. Accepted source spans record what was observed without certifying the customer goal.'
-            : 'CasePath selected one bounded evidence obligation. Request one source span; the server alone decides whether its meaning is admissible.'
-          : 'The journal is processing the accepted transition.';
-    const proposedAction = provisionalPlan ? operational.provisional_next_action : null;
-    const visibleNextStateTitle = proposedAction?.enabled
-      ? `${({provider: 'Provider', claimant: 'Claimant', authority: 'Authority', internal: 'Internal review'})[proposedAction.audience]} — ${proposedAction.requested_contents[0]}${proposedAction.requested_contents.length > 1 ? ` (+${proposedAction.requested_contents.length - 1} more)` : ''}`
-      : provisionalPlan && operational.next_state.kind === 'decision_ready'
-        ? 'Review provisional-plan coverage'
-        : operational.next_state.title;
-    const proposedActionMarkup = proposedAction?.enabled ? `
-      <section class="cw-correction" id="cwProvisionalNextAction" data-audience="${esc(proposedAction.audience)}">
-        <p class="cw-eyebrow">Fallible proposed follow-up · no dispatch</p>
-        <h3>${esc(({provider: 'Request from the provider', claimant: 'Request from the claimant', authority: 'Request from the authority', internal: 'Internal review'})[proposedAction.audience])}</h3>
-        <ul>${proposedAction.requested_contents.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
-        <p>This proposal comes from the saved model plan. It has not been sent and does not certify that the customer goal is fulfilled.</p>
-      </section>` : '';
-    const evidenceForm = action && !provisionalPlan ? `
-      <form class="cw-evidence-form" id="cwEvidenceForm">
-        <p class="cw-authority-badge">Server-acquired bytes · independent semantic authority · no approve, deny, pay, or close authority</p>
-        <p class="cw-muted">The browser submits only the current action, revision, acquisition receipts, and exact acquired bytes. It cannot choose a source, parser, finding, normalized value, sufficiency state, or branch.</p>
-        <div class="cw-actions">
-          <button class="cw-button cw-button-primary" id="cwLoopCommit" type="submit" ${pendingInvalid ? 'disabled' : ''}>${pendingAdvance ? 'Check journal and finish replan' : staged ? 'Complete verified replan' : pendingStage || pendingIntent ? 'Check journal and retry safely' : 'Acquire source and replan'}</button>
-        </div>
-      </form>` : '';
-    const roles = value.six_agent_cycle_receipt.agent_ids.map((agent, index) => `<li data-agent-id="${esc(agent)}" data-receipt-sha256="${esc(value.six_agent_cycle_receipt.agent_receipt_sha256s[index])}"><strong>${esc(label(agent))}</strong><span>receipt ${esc(value.six_agent_cycle_receipt.agent_receipt_sha256s[index].slice(0, 12))}…</span></li>`).join('');
-    const gates = value.six_agent_cycle_receipt.deterministic_gate_ids.map((gate, index) => `<li data-gate-id="${esc(gate)}" data-receipt-sha256="${esc(value.six_agent_cycle_receipt.gate_receipt_sha256s[index])}"><strong>${esc(label(gate))}</strong><span>receipt ${esc(value.six_agent_cycle_receipt.gate_receipt_sha256s[index].slice(0, 12))}…</span></li>`).join('');
-    return `
-      <section class="cw-section cw-loop cw-decision-card" id="cwLoopWorkbench" data-outcome="${esc(loop.outcome)}">
-        <p class="cw-eyebrow">Current decision</p>
-        <h2 id="cwLoopProposal" data-action-sha256="${esc(action?.action_sha256 || '')}">${esc(action?.title || label(loop.outcome))}</h2>
-        <p class="cw-status">${outcomeCopy}</p>
-        <div class="cw-state-grid cw-current-process" id="cwCurrentProcess" data-operational-projection-sha256="${esc(operational.projection_sha256)}"><div class="cw-state-item"><span>Current process</span><strong>${esc(operational.current_process?.node_title || operational.current_process?.node_id || 'Not started')}</strong><small>${esc(operational.current_process?.node_id || 'No current node')}</small></div><div class="cw-state-item"><span>Controlling uncertainty</span><strong>${esc(operational.controlling_decision?.title || 'No controlling uncertainty')}</strong><small>${operational.controlling_decision ? `${esc(label(operational.controlling_decision.fact_state))} fact · ${esc(label(operational.controlling_decision.evidence_class))} evidence` : provisionalPlan ? 'All provisional-plan inquiries have been handled' : 'Current mandatory obligations are resolved'}</small></div><div class="cw-state-item"><span>Journal state</span><strong>${esc(label(operational.workflow_state))}</strong><small>revision ${esc(operational.claim_loop_prefix?.revision || '—')}</small></div></div>
-        <section class="cw-progress-panel" id="cwEvidenceProgress"><header><strong>${provisionalPlan ? 'Provisional-plan coverage' : 'Evidence readiness'}</strong><span>${esc(operational.pending_evidence_count)} ${provisionalPlan ? 'proposed inquiries' : 'current mandatory'} unresolved</span></header>${evidenceProgressMarkup(operational)}</section>
-        <p class="cw-status" id="cwPrincipalBlocker" data-principal-blocker="${esc(operational.principal_blocker)}">Controlling blocker: ${esc(operational.principal_blocker)}</p>
-        <p class="cw-status" id="cwNextState" data-next-state="${esc(canonicalJson(operational.next_state))}">${proposedAction?.enabled ? 'Proposed next step' : 'Next safe state'}: ${esc(visibleNextStateTitle)}</p>
-        ${proposedActionMarkup}
-        ${proposalRevisionMarkup(loop.latest_proposal_revision)}
-        ${loop.latest_proposal_revision ? '<details id="cwSavedEvidenceAssessment"><summary>Saved evidence assessment</summary><p>These admitted states are retained for reference. The updated review above records the latest proposed readings and request changes.</p>' : ''}
-        <div class="cw-evidence-classes" id="cwEvidenceClasses">${evidenceClassMarkup}</div>
-        ${loop.latest_proposal_revision ? '</details>' : ''}
-        <details class="cw-source-observations"><summary>Accepted source observations (${observations.length})</summary><ul class="cw-evidence-list" id="cwEvidencePresent">${observationEvidence}</ul></details>
-        <div class="cw-safety-boundary"><strong>Safety boundary</strong><span>${loop.outcome === 'decision_ready' ? provisionalPlan ? 'Coverage applies only to the model-proposed inquiries. It does not certify the claim, legal sufficiency, or completeness.' : 'The packet is evidence-ready, but CasePath still cannot approve, deny, pay, or close the claim.' : loop.outcome === 'abstain' ? 'Mandatory evidence remains unresolved. CasePath stopped rather than infer an unsupported fact.' : loop.outcome === 'processing' ? 'One journaled transition is in flight. No second action is available until its receipt is reconciled.' : provisionalPlan ? 'Only an answer whose cited source bytes match this active inquiry can enter the journal.' : 'This action submits one exact evidence object for independent admission or safe rejection. It cannot approve, deny, pay, or close the claim.'}</span></div>
-        ${evidenceForm}
-        ${correctionMarkup}
-        ${staged ? `<p class="cw-stage-receipt" id="cwEvidenceStageReceipt" data-receipt-sha256="${esc(staged.receipt_sha256)}">Registration receipt <code>${esc(staged.receipt_sha256.slice(0, 16))}…</code></p>` : ''}
-        ${loop.decision_packet ? `<p class="cw-terminal-receipt">${provisionalPlan ? 'Provisional-plan coverage receipt' : 'Certified packet'} <code>${esc(loop.decision_packet.packet_sha256.slice(0, 16))}…</code></p>` : ''}
-        <p class="cw-verified-line">Inner journal cycle: 6 deterministic roles · 3 gates · zero additional provider calls.</p>
-        <details class="cw-receipt" id="cwDiagnostics"><summary>Verification and receipts</summary><div class="cw-cycle-grid"><div><h4>Six deterministic roles</h4><ul class="cw-receipt-list" id="cwAgentReceipts">${roles}</ul></div><div><h4>Three authority gates</h4><ul class="cw-receipt-list" id="cwGateReceipts">${gates}</ul></div></div><pre data-receipt-json="${esc(canonicalJson({loop_id:value.loop_id,revision:value.revision,state_sha256:value.state_sha256,last_event_sha256:value.last_event_sha256,cycle_receipt_sha256:value.six_agent_cycle_receipt.receipt_sha256,audit_sha256:loop.audit.receipt_sha256,model_calls:loop.audit.model_calls,provider_calls:loop.audit.provider_calls,cost_usd:loop.audit.cost_usd}))}">${esc(JSON.stringify({loop_id:value.loop_id,revision:value.revision,state_sha256:value.state_sha256,last_event_sha256:value.last_event_sha256,cycle_receipt_sha256:value.six_agent_cycle_receipt.receipt_sha256,audit_sha256:loop.audit.receipt_sha256,model_calls:loop.audit.model_calls,provider_calls:loop.audit.provider_calls,cost_usd:loop.audit.cost_usd}, null, 2))}</pre></details>
-      </section>`;
+  function loopWorkbenchMarkup(loop, workspaceState, options = {}) {
+    const id=workspaceState.claim_id;
+    const pendingIntent=storedCommandIdentity('evidence-intent',id);
+    const pendingStage=storedCommandIdentity('evidence',id);
+    const pendingAdvance=storedCommandIdentity('advance',id);
+    const pendingCorrection=storedCommandIdentity('correction-preview',id);
+    return ui.workbench(loop,workspaceState,{
+      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,
+      pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
+      correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
+      change:state.change?.claimId===id?state.change:null,
+      provisionalMarkup:loop?proposalRevisionMarkup(loop.latest_proposal_revision):'',
+    });
   }
 
   async function openClaim(claimId) {
+    // A click may precede the search debounce. Bind filters to the queue entry
+    // before adding the claim entry so Back and reload preserve the same view.
+    if ($('#cwDetail').hidden) { clearTimeout(state.filterTimer); saveQueueFilters(); }
+    state.headerObserver?.disconnect();
     const epoch = ++state.detailEpoch;
+    releaseSourcePreview(); state.sourceSelection=null; state.change=null;
+    if (claimIdFromLocation() !== claimId) history.pushState({casepathClaim:claimId,casepathFromQueue:true},'',`${location.pathname}${location.search}#claim=${encodeURIComponent(claimId)}`);
     state.mutationBusy = null;
     state.correctionPreview = null;
     state.nativeInvestigation = null;
@@ -1618,7 +1518,8 @@
     $('.cw-shell').inert = true;
     detailRoot.hidden = false;
     document.body.style.overflow = 'hidden';
-    panel.innerHTML = '<div class="cw-empty"><h2>Opening source-linked claim…</h2></div>';
+    panel.innerHTML = '<div class="cw-empty" role="status"><h2>Opening claim…</h2><p>Loading its saved sources, evidence and process.</p></div>';
+    panel.scrollTop=0; panel.focus({preventScroll:true});
     try {
       const detail = await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`, {signal:controller.signal}), claimId);
       if (epoch !== state.detailEpoch) return;
@@ -1638,8 +1539,7 @@
       state.detail = detail;
       state.detailPriority = null;
       renderDetail(detail);
-      void loadEvidenceInvestigation(claimId, activeDetailContext(), controller.signal);
-      history.replaceState(null, '', `#claim=${encodeURIComponent(claimId)}`);
+      if (loop?.provisional_source_binding) void loadEvidenceInvestigation(claimId, activeDetailContext(), controller.signal);
       const pendingIntent = storedCommandIdentity('evidence-intent', claimId);
       const pendingEvidence = storedCommandIdentity('evidence', claimId);
       const pendingAdvance = storedCommandIdentity('advance', claimId);
@@ -1648,7 +1548,7 @@
       }
     } catch (error) {
       if (error.name === 'AbortError' || epoch !== state.detailEpoch) return;
-      panel.innerHTML = `<div class="cw-error"><h2>Claim unavailable</h2><p>${esc(error.message)}</p><div class="cw-actions"><button class="cw-button" data-close-detail>Close</button></div></div>`;
+      panel.innerHTML = `<div class="cw-error"><h2>Claim unavailable</h2><p>${esc(error.message)}</p><div class="cw-actions"><button class="cw-button" data-retry-claim="${esc(claimId)}">Try again</button><button class="cw-button" data-close-detail>Back to claims</button></div></div>`;
       panel.querySelector('[data-close-detail]')?.addEventListener('click', closeDetail);
       panel.focus();
     }
@@ -1713,50 +1613,55 @@
           <details class="cw-receipt"><summary>Compiler proof</summary><pre>${esc(JSON.stringify({compiler_id:assessment.compiler_id,assessment_sha256:assessment.assessment_sha256,message_sha256:assessment.message_sha256,policy_template_sha256:assessment.policy_template.template_sha256,static_policy_file_sha256:assessment.static_policy_file_sha256,classifier_catalog_sha256:assessment.classifier_catalog_sha256,activity:assessment.activity}, null, 2))}</pre></details>
           </div>
         </details>` : '';
-    const primaryWorkspaceAction = !state.loop && value.workflow_state !== 'in_review' ? `
-      <section class="cw-section cw-decision-card">
-        <p class="cw-eyebrow">Current decision</p>
-        <h2>${esc(value.next_safe_action)}</h2>
-        <p class="cw-status">${esc(value.principal_blocker)}</p>
-        <div class="cw-safety-boundary"><strong>Safety boundary</strong><span>This action records or reconciles state only. It cannot approve, deny, pay, or close the claim.</span></div>
-        <div class="cw-actions">${value.failure_or_unknown_effect ? '<button class="cw-button cw-button-primary" id="cwReconcile">Reconcile unknown effect</button>' : `<button class="cw-button cw-button-primary" id="cwStart" ${invalidPendingCommand ? 'disabled' : ''}>${pendingStartUnresolved ? 'Retry pending assessment' : value.workflow_state === 'waiting' ? 'Resume deterministic assessment' : 'Start deterministic assessment'}</button>`}</div>
-      </section>` : '';
-    const operational = state.loop?.operational_projection;
-    const provisionalPlan = inquiryRecord(state.loop?.provisional_source_binding);
-    const visibleReadiness = operational
-      ? provisionalPlan && operational.readiness_state === 'decision_ready' ? 'Provisional plan covered' : label(operational.readiness_state)
-      : label(value.readiness_state);
-    const visibleGaps = operational
-      ? operational.pending_evidence_count
-      : value.pending_evidence_count == null ? 'Not assessed' : value.pending_evidence_count;
-    $('#cwDetailPanel').innerHTML = `
-      <header class="cw-detail-head"><div class="cw-detail-title"><small>${esc(value.claim_id)}</small><h2>${esc(detail.message.subject)}</h2><p>${esc(value.binding.language)} · received ${esc(stamp(value.binding.received_at))}</p></div><button class="cw-button cw-close" data-close-detail aria-label="Close claim">×</button></header>
-      <div class="cw-detail-body">
-        <section class="cw-state-strip" aria-label="Authoritative claim state"><span><small>Workflow</small><strong>${esc(operational ? label(operational.workflow_state) : label(value.workflow_state))}</strong></span><span><small>Readiness</small><strong>${esc(visibleReadiness)}</strong></span><span><small>Owner</small><strong>${esc(value.owner || 'Unassigned')}</strong></span><span><small>Evidence gaps</small><strong>${esc(visibleGaps)}</strong></span></section>
-        ${primaryWorkspaceAction}
-        ${loopWorkbenchMarkup(state.loop, value)}
-        <div id="cwEvidenceInvestigationMount">${evidenceInvestigationMarkup(state.nativeInvestigation, state.loop)}</div>
-        <p class="cw-command-status" id="cwCommandStatus" role="status" aria-live="polite">${invalidPendingCommand ? 'A local pending-command receipt is corrupt. The claim remains read-only until authoritative state is reloaded.' : loopCommandPending ? 'A source or replan outcome is unresolved. Evidence inputs are locked; the single action above checks the journal with the exact command.' : pendingAssignBody ? `The assignment outcome is unknown. Retry uses the exact original command.` : pendingStartUnresolved ? 'The assessment outcome is unknown. Retry uses the exact original command.' : ''}</p>
-        ${assessmentMarkup}
-        <details class="cw-section cw-secondary" id="cwSourceRecord"><summary>Accepted source record</summary><div class="cw-secondary-body"><p class="cw-body-copy" lang="${esc(value.binding.language)}">${esc(detail.message.body)}</p><div class="cw-artifacts">${detail.artifacts.map(artifact => `<a class="cw-artifact" href="${esc(artifact.download_url)}" target="_blank" rel="noopener"><span class="cw-artifact-icon">${esc(artifact.role === 'customer_message' ? 'MSG' : 'FILE')}</span><span class="cw-artifact-copy"><strong>${esc(artifact.file_name)}</strong><span>${esc(artifact.media_type)} · ${bytes(artifact.size_bytes)} · SHA ${esc(artifact.sha256.slice(0,12))}…</span></span></a>`).join('')}</div></div></details>
-        <details class="cw-section cw-secondary" id="cwAssignment" ${!value.owner || pendingAssignBody ? 'open' : ''}><summary>Assignment</summary><div class="cw-secondary-body"><form class="cw-owner-form" id="cwOwnerForm"><input id="cwOwnerInput" maxlength="80" value="${esc(pendingAssignBody?.owner || value.owner || '')}" placeholder="Handler name" aria-label="Assigned handler" ${pendingAssignBody || invalidPendingCommand || loopCommandPending ? 'readonly' : ''}><button class="cw-button" type="submit" ${invalidPendingCommand || loopCommandPending ? 'disabled' : ''}>${pendingAssignBody ? 'Retry pending assignment' : 'Assign'}</button></form></div></details>
-        <details class="cw-section cw-secondary" id="cwExplainablePriority"><summary>Explainable priority</summary><p class="cw-status" data-priority-status ${priority ? 'hidden' : ''}>Loading the verified priority tuple…</p><ol class="cw-priority">${priority ? priorityList(priority) : ''}</ol></details>
-        <details class="cw-section cw-secondary"><summary>Workspace receipt and export</summary><div class="cw-secondary-body"><pre class="cw-technical-receipt">${esc(JSON.stringify({detail_sha256:detail.detail_sha256 || null,state_sha256:value.state_sha256,binding_sha256:value.binding.binding_sha256,last_event_sha256:value.last_event_sha256,revision:value.revision,authority:detail.authority}, null, 2))}</pre><button class="cw-button" id="cwExport" type="button">Export verified status</button></div></details>
-      </div>`;
+    const panel=$('#cwDetailPanel');
+    const sameClaim=panel.dataset.openClaimId===value.claim_id;
+    const previousScroll=panel.scrollTop;
+    const focusedId=document.activeElement?.id;
+    const openDetails=sameClaim?[...panel.querySelectorAll('details[open][id]')].map(el=>el.id):[];
+    const commandStatus=invalidPendingCommand?'A recovery record could not be verified. Actions are locked; reload the saved claim before continuing.':loopCommandPending?'An action outcome is still being checked. Use the recovery action above; do not create a second request.':pendingAssignBody?'The assignment outcome is unknown. Recovery uses the same saved request.':pendingStartUnresolved?'The assessment outcome is unknown. Recovery uses the same saved request.':'';
+    panel.innerHTML=ui.detail(detail,state.loop,{
+      commandStatus,
+      workbench:loopWorkbenchMarkup(state.loop,value,{invalid:invalidPendingCommand,pendingStart:pendingStartUnresolved})+assessmentMarkup,
+      ownerValue:pendingAssignBody?.owner||value.owner||'',
+      ownerReadonly:Boolean(pendingAssignBody||invalidPendingCommand||loopCommandPending),
+      ownerDisabled:invalidPendingCommand||loopCommandPending,
+      pendingAssign:Boolean(pendingAssignBody),
+      priority,priorityMarkup:priority?priorityList(priority):'',
+    });
+    panel.dataset.openClaimId=value.claim_id;
+    state.headerObserver?.disconnect();
+    const measuredHeader=panel.querySelector('.cw-detail-head');
+    const measureHeader=()=>{
+      if(measuredHeader?.isConnected && panel.contains(measuredHeader)) panel.style.setProperty('--cw-head-height',`${measuredHeader.getBoundingClientRect().height}px`);
+    };
+    measureHeader(); state.headerObserver=new ResizeObserver(measureHeader); state.headerObserver.observe(measuredHeader);
+    for(const id of openDetails){const disclosure=panel.querySelector('#'+CSS.escape(id));if(disclosure) disclosure.open=true;}
+    if(state.nativeInvestigation) $('#cwEvidenceInvestigationMount').innerHTML=evidenceInvestigationMarkup(state.nativeInvestigation,state.loop);
+
     root.querySelectorAll('[data-close-detail]').forEach(button => button.addEventListener('click', closeDetail));
-    $('#cwOwnerForm').addEventListener('submit', event => { event.preventDefault(); assignOwner(); });
-    $('#cwStart')?.addEventListener('click', startClaim);
-    $('#cwReconcile')?.addEventListener('click', reconcileClaim);
+    $('#cwOwnerForm').addEventListener('submit', event => { event.preventDefault(); void runWorkspaceCommand(assignOwner); });
+    $('#cwStart')?.addEventListener('click', () => runWorkspaceCommand(startClaim));
+    $('#cwReconcile')?.addEventListener('click', () => runWorkspaceCommand(reconcileClaim));
     $('#cwEnsureLoop')?.addEventListener('click', ensureClaimLoop);
     bindNativeInvestigationActions();
     $('#cwEvidenceForm')?.addEventListener('submit', event => { event.preventDefault(); commitLoopObservation(); });
     $('#cwCorrectionReview')?.addEventListener('click', previewWorkspaceCorrection);
     $('#cwCorrectionConfirm')?.addEventListener('click', applyWorkspaceCorrection);
     $('#cwCorrectionCancel')?.addEventListener('click', cancelWorkspaceCorrection);
-    $('#cwExport').addEventListener('click', exportClaim);
+    $('#cwExport')?.addEventListener('click', exportClaim);
     if (recoveredCommand) $('#cwCommandStatus').textContent = recoveredCommand;
-    $('#cwDetailPanel').focus?.();
+    if (state.mutationBusy) setLoopMutationBusy(true,'',state.mutationBusy);
+    restoreSourceSelection();
+    if (sameClaim) { panel.scrollTop=previousScroll; if(focusedId) panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true}); }
+    else { panel.scrollTop=0; panel.focus({preventScroll:true}); }
     if (!priority) void loadOpenPriority(value.claim_id, value.state_sha256, activeDetailContext(), state.detailController?.signal);
+  }
+
+  async function runWorkspaceCommand(action) {
+    if(state.mutationBusy || !state.detail) return;
+    const context=activeDetailContext();
+    setLoopMutationBusy(true,'',context);
+    try { await action(); } finally { setLoopMutationBusy(false,'',context); }
   }
 
   async function assignOwner() {
@@ -1764,13 +1669,13 @@
     const context = activeDetailContext();
     const owner = $('#cwOwnerInput').value.trim();
     if (!owner) { $('#cwCommandStatus').textContent = 'Enter a handler name.'; return; }
-    $('#cwCommandStatus').textContent = 'Journaling assignment…';
+    $('#cwCommandStatus').textContent = 'Saving assignment…';
     try {
       const body = {owner,expected_revision:detail.state.revision};
       const pending = commandIdentity('assign', detail.state.claim_id, body);
       const response = await validateMutationResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(detail.state.claim_id)}/owner`, {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':pending.key},body:pending.body}), detail.state.claim_id, 'WORKSPACE_OWNER_ASSIGNED', detail.state);
       if (!isActiveDetail(context)) return;
-      await reflectAcceptedMutation(response, 'Assignment journaled and replayable.', 'assign', context);
+      await reflectAcceptedMutation(response, 'Handler assignment saved.', 'assign', context);
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {
@@ -1785,13 +1690,13 @@
   async function startClaim() {
     const detail = state.detail;
     const context = activeDetailContext();
-    $('#cwCommandStatus').textContent = 'Starting deterministic assessment…';
+    $('#cwCommandStatus').textContent = 'Starting the assessment…';
     try {
       const body = {expected_revision:detail.state.revision};
       const pending = commandIdentity('start', detail.state.claim_id, body);
       const response = await validateMutationResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(detail.state.claim_id)}/start`, {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':pending.key},body:pending.body}), detail.state.claim_id, 'WORKSPACE_PROCESSING_STARTED', detail.state);
       if (!isActiveDetail(context)) return;
-      await reflectAcceptedMutation(response, 'Source-bound assessment compiled and durably journaled.', 'start', context);
+      await reflectAcceptedMutation(response, 'Assessment saved. Open the evidence review to continue.', 'start', context);
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {
@@ -1815,7 +1720,10 @@
       return;
     }
     const active = Boolean(state.mutationBusy);
-    root.querySelectorAll('#cwDetailPanel button:not([data-close-detail]), #cwDetailPanel input, #cwDetailPanel select, #cwDetailPanel textarea').forEach(control => { control.disabled = active; });
+    root.querySelectorAll('#cwDetailPanel button:not([data-close-detail]), #cwDetailPanel input, #cwDetailPanel select, #cwDetailPanel textarea').forEach(control => {
+      if(active) { if(!control.hasAttribute('data-cw-busy-disabled')) control.dataset.cwBusyDisabled=String(control.disabled); control.disabled=true; }
+      else if(control.hasAttribute('data-cw-busy-disabled')) { control.disabled=control.dataset.cwBusyDisabled==='true'; delete control.dataset.cwBusyDisabled; }
+    });
     if (message && $('#cwCommandStatus')) $('#cwCommandStatus').textContent = message;
   }
 
@@ -1846,7 +1754,7 @@
       await loadQueue();
       if (!isActiveDetail(context)) return;
       renderDetail(detail);
-      $('#cwCommandStatus').textContent = 'Evidence workbench is bound to the accepted claim journal.';
+      $('#cwCommandStatus').textContent = 'Evidence review opened. The current requirement is shown below.';
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {
@@ -2030,7 +1938,8 @@
     if (state.mutationBusy || !state.detail || !state.loop) return;
     const context = activeDetailContext();
     let loop = state.loop;
-    setLoopMutationBusy(true, 'Validating the source, applying independent admission policy, and rerunning six roles and three gates…', context);
+    const beforeLoop = loop;
+    setLoopMutationBusy(true, 'Checking the source and updating the claim…', context);
     try {
       if (!storedCommandIdentity('advance', loop.claim_id)) {
         loop = await stageLoopEvidence(context, loop);
@@ -2039,11 +1948,13 @@
       const advance = await advanceClaimLoop(context, loop);
       if (!advance || !isActiveDetail(context)) return;
       ({loop} = advance);
+      state.change = ui.compareLoops(beforeLoop,loop);
       state.loop = loop;
       await loadQueue();
       if (!isActiveDetail(context)) return;
       renderDetail(state.detail);
-      $('#cwCommandStatus').textContent = advance.status.copy;
+      $('#cwCommandStatus').textContent = '';
+      $('#cwReplanDelta')?.scrollIntoView({block:'start'}); $('#cwReplanDelta')?.focus({preventScroll:true});
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {
@@ -2131,11 +2042,13 @@
       clearCommandIdentity('correction-preview', loop.claim_id);
       clearCommandIdentity('correction-apply', loop.claim_id);
       state.correctionPreview = null;
+      state.change = ui.compareLoops(loop,fresh,'correction');
       state.loop = fresh;
       await loadQueue();
       if (!isActiveDetail(context)) return;
       renderDetail(state.detail);
-      $('#cwCommandStatus').textContent = 'Scoped correction committed once. The affected obligation was replanned; unrelated facts stayed unchanged.';
+      $('#cwCommandStatus').textContent = '';
+      $('#cwReplanDelta')?.scrollIntoView({block:'start'}); $('#cwReplanDelta')?.focus({preventScroll:true});
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {
@@ -2218,13 +2131,6 @@
     } catch (error) { $('#cwCommandStatus').textContent = `Export failed: ${error.message}`; }
   }
 
-  async function refreshOpen(claimId) {
-    const detail = await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`), claimId);
-    state.loop = detail.state.workflow_state === 'in_review' ? await loadClaimLoop(claimId, {allowMissing:true}) : null;
-    state.detail = detail;
-    renderDetail(detail);
-    await loadQueue();
-  }
 
   async function reflectAcceptedMutation(response, message, commandKind, context) {
     try {
@@ -2238,6 +2144,7 @@
       if (!isActiveDetail(context)) return;
       $('#cwCommandStatus').textContent = message;
     } catch (error) {
+      if (!isActiveDetail(context)) return;
       root.querySelectorAll('#cwDetailPanel button, #cwDetailPanel input').forEach(control => { control.disabled = true; });
       const failure = new Error(`Command receipt is not yet confirmed by the authoritative journal: ${error.message}`);
       failure.ambiguousResponse = true;
@@ -2245,7 +2152,126 @@
     }
   }
 
-  function closeDetail() {
+  function releaseSourcePreview() {
+    state.sourceRequest=(state.sourceRequest||0)+1;
+    state.sourceController?.abort(); state.sourceController=null;
+    if(state.sourceUrl){URL.revokeObjectURL(state.sourceUrl);state.sourceUrl=null;}
+  }
+  function focusSource(focus=true) {
+    const inspector=$('#cwSourceInspector'); if(!inspector) return;
+    $('.cw-source-rail').scrollTop=0;
+    if(focus){if(matchMedia('(max-width:760px)').matches) inspector.scrollIntoView({block:'start'});inspector.focus({preventScroll:true});}
+    root.querySelectorAll('[data-source-reset]').forEach(b=>b.hidden=!state.sourceSelection);
+  }
+  function resetSource(focus=true) {
+    releaseSourcePreview(); state.sourceSelection=null;
+    if(!state.detail || !$('#cwSourceContent')) return;
+    $('#cwSourceHeading').textContent='Original customer message';
+    $('#cwSourceContent').innerHTML=`<p class="cw-source-label">Customer account · not an established finding</p><div class="cw-message" tabindex="0" role="region" aria-label="Source text" lang="${esc(state.detail.state.binding.language)}">${esc(state.detail.message.body)}</div>`;
+    focusSource(focus);
+  }
+  function showEvidenceSource(itemId, focus=true) {
+    const item=state.loop?.operational_projection.evidence_items.find(i=>i.evidence_item_id===itemId);
+    if(!item || !$('#cwSourceContent')) return;
+    releaseSourcePreview(); state.sourceSelection={kind:'evidence',id:itemId};
+    $('#cwSourceHeading').textContent='Evidence & its sources';
+    $('#cwSourceContent').innerHTML=ui.evidenceSource(item,state.loop,state.detail);
+    focusSource(focus);
+  }
+  function showProcessSource(nodeId, focus=true) {
+    const node=state.loop?.loop_state.process.nodes.find(n=>n.node_id===nodeId); if(!node) return;
+    const item=state.loop.operational_projection.evidence_items.find(i=>node.evidence_requirement_ids?.includes(i.evidence_item_id));
+    if(item){showEvidenceSource(item.evidence_item_id,focus);return;}
+    releaseSourcePreview();state.sourceSelection={kind:'process',id:nodeId};
+    $('#cwSourceHeading').textContent='Process step';
+    $('#cwSourceContent').innerHTML=`<div class="cw-source-selection"><h4>${esc(node.title)}</h4><p>${esc(node.answer)}</p><p><strong>Recorded process rule</strong><br>${esc(node.why)}</p><p class="cw-note">This view explains the saved process; it does not change the active path.</p></div>`;
+    focusSource(focus);
+  }
+  async function showSourceArtifact(index, focus=true) {
+    const detail=state.detail, artifact=detail?.artifacts[index];
+    if(!artifact || !Number.isSafeInteger(index)) return;
+    releaseSourcePreview();state.sourceSelection={kind:'artifact',index};
+    const ticket=state.sourceRequest, claimId=detail.state.claim_id;
+    const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
+    $('#cwSourceHeading').textContent=artifact.file_name;
+    $('#cwSourceContent').innerHTML='<p class="cw-source-loading" role="status">Loading and verifying the original file…</p>';
+    focusSource(focus);
+    const controller=new AbortController();state.sourceController=controller;
+    const timer=setTimeout(()=>controller.abort(),20000);
+    try {
+      const url=new URL(artifact.download_url,location.origin);
+      if(url.origin!==location.origin) throw new Error('The source is outside this workspace.');
+      if(artifact.size_bytes>12*1024*1024) throw new Error('This file exceeds the 12 MB inline preview limit.');
+      const response=await fetch(url,{credentials:'same-origin',cache:'no-store',redirect:'error',signal:controller.signal});
+      if(!response.ok) throw new Error(`Source unavailable (${response.status}).`);
+      const bytes=await response.arrayBuffer();
+      const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),b=>b.toString(16).padStart(2,'0')).join('');
+      if(bytes.byteLength!==artifact.size_bytes || hash!==artifact.sha256) throw new Error('The file does not match the saved source record. Preview was blocked.');
+      if(!current()) return;
+      const media=artifact.media_type.split(';')[0].trim().toLowerCase();
+      let content='';
+      if(media.startsWith('text/')||media==='application/json') {
+        let text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);
+        if(media==='application/json') {
+          try {const value=JSON.parse(text);if(typeof value.body==='string') text=(value.subject?value.subject+'\n\n':'')+value.body;} catch(_) { /* Preserve source text when it is not a message object. */ }
+        }
+        content=`<div class="cw-message" tabindex="0" role="region" aria-label="Source text">${esc(text)}</div>`;
+      } else if(['image/png','image/jpeg','image/gif','image/webp','application/pdf'].includes(media)) {
+        state.sourceUrl=URL.createObjectURL(new Blob([bytes],{type:media}));
+        content=media==='application/pdf'?`<div class="cw-pdf-open"><p>This is the original PDF, with its pages and formatting preserved.</p><a class="cw-button cw-button-primary" href="${esc(url.href)}" target="_blank" rel="noopener noreferrer" data-open-original-pdf>Open full PDF ${ui.icon('next')}</a><p class="cw-note">Opens in a separate tab. This claim stays open here.</p></div>`:`<img class="cw-document-preview" alt="${esc(artifact.file_name)}" src="${esc(state.sourceUrl)}">`;
+      } else content='<p class="cw-note">This file type has no inline preview. The original file is available below.</p>';
+      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">Original file · verified against the saved record</p>${content}<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p><details class="cw-receipt"><summary>File verification</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+    } catch(error) {
+      if(!current()) return;
+      const reason=error.name==='AbortError'?'The source preview took too long to load.':error.message;
+      $('#cwSourceContent').innerHTML=`<div class="cw-inline-notice"><p>${esc(reason)}</p><p>No source or claim record was changed.</p><button class="cw-button" type="button" data-source-artifact="${index}">Try preview again</button></div>`;
+    } finally {clearTimeout(timer);if(current()) state.sourceController=null;}
+  }
+  function restoreSourceSelection() {
+    const selection=state.sourceSelection;
+    if(selection?.kind==='evidence') showEvidenceSource(selection.id,false);
+    else if(selection?.kind==='process') showProcessSource(selection.id,false);
+    else if(selection?.kind==='artifact') void showSourceArtifact(selection.index,false);
+  }
+  function handleWorkspaceClick(event) {
+    const button=event.target.closest('button,a');if(!button) return;
+    if(button.matches('[data-clear-filters]')) clearQueueFilters();
+    if(button.matches('[data-retry-queue]')) void loadQueue();
+    if(button.dataset.queueView) selectQueueView(button.dataset.queueView);
+    if(button.dataset.evidenceSource) showEvidenceSource(button.dataset.evidenceSource);
+    if(button.dataset.processNode) showProcessSource(button.dataset.processNode);
+    if(button.hasAttribute('data-source-artifact')) void showSourceArtifact(Number(button.dataset.sourceArtifact));
+    if(button.hasAttribute('data-source-reset')) resetSource();
+    if(button.hasAttribute('data-show-investigation')) { const section=$('#cwSavedInvestigation'); if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});} }
+    if(button.id==='cwClearFilters') clearQueueFilters();
+    if(button.hasAttribute('data-show-evidence')) {const section=$('#cwEvidenceClasses');section?.scrollIntoView({block:'start'});section?.setAttribute('tabindex','-1');section?.focus({preventScroll:true});}
+    if(button.hasAttribute('data-dismiss-change')) {state.change=null;$('#cwReplanDelta')?.remove();$('#cwLoopWorkbench')?.setAttribute('tabindex','-1');$('#cwLoopWorkbench')?.focus({preventScroll:true});}
+    if(button.hasAttribute('data-refresh-claim')) void refreshOpen().catch(error=>{if($('#cwCommandStatus')) $('#cwCommandStatus').textContent='Could not refresh this claim. '+error.message;});
+    if(button.dataset.retryClaim) void openClaim(button.dataset.retryClaim);
+    if(button.hasAttribute('data-load-investigation') && state.detail) {
+      button.disabled=true;button.textContent='Loading saved investigation…';
+      const context=activeDetailContext();
+      void loadEvidenceInvestigation(state.detail.state.claim_id,context,state.detailController?.signal).finally(()=>{
+        if(isActiveDetail(context) && !state.nativeInvestigation && button.isConnected) $('#cwEvidenceInvestigationMount').innerHTML='<p class="cw-note">No saved investigation is available for this claim.</p>';
+      });
+    }
+  }
+  async function refreshOpen() {
+    if(!state.detail || state.mutationBusy) return;
+    const context=activeDetailContext(), claimId=state.detail.state.claim_id;
+    const detail=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`,{signal:state.detailController?.signal}),claimId);
+    const loop=detail.state.workflow_state==='in_review'?await loadClaimLoop(claimId,{allowMissing:true,signal:state.detailController?.signal}):null;
+    if(!isActiveDetail(context)) return;
+    state.detail=detail;state.loop=loop;
+    if(state.change && state.change.afterRevision!==loop?.revision) state.change=null;
+    renderDetail(detail);void loadQueue();
+    $('#cwCommandStatus').textContent='Showing the latest saved claim record.';
+  }
+
+  function closeDetail({fromHistory=false} = {}) {
+    state.queueFocusReturn=state.returnClaimId;
+    state.headerObserver?.disconnect();
+    releaseSourcePreview(); state.sourceSelection=null; state.change=null;
     state.detailEpoch += 1;
     state.mutationBusy = null;
     state.detailController?.abort();
@@ -2258,8 +2284,11 @@
     state.loop = null;
     state.correctionPreview = null;
     state.nativeInvestigation = null;
-    history.replaceState(null, '', `${location.pathname}${location.search}`);
-    const currentRow = state.returnClaimId ? root.querySelector(`[data-claim-id="${CSS.escape(state.returnClaimId)}"]`) : null;
+    if (!fromHistory) {
+      if (history.state?.casepathFromQueue) history.back();
+      else history.replaceState(null,'',`${location.pathname}${location.search}`);
+    }
+    const currentRow = state.returnClaimId ? $('#cwTable').querySelector(`tr[data-claim-id="${CSS.escape(state.returnClaimId)}"]`) : null;
     (currentRow || (state.returnFocus?.isConnected ? state.returnFocus : null))?.focus?.();
     state.returnFocus = null;
     state.returnClaimId = null;
@@ -2280,12 +2309,13 @@
       void openClaim(claimId);
       return;
     }
-    if (!$('#cwDetail').hidden) closeDetail();
+    if (!$('#cwDetail').hidden) closeDetail({fromHistory:true});
   }
 
-  $('#cwFilters').addEventListener('submit', event => event.preventDefault());
-  $('#cwFilters').addEventListener('input', () => { clearTimeout(state.filterTimer); state.filterTimer = setTimeout(() => loadQueue(), 180); });
-  $('#cwFilters').addEventListener('change', () => loadQueue());
+  $('#cwFilters').addEventListener('submit', event => { event.preventDefault(); clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });
+  $('#cwSearch').addEventListener('input', () => { clearTimeout(state.filterTimer); state.filterTimer=setTimeout(()=>{saveQueueFilters();void loadQueue();},180); });
+  $('#cwFilters').addEventListener('change', event => { if(event.target.id==='cwSearch') return; clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });
+  root.addEventListener('click',handleWorkspaceClick);
   $('#cwRefresh').addEventListener('click', () => loadQueue());
   $('#cwMore').addEventListener('click', () => loadQueue({append:true}));
   root.querySelector('[data-close-detail]').addEventListener('click', closeDetail);
@@ -2325,6 +2355,8 @@
   });
 
   window.addEventListener('hashchange', syncClaimFromLocation);
+  window.addEventListener('popstate',()=>{restoreQueueFilters();syncClaimFromLocation();void loadQueue();});
+  restoreQueueFilters();
   void loadQueue();
   syncClaimFromLocation();
 })();

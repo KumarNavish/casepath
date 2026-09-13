@@ -54,6 +54,8 @@ PUBLIC_ASSETS = (
     "assets/insurance-protocol-v1.js",
     "assets/claims-workspace-v1.css",
     "assets/claims-workspace-v1.js",
+    "assets/claims-workspace-presentation-v1.js",
+    "assets/claims-workspace-presentation-v1.css",
 )
 GENERATED_FILES = ("deployment.json",)
 PUBLIC_INVENTORY = frozenset((*PUBLIC_ROOT_FILES, *PUBLIC_ASSETS, *GENERATED_FILES))
@@ -71,6 +73,8 @@ CONTENT_BOUND_ASSETS = (
     "assets/foundation-live.css",
     "assets/claims-workspace-v1.css",
     "assets/claims-workspace-v1.js",
+    "assets/claims-workspace-presentation-v1.js",
+    "assets/claims-workspace-presentation-v1.css",
     "assets/live-v16.js",
     "assets/live-v16-stability.js",
     "assets/live-v18-insertion-guard.js",
