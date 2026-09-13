@@ -1183,7 +1183,7 @@
   }
 
   function queryString(cursor = null) {
-    const query = new URLSearchParams({limit:'25',sort:$('#cwSort').value});
+    const query = new URLSearchParams({limit:'100',sort:$('#cwSort').value});
     const fields = [
       ['q','#cwSearch'],['state','#cwState'],['readiness','#cwReadiness'],
       ['claim_type','#cwClaimType'],['owner','#cwOwner'],['urgency','#cwUrgency'],
@@ -1260,11 +1260,15 @@
       $('#cwTable').innerHTML=`<div class="cw-empty"><h2>${filtered?'No matching claims':'No claims yet'}</h2><p>${filtered?'Try a different search or clear your filters. Your claims have not changed.':'No claim records are present in this workspace.'}</p><div class="cw-actions"><button type="button" class="cw-button" ${filtered?'data-clear-filters':'data-retry-queue'}>${filtered?'Clear filters':'Refresh workspace'}</button></div>${filtered?'':'<details><summary>Development setup</summary><code>./bin/casepath seed --corpus synthetic-dev-60</code></details>'}</div>`;
       return;
     }
-    $('#cwTable').innerHTML=ui.queueRows(state.items);
-    $('#cwTable').querySelectorAll('tr[data-claim-id]').forEach(row=>{
-      row.addEventListener('click',()=>openClaim(row.dataset.claimId));
-      row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openClaim(row.dataset.claimId);}});
-    });
+    const markup=ui.queueRows(state.items);
+    // A verified unchanged response must not replace the focused queue node.
+    if(state.queueMarkup!==markup || !$('#cwTable').querySelector('table')) {
+      $('#cwTable').innerHTML=markup;state.queueMarkup=markup;
+      $('#cwTable').querySelectorAll('tr[data-claim-id]').forEach(row=>{
+        row.addEventListener('click',()=>openClaim(row.dataset.claimId));
+        row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openClaim(row.dataset.claimId);}});
+      });
+    }
     const returnId=state.queueFocusReturn || focusedRow;
     if(returnId && $('#cwDetail').hidden) { $('#cwTable').querySelector(`tr[data-claim-id="${CSS.escape(returnId)}"]`)?.focus({preventScroll:true}); state.queueFocusReturn=null; }
   }
@@ -1281,15 +1285,25 @@
     try {
       const page=await requireVerifiedResponse(validateQueueResponse(await request(`/api/claim-loops/v1/workspace/claims?${queryString(append?state.cursor:null)}`)));
       if(filterKey!==queryString()){state.queuedLoad={append:false};return;}
-      state.items=append?state.items.concat(page.items):page.items;
-      state.total=page.total_count; state.cursor=page.next_cursor; state.loadedQuery=filterKey;
+      let windowItems=page.items,windowCursor=page.next_cursor;
+      const wanted=!append&&state.loadedQuery===filterKey?state.items.length:0;
+      while(windowCursor&&windowItems.length<wanted){
+        const continuation=await requireVerifiedResponse(validateQueueResponse(await request(`/api/claim-loops/v1/workspace/claims?${queryString(windowCursor)}`)));
+        if(continuation.state_roster_sha256!==page.state_roster_sha256||continuation.total_count!==page.total_count)throw new Error('The queue changed during refresh. The previous view is preserved.');
+        if(!continuation.items.length||continuation.next_cursor===windowCursor)throw new Error('The queue continuation did not advance.');
+        windowItems=windowItems.concat(continuation.items);windowCursor=continuation.next_cursor;
+      }
+      if(filterKey!==queryString()){state.queuedLoad={append:false};return;}
+      state.items=append?state.items.concat(windowItems):windowItems;
+      state.total=page.total_count;state.cursor=windowCursor;state.loadedQuery=filterKey;
       for(const [id,values,first] of [['#cwOwner',['unassigned',...(page.facets?.owners||[])],'All handlers'],['#cwClaimType',page.facets?.claim_types||[],'All types']]) {
         const select=$(id), selected=select.value;
         const choices=[...new Set([...values,...(selected?[selected]:[])])];
         select.replaceChildren(new Option(first,''),...choices.map(v=>new Option(id==='#cwOwner'&&v!=='unassigned'?v:ui.label(v),v)));
         select.value=selected;
       }
-      renderRows(); hydrateOpenPriority(); saveQueueFilters();setAdjacentClaims();void loadWorkspaceOverview();
+      renderRows();hydrateOpenPriority();saveQueueFilters();setAdjacentClaims();
+      if(!hasQueueFilters()&&!state.cursor&&state.items.length===state.total)displayWorkspaceOverview(state.items);else void loadWorkspaceOverview();
     } catch(error) {
       if(filterKey!==queryString()){state.queuedLoad={append:false};return;}
       if(state.items.length && state.loadedQuery===filterKey) {
@@ -2233,6 +2247,13 @@
     $('#cpQueueTitle').textContent=search?'Search results':names[selected];
     $('#cpQueueSubtitle').textContent=search?'Matching claims and handlers.':descriptions[selected];
   }
+  function displayWorkspaceOverview(rows){
+      const summary=ui.queueSummary(rows);state.overviewSummary=summary;
+      root.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
+      $('#cpOverviewState').textContent=summary.unassessed?`${summary.unassessed} awaiting review`:'Overview up to date';
+      $('#cpOverviewState').removeAttribute('data-stale');
+      $('#cpActionIssuesSummary').hidden=summary.attention===0;
+  }
   async function loadWorkspaceOverview(){
     if(state.overviewLoading){state.overviewQueued=true;return;}
     state.overviewLoading=true;
@@ -2246,11 +2267,7 @@
         if(!cursor)break;
       }
       if(cursor||rows.length!==total||new Set(rows.map(r=>r.claim_id)).size!==total)throw new Error('Incomplete workspace overview');
-      const summary=ui.queueSummary(rows);state.overviewSummary=summary;
-      root.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
-      $('#cpOverviewState').textContent=summary.unassessed?`${summary.unassessed} awaiting review`:'Overview up to date';
-      $('#cpOverviewState').removeAttribute('data-stale');
-      $('#cpActionIssuesSummary').hidden=summary.attention===0;
+      displayWorkspaceOverview(rows);
     }catch(_){$('#cpOverviewState').textContent=state.overviewSummary?'Overview not refreshed':'Overview unavailable';$('#cpOverviewState').dataset.stale='true';}
     finally{state.overviewLoading=false;if(state.overviewQueued){state.overviewQueued=false;void loadWorkspaceOverview();}}
   }
@@ -2408,6 +2425,7 @@
   }
 
   function closeDetail({fromHistory=false,refresh=true} = {}) {
+    const returnViaHistory=!fromHistory&&Boolean(history.state?.casepathFromQueue);
     savePresentation();$(".cp-sidebar").inert=false;
     state.queueFocusReturn=state.returnClaimId;
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
@@ -2433,7 +2451,7 @@
     state.returnFocus = null;
     state.returnClaimId = null;
     window.scrollTo({top:state.queueScrollY||0,behavior:"instant"});
-    if(refresh)void loadQueue();
+    if(refresh&&!returnViaHistory)void loadQueue();
   }
 
   function claimIdFromLocation() {
@@ -2441,14 +2459,14 @@
     const claim=query.get('claim');return claim||null;
   }
 
-  function syncClaimFromLocation() {
+  function syncClaimFromLocation({refresh=true} = {}) {
     const claimId = claimIdFromLocation();
     if (claimId) {
       if(!$('#cwDetail').hidden&&state.returnClaimId===claimId){const view=new URLSearchParams(location.hash.slice(1)).get('view')||'overview';if(view!==state.workbenchTab)setWorkbenchTab(view,{remember:false});return;}
       void openClaim(claimId);
       return;
     }
-    if (!$('#cwDetail').hidden) closeDetail({fromHistory:true});
+    if (!$('#cwDetail').hidden) closeDetail({fromHistory:true,refresh});
   }
 
   $('#cwFilters').addEventListener('submit', event => { event.preventDefault(); clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });
@@ -2461,7 +2479,7 @@
   document.addEventListener('keydown',workspaceKeyboard);
 
   window.addEventListener('hashchange', syncClaimFromLocation);
-  window.addEventListener('popstate',()=>{restoreQueueFilters();syncClaimFromLocation();void loadQueue();});
+  window.addEventListener('popstate',()=>{restoreQueueFilters();syncClaimFromLocation({refresh:false});void loadQueue();});
   restoreQueueFilters();
   void loadQueue();
   syncClaimFromLocation();
