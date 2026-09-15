@@ -261,7 +261,7 @@ TOOL_DESCRIPTION = {
     "read_customer_message": "Read the exact customer message text and its source identity. A report is not an established fact.",
     "list_sources": "List the original claim packet's sources. This does not open any source.",
     "open_source": "Open a source from this claim. Returns exact bounded text, its hash, and its extraction scope.",
-    "select_source_span": "Select an exact verbatim substring in a source already opened. Offsets count Unicode code points.",
+    "select_source_span": "Select an exact verbatim substring in an opened source. The quote must match source text exactly; if offsets are wrong they are canonicalized only when the quote occurs exactly once.",
     "propose_assertion": "Propose the exact selected quotation as a reported assertion. Text must equal the selected span. No legal conclusion is admitted.",
     "revise_assertion": "Replace a reported quotation using an exact new span and the current assertion hash.",
     "flag_conflict": "Flag two different reported assertions for review, without establishing which is true.",

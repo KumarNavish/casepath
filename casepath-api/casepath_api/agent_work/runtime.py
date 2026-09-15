@@ -139,15 +139,22 @@ class ToolRuntime:
             source = self._get("source:" + args.source_id)
         except WorkStoreError as exc:
             raise GateRejected("open the source before selecting a span") from exc
-        if args.end > len(source["text"]) or source["text"][args.start:args.end] != args.quote or not args.quote.strip():
+        text = source["text"]
+        if not args.quote.strip():
             raise GateRejected("the selected quotation is not the exact source substring")
+        start, end, canonicalized = args.start, args.end, False
+        if end > len(text) or text[start:end] != args.quote:
+            found = text.find(args.quote)
+            if found < 0 or text.find(args.quote, found + 1) >= 0:
+                raise GateRejected("the selected quotation is not one unique exact source substring")
+            start, end, canonicalized = found, found + len(args.quote), True
         span = SourceSpan(source_id=args.source_id, source_sha256=source["source_sha256"], text_sha256=source["text_sha256"],
-                          start=args.start, end=args.end, quote=args.quote, extraction=source["extraction"])
+                          start=start, end=end, quote=args.quote, extraction=source["extraction"])
         span_id = "span:" + digest(span.model_dump(mode="json"))
         self._put("span", span_id, span.model_dump(mode="json"))
         self._event(Operation.SOURCE_SPAN_SELECTED, "span", span_id, "Selected an exact source passage", sources=[span],
-                    after={"source_id": args.source_id, "start": args.start, "end": args.end}, links=["source:" + args.source_id])
-        return {"span_id": span_id, "source": span.model_dump(mode="json")}
+                    after={"source_id": args.source_id, "start": start, "end": end, "offsets_canonicalized": canonicalized}, links=["source:" + args.source_id])
+        return {"span_id": span_id, "source": span.model_dump(mode="json"), "offsets_canonicalized": canonicalized}
 
     def _assertion(self, args, revise=False):
         self._check_packet()

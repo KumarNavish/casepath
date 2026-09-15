@@ -126,7 +126,8 @@ class OpenRouterFactsWorker:
         cfg = self.config
         messages = [{"role": "system", "content": (
             "You are the Facts role in CasePath. Use only the supplied tools. First read the customer message, list the original sources and open every attachment. "
-            "Select at least one exact source passage, then propose it verbatim as a reported assertion. Offsets count Unicode code points in the returned text. "
+            "Select at least one short exact source passage copied character-for-character, then propose it verbatim as a reported assertion. "
+            "Offsets count Unicode code points, but the tool may canonicalize a wrong offset only when your exact quote occurs once; never paraphrase the quote. "
             "A customer's claim is not an established fact. Do not infer legal conclusions, causes or missing evidence. "
             "Never output private reasoning or explanations. Call finish_work only after the required tools succeed. "
             "Tool errors are authoritative; do not invent a source or offset. Preserve German/English source wording exactly."
