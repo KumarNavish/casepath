@@ -1,0 +1,421 @@
+{
+ "nodes": [
+  {
+   "node_id": "rent_arrears",
+   "label": "Determine whether the tenant is in arrears for due rent or ancillary costs after taking over the property",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-257d-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "Payment arrears after taking over the property are stated as the condition for the landlord to use the payment-period-and-termination-threat procedure."
+  },
+  {
+   "node_id": "arrears_procedure_unavailable",
+   "label": "Payment-period-and-termination-threat procedure is unavailable",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-257d-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The stated procedure is conditioned on the tenant being in the specified payment arrears."
+  },
+  {
+   "node_id": "set_payment_period_and_threaten_termination",
+   "label": "Landlord sets a written payment period and threatens termination if it expires unused",
+   "kind": "step",
+   "supported_by": [
+    "or-art-257d-para1-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "The landlord may set the payment period in writing and threaten termination upon its unused expiry."
+  },
+  {
+   "node_id": "payment_period_expires_unpaid",
+   "label": "Determine whether the tenant does not pay within the prescribed payment period",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-257d-para2-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "Non-payment within the prescribed period is the stated condition for the landlord's termination right."
+  },
+  {
+   "node_id": "landlord_terminates_for_arrears",
+   "label": "Landlord gives notice terminating the tenancy for non-payment",
+   "kind": "step",
+   "supported_by": [
+    "or-art-257d-para2-20260101-de#p2",
+    "or-art-266l-para1-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "After non-payment, the landlord may terminate, and residential-tenancy notice must be written and given on the approved cantonal form."
+  },
+  {
+   "node_id": "formal_compliance",
+   "label": "Determine whether the termination complies with Articles 266l–266n",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-266o-para-20260101-de#p1",
+    "or-art-266l-para1-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p1",
+    "or-art-266n-para-20260101-de#p1"
+   ],
+   "support": "uncertain",
+   "why": "The propositions state formal requirements and that non-compliance makes a termination void, implying a compliance determination."
+  },
+  {
+   "node_id": "termination_void",
+   "label": "Termination is void",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-266o-para-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A termination that does not comply with Articles 266l–266n is expressly void."
+  },
+  {
+   "node_id": "justification_requested",
+   "label": "Justification for the termination is requested",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p1",
+    "or-art-271-para2-20260101-de#p2"
+   ],
+   "support": "uncertain",
+   "why": "The propositions make justification mandatory upon request, which implies a request-trigger determination."
+  },
+  {
+   "node_id": "justify_termination",
+   "label": "Provide justification for the termination",
+   "kind": "step",
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p1",
+    "or-art-271-para2-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "The termination must be justified when justification is requested."
+  },
+  {
+   "node_id": "good_faith_violation",
+   "label": "Determine whether the termination violates the principle of good faith",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-271-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A termination is stated to be challengeable when it violates the principle of good faith."
+  },
+  {
+   "node_id": "submit_termination_challenge",
+   "label": "Submit a request challenging the termination",
+   "kind": "step",
+   "supported_by": [
+    "or-art-271-para1-20260101-de#p1",
+    "or-art-273-para1-20260101-de#p1",
+    "or-art-273-para1-20260101-de#p3"
+   ],
+   "support": "uncertain",
+   "why": "A good-faith violation makes termination challengeable, and a party intending to challenge must submit a request within the stated period."
+  },
+  {
+   "node_id": "hardship_for_extension",
+   "label": "Determine whether termination causes unjustified hardship to the tenant or the tenant's family",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The tenant's right to request an extension is conditioned on hardship not justified by the landlord's interests."
+  },
+  {
+   "node_id": "request_tenancy_extension",
+   "label": "Tenant requests an extension of the tenancy",
+   "kind": "step",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The tenant may request an extension where the stated hardship condition is met."
+  },
+  {
+   "node_id": "authority_balances_extension_interests",
+   "label": "Competent authority balances the relevant interests for the extension request",
+   "kind": "step",
+   "supported_by": [
+    "or-art-272-para2-20260101-de#p1",
+    "or-art-272-para2-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p3",
+    "or-art-272-para2-20260101-de#p4",
+    "or-art-272-para2-20260101-de#p5"
+   ],
+   "support": "supported",
+   "why": "The competent authority must consider the enumerated contractual, personal, landlord-need, and market circumstances in balancing interests."
+  }
+ ],
+ "transitions": [
+  {
+   "edge_id": "e01",
+   "source_node_id": "rent_arrears",
+   "target_node_id": "set_payment_period_and_threaten_termination",
+   "condition": "The tenant is in arrears with due rent or ancillary costs after taking over the property",
+   "supported_by": [
+    "or-art-257d-para1-20260101-de#p1",
+    "or-art-257d-para1-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e02",
+   "source_node_id": "rent_arrears",
+   "target_node_id": "arrears_procedure_unavailable",
+   "condition": "The tenant is not in the specified arrears",
+   "supported_by": [
+    "or-art-257d-para1-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e03",
+   "source_node_id": "set_payment_period_and_threaten_termination",
+   "target_node_id": "payment_period_expires_unpaid",
+   "condition": null,
+   "supported_by": [
+    "or-art-257d-para1-20260101-de#p2",
+    "or-art-257d-para2-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e04",
+   "source_node_id": "payment_period_expires_unpaid",
+   "target_node_id": "landlord_terminates_for_arrears",
+   "condition": "The tenant does not pay within the prescribed period",
+   "supported_by": [
+    "or-art-257d-para2-20260101-de#p1",
+    "or-art-257d-para2-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e05",
+   "source_node_id": "landlord_terminates_for_arrears",
+   "target_node_id": "formal_compliance",
+   "condition": null,
+   "supported_by": [
+    "or-art-266o-para-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e06",
+   "source_node_id": "formal_compliance",
+   "target_node_id": "termination_void",
+   "condition": "The termination does not comply with Articles 266l–266n",
+   "supported_by": [
+    "or-art-266o-para-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e07",
+   "source_node_id": "landlord_terminates_for_arrears",
+   "target_node_id": "justification_requested",
+   "condition": null,
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e08",
+   "source_node_id": "justification_requested",
+   "target_node_id": "justify_termination",
+   "condition": "Justification is requested",
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p1",
+    "or-art-271-para2-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e09",
+   "source_node_id": "landlord_terminates_for_arrears",
+   "target_node_id": "good_faith_violation",
+   "condition": null,
+   "supported_by": [
+    "or-art-271-para1-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e10",
+   "source_node_id": "good_faith_violation",
+   "target_node_id": "submit_termination_challenge",
+   "condition": "The termination violates the principle of good faith and a party intends to challenge it",
+   "supported_by": [
+    "or-art-271-para1-20260101-de#p1",
+    "or-art-273-para1-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e11",
+   "source_node_id": "landlord_terminates_for_arrears",
+   "target_node_id": "hardship_for_extension",
+   "condition": null,
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e12",
+   "source_node_id": "hardship_for_extension",
+   "target_node_id": "request_tenancy_extension",
+   "condition": "Termination causes hardship for the tenant or family that cannot be justified by the landlord's interests",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e13",
+   "source_node_id": "request_tenancy_extension",
+   "target_node_id": "authority_balances_extension_interests",
+   "condition": null,
+   "supported_by": [
+    "or-art-272-para2-20260101-de#p1",
+    "or-art-272-para2-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p3",
+    "or-art-272-para2-20260101-de#p4",
+    "or-art-272-para2-20260101-de#p5"
+   ],
+   "support": "uncertain"
+  }
+ ],
+ "deadlines": [
+  {
+   "deadline_id": "d01",
+   "governs_node_id": "set_payment_period_and_threaten_termination",
+   "period": "At least 30 days for residential premises",
+   "runs_from": "Not stated",
+   "supported_by": [
+    "or-art-257d-para1-20260101-de#p4"
+   ]
+  },
+  {
+   "deadline_id": "d02",
+   "governs_node_id": "landlord_terminates_for_arrears",
+   "period": "At least 30 days, ending at the end of a month, for residential premises",
+   "runs_from": "Not stated",
+   "supported_by": [
+    "or-art-257d-para2-20260101-de#p2"
+   ]
+  },
+  {
+   "deadline_id": "d03",
+   "governs_node_id": "submit_termination_challenge",
+   "period": "Within 30 days",
+   "runs_from": "After receipt of the termination",
+   "supported_by": [
+    "or-art-273-para1-20260101-de#p3"
+   ]
+  }
+ ],
+ "obligations": [
+  {
+   "obligation_id": "o01",
+   "node_id": "landlord_terminates_for_arrears",
+   "party": "Landlord",
+   "statement": "Give notice of termination in writing.",
+   "supported_by": [
+    "or-art-266l-para1-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o02",
+   "node_id": "landlord_terminates_for_arrears",
+   "party": "Landlord",
+   "statement": "Use a form approved by the canton for the termination notice.",
+   "supported_by": [
+    "or-art-266l-para2-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o03",
+   "node_id": "landlord_terminates_for_arrears",
+   "party": "Landlord",
+   "statement": "State on the form how the tenant must proceed to challenge the notice or seek an extension.",
+   "supported_by": [
+    "or-art-266l-para2-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o04",
+   "node_id": "set_payment_period_and_threaten_termination",
+   "party": "Landlord",
+   "statement": "Serve the payment-deadline setting with termination threat separately on the tenant and on the tenant's spouse or registered partner.",
+   "supported_by": [
+    "or-art-266n-para-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o05",
+   "node_id": "landlord_terminates_for_arrears",
+   "party": "Landlord",
+   "statement": "Serve the termination separately on the tenant and on the tenant's spouse or registered partner.",
+   "supported_by": [
+    "or-art-266n-para-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o06",
+   "node_id": "justify_termination",
+   "party": "Not specified",
+   "statement": "Justify the termination upon request.",
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p1",
+    "or-art-271-para2-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o07",
+   "node_id": "authority_balances_extension_interests",
+   "party": "Competent authority",
+   "statement": "In balancing interests, consider the circumstances and content of the contract, tenancy duration, parties' circumstances and conduct, landlord's own need and urgency, and local market conditions.",
+   "supported_by": [
+    "or-art-272-para2-20260101-de#p1",
+    "or-art-272-para2-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p3",
+    "or-art-272-para2-20260101-de#p4",
+    "or-art-272-para2-20260101-de#p5"
+   ],
+   "support": "supported"
+  }
+ ],
+ "unsupported_gaps": [
+  {
+   "what_is_missing": "The consequence when the tenant pays within the prescribed payment period.",
+   "why_it_matters": "The propositions authorize termination after non-payment but do not state the procedural or tenancy consequence of timely payment."
+  },
+  {
+   "what_is_missing": "The adjudicative procedure and outcome for a termination challenge.",
+   "why_it_matters": "The propositions provide challengeability and a filing deadline but do not state the authority's decision process or remedies."
+  },
+  {
+   "what_is_missing": "The adjudicative outcome and duration of a tenancy extension.",
+   "why_it_matters": "The propositions authorize an extension request and prescribe interest-balancing factors but do not state whether, for how long, or on what terms an extension is granted."
+  }
+ ],
+ "contract": "casepath.process-induction/1.0.0",
+ "scope": "termination of a residential tenancy for rent arrears, and the tenant's options against it",
+ "grounding_problems": []
+}
