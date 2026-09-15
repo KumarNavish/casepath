@@ -1,0 +1,311 @@
+{
+ "actors": [
+  {
+   "label": "economical",
+   "model": "openai/gpt-5.4-mini",
+   "s1": {
+    "mean": 0.0937,
+    "ci": [
+     0.0389,
+     0.15
+    ],
+    "w": 21,
+    "l": 8,
+    "p": 0.0008
+   },
+   "readiness": {
+    "mean": -0.0722,
+    "ci": [
+     -0.1278,
+     -0.0167
+    ],
+    "w": 4,
+    "l": 15,
+    "p": 0.008
+   },
+   "hearsay": {
+    "full": 99,
+    "gated": 0
+   },
+   "premature": {
+    "ctes": 5,
+    "abl": 17
+   },
+   "turns": {
+    "ctes": [
+     0.824,
+     0.819,
+     0.719
+    ],
+    "ctes-abl-satisfaction": [
+     0.826,
+     0.81,
+     0.726
+    ],
+    "full-artifact-gate": [
+     0.731,
+     0.698,
+     0.652
+    ],
+    "full": [
+     0.674,
+     0.645,
+     0.595
+    ],
+    "direct-end-to-end": [
+     0.693,
+     0.645,
+     0.69
+    ],
+    "constant": [
+     0.629,
+     0.586,
+     0.648
+    ]
+   },
+   "arms": {
+    "ctes": {
+     "state": 0.787,
+     "final_turn_state": 0.719,
+     "premature": 5,
+     "requests": 240
+    },
+    "ctes-abl-satisfaction": {
+     "state": 0.787,
+     "final_turn_state": 0.726,
+     "premature": 17,
+     "requests": 212
+    },
+    "full-artifact-gate": {
+     "state": 0.694,
+     "final_turn_state": 0.652,
+     "premature": 8,
+     "requests": 236
+    },
+    "full": {
+     "state": 0.638,
+     "final_turn_state": 0.595,
+     "premature": 7,
+     "requests": 226
+    },
+    "direct-end-to-end": {
+     "state": 0.676,
+     "final_turn_state": 0.69,
+     "premature": 21,
+     "requests": 255
+    },
+    "constant": {
+     "state": 0.621,
+     "final_turn_state": 0.648,
+     "premature": 0,
+     "requests": 349
+    }
+   }
+  },
+  {
+   "label": "strong, same provider",
+   "model": "openai/gpt-5.6-terra",
+   "s1": {
+    "mean": 0.0317,
+    "ci": [
+     -0.0063,
+     0.0675
+    ],
+    "w": 19,
+    "l": 11,
+    "p": 0.1032
+   },
+   "readiness": {
+    "mean": -0.0778,
+    "ci": [
+     -0.1444,
+     -0.0111
+    ],
+    "w": 5,
+    "l": 14,
+    "p": 0.0252
+   },
+   "hearsay": {
+    "full": 16,
+    "gated": 0
+   },
+   "premature": {
+    "ctes": 1,
+    "abl": 9
+   },
+   "turns": {
+    "ctes": [
+     0.893,
+     0.826,
+     0.698
+    ],
+    "ctes-abl-satisfaction": [
+     0.886,
+     0.836,
+     0.71
+    ],
+    "full-artifact-gate": [
+     0.81,
+     0.776,
+     0.736
+    ],
+    "full": [
+     0.788,
+     0.762,
+     0.719
+    ],
+    "direct-end-to-end": [
+     0.726,
+     0.712,
+     0.69
+    ],
+    "constant": [
+     0.629,
+     0.586,
+     0.648
+    ]
+   },
+   "arms": {
+    "ctes": {
+     "state": 0.806,
+     "final_turn_state": 0.698,
+     "premature": 1,
+     "requests": 258
+    },
+    "ctes-abl-satisfaction": {
+     "state": 0.81,
+     "final_turn_state": 0.71,
+     "premature": 9,
+     "requests": 225
+    },
+    "full-artifact-gate": {
+     "state": 0.774,
+     "final_turn_state": 0.736,
+     "premature": 2,
+     "requests": 245
+    },
+    "full": {
+     "state": 0.756,
+     "final_turn_state": 0.719,
+     "premature": 3,
+     "requests": 244
+    },
+    "direct-end-to-end": {
+     "state": 0.71,
+     "final_turn_state": 0.69,
+     "premature": 1,
+     "requests": 248
+    },
+    "constant": {
+     "state": 0.621,
+     "final_turn_state": 0.648,
+     "premature": 0,
+     "requests": 349
+    }
+   }
+  },
+  {
+   "label": "strong, different provider",
+   "model": "anthropic/claude-sonnet-5",
+   "s1": {
+    "mean": -0.0746,
+    "ci": [
+     -0.1857,
+     0.031
+    ],
+    "w": 15,
+    "l": 14,
+    "p": 0.17
+   },
+   "readiness": {
+    "mean": -0.0833,
+    "ci": [
+     -0.2,
+     0.0278
+    ],
+    "w": 8,
+    "l": 14,
+    "p": 0.1464
+   },
+   "hearsay": {
+    "full": 13,
+    "gated": 0
+   },
+   "premature": {
+    "ctes": 0,
+    "abl": 2
+   },
+   "turns": {
+    "ctes": [
+     0.805,
+     0.505,
+     0.276
+    ],
+    "ctes-abl-satisfaction": [
+     0.814,
+     0.524,
+     0.281
+    ],
+    "full-artifact-gate": [
+     0.719,
+     0.583,
+     0.507
+    ],
+    "full": [
+     0.698,
+     0.579,
+     0.514
+    ],
+    "direct-end-to-end": [
+     0.698,
+     0.762,
+     0.8
+    ],
+    "constant": [
+     0.629,
+     0.586,
+     0.648
+    ]
+   },
+   "arms": {
+    "ctes": {
+     "state": 0.529,
+     "final_turn_state": 0.276,
+     "premature": 0,
+     "requests": 156
+    },
+    "ctes-abl-satisfaction": {
+     "state": 0.54,
+     "final_turn_state": 0.281,
+     "premature": 2,
+     "requests": 148
+    },
+    "full-artifact-gate": {
+     "state": 0.603,
+     "final_turn_state": 0.507,
+     "premature": 3,
+     "requests": 177
+    },
+    "full": {
+     "state": 0.597,
+     "final_turn_state": 0.514,
+     "premature": 3,
+     "requests": 181
+    },
+    "direct-end-to-end": {
+     "state": 0.753,
+     "final_turn_state": 0.8,
+     "premature": 5,
+     "requests": 238
+    },
+    "constant": {
+     "state": 0.621,
+     "final_turn_state": 0.648,
+     "premature": 0,
+     "requests": 349
+    }
+   }
+  }
+ ],
+ "missing": []
+}

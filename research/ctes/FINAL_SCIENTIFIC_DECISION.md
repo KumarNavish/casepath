@@ -4,10 +4,12 @@
 > baseline, a multi-actor generalization split, and a hostile operation-level novelty audit — returned
 > results that the sections below do not reflect. Read `TURN_TRAJECTORY_FINDING.md`,
 > `MINIMAL_RULE_BASELINE.md` and `FINAL_NOVELTY_AUDIT.md` first. The short version: the obvious fix removes
-> the hearsay error entirely and beats the method on readiness accuracy; the state-accuracy advantage is
-> not established on a strong actor model; the averaged headline metric reverses by the final turn; and the
-> audited operation has verified prior art. The status is **not submission-ready**, and not for reasons of
-> packaging.
+> the hearsay error entirely and beats the method on readiness accuracy on both actors that produced valid
+> reads; the state-accuracy advantage is established on the economical actor and not on the strong one; the
+> averaged headline metric conceals a decline across turns, with a baseline finishing ahead on two of five
+> runs; the third actor could not execute the protocol at its token budget and its comparison is void; and
+> the audited operation has verified prior art. The status is **not submission-ready**, and not for reasons
+> of packaging.
 
 *Superseded versions kept in git history. This one is written after the decisive split.*
 
