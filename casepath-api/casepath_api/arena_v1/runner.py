@@ -17,7 +17,17 @@ from casepath_api.arena_v1 import evaluation
 from casepath_api import evidential_channel_v1 as ctes
 
 TURNS = 3
-MODEL_ARMS = ("direct-end-to-end", "process-only", "full", "ctes", "ctes-ablation")
+# Each ``ctes-abl-*`` arm turns off exactly one of the three rules the compound ``ctes-ablation`` switch
+# turns off together, so the channel cap can be attributed one effect at a time.
+CTES_RULE_ARMS = {
+    "ctes": {},
+    "ctes-ablation": {"channel_cap": False},
+    "ctes-abl-levels": {"levels_from_content": True},
+    "ctes-abl-commitments": {"believe_party_commitments": True},
+    "ctes-abl-satisfaction": {"satisfy_by_attestation_alone": True},
+}
+MODEL_ARMS = ("direct-end-to-end", "process-only", "full", "ctes", "ctes-ablation",
+              "ctes-abl-levels", "ctes-abl-commitments", "ctes-abl-satisfaction")
 ZERO_ARMS = ("random", "static-checklist", "constant", "keyword-router", "domain-compiler")
 ALL_ARMS = ZERO_ARMS + MODEL_ARMS
 PRIOR_FIELDS = method.COMMON_FIELDS + ("readiness_target", "readiness_source_refs", "decisions", "pending_deliveries", "document_priority_ids")
@@ -128,7 +138,7 @@ def save(run, st): (run / "state.json").write_text(dump(st))
 
 
 def build_requests(arm, actor):
-    if arm in ("ctes", "ctes-ablation"):
+    if arm in CTES_RULE_ARMS:
         return {"messages": [{"role": "system", "content": CTES_SYSTEM_PROMPT}, {"role": "user", "content": json.dumps(actor, ensure_ascii=False, sort_keys=True)}]}
     return method.provider_request(method.build_request(arm, actor))
 
@@ -183,10 +193,11 @@ def cmd_init(a):
 
 def materialize(arm, actor, content, prior_requests):
     raw = method.parse_model_content(content)
-    if arm in ("ctes", "ctes-ablation"):
+    if arm in CTES_RULE_ARMS:
         notes: dict = {}
         reqs, atts, mentions, readability = ctes.parse_extraction(raw, actor, notes)
-        st = ctes.compute_state(actor, reqs, atts, mentions, readability, channel_cap=(arm == "ctes"), prior_requests=prior_requests)
+        st = ctes.compute_state(actor, reqs, atts, mentions, readability,
+                                prior_requests=prior_requests, **CTES_RULE_ARMS[arm])
         plan = ctes.plan_from_state(actor, st, reqs, atts, mentions, arm)
         plan["parse_notes"] = notes
         return raw, {arm: plan}
@@ -243,7 +254,7 @@ def cmd_step(a):
             else:
                 receipt = {"terminal": True, "case_id": cid, "turn": turn}
             h["previous_plan"] = copy.deepcopy(plan); h["previous_state"] = state_before; h["prior"] = prior_for_next_turn(plan, failure)
-            if failure is not None and not h["inactive"] and arm in MODEL_ARMS + ("ctes-ablation",):
+            if failure is not None and not h["inactive"] and arm in MODEL_ARMS:
                 h["inactive"] = True; h["stopping_failure"] = failure.get("error")
             call = calls.get(arm)
             st["records"].append({"case_id": cid, "domain": case["domain"], "family": case["family"], "turn": turn, "arm": arm, "metrics": metrics,

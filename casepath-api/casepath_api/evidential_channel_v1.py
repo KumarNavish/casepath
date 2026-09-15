@@ -164,10 +164,25 @@ def compute_state(
     readability: Mapping[str, str],
     *,
     channel_cap: bool = True,
+    levels_from_content: bool | None = None,
+    believe_party_commitments: bool | None = None,
+    satisfy_by_attestation_alone: bool | None = None,
     prior_requests: Sequence[str] = (),
     max_requests: int = 2,
     hedge_spare_slot: bool = False,
 ) -> dict[str, Any]:
+    # ``channel_cap`` remains the compound switch it has always been, so every frozen run reproduces
+    # byte for byte. It turns off three separable rules at once, which is why it cannot isolate the cap:
+    #   levels_from_content          - a unit's support level comes from its text rather than its channel
+    #   believe_party_commitments    - a delivery promise reported by a party is taken at face value
+    #   satisfy_by_attestation_alone - an attestation can satisfy a requirement with no artifact on file
+    # Each defaults to ``not channel_cap``; setting one explicitly ablates exactly that rule.
+    if levels_from_content is None:
+        levels_from_content = not channel_cap
+    if believe_party_commitments is None:
+        believe_party_commitments = not channel_cap
+    if satisfy_by_attestation_alone is None:
+        satisfy_by_attestation_alone = not channel_cap
     units = {u.ref: u for u in units_from_actor(actor)}
     catalog = [row["id"] for row in actor["document_catalog"]]
     returned: dict[str, list[Unit]] = {}
@@ -176,7 +191,7 @@ def compute_state(
             returned.setdefault(u.document_id, []).append(u)
 
     def unit_level(u: Unit) -> int:
-        if channel_cap:
+        if not levels_from_content:
             return CHANNEL_LEVEL[u.channel]
         return LEVEL["observed"] if u.channel != "instruction" else 0
 
@@ -200,7 +215,7 @@ def compute_state(
         # Channel rule for second-order reports: a delivery commitment (promised/automatic) counts only when
         # it comes from a returned artifact of the committing party; in a party report it is hearsay and
         # only establishes existence. Without the channel cap every report is taken at face value.
-        if channel_cap and u.channel != "returned_artifact" and status in {"promised", "automatic"}:
+        if not believe_party_commitments and u.channel != "returned_artifact" and status in {"promised", "automatic"}:
             status = "exists"
         order = {"exists": 1, "content_quoted": 1, "possessed_by_customer": 2, "held_by_third_party": 2,
                  "promised": 3, "automatic": 4, "unreadable": 0, "nonexistent": 5}
@@ -215,7 +230,7 @@ def compute_state(
         if not r.satisfying_document_sets:
             satisfied[r.requirement_id] = False
             continue
-        if not channel_cap:
+        if satisfy_by_attestation_alone:
             satisfied[r.requirement_id] = attained[r.requirement_id] >= LEVEL[r.standard] or any(
                 all(doc_observed_ok(d) for d in option) for option in r.satisfying_document_sets)
         else:
@@ -317,6 +332,9 @@ def compute_state(
     return {
         "contract": CONTRACT,
         "channel_cap": channel_cap,
+        "rules": {"levels_from_content": levels_from_content,
+                  "believe_party_commitments": believe_party_commitments,
+                  "satisfy_by_attestation_alone": satisfy_by_attestation_alone},
         "attained_levels": attained,
         "availability": availability,
         "satisfied": satisfied,
