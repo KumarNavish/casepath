@@ -28,7 +28,8 @@ def prepare(corpus, claim_id: str, assets: Path):
         sources=sources, observed_at=OBSERVED_AT, prior_self=(), system_prompt=SYSTEM_PROMPT)
 
 
-def run_claim(corpus, claim_id: str, assets: Path, model: str, max_tokens: int) -> dict:
+def run_claim(corpus, claim_id: str, assets: Path, model: str, max_tokens: int,
+              provider_only: tuple[str, ...] = ("anthropic",)) -> dict:
     sources, prepared = prepare(corpus, claim_id, assets)
     roles = {s.artifact_id: s.admission_receipt.get("artifact_role") for s in sources}
     user = prepared.messages[1]["content"]
@@ -36,7 +37,7 @@ def run_claim(corpus, claim_id: str, assets: Path, model: str, max_tokens: int) 
     images = sum(1 for part in (user if isinstance(user, list) else []) if part.get("type") != "text")
     messages = [{"role": "system", "content": SYSTEM_PROMPT + "\n\nReturn JSON matching this schema:\n" + json.dumps(OUTPUT_SCHEMA)},
                 {"role": "user", "content": text}]
-    r = transport.call_with_transport_retry(messages, model=model, max_tokens=max_tokens, temperature=0.0, provider_only=["anthropic"])
+    r = transport.call_with_transport_retry(messages, model=model, max_tokens=max_tokens, temperature=0.0, provider_only=list(provider_only) or None)
     if not r["ok"]:
         return {"claim_id": claim_id, "status": "transport_failure", "error": str(r.get("error"))[:200]}
     content = r["content"].strip()
@@ -63,6 +64,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(); ap.add_argument("--claims", nargs="*", default=[]); ap.add_argument("--with-attachment", type=int, default=6)
     ap.add_argument("--message-only", type=int, default=6); ap.add_argument("--model", default="anthropic/claude-opus-5")
     ap.add_argument("--max-tokens", type=int, default=6000); ap.add_argument("--assets", required=True); ap.add_argument("--out", required=True); ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--provider-only", default="anthropic", help="comma-separated provider pin; must serve --model")
     a = ap.parse_args()
     root = default_workspace_corpus_root()
     corpus = PublicCorpus(root)
@@ -73,7 +75,8 @@ def main() -> None:
     claims = a.claims or (with_att[: a.with_attachment] + msg_only[: a.message_only])
     assets = Path(a.assets); assets.mkdir(parents=True, exist_ok=True)
     with concurrent.futures.ThreadPoolExecutor(max_workers=a.workers) as pool:
-        results = list(pool.map(lambda c: run_claim(corpus, c, assets, a.model, a.max_tokens), claims))
+        results = list(pool.map(lambda c: run_claim(corpus, c, assets, a.model, a.max_tokens,
+                                     tuple(x for x in a.provider_only.split(",") if x)), claims))
     ok = [r for r in results if r["status"] == "ok"]
     summary = {"contract": "casepath.ctes-product-corpus-study/1.0.0", "corpus_identity": manifest, "model": a.model,
                "claims": len(results), "ok": len(ok), "failures": [r for r in results if r["status"] != "ok"],

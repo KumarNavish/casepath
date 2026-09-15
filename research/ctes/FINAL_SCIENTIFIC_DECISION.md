@@ -32,9 +32,22 @@ third carries the readiness discipline.
    controls.
 5. **Fixed-core transfer** to a third domain still requires zero changed lines of algorithm, configuration
    or prompt.
-6. **The product.** Both integrations are live in the real CasePath repository, the full suite goes from
-   917 to 934 passing with the identical seven pre-existing failures, and the gate is exercised end to end
-   through the mounted route.
+6. **The product.** Both integrations are live in the real CasePath repository at the product session's own
+   accepted functional commit `fac1f4c`, the full suite goes from 917 to 934 passing with the identical
+   seven pre-existing failures, and the gate is exercised end to end through the mounted route. The live
+   corpus is confirmed as the product's own: 150 claims, 207 original sources, 57 attachments.
+7. **Where the rule bites in the product, measured on both surfaces.** On the native live workspace
+   decoder, run over all 150 real claims, the model books **266 receipts of which 144 rest only on a
+   customer-message pointer** — 54 per cent — across 85 of 149 claims. The cap removes exactly those and
+   leaves the other 122 alone. On the six-role agent-work runtime, replayed against the product's own
+   preserved external-model acceptance run, the cap changes **nothing**: the Facts specialist scoped its
+   single span `source_statement_not_established_fact` and no role proposed `received`. The workflow's own
+   provenance scoping already prevents the error there. The rule earns its place where a model states
+   evidence status directly from sources, and is redundant where per-span scoping already exists. Both the
+   positive and the negative are reported.
+8. **No UI work was required.** The product's new Agent review console already renders a rejected gate with
+   its scope and reason, so a capped receipt is inspectable as `Gate rejected · exact_source_link`, beside
+   the console's own caption "A reported source statement, not an established fact".
 
 ## What it does not establish
 
