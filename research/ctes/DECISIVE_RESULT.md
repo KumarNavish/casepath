@@ -5,6 +5,20 @@ in `PRE_REGISTRATION.md` before any of these episodes existed. `openai/gpt-5.4-m
 turns, at most two requests per turn, no retries, no plan repair. Every zero-model control is far below the
 shortcut-audit thresholds. No arm suffered a single output failure except `process-only` (4) and `full` (1).
 
+### 0. The split as executed
+
+Recorded because the confirmatory split's plan and execution differed by one family, and that discrepancy
+is itself a disclosure in this work. This split's execution matches its plan exactly:
+
+| | planned | executed |
+|---|---|---|
+| episodes | 42 | 42 |
+| families | 21 | 21 |
+| families per domain | 7 / 7 / 7 | 7 / 7 / 7 |
+| episodes per domain | 14 / 14 / 14 | 14 / 14 / 14 |
+| German / English | 19 / 23 | 19 / 23 |
+| conditional requirement live | 20 of 42 | 20 of 42 |
+
 ## 1. The pre-registered primary endpoint is established
 
 **D1. State accuracy, `ctes` over `full`: +0.147, 95% CI [+0.095, +0.205], nineteen of twenty-one families

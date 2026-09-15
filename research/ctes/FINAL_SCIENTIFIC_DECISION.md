@@ -68,8 +68,10 @@ third carries the readiness discipline.
    a burden weight of 0.25 they cancel. This is a fact about the utility function as much as about the
    method, and it is reported as a negative.
 2. **Utility against its own ablation.** +0.127 [−0.009, +0.273]. Same story.
-3. **A single-effect ablation of the cap.** `channel_cap=False` changes three things at once. The ablation
-   is honest "content-based support" but it is not a one-flag isolation, and `METHOD.md` now says so.
+3. ~~A single-effect ablation of the cap.~~ **Discharged.** The compound switch was separated into three
+   independently settable rules and each given its own arm on the decisive split; see item 3 of what the
+   evidence establishes. The confirmatory split's compound ablation remains uninterpretable as an isolation
+   of the cap and is not restated as one anywhere.
 4. **That the method beats asking for everything.** `constant`, a zero-model arm that requests every
    outstanding document and never declares readiness, matches the method on evidence acquired and never
    declares prematurely. It loses on state accuracy by 0.181, the largest gap in the table, and it misses
@@ -78,24 +80,29 @@ third carries the readiness discipline.
 
 ## Status against the METHOD_READY gate
 
-The two boxes left open by the previous version are now closed, and they closed differently than hoped.
+Three boxes have now closed, across two pre-registered splits.
 
-- *The hidden split was read twice.* Closed. A fresh forty-one-family split, none of whose families appear
-  in any earlier split, was pre-registered before its episodes existed and read exactly once. The
-  pre-registration, its two logged amendments, the power analysis that motivated the second, the shortcut
-  audit, the writer-validity study and the adversarial audit response are all in the record.
-- *Significance against `full`.* Closed as a **negative** on utility and as a **decisive positive** on
-  state accuracy. The pre-registered endpoint did not separate; the exploratory metric that separates was
-  not pre-registered and is labelled as such throughout.
+- *The hidden split was read twice.* Closed. The confirmatory split — forty-one families, none appearing in
+  any earlier split — was pre-registered before its episodes existed and read once. Its pre-registration,
+  two logged amendments, power analysis, shortcut audit, writer-validity study and adversarial audit
+  response are all in the record.
+- *The headline rested on an exploratory metric.* Closed. State accuracy was pre-registered as the primary
+  endpoint of a second, decisive split of **twenty-one further families, forty-two episodes**, with the
+  power computed in advance, and read once. It returned +0.147 [+0.095, +0.205], nineteen families won and
+  one lost. The confirmatory split's exploratory +0.148 is a replication of it, not the basis for it.
+- *No single-effect ablation existed.* Closed, and against the method's own framing: the graded channel
+  ordering contributes nothing measurable, while one binary rule carries the readiness effect.
 
-I do not emit the terminal token. The pre-registered primary endpoint returned a negative, and a paper
-whose headline rests on an exploratory metric is not finished, however large that metric's effect is. The
-honest statement is that the method, the arena, the evaluation protocol and the product integration exist,
-reinforce each other and are reproducible; that the method is decisively more accurate about the state of
-the evidence than any baseline tested, under two writers and with the harness asymmetry removed; that it
-never credits a party report as a receipt; that the channel cap demonstrably and unanimously suppresses
-premature readiness; and that on the composite utility chosen in advance it does not separate from the
-strongest baseline.
+What remains open is narrower than what closed. Two endpoints fixed in advance returned nulls — the
+composite utility on both splits, and the symmetric readiness score introduced to repair it — and a
+zero-model arm that requests everything ties the method on evidence acquired. The zero hearsay receipts
+remain a property of the representation rather than a measurement.
+
+I still do not emit the terminal token, for a different and smaller reason than before. The science is
+where a submission needs it: a pre-registered primary endpoint established and replicated, a clean
+mechanism attribution, honest nulls, and a production deployment measured on two surfaces. What is not yet
+done is the writing — the draft at `PAPER_DRAFT.md` is a first full draft, not a submission — and the
+single-family-model caveat stands, since every number here comes from one model.
 
 ## What would finish it
 
