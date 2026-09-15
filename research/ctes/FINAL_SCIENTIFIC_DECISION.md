@@ -18,10 +18,14 @@ third carries the readiness discipline.
    which any arm had a failed output leaves +0.135 [+0.091, +0.181], 34 of 41, p = 0.0000. The same
    comparison on episodes rewritten by a different model gives +0.139 [+0.062, +0.218]. It does not depend
    on the writer, on the harness, or on the failure asymmetry.
-2. **Hearsay receipts.** The method records zero across all eighty-two episodes and all six earlier
-   configurations, where the content-reading baselines record 77 (`full`), 68 (`process-only`) and 137
-   (`direct`). The typed atom representation is what does this, not the channel cap: the ablation records
-   zero too.
+2. **Hearsay receipts — a design property, not a measurement.** No CTES-family arm can record one: in
+   `compute_state` every branch assigning a document `received` or `insufficient` requires that document to
+   be in `returned`, which is built only from returned-artifact units, and the cap appears in none of them.
+   The zero therefore holds with the cap switched off and for any data, and it is verified by inspection
+   rather than by experiment. What is measured is the other side: the arms that *can* make the error make
+   it constantly — 77 (`full`), 68 (`process-only`), 137 (`direct`) over the same eighty-two episodes —
+   although all three are told the provenance rule in their prompts. The contribution here is that the
+   representation makes the error unrepresentable; it is not evidence that the channel cap works.
 3. **The channel cap's own contribution is readiness.** Against its own ablation, premature readiness falls
    from 24 episodes to 6, a family-paired difference of **0.220 [0.134, 0.317] with fifteen families won
    and none lost**, p = 0.0000, and readiness accuracy rises 0.081 [0.016, 0.155], p = 0.013. It is paid

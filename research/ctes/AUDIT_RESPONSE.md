@@ -48,6 +48,20 @@ shrinks the measured gap rather than widening it.
 between two null results. The writer question is now answered on the metric that does separate, where the
 effect is +0.156 under one writer and +0.139 under the other.
 
+**The zero is structural, not measured — a sharper version of the H1 defect.** The audit's strongest
+finding goes past "H1's threshold was unmeetable" to "no CTES-family arm can produce this metric at all".
+Verified in `compute_state`: every branch assigning `received` or `insufficient` requires the document to be
+in `returned`, which is built only from `returned_artifact` units, and `channel_cap` is absent from all of
+them. So the method's zero holds with the cap switched off and would hold for any data. The confirmatory
+result now separates the design claim (checkable by inspection) from the empirical one (the arms that can
+make the error make it 68 to 137 times), and no longer offers the zero as evidence for the cap.
+
+**The writer-swap control omits an entire domain.** Verified: the thirteen swapped families are seven
+heating-defect and six rent-increase; all seven termination-payment families are missing, because the second
+writer was stopped part-way through an alphabetical queue. The earlier description as "thirteen of the
+forty-one families" implied a spread subset. Corrected in the confirmatory result and added to the
+limitations.
+
 ## Refuted by reading the code
 
 **"The baselines run at lower reasoning effort and a smaller token budget than CTES."** False, and this

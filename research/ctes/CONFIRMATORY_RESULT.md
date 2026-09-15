@@ -14,12 +14,26 @@ repair. Every zero-model control stays far below the shortcut-audit thresholds, 
 | H3 — `U(ctes) > U(ctes-ablation)` | **not established**: +0.127, 95% CI [−0.009, +0.273], 17 / 15, Holm p = 0.133 |
 | H4 — the two signs agree between writers | **not confirmed** |
 
-H1 failed on its second clause, and the failure is mine, not the method's. `ctes` did record zero hearsay
-receipts, as predicted. So did `ctes-ablation` — and it had done so on every earlier split too, which I
-should have read off my own prior results before writing the threshold. The typed atom representation is
-what prevents a party report from being booked as a receipt; the channel cap is not what does that work.
-H1 was therefore unfalsifiable in the direction I wrote it and is withdrawn as a test. What it was meant
-to measure is measured below, on the metric that actually separates the two.
+H1 failed on its second clause, and the failure is mine, not the method's. It is worse than a badly chosen
+threshold: **no CTES-family arm can record a hearsay receipt at all, by construction.** In
+`compute_state`, every branch that assigns a document `received` or `insufficient` is gated on that
+document being in `returned`, and `returned` is built only from units whose channel is
+`returned_artifact`. `channel_cap` appears in none of those branches. So the zero is a property of the
+representation, guaranteed by reading the code, not a measurement — and it is equally guaranteed for the
+ablation, which is why H1's second clause could never be met for any data whatsoever.
+
+This is a real weakening of the claim as it was first written, and it is recorded rather than quietly
+restated. What survives is two separate things:
+
+- a **design** claim, checkable by inspection rather than by experiment: the typed atom representation
+  makes it impossible to book a party report as a receipt;
+- an **empirical** claim: the arms that *can* make the error make it constantly — 77 times for `full`,
+  68 for `process-only`, 137 for `direct-end-to-end` over the same 82 episodes, and they are told the rule
+  in their prompts.
+
+H1 is withdrawn as a test of the channel cap. The cap's own contribution cannot be measured on hearsay
+receipts at all, and is measured below on premature readiness and readiness accuracy, where the two arms
+genuinely differ.
 
 H4 failed between two null results. On the thirteen families written twice, `U(ctes) − U(full)` is +0.048
 under one writer and −0.096 under the other, and neither interval comes near excluding zero. A sign test
@@ -102,8 +116,18 @@ future version of this arena should score readiness symmetrically.
 ## 4. Whether the writer chose the answer
 
 Thirteen families exist in two independently written versions from the identical latent specification, one
-by `openai/gpt-5.4-mini` (the evaluated model) and one by `anthropic/claude-sonnet-5`. The pre-registered
-sign test could not separate anything. The metric that does separate is stable across both:
+by `openai/gpt-5.4-mini` (the evaluated model) and one by `anthropic/claude-sonnet-5`.
+
+**Those thirteen families cover only two of the three domains.** They are seven from heating defect and six
+from rent increase; all seven termination-payment families are absent, because the second writer was
+stopped part-way through an alphabetically ordered queue. Earlier text here described the set only as
+"thirteen of the forty-one families", which reads as a spread subset and is not what it is. A writer effect
+confined to termination payment would be invisible to this control, and termination payment is where the
+baselines are most fragile on this run. The swap test is therefore weaker than stated, in a way that was
+not disclosed until now.
+
+The pre-registered sign test could not separate anything. The metric that does separate is stable across
+both writers on the domains the swap does cover:
 
 | comparison | mini-written | Sonnet-written |
 |---|---|---|
@@ -128,6 +152,10 @@ conservative in that respect.
 
 1. The composite utility does not separate `ctes` from `full` or from its own ablation, at forty-one
    families, on a third independent arena. Reported as a negative.
+1b. "Zero hearsay receipts" is structural for every CTES-family arm, not measured. It is a property of the
+   state representation and holds with the cap switched off. Do not present it as evidence that the channel
+   cap works.
+1c. The writer-swap control covers two of three domains; termination payment is absent from it entirely.
 2. `channel_cap=False` is a compound switch. It removes the channel levels, it stops downgrading a
    delivery promise reported by a party, and it loosens requirement satisfaction from "the artifact was
    returned **and** its content attests" to "either". The ablation is therefore "content-based support",
@@ -140,7 +168,8 @@ conservative in that respect.
 4. `hearsay_receipts` counts a document recorded as `received` **or** as `insufficient` when no version of
    it has been returned. The broader reading is the one used throughout; under it `ctes` scores zero, so
    the narrower reading cannot raise it.
-5. The writer-swap control covers thirteen of forty-one families and one writer pair. A properly powered
-   swap would rewrite all forty-one families under a second writer, at roughly fifteen dollars.
+5. The writer-swap control covers thirteen of forty-one families, two of three domains, and one writer
+   pair. A properly powered swap would rewrite all forty-one families under a second writer, at roughly
+   fifteen dollars.
 6. `U` charges premature readiness and does not reward correct readiness, which is why a never-deciding
    arm is not punished.
