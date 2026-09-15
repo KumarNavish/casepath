@@ -9,6 +9,7 @@ import re
 import shutil
 import stat
 import tempfile
+from types import MappingProxyType
 from typing import Any, Mapping
 
 
@@ -23,6 +24,13 @@ AUTHORIZED_PUBLIC_FILE_BYTES = 12_890_036
 CORPUS_CONTRACT = "casepath.public-observable-corpus/1.0.0"
 CORPUS_ID = "synthetic-dev-60"
 CORPUS_VERSION = "1.0.0"
+WORKSPACE_CORPUS_ID = "synthetic-150"
+# (source split, claim count, non-policy file count, non-policy bytes).
+# Both profiles are derived solely from the exact original source manifest.
+CORPUS_PROFILES = MappingProxyType({
+    CORPUS_ID: (AUTHORIZED_SOURCE_SPLIT, 60, 255, 12_890_036),
+    WORKSPACE_CORPUS_ID: (None, 150, 657, 45_506_779),
+})
 CLAIM_BINDING_CONTRACT = "casepath.claim-binding/1.0.0"
 STATIC_TEMPLATE_CONTRACT = "casepath.static-playbook-template/1.0.0"
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
@@ -145,9 +153,13 @@ def _file_receipt(path: str, raw: bytes) -> dict[str, Any]:
     return {"path": path, "sha256": sha256_bytes(raw), "size_bytes": len(raw)}
 
 
-def build_public_corpus_bundle(source_root: Path, destination: Path) -> dict[str, Any]:
+def build_public_corpus_bundle(source_root: Path, destination: Path, *, corpus_id: str = CORPUS_ID) -> dict[str, Any]:
     """Build the exact public-safe bundle without copying benchmark labels or gold."""
 
+    try:
+        source_split, case_count, data_file_count, data_bytes = CORPUS_PROFILES[corpus_id]
+    except (KeyError, TypeError) as exc:
+        raise WorkspaceCorpusError("unsupported intake corpus profile") from exc
     source_root = source_root.resolve()
     destination = destination.resolve()
     source_manifest_raw = _read_regular(source_root, "manifest.json")
@@ -163,10 +175,10 @@ def build_public_corpus_bundle(source_root: Path, destination: Path) -> dict[str
     ):
         raise WorkspaceCorpusError("authorized source case roster is invalid")
     cases = [
-        case for case in source_cases if case.get("split") == AUTHORIZED_SOURCE_SPLIT
+        case for case in source_cases if source_split is None or case.get("split") == source_split
     ]
-    if len(cases) != AUTHORIZED_PUBLIC_CASE_COUNT:
-        raise WorkspaceCorpusError("authorized public development roster is not 60")
+    if len(cases) != case_count:
+        raise WorkspaceCorpusError("authorized intake roster differs from its profile")
     case_ids: set[str] = set()
 
     if destination.exists() or destination.is_symlink():
@@ -353,16 +365,16 @@ def build_public_corpus_bundle(source_root: Path, destination: Path) -> dict[str
         written_rows.sort(key=lambda row: row["path"])
         binding_rows.sort(key=lambda row: row["claim_id"])
         if (
-            len(binding_rows) != AUTHORIZED_PUBLIC_CASE_COUNT
+            len(binding_rows) != case_count
             or len(written_rows)
-            != AUTHORIZED_PUBLIC_FILE_COUNT + len(policy_sources) + 1
+            != data_file_count + len(policy_sources) + 1
             or sum(
                 row["size_bytes"]
                 for row in written_rows
                 if not row["path"].startswith("policy/")
                 and row["path"] != "LICENSE-DATA"
             )
-            != AUTHORIZED_PUBLIC_FILE_BYTES
+            != data_bytes
         ):
             raise WorkspaceCorpusError("public bundle aggregate differs")
         aggregate = {
@@ -374,7 +386,7 @@ def build_public_corpus_bundle(source_root: Path, destination: Path) -> dict[str
         }
         manifest_material = {
             "contract": CORPUS_CONTRACT,
-            "corpus_id": CORPUS_ID,
+            "corpus_id": corpus_id,
             "corpus_version": "1.0.0",
             "source_manifest_file_sha256": AUTHORIZED_SOURCE_MANIFEST_SHA256,
             "contains_sealed_targets": False,
@@ -418,6 +430,10 @@ class PublicCorpus:
         self.manifest_file_sha256 = sha256_bytes(raw)
         self.manifest_size_bytes = len(raw)
         self.manifest = _closed_json(raw, label="public corpus manifest")
+        profile = CORPUS_PROFILES.get(self.manifest.get("corpus_id"))
+        if profile is None:
+            raise WorkspaceCorpusError("unsupported intake corpus profile")
+        self.corpus_id = self.manifest["corpus_id"]
         material = dict(self.manifest)
         manifest_sha256 = material.pop("manifest_sha256", None)
         if (
@@ -436,7 +452,7 @@ class PublicCorpus:
                 "manifest_sha256",
             }
             or self.manifest.get("contract") != CORPUS_CONTRACT
-            or self.manifest.get("corpus_id") != CORPUS_ID
+            or self.manifest.get("corpus_id") not in CORPUS_PROFILES
             or self.manifest.get("corpus_version") != CORPUS_VERSION
             or self.manifest.get("source_manifest_file_sha256")
             != AUTHORIZED_SOURCE_MANIFEST_SHA256
@@ -446,7 +462,7 @@ class PublicCorpus:
         ):
             raise WorkspaceCorpusError("public corpus manifest is invalid")
         rows = self.manifest.get("claims")
-        if not isinstance(rows, list) or len(rows) != AUTHORIZED_PUBLIC_CASE_COUNT:
+        if not isinstance(rows, list) or len(rows) != profile[1]:
             raise WorkspaceCorpusError("public corpus claim roster is invalid")
         self.bindings: dict[str, dict[str, Any]] = {}
         expected_files = {"manifest.json"}
@@ -721,5 +737,13 @@ class PublicCorpus:
         return raw, row
 
 
-def default_public_corpus_root() -> Path:
-    return Path(__file__).resolve().parent / "corpora" / CORPUS_ID
+def default_public_corpus_root(corpus_id: str = CORPUS_ID) -> Path:
+    """Resolve one allowlisted corpus; the legacy no-argument profile is unchanged."""
+    if not isinstance(corpus_id, str) or corpus_id not in CORPUS_PROFILES:
+        raise WorkspaceCorpusError("unsupported intake corpus profile")
+    return Path(__file__).resolve().parent / "corpora" / corpus_id
+
+
+def default_workspace_corpus_root() -> Path:
+    """The operational workspace contains all 150 original intake packets."""
+    return default_public_corpus_root(WORKSPACE_CORPUS_ID)

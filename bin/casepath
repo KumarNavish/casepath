@@ -1545,9 +1545,9 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(sys.argv[1])))
-from casepath_api.workspace_corpus import PublicCorpus, default_public_corpus_root
+from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root
 
-corpus = PublicCorpus(default_public_corpus_root())
+corpus = PublicCorpus(default_workspace_corpus_root())
 corpus_id = corpus.manifest["corpus_id"]
 claim_count = corpus.identity["claim_count"]
 print(f"{corpus_id}\t{claim_count}")
@@ -1795,7 +1795,7 @@ usage() {
 Usage:
   ./bin/casepath dev
   ./bin/casepath prepare
-  ./bin/casepath seed --corpus synthetic-dev-60
+  ./bin/casepath seed --corpus synthetic-150
   ./bin/casepath test
   ./bin/casepath replay <claim-id>
   ./bin/casepath adapter-check examples/local_source_adapter.py

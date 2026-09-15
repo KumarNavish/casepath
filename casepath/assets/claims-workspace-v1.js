@@ -1666,7 +1666,7 @@
 
 
     $('#cwOwnerForm').addEventListener('submit', event => { event.preventDefault(); void runWorkspaceCommand(assignOwner); });
-    $('#cwStart')?.addEventListener('click', () => runWorkspaceCommand(startClaim));
+    $('#cwStart')?.addEventListener('click', startReview);
     $('#cwReconcile')?.addEventListener('click', () => runWorkspaceCommand(reconcileClaim));
     $('#cwEnsureLoop')?.addEventListener('click', ensureClaimLoop);
     bindNativeInvestigationActions();
@@ -1714,6 +1714,15 @@
     }
   }
 
+  async function startReview() {
+    if(state.mutationBusy || !state.detail) return;
+    const context=activeDetailContext();let confirmed=false;
+    await runWorkspaceCommand(async()=>{confirmed=await startClaim();});
+    if(confirmed===true && isActiveDetail(context) && state.detail?.state.workflow_state==='in_review' && !state.loop) {
+      await ensureClaimLoop();
+    }
+  }
+
   async function startClaim() {
     const detail = state.detail;
     const context = activeDetailContext();
@@ -1723,7 +1732,8 @@
       const pending = commandIdentity('start', detail.state.claim_id, body);
       const response = await validateMutationResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(detail.state.claim_id)}/start`, {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':pending.key},body:pending.body}), detail.state.claim_id, 'WORKSPACE_PROCESSING_STARTED', detail.state);
       if (!isActiveDetail(context)) return;
-      await reflectAcceptedMutation(response, 'Assessment saved. Open the evidence review to continue.', 'start', context);
+      await reflectAcceptedMutation(response, 'Review saved. Preparing evidence requirements…', 'start', context);
+      return true;
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {
@@ -2302,7 +2312,60 @@
     if(event.key==='Tab'&&compactWorkbench.matches&&state.inspectorOpen){const rail=$('.cp-source-rail'),controls=visibleFocusables(rail),first=controls[0],last=controls.at(-1);if(!controls.includes(document.activeElement)||event.shiftKey&&document.activeElement===first||!event.shiftKey&&document.activeElement===last){event.preventDefault();(event.shiftKey?last:first)?.focus();}}
   }
 
+  function packetSelection(){
+    const selected=state.sourceSelection?.kind==='artifact'?state.sourceSelection.index:null;
+    root.querySelectorAll('[data-packet-artifact]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.packetArtifact)===selected)));
+    root.querySelectorAll('[data-packet-message]').forEach(b=>b.setAttribute('aria-pressed',String(!state.sourceSelection||selected!==null&&state.detail?.artifacts[selected]?.role==='customer_message')));
+  }
+  async function packetMetadata(artifact,claimId,signal){
+    const response=await fetch(artifact.download_url+'/preview?source_sha256='+artifact.sha256,{credentials:'same-origin',cache:'no-store',redirect:'error',signal});
+    if(!response.ok)throw new Error('This file could not be previewed. The original remains available.');
+    const value=await response.json();
+    if(value.contract!=='casepath.source-preview/1.0.0'||value.source_sha256!==artifact.sha256||value.artifact_id!==artifact.artifact_id||value.claim_id!==claimId||value.size_bytes!==artifact.size_bytes||value.is_evidence_admission!==false)throw new Error('The preview does not match the selected source.');
+    if(value.renderable&&(!Number.isSafeInteger(value.page_count)||value.page_count<1||value.page_count>400))throw new Error('The document page count is invalid.');
+    return value;
+  }
+  function packetPreviewShell(artifact,descriptor){
+    const count=descriptor.page_count;
+    return `<div class="cp-preview-toolbar"><button type="button" class="cw-text-button" data-packet-library>${ui.icon('back')}Packet</button><div class="cp-preview-paging">${count>1?`<button type="button" class="cp-icon-button" data-preview-page="previous" aria-label="Previous document page" disabled>${ui.icon('back')}</button>`:''}<span id="cpPreviewPageLabel">${descriptor.kind==='image'?`${descriptor.width} × ${descriptor.height}`:`Page 1 of ${count}`}</span>${count>1?`<button type="button" class="cp-icon-button" data-preview-page="next" aria-label="Next document page">${ui.icon('next')}</button>`:''}</div><button type="button" class="cw-text-button" data-preview-zoom aria-pressed="false">Zoom</button></div><div id="cpPreviewPageWrap" class="cp-preview-page-wrap" data-zoom="false" tabindex="0" role="region" aria-label="Document page preview"><div class="cp-page-placeholder" role="status">Loading page…</div></div><p id="cpPreviewPageError" class="cp-helper" role="status" hidden></p><p class="cp-original-link"><a class="cw-text-button" href="${esc(artifact.download_url)}" target="_blank" rel="noopener noreferrer" data-open-original-pdf>Open original ${ui.icon('external')}</a></p>`;
+  }
+  async function renderPacketPage(page){
+    const preview=state.packetPreview,artifact=state.detail?.artifacts[preview?.index];
+    if(!preview||!artifact||!Number.isSafeInteger(page)||page<1||page>preview.descriptor.page_count)return;
+    const ticket=state.sourceRequest,claimId=state.detail.state.claim_id;
+    state.previewPageController?.abort();
+    const controller=new AbortController();state.previewPageController=controller;
+    const current=()=>state.sourceRequest===ticket&&state.detail?.state.claim_id===claimId&&state.previewPageController===controller;
+    const wrap=$('#cpPreviewPageWrap');if(!wrap)return;
+    wrap.setAttribute('aria-busy','true');root.querySelectorAll('[data-preview-page]').forEach(b=>b.disabled=true);
+    const timer=setTimeout(()=>controller.abort(),20000);let blobUrl=null;
+    preview.requestedPage=page;
+    try{
+      const url=ui.packetPreviewUrl(artifact,page,1100);if(!url)throw new Error('Source preview address is invalid.');
+      const response=await fetch(url,{credentials:'same-origin',cache:'no-store',redirect:'error',signal:controller.signal});
+      if(!response.ok||response.headers.get('x-source-sha256')!==artifact.sha256||response.headers.get('content-type')?.split(';')[0]!=='image/png')throw new Error('The page preview could not be verified.');
+      const blob=await response.blob();if(blob.size>12*1024*1024)throw new Error('The preview exceeds the image limit.');
+      if(!current())return;
+      blobUrl=URL.createObjectURL(blob);const image=new Image();image.className='cp-preview-page';image.alt=ui.fileTitle(artifact)+' · page '+page;image.src=blobUrl;await image.decode();
+      if(!current()){URL.revokeObjectURL(blobUrl);blobUrl=null;return;}
+      const previous=state.previewPageUrl;state.previewPageUrl=blobUrl;blobUrl=null;wrap.replaceChildren(image);if(previous)URL.revokeObjectURL(previous);
+      preview.page=page;$('#cpPreviewPageLabel').textContent=preview.descriptor.kind==='image'?`${preview.descriptor.width} × ${preview.descriptor.height}`:`Page ${page} of ${preview.descriptor.page_count}`;
+      $('#cpPreviewPageError').hidden=true;
+    }catch(error){if(blobUrl)URL.revokeObjectURL(blobUrl);if(!current())return;const line=$('#cpPreviewPageError');line.hidden=false;wrap.querySelector('.cp-page-placeholder')?.remove();line.textContent=error.name==='AbortError'?'The page took too long to load.':error.message;const retry=document.createElement('button');retry.type='button';retry.className='cw-text-button';retry.dataset.previewRetry='true';retry.textContent='Try page again';line.append(' ',retry);}
+    finally{clearTimeout(timer);if(current()){wrap.setAttribute('aria-busy','false');root.querySelectorAll('[data-preview-page]').forEach(b=>b.disabled=b.dataset.previewPage==='previous'?preview.page<=1:preview.page>=preview.descriptor.page_count);}}
+  }
+  function packetClick(button){
+    if(button.hasAttribute('data-preview-retry')){if(state.packetPreview)void renderPacketPage(state.packetPreview.requestedPage||1);return true;}
+    if(button.hasAttribute('data-preview-page')){const p=state.packetPreview;if(p)void renderPacketPage(p.page+(button.dataset.previewPage==='next'?1:-1));return true;}
+    if(button.hasAttribute('data-preview-zoom')){const wrap=$('#cpPreviewPageWrap');if(wrap){const zoom=wrap.dataset.zoom!=='true';wrap.dataset.zoom=String(zoom);button.setAttribute('aria-pressed',String(zoom));button.textContent=zoom?'Fit':'Zoom';}return true;}
+    if(button.hasAttribute('data-packet-library')){const rail=$('.cp-source-rail');if(rail){rail.scrollTop=0;rail.querySelector('[data-packet-message]')?.focus({preventScroll:true});}return true;}
+    return false;
+  }
+  root.addEventListener('error',event=>{const image=event.target;if(image?.matches?.('.cp-packet-thumbnail img')){image.hidden=true;image.parentElement.dataset.previewUnavailable='true';}},true);
+
   function releaseSourcePreview() {
+    state.previewPageController?.abort();state.previewPageController=null;state.packetPreview=null;
+    if(state.previewPageUrl){URL.revokeObjectURL(state.previewPageUrl);state.previewPageUrl=null;}
     state.sourceRequest=(state.sourceRequest||0)+1;
     state.sourceController?.abort(); state.sourceController=null;
     if(state.sourceUrl){URL.revokeObjectURL(state.sourceUrl);state.sourceUrl=null;}
@@ -2310,7 +2373,9 @@
   function focusSource(focus=true) {
     const inspector=$('#cwSourceInspector');if(!inspector)return;
     if(focus)openInspector({focus:true});
-    $('.cp-source-rail').scrollTop=0;
+    packetSelection();
+    const rail=$('.cp-source-rail');
+    if(focus)rail.scrollTop=Math.max(0,inspector.offsetTop-62);else rail.scrollTop=0;
     root.querySelectorAll('[data-source-reset]').forEach(b=>b.hidden=!state.sourceSelection);
     root.querySelectorAll('[data-evidence-source]').forEach(b=>b.classList.toggle('cp-source-selected',state.sourceSelection?.kind==='evidence'&&b.dataset.evidenceSource===state.sourceSelection.id));
     if(focus)savePresentation();
@@ -2319,8 +2384,8 @@
   function resetSource(focus=true) {
     releaseSourcePreview(); state.sourceSelection=null;
     if(!state.detail || !$('#cwSourceContent')) return;
-    $('#cwSourceHeading').textContent='Original customer message';
-    $('#cwSourceContent').innerHTML=`<p class="cw-source-label">Customer account · not an established finding</p><div class="cw-message" tabindex="0" role="region" aria-label="Source text" lang="${esc(state.detail.state.binding.language)}">${esc(state.detail.message.body)}</div>`;
+    $('#cwSourceHeading').textContent='Customer message';
+    $('#cwSourceContent').innerHTML=`<p class="cw-source-label">As received from the customer</p><div class="cw-message" tabindex="0" role="region" aria-label="Source text" lang="${esc(state.detail.state.binding.language)}">${esc(state.detail.message.body)}</div>`;
     focusSource(focus);
   }
   function showEvidenceSource(itemId, focus=true) {
@@ -2354,7 +2419,7 @@
     try {
       const url=new URL(artifact.download_url,location.origin);
       if(url.origin!==location.origin) throw new Error('The source is outside this workspace.');
-      if(artifact.size_bytes>12*1024*1024) throw new Error('This file exceeds the 12 MB inline preview limit.');
+      if(artifact.size_bytes>16*1024*1024) throw new Error('This file exceeds the 16 MB inline preview limit.');
       const response=await fetch(url,{credentials:'same-origin',cache:'no-store',redirect:'error',signal:controller.signal});
       if(!response.ok) throw new Error(`Source unavailable (${response.status}).`);
       const bytes=await response.arrayBuffer();
@@ -2362,18 +2427,21 @@
       if(bytes.byteLength!==artifact.size_bytes || hash!==artifact.sha256) throw new Error('The file does not match the saved source record. Preview was blocked.');
       if(!current()) return;
       const media=artifact.media_type.split(';')[0].trim().toLowerCase();
-      let content='';
+      let content='',renderedPage=false;
       if(media.startsWith('text/')||media==='application/json'||media==='message/rfc822') {
         let text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);
         if(media==='application/json') {
           try {const value=JSON.parse(text);if(typeof value.body==='string') text=(value.subject?value.subject+'\n\n':'')+value.body;} catch(_) { /* Preserve source text when it is not a message object. */ }
         }
         content=ui.textSourceMarkup(text,media);
-      } else if(['image/png','image/jpeg','image/gif','image/webp','application/pdf'].includes(media)) {
-        state.sourceUrl=URL.createObjectURL(new Blob([bytes],{type:media}));
-        content=media==='application/pdf'?`<div class="cw-pdf-open"><p>This is the original PDF, with its pages and formatting preserved.</p><a class="cw-button cw-button-primary" href="${esc(url.href)}" target="_blank" rel="noopener noreferrer" data-open-original-pdf>Open full PDF ${ui.icon('next')}</a><p class="cw-note">Opens in a separate tab. This claim stays open here.</p></div>`:`<img class="cw-document-preview" alt="${esc(artifact.file_name)}" src="${esc(state.sourceUrl)}">`;
-      } else content='<p class="cw-note">This file type has no inline preview. The original file is available below.</p>';
-      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">Original file · verified against the saved record</p>${content}<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p><details class="cw-receipt"><summary>File verification</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+      } else if(['image/png','image/jpeg','image/gif','image/webp','image/tiff','image/bmp','application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].includes(media)) {
+        const descriptor=await packetMetadata(artifact,claimId,controller.signal);
+        if(!current())return;
+        if(descriptor.renderable){state.packetPreview={index,descriptor,page:1};content=packetPreviewShell(artifact,descriptor);renderedPage=true;}
+        else content=ui.packetContentMarkup(descriptor);
+      } else content='<p class="cw-note">This file type has no inline preview. Open the original file below.</p>';
+      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+      if(renderedPage)await renderPacketPage(1);
     } catch(error) {
       if(!current()) return;
       const reason=error.name==='AbortError'?'The source preview took too long to load.':error.message;
@@ -2388,6 +2456,7 @@
   }
   function handleWorkspaceClick(event) {
     const button=event.target.closest('button,a');if(!button)return;
+    if(packetClick(button))return;
     const menu=button.closest('.cp-actions-menu');if(menu)menu.open=false;
     if(presentationClick(button))return;
     const picker=button.closest('.cp-file-picker');if(picker)picker.open=false;

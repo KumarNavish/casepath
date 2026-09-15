@@ -1,3 +1,8 @@
+> Current product scope: the main workspace uses all 150 original intake-only
+> claims in `synthetic-150`; the original 60-case package is retained unchanged
+> for legacy tests. See [the current packet release](INTAKE_PACKET_150.md).
+> Historical 60-case statements below describe the predecessor release.
+
 # Manual Pro implementation handoff
 
 Use this repository for a direct, supervised ChatGPT Pro implementation

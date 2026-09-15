@@ -14,7 +14,7 @@ Original text is keyboard accessible. PDF attachments are verified against their
 
 ## Authority and validation boundaries
 
-All mutations still use the existing claim-loop endpoints, expected revisions and exact idempotency keys. The new presentation module only renders validated responses. The queue is scoped to the **60 public synthetic development claims** in this standalone repository; the 90 reserved research inputs are not included.
+All mutations still use the existing claim-loop endpoints, expected revisions and exact idempotency keys. The new presentation module only renders validated responses. The operational queue now uses all **150 original intake-only claims**. The legacy 60-case corpus remains unchanged for regression testing. No benchmark outcomes or hidden answers are imported. See INTAKE_PACKET_150.md.
 
 Local deterministic execution demonstrates product mechanics, not model competence, legal correctness, production readiness or real-world outcomes. A proposed plan remains explicitly provisional. Readiness does not authorize approval, payment or closure. This release does not enable inference or dispatch to customers.
 

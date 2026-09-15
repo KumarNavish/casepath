@@ -20,11 +20,12 @@ claim-loop journal is lifecycle authority. Preserve idempotency, revision
 checks, source grounding, replay, and explicit unknown states. Do not fabricate
 progress, evidence, decisions, model results, or review.
 
-The package contains only `synthetic-dev-60`, a public synthetic development
-corpus. Do not add private claims, reserved research inputs, credentials,
-benchmark gold, or evaluator outputs. Local product work uses deterministic
-mode and requires no model API call. Enabling paid inference, changing research
-records, publishing, or deploying is outside ordinary implementation work.
+The main workspace uses `synthetic-150`: all original intake-only inputs,
+explicitly requested for local product work. Keep `synthetic-dev-60` unchanged
+as the legacy regression profile. Do not import sealed targets, evaluator gold,
+expected answers, private real claims, credentials, or research records. No paid
+inference is needed. Preview projections are read-only and never admit evidence.
+Publishing or deploying the full corpus is not implied by local implementation.
 
 After source or documentation edits, follow the exact sealing commands in
 `CONTRIBUTING.md`. Run focused regressions for the changed behavior. Run

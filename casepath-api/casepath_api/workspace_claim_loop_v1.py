@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from .workspace_loop_presence import has_loop_records
+
 import json
 import os
 import stat
@@ -1132,6 +1134,10 @@ class WorkspaceClaimLoopServiceV1:
         recorded native binding can be inspected.
         """
 
+        if not has_loop_records(self.claim_loop.store,
+                                session_id=WORKSPACE_CLAIM_LOOP_SESSION_ID,
+                                loop_id=loop_id):
+            raise WorkspaceClaimLoopError("claim loop does not exist")
         try:
             initial_state = self.claim_loop.store.state_at_revision(
                 session_id=WORKSPACE_CLAIM_LOOP_SESSION_ID,

@@ -17,10 +17,11 @@ Keep these invariants intact:
 6. Use public synthetic fixtures and deterministic local mode for routine work.
 7. Verify the changed behavior in an isolated local instance.
 
-Do not add credentials, real claims, private records, the 90 reserved research
-inputs, benchmark targets, provider calls, or external effects to fixtures.
-Older QA programs that name 150 claims preserve historical contracts; they are
-not the fresh-clone acceptance path for the 60-case public package.
+Keep the two corpus identities separate. `synthetic-150` is the requested local
+operational set of original intake inputs; `synthetic-dev-60` is the unchanged
+legacy regression set. Never add sealed answers, evaluator outputs, credentials,
+private real claims, automatic provider calls, or external effects. Source preview
+routes must stay GET-only and may not update evidence or the handling journal.
 
 ## Development loop
 

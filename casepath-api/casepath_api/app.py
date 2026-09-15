@@ -107,7 +107,8 @@ from .workspace_evidence_authority_v1 import (
     LoopbackSourceByteAcquisitionAdapterV1,
     ServerInterpretedWorkspaceEvidenceV1,
 )
-from .workspace_corpus import PublicCorpus, default_public_corpus_root
+from .workspace_corpus import PublicCorpus, default_workspace_corpus_root
+from .workspace_packet_preview import create_packet_preview_router
 
 
 class _LocalNoStoreStaticFiles(StaticFiles):
@@ -150,7 +151,7 @@ claim_loop_protocol_adapter = LocalArtifactRegistryAdapterV1(
 )
 claim_loop_correction_adapter = MouldNeutralAssessmentCorrectionAdapterV1()
 claim_loop_correction_rollback_adapter = MouldNeutralAssessmentRollbackAdapterV1()
-claim_workspace_corpus = PublicCorpus(default_public_corpus_root())
+claim_workspace_corpus = PublicCorpus(default_workspace_corpus_root())
 workspace_cycle_pipeline_router = DeterministicTemplateCyclePipelineRouter(
     storage,
     claim_loop_cycle_pipeline,
@@ -364,6 +365,12 @@ app.add_middleware(
 app.include_router(create_foundation_router(service_from_environment()))
 app.include_router(create_source_preserving_shadow_router())
 app.include_router(create_document_lifecycle_shadow_router())
+app.include_router(create_packet_preview_router(claim_workspace_service))
+# Provider-neutral work events; original claim services remain authoritative.
+from .agent_work.install import install_agent_work
+install_agent_work(app, claim_workspace_service, workspace_claim_loop_service,
+                   storage.path.parent / "agent-work-v1.sqlite3")
+
 app.include_router(
     create_claim_loop_router(
         lambda: storage,

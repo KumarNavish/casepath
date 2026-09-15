@@ -21,7 +21,7 @@ from .insurance_protocol_v1 import (
     capability_catalog_v1,
 )
 from .storage import Storage
-from .workspace_corpus import PublicCorpus, default_public_corpus_root, sha256_bytes
+from .workspace_corpus import PublicCorpus, default_public_corpus_root, default_workspace_corpus_root, sha256_bytes
 
 
 class CasePathCLIError(RuntimeError):
@@ -307,7 +307,7 @@ def seed(args: argparse.Namespace) -> int:
     _, source_roster_sha256 = _validate_source_manifest(
         repository, source_manifest_raw
     )
-    corpus = PublicCorpus(default_public_corpus_root())
+    corpus = PublicCorpus(default_public_corpus_root(args.corpus))
     corpus_id = corpus.manifest["corpus_id"]
     if args.corpus != corpus_id:
         raise CasePathCLIError(
@@ -370,7 +370,7 @@ def replay(args: argparse.Namespace) -> int:
     )
     service = ClaimWorkspaceService.open_read_only(
         database_path,
-        corpus=PublicCorpus(default_public_corpus_root()),
+        corpus=PublicCorpus(default_workspace_corpus_root()),
     )
     detail = service.detail(args.claim_id)
     state = detail["state"]
