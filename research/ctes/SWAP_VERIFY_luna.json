@@ -1,0 +1,390 @@
+{
+ "model": "openai/gpt-5.6-luna-pro",
+ "episodes": 26,
+ "ok": 2,
+ "failed_checks": 24,
+ "errors": 0,
+ "cost_usd": 0.1798,
+ "results": [
+  {
+   "episode": "heating_defect.facade.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p4",
+     "rule": 1,
+     "issue": "The phrase \"I'm able to get that over to you now\" says the customer is sending the record."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It does not state what must be established or which record is acceptable as evidence for the medical-confirmation requirement."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It refers only to \"the listed facts\" and \"the required records\" without stating what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00869748
+  },
+  {
+   "episode": "heating_defect.facade.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "„Zur Fristsetzung und der Androhung der Mietzinshinterlegung ... ein Schreiben“ resolves the reference to the deadline/deposit-warning letter instead of leaving it ambiguous."
+    },
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "„Ich kann Ihnen diesen Auszug gerne zusenden“ says the customer is sending the record, contrary to possession_report."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„Photographs of the apartment are not required“ does not state which records are acceptable for establishing the facts."
+    }
+   ],
+   "cost_usd": 0.00911236
+  },
+  {
+   "episode": "heating_defect.hot_water.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "The instruction says medical confirmation should be requested once a contractor report reports health effects, but does not state which records are acceptable evidence for establishing the health effects."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "The phrase \"the listed facts have been established through the required documents\" does not state what must be established or identify which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0079261
+  },
+  {
+   "episode": "heating_defect.hot_water.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It says the listed facts must be supported by \"the required records\" but does not identify which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.008242
+  },
+  {
+   "episode": "heating_defect.meter_dispute.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "The possession report says “I'm able to send it over,” which violates the requirement not to say the customer is sending the record."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It does not clearly state what must be established or identify the acceptable record for establishing the medical health effects."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It refers only to “the listed facts” and “the required documents” without stating what must be established and which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00689752
+  },
+  {
+   "episode": "heating_defect.meter_dispute.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It says readiness comes from \"the required documents\" but does not identify which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00546473
+  },
+  {
+   "episode": "heating_defect.night_shutoff.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Nennt keine akzeptable Aufzeichnung, mit der die medizinischen Gesundheitsfolgen festgestellt werden; es heißt nur „Die medizinische Bestätigung ... wird relevant“."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "Nennt keine akzeptablen Aufzeichnungen; es verweist nur allgemein auf „die erforderlichen Dokumente“."
+    }
+   ],
+   "cost_usd": 0.0073806
+  },
+  {
+   "episode": "heating_defect.night_shutoff.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.0083776
+  },
+  {
+   "episode": "heating_defect.thermostat.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"aus den erforderlichen Dokumenten\" does not state which records are acceptable"
+    }
+   ],
+   "cost_usd": 0.00781581
+  },
+  {
+   "episode": "heating_defect.thermostat.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It requires medical confirmation and names a triggering contractor report, but does not state which record is acceptable evidence for the medical confirmation itself."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It says facts must be established from “the required records” but does not identify which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00725828
+  },
+  {
+   "episode": "heating_defect.underfloor.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "„kann Ihnen dieses Papier ohne Weiteres zusenden“ sagt, dass der Kunde den Bericht senden kann."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„aus den erforderlichen Dokumenten“ nennt nicht, welche konkreten Aufzeichnungen oder Dokumente als akzeptable Nachweise gelten."
+    }
+   ],
+   "cost_usd": 0.00728168
+  },
+  {
+   "episode": "heating_defect.underfloor.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "does not state which records are acceptable; it only refers vaguely to \"the required documents\""
+    }
+   ],
+   "cost_usd": 0.00666904
+  },
+  {
+   "episode": "heating_defect.window_seal.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "The phrase \"pulls together how they diagnosed the issue and how they've responded\" describes the record's content, contrary to existence_only."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It conditionally describes when to request a medical confirmation but does not state what must be established and which records are acceptable to establish it."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It states that photographs are not required and defines readiness, but does not state what must be established and which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00665148
+  },
+  {
+   "episode": "heating_defect.window_seal.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p4",
+     "rule": 1,
+     "issue": "\"kann sie Ihnen ohne Weiteres zukommen lassen\" says the customer is sending the record"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"durch die erforderlichen Dokumente\" does not state which records are acceptable"
+    }
+   ],
+   "cost_usd": 0.00697904
+  },
+  {
+   "episode": "rent_increase.charges_shift.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00535508
+  },
+  {
+   "episode": "rent_increase.charges_shift.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It refers only to \"the required records\" without stating which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0069901
+  },
+  {
+   "episode": "rent_increase.comparables.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It refers only to \"the listed facts\" and \"the required records\" without stating which facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00573488
+  },
+  {
+   "episode": "rent_increase.comparables.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "„kann Ihnen diesen zustellen“ — der Kunde sagt, dass er den Datensatz senden kann."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "„aus den erforderlichen Unterlagen“ — nennt weder konkret, was festzustellen ist, noch welche Unterlagen als Nachweis akzeptabel sind."
+    }
+   ],
+   "cost_usd": 0.0071161
+  },
+  {
+   "episode": "rent_increase.cost_increase.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It refers only to \"the listed facts\" and \"the required records\" without stating what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00705098
+  },
+  {
+   "episode": "rent_increase.cost_increase.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p4",
+     "rule": 1,
+     "issue": "„Ich kann Ihnen dieses Dokument gerne zukommen lassen“ – possession_report darf nicht aussagen, dass der Kunde das Dokument sendet."
+    }
+   ],
+   "cost_usd": 0.00681173
+  },
+  {
+   "episode": "rent_increase.renovation_share.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"I can get it over to you\" indicates that the customer will send the record, contrary to possession_report."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It says \"the listed facts\" and \"required records\" without stating what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00808256
+  },
+  {
+   "episode": "rent_increase.renovation_share.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It does not identify which records are acceptable; it only refers generally to \"qualifying records\"."
+    },
+    {
+     "id": "ret-C6-final#p1",
+     "rule": 4,
+     "issue": "The phrase \"supporting the CHF 120 monthly value-added share\" reveals that the record is adequate."
+    }
+   ],
+   "cost_usd": 0.00814016
+  },
+  {
+   "episode": "rent_increase.staggered.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It says \"Current rent-payment receipts are not required\" but does not state which records are acceptable evidence for establishing the listed facts."
+    }
+   ],
+   "cost_usd": 0.00490748
+  },
+  {
+   "episode": "rent_increase.staggered.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It says current rent-payment receipts are not needed and refers generally to “the required records,” but does not state which records are acceptable for establishing the facts."
+    }
+   ],
+   "cost_usd": 0.00374024
+  },
+  {
+   "episode": "rent_increase.takeover.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"from the required records\" does not identify which records are acceptable"
+    }
+   ],
+   "cost_usd": 0.00454652
+  },
+  {
+   "episode": "rent_increase.takeover.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It says the facts should be confirmed through \"appropriate documents\" but does not state which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00659944
+  }
+ ]
+}

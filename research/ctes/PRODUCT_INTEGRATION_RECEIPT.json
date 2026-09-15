@@ -1,0 +1,56 @@
+{
+ "contract": "casepath.ctes-product-integration-receipt/1.0.0",
+ "question": "Does the channel rule survive inside the real CasePath product, and does it break anything?",
+ "repository": "CasePath Agentic Acceptance 20260915d/casepath",
+ "branch": "product/agentic-experience-20260915",
+ "baseline_commit": "fac1f4c",
+ "integration_commit": "dc5dd4f",
+ "integration_points": [
+  {
+   "surface": "six-role agent_work workflow",
+   "files": ["casepath-api/casepath_api/agent_work/evidential_channel.py", "casepath-api/casepath_api/agent_work/runtime.py"],
+   "rule": "an evidence_class of 'received' is lowered to 'insufficient' when every SourceSpan behind the requirement came from an extraction typed as a party report (message_body); artifact extractions (utf8, pdf_text, office_text, image_metadata) leave it untouched",
+   "always_on": true
+  },
+  {
+   "surface": "native_live_workspace_v1 provisional proposals",
+   "files": ["casepath-api/casepath_api/evidential_channel_gate_v1.py", "casepath-api/casepath_api/native_live_workspace_v1.py"],
+   "rule": "the same channel cap applied to a decoded provisional proposal before hashing and journaling; the gate receipt is written into the proposal material so the decision is auditable after the fact",
+   "always_on": false,
+   "flag": "CASEPATH_EVIDENTIAL_CHANNEL_V1=1"
+  }
+ ],
+ "full_suite": {
+  "runner": "pytest over the whole casepath-api suite, identical invocation both times",
+  "baseline": {"failed": 7, "passed": 917, "skipped": 10, "warnings": 8, "wall_clock_s": 915.9},
+  "with_integration": {"failed": 7, "passed": 934, "skipped": 10, "warnings": 8, "wall_clock_s": 1023.4},
+  "delta_passed": 17,
+  "failure_sets_identical": true,
+  "pre_existing_failures": [
+   "tests/test_cli_v1.py::test_audited_local_adapter_completes_exact_once_lifecycle",
+   "tests/test_cli_v1.py::test_adapter_check_rejects_local_implementation_source_drift",
+   "tests/test_cli_v1.py::test_adapter_check_rejects_transitive_source_drift",
+   "tests/test_cli_v1.py::test_seed_rejects_source_drift_after_service_construction",
+   "tests/test_cli_v1.py::test_seed_withholds_receipt_when_source_drifts_during_mutation",
+   "tests/test_cli_v1.py::test_adapter_static_byte_cap_has_exact_boundary",
+   "tests/test_cli_v1.py::test_launcher_safe_path_blocks_caller_package_shadow"
+  ],
+  "pre_existing_failure_note": "all seven concern adapter source-drift detection and a static byte cap in the CLI, are present at the untouched baseline commit fac1f4c, and touch no file this work modifies"
+ },
+ "added_tests": {
+  "tests/test_evidential_channel_agent_work.py": 6,
+  "tests/test_evidential_channel_v1.py": 9,
+  "tests/test_evidential_channel_gate_v1.py": 6,
+  "tests/test_arena_v1.py": 3,
+  "total": 24,
+  "note": "24 new tests, of which 17 are net new passes in the full suite count; the remainder replace or refine assertions that already existed"
+ },
+ "live_end_to_end": "tests/test_evidential_channel_gate_v1.py drives a real provisional proposal through the mounted route with the flag on and asserts the lowered class and the gate receipt in the journalled material",
+ "untouched": [
+  "casepath/assets/agent-work-v1.css",
+  "casepath/assets/agent-work-v1.js",
+  "casepath/index.html",
+  "casepath/source-manifest.json"
+ ],
+ "untouched_note": "in-flight product UI work owned by the product chat; left uncommitted and unmodified throughout"
+}

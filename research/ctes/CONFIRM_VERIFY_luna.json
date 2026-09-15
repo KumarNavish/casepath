@@ -1,0 +1,714 @@
+{
+ "model": "openai/gpt-5.6-luna-pro",
+ "episodes": 40,
+ "ok": 1,
+ "failed_checks": 39,
+ "errors": 0,
+ "cost_usd": 0.291,
+ "results": [
+  {
+   "episode": "heating_defect.facade.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p4",
+     "rule": 1,
+     "issue": "\"I can send it if needed\""
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"the medical confirmation become relevant\" does not state what must be established and which records are acceptable"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"established from the required records\" does not identify which records are acceptable"
+    },
+    {
+     "id": "ret-A2-final#p1",
+     "rule": 2,
+     "issue": "\"the cold wall has already led to damp conditions\" does not report the health-effect circumstance that triggers the medical confirmation"
+    }
+   ],
+   "cost_usd": 0.00974232
+  },
+  {
+   "episode": "heating_defect.facade.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "„ich kann es bei Bedarf schicken“ — ein Besitzbericht darf nicht sagen, dass das Dokument gesendet wird."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„die gelisteten Fakten ... aus den erforderlichen Unterlagen“ — es wird nicht angegeben, welche Fakten festzustellen sind und welche konkreten Aufzeichnungen akzeptabel sind."
+    }
+   ],
+   "cost_usd": 0.00878444
+  },
+  {
+   "episode": "heating_defect.hot_water.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not state what must be established or identify the acceptable record for establishing the medical health effects."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "Says photographs are not required but does not state which records are acceptable for establishing the listed facts."
+    }
+   ],
+   "cost_usd": 0.00618219
+  },
+  {
+   "episode": "heating_defect.hot_water.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00748248
+  },
+  {
+   "episode": "heating_defect.meter_dispute.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"I can send it if you need it\""
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"Only if a returned contractor service report actually reports the triggering circumstance\" does not state which records are acceptable"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not required for this check\" does not state what must be established or which records are acceptable"
+    }
+   ],
+   "cost_usd": 0.00556116
+  },
+  {
+   "episode": "heating_defect.meter_dispute.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "“Readiness here means the listed facts are established from the required records” does not state which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0047142
+  },
+  {
+   "episode": "heating_defect.night_shutoff.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Readiness here means the listed facts are established from the required records\" does not state which facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00694447
+  },
+  {
+   "episode": "heating_defect.night_shutoff.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Readiness means the listed facts are established from the required records\" does not state which facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00693316
+  },
+  {
+   "episode": "heating_defect.thermostat.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h3",
+     "rule": 3,
+     "issue": "\"schriftlichen Reparaturfristbrief\" omits the required deposit warning from the acceptable record description"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"die gelisteten Fakten ... den erforderlichen Unterlagen\" does not state which facts must be established or which specific records are acceptable"
+    }
+   ],
+   "cost_usd": 0.00856291
+  },
+  {
+   "episode": "heating_defect.thermostat.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A2-final#p1",
+     "rule": 2,
+     "issue": "It says “no occupant health complaint was reported,” but does not report the circumstance that triggers medical confirmation."
+    },
+    {
+     "id": "ret-A3-partial#p1",
+     "rule": 2,
+     "issue": "It says “The later entries are missing” but does not promise that the complete version follows."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It refers only to “the required records” without stating which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00757122
+  },
+  {
+   "episode": "heating_defect.underfloor.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "„kann ihn Ihnen schicken“ – der Kunde sagt, dass er den Bericht senden kann."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "„Until then, do not ask for the medical confirmation of health effects for an occupant.“ – nennt keine zulässigen Nachweise für die festzustellende Tatsache."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„Photographs of the apartment are not required for this check.“ – nennt weder konkret, was festzustellen ist, noch welche Aufzeichnungen dafür zulässig sind."
+    }
+   ],
+   "cost_usd": 0.00619241
+  },
+  {
+   "episode": "heating_defect.underfloor.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"then request the medical confirmation\" does not state what must be established or identify acceptable evidence as the record establishing it"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"the listed facts are established from the required documents\" does not identify which records are acceptable"
+    }
+   ],
+   "cost_usd": 0.00568387
+  },
+  {
+   "episode": "heating_defect.window_seal.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not state what must be established or which record is acceptable for the medical confirmation; it only says “This becomes relevant only if a returned contractor service report reports the triggering circumstance.”"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "Does not identify which records are acceptable or specify the facts to be established; it only refers generally to “the listed facts” and “the required documents.”"
+    }
+   ],
+   "cost_usd": 0.00677059
+  },
+  {
+   "episode": "heating_defect.window_seal.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not state what must be established or which records are acceptable; it only says “This obligation becomes active only if a returned contractor report itself reports the triggering circumstance.”"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "Does not identify what must be established or which specific records are acceptable; it only refers generally to “the listed facts” and “the required records.”"
+    }
+   ],
+   "cost_usd": 0.0083374
+  },
+  {
+   "episode": "rent_increase.charges_shift.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "does not state which records are acceptable; it only says “Readiness here means the listed facts are established from the required documents”"
+    }
+   ],
+   "cost_usd": 0.00459316
+  },
+  {
+   "episode": "rent_increase.charges_shift.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"Readiness here means the listed facts are established from the required records\" does not identify which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0059959
+  },
+  {
+   "episode": "rent_increase.comparables.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not specify which records are acceptable; it only refers generically to \"the required documents\"."
+    }
+   ],
+   "cost_usd": 0.00429224
+  },
+  {
+   "episode": "rent_increase.comparables.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "„kann es bei Bedarf schicken“"
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "„Readiness here means the listed facts have been established from the required documents“ nennt weder die konkret festzustellenden Fakten noch akzeptable Aufzeichnungen"
+    }
+   ],
+   "cost_usd": 0.00702236
+  },
+  {
+   "episode": "rent_increase.cost_increase.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h3",
+     "rule": 3,
+     "issue": "Does not state what must be established or identify acceptable evidence; it only says the duty arises to request the renovation cost breakdown."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not identify which records are acceptable for establishing the listed facts; it only says they must come from the required documents."
+    }
+   ],
+   "cost_usd": 0.00585192
+  },
+  {
+   "episode": "rent_increase.cost_increase.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p4",
+     "rule": 1,
+     "issue": "„Wenn nötig kann ich sie schicken“ — the customer says they can send the record."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "„aus den erforderlichen Dokumenten“ — it does not specify which records are acceptable evidence."
+    }
+   ],
+   "cost_usd": 0.00718563
+  },
+  {
+   "episode": "rent_increase.renovation_share.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"I can send it over if needed\""
+    },
+    {
+     "id": "gov#h3",
+     "rule": 3,
+     "issue": "Does not state what facts must be established or identify acceptable evidence for the renovation cost breakdown."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not state which records are acceptable evidence."
+    }
+   ],
+   "cost_usd": 0.00645244
+  },
+  {
+   "episode": "rent_increase.renovation_share.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It says facts are established \"from the required records\" but does not state which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00585884
+  },
+  {
+   "episode": "rent_increase.staggered.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It says facts are established from \"the required records\" but does not state which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0056376
+  },
+  {
+   "episode": "rent_increase.staggered.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C2-final#p1",
+     "rule": 2,
+     "issue": "It lists the referenced adjustment rate used for the notice, but does not state the concrete rate value."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "“Readiness here means the listed facts are established from the required records” does not state which facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00870684
+  },
+  {
+   "episode": "rent_increase.takeover.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"Readiness means the listed facts are established from the required records\" does not state what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00517176
+  },
+  {
+   "episode": "rent_increase.takeover.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It refers only to \"the required records\" without stating which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00579252
+  },
+  {
+   "episode": "termination_payment.bank_holiday.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It gives a condition for relevance but does not state what must be established or identify acceptable evidence for the allocation statement."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It does not state the specific facts to be established or which records are acceptable; it only refers to “the listed facts” and “the required records.”"
+    },
+    {
+     "id": "ret-B7-irrelevant#p1",
+     "rule": 2,
+     "issue": "The paragraph includes facts related to the review, including “monthly rent of CHF 2,150.00” and “the apartment at Seestrasse 18,” rather than being unrelated."
+    }
+   ],
+   "cost_usd": 0.0087706
+  },
+  {
+   "episode": "termination_payment.bank_holiday.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "It does not clearly state what must be established or identify the acceptable record for establishing it."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It says a signed lease contract is not required but does not state which records are acceptable for establishing the listed facts."
+    },
+    {
+     "id": "ret-B7-irrelevant#p1",
+     "rule": 2,
+     "issue": "The paragraph is not genuinely unrelated: it states the relevant monthly rent amount, “CHF 2,450.00.”"
+    }
+   ],
+   "cost_usd": 0.0084748
+  },
+  {
+   "episode": "termination_payment.cure_window.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "„Ich kann ihn bei Bedarf schicken“ — the possession report says the customer can send the record."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„Readiness here means the listed facts are established from the required documents“ — it does not identify which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00957044
+  },
+  {
+   "episode": "termination_payment.cure_window.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"I can send it over if needed\" says the customer will send the record."
+    },
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"was ever issued to me\" denies issuance to the customer, but does not assert that no such record was ever produced or existed."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"Only if the property-manager ledger itself reports a mixed demand does the allocation issue arise\" does not state what must be established or clearly identify the acceptable record for establishing it."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"the listed facts are established from the required records\" does not identify what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00772942
+  },
+  {
+   "episode": "termination_payment.deposit_offset.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"Only if the returned property-manager ledger itself reports a mixed demand does the obligation to provide an allocation statement become active\" does not clearly state the fact to be established and the acceptable record for establishing it."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Readiness here means the listed facts are established from the required documents\" does not state which facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00922512
+  },
+  {
+   "episode": "termination_payment.deposit_offset.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "„Wenn nötig, kann ich sie schicken“ widerspricht possession_report, da das Senden des Dokuments erwähnt wird."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "„Bis dahin fordern Sie keine Abrechnung zur Zuordnung an“ nennt weder eindeutig die festzustellende Tatsache noch die zulässigen Nachweise und weicht von der geforderten Bedingung ab."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„Der unterschriebene Mietvertrag ist für diese Prüfung nicht erforderlich“ nennt keine festzustellende Tatsache und keine zulässigen Nachweise."
+    },
+    {
+     "id": "ret-B1-partial#p1",
+     "rule": 2,
+     "issue": "„der Verwendungszweck ist jedoch nicht sichtbar“ bezeichnet kein Fehlen eines für den Bankexport erforderlichen Elements; Ausführungs- und Valutadatum sind beide vorhanden."
+    },
+    {
+     "id": "ret-B3-final#p1",
+     "rule": 2,
+     "issue": "„Mahnungsanzeige der Vermieterin vom 08.05.2025“ stellt den Inhalt dar, aber nicht, dass die Cure Notice zugestellt wurde."
+    },
+    {
+     "id": "ret-B7-irrelevant#p1",
+     "rule": 2,
+     "issue": "„die Monatsmiete beträgt CHF 2'480.00, und die Kaution liegt bei CHF 4'960.00“ betrifft relevante Tatsachen und ist daher nicht vollständig irrelevant."
+    },
+    {
+     "id": "ret-B5-partial#p1",
+     "rule": 4,
+     "issue": "„Die beigefügte Kopie“ verwendet eine Formulierung für ein beigefügtes Dokument."
+    }
+   ],
+   "cost_usd": 0.0096236
+  },
+  {
+   "episode": "termination_payment.estate.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "„Ich kann es Ihnen zuschicken“ – die Kundin sagt damit, dass sie das Dokument senden kann."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "„wird ... relevant“ – die Anweisung nennt weder ausdrücklich, was festgestellt werden muss, noch welche Unterlagen dafür als Nachweis akzeptiert werden."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„aus den erforderlichen Dokumenten“ – die Anweisung bezeichnet keine konkret akzeptablen Unterlagen und sagt nicht ausdrücklich, welcher konkrete Sachverhalt festzustellen ist."
+    }
+   ],
+   "cost_usd": 0.0081494
+  },
+  {
+   "episode": "termination_payment.estate.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p5",
+     "rule": 1,
+     "issue": "\"ich kann ihn bei Bedarf schicken\" says the customer can send the record, which possession_report must not do"
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"die allocation statement requirement becomes active\" does not clearly state what must be established or identify an acceptable record for establishing it"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"from the required documents\" does not identify which facts must be established or which records are acceptable"
+    }
+   ],
+   "cost_usd": 0.00911684
+  },
+  {
+   "episode": "termination_payment.joint_tenant.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Readiness means the listed facts are established from the required records\" does not state which records are acceptable evidence."
+    }
+   ],
+   "cost_usd": 0.00688098
+  },
+  {
+   "episode": "termination_payment.joint_tenant.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "„kann ihn bei Bedarf schicken“ sagt, dass der Kunde den Datensatz senden kann."
+    },
+    {
+     "id": "ret-B7-irrelevant#p1",
+     "rule": 2,
+     "issue": "Der angeblich irrelevante Mietvertrag nennt die gemeinsamen Mieter, die Wohnung und die Miete und ist damit nicht genuin sachfremd."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„aus den erforderlichen Dokumenten“ benennt weder konkret, was festzustellen ist, noch welche Aufzeichnungen als zulässiger Nachweis gelten."
+    }
+   ],
+   "cost_usd": 0.00921376
+  },
+  {
+   "episode": "termination_payment.sublet_payer.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"kann ihn schicken\" says the customer is sending the record"
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"request an allocation statement for the mixed demand\" does not state which records are acceptable"
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"the listed facts are established from the required documents\" does not specify what must be established or which records are acceptable"
+    }
+   ],
+   "cost_usd": 0.00930832
+  },
+  {
+   "episode": "termination_payment.sublet_payer.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"an allocation statement becomes relevant\" does not explicitly state what must be established or which record is acceptable evidence."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Readiness means the listed facts are established from the required records\" does not identify what facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00834772
+  },
+  {
+   "episode": "termination_payment.wrong_account.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"can send it if needed\" says the customer will send the record, contrary to possession_report."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Readiness here means the listed facts are established from the required records\" does not state what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.00927444
+  },
+  {
+   "episode": "termination_payment.wrong_account.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "It does not state what must be established or identify which records are acceptable; it only says to verify \"the listed facts from the required records\"."
+    }
+   ],
+   "cost_usd": 0.00530564
+  }
+ ]
+}

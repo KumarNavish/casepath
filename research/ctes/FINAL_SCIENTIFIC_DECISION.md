@@ -1,34 +1,84 @@
 # Final scientific decision
 
-**The contribution is the channel cap**: an evidence-acquisition agent derives how much support a source
-can lend from the channel the source arrived on, not from its content or the model's judgement. It is one
-typed constraint over signal the product already records, it costs nothing at inference time, and it is the
-component the evidence attributes to.
+*Superseded version kept in git history. This one is written after the confirmatory split.*
 
-**What the evidence supports.**
-1. The hearsay failure is real and scales with model weakness: model-declared arms produce 4–80 hearsay
-   receipts per split (Opus 3–5; gpt-5.4-mini 11–80). CTES produces **zero in all six configurations**.
-2. Premature readiness: direct produces 1–12 episodes per split; CTES produces 0 in five of six and 1 once.
-3. On the primary frozen utility CTES is the best arm in 5 of 6 configurations, and beats the direct planner
-   with a family-level interval excluding zero in 4 of 6.
-4. Removing only the cap (identical call, atoms, calculus) costs +0.424 [0.062, 0.924] on the untouched
-   hidden split and +0.950 [0.750, 1.183] in the transfer domain, where the ablation suffers 8 premature
-   readiness episodes and a negative utility. The mechanism, not the pipeline, carries the safety result.
-5. Fixed-core transfer to a third domain required **zero** changed lines of algorithm, configuration or
-   prompt; only the episodes' own knowledge changed.
-6. The gain is not bought with acquisitions: CTES issues fewer requests than direct in every split
-   (36 vs 46 hidden, 23 vs 32 transfer) at comparable inference cost.
+**The contribution is a channel-typed evidential state, and the confirmatory evidence splits it in two.**
+An evidence-acquisition agent represents what each source locally says as typed atoms, derives the case
+state by a deterministic calculus rather than by asking a model to judge it, and fixes how much support a
+source can lend from the channel the source arrived on rather than from its content. On a fresh
+forty-one-family arena read once, the first two parts carry a large and decisive accuracy effect and the
+third carries the readiness discipline.
 
-**What it does not support.** Superiority over process-first + deterministic verifier is not established at
-family-level significance (4 of 6 intervals include zero). Against a strong direct planner in the transfer
-domain the utility difference is within noise. These are reported, not smoothed.
+## What the evidence establishes
 
-**Status against the METHOD_READY gate.** Scientific, evaluation, generality and product boxes are met with
-artifacts. Two empirical boxes are not: significance against `full`, and an untouched-first-look hidden
-split for the final method version. I therefore do not emit the terminal token; the honest statement is that
-the method, arena, evaluation, and product integration exist and reinforce each other, one comparison is
-underpowered, and the hidden split was read a second time for the final method version.
+1. **State accuracy.** Against the strongest baseline — process-first decomposition plus an explicit
+   verification step, the same model, told the provenance rule in words — the method is right about the
+   state of the evidence by **+0.148 [+0.100, +0.195]**, winning 36 of 41 families, p = 0.0000. Against
+   the direct planner +0.128 and against process-only +0.120, both p = 0.0000. Dropping every episode in
+   which any arm had a failed output leaves +0.135 [+0.091, +0.181], 34 of 41, p = 0.0000. The same
+   comparison on episodes rewritten by a different model gives +0.139 [+0.062, +0.218]. It does not depend
+   on the writer, on the harness, or on the failure asymmetry.
+2. **Hearsay receipts.** The method records zero across all eighty-two episodes and all six earlier
+   configurations, where the content-reading baselines record 77 (`full`), 68 (`process-only`) and 137
+   (`direct`). The typed atom representation is what does this, not the channel cap: the ablation records
+   zero too.
+3. **The channel cap's own contribution is readiness.** Against its own ablation, premature readiness falls
+   from 24 episodes to 6, a family-paired difference of **0.220 [0.134, 0.317] with fifteen families won
+   and none lost**, p = 0.0000, and readiness accuracy rises 0.081 [0.016, 0.155], p = 0.013. It is paid
+   for with 0.610 [0.366, 0.866] more requests per family, p = 0.0000, because the agent cannot take a
+   party's word that a document exists or is on its way.
+4. **Utility against the weaker baselines.** +0.345 [+0.194, +0.497] over the direct planner and
+   +0.300 [+0.166, +0.430] over process-only, both p = 0.000, and decisive against all five zero-model
+   controls.
+5. **Fixed-core transfer** to a third domain still requires zero changed lines of algorithm, configuration
+   or prompt.
+6. **The product.** Both integrations are live in the real CasePath repository, the full suite goes from
+   917 to 934 passing with the identical seven pre-existing failures, and the gate is exercised end to end
+   through the mounted route.
 
-**Cheapest next step to close them**: extend the arena by ~12 families per split (episode writing costs
-~$0.02 each through the cheap model) and run the full matrix on the small model at ~$2 per split, then a
-single Opus confirmation. Nothing about the method needs to change.
+## What it does not establish
+
+1. **Composite utility against the strongest baseline.** +0.129, 95% CI [−0.011, +0.271], 21 wins to 16,
+   Holm p = 0.133. Not established, on a third independent arena. The components move in opposite
+   directions — more evidence acquired and far fewer premature declarations, against more requests — and at
+   a burden weight of 0.25 they cancel. This is a fact about the utility function as much as about the
+   method, and it is reported as a negative.
+2. **Utility against its own ablation.** +0.127 [−0.009, +0.273]. Same story.
+3. **A single-effect ablation of the cap.** `channel_cap=False` changes three things at once. The ablation
+   is honest "content-based support" but it is not a one-flag isolation, and `METHOD.md` now says so.
+4. **That the method beats asking for everything.** `constant`, a zero-model arm that requests every
+   outstanding document and never declares readiness, matches the method on evidence acquired and never
+   declares prematurely. It loses on state accuracy by 0.181, the largest gap in the table, and it misses
+   29 readiness decisions to the method's 20. But `U` does not reward correct readiness, so it is not
+   charged for that. Any next version of this arena must score readiness symmetrically.
+
+## Status against the METHOD_READY gate
+
+The two boxes left open by the previous version are now closed, and they closed differently than hoped.
+
+- *The hidden split was read twice.* Closed. A fresh forty-one-family split, none of whose families appear
+  in any earlier split, was pre-registered before its episodes existed and read exactly once. The
+  pre-registration, its two logged amendments, the power analysis that motivated the second, the shortcut
+  audit, the writer-validity study and the adversarial audit response are all in the record.
+- *Significance against `full`.* Closed as a **negative** on utility and as a **decisive positive** on
+  state accuracy. The pre-registered endpoint did not separate; the exploratory metric that separates was
+  not pre-registered and is labelled as such throughout.
+
+I do not emit the terminal token. The pre-registered primary endpoint returned a negative, and a paper
+whose headline rests on an exploratory metric is not finished, however large that metric's effect is. The
+honest statement is that the method, the arena, the evaluation protocol and the product integration exist,
+reinforce each other and are reproducible; that the method is decisively more accurate about the state of
+the evidence than any baseline tested, under two writers and with the harness asymmetry removed; that it
+never credits a party report as a receipt; that the channel cap demonstrably and unanimously suppresses
+premature readiness; and that on the composite utility chosen in advance it does not separate from the
+strongest baseline.
+
+## What would finish it
+
+One run, and it is a pre-registration rather than an experiment: **re-register state accuracy as the
+primary endpoint**, with a symmetric readiness score replacing `U`, and read a fresh split once. The
+effect size observed here (0.135 to 0.156 across conditions, standard deviation about 0.14 at family
+level) needs roughly fifteen families for 80% power, so a twenty-family split settles it. On
+`openai/gpt-5.4-mini` that costs about four dollars. The second item, in the same run, is the clean
+one-effect ablation of the cap. The third, at about fifteen dollars, is the full forty-one-family writer
+swap. Nothing about the method needs to change for any of them.

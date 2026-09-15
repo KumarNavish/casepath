@@ -52,9 +52,27 @@ the catalogue are dropped and a requirement left with no option becomes *unsatis
 never requested, blocks readiness); atoms naming a unit, requirement, document or status that does not exist
 are dropped and counted. Both can only remove support, never create a receipt or a readiness.
 
-**Ablation.** `channel_cap = False` keeps the identical model call, atoms and calculus and treats every
-non-instruction unit as observed. That is exactly decompose-then-verify over content, and it is the
-preregistered mechanism ablation.
+**Ablation.** `channel_cap = False` keeps the identical model call and the identical atoms, and switches
+the calculus from channel-based support to content-based support. It is a compound switch and the earlier
+description of it as one flag was wrong; it changes three things at once, and the correction is recorded
+here rather than quietly applied:
+
+1. every non-instruction unit counts as observed, instead of carrying the level of its channel;
+2. a delivery commitment (`promised`, `automatic`) reported by a party is believed, instead of being
+   downgraded to bare existence unless it comes from a returned artifact;
+3. a requirement is satisfied when the returned artifact establishes it **or** when an attestation attains
+   the required level, instead of requiring both.
+
+The third is the structural one: without the cap an attestation alone can satisfy a requirement with no
+artifact on file. So the ablation is a faithful "decompose then verify over content" system, but it is not
+a single-effect ablation of the cap, and the confirmatory result reports it as the former. A clean
+one-effect ablation has not been run.
+
+**What each part earns.** On the confirmatory split the typed atoms and the deterministic calculus carry
+the state accuracy (about fourteen points over the strongest baseline, and no separation from the
+ablation) and the zero hearsay receipts, which the ablation also achieves. The channel cap carries
+readiness: premature readiness falls from 24 episodes to 6 with fifteen families won and none lost, and it
+is paid for with more requests.
 
 ## What it adds beyond the current CasePath product
 The shipped six-role workflow (Facts → Orchestration → Source integrity → Process → Evidence →

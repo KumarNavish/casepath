@@ -1,0 +1,476 @@
+{
+ "model": "anthropic/claude-haiku-4.5",
+ "episodes": 42,
+ "ok": 17,
+ "failed_checks": 24,
+ "errors": 1,
+ "cost_usd": 0.1718,
+ "results": [
+  {
+   "episode": "heating_defect.boiler_age.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A6-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'eingescannten' (scanned) which implies attachment/enclosure of a document"
+    }
+   ],
+   "cost_usd": 0.004023
+  },
+  {
+   "episode": "heating_defect.boiler_age.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "motif 'content_quote' requires the customer NOT say they are sending it, but text states 'ich gebe es hier nur wieder' (I am giving it here again), which implies transmission of the content"
+    },
+    {
+     "id": "ret-A1-partial#p1",
+     "rule": 2,
+     "issue": "scope 'partial' must explicitly state which required element is lacking; text says 'Der Messstreifen für die Feuchtigkeit fehlt hier noch' but does not clearly identify this as a required element of the calibrated log"
+    }
+   ],
+   "cost_usd": 0.00527
+  },
+  {
+   "episode": "heating_defect.cellar_damp.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A3-partial#p1",
+     "rule": 4,
+     "issue": "the scan of the landlord or property-manager response history is illegible in places and several pages are missing"
+    }
+   ],
+   "cost_usd": 0.003842
+  },
+  {
+   "episode": "heating_defect.cellar_damp.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or discussing attachment/transmission"
+    },
+    {
+     "id": "ret-A4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'copy' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or discussing attachment/transmission"
+    }
+   ],
+   "cost_usd": 0.004504
+  },
+  {
+   "episode": "heating_defect.district_heat.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A4-partial#p1",
+     "rule": 2,
+     "issue": "scope is 'partial' but the text does not explicitly state which required element is lacking; it says 'I have not included the exact wording of the warning paragraph' but does not clearly declare what is missing or incomplete"
+    }
+   ],
+   "cost_usd": 0.003958
+  },
+  {
+   "episode": "heating_defect.district_heat.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003283
+  },
+  {
+   "episode": "heating_defect.pipe_burst.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00379
+  },
+  {
+   "episode": "heating_defect.pipe_burst.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "ich kann es Ihnen schicken — states intention to send the document, not possession_report which requires stating they HAVE/HOLD it without mentioning sending"
+    },
+    {
+     "id": "ret-A2-partial#p1",
+     "rule": 2,
+     "issue": "scope is 'partial' but text does not explicitly state what required element is lacking; it says 'Der genaue Reparaturplan ist hier noch nicht ausgefuehrt' but must explicitly name the missing element"
+    }
+   ],
+   "cost_usd": 0.005096
+  },
+  {
+   "episode": "heating_defect.roof_leak.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A4-partial#p1",
+     "rule": 2,
+     "issue": "Scope 'partial' must explicitly state which required element is lacking; text says 'Der genaue Passus zum Einzahlungsschein oder zur Kaution fehlt hier noch' but does not clearly identify what the 'Written repair deadline letter with the deposit warning' requires and what is missing"
+    },
+    {
+     "id": "ret-A5-partial#p1",
+     "rule": 2,
+     "issue": "Scope 'partial' must explicitly state which required element is lacking; text says 'Die genaue Einschätzung zur Dauer der Beschwerden und zur Ursache fehlt' but does not clearly identify what the 'Medical confirmation of health effects for an occupant' requires and what is missing"
+    },
+    {
+     "id": "ret-A6-partial#p1",
+     "rule": 2,
+     "issue": "Scope 'partial' must explicitly state which required element is lacking; text says 'Der technische Befund zur Ursache ist in diesem Auszug noch nicht vollständig wiedergegeben' but does not clearly identify what the 'Authenticated property-management case export' requires and what is missing"
+    }
+   ],
+   "cost_usd": 0.005865
+  },
+  {
+   "episode": "heating_defect.roof_leak.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A5-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' which implies attachment/enclosure of a document"
+    }
+   ],
+   "cost_usd": 0.004341
+  },
+  {
+   "episode": "heating_defect.smart_valve.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.004629
+  },
+  {
+   "episode": "heating_defect.smart_valve.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003679
+  },
+  {
+   "episode": "heating_defect.solar_backup.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; the rule forbids 'attached/enclosed/beigelegt/beiliegend'"
+    },
+    {
+     "id": "ret-A3-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; the rule forbids 'attached/enclosed/beigelegt/beiliegend'"
+    }
+   ],
+   "cost_usd": 0.004486
+  },
+  {
+   "episode": "heating_defect.solar_backup.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A1-partial#p1",
+     "rule": 2,
+     "issue": "Scope is 'partial' but the text does not visibly state that a required element is lacking or say the content is incomplete; it only describes the scan quality without explicitly marking incompleteness"
+    },
+    {
+     "id": "ret-A3-partial#p1",
+     "rule": 2,
+     "issue": "Scope is 'partial_correcting' but the text does not explicitly state that a corrected version follows; it only says 'A later correction was issued' without confirming the corrected version is forthcoming in the return"
+    }
+   ],
+   "cost_usd": 0.004561
+  },
+  {
+   "episode": "rent_increase.energy_pass.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or discussing document transmission"
+    },
+    {
+     "id": "ret-C5-partial#p1",
+     "rule": 4,
+     "issue": "states 'The complete export follows' which reveals the outcome of document adequacy and implies attachment/transmission"
+    }
+   ],
+   "cost_usd": 0.003942
+  },
+  {
+   "episode": "rent_increase.energy_pass.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003799
+  },
+  {
+   "episode": "rent_increase.missing_form.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' and 'gescannte Kopie' which implies an attached document; the rule prohibits revealing whether a record will be adequate or discussing attachment status"
+    }
+   ],
+   "cost_usd": 0.004167
+  },
+  {
+   "episode": "rent_increase.missing_form.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003852
+  },
+  {
+   "episode": "rent_increase.net_gross.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C4-partial#p1",
+     "rule": 2,
+     "issue": "Scope is 'partial' but the text does not explicitly state which required element is lacking; it says 'Der Eintrag laesst den urspruenglichen Vergleichszins offen' (the entry leaves the original comparison rate open) but does not clearly declare this as a missing required element"
+    }
+   ],
+   "cost_usd": 0.004667
+  },
+  {
+   "episode": "rent_increase.net_gross.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C1-partial#p1",
+     "rule": 2,
+     "issue": "scope is 'partial_correcting' but text does not explicitly state that a corrected version follows"
+    },
+    {
+     "id": "ret-C6-partial#p1",
+     "rule": 2,
+     "issue": "scope is 'partial' but text does not promise that the complete version follows"
+    }
+   ],
+   "cost_usd": 0.004537
+  },
+  {
+   "episode": "rent_increase.reference_drop.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003788
+  },
+  {
+   "episode": "rent_increase.reference_drop.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.004005
+  },
+  {
+   "episode": "rent_increase.sublet_surcharge.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C6-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; the spec forbids revealing whether a record will be adequate or discussing attachment status"
+    }
+   ],
+   "cost_usd": 0.003818
+  },
+  {
+   "episode": "rent_increase.sublet_surcharge.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003407
+  },
+  {
+   "episode": "rent_increase.two_forms.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' which implies an attached document; the rule prohibits revealing whether a record will be adequate or discussing attachment status"
+    },
+    {
+     "id": "ret-C6-partial#p1",
+     "rule": 4,
+     "issue": "states 'Eine korrigierte Fassung mit neuen Zahlen folgt' which reveals that a corrected version will follow, thereby revealing adequacy of future records"
+    }
+   ],
+   "cost_usd": 0.004601
+  },
+  {
+   "episode": "rent_increase.two_forms.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 4,
+     "issue": "uses the exact phrase 'authenticated administrative export for the notice, table reference and preparation history' which reveals the specific record name from instructions"
+    },
+    {
+     "id": "ret-C2-partial#p1",
+     "rule": 2,
+     "issue": "scope is 'partial' but does not explicitly state which required element is lacking; it says 'Die genaue Laufzeit der zugrunde gelegten Tabelle fehlt hier noch' but must clearly declare the missing element"
+    }
+   ],
+   "cost_usd": 0.004399
+  },
+  {
+   "episode": "rent_increase.two_stage.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003509
+  },
+  {
+   "episode": "rent_increase.two_stage.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; the rule prohibits 'attached/enclosed/beigelegt/beiliegend'"
+    },
+    {
+     "id": "ret-C6-partial#p1",
+     "rule": 4,
+     "issue": "uses the phrase 'from this copy' which implies an attached document; the rule prohibits 'attached/enclosed/beigelegt/beiliegend'"
+    }
+   ],
+   "cost_usd": 0.004142
+  },
+  {
+   "episode": "termination_payment.agent_change.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003355
+  },
+  {
+   "episode": "termination_payment.agent_change.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B3-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' which implies an attached document; the rule prohibits revealing whether a record will be adequate or using language that suggests attachment"
+    },
+    {
+     "id": "ret-B3-final#p1",
+     "rule": 2,
+     "issue": "scope is 'final' but the paragraph does not establish concrete values for all required facts; it lacks the specific date the cure notice was served and does not quote the exact payment deadline or amount from the notice itself"
+    }
+   ],
+   "cost_usd": 0.005014
+  },
+  {
+   "episode": "termination_payment.charges_arrears.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003559
+  },
+  {
+   "episode": "termination_payment.charges_arrears.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; the rule forbids revealing whether a record will be adequate or discussing attachment status"
+    }
+   ],
+   "cost_usd": 0.004156
+  },
+  {
+   "episode": "termination_payment.early_release.e1",
+   "ok": null,
+   "error": "unparsable verdict",
+   "raw": "{\n  \"ok\": false,\n  \"problems\": [\n    {\n      \"id\": \"ret-B4-partial#p1\",\n      \"rule\": 4,\n      \"issue\": \"uses the word 'attached' in 'the scan of the termination notice on the official form is missing pages'\"\n    },\n    {\n      \"id\": \"ret-B5-partial#p1\",\n      \"rule\": 4,\n      \"issue\": \"uses the wor"
+  },
+  {
+   "episode": "termination_payment.early_release.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' which implies an attached document; the rule prohibits revealing whether a record will be adequate or using language that suggests attachment"
+    },
+    {
+     "id": "ret-B6-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' which implies an attached document; the rule prohibits revealing whether a record will be adequate or using language that suggests attachment"
+    }
+   ],
+   "cost_usd": 0.00519
+  },
+  {
+   "episode": "termination_payment.holiday_service.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B5-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'copy' which implies an attached document; the rule forbids 'attached/enclosed/beigelegt/beiliegend'"
+    }
+   ],
+   "cost_usd": 0.004292
+  },
+  {
+   "episode": "termination_payment.holiday_service.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'attached' in 'the scan of the property-manager ledger is unreadable'"
+    }
+   ],
+   "cost_usd": 0.003828
+  },
+  {
+   "episode": "termination_payment.notice_form.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00363
+  },
+  {
+   "episode": "termination_payment.notice_form.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00352
+  },
+  {
+   "episode": "termination_payment.rounding.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.004204
+  },
+  {
+   "episode": "termination_payment.rounding.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B3-partial#p1",
+     "rule": 4,
+     "issue": "Der beigefuegte Scan ist an den Rändern abgeschnitten"
+    }
+   ],
+   "cost_usd": 0.004437
+  },
+  {
+   "episode": "termination_payment.standing_lapsed.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.004315
+  },
+  {
+   "episode": "termination_payment.standing_lapsed.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.004355
+  }
+ ]
+}
