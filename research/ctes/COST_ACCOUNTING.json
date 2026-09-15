@@ -186,5 +186,13 @@
   },
   "note": "the whole decisive phase, including three extra ablation arms, ran on the small model",
   "decisive_phase_total_usd": 4.19
+ },
+ "reconciliation": {
+  "authoritative_total_usd": 129.54,
+  "source": "the OpenRouter key's own usage endpoint, read after the decisive run",
+  "itemised_in_this_file_usd": 112.05,
+  "unreconciled_usd": 17.49,
+  "what_the_gap_is": "the per-phase figures above count arm execution, episode writing and episode verification. They do not count the two product corpus studies, the aborted claude-sonnet-5 writer run, provider-rejected calls that returned no completion, or one-off exploratory calls. Those are real spend and they are named here rather than absorbed into a rounded total.",
+  "note": "total_cost_usd below covers per_run only and predates the confirmatory and decisive phases"
  }
 }

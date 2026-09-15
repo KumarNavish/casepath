@@ -4,7 +4,7 @@
 An evidence-acquisition agent should read *what a source says* with a language model but derive *how much
 support that source can lend* from the channel the source arrived on, so that a party's report about a
 record can direct acquisition but can never make the record received — a single typed constraint that
-removes hearsay-grounded receipts and premature closure entirely, at no extra inference or acquisition cost.
+removes hearsay-grounded receipts structurally and cuts premature closure sharply, at no extra inference cost and at a real acquisition cost: the method issues more document requests than its ablations, 353 against 285 on the confirmatory split and 161 against 141 on the decisive one, because it cannot take a party's word that a document exists or is on its way. An earlier version of this sentence claimed no acquisition cost; that was wrong.
 
 ## The failure it addresses
 In document-heavy expert workflows the agent decides each turn what is established, what to request, and

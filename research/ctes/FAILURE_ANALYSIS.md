@@ -32,7 +32,7 @@
 - **Baselines keep their published fail-closed contract** while CTES parses atoms conservatively. This is an
   asymmetry in favour of CTES on robustness; the per-arm failure counts are reported in every table so the
   reader can see it (`full` and `process-only` lose 1–3 records with the small model; CTES loses 0).
-- **The episode verifier flagged 30 of 46 episodes**, almost all from an over-broad rule of mine (it demanded
+- **The episode verifier flagged 40 of 46 episodes**, almost all from an over-broad rule of mine (it demanded
   that the exclusion paragraph also state facts to establish) or from benign phrasings such as a customer
   offering to send a record they hold. The decisive guard — that no paragraph claims a document is attached
   or enclosed — passes in all 46 episodes by exact string check. The full verifier output is retained.
