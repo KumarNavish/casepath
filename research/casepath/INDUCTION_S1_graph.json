@@ -1,0 +1,388 @@
+{
+ "nodes": [
+  {
+   "node_id": "termination_formal_compliance",
+   "label": "Determine whether the landlord's termination complies with the required termination formalities",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-266l-para1-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p2",
+    "or-art-266n-20260101-de#p1",
+    "or-art-266o-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "Residential-lease termination must be written, use a canton-approved landlord form containing challenge and extension information, be separately served where Article 266n applies, and is void if Articles 266l–266n are not complied with."
+  },
+  {
+   "node_id": "termination_void",
+   "label": "Termination is void",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-266o-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A termination that does not comply with Articles 266l–266n is void."
+  },
+  {
+   "node_id": "good_faith_violation",
+   "label": "Determine whether the termination violates good faith",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-271-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A termination is contestable if it violates the principle of good faith."
+  },
+  {
+   "node_id": "submit_termination_challenge",
+   "label": "Submit a request challenging the termination to the conciliation authority",
+   "kind": "step",
+   "supported_by": [
+    "or-art-273-para1-20260101-de#p1",
+    "or-art-273-para1-20260101-de#p3",
+    "zpo-art-202-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A party intending to challenge a termination must submit the request within 30 days after receipt, and a conciliation request initiates the procedure."
+  },
+  {
+   "node_id": "unjustified_hardship",
+   "label": "Determine whether termination causes hardship not justified by the landlord's interests",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "An extension request applies where termination would cause hardship to the tenant or family that cannot be justified by the landlord's interests."
+  },
+  {
+   "node_id": "request_lease_extension",
+   "label": "Request an extension of the tenancy",
+   "kind": "step",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The tenant may request extension of a fixed-term or indefinite-term tenancy when the specified unjustified hardship condition is met."
+  },
+  {
+   "node_id": "weigh_extension_interests",
+   "label": "Competent authority weighs the parties' interests for the extension request",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-272-para2-20260101-de#p1",
+    "or-art-272-para2-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p3",
+    "or-art-272-para2-20260101-de#p4",
+    "or-art-272-para2-20260101-de#p5"
+   ],
+   "support": "supported",
+   "why": "The competent authority must weigh the listed contractual, duration, personal, landlord-need, and local-market factors."
+  },
+  {
+   "node_id": "conciliation_hearing",
+   "label": "Conciliation authority conducts informal reconciliation negotiations",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-201-para1-20250101-de#p1",
+    "zpo-art-203-para1-20250101-de#p1",
+    "vmwg-art-21-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The conciliation authority must attempt informal reconciliation and seek an agreement covering the entire tenancy, with the hearing held within the stated period."
+  },
+  {
+   "node_id": "agreement_reached",
+   "label": "Record and sign the agreement",
+   "kind": "terminal",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p1",
+    "zpo-art-208-para1-20250101-de#p2",
+    "zpo-art-208-para1-20250101-de#p3",
+    "zpo-art-208-para1-20250101-de#p4"
+   ],
+   "support": "supported",
+   "why": "If agreement is reached, the conciliation authority must record it, obtain signatures, and provide each party a copy."
+  },
+  {
+   "node_id": "claimant_default",
+   "label": "Conciliation request is deemed withdrawn and proceedings are struck off",
+   "kind": "terminal",
+   "supported_by": [
+    "zpo-art-206-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "If the claimant is in default, the request is deemed withdrawn and the proceedings are struck off as moot."
+  },
+  {
+   "node_id": "authorization_to_sue",
+   "label": "Record lack of agreement and issue authorization to sue to the claimant",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p1",
+    "zpo-art-209-para1-20250101-de#p2",
+    "zpo-art-209-para1-20250101-de#p3",
+    "zpo-art-209-para1-20250101-de#p5"
+   ],
+   "support": "supported",
+   "why": "Where no agreement is reached, the authority must record that fact and issue authorization to sue to the claimant in cases other than rent-increase challenges."
+  },
+  {
+   "node_id": "file_court_action",
+   "label": "File an action with the court under the authorization to sue",
+   "kind": "terminal",
+   "supported_by": [
+    "zpo-art-197-20250101-de#p1",
+    "zpo-art-209-para3-20250101-de#p1",
+    "zpo-art-209-para4-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A conciliation attempt is required before decision proceedings, and the authorization entitles its holder to file a residential-tenancy action with the court within the applicable period."
+  }
+ ],
+ "transitions": [
+  {
+   "edge_id": "e01",
+   "source_node_id": "termination_formal_compliance",
+   "target_node_id": "termination_void",
+   "condition": "The termination does not comply with Articles 266l–266n.",
+   "supported_by": [
+    "or-art-266o-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e02",
+   "source_node_id": "termination_formal_compliance",
+   "target_node_id": "good_faith_violation",
+   "condition": "The termination complies with the required formalities.",
+   "supported_by": [
+    "or-art-266o-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e03",
+   "source_node_id": "termination_formal_compliance",
+   "target_node_id": "unjustified_hardship",
+   "condition": "The termination complies with the required formalities.",
+   "supported_by": [
+    "or-art-266o-20260101-de#p1",
+    "or-art-272-para1-20260101-de#p2"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e04",
+   "source_node_id": "good_faith_violation",
+   "target_node_id": "submit_termination_challenge",
+   "condition": "The termination violates the principle of good faith and the tenant intends to challenge it.",
+   "supported_by": [
+    "or-art-271-para1-20260101-de#p1",
+    "or-art-273-para1-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e05",
+   "source_node_id": "unjustified_hardship",
+   "target_node_id": "request_lease_extension",
+   "condition": "Termination would cause hardship that cannot be justified by the landlord's interests.",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1",
+    "or-art-272-para1-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e06",
+   "source_node_id": "request_lease_extension",
+   "target_node_id": "weigh_extension_interests",
+   "condition": null,
+   "supported_by": [
+    "or-art-272-para2-20260101-de#p1",
+    "or-art-272-para2-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p3",
+    "or-art-272-para2-20260101-de#p4",
+    "or-art-272-para2-20260101-de#p5"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e07",
+   "source_node_id": "submit_termination_challenge",
+   "target_node_id": "conciliation_hearing",
+   "condition": null,
+   "supported_by": [
+    "zpo-art-202-para1-20250101-de#p1",
+    "zpo-art-203-para1-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e08",
+   "source_node_id": "conciliation_hearing",
+   "target_node_id": "agreement_reached",
+   "condition": "An agreement is reached.",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e09",
+   "source_node_id": "conciliation_hearing",
+   "target_node_id": "claimant_default",
+   "condition": "The claimant is in default.",
+   "supported_by": [
+    "zpo-art-206-para1-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e10",
+   "source_node_id": "conciliation_hearing",
+   "target_node_id": "authorization_to_sue",
+   "condition": "No agreement is reached.",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p1",
+    "zpo-art-209-para1-20260101-de#p2",
+    "zpo-art-209-para1-20260101-de#p3"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e11",
+   "source_node_id": "authorization_to_sue",
+   "target_node_id": "file_court_action",
+   "condition": "The holder elects to bring an action within the applicable period.",
+   "supported_by": [
+    "zpo-art-209-para3-20250101-de#p1",
+    "zpo-art-209-para4-20250101-de#p1"
+   ],
+   "support": "supported"
+  }
+ ],
+ "deadlines": [
+  {
+   "deadline_id": "d01",
+   "governs_node_id": "submit_termination_challenge",
+   "period": "30 days",
+   "runs_from": "receipt of the termination",
+   "supported_by": [
+    "or-art-273-para1-20260101-de#p3"
+   ]
+  },
+  {
+   "deadline_id": "d02",
+   "governs_node_id": "conciliation_hearing",
+   "period": "within two months",
+   "runs_from": "receipt of the application or, if applicable, completion of the exchange of written submissions",
+   "supported_by": [
+    "zpo-art-203-para1-20250101-de#p1"
+   ]
+  },
+  {
+   "deadline_id": "d03",
+   "governs_node_id": "file_court_action",
+   "period": "30 days",
+   "runs_from": "opening of the authorization to bring an action",
+   "supported_by": [
+    "zpo-art-209-para3-20250101-de#p2",
+    "zpo-art-209-para4-20250101-de#p1"
+   ]
+  }
+ ],
+ "obligations": [
+  {
+   "obligation_id": "o01",
+   "node_id": "termination_formal_compliance",
+   "party": "landlord",
+   "statement": "Give residential-premises termination in writing using a canton-approved form that states how the tenant must challenge termination or request an extension.",
+   "supported_by": [
+    "or-art-266l-para1-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o02",
+   "node_id": "termination_formal_compliance",
+   "party": "landlord",
+   "statement": "Serve termination separately on the tenant and on the tenant's spouse or registered partner where applicable.",
+   "supported_by": [
+    "or-art-266n-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o03",
+   "node_id": "weigh_extension_interests",
+   "party": "competent authority",
+   "statement": "Take account of the specified contractual, duration, personal and economic, landlord-need, and local-market circumstances when weighing interests.",
+   "supported_by": [
+    "or-art-272-para2-20260101-de#p1",
+    "or-art-272-para2-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p3",
+    "or-art-272-para2-20260101-de#p4",
+    "or-art-272-para2-20260101-de#p5"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o04",
+   "node_id": "conciliation_hearing",
+   "party": "conciliation authority",
+   "statement": "Attempt to reconcile the parties in informal negotiations and seek an agreement covering the entire tenancy.",
+   "supported_by": [
+    "zpo-art-201-para1-20250101-de#p1",
+    "vmwg-art-21-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o05",
+   "node_id": "authorization_to_sue",
+   "party": "conciliation authority",
+   "statement": "Record the lack of agreement and issue authorization to sue to the claimant.",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p2",
+    "zpo-art-209-para1-20250101-de#p3",
+    "zpo-art-209-para1-20250101-de#p5"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o06",
+   "node_id": "file_court_action",
+   "party": "court",
+   "statement": "Establish the facts ex officio in this residential-lease dispute concerning protection against termination or extension of the lease relationship.",
+   "supported_by": [
+    "zpo-art-243-para2-20250101-de#p3",
+    "zpo-art-247-para2-20250101-de#p1"
+   ],
+   "support": "supported"
+  }
+ ],
+ "unsupported_gaps": [
+  {
+   "what_is_missing": "A stated procedural forum, filing method, and filing deadline specifically for a tenant's request for a lease extension.",
+   "why_it_matters": "The propositions authorize an extension request and prescribe its substantive hardship test, but expressly provide the 30-day submission rule only for a request challenging termination."
+  },
+  {
+   "what_is_missing": "A stated outcome rule specifying when the competent authority grants, refuses, and for how long it grants a lease extension.",
+   "why_it_matters": "The propositions require interest-weighing factors but do not state the resulting extension decision or duration."
+  },
+  {
+   "what_is_missing": "The consequence of not filing a court action after authorization to sue is issued.",
+   "why_it_matters": "The propositions provide the 30-day action period but do not state what happens to the termination challenge or extension request if that period is not used."
+  }
+ ],
+ "contract": "casepath.process-induction/1.0.0",
+ "scope": "a tenant contesting a landlord's termination of a residential lease, and seeking an extension of the lease",
+ "grounding_problems": [
+  "transitions e10 cites unknown propositions ['zpo-art-209-para1-20260101-de#p2', 'zpo-art-209-para1-20260101-de#p3']"
+ ]
+}

@@ -1,0 +1,622 @@
+{
+ "contract": "casepath.authority-corpus-bundle/1.0.0",
+ "extraction_identity": "fedlex-akn3-visible-text-blockspaced-whitespace-normalization/1.1.0",
+ "acts": {
+  "or": {
+   "eli_path": "cc/27/317_321_377",
+   "sr_number": "220",
+   "consolidation_date": "20260101",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml",
+   "source_sha256": "61296c5d57f709bc6408aa9b457e41755c8a6b65c0a82c0a5b2f33b8fce5470b",
+   "articles_in_act": 1686,
+   "extracted": 28,
+   "missing": []
+  },
+  "vmwg": {
+   "eli_path": "cc/1990/835_835_835",
+   "sr_number": "221.213.11",
+   "consolidation_date": "20250101",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml",
+   "source_sha256": "d6688be492006dc22f96b5b79ea9bb5392f965c2246c00c0e05ab12357bafafc",
+   "articles_in_act": 31,
+   "extracted": 9,
+   "missing": [
+    {
+     "article": "19a",
+     "paragraph": null,
+     "eid": "art_19_a",
+     "present_in_act": false
+    }
+   ]
+  },
+  "zpo": {
+   "eli_path": "cc/2010/262",
+   "sr_number": "272",
+   "consolidation_date": "20250101",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml",
+   "source_sha256": "8550cbace0b150c210586f2afcab87b007304d9f196b6ae83c1b8d533c4591d7",
+   "articles_in_act": 426,
+   "extracted": 17,
+   "missing": []
+  },
+  "vvg": {
+   "eli_path": "cc/24/719_735_717",
+   "sr_number": "221.229.1",
+   "consolidation_date": "20240101",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml",
+   "source_sha256": "8498c33ac85675f0566a89c6746b59cdce4451bdb2b01e47e88e51ab6bca761a",
+   "articles_in_act": 112,
+   "extracted": 9,
+   "missing": []
+  }
+ },
+ "passages": [
+  {
+   "authority_id": "or-art-257d-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 257d Abs. 1",
+   "exact_text": "Ist der Mieter nach der Übernahme der Sache mit der Zahlung fälliger Mietzinse oder Nebenkosten im Rückstand, so kann ihm der Vermieter schriftlich eine Zahlungsfrist setzen und ihm androhen, dass bei unbenütztem Ablauf der Frist das Mietverhältnis gekündigt werde. Diese Frist beträgt mindestens zehn Tage, bei Wohn- und Geschäftsräumen mindestens 30 Tage.",
+   "text_sha256": "35dc498927328aac3785b59d36e1a11f3b1126215967a97b8cbd643b9fe80d21",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-257d-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 257d Abs. 2",
+   "exact_text": "Bezahlt der Mieter innert der gesetzten Frist nicht, so kann der Vermieter fristlos, bei Wohn- und Geschäftsräumen mit einer Frist von mindestens 30 Tagen auf Ende eines Monats kündigen.",
+   "text_sha256": "739cd26213cc58ece703f0b6b389ea6a899d597df24c740b38520024150ac6cf",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-257e-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 257e Abs. 1",
+   "exact_text": "Leistet der Mieter von Wohn- oder Geschäftsräumen eine Sicherheit in Geld oder in Wertpapieren, so muss der Vermieter sie bei einer Bank auf einem Sparkonto oder einem Depot, das auf den Namen des Mieters lautet, hinterlegen.",
+   "text_sha256": "4a04c510554b5fd6c98839918a1a8526478a63f879c2314d61fea05191fbeac8",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-257e-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 257e Abs. 2",
+   "exact_text": "Bei der Miete von Wohnräumen darf der Vermieter höchstens drei Monatszinse als Sicherheit verlangen.",
+   "text_sha256": "ccd20adff10ca656bb3a1f4419d31bfa603834e03121df89da96e699e0601717",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-257e-para3-20260101-de",
+   "act": "or",
+   "article": "Art. 257e Abs. 3",
+   "exact_text": "Die Bank darf die Sicherheit nur mit Zustimmung beider Parteien oder gestützt auf einen rechtskräftigen Zahlungsbefehl oder auf ein rechtskräftiges Gerichtsurteil herausgeben. Hat der Vermieter innert einem Jahr nach Beendigung des Mietverhältnisses keinen Anspruch gegenüber dem Mieter rechtlich geltend gemacht, so kann dieser von der Bank die Rückerstattung der Sicherheit verlangen.",
+   "text_sha256": "332c2af2a493c706e8be8c6be8ea3ad795a11ac69aee84738bbfb368abc469fc",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-257g-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 257g Abs. 1",
+   "exact_text": "Der Mieter muss Mängel, die er nicht selber zu beseitigen hat, dem Vermieter melden.",
+   "text_sha256": "501107fb605026b2a2d3d1499ccf90b1ad6311630a465dca16ffcd959d3e046b",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-259a-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 259a Abs. 1",
+   "exact_text": "Entstehen an der Sache Mängel, die der Mieter weder zu verantworten noch auf eigene Kosten zu beseitigen hat, oder wird der Mieter im vertragsgemässen Gebrauch der Sache gestört, so kann er verlangen, dass der Vermieter: a. den Mangel beseitigt; b. den Mietzins verhältnismässig herabsetzt; c. Schadenersatz leistet; d. den Rechtsstreit mit einem Dritten übernimmt.",
+   "text_sha256": "c3f25dae4586691caedb9ad49e256bcc80b28dc92d51d5df76bd3dc6197e8605",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-259a-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 259a Abs. 2",
+   "exact_text": "Der Mieter einer unbeweglichen Sache kann zudem den Mietzins hinterlegen.",
+   "text_sha256": "6d669928cb16380948e16d1894f6ecb9db8feb45e7e1fe4663893a0026627283",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-259g-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 259g Abs. 1",
+   "exact_text": "Verlangt der Mieter einer unbeweglichen Sache vom Vermieter die Beseitigung eines Mangels, so muss er ihm dazu schriftlich eine angemessene Frist setzen und kann ihm androhen, dass er bei unbenütztem Ablauf der Frist Mietzinse die künftig fällig werden bei einer vom Kanton bezeichneten Stelle hinterlegen wird. Er muss die Hinterlegung dem Vermieter schriftlich ankündigen.",
+   "text_sha256": "c3174414fce767bf4455c6bb386ee1e81dcbdf25283cf496b8f8688ad21ab13d",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-259h-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 259h Abs. 1",
+   "exact_text": "Hinterlegte Mietzinse fallen dem Vermieter zu, wenn der Mieter seine Ansprüche gegenüber dem Vermieter nicht innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend gemacht hat.",
+   "text_sha256": "56d95181df7fce0228f408bce932950fe627dcb175110a56d619741cefe3f91d",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-266l-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 266l Abs. 1",
+   "exact_text": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen.",
+   "text_sha256": "9784d12ad76edc9c29e14a076de89b04afc53442d668ea580017084b2ee796bf",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-266l-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 266l Abs. 2",
+   "exact_text": "Der Vermieter muss mit einem Formular kündigen, das vom Kanton genehmigt ist und das angibt, wie der Mieter vorzugehen hat, wenn er die Kündigung anfechten oder eine Erstreckung des Mietverhältnisses verlangen will.",
+   "text_sha256": "1d08b8c6009dd7ddabf3a2163f4c9e356c89a97876fc3cce22c140575289f8b6",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-266n-20260101-de",
+   "act": "or",
+   "article": "Art. 266n",
+   "exact_text": "Die Kündigung durch den Vermieter sowie die Ansetzung einer Zahlungsfrist mit Kündigungsandrohung (Art. 257d) sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen.",
+   "text_sha256": "bd63b8092e714eca81808aa87838a081c67cce1c23236c52107ed9902d09274e",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-266o-20260101-de",
+   "act": "or",
+   "article": "Art. 266o",
+   "exact_text": "Die Kündigung ist nichtig, wenn sie den Artikeln 266l–266n nicht entspricht.",
+   "text_sha256": "3ce42f591267bda9913a6d331a5ffe48f2abe2dea78f3747acef15aaa7c37d77",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-267-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 267 Abs. 1",
+   "exact_text": "Der Mieter muss die Sache in dem Zustand zurückgeben, der sich aus dem vertragsgemässen Gebrauch ergibt.",
+   "text_sha256": "8b3de65d2b3b7aa4a1f144613913d514019d184196a277cb2c5bb32e7418837b",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-267-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 267 Abs. 2",
+   "exact_text": "Vereinbarungen, in denen sich der Mieter im Voraus verpflichtet, bei Beendigung des Mietverhältnisses eine Entschädigung zu entrichten, die anderes als die Deckung des allfälligen Schadens einschliesst, sind nichtig.",
+   "text_sha256": "11c1b7b51ad291508f6e152f16ec7d19752d441e67269b591eed14cb39b6d434",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-267a-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 267a Abs. 1",
+   "exact_text": "Bei der Rückgabe muss der Vermieter den Zustand der Sache prüfen und Mängel, für die der Mieter einzustehen hat, diesem sofort melden.",
+   "text_sha256": "fb0445a74c25c132c2d48ee643cbe331766bab946d007df1a35bad8eab467b30",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-267a-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 267a Abs. 2",
+   "exact_text": "Versäumt dies der Vermieter, so verliert er seine Ansprüche, soweit es sich nicht um Mängel handelt, die bei übungsgemässer Untersuchung nicht erkennbar waren.",
+   "text_sha256": "60071517d5db2ae0a57dba942e2c275967f20f8d30030bcd111f9894f441ca9b",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-267a-para3-20260101-de",
+   "act": "or",
+   "article": "Art. 267a Abs. 3",
+   "exact_text": "Entdeckt der Vermieter solche Mängel später, so muss er sie dem Mieter sofort melden.",
+   "text_sha256": "2e5d876d86b57dbab97f8dc2a98e820da66cef1eb87ad51d71607fa397f8b4e6",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-269a-20260101-de",
+   "act": "or",
+   "article": "Art. 269a",
+   "exact_text": "Mietzinse sind in der Regel nicht missbräuchlich, wenn sie insbesondere: a. im Rahmen der orts- oder quartierüblichen Mietzinse liegen; b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind; c. bei neueren Bauten im Rahmen der kostendeckenden Bruttorendite liegen; d. lediglich dem Ausgleich einer Mietzinsverbilligung dienen, die zuvor durch Umlagerung marktüblicher Finanzierungskosten gewahrt wurde, und in einem dem Mieter im Voraus bekanntgegebenen Zahlungsplan festgelegt sind; e. lediglich die Teuerung auf dem risikotragenden Kapital ausgleichen; f. das Ausmass nicht überschreiten, das Vermieter- und Mieterverbände oder Organisationen, die ähnliche Interessen wahrnehmen, in ihren Rahmenverträgen empfehlen.",
+   "text_sha256": "895cbfb27345bcd1add17d3d939b410db80140f294ba5984a5632a47d53d983d",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-269d-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 269d Abs. 1",
+   "exact_text": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.",
+   "text_sha256": "a8d0e4b8480da32d3a1edc3efd50ed5e26e0210b64ff5962a65c388fe0ca82e1",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-269d-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 269d Abs. 2",
+   "exact_text": "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet; c. mit der Mitteilung die Kündigung androht oder ausspricht.",
+   "text_sha256": "876e091fb91d741dc65b1d14c40bb6d1ca59629cb7ff365794a6fa053c1d4f44",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-270b-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 270b Abs. 1",
+   "exact_text": "Der Mieter kann eine Mietzinserhöhung innert 30 Tagen, nachdem sie ihm mitgeteilt worden ist, bei der Schlichtungsbehörde als missbräuchlich im Sinne der Artikel 269 und 269a anfechten.",
+   "text_sha256": "6e572ec15a356bb8ea13699379c4b79223002a3802380da2dde7a8f5aabf2e4d",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-271-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 271 Abs. 1",
+   "exact_text": "Die Kündigung ist anfechtbar, wenn sie gegen den Grundsatz von Treu und Glauben verstösst.",
+   "text_sha256": "3dc165270a1d0802129b279c1df7169397ce7cc6f694e725f0cf011a8bccc568",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-271-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 271 Abs. 2",
+   "exact_text": "Die Kündigung muss auf Verlangen begründet werden.",
+   "text_sha256": "427df6367884a1297e5c93949538713b588f2960882fb5eee46384b2fc830d4c",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-272-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 272 Abs. 1",
+   "exact_text": "Der Mieter kann die Erstreckung eines befristeten oder unbefristeten Mietverhältnisses verlangen, wenn die Beendigung der Miete für ihn oder seine Familie eine Härte zur Folge hätte, die durch die Interessen des Vermieters nicht zu rechtfertigen wäre.",
+   "text_sha256": "ef19407320a047c20c62acf449c141a6b65138e3047dd8f9dc04c65b78c21847",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-272-para2-20260101-de",
+   "act": "or",
+   "article": "Art. 272 Abs. 2",
+   "exact_text": "Bei der Interessenabwägung berücksichtigt die zuständige Behörde insbesondere: a. die Umstände des Vertragsabschlusses und den Inhalt des Vertrags; b. die Dauer des Mietverhältnisses; c. die persönlichen, familiären und wirtschaftlichen Verhältnisse der Parteien und deren Verhalten; d. einen allfälligen Eigenbedarf des Vermieters für sich, nahe Verwandte oder Verschwägerte sowie die Dringlichkeit dieses Bedarfs; e. die Verhältnisse auf dem örtlichen Markt für Wohn- und Geschäftsräume.",
+   "text_sha256": "0ed002f3b29eed46bc065d1cfc0b6a79dc901559dc16ceecff0e4e3dcafe59a9",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "or-art-273-para1-20260101-de",
+   "act": "or",
+   "article": "Art. 273 Abs. 1",
+   "exact_text": "Will eine Partei die Kündigung anfechten, so muss sie das Begehren innert 30 Tagen nach Empfang der Kündigung der Schlichtungsbehörde einreichen.",
+   "text_sha256": "b6cecd42045edbde909195d716d1908c2005db3675c16adeae51a7b2a89866de",
+   "snapshot_id": "fedlex-or-20260101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-8-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 8",
+   "exact_text": "(Art. 257b OR) 1 Erhält der Mieter mit der jährlichen Heizungskostenrechnung nicht eine detaillierte Abrechnung und Aufteilung der Heizungs- und Warmwasseraufbereitungskosten, so ist auf der Rechnung ausdrücklich darauf hinzuweisen, dass er die detaillierte Abrechnung verlangen kann. 2 Der Mieter oder sein bevollmächtigter Vertreter ist berechtigt, die sachdienlichen Originalunterlagen einzusehen und über den Anfangs- und Endbestand von Heizmaterialien Auskunft zu verlangen.",
+   "text_sha256": "e800a136bd679ab57a9fa3cca850713d4c53bd08630ef7022e65ffa49a39646c",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-9-para1-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 9 Abs. 1",
+   "exact_text": "Das Formular für die Mitteilung der Kündigung im Sinne von Artikel 266l Absatz 2 OR muss enthalten: a. die Bezeichnung des Mietgegenstandes, auf welchen sich die Kündigung bezieht; b. den Zeitpunkt, auf den die Kündigung wirksam wird; c. den Hinweis, dass der Vermieter die Kündigung auf Verlangen des Mieters begründen muss; d. die gesetzlichen Voraussetzungen der Anfechtung der Kündigung und der Erstreckung des Mietverhältnisses (Art. 271–273 OR); e. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit.",
+   "text_sha256": "b14800cc7e26f87acbc0db41460690dc9d3281e520d169d6a8552f4a156bc2f3",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-9-para2-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 9 Abs. 2",
+   "exact_text": "Die Kantone sorgen dafür, dass in den Gemeinden Formulare in genügender Zahl zur Verfügung stehen. Sie können zu diesem Zweck eigene Formulare in den Gemeindekanzleien auflegen.",
+   "text_sha256": "96287788fdf870790251f5a3838151c960fe9904bc2064242029123affde17c4",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-11-para1-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 11 Abs. 1",
+   "exact_text": "Massgeblich für die Ermittlung der orts- und quartierüblichen Mietzinse im Sinne von Artikel 269a Buchstabe a OR sind die Mietzinse für Wohn- und Geschäftsräume, die nach Lage, Grösse, Ausstattung, Zustand und Bauperiode mit der Mietsache vergleichbar sind.",
+   "text_sha256": "689cd68b0618ff6604556c77892ccc745b959351e906a91ca60e4f2f712fb0f2",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-19-para1-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 19 Abs. 1",
+   "exact_text": "Das Formular für die Mitteilung von Mietzinserhöhungen und anderen einseitigen Vertragsänderungen im Sinne von Artikel 269d OR muss enthalten: a. Für Mietzinserhöhungen: 1. den bisherigen Mietzins und die bisherige Belastung des Mieters für Nebenkosten; 2. den neuen Mietzins und die neue Belastung des Mieters für Nebenkosten; 3. den Zeitpunkt, auf den die Erhöhung in Kraft tritt; 4. die klare Begründung der Erhöhung. Werden mehrere Erhöhungsgründe geltend gemacht, so sind diese je in Einzelbeträgen auszuweisen; 5. bei Mehrleistungen die Angabe, ob der Vermieter Förderbeiträge für wertvermehrende Verbesserungen erhält. b. Für andere einseitige Vertragsänderungen: 1. die Umschreibung dieser Forderung; 2. den Zeitpunkt, auf den sie wirksam wird; 3. die klare Begründung dieser Forderung. c. Für beide Fälle: 1. die gesetzlichen Voraussetzungen der Anfechtung; 2. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit.",
+   "text_sha256": "363b3d6d9e4c3de8d563d2f6b682f1444c38a23e966b4bb583a8387d93521eeb",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-19-para2-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 19 Abs. 2",
+   "exact_text": "Die Absätze 1 und 1bis gelten ferner sinngemäss, wenn der Vermieter den Mietzins einem vereinbarten Index anpasst oder ihn aufgrund der vereinbarten Staffelung erhöht. Bei indexgebundenen Mietverhältnissen darf die Mitteilung frühestens nach der öffentlichen Bekanntgabe des neuen Indexstandes erfolgen. Bei gestaffelten Mietzinsen darf die Mitteilung frühestens vier Monate vor Eintritt jeder Mietzinserhöhung erfolgen. Die Kantone können als rechtsgenügendes Formular in diesem Fall die Kopie der Mietzinsvereinbarung bezeichnen.",
+   "text_sha256": "15d54b18905435e6f69c739d8083cc44805f0983bfcb6b6adab9e97193f05d35",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-20-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 20",
+   "exact_text": "(Art. 269d Abs. 2 und 3 OR) 1 Bei Mietzinserhöhungen wegen Kostensteigerungen oder wegen wertvermehrenden Verbesserungen des Vermieters kann der Mieter verlangen, dass der geltend gemachte Differenzbetrag zahlenmässig begründet wird. Die 30-tägige Anfechtungsfrist wird dadurch nicht berührt. 2 Im Schlichtungsverfahren kann der Mieter verlangen, dass für alle geltend gemachten Gründe der Mietzinserhöhung die sachdienlichen Belege vorgelegt werden.",
+   "text_sha256": "812406339f388f9603325f8652f4ac1275b8bea64ab37dcbf4487a9f70472053",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-21-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 21",
+   "exact_text": "(Art. 201 und 208 ZPO) 1 Die Schlichtungsbehörden haben im Schlichtungsverfahren eine Einigung der Parteien anzustreben, die sich auf das gesamte Mietverhältnis (Höhe des Mietzinses, Dauer des Vertrags, Kündigungsfrist usw.) erstreckt. 2 Die Schlichtungsbehörden sind verpflichtet, Mieter und Vermieter ausserhalb eines Anfechtungsverfahrens, insbesondere vor Abschluss eines Mietvertrags, zu beraten. Sie haben namentlich Mietern und Vermietern behilflich zu sein, sich selbst ein Urteil darüber zu bilden, ob ein Mietzins missbräuchlich ist. 3 Die Schlichtungsbehörden können einzelne Mitglieder oder das Sekretariat mit der Beratung betrauen.",
+   "text_sha256": "409da9f411dd6979eafd7aec6df42bd2c101c970c780dd953d33771b3d6d358c",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vmwg-art-22-20250101-de",
+   "act": "vmwg",
+   "article": "Art. 22",
+   "exact_text": "(Art. 200 Abs. 1 ZPO) Die Kantone sind verpflichtet, die Zusammensetzung der Schlichtungsbehörden und deren Zuständigkeit periodisch zu veröffentlichen.",
+   "text_sha256": "0cd1903829cf0983a4ca7a5be8bcf3144bdd1da893a37278fa28ae88b76d4e6f",
+   "snapshot_id": "fedlex-vmwg-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-197-20250101-de",
+   "act": "zpo",
+   "article": "Art. 197",
+   "exact_text": "Dem Entscheidverfahren geht ein Schlichtungsversuch vor einer Schlichtungsbehörde voraus.",
+   "text_sha256": "e4afe6489e9d41faee4751e6883e4ca271fa4a8c5f45c321766e37263611ce1d",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-198-20250101-de",
+   "act": "zpo",
+   "article": "Art. 198",
+   "exact_text": "Das Schlichtungsverfahren entfällt: a. im summarischen Verfahren; abis. bei Klagen wegen Gewalt, Drohungen oder Nachstellungen nach Artikel 28b ZGB oder betreffend eine elektronische Überwachung nach Artikel 28c ZGB; b. bei Klagen über den Personenstand; bbis. bei Klagen über den Unterhalt von minder- und volljährigen Kindern und weitere Kinderbelange; c. im Scheidungsverfahren; d. im Verfahren zur Auflösung und zur Ungültigerklärung der eingetragenen Partnerschaft; e. bei folgenden Klagen aus dem SchKG: 1. Aberkennungsklage (Art. 83 Abs. 2 SchKG), 2. Feststellungsklage (Art. 85a SchKG), 3. Widerspruchsklage (Art. 106–109 SchKG), 4. Anschlussklage (Art. 111 SchKG), 5. Aussonderungs- und Admassierungsklage (Art. 242 SchKG), 6. Kollokationsklage (Art. 148 und 250 SchKG), 7. Klage auf Feststellung neuen Vermögens (Art. 265a SchKG), 8. Klage auf Rückschaffung von Retentionsgegenständen (Art. 284 SchKG); f. bei Streitigkeiten, für die nach Artikel 7 dieses Gesetzes eine einzige kantonale Instanz zuständig ist; g. bei der Hauptintervention, der Widerklage und der Streitverkündungsklage; h. wenn das Gericht eine Frist für eine Klage gesetzt hat sowie bei Klagen, die mit einer solchen Klage vereint werden, sofern die Klagen in einem sachlichen Zusammenhang stehen; i. bei Klagen vor dem Bundespatentgericht.",
+   "text_sha256": "f9d9d12f69b2f31b6e006d59f05a8bda26df4003f6f5aa6bac0251d1604ad889",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-200-para1-20250101-de",
+   "act": "zpo",
+   "article": "Art. 200 Abs. 1",
+   "exact_text": "Bei Streitigkeiten aus Miete und Pacht von Wohn- und Geschäftsräumen besteht die Schlichtungsbehörde aus einer vorsitzenden Person und einer paritätischen Vertretung.",
+   "text_sha256": "344ff520b028706511f28310dd0e79614c0a6d94539ed4a5bb34195b570a07f2",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-200-para2-20250101-de",
+   "act": "zpo",
+   "article": "Art. 200 Abs. 2",
+   "exact_text": "Bei Streitigkeiten nach dem Gleichstellungsgesetz vom 24. März 1995 besteht die Schlichtungsbehörde aus einer vorsitzenden Person und einer paritätischen Vertretung der Arbeitgeber- und Arbeitnehmerseite und des öffentlichen und privaten Bereichs; die Geschlechter müssen paritätisch vertreten sein.",
+   "text_sha256": "2eb69154199eadc370b4bb04b06917b8d05ca407987abc02966fe4885c7fe7c2",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-201-para1-20250101-de",
+   "act": "zpo",
+   "article": "Art. 201 Abs. 1",
+   "exact_text": "Die Schlichtungsbehörde versucht in formloser Verhandlung, die Parteien zu versöhnen. Dient es der Beilegung des Streites, so können in einen Vergleich auch ausserhalb des Verfahrens liegende Streitfragen zwischen den Parteien einbezogen werden.",
+   "text_sha256": "8c9011f476a1b9651156ffd13d9f3586f1616b1eab068308880bc1dd60835fd4",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-201-para2-20250101-de",
+   "act": "zpo",
+   "article": "Art. 201 Abs. 2",
+   "exact_text": "In den Angelegenheiten nach Artikel 200 ist die Schlichtungsbehörde auch Rechtsberatungsstelle.",
+   "text_sha256": "36b46596a78d7840982bfa24b7d220142e27366b03a69864c0d4c31ec267ec51",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-202-para1-20250101-de",
+   "act": "zpo",
+   "article": "Art. 202 Abs. 1",
+   "exact_text": "Das Verfahren wird durch das Schlichtungsgesuch eingeleitet. Dieses kann in den Formen nach Artikel 130 eingereicht oder mündlich bei der Schlichtungsbehörde zu Protokoll gegeben werden.",
+   "text_sha256": "110868571089b0dccde270adca4a6f42a769ced8eb462f3fd95febb1d31dc5c1",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-203-para1-20250101-de",
+   "act": "zpo",
+   "article": "Art. 203 Abs. 1",
+   "exact_text": "Die Verhandlung hat innert zwei Monaten seit Eingang des Gesuchs oder nach Abschluss des Schriftenwechsels stattzufinden.",
+   "text_sha256": "6fed5357ba9e873d2cc67a18e564c969074ef2db3add4bf639715f65af9bef9a",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-205-para1-20250101-de",
+   "act": "zpo",
+   "article": "Art. 205 Abs. 1",
+   "exact_text": "Aussagen der Parteien dürfen weder protokolliert noch später im Entscheidverfahren verwendet werden.",
+   "text_sha256": "84ac697452f9de2fabb4b0e54bd7c157445b82e3d4e07474231fce0b8de164e1",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-206-para1-20250101-de",
+   "act": "zpo",
+   "article": "Art. 206 Abs. 1",
+   "exact_text": "Bei Säumnis der klagenden Partei gilt das Schlichtungsgesuch als zurückgezogen; das Verfahren wird als gegenstandslos abgeschrieben.",
+   "text_sha256": "2e4d911b802eb07ea9297ba51935aa5545bfe4866afa1dc0c495f44d2df717dd",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-208-para1-20250101-de",
+   "act": "zpo",
+   "article": "Art. 208 Abs. 1",
+   "exact_text": "Kommt es zu einer Einigung, so nimmt die Schlichtungsbehörde einen Vergleich, eine Klageanerkennung oder einen vorbehaltlosen Klagerückzug zu Protokoll und lässt die Parteien dieses unterzeichnen. Jede Partei erhält ein Exemplar des Protokolls.",
+   "text_sha256": "19cb8c2b28e788964f450faac44f6d07df2b458971fbcdbe9bb16d213be9c8ca",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-209-para1-20250101-de",
+   "act": "zpo",
+   "article": "Art. 209 Abs. 1",
+   "exact_text": "Kommt es zu keiner Einigung, so hält die Schlichtungsbehörde dies im Protokoll fest und erteilt die Klagebewilligung: a. bei der Anfechtung von Miet- und Pachtzinserhöhungen: dem Vermieter oder Verpächter; b. in den übrigen Fällen: der klagenden Partei.",
+   "text_sha256": "dd5bf66763cce1fc86ba87f5c5e4955e683867b6140b9bd244b6187e58689a23",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-209-para3-20250101-de",
+   "act": "zpo",
+   "article": "Art. 209 Abs. 3",
+   "exact_text": "Nach Eröffnung berechtigt die Klagebewilligung während dreier Monate zur Einreichung der Klage beim Gericht.",
+   "text_sha256": "583478ed9e6cc3de5c7433dceb18ee3f054460c65f9e3946f6cda608bd4c0c89",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-209-para4-20250101-de",
+   "act": "zpo",
+   "article": "Art. 209 Abs. 4",
+   "exact_text": "In Streitigkeiten aus Miete und Pacht von Wohn- und Geschäftsräumen sowie aus landwirtschaftlicher Pacht beträgt die Klagefrist 30 Tage.",
+   "text_sha256": "ce2a7b2f589845d5d22f9548fc75323634b14f41b9a17fdc7dc53b19b683dfc6",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-243-para2-20250101-de",
+   "act": "zpo",
+   "article": "Art. 243 Abs. 2",
+   "exact_text": "Es gilt ohne Rücksicht auf den Streitwert bei Streitigkeiten: a. nach dem Gleichstellungsgesetz vom 24. März 1995; b. wegen Gewalt, Drohungen oder Nachstellungen nach Artikel 28b ZGB oder betreffend eine elektronische Überwachung nach Artikel 28c ZGB; c. aus Miete und Pacht von Wohn- und Geschäftsräumen sowie aus landwirtschaftlicher Pacht, sofern die Hinterlegung von Miet- und Pachtzinsen, der Schutz vor missbräuchlichen Miet- und Pachtzinsen, der Kündigungsschutz oder die Erstreckung des Miet- oder Pachtverhältnisses betroffen ist; d. zur Durchsetzung des Auskunftsrechts nach Artikel 25 DSG; e. nach dem Mitwirkungsgesetz vom 17. Dezember 1993; f. aus Zusatzversicherungen zur sozialen Krankenversicherung nach dem Bundesgesetz vom 18. März 1994 über die Krankenversicherung.",
+   "text_sha256": "f39b424df9c5f210bf818eec6fc13a054623a23ae55e8d580b78eba784c4af4a",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-244-para3-20250101-de",
+   "act": "zpo",
+   "article": "Art. 244 Abs. 3",
+   "exact_text": "Als Beilagen sind einzureichen: a. eine Vollmacht bei Vertretung; b. die Klagebewilligung oder die Erklärung, dass auf das Schlichtungsverfahren verzichtet werde; c. die verfügbaren Urkunden, welche als Beweismittel dienen sollen.",
+   "text_sha256": "a93bfc51fcabf6f806406beb8c8255ff2e97661d20189fe4477a657981e90389",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "zpo-art-247-para2-20250101-de",
+   "act": "zpo",
+   "article": "Art. 247 Abs. 2",
+   "exact_text": "Das Gericht stellt den Sachverhalt von Amtes wegen fest: a. in den Angelegenheiten nach Artikel 243 Absatz 2; b. bis zu einem Streitwert von 30 000 Franken: 1. in den übrigen Streitigkeiten aus Miete und Pacht von Wohn- und Geschäftsräumen sowie aus landwirtschaftlicher Pacht, 2. in den übrigen arbeitsrechtlichen Streitigkeiten.",
+   "text_sha256": "2702f20c41d2ff88e25dc94f9ffa753385f2d8f420eb20389a439ae18f26fbd8",
+   "snapshot_id": "fedlex-zpo-20250101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/2010/262/20250101/de/xml/fedlex-data-admin-ch-eli-cc-2010-262-20250101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-38-para1-20240101-de",
+   "act": "vvg",
+   "article": "Art. 38 Abs. 1",
+   "exact_text": "Ist das befürchtete Ereignis eingetreten, so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen. Der Vertrag kann verfügen, dass die Anzeige schriftlich erstattet werden muss.",
+   "text_sha256": "154c60bf90055912e86c7e63c6823ae106710c9663c5bbaedd2cc0c6636dc2ca",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-38-para2-20240101-de",
+   "act": "vvg",
+   "article": "Art. 38 Abs. 2",
+   "exact_text": "Hat der Anspruchsberechtigte die Anzeigepflicht schuldhafterweise verletzt, so ist das Versicherungsunternehmen befugt, die Entschädigung um den Betrag zu kürzen, um den sie sich bei rechtzeitiger Anzeige gemindert haben würde.",
+   "text_sha256": "be95a2d7468633f12c16dfef868bd318dc4d5587957ae682429c03642ef65c1b",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-39-para1-20240101-de",
+   "act": "vvg",
+   "article": "Art. 39 Abs. 1",
+   "exact_text": "Der Anspruchsberechtigte muss auf Begehren des Versicherungsunternehmens jede Auskunft über solche ihm bekannte Tatsachen erteilen, die zur Ermittlung der Umstände, unter denen das befürchtete Ereignis eingetreten ist, oder zur Feststellung der Folgen des Ereignisses dienlich sind.",
+   "text_sha256": "a617517408af155c7ad1c64741d1d46f5b8208a0b9a6a05cfa7f4ed40185e88a",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-39-para2-20240101-de",
+   "act": "vvg",
+   "article": "Art. 39 Abs. 2",
+   "exact_text": "Der Vertrag kann verfügen: 1. dass der Anspruchsberechtigte bestimmte Belege, deren Beschaffung ihm ohne erhebliche Kosten möglich ist, insbesondere auch ärztliche Bescheinigungen, beizubringen hat; 2. dass die in Absatz 1 und Absatz 2 Ziffer 1 dieses Artikels vorgesehenen Mitteilungen, bei Verlust des Versicherungsanspruches, binnen bestimmter, angemessener Frist gemacht werden müssen. Die Frist läuft von dem Tage an, an dem das Versicherungsunternehmen den Anspruchsberechtigten, unter Androhung der Säumnisfolgen, schriftlich aufgefordert hat, diese Mitteilungen zu machen.",
+   "text_sha256": "58adea74d817dbe561754980d99494eced8eeb3d87a7ec111d9aa2ee10638337",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-40-20240101-de",
+   "act": "vvg",
+   "article": "Art. 40",
+   "exact_text": "Hat der Anspruchsberechtigte oder sein Vertreter Tatsachen, welche die Leistungspflicht des Versicherungsunternehmens ausschliessen oder mindern würden, zum Zwecke der Täuschung unrichtig mitgeteilt oder verschwiegen oder hat er die ihm nach Massgabe des Artikels 39 dieses Gesetzes obliegenden Mitteilungen zum Zwecke der Täuschung zu spät oder gar nicht gemacht, so ist das Versicherungsunternehmen gegenüber dem Anspruchsberechtigten an den Vertrag nicht gebunden.",
+   "text_sha256": "e81ff6af950a1050e15175a6b9d4a43441dbc9747e3fcff772a440be31e6291d",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-41-para1-20240101-de",
+   "act": "vvg",
+   "article": "Art. 41 Abs. 1",
+   "exact_text": "Die Forderung aus dem Versicherungsvertrage wird mit dem Ablaufe von vier Wochen, von dem Zeitpunkte an gerechnet, fällig, in dem das Versicherungsunternehmen Angaben erhalten hat, aus denen es sich von der Richtigkeit des Anspruches überzeugen kann.",
+   "text_sha256": "35d4bd3eb09d011a0589e7361675ebbd0093861c238d6eb0b3212b8887471870",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-45-para1-20240101-de",
+   "act": "vvg",
+   "article": "Art. 45 Abs. 1",
+   "exact_text": "Ist vereinbart worden, dass der Versicherungsnehmer oder der Anspruchsberechtigte wegen Verletzung einer Obliegenheit von einem Rechtsnachteil betroffen wird, so tritt dieser Nachteil nicht ein, wenn: a. die Verletzung den Umständen nach als eine unverschuldete anzusehen ist; oder b. der Versicherungsnehmer nachweist, dass die Verletzung keinen Einfluss auf den Eintritt des befürchteten Ereignisses und auf den Umfang der vom Versicherungsunternehmen geschuldeten Leistungen gehabt hat.",
+   "text_sha256": "eacb68ebc2aef26e5f939304e9f44424a712aecf41d98909382317d493582b72",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-46-para1-20240101-de",
+   "act": "vvg",
+   "article": "Art. 46 Abs. 1",
+   "exact_text": "Die Forderungen aus dem Versicherungsvertrag verjähren unter Vorbehalt von Absatz 3 fünf Jahre nach Eintritt der Tatsache, welche die Leistungspflicht begründet. Artikel 41 des Bundesgesetzes vom 25. Juni 1982 über die berufliche Alters-, Hinterlassenen- und Invalidenvorsorge bleibt vorbehalten.",
+   "text_sha256": "c43a2ef38dcaf95936bff80df234b3bbb4d469f973c2a590397e290973f59f15",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  },
+  {
+   "authority_id": "vvg-art-46-para2-20240101-de",
+   "act": "vvg",
+   "article": "Art. 46 Abs. 2",
+   "exact_text": "Vertragsabreden, die den Anspruch gegen das Versicherungsunternehmen einer kürzern Verjährung oder einer zeitlich kürzern Beschränkung unterwerfen, sind ungültig. Vorbehalten bleibt die Bestimmung des Artikels 39 Absatz 2 Ziffer 2 dieses Gesetzes.",
+   "text_sha256": "387e3c066095d753bfb4b26388eb08b9c0164a8b5850253011e70e9f3cff3665",
+   "snapshot_id": "fedlex-vvg-20240101-de",
+   "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/719_735_717/20240101/de/xml/fedlex-data-admin-ch-eli-cc-24-719_735_717-20240101-de-xml-1.xml"
+  }
+ ]
+}
