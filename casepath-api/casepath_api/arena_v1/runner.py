@@ -14,6 +14,7 @@ from typing import Any, Mapping
 
 from casepath_api.arena_v1 import arms as method
 from casepath_api.arena_v1 import evaluation
+from casepath_api import artifact_gate_v1
 from casepath_api import evidential_channel_v1 as ctes
 
 TURNS = 3
@@ -26,7 +27,11 @@ CTES_RULE_ARMS = {
     "ctes-abl-commitments": {"believe_party_commitments": True},
     "ctes-abl-satisfaction": {"satisfy_by_attestation_alone": True},
 }
-MODEL_ARMS = ("direct-end-to-end", "process-only", "full", "ctes", "ctes-ablation",
+# B6: the strongest baseline plus the minimal deterministic artifact rule, nothing else. It shares the
+# baseline's prompt and therefore its physical call while their histories agree.
+GATED_BASELINE = "full-artifact-gate"
+PROMPT_ALIAS = {GATED_BASELINE: "full"}
+MODEL_ARMS = ("direct-end-to-end", "process-only", "full", GATED_BASELINE, "ctes", "ctes-ablation",
               "ctes-abl-levels", "ctes-abl-commitments", "ctes-abl-satisfaction")
 ZERO_ARMS = ("random", "static-checklist", "constant", "keyword-router", "domain-compiler")
 ALL_ARMS = ZERO_ARMS + MODEL_ARMS
@@ -140,7 +145,7 @@ def save(run, st): (run / "state.json").write_text(dump(st))
 def build_requests(arm, actor):
     if arm in CTES_RULE_ARMS:
         return {"messages": [{"role": "system", "content": CTES_SYSTEM_PROMPT}, {"role": "user", "content": json.dumps(actor, ensure_ascii=False, sort_keys=True)}]}
-    return method.provider_request(method.build_request(arm, actor))
+    return method.provider_request(method.build_request(PROMPT_ALIAS.get(arm, arm), actor))
 
 
 def emit_requests(run, st, cases):
@@ -201,6 +206,8 @@ def materialize(arm, actor, content, prior_requests):
         plan = ctes.plan_from_state(actor, st, reqs, atts, mentions, arm)
         plan["parse_notes"] = notes
         return raw, {arm: plan}
+    if arm == GATED_BASELINE:
+        return raw, {arm: artifact_gate_v1.apply(actor, method.materialize_arm(actor, "full", raw))}
     return raw, {arm: method.materialize_arm(actor, arm, raw)}
 
 

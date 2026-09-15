@@ -19,6 +19,12 @@ from .contracts import (Role, ROLE_ORDER, ROLE_LABELS, Operation, SourceSpan, Ga
 from .store import WorkStore, WorkStoreError, ConflictError, ReconciliationRequired
 
 
+
+def _source_ref_candidates(source: dict) -> str:
+    """The claim loop's own source-ref digest for one listed source."""
+    from casepath_api.claim_loop import digest_value
+    return "source-ref." + digest_value(dict(source))
+
 class GateRejected(ValueError):
     pass
 
@@ -339,9 +345,42 @@ class ToolRuntime:
         self._put("obligation", "obligation:" + args.object_id, item)
         return item
 
+    def _requirement_source_ids(self, requirement_id):
+        """The sources THIS requirement's accepted evidence actually cites.
+
+        The obligation carries source-ref digests rather than source ids, so the ids are recovered by
+        recomputing the claim loop's own ref digest over each source the authority lists for this claim.
+        """
+        try:
+            item = self._get("obligation:" + requirement_id)
+        except WorkStoreError:
+            return set()
+        refs = {r for r in (item.get("source_ref_ids") or ()) if isinstance(r, str)}
+        if not refs:
+            return set()
+        wanted = set()
+        try:
+            for source in self.authority.list_sources(self.claim_id):
+                sid = source.get("source_id")
+                if sid and {_source_ref_candidates(source)} & refs:
+                    wanted.add(sid)
+        except Exception:
+            return set()
+        return wanted
+
     def _requirement_spans(self, requirement_id):
-        """Every span this run selected, as the evidence available to support a receipt."""
-        return [obj["value"] for obj in self._all("span")]
+        """Only the spans evidentially tied to THIS requirement.
+
+        This used to return every span the run had selected, so one returned artifact anywhere could lift
+        the cap on every requirement in the claim — a run-level shortcut the research method never had. The
+        rule is per requirement: a receipt may rest only on evidence cited by that requirement. When the
+        tie cannot be established the spans are treated as absent, which caps rather than admits.
+        """
+        wanted = self._requirement_source_ids(requirement_id)
+        if not wanted:
+            return []
+        return [obj["value"] for obj in self._all("span")
+                if obj["value"].get("source_id") in wanted]
 
     def _channel_gate(self, object_id, item):
         """Cap a receipt by the channel of the evidence supporting it (see evidential_channel)."""
