@@ -1,6 +1,6 @@
 # Final scientific decision
 
-*Superseded version kept in git history. This one is written after the confirmatory split.*
+*Superseded versions kept in git history. This one is written after the decisive split.*
 
 **The contribution is a channel-typed evidential state, and the confirmatory evidence splits it in two.**
 An evidence-acquisition agent represents what each source locally says as typed atoms, derives the case
@@ -11,13 +11,13 @@ third carries the readiness discipline.
 
 ## What the evidence establishes
 
-1. **State accuracy.** Against the strongest baseline — process-first decomposition plus an explicit
-   verification step, the same model, told the provenance rule in words — the method is right about the
-   state of the evidence by **+0.148 [+0.100, +0.195]**, winning 36 of 41 families, p = 0.0000. Against
-   the direct planner +0.128 and against process-only +0.120, both p = 0.0000. Dropping every episode in
-   which any arm had a failed output leaves +0.135 [+0.091, +0.181], 34 of 41, p = 0.0000. The same
-   comparison on episodes rewritten by a different model gives +0.139 [+0.062, +0.218]. It does not depend
-   on the writer, on the harness, or on the failure asymmetry.
+1. **State accuracy, now pre-registered and replicated.** On a fresh twenty-one-family split read once,
+   with state accuracy fixed in advance as the primary endpoint, the method is right about the state of the
+   evidence **+0.147 [+0.095, +0.205]** more often than the strongest baseline, winning **nineteen of
+   twenty-one families and losing one**, Holm p = 0.000. The confirmatory split had measured +0.148 for the
+   same comparison as an exploratory quantity; the decisive split reproduces it to the third decimal as a
+   pre-registered one. It also survives dropping every episode where any arm failed (+0.135) and rewriting
+   the episodes with a different model (+0.139), so it depends on neither the harness nor the writer.
 2. **Hearsay receipts — a design property, not a measurement.** No CTES-family arm can record one: in
    `compute_state` every branch assigning a document `received` or `insufficient` requires that document to
    be in `returned`, which is built only from returned-artifact units, and the cap appears in none of them.
@@ -26,11 +26,15 @@ third carries the readiness discipline.
    it constantly — 77 (`full`), 68 (`process-only`), 137 (`direct`) over the same eighty-two episodes —
    although all three are told the provenance rule in their prompts. The contribution here is that the
    representation makes the error unrepresentable; it is not evidence that the channel cap works.
-3. **The channel cap's own contribution is readiness.** Against its own ablation, premature readiness falls
-   from 24 episodes to 6, a family-paired difference of **0.220 [0.134, 0.317] with fifteen families won
-   and none lost**, p = 0.0000, and readiness accuracy rises 0.081 [0.016, 0.155], p = 0.013. It is paid
-   for with 0.610 [0.366, 0.866] more requests per family, p = 0.0000, because the agent cannot take a
-   party's word that a document exists or is on its way.
+3. **The mechanism is one binary rule, and it is not the graded one.** The compound switch was separated
+   into three independently settable rules, each given its own arm on the decisive split. *A requirement is
+   satisfied only when the returned artifact establishes it* carries the whole effect: disabling it alone
+   takes premature readiness from 2 episodes to 11, +0.214 [+0.095, +0.357] family-paired, eight families
+   won and **none lost**, and the compound ablation reaches only 10. *Do not believe a party's delivery
+   promise* carries state accuracy, +0.033 [+0.013, +0.056], p = 0.0012. The **graded channel ordering
+   contributes nothing measurable**: its arm is identical to the method on state accuracy, readiness
+   accuracy, acquired evidence, premature readiness and hearsay receipts, every paired difference exactly
+   zero. The method's own name oversold it, and the correction is recorded rather than buried.
 4. **Utility against the weaker baselines.** +0.345 [+0.194, +0.497] over the direct planner and
    +0.300 [+0.166, +0.430] over process-only, both p = 0.000, and decisive against all five zero-model
    controls.
@@ -55,8 +59,11 @@ third carries the readiness discipline.
 
 ## What it does not establish
 
-1. **Composite utility against the strongest baseline.** +0.129, 95% CI [−0.011, +0.271], 21 wins to 16,
-   Holm p = 0.133. Not established, on a third independent arena. The components move in opposite
+1. **Composite utility against the strongest baseline.** +0.129 [−0.011, +0.271] on the confirmatory split
+   and +0.135 [−0.040, +0.316] on the decisive one. Two independent splits agree it does not separate.
+   Not established.
+1b. **A symmetric readiness score does not separate either.** +0.024 [−0.056, +0.119], five families won
+   and five lost. Introduced precisely to fix the composite's asymmetry, and it returns a null. The components move in opposite
    directions — more evidence acquired and far fewer premature declarations, against more requests — and at
    a burden weight of 0.25 they cancel. This is a fact about the utility function as much as about the
    method, and it is reported as a negative.

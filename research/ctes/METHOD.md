@@ -68,11 +68,19 @@ artifact on file. So the ablation is a faithful "decompose then verify over cont
 a single-effect ablation of the cap, and the confirmatory result reports it as the former. A clean
 one-effect ablation has not been run.
 
-**What each part earns.** On the confirmatory split the typed atoms and the deterministic calculus carry
-the state accuracy (about fourteen points over the strongest baseline, and no separation from the
-ablation) and the zero hearsay receipts, which the ablation also achieves. The channel cap carries
-readiness: premature readiness falls from 24 episodes to 6 with fifteen families won and none lost, and it
-is paid for with more requests.
+**What each part earns, measured one rule at a time.** The three rules were separated and each given its
+own arm on the decisive split:
+
+| rule | what disabling it costs |
+|---|---|
+| a requirement needs the returned artifact, not an attestation | premature readiness 2 to 11 episodes, +0.214 [+0.095, +0.357], 8 families won, 0 lost |
+| a party's delivery promise is not believed | state accuracy +0.033 [+0.013, +0.056], p = 0.0012 |
+| support level comes from the channel, not the content | **nothing measurable**: every paired difference exactly zero |
+
+So the graded channel lattice, which the name "channel-typed" advertises, does no work. The load-bearing
+content of the method is one binary rule about satisfaction and a second about delivery promises, sitting
+on top of a typed representation that carries the state accuracy. Earlier text here claimed the lattice was
+the contribution; that was wrong and is corrected.
 
 ## What it adds beyond the current CasePath product
 The shipped six-role workflow (Facts → Orchestration → Source integrity → Process → Evidence →

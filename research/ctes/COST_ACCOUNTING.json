@@ -168,5 +168,23 @@
    "note": "nine times the coverage for half the cost, on the product's actual 150-claim intake corpus"
   }
  },
- "lesson": "Development and iteration ran on the frontier model for the first phase at $85.05, of which about $49.72 was development iteration that the cheap model could have made. The cheap model was not only 18 to 20 times cheaper per unit of work, it exposed the parser brittleness the frontier model masked and it made the sample-size correction affordable. Every later decision was taken on openai/gpt-5.4-mini."
+ "lesson": "Development and iteration ran on the frontier model for the first phase at $85.05, of which about $49.72 was development iteration that the cheap model could have made. The cheap model was not only 18 to 20 times cheaper per unit of work, it exposed the parser brittleness the frontier model masked and it made the sample-size correction affordable. Every later decision was taken on openai/gpt-5.4-mini.",
+ "decisive_phase": {
+  "purpose": "pre-register state accuracy as primary and attribute the cap one rule at a time",
+  "episode_writing": {
+   "model": "openai/gpt-5.4-mini",
+   "episodes": 42,
+   "cost_usd": 0.3036
+  },
+  "episode_verification": {
+   "openai/gpt-5.6-luna-pro": 0.2996,
+   "anthropic/claude-haiku-4.5": 0.1706
+  },
+  "arm_execution": {
+   "run_decisive_mini_42_episodes_13_arms": 3.4153,
+   "note": "thirteen arms including three new single-rule ablations; the five CTES-family arms share one physical call per turn while their histories agree"
+  },
+  "note": "the whole decisive phase, including three extra ablation arms, ran on the small model",
+  "decisive_phase_total_usd": 4.19
+ }
 }

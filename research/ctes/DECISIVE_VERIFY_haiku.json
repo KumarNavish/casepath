@@ -1,0 +1,497 @@
+{
+ "model": "anthropic/claude-haiku-4.5",
+ "episodes": 42,
+ "ok": 16,
+ "failed_checks": 25,
+ "errors": 1,
+ "cost_usd": 0.1706,
+ "results": [
+  {
+   "episode": "heating_defect.balcony_door.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or using language that suggests attachment"
+    },
+    {
+     "id": "ret-A4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan received' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or using language that suggests attachment"
+    },
+    {
+     "id": "ret-A5-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'received' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or using language that suggests attachment"
+    }
+   ],
+   "cost_usd": 0.004793
+  },
+  {
+   "episode": "heating_defect.balcony_door.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A6-partial#p1",
+     "rule": 4,
+     "issue": "The paragraph uses the word 'scan of the authenticated property-management case export' which implies a document is being presented/attached, violating the prohibition on revealing whether a record will be adequate or using attachment language."
+    }
+   ],
+   "cost_usd": 0.003853
+  },
+  {
+   "episode": "heating_defect.boiler_noise.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "motif is 'content_quote' but the text says 'I am not sending that export now' which contradicts the requirement that the customer must NOT say they are sending it—this phrasing implies they could send it, violating the semantic requirement that content_quote means the customer describes from memory WITHOUT implying possession or transmission capability"
+    }
+   ],
+   "cost_usd": 0.003979
+  },
+  {
+   "episode": "heating_defect.boiler_noise.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A5-final#p1",
+     "rule": 1,
+     "issue": "Text contains Cyrillic characters 'ноч—' (partial word 'noch') mixed with English, suggesting corruption or encoding error in the medical confirmation document itself"
+    }
+   ],
+   "cost_usd": 0.003967
+  },
+  {
+   "episode": "heating_defect.draught.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003649
+  },
+  {
+   "episode": "heating_defect.draught.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.0033
+  },
+  {
+   "episode": "heating_defect.heat_pump.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A4-partial#p1",
+     "rule": 2,
+     "issue": "Paragraph states 'Der Hinweis auf den Mietzinsdepot ist noch nicht enthalten' but scope 'partial' requires an explicit statement that it lacks a required element AND promises the complete version follows; this only states what is missing, not that more will follow"
+    }
+   ],
+   "cost_usd": 0.004758
+  },
+  {
+   "episode": "heating_defect.heat_pump.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A3-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; the rule prohibits 'attached/enclosed/beigelegt/beiliegend'"
+    }
+   ],
+   "cost_usd": 0.003837
+  },
+  {
+   "episode": "heating_defect.legionella.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.004197
+  },
+  {
+   "episode": "heating_defect.legionella.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003339
+  },
+  {
+   "episode": "heating_defect.shared_meter.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "motif is 'content_quote' but text says 'My doctor said the note dated 26 March 2025 mentions' — this is third-party relay (doctor told them), not the customer's own description or quote from memory of the document"
+    }
+   ],
+   "cost_usd": 0.004186
+  },
+  {
+   "episode": "heating_defect.shared_meter.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' which implies attachment/enclosure of a document"
+    }
+   ],
+   "cost_usd": 0.004473
+  },
+  {
+   "episode": "heating_defect.winter_gap.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A6-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Copy scan received' which implies an attachment or enclosed document"
+    }
+   ],
+   "cost_usd": 0.003696
+  },
+  {
+   "episode": "heating_defect.winter_gap.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-A6-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'beigefügten' (attached/enclosed)"
+    }
+   ],
+   "cost_usd": 0.004892
+  },
+  {
+   "episode": "rent_increase.area_recalc.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003483
+  },
+  {
+   "episode": "rent_increase.area_recalc.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C2-partial#p1",
+     "rule": 4,
+     "issue": "The paragraph uses the word 'scan' which implies an attached document, violating rule 4's prohibition on revealing whether a record will be adequate or using attachment language"
+    }
+   ],
+   "cost_usd": 0.003617
+  },
+  {
+   "episode": "rent_increase.arrears_offset.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "The customer states 'the renovation cost breakdown will go out automatically within three days' but this is relayed via email from the property manager, not a direct promise from the customer that they will receive it automatically. The motif requires the customer to report that the holder WILL send it automatically, but the text shows the manager said it would be sent, making this third-party relay rather than promise_automatic."
+    },
+    {
+     "id": "src#p4",
+     "rule": 1,
+     "issue": "The customer states 'When I phoned, the manager said the authenticated admin export records...' This is correctly third-party relay, but the phrase 'the manager said' followed by specific facts ('preparation history in that export shows the work was finished on 14 March 2025') blurs the line between what the manager told them and what the document actually says. The motif requires second-hand only reporting of what another party told them, which is present, but the phrasing could suggest the customer is asserting document content rather than merely relaying hearsay."
+    }
+   ],
+   "cost_usd": 0.004833
+  },
+  {
+   "episode": "rent_increase.arrears_offset.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00329
+  },
+  {
+   "episode": "rent_increase.furnished.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003757
+  },
+  {
+   "episode": "rent_increase.furnished.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; rule 4 prohibits words like 'attached/enclosed'"
+    },
+    {
+     "id": "ret-C5-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'copy' which implies an attached document; rule 4 prohibits words like 'attached/enclosed'"
+    },
+    {
+     "id": "ret-C6-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; rule 4 prohibits words like 'attached/enclosed'"
+    }
+   ],
+   "cost_usd": 0.004484
+  },
+  {
+   "episode": "rent_increase.parking.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003226
+  },
+  {
+   "episode": "rent_increase.parking.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; the rule prohibits 'attached/enclosed/beigelegt/beiliegend'"
+    }
+   ],
+   "cost_usd": 0.003676
+  },
+  {
+   "episode": "rent_increase.portfolio.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "motif 'possession_report' requires stating the customer HOLDS/HAS the document, but text says 'kann es Ihnen schicken' (can send it to you) which implies future transmission, not current possession"
+    },
+    {
+     "id": "ret-C1-partial#p1",
+     "rule": 4,
+     "issue": "uses word 'Scan' which implies attachment/enclosure; rule 4 prohibits 'attached/enclosed/beigelegt/beiliegend'"
+    },
+    {
+     "id": "ret-C3-partial#p1",
+     "rule": 4,
+     "issue": "uses phrase 'soll spaeter folgen' (will follow later) which implies the complete version will be attached/enclosed"
+    },
+    {
+     "id": "ret-C5-partial#p1",
+     "rule": 4,
+     "issue": "uses word 'Scan' which implies attachment/enclosure; rule 4 prohibits 'attached/enclosed/beigelegt/beiliegend'"
+    },
+    {
+     "id": "ret-C6-partial#p1",
+     "rule": 4,
+     "issue": "uses word 'Scan' which implies attachment/enclosure; rule 4 prohibits 'attached/enclosed/beigelegt/beiliegend'"
+    }
+   ],
+   "cost_usd": 0.005788
+  },
+  {
+   "episode": "rent_increase.portfolio.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C3-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Begleitschreiben zum Scan' (cover note to scan) which implies an attachment; rule 4 prohibits all paragraphs from using words like 'attached/enclosed/beigelegt/beiliegend'"
+    },
+    {
+     "id": "ret-C6-partial#p1",
+     "rule": 4,
+     "issue": "states 'die vollständige Version soll nachgereicht werden' (the complete version will be submitted later), which implies a future attachment; rule 4 prohibits revealing whether a record will be adequate or attached"
+    }
+   ],
+   "cost_usd": 0.004512
+  },
+  {
+   "episode": "rent_increase.reference_lag.e1",
+   "ok": null,
+   "error": "unparsable verdict",
+   "raw": "{\n  \"ok\": false,\n  \"problems\": [\n    {\n      \"id\": \"ret-C4-partial#p1\",\n      \"rule\": 2,\n      \"issue\": \"scope is 'partial_correcting' but the text does not explicitly state that a corrected version follows; it says 'Eine korrigierte Fassung mit abweichenden Zahlen folgt noch' which does state this,"
+  },
+  {
+   "episode": "rent_increase.reference_lag.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-C2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'eingereichten Kopie' and 'Scan' which implies a document is being submitted/attached, violating the prohibition on revealing attachment status"
+    },
+    {
+     "id": "ret-C2-final#p1",
+     "rule": 4,
+     "issue": "no explicit statement that this is a legible complete document; the scope 'final' requires establishing facts with concrete values, but the paragraph does not clearly state it is the complete version or that it establishes the required facts for ['R-SEQ']"
+    }
+   ],
+   "cost_usd": 0.004704
+  },
+  {
+   "episode": "rent_increase.service_charge.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003224
+  },
+  {
+   "episode": "rent_increase.service_charge.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00414
+  },
+  {
+   "episode": "termination_payment.double_debit.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Beiblatt' (attachment context) and 'Scan' which implies a document is being provided/attached"
+    }
+   ],
+   "cost_usd": 0.004698
+  },
+  {
+   "episode": "termination_payment.double_debit.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003715
+  },
+  {
+   "episode": "termination_payment.grace_custom.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00435
+  },
+  {
+   "episode": "termination_payment.grace_custom.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B6-partial#p1",
+     "rule": 2,
+     "issue": "scope is 'partial' but text states 'Eine weitere Fassung wird hier nicht versprochen' (no further version promised), contradicting the requirement that partial paragraphs must promise a complete version follows"
+    }
+   ],
+   "cost_usd": 0.005006
+  },
+  {
+   "episode": "termination_payment.guarantor.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B1-partial#p1",
+     "rule": 4,
+     "issue": "uses word 'eingescannte' (scanned) which implies attachment; violates rule 4 prohibition on 'attached/enclosed/beigelegt/beiliegend'"
+    },
+    {
+     "id": "ret-B2-partial#p1",
+     "rule": 4,
+     "issue": "uses word 'eingescannte' (scanned) which implies attachment; violates rule 4 prohibition on 'attached/enclosed/beigelegt/beiliegend'"
+    },
+    {
+     "id": "src#p5",
+     "rule": 1,
+     "issue": "states 'kann sie bei Bedarf zusenden' (can send it if needed) which contradicts possession_report motif requirement to state they HAVE/HOLD it without implying sending"
+    }
+   ],
+   "cost_usd": 0.005351
+  },
+  {
+   "episode": "termination_payment.guarantor.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' which implies an attached document; the instruction prohibits revealing whether records will be attached"
+    }
+   ],
+   "cost_usd": 0.004496
+  },
+  {
+   "episode": "termination_payment.mail_hold.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B4-partial#p1",
+     "rule": 2,
+     "issue": "scope is 'partial_correcting' but must_convey requires 'an OLDER version' with 'figures that are later corrected'; the text states 'a corrected version will follow' which is correct, but the scope label should be 'partial_correcting' not 'partial' — however, the spec lists this id as 'ret-B4-partial#p1' when it should semantically be 'ret-B4-partial_correcting#p1' to match rule 2 requirements"
+    },
+    {
+     "id": "ret-B5-partial#p1",
+     "rule": 2,
+     "issue": "scope is 'partial' but the text says 'The complete record follows' which implies a promise of correction; this should be 'partial_correcting' if it's an older version being corrected, or the promise statement should be removed if it's just incomplete without correction"
+    }
+   ],
+   "cost_usd": 0.005061
+  },
+  {
+   "episode": "termination_payment.mail_hold.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B1-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'scan' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or discussing attachment status"
+    },
+    {
+     "id": "ret-B2-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'copy' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or discussing attachment status"
+    },
+    {
+     "id": "ret-B3-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'copy' which implies an attached document; rule 4 prohibits revealing whether a record will be adequate or discussing attachment status"
+    }
+   ],
+   "cost_usd": 0.004403
+  },
+  {
+   "episode": "termination_payment.part_month.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003539
+  },
+  {
+   "episode": "termination_payment.part_month.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'Scan' which implies attachment/enclosure of a document"
+    }
+   ],
+   "cost_usd": 0.004654
+  },
+  {
+   "episode": "termination_payment.renovation_exit.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003532
+  },
+  {
+   "episode": "termination_payment.renovation_exit.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.003748
+  },
+  {
+   "episode": "termination_payment.successor.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "ret-B4-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'attached' implicitly via 'the scan of the notice' which violates the prohibition on attached/enclosed language"
+    },
+    {
+     "id": "ret-B6-partial#p1",
+     "rule": 4,
+     "issue": "uses the word 'attached' implicitly via 'the scan of the authenticated chronology packet' which violates the prohibition on attached/enclosed language"
+    }
+   ],
+   "cost_usd": 0.004252
+  },
+  {
+   "episode": "termination_payment.successor.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.00411
+  }
+ ]
+}
