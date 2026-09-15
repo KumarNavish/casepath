@@ -53,6 +53,14 @@ def _problems(brief: dict, texts: dict) -> list[str]:
 
 
 def write_one(ep_dir: Path, model: str, max_attempts: int = 3) -> dict:
+    # A per-episode WRITER file overrides the default, so one split can be rendered by several writer
+    # families with the assignment fixed before any actor runs. The writer is then a nuisance variable
+    # rather than something that tracks the model under test.
+    marker = ep_dir / "WRITER"
+    if marker.exists():
+        named = marker.read_text().strip()
+        if named:
+            model = named
     brief = json.loads((ep_dir / "brief.json").read_text())
     messages = [{"role": "system", "content": SYSTEM},
                 {"role": "user", "content": json.dumps(brief, ensure_ascii=False)}]
@@ -77,10 +85,10 @@ def write_one(ep_dir: Path, model: str, max_attempts: int = 3) -> dict:
         if not problems:
             ordered = {p["id"]: str(texts[p["id"]]).strip() for p in brief["paragraphs"]}
             (ep_dir / "texts.json").write_text(json.dumps(ordered, ensure_ascii=False, indent=1) + "\n")
-            return {"episode": ep_dir.name, "ok": True, "attempts": receipts,
+            return {"episode": ep_dir.name, "writer_model": model, "ok": True, "attempts": receipts,
                     "cost_usd": round(sum(x.get("cost_usd") or 0 for x in receipts), 6)}
         messages = messages[:2] + [{"role": "user", "content": "Your previous reply broke these rules; rewrite the whole object correctly.\n" + "\n".join(problems)}]
-    return {"episode": ep_dir.name, "ok": False, "attempts": receipts,
+    return {"episode": ep_dir.name, "writer_model": model, "ok": False, "attempts": receipts,
             "cost_usd": round(sum(x.get("cost_usd") or 0 for x in receipts), 6)}
 
 
