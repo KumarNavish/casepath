@@ -1,0 +1,95 @@
+{
+ "contract": "casepath.arena-v1-reproducibility-manifest/1.0.0",
+ "git": {
+  "head": "89535daba3e6ccf9b950091d199978cc6c3eb6f1",
+  "branch": "research/ctes-20260915",
+  "dirty_files": [
+   "M casepath-api/casepath_api/native_live_workspace_v1.py",
+   "?? casepath-api/arena_v1_data/",
+   "?? casepath-api/casepath_api/arena_v1/",
+   "?? casepath-api/casepath_api/evidential_channel_gate_v1.py",
+   "?? casepath-api/casepath_api/evidential_channel_v1.py",
+   "?? casepath-api/tests/test_arena_v1.py",
+   "?? casepath-api/tests/test_evidential_channel_gate_v1.py",
+   "?? casepath-api/tests/test_evidential_channel_v1.py"
+  ]
+ },
+ "code": {
+  "evidential_channel_v1.py": "d8170df1b179740f393757c5bd4e553fbe39e8d6e86d57cd97c05b1b80a87d72",
+  "evidential_channel_gate_v1.py": "2060cfeec951902309ffceca232ba0b4dc8cf02046ba164694e3328bea3e8103",
+  "native_live_workspace_v1.py": "845d604d6f6d5bfd33a361ffc9fdad12150158b94f1dda79e24fe222425e4398",
+  "arena_v1/evaluation.py": "96fb4225f2834c24ad64c776693d2b144bc1fc400fcef3a26d223adf04cd6ff5",
+  "arena_v1/arms.py": "2916ca8c2ae50180838ab90ad3305b49cbaf7be7251b8df1d3b0146688378256",
+  "arena_v1/generator.py": "b9d992f0547192987920f713b27f0d93bd5fc4f85706ce07a793210cc778db0f",
+  "arena_v1/runner.py": "9f5d8be43fdcf8bb7b0a96600b64495b5b5edb8be113f878d332d4e89d782c81",
+  "arena_v1/transport.py": "60e0e1d944c5f561ce97387211e2201de055c78591dc96e986cf71e029d4e2dd",
+  "arena_v1/run_turn.py": "969ebd58ea8c55c348e3c6a00dea5190c4172149568b6c1b2e56c2b67e002236",
+  "arena_v1/assemble.py": "30afb611c148f2c8c9148b0ffb3b49540514a36b33c5a1d202233bf68d07f1c6",
+  "arena_v1/shortcut_audit.py": "25eeb6073d4a707b3fe4eef1985860e1ad6c1dc23fb2e262b5279510e05dc177",
+  "arena_v1/analyze.py": "01d6ae5ea33fc3414823bf3af41f6120be69fa6e5217256876141b5eb5a74627"
+ },
+ "tests": {
+  "test_evidential_channel_gate_v1.py": "cb451ad3799c20757b2ca3cc9e9bae879cc798a2a437d533a29166e2ad80abab",
+  "test_evidential_channel_v1.py": "7e51299e05c0593819fe4c317a667ff8446f6d508e011c8261e97a728eb7d16a",
+  "test_arena_v1.py": "ad4f52296e3cbc3879ce1842bdc131a534bcb444d22f1163ca2049da721be41e"
+ },
+ "data": {
+  "latents.json": "5e95d8956937cd80262177e442898298c0e5e25249bbd52cd95d2198e0dd8f35",
+  "PRODUCT_CORPUS_STUDY.json": "71aa52e571837e453af8c21f09021875d5835def69a3f8d2cb5d2cd0543bde8c",
+  "EPISODE_VERIFICATION.json": "aca05ae59fc5a69abbf1400c2e055ac54eaa9c08304ddcbd04c6b1aab04a2a79",
+  "HIDDEN_IDS.txt": "84ade787f7c6846a8f5d9352847c964d67d931e1e03ff362167b81c3991bf216",
+  "DEV_IDS.txt": "d18c65f76dd352b7a01dd9bee6f6c08ad6888e0cc8a2f20ce00b685d487e2de8",
+  "TRANSFER_IDS.txt": "47599394675529967e9d725098272e48633438599faeeaa81cb49f090f401df2",
+  "HIDDEN_IDS.hash": "7d34242d240d6dea7452f7f2ba0c0581c318bbd23a9bdd48a15e0c02b6478574"
+ },
+ "prompts": {
+  "ctes_system_prompt": "638650e5c280942d7486f41bd5c3c959bbfcbe1aae974da36df6f7d743fc1b6e",
+  "direct_system_prompt": "8db44ae0b4862e23994a87016f45721079d3d742cccdf73bb4b1e83d905092dc",
+  "shared_ledger_system_prompt": "969432d8cc1fc130e2474bc9725c448b5f1bbda9b4cc290c50092ca3a62332c7",
+  "document_first_system_prompt": "5e1fa980d1e640d48789ceeddef3182f6b5662cad20252e754404f1a06b0ad42"
+ },
+ "model": {
+  "id": "anthropic/claude-opus-5",
+  "provider": "anthropic (OpenRouter, allow_fallbacks=false)",
+  "temperature": 0.0,
+  "max_tokens": 3000,
+  "response_format": "json_object"
+ },
+ "runs": {
+  "run": {
+   "result_sha256": "c1653b201b8b8a75015448a55bdf448ff93a05190bd3186481d7205cde0978e6",
+   "cases_sha256": "eee7b0996ecf22d45dbb80d845a7fbcd93dd1fff169bcb8bba43ea99ccbd29b5",
+   "model_label": "openai/gpt-5.4-mini",
+   "arms": [
+    "ctes",
+    "ctes-ablation"
+   ],
+   "case_ids": [
+    "heating_defect.boiler.e1",
+    "heating_defect.boiler.e2",
+    "heating_defect.boiler.e3",
+    "heating_defect.leak.e1",
+    "heating_defect.leak.e2",
+    "heating_defect.leak.e3",
+    "heating_defect.mould.e1",
+    "heating_defect.mould.e2",
+    "heating_defect.mould.e3",
+    "heating_defect.access.e1",
+    "heating_defect.access.e2",
+    "heating_defect.access.e3",
+    "termination_payment.late_paid.e1",
+    "termination_payment.late_paid.e2",
+    "termination_payment.late_paid.e3",
+    "termination_payment.mixed_demand.e1",
+    "termination_payment.mixed_demand.e2",
+    "termination_payment.mixed_demand.e3",
+    "termination_payment.wrong_address.e1",
+    "termination_payment.wrong_address.e2",
+    "termination_payment.wrong_address.e3",
+    "termination_payment.family_home.e1",
+    "termination_payment.family_home.e2",
+    "termination_payment.family_home.e3"
+   ]
+  }
+ }
+}

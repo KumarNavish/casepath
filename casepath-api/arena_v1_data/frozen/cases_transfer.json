@@ -1,0 +1,4602 @@
+{
+ "cases": [
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-rate_date-1#h1"
+     ],
+     "need_origin": [
+      "src-rate_date-1#p1",
+      "src-rate_date-1#p2",
+      "src-rate_date-1#p3",
+      "src-rate_date-1#p4"
+     ],
+     "observed_return": [
+      "ret-cdb2dc8ea1#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-rate_date-1#h1"
+     ],
+     "need_origin": [
+      "src-rate_date-1#p1",
+      "src-rate_date-1#p2",
+      "src-rate_date-1#p3",
+      "src-rate_date-1#p4"
+     ],
+     "observed_return": [
+      "ret-4f1508b464#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-rate_date-1#h1"
+     ],
+     "need_origin": [
+      "src-rate_date-1#p1",
+      "src-rate_date-1#p2",
+      "src-rate_date-1#p3",
+      "src-rate_date-1#p4"
+     ],
+     "observed_return": [
+      "ret-2ad9393912#p1",
+      "ret-522531180b#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-rate_date-1#h2"
+     ],
+     "need_origin": [
+      "src-rate_date-1#p1",
+      "src-rate_date-1#p2",
+      "src-rate_date-1#p3",
+      "src-rate_date-1#p4"
+     ],
+     "observed_return": [
+      "ret-135076092e#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-rate_date-1#h1"
+     ],
+     "need_origin": [
+      "src-rate_date-1#p1",
+      "src-rate_date-1#p2",
+      "src-rate_date-1#p3",
+      "src-rate_date-1#p4"
+     ],
+     "observed_return": [
+      "ret-fca6d20dc9#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-rate_date-1#h3"
+     ],
+     "need_origin": [
+      "src-rate_date-1#p1",
+      "src-rate_date-1#p2",
+      "src-rate_date-1#p3",
+      "src-rate_date-1#p4"
+     ],
+     "observed_return": [
+      "ret-570301ea61#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-rate_date-1#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-e85975607b#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-cdb2dc8ea1"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-4f1508b464"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial_correcting",
+       "source_ids": [
+        "ret-2ad9393912"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-522531180b"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-522531180b"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-135076092e"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-fca6d20dc9"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-570301ea61"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-e85975607b"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-rate_date-1",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "On 9 April 2025 a rent increase form for my flat at Sonnenweg 14 in Bern turned up in my letterbox, signed at Bern on 12 March 2025 by Claudia Vogt of Rietberg Immobilien AG. It lifts my net rent from CHF 1,640 to CHF 1,792 from 1 July 2025 and justifies this with a reference interest rate table that, as far as I can see, only came into force on 1 April 2025 - roughly three weeks after she signed."
+       },
+       {
+        "id": "p2",
+        "text": "When I queried the dates, the office sent me a printout of their processing history for the form by email. Ms Vogt then told me a few days later that the version numbers and save times in that printout had been pulled from the wrong system and had since been put right."
+       },
+       {
+        "id": "p3",
+        "text": "I also still have the letter about the rate that they keep pointing to. Whether it is the same document the form relies on or something else the office posted to me in April, I genuinely could not say."
+       },
+       {
+        "id": "p4",
+        "text": "What I would like looked at is whether a rate that only took effect after the signature can carry this increase, and whether the starting figures used for my rent are really the ones from my lease of 1 May 2021. What stays unclear to me is when the office actually finished preparing the form, because the dates I have been given so far do not line up with each other."
+       }
+      ]
+     },
+     {
+      "id": "gov-rate_date-1",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Before the current decision is taken, three facts must be on the record: the date the increase form was signed, the exact rate table relied on together with the period for which it applies, and the moment the completed form content was prepared. These are established by the signed increase notice showing the form date and the rate or table it cites, the publication excerpt for that table and its period of effect, and the property manager's workflow or audit log covering preparation of the completed form content; alternatively, an authenticated administrative export covering the notice, the table reference and the preparation history may be relied on. A party's account or recollection of what a record says does not establish its content - the record itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis tied to this notice must likewise be on the record before the matter is decided. This is established by the calculation worksheet setting out the starting basis used for the notice. However confidently either side describes that worksheet, a description or recollection does not establish its content; the worksheet itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h3",
+        "text": "A renovation cost breakdown supporting a value-added increase comes into play only once the notice itself reveals a renovation reason. Do not request that breakdown unless a returned signed increase notice reports the triggering circumstance; until it does, the obligation stays dormant."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts are not required for this check and should not be requested. Readiness here means that the listed facts are established from the required records; it does not decide whether the increase is legally owed."
+       }
+      ]
+     },
+     {
+      "id": "ret-4f1508b464",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Excerpt from the published reference interest rate table: the mortgage reference interest rate was fixed at 1.75% and announced on 1 April 2025, applying to rent adjustments from that day onwards. The entry immediately before it records 1.50%, in force from 2 December 2024 until 31 March 2025."
+       }
+      ],
+      "provided_document_id": "C2"
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.rate_date.e1",
+   "domain": "rent_increase",
+   "episode": 1,
+   "family": "rate_date",
+   "intake_source_documents": {
+    "ret-4f1508b464": "C2"
+   },
+   "language": "en",
+   "latent_sha256": "670b814d6c9ab58817b41d349b6bd51fa0fa99e025e1d74def182cbebb568e94",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Before the current decision is taken, three facts must be on the record: the date the increase form was signed, the exact rate table relied on together with the period for which it applies, and the moment the completed form content was prepared. These are established by the signed increase notice showing the form date and the rate or table it cites, the publication excerpt for that table and its period of effect, and the property manager's workflow or audit log covering preparation of the completed form content; alternatively, an authenticated administrative export covering the notice, the table reference and the preparation history may be relied on. A party's account or recollection of what a record says does not establish its content - the record itself, or the authenticated export, is required.",
+       "source_ref": "gov-rate_date-1#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis tied to this notice must likewise be on the record before the matter is decided. This is established by the calculation worksheet setting out the starting basis used for the notice. However confidently either side describes that worksheet, a description or recollection does not establish its content; the worksheet itself, or the authenticated export, is required.",
+       "source_ref": "gov-rate_date-1#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "activation": {
+      "active_if_any_observed": [
+       "ret-cdb2dc8ea1"
+      ]
+     },
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "A renovation cost breakdown supporting a value-added increase comes into play only once the notice itself reveals a renovation reason. Do not request that breakdown unless a returned signed increase notice reports the triggering circumstance; until it does, the obligation stays dormant.",
+       "source_ref": "gov-rate_date-1#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-cdb2dc8ea1",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Notification of a rent increase for the flat at Sonnenweg 14, 3006 Bern, on the official cantonal form, signed at Bern on 12 March 2025 by Claudia Vogt for Rietberg Immobilien AG. From 1 July 2025 the net rent rises from CHF 1,640 to CHF 1,792 per month: CHF 49 of that follows the mortgage reference interest rate of 1.75% shown in the rate table valid from 1 April 2025, and CHF 103 follows the value-adding share of the bathroom and kitchen renovation completed in November 2024."
+      }
+     ]
+    },
+    {
+     "id": "ret-2ad9393912",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Processing history for the Sonnenweg 14 increase notice, extract drawn on 4 April 2025: draft opened 6 March 2025, content saved at revision 3 on 11 March 2025, signature captured 12 March 2025. Administrator's note: the revision counter and the save times in this extract were read from the test environment and are known to be wrong; a corrected extract will follow once the export has been rerun."
+      }
+     ]
+    },
+    {
+     "id": "ret-522531180b",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Processing history for the increase notice at Sonnenweg 14, drawn from the live system on 22 April 2025: the form was opened on 6 March 2025, the signature was applied on 12 March 2025, and the form content was last edited and saved at 09:42 on 3 April 2025, when the rate figure was changed from 1.50% to 1.75% and the table reference was set to the table valid from 1 April 2025. Printing was released on 4 April 2025 and no later content change is logged for this notice."
+      }
+     ]
+    },
+    {
+     "id": "ret-135076092e",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Rent calculation sheet for flat 3.2, Sonnenweg 14: the net rent of CHF 1,640 agreed in the lease of 1 May 2021 rests on a mortgage reference interest rate of 1.50%, a consumer price index of 100.1 points (December 2020) and general cost increases accounted for up to 1 May 2021. Each quarter-point step of the reference rate is carried at 3.0% of the net rent, which gives CHF 49.20 for the step to 1.75%; no earlier reduction or reservation is recorded against this basis."
+      }
+     ]
+    },
+    {
+     "id": "ret-fca6d20dc9",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Certified administrative export issued by Rietberg Immobilien AG on 6 May 2025 and signed off by its authorised officer for the Sonnenweg 14 increase notice. It reproduces the form signed on 12 March 2025 that raises the net rent to CHF 1,792 from 1 July 2025, identifies the cited table as the reference interest rate table of 1.75% valid from 1 April 2025, and sets out the preparation history, in which the last content change stands at 09:42 on 3 April 2025 with printing released the following day. The export carries the system seal and the certification stamp of the issuing office."
+      }
+     ]
+    },
+    {
+     "id": "ret-570301ea61",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Cost breakdown for the renovation of the bathrooms and kitchens at Sonnenweg 14, carried out between June and November 2024: works of CHF 96,000 in total, of which 55% (CHF 52,800) is treated as value-adding and the remainder as deferred maintenance. Flat 3.2 carries CHF 12,360 of the value-adding portion; at an annual charge of 10% (6.67% amortisation over fifteen years, 2.33% interest and 1% upkeep) this amounts to CHF 1,236 a year, or CHF 103 a month."
+      }
+     ]
+    },
+    {
+     "id": "ret-e85975607b",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Payment record for flat 3.2, Sonnenweg 14: transfers of CHF 1,640 in net rent plus CHF 185 in service charge advances were received on 29 January, 26 February and 28 March 2025, each on time and in full. The account shows no arrears and no outstanding balance from the 2024 service charge statement."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "reference-rate calculation with a rate dated after the manager's signature"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-rate_date-2#h1"
+     ],
+     "need_origin": [
+      "src-rate_date-2#p1",
+      "src-rate_date-2#p2",
+      "src-rate_date-2#p3",
+      "src-rate_date-2#p4",
+      "src-rate_date-2#p5"
+     ],
+     "observed_return": [
+      "ret-636fa71b5d#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-rate_date-2#h1"
+     ],
+     "need_origin": [
+      "src-rate_date-2#p1",
+      "src-rate_date-2#p2",
+      "src-rate_date-2#p3",
+      "src-rate_date-2#p4",
+      "src-rate_date-2#p5"
+     ],
+     "observed_return": [
+      "ret-864bd26774#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-rate_date-2#h1"
+     ],
+     "need_origin": [
+      "src-rate_date-2#p1",
+      "src-rate_date-2#p2",
+      "src-rate_date-2#p3",
+      "src-rate_date-2#p4",
+      "src-rate_date-2#p5"
+     ],
+     "observed_return": [
+      "ret-0f83e2f9a8#p1",
+      "ret-694f8a885c#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-rate_date-2#h2"
+     ],
+     "need_origin": [
+      "src-rate_date-2#p1",
+      "src-rate_date-2#p2",
+      "src-rate_date-2#p3",
+      "src-rate_date-2#p4",
+      "src-rate_date-2#p5"
+     ],
+     "observed_return": [
+      "ret-1e2973db7d#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-rate_date-2#h1"
+     ],
+     "need_origin": [
+      "src-rate_date-2#p1",
+      "src-rate_date-2#p2",
+      "src-rate_date-2#p3",
+      "src-rate_date-2#p4",
+      "src-rate_date-2#p5"
+     ],
+     "observed_return": [
+      "ret-1ec99e08e4#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-rate_date-2#h3"
+     ],
+     "need_origin": [
+      "src-rate_date-2#p1",
+      "src-rate_date-2#p2",
+      "src-rate_date-2#p3",
+      "src-rate_date-2#p4",
+      "src-rate_date-2#p5"
+     ],
+     "observed_return": [
+      "ret-978e8c11df#p1",
+      "ret-466610cd3b#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-rate_date-2#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-d53921ae9f#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-636fa71b5d"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-864bd26774"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-0f83e2f9a8"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-694f8a885c"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-694f8a885c"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-1e2973db7d"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-1ec99e08e4"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-978e8c11df"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-466610cd3b"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-466610cd3b"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-d53921ae9f"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-rate_date-2",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "The rent adjustment notice from Brunner Immobilien AG landed in my letterbox at Lindenweg 14 in Bern on 16 June 2025, lifting my net rent from CHF 1,480 to CHF 1,569 with effect from 1 October 2025. What struck me straight away was the signature date of 4 March 2025, because the 1.75 per cent reference interest rate the form leans on was only made public in June."
+       },
+       {
+        "id": "p2",
+        "text": "My own reading of the form is quite clear: the manager's signature line shows 4 March 2025, and the rate quoted just above it is 1.75 per cent. Martin Roth at Brunner Immobilien AG tells me I am misremembering, and that the copy sitting in their file carries a June signature date alongside the same rate. One of us has the order of events wrong, and I cannot settle that from memory alone."
+       },
+       {
+        "id": "p3",
+        "text": "During a phone call on 18 August 2025, Mr Roth mentioned that their system keeps a record of when the wording of the notice was actually put together, and he said it would reach me on its own within the next few days. I never asked him for it; he described sending that record out as ordinary office routine."
+       },
+       {
+        "id": "p4",
+        "text": "Sorting through the folder in my hallway cupboard on 20 August 2025, I came across the worksheet setting out the starting figures behind the increase. It is here with me and I can pass it on the moment you want it, though I have made no attempt to interpret what it says."
+       },
+       {
+        "id": "p5",
+        "text": "Could you please look at whether a rent increase may rest on a reference rate that only came into existence after the form had been signed? I genuinely do not know which date is the one that counts here: the date under the signature, the day the office finished drafting the form, or the day the rate itself became applicable."
+       }
+      ]
+     },
+     {
+      "id": "gov-rate_date-2",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Before this file is decided, three points have to be established: the date carried by the signed increase notice, the exact rate table relied on together with the period over which it applies, and the moment the completed wording of the form was prepared. What establishes them is the signed increase notice or form showing its date and the rate or table it cites, the publication excerpt for that rate or table with its effective period, and the workflow or audit record of when the completed form content was prepared; an authenticated administrative export covering the notice, the table reference and the preparation history may stand in place of that combination. A party's description or recollection of a document does not establish what it contains, so the document itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis tied to this notice must likewise be established before the decision is taken, and the calculation worksheet showing the basis used for the notice is what establishes it. An account given by either side about that worksheet does not settle its contents; the worksheet itself, or the authenticated export, has to be on file."
+       },
+       {
+        "id": "h3",
+        "text": "A renovation cost breakdown supporting a value-added increase comes into scope only once a returned increase notice itself gives a renovation as a reason for the adjustment. Until such a reason appears in the notice, do not ask the property manager for that cost breakdown."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts play no part in this check and should not be requested. Readiness here means that the listed facts are established from the required documents; it settles nothing about whether the increase is legally owed."
+       }
+      ]
+     },
+     {
+      "id": "ret-1e2973db7d",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Calculation sheet for the adjustment at Lindenweg 14, flat 3.2, prepared by S. Keller for Brunner Immobilien AG. The rent was last fixed on 1 April 2021 at a net CHF 1,480 per month on a reference interest rate of 1.25 per cent, with no reserved claims carried forward. Those two values form the starting point on which the 2025 adjustment was built."
+       }
+      ],
+      "provided_document_id": "C4"
+     },
+     {
+      "id": "ret-1ec99e08e4",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Certified administrative export, Brunner Immobilien AG, object Lindenweg 14 / flat 3.2, issued 2 September 2025 under the seal and signature of the managing director. The export reproduces the adjustment notice signed 4 March 2025 that raises the net rent from CHF 1,480 to CHF 1,569 as of 1 October 2025, records that the rate cited is the 1.75 per cent value published on 3 June 2025 and applicable from that day, and shows the form wording being locked with that rate on 11 June 2025 at 14:32 by M. Roth. The whole is certified as a true reproduction of the entries held in the company's management system."
+       }
+      ],
+      "provided_document_id": "C5"
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.rate_date.e2",
+   "domain": "rent_increase",
+   "episode": 2,
+   "family": "rate_date",
+   "intake_source_documents": {
+    "ret-1e2973db7d": "C4",
+    "ret-1ec99e08e4": "C5"
+   },
+   "language": "en",
+   "latent_sha256": "051b7ddca83ab157e1861f2f0f90dcfce0111801c36f384fe5467f587a0fd8c8",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Before this file is decided, three points have to be established: the date carried by the signed increase notice, the exact rate table relied on together with the period over which it applies, and the moment the completed wording of the form was prepared. What establishes them is the signed increase notice or form showing its date and the rate or table it cites, the publication excerpt for that rate or table with its effective period, and the workflow or audit record of when the completed form content was prepared; an authenticated administrative export covering the notice, the table reference and the preparation history may stand in place of that combination. A party's description or recollection of a document does not establish what it contains, so the document itself, or the authenticated export, is required.",
+       "source_ref": "gov-rate_date-2#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis tied to this notice must likewise be established before the decision is taken, and the calculation worksheet showing the basis used for the notice is what establishes it. An account given by either side about that worksheet does not settle its contents; the worksheet itself, or the authenticated export, has to be on file.",
+       "source_ref": "gov-rate_date-2#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": false,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "A renovation cost breakdown supporting a value-added increase comes into scope only once a returned increase notice itself gives a renovation as a reason for the adjustment. Until such a reason appears in the notice, do not ask the property manager for that cost breakdown.",
+       "source_ref": "gov-rate_date-2#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-636fa71b5d",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Notice of rent adjustment, Lindenweg 14, 3006 Bern, flat 3.2, tenant N. Aebi. With effect from 1 October 2025 the net monthly rent rises from CHF 1,480 to CHF 1,569, the adjustment being based on the mortgage reference interest rate of 1.75 per cent set out in the published reference-rate table; ancillary charges of CHF 180 per month remain unchanged. Signed at Bern on 4 March 2025 for Brunner Immobilien AG, M. Roth, property manager."
+      }
+     ]
+    },
+    {
+     "id": "ret-864bd26774",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Official publication of the federal reference interest rate for tenancy agreements. The rate was fixed at 1.75 per cent and published on 3 June 2025, and it governs rent adjustments from 3 June 2025 until the next publication. The preceding value of 1.50 per cent was in force from 4 December 2023 through 2 June 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-0f83e2f9a8",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Workflow extract, mandate Lindenweg 14 / adjustment 2025: file opened 27 February 2025 by S. Keller, tenant address block verified 3 March 2025, letter dispatched 12 June 2025. Entries showing the point at which the form wording and the rate reference were locked for printing do not appear in this extract, since the editing history is held in a separate module. Our IT department will send through a complete run that includes that history."
+      }
+     ]
+    },
+    {
+     "id": "ret-694f8a885c",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Workflow history, mandate Lindenweg 14 / adjustment 2025, complete run. Draft created 27 February 2025 at 10:14 by S. Keller; form content locked with the rate reference set to 1.75 per cent on 11 June 2025 at 14:32 by M. Roth; document released for printing 12 June 2025 at 09:05 and dispatched the same day. No change to the signature block was recorded at any time after 4 March 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-978e8c11df",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Renovation account, Lindenweg 14, works carried out in 2024: total expenditure CHF 212,400, of which CHF 94,000 went on the bathroom refits and CHF 61,500 on the window replacement. No split between maintenance and value-adding work has been made on this sheet, so no value-adding share is stated anywhere in it."
+      }
+     ]
+    },
+    {
+     "id": "ret-466610cd3b",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Renovation cost breakdown, Lindenweg 14, works completed 30 September 2024. Total expenditure came to CHF 212,400, of which CHF 148,680 (70 per cent) is treated as value-adding and CHF 63,720 as maintenance; the value-adding share allocated to flat 3.2 by floor area is CHF 14,868, producing an annual amortisation and interest charge of CHF 1,041, or CHF 86.75 per month. All figures were checked against the contractor invoices by our accounting department."
+      }
+     ]
+    },
+    {
+     "id": "ret-d53921ae9f",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Payment record, tenant N. Aebi, Lindenweg 14, flat 3.2. Rent of CHF 1,660 was received on 29 April 2025, 28 May 2025 and 27 June 2025, each by standing order through PostFinance. No arrears were outstanding as at 30 June 2025."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "reference-rate calculation with a rate dated after the manager's signature"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-no_reason-1#h1"
+     ],
+     "need_origin": [
+      "src-no_reason-1#p1",
+      "src-no_reason-1#p2",
+      "src-no_reason-1#p3",
+      "src-no_reason-1#p4",
+      "src-no_reason-1#p5"
+     ],
+     "observed_return": [
+      "ret-11113e31f9#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-no_reason-1#h1"
+     ],
+     "need_origin": [
+      "src-no_reason-1#p1",
+      "src-no_reason-1#p2",
+      "src-no_reason-1#p3",
+      "src-no_reason-1#p4",
+      "src-no_reason-1#p5"
+     ],
+     "observed_return": [
+      "ret-5132ea646c#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-no_reason-1#h1"
+     ],
+     "need_origin": [
+      "src-no_reason-1#p1",
+      "src-no_reason-1#p2",
+      "src-no_reason-1#p3",
+      "src-no_reason-1#p4",
+      "src-no_reason-1#p5"
+     ],
+     "observed_return": [
+      "ret-a9484c2751#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-no_reason-1#h2"
+     ],
+     "need_origin": [
+      "src-no_reason-1#p1",
+      "src-no_reason-1#p2",
+      "src-no_reason-1#p3",
+      "src-no_reason-1#p4",
+      "src-no_reason-1#p5"
+     ],
+     "observed_return": [
+      "ret-02bf8e9472#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-no_reason-1#h1"
+     ],
+     "need_origin": [
+      "src-no_reason-1#p1",
+      "src-no_reason-1#p2",
+      "src-no_reason-1#p3",
+      "src-no_reason-1#p4",
+      "src-no_reason-1#p5"
+     ],
+     "observed_return": [
+      "ret-e733cb6a01#p1",
+      "ret-6d0adb4691#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-no_reason-1#h3"
+     ],
+     "need_origin": [
+      "src-no_reason-1#p1",
+      "src-no_reason-1#p2",
+      "src-no_reason-1#p3",
+      "src-no_reason-1#p4",
+      "src-no_reason-1#p5"
+     ],
+     "observed_return": [
+      "ret-29086d2eb9#p1",
+      "ret-67e548d6af#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-no_reason-1#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-318034ab34#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-11113e31f9"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-5132ea646c"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-a9484c2751"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-02bf8e9472"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-e733cb6a01"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-6d0adb4691"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-6d0adb4691"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-29086d2eb9"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-67e548d6af"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-67e548d6af"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-318034ab34"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-no_reason-1",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "On 17 March 2025 I found an official rent adjustment form in my letterbox for my flat at Lindenstrasse 14 in Bern, raising the net rent from CHF 1,680 to CHF 1,845 a month with effect from 1 October 2025. What struck me straight away was that the space where a reason belongs had simply been left empty. A week later, on 24 March, Ms. Frei of Rueegg Verwaltungs AG wrote to me by e-mail that this was \"a normal market adjustment\", and that one line is the only explanation I have been given."
+       },
+       {
+        "id": "p2",
+        "text": "At the tenants' information evening on 21 January 2025, Mr. Bruderer of Hofmatt Immobilien AG told us quite plainly that the 2024 refurbishment had been covered out of the renovation fund and that no statement of those costs would be passed on to us. The management now insists that a detailed statement of the renovation costs, separating upkeep from value-adding work, went to every household in December 2024; I never saw such a sheet, and my neighbour on the same floor says the same."
+       },
+       {
+        "id": "p3",
+        "text": "I went through my folder again yesterday evening, and the signed adjustment form itself is here at home, along with the envelope it arrived in. I can put it in the post to you tomorrow or scan it this afternoon, whichever suits you better. I would rather not paraphrase what it says, because I am obviously not reading it the way the management does."
+       },
+       {
+        "id": "p4",
+        "text": "Then there is the letter I keep coming back to, the one that shows when all of this was actually put together in their office. I am no longer sure whether that is the same document the management pointed to during our telephone call on 2 April 2025, and I do not want to guess at it."
+       },
+       {
+        "id": "p5",
+        "text": "What I would like looked at now is whether an increase of CHF 165 a month can stand at all when the form itself names no reason and the only explanation arrived afterwards by e-mail. What genuinely remains unclear to me is which of the two counts: the empty space on the form, or Ms. Frei's market-adjustment sentence of 24 March 2025."
+       }
+      ]
+     },
+     {
+      "id": "gov-no_reason-1",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Before the current decision is taken, three points must be established: the date carried by the signed increase notice, the exact rate or calculation table it refers to together with the period for which that table was in force, and the moment at which the completed form content was prepared. Acceptable proof is the signed increase notice or form showing its date and the referenced rate or table, taken together with a publication excerpt for that rate or table and its effective period and a workflow or audit log recording when the completed form content was drawn up; an authenticated administrative export covering the notice, the table reference and the preparation history may stand in place of that audit-log route. What a party remembers or describes about a document does not establish its content, so the document itself, or the authenticated export, must be on file."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis on which the notice was built must likewise be established before the decision. It is to be taken from the calculation worksheet setting out the basis used for that notice. Neither side's account or recollection of that worksheet establishes what it contains; the worksheet itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h3",
+        "text": "A renovation cost breakdown is required only in the conditional case: the obligation arises once a returned increase notice or form itself reports that the increase rests on renovation work. Until such a notice is in hand and shows that circumstance, do not request the renovation cost breakdown supporting a value-added increase."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts play no part in this check and should not be requested for it. Readiness here means only that the listed facts are established from the required documents; it settles nothing about whether the increase is legally owed."
+       }
+      ]
+     },
+     {
+      "id": "ret-5132ea646c",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Publication of the Federal Housing Office on the mortgage reference interest rate: the rate of 1.75 per cent was announced on 1 December 2023 and applied from 2 December 2023 onwards. It stayed in force unchanged until 2 March 2025; from 3 March 2025 the published rate stands at 1.50 per cent."
+       }
+      ],
+      "provided_document_id": "C2"
+     },
+     {
+      "id": "ret-29086d2eb9",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Renovation account for Lindenstrasse 14, works completed in November 2024: total construction cost CHF 680,000, of which kitchens CHF 246,000, bathrooms CHF 231,000 and building envelope CHF 203,000. The division between value-preserving upkeep and value-adding investment has not yet been carried out in this statement, and the allocation key to the individual flats is therefore still missing; the completed statement showing both will follow by the end of next week."
+       }
+      ],
+      "provided_document_id": "C6"
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.no_reason.e1",
+   "domain": "rent_increase",
+   "episode": 1,
+   "family": "no_reason",
+   "intake_source_documents": {
+    "ret-29086d2eb9": "C6",
+    "ret-5132ea646c": "C2"
+   },
+   "language": "en",
+   "latent_sha256": "b948148f9e38bf5f441951667c7a7af9914e9259ddb46aae9ae37c38dd05c53d",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Before the current decision is taken, three points must be established: the date carried by the signed increase notice, the exact rate or calculation table it refers to together with the period for which that table was in force, and the moment at which the completed form content was prepared. Acceptable proof is the signed increase notice or form showing its date and the referenced rate or table, taken together with a publication excerpt for that rate or table and its effective period and a workflow or audit log recording when the completed form content was drawn up; an authenticated administrative export covering the notice, the table reference and the preparation history may stand in place of that audit-log route. What a party remembers or describes about a document does not establish its content, so the document itself, or the authenticated export, must be on file.",
+       "source_ref": "gov-no_reason-1#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis on which the notice was built must likewise be established before the decision. It is to be taken from the calculation worksheet setting out the basis used for that notice. Neither side's account or recollection of that worksheet establishes what it contains; the worksheet itself, or the authenticated export, is required.",
+       "source_ref": "gov-no_reason-1#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "activation": {
+      "active_if_any_observed": [
+       "ret-11113e31f9"
+      ]
+     },
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "A renovation cost breakdown is required only in the conditional case: the obligation arises once a returned increase notice or form itself reports that the increase rests on renovation work. Until such a notice is in hand and shows that circumstance, do not request the renovation cost breakdown supporting a value-added increase.",
+       "source_ref": "gov-no_reason-1#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-11113e31f9",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Official notice of rent adjustment for Lindenstrasse 14, 3007 Bern, apartment 21, tenant R. Steiner, drawn up and signed on 12 March 2025 by Rueegg Verwaltungs AG on behalf of the owner Hofmatt Immobilien AG. With effect from 1 October 2025 the net rent rises from CHF 1,680 to CHF 1,845 per month, the ancillary-charge instalment of CHF 180 remaining unchanged; the calculation refers to the mortgage reference interest rate of 1.75 per cent. Reason given for the adjustment: the value-adding renovation of the building completed in November 2024, covering kitchens, bathrooms and the building envelope, of which CHF 412,000 is treated as value-adding investment."
+      }
+     ]
+    },
+    {
+     "id": "ret-a9484c2751",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Workflow record from the property administration system of Rueegg Verwaltungs AG, object Lindenstrasse 14, apartment 21: draft adjustment notice opened 27 February 2025 at 09:14 by user m.frei, rate and table reference last edited 6 March 2025 at 16:40, content closed for signature on 10 March 2025 at 14:22 by the same user, with no later edit recorded. Printing and dispatch were released from the batch of 13 March 2025 at 08:05."
+      }
+     ]
+    },
+    {
+     "id": "ret-02bf8e9472",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Calculation worksheet for the adjustment notice, Lindenstrasse 14, apartment 21: the starting basis is the net rent of CHF 1,680 per month agreed in the lease of 1 April 2021, resting on a reference interest rate of 1.25 per cent, a consumer price index of 101.2 points as at December 2020, and cost-increase allowances last accounted for on 1 April 2021. From that basis the sheet derives the new net rent of CHF 1,845, an increase of CHF 165 per month or 9.82 per cent."
+      }
+     ]
+    },
+    {
+     "id": "ret-e733cb6a01",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Authenticated administrative export for Lindenstrasse 14, apartment 21, produced under electronic seal by Rueegg Verwaltungs AG on 28 April 2025. It reproduces the adjustment notice signed on 12 March 2025, the new net rent of CHF 1,845 from 1 October 2025, and the referenced mortgage reference interest rate of 1.75 per cent. The preparation history of the form content lies outside the exported range and is not contained in this document."
+      }
+     ]
+    },
+    {
+     "id": "ret-6d0adb4691",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Issued under electronic seal on 19 May 2025, this administrative export for Lindenstrasse 14, apartment 21, reproduces the notice signed on 12 March 2025, which raises the net rent to CHF 1,845 from 1 October 2025 and refers to the mortgage reference interest rate of 1.75 per cent as published for the period from 2 December 2023 to 2 March 2025. The same export carries the preparation history: draft opened 27 February 2025 at 09:14, rate and table reference last edited 6 March 2025 at 16:40, content closed for signature 10 March 2025 at 14:22, dispatch released 13 March 2025 at 08:05."
+      }
+     ]
+    },
+    {
+     "id": "ret-67e548d6af",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Renovation cost statement for the works carried out at Lindenstrasse 14 between March and November 2024: of the total cost of CHF 680,000, CHF 268,000 falls to value-preserving upkeep and CHF 412,000 to value-adding investment. The value-adding share is written off over 25 years and, together with the interest component, produces an annual charge of CHF 24,000 for the building as a whole. Apartment 21 carries 8.25 per cent under the allocation key, which comes to CHF 1,980 per year, or CHF 165 per month."
+      }
+     ]
+    },
+    {
+     "id": "ret-318034ab34",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Payment confirmations for tenant R. Steiner, Lindenstrasse 14, apartment 21: the monthly amount of CHF 1,860, comprising the net rent and the ancillary-charge instalment, was credited on time for every month from January to August 2025, in each case on the 28th or 29th of the preceding month. No arrears are open and no reminder has been sent."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "official increase form with no stated reason and a market-adjustment e-mail"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-no_reason-2#h1"
+     ],
+     "need_origin": [
+      "src-no_reason-2#p1",
+      "src-no_reason-2#p2",
+      "src-no_reason-2#p3",
+      "src-no_reason-2#p4"
+     ],
+     "observed_return": [
+      "ret-b3ea8fcd53#p1",
+      "ret-788a9f5440#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-no_reason-2#h1"
+     ],
+     "need_origin": [
+      "src-no_reason-2#p1",
+      "src-no_reason-2#p2",
+      "src-no_reason-2#p3",
+      "src-no_reason-2#p4"
+     ],
+     "observed_return": [
+      "ret-3a2087eecc#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-no_reason-2#h1"
+     ],
+     "need_origin": [
+      "src-no_reason-2#p1",
+      "src-no_reason-2#p2",
+      "src-no_reason-2#p3",
+      "src-no_reason-2#p4"
+     ],
+     "observed_return": [
+      "ret-725a1937cb#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-no_reason-2#h2"
+     ],
+     "need_origin": [
+      "src-no_reason-2#p1",
+      "src-no_reason-2#p2",
+      "src-no_reason-2#p3",
+      "src-no_reason-2#p4"
+     ],
+     "observed_return": [
+      "ret-b103fdfedc#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-no_reason-2#h1"
+     ],
+     "need_origin": [
+      "src-no_reason-2#p1",
+      "src-no_reason-2#p2",
+      "src-no_reason-2#p3",
+      "src-no_reason-2#p4"
+     ],
+     "observed_return": [
+      "ret-5c057aebcd#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-no_reason-2#h3"
+     ],
+     "need_origin": [
+      "src-no_reason-2#p1",
+      "src-no_reason-2#p2",
+      "src-no_reason-2#p3",
+      "src-no_reason-2#p4"
+     ],
+     "observed_return": [
+      "ret-bec5ffc822#p1",
+      "ret-e2d3bea903#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-no_reason-2#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-9bea60c60e#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-b3ea8fcd53"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-788a9f5440"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-788a9f5440"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-3a2087eecc"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-725a1937cb"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-b103fdfedc"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-5c057aebcd"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-bec5ffc822"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-e2d3bea903"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-e2d3bea903"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-9bea60c60e"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-no_reason-2",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "On 14 March 2025 I found an official rent increase notice in my letterbox for my flat at Lindenweg 14 in Köniz: the net rent jumps from CHF 1,640 to CHF 1,835 a month as of 1 October 2025, yet the field where the ground for the increase belongs has been left blank on my copy. Three days later Brunner Verwaltungs AG wrote to me by e-mail and said nothing more than that the rent was being brought into line with current market levels."
+       },
+       {
+        "id": "p2",
+        "text": "When I rang Brunner Verwaltungs AG on 24 March 2025, Mr Steiner told me their system logs every step of a notice and that the wording of mine had been locked down on 10 March, four days before it reached me. That is simply what he said to me on the telephone; I have never laid eyes on any such log myself."
+       },
+       {
+        "id": "p3",
+        "text": "Going through the folder I keep for the flat, I turned up the renovation cost breakdown that the management circulated to us tenants after the 2024 building works, and it is here at home with me. I can put it in the post or scan it across whenever you need it, though I would rather leave the figures in it to you."
+       },
+       {
+        "id": "p4",
+        "text": "What I would like checked is whether an increase notice that leaves the reason blank, backed only by an e-mail about market levels, can stand at all, and whether the timing of the whole procedure was in order. What I genuinely cannot work out is which rate or calculation table the new amount is supposed to rest on, because nothing that has reached me so far names one."
+       }
+      ]
+     },
+     {
+      "id": "gov-no_reason-2",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Before the present decision is taken, three matters must be established: the date borne by the signed increase notice, the precise rate or calculation table it refers to together with the period for which that table was in force, and the moment at which the content of the form was settled in its definitive wording. Acceptable for this are the signed increase notice or form showing its date and the rate or table referenced, the publication excerpt for that rate or table with its effective period, and the property manager's workflow or audit log covering preparation of the settled form content; the authenticated administrative export from the property manager covering the notice, the table reference and the preparation history may take the place of that log. What a party recalls or describes about a document does not establish its content, so the document itself, or the authenticated export, must be obtained."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis tied to this notice must likewise be established before the decision is reached. For that point, only the calculation worksheet setting out the basis actually used for the notice is acceptable. Here too, an account given by a party about what a paper says proves nothing as to its content; the worksheet itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h3",
+        "text": "A renovation cost breakdown enters the picture only conditionally. The obligation to obtain it arises solely where a returned signed increase notice or form itself reports a renovation as the ground for the increase; for as long as no returned notice reports that circumstance, do not ask the property manager for the renovation cost breakdown supporting a value-added increase."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts play no part in this check and should not be requested for it. Readiness here means no more than that the listed facts have been established from the documents required above; it does not settle whether the increase is legally owed."
+       }
+      ]
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.no_reason.e2",
+   "domain": "rent_increase",
+   "episode": 2,
+   "family": "no_reason",
+   "intake_source_documents": {},
+   "language": "en",
+   "latent_sha256": "d7128c924e73068632253d794a55feb3f5f97ae5627a5d56bee4b496b53d3307",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Before the present decision is taken, three matters must be established: the date borne by the signed increase notice, the precise rate or calculation table it refers to together with the period for which that table was in force, and the moment at which the content of the form was settled in its definitive wording. Acceptable for this are the signed increase notice or form showing its date and the rate or table referenced, the publication excerpt for that rate or table with its effective period, and the property manager's workflow or audit log covering preparation of the settled form content; the authenticated administrative export from the property manager covering the notice, the table reference and the preparation history may take the place of that log. What a party recalls or describes about a document does not establish its content, so the document itself, or the authenticated export, must be obtained.",
+       "source_ref": "gov-no_reason-2#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis tied to this notice must likewise be established before the decision is reached. For that point, only the calculation worksheet setting out the basis actually used for the notice is acceptable. Here too, an account given by a party about what a paper says proves nothing as to its content; the worksheet itself, or the authenticated export, is required.",
+       "source_ref": "gov-no_reason-2#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "activation": {
+      "active_if_any_observed": [
+       "ret-788a9f5440"
+      ]
+     },
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "A renovation cost breakdown enters the picture only conditionally. The obligation to obtain it arises solely where a returned signed increase notice or form itself reports a renovation as the ground for the increase; for as long as no returned notice reports that circumstance, do not ask the property manager for the renovation cost breakdown supporting a value-added increase.",
+       "source_ref": "gov-no_reason-2#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-b3ea8fcd53",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Notification of rent increase, flat on the second floor at Lindenweg 14, 3098 Köniz, signed for Hofweid Immobilien AG on 12 March 2025: the net rent moves from CHF 1,640 to CHF 1,835 per month with effect from 1 October 2025. The section in which the rate or calculation table underlying the new amount is to be named has been left empty on this form, and the form consists of this single sheet."
+      }
+     ]
+    },
+    {
+     "id": "ret-788a9f5440",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Notification of rent increase, flat on the second floor at Lindenweg 14, 3098 Köniz, signed for Hofweid Immobilien AG by R. Hofweid on 12 March 2025, effective 1 October 2025: net rent from CHF 1,640 to CHF 1,835 per month. The new amount rests on the mortgage reference rate table of 1.75 per cent in force since 2 December 2024 and, as to CHF 118 of the monthly figure, on the value-adding share of the bathroom, window and façade renovation completed in the building in 2024."
+      }
+     ]
+    },
+    {
+     "id": "ret-3a2087eecc",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Federal publication, mortgage reference rate for tenancy relationships: the rate stands at 1.75 per cent and applies from 2 December 2024 until further notice. It replaces the rate of 1.50 per cent, which was in force from 2 June 2020 to 1 December 2024; the entry was published by the Federal Housing Office on 2 December 2024."
+      }
+     ]
+    },
+    {
+     "id": "ret-725a1937cb",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Workflow record, tenancy file 4412 / Lindenweg 14, second floor: version 3 of the increase notice was saved by user b.steiner on 10 March 2025 at 14:22 and flagged ready for signature at 14:31, and no later edit to the document text appears in the record. Printing and dispatch are logged for 13 March 2025 at 09:05."
+      }
+     ]
+    },
+    {
+     "id": "ret-b103fdfedc",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Calculation sheet, tenancy 4412 / Lindenweg 14: the basis carried forward for the present notice is the net rent of CHF 1,640 agreed on 1 May 2021, with a reference rate of 1.50 per cent, a cost-of-living index of 106.2 points as at December 2020 and general cost increases accounted for up to 30 April 2021. Against that basis the sheet derives CHF 62 for the rate step, CHF 15 for general cost development and CHF 118 for the value-adding works, producing the net rent of CHF 1,835 from 1 October 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-5c057aebcd",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Certified export from the property management system for tenancy 4412, issued and electronically sealed on 8 April 2025. It reproduces the increase notice signed on 12 March 2025 for the rise from CHF 1,640 to CHF 1,835 with effect from 1 October 2025, the reference rate table of 1.75 per cent in force since 2 December 2024 to which that notice refers, and the preparation history showing the document text settled on 10 March 2025 at 14:22 with no subsequent change."
+      }
+     ]
+    },
+    {
+     "id": "ret-bec5ffc822",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Cover note from Brunner Verwaltungs AG, 22 April 2025: the renovation cost breakdown you requested was scanned from our archive copy, but the file we are sending carries only pages 1 and 4, and both come through so dark that not a single figure on them can be made out. We are therefore in no position to tell you what the breakdown records."
+      }
+     ]
+    },
+    {
+     "id": "ret-e2d3bea903",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Renovation cost statement, Lindenweg 14, works completed on 30 November 2024: total expenditure CHF 486,400, of which CHF 173,900 is booked as maintenance and CHF 312,500 as value-adding, covering bathroom replacement, window renewal and façade insulation. Apportioned across the eight flats by floor area and amortised at 5.2 per cent with interest, the share falling on the second-floor flat amounts to CHF 118 per month. Drawn up and signed by Brunner Verwaltungs AG on 15 January 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-9bea60c60e",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Payment confirmations, tenancy 4412: standing-order transfers of CHF 1,640 were credited on 30 April, 30 May and 30 June 2025 from the tenant's account at Bank Köniz, each booked as rent for the month following. Nothing is outstanding on the account for the period covered."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "official increase form with no stated reason and a market-adjustment e-mail"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-subsidy-1#h1"
+     ],
+     "need_origin": [
+      "src-subsidy-1#p1",
+      "src-subsidy-1#p2",
+      "src-subsidy-1#p3",
+      "src-subsidy-1#p4",
+      "src-subsidy-1#p5"
+     ],
+     "observed_return": [
+      "ret-b960b416f1#p1",
+      "ret-49f418c700#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-subsidy-1#h1"
+     ],
+     "need_origin": [
+      "src-subsidy-1#p1",
+      "src-subsidy-1#p2",
+      "src-subsidy-1#p3",
+      "src-subsidy-1#p4",
+      "src-subsidy-1#p5"
+     ],
+     "observed_return": [
+      "ret-df4df4cd2c#p1",
+      "ret-836871750f#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-subsidy-1#h1"
+     ],
+     "need_origin": [
+      "src-subsidy-1#p1",
+      "src-subsidy-1#p2",
+      "src-subsidy-1#p3",
+      "src-subsidy-1#p4",
+      "src-subsidy-1#p5"
+     ],
+     "observed_return": [
+      "ret-372a4f02a6#p1",
+      "ret-b42c1f6f8b#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-subsidy-1#h2"
+     ],
+     "need_origin": [
+      "src-subsidy-1#p1",
+      "src-subsidy-1#p2",
+      "src-subsidy-1#p3",
+      "src-subsidy-1#p4",
+      "src-subsidy-1#p5"
+     ],
+     "observed_return": [
+      "ret-e6535bd15c#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-subsidy-1#h1"
+     ],
+     "need_origin": [
+      "src-subsidy-1#p1",
+      "src-subsidy-1#p2",
+      "src-subsidy-1#p3",
+      "src-subsidy-1#p4",
+      "src-subsidy-1#p5"
+     ],
+     "observed_return": [
+      "ret-cfcb46d7bd#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-subsidy-1#h3"
+     ],
+     "need_origin": [
+      "src-subsidy-1#p1",
+      "src-subsidy-1#p2",
+      "src-subsidy-1#p3",
+      "src-subsidy-1#p4",
+      "src-subsidy-1#p5"
+     ],
+     "observed_return": [
+      "ret-ec6e0f204a#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-subsidy-1#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-3bfaa62a5d#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-b960b416f1"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-49f418c700"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-49f418c700"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-df4df4cd2c"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-836871750f"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-836871750f"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-372a4f02a6"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-b42c1f6f8b"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-b42c1f6f8b"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-e6535bd15c"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-cfcb46d7bd"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-ec6e0f204a"
+     ],
+     "scope": "unavailable"
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-3bfaa62a5d"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-subsidy-1",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "The rent adjustment form for my flat at Lindenweg 12 in Bern is dated 14 March 2025 and landed in my letterbox four days later, and ever since I have been given two different stories about the renovation money. At the tenants' meeting on 2 April 2025, Ms Egger of Bergmann Immobilien AG told me face to face that the cantonal subsidy of CHF 140,000 had already been taken off the renovation costs before anything was passed on to us, whereas the letter that reached me from the same office on 28 April 2025 says the subsidy was booked against the owner's own contribution and changed nothing at all for me. My net rent is meant to climb from CHF 1,680 to CHF 1,915 on 1 October 2025."
+       },
+       {
+        "id": "p2",
+        "text": "When I rang the cantonal publication office on 6 May 2025 to ask about the rate table my increase points to, the clerk told me I did not need to put in a request at all. Their office sends the published extract, with the table and the dates it covers, out on its own initiative, and she said it should be in the post to me within a few days."
+       },
+       {
+        "id": "p3",
+        "text": "Over the weekend I dug through the folder where I keep everything to do with the flat, and the certified administrative export that Bergmann Immobilien had drawn up for this increase is sitting in it, seal and all, covering the notice, the table it refers to and the preparation history. I have it here at home and can pass it on to you whenever you want it; I have not worked my way through what it records."
+       },
+       {
+        "id": "p4",
+        "text": "The calculation sheet I was shown at the meeting I still remember reasonably well: it began from a net rent of CHF 1,680 with 1 July 2021 marked as the date that basis was set, and it put the reference rate at that time at 1.25 per cent. That is going purely on what I saw on the screen that evening."
+       },
+       {
+        "id": "p5",
+        "text": "What I would like looked at now is whether the increase taking effect on 1 October 2025 was really worked out the way the form says, and above all whether the CHF 140,000 subsidy ought to have reduced the amount passed on to me. What I genuinely cannot work out on my own is which of the two statements from Bergmann Immobilien is the one that counts, the spoken one from the April meeting or the written one from the end of that month."
+       }
+      ]
+     },
+     {
+      "id": "gov-subsidy-1",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Three points must be settled before the current question is addressed: the date carried on the signed increase form, the exact rate or calculation table the form relies on together with the period that table covers, and the moment at which the content of the form was completed. These follow from the signed increase notice showing the form date and the referenced rate or table, the publication extract for that rate or table with its period of effect, and the workflow or audit log recording when the form content was prepared; an authenticated administrative export covering the notice, the table reference and the preparation history stands in place of that set. What a party remembers or reports about a document does not establish its content, so the document itself, or the authenticated export, must be on file."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis tied to this notice has to be established before the current question is decided. Only the calculation worksheet showing the basis actually used for the notice will establish it. A description or recollection of that worksheet from either side does not establish what it contains; the worksheet itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h3",
+        "text": "The renovation cost breakdown is a conditional item. It comes into play solely once a returned signed increase notice itself reports that the increase rests on a renovation reason; until such a notice has come in and says so, do not ask the property manager for the renovation cost breakdown supporting a value-added increase."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts are not needed for this check and should not be requested for it. Readiness here means the listed facts are established from the documents required above; it decides nothing about whether the increase is legally owed."
+       }
+      ]
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.subsidy.e1",
+   "domain": "rent_increase",
+   "episode": 1,
+   "family": "subsidy",
+   "intake_source_documents": {},
+   "language": "en",
+   "latent_sha256": "c2a588dad1eae1b41dc020efff9ede66463c8a04134dad96e164b01b8b51b34a",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Three points must be settled before the current question is addressed: the date carried on the signed increase form, the exact rate or calculation table the form relies on together with the period that table covers, and the moment at which the content of the form was completed. These follow from the signed increase notice showing the form date and the referenced rate or table, the publication extract for that rate or table with its period of effect, and the workflow or audit log recording when the form content was prepared; an authenticated administrative export covering the notice, the table reference and the preparation history stands in place of that set. What a party remembers or reports about a document does not establish its content, so the document itself, or the authenticated export, must be on file.",
+       "source_ref": "gov-subsidy-1#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis tied to this notice has to be established before the current question is decided. Only the calculation worksheet showing the basis actually used for the notice will establish it. A description or recollection of that worksheet from either side does not establish what it contains; the worksheet itself, or the authenticated export, is required.",
+       "source_ref": "gov-subsidy-1#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "activation": {
+      "active_if_any_observed": [
+       "ret-49f418c700"
+      ]
+     },
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The renovation cost breakdown is a conditional item. It comes into play solely once a returned signed increase notice itself reports that the increase rests on a renovation reason; until such a notice has come in and says so, do not ask the property manager for the renovation cost breakdown supporting a value-added increase.",
+       "source_ref": "gov-subsidy-1#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-b960b416f1",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Rent adjustment, flat at Lindenweg 12, 3007 Bern, third floor left: the net rent moves from CHF 1,680.00 to CHF 1,915.00 per month with effect from 1 October 2025. Form drawn up on 14 March 2025 and signed for Bergmann Immobilien AG. The box in which the rate or calculation table relied on is to be entered has been left blank."
+      }
+     ]
+    },
+    {
+     "id": "ret-49f418c700",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Rent adjustment notice of 14 March 2025, signed by M. Egger for Bergmann Immobilien AG: the net rent for the third-floor left flat at Lindenweg 12, 3007 Bern rises from CHF 1,680.00 to CHF 1,915.00 per month as from 1 October 2025. The form relies on the rent reference interest rate of 1.75 per cent published on 3 March 2025 and splits the CHF 235.00 into CHF 100.80 for the movement of that rate from 1.25 to 1.75 per cent, CHF 38.40 for general cost inflation, and CHF 95.80 as the tenant's share of the value-adding facade insulation and heating replacement completed in February 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-df4df4cd2c",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Publication extract, rent reference interest rate, announcement 2025/037: the rate stands at 1.75 per cent. The column stating the period for which this value applies has not been reproduced here; the complete version carrying those dates will follow."
+      }
+     ]
+    },
+    {
+     "id": "ret-836871750f",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Official publication extract 2025/037: the rent reference interest rate of 1.75 per cent was published on 3 March 2025 and applies from that day until a later announcement replaces it. The preceding value of 1.50 per cent was in force from 4 December 2024 to 2 March 2025. As at 9 May 2025 no further announcement had been issued."
+      }
+     ]
+    },
+    {
+     "id": "ret-372a4f02a6",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Cover note from Bergmann Immobilien AG: we have sent over the scan of the workflow log for the increase form of 14 March 2025, but the copy pulled from our archive is heavily streaked and pages 2 and 3 are missing altogether. Nothing on it can be made out, so we cannot tell you what it records."
+      }
+     ]
+    },
+    {
+     "id": "ret-b42c1f6f8b",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Workflow log, object Lindenweg 12, third floor left, process 'rent adjustment 2025': draft opened 6 March 2025 at 09:14 by user t.brunner, content edited between 6 and 11 March 2025, content completed and locked on 11 March 2025 at 16:42 by user m.egger. Released for signature on 12 March 2025 at 08:05; form printed and dispatched on 14 March 2025 at 11:20. No entries were made after that date."
+      }
+     ]
+    },
+    {
+     "id": "ret-e6535bd15c",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Calculation worksheet, Lindenweg 12, 3007 Bern, third floor left: the calculation starts from the net rent of CHF 1,680.00 per month in force since 1 July 2021, the last adjustment before the present one. The basis recorded for that starting point is a reference interest rate of 1.25 per cent and a consumer price index of 100.8 points as at June 2021, and no cost inflation had been passed on in the meantime."
+      }
+     ]
+    },
+    {
+     "id": "ret-cfcb46d7bd",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Certified administrative export of 9 May 2025 for the object Lindenweg 12, third floor left, issued by Bergmann Immobilien AG under export seal 4471-BE: the rent adjustment form carries the date 14 March 2025 and names the rent reference interest rate of 1.75 per cent published on 3 March 2025 as the table it relies on. The preparation history in the same export shows the form content completed and locked on 11 March 2025 at 16:42, released for signature on 12 March 2025 at 08:05 and dispatched on 14 March 2025 at 11:20."
+      }
+     ]
+    },
+    {
+     "id": "ret-ec6e0f204a",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Bergmann Immobilien AG confirms in writing that no renovation cost breakdown supporting a value-adding increase was ever drawn up for Lindenweg 12. The facade and heating works carried out in 2024 and 2025 were booked in the owner's ledger without any allocation document being produced, and no such record exists anywhere in our files."
+      }
+     ]
+    },
+    {
+     "id": "ret-3bfaa62a5d",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Payment receipts, tenant account for the third-floor left flat at Lindenweg 12: CHF 1,680.00 received on 30 December 2024 for January 2025, CHF 1,680.00 on 29 January 2025 for February 2025 and CHF 1,680.00 on 27 February 2025 for March 2025, each alongside CHF 120.00 for the outdoor parking space. The account carries no arrears and no outstanding charges."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "conflicting statements about allocating a renovation subsidy"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-subsidy-2#h1"
+     ],
+     "need_origin": [
+      "src-subsidy-2#p1",
+      "src-subsidy-2#p2",
+      "src-subsidy-2#p3",
+      "src-subsidy-2#p4",
+      "src-subsidy-2#p5"
+     ],
+     "observed_return": [
+      "ret-0a117e7625#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-subsidy-2#h1"
+     ],
+     "need_origin": [
+      "src-subsidy-2#p1",
+      "src-subsidy-2#p2",
+      "src-subsidy-2#p3",
+      "src-subsidy-2#p4",
+      "src-subsidy-2#p5"
+     ],
+     "observed_return": [
+      "ret-f97a849fa7#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-subsidy-2#h1"
+     ],
+     "need_origin": [
+      "src-subsidy-2#p1",
+      "src-subsidy-2#p2",
+      "src-subsidy-2#p3",
+      "src-subsidy-2#p4",
+      "src-subsidy-2#p5"
+     ],
+     "observed_return": [
+      "ret-4e85f1ab29#p1",
+      "ret-fa59bb3335#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-subsidy-2#h2"
+     ],
+     "need_origin": [
+      "src-subsidy-2#p1",
+      "src-subsidy-2#p2",
+      "src-subsidy-2#p3",
+      "src-subsidy-2#p4",
+      "src-subsidy-2#p5"
+     ],
+     "observed_return": [
+      "ret-8b6d6fcdef#p1",
+      "ret-dcf66479a1#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-subsidy-2#h1"
+     ],
+     "need_origin": [
+      "src-subsidy-2#p1",
+      "src-subsidy-2#p2",
+      "src-subsidy-2#p3",
+      "src-subsidy-2#p4",
+      "src-subsidy-2#p5"
+     ],
+     "observed_return": [
+      "ret-38e5cdbce3#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-subsidy-2#h3"
+     ],
+     "need_origin": [
+      "src-subsidy-2#p1",
+      "src-subsidy-2#p2",
+      "src-subsidy-2#p3",
+      "src-subsidy-2#p4",
+      "src-subsidy-2#p5"
+     ],
+     "observed_return": [
+      "ret-14a101fdcd#p1",
+      "ret-ff147f898d#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-subsidy-2#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-b7f50e2f4c#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-0a117e7625"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-f97a849fa7"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-4e85f1ab29"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-fa59bb3335"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-fa59bb3335"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-8b6d6fcdef"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-dcf66479a1"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-dcf66479a1"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-38e5cdbce3"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-14a101fdcd"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-ff147f898d"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-ff147f898d"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-b7f50e2f4c"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-subsidy-2",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "When the rent adjustment landed in my letterbox on 14 March 2025, I rang Brunnenhof Verwaltung AG and was told quite plainly that the cantonal renovation subsidy had already been taken off the works costs before anything was passed on to us tenants. Two weeks later, on 28 March 2025, a colleague of his in the same office told me the opposite: the subsidy money sits in a separate building account and was never set against the renovation costs. I have been going back and forth between those two answers ever since."
+       },
+       {
+        "id": "p2",
+        "text": "From reading the published rate table at the counter I remember the figure 1.75 per cent, and it was marked as applying from 3 March 2025 onward. That is my recollection rather than something I have in front of me, but I am fairly confident about the date, because I noticed it was only nine days before the date on my own form."
+       },
+       {
+        "id": "p3",
+        "text": "On the telephone in April someone at the administration told me a certified export had been produced covering my notice, the table it refers to and the editing history behind it, and I wrote down 8 April 2025 as the day it was generated. Brunnenhof Verwaltung AG now insists that no certified export of that kind was ever made and that I am confusing it with an ordinary printout. One of those two accounts must be wrong, and I have no way of telling which."
+       },
+       {
+        "id": "p4",
+        "text": "Herr Tobias Frei, who runs their office, told me I would not have to chase anyone for it. According to him, the workflow and editing record for my notice is generated as a matter of course and will reach me within the next few working days without any request from my side."
+       },
+       {
+        "id": "p5",
+        "text": "What I would like looked at now is whether the step from CHF 1,940 to CHF 2,045 as from 1 October 2025 was built up correctly in the first place, given that the form itself carries the date 12 March 2025. What I still cannot work out is which rate table was genuinely in force at the moment the wording of my notice was settled, and whether the subsidy ever came off the cost side at all."
+       }
+      ]
+     },
+     {
+      "id": "gov-subsidy-2",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Three points must be on record before the present question is decided: the date borne by the signed increase form, the exact rate or calculation table relied on together with the period it covers, and the moment at which the wording of the notice was completed. Establish them from the signed increase form showing its own date and the rate or table it cites, from the published excerpt for that rate or table with its effective period, and from the workflow or audit record showing when the notice wording was completed; a certified administrative export covering the notice, the table reference and the preparation history may take the place of that workflow or audit record. What either side remembers or reports about a record does not establish its content — the record itself, or the certified export, is required."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis tied to this notice must likewise be on record before the present question is answered, and it is established by the calculation worksheet setting out the basis actually used for the notice. However precise a party's account of that worksheet may sound, a description does not establish what the worksheet contains; the worksheet itself, or the certified administrative export, is needed."
+       },
+       {
+        "id": "h3",
+        "text": "The renovation cost breakdown is a conditional item rather than a standing one. It becomes an active obligation only if a returned signed increase form itself states a renovation-related ground for the adjustment; for as long as no such form is on record showing that ground, do not request a breakdown of renovation costs supporting a value-added increase."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts are not needed for this check and should not be called in for it. Readiness here means only that the listed facts are established from the required records; it decides nothing about whether the increase is legally owed."
+       }
+      ]
+     },
+     {
+      "id": "ret-8b6d6fcdef",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Calculation worksheet, Lindenstrasse 14, apartment 3.2: the target net rent of CHF 2,045 per month from 1 October 2025 is derived using a reference-rate step of 3.0 per cent and a cost-increase component of 2.4 per cent. The line stating the starting net rent to which those steps were applied is empty on this printout, as the historical rent field did not carry over from the previous system. The complete worksheet, showing the starting rent and the date it was fixed, will follow."
+       }
+      ],
+      "provided_document_id": "C4"
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.subsidy.e2",
+   "domain": "rent_increase",
+   "episode": 2,
+   "family": "subsidy",
+   "intake_source_documents": {
+    "ret-8b6d6fcdef": "C4"
+   },
+   "language": "en",
+   "latent_sha256": "e879f644c0b2c76285fdab47c134e5799a59e0e7538683296b6460f90e3cc8ad",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Three points must be on record before the present question is decided: the date borne by the signed increase form, the exact rate or calculation table relied on together with the period it covers, and the moment at which the wording of the notice was completed. Establish them from the signed increase form showing its own date and the rate or table it cites, from the published excerpt for that rate or table with its effective period, and from the workflow or audit record showing when the notice wording was completed; a certified administrative export covering the notice, the table reference and the preparation history may take the place of that workflow or audit record. What either side remembers or reports about a record does not establish its content — the record itself, or the certified export, is required.",
+       "source_ref": "gov-subsidy-2#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis tied to this notice must likewise be on record before the present question is answered, and it is established by the calculation worksheet setting out the basis actually used for the notice. However precise a party's account of that worksheet may sound, a description does not establish what the worksheet contains; the worksheet itself, or the certified administrative export, is needed.",
+       "source_ref": "gov-subsidy-2#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": false,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The renovation cost breakdown is a conditional item rather than a standing one. It becomes an active obligation only if a returned signed increase form itself states a renovation-related ground for the adjustment; for as long as no such form is on record showing that ground, do not request a breakdown of renovation costs supporting a value-added increase.",
+       "source_ref": "gov-subsidy-2#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-0a117e7625",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Notice of rent adjustment for the 3.5-room apartment 3.2 at Lindenstrasse 14, 8706 Meilen, signed for Brunnenhof Verwaltung AG on 12 March 2025: the net rent rises from CHF 1,940 to CHF 2,045 per month with effect from 1 October 2025. The adjustment rests on the movement of the reference rate to 1.75 per cent as set out in the rate table effective from 3 March 2025, together with the general cost increase of 2.4 per cent accrued since the last adjustment. No further ground is invoked for this adjustment."
+      }
+     ]
+    },
+    {
+     "id": "ret-f97a849fa7",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Official publication of the reference rate table, issue of 3 March 2025: the applicable reference rate is fixed at 1.75 per cent. The value governs rent adjustments notified from 3 March 2025 until the next published table supersedes it, and it replaces the table of 2 September 2024, which stood at 1.50 per cent."
+      }
+     ]
+    },
+    {
+     "id": "ret-4e85f1ab29",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Workflow record for the rent adjustment file of Lindenstrasse 14, apartment 3.2: the file was opened on 11 February 2025, a draft notice was created by user t.frei on 17 February 2025, and the print run was released on 12 March 2025. This extract carries no timestamp for the last edit to the notice wording, because the editing-history layer was left out of the export. The version containing those editing timestamps will follow once the archive query has run."
+      }
+     ]
+    },
+    {
+     "id": "ret-fa59bb3335",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Workflow and editing record, Lindenstrasse 14, apartment 3.2, rent adjustment 2025: file opened 11 February 2025; draft notice created by user t.frei on 17 February 2025 at 10:26; last edit to the notice wording saved by user m.keller on 26 February 2025 at 14:07, whereupon the document was locked; signature and dispatch released on 12 March 2025 at 08:55. No further change to the notice wording is recorded between 26 February 2025 and the release."
+      }
+     ]
+    },
+    {
+     "id": "ret-dcf66479a1",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Calculation worksheet, Lindenstrasse 14, apartment 3.2: the starting net rent is CHF 1,940 per month, fixed on 1 April 2021 on a reference rate of 1.50 per cent. From that basis the notice of 12 March 2025 applies a reference-rate step of 3.0 per cent (CHF 58.20) and a cost increase of 2.4 per cent (CHF 46.56), plus a rounding of CHF 0.24, arriving at the notified net rent of CHF 2,045."
+      }
+     ]
+    },
+    {
+     "id": "ret-38e5cdbce3",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Certified administrative export, generated on 8 April 2025 at 09:12 and signed electronically by the administration: it reproduces the rent adjustment form for Lindenstrasse 14, apartment 3.2, bearing the signature date 12 March 2025 and citing the reference rate table of 3 March 2025 at 1.75 per cent. The preparation history carried in the export shows the notice wording last saved on 26 February 2025 at 14:07 and locked from that point until release on 12 March 2025 at 08:55."
+      }
+     ]
+    },
+    {
+     "id": "ret-14a101fdcd",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Renovation cost statement, Lindenstrasse 14, building envelope and heating replacement, works of 2023 and 2024: invoiced costs amount to CHF 612,400, of which CHF 418,000 falls on the envelope and CHF 194,400 on the heating system. The sheet does not state the value-adding share as against maintenance, since the technical office has not yet signed off that split. The apportionment will be supplied with the complete statement."
+      }
+     ]
+    },
+    {
+     "id": "ret-ff147f898d",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Renovation cost statement, Lindenstrasse 14, building envelope and heating replacement, works completed 30 November 2024: invoiced costs of CHF 612,400, against which a cantonal energy subsidy of CHF 48,000 was received on 15 January 2025 and deducted, leaving CHF 564,400. Of that net amount, 61 per cent (CHF 344,284) is treated as value-adding and 39 per cent as maintenance. The value-adding share is spread across the fourteen apartments by floor area, which yields CHF 21.40 per month for apartment 3.2."
+      }
+     ]
+    },
+    {
+     "id": "ret-b7f50e2f4c",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Payment record, Lindenstrasse 14, apartment 3.2: rent of CHF 1,940 was received by standing order on the first working day of each month from January to August 2025, with no arrears and no deductions. A one-off credit of CHF 62.50 was booked on 4 June 2025 arising from the heating-cost settlement for the previous season."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "conflicting statements about allocating a renovation subsidy"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-late_form-1#h1"
+     ],
+     "need_origin": [
+      "src-late_form-1#p1",
+      "src-late_form-1#p2",
+      "src-late_form-1#p3",
+      "src-late_form-1#p4",
+      "src-late_form-1#p5",
+      "src-late_form-1#p6"
+     ],
+     "observed_return": [
+      "ret-5a2458f66c#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-late_form-1#h1"
+     ],
+     "need_origin": [
+      "src-late_form-1#p1",
+      "src-late_form-1#p2",
+      "src-late_form-1#p3",
+      "src-late_form-1#p4",
+      "src-late_form-1#p5",
+      "src-late_form-1#p6"
+     ],
+     "observed_return": [
+      "ret-662d53e4e1#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-late_form-1#h1"
+     ],
+     "need_origin": [
+      "src-late_form-1#p1",
+      "src-late_form-1#p2",
+      "src-late_form-1#p3",
+      "src-late_form-1#p4",
+      "src-late_form-1#p5",
+      "src-late_form-1#p6"
+     ],
+     "observed_return": [
+      "ret-72fa72d9f0#p1",
+      "ret-fa0390cb5c#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-late_form-1#h2"
+     ],
+     "need_origin": [
+      "src-late_form-1#p1",
+      "src-late_form-1#p2",
+      "src-late_form-1#p3",
+      "src-late_form-1#p4",
+      "src-late_form-1#p5",
+      "src-late_form-1#p6"
+     ],
+     "observed_return": [
+      "ret-5e961414e0#p1",
+      "ret-fcdc0506ad#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-late_form-1#h1"
+     ],
+     "need_origin": [
+      "src-late_form-1#p1",
+      "src-late_form-1#p2",
+      "src-late_form-1#p3",
+      "src-late_form-1#p4",
+      "src-late_form-1#p5",
+      "src-late_form-1#p6"
+     ],
+     "observed_return": [
+      "ret-7182e12b42#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-late_form-1#h3"
+     ],
+     "need_origin": [
+      "src-late_form-1#p1",
+      "src-late_form-1#p2",
+      "src-late_form-1#p3",
+      "src-late_form-1#p4",
+      "src-late_form-1#p5",
+      "src-late_form-1#p6"
+     ],
+     "observed_return": [
+      "ret-b9d5a9642f#p1",
+      "ret-d373c9461d#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-late_form-1#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-8d201421fc#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-5a2458f66c"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-662d53e4e1"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-72fa72d9f0"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-fa0390cb5c"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-fa0390cb5c"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial_correcting",
+       "source_ids": [
+        "ret-5e961414e0"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-fcdc0506ad"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-fcdc0506ad"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-7182e12b42"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-b9d5a9642f"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-d373c9461d"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-d373c9461d"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-8d201421fc"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-late_form-1",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Am Dienstag, 8. April 2025, lag in meinem Briefkasten ein amtliches Formular der Hausverwaltung Brunnmatt AG, lose zwischen der Werbung und ohne Couvert. Darauf wird für meine 3,5-Zimmer-Wohnung an der Lindenstrasse 14 in Bern ab dem 1. Juli 2025 eine Nettomiete von CHF 1'645.00 statt der bisherigen CHF 1'480.00 verlangt."
+       },
+       {
+        "id": "p2",
+        "text": "Die Verwaltung beruft sich auf eine amtliche Veröffentlichung zum herangezogenen Satz beziehungsweise zur Berechnungstabelle; einen Auszug daraus führt sie nach eigenen Angaben in ihren Akten. Zu Gesicht bekommen habe ich dieses Blatt nie, und ich weiss weder, was darin steht, noch für welchen Zeitraum es gelten soll."
+       },
+       {
+        "id": "p3",
+        "text": "Aus dem Gedächtnis kann ich sagen: Als Datum trägt das Formular den 14. März 2025, im Begründungsfeld ist von einem Referenzzinssatz von 1,75 Prozent die Rede, und der neue Betrag ist mit CHF 1'645.00 beziffert. Mehr als ein rasches Überfliegen war mir bisher nicht möglich; das Blatt liegt weiterhin bei mir im Ordner."
+       },
+       {
+        "id": "p4",
+        "text": "Im Februar liess mir die Verwaltung eine Berechnungsaufstellung zur Ausgangslage der Miete zukommen, datiert auf den 21. Februar 2025. Wenig später hiess es am Telefon, die dortigen Zahlen zur Ausgangsmiete und zum Ausgangszinssatz seien falsch erfasst und inzwischen berichtigt worden."
+       },
+       {
+        "id": "p5",
+        "text": "An der Hausversammlung vom 12. November 2024 war von rund CHF 40'000.00 wertvermehrendem Anteil an der Küchen- und Badsanierung die Rede, so jedenfalls habe ich es mir damals notiert. Heute stellt sich die Verwaltung auf den Standpunkt, die Kostenaufstellung zu dieser Sanierung weise deutlich mehr als CHF 50'000.00 als wertvermehrend aus; beides zusammen geht nicht auf."
+       },
+       {
+        "id": "p6",
+        "text": "Geprüft haben möchte ich, ob die Erhöhung auf den 1. Juli 2025 überhaupt rechtzeitig und ordnungsgemäss zustande gekommen ist. Offen bleibt für mich vor allem, wann der Inhalt des Formulars tatsächlich fertiggestellt wurde und von welchen Ausgangswerten die Verwaltung dabei ausgegangen ist."
+       }
+      ]
+     },
+     {
+      "id": "gov-late_form-1",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Before the present question can be decided, three points have to be settled: the date carried by the signed increase form, the exact rate or calculation table it relies on together with the period for which that rate or table was in force, and the moment at which the final content of the form was actually prepared. Acceptable evidence is either the signed increase notice or form itself together with the publication excerpt for the referenced rate or table and the workflow or audit log recording when the form content was completed, or, in its place, the authenticated administrative export covering the notice, the table reference and the preparation history. A party's description or recollection of a document does not establish what that document says; the record itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis linked to this notice must likewise be established before the current decision is taken. Only the calculation worksheet setting out the starting basis used for the notice will serve this purpose. Figures reported from memory by the tenant or repeated by the manager do not establish that basis; obtain the worksheet itself, or the authenticated export."
+       },
+       {
+        "id": "h3",
+        "text": "A renovation cost breakdown may enter the picture, but only once the notice itself discloses a renovation as the reason for the increase. Unless a returned signed increase notice or form reports that circumstance, the renovation cost breakdown supporting a value-added increase is not to be requested at this stage."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts are not required for this check and should not be gathered for it. Readiness here means no more than that the listed facts are established from the required records; it does not decide whether the increase is legally owed."
+       }
+      ]
+     },
+     {
+      "id": "ret-5e961414e0",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Berechnungsblatt zur Ausgangslage des Mietzinses, Lindenstrasse 14, Fassung vom 21. Februar 2025: Ausgangsnettomiete CHF 1'520.00 mit Wirkung ab 1. Februar 2024, Ausgangsreferenzzinssatz 1,50 Prozent, Teuerungsstand 107,1 Punkte. Die Werte wurden aus dem Vorvertrag übernommen und befinden sich derzeit in Überprüfung; eine berichtigte Fassung wird nachgereicht."
+       }
+      ],
+      "provided_document_id": "C4"
+     },
+     {
+      "id": "ret-7182e12b42",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Beglaubigter Verwaltungsauszug der Hausverwaltung Brunnmatt AG vom 6. Mai 2025, elektronisch signiert und mit Prüfnummer BRM-2025-0446 versehen. Für das Objekt Lindenstrasse 14, 3006 Bern, ist ein amtliches Erhöhungsformular mit Formulardatum 14. März 2025 erfasst, das die Nettomiete per 1. Juli 2025 von CHF 1'480.00 auf CHF 1'645.00 anhebt und sich auf den Referenzzinssatz von 1,75 Prozent gemäss der Publikation mit Geltung ab 3. März 2025 stützt. Die Bearbeitungshistorie weist die letzte inhaltliche Speicherung am 2. April 2025 um 16:42 Uhr, die Freigabe am 3. April 2025 und den Versand am 4. April 2025 aus."
+       }
+      ],
+      "provided_document_id": "C5"
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.late_form.e1",
+   "domain": "rent_increase",
+   "episode": 1,
+   "family": "late_form",
+   "intake_source_documents": {
+    "ret-5e961414e0": "C4",
+    "ret-7182e12b42": "C5"
+   },
+   "language": "de",
+   "latent_sha256": "2c3666a4c6d0a5458d75c9a905561d68b8238686ed4e8c5e65d886b3a90bc032",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Before the present question can be decided, three points have to be settled: the date carried by the signed increase form, the exact rate or calculation table it relies on together with the period for which that rate or table was in force, and the moment at which the final content of the form was actually prepared. Acceptable evidence is either the signed increase notice or form itself together with the publication excerpt for the referenced rate or table and the workflow or audit log recording when the form content was completed, or, in its place, the authenticated administrative export covering the notice, the table reference and the preparation history. A party's description or recollection of a document does not establish what that document says; the record itself, or the authenticated export, is required.",
+       "source_ref": "gov-late_form-1#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis linked to this notice must likewise be established before the current decision is taken. Only the calculation worksheet setting out the starting basis used for the notice will serve this purpose. Figures reported from memory by the tenant or repeated by the manager do not establish that basis; obtain the worksheet itself, or the authenticated export.",
+       "source_ref": "gov-late_form-1#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": false,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "A renovation cost breakdown may enter the picture, but only once the notice itself discloses a renovation as the reason for the increase. Unless a returned signed increase notice or form reports that circumstance, the renovation cost breakdown supporting a value-added increase is not to be requested at this stage.",
+       "source_ref": "gov-late_form-1#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-5a2458f66c",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Amtliches Formular zur Mitteilung einer Mietzinsänderung, Mietobjekt Lindenstrasse 14, 3006 Bern, 3,5-Zimmer-Wohnung im 2. Obergeschoss, Mietpartei D. Bieri; Formulardatum 14. März 2025. Mit Wirkung ab 1. Juli 2025 wird die Nettomiete von CHF 1'480.00 auf CHF 1'645.00 erhöht, die Akontozahlung für Nebenkosten bleibt bei CHF 160.00; als Grund ist die Anhebung des hypothekarischen Referenzzinssatzes von 1,25 auf 1,75 Prozent gemäss der amtlichen Publikation angegeben. Unterzeichnet am Formularort Bern durch die Hausverwaltung Brunnmatt AG, S. Jenni, mit Hinweis auf die Anfechtungsmöglichkeit bei der Schlichtungsbehörde innert 30 Tagen seit Empfang."
+      }
+     ]
+    },
+    {
+     "id": "ret-662d53e4e1",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Amtliche Publikation zum hypothekarischen Referenzzinssatz, Ausgabe des Bundesamtes für Wohnungswesen vom 3. März 2025: Der massgebende Referenzzinssatz beträgt neu 1,75 Prozent. Er gilt ab dem 3. März 2025 bis auf Weiteres und löst den Satz von 1,25 Prozent ab, der vom 2. Dezember 2023 bis zum 2. März 2025 in Kraft stand."
+      }
+     ]
+    },
+    {
+     "id": "ret-72fa72d9f0",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Begleitnotiz der Hausverwaltung Brunnmatt AG vom 29. April 2025 zur Kopie des Bearbeitungsprotokolls über die Erstellung des Erhöhungsformulars Lindenstrasse 14. Beim Einlesen ist die Vorlage verrutscht: Ab der zweiten Seite zeigt der Scan nur noch graue Flächen, und die Blätter 3 und 4 fehlen im Versand. Dem übermittelten Stück lässt sich deshalb kein Inhalt entnehmen; wir bemühen uns um eine saubere Wiedergabe."
+      }
+     ]
+    },
+    {
+     "id": "ret-fa0390cb5c",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Bearbeitungsprotokoll der Hausverwaltung Brunnmatt AG, Objekt Lindenstrasse 14, 3006 Bern, Vorgang Mietzinserhöhung per 01.07.2025. Entwurf angelegt am 11. März 2025 durch M. Roth, Formularvorlage geöffnet am 14. März 2025, letzte inhaltliche Speicherung mit Eintrag des Referenzzinssatzes von 1,75 Prozent und des Betrags von CHF 1'645.00 am 2. April 2025 um 16:42 Uhr durch S. Jenni. Freigabe zum Druck am 3. April 2025 um 09:05 Uhr, Postaufgabe respektive Einwurf am 4. April 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-fcdc0506ad",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Berechnungsblatt zur Ausgangslage des Mietzinses, Lindenstrasse 14, berichtigte Fassung vom 10. März 2025: Massgebende Ausgangsnettomiete CHF 1'480.00 mit Wirkung ab 1. Februar 2024, Ausgangsreferenzzinssatz 1,25 Prozent, Teuerungsstand 106,3 Punkte (Landesindex Dezember 2023), Kostenstand November 2023. Auf dieser Grundlage wird die Anpassung per 1. Juli 2025 gerechnet; die Fassung vom 21. Februar 2025 ist damit überholt."
+      }
+     ]
+    },
+    {
+     "id": "ret-b9d5a9642f",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Begleitnotiz der Hausverwaltung Brunnmatt AG vom 14. Mai 2025 zur Kostenaufstellung der Sanierung von Küche und Bad, Lindenstrasse 14. Die Vorlage lag beim Einlesen schief, sodass die Zahlenspalten über den Rand hinauslaufen und nicht mehr zu entziffern sind; überdies fehlen die Seiten 2 bis 5. Ein Inhalt ist der übermittelten Wiedergabe somit nicht zu entnehmen."
+      }
+     ]
+    },
+    {
+     "id": "ret-d373c9461d",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Kostenaufstellung zur Sanierung von Küche und Bad, Liegenschaft Lindenstrasse 14, 3006 Bern, ausgeführt von März bis August 2024. Gesamtaufwand CHF 96'400.00, davon Unterhalt CHF 43'380.00 und wertvermehrender Anteil CHF 53'020.00, aufgeschlüsselt nach Sanitär CHF 21'150.00, Schreinerarbeiten CHF 18'900.00, Elektroinstallationen CHF 7'470.00 und Plattenarbeiten CHF 5'500.00. Nach Flächenschlüssel entfallen auf die 3,5-Zimmer-Wohnung im 2. Obergeschoss CHF 11'840.00 des wertvermehrenden Anteils."
+      }
+     ]
+    },
+    {
+     "id": "ret-8d201421fc",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Zahlungsbelege der Mietpartei D. Bieri, Lindenstrasse 14, 3006 Bern, Kontoauszug der Berner Kantonalbank. Am 30. Januar, am 27. Februar und am 28. März 2025 wurden je CHF 1'640.00 per Dauerauftrag auf das Konto der Hausverwaltung Brunnmatt AG überwiesen, zusammengesetzt aus Nettomiete CHF 1'480.00 und Akontozahlung Nebenkosten CHF 160.00. Sämtliche drei Zahlungen sind vorbehaltlos und fristgerecht verbucht worden."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "form found in the mailbox demanding the higher rent from the first of the month"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-late_form-2#h1"
+     ],
+     "need_origin": [
+      "src-late_form-2#p1",
+      "src-late_form-2#p2",
+      "src-late_form-2#p3",
+      "src-late_form-2#p4"
+     ],
+     "observed_return": [
+      "ret-fe6244d084#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-late_form-2#h1"
+     ],
+     "need_origin": [
+      "src-late_form-2#p1",
+      "src-late_form-2#p2",
+      "src-late_form-2#p3",
+      "src-late_form-2#p4"
+     ],
+     "observed_return": [
+      "ret-33e5ea2a28#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-late_form-2#h1"
+     ],
+     "need_origin": [
+      "src-late_form-2#p1",
+      "src-late_form-2#p2",
+      "src-late_form-2#p3",
+      "src-late_form-2#p4"
+     ],
+     "observed_return": [
+      "ret-f00f6cd5a1#p1",
+      "ret-34c4898401#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-late_form-2#h2"
+     ],
+     "need_origin": [
+      "src-late_form-2#p1",
+      "src-late_form-2#p2",
+      "src-late_form-2#p3",
+      "src-late_form-2#p4"
+     ],
+     "observed_return": [
+      "ret-2d8a4fead3#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-late_form-2#h1"
+     ],
+     "need_origin": [
+      "src-late_form-2#p1",
+      "src-late_form-2#p2",
+      "src-late_form-2#p3",
+      "src-late_form-2#p4"
+     ],
+     "observed_return": [
+      "ret-7b59539d6f#p1",
+      "ret-1ce44ba91b#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-late_form-2#h3"
+     ],
+     "need_origin": [
+      "src-late_form-2#p1",
+      "src-late_form-2#p2",
+      "src-late_form-2#p3",
+      "src-late_form-2#p4"
+     ],
+     "observed_return": [
+      "ret-96050d8d11#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-late_form-2#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-d58bfe78fd#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-fe6244d084"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-33e5ea2a28"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-f00f6cd5a1"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-34c4898401"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-34c4898401"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-2d8a4fead3"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-7b59539d6f"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-1ce44ba91b"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-1ce44ba91b"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-96050d8d11"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-d58bfe78fd"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-late_form-2",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Am Freitag, 12. September 2025, lag in meinem Briefkasten an der Lindenstrasse 14 in Bern ein Formular der Immo Aare AG, das für meine Wohnung im 3. OG ab 1. Oktober 2025 einen Nettomietzins von CHF 1'785 statt der bisherigen CHF 1'640 verlangt. Der Umschlag trug keinen Poststempel, und auf dem Formular selbst steht als Datum der 8. September 2025, unterzeichnet von Frau R. Zbinden."
+       },
+       {
+        "id": "p2",
+        "text": "In einem Telefonat vom 15. September 2025 sagte mir ein Mitarbeiter der Verwaltung, der beglaubigte Systemauszug zum Mandat zeige, dass der Formularinhalt erst am 11. September fertiggestellt worden sei; daran erinnere ich mich deutlich, weil ich mir die Uhrzeit notiert habe. Frau Zbinden bestreitet das inzwischen und stellt sich auf den Standpunkt, derselbe Auszug weise für Formular, Tabellenbezug und Bearbeitungsverlauf durchwegs den 8. September 2025 aus. Beide Darstellungen können nicht zugleich zutreffen."
+       },
+       {
+        "id": "p3",
+        "text": "Noch vor diesem Anruf habe ich auf der Publikation des Bundesamts für Wohnungswesen nachgesehen, weil mich der genannte Zinssatz stutzig machte. Soweit ich es im Kopf habe, stand dort, der hypothekarische Referenzzinssatz betrage seit dem 2. Juni 2025 1.75 Prozent und gelte bis zur nächsten Bekanntgabe. Ausdrucken konnte ich die Seite damals nicht, ich gebe die Angabe also aus der Erinnerung wieder."
+       },
+       {
+        "id": "p4",
+        "text": "Bitte prüfen Sie für mich, ob die Erhöhung auf den 1. Oktober 2025 überhaupt greifen kann, nachdem das Formular erst am 12. September bei mir eingetroffen ist. Unklar bleibt mir vor allem, welcher Zeitpunkt zählt: das Datum auf dem Papier oder jener Tag, an dem der Text tatsächlich fertig war. Ebenso wenig verstehe ich, wie sich der Aufschlag von CHF 145 aus der genannten Zinssatzänderung ergeben soll."
+       }
+      ]
+     },
+     {
+      "id": "gov-late_form-2",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Three points belong on the record before the present question is decided: the date on which the increase form was signed, the exact rate or calculation table relied upon together with the period for which it applies, and the moment at which the completed form content was prepared. Two routes establish them: the signed increase notice showing its own date and the rate or table it invokes, combined with the publication excerpt for that rate or table and its effective period, combined with the workflow or audit log recording when the completed form content was prepared; or, alternatively, the authenticated administrative export covering the notice, the table reference and the preparation history. What either side remembers or reports about such a record does not establish its content, so obtain the document itself or the authenticated export."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis tied to this notice must likewise be on the record beforehand. It is established by the calculation worksheet setting out the basis that was actually used for the notice, showing the reference values it started from. An account of that worksheet given by a party, however confident, does not establish what it contains; the document itself, or an authenticated export of it, is required."
+       },
+       {
+        "id": "h3",
+        "text": "A breakdown of renovation costs is a conditional obligation, not a standing one. It becomes live only if a returned signed increase notice itself reports a renovation as a ground for the increase; for as long as no such ground appears in the notice, do not ask the property manager for the renovation cost breakdown."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts lie outside this check and are not to be requested for it. Readiness here means that the listed facts are established by the documents named above; it does not settle whether the increase is legally owed."
+       }
+      ]
+     },
+     {
+      "id": "ret-33e5ea2a28",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Auszug aus der amtlichen Bekanntgabe des Bundesamts für Wohnungswesen zum hypothekarischen Referenzzinssatz bei Mietverhältnissen: Mit Mitteilung vom 2. Juni 2025 wurde der Satz von 1.50 auf 1.75 Prozent festgesetzt. Er gilt ab dem 2. Juni 2025 und bleibt bis zur nächsten Bekanntgabe vom 1. Dezember 2025 massgebend."
+       }
+      ],
+      "provided_document_id": "C2"
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.late_form.e2",
+   "domain": "rent_increase",
+   "episode": 2,
+   "family": "late_form",
+   "intake_source_documents": {
+    "ret-33e5ea2a28": "C2"
+   },
+   "language": "de",
+   "latent_sha256": "13ea8aec340bbf192b5c457251175cd45a2f5efef82c0560a5af7eade3f2a84b",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Three points belong on the record before the present question is decided: the date on which the increase form was signed, the exact rate or calculation table relied upon together with the period for which it applies, and the moment at which the completed form content was prepared. Two routes establish them: the signed increase notice showing its own date and the rate or table it invokes, combined with the publication excerpt for that rate or table and its effective period, combined with the workflow or audit log recording when the completed form content was prepared; or, alternatively, the authenticated administrative export covering the notice, the table reference and the preparation history. What either side remembers or reports about such a record does not establish its content, so obtain the document itself or the authenticated export.",
+       "source_ref": "gov-late_form-2#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis tied to this notice must likewise be on the record beforehand. It is established by the calculation worksheet setting out the basis that was actually used for the notice, showing the reference values it started from. An account of that worksheet given by a party, however confident, does not establish what it contains; the document itself, or an authenticated export of it, is required.",
+       "source_ref": "gov-late_form-2#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": false,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "A breakdown of renovation costs is a conditional obligation, not a standing one. It becomes live only if a returned signed increase notice itself reports a renovation as a ground for the increase; for as long as no such ground appears in the notice, do not ask the property manager for the renovation cost breakdown.",
+       "source_ref": "gov-late_form-2#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-fe6244d084",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Mitteilung von Mietzinserhöhungen, Objekt Lindenstrasse 14, 3. OG, 3011 Bern, Mieterin: Frau L. Studer. Gestützt auf den hypothekarischen Referenzzinssatz von 1.75 Prozent und den Ausgleich der aufgelaufenen Teuerung wird der Nettomietzins per 1. Oktober 2025 von CHF 1'640 auf CHF 1'785 angehoben, wobei die Nebenkostenpauschale von CHF 200 unverändert bleibt. Bern, 8. September 2025, Immo Aare AG, R. Zbinden, mit Unterschrift und Firmenstempel."
+      }
+     ]
+    },
+    {
+     "id": "ret-f00f6cd5a1",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Begleitnotiz der Immo Aare AG zum Bearbeitungsprotokoll Mandat 4412: Der Scan, den wir Ihnen zustellen, umfasst lediglich die Seiten 1 und 4, die Seiten 2 und 3 fehlen im Stapel. Die vorhandenen Blätter sind zudem so blass kopiert, dass weder Einträge noch Zeitstempel entzifferbar sind, weshalb sich der Inhalt daraus nicht ermitteln lässt."
+      }
+     ]
+    },
+    {
+     "id": "ret-34c4898401",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Bearbeitungsprotokoll Mandat 4412, Objekt Lindenstrasse 14, Wohnung 3. OG: Entwurf des Erhöhungsformulars angelegt am 4. September 2025 um 14:05 durch M. Furrer, Einsetzen des Tabellenbezugs von 1.75 Prozent am 8. September 2025 um 11:20. Der abschliessende Formularinhalt wurde am 11. September 2025 um 09:17 durch R. Zbinden freigegeben und gleichentags an den Druckdienst übergeben; spätere Änderungen sind nicht verzeichnet."
+      }
+     ]
+    },
+    {
+     "id": "ret-2d8a4fead3",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Berechnungsblatt zur Mietzinsanpassung, Lindenstrasse 14, Wohnung 3. OG: Ausgangsbasis ist der bei Mietbeginn am 1. Oktober 2021 vereinbarte Nettomietzins von CHF 1'640, kalkuliert auf einem Referenzzinssatz von 1.25 Prozent und einem Landesindex der Konsumentenpreise von 101.2 Punkten, Stand August 2021. Aus dieser Basis ergeben sich CHF 100 für den Schritt von 1.25 auf 1.75 Prozent und CHF 45 aus dem Teuerungsausgleich, zusammen CHF 145 und damit der neue Nettomietzins von CHF 1'785."
+      }
+     ]
+    },
+    {
+     "id": "ret-7b59539d6f",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Beglaubigter Verwaltungsauszug, Mandat 4412, Immo Aare AG: Das Mietzinsänderungsformular ist mit dem Datum 8. September 2025 erfasst und verweist auf den Referenzzinssatz von 1.75 Prozent gemäss Bekanntgabe vom 2. Juni 2025. Der Bearbeitungsverlauf, also die Zeitpunkte von Erstellung und Freigabe des abschliessenden Formularinhalts, ist in diesem Auszug nicht enthalten, weil das Protokollmodul bei der Beglaubigung nicht ausgelesen wurde."
+      }
+     ]
+    },
+    {
+     "id": "ret-1ce44ba91b",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Beglaubigter Verwaltungsauszug, Mandat 4412, erstellt am 26. September 2025 und durch die Notariatskanzlei Aeschbacher, Bern, beglaubigt. Das Mietzinsänderungsformular trägt das Datum 8. September 2025 und stützt sich auf den Referenzzinssatz von 1.75 Prozent, gültig ab 2. Juni 2025 bis zur Bekanntgabe vom 1. Dezember 2025. Der mitbeglaubigte Verlauf weist aus, dass der abschliessende Formularinhalt am 11. September 2025 um 09:17 freigegeben und erst danach in den Versand gegeben wurde."
+      }
+     ]
+    },
+    {
+     "id": "ret-96050d8d11",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Kostenzusammenstellung zur Sanierung 2024/2025, Liegenschaft Lindenstrasse 14: Gesamtaufwand CHF 286'400 für Küchenersatz, Fensterersatz und Steigzonen, wovon nach Abzug des Unterhaltsanteils 58 Prozent, also CHF 166'112, als wertvermehrend ausgewiesen sind. Auf die Wohnung im 3. OG entfallen nach Flächenschlüssel CHF 14'240; bei einem Satz von 6.75 Prozent für Verzinsung, Amortisation und Unterhalt entspricht dies einer monatlichen Belastung von CHF 80. Bauabnahme durch die Bauleitung am 30. April 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-d58bfe78fd",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Zahlungsübersicht Mieterkonto Studer, Januar bis August 2025: Für jeden dieser Monate ging der volle Betrag von CHF 1'840 ein, überwiesen jeweils zwischen dem 26. und dem 29. des Vormonats ab einem Konto bei der Berner Kantonalbank. Ein Rückstand besteht nicht; die Gutschrift von CHF 62 aus der Nebenkostenabrechnung 2024 wurde am 14. Juli 2025 verrechnet."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "form found in the mailbox demanding the higher rent from the first of the month"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-index-1#h1"
+     ],
+     "need_origin": [
+      "src-index-1#p1",
+      "src-index-1#p2",
+      "src-index-1#p3",
+      "src-index-1#p4",
+      "src-index-1#p5"
+     ],
+     "observed_return": [
+      "ret-f390914748#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-index-1#h1"
+     ],
+     "need_origin": [
+      "src-index-1#p1",
+      "src-index-1#p2",
+      "src-index-1#p3",
+      "src-index-1#p4",
+      "src-index-1#p5"
+     ],
+     "observed_return": [
+      "ret-590b67e37a#p1",
+      "ret-e14c808bdb#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-index-1#h1"
+     ],
+     "need_origin": [
+      "src-index-1#p1",
+      "src-index-1#p2",
+      "src-index-1#p3",
+      "src-index-1#p4",
+      "src-index-1#p5"
+     ],
+     "observed_return": [
+      "ret-4638248ee7#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-index-1#h2"
+     ],
+     "need_origin": [
+      "src-index-1#p1",
+      "src-index-1#p2",
+      "src-index-1#p3",
+      "src-index-1#p4",
+      "src-index-1#p5"
+     ],
+     "observed_return": [
+      "ret-4f36184f2f#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-index-1#h1"
+     ],
+     "need_origin": [
+      "src-index-1#p1",
+      "src-index-1#p2",
+      "src-index-1#p3",
+      "src-index-1#p4",
+      "src-index-1#p5"
+     ],
+     "observed_return": [
+      "ret-fbf019ae8a#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-index-1#h3"
+     ],
+     "need_origin": [
+      "src-index-1#p1",
+      "src-index-1#p2",
+      "src-index-1#p3",
+      "src-index-1#p4",
+      "src-index-1#p5"
+     ],
+     "observed_return": [
+      "ret-f0c4bee64a#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-index-1#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-fb6b5e2445#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-f390914748"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial_correcting",
+       "source_ids": [
+        "ret-590b67e37a"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-e14c808bdb"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-e14c808bdb"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-4638248ee7"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-4f36184f2f"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-fbf019ae8a"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 2,
+     "response_source_ids": [
+      "ret-f0c4bee64a"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-fb6b5e2445"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-index-1",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "The rent adjustment notice from Brunner Immobilien Treuhand, dated 12 March 2025, landed in my letterbox on 17 March and tells me that the net rent for my flat at Rosenweg 12 in Bern climbs from CHF 1,480 to CHF 1,648 as of 1 July 2025. What jumped out at me straight away is the starting index they worked from: 98.6 points, a figure belonging to December 2015, although I moved in on 1 May 2021 and my lease names the index standing at 100.4 points at that time."
+       },
+       {
+        "id": "p2",
+        "text": "When I looked the index table up on the statistics office pages around the middle of March, the February 2025 value was shown as 106.8 points and I noted it down that way. Going back to the same publication a few days later, February read 106.3 points, with a remark that the earlier release had been revised, and now I genuinely do not know which of the two versions the increase was built on."
+       },
+       {
+        "id": "p3",
+        "text": "I have found the signed increase notice itself; it was sitting in the folder with my lease papers at home, and I can put it in the post or upload it the moment you tell me where it should go. I would rather not retell what it says from memory, because the exact wording seems to matter here and I do not want to garble it."
+       },
+       {
+        "id": "p4",
+        "text": "On 24 March I rang Mr Estermann at the management office, and he explained over the phone that a slice of the increase comes from the bathroom and kitchen works finished in autumn 2024, something like CHF 96,000 all in, with a bit more than half of that counted as value-adding. That is purely what I heard him say down the line; no cost sheet has ever passed through my hands, so I cannot stand behind those figures myself."
+       },
+       {
+        "id": "p5",
+        "text": "What I am asking you to check is whether the increase was calculated from the right starting index and whether the arithmetic holds up at all. The part that stays murky for me is which version of the index table was actually in force when the notice was drawn up, and whether a renovation surcharge is even permitted to ride on top of an index adjustment in the same step."
+       }
+      ]
+     },
+     {
+      "id": "gov-index-1",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Three points must be established before the current question is decided: the date borne by the signed increase notice, the precise rate or calculation table it relies on together with the period that table covers, and the moment at which the completed notice content was prepared. These follow from the signed increase notice read together with the published excerpt for the referenced table and its period of validity, plus the property manager's workflow or audit record showing when the notice content was completed; alternatively, the authenticated administrative export covering the notice, the table reference and the preparation history supplies all three. What a party recounts about a record — however confidently or in however much detail — does not establish what that record contains; the record itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis tied to this notice must likewise be established before the current question is answered. Only the calculation worksheet setting out the starting basis used for the notice can do that; no other source in this file speaks to it. A description or recollection offered by either party does not establish the content of that worksheet — the worksheet itself, or the authenticated export, is required."
+       },
+       {
+        "id": "h3",
+        "text": "A renovation cost breakdown supporting a value-added increase is called for in one situation only: where the returned increase notice itself reports that a renovation reason makes up part of the increase. Unless and until that circumstance appears in the notice, do not request the renovation cost breakdown."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts play no part in this check and should not be requested for it. Readiness here means no more than that the listed facts stand established on the required records; it settles nothing about the lawfulness of the increase or the merits of the tenant's objection."
+       }
+      ]
+     },
+     {
+      "id": "ret-590b67e37a",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "Consumer price index publication (December 2020 = 100), monthly release of 4 March 2025: the index for February 2025 stands at 106.8 points and applies to adjustments notified up to the following monthly release. A footnote to the table records that the February value is provisional owing to a processing fault in two regional price surveys, and that a corrected release will be issued within days."
+       }
+      ],
+      "provided_document_id": "C2"
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.index.e1",
+   "domain": "rent_increase",
+   "episode": 1,
+   "family": "index",
+   "intake_source_documents": {
+    "ret-590b67e37a": "C2"
+   },
+   "language": "en",
+   "latent_sha256": "2117b45814da00404b08cf58c0ca40010c1b12d3a55ea31767cfc36725869666",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Three points must be established before the current question is decided: the date borne by the signed increase notice, the precise rate or calculation table it relies on together with the period that table covers, and the moment at which the completed notice content was prepared. These follow from the signed increase notice read together with the published excerpt for the referenced table and its period of validity, plus the property manager's workflow or audit record showing when the notice content was completed; alternatively, the authenticated administrative export covering the notice, the table reference and the preparation history supplies all three. What a party recounts about a record — however confidently or in however much detail — does not establish what that record contains; the record itself, or the authenticated export, is required.",
+       "source_ref": "gov-index-1#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis tied to this notice must likewise be established before the current question is answered. Only the calculation worksheet setting out the starting basis used for the notice can do that; no other source in this file speaks to it. A description or recollection offered by either party does not establish the content of that worksheet — the worksheet itself, or the authenticated export, is required.",
+       "source_ref": "gov-index-1#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "activation": {
+      "active_if_any_observed": [
+       "ret-f390914748"
+      ]
+     },
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "A renovation cost breakdown supporting a value-added increase is called for in one situation only: where the returned increase notice itself reports that a renovation reason makes up part of the increase. Unless and until that circumstance appears in the notice, do not request the renovation cost breakdown.",
+       "source_ref": "gov-index-1#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-f390914748",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Notice of rent adjustment, Rosenweg 12, flat 4B, Bern, signed at Bern on 12 March 2025 by Brunner Immobilien Treuhand AG on behalf of the owner, Helvetia Wohnbau AG: with effect from 1 July 2025 the net monthly rent rises from CHF 1,480 to CHF 1,648. Of that adjustment, CHF 123 follows the national consumer price index (December 2020 = 100) as published in the release of 4 March 2025, while the remaining CHF 45 is charged for the value-adding share of the bathroom and kitchen refurbishment completed in October 2024."
+      }
+     ]
+    },
+    {
+     "id": "ret-e14c808bdb",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Consumer price index publication (December 2020 = 100), corrected release of 11 March 2025: February 2025 is set at 106.3 points, superseding the value issued on 4 March 2025. This table governs rent adjustments notified from 11 March 2025 until the next release on 8 April 2025, and the historical series printed alongside it gives December 2015 at 98.6 points and March 2021 at 100.4 points."
+      }
+     ]
+    },
+    {
+     "id": "ret-4638248ee7",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Workflow record, dossier Rosenweg 12 / flat 4B, Brunner Immobilien Treuhand AG. The notice text was created on 3 March 2025 at 09:14 by M. Estermann, amended on 6 March 2025 at 16:41, and locked for signature in that state on 6 March 2025 at 16:47; the log registers no content change thereafter, only the print and signature step on 12 March 2025 at 08:30 and dispatch by registered post on 14 March 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-4f36184f2f",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Rent calculation sheet, Rosenweg 12 / flat 4B, drawn up on 6 March 2025: starting basis index 98.6 points (December 2015), reference index 106.8 points from the release of 4 March 2025, movement 8.32 per cent, applied to a net rent of CHF 1,480 and rounded to CHF 123 per month. The header of the sheet records the lease commencement of 1 May 2021, yet the December 2015 value is what the calculation line carries forward as the starting figure."
+      }
+     ]
+    },
+    {
+     "id": "ret-fbf019ae8a",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Authenticated administrative export, issued on 22 April 2025 under the electronic seal of Brunner Immobilien Treuhand AG and countersigned by its managing officer. The export reproduces the rent adjustment notice signed on 12 March 2025 for Rosenweg 12 / flat 4B, raising the net rent to CHF 1,648 from 1 July 2025, and names the referenced table as the consumer price index release of 4 March 2025 with February 2025 at 106.8 points. It carries the complete content history — created 3 March 2025 09:14, amended 6 March 2025 16:41, locked 6 March 2025 16:47, signed 12 March 2025 08:30 — and certifies that no version of the notice cites the corrected release of 11 March 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-f0c4bee64a",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Cost breakdown for the bathroom and kitchen refurbishment at Rosenweg 12, works accepted on 18 October 2024: CHF 96,400 invoiced in total, of which CHF 57,840 is booked as value-adding and CHF 38,560 as maintenance. The value-adding share is apportioned across the eight flats by floor area, giving flat 4B a share of CHF 7,230, which at 5 per cent amortisation over twenty years plus 2.5 per cent interest works out at CHF 45 per month."
+      }
+     ]
+    },
+    {
+     "id": "ret-fb6b5e2445",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Payment record, Rosenweg 12 / flat 4B: the net rent of CHF 1,480 together with the service-charge instalment of CHF 180 was credited in full on the first banking day of each month from January to June 2025. The account carries no outstanding balance for that period and no reminder was issued."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "index-linked increase with a disputed base index"
+  },
+  {
+   "accepted_justification_refs": {
+    "C1": {
+     "handling_instruction": [
+      "gov-index-2#h1"
+     ],
+     "need_origin": [
+      "src-index-2#p1",
+      "src-index-2#p2",
+      "src-index-2#p3",
+      "src-index-2#p4",
+      "src-index-2#p5"
+     ],
+     "observed_return": [
+      "ret-f9fb480c69#p1"
+     ]
+    },
+    "C2": {
+     "handling_instruction": [
+      "gov-index-2#h1"
+     ],
+     "need_origin": [
+      "src-index-2#p1",
+      "src-index-2#p2",
+      "src-index-2#p3",
+      "src-index-2#p4",
+      "src-index-2#p5"
+     ],
+     "observed_return": [
+      "ret-a8acc3b3a8#p1"
+     ]
+    },
+    "C3": {
+     "handling_instruction": [
+      "gov-index-2#h1"
+     ],
+     "need_origin": [
+      "src-index-2#p1",
+      "src-index-2#p2",
+      "src-index-2#p3",
+      "src-index-2#p4",
+      "src-index-2#p5"
+     ],
+     "observed_return": [
+      "ret-6012d936bd#p1",
+      "ret-2dbeec1308#p1"
+     ]
+    },
+    "C4": {
+     "handling_instruction": [
+      "gov-index-2#h2"
+     ],
+     "need_origin": [
+      "src-index-2#p1",
+      "src-index-2#p2",
+      "src-index-2#p3",
+      "src-index-2#p4",
+      "src-index-2#p5"
+     ],
+     "observed_return": [
+      "ret-8c16e7794f#p1",
+      "ret-6ce0af6d55#p1"
+     ]
+    },
+    "C5": {
+     "handling_instruction": [
+      "gov-index-2#h1"
+     ],
+     "need_origin": [
+      "src-index-2#p1",
+      "src-index-2#p2",
+      "src-index-2#p3",
+      "src-index-2#p4",
+      "src-index-2#p5"
+     ],
+     "observed_return": [
+      "ret-985520e25e#p1"
+     ]
+    },
+    "C6": {
+     "handling_instruction": [
+      "gov-index-2#h3"
+     ],
+     "need_origin": [
+      "src-index-2#p1",
+      "src-index-2#p2",
+      "src-index-2#p3",
+      "src-index-2#p4",
+      "src-index-2#p5"
+     ],
+     "observed_return": [
+      "ret-518af51d9a#p1",
+      "ret-a560f7d9a7#p1"
+     ]
+    },
+    "C7": {
+     "handling_instruction": [
+      "gov-index-2#h4"
+     ],
+     "need_origin": [],
+     "observed_return": [
+      "ret-d24916dbdb#p1"
+     ]
+    }
+   },
+   "action_response_table": [
+    {
+     "document_id": "C1",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-f9fb480c69"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C2",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-a8acc3b3a8"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C3",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial_correcting",
+       "source_ids": [
+        "ret-6012d936bd"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-2dbeec1308"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-2dbeec1308"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C4",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-8c16e7794f"
+       ]
+      },
+      {
+       "automatic_after_partial": true,
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-6ce0af6d55"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-6ce0af6d55"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C5",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-985520e25e"
+     ],
+     "scope": "final"
+    },
+    {
+     "document_id": "C6",
+     "earliest_turn_available": 1,
+     "if_first_requested_at_turn_0": [
+      {
+       "deliver_at_turn": 1,
+       "scope": "partial",
+       "source_ids": [
+        "ret-518af51d9a"
+       ]
+      },
+      {
+       "deliver_at_turn": 2,
+       "requires_follow_up_request_at_turn_1": true,
+       "scope": "final",
+       "source_ids": [
+        "ret-a560f7d9a7"
+       ]
+      }
+     ],
+     "if_first_requested_at_turn_1": [
+      {
+       "deliver_at_turn": 2,
+       "scope": "final",
+       "source_ids": [
+        "ret-a560f7d9a7"
+       ]
+      }
+     ]
+    },
+    {
+     "document_id": "C7",
+     "earliest_turn_available": 1,
+     "response_source_ids": [
+      "ret-d24916dbdb"
+     ],
+     "scope": "irrelevant"
+    }
+   ],
+   "actor_initial": {
+    "aware_at": "2025-03-03T09:00:00+01:00",
+    "document_catalog": [
+     {
+      "document_id": "C1",
+      "role": "Signed increase notice or form showing the form date and referenced rate or table"
+     },
+     {
+      "document_id": "C2",
+      "role": "Publication excerpt for the referenced rate or calculation table and its effective period"
+     },
+     {
+      "document_id": "C3",
+      "role": "Workflow or audit log showing when the final form content was prepared"
+     },
+     {
+      "document_id": "C4",
+      "role": "Calculation worksheet showing the starting basis used for the notice"
+     },
+     {
+      "document_id": "C5",
+      "role": "Authenticated administrative export for the notice, table reference and preparation history"
+     },
+     {
+      "document_id": "C6",
+      "role": "Renovation cost breakdown supporting a value-added increase"
+     },
+     {
+      "document_id": "C7",
+      "role": "Current rent-payment receipts"
+     }
+    ],
+    "sources": [
+     {
+      "id": "src-index-2",
+      "paragraphs": [
+       {
+        "id": "p1",
+        "text": "On 18 March 2025 I found a rent adjustment notice from Brunner & Partner AG in my letterbox, putting the net rent for my flat at Lindenstrasse 14 up from CHF 1,640 to CHF 1,712 a month as of 1 October 2025. What struck me straight away is that the starting index figure they seem to have worked from belongs to December 2021, even though my rent was already adjusted in November 2022."
+       },
+       {
+        "id": "p2",
+        "text": "Over the weekend I went through my tenancy folder and the signed increase form itself is here in the flat, still in the envelope it arrived in. I can drop it off at your office or post you a copy this week if you tell me where it should go."
+       },
+       {
+        "id": "p3",
+        "text": "There is also the letter about the building works from last spring, the one full of figures, which I put aside at the time. Honestly, I can no longer say whether it came from the owner or from the management office, or whether it is the same paper the management already showed you."
+       },
+       {
+        "id": "p4",
+        "text": "In April the management printed out their processing history for the notice for me, and a few weeks later someone there admitted on the phone that the timestamps and numbers in it were wrong and that a corrected listing would be sent. I never followed up to see whether the newer listing says something different."
+       },
+       {
+        "id": "p5",
+        "text": "What I would like looked into is whether the increase was worked out from the right starting index at all, and whether the form was properly drawn up before it went out. What I genuinely cannot work out for myself is which index month they took as their basis, because nothing in the correspondence spells it out."
+       }
+      ]
+     },
+     {
+      "id": "gov-index-2",
+      "paragraphs": [
+       {
+        "id": "h1",
+        "text": "Before the present decision is taken, three facts must be established: the date borne by the signed increase form, the exact rate or calculation table relied upon together with the period it covers, and the moment at which the completed form content was prepared. The evidence accepted for this is the signed increase notice or form showing the form date and the referenced rate or table, together with the publication excerpt for that rate or calculation table and its effective period, together with the workflow or audit log showing when the completed form content was prepared; alternatively, the authenticated administrative export covering the notice, the table reference and the preparation history. A party's description or recollection of a document does not establish its content, so the record itself, or the authenticated export, must be obtained."
+       },
+       {
+        "id": "h2",
+        "text": "The starting calculation basis linked to the notice must also be established before the present decision. For this, obtain the calculation worksheet showing the starting basis used for the notice. What either side says that worksheet contains does not establish its content; the worksheet itself, or the authenticated export, is what is required."
+       },
+       {
+        "id": "h3",
+        "text": "A renovation cost breakdown comes into play only once the notice itself reveals a renovation reason. This obligation becomes active only where a returned signed increase notice or form reports that triggering circumstance; until that happens, do not request the renovation cost breakdown supporting a value-added increase."
+       },
+       {
+        "id": "h4",
+        "text": "Current rent-payment receipts are not required for this check and should not be called in for it. Readiness here means the listed facts are established from the required documents; it does not settle legal entitlement, which is a separate question."
+       }
+      ]
+     }
+    ],
+    "static_category_checklist": {
+     "category": "rent-adjustment calculation",
+     "document_ids": [
+      "C1",
+      "C2",
+      "C4",
+      "C7"
+     ],
+     "rationale": "A usual intake list for this category; it ignores the trajectory-specific instructions and returns."
+    },
+    "turn": 0
+   },
+   "aware_at": "2025-03-03T09:00:00+01:00",
+   "case_id": "rent_increase.index.e2",
+   "domain": "rent_increase",
+   "episode": 2,
+   "family": "index",
+   "intake_source_documents": {},
+   "language": "en",
+   "latent_sha256": "36e200ddb05395f05b812d2fdf9a753ea295fd81f98ecab40b9d836c448c6488",
+   "reference_requirements": [
+    {
+     "condition": "Signed form date, exact table with its period, and final preparation time",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "Before the present decision is taken, three facts must be established: the date borne by the signed increase form, the exact rate or calculation table relied upon together with the period it covers, and the moment at which the completed form content was prepared. The evidence accepted for this is the signed increase notice or form showing the form date and the referenced rate or table, together with the publication excerpt for that rate or calculation table and its effective period, together with the workflow or audit log showing when the completed form content was prepared; alternatively, the authenticated administrative export covering the notice, the table reference and the preparation history. A party's description or recollection of a document does not establish its content, so the record itself, or the authenticated export, must be obtained.",
+       "source_ref": "gov-index-2#h1"
+      }
+     ],
+     "requirement_id": "R-SEQ",
+     "satisfying_document_sets": [
+      [
+       "C1",
+       "C2",
+       "C3"
+      ],
+      [
+       "C5"
+      ]
+     ]
+    },
+    {
+     "condition": "Starting calculation basis linked to the notice",
+     "critical": true,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "The starting calculation basis linked to the notice must also be established before the present decision. For this, obtain the calculation worksheet showing the starting basis used for the notice. What either side says that worksheet contains does not establish its content; the worksheet itself, or the authenticated export, is what is required.",
+       "source_ref": "gov-index-2#h2"
+      }
+     ],
+     "requirement_id": "R-BASIS",
+     "satisfying_document_sets": [
+      [
+       "C4"
+      ]
+     ]
+    },
+    {
+     "condition": "Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "critical": false,
+     "decision_id": "current-check",
+     "exact_support": [
+      {
+       "exact_sentence": "A renovation cost breakdown comes into play only once the notice itself reveals a renovation reason. This obligation becomes active only where a returned signed increase notice or form reports that triggering circumstance; until that happens, do not request the renovation cost breakdown supporting a value-added increase.",
+       "source_ref": "gov-index-2#h3"
+      }
+     ],
+     "requirement_id": "R-RENOV",
+     "satisfying_document_sets": [
+      [
+       "C6"
+      ]
+     ]
+    }
+   ],
+   "source_store": [
+    {
+     "id": "ret-f9fb480c69",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Notification of rent adjustment for the third-floor apartment at Lindenstrasse 14, issued on the official cantonal form bearing the date 12 March 2025 and signed by Brunner & Partner AG on behalf of the owner, Hofmatt Immobilien AG. The net rent rises from CHF 1,640 to CHF 1,712 per month with effect from 1 October 2025, calculated exclusively on the movement of the national consumer price index series (December 2020 = 100) up to the reading of 107.6 points for January 2025. No other ground is invoked for this adjustment."
+      }
+     ]
+    },
+    {
+     "id": "ret-a8acc3b3a8",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Excerpt from the official consumer price index series (December 2020 = 100) maintained by the Federal Statistical Office. The reading for December 2021 stands at 103.1 points, the reading for November 2022 at 105.9 points, and the reading for January 2025 at 107.6 points; the January 2025 figure was published on 6 February 2025 and governs adjustments notified from that date until the February 2025 figure replaced it on 6 March 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-6012d936bd",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Processing history for the Lindenstrasse 14 rent adjustment, drawn from the management system on 4 April 2025: the form record appears as opened on 6 March 2025, with the last write to its content shown as 14 March 2025 at 09:12 by user m.bieri. These timestamps were read from the archive server, whose clock ran ahead throughout March; a corrected listing will be issued once the export has been rerun against the primary database."
+      }
+     ]
+    },
+    {
+     "id": "ret-2dbeec1308",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Corrected processing history for the Lindenstrasse 14 rent adjustment, regenerated on 29 April 2025 directly from the primary database. The form record was created on 6 March 2025 at 11:04, its content was written for the last time and locked on 10 March 2025 at 16:42 by user m.bieri, and the document was released for printing on 12 March 2025 at 08:15, with no further write to the content recorded after 10 March 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-8c16e7794f",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Calculation sheet for the Lindenstrasse 14 adjustment: current net rent CHF 1,640, reference reading 107.6 points, resulting net rent CHF 1,712 per month from 1 October 2025. The row naming the starting index reading and the month it belongs to has been left empty in this print-out, since that field was still under review when the sheet was produced. A completed sheet carrying that row will follow next week."
+      }
+     ]
+    },
+    {
+     "id": "ret-6ce0af6d55",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Calculation sheet for the Lindenstrasse 14 adjustment, version of 2 May 2025: the starting basis applied to this notice is the consumer price index reading for December 2021 of 103.1 points, carried forward from the tenancy agreement signed on 24 November 2021. Measured against the reference reading of 107.6 points for January 2025, this gives an increase of 4.36 per cent and takes the net rent from CHF 1,640 to CHF 1,712 per month as of 1 October 2025."
+      }
+     ]
+    },
+    {
+     "id": "ret-985520e25e",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Certified system export issued by Brunner & Partner AG on 15 May 2025 under seal reference EX-2025-0431 for the Lindenstrasse 14 tenancy. It records the increase form as signed and dated 12 March 2025, the table relied upon as the consumer price index series (December 2020 = 100) at its January 2025 reading of 107.6 points, and the form content as written for the last time and locked on 10 March 2025 at 16:42. The export was generated from the primary database and carries the electronic signature of the managing director."
+      }
+     ]
+    },
+    {
+     "id": "ret-518af51d9a",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Cost summary for the 2024 works at Lindenstrasse 14: roof insulation CHF 186,400, stairwell windows CHF 74,900, boiler replacement CHF 121,300, giving total expenditure of CHF 382,600. This summary contains no split between maintenance expenditure and value-adding expenditure, and the amounts are stated gross of the cantonal energy subsidy received."
+      }
+     ]
+    },
+    {
+     "id": "ret-a560f7d9a7",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Cost breakdown for the 2024 works at Lindenstrasse 14, dated 20 May 2025 and signed off by the site architect. After deduction of the cantonal energy subsidy of CHF 31,000, net expenditure of CHF 351,600 divides into CHF 138,200 of maintenance and CHF 213,400 of value-adding work; the value-adding share is apportioned across the eleven apartments by floor area, which allocates CHF 19,400 to the third-floor apartment."
+      }
+     ]
+    },
+    {
+     "id": "ret-d24916dbdb",
+     "paragraphs": [
+      {
+       "id": "p1",
+       "text": "Payment record for the Lindenstrasse 14 tenancy: the monthly rent of CHF 1,640 together with service-charge instalments of CHF 180 was credited in full on the first banking day of every month from January to August 2025. No arrears stand open for that period and no reminder has been sent to the tenant."
+      }
+     ]
+    }
+   ],
+   "split": "transfer",
+   "title": "index-linked increase with a disputed base index"
+  }
+ ],
+ "contract": "casepath.arena-v1-cases/1.0.0",
+ "split": "transfer"
+}

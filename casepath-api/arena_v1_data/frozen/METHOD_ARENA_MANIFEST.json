@@ -1,0 +1,111 @@
+{
+ "contract": "casepath.arena-v1-manifest/1.0.0",
+ "generator_sha256": "b9d992f0547192987920f713b27f0d93bd5fc4f85706ce07a793210cc778db0f",
+ "evaluator_sha256": "96fb4225f2834c24ad64c776693d2b144bc1fc400fcef3a26d223adf04cd6ff5",
+ "latents_sha256": "5e95d8956937cd80262177e442898298c0e5e25249bbd52cd95d2198e0dd8f35",
+ "splits": {
+  "dev": {
+   "file": "cases_dev.json",
+   "sha256": "eee7b0996ecf22d45dbb80d845a7fbcd93dd1fff169bcb8bba43ea99ccbd29b5",
+   "cases": 24,
+   "families": [
+    "access",
+    "boiler",
+    "family_home",
+    "late_paid",
+    "leak",
+    "mixed_demand",
+    "mould",
+    "wrong_address"
+   ],
+   "domains": [
+    "heating_defect",
+    "termination_payment"
+   ],
+   "case_ids": [
+    "heating_defect.boiler.e1",
+    "heating_defect.boiler.e2",
+    "heating_defect.boiler.e3",
+    "heating_defect.leak.e1",
+    "heating_defect.leak.e2",
+    "heating_defect.leak.e3",
+    "heating_defect.mould.e1",
+    "heating_defect.mould.e2",
+    "heating_defect.mould.e3",
+    "heating_defect.access.e1",
+    "heating_defect.access.e2",
+    "heating_defect.access.e3",
+    "termination_payment.late_paid.e1",
+    "termination_payment.late_paid.e2",
+    "termination_payment.late_paid.e3",
+    "termination_payment.mixed_demand.e1",
+    "termination_payment.mixed_demand.e2",
+    "termination_payment.mixed_demand.e3",
+    "termination_payment.wrong_address.e1",
+    "termination_payment.wrong_address.e2",
+    "termination_payment.wrong_address.e3",
+    "termination_payment.family_home.e1",
+    "termination_payment.family_home.e2",
+    "termination_payment.family_home.e3"
+   ]
+  },
+  "hidden": {
+   "file": "cases_hidden.json",
+   "sha256": "5229236adc08501fa4317b6666c42302bf23bdbff5cd4aa43c0fcabcbe320155",
+   "cases": 12,
+   "families": [
+    "chimney",
+    "partial_payment",
+    "radiator",
+    "retaliation",
+    "standing_order",
+    "ventilation"
+   ],
+   "domains": [
+    "heating_defect",
+    "termination_payment"
+   ],
+   "case_ids": [
+    "heating_defect.ventilation.e1",
+    "heating_defect.ventilation.e2",
+    "heating_defect.radiator.e1",
+    "heating_defect.radiator.e2",
+    "heating_defect.chimney.e1",
+    "heating_defect.chimney.e2",
+    "termination_payment.standing_order.e1",
+    "termination_payment.standing_order.e2",
+    "termination_payment.partial_payment.e1",
+    "termination_payment.partial_payment.e2",
+    "termination_payment.retaliation.e1",
+    "termination_payment.retaliation.e2"
+   ]
+  },
+  "transfer": {
+   "file": "cases_transfer.json",
+   "sha256": "a174da29ddcf2373c23f50cd1d217d51e4a73e299c3a52066967ff6fd16a9e4a",
+   "cases": 10,
+   "families": [
+    "index",
+    "late_form",
+    "no_reason",
+    "rate_date",
+    "subsidy"
+   ],
+   "domains": [
+    "rent_increase"
+   ],
+   "case_ids": [
+    "rent_increase.rate_date.e1",
+    "rent_increase.rate_date.e2",
+    "rent_increase.no_reason.e1",
+    "rent_increase.no_reason.e2",
+    "rent_increase.subsidy.e1",
+    "rent_increase.subsidy.e2",
+    "rent_increase.late_form.e1",
+    "rent_increase.late_form.e2",
+    "rent_increase.index.e1",
+    "rent_increase.index.e2"
+   ]
+  }
+ }
+}

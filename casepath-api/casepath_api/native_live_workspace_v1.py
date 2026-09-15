@@ -27,6 +27,7 @@ import fitz
 from fastapi import APIRouter, Body, Depends, Header, HTTPException
 from PIL import Image
 
+from . import evidential_channel_gate_v1
 from .native_inference_v1 import (
     AdmittedRawSource,
     MeteredNativeProvider,
@@ -886,8 +887,14 @@ def decode_provisional_proposal(
     *,
     actor_output: Mapping[str, Any],
     prepared: PreparedInference,
+    channel_gate: bool | None = None,
 ) -> dict[str, Any]:
-    """Resolve every public alias and deadline against this exact live prefix."""
+    """Resolve every public alias and deadline against this exact live prefix.
+
+    With the channel-typed evidential gate enabled (``CASEPATH_EVIDENTIAL_CHANNEL_V1=1`` or
+    ``channel_gate=True``) each need's proposed state is capped by the admission channel of its
+    supporting evidence before the proposal is hashed and journaled.
+    """
 
     document = _source_document(prepared)
     registry = _pointer_registry(document, prepared)
@@ -925,9 +932,16 @@ def decode_provisional_proposal(
                 for item in row["evidence"]
             ],
         }
-        needs.append({**material, "proposal_item_sha256": digest(material)})
+        needs.append(material)
+    gate_receipt: dict[str, Any] | None = None
+    if evidential_channel_gate_v1.gate_enabled(channel_gate):
+        needs, gate_receipt = evidential_channel_gate_v1.apply_gate(
+            needs, registry, evidential_channel_gate_v1.channel_map(prepared.source_receipts)
+        )
+    needs = [{**material, "proposal_item_sha256": digest(material)} for material in needs]
     proposal_material = {
         "contract": "casepath.native-live-provisional-proposal/1.0.0",
+        "evidential_channel_gate": gate_receipt,
         "observed_at": prepared.observed_at,
         "input_identity": prepared.input_identity,
         "source_prefix_sha256": prepared.source_prefix_sha256,

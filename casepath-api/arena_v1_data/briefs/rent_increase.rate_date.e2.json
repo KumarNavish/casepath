@@ -1,0 +1,231 @@
+{
+ "case_id": "rent_increase.rate_date.e2",
+ "latent_split": "transfer",
+ "brief": {
+  "contract": "casepath.arena-v1-brief/1.0.0",
+  "language": "en",
+  "style_seed": 8451,
+  "scenario": "reference-rate calculation with a rate dated after the manager's signature",
+  "domain": "rent_increase",
+  "catalog": [
+   {
+    "document_id": "C1",
+    "role": "Signed increase notice or form showing the form date and referenced rate or table",
+    "holder": "landlord",
+    "authenticated": false
+   },
+   {
+    "document_id": "C2",
+    "role": "Publication excerpt for the referenced rate or calculation table and its effective period",
+    "holder": "public register",
+    "authenticated": false
+   },
+   {
+    "document_id": "C3",
+    "role": "Workflow or audit log showing when the final form content was prepared",
+    "holder": "property manager",
+    "authenticated": false
+   },
+   {
+    "document_id": "C4",
+    "role": "Calculation worksheet showing the starting basis used for the notice",
+    "holder": "property manager",
+    "authenticated": false
+   },
+   {
+    "document_id": "C5",
+    "role": "Authenticated administrative export for the notice, table reference and preparation history",
+    "holder": "property manager (authenticated export)",
+    "authenticated": true
+   },
+   {
+    "document_id": "C6",
+    "role": "Renovation cost breakdown supporting a value-added increase",
+    "holder": "property manager",
+    "authenticated": false
+   },
+   {
+    "document_id": "C7",
+    "role": "Current rent-payment receipts",
+    "holder": "customer",
+    "authenticated": false
+   }
+  ],
+  "paragraphs": [
+   {
+    "id": "src#p1",
+    "kind": "customer",
+    "must_convey": [
+     "first-person account of the situation: reference-rate calculation with a rate dated after the manager's signature",
+     "at least one concrete date and one concrete observation"
+    ],
+    "must_not": [
+     "state that any document is attached"
+    ]
+   },
+   {
+    "id": "src#p2",
+    "kind": "customer",
+    "document_id": "C1",
+    "motif": "conflict",
+    "must_convey": [
+     "two statements about 'Signed increase notice or form showing the form date and referenced rate or table' conflict: the customer's own recollection versus what another party claims"
+    ],
+    "must_not": [
+     "use the words 'attached' or 'enclosed'"
+    ]
+   },
+   {
+    "id": "src#p3",
+    "kind": "customer",
+    "document_id": "C3",
+    "motif": "promise_automatic",
+    "must_convey": [
+     "the customer reports that the holder of 'Workflow or audit log showing when the final form content was prepared' (property manager) will send it automatically without being asked, within days"
+    ],
+    "must_not": [
+     "use the words 'attached' or 'enclosed'"
+    ]
+   },
+   {
+    "id": "src#p4",
+    "kind": "customer",
+    "document_id": "C4",
+    "motif": "possession_report",
+    "must_convey": [
+     "the customer states they HAVE FOUND / HOLD the document 'Calculation worksheet showing the starting basis used for the notice' at home and can send it",
+     "do not quote its contents"
+    ],
+    "must_not": [
+     "use the words 'attached' or 'enclosed'"
+    ]
+   },
+   {
+    "id": "src#p5",
+    "kind": "customer",
+    "must_convey": [
+     "what the customer wants checked now (the operational question)",
+     "an explicit statement of what remains unclear to them"
+    ],
+    "must_not": []
+   },
+   {
+    "id": "gov#h1",
+    "kind": "instruction",
+    "requirement_id": "R-SEQ",
+    "must_convey": [
+     "before the current decision, establish: Signed form date, exact table with its period, and final preparation time",
+     "acceptable evidence: Signed increase notice or form showing the form date and referenced rate or table + Publication excerpt for the referenced rate or calculation table and its effective period + Workflow or audit log showing when the final form content was prepared OR Authenticated administrative export for the notice, table reference and preparation history",
+     "a party's description or recollection of a document does not establish its content; the document itself (or the authenticated export) is required"
+    ]
+   },
+   {
+    "id": "gov#h2",
+    "kind": "instruction",
+    "requirement_id": "R-BASIS",
+    "must_convey": [
+     "before the current decision, establish: Starting calculation basis linked to the notice",
+     "acceptable evidence: Calculation worksheet showing the starting basis used for the notice",
+     "a party's description or recollection of a document does not establish its content; the document itself (or the authenticated export) is required"
+    ]
+   },
+   {
+    "id": "gov#h3",
+    "kind": "instruction",
+    "requirement_id": "R-RENOV",
+    "must_convey": [
+     "conditional: Renovation cost breakdown (only once the notice reveals a renovation reason)",
+     "this obligation becomes active ONLY if a returned 'Signed increase notice or form showing the form date and referenced rate or table' reports the triggering circumstance; until then do not request 'Renovation cost breakdown supporting a value-added increase'"
+    ]
+   },
+   {
+    "id": "gov#h4",
+    "kind": "instruction",
+    "must_convey": [
+     "the following are not required for this check: Current rent-payment receipts",
+     "readiness means the listed facts are established from the required documents; it does not decide legal entitlement"
+    ]
+   },
+   {
+    "id": "ret-C1-final#p1",
+    "document_id": "C1",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Signed increase notice or form showing the form date and referenced rate or table' establishing the fact(s) for ['R-SEQ'] with concrete values/dates; the document must NOT mention any circumstance related to 'Renovation cost breakdown (only once the notice reveals a renovation reason)'"
+    ]
+   },
+   {
+    "id": "ret-C2-final#p1",
+    "document_id": "C2",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Publication excerpt for the referenced rate or calculation table and its effective period' establishing the fact(s) for ['R-SEQ'] with concrete values/dates"
+    ]
+   },
+   {
+    "id": "ret-C3-partial#p1",
+    "document_id": "C3",
+    "scope": "partial",
+    "must_convey": [
+     "an incomplete 'Workflow or audit log showing when the final form content was prepared': it gives part of the information but explicitly lacks a required element (state which)",
+     "it promises that the complete version follows"
+    ]
+   },
+   {
+    "id": "ret-C3-final#p1",
+    "document_id": "C3",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Workflow or audit log showing when the final form content was prepared' establishing the fact(s) for ['R-SEQ']"
+    ]
+   },
+   {
+    "id": "ret-C4-final#p1",
+    "document_id": "C4",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Calculation worksheet showing the starting basis used for the notice' establishing the fact(s) for ['R-BASIS'] with concrete values/dates"
+    ]
+   },
+   {
+    "id": "ret-C5-final#p1",
+    "document_id": "C5",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Authenticated administrative export for the notice, table reference and preparation history' establishing the fact(s) for ['R-SEQ'] with concrete values/dates"
+    ]
+   },
+   {
+    "id": "ret-C6-partial#p1",
+    "document_id": "C6",
+    "scope": "partial",
+    "must_convey": [
+     "an incomplete 'Renovation cost breakdown supporting a value-added increase': it gives part of the information but explicitly lacks a required element (state which)",
+     "it does not promise anything further"
+    ]
+   },
+   {
+    "id": "ret-C6-final#p1",
+    "document_id": "C6",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Renovation cost breakdown supporting a value-added increase' establishing the fact(s) for ['R-RENOV']"
+    ]
+   },
+   {
+    "id": "ret-C7-irrelevant#p1",
+    "document_id": "C7",
+    "scope": "irrelevant",
+    "must_convey": [
+     "content of 'Current rent-payment receipts' that is genuinely unrelated to the facts under review"
+    ]
+   }
+  ],
+  "writer_rules": [
+   "Write every paragraph as natural prose in the requested language (customer paragraphs in the customer's voice, instruction paragraphs as neutral handling guidance, return paragraphs as the document's own text or a cover note).",
+   "Vary sentence openings, register and length across paragraphs; never use meta-labels such as 'partial', 'final', 'hearsay' or the document IDs.",
+   "Never reveal whether a document will be sufficient; convey exactly the semantics in must_convey and nothing that contradicts must_not.",
+   "Return one JSON object mapping each paragraph id to its text."
+  ]
+ }
+}

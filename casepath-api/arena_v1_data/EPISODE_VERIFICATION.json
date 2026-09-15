@@ -1,0 +1,621 @@
+{
+ "model": "openai/gpt-5.6-terra",
+ "episodes": 46,
+ "ok": 6,
+ "failed_checks": 40,
+ "errors": 0,
+ "cost_usd": 0.9098,
+ "results": [
+  {
+   "episode": "heating_defect.access.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not needed for this check\" does not state a fact that must be established or identify acceptable records for establishing it."
+    }
+   ],
+   "cost_usd": 0.0177565
+  },
+  {
+   "episode": "heating_defect.access.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not required for this check\" does not state facts to be established or acceptable records."
+    }
+   ],
+   "cost_usd": 0.0210425
+  },
+  {
+   "episode": "heating_defect.access.e3",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not required for this check\" does not state what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0178865
+  },
+  {
+   "episode": "heating_defect.boiler.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.0163715
+  },
+  {
+   "episode": "heating_defect.boiler.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"just tell me where to send it and it goes out the same day\" says the customer is sending the record."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"the listed facts are established from the required documents\" does not state what facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0170975
+  },
+  {
+   "episode": "heating_defect.boiler.e3",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "„darin ist festgehalten, wie auf meine Meldung ... reagiert wurde“ resolves the reference to a response-history record rather than leaving multiple catalogue records possible."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "„Photographs of the apartment are not required for this check“ does not state facts that must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0208785
+  },
+  {
+   "episode": "heating_defect.chimney.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not state what must be established or identify acceptable records; it only says, \"Do not request a medical confirmation ... at this stage.\""
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "Does not state what must be established and which records are acceptable; it only says, \"Photographs of the apartment are not required for this check.\""
+    }
+   ],
+   "cost_usd": 0.0238215
+  },
+  {
+   "episode": "heating_defect.chimney.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"the listed facts are established from the required documents\" does not state which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0236315
+  },
+  {
+   "episode": "heating_defect.leak.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"Medical confirmation of health effects for an occupant is a conditional point\" does not identify which record is acceptable to establish that point."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"the listed facts are established from the required documents\" does not state the facts to establish or identify acceptable records."
+    }
+   ],
+   "cost_usd": 0.0221375
+  },
+  {
+   "episode": "heating_defect.leak.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"einen Servicebericht mit ihrer Beurteilung und dem weiteren Vorgehen verfasst\" describes the record's content despite existence_only."
+    },
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"ich kann sie Ihnen jederzeit schicken\" says the customer will send the record despite possession_report."
+    }
+   ],
+   "cost_usd": 0.0191455
+  },
+  {
+   "episode": "heating_defect.leak.e3",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not required for this check\" does not state which records are acceptable to establish the required facts."
+    }
+   ],
+   "cost_usd": 0.0216465
+  },
+  {
+   "episode": "heating_defect.mould.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"an welche Adresse ich ihn schicken soll\" says the customer will send the record, rather than only reporting possession."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"the facts listed above ... the required documents\" does not state which facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.018213
+  },
+  {
+   "episode": "heating_defect.mould.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not required for this check\" does not state facts to be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0174255
+  },
+  {
+   "episode": "heating_defect.mould.e3",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p4",
+     "rule": 1,
+     "issue": "\"the letter from March that I sent by registered post\" identifies a particular letter rather than leaving the reference capable of meaning multiple catalogue records."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"Medical confirmation of health effects for an occupant is a conditional point\" does not state what must be established or identify acceptable evidence for establishing it."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not required for this check\" does not state facts that must be established and the records acceptable to establish them."
+    }
+   ],
+   "cost_usd": 0.0335065
+  },
+  {
+   "episode": "heating_defect.radiator.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not needed for this check\" does not state facts to be established or acceptable records."
+    }
+   ],
+   "cost_usd": 0.0179535
+  },
+  {
+   "episode": "heating_defect.radiator.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Photographs of the apartment are not needed for this check\" does not state a fact that must be established and which records are acceptable for establishing it."
+    }
+   ],
+   "cost_usd": 0.0162295
+  },
+  {
+   "episode": "heating_defect.ventilation.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "„ich kann es Ihnen jederzeit zustellen“ says the customer will send the record."
+    }
+   ],
+   "cost_usd": 0.023884
+  },
+  {
+   "episode": "heating_defect.ventilation.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "Does not state what must be established or which records are acceptable; it only says “Photographs of the apartment are not required for this check” and refers generically to “the required documents.”"
+    }
+   ],
+   "cost_usd": 0.022457
+  },
+  {
+   "episode": "rent_increase.index.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"I can put it in the post or upload it\" states that the customer will send the record."
+    }
+   ],
+   "cost_usd": 0.0131895
+  },
+  {
+   "episode": "rent_increase.index.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"I can drop it off at your office or post you a copy\" says the customer will send the record."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"the listed facts are established from the required documents\" does not state the facts to establish or identify acceptable records."
+    }
+   ],
+   "cost_usd": 0.018609
+  },
+  {
+   "episode": "rent_increase.late_form.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"das Blatt liegt weiterhin bei mir im Ordner\" asserts possession despite content_quote motif"
+    },
+    {
+     "id": "ret-C4-partial#p1",
+     "rule": 2,
+     "issue": "\"befinden sich derzeit in Überprüfung; eine berichtigte Fassung wird nachgereicht\" only promises a correction, rather than showing figures later corrected"
+    }
+   ],
+   "cost_usd": 0.02128
+  },
+  {
+   "episode": "rent_increase.late_form.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"the documents named above\" does not state which records are acceptable in this paragraph."
+    }
+   ],
+   "cost_usd": 0.0239995
+  },
+  {
+   "episode": "rent_increase.no_reason.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"I can put it in the post to you tomorrow or scan it this afternoon\" says the customer is sending the record."
+    }
+   ],
+   "cost_usd": 0.021322
+  },
+  {
+   "episode": "rent_increase.no_reason.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"I can put it in the post or scan it across whenever you need it\""
+    }
+   ],
+   "cost_usd": 0.0126965
+  },
+  {
+   "episode": "rent_increase.rate_date.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"Current rent-payment receipts are not required for this check\" does not state facts that must be established or acceptable records for establishing them."
+    }
+   ],
+   "cost_usd": 0.0183765
+  },
+  {
+   "episode": "rent_increase.rate_date.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"the listed facts are established from the required documents\" does not identify which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0156255
+  },
+  {
+   "episode": "rent_increase.subsidy.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.0152345
+  },
+  {
+   "episode": "rent_increase.subsidy.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.0146715
+  },
+  {
+   "episode": "termination_payment.family_home.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Readiness here means that the listed facts are established from the required documents\" does not state which facts must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0181815
+  },
+  {
+   "episode": "termination_payment.family_home.e2",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.01517
+  },
+  {
+   "episode": "termination_payment.family_home.e3",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "Possession report says \"I can send it over,\" although this motif must not say it is being sent."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"An allocation statement for a mixed demand comes into play\" does not state what that statement must establish or which record is acceptable for establishing it."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract plays no part in this check\" does not state facts that must be established and the acceptable records for them."
+    }
+   ],
+   "cost_usd": 0.018206
+  },
+  {
+   "episode": "termination_payment.late_paid.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"Readiness here means that the listed facts are established from the required documents\" does not state which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0195575
+  },
+  {
+   "episode": "termination_payment.late_paid.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not needed for this check\" does not state what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0232075
+  },
+  {
+   "episode": "termination_payment.late_paid.e3",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.0265495
+  },
+  {
+   "episode": "termination_payment.mixed_demand.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not among the records needed\" — does not state facts that must be established or identify acceptable records for establishing them."
+    }
+   ],
+   "cost_usd": 0.0192725
+  },
+  {
+   "episode": "termination_payment.mixed_demand.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"I can drop them in the post or scan them over to you today\" says the held records will be sent."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"How a combined demand was allocated becomes a question\" does not state acceptable records for establishing that allocation."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not among the records needed for this check\" does not state facts that must be established or acceptable records."
+    }
+   ],
+   "cost_usd": 0.016854
+  },
+  {
+   "episode": "termination_payment.mixed_demand.e3",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not among the items needed for this check\" does not state facts that must be established or acceptable records for establishing them."
+    }
+   ],
+   "cost_usd": 0.0185435
+  },
+  {
+   "episode": "termination_payment.partial_payment.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not identify an acceptable record for the required allocation statement; it only says \"once a returned property-manager ledger reports the triggering circumstance\"."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "Does not state particular facts that must be established or identify acceptable records; it says only \"the listed facts stand established from the required documents\"."
+    }
+   ],
+   "cost_usd": 0.017026
+  },
+  {
+   "episode": "termination_payment.partial_payment.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not needed for this check\" does not state facts to be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.02301
+  },
+  {
+   "episode": "termination_payment.retaliation.e1",
+   "ok": true,
+   "problems": [],
+   "cost_usd": 0.0290685
+  },
+  {
+   "episode": "termination_payment.retaliation.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p2",
+     "rule": 1,
+     "issue": "\"in dem die Verwaltung die eingehenden Zahlungen erfasst\" describes the record's content rather than existence only."
+    },
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "\"A separate allocation statement for a mixed demand becomes a requirement\" does not state what must be established or identify acceptable evidence for it."
+    }
+   ],
+   "cost_usd": 0.0168165
+  },
+  {
+   "episode": "termination_payment.standing_order.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"Ich schicke ihn Ihnen gerne\" says the customer is sending the record."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not among the documents needed\" does not state facts to be established or acceptable records."
+    }
+   ],
+   "cost_usd": 0.0225525
+  },
+  {
+   "episode": "termination_payment.standing_order.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not needed for this check\" does not state what must be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.0182665
+  },
+  {
+   "episode": "termination_payment.wrong_address.e1",
+   "ok": false,
+   "problems": [
+    {
+     "id": "src#p3",
+     "rule": 1,
+     "issue": "\"ich kann Ihnen das Formular jederzeit zukommen lassen\" asserts that the customer can send the record."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not among the documents needed\" does not state facts to be established or acceptable records for establishing them."
+    }
+   ],
+   "cost_usd": 0.0232975
+  },
+  {
+   "episode": "termination_payment.wrong_address.e2",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "\"The signed lease contract is not needed for this check\" states an exclusion but does not state facts to be established or acceptable records."
+    }
+   ],
+   "cost_usd": 0.0196035
+  },
+  {
+   "episode": "termination_payment.wrong_address.e3",
+   "ok": false,
+   "problems": [
+    {
+     "id": "gov#h4",
+     "rule": 3,
+     "issue": "Does not state which records are acceptable for establishing the allocation statement."
+    },
+    {
+     "id": "gov#h5",
+     "rule": 3,
+     "issue": "Does not state facts to be established or which records are acceptable."
+    }
+   ],
+   "cost_usd": 0.018564
+  }
+ ]
+}

@@ -1,0 +1,10 @@
+You are a careful bilingual (English / Swiss German) writer producing the natural-language sources of ONE synthetic claim-handling episode for a research benchmark. Read brief.json in this directory. It lists paragraphs with an id, a kind (customer | instruction | return), and `must_convey` / `must_not` semantics.
+
+Write every paragraph as natural prose:
+- kind=customer: the customer's own voice (first person), in the language given by brief.language ("de" = Swiss Standard German with ß→ss, "en" = English). Each customer paragraph is 1–3 sentences. Include concrete dates (2025) and names of parties where natural.
+- kind=instruction: neutral handling guidance for the claims handler, ALWAYS in English, 1–3 sentences, precise about what evidence is acceptable and what is not.
+- kind=return (ids starting with ret-): the text of the returned record itself (or a cover note, when the brief says so), in the episode language, 1–3 sentences, with concrete values/dates consistent with the customer paragraphs. A 'partial' return must visibly lack the stated element; a 'final' return must establish the fact(s) concretely; an 'irrelevant' return must be genuinely unrelated; an 'unavailable' return is a written statement that no such record exists.
+
+Hard rules: never use the words 'attached', 'enclosed', 'partial', 'final', 'sufficient', 'hearsay', or any document ID (like A1, B3); never say which return will be adequate; do not add facts that contradict other paragraphs of the same episode; keep the customer and return paragraphs mutually consistent (same parties, dates, amounts). Vary sentence openings and register across paragraphs; avoid formulaic templates.
+
+Output: write a file named texts.json in this same directory containing ONE JSON object that maps every paragraph id from brief.json to its text (all ids present, nothing else). Then reply with the single word: written

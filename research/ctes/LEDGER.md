@@ -1,0 +1,7 @@
+# Method search ledger (started 2026-09-14, second mandate)
+
+| # | candidate | scientific seam | closest prior | reduction | falsifier | result | decision | artifact hashes |
+|---|---|---|---|---|---|---|---|---|
+| 0 | §24 joint process identification + acquisition | source→process boundary | CGDP 2605.07042; InfoGatherer 2603.05909; EC²/HEC; adaptive cover | constructive, complete | F1 template kernel on v3 dev | v3 closed-form; zero-model kernel at ceiling | CLOSED (arena inadequate; formulation reducible) | RESULT_F1 receipt c5131a87… |
+| 0b | decision ledger + compiled acquisition (E-series full arm) | acquisition-time structure | E76 harness itself | n/a (empirical) | strong-model replay, 3 carriers | no separation from direct; shared 043 semantic error | CLOSED (no strong-model residual) | RESULT.json 7491e2fd… |
+| 1 | CTES — channel-typed evidential state (level from channel metadata; local atoms only from the model; deterministic readiness/requests) | source→evidence boundary (assertion vs artifact) | EnvTrustBench 2605.08828 (phenomenon, no method); Trust-but-don't-verify 2606.05403 (synthesis gap); ProvenanceGuard 2606.18037 (decompose-then-verify on content); Evidence Model 2609.08481 (taxonomy); best-evidence rule | see NOVELTY_AUDIT.md (content-only verifiers cannot access the channel variable; ablation = same atoms without cap) | arena v1 dev, 24 episodes, matched Opus-5 arms; predictions frozen in final/PREDICTIONS.md | pending | pending | calculus sha256 in REPRODUCIBILITY_MANIFEST |

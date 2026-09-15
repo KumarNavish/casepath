@@ -1,0 +1,127 @@
+{
+ "contract": "casepath.ctes-cost-accounting/1.0.0",
+ "provider": "OpenRouter \u2192 Anthropic (allow_fallbacks=false)",
+ "model": "anthropic/claude-opus-5",
+ "temperature": 0.0,
+ "max_output_tokens": 8000,
+ "per_run": {
+  "dev/run": {
+   "calls": 264,
+   "cost_usd": 26.545,
+   "prompt_tokens": 1269020,
+   "completion_tokens": 807996,
+   "truncated": 0
+  },
+  "devabl/run": {
+   "calls": 72,
+   "cost_usd": 6.1261,
+   "prompt_tokens": 273995,
+   "completion_tokens": 190245,
+   "truncated": 0
+  },
+  "dev2/run": {
+   "calls": 98,
+   "cost_usd": 8.494,
+   "prompt_tokens": 391053,
+   "completion_tokens": 261549,
+   "truncated": 0
+  },
+  "hidden/run": {
+   "calls": 141,
+   "cost_usd": 14.1085,
+   "prompt_tokens": 670153,
+   "completion_tokens": 430310,
+   "truncated": 0
+  },
+  "hidden2/run": {
+   "calls": 47,
+   "cost_usd": 4.0569,
+   "prompt_tokens": 187131,
+   "completion_tokens": 124851,
+   "truncated": 0
+  },
+  "hidden_final/run": {
+   "calls": 47,
+   "cost_usd": 3.9921,
+   "prompt_tokens": 184789,
+   "completion_tokens": 122725,
+   "truncated": 0
+  },
+  "transfer/run": {
+   "calls": 125,
+   "cost_usd": 12.9241,
+   "prompt_tokens": 575468,
+   "completion_tokens": 401872,
+   "truncated": 0
+  },
+  "transfer2/run": {
+   "calls": 45,
+   "cost_usd": 4.5013,
+   "prompt_tokens": 181872,
+   "completion_tokens": 143676,
+   "truncated": 0
+  },
+  "transfer_final/run": {
+   "calls": 44,
+   "cost_usd": 4.3056,
+   "prompt_tokens": 175361,
+   "completion_tokens": 137152,
+   "truncated": 0
+  },
+  "dev_mini/run": {
+   "calls": 275,
+   "cost_usd": 1.9844,
+   "prompt_tokens": 816197,
+   "completion_tokens": 319498,
+   "truncated": 0
+  },
+  "dev_mini2/run": {
+   "calls": 99,
+   "cost_usd": 0.6403,
+   "prompt_tokens": 274972,
+   "completion_tokens": 101301,
+   "truncated": 0
+  },
+  "hidden_mini/run": {
+   "calls": 139,
+   "cost_usd": 0.9926,
+   "prompt_tokens": 406037,
+   "completion_tokens": 160249,
+   "truncated": 0
+  },
+  "hidden_mini2/run": {
+   "calls": 43,
+   "cost_usd": 0.274,
+   "prompt_tokens": 115113,
+   "completion_tokens": 43778,
+   "truncated": 0
+  },
+  "transfer_mini/run": {
+   "calls": 109,
+   "cost_usd": 0.7628,
+   "prompt_tokens": 306898,
+   "completion_tokens": 124770,
+   "truncated": 0
+  },
+  "transfer_mini2/run": {
+   "calls": 44,
+   "cost_usd": 0.2917,
+   "prompt_tokens": 116140,
+   "completion_tokens": 47471,
+   "truncated": 0
+  },
+  "PRODUCT_CORPUS_STUDY": {
+   "calls": 16,
+   "cost_usd": 2.5102,
+   "note": "study"
+  },
+  "EPISODE_VERIFICATION": {
+   "calls": 46,
+   "cost_usd": 0.9098,
+   "note": "study"
+  }
+ },
+ "total_cost_usd": 93.4194,
+ "total_calls": 1592,
+ "note": "Zero-model control arms (constant, random, static-checklist, keyword-router, domain-compiler) cost nothing. Episode writing and verification used separate provider calls recorded in their own artifacts."
+}

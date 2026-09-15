@@ -13,6 +13,7 @@ import uuid
 from pydantic import ValidationError
 
 from .authority import ClaimAuthority, AuthorityError, SourceChanged
+from . import evidential_channel
 from .contracts import (Role, ROLE_ORDER, ROLE_LABELS, Operation, SourceSpan, GateResult,
                         TOOL_MODELS, ROLE_TOOLS, canonical, digest)
 from .store import WorkStore, WorkStoreError, ConflictError, ReconciliationRequired
@@ -338,8 +339,23 @@ class ToolRuntime:
         self._put("obligation", "obligation:" + args.object_id, item)
         return item
 
+    def _requirement_spans(self, requirement_id):
+        """Every span this run selected, as the evidence available to support a receipt."""
+        return [obj["value"] for obj in self._all("span")]
+
+    def _channel_gate(self, object_id, item):
+        """Cap a receipt by the channel of the evidence supporting it (see evidential_channel)."""
+        proposed = item.get("evidence_class")
+        decision = evidential_channel.gate_evidence_class(proposed, self._requirement_spans(object_id))
+        if not decision["capped"]:
+            return item, decision
+        self._gate("document:" + object_id, False, "exact_source_link", decision["reason"][:500])
+        return {**item, "evidence_class": decision["final_class"],
+                "evidential_channel_gate": {k: decision[k] for k in ("proposed_class", "final_class", "support_channels", "reason")}}, decision
+
     def _tool_propose_document_requirement(self, args):
         item = self._get("obligation:" + args.object_id)
+        item, decision = self._channel_gate(args.object_id, item)
         self._event(Operation.DOCUMENT_REQUIREMENT_PROPOSED, "document_requirement", "document:" + args.object_id,
                     "Recorded the existing evidence request and when it is needed", status="accepted", after=item,
                     links=["obligation:" + args.object_id])

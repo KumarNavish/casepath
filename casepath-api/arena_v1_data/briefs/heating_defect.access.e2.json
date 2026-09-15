@@ -1,0 +1,245 @@
+{
+ "case_id": "heating_defect.access.e2",
+ "latent_split": "dev",
+ "brief": {
+  "contract": "casepath.arena-v1-brief/1.0.0",
+  "language": "en",
+  "style_seed": 2188,
+  "scenario": "uninspected dampness with disputed contractor access at scheduled visits",
+  "domain": "heating_defect",
+  "catalog": [
+   {
+    "document_id": "A1",
+    "role": "Calibrated overnight temperature or humidity log for the occupied rooms",
+    "holder": "measurement service or customer logger",
+    "authenticated": false
+   },
+   {
+    "document_id": "A2",
+    "role": "Contractor service report stating the technical diagnosis and repair plan",
+    "holder": "heating contractor",
+    "authenticated": false
+   },
+   {
+    "document_id": "A3",
+    "role": "Landlord or property-manager response history to the defect notice",
+    "holder": "property manager",
+    "authenticated": false
+   },
+   {
+    "document_id": "A4",
+    "role": "Written repair deadline letter with the deposit warning",
+    "holder": "customer",
+    "authenticated": false
+   },
+   {
+    "document_id": "A5",
+    "role": "Medical confirmation of health effects for an occupant",
+    "holder": "physician",
+    "authenticated": false
+   },
+   {
+    "document_id": "A6",
+    "role": "Authenticated property-management case export covering diagnosis and response history",
+    "holder": "property manager (authenticated export)",
+    "authenticated": true
+   },
+   {
+    "document_id": "A7",
+    "role": "Photographs of the apartment",
+    "holder": "customer",
+    "authenticated": false
+   }
+  ],
+  "paragraphs": [
+   {
+    "id": "src#p1",
+    "kind": "customer",
+    "must_convey": [
+     "first-person account of the situation: uninspected dampness with disputed contractor access at scheduled visits",
+     "at least one concrete date and one concrete observation"
+    ],
+    "must_not": [
+     "state that any document is attached"
+    ]
+   },
+   {
+    "id": "src#p2",
+    "kind": "customer",
+    "document_id": "A2",
+    "motif": "conflict",
+    "must_convey": [
+     "two statements about 'Contractor service report stating the technical diagnosis and repair plan' conflict: the customer's own recollection versus what another party claims"
+    ],
+    "must_not": [
+     "use the words 'attached' or 'enclosed'"
+    ]
+   },
+   {
+    "id": "src#p3",
+    "kind": "customer",
+    "document_id": "A1",
+    "motif": "stale_then_correct",
+    "must_convey": [
+     "the customer mentions an older version of 'Calibrated overnight temperature or humidity log for the occupied rooms' whose figures were later corrected"
+    ],
+    "must_not": [
+     "use the words 'attached' or 'enclosed'"
+    ]
+   },
+   {
+    "id": "src#p4",
+    "kind": "customer",
+    "must_convey": [
+     "what the customer wants checked now (the operational question)",
+     "an explicit statement of what remains unclear to them"
+    ],
+    "must_not": []
+   },
+   {
+    "id": "gov#h1",
+    "kind": "instruction",
+    "requirement_id": "R-COND",
+    "must_convey": [
+     "before the current decision, establish: Calibrated overnight conditions in the occupied rooms",
+     "acceptable evidence: Calibrated overnight temperature or humidity log for the occupied rooms",
+     "a party's description or recollection of a document does not establish its content; the document itself (or the authenticated export) is required"
+    ]
+   },
+   {
+    "id": "gov#h2",
+    "kind": "instruction",
+    "requirement_id": "R-CAUSE",
+    "must_convey": [
+     "before the current decision, establish: Technical cause and repair plan from the contractor",
+     "acceptable evidence: Contractor service report stating the technical diagnosis and repair plan OR Authenticated property-management case export covering diagnosis and response history",
+     "a party's description or recollection of a document does not establish its content; the document itself (or the authenticated export) is required"
+    ]
+   },
+   {
+    "id": "gov#h3",
+    "kind": "instruction",
+    "requirement_id": "R-NOTICE",
+    "must_convey": [
+     "before the current decision, establish: Notice, deadline and landlord response history",
+     "acceptable evidence: Landlord or property-manager response history to the defect notice + Written repair deadline letter with the deposit warning OR Authenticated property-management case export covering diagnosis and response history",
+     "a party's description or recollection of a document does not establish its content; the document itself (or the authenticated export) is required"
+    ]
+   },
+   {
+    "id": "gov#h4",
+    "kind": "instruction",
+    "requirement_id": "R-HEALTH",
+    "must_convey": [
+     "conditional: Medical confirmation of health effects (only once a return reports health effects)",
+     "this obligation becomes active ONLY if a returned 'Contractor service report stating the technical diagnosis and repair plan' reports the triggering circumstance; until then do not request 'Medical confirmation of health effects for an occupant'"
+    ]
+   },
+   {
+    "id": "gov#h5",
+    "kind": "instruction",
+    "must_convey": [
+     "the following are not required for this check: Photographs of the apartment",
+     "readiness means the listed facts are established from the required documents; it does not decide legal entitlement"
+    ]
+   },
+   {
+    "id": "ret-A1-partial#p1",
+    "document_id": "A1",
+    "scope": "partial_correcting",
+    "must_convey": [
+     "an OLDER version of 'Calibrated overnight temperature or humidity log for the occupied rooms' with figures that are later corrected; it states that a corrected version follows"
+    ]
+   },
+   {
+    "id": "ret-A1-final#p1",
+    "document_id": "A1",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Calibrated overnight temperature or humidity log for the occupied rooms' establishing the fact(s) for ['R-COND']"
+    ]
+   },
+   {
+    "id": "ret-A2-partial#p1",
+    "document_id": "A2",
+    "scope": "partial",
+    "must_convey": [
+     "an incomplete 'Contractor service report stating the technical diagnosis and repair plan': it gives part of the information but explicitly lacks a required element (state which)",
+     "it promises that the complete version follows"
+    ]
+   },
+   {
+    "id": "ret-A2-final#p1",
+    "document_id": "A2",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Contractor service report stating the technical diagnosis and repair plan' establishing the fact(s) for ['R-CAUSE']; the document must NOT mention any circumstance related to 'Medical confirmation of health effects (only once a return reports health effects)'"
+    ]
+   },
+   {
+    "id": "ret-A3-final#p1",
+    "document_id": "A3",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Landlord or property-manager response history to the defect notice' establishing the fact(s) for ['R-NOTICE'] with concrete values/dates"
+    ]
+   },
+   {
+    "id": "ret-A4-partial#p1",
+    "document_id": "A4",
+    "scope": "partial",
+    "must_convey": [
+     "an incomplete 'Written repair deadline letter with the deposit warning': it gives part of the information but explicitly lacks a required element (state which)",
+     "it promises that the complete version follows"
+    ]
+   },
+   {
+    "id": "ret-A4-final#p1",
+    "document_id": "A4",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Written repair deadline letter with the deposit warning' establishing the fact(s) for ['R-NOTICE']"
+    ]
+   },
+   {
+    "id": "ret-A5-partial#p1",
+    "document_id": "A5",
+    "scope": "partial",
+    "must_convey": [
+     "a cover note stating that the attached scan of 'Medical confirmation of health effects for an occupant' is illegible / pages missing, so its content cannot be read",
+     "no substantive content"
+    ]
+   },
+   {
+    "id": "ret-A5-final#p1",
+    "document_id": "A5",
+    "scope": "final",
+    "must_convey": [
+     "a legible complete 'Medical confirmation of health effects for an occupant' establishing the fact(s) for ['R-HEALTH']"
+    ]
+   },
+   {
+    "id": "ret-A6-final#p1",
+    "document_id": "A6",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Authenticated property-management case export covering diagnosis and response history' establishing the fact(s) for ['R-CAUSE', 'R-NOTICE'] with concrete values/dates"
+    ]
+   },
+   {
+    "id": "ret-A7-irrelevant#p1",
+    "document_id": "A7",
+    "scope": "irrelevant",
+    "must_convey": [
+     "content of 'Photographs of the apartment' that is genuinely unrelated to the facts under review"
+    ]
+   }
+  ],
+  "writer_rules": [
+   "Write every paragraph as natural prose in the requested language (customer paragraphs in the customer's voice, instruction paragraphs as neutral handling guidance, return paragraphs as the document's own text or a cover note).",
+   "Vary sentence openings, register and length across paragraphs; never use meta-labels such as 'partial', 'final', 'hearsay' or the document IDs.",
+   "Never reveal whether a document will be sufficient; convey exactly the semantics in must_convey and nothing that contradicts must_not.",
+   "Return one JSON object mapping each paragraph id to its text."
+  ]
+ }
+}

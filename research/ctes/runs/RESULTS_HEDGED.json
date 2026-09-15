@@ -1,0 +1,400 @@
+{
+ "run": "/private/tmp/claude-503/-Users-kumar0002-Library-Application-Support-Claude-scratch-workspaces-7571a0a9-dcb5-4cc7-8def-6cf37dcc2b58-42de860a-94a1-4cf9-ae1d-375f3d0f37ad-scratch-2026-09-14-ec40be/7dd2d091-8194-477e-8573-5d2ad1553c6a/scratchpad/transfer/run",
+ "model": "anthropic/claude-opus-5",
+ "episodes": 10,
+ "arms": {
+  "constant": {
+   "family_weighted_U": 0.016666666666666653,
+   "mean_U": 0.016666666666666653,
+   "A": 0.6666666666666666,
+   "premature_episodes": 0,
+   "burden_total": 26,
+   "hearsay_total": 0,
+   "requests_total": 57,
+   "failed_records": 0,
+   "state_acc": 0.6095238095238095,
+   "readiness_acc": 0.8333333333333334,
+   "action_acc": 0.3333333333333333
+  },
+  "random": {
+   "family_weighted_U": -0.4166666666666667,
+   "mean_U": -0.4166666666666667,
+   "A": 0.4333333333333333,
+   "premature_episodes": 3,
+   "burden_total": 22,
+   "hearsay_total": 0,
+   "requests_total": 39,
+   "failed_records": 0,
+   "state_acc": 0.6095238095238095,
+   "readiness_acc": 0.8,
+   "action_acc": 0.16666666666666666
+  },
+  "static-checklist": {
+   "family_weighted_U": -0.8333333333333334,
+   "mean_U": -0.8333333333333334,
+   "A": 0.4166666666666667,
+   "premature_episodes": 9,
+   "burden_total": 14,
+   "hearsay_total": 0,
+   "requests_total": 33,
+   "failed_records": 0,
+   "state_acc": 0.6476190476190476,
+   "readiness_acc": 0.6333333333333333,
+   "action_acc": 0.26666666666666666
+  },
+  "keyword-router": {
+   "family_weighted_U": -0.12500000000000003,
+   "mean_U": -0.125,
+   "A": 0.75,
+   "premature_episodes": 5,
+   "burden_total": 15,
+   "hearsay_total": 0,
+   "requests_total": 31,
+   "failed_records": 0,
+   "state_acc": 0.6904761904761905,
+   "readiness_acc": 0.7333333333333333,
+   "action_acc": 0.3
+  },
+  "domain-compiler": {
+   "family_weighted_U": -0.4416666666666667,
+   "mean_U": -0.4416666666666667,
+   "A": 0.5833333333333333,
+   "premature_episodes": 8,
+   "burden_total": 9,
+   "hearsay_total": 0,
+   "requests_total": 33,
+   "failed_records": 0,
+   "state_acc": 0.6333333333333333,
+   "readiness_acc": 0.6666666666666666,
+   "action_acc": 0.36666666666666664
+  },
+  "direct-end-to-end": {
+   "family_weighted_U": 0.45,
+   "mean_U": 0.45,
+   "A": 0.75,
+   "premature_episodes": 0,
+   "burden_total": 12,
+   "hearsay_total": 4,
+   "requests_total": 32,
+   "failed_records": 0,
+   "state_acc": 0.7523809523809524,
+   "readiness_acc": 0.9333333333333333,
+   "action_acc": 0.6666666666666666
+  },
+  "process-only": {
+   "family_weighted_U": 0.2333333333333333,
+   "mean_U": 0.2333333333333333,
+   "A": 0.6833333333333333,
+   "premature_episodes": 1,
+   "burden_total": 14,
+   "hearsay_total": 1,
+   "requests_total": 29,
+   "failed_records": 0,
+   "state_acc": 0.7857142857142857,
+   "readiness_acc": 0.9333333333333333,
+   "action_acc": 0.6
+  },
+  "full": {
+   "family_weighted_U": 0.37499999999999994,
+   "mean_U": 0.375,
+   "A": 0.65,
+   "premature_episodes": 0,
+   "burden_total": 11,
+   "hearsay_total": 1,
+   "requests_total": 28,
+   "failed_records": 0,
+   "state_acc": 0.7952380952380953,
+   "readiness_acc": 1.0,
+   "action_acc": 0.6666666666666666
+  },
+  "ctes-ablation": {
+   "family_weighted_U": -0.4666666666666667,
+   "mean_U": -0.4666666666666667,
+   "A": 0.4333333333333333,
+   "premature_episodes": 7,
+   "burden_total": 8,
+   "hearsay_total": 0,
+   "requests_total": 21,
+   "failed_records": 0,
+   "state_acc": 0.8,
+   "readiness_acc": 0.5666666666666667,
+   "action_acc": 0.26666666666666666
+  },
+  "ctes": {
+   "family_weighted_U": 0.39999999999999997,
+   "mean_U": 0.4,
+   "A": 0.7,
+   "premature_episodes": 0,
+   "burden_total": 12,
+   "hearsay_total": 0,
+   "requests_total": 33,
+   "failed_records": 0,
+   "state_acc": 0.919047619047619,
+   "readiness_acc": 1.0,
+   "action_acc": 0.4666666666666666
+  }
+ },
+ "paired_vs_ctes": {
+  "random": {
+   "families": 5,
+   "mean_diff": 0.8166666666666667,
+   "ci95": [
+    0.19166666666666662,
+    1.4416666666666669
+   ],
+   "wins": 4,
+   "losses": 1,
+   "ties": 0
+  },
+  "static-checklist": {
+   "families": 5,
+   "mean_diff": 1.2333333333333334,
+   "ci95": [
+    0.7749999999999999,
+    1.6166666666666667
+   ],
+   "wins": 5,
+   "losses": 0,
+   "ties": 0
+  },
+  "constant": {
+   "families": 5,
+   "mean_diff": 0.3833333333333333,
+   "ci95": [
+    -0.0916666666666667,
+    0.6666666666666667
+   ],
+   "wins": 4,
+   "losses": 1,
+   "ties": 0
+  },
+  "keyword-router": {
+   "families": 5,
+   "mean_diff": 0.525,
+   "ci95": [
+    -0.0916666666666667,
+    1.1416666666666666
+   ],
+   "wins": 4,
+   "losses": 1,
+   "ties": 0
+  },
+  "domain-compiler": {
+   "families": 5,
+   "mean_diff": 0.8416666666666666,
+   "ci95": [
+    0.4,
+    1.275
+   ],
+   "wins": 5,
+   "losses": 0,
+   "ties": 0
+  },
+  "direct-end-to-end": {
+   "families": 5,
+   "mean_diff": -0.04999999999999999,
+   "ci95": [
+    -0.26666666666666666,
+    0.16666666666666669
+   ],
+   "wins": 2,
+   "losses": 2,
+   "ties": 1
+  },
+  "process-only": {
+   "families": 5,
+   "mean_diff": 0.16666666666666666,
+   "ci95": [
+    -0.1333333333333334,
+    0.4833333333333334
+   ],
+   "wins": 2,
+   "losses": 2,
+   "ties": 1
+  },
+  "full": {
+   "families": 5,
+   "mean_diff": 0.025,
+   "ci95": [
+    -0.1416666666666667,
+    0.1416666666666667
+   ],
+   "wins": 3,
+   "losses": 1,
+   "ties": 1
+  },
+  "ctes-ablation": {
+   "families": 5,
+   "mean_diff": 0.8666666666666668,
+   "ci95": [
+    0.6,
+    1.2416666666666667
+   ],
+   "wins": 5,
+   "losses": 0,
+   "ties": 0
+  }
+ },
+ "cost": {
+  "physical_calls": 125,
+  "cost_usd": 12.9241,
+  "prompt_tokens": 575468,
+  "completion_tokens": 401872,
+  "by_arm": {
+   "full": {
+    "calls": 25.0,
+    "cost": 3.0943,
+    "out_tokens": 96150.5
+   },
+   "process-only": {
+    "calls": 25.0,
+    "cost": 3.1156,
+    "out_tokens": 97105.5
+   },
+   "direct-end-to-end": {
+    "calls": 30.0,
+    "cost": 2.3351,
+    "out_tokens": 69836.0
+   },
+   "ctes": {
+    "calls": 22.5,
+    "cost": 2.2322,
+    "out_tokens": 70925.5
+   },
+   "ctes-ablation": {
+    "calls": 22.5,
+    "cost": 2.147,
+    "out_tokens": 67854.5
+   }
+  }
+ },
+ "extra_runs": [
+  "/private/tmp/claude-503/-Users-kumar0002-Library-Application-Support-Claude-scratch-workspaces-7571a0a9-dcb5-4cc7-8def-6cf37dcc2b58-42de860a-94a1-4cf9-ae1d-375f3d0f37ad-scratch-2026-09-14-ec40be/7dd2d091-8194-477e-8573-5d2ad1553c6a/scratchpad/transfer2/run"
+ ],
+ "extra_cost": [
+  {
+   "physical_calls": 45,
+   "cost_usd": 4.5013,
+   "prompt_tokens": 181872,
+   "completion_tokens": 143676,
+   "by_arm": {
+    "ctes": {
+     "calls": 22.5,
+     "cost": 2.3022,
+     "out_tokens": 73599.0
+    },
+    "ctes-ablation": {
+     "calls": 22.5,
+     "cost": 2.1991,
+     "out_tokens": 70077.0
+    }
+   }
+  }
+ ],
+ "signature": {
+  "random": {
+   "episodes_with_report_motif": 10,
+   "U_with": -0.4166666666666667,
+   "U_without": null,
+   "hearsay_with": 0,
+   "hearsay_without": 0,
+   "premature_with": 3,
+   "premature_without": 0
+  },
+  "static-checklist": {
+   "episodes_with_report_motif": 10,
+   "U_with": -0.8333333333333334,
+   "U_without": null,
+   "hearsay_with": 0,
+   "hearsay_without": 0,
+   "premature_with": 9,
+   "premature_without": 0
+  },
+  "constant": {
+   "episodes_with_report_motif": 10,
+   "U_with": 0.016666666666666653,
+   "U_without": null,
+   "hearsay_with": 0,
+   "hearsay_without": 0,
+   "premature_with": 0,
+   "premature_without": 0
+  },
+  "keyword-router": {
+   "episodes_with_report_motif": 10,
+   "U_with": -0.125,
+   "U_without": null,
+   "hearsay_with": 0,
+   "hearsay_without": 0,
+   "premature_with": 5,
+   "premature_without": 0
+  },
+  "domain-compiler": {
+   "episodes_with_report_motif": 10,
+   "U_with": -0.4416666666666667,
+   "U_without": null,
+   "hearsay_with": 0,
+   "hearsay_without": 0,
+   "premature_with": 8,
+   "premature_without": 0
+  },
+  "direct-end-to-end": {
+   "episodes_with_report_motif": 10,
+   "U_with": 0.45,
+   "U_without": null,
+   "hearsay_with": 4,
+   "hearsay_without": 0,
+   "premature_with": 0,
+   "premature_without": 0
+  },
+  "process-only": {
+   "episodes_with_report_motif": 10,
+   "U_with": 0.2333333333333333,
+   "U_without": null,
+   "hearsay_with": 1,
+   "hearsay_without": 0,
+   "premature_with": 1,
+   "premature_without": 0
+  },
+  "full": {
+   "episodes_with_report_motif": 10,
+   "U_with": 0.375,
+   "U_without": null,
+   "hearsay_with": 1,
+   "hearsay_without": 0,
+   "premature_with": 0,
+   "premature_without": 0
+  },
+  "ctes": {
+   "episodes_with_report_motif": 10,
+   "U_with": 0.4,
+   "U_without": null,
+   "hearsay_with": 0,
+   "hearsay_without": 0,
+   "premature_with": 0,
+   "premature_without": 0
+  },
+  "ctes-ablation": {
+   "episodes_with_report_motif": 10,
+   "U_with": -0.4666666666666667,
+   "U_without": null,
+   "hearsay_with": 0,
+   "hearsay_without": 0,
+   "premature_with": 7,
+   "premature_without": 0
+  }
+ },
+ "by_domain_U": {
+  "rent_increase": {
+   "random": -0.4166666666666667,
+   "static-checklist": -0.8333333333333334,
+   "constant": 0.016666666666666653,
+   "keyword-router": -0.125,
+   "domain-compiler": -0.4416666666666667,
+   "direct-end-to-end": 0.45,
+   "process-only": 0.2333333333333333,
+   "full": 0.375,
+   "ctes": 0.4,
+   "ctes-ablation": -0.4666666666666667
+  }
+ }
+}

@@ -1,0 +1,971 @@
+{
+ "contract": "casepath.ctes-product-corpus-study/1.0.0",
+ "corpus_identity": {
+  "manifest_sha256": "921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e",
+  "static_template_sha256": "84f576cc7f8f2bcb6e638d02e0549fd32e4bb183e4957f2b4a4ab7dcf2beb232",
+  "bindings_sha256": "6b895ab5ed521c0700d0f162ed3c47fa4f18a40b6ed794434eb6d5d5393a4b40",
+  "claim_count": 150,
+  "file_count": 660,
+  "files_sha256": "6d4fab7ace31831e32a752ba5dd94b4a7103257cd2e8d52643cf7281a4ba5df5",
+  "size_bytes": 45551478
+ },
+ "model": "anthropic/claude-opus-5",
+ "claims": 16,
+ "ok": 16,
+ "failures": [],
+ "claims_with_attachment": 8,
+ "needs_total": 113,
+ "received_off_total": 8,
+ "received_on_total": 6,
+ "capped_needs_total": 2,
+ "claims_with_capped_need": 2,
+ "cost_usd": 2.5102,
+ "results": [
+  {
+   "claim_id": "clm_0c5e7c7723a3c694",
+   "status": "ok",
+   "artifact_roles": {
+    "com_ae56875f6dd04668": "customer_message",
+    "doc_5f8bb67f9b9af579": "attachment",
+    "doc_64d1c01e7c356a53": "attachment"
+   },
+   "has_attachment": true,
+   "images_in_prefix": 2,
+   "needs": 7,
+   "states_off": {
+    "n1-binding-notice": "missing",
+    "n2-decisive-end-date": "contested",
+    "n3-complete-pages": "partial",
+    "n4-issue-date-year": "missing",
+    "n5-signature-authority": "uncertain",
+    "n6-receipt-date": "missing",
+    "n7-reason-begruendung": "missing"
+   },
+   "states_on": {
+    "n1-binding-notice": "missing",
+    "n2-decisive-end-date": "contested",
+    "n3-complete-pages": "partial",
+    "n4-issue-date-year": "missing",
+    "n5-signature-authority": "uncertain",
+    "n6-receipt-date": "missing",
+    "n7-reason-begruendung": "missing"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "21f37c686cdfd99ce6c7edfddc5784bf1f7824eea8c22039a6870cf5c0626966",
+   "proposal_sha256_on": "993459d164828b10098a1d5a64957b28b04ab25a3a07fdcff1779a314da6079f",
+   "cost_usd": 0.08709,
+   "usage": {
+    "prompt_tokens": 5458,
+    "completion_tokens": 2392,
+    "total_tokens": 7850,
+    "cost": 0.08709,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.08709,
+     "upstream_inference_prompt_cost": 0.02729,
+     "upstream_inference_completions_cost": 0.0598
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 878,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_0c7beda7583b3558",
+   "status": "ok",
+   "artifact_roles": {
+    "com_8993abb41aeba55a": "customer_message",
+    "doc_1129c354c5b55bd6": "attachment"
+   },
+   "has_attachment": true,
+   "images_in_prefix": 3,
+   "needs": 8,
+   "states_off": {
+    "prior_net_rent": "received",
+    "net_increase": "received",
+    "gross_total": "received",
+    "nk_positions": "received",
+    "nk_abrechnung": "missing",
+    "reason_reclass": "partial",
+    "deadline": "partial",
+    "sender_signature": "partial"
+   },
+   "states_on": {
+    "prior_net_rent": "received",
+    "net_increase": "received",
+    "gross_total": "received",
+    "nk_positions": "received",
+    "nk_abrechnung": "missing",
+    "reason_reclass": "partial",
+    "deadline": "partial",
+    "sender_signature": "partial"
+   },
+   "received_off": 4,
+   "received_on": 4,
+   "capped": [],
+   "proposal_sha256_off": "f9565ffefcc52c96cd54b6b2a4751c4ae6df9cb4d5aef0afffef4328840554d6",
+   "proposal_sha256_on": "ae652130636bb32ab9eb841434ad90abe5700b77eb4a06d3378c2116b9b8f66f",
+   "cost_usd": 0.123485,
+   "usage": {
+    "prompt_tokens": 10272,
+    "completion_tokens": 2885,
+    "total_tokens": 13157,
+    "cost": 0.123485,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.123485,
+     "upstream_inference_prompt_cost": 0.05136,
+     "upstream_inference_completions_cost": 0.072125
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 871,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_0e538990cc6ba7ef",
+   "status": "ok",
+   "artifact_roles": {
+    "com_cebc16bebc169805": "customer_message",
+    "doc_ee5afc3a4e3cd60f": "attachment",
+    "doc_7377764332dadd26": "attachment"
+   },
+   "has_attachment": true,
+   "images_in_prefix": 3,
+   "needs": 8,
+   "states_off": {
+    "N1-kuendigungsgrund": "missing",
+    "N2-termination-date": "partial",
+    "N3-empfang-30-tage": "missing",
+    "N4-schlichtungsbehoerde": "partial",
+    "N5-seite2-or-auszug": "partial",
+    "N6-unterschrift-ort-datum": "partial",
+    "N7-ehegatte-identitaet": "partial",
+    "N8-mietvertrag": "missing"
+   },
+   "states_on": {
+    "N1-kuendigungsgrund": "missing",
+    "N2-termination-date": "partial",
+    "N3-empfang-30-tage": "missing",
+    "N4-schlichtungsbehoerde": "partial",
+    "N5-seite2-or-auszug": "partial",
+    "N6-unterschrift-ort-datum": "partial",
+    "N7-ehegatte-identitaet": "partial",
+    "N8-mietvertrag": "missing"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "0150cb0066abd46221b7652de7b4b946c1d2960ec80600f9471b1ae1914fe7fd",
+   "proposal_sha256_on": "c412d77ebb7b742880fcc71a344dd1b81995ec0ac3f30c58c82a8360d0673afc",
+   "cost_usd": 1.415475,
+   "usage": {
+    "prompt_tokens": 257695,
+    "completion_tokens": 5080,
+    "total_tokens": 262775,
+    "cost": 1.415475,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 1.415475,
+     "upstream_inference_prompt_cost": 1.288475,
+     "upstream_inference_completions_cost": 0.127
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 3383,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_0f4f13b1e3e1328c",
+   "status": "ok",
+   "artifact_roles": {
+    "com_6a4b4d2c35876d30": "customer_message",
+    "doc_ddfe973d72142113": "attachment"
+   },
+   "has_attachment": true,
+   "images_in_prefix": 1,
+   "needs": 7,
+   "states_off": {
+    "N1-issuer-authority": "partial",
+    "N2-official-form": "partial",
+    "N3-service-channels": "missing",
+    "N4-termination-date": "partial",
+    "N5-receipt-date-deadline": "missing",
+    "N6-case-manager-email": "missing",
+    "N7-first-record": "missing"
+   },
+   "states_on": {
+    "N1-issuer-authority": "partial",
+    "N2-official-form": "partial",
+    "N3-service-channels": "missing",
+    "N4-termination-date": "partial",
+    "N5-receipt-date-deadline": "missing",
+    "N6-case-manager-email": "missing",
+    "N7-first-record": "missing"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "3f97db6c119b97c3ad7704d488e8c6cda071b7dc488faa3b9c96f8c759e214f3",
+   "proposal_sha256_on": "f59db720c3744443b16fbed9f08c9bca9dbb24d0c0ec26ae715a8bdef693435f",
+   "cost_usd": 0.08555,
+   "usage": {
+    "prompt_tokens": 2845,
+    "completion_tokens": 2853,
+    "total_tokens": 5698,
+    "cost": 0.08555,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.08555,
+     "upstream_inference_prompt_cost": 0.014225,
+     "upstream_inference_completions_cost": 0.071325
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 1509,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_1093c1917b109a21",
+   "status": "ok",
+   "artifact_roles": {
+    "com_9cef73253ff170a8": "customer_message",
+    "doc_ae472da73f550206": "attachment",
+    "doc_ef25b695fddc3747": "attachment"
+   },
+   "has_attachment": true,
+   "images_in_prefix": 3,
+   "needs": 7,
+   "states_off": {
+    "end-date": "contested",
+    "spouse-receipt-dates": "missing",
+    "page2-completeness": "partial",
+    "copy-vs-original": "missing",
+    "notice-date-signature": "uncertain",
+    "begruendung": "partial",
+    "detail-before-classify": "partial"
+   },
+   "states_on": {
+    "end-date": "contested",
+    "spouse-receipt-dates": "missing",
+    "page2-completeness": "partial",
+    "copy-vs-original": "missing",
+    "notice-date-signature": "uncertain",
+    "begruendung": "partial",
+    "detail-before-classify": "partial"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "1df23f146d402f6ce41798987b4f6ca94034ace20c28566104a06519a3fbb3e0",
+   "proposal_sha256_on": "3ab5367dcf208a98bb145f35851b0770b6ed91080c74896b990190437252e135",
+   "cost_usd": 0.145045,
+   "usage": {
+    "prompt_tokens": 12419,
+    "completion_tokens": 3318,
+    "total_tokens": 15737,
+    "cost": 0.145045,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.145045,
+     "upstream_inference_prompt_cost": 0.062095,
+     "upstream_inference_completions_cost": 0.08295
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 1600,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_14970d755f5b88ed",
+   "status": "ok",
+   "artifact_roles": {
+    "com_faa39f95dac08674": "customer_message",
+    "upl_535854833181406554dce563": "attachment"
+   },
+   "has_attachment": true,
+   "images_in_prefix": 1,
+   "needs": 7,
+   "states_off": {
+    "n1": "missing",
+    "n2": "missing",
+    "n3": "partial",
+    "n4": "missing",
+    "n5": "missing",
+    "n6": "missing",
+    "n7": "received"
+   },
+   "states_on": {
+    "n1": "missing",
+    "n2": "missing",
+    "n3": "partial",
+    "n4": "missing",
+    "n5": "missing",
+    "n6": "missing",
+    "n7": "partial"
+   },
+   "received_off": 1,
+   "received_on": 0,
+   "capped": [
+    {
+     "need_id": "n7",
+     "proposed_state": "received",
+     "gated_state": "partial",
+     "support_channels": [
+      "party_report"
+     ],
+     "capped": true
+    }
+   ],
+   "proposal_sha256_off": "281ecc3552355c064783670db0199cc8ae613fa97b4ab0d8e57c91c89e51273d",
+   "proposal_sha256_on": "9e8e7bea4a6d3457954b3600af6409a56bf6536a0bcd94c7abb7c3b30381270e",
+   "cost_usd": 0.052695,
+   "usage": {
+    "prompt_tokens": 2209,
+    "completion_tokens": 1666,
+    "total_tokens": 3875,
+    "cost": 0.052695,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.052695,
+     "upstream_inference_prompt_cost": 0.011045,
+     "upstream_inference_completions_cost": 0.04165
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 472,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_1ba0a82246459c6f",
+   "status": "ok",
+   "artifact_roles": {
+    "com_7b9bdcdb39ec8274": "customer_message",
+    "doc_75919fca60d32816": "attachment",
+    "doc_d6b533a96a9a0b6a": "attachment"
+   },
+   "has_attachment": true,
+   "images_in_prefix": 2,
+   "needs": 7,
+   "states_off": {
+    "n1": "missing",
+    "n2": "contested",
+    "n3": "partial",
+    "n4": "missing",
+    "n5": "partial",
+    "n6": "missing",
+    "n7": "pending"
+   },
+   "states_on": {
+    "n1": "missing",
+    "n2": "contested",
+    "n3": "partial",
+    "n4": "missing",
+    "n5": "partial",
+    "n6": "missing",
+    "n7": "pending"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "7b0a6d9511141c8f654dac7971da00d19be294497f2dbabcb65fe9fedcc8cb60",
+   "proposal_sha256_on": "5a0138b571441cddedb1a67ffa1b9f1cbc4c3754c15ff015a2f9400d1e94c03a",
+   "cost_usd": 0.108545,
+   "usage": {
+    "prompt_tokens": 5374,
+    "completion_tokens": 3267,
+    "total_tokens": 8641,
+    "cost": 0.108545,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.108545,
+     "upstream_inference_prompt_cost": 0.02687,
+     "upstream_inference_completions_cost": 0.081675
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 1898,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_1f1dffaac057e7e4",
+   "status": "ok",
+   "artifact_roles": {
+    "com_8b3080e0324d82e3": "customer_message",
+    "doc_82ac582f2b44fa42": "attachment"
+   },
+   "has_attachment": true,
+   "images_in_prefix": 3,
+   "needs": 8,
+   "states_off": {
+    "n1-prior-net-rent": "received",
+    "n2-net-gross-breakdown": "received",
+    "n3-reclass-reason": "missing",
+    "n4-nk-statement": "missing",
+    "n5-cost-basis-docs": "partial",
+    "n6-deadline": "partial",
+    "n7-form-authorship": "partial",
+    "n8-initial-view": "missing"
+   },
+   "states_on": {
+    "n1-prior-net-rent": "received",
+    "n2-net-gross-breakdown": "received",
+    "n3-reclass-reason": "missing",
+    "n4-nk-statement": "missing",
+    "n5-cost-basis-docs": "partial",
+    "n6-deadline": "partial",
+    "n7-form-authorship": "partial",
+    "n8-initial-view": "missing"
+   },
+   "received_off": 2,
+   "received_on": 2,
+   "capped": [],
+   "proposal_sha256_off": "1031deedaed5cd40294a2f47ca5b05d12d172a9a347aad5ce9aa63e63e7617ad",
+   "proposal_sha256_on": "91b424e82ea2fd3c7e392d2d376b0a8da92f555580b8a69c179ce3059729417d",
+   "cost_usd": 0.14547,
+   "usage": {
+    "prompt_tokens": 10219,
+    "completion_tokens": 3775,
+    "total_tokens": 13994,
+    "cost": 0.14547,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.14547,
+     "upstream_inference_prompt_cost": 0.051095,
+     "upstream_inference_completions_cost": 0.094375
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 1326,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_06400c75399e7f37",
+   "status": "ok",
+   "artifact_roles": {
+    "com_ed33fa6eff83d50b": "customer_message"
+   },
+   "has_attachment": false,
+   "images_in_prefix": 0,
+   "needs": 7,
+   "states_off": {
+    "n1-technical-cause": "missing",
+    "n2-health-link": "missing",
+    "n3-records-basis": "missing",
+    "n4-onset-date": "received",
+    "n5-photos": "missing",
+    "n6-defect-notice": "missing",
+    "n7-lease-rent": "missing"
+   },
+   "states_on": {
+    "n1-technical-cause": "missing",
+    "n2-health-link": "missing",
+    "n3-records-basis": "missing",
+    "n4-onset-date": "partial",
+    "n5-photos": "missing",
+    "n6-defect-notice": "missing",
+    "n7-lease-rent": "missing"
+   },
+   "received_off": 1,
+   "received_on": 0,
+   "capped": [
+    {
+     "need_id": "n4-onset-date",
+     "proposed_state": "received",
+     "gated_state": "partial",
+     "support_channels": [
+      "party_report"
+     ],
+     "capped": true
+    }
+   ],
+   "proposal_sha256_off": "f493436d4f8d98cf6289f9da2f3d7860339cdaea8275b50f154ef09874ede024",
+   "proposal_sha256_on": "6ae1352ed4b38d2586620276ca3ed8185f0a430aaa8f72ae6e9882663176fc7e",
+   "cost_usd": 0.045345,
+   "usage": {
+    "prompt_tokens": 2114,
+    "completion_tokens": 1391,
+    "total_tokens": 3505,
+    "cost": 0.045345,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.045345,
+     "upstream_inference_prompt_cost": 0.01057,
+     "upstream_inference_completions_cost": 0.034775
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 513,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_0b431bbf8391ce3e",
+   "status": "ok",
+   "artifact_roles": {
+    "com_d63bbf052276b4a2": "customer_message"
+   },
+   "has_attachment": false,
+   "images_in_prefix": 0,
+   "needs": 7,
+   "states_off": {
+    "n1": "missing",
+    "n2": "missing",
+    "n3": "missing",
+    "n4": "missing",
+    "n5": "missing",
+    "n6": "missing",
+    "n7": "partial"
+   },
+   "states_on": {
+    "n1": "missing",
+    "n2": "missing",
+    "n3": "missing",
+    "n4": "missing",
+    "n5": "missing",
+    "n6": "missing",
+    "n7": "partial"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "62fad3a8e20d1e5c4d7200c9914bfc7174437ca4c90f28341bf4df1e24cac5a6",
+   "proposal_sha256_on": "56cffd4b8cc0495fc7e1980e94f177133e31b5bb7a858bb85038d2e95d255393",
+   "cost_usd": 0.03465,
+   "usage": {
+    "prompt_tokens": 1925,
+    "completion_tokens": 1001,
+    "total_tokens": 2926,
+    "cost": 0.03465,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.03465,
+     "upstream_inference_prompt_cost": 0.009625,
+     "upstream_inference_completions_cost": 0.025025
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 296,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_0c1a91bc008f8747",
+   "status": "ok",
+   "artifact_roles": {
+    "com_c113d5099bdc44dd": "customer_message"
+   },
+   "has_attachment": false,
+   "images_in_prefix": 0,
+   "needs": 7,
+   "states_off": {
+    "n1": "missing",
+    "n2": "missing",
+    "n3": "missing",
+    "n4": "missing",
+    "n5": "partial",
+    "n6": "partial",
+    "n7": "missing"
+   },
+   "states_on": {
+    "n1": "missing",
+    "n2": "missing",
+    "n3": "missing",
+    "n4": "missing",
+    "n5": "partial",
+    "n6": "partial",
+    "n7": "missing"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "a739ef650390c761a6232c13035609fad4ec49cc1b0720ef87b779235f3f488d",
+   "proposal_sha256_on": "f108c5a82d650a74c7e7513e68bd3514a453556afe0f704824596bedc575641a",
+   "cost_usd": 0.049005,
+   "usage": {
+    "prompt_tokens": 2281,
+    "completion_tokens": 1504,
+    "total_tokens": 3785,
+    "cost": 0.049005,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.049005,
+     "upstream_inference_prompt_cost": 0.011405,
+     "upstream_inference_completions_cost": 0.0376
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 489,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_0c373e693a363f9e",
+   "status": "ok",
+   "artifact_roles": {
+    "com_50db4f9af4a95dea": "customer_message"
+   },
+   "has_attachment": false,
+   "images_in_prefix": 0,
+   "needs": 8,
+   "states_off": {
+    "n1-grant-building-match": "missing",
+    "n2-grant-decision-doc": "missing",
+    "n3-gross-costs": "missing",
+    "n4-net-eligible-costs": "missing",
+    "n5-allocated-costs": "missing",
+    "n6-rent-attachment-zero-subsidy": "missing",
+    "n7-assessment-route": "missing",
+    "n8-remaining-records": "partial"
+   },
+   "states_on": {
+    "n1-grant-building-match": "missing",
+    "n2-grant-decision-doc": "missing",
+    "n3-gross-costs": "missing",
+    "n4-net-eligible-costs": "missing",
+    "n5-allocated-costs": "missing",
+    "n6-rent-attachment-zero-subsidy": "missing",
+    "n7-assessment-route": "missing",
+    "n8-remaining-records": "partial"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "7e65459dc72ecafa3496aa1f6afb9f625f9cd1b6915480de381ecb55c097ef69",
+   "proposal_sha256_on": "80b92a6c72b9ec60026eaf9f2d20b7d93075b06019e79d40fd2277e7b44c7cf6",
+   "cost_usd": 0.04179,
+   "usage": {
+    "prompt_tokens": 2158,
+    "completion_tokens": 1240,
+    "total_tokens": 3398,
+    "cost": 0.04179,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.04179,
+     "upstream_inference_prompt_cost": 0.01079,
+     "upstream_inference_completions_cost": 0.031
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 247,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_0e11979130681bd0",
+   "status": "ok",
+   "artifact_roles": {
+    "com_9f730054a0e2f248": "customer_message"
+   },
+   "has_attachment": false,
+   "images_in_prefix": 0,
+   "needs": 5,
+   "states_off": {
+    "nd-bank-value-date": "missing",
+    "nd-posting-date": "missing",
+    "nd-cure-notice": "missing",
+    "nd-first-record": "missing",
+    "nd-initial-view": "missing"
+   },
+   "states_on": {
+    "nd-bank-value-date": "missing",
+    "nd-posting-date": "missing",
+    "nd-cure-notice": "missing",
+    "nd-first-record": "missing",
+    "nd-initial-view": "missing"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "247721df01ee284d5715916d59e9cbf864d6e600714fbb682a0e671ccb353978",
+   "proposal_sha256_on": "c09aa02ee725e215a433bcb7df0ebf6eec0e207a1eb97e33dc7a1bcb5e74b98b",
+   "cost_usd": 0.028695,
+   "usage": {
+    "prompt_tokens": 2094,
+    "completion_tokens": 729,
+    "total_tokens": 2823,
+    "cost": 0.028695,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.028695,
+     "upstream_inference_prompt_cost": 0.01047,
+     "upstream_inference_completions_cost": 0.018225
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 175,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_125b6fe2f3cada64",
+   "status": "ok",
+   "artifact_roles": {
+    "com_be694ae6298b968e": "customer_message"
+   },
+   "has_attachment": false,
+   "images_in_prefix": 0,
+   "needs": 8,
+   "states_off": {
+    "n1-works-schedule": "missing",
+    "n2-vacant-possession": "missing",
+    "n3-renovation-reason-doc": "missing",
+    "n4-termination-notice": "missing",
+    "n5-housing-searches": "partial",
+    "n6-accessibility": "partial",
+    "n7-tenancy-duration": "partial",
+    "n8-classification-detail": "missing"
+   },
+   "states_on": {
+    "n1-works-schedule": "missing",
+    "n2-vacant-possession": "missing",
+    "n3-renovation-reason-doc": "missing",
+    "n4-termination-notice": "missing",
+    "n5-housing-searches": "partial",
+    "n6-accessibility": "partial",
+    "n7-tenancy-duration": "partial",
+    "n8-classification-detail": "missing"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "124d015b65081026c1406b8e2c2027472aa5064bd69952a3c60ac94b714e90aa",
+   "proposal_sha256_on": "d57d3d02f8f668c7fc974426c1623c76dc3319e2526da8998f006e522e10023f",
+   "cost_usd": 0.05752,
+   "usage": {
+    "prompt_tokens": 2244,
+    "completion_tokens": 1852,
+    "total_tokens": 4096,
+    "cost": 0.05752,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.05752,
+     "upstream_inference_prompt_cost": 0.01122,
+     "upstream_inference_completions_cost": 0.0463
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 825,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_136438c6463a5721",
+   "status": "ok",
+   "artifact_roles": {
+    "com_8c611a7b3c755567": "customer_message"
+   },
+   "has_attachment": false,
+   "images_in_prefix": 0,
+   "needs": 7,
+   "states_off": {
+    "n1": "missing",
+    "n2": "missing",
+    "n3": "missing",
+    "n4": "missing",
+    "n5": "partial",
+    "n6": "missing",
+    "n7": "uncertain"
+   },
+   "states_on": {
+    "n1": "missing",
+    "n2": "missing",
+    "n3": "missing",
+    "n4": "missing",
+    "n5": "partial",
+    "n6": "missing",
+    "n7": "uncertain"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "ed06ddf3748b62fbda611b4991b5990a2011f66daf5638f71e2e83065a76c753",
+   "proposal_sha256_on": "5f7df7e673cbdcdf6ce9611a2bd5c3f65aecc558ba47faa65ec4cc48177069a2",
+   "cost_usd": 0.05055,
+   "usage": {
+    "prompt_tokens": 2120,
+    "completion_tokens": 1598,
+    "total_tokens": 3718,
+    "cost": 0.05055,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.05055,
+     "upstream_inference_prompt_cost": 0.0106,
+     "upstream_inference_completions_cost": 0.03995
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 458,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "claim_id": "clm_15dc0a0f31eced5a",
+   "status": "ok",
+   "artifact_roles": {
+    "com_9ab5cd59f681a97a": "customer_message"
+   },
+   "has_attachment": false,
+   "images_in_prefix": 0,
+   "needs": 5,
+   "states_off": {
+    "N1": "missing",
+    "N2": "missing",
+    "N3": "missing",
+    "N4": "missing",
+    "N5": "missing"
+   },
+   "states_on": {
+    "N1": "missing",
+    "N2": "missing",
+    "N3": "missing",
+    "N4": "missing",
+    "N5": "missing"
+   },
+   "received_off": 0,
+   "received_on": 0,
+   "capped": [],
+   "proposal_sha256_off": "aeee4a10108669b488b5485774a5617a2dc3f9ff647715b24aad9c43c86ac0ad",
+   "proposal_sha256_on": "5caad0700096d49b5d2a6e6b090ad2ddfd20e4e4992f30ea5324e2311b5a3aa7",
+   "cost_usd": 0.03931,
+   "usage": {
+    "prompt_tokens": 2567,
+    "completion_tokens": 1059,
+    "total_tokens": 3626,
+    "cost": 0.03931,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0.03931,
+     "upstream_inference_prompt_cost": 0.012835,
+     "upstream_inference_completions_cost": 0.026475
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 418,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  }
+ ]
+}

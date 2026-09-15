@@ -1,0 +1,238 @@
+{
+ "case_id": "termination_payment.late_paid.e1",
+ "latent_split": "dev",
+ "brief": {
+  "contract": "casepath.arena-v1-brief/1.0.0",
+  "language": "de",
+  "style_seed": 7258,
+  "scenario": "one month late but paid before the termination; manager says posted afterwards",
+  "domain": "termination_payment",
+  "catalog": [
+   {
+    "document_id": "B1",
+    "role": "Bank export showing the execution and value date of the rent payment",
+    "holder": "customer's bank",
+    "authenticated": false
+   },
+   {
+    "document_id": "B2",
+    "role": "Property-manager ledger showing the posting and allocation of the payment",
+    "holder": "property manager",
+    "authenticated": false
+   },
+   {
+    "document_id": "B3",
+    "role": "Cure notice with termination warning as served",
+    "holder": "landlord",
+    "authenticated": false
+   },
+   {
+    "document_id": "B4",
+    "role": "Termination notice on the official form",
+    "holder": "landlord",
+    "authenticated": false
+   },
+   {
+    "document_id": "B5",
+    "role": "Registered-mail or delivery proof for the notices",
+    "holder": "postal service",
+    "authenticated": false
+   },
+   {
+    "document_id": "B6",
+    "role": "Authenticated chronology packet from the landlord's system covering notices and service",
+    "holder": "landlord (authenticated export)",
+    "authenticated": true
+   },
+   {
+    "document_id": "B7",
+    "role": "Signed lease contract",
+    "holder": "customer",
+    "authenticated": false
+   }
+  ],
+  "paragraphs": [
+   {
+    "id": "src#p1",
+    "kind": "customer",
+    "must_convey": [
+     "first-person account of the situation: one month late but paid before the termination; manager says posted afterwards",
+     "at least one concrete date and one concrete observation"
+    ],
+    "must_not": [
+     "state that any document is attached"
+    ]
+   },
+   {
+    "id": "src#p2",
+    "kind": "customer",
+    "document_id": "B2",
+    "motif": "third_party_relay",
+    "must_convey": [
+     "the customer relays what another party (e.g. the manager, contractor or bank) told them about 'Property-manager ledger showing the posting and allocation of the payment' by phone",
+     "second-hand only"
+    ],
+    "must_not": [
+     "use the words 'attached' or 'enclosed'"
+    ]
+   },
+   {
+    "id": "src#p3",
+    "kind": "customer",
+    "document_id": "B1",
+    "motif": "ambiguous_reference",
+    "must_convey": [
+     "the customer refers to 'the letter' / 'the document' in a way that could mean 'Bank export showing the execution and value date of the rent payment' or another catalog document; do not resolve the ambiguity"
+    ],
+    "must_not": [
+     "use the words 'attached' or 'enclosed'"
+    ]
+   },
+   {
+    "id": "src#p4",
+    "kind": "customer",
+    "must_convey": [
+     "what the customer wants checked now (the operational question)",
+     "an explicit statement of what remains unclear to them"
+    ],
+    "must_not": []
+   },
+   {
+    "id": "gov#h1",
+    "kind": "instruction",
+    "requirement_id": "R-PAY",
+    "must_convey": [
+     "before the current decision, establish: Bank-attested execution and value date of the payment",
+     "acceptable evidence: Bank export showing the execution and value date of the rent payment",
+     "a party's description or recollection of a document does not establish its content; the document itself (or the authenticated export) is required"
+    ]
+   },
+   {
+    "id": "gov#h2",
+    "kind": "instruction",
+    "requirement_id": "R-POST",
+    "must_convey": [
+     "before the current decision, establish: Manager-side posting and allocation of the payment",
+     "acceptable evidence: Property-manager ledger showing the posting and allocation of the payment",
+     "a party's description or recollection of a document does not establish its content; the document itself (or the authenticated export) is required"
+    ]
+   },
+   {
+    "id": "gov#h3",
+    "kind": "instruction",
+    "requirement_id": "R-NOTICES",
+    "must_convey": [
+     "before the current decision, establish: Content and service of the cure and termination notices",
+     "acceptable evidence: Cure notice with termination warning as served + Termination notice on the official form + Registered-mail or delivery proof for the notices OR Authenticated chronology packet from the landlord's system covering notices and service",
+     "a party's description or recollection of a document does not establish its content; the document itself (or the authenticated export) is required"
+    ]
+   },
+   {
+    "id": "gov#h4",
+    "kind": "instruction",
+    "requirement_id": "R-ALLOC",
+    "must_convey": [
+     "conditional: Allocation statement for a mixed demand (only once the ledger shows a mixed demand)",
+     "this obligation becomes active ONLY if a returned 'Property-manager ledger showing the posting and allocation of the payment' reports the triggering circumstance; until then do not request 'Property-manager ledger showing the posting and allocation of the payment'"
+    ]
+   },
+   {
+    "id": "gov#h5",
+    "kind": "instruction",
+    "must_convey": [
+     "the following are not required for this check: Signed lease contract",
+     "readiness means the listed facts are established from the required documents; it does not decide legal entitlement"
+    ]
+   },
+   {
+    "id": "ret-B1-partial#p1",
+    "document_id": "B1",
+    "scope": "partial",
+    "must_convey": [
+     "an incomplete 'Bank export showing the execution and value date of the rent payment': it gives part of the information but explicitly lacks a required element (state which)",
+     "it promises that the complete version follows"
+    ]
+   },
+   {
+    "id": "ret-B1-final#p1",
+    "document_id": "B1",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Bank export showing the execution and value date of the rent payment' establishing the fact(s) for ['R-PAY']"
+    ]
+   },
+   {
+    "id": "ret-B2-final#p1",
+    "document_id": "B2",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Property-manager ledger showing the posting and allocation of the payment' establishing the fact(s) for ['R-POST', 'R-ALLOC'] with concrete values/dates; the document must NOT mention any circumstance related to 'Allocation statement for a mixed demand (only once the ledger shows a mixed demand)'"
+    ]
+   },
+   {
+    "id": "ret-B3-final#p1",
+    "document_id": "B3",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Cure notice with termination warning as served' establishing the fact(s) for ['R-NOTICES'] with concrete values/dates"
+    ]
+   },
+   {
+    "id": "ret-B4-partial#p1",
+    "document_id": "B4",
+    "scope": "partial",
+    "must_convey": [
+     "an incomplete 'Termination notice on the official form': it gives part of the information but explicitly lacks a required element (state which)",
+     "it does not promise anything further"
+    ]
+   },
+   {
+    "id": "ret-B4-final#p1",
+    "document_id": "B4",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Termination notice on the official form' establishing the fact(s) for ['R-NOTICES']"
+    ]
+   },
+   {
+    "id": "ret-B5-partial#p1",
+    "document_id": "B5",
+    "scope": "partial",
+    "must_convey": [
+     "an incomplete 'Registered-mail or delivery proof for the notices': it gives part of the information but explicitly lacks a required element (state which)",
+     "it promises that the complete version follows"
+    ]
+   },
+   {
+    "id": "ret-B5-final#p1",
+    "document_id": "B5",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Registered-mail or delivery proof for the notices' establishing the fact(s) for ['R-NOTICES']"
+    ]
+   },
+   {
+    "id": "ret-B6-final#p1",
+    "document_id": "B6",
+    "scope": "final",
+    "must_convey": [
+     "the complete 'Authenticated chronology packet from the landlord's system covering notices and service' establishing the fact(s) for ['R-NOTICES'] with concrete values/dates"
+    ]
+   },
+   {
+    "id": "ret-B7-irrelevant#p1",
+    "document_id": "B7",
+    "scope": "irrelevant",
+    "must_convey": [
+     "content of 'Signed lease contract' that is genuinely unrelated to the facts under review"
+    ]
+   }
+  ],
+  "writer_rules": [
+   "Write every paragraph as natural prose in the requested language (customer paragraphs in the customer's voice, instruction paragraphs as neutral handling guidance, return paragraphs as the document's own text or a cover note).",
+   "Vary sentence openings, register and length across paragraphs; never use meta-labels such as 'partial', 'final', 'hearsay' or the document IDs.",
+   "Never reveal whether a document will be sufficient; convey exactly the semantics in must_convey and nothing that contradicts must_not.",
+   "Return one JSON object mapping each paragraph id to its text."
+  ]
+ }
+}
