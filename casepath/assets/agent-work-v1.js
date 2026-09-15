@@ -4,14 +4,35 @@
   'use strict';
   const ROOT='/api/agent-work/v1', CONTRACT='casepath.agent-work/1.0.0';
   const h=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const icon=(name)=>`<svg class="aw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${({work:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',close:'m6 6 12 12M6 18 18 6',arrow:'M4 12h15m-5-5 5 5-5 5',source:'M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8M8 16h6',check:'m5 12 4 4L19 6',link:'m9 15 6-6M7 17l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0M17 7l1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0'})[name]||'M5 12h14'}"/></svg>`;
-  const state={cap:null,claim:null,run:null,events:[],summary:null,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map()};
+  const icon=(name)=>`<svg class="aw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${({work:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',close:'m6 6 12 12M6 18 18 6',arrow:'M4 12h15m-5-5 5 5-5 5',source:'M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8M8 16h6',check:'m5 12 4 4L19 6',link:'m9 15 6-6M7 17l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0M17 7l1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0',plan:'M4 6h5m6 0h5M9 6a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h5M4 18h5',process:'M5 3v5m0 0h14v8m-14-8v13m11-5h6M3 3h4M3 21h4',evidence:'M5 3h14v18H5zM8 8l2 2 4-4M8 14h8M8 18h6',audit:'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6zM9 12l2 2 4-4',pulse:'M3 12h4l2-5 4 10 2-5h6'})[name]||'M5 12h14'}"/></svg>`;
+  const state={cap:null,claim:null,run:null,events:[],summary:null,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,repoll:false};
   const time=t=>t?new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date(t)):'—';
   const label=s=>({not_started:'Not started',working:'Working',completed:'Completed',blocked:'Needs review',unconfirmed:'Outcome unconfirmed',queued:'Queued',running:'Processing',interrupted:'Interrupted',failed:'Needs review'})[s]||s;
   const roleName=r=>state.cap?.roles.find(x=>x.id===r)?.label||'CasePath';
   const currentLabel=r=>r.currentness==='historical'?'Previous review':r.currentness==='unconfirmed'?'Check saved state':label(r.status);
   const currentTone=r=>['historical','unconfirmed'].includes(r.currentness)?'unconfirmed':statusClass(r.status);
   const statusClass=s=>['completed','working','blocked','unconfirmed'].includes(s)?s:'quiet';
+  const ROLE_ICON={canonical_facts:'source',orchestrator_plan:'plan',document_source_integrity:'link',process_decision_mapping:'process',evidence_checklist:'evidence',final_claim_brief_audit:'audit'};
+  const MILESTONE_OPERATIONS=new Set(['RUN_STARTED','AGENT_STARTED','AGENT_COMPLETED','AGENT_BLOCKED','SOURCE_SPAN_SELECTED','ASSERTION_PROPOSED','HANDOFF_COMPLETED','AUTHORITY_CONFIRMED','CLAIM_REPLANNED','ACTION_PROPOSED','GATE_REJECTED','RUN_COMPLETED','RUN_BLOCKED']);
+  const roleIcon=id=>icon(ROLE_ICON[id]||'work');
+  const eventsFor=operation=>state.events.filter(e=>e.operation===operation);
+  const latestVisibleEvent=()=>[...state.events].reverse().find(e=>!HIDDEN_OPERATIONS.has(e.operation));
+  const modelLabel=()=>{const row=[...state.events].reverse().find(e=>e.operation==='PROVIDER_RESPONSE_RECEIVED'&&e.after?.response_model);if(!row)return null;const raw=row.after.response_model.split('/').at(-1).replace(':free','').replaceAll('-',' ');return raw.replace(/\b\w/g,c=>c.toUpperCase());};
+  function roleOutcome(role){
+    if(!role)return 'Waiting';
+    if(role.status==='working')return role.last_operation||'Working through recorded tools';
+    if(role.status==='blocked')return role.last_operation||'Needs review';
+    if(role.status==='not_started')return 'Waiting for checked handoff';
+    const c=role.coverage||{},objects=state.run?.objects||[];
+    if(role.id==='canonical_facts')return `${objects.filter(o=>o.kind==='assertion').length} exact source statement${objects.filter(o=>o.kind==='assertion').length===1?'':'s'}`;
+    if(role.id==='orchestrator_plan')return eventsFor('HANDOFF_COMPLETED').length?`${eventsFor('HANDOFF_COMPLETED').length} checked handoffs`:'Review sequence set';
+    if(role.id==='document_source_integrity')return `${c.source_assertions||0} statement${c.source_assertions===1?'':'s'} rechecked`;
+    if(role.id==='process_decision_mapping')return `${c.process_nodes||0} steps · ${c.branches||0} paths`;
+    if(role.id==='evidence_checklist')return `${c.obligations||0} needs · ${c.process_requirement_links||0} links`;
+    return role.status==='completed'?'Readiness and next action checked':label(role.status);
+  }
+  function reviewMetrics(summary){return {events:summary?.last_sequence||state.events.length,handoffs:eventsFor('HANDOFF_COMPLETED').length,sourceReads:eventsFor('SOURCE_OPENED').length,gates:eventsFor('GATE_ACCEPTED').length};}
+
   function objectTitle(o){
     const value=o?.value||{};
     if(o?.kind==='role_completion')return roleName(value.role)+' · completed work';
@@ -37,42 +58,70 @@
     const root=document.getElementById('claimsWorkspace');if(!root||!state.cap)return;
     const nav=root.querySelector('.cp-navigation');
     if(nav&&!document.getElementById('awWorkforceButton')){
-      const button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>AI workforce</span>';button.setAttribute('aria-label','AI workforce');button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>showWorkforce());nav.append(button);
+      const button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>Review team</span>';button.setAttribute('aria-label','Review team');button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>showWorkforce());nav.append(button);
     }
     const claim=getClaim();
-    if(claim!==state.claim){document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.renderKey=null;}
+    if(claim!==state.claim){document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.renderKey=null;state.timelineExpanded=false;state.repoll=Boolean(claim);}
     if(!claim)return;
     const work=root.querySelector('.cp-work-column');if(!work)return;
     if(!document.getElementById('awClaimWork')){
-      const section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent work');work.prepend(section);state.renderKey=null;
+      const section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent review');work.prepend(section);state.renderKey=null;
     }
     const start=document.getElementById('cwStart');
-    if(start&&!start.dataset.agentWorkEntry){start.dataset.agentWorkEntry='true';start.textContent='Start team review';}
+    if(start&&!start.dataset.agentWorkEntry){start.dataset.agentWorkEntry='true';start.textContent='Start agent review';}
     renderClaim();
   }
   function compactSummary(summary){
-    if(!summary)return '<span class="aw-kicker">Agent work</span><p class="aw-muted">No agent run is recorded for this claim.</p>';
-    const active=summary.current_role,complete=summary.status==='completed';
-    return `<span class="aw-kicker">${summary.facts_worker==='external_facts'?'Mixed workers · same authority':'Reference workers · same authority'}</span><div class="aw-run-heading"><strong>${complete?'Six roles completed':active?`${h(active.label)} · ${h(label(active.status))}`:h(label(summary.status))}</strong><span>${summary.completed_roles} of 6 stages</span></div>${summary.currentness==='historical'?'<p class="aw-stale">The claim has changed since this run. Its work remains inspectable as history.</p>':''}${summary.currentness==='unconfirmed'?'<p class="aw-stale">The current claim state could not be confirmed. Saved work is available, but it must not replace the current process.</p>':''}${summary.status==='blocked'||summary.status==='unconfirmed'?`<p class="aw-stale">${h(summary.last_message)}</p>`:''}`;
+    const roles=summary?.roles||state.cap?.roles.map(r=>({...r,status:'not_started'}))||[];
+    if(!summary)return `<header class="aw-console-head"><div><span class="aw-kicker">Agent review</span><h2>Six specialists are ready to review this claim</h2><p>They read the original packet, ground statements, map the handling path, connect evidence and audit readiness through the existing claim authority.</p></div><span class="aw-console-state" data-status="quiet">Ready</span></header>`;
+    const active=summary.current_role,complete=summary.status==='completed',blocked=summary.status==='blocked'||summary.status==='unconfirmed';
+    const heading=complete?'Six specialists checked this claim':blocked?`Review paused at ${h(active?.label||'a checked gate')}`:active?`${h(active.label)} is working on the claim`:summary.status==='queued'?'Review is queued':h(label(summary.status));
+    const latest=latestVisibleEvent();
+    const description=complete?'Sources, process, evidence and readiness are connected in one recorded chain.':blocked?h(summary.last_message):latest?h(latest.message):'The review is moving through the saved six-role sequence.';
+    const model=summary.facts_worker==='external_facts'?(modelLabel()||'External model'):'Reference Facts';
+    return `<header class="aw-console-head"><div><span class="aw-kicker">Agent review · ${h(model)}</span><h2>${heading}</h2><p>${description}</p></div><span class="aw-console-state" data-status="${currentTone(summary)}"><strong>${summary.completed_roles}/6</strong>${complete?'Complete':blocked?'Needs review':'In progress'}</span></header>`;
   }
-  function roleTrack(summary){return summary?`<ol class="aw-role-track" aria-label="Recorded stages">${summary.roles.map(r=>`<li data-status="${statusClass(r.status)}"><button type="button" data-aw-role="${h(r.id)}" ${r.status==='not_started'?'disabled':''}><span class="aw-role-dot">${r.status==='completed'?icon('check'):''}</span><strong>${h(r.label)}</strong><small>${h(label(r.status))}${r.limited_source_extractions?.length?' · limited source coverage':''}</small></button></li>`).join('')}</ol>`:'';}
+  function roleTrack(summary){
+    if(summary&&!summary.roles)return '<div class="aw-agent-flow aw-agent-flow-loading" aria-live="polite"><span>Loading recorded specialist outputs…</span></div>';
+    const roles=summary?.roles||state.cap?.roles.map(r=>({...r,status:'not_started',coverage:{}}))||[];
+    const handoffs=eventsFor('HANDOFF_COMPLETED');
+    return `<div class="aw-agent-flow" role="group" aria-label="Review team and checked handoffs">${roles.map((role,index)=>{
+      const next=roles[index+1],handoff=next?handoffs.find(e=>e.role===next.id):null;
+      const external=role.id==='canonical_facts'&&summary?.facts_worker==='external_facts';
+      const agent=`<button type="button" class="aw-agent" data-aw-role="${h(role.id)}" data-status="${statusClass(role.status)}" ${role.status==='not_started'?'disabled':''}><span class="aw-agent-mark">${role.status==='completed'?icon('check'):roleIcon(role.id)}</span><span class="aw-agent-copy"><strong>${h(role.label)}</strong><small>${h(roleOutcome(role))}</small>${external?`<em>${h(modelLabel()||'External model')}</em>`:''}</span></button>`;
+      const bridge=next?handoff?`<button type="button" class="aw-handoff" data-aw-event="${handoff.sequence}" aria-label="Inspect checked handoff from ${h(role.label)} to ${h(next.label)}">${icon('arrow')}<span>Handoff</span></button>`:`<span class="aw-handoff aw-handoff-pending" aria-hidden="true">${icon('arrow')}</span>`:'';
+      return agent+bridge;
+    }).join('')}</div>`;
+  }
+  function liveSignal(summary){
+    if(!summary)return '<div class="aw-live-signal aw-live-ready"><span class="aw-live-mark">'+icon('work')+'</span><div><small>Review team</small><strong>Source-grounded collaboration, on demand</strong><p>No work is shown until it actually executes.</p></div></div>';
+    const metrics=reviewMetrics(summary),latest=latestVisibleEvent(),complete=summary.status==='completed';
+    if(complete)return `<div class="aw-live-signal aw-live-complete"><span class="aw-live-mark">${icon('check')}</span><div><small>Recorded outcome</small><strong>One checked chain from source to readiness</strong><p>${metrics.events} recorded actions · ${metrics.handoffs} handoffs · ${metrics.gates} accepted gates · ${metrics.sourceReads} source reads</p></div><button type="button" class="aw-text-button" data-aw-timeline>Open review ${icon('arrow')}</button></div>`;
+    const role=summary.current_role;
+    return `<div class="aw-live-signal" data-live="${summary.status==='running'}"><span class="aw-live-mark">${icon('pulse')}</span><div><small>${summary.status==='running'?'Working now':h(label(summary.status))}</small><strong>${h(role?.label||'Review team')}</strong><p>${h(latest?.message||summary.last_message||'Waiting for the next persisted event')}</p></div><span class="aw-live-time">${latest?h(time(latest.timestamp)):''}</span></div>`;
+  }
   function renderClaim(){
     const host=document.getElementById('awClaimWork');if(!host)return;
     const summary=state.summary,hasStart=Boolean(document.getElementById('cwStart'));
-    const key=JSON.stringify([summary?.run_id,summary?.last_sequence,summary?.status,summary?.currentness,state.busy,hasStart,summary?.recovery]);
+    const key=JSON.stringify([summary?.run_id,summary?.last_sequence,summary?.status,summary?.currentness,state.busy,hasStart,summary?.recovery,state.events.length,state.run?.objects?.length,state.timelineExpanded]);
     if(state.renderKey===key)return;
     state.renderKey=key;
     if(summary?.run_id)host.dataset.awRunId=summary.run_id;else delete host.dataset.awRunId;
-    const actions=summary?.recovery?.can_resume?`<button type="button" class="aw-text-button" data-aw-resume ${state.busy?'disabled':''}>Resume saved work ${icon('arrow')}</button>`:(!hasStart&&!['queued','running','unconfirmed','interrupted'].includes(summary?.status))?`<button type="button" class="aw-text-button" data-aw-start ${state.busy?'disabled':''}>${summary?'Review current state':'Inspect with agents'} ${icon('arrow')}</button>`:'';
+    host.dataset.status=summary?.status||'ready';
+    const activityLabel=document.querySelector('#cpTab-activity>span');if(activityLabel)activityLabel.textContent='Agent review';
+    const actions=summary?.recovery?.can_resume?`<button type="button" class="aw-review-action" data-aw-resume ${state.busy?'disabled':''}>Resume saved review ${icon('arrow')}</button>`:(!summary&&!hasStart)?`<button type="button" class="aw-review-action" data-aw-start ${state.busy?'disabled':''}>Start agent review ${icon('arrow')}</button>`:(summary?.currentness==='historical'&&!hasStart&&!['queued','running','interrupted'].includes(summary.status))?`<button type="button" class="aw-text-button" data-aw-start ${state.busy?'disabled':''}>Review current claim ${icon('arrow')}</button>`:'';
     const start=document.getElementById('cwStart');
     if(start){
+      start.dataset.agentWorkEntry='true';
       const waiting=['queued','running','unconfirmed','interrupted'].includes(summary?.status);
-      if(waiting){start.dataset.awLocked='true';start.disabled=true;start.textContent=summary.recovery?.can_resume?'Resume using the saved work above':summary.status==='running'?'Team review in progress':'Saved work needs checking';}
-      else if(start.dataset.awLocked){delete start.dataset.awLocked;start.disabled=state.busy;start.textContent='Start team review';}
+      if(waiting){start.dataset.awLocked='true';start.disabled=true;start.textContent=summary.recovery?.can_resume?'Resume saved agent review above':summary.status==='running'?'Agent review in progress':'Saved agent work needs checking';}
+      else{delete start.dataset.awLocked;start.disabled=state.busy;start.textContent='Start agent review';}
     }
+    const worker=state.cap?.facts_workers?.includes('external_facts')&&!['queued','running'].includes(summary?.status)?`<label class="aw-worker-select"><span>Facts specialist</span><select id="awFactsWorker" aria-label="Facts specialist"><option value="reference">Reference worker</option><option value="external_facts">External model · bounded</option></select></label>`:'';
+    const stale=summary?.currentness==='historical'?'<p class="aw-stale">This review belongs to an earlier claim state. It remains inspectable history and does not replace current handling.</p>':summary?.currentness==='unconfirmed'?'<p class="aw-stale">Current claim state could not be confirmed. Saved work remains visible but is not treated as current.</p>':'';
     const focusedRole=host.contains(document.activeElement)?document.activeElement?.dataset?.awRole:null;
-    host.innerHTML=compactSummary(summary)+roleTrack(summary)+`<div class="aw-strip-actions">${summary?'<button class="aw-text-button" type="button" data-aw-timeline>View recorded work</button>':''}${actions}${state.cap?.facts_workers?.includes('external_facts')?'<label class="aw-worker-select">Facts worker <select id="awFactsWorker"><option value="reference">Reference</option><option value="external_facts">External model · bounded</option></select></label>':''}</div><p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p>`;
-    const pending=pendingRequest();if(pending)document.getElementById('awRequestStatus').innerHTML='A submitted work request is unconfirmed. <button type="button" class="aw-text-button" data-aw-retry>Check the same request</button>';
+    host.innerHTML=`<div class="aw-review-console">${compactSummary(summary)}${roleTrack(summary)}${liveSignal(summary)}${stale}<div class="aw-review-controls">${actions}${worker}${summary?'<button class="aw-text-button" type="button" data-aw-timeline>Review trace</button>':''}</div><p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></div>`;
+    const pending=pendingRequest();if(pending)document.getElementById('awRequestStatus').innerHTML='A submitted review request is unconfirmed. <button type="button" class="aw-text-button" data-aw-retry>Check the same request</button>';
     if(focusedRole)host.querySelector(`[data-aw-role="${CSS.escape(focusedRole)}"]`)?.focus({preventScroll:true});
     if(state.messages.has(state.claim)&&!pending)document.getElementById('awRequestStatus').textContent=state.messages.get(state.claim);
     renderTimeline();renderProcess();
@@ -114,11 +163,12 @@
     const panel=document.getElementById('cpPanel-activity');if(!panel||!state.run)return;
     let host=document.getElementById('awTimeline');
     if(!host){host=document.createElement('section');host.id='awTimeline';host.className='aw-timeline';panel.prepend(host);}
-    const events=state.events.filter(e=>!HIDDEN_OPERATIONS.has(e.operation));
-    const version=state.summary.run_id+':'+state.events.length+':'+state.events.at(-1)?.event_sha256;
-    const previous=host.dataset.eventCount;if(previous===version)return;
-    host.dataset.eventCount=version;
-    host.innerHTML=`<header class="aw-section-heading"><div><h3>Agent execution</h3><p>Source reads, checked products and handoffs—recorded as they happened.</p></div><span>${events.length} events</span></header><ol>${events.map(e=>`<li data-role="${h(e.role||'kernel')}" data-operation="${h(e.operation)}"><time datetime="${h(e.timestamp)}">${h(time(e.timestamp))}</time><button type="button" data-aw-event="${e.sequence}"><span class="aw-event-role">${h(roleName(e.role))}${e.worker_kind==='external'?' <small>External</small>':''}</span><strong>${h(e.message)}</strong>${e.sources?.length?`<blockquote>“${h(e.sources[0].quote.slice(0,170))}${e.sources[0].quote.length>170?'…':''}”</blockquote>`:''}<span class="aw-event-state" data-status="${e.status==='rejected'?'blocked':'quiet'}">${h(e.status)}${e.gate?' · gate recorded':''}</span></button></li>`).join('')}</ol>`;
+    const all=state.events.filter(e=>!HIDDEN_OPERATIONS.has(e.operation));
+    const events=state.timelineExpanded?all:all.filter(e=>MILESTONE_OPERATIONS.has(e.operation));
+    const version=[state.summary.run_id,state.summary.last_sequence,state.timelineExpanded,events.at(-1)?.event_sha256].join(':');
+    if(host.dataset.eventCount===version)return;host.dataset.eventCount=version;
+    const external=all.some(e=>e.worker_kind==='external');
+    host.innerHTML=`<header class="aw-section-heading aw-trace-heading"><div><span class="aw-kicker">Persisted execution</span><h3>Review trace</h3><p>${state.summary.last_sequence} persisted actions. ${state.timelineExpanded?`${events.length} visible entries in the complete execution record.`:`${events.length} review milestones: source reads, role boundaries, handoffs, decisions and gates.`}</p></div><div class="aw-trace-actions"><span>${external?'Mixed workers':'Reference workers'}</span><button type="button" class="aw-text-button" data-aw-trace-toggle>${state.timelineExpanded?'Show milestones':'Show full trace'}</button></div></header><ol class="aw-trace-list">${events.map(e=>`<li data-role="${h(e.role||'kernel')}" data-operation="${h(e.operation)}" data-status="${e.status==='rejected'?'blocked':e.status}"><time datetime="${h(e.timestamp)}">${h(time(e.timestamp))}</time><span class="aw-trace-mark">${e.operation==='HANDOFF_COMPLETED'?icon('arrow'):e.operation==='SOURCE_OPENED'?icon('source'):e.operation==='GATE_REJECTED'?icon('close'):e.operation==='GATE_ACCEPTED'||e.operation==='AGENT_COMPLETED'?icon('check'):roleIcon(e.role)}</span><button type="button" data-aw-event="${e.sequence}"><span class="aw-event-role">${h(roleName(e.role))}${e.worker_kind==='external'?` <em>${h(modelLabel()||'External')}</em>`:''}</span><strong>${h(e.message)}</strong>${e.sources?.length?`<blockquote>“${h(e.sources[0].quote.slice(0,190))}${e.sources[0].quote.length>190?'…':''}”</blockquote>`:''}${e.gate?`<span class="aw-event-state" data-status="${e.gate.accepted?'completed':'blocked'}">${e.gate.accepted?'Gate accepted':'Gate rejected'} · ${h(e.gate.scope)}</span>`:''}</button></li>`).join('')}</ol>${!events.length?'<p class="aw-muted">No persisted milestones are recorded yet.</p>':''}`;
   }
   function renderProcess(){
     const panel=document.getElementById('cpPanel-process');if(!panel||!state.run)return;
@@ -180,7 +230,7 @@
   }
   async function showWorkforce(){
     state.workforce=true;state.workforceKey=null;document.getElementById('awWorkforceButton')?.setAttribute('aria-pressed','true');
-    let view=document.getElementById('awWorkforce');if(!view){view=document.createElement('section');view.id='awWorkforce';view.className='aw-workforce';view.setAttribute('aria-label','AI workforce');document.getElementById('claimsWorkspace').append(view);}
+    let view=document.getElementById('awWorkforce');if(!view){view=document.createElement('section');view.id='awWorkforce';view.className='aw-workforce';view.setAttribute('aria-label','Review operations');document.getElementById('claimsWorkspace').append(view);}
     view.hidden=false;view.innerHTML='<p class="aw-muted" role="status">Loading recorded work…</p>';
     await refreshWorkforce();
   }
@@ -191,8 +241,10 @@
       const data=await request('/workforce');
       const active=data.runs.filter(r=>['queued','running'].includes(r.status)),blocked=data.runs.filter(r=>['blocked','unconfirmed','interrupted'].includes(r.status)||r.currentness==='unconfirmed');
       const key=JSON.stringify(data);if(state.workforceKey===key)return;state.workforceKey=key;
-      const focusedClaim=view.contains(document.activeElement)?document.activeElement?.dataset?.awClaim:null;const scroll=view.scrollTop;
-      view.innerHTML=`<header class="aw-workforce-heading"><div><span class="aw-kicker">CasePath</span><h1>AI workforce</h1><p>Six roles. One source-grounded record of the work.</p></div><button class="aw-text-button" type="button" data-aw-back>Back to claims</button></header><div class="aw-workforce-stats"><span><strong>${active.length}</strong> active or queued</span><span><strong>${blocked.length}</strong> need review</span><span><strong>${data.runs.filter(r=>r.status==='completed').length}</strong> latest completed reviews</span></div><div class="aw-team">${data.roles.map(role=>{const relevant=data.runs.filter(r=>r.roles.find(x=>x.id===role.id)?.status==='working'),complete=data.runs.filter(r=>r.roles.find(x=>x.id===role.id)?.status==='completed');return `<section><h2>${h(role.label)}</h2><p>${relevant.length?`${relevant.length} claim in progress`:'No work running'}</p><span>${complete.length} latest recorded completions</span></section>`;}).join('')}</div>${data.coverage?.has_more?'<p class="aw-stale">This is a partial work roster. Open a claim for its complete current work record.</p>':''}<h2 class="aw-runs-heading">Latest work per claim</h2>${data.runs.length?`<div class="aw-runs">${data.runs.map(r=>`<button type="button" data-aw-claim="${h(r.claim_id)}"><span><strong>${h(r.subject)}</strong><small>${h(r.current_role?.label||'Six-role review')} · ${r.completed_roles} of 6 stages completed</small></span><span data-status="${currentTone(r)}">${h(currentLabel(r))}</span>${icon('arrow')}</button>`).join('')}</div>`:'<div class="aw-empty"><h3>No work has been run yet</h3><p>Open a claim and start a team review. This view will show only the work that actually executes.</p></div>'}`;
+      const focusedClaim=view.contains(document.activeElement)?document.activeElement?.dataset?.awClaim:null,scroll=view.scrollTop;
+      const team=data.roles.map(role=>{const running=data.runs.filter(r=>r.roles.find(x=>x.id===role.id)?.status==='working').length,complete=data.runs.filter(r=>r.roles.find(x=>x.id===role.id)?.status==='completed').length;return `<section class="aw-team-agent"><span class="aw-agent-mark">${roleIcon(role.id)}</span><div><h2>${h(role.label)}</h2><p>${running?`${running} working now`:'Available for checked handoff'}</p><small>${complete} latest completions</small></div></section>`;}).join('');
+      const runs=data.runs.map(r=>{const current=r.current_role?.label||'Review complete',external=r.facts_worker==='external_facts';return `<button type="button" class="aw-run-row" data-aw-claim="${h(r.claim_id)}"><span class="aw-run-main"><strong>${h(r.subject)}</strong><small>${external?'External Facts · ':'Reference Facts · '}${h(current)}</small><span class="aw-mini-flow" aria-label="${r.completed_roles} of 6 review roles completed">${r.roles.map(role=>`<i data-status="${statusClass(role.status)}"></i>`).join('')}</span></span><span class="aw-run-state" data-status="${currentTone(r)}"><strong>${r.completed_roles}/6</strong>${h(currentLabel(r))}</span>${icon('arrow')}</button>`;}).join('');
+      view.innerHTML=`<header class="aw-workforce-heading"><div><span class="aw-kicker">Recorded agent operations</span><h1>Review operations</h1><p>Six specialists move claims from original sources to checked readiness through persisted handoffs and deterministic gates.</p></div><button class="aw-text-button" type="button" data-aw-back>Back to claims</button></header><div class="aw-workforce-stats"><span><strong>${active.length}</strong> active</span><span><strong>${blocked.length}</strong> need review</span><span><strong>${data.runs.filter(r=>r.status==='completed').length}</strong> completed</span><span><strong>${data.coverage?.total_claims||data.runs.length}</strong> claims with recorded work</span></div><div class="aw-team-flow">${team}</div>${data.coverage?.has_more?'<p class="aw-stale">This operations view is a partial roster. Open a claim for its complete work record.</p>':''}<div class="aw-runs-header"><h2>Latest review per claim</h2><span>Source → handoffs → readiness</span></div>${data.runs.length?`<div class="aw-runs">${runs}</div>`:'<div class="aw-empty"><h3>No agent review has run yet</h3><p>Open a claim and start an agent review. This page will show only work that actually executes.</p></div>'}`;
       view.scrollTop=scroll;if(focusedClaim)view.querySelector(`[data-aw-claim="${CSS.escape(focusedClaim)}"]`)?.focus({preventScroll:true});
     }catch(e){view.innerHTML=`<p class="aw-stale">${h(e.message)}</p><button type="button" class="aw-text-button" data-aw-back>Return to claims</button>`;}
   }
@@ -202,7 +254,7 @@
       const run=latest.get(row.dataset.claimId);if(!run)return;
       const cell=row.querySelector('.cp-state-cell')||row.querySelector('td:nth-child(2)');if(!cell)return;
       let el=cell.querySelector('.aw-row-work');if(!el){el=document.createElement('small');el.className='aw-row-work';cell.append(el);}
-      const text=run.currentness==='historical'?`Previous review · ${run.completed_roles} of 6 roles completed`:run.currentness==='unconfirmed'?'Saved review · current state unconfirmed':run.current_role?`${run.current_role.label} · ${label(run.current_role.status)}`:run.status==='completed'?`Review complete · ${run.completed_roles} of 6 roles`:`${label(run.status)} · ${run.completed_roles} of 6 stages completed`;
+      const text=run.currentness==='historical'?`Agent review · previous · ${run.completed_roles}/6`:run.currentness==='unconfirmed'?'Agent review · state unconfirmed':run.current_role?`Agent review · ${run.current_role.label} ${label(run.current_role.status).toLowerCase()} · ${run.completed_roles}/6`:run.status==='completed'?`Agent review · complete · ${run.completed_roles}/6`:`Agent review · ${label(run.status).toLowerCase()} · ${run.completed_roles}/6`;
       if(el.textContent!==text)el.textContent=text;
     });
   }
@@ -231,7 +283,7 @@
       renderClaim();
       if(run.summary.status==='completed'&&run.summary.currentness==='current'&&state.forceRefresh!==run.summary.run_id){state.forceRefresh=run.summary.run_id;document.querySelector('[data-refresh-claim]')?.click();}
     }catch(e){refreshInspectionContext(true);report(e.name==='AbortError'?'Work status is temporarily unavailable. Saved work has not been replaced.':e.message);}
-    finally{state.fetching=false;}
+    finally{state.fetching=false;if(state.repoll){state.repoll=false;queueMicrotask(()=>void poll());}}
   }
   document.addEventListener('click',event=>{
     const button=event.target.closest('button');if(!button)return;
@@ -240,6 +292,7 @@
     if(button.hasAttribute('data-aw-start'))void startWork();
     if(button.hasAttribute('data-aw-retry'))void startWork(true);
     if(button.hasAttribute('data-aw-timeline'))openTimeline();
+    if(button.hasAttribute('data-aw-trace-toggle')){state.timelineExpanded=!state.timelineExpanded;const trace=document.getElementById('awTimeline');if(trace)delete trace.dataset.eventCount;renderTimeline();}
     if(button.dataset.awRole)openTimeline(button.dataset.awRole);
     if(button.dataset.awEvent)inspect(state.events.find(e=>e.sequence===Number(button.dataset.awEvent)));
     if(button.dataset.awObject)inspect(null,button.dataset.awObject);
