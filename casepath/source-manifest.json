@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1251,
+  "file_count": 1347,
   "files": [
     {
       "executable": false,
@@ -166,6 +166,426 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/arena_v1_data/DEV_IDS.txt",
+      "sha256": "d18c65f76dd352b7a01dd9bee6f6c08ad6888e0cc8a2f20ce00b685d487e2de8",
+      "size_bytes": 714
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/EPISODE_VERIFICATION.json",
+      "sha256": "aca05ae59fc5a69abbf1400c2e055ac54eaa9c08304ddcbd04c6b1aab04a2a79",
+      "size_bytes": 17322
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/HIDDEN_IDS.hash",
+      "sha256": "7d34242d240d6dea7452f7f2ba0c0581c318bbd23a9bdd48a15e0c02b6478574",
+      "size_bytes": 100
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/HIDDEN_IDS.txt",
+      "sha256": "84ade787f7c6846a8f5d9352847c964d67d931e1e03ff362167b81c3991bf216",
+      "size_bytes": 390
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/PRODUCT_CORPUS_STUDY.json",
+      "sha256": "71aa52e571837e453af8c21f09021875d5835def69a3f8d2cb5d2cd0543bde8c",
+      "size_bytes": 26415
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/TRANSFER_IDS.txt",
+      "sha256": "47599394675529967e9d725098272e48633438599faeeaa81cb49f090f401df2",
+      "size_bytes": 258
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/WRITER_INSTRUCTIONS.md",
+      "sha256": "3bd70425ee3d2d57fc5d8e5f3e2cb1512ef08caa724bc1c0ff20a01e2e7ab7ad",
+      "size_bytes": 1904
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.access.e1.json",
+      "sha256": "5e18b91cf39f95d5b44837da7fa0d4e2a296b2637b21c607be8ba416f64fe22d",
+      "size_bytes": 9266
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.access.e2.json",
+      "sha256": "0b96a43a6764d3c16d4afe32764c1fc2bb56624da4d3d8a0bd64a95716c6b48b",
+      "size_bytes": 9171
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.access.e3.json",
+      "sha256": "b5b9eaa082dc2f9d2ef980dfd5500683bce43098b96951e7566e56fb83ae583e",
+      "size_bytes": 9062
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.boiler.e1.json",
+      "sha256": "45c411a6325ba9a40a66483b8360176400bc3ed257342a9c5a012ce2832cb907",
+      "size_bytes": 8693
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.boiler.e2.json",
+      "sha256": "6876fdda76d441dcd4f1b01d43c77299e80dabb50508d388dda70099e5a539e0",
+      "size_bytes": 8629
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.boiler.e3.json",
+      "sha256": "9a6c66fdd386397452a38823815ce3e26ffad2678b218b47c9fef56e47665f18",
+      "size_bytes": 8674
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.chimney.e1.json",
+      "sha256": "44303966dbf4ce6abc6a07fd65a0cf548bf1f26edc15a6c84f0b9bcd3fff27fc",
+      "size_bytes": 8553
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.chimney.e2.json",
+      "sha256": "24dbf5d2a0d4dac45bf978f8f55d2b6814eb7f2b2accf30c13bc58e4439f2777",
+      "size_bytes": 8789
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.leak.e1.json",
+      "sha256": "9317d2a9a0bb5c80869ce86159a07af4a29aed74ee87de7548e0ea04597a0b17",
+      "size_bytes": 9398
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.leak.e2.json",
+      "sha256": "de785c722f2d8b9546d22226a929299dd4682a3d0893bfee9e8d2a59ed09db29",
+      "size_bytes": 8346
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.leak.e3.json",
+      "sha256": "40692f5f14582e5ad2d06116c4f2e79f50d4d7fcbcdcaaebfa69203a991916ed",
+      "size_bytes": 9375
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.mould.e1.json",
+      "sha256": "faafcffce1b46249239f3bb0c081eab26f23e47f2f9052aacedc8f8244aedd1d",
+      "size_bytes": 8686
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.mould.e2.json",
+      "sha256": "c65e5c9596a73e4bf63db72b5b9a807f8263052c9354f77e437efdda5007a636",
+      "size_bytes": 8901
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.mould.e3.json",
+      "sha256": "8f9f958ac310ac011075c1b10e837f58c62fc84032241821aba486092d2666b3",
+      "size_bytes": 8965
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.radiator.e1.json",
+      "sha256": "9b844a5e1d2375d58b47a6854de793c9704ca375dea71bd09b01d0866758fac2",
+      "size_bytes": 8627
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.radiator.e2.json",
+      "sha256": "80b3e11102fde728d87801f1fc6200bed647714eed09bd629166d6cdeb0e18c1",
+      "size_bytes": 8205
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.ventilation.e1.json",
+      "sha256": "0faa3d1fce8cdd066ccc775a710eee20b7caeb4fa57e7ac4f2fd01a41bbd1026",
+      "size_bytes": 9761
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/heating_defect.ventilation.e2.json",
+      "sha256": "2b8caa1baf575f94045ad494ff32f2e70b8266e2f0fa9dfec308fd2d1c2a6713",
+      "size_bytes": 8598
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.index.e1.json",
+      "sha256": "79d5bf91e80ae9828d3d89529ba01dea2edc6207c2837cf7b8c0657663e2bd2f",
+      "size_bytes": 8325
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.index.e2.json",
+      "sha256": "0de1d5233688e5f2ed3950f0bc8dc98fd92754485cef41cbece0c2076dafaa0b",
+      "size_bytes": 8920
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.late_form.e1.json",
+      "sha256": "259b8a581f10d579406203d948747431661c74aebed09452e6721aab29a43ae4",
+      "size_bytes": 9370
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.late_form.e2.json",
+      "sha256": "135681db21034c4925e11eed43a5b116a03367d47cb8169dcf4cb11c41764b11",
+      "size_bytes": 8369
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.no_reason.e1.json",
+      "sha256": "268a79a5804936267f825ba65aee47afa1b4b17f5c4fa92289df7e407ffdb382",
+      "size_bytes": 8735
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.no_reason.e2.json",
+      "sha256": "d8402cc2f715fbcb83008734b53e45f895b046a1faa0c71e8c37ba139139f1bc",
+      "size_bytes": 8313
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.rate_date.e1.json",
+      "sha256": "27dfce9b4e1771fa621dbc8291bbe5ab5120bf520916be8c025b3b7b72ac5da2",
+      "size_bytes": 7966
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.rate_date.e2.json",
+      "sha256": "29b6de64542d9d3e334d835a522b3e6c3ed196b294e9fefadd03d1e2bd06b7d2",
+      "size_bytes": 8693
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.subsidy.e1.json",
+      "sha256": "726afeff43ccabaad87f9df31663b0f6efa3b89802fb37d6a2074870afc7c06a",
+      "size_bytes": 9113
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/rent_increase.subsidy.e2.json",
+      "sha256": "415557fdcd418b678373ebe5d35493ab54dacf8bb75efa02032719b681acc6a4",
+      "size_bytes": 9054
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.family_home.e1.json",
+      "sha256": "58d468b47b42333f1e5294cea7faad218a5408b80e838dc388e93a06037bc37c",
+      "size_bytes": 8926
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.family_home.e2.json",
+      "sha256": "55250dc234484c86f2aaff7a799f2e8a8e97db351f53c201c23f68d62b26fda1",
+      "size_bytes": 8693
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.family_home.e3.json",
+      "sha256": "5c90d9f40ce4c69c9372e2b7f9b8b15b4f315b890b7aa6276d9e6c7e3d8f5bb0",
+      "size_bytes": 8696
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.late_paid.e1.json",
+      "sha256": "65a668ae557d7a7b45c57ecdeeca9b7466dd5cecb6db0d1d3d744a98c1fc14f9",
+      "size_bytes": 8800
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.late_paid.e2.json",
+      "sha256": "e2dd08d9db6076b31655307b18e93a42c17625a28d69a76124e9baf32c5ab3fe",
+      "size_bytes": 8926
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.late_paid.e3.json",
+      "sha256": "4b582e5fb9722e4cb2f47c4c2fe620ff3ef34d3a3ba13546c724ecf687fd506e",
+      "size_bytes": 8503
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.mixed_demand.e1.json",
+      "sha256": "6e7617380cc47154313c32c06c87cd290eb10ac17e45c80dd4a224253990d693",
+      "size_bytes": 8485
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.mixed_demand.e2.json",
+      "sha256": "6f9c5858e3de73a3a8f92aafb0815363604e393fba8bd75d81916f464f69c4ab",
+      "size_bytes": 8072
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.mixed_demand.e3.json",
+      "sha256": "b7a13363702f095db585b12175f1ea33868ed2cad07c3c891f4cf9c74bcae236",
+      "size_bytes": 8469
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.partial_payment.e1.json",
+      "sha256": "1641353a0784be3c24106f0ff98746f7cd2c42d08742a1d7119885a5a328d8aa",
+      "size_bytes": 7943
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.partial_payment.e2.json",
+      "sha256": "c9c782c8ef803392eeab9cfe216adb81737eb5239d9aa15199a97dbfee53d3ae",
+      "size_bytes": 8783
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.retaliation.e1.json",
+      "sha256": "cd2b96ab63efa832c063c156d1b99262a8bfec0e0055e0f75bc6fd73972104ca",
+      "size_bytes": 9422
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.retaliation.e2.json",
+      "sha256": "3f273881e2567d7409a2948705c9e324577dc6ffd29b86add3099ca3143a581c",
+      "size_bytes": 8452
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.standing_order.e1.json",
+      "sha256": "4c41b05388069d03f6f03a1017bf15d1fcff172ab7bad0150d967e1d5c9bc3dc",
+      "size_bytes": 8174
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.standing_order.e2.json",
+      "sha256": "3d59023cf575f815c8b95c4d5069d532de1c76aba7d11b50eb986fe65fec86d4",
+      "size_bytes": 9432
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.wrong_address.e1.json",
+      "sha256": "97a1f7d5cb54bfed90ef5d2abb125a9d52036011efb2c06e89796a91e1757d98",
+      "size_bytes": 9188
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.wrong_address.e2.json",
+      "sha256": "544bdf802eeda429c979a5cef60e11668233803185c5f2f5e27ff97dc2be899a",
+      "size_bytes": 8357
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/briefs/termination_payment.wrong_address.e3.json",
+      "sha256": "dafdb789ad4ce9cc05b6b352edc694c78eb7880c464653167c1122054295aeca",
+      "size_bytes": 9490
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm/CASE_IDS.txt",
+      "sha256": "aaac7b1b3b5a9e9c193782d59ff4c890de07bfef010f9562ab0721da60c517d6",
+      "size_bytes": 1262
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm/METHOD_ARENA_MANIFEST.json",
+      "sha256": "97e6116bb056ebd3fbc24278d4a21e7a984df55265372b13d0d155fcd9725c2e",
+      "size_bytes": 2540
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm/SHORTCUT_AUDIT.json",
+      "sha256": "c55c9395a936d6509b6a362ccd6c6bf6595d3be302d50a42e79f7e22415d8dbe",
+      "size_bytes": 946
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm/cases_confirm.json",
+      "sha256": "6c54fd6ca72fc1bf1ee2ef52f4708b0d28ee8db23395b467761f2ce18835d94b",
+      "size_bytes": 623197
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm/latents.json",
+      "sha256": "d9b4a3ba067beae49ab4a0e49a3c9bde6ef21c972f67d6c4fdf3558cb889d036",
+      "size_bytes": 26272
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm2/CASE_IDS.txt",
+      "sha256": "32157165bd07102422444819ef589de4f075476b86d143397e3b9067ba0540aa",
+      "size_bytes": 1344
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm2/SHORTCUT_AUDIT.json",
+      "sha256": "a65384f2c0885cb327eaf7142d209406e4a993f8197551273bfd46008ba7374b",
+      "size_bytes": 968
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm2/cases_confirm.json",
+      "sha256": "3c4206e2e422b5819fe2292ed3bc201a55ca5a2e506da0f35e7384842c2ce074",
+      "size_bytes": 671291
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm2/latents.json",
+      "sha256": "aa9cc4e502a0e478cef8c759a4e8ceef06f5a679deef4dfa5b8f9b270da8320a",
+      "size_bytes": 27935
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm_swap/CASE_IDS.txt",
+      "sha256": "9cc8bd9bf1eb821baa102a7045494a5229cda4d7efa63d9c0fe7b924b907e0b7",
+      "size_bytes": 766
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/confirm_swap/cases_confirm.json",
+      "sha256": "e13c3218c239995f57229d84c1507b72a514bf061e9b4921b1247ce703e81b67",
+      "size_bytes": 412008
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/frozen/METHOD_ARENA_MANIFEST.json",
+      "sha256": "95af1bf8f1ac42704b9878c69371972690d1bd846f278d7e231a5c4c801d472f",
+      "size_bytes": 3092
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/frozen/SHORTCUT_AUDIT.json",
+      "sha256": "f2db81e71a749d24f27e2d138c9247de39a6f463cec0c572f453439bcf45b943",
+      "size_bytes": 961
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/frozen/cases_dev.json",
+      "sha256": "eee7b0996ecf22d45dbb80d845a7fbcd93dd1fff169bcb8bba43ea99ccbd29b5",
+      "size_bytes": 480506
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/frozen/cases_hidden.json",
+      "sha256": "5229236adc08501fa4317b6666c42302bf23bdbff5cd4aa43c0fcabcbe320155",
+      "size_bytes": 236859
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/frozen/cases_transfer.json",
+      "sha256": "a174da29ddcf2373c23f50cd1d217d51e4a73e299c3a52066967ff6fd16a9e4a",
+      "size_bytes": 181562
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/latents.json",
+      "sha256": "5e95d8956937cd80262177e442898298c0e5e25249bbd52cd95d2198e0dd8f35",
+      "size_bytes": 29829
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/__init__.py",
       "sha256": "d66e2e06ab1dfc9d529aa4f42342048140a3df346955ca0e25e33a36d028b4e6",
       "size_bytes": 23
@@ -196,6 +616,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/agent_work/evidential_channel.py",
+      "sha256": "a7b619aa136313bc1f8afd2bc30dab567662f3bb072fd3640283a0de7deedda3",
+      "size_bytes": 3285
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/agent_work/install.py",
       "sha256": "3c4165df6405e5d390a7043d6308874607cd4d8ea962400765632d6039c63fcf",
       "size_bytes": 3442
@@ -215,8 +641,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/agent_work/runtime.py",
-      "sha256": "2e4909767765e4590ec5dfa0c607df4e71d9fc72c6d497bda5d992c041811b55",
-      "size_bytes": 40098
+      "sha256": "32c485a2ce00311493941d0dcd1183a460fadb492dc54018f1168ade51bc038c",
+      "size_bytes": 41073
     },
     {
       "executable": false,
@@ -235,6 +661,114 @@
       "path": "casepath-api/casepath_api/app.py",
       "sha256": "8ff6c3262c1eae5cd068e7ac207f3694b6ea9a8ea20383f87b16e7139e4005d2",
       "size_bytes": 32703
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/__init__.py",
+      "sha256": "d88bb449841affa3b48b9e21d0bef6c807feb2ae5e6312e7b61c8f08863f872a",
+      "size_bytes": 92
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/analyze.py",
+      "sha256": "01d6ae5ea33fc3414823bf3af41f6120be69fa6e5217256876141b5eb5a74627",
+      "size_bytes": 7712
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/arms.py",
+      "sha256": "2916ca8c2ae50180838ab90ad3305b49cbaf7be7251b8df1d3b0146688378256",
+      "size_bytes": 39346
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/assemble.py",
+      "sha256": "30afb611c148f2c8c9148b0ffb3b49540514a36b33c5a1d202233bf68d07f1c6",
+      "size_bytes": 2772
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/cost_report.py",
+      "sha256": "5f8effccd60caa5ef60b71ffc89cdc751c74eec3fd5e4baa2c1c41c3e17f1a55",
+      "size_bytes": 2209
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/decide_confirm.py",
+      "sha256": "3ef0f124fb8379ac35327d02a97ecc2043aa3567abf645c991bf321ca582dc7b",
+      "size_bytes": 6407
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/evaluation.py",
+      "sha256": "96fb4225f2834c24ad64c776693d2b144bc1fc400fcef3a26d223adf04cd6ff5",
+      "size_bytes": 33285
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/generator.py",
+      "sha256": "f5e00ff23eee2ea1dca1dbdaf339be1863ecb16ae915a240166e7dbcb85964de",
+      "size_bytes": 30362
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/manifest.py",
+      "sha256": "dfcdd5c9b1825705f687ad70b93d25e45ab8d58bf73ddf0d807240d815ef5e94",
+      "size_bytes": 3282
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/merge_runs.py",
+      "sha256": "d76e8d570a0d0cd927e1c04aab4af91c0a6277600cfe74242241b32f334f6fd8",
+      "size_bytes": 2149
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/product_corpus_study.py",
+      "sha256": "c987be882464703a43ef20c53d5c7b9607d6de45fa77f827dafdaec6a40fe149",
+      "size_bytes": 6360
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/product_receipt.py",
+      "sha256": "b66c403d55dd352750cce31a94df8a3fd7dcd428e2b65ea5bd0d975cc8fab1ea",
+      "size_bytes": 3627
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/run_turn.py",
+      "sha256": "969ebd58ea8c55c348e3c6a00dea5190c4172149568b6c1b2e56c2b67e002236",
+      "size_bytes": 3233
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/runner.py",
+      "sha256": "9f5d8be43fdcf8bb7b0a96600b64495b5b5edb8be113f878d332d4e89d782c81",
+      "size_bytes": 17621
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/shortcut_audit.py",
+      "sha256": "25eeb6073d4a707b3fe4eef1985860e1ad6c1dc23fb2e262b5279510e05dc177",
+      "size_bytes": 4998
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/transport.py",
+      "sha256": "60e0e1d944c5f561ce97387211e2201de055c78591dc96e986cf71e029d4e2dd",
+      "size_bytes": 3448
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/verify_episodes.py",
+      "sha256": "5e67cdc1bd00c2c99f1e5999e07d7229140a80b2dcca6d5d55fd963686500648",
+      "size_bytes": 5293
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/write_episodes.py",
+      "sha256": "1101c37946361bbd4a3ee43ba1548a78a17cf37735e85e6f7bf89b757311fedc",
+      "size_bytes": 8001
     },
     {
       "executable": false,
@@ -5854,6 +6388,18 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/evidential_channel_gate_v1.py",
+      "sha256": "2060cfeec951902309ffceca232ba0b4dc8cf02046ba164694e3328bea3e8103",
+      "size_bytes": 4046
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/evidential_channel_v1.py",
+      "sha256": "d8170df1b179740f393757c5bd4e553fbe39e8d6e86d57cd97c05b1b80a87d72",
+      "size_bytes": 18434
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/fact_relations.py",
       "sha256": "0f2854dfcec1882c0193626b2ea5c4ae8d958eaf87210236dfe00ff9eb6f62f4",
       "size_bytes": 12204
@@ -6029,8 +6575,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/native_live_workspace_v1.py",
-      "sha256": "f3e5db3ca74c65d5fe8bffc9fff505d519b4bcc04d0c8635db8ed02a1032f76e",
-      "size_bytes": 98489
+      "sha256": "67dfdbe6fb64aca50737256817d1a43492372a86ab8a38ad511a1f5a3337c769",
+      "size_bytes": 99207
     },
     {
       "executable": false,
@@ -6418,6 +6964,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_arena_v1.py",
+      "sha256": "ad4f52296e3cbc3879ce1842bdc131a534bcb444d22f1163ca2049da721be41e",
+      "size_bytes": 3667
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_canonicalizer_v15.py",
       "sha256": "5508fe8c9802aa060979a682f88e91c818e0d99d2dd429f5f883886a87b5a8b8",
       "size_bytes": 114953
@@ -6448,6 +7000,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_confirmatory_tools.py",
+      "sha256": "b9aa7920e3de129cd53e159ebeaf5f5c8629dc8970bd38ab23ecb8f99dd872c7",
+      "size_bytes": 3048
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_document_lifecycle_shadow_v1.py",
       "sha256": "4028bb2f83e673173793c07be4205c284799c34bff641e72d28f412225714105",
       "size_bytes": 26477
@@ -6463,6 +7021,24 @@
       "path": "casepath-api/tests/test_evidence_relations_v15.py",
       "sha256": "c9f937dc4d7100d0e37ff172e42d63462871607309f54553a7b68b618a3fb2b2",
       "size_bytes": 4579
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidential_channel_agent_work.py",
+      "sha256": "a5b75e8d7492982c6d5adb636f1df343c815788656589c6f5c67ab6aef6b6298",
+      "size_bytes": 2079
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidential_channel_gate_v1.py",
+      "sha256": "cb451ad3799c20757b2ca3cc9e9bae879cc798a2a437d533a29166e2ad80abab",
+      "size_bytes": 10529
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidential_channel_v1.py",
+      "sha256": "7e51299e05c0593819fe4c317a667ff8446f6d508e011c8261e97a728eb7d16a",
+      "size_bytes": 8889
     },
     {
       "executable": false,
@@ -6959,14 +7535,14 @@
     {
       "executable": false,
       "path": "casepath/assets/agent-work-v1.css",
-      "sha256": "5900742621de5417effbf28a648f8d1275934bdd27541e260137caa8d6710cfb",
-      "size_bytes": 13767
+      "sha256": "f0fef2ffcee08c9056312a7754f6f6fbbd35c7d555741bd08dbae201cdaf742f",
+      "size_bytes": 26103
     },
     {
       "executable": false,
       "path": "casepath/assets/agent-work-v1.js",
-      "sha256": "a652ccdd54b7f15eb7820b1cec2beb583649ce75d43df40d16efb4c27ae164c8",
-      "size_bytes": 31029
+      "sha256": "4e11b7d7520cbd707d91aab57979f317c614709151c017b6ca267d0aa58cc850",
+      "size_bytes": 39818
     },
     {
       "executable": false,
@@ -7259,7 +7835,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "1a1809aaca660daa52daa40e449f4f2d998871ee5bdecc2834212cd9a35a5908",
+      "sha256": "a0b4d8579f1ab7375445646399893583265e4081b45107452d8b417e64535c5e",
       "size_bytes": 23353
     },
     {
