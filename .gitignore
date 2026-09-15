@@ -14,3 +14,9 @@ reports/
 /dist/
 .discovery-loop/
 .DS_Store
+
+# the release payload is regenerated from this repository by release/build_release.py;
+# its MANIFEST.json and SHA256SUMS are committed, the copied files are not
+release/package/*
+!release/package/MANIFEST.json
+!release/package/SHA256SUMS
