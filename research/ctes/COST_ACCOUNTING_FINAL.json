@@ -1,0 +1,93 @@
+{
+ "contract": "casepath.cost-accounting-final/1.0.0",
+ "method": "reconstructed from per-call receipts on disk and per-run summaries, not from memory",
+ "phases": {
+  "development (frontier + early cheap matrices, run dirs deleted)": {
+   "arm_execution_usd": 93.42,
+   "calls": null,
+   "note": "from the earlier per_run table; those run directories were deleted after compression, so this is the only record"
+  },
+  "confirmatory": {
+   "arm_execution_usd": 8.401,
+   "calls": 1244,
+   "runs": [
+    "confirm_mini",
+    "confirm2_mini",
+    "swap_mini"
+   ]
+  },
+  "decisive": {
+   "arm_execution_usd": 3.4153,
+   "calls": 509,
+   "runs": [
+    "decisive_mini"
+   ]
+  },
+  "writer swap of decisive": {
+   "arm_execution_usd": 2.547,
+   "calls": 390,
+   "runs": [
+    "decisive_swap"
+   ]
+  },
+  "B6 obvious-fix diagnostic": {
+   "arm_execution_usd": 2.6055,
+   "calls": 401,
+   "runs": [
+    "b6_diagnostic"
+   ]
+  },
+  "submission, three actor models": {
+   "arm_execution_usd": 41.2512,
+   "calls": 1539,
+   "runs": [
+    "mini",
+    "sonnet",
+    "terra"
+   ],
+   "by_actor_usd": {
+    "openai/gpt-5.4-mini": 4.02,
+    "openai/gpt-5.6-terra": 15.71,
+    "anthropic/claude-sonnet-5": 21.79
+   },
+   "note": "the mandated multi-actor generalization cost 10x what the economical actor alone cost, and the anthropic actor was still running when this ledger was written; its figure is a lower bound"
+  }
+ },
+ "aux_by_file": {
+  "arena_v1_data/EPISODE_VERIFICATION.json": 0.9098,
+  "arena_v1_data_confirm/VERIFY_haiku.json": 0.1651,
+  "arena_v1_data_confirm/VERIFY_luna.json": 0.291,
+  "arena_v1_data_confirm/WRITE_RECEIPTS.json": 0.2795,
+  "arena_v1_data_confirm2/VERIFY_haiku.json": 0.1718,
+  "arena_v1_data_confirm2/VERIFY_luna.json": 0.3073,
+  "arena_v1_data_confirm2/WRITE_RECEIPTS.json": 0.3177,
+  "arena_v1_data_decisive/VERIFY_haiku.json": 0.1706,
+  "arena_v1_data_decisive/VERIFY_luna.json": 0.2996,
+  "arena_v1_data_decisive/WRITE_RECEIPTS.json": 0.3036,
+  "arena_v1_data_decisive_swap/VERIFY_luna.json": 0.283,
+  "arena_v1_data_decisive_swap/WRITE_RECEIPTS.json": 2.9561,
+  "arena_v1_data_submission/WRITE_RECEIPTS.json": 2.3959,
+  "arena_v1_data_swap/VERIFY_luna.json": 0.1798
+ },
+ "totals": {
+  "arm_execution_usd": 151.64,
+  "writing_and_verification_usd": 9.03,
+  "itemised_usd": 160.67
+ },
+ "named_but_not_in_the_per_call_receipts": {
+  "product_corpus_study_opus_16_claims_usd": 2.5102,
+  "product_corpus_study_mini_150_claims_usd": 1.2413,
+  "aborted_sonnet_writer_confirmatory_swap_usd": 3.63,
+  "note": "the first two write their own summary rather than per-call receipts; the third's receipts file was overwritten when the cheap writer reran into the same directory, so its figure is 27 episodes at the measured 0.1396 each"
+ },
+ "reconciliation": {
+  "authoritative_total_usd": 182.19,
+  "source": "the OpenRouter key's own usage endpoint",
+  "itemised_usd": 168.05,
+  "unattributed_usd": 14.14,
+  "what_the_unattributed_is": "resumed runs overwrite the transport summary of the invocation they replace, so a turn that was run twice keeps only the second figure; provider-rejected calls that returned no completion; one-off exploratory and smoke-test calls made outside any run directory",
+  "closes": false,
+  "honesty_note": "this does not close to the cent and is not presented as though it does. every identified line is named and the remainder is quantified rather than absorbed"
+ },
+ "lesson": "Development ran on a frontier model for its first phase at $93.42, of which roughly half was iteration a cheap model could have done. Every later decision ran on openai/gpt-5.4-mini at a fraction of the cost. The exception is the mandated multi-actor generalization: strong models cost 4x to 5x the economical one per identical protocol, and that single requirement is the largest line in the ledger after the original development phase. It was also the requirement that produced the result which falsified the claim, so it was worth every dollar."
+}
