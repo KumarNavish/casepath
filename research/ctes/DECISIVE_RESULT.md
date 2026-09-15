@@ -24,6 +24,18 @@ State accuracy, `ctes` minus each comparator, twenty-one families:
 | `constant` (ask for everything) | +0.218 | [+0.176, +0.262] | 21 / 0 | 0.0000 |
 | `ctes-ablation` (all three rules off) | +0.039 | [+0.006, +0.071] | 12 / 4 | 0.0200 |
 
+### 1.1 The result does not come from the harness
+
+The baselines produce malformed outputs and the method does not: over 1638 turn-records, `process-only`
+failed 4 times and `full` once, while every arm in the method's family failed zero times. A failed turn is
+scored with zero state accuracy, so the asymmetry flatters the method. Dropping the three episodes in which
+any arm failed leaves **+0.136 [+0.084, +0.189], eighteen families won and two lost, p = 0.0000** over
+thirty-nine episodes. The confirmatory split's equivalent check gave +0.135. About a tenth of the headline
+is the harness; the rest is not.
+
+The run itself was clean: 509 requests over three turns, zero truncations, zero transport failures, no
+retries.
+
 ## 2. The channel cap is one rule, not three, and not the one it was named after
 
 The compound switch was separated into three independently settable rules and each given its own arm. The
