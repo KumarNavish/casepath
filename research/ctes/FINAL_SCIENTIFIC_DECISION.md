@@ -1,5 +1,14 @@
 # Final scientific decision
 
+> **Superseded by the submission-closure pass.** Three closure experiments — a minimal obvious-fix
+> baseline, a multi-actor generalization split, and a hostile operation-level novelty audit — returned
+> results that the sections below do not reflect. Read `TURN_TRAJECTORY_FINDING.md`,
+> `MINIMAL_RULE_BASELINE.md` and `FINAL_NOVELTY_AUDIT.md` first. The short version: the obvious fix removes
+> the hearsay error entirely and beats the method on readiness accuracy; the state-accuracy advantage is
+> not established on a strong actor model; the averaged headline metric reverses by the final turn; and the
+> audited operation has verified prior art. The status is **not submission-ready**, and not for reasons of
+> packaging.
+
 *Superseded versions kept in git history. This one is written after the decisive split.*
 
 **The contribution is a channel-typed evidential state, and the confirmatory evidence splits it in two.**

@@ -1,0 +1,545 @@
+{
+ "contract": "casepath.claims-ledger/1.0.0",
+ "rows": 33,
+ "status_vocabulary": {
+  "PRE-REG(C)": "pre-registered on the confirmatory split, read once",
+  "PRE-REG(D)": "pre-registered on the decisive split, read once",
+  "PRE-REG(SWAP)": "pre-registered on the writer swap, read once",
+  "PRE-REG(S)": "pre-registered on the submission split, read once per actor",
+  "EXPLORATORY": "not pre-registered, no multiplicity correction",
+  "DESCRIPTIVE": "measured, not a gate"
+ },
+ "claims": [
+  {
+   "id": 1,
+   "claim": "decisive split D1: state accuracy of ctes exceeds that of full (PRIMARY, pre-registered)",
+   "value": {
+    "mean_diff": 0.1474,
+    "ci95": [
+     0.0952,
+     0.2052
+    ],
+    "wins": 19,
+    "losses": 1,
+    "p_holm": 0.0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "hypothesis": "D1",
+   "established": true
+  },
+  {
+   "id": 2,
+   "claim": "decisive split D2: readiness accuracy of ctes against full, two-sided; this metric rewards a correct readines",
+   "value": {
+    "mean_diff": 0.0238,
+    "ci95": [
+     -0.0556,
+     0.119
+    ],
+    "wins": 5,
+    "losses": 5,
+    "p_holm": 0.5804
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "hypothesis": "D2",
+   "established": null
+  },
+  {
+   "id": 3,
+   "claim": "decisive split: arm constant",
+   "value": {
+    "family_weighted_state_accuracy": 0.5862,
+    "family_weighted_readiness_accuracy": 0.8175,
+    "family_weighted_U": -0.0198,
+    "premature_readiness_episodes": 0,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 31.167,
+    "requests": 240,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "constant"
+  },
+  {
+   "id": 4,
+   "claim": "decisive split: arm ctes",
+   "value": {
+    "family_weighted_state_accuracy": 0.8039,
+    "family_weighted_readiness_accuracy": 0.8968,
+    "family_weighted_U": 0.1627,
+    "premature_readiness_episodes": 2,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 31.083,
+    "requests": 161,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "ctes"
+  },
+  {
+   "id": 5,
+   "claim": "decisive split: arm ctes-abl-commitments",
+   "value": {
+    "family_weighted_state_accuracy": 0.771,
+    "family_weighted_readiness_accuracy": 0.9127,
+    "family_weighted_U": 0.1389,
+    "premature_readiness_episodes": 1,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 30.333,
+    "requests": 162,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "ctes-abl-commitments"
+  },
+  {
+   "id": 6,
+   "claim": "decisive split: arm ctes-abl-levels",
+   "value": {
+    "family_weighted_state_accuracy": 0.8039,
+    "family_weighted_readiness_accuracy": 0.8968,
+    "family_weighted_U": 0.1508,
+    "premature_readiness_episodes": 2,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 31.083,
+    "requests": 164,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "ctes-abl-levels"
+  },
+  {
+   "id": 7,
+   "claim": "decisive split: arm ctes-abl-satisfaction",
+   "value": {
+    "family_weighted_state_accuracy": 0.7959,
+    "family_weighted_readiness_accuracy": 0.8571,
+    "family_weighted_U": -0.0218,
+    "premature_readiness_episodes": 11,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 29.333,
+    "requests": 141,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "ctes-abl-satisfaction"
+  },
+  {
+   "id": 8,
+   "claim": "decisive split: arm ctes-ablation",
+   "value": {
+    "family_weighted_state_accuracy": 0.7653,
+    "family_weighted_readiness_accuracy": 0.881,
+    "family_weighted_U": -0.0258,
+    "premature_readiness_episodes": 10,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 28.917,
+    "requests": 141,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "ctes-ablation"
+  },
+  {
+   "id": 9,
+   "claim": "decisive split: arm direct-end-to-end",
+   "value": {
+    "family_weighted_state_accuracy": 0.6837,
+    "family_weighted_readiness_accuracy": 0.7937,
+    "family_weighted_U": -0.2302,
+    "premature_readiness_episodes": 17,
+    "hearsay_receipts": 60,
+    "acquired_critical_evidence": 26.583,
+    "requests": 171,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "direct-end-to-end"
+  },
+  {
+   "id": 10,
+   "claim": "decisive split: arm domain-compiler",
+   "value": {
+    "family_weighted_state_accuracy": 0.6429,
+    "family_weighted_readiness_accuracy": 0.7063,
+    "family_weighted_U": -0.3532,
+    "premature_readiness_episodes": 27,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 28.167,
+    "requests": 155,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "domain-compiler"
+  },
+  {
+   "id": 11,
+   "claim": "decisive split: arm full",
+   "value": {
+    "family_weighted_state_accuracy": 0.6565,
+    "family_weighted_readiness_accuracy": 0.873,
+    "family_weighted_U": 0.0278,
+    "premature_readiness_episodes": 6,
+    "hearsay_receipts": 53,
+    "acquired_critical_evidence": 24.417,
+    "requests": 148,
+    "failures": 1
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "full"
+  },
+  {
+   "id": 12,
+   "claim": "decisive split: arm keyword-router",
+   "value": {
+    "family_weighted_state_accuracy": 0.5986,
+    "family_weighted_readiness_accuracy": 0.7222,
+    "family_weighted_U": -0.3631,
+    "premature_readiness_episodes": 28,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 28.75,
+    "requests": 134,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "keyword-router"
+  },
+  {
+   "id": 13,
+   "claim": "decisive split: arm process-only",
+   "value": {
+    "family_weighted_state_accuracy": 0.6803,
+    "family_weighted_readiness_accuracy": 0.8175,
+    "family_weighted_U": -0.2242,
+    "premature_readiness_episodes": 10,
+    "hearsay_receipts": 45,
+    "acquired_critical_evidence": 24.333,
+    "requests": 189,
+    "failures": 4
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "process-only"
+  },
+  {
+   "id": 14,
+   "claim": "decisive split: arm random",
+   "value": {
+    "family_weighted_state_accuracy": 0.6077,
+    "family_weighted_readiness_accuracy": 0.8413,
+    "family_weighted_U": -0.3611,
+    "premature_readiness_episodes": 12,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 19.833,
+    "requests": 167,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "random"
+  },
+  {
+   "id": 15,
+   "claim": "decisive split: arm static-checklist",
+   "value": {
+    "family_weighted_state_accuracy": 0.6077,
+    "family_weighted_readiness_accuracy": 0.6349,
+    "family_weighted_U": -0.8552,
+    "premature_readiness_episodes": 39,
+    "hearsay_receipts": 0,
+    "acquired_critical_evidence": 18.333,
+    "requests": 149,
+    "failures": 0
+   },
+   "status": "PRE-REG(D)",
+   "source_file": "DECISIVE_DECISION.json",
+   "arm": "static-checklist"
+  },
+  {
+   "id": 16,
+   "claim": "confirmatory split H2: U(ctes) - U(full) > 0",
+   "value": {
+    "mean_diff": 0.1291,
+    "ci95": [
+     -0.0112,
+     0.2713
+    ],
+    "wins": 21,
+    "losses": 16,
+    "p_holm": 0.1328
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "hypothesis": "H2",
+   "established": false
+  },
+  {
+   "id": 17,
+   "claim": "confirmatory split H3: U(ctes) - U(ctes-ablation) > 0",
+   "value": {
+    "mean_diff": 0.127,
+    "ci95": [
+     -0.0091,
+     0.2734
+    ],
+    "wins": 17,
+    "losses": 15,
+    "p_holm": 0.1328
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "hypothesis": "H3",
+   "established": false
+  },
+  {
+   "id": 18,
+   "claim": "confirmatory split: arm constant",
+   "value": {
+    "family_weighted_U": -0.0579,
+    "hearsay_receipts": 0,
+    "premature_readiness_episodes": 0,
+    "acquired_critical_evidence": 58.5,
+    "requests": 466,
+    "failures": 0
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "constant"
+  },
+  {
+   "id": 19,
+   "claim": "confirmatory split: arm ctes",
+   "value": {
+    "family_weighted_U": 0.0244,
+    "hearsay_receipts": 0,
+    "premature_readiness_episodes": 6,
+    "acquired_critical_evidence": 58.75,
+    "requests": 353,
+    "failures": 3
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "ctes"
+  },
+  {
+   "id": 20,
+   "claim": "confirmatory split: arm ctes-ablation",
+   "value": {
+    "family_weighted_U": -0.1026,
+    "hearsay_receipts": 0,
+    "premature_readiness_episodes": 24,
+    "acquired_critical_evidence": 53.833,
+    "requests": 285,
+    "failures": 3
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "ctes-ablation"
+  },
+  {
+   "id": 21,
+   "claim": "confirmatory split: arm direct-end-to-end",
+   "value": {
+    "family_weighted_U": -0.3211,
+    "hearsay_receipts": 137,
+    "premature_readiness_episodes": 32,
+    "acquired_critical_evidence": 44.417,
+    "requests": 337,
+    "failures": 1
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "direct-end-to-end"
+  },
+  {
+   "id": 22,
+   "claim": "confirmatory split: arm domain-compiler",
+   "value": {
+    "family_weighted_U": -0.4837,
+    "hearsay_receipts": 0,
+    "premature_readiness_episodes": 58,
+    "acquired_critical_evidence": 51.583,
+    "requests": 302,
+    "failures": 0
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "domain-compiler"
+  },
+  {
+   "id": 23,
+   "claim": "confirmatory split: arm full",
+   "value": {
+    "family_weighted_U": -0.1047,
+    "hearsay_receipts": 77,
+    "premature_readiness_episodes": 11,
+    "acquired_critical_evidence": 40.917,
+    "requests": 311,
+    "failures": 6
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "full"
+  },
+  {
+   "id": 24,
+   "claim": "confirmatory split: arm keyword-router",
+   "value": {
+    "family_weighted_U": -0.4431,
+    "hearsay_receipts": 0,
+    "premature_readiness_episodes": 59,
+    "acquired_critical_evidence": 55.167,
+    "requests": 268,
+    "failures": 0
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "keyword-router"
+  },
+  {
+   "id": 25,
+   "claim": "confirmatory split: arm process-only",
+   "value": {
+    "family_weighted_U": -0.2754,
+    "hearsay_receipts": 68,
+    "premature_readiness_episodes": 16,
+    "acquired_critical_evidence": 43.417,
+    "requests": 379,
+    "failures": 11
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "process-only"
+  },
+  {
+   "id": 26,
+   "claim": "confirmatory split: arm random",
+   "value": {
+    "family_weighted_U": -0.3476,
+    "hearsay_receipts": 0,
+    "premature_readiness_episodes": 25,
+    "acquired_critical_evidence": 40.25,
+    "requests": 319,
+    "failures": 0
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "random"
+  },
+  {
+   "id": 27,
+   "claim": "confirmatory split: arm static-checklist",
+   "value": {
+    "family_weighted_U": -0.9228,
+    "hearsay_receipts": 0,
+    "premature_readiness_episodes": 79,
+    "acquired_critical_evidence": 34.333,
+    "requests": 290,
+    "failures": 0
+   },
+   "status": "PRE-REG(C)",
+   "source_file": "CONFIRMATORY_DECISION.json",
+   "arm": "static-checklist"
+  },
+  {
+   "id": 28,
+   "claim": "writer swap D5",
+   "value": {
+    "mean_diff": 0.1621,
+    "ci95": [
+     0.1156,
+     0.2086
+    ],
+    "wins": 20,
+    "losses": 1,
+    "families": 21,
+    "p_boot": 0.0,
+    "ci_excludes_zero": true,
+    "confirmed": true
+   },
+   "status": "PRE-REG(SWAP)",
+   "source_file": "SWAP_DECISION.json",
+   "hypothesis": "D5"
+  },
+  {
+   "id": 29,
+   "claim": "writer swap D6",
+   "value": {
+    "decisive_ci95": [
+     0.0952,
+     0.2052
+    ],
+    "decisive_mean": 0.1474,
+    "swapped_mean": 0.1621,
+    "confirmed": true
+   },
+   "status": "PRE-REG(SWAP)",
+   "source_file": "SWAP_DECISION.json",
+   "hypothesis": "D6"
+  },
+  {
+   "id": 30,
+   "claim": "writer swap D7",
+   "value": {
+    "premature_by_arm": {
+     "ctes": 3,
+     "ctes-abl-satisfaction": 8
+    },
+    "confirmed": true
+   },
+   "status": "PRE-REG(SWAP)",
+   "source_file": "SWAP_DECISION.json",
+   "hypothesis": "D7"
+  },
+  {
+   "id": 31,
+   "claim": "product decoder: receipts resting only on a party report",
+   "value": {
+    "claims": 150,
+    "scored": 149,
+    "needs": 795,
+    "received_gate_off": 266,
+    "received_gate_on": 122,
+    "capped": 144,
+    "claims_with_capped": 85
+   },
+   "status": "DESCRIPTIVE",
+   "source_file": "PRODUCT_CORPUS_STUDY_FULL150.json",
+   "caveat": "binding rate of the rule on the shipped corpus, NOT production accuracy"
+  },
+  {
+   "id": 32,
+   "claim": "product six-role path: requirements the rule would change",
+   "value": {
+    "requirements": 10,
+    "capped": 0
+   },
+   "status": "DESCRIPTIVE",
+   "source_file": "EXTERNAL_RUN_REPLAY.json",
+   "caveat": "one preserved run; not a study"
+  },
+  {
+   "id": 33,
+   "claim": "writer validity on identical latents",
+   "value": {
+    "mini": 0.333,
+    "sonnet": 0.31,
+    "episodes_each": 42
+   },
+   "status": "DESCRIPTIVE",
+   "source_file": "WRITER_VALIDITY.json"
+  }
+ ]
+}

@@ -221,8 +221,15 @@ def cmd_step(a):
         for ph in st["physical"][cid]:
             resp = Path(ph["dir"]) / "answer.json"
             if not resp.exists():
-                raise SystemExit(f"missing answer: {resp}")
-            txt = resp.read_text().strip()
+                # A provider can answer 200 with no content at all. run_turn records that as failure.json
+                # and writes no answer. That is a model-output failure for the arms sharing this call, and
+                # it is scored as one — the same treatment any malformed output gets, for every arm.
+                if (Path(ph["dir"]) / "failure.json").exists():
+                    txt = ""
+                else:
+                    raise SystemExit(f"missing answer: {resp}")
+            else:
+                txt = resp.read_text().strip()
             if txt.startswith("```"):
                 txt = txt.strip("`").split("\n", 1)[1].rsplit("```", 1)[0]
             for arm in ph["arms"]:
