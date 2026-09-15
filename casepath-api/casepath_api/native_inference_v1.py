@@ -16,6 +16,7 @@ import json
 import os
 from pathlib import Path
 import time
+import uuid
 from typing import Any, Callable, Iterable, Mapping, Sequence
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -390,12 +391,18 @@ class SourcePrefixAssembler:
             if not path.is_file() or sha256_bytes(path.read_bytes()) != sha256_bytes(raw):
                 raise ValueError("materialized native asset collision")
             return
-        temporary = path.with_name(path.name + ".tmp")
-        temporary.write_bytes(raw)
-        if sha256_bytes(temporary.read_bytes()) != sha256_bytes(raw):
+        # The destination is content-addressed, so two threads or two processes may legitimately
+        # materialize the same asset at once. A temporary name shared between writers let one overwrite
+        # another's bytes mid-write; the first writer then read back the other's bytes and failed its own
+        # check. The name is unique per writer for that reason, and per the convention in local_data_root.
+        temporary = path.parent / f".{path.name}.{os.getpid()}.{uuid.uuid4()}.tmp"
+        try:
+            temporary.write_bytes(raw)
+            if sha256_bytes(temporary.read_bytes()) != sha256_bytes(raw):
+                raise ValueError("native asset materialization failed")
+            temporary.replace(path)
+        finally:
             temporary.unlink(missing_ok=True)
-            raise ValueError("native asset materialization failed")
-        temporary.replace(path)
 
 
 @dataclass(frozen=True)

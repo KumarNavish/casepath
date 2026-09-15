@@ -19,8 +19,10 @@ from email.message import Message
 from email.parser import BytesParser
 from io import BytesIO
 import json
+import os
 from pathlib import Path
 import subprocess
+import uuid
 from typing import Any, Annotated
 
 import fitz
@@ -326,12 +328,16 @@ def _atomic_write(path: Path, raw: bytes) -> None:
         if path.is_symlink() or not path.is_file() or path.read_bytes() != raw:
             raise NativeLiveWorkspaceError(f"runtime file collision: {path.name}")
         return
-    temporary = path.with_name(path.name + ".tmp")
-    temporary.write_bytes(raw)
-    if temporary.read_bytes() != raw:
+    # Unique per writer: a shared temporary name is not atomic between concurrent writers, which is the
+    # one guarantee this function's name promises. Same convention as local_data_root.
+    temporary = path.parent / f".{path.name}.{os.getpid()}.{uuid.uuid4()}.tmp"
+    try:
+        temporary.write_bytes(raw)
+        if temporary.read_bytes() != raw:
+            raise NativeLiveWorkspaceError(f"runtime file write failed: {path.name}")
+        temporary.replace(path)
+    finally:
         temporary.unlink(missing_ok=True)
-        raise NativeLiveWorkspaceError(f"runtime file write failed: {path.name}")
-    temporary.replace(path)
 
 
 def _text_units(text: str) -> tuple[TextUnit, ...]:
