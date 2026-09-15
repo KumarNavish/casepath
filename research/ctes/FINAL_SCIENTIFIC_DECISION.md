@@ -92,6 +92,11 @@ Three boxes have now closed, across two pre-registered splits.
   one lost. The confirmatory split's exploratory +0.148 is a replication of it, not the basis for it.
 - *No single-effect ablation existed.* Closed, and against the method's own framing: the graded channel
   ordering contributes nothing measurable, while one binary rule carries the readiness effect.
+- *The writer-swap control was partial.* Closed. All 21 families and 42 episodes of the decisive split were
+  rewritten from identical latents by a different model family and read once. The primary effect moved from
+  +0.147 to **+0.162 [+0.116, +0.209], 20 of 21 families** — inside its own interval, in the direction that
+  makes the original conservative. The mechanism attribution survives, and on identical latents the two
+  writers differ by 0.024 motif violations per episode.
 
 What remains open is narrower than what closed. Two endpoints fixed in advance returned nulls — the
 composite utility on both splits, and the symmetric readiness score introduced to repair it — and a

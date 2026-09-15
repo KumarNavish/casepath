@@ -194,5 +194,20 @@
   "unreconciled_usd": 17.49,
   "what_the_gap_is": "the per-phase figures above count arm execution, episode writing and episode verification. They do not count the two product corpus studies, the aborted claude-sonnet-5 writer run, provider-rejected calls that returned no completion, or one-off exploratory calls. Those are real spend and they are named here rather than absorbed into a rounded total.",
   "note": "total_cost_usd below covers per_run only and predates the confirmatory and decisive phases"
+ },
+ "writer_swap_phase": {
+  "purpose": "close the writer objection on the full decisive split",
+  "episode_writing": {
+   "model": "anthropic/claude-sonnet-5",
+   "episodes": 42,
+   "cost_usd": 2.9561
+  },
+  "episode_verification": {
+   "openai/gpt-5.6-luna-pro": 0.283
+  },
+  "arm_execution": {
+   "run_decisive_swap_42_episodes_9_arms": 2.547
+  },
+  "writer_swap_phase_total_usd": 5.79
  }
 }

@@ -92,5 +92,25 @@
   "rule1_total": 39,
   "rule1_per_episode": 0.315
  },
- "correction": "The headline comparison originally quoted 0.400 for the cheap writer against 0.385 for the expensive one. That 0.400 came from the first 40 mini-written episodes only. Pooled over all 124 mini-written episodes under the same verifier the rate is 0.315, below the expensive writer's 0.385 over 26 episodes and below the original benchmark's 0.37 over 46. The conclusion is unchanged and slightly strengthened: the cheap writer is not the weaker writer. The original figure was an accident of which batch was measured, and it happened to be the batch least favourable to the cheap model."
+ "correction": "The headline comparison originally quoted 0.400 for the cheap writer against 0.385 for the expensive one. That 0.400 came from the first 40 mini-written episodes only. Pooled over all 124 mini-written episodes under the same verifier the rate is 0.315, below the expensive writer's 0.385 over 26 episodes and below the original benchmark's 0.37 over 46. The conclusion is unchanged and slightly strengthened: the cheap writer is not the weaker writer. The original figure was an accident of which batch was measured, and it happened to be the batch least favourable to the cheap model.",
+ "clean_same_latent_comparison": {
+  "design": "identical 21 latents, 42 episodes each, same verifier openai/gpt-5.6-luna-pro",
+  "gpt_5_4_mini": {
+   "episodes": 42,
+   "rule1": 14,
+   "rule1_per_episode": 0.333,
+   "rule2": 10,
+   "rule3": 60,
+   "rule4": 3
+  },
+  "claude_sonnet_5": {
+   "episodes": 42,
+   "rule1": 13,
+   "rule1_per_episode": 0.31,
+   "rule2": 2,
+   "rule3": 49,
+   "rule4": 0
+  },
+  "reading": "the definitive version of this comparison: on the one rule that carries cross-verifier signal the two writers differ by 0.024 violations per episode. The expensive writer stays cleaner on return-scope semantics. Earlier comparisons in this file used mismatched denominators and different latents; this one does not."
+ }
 }
