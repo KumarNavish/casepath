@@ -1,0 +1,2175 @@
+[
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "final_t1",
+   "A3": "unreadable_followup",
+   "A4": "partial_followup",
+   "A5": "partial_auto",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "thermal_bridge",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A5",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A2",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 6841,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "partial_followup",
+   "A3": "unreadable_followup",
+   "A4": "final_t1",
+   "A5": "partial_auto",
+   "A6": "partial_auto",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "thermal_bridge",
+  "intake_attached": [
+   "A4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A5",
+    "motif": "stale_then_correct"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3849,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "unreadable_followup",
+   "A3": "final_t1",
+   "A4": "final_t1",
+   "A5": "final_t1",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "boiler_swap",
+  "intake_attached": [
+   "A3"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A4",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 6976,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "partial_auto",
+   "A3": "partial_auto",
+   "A4": "final_t1",
+   "A5": "final_t1",
+   "A6": "final_t2",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "boiler_swap",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A5",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "A3",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3502,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "final_t1",
+   "A3": "final_t1",
+   "A4": "final_t1",
+   "A5": "partial_auto",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "pipe_insulation",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A4",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A5",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "A2",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 4945,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "final_t1",
+   "A3": "partial_followup",
+   "A4": "partial_auto",
+   "A5": "partial_auto",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "pipe_insulation",
+  "intake_attached": [
+   "A4"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "A2",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "A1",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3217,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "partial_auto",
+   "A2": "final_t1",
+   "A3": "final_t1",
+   "A4": "partial_followup",
+   "A5": "partial_auto",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "control_lockout",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A6",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A4",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 7531,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "final_t2",
+   "A3": "partial_followup",
+   "A4": "partial_followup",
+   "A5": "unavailable",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "control_lockout",
+  "intake_attached": [
+   "A4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A5",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A2",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "A1",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "A4",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2328,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "partial_auto",
+   "A3": "unreadable_followup",
+   "A4": "partial_followup",
+   "A5": "unavailable",
+   "A6": "unreadable_followup",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "condensate",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A3",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "A2",
+    "motif": "stale_then_correct"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2930,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "partial_auto",
+   "A3": "final_t1",
+   "A4": "partial_followup",
+   "A5": "final_t1",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "condensate",
+  "intake_attached": [
+   "A3",
+   "A4"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A3",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A2",
+    "motif": "stale_then_correct"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 6165,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "partial_auto",
+   "A2": "final_t2",
+   "A3": "final_t1",
+   "A4": "partial_auto",
+   "A5": "final_t1",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "flue_share",
+  "intake_attached": [
+   "A1",
+   "A6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A5",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "A2",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "A1",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "A4",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3480,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "final_t2",
+   "A2": "partial_auto",
+   "A3": "partial_auto",
+   "A4": "final_t1",
+   "A5": "partial_auto",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "flue_share",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A6",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "A5",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "A3",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 9521,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "final_t1",
+   "A3": "unavailable",
+   "A4": "partial_auto",
+   "A5": "final_t1",
+   "A6": "final_t2",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "night_setback",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A6",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "A4",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "A3",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 6750,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "partial_followup",
+   "A2": "unreadable_followup",
+   "A3": "final_t1",
+   "A4": "partial_auto",
+   "A5": "partial_auto",
+   "A6": "unreadable_followup",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "night_setback",
+  "intake_attached": [
+   "A4",
+   "A6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A6",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A1",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "A2",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "A6",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3643,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "partial_auto",
+   "A3": "partial_auto",
+   "A4": "final_t1",
+   "A5": "final_t1",
+   "A6": "partial_auto",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "pump_speed",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "A2",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "A3",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3242,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "final_t1",
+   "A3": "unreadable_followup",
+   "A4": "unreadable_followup",
+   "A5": "final_t1",
+   "A6": "partial_auto",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "pump_speed",
+  "intake_attached": [
+   "A5"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A3",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "A4",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "A6",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2997,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "final_t2",
+   "A2": "final_t1",
+   "A3": "final_t1",
+   "A4": "partial_auto",
+   "A5": "final_t2",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "roof_flat",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A6",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "A2",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 9923,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "final_t2",
+   "A3": "final_t2",
+   "A4": "final_t1",
+   "A5": "partial_auto",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "roof_flat",
+  "intake_attached": [
+   "A6"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A1",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "A5",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 5318,
+  "trigger_doc": "A2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "final_t1",
+   "A3": "unreadable_followup",
+   "A4": "unreadable_followup",
+   "A5": "unavailable",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "sensor_place",
+  "intake_attached": [
+   "A1"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "A4",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 7758,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "final_t1",
+   "A3": "partial_followup",
+   "A4": "unavailable",
+   "A5": "unreadable_followup",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "sensor_place",
+  "intake_attached": [
+   "A1",
+   "A5"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "A5",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "A1",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "A1",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2954,
+  "trigger_doc": "A2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "unreadable_followup",
+   "B2": "final_t1",
+   "B3": "unavailable",
+   "B4": "final_t1",
+   "B5": "partial_auto",
+   "B6": "partial_auto",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "standing_amount",
+  "intake_attached": [
+   "B1",
+   "B4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B5",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B5",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "B6",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "B3",
+    "motif": "denial_nonexistent"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 1190,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "partial_auto",
+   "B3": "final_t1",
+   "B4": "final_t2",
+   "B5": "final_t1",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "standing_amount",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B1",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "B2",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "B5",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 4664,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "partial_followup",
+   "B2": "final_t1",
+   "B3": "final_t1",
+   "B4": "final_t1",
+   "B5": "final_t1",
+   "B6": "final_t2",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "bank_error",
+  "intake_attached": [
+   "B1",
+   "B4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B2",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "B4",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "B3",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2510,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "final_t2",
+   "B2": "final_t1",
+   "B3": "final_t2",
+   "B4": "final_t1",
+   "B5": "final_t2",
+   "B6": "unreadable_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "bank_error",
+  "intake_attached": [
+   "B6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B6",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "B3",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2945,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "final_t2",
+   "B2": "final_t1",
+   "B3": "final_t1",
+   "B4": "partial_auto",
+   "B5": "unreadable_followup",
+   "B6": "partial_auto",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "cash_office",
+  "intake_attached": [
+   "B6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B2",
+    "motif": "conflict"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 1769,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "final_t2",
+   "B3": "unavailable",
+   "B4": "final_t1",
+   "B5": "final_t2",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "cash_office",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B1",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B6",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "B3",
+    "motif": "denial_nonexistent"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 7126,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t1",
+   "B3": "partial_followup",
+   "B4": "partial_auto",
+   "B5": "final_t2",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "two_accounts",
+  "intake_attached": [
+   "B4",
+   "B6"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B4",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "B4",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "B1",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 6917,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "final_t1",
+   "B3": "final_t1",
+   "B4": "unavailable",
+   "B5": "unreadable_followup",
+   "B6": "final_t2",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "two_accounts",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B2",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B3",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 7904,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t1",
+   "B3": "final_t1",
+   "B4": "final_t2",
+   "B5": "final_t1",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "notice_email",
+  "intake_attached": [
+   "B6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B3",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "B4",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B2",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "B5",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 6822,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t1",
+   "B3": "final_t2",
+   "B4": "final_t1",
+   "B5": "final_t1",
+   "B6": "partial_auto",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "notice_email",
+  "intake_attached": [
+   "B4",
+   "B5"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B3",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B3",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 4254,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "partial_followup",
+   "B3": "final_t1",
+   "B4": "final_t1",
+   "B5": "final_t2",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "sick_leave",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B3",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "B2",
+    "motif": "conflict"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 4898,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "partial_auto",
+   "B3": "unreadable_followup",
+   "B4": "partial_followup",
+   "B5": "final_t1",
+   "B6": "partial_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "sick_leave",
+  "intake_attached": [
+   "B5"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B2",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B3",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2758,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "unreadable_followup",
+   "B3": "final_t2",
+   "B4": "final_t2",
+   "B5": "unreadable_followup",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "deposit_swap",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B5",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "B2",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "B2",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 41,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t1",
+   "B3": "partial_auto",
+   "B4": "unreadable_followup",
+   "B5": "partial_auto",
+   "B6": "unreadable_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "deposit_swap",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B6",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "B3",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "B6",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 615,
+  "trigger_doc": "B2",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "partial_followup",
+   "B3": "final_t2",
+   "B4": "partial_followup",
+   "B5": "partial_followup",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "agent_arrears",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B1",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "B4",
+    "motif": "conflict"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2828,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "partial_auto",
+   "B3": "final_t1",
+   "B4": "unavailable",
+   "B5": "unavailable",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "agent_arrears",
+  "intake_attached": [
+   "B3"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B2",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B3",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B6",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "B6",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 4230,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t1",
+   "B3": "final_t1",
+   "B4": "final_t1",
+   "B5": "final_t1",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "rounding_fee",
+  "intake_attached": [
+   "B1"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B6",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "B1",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "B4",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 5095,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "partial_auto",
+   "B3": "final_t1",
+   "B4": "final_t1",
+   "B5": "partial_auto",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "rounding_fee",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B6",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "B2",
+    "motif": "promise_automatic"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 5595,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "unreadable_followup",
+   "B2": "final_t1",
+   "B3": "final_t2",
+   "B4": "final_t1",
+   "B5": "final_t2",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "holiday_form",
+  "intake_attached": [
+   "B1"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B2",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B3",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B6",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 5640,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "partial_auto",
+   "B3": "partial_followup",
+   "B4": "final_t1",
+   "B5": "final_t1",
+   "B6": "partial_auto",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "holiday_form",
+  "intake_attached": [
+   "B3"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B6",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "B2",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "B1",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2546,
+  "trigger_doc": "B2",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "partial_auto",
+   "C3": "final_t1",
+   "C4": "partial_auto",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "mortgage_lag",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C6",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "C1",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "C4",
+    "motif": "stale_then_correct"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2883,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "partial_auto",
+   "C3": "final_t1",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "partial_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "mortgage_lag",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "C1",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 4244,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "final_t2",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "partial_auto",
+   "C5": "final_t2",
+   "C6": "partial_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "renovation_split",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C4",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "C5",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2189,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t1",
+   "C3": "final_t2",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "partial_auto",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "renovation_split",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C4",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "C1",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "C4",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3078,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t2",
+   "C3": "unreadable_followup",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "partial_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "comparables_thin",
+  "intake_attached": [
+   "C3",
+   "C5"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C5",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "C5",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "C2",
+    "motif": "promise_automatic"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 1994,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "final_t2",
+   "C5": "partial_auto",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "comparables_thin",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C4",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "C4",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3335,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "partial_auto",
+   "C2": "partial_followup",
+   "C3": "partial_auto",
+   "C4": "final_t1",
+   "C5": "final_t2",
+   "C6": "final_t2",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "index_wrong",
+  "intake_attached": [
+   "C4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C3",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "C4",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "C4",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C2",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 7345,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "partial_followup",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "index_wrong",
+  "intake_attached": [
+   "C6"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C2",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "C1",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 3687,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "unreadable_followup",
+   "C2": "final_t1",
+   "C3": "final_t2",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "unavailable",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "service_merge",
+  "intake_attached": [
+   "C5"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C6",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "C6",
+    "motif": "denial_nonexistent"
+   },
+   {
+    "document_id": "C4",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 9877,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "partial_followup",
+   "C2": "final_t1",
+   "C3": "unreadable_followup",
+   "C4": "partial_followup",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "service_merge",
+  "intake_attached": [
+   "C2"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C6",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "C5",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C3",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 2261,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t2",
+   "C3": "unreadable_followup",
+   "C4": "partial_followup",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "area_survey",
+  "intake_attached": [
+   "C4",
+   "C5"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "C2",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "C2",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 9600,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "partial_followup",
+   "C2": "unavailable",
+   "C3": "partial_auto",
+   "C4": "partial_auto",
+   "C5": "final_t1",
+   "C6": "final_t2",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "area_survey",
+  "intake_attached": [
+   "C4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C3",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "C3",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 5975,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "partial_auto",
+   "C3": "final_t1",
+   "C4": "final_t1",
+   "C5": "unreadable_followup",
+   "C6": "partial_auto",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "sublet_fee",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C3",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "C2",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "C3",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "C1",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 9913,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "partial_auto",
+   "C2": "final_t1",
+   "C3": "partial_auto",
+   "C4": "unreadable_followup",
+   "C5": "final_t1",
+   "C6": "unreadable_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "sublet_fee",
+  "intake_attached": [
+   "C3"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "C2",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 5213,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "partial_auto",
+   "C2": "unreadable_followup",
+   "C3": "final_t1",
+   "C4": "partial_followup",
+   "C5": "final_t2",
+   "C6": "unavailable",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "energy_pass_two",
+  "intake_attached": [
+   "C3"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C6",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "C6",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "C6",
+    "motif": "denial_nonexistent"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 130,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "partial_followup",
+   "C2": "partial_auto",
+   "C3": "final_t1",
+   "C4": "final_t2",
+   "C5": "final_t1",
+   "C6": "partial_auto",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "energy_pass_two",
+  "intake_attached": [
+   "C2"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C2",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "C5",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 5037,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "partial_auto",
+   "C2": "final_t1",
+   "C3": "partial_auto",
+   "C4": "final_t1",
+   "C5": "final_t2",
+   "C6": "unreadable_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "owner_change",
+  "intake_attached": [
+   "C3"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "C1",
+    "motif": "promise_automatic"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 9341,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "partial_auto",
+   "C5": "partial_auto",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "owner_change",
+  "intake_attached": [
+   "C2",
+   "C3"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C5",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "C5",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "C6",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "C2",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 1185,
+  "trigger_doc": "C1",
+  "writer_model": "openai/gpt-5.4-mini"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "unreadable_followup",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "form_late",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "C6",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 9737,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ },
+ {
+  "availability": {
+   "C1": "unreadable_followup",
+   "C2": "final_t1",
+   "C3": "partial_followup",
+   "C4": "partial_auto",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "form_late",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C4",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "C4",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C6",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "C3",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "submission",
+  "style_seed": 5798,
+  "trigger_doc": "C1",
+  "writer_model": "anthropic/claude-sonnet-5"
+ }
+]

@@ -16,9 +16,18 @@ def answer(entry: dict, model: str, max_tokens: int, temperature: float, provide
     receipt = {k: v for k, v in result.items() if k != "content"}
     receipt["request_dir"] = entry["dir"]; receipt["arms"] = entry["arms"]; receipt["case"] = entry["case"]
     (d / "receipt.json").write_text(json.dumps(receipt, indent=1, ensure_ascii=False))
-    if result["ok"]:
-        (d / "answer.json").write_text(result["content"])
+    content = result.get("content") if result["ok"] else None
+    if result["ok"] and isinstance(content, str) and content.strip():
+        (d / "answer.json").write_text(content)
         return {"dir": entry["dir"], "status": "answered", "cost_usd": result.get("cost_usd"), "tokens": result.get("usage", {}).get("total_tokens")}
+    if result["ok"]:
+        # A provider can answer 200 with no content at all — an empty completion, or reasoning with an
+        # empty content field. That is a model-output failure for this arm on this turn, not a crash, and
+        # it is recorded like any other so the arm is scored rather than the run lost.
+        receipt["empty_completion"] = True
+        (d / "failure.json").write_text(json.dumps(receipt, indent=1, ensure_ascii=False))
+        return {"dir": entry["dir"], "status": "empty_completion",
+                "cost_usd": result.get("cost_usd"), "finish_reason": result.get("finish_reason")}
     (d / "failure.json").write_text(json.dumps(receipt, indent=1))
     return {"dir": entry["dir"], "status": "transport_failure", "error": result.get("error")}
 
@@ -42,6 +51,7 @@ def main() -> None:
             if rr.get("finish_reason") == "length":
                 lengths.append(e["dir"].split("/pending/")[1])
     summary = {"turn": a.turn, "model": a.model, "max_tokens": a.max_tokens, "truncated": lengths, "requests": len(listing), "answered": sum(r["status"] == "answered" for r in results),
+               "empty_completions": [r for r in results if r["status"] == "empty_completion"],
                "already": sum(r["status"] == "already_answered" for r in results), "failures": [r for r in results if r["status"] == "transport_failure"],
                "cost_usd": round(sum((r.get("cost_usd") or 0) for r in results), 6), "wall_s": round(time.time() - started, 1)}
     (Path(a.run) / "pending" / f"turn-{a.turn}" / "TRANSPORT_SUMMARY.json").write_text(json.dumps(summary, indent=1))

@@ -1,0 +1,1472 @@
+[
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "partial_followup",
+   "A3": "final_t2",
+   "A4": "partial_auto",
+   "A5": "final_t1",
+   "A6": "partial_auto",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "heat_pump",
+  "intake_attached": [
+   "A5",
+   "A6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "A2",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 3455,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "final_t1",
+   "A3": "unreadable_followup",
+   "A4": "final_t1",
+   "A5": "final_t2",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "heat_pump",
+  "intake_attached": [
+   "A1",
+   "A6"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A3",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "A1",
+    "motif": "conflict"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 8267,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "unreadable_followup",
+   "A3": "final_t1",
+   "A4": "unreadable_followup",
+   "A5": "partial_auto",
+   "A6": "final_t2",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "balcony_door",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A5",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "A2",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 4975,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "partial_auto",
+   "A2": "final_t1",
+   "A3": "final_t1",
+   "A4": "final_t1",
+   "A5": "final_t2",
+   "A6": "unreadable_followup",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "balcony_door",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A1",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 8661,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "partial_auto",
+   "A3": "final_t1",
+   "A4": "final_t2",
+   "A5": "final_t1",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "boiler_noise",
+  "intake_attached": [
+   "A1"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "A6",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A2",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 5403,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "unreadable_followup",
+   "A2": "final_t1",
+   "A3": "partial_auto",
+   "A4": "final_t1",
+   "A5": "final_t1",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "boiler_noise",
+  "intake_attached": [
+   "A5"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A4",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "A5",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "A2",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "A4",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 6513,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "partial_auto",
+   "A3": "partial_auto",
+   "A4": "final_t2",
+   "A5": "final_t1",
+   "A6": "partial_auto",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "shared_meter",
+  "intake_attached": [
+   "A1"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A5",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A3",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "A2",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "A3",
+    "motif": "stale_then_correct"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 7481,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "unreadable_followup",
+   "A3": "final_t2",
+   "A4": "final_t1",
+   "A5": "partial_followup",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "shared_meter",
+  "intake_attached": [
+   "A6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A1",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "A2",
+    "motif": "conflict"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 2993,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "final_t2",
+   "A2": "final_t1",
+   "A3": "final_t1",
+   "A4": "final_t1",
+   "A5": "final_t1",
+   "A6": "unreadable_followup",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "winter_gap",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "A1",
+    "motif": "promise_automatic"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 5357,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "partial_auto",
+   "A2": "partial_auto",
+   "A3": "final_t2",
+   "A4": "partial_auto",
+   "A5": "final_t1",
+   "A6": "unreadable_followup",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "winter_gap",
+  "intake_attached": [
+   "A4"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A4",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "A2",
+    "motif": "stale_then_correct"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 8153,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "partial_auto",
+   "A2": "final_t2",
+   "A3": "final_t1",
+   "A4": "partial_auto",
+   "A5": "partial_auto",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": false,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "legionella",
+  "intake_attached": [
+   "A3",
+   "A4"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A3",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "A2",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "A5",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 5550,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "final_t2",
+   "A3": "unavailable",
+   "A4": "final_t2",
+   "A5": "partial_auto",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "legionella",
+  "intake_attached": [
+   "A5",
+   "A6"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A2",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "A1",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 4784,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "partial_auto",
+   "A2": "final_t1",
+   "A3": "final_t1",
+   "A4": "partial_followup",
+   "A5": "unavailable",
+   "A6": "partial_auto",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 1,
+  "family": "draught",
+  "intake_attached": [
+   "A1",
+   "A4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "A4",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "A5",
+    "motif": "denial_nonexistent"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 4859,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "A1": "final_t1",
+   "A2": "partial_followup",
+   "A3": "final_t1",
+   "A4": "final_t1",
+   "A5": "unavailable",
+   "A6": "final_t1",
+   "A7": "irrelevant"
+  },
+  "cond_requirement": "R-HEALTH",
+  "conditional_active": true,
+  "domain": "heating_defect",
+  "episode": 2,
+  "family": "draught",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "A6",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "A6",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 303,
+  "trigger_doc": "A2"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "partial_followup",
+   "B3": "final_t2",
+   "B4": "unreadable_followup",
+   "B5": "final_t1",
+   "B6": "partial_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "double_debit",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B1",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "B4",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 1097,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "final_t1",
+   "B3": "final_t1",
+   "B4": "final_t1",
+   "B5": "final_t1",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "double_debit",
+  "intake_attached": [
+   "B4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B1",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "B5",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "B2",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B4",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 879,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "final_t2",
+   "B3": "partial_auto",
+   "B4": "partial_auto",
+   "B5": "partial_auto",
+   "B6": "partial_auto",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "grace_custom",
+  "intake_attached": [
+   "B5",
+   "B6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B3",
+    "motif": "conflict"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 6236,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "final_t2",
+   "B3": "partial_auto",
+   "B4": "partial_followup",
+   "B5": "partial_auto",
+   "B6": "partial_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "grace_custom",
+  "intake_attached": [
+   "B5"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B5",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "B3",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "B3",
+    "motif": "conflict"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 2917,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "unreadable_followup",
+   "B2": "unreadable_followup",
+   "B3": "final_t2",
+   "B4": "final_t2",
+   "B5": "final_t1",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "guarantor",
+  "intake_attached": [
+   "B1"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B3",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B1",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B4",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "B5",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 1999,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t1",
+   "B3": "final_t2",
+   "B4": "unreadable_followup",
+   "B5": "unavailable",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "guarantor",
+  "intake_attached": [
+   "B6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B2",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "B5",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "B1",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B3",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 2418,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t2",
+   "B3": "final_t1",
+   "B4": "partial_auto",
+   "B5": "partial_auto",
+   "B6": "partial_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "mail_hold",
+  "intake_attached": [
+   "B1",
+   "B6"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B2",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "B5",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B4",
+    "motif": "stale_then_correct"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 5144,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "unreadable_followup",
+   "B2": "partial_auto",
+   "B3": "partial_auto",
+   "B4": "unavailable",
+   "B5": "unavailable",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "mail_hold",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B4",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "B4",
+    "motif": "denial_nonexistent"
+   },
+   {
+    "document_id": "B4",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 8579,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t1",
+   "B3": "partial_auto",
+   "B4": "final_t1",
+   "B5": "partial_auto",
+   "B6": "unreadable_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "renovation_exit",
+  "intake_attached": [
+   "B3",
+   "B6"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B5",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B5",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 4420,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "final_t2",
+   "B2": "final_t1",
+   "B3": "final_t2",
+   "B4": "partial_auto",
+   "B5": "final_t1",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "renovation_exit",
+  "intake_attached": [
+   "B5",
+   "B6"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B6",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "B1",
+    "motif": "promise_automatic"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 9754,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t2",
+   "B3": "partial_auto",
+   "B4": "partial_auto",
+   "B5": "final_t1",
+   "B6": "unreadable_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "part_month",
+  "intake_attached": [
+   "B1"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B4",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "B3",
+    "motif": "content_quote"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 4803,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "final_t2",
+   "B3": "partial_auto",
+   "B4": "unreadable_followup",
+   "B5": "partial_auto",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": false,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "part_month",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B4",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "B1",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B4",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 2249,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "final_t1",
+   "B2": "final_t1",
+   "B3": "partial_auto",
+   "B4": "unreadable_followup",
+   "B5": "final_t2",
+   "B6": "unreadable_followup",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 1,
+  "family": "successor",
+  "intake_attached": [
+   "B6"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "B3",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "B3",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 708,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "B1": "partial_auto",
+   "B2": "partial_auto",
+   "B3": "final_t1",
+   "B4": "final_t1",
+   "B5": "final_t2",
+   "B6": "final_t1",
+   "B7": "irrelevant"
+  },
+  "cond_requirement": "R-ALLOC",
+  "conditional_active": true,
+  "domain": "termination_payment",
+  "episode": 2,
+  "family": "successor",
+  "intake_attached": [
+   "B1"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "B1",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "B6",
+    "motif": "ambiguous_reference"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 9399,
+  "trigger_doc": "B2"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "partial_auto",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "service_charge",
+  "intake_attached": [
+   "C3",
+   "C4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C2",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "C3",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C1",
+    "motif": "conflict"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 1003,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "unreadable_followup",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "partial_followup",
+   "C5": "final_t1",
+   "C6": "partial_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "service_charge",
+  "intake_attached": [
+   "C3"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "C2",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "C3",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 7450,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "partial_auto",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "reference_lag",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C3",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "C4",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "C3",
+    "motif": "conflict"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 876,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "partial_auto",
+   "C2": "unreadable_followup",
+   "C3": "unavailable",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "unavailable",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "reference_lag",
+  "intake_attached": [
+   "C4",
+   "C5"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "C6",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "C5",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 8413,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "partial_auto",
+   "C2": "partial_followup",
+   "C3": "final_t1",
+   "C4": "final_t1",
+   "C5": "unreadable_followup",
+   "C6": "partial_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "area_recalc",
+  "intake_attached": [
+   "C3",
+   "C5"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C5",
+    "motif": "ambiguous_reference"
+   },
+   {
+    "document_id": "C1",
+    "motif": "promise_automatic"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 5622,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "partial_followup",
+   "C2": "unreadable_followup",
+   "C3": "partial_auto",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "final_t2",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "area_recalc",
+  "intake_attached": [
+   "C4"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C5",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "C5",
+    "motif": "existence_only"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 8429,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "partial_followup",
+   "C3": "unavailable",
+   "C4": "final_t1",
+   "C5": "partial_followup",
+   "C6": "partial_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "furnished",
+  "intake_attached": [],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "C1",
+    "motif": "stale_then_correct"
+   },
+   {
+    "document_id": "C1",
+    "motif": "possession_report"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 3706,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "unreadable_followup",
+   "C3": "partial_auto",
+   "C4": "partial_auto",
+   "C5": "partial_auto",
+   "C6": "unreadable_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "furnished",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C1",
+    "motif": "conflict"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 8929,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "unreadable_followup",
+   "C2": "final_t1",
+   "C3": "partial_auto",
+   "C4": "final_t1",
+   "C5": "unreadable_followup",
+   "C6": "unreadable_followup",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "portfolio",
+  "intake_attached": [
+   "C4"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C5",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "C4",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 945,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "final_t2",
+   "C2": "final_t1",
+   "C3": "unreadable_followup",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "partial_auto",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "portfolio",
+  "intake_attached": [
+   "C2"
+  ],
+  "language": "de",
+  "motifs": [
+   {
+    "document_id": "C3",
+    "motif": "possession_report"
+   },
+   {
+    "document_id": "C4",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 5430,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "partial_followup",
+   "C3": "final_t1",
+   "C4": "final_t1",
+   "C5": "unavailable",
+   "C6": "partial_auto",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": false,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "arrears_offset",
+  "intake_attached": [
+   "C2"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C2",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C6",
+    "motif": "promise_automatic"
+   },
+   {
+    "document_id": "C5",
+    "motif": "denial_nonexistent"
+   },
+   {
+    "document_id": "C5",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 5066,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "final_t2",
+   "C2": "final_t1",
+   "C3": "partial_auto",
+   "C4": "final_t1",
+   "C5": "final_t1",
+   "C6": "unavailable",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "arrears_offset",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C6",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "C3",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C1",
+    "motif": "promise_automatic"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 4086,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t2",
+   "C3": "final_t1",
+   "C4": "partial_auto",
+   "C5": "final_t1",
+   "C6": "final_t1",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 1,
+  "family": "parking",
+  "intake_attached": [
+   "C3"
+  ],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C5",
+    "motif": "third_party_relay"
+   },
+   {
+    "document_id": "C5",
+    "motif": "existence_only"
+   },
+   {
+    "document_id": "C2",
+    "motif": "promise_automatic"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 159,
+  "trigger_doc": "C1"
+ },
+ {
+  "availability": {
+   "C1": "final_t1",
+   "C2": "final_t1",
+   "C3": "final_t1",
+   "C4": "unreadable_followup",
+   "C5": "final_t1",
+   "C6": "unavailable",
+   "C7": "irrelevant"
+  },
+  "cond_requirement": "R-RENOV",
+  "conditional_active": true,
+  "domain": "rent_increase",
+  "episode": 2,
+  "family": "parking",
+  "intake_attached": [],
+  "language": "en",
+  "motifs": [
+   {
+    "document_id": "C6",
+    "motif": "conflict"
+   },
+   {
+    "document_id": "C4",
+    "motif": "content_quote"
+   },
+   {
+    "document_id": "C3",
+    "motif": "third_party_relay"
+   }
+  ],
+  "split": "decisive",
+  "style_seed": 8186,
+  "trigger_doc": "C1"
+ }
+]

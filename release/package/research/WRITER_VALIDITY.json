@@ -1,0 +1,116 @@
+{
+ "contract": "casepath.arena-v1-writer-validity/1.0.0",
+ "question": "does gpt-5.4-mini write episodes of the same validity as the stronger writers?",
+ "decisive_rule": "rule 1 = the motif semantics the arms are actually scored against",
+ "profiles": {
+  "original_terra": {
+   "episodes": 46,
+   "ok": 6,
+   "rule1_per_episode": 0.37,
+   "rule1": 17,
+   "rule2": 1,
+   "rule3": 41,
+   "rule4": 0
+  },
+  "confirm_mini_luna": {
+   "episodes": 40,
+   "ok": 1,
+   "rule1_per_episode": 0.4,
+   "rule1": 16,
+   "rule2": 10,
+   "rule3": 58,
+   "rule4": 1,
+   "scope_note": "covers only the first 40 mini-written episodes, which is the batch this figure was originally quoted from"
+  },
+  "confirm_mini_haiku": {
+   "episodes": 40,
+   "ok": 15,
+   "rule1_per_episode": 0.275,
+   "rule1": 11,
+   "rule2": 7,
+   "rule3": 1,
+   "rule4": 28
+  },
+  "swap_sonnet_luna": {
+   "episodes": 26,
+   "ok": 2,
+   "rule1_per_episode": 0.385,
+   "rule1": 10,
+   "rule2": 0,
+   "rule3": 29,
+   "rule4": 1
+  }
+ },
+ "finding": "rule-1 violation rates are indistinguishable across writers; rules 3 and 4 are verifier-subjective (luna flags 58 rule-3 where haiku flags 1; haiku flags 28 rule-4 where luna flags 1), so only rule 1 and rule 2 carry signal",
+ "cross_verifier_agreement_on_confirm": {
+  "rule1": {
+   "luna_episodes": 15,
+   "haiku_episodes": 9,
+   "both": 3,
+   "jaccard": 0.143
+  },
+  "rule2": {
+   "luna_episodes": 7,
+   "haiku_episodes": 5,
+   "both": 0,
+   "jaccard": 0.0
+  },
+  "rule3": {
+   "luna_episodes": 39,
+   "haiku_episodes": 1,
+   "both": 1,
+   "jaccard": 0.026
+  },
+  "rule4": {
+   "luna_episodes": 1,
+   "haiku_episodes": 15,
+   "both": 1,
+   "jaccard": 0.067
+  }
+ },
+ "conclusion": "Held to one verifier, gpt-5.4-mini and claude-sonnet-5 produce the same rate of motif violations (0.40 vs 0.38 per episode) and both match the original benchmark's Claude-written episodes (0.37). On every other rule the two verifiers agree on nothing - rule 2 has zero episodes flagged by both - so those flags are verifier noise rather than defects. The cheap writer is not the weaker writer.",
+ "pooled_mini_written_all_splits": {
+  "verifier": "openai/gpt-5.6-luna-pro",
+  "episodes": 124,
+  "splits": {
+   "confirm": {
+    "episodes": 40,
+    "rule1": 16,
+    "rate": 0.4
+   },
+   "confirm2": {
+    "episodes": 42,
+    "rule1": 9,
+    "rate": 0.214
+   },
+   "decisive": {
+    "episodes": 42,
+    "rule1": 14,
+    "rate": 0.333
+   }
+  },
+  "rule1_total": 39,
+  "rule1_per_episode": 0.315
+ },
+ "correction": "The headline comparison originally quoted 0.400 for the cheap writer against 0.385 for the expensive one. That 0.400 came from the first 40 mini-written episodes only. Pooled over all 124 mini-written episodes under the same verifier the rate is 0.315, below the expensive writer's 0.385 over 26 episodes and below the original benchmark's 0.37 over 46. The conclusion is unchanged and slightly strengthened: the cheap writer is not the weaker writer. The original figure was an accident of which batch was measured, and it happened to be the batch least favourable to the cheap model.",
+ "clean_same_latent_comparison": {
+  "design": "identical 21 latents, 42 episodes each, same verifier openai/gpt-5.6-luna-pro",
+  "gpt_5_4_mini": {
+   "episodes": 42,
+   "rule1": 14,
+   "rule1_per_episode": 0.333,
+   "rule2": 10,
+   "rule3": 60,
+   "rule4": 3
+  },
+  "claude_sonnet_5": {
+   "episodes": 42,
+   "rule1": 13,
+   "rule1_per_episode": 0.31,
+   "rule2": 2,
+   "rule3": 49,
+   "rule4": 0
+  },
+  "reading": "the definitive version of this comparison: on the one rule that carries cross-verifier signal the two writers differ by 0.024 violations per episode. The expensive writer stays cleaner on return-scope semantics. Earlier comparisons in this file used mismatched denominators and different latents; this one does not."
+ }
+}

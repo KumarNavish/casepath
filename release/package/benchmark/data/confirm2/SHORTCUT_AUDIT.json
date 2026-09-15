@@ -1,0 +1,41 @@
+{
+ "contract": "casepath.arena-v1-shortcut-audit/1.0.0",
+ "cases": 42,
+ "controls": {
+  "constant": {
+   "family_weighted_U": -0.0654761904761905,
+   "t0_state_accuracy": 0.6054421768707483,
+   "families": 21
+  },
+  "random": {
+   "family_weighted_U": -0.47817460317460325,
+   "t0_state_accuracy": 0.6054421768707483,
+   "families": 21
+  },
+  "static-checklist": {
+   "family_weighted_U": -0.9325396825396827,
+   "t0_state_accuracy": 0.6054421768707483,
+   "families": 21
+  },
+  "keyword-router": {
+   "family_weighted_U": -0.5,
+   "t0_state_accuracy": 0.5578231292517006,
+   "families": 21
+  },
+  "domain-compiler": {
+   "family_weighted_U": -0.47420634920634924,
+   "t0_state_accuracy": 0.6326530612244897,
+   "families": 21
+  },
+  "family-mode": {
+   "t0_state_accuracy": 0.6870748299319728,
+   "t0_checklist_f1": 0.8535525321239606,
+   "episodes": 42
+  }
+ },
+ "thresholds": {
+  "max_control_U": 0.35,
+  "max_control_t0_state_accuracy": 0.75
+ },
+ "admitted": true
+}

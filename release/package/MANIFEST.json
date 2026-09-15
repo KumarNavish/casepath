@@ -1,0 +1,16 @@
+{
+ "contract": "casepath.release-manifest/1.0.0",
+ "repository_commit": "2c158c35f531f53961095eaa88153bcacf2a3852",
+ "working_tree_clean": false,
+ "files": 84,
+ "bytes": 16332730,
+ "missing_inputs": [
+  "research/ctes/FINAL_NOVELTY_AUDIT.md",
+  "research/ctes/MODEL_GENERALIZATION_RESULT.md",
+  "research/ctes/FINAL_PARETO_ANALYSIS.md",
+  "research/ctes/FINAL_METHOD.md",
+  "research/ctes/COST_ACCOUNTING_FINAL.json",
+  "research/ctes/CLAIMS_LEDGER.json"
+ ],
+ "note": "every file here is copied from the repository that produced the numbers; nothing is re-derived for the package. missing_inputs must be empty for a submission freeze."
+}
