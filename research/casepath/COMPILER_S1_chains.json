@@ -1,0 +1,2877 @@
+{
+ "compiled": [
+  {
+   "node_id": "termination_formal_compliance",
+   "facts": [
+    {
+     "fact_id": "termination_formal_compliance.f1",
+     "statement": "The landlord gave the termination notice in writing.",
+     "for_obligation_id": "o01",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-266l-para1-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "termination_formal_compliance.c1",
+       "must_show": "That the landlord's termination notice was communicated in written form.",
+       "from_propositions": [
+        "or-art-266l-para1-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "termination_formal_compliance"
+    },
+    {
+     "fact_id": "termination_formal_compliance.f2",
+     "statement": "The landlord used a form approved by the canton for the termination notice.",
+     "for_obligation_id": "o01",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-266l-para2-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "termination_formal_compliance.c2",
+       "must_show": "That the form used by the landlord for this termination was approved by the relevant canton.",
+       "from_propositions": [
+        "or-art-266l-para2-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "termination_formal_compliance"
+    },
+    {
+     "fact_id": "termination_formal_compliance.f3",
+     "statement": "The form used for the termination states how the tenant must proceed to challenge the termination or request an extension of the tenancy.",
+     "for_obligation_id": "o01",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-266l-para2-20260101-de#p2"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "termination_formal_compliance.c3",
+       "must_show": "That the termination form states the procedure for challenging the termination and for requesting an extension of the tenancy.",
+       "from_propositions": [
+        "or-art-266l-para2-20260101-de#p2"
+       ]
+      }
+     ],
+     "node_id": "termination_formal_compliance"
+    },
+    {
+     "fact_id": "termination_formal_compliance.f4",
+     "statement": "The tenant has a spouse or registered partner.",
+     "for_obligation_id": "o02",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-266n-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "termination_formal_compliance.c4",
+       "must_show": "Whether, at the time of termination, the tenant had a spouse or registered partner.",
+       "from_propositions": [
+        "or-art-266n-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "termination_formal_compliance"
+    },
+    {
+     "fact_id": "termination_formal_compliance.f5",
+     "statement": "The landlord served the termination notice separately on the tenant.",
+     "for_obligation_id": "o02",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-266n-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "termination_formal_compliance.c5",
+       "must_show": "That the tenant was served with the termination notice and that this service was separate from service on any spouse or registered partner.",
+       "from_propositions": [
+        "or-art-266n-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "termination_formal_compliance"
+    },
+    {
+     "fact_id": "termination_formal_compliance.f6",
+     "statement": "The landlord served the termination notice separately on the tenant's spouse or registered partner.",
+     "for_obligation_id": "o02",
+     "only_if": "The tenant has a spouse or registered partner.",
+     "from_propositions": [
+      "or-art-266n-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "termination_formal_compliance.c6",
+       "must_show": "That the tenant's spouse or registered partner was served with the termination notice and that this service was separate from service on the tenant.",
+       "from_propositions": [
+        "or-art-266n-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "termination_formal_compliance"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "termination_void",
+   "facts": [
+    {
+     "fact_id": "termination_void.f1",
+     "statement": "The termination does not comply with Articles 266l–266n.",
+     "for_obligation_id": "termination_void",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-266o-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "termination_void.c1",
+       "must_show": "Whether the termination complies with Articles 266l–266n, and specifically that it does not comply.",
+       "from_propositions": [
+        "or-art-266o-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "termination_void"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "good_faith_violation",
+   "facts": [
+    {
+     "fact_id": "good_faith_violation.f1",
+     "statement": "The termination violates the principle of good faith.",
+     "for_obligation_id": null,
+     "only_if": null,
+     "from_propositions": [
+      "or-art-271-para1-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "good_faith_violation.c1",
+       "must_show": "That the termination violates the principle of good faith.",
+       "from_propositions": [
+        "or-art-271-para1-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "good_faith_violation"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "submit_termination_challenge",
+   "facts": [],
+   "problems": []
+  },
+  {
+   "node_id": "unjustified_hardship",
+   "facts": [
+    {
+     "fact_id": "unjustified_hardship.f1",
+     "statement": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+     "for_obligation_id": "unjustified_hardship",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-272-para1-20260101-de#p2"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "unjustified_hardship.c1",
+       "must_show": "Whether, and in what way, termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+       "from_propositions": [
+        "or-art-272-para1-20260101-de#p2"
+       ]
+      }
+     ],
+     "node_id": "unjustified_hardship"
+    },
+    {
+     "fact_id": "unjustified_hardship.f2",
+     "statement": "The hardship caused by termination cannot be justified by the landlord’s interests.",
+     "for_obligation_id": "unjustified_hardship",
+     "only_if": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+     "from_propositions": [
+      "or-art-272-para1-20260101-de#p2"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "unjustified_hardship.c2",
+       "must_show": "The landlord’s interests relevant to the termination and whether those interests justify the hardship caused to the tenant or the tenant’s family.",
+       "from_propositions": [
+        "or-art-272-para1-20260101-de#p2"
+       ]
+      }
+     ],
+     "node_id": "unjustified_hardship"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "request_lease_extension",
+   "facts": [
+    {
+     "fact_id": "request_lease_extension.f1",
+     "statement": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+     "for_obligation_id": null,
+     "only_if": null,
+     "from_propositions": [
+      "or-art-272-para1-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "request_lease_extension.c1",
+       "must_show": "That termination would cause hardship for the tenant or the tenant’s family.",
+       "from_propositions": [
+        "or-art-272-para1-20260101-de#p1"
+       ]
+      },
+      {
+       "capability_id": "request_lease_extension.c2",
+       "must_show": "That the hardship cannot be justified by the landlord’s interests.",
+       "from_propositions": [
+        "or-art-272-para1-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "request_lease_extension"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "weigh_extension_interests",
+   "facts": [
+    {
+     "fact_id": "weigh_extension_interests.f1",
+     "statement": "The circumstances in which the tenancy contract was concluded.",
+     "for_obligation_id": "o03",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-272-para2-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "weigh_extension_interests.c1",
+       "must_show": "Shows the circumstances surrounding the conclusion of the tenancy contract.",
+       "from_propositions": [
+        "or-art-272-para2-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "weigh_extension_interests"
+    },
+    {
+     "fact_id": "weigh_extension_interests.f2",
+     "statement": "The content of the tenancy contract.",
+     "for_obligation_id": "o03",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-272-para2-20260101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "weigh_extension_interests.c2",
+       "must_show": "Shows the terms and content of the tenancy contract.",
+       "from_propositions": [
+        "or-art-272-para2-20260101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "weigh_extension_interests"
+    },
+    {
+     "fact_id": "weigh_extension_interests.f3",
+     "statement": "The duration of the tenancy.",
+     "for_obligation_id": "o03",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-272-para2-20260101-de#p2"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "weigh_extension_interests.c3",
+       "must_show": "Shows when the tenancy began and its duration.",
+       "from_propositions": [
+        "or-art-272-para2-20260101-de#p2"
+       ]
+      }
+     ],
+     "node_id": "weigh_extension_interests"
+    },
+    {
+     "fact_id": "weigh_extension_interests.f4",
+     "statement": "The personal, family, and economic circumstances of each party.",
+     "for_obligation_id": "o03",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-272-para2-20260101-de#p3"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "weigh_extension_interests.c4",
+       "must_show": "Shows each party's personal, family, and economic circumstances relevant to the weighing of interests.",
+       "from_propositions": [
+        "or-art-272-para2-20260101-de#p3"
+       ]
+      }
+     ],
+     "node_id": "weigh_extension_interests"
+    },
+    {
+     "fact_id": "weigh_extension_interests.f5",
+     "statement": "The conduct of each party.",
+     "for_obligation_id": "o03",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-272-para2-20260101-de#p3"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "weigh_extension_interests.c5",
+       "must_show": "Shows the conduct of each party relevant to the weighing of interests.",
+       "from_propositions": [
+        "or-art-272-para2-20260101-de#p3"
+       ]
+      }
+     ],
+     "node_id": "weigh_extension_interests"
+    },
+    {
+     "fact_id": "weigh_extension_interests.f6",
+     "statement": "The landlord has an own need for the premises for themselves, close relatives, or relatives by marriage.",
+     "for_obligation_id": "o03",
+     "only_if": "The landlord asserts or has an own need for the premises.",
+     "from_propositions": [
+      "or-art-272-para2-20260101-de#p4"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "weigh_extension_interests.c6",
+       "must_show": "Shows whether the landlord needs the premises for themselves, a close relative, or a relative by marriage, and identifies the person for whom the need exists.",
+       "from_propositions": [
+        "or-art-272-para2-20260101-de#p4"
+       ]
+      }
+     ],
+     "node_id": "weigh_extension_interests"
+    },
+    {
+     "fact_id": "weigh_extension_interests.f7",
+     "statement": "The urgency of the landlord's own need for the premises.",
+     "for_obligation_id": "o03",
+     "only_if": "The landlord asserts or has an own need for the premises.",
+     "from_propositions": [
+      "or-art-272-para2-20260101-de#p4"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "weigh_extension_interests.c7",
+       "must_show": "Shows the urgency of the landlord's own need for the premises.",
+       "from_propositions": [
+        "or-art-272-para2-20260101-de#p4"
+       ]
+      }
+     ],
+     "node_id": "weigh_extension_interests"
+    },
+    {
+     "fact_id": "weigh_extension_interests.f8",
+     "statement": "Conditions on the local market for residential and commercial premises.",
+     "for_obligation_id": "o03",
+     "only_if": null,
+     "from_propositions": [
+      "or-art-272-para2-20260101-de#p5"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "weigh_extension_interests.c8",
+       "must_show": "Shows the conditions in the relevant local market for residential and commercial premises.",
+       "from_propositions": [
+        "or-art-272-para2-20260101-de#p5"
+       ]
+      }
+     ],
+     "node_id": "weigh_extension_interests"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "conciliation_hearing",
+   "facts": [
+    {
+     "fact_id": "conciliation_hearing.f1",
+     "statement": "The conciliation authority attempted to reconcile the parties through informal negotiations.",
+     "for_obligation_id": "o04",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-201-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "conciliation_hearing.c1",
+       "must_show": "That the conciliation authority conducted or attempted informal negotiations between the parties for the purpose of reconciliation.",
+       "from_propositions": [
+        "zpo-art-201-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "conciliation_hearing"
+    },
+    {
+     "fact_id": "conciliation_hearing.f2",
+     "statement": "The conciliation authority sought an agreement between the parties that covered the entire tenancy.",
+     "for_obligation_id": "o04",
+     "only_if": null,
+     "from_propositions": [
+      "vmwg-art-21-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "conciliation_hearing.c2",
+       "must_show": "That the authority sought an agreement between the parties and that the agreement sought covered the entire tenancy.",
+       "from_propositions": [
+        "vmwg-art-21-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "conciliation_hearing"
+    },
+    {
+     "fact_id": "conciliation_hearing.f3",
+     "statement": "The hearing took place within two months of the applicable triggering event.",
+     "for_obligation_id": "o04",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-203-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "conciliation_hearing.c3",
+       "must_show": "The date on which the hearing took place and the date of the applicable triggering event, sufficient to determine that no more than two months elapsed.",
+       "from_propositions": [
+        "zpo-art-203-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "conciliation_hearing"
+    },
+    {
+     "fact_id": "conciliation_hearing.f4",
+     "statement": "The application was received by the conciliation authority.",
+     "for_obligation_id": "o04",
+     "only_if": "If the two-month period runs from receipt of the application.",
+     "from_propositions": [
+      "zpo-art-203-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "conciliation_hearing.c4",
+       "must_show": "The date on which the conciliation authority received the application.",
+       "from_propositions": [
+        "zpo-art-203-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "conciliation_hearing"
+    },
+    {
+     "fact_id": "conciliation_hearing.f5",
+     "statement": "The exchange of written submissions was completed.",
+     "for_obligation_id": "o04",
+     "only_if": "If the two-month period runs after completion of the exchange of written submissions.",
+     "from_propositions": [
+      "zpo-art-203-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "conciliation_hearing.c5",
+       "must_show": "The date on which the exchange of written submissions was completed.",
+       "from_propositions": [
+        "zpo-art-203-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "conciliation_hearing"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "agreement_reached",
+   "facts": [
+    {
+     "fact_id": "agreement_reached.f1",
+     "statement": "An agreement has been reached.",
+     "for_obligation_id": "zpo-art-208-para1-20250101-de#p2",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-208-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "agreement_reached.c1",
+       "must_show": "that the parties reached an agreement.",
+       "from_propositions": [
+        "zpo-art-208-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "agreement_reached"
+    },
+    {
+     "fact_id": "agreement_reached.f2",
+     "statement": "An agreement has been reached.",
+     "for_obligation_id": "zpo-art-208-para1-20250101-de#p3",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-208-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "agreement_reached.c2",
+       "must_show": "that the parties reached an agreement.",
+       "from_propositions": [
+        "zpo-art-208-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "agreement_reached"
+    },
+    {
+     "fact_id": "agreement_reached.f3",
+     "statement": "An agreement has been reached.",
+     "for_obligation_id": "zpo-art-208-para1-20250101-de#p4",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-208-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "agreement_reached.c3",
+       "must_show": "that the parties reached an agreement.",
+       "from_propositions": [
+        "zpo-art-208-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "agreement_reached"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "claimant_default",
+   "facts": [
+    {
+     "fact_id": "claimant_default.f1",
+     "statement": "The claimant is in default.",
+     "for_obligation_id": null,
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-206-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "claimant_default.c1",
+       "must_show": "That the claimant is in default.",
+       "from_propositions": [
+        "zpo-art-206-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "claimant_default"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "authorization_to_sue",
+   "facts": [
+    {
+     "fact_id": "authorization_to_sue.f1",
+     "statement": "No agreement has been reached in the conciliation matter.",
+     "for_obligation_id": "o05",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-209-para1-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "authorization_to_sue.c1",
+       "must_show": "Whether an agreement has been reached in the conciliation matter.",
+       "from_propositions": [
+        "zpo-art-209-para1-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "authorization_to_sue"
+    },
+    {
+     "fact_id": "authorization_to_sue.f2",
+     "statement": "The case is an \"all other cases\" case for which the authorization to sue must be issued to the claimant.",
+     "for_obligation_id": "o05",
+     "only_if": "No agreement has been reached and an authorization to sue is to be issued.",
+     "from_propositions": [
+      "zpo-art-209-para1-20250101-de#p5"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "authorization_to_sue.c2",
+       "must_show": "Whether the case falls within the category of all other cases under which the authorization to sue is issued to the claimant.",
+       "from_propositions": [
+        "zpo-art-209-para1-20250101-de#p5"
+       ]
+      }
+     ],
+     "node_id": "authorization_to_sue"
+    }
+   ],
+   "problems": []
+  },
+  {
+   "node_id": "file_court_action",
+   "facts": [
+    {
+     "fact_id": "file_court_action.f1",
+     "statement": "A conciliation attempt before a conciliation authority occurred before the decision proceedings.",
+     "for_obligation_id": "o06",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-197-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "file_court_action.c1",
+       "must_show": "that a conciliation attempt occurred before a conciliation authority and that it preceded the decision proceedings.",
+       "from_propositions": [
+        "zpo-art-197-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "file_court_action"
+    },
+    {
+     "fact_id": "file_court_action.f2",
+     "statement": "The authorization to bring the action was opened before the holder filed the action with the court.",
+     "for_obligation_id": "o06",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-209-para3-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "file_court_action.c2",
+       "must_show": "that the authorization to bring the action was opened and that its opening preceded filing of the court action by its holder.",
+       "from_propositions": [
+        "zpo-art-209-para3-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "file_court_action"
+    },
+    {
+     "fact_id": "file_court_action.f3",
+     "statement": "The action was brought within the applicable 30-day period.",
+     "for_obligation_id": "o06",
+     "only_if": "The dispute arises from the lease or tenancy of residential or commercial premises, or from agricultural tenancy.",
+     "from_propositions": [
+      "zpo-art-209-para4-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "file_court_action.c3",
+       "must_show": "the timing of the bringing of the action relative to the applicable 30-day period.",
+       "from_propositions": [
+        "zpo-art-209-para4-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "file_court_action"
+    },
+    {
+     "fact_id": "file_court_action.f4",
+     "statement": "The dispute arises from a residential, commercial, or agricultural lease relationship.",
+     "for_obligation_id": "o06",
+     "only_if": null,
+     "from_propositions": [
+      "zpo-art-243-para2-20250101-de#p3",
+      "zpo-art-247-para2-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "file_court_action.c4",
+       "must_show": "that the dispute arises from a residential, commercial, or agricultural lease relationship.",
+       "from_propositions": [
+        "zpo-art-243-para2-20250101-de#p3",
+        "zpo-art-247-para2-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "file_court_action"
+    },
+    {
+     "fact_id": "file_court_action.f5",
+     "statement": "The dispute affects deposit of rent or lease payments, protection against abusive rent or lease payments, protection against termination, or extension of the lease relationship.",
+     "for_obligation_id": "o06",
+     "only_if": "The dispute arises from a residential, commercial, or agricultural lease relationship.",
+     "from_propositions": [
+      "zpo-art-243-para2-20250101-de#p3",
+      "zpo-art-247-para2-20250101-de#p1"
+     ],
+     "capabilities": [
+      {
+       "capability_id": "file_court_action.c5",
+       "must_show": "which of the specified matters is affected by the dispute, including whether it concerns protection against termination or extension of the lease relationship.",
+       "from_propositions": [
+        "zpo-art-243-para2-20250101-de#p3",
+        "zpo-art-247-para2-20250101-de#p1"
+       ]
+      }
+     ],
+     "node_id": "file_court_action"
+    }
+   ],
+   "problems": []
+  }
+ ],
+ "requirements": [
+  {
+   "capability_id": "termination_formal_compliance.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "termination_notice_official_form"
+     ],
+     "why": "The official termination notice is a written document and can establish that the termination was communicated in writing."
+    }
+   ]
+  },
+  {
+   "capability_id": "termination_formal_compliance.c2",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "termination_notice_official_form"
+     ],
+     "why": "The official termination form can identify whether the prescribed canton-approved form was used."
+    }
+   ]
+  },
+  {
+   "capability_id": "termination_formal_compliance.c3",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "termination_notice_official_form"
+     ],
+     "why": "The termination form can be examined for the required information on challenging the termination and requesting a tenancy extension."
+    }
+   ]
+  },
+  {
+   "capability_id": "termination_formal_compliance.c4",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "marriage_certificate"
+     ],
+     "why": "A marriage certificate establishes that the tenant had a spouse at the relevant time."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "household_registration"
+     ],
+     "why": "Household registration can establish the tenant's recorded household and registered-partnership status at the time of termination."
+    }
+   ]
+  },
+  {
+   "capability_id": "termination_formal_compliance.c5",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "termination_notice_official_form",
+      "registered_mail_receipt",
+      "envelope_copy",
+      "marriage_certificate"
+     ],
+     "why": "The separately addressed notice, envelope, and registered-mail receipt, read with proof of marriage, can show service on the tenant separately from the spouse."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "termination_notice_official_form",
+      "registered_mail_receipt",
+      "envelope_copy",
+      "household_registration"
+     ],
+     "why": "The separately addressed notice, envelope, and registered-mail receipt, read with household-registration evidence, can show service on the tenant separately from a registered partner."
+    }
+   ]
+  },
+  {
+   "capability_id": "termination_formal_compliance.c6",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "termination_notice_official_form",
+      "registered_mail_receipt",
+      "envelope_copy",
+      "marriage_certificate"
+     ],
+     "why": "The separately addressed notice, envelope, and registered-mail receipt, read with proof of marriage, can show service on the spouse separately from the tenant."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "termination_notice_official_form",
+      "registered_mail_receipt",
+      "envelope_copy",
+      "household_registration"
+     ],
+     "why": "The separately addressed notice, envelope, and registered-mail receipt, read with household-registration evidence, can show service on a registered partner separately from the tenant."
+    }
+   ]
+  },
+  {
+   "capability_id": "termination_void.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "termination_notice_official_form",
+      "registered_mail_receipt",
+      "envelope_copy",
+      "marriage_certificate"
+     ],
+     "why": "These documents permit assessment of the prescribed form, required notice content, and separate service on married tenants, and can reveal a formal defect under Articles 266l–266n."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "termination_notice_official_form",
+      "registered_mail_receipt",
+      "envelope_copy",
+      "household_registration"
+     ],
+     "why": "These documents permit assessment of the prescribed form, required notice content, and separate service where the tenant has a registered partner, and can reveal a formal defect under Articles 266l–266n."
+    }
+   ]
+  },
+  {
+   "capability_id": "good_faith_violation.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "landlord_correspondence"
+     ],
+     "why": "Landlord correspondence can evidence the landlord's stated reasons, motive, or retaliatory conduct underlying the termination."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "landlord_correspondence",
+      "tenant_correspondence"
+     ],
+     "why": "Correspondence from both parties can establish the surrounding dispute and support an inference that the termination was contrary to good faith."
+    }
+   ]
+  },
+  {
+   "capability_id": "unjustified_hardship.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "hardship_evidence"
+     ],
+     "why": "Hardship evidence can document the nature and extent of the consequences of termination for the tenant or family."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "medical_certificate",
+      "household_registration"
+     ],
+     "why": "Medical and household records can together show health-related hardship and the affected household members."
+    },
+    {
+     "route_id": "r3",
+     "document_types": [
+      "replacement_housing_search_records",
+      "household_registration"
+     ],
+     "why": "Housing-search records and household registration can show difficulty obtaining suitable replacement housing for the tenant's household."
+    }
+   ]
+  },
+  {
+   "capability_id": "unjustified_hardship.c2",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "hardship_evidence",
+      "property_management_statement"
+     ],
+     "why": "Hardship evidence and a property-management statement allow the tenant's hardship to be weighed against the landlord's stated interests."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "hardship_evidence",
+      "landlord_correspondence"
+     ],
+     "why": "Hardship evidence and landlord correspondence allow comparison of the hardship with the landlord's asserted reasons for termination."
+    }
+   ]
+  },
+  {
+   "capability_id": "request_lease_extension.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "hardship_evidence"
+     ],
+     "why": "Hardship evidence can establish that ending the tenancy would cause hardship to the tenant or family."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "medical_certificate",
+      "household_registration"
+     ],
+     "why": "Medical and household records can jointly establish hardship affecting the tenant or the tenant's family."
+    },
+    {
+     "route_id": "r3",
+     "document_types": [
+      "replacement_housing_search_records",
+      "household_registration"
+     ],
+     "why": "Housing-search records and household registration can establish hardship arising from the inability to find suitable replacement housing for the household."
+    }
+   ]
+  },
+  {
+   "capability_id": "request_lease_extension.c2",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "hardship_evidence",
+      "property_management_statement"
+     ],
+     "why": "These documents allow the tenant's hardship to be compared with the landlord's stated interests in determining whether those interests justify it."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "hardship_evidence",
+      "landlord_correspondence"
+     ],
+     "why": "These documents allow the tenant's hardship to be compared with the landlord's asserted termination reasons in determining whether the hardship is justified."
+    }
+   ]
+  },
+  {
+   "capability_id": "weigh_extension_interests.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "landlord_correspondence",
+      "tenant_correspondence"
+     ],
+     "why": "Correspondence exchanged when the lease was made can document the surrounding circumstances and parties' representations at conclusion."
+    }
+   ]
+  },
+  {
+   "capability_id": "weigh_extension_interests.c2",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "lease_contract"
+     ],
+     "why": "The lease contract records the agreed contractual terms and content."
+    }
+   ]
+  },
+  {
+   "capability_id": "weigh_extension_interests.c3",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "lease_contract"
+     ],
+     "why": "The lease contract ordinarily states the commencement date and fixed or indefinite duration of the tenancy."
+    }
+   ]
+  },
+  {
+   "capability_id": "weigh_extension_interests.c4",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "hardship_evidence",
+      "household_registration",
+      "marriage_certificate",
+      "medical_certificate",
+      "property_management_statement"
+     ],
+     "why": "These documents can collectively substantiate the parties' relevant personal, family, medical, and economic circumstances."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "landlord_correspondence",
+      "tenant_correspondence",
+      "hardship_evidence"
+     ],
+     "why": "Party correspondence together with supporting hardship evidence can show the personal, family, and economic circumstances asserted by both parties."
+    }
+   ]
+  },
+  {
+   "capability_id": "weigh_extension_interests.c5",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "landlord_correspondence",
+      "tenant_correspondence"
+     ],
+     "why": "The parties' correspondence can evidence their respective conduct during the tenancy and dispute."
+    },
+    {
+     "route_id": "r2",
+     "document_types": [
+      "payment_reminder_letter",
+      "rent_payment_records",
+      "bank_statement",
+      "landlord_correspondence",
+      "tenant_correspondence"
+     ],
+     "why": "Payment records and reminders, read with the parties' correspondence, can establish payment-related and other relevant conduct by each party."
+    }
+   ]
+  },
+  {
+   "capability_id": "weigh_extension_interests.c6",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "landlord_correspondence"
+     ],
+     "why": "Landlord correspondence can state the claimed own-use need and identify the landlord, relative, or relative by marriage for whom the premises are required."
+    }
+   ]
+  },
+  {
+   "capability_id": "weigh_extension_interests.c7",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "landlord_correspondence"
+     ],
+     "why": "Landlord correspondence can explain the timing and urgency of the asserted own-use need."
+    }
+   ]
+  },
+  {
+   "capability_id": "weigh_extension_interests.c8",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "replacement_housing_search_records"
+     ],
+     "why": "Records of searches for replacement premises can evidence availability, pricing, and other conditions in the relevant local premises market."
+    }
+   ]
+  },
+  {
+   "capability_id": "conciliation_hearing.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "conciliation_authorisation_to_sue"
+     ],
+     "why": "An authorisation to sue issued after conciliation can establish that the authority conducted or attempted reconciliation between the parties."
+    }
+   ]
+  },
+  {
+   "capability_id": "conciliation_hearing.c2",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "conciliation_request",
+      "conciliation_authorisation_to_sue"
+     ],
+     "why": "The request identifies the tenancy dispute submitted for conciliation, while the authorisation to sue evidences the resulting conciliation process and failure to reach agreement."
+    }
+   ]
+  },
+  {
+   "capability_id": "conciliation_hearing.c3",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "conciliation_request",
+      "conciliation_authorisation_to_sue"
+     ],
+     "why": "The conciliation request can show the application-receipt triggering date, and the authorisation to sue can show the hearing or completion date needed to assess the two-month period."
+    }
+   ]
+  },
+  {
+   "capability_id": "conciliation_hearing.c4",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "conciliation_authorisation_to_sue"
+     ],
+     "why": "The conciliation authority's authorisation to sue can record the date on which it received the conciliation application."
+    }
+   ]
+  },
+  {
+   "capability_id": "conciliation_hearing.c5",
+   "routes": []
+  },
+  {
+   "capability_id": "agreement_reached.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "landlord_correspondence",
+      "tenant_correspondence"
+     ],
+     "why": "Correspondence from both parties can together show offer, acceptance, and the terms of an agreement."
+    }
+   ]
+  },
+  {
+   "capability_id": "agreement_reached.c2",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "landlord_correspondence",
+      "tenant_correspondence"
+     ],
+     "why": "Correspondence from both parties can together show offer, acceptance, and the terms of an agreement."
+    }
+   ]
+  },
+  {
+   "capability_id": "agreement_reached.c3",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "landlord_correspondence",
+      "tenant_correspondence"
+     ],
+     "why": "Correspondence from both parties can together show offer, acceptance, and the terms of an agreement."
+    }
+   ]
+  },
+  {
+   "capability_id": "claimant_default.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "property_management_statement"
+     ],
+     "why": "A property management statement can record arrears or another recorded default by the claimant."
+    }
+   ]
+  },
+  {
+   "capability_id": "authorization_to_sue.c1",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "conciliation_authorisation_to_sue"
+     ],
+     "why": "The conciliation authorisation to sue records the outcome of the conciliation matter, including whether an agreement was reached."
+    }
+   ]
+  },
+  {
+   "capability_id": "authorization_to_sue.c2",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "conciliation_authorisation_to_sue"
+     ],
+     "why": "The conciliation authorisation to sue identifies the basis or category under which it was issued."
+    }
+   ]
+  },
+  {
+   "capability_id": "file_court_action.c1",
+   "routes": []
+  },
+  {
+   "capability_id": "file_court_action.c2",
+   "routes": []
+  },
+  {
+   "capability_id": "file_court_action.c3",
+   "routes": []
+  },
+  {
+   "capability_id": "file_court_action.c4",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "lease_contract"
+     ],
+     "why": "The lease contract establishes that the dispute arises from a lease relationship and identifies its type."
+    }
+   ]
+  },
+  {
+   "capability_id": "file_court_action.c5",
+   "routes": [
+    {
+     "route_id": "r1",
+     "document_types": [
+      "conciliation_request"
+     ],
+     "why": "The conciliation request can identify the subject matter of the dispute, including termination protection or lease extension."
+    }
+   ]
+  }
+ ],
+ "chains": {
+  "contract": "casepath.obligation-compiler/1.0.0",
+  "chains": [
+   {
+    "document_types": [
+     "termination_notice_official_form"
+    ],
+    "route_id": "r1",
+    "capability_id": "termination_formal_compliance.c1",
+    "must_show": "That the landlord's termination notice was communicated in written form.",
+    "fact_id": "termination_formal_compliance.f1",
+    "fact": "The landlord gave the termination notice in writing.",
+    "only_if": null,
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266l-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266l-para1-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form"
+    ],
+    "route_id": "r1",
+    "capability_id": "termination_formal_compliance.c2",
+    "must_show": "That the form used by the landlord for this termination was approved by the relevant canton.",
+    "fact_id": "termination_formal_compliance.f2",
+    "fact": "The landlord used a form approved by the canton for the termination notice.",
+    "only_if": null,
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266l-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266l-para2-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form"
+    ],
+    "route_id": "r1",
+    "capability_id": "termination_formal_compliance.c3",
+    "must_show": "That the termination form states the procedure for challenging the termination and for requesting an extension of the tenancy.",
+    "fact_id": "termination_formal_compliance.f3",
+    "fact": "The form used for the termination states how the tenant must proceed to challenge the termination or request an extension of the tenancy.",
+    "only_if": null,
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266l-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266l-para2-20260101-de#p2"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "marriage_certificate"
+    ],
+    "route_id": "r1",
+    "capability_id": "termination_formal_compliance.c4",
+    "must_show": "Whether, at the time of termination, the tenant had a spouse or registered partner.",
+    "fact_id": "termination_formal_compliance.f4",
+    "fact": "The tenant has a spouse or registered partner.",
+    "only_if": null,
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266n-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266n-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "household_registration"
+    ],
+    "route_id": "r2",
+    "capability_id": "termination_formal_compliance.c4",
+    "must_show": "Whether, at the time of termination, the tenant had a spouse or registered partner.",
+    "fact_id": "termination_formal_compliance.f4",
+    "fact": "The tenant has a spouse or registered partner.",
+    "only_if": null,
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266n-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266n-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form",
+     "registered_mail_receipt",
+     "envelope_copy",
+     "marriage_certificate"
+    ],
+    "route_id": "r1",
+    "capability_id": "termination_formal_compliance.c5",
+    "must_show": "That the tenant was served with the termination notice and that this service was separate from service on any spouse or registered partner.",
+    "fact_id": "termination_formal_compliance.f5",
+    "fact": "The landlord served the termination notice separately on the tenant.",
+    "only_if": null,
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266n-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266n-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form",
+     "registered_mail_receipt",
+     "envelope_copy",
+     "household_registration"
+    ],
+    "route_id": "r2",
+    "capability_id": "termination_formal_compliance.c5",
+    "must_show": "That the tenant was served with the termination notice and that this service was separate from service on any spouse or registered partner.",
+    "fact_id": "termination_formal_compliance.f5",
+    "fact": "The landlord served the termination notice separately on the tenant.",
+    "only_if": null,
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266n-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266n-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form",
+     "registered_mail_receipt",
+     "envelope_copy",
+     "marriage_certificate"
+    ],
+    "route_id": "r1",
+    "capability_id": "termination_formal_compliance.c6",
+    "must_show": "That the tenant's spouse or registered partner was served with the termination notice and that this service was separate from service on the tenant.",
+    "fact_id": "termination_formal_compliance.f6",
+    "fact": "The landlord served the termination notice separately on the tenant's spouse or registered partner.",
+    "only_if": "The tenant has a spouse or registered partner.",
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266n-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266n-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form",
+     "registered_mail_receipt",
+     "envelope_copy",
+     "household_registration"
+    ],
+    "route_id": "r2",
+    "capability_id": "termination_formal_compliance.c6",
+    "must_show": "That the tenant's spouse or registered partner was served with the termination notice and that this service was separate from service on the tenant.",
+    "fact_id": "termination_formal_compliance.f6",
+    "fact": "The landlord served the termination notice separately on the tenant's spouse or registered partner.",
+    "only_if": "The tenant has a spouse or registered partner.",
+    "node_id": "termination_formal_compliance",
+    "node_label": "Determine whether the landlord's termination complies with the required termination formalities",
+    "activation": "active",
+    "authorities": [
+     "or-art-266n-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266n-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form",
+     "registered_mail_receipt",
+     "envelope_copy",
+     "marriage_certificate"
+    ],
+    "route_id": "r1",
+    "capability_id": "termination_void.c1",
+    "must_show": "Whether the termination complies with Articles 266l–266n, and specifically that it does not comply.",
+    "fact_id": "termination_void.f1",
+    "fact": "The termination does not comply with Articles 266l–266n.",
+    "only_if": null,
+    "node_id": "termination_void",
+    "node_label": "Termination is void",
+    "activation": "unresolved",
+    "authorities": [
+     "or-art-266o-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266o-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form",
+     "registered_mail_receipt",
+     "envelope_copy",
+     "household_registration"
+    ],
+    "route_id": "r2",
+    "capability_id": "termination_void.c1",
+    "must_show": "Whether the termination complies with Articles 266l–266n, and specifically that it does not comply.",
+    "fact_id": "termination_void.f1",
+    "fact": "The termination does not comply with Articles 266l–266n.",
+    "only_if": null,
+    "node_id": "termination_void",
+    "node_label": "Termination is void",
+    "activation": "unresolved",
+    "authorities": [
+     "or-art-266o-20260101-de"
+    ],
+    "propositions": [
+     "or-art-266o-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence"
+    ],
+    "route_id": "r1",
+    "capability_id": "good_faith_violation.c1",
+    "must_show": "That the termination violates the principle of good faith.",
+    "fact_id": "good_faith_violation.f1",
+    "fact": "The termination violates the principle of good faith.",
+    "only_if": null,
+    "node_id": "good_faith_violation",
+    "node_label": "Determine whether the termination violates good faith",
+    "activation": "active",
+    "authorities": [
+     "or-art-271-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-271-para1-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "route_id": "r2",
+    "capability_id": "good_faith_violation.c1",
+    "must_show": "That the termination violates the principle of good faith.",
+    "fact_id": "good_faith_violation.f1",
+    "fact": "The termination violates the principle of good faith.",
+    "only_if": null,
+    "node_id": "good_faith_violation",
+    "node_label": "Determine whether the termination violates good faith",
+    "activation": "active",
+    "authorities": [
+     "or-art-271-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-271-para1-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "hardship_evidence"
+    ],
+    "route_id": "r1",
+    "capability_id": "unjustified_hardship.c1",
+    "must_show": "Whether, and in what way, termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+    "fact_id": "unjustified_hardship.f1",
+    "fact": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+    "only_if": null,
+    "node_id": "unjustified_hardship",
+    "node_label": "Determine whether termination causes hardship not justified by the landlord's interests",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p2"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "medical_certificate",
+     "household_registration"
+    ],
+    "route_id": "r2",
+    "capability_id": "unjustified_hardship.c1",
+    "must_show": "Whether, and in what way, termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+    "fact_id": "unjustified_hardship.f1",
+    "fact": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+    "only_if": null,
+    "node_id": "unjustified_hardship",
+    "node_label": "Determine whether termination causes hardship not justified by the landlord's interests",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p2"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "replacement_housing_search_records",
+     "household_registration"
+    ],
+    "route_id": "r3",
+    "capability_id": "unjustified_hardship.c1",
+    "must_show": "Whether, and in what way, termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+    "fact_id": "unjustified_hardship.f1",
+    "fact": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+    "only_if": null,
+    "node_id": "unjustified_hardship",
+    "node_label": "Determine whether termination causes hardship not justified by the landlord's interests",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p2"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "hardship_evidence",
+     "property_management_statement"
+    ],
+    "route_id": "r1",
+    "capability_id": "unjustified_hardship.c2",
+    "must_show": "The landlord’s interests relevant to the termination and whether those interests justify the hardship caused to the tenant or the tenant’s family.",
+    "fact_id": "unjustified_hardship.f2",
+    "fact": "The hardship caused by termination cannot be justified by the landlord’s interests.",
+    "only_if": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+    "node_id": "unjustified_hardship",
+    "node_label": "Determine whether termination causes hardship not justified by the landlord's interests",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p2"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "hardship_evidence",
+     "landlord_correspondence"
+    ],
+    "route_id": "r2",
+    "capability_id": "unjustified_hardship.c2",
+    "must_show": "The landlord’s interests relevant to the termination and whether those interests justify the hardship caused to the tenant or the tenant’s family.",
+    "fact_id": "unjustified_hardship.f2",
+    "fact": "The hardship caused by termination cannot be justified by the landlord’s interests.",
+    "only_if": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+    "node_id": "unjustified_hardship",
+    "node_label": "Determine whether termination causes hardship not justified by the landlord's interests",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p2"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "hardship_evidence"
+    ],
+    "route_id": "r1",
+    "capability_id": "request_lease_extension.c1",
+    "must_show": "That termination would cause hardship for the tenant or the tenant’s family.",
+    "fact_id": "request_lease_extension.f1",
+    "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+    "only_if": null,
+    "node_id": "request_lease_extension",
+    "node_label": "Request an extension of the tenancy",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "medical_certificate",
+     "household_registration"
+    ],
+    "route_id": "r2",
+    "capability_id": "request_lease_extension.c1",
+    "must_show": "That termination would cause hardship for the tenant or the tenant’s family.",
+    "fact_id": "request_lease_extension.f1",
+    "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+    "only_if": null,
+    "node_id": "request_lease_extension",
+    "node_label": "Request an extension of the tenancy",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "replacement_housing_search_records",
+     "household_registration"
+    ],
+    "route_id": "r3",
+    "capability_id": "request_lease_extension.c1",
+    "must_show": "That termination would cause hardship for the tenant or the tenant’s family.",
+    "fact_id": "request_lease_extension.f1",
+    "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+    "only_if": null,
+    "node_id": "request_lease_extension",
+    "node_label": "Request an extension of the tenancy",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "hardship_evidence",
+     "property_management_statement"
+    ],
+    "route_id": "r1",
+    "capability_id": "request_lease_extension.c2",
+    "must_show": "That the hardship cannot be justified by the landlord’s interests.",
+    "fact_id": "request_lease_extension.f1",
+    "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+    "only_if": null,
+    "node_id": "request_lease_extension",
+    "node_label": "Request an extension of the tenancy",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "hardship_evidence",
+     "landlord_correspondence"
+    ],
+    "route_id": "r2",
+    "capability_id": "request_lease_extension.c2",
+    "must_show": "That the hardship cannot be justified by the landlord’s interests.",
+    "fact_id": "request_lease_extension.f1",
+    "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+    "only_if": null,
+    "node_id": "request_lease_extension",
+    "node_label": "Request an extension of the tenancy",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para1-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para1-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "route_id": "r1",
+    "capability_id": "weigh_extension_interests.c1",
+    "must_show": "Shows the circumstances surrounding the conclusion of the tenancy contract.",
+    "fact_id": "weigh_extension_interests.f1",
+    "fact": "The circumstances in which the tenancy contract was concluded.",
+    "only_if": null,
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "lease_contract"
+    ],
+    "route_id": "r1",
+    "capability_id": "weigh_extension_interests.c2",
+    "must_show": "Shows the terms and content of the tenancy contract.",
+    "fact_id": "weigh_extension_interests.f2",
+    "fact": "The content of the tenancy contract.",
+    "only_if": null,
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "lease_contract"
+    ],
+    "route_id": "r1",
+    "capability_id": "weigh_extension_interests.c3",
+    "must_show": "Shows when the tenancy began and its duration.",
+    "fact_id": "weigh_extension_interests.f3",
+    "fact": "The duration of the tenancy.",
+    "only_if": null,
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p2"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "hardship_evidence",
+     "household_registration",
+     "marriage_certificate",
+     "medical_certificate",
+     "property_management_statement"
+    ],
+    "route_id": "r1",
+    "capability_id": "weigh_extension_interests.c4",
+    "must_show": "Shows each party's personal, family, and economic circumstances relevant to the weighing of interests.",
+    "fact_id": "weigh_extension_interests.f4",
+    "fact": "The personal, family, and economic circumstances of each party.",
+    "only_if": null,
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p3"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence",
+     "hardship_evidence"
+    ],
+    "route_id": "r2",
+    "capability_id": "weigh_extension_interests.c4",
+    "must_show": "Shows each party's personal, family, and economic circumstances relevant to the weighing of interests.",
+    "fact_id": "weigh_extension_interests.f4",
+    "fact": "The personal, family, and economic circumstances of each party.",
+    "only_if": null,
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p3"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "route_id": "r1",
+    "capability_id": "weigh_extension_interests.c5",
+    "must_show": "Shows the conduct of each party relevant to the weighing of interests.",
+    "fact_id": "weigh_extension_interests.f5",
+    "fact": "The conduct of each party.",
+    "only_if": null,
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p3"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "payment_reminder_letter",
+     "rent_payment_records",
+     "bank_statement",
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "route_id": "r2",
+    "capability_id": "weigh_extension_interests.c5",
+    "must_show": "Shows the conduct of each party relevant to the weighing of interests.",
+    "fact_id": "weigh_extension_interests.f5",
+    "fact": "The conduct of each party.",
+    "only_if": null,
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p3"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence"
+    ],
+    "route_id": "r1",
+    "capability_id": "weigh_extension_interests.c6",
+    "must_show": "Shows whether the landlord needs the premises for themselves, a close relative, or a relative by marriage, and identifies the person for whom the need exists.",
+    "fact_id": "weigh_extension_interests.f6",
+    "fact": "The landlord has an own need for the premises for themselves, close relatives, or relatives by marriage.",
+    "only_if": "The landlord asserts or has an own need for the premises.",
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p4"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence"
+    ],
+    "route_id": "r1",
+    "capability_id": "weigh_extension_interests.c7",
+    "must_show": "Shows the urgency of the landlord's own need for the premises.",
+    "fact_id": "weigh_extension_interests.f7",
+    "fact": "The urgency of the landlord's own need for the premises.",
+    "only_if": "The landlord asserts or has an own need for the premises.",
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p4"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "replacement_housing_search_records"
+    ],
+    "route_id": "r1",
+    "capability_id": "weigh_extension_interests.c8",
+    "must_show": "Shows the conditions in the relevant local market for residential and commercial premises.",
+    "fact_id": "weigh_extension_interests.f8",
+    "fact": "Conditions on the local market for residential and commercial premises.",
+    "only_if": null,
+    "node_id": "weigh_extension_interests",
+    "node_label": "Competent authority weighs the parties' interests for the extension request",
+    "activation": "active",
+    "authorities": [
+     "or-art-272-para2-20260101-de"
+    ],
+    "propositions": [
+     "or-art-272-para2-20260101-de#p5"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "conciliation_authorisation_to_sue"
+    ],
+    "route_id": "r1",
+    "capability_id": "conciliation_hearing.c1",
+    "must_show": "That the conciliation authority conducted or attempted informal negotiations between the parties for the purpose of reconciliation.",
+    "fact_id": "conciliation_hearing.f1",
+    "fact": "The conciliation authority attempted to reconcile the parties through informal negotiations.",
+    "only_if": null,
+    "node_id": "conciliation_hearing",
+    "node_label": "Conciliation authority conducts informal reconciliation negotiations",
+    "activation": "active",
+    "authorities": [
+     "zpo-art-201-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-201-para1-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "conciliation_request",
+     "conciliation_authorisation_to_sue"
+    ],
+    "route_id": "r1",
+    "capability_id": "conciliation_hearing.c2",
+    "must_show": "That the authority sought an agreement between the parties and that the agreement sought covered the entire tenancy.",
+    "fact_id": "conciliation_hearing.f2",
+    "fact": "The conciliation authority sought an agreement between the parties that covered the entire tenancy.",
+    "only_if": null,
+    "node_id": "conciliation_hearing",
+    "node_label": "Conciliation authority conducts informal reconciliation negotiations",
+    "activation": "active",
+    "authorities": [
+     "vmwg-art-21-20250101-de"
+    ],
+    "propositions": [
+     "vmwg-art-21-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "conciliation_request",
+     "conciliation_authorisation_to_sue"
+    ],
+    "route_id": "r1",
+    "capability_id": "conciliation_hearing.c3",
+    "must_show": "The date on which the hearing took place and the date of the applicable triggering event, sufficient to determine that no more than two months elapsed.",
+    "fact_id": "conciliation_hearing.f3",
+    "fact": "The hearing took place within two months of the applicable triggering event.",
+    "only_if": null,
+    "node_id": "conciliation_hearing",
+    "node_label": "Conciliation authority conducts informal reconciliation negotiations",
+    "activation": "active",
+    "authorities": [
+     "zpo-art-203-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-203-para1-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "conciliation_authorisation_to_sue"
+    ],
+    "route_id": "r1",
+    "capability_id": "conciliation_hearing.c4",
+    "must_show": "The date on which the conciliation authority received the application.",
+    "fact_id": "conciliation_hearing.f4",
+    "fact": "The application was received by the conciliation authority.",
+    "only_if": "If the two-month period runs from receipt of the application.",
+    "node_id": "conciliation_hearing",
+    "node_label": "Conciliation authority conducts informal reconciliation negotiations",
+    "activation": "active",
+    "authorities": [
+     "zpo-art-203-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-203-para1-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "route_id": "r1",
+    "capability_id": "agreement_reached.c1",
+    "must_show": "that the parties reached an agreement.",
+    "fact_id": "agreement_reached.f1",
+    "fact": "An agreement has been reached.",
+    "only_if": null,
+    "node_id": "agreement_reached",
+    "node_label": "Record and sign the agreement",
+    "activation": "unresolved",
+    "authorities": [
+     "zpo-art-208-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-208-para1-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "route_id": "r1",
+    "capability_id": "agreement_reached.c2",
+    "must_show": "that the parties reached an agreement.",
+    "fact_id": "agreement_reached.f2",
+    "fact": "An agreement has been reached.",
+    "only_if": null,
+    "node_id": "agreement_reached",
+    "node_label": "Record and sign the agreement",
+    "activation": "unresolved",
+    "authorities": [
+     "zpo-art-208-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-208-para1-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "route_id": "r1",
+    "capability_id": "agreement_reached.c3",
+    "must_show": "that the parties reached an agreement.",
+    "fact_id": "agreement_reached.f3",
+    "fact": "An agreement has been reached.",
+    "only_if": null,
+    "node_id": "agreement_reached",
+    "node_label": "Record and sign the agreement",
+    "activation": "unresolved",
+    "authorities": [
+     "zpo-art-208-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-208-para1-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "property_management_statement"
+    ],
+    "route_id": "r1",
+    "capability_id": "claimant_default.c1",
+    "must_show": "That the claimant is in default.",
+    "fact_id": "claimant_default.f1",
+    "fact": "The claimant is in default.",
+    "only_if": null,
+    "node_id": "claimant_default",
+    "node_label": "Conciliation request is deemed withdrawn and proceedings are struck off",
+    "activation": "unresolved",
+    "authorities": [
+     "zpo-art-206-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-206-para1-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "conciliation_authorisation_to_sue"
+    ],
+    "route_id": "r1",
+    "capability_id": "authorization_to_sue.c1",
+    "must_show": "Whether an agreement has been reached in the conciliation matter.",
+    "fact_id": "authorization_to_sue.f1",
+    "fact": "No agreement has been reached in the conciliation matter.",
+    "only_if": null,
+    "node_id": "authorization_to_sue",
+    "node_label": "Record lack of agreement and issue authorization to sue to the claimant",
+    "activation": "active",
+    "authorities": [
+     "zpo-art-209-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-209-para1-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "conciliation_authorisation_to_sue"
+    ],
+    "route_id": "r1",
+    "capability_id": "authorization_to_sue.c2",
+    "must_show": "Whether the case falls within the category of all other cases under which the authorization to sue is issued to the claimant.",
+    "fact_id": "authorization_to_sue.f2",
+    "fact": "The case is an \"all other cases\" case for which the authorization to sue must be issued to the claimant.",
+    "only_if": "No agreement has been reached and an authorization to sue is to be issued.",
+    "node_id": "authorization_to_sue",
+    "node_label": "Record lack of agreement and issue authorization to sue to the claimant",
+    "activation": "active",
+    "authorities": [
+     "zpo-art-209-para1-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-209-para1-20250101-de#p5"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "lease_contract"
+    ],
+    "route_id": "r1",
+    "capability_id": "file_court_action.c4",
+    "must_show": "that the dispute arises from a residential, commercial, or agricultural lease relationship.",
+    "fact_id": "file_court_action.f4",
+    "fact": "The dispute arises from a residential, commercial, or agricultural lease relationship.",
+    "only_if": null,
+    "node_id": "file_court_action",
+    "node_label": "File an action with the court under the authorization to sue",
+    "activation": "active",
+    "authorities": [
+     "zpo-art-243-para2-20250101-de",
+     "zpo-art-247-para2-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-243-para2-20250101-de#p3",
+     "zpo-art-247-para2-20250101-de#p1"
+    ],
+    "fault": null
+   },
+   {
+    "document_types": [
+     "conciliation_request"
+    ],
+    "route_id": "r1",
+    "capability_id": "file_court_action.c5",
+    "must_show": "which of the specified matters is affected by the dispute, including whether it concerns protection against termination or extension of the lease relationship.",
+    "fact_id": "file_court_action.f5",
+    "fact": "The dispute affects deposit of rent or lease payments, protection against abusive rent or lease payments, protection against termination, or extension of the lease relationship.",
+    "only_if": "The dispute arises from a residential, commercial, or agricultural lease relationship.",
+    "node_id": "file_court_action",
+    "node_label": "File an action with the court under the authorization to sue",
+    "activation": "active",
+    "authorities": [
+     "zpo-art-243-para2-20250101-de",
+     "zpo-art-247-para2-20250101-de"
+    ],
+    "propositions": [
+     "zpo-art-243-para2-20250101-de#p3",
+     "zpo-art-247-para2-20250101-de#p1"
+    ],
+    "fault": null
+   }
+  ],
+  "evidence_gaps": [
+   {
+    "fault": "evidence_gap",
+    "node_id": "conciliation_hearing",
+    "activation": "active",
+    "fact_id": "conciliation_hearing.f5",
+    "capability_id": "conciliation_hearing.c5",
+    "must_show": "The date on which the exchange of written submissions was completed."
+   },
+   {
+    "fault": "evidence_gap",
+    "node_id": "file_court_action",
+    "activation": "active",
+    "fact_id": "file_court_action.f1",
+    "capability_id": "file_court_action.c1",
+    "must_show": "that a conciliation attempt occurred before a conciliation authority and that it preceded the decision proceedings."
+   },
+   {
+    "fault": "evidence_gap",
+    "node_id": "file_court_action",
+    "activation": "active",
+    "fact_id": "file_court_action.f2",
+    "capability_id": "file_court_action.c2",
+    "must_show": "that the authorization to bring the action was opened and that its opening preceded filing of the court action by its holder."
+   },
+   {
+    "fault": "evidence_gap",
+    "node_id": "file_court_action",
+    "activation": "active",
+    "fact_id": "file_court_action.f3",
+    "capability_id": "file_court_action.c3",
+    "must_show": "the timing of the bringing of the action relative to the applicable 30-day period."
+   }
+  ],
+  "counts": {
+   "chains": 45,
+   "evidence_gaps": 4,
+   "wrong_branch": 0,
+   "premature": 0,
+   "clean": 45
+  }
+ },
+ "checklist": {
+  "requests": [
+   {
+    "document_types": [
+     "marriage_certificate"
+    ],
+    "still_missing": [
+     "marriage_certificate"
+    ],
+    "justified_by": [
+     {
+      "node_id": "termination_formal_compliance",
+      "fact": "The tenant has a spouse or registered partner.",
+      "must_show": "Whether, at the time of termination, the tenant had a spouse or registered partner.",
+      "authorities": [
+       "or-art-266n-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "household_registration"
+    ],
+    "still_missing": [
+     "household_registration"
+    ],
+    "justified_by": [
+     {
+      "node_id": "termination_formal_compliance",
+      "fact": "The tenant has a spouse or registered partner.",
+      "must_show": "Whether, at the time of termination, the tenant had a spouse or registered partner.",
+      "authorities": [
+       "or-art-266n-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form",
+     "registered_mail_receipt",
+     "envelope_copy",
+     "marriage_certificate"
+    ],
+    "still_missing": [
+     "registered_mail_receipt",
+     "envelope_copy",
+     "marriage_certificate"
+    ],
+    "justified_by": [
+     {
+      "node_id": "termination_formal_compliance",
+      "fact": "The landlord served the termination notice separately on the tenant.",
+      "must_show": "That the tenant was served with the termination notice and that this service was separate from service on any spouse or registered partner.",
+      "authorities": [
+       "or-art-266n-20260101-de"
+      ]
+     },
+     {
+      "node_id": "termination_formal_compliance",
+      "fact": "The landlord served the termination notice separately on the tenant's spouse or registered partner.",
+      "must_show": "That the tenant's spouse or registered partner was served with the termination notice and that this service was separate from service on the tenant.",
+      "authorities": [
+       "or-art-266n-20260101-de"
+      ]
+     },
+     {
+      "node_id": "termination_void",
+      "fact": "The termination does not comply with Articles 266l–266n.",
+      "must_show": "Whether the termination complies with Articles 266l–266n, and specifically that it does not comply.",
+      "authorities": [
+       "or-art-266o-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "termination_notice_official_form",
+     "registered_mail_receipt",
+     "envelope_copy",
+     "household_registration"
+    ],
+    "still_missing": [
+     "registered_mail_receipt",
+     "envelope_copy",
+     "household_registration"
+    ],
+    "justified_by": [
+     {
+      "node_id": "termination_formal_compliance",
+      "fact": "The landlord served the termination notice separately on the tenant.",
+      "must_show": "That the tenant was served with the termination notice and that this service was separate from service on any spouse or registered partner.",
+      "authorities": [
+       "or-art-266n-20260101-de"
+      ]
+     },
+     {
+      "node_id": "termination_formal_compliance",
+      "fact": "The landlord served the termination notice separately on the tenant's spouse or registered partner.",
+      "must_show": "That the tenant's spouse or registered partner was served with the termination notice and that this service was separate from service on the tenant.",
+      "authorities": [
+       "or-art-266n-20260101-de"
+      ]
+     },
+     {
+      "node_id": "termination_void",
+      "fact": "The termination does not comply with Articles 266l–266n.",
+      "must_show": "Whether the termination complies with Articles 266l–266n, and specifically that it does not comply.",
+      "authorities": [
+       "or-art-266o-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "landlord_correspondence"
+    ],
+    "still_missing": [
+     "landlord_correspondence"
+    ],
+    "justified_by": [
+     {
+      "node_id": "good_faith_violation",
+      "fact": "The termination violates the principle of good faith.",
+      "must_show": "That the termination violates the principle of good faith.",
+      "authorities": [
+       "or-art-271-para1-20260101-de"
+      ]
+     },
+     {
+      "node_id": "weigh_extension_interests",
+      "fact": "The landlord has an own need for the premises for themselves, close relatives, or relatives by marriage.",
+      "must_show": "Shows whether the landlord needs the premises for themselves, a close relative, or a relative by marriage, and identifies the person for whom the need exists.",
+      "authorities": [
+       "or-art-272-para2-20260101-de"
+      ]
+     },
+     {
+      "node_id": "weigh_extension_interests",
+      "fact": "The urgency of the landlord's own need for the premises.",
+      "must_show": "Shows the urgency of the landlord's own need for the premises.",
+      "authorities": [
+       "or-art-272-para2-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "still_missing": [
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "justified_by": [
+     {
+      "node_id": "good_faith_violation",
+      "fact": "The termination violates the principle of good faith.",
+      "must_show": "That the termination violates the principle of good faith.",
+      "authorities": [
+       "or-art-271-para1-20260101-de"
+      ]
+     },
+     {
+      "node_id": "weigh_extension_interests",
+      "fact": "The circumstances in which the tenancy contract was concluded.",
+      "must_show": "Shows the circumstances surrounding the conclusion of the tenancy contract.",
+      "authorities": [
+       "or-art-272-para2-20260101-de"
+      ]
+     },
+     {
+      "node_id": "weigh_extension_interests",
+      "fact": "The conduct of each party.",
+      "must_show": "Shows the conduct of each party relevant to the weighing of interests.",
+      "authorities": [
+       "or-art-272-para2-20260101-de"
+      ]
+     },
+     {
+      "node_id": "agreement_reached",
+      "fact": "An agreement has been reached.",
+      "must_show": "that the parties reached an agreement.",
+      "authorities": [
+       "zpo-art-208-para1-20250101-de"
+      ]
+     },
+     {
+      "node_id": "agreement_reached",
+      "fact": "An agreement has been reached.",
+      "must_show": "that the parties reached an agreement.",
+      "authorities": [
+       "zpo-art-208-para1-20250101-de"
+      ]
+     },
+     {
+      "node_id": "agreement_reached",
+      "fact": "An agreement has been reached.",
+      "must_show": "that the parties reached an agreement.",
+      "authorities": [
+       "zpo-art-208-para1-20250101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "hardship_evidence"
+    ],
+    "still_missing": [
+     "hardship_evidence"
+    ],
+    "justified_by": [
+     {
+      "node_id": "unjustified_hardship",
+      "fact": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+      "must_show": "Whether, and in what way, termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     },
+     {
+      "node_id": "request_lease_extension",
+      "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+      "must_show": "That termination would cause hardship for the tenant or the tenant’s family.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "medical_certificate",
+     "household_registration"
+    ],
+    "still_missing": [
+     "medical_certificate",
+     "household_registration"
+    ],
+    "justified_by": [
+     {
+      "node_id": "unjustified_hardship",
+      "fact": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+      "must_show": "Whether, and in what way, termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     },
+     {
+      "node_id": "request_lease_extension",
+      "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+      "must_show": "That termination would cause hardship for the tenant or the tenant’s family.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "replacement_housing_search_records",
+     "household_registration"
+    ],
+    "still_missing": [
+     "replacement_housing_search_records",
+     "household_registration"
+    ],
+    "justified_by": [
+     {
+      "node_id": "unjustified_hardship",
+      "fact": "Termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+      "must_show": "Whether, and in what way, termination of the tenancy would cause hardship for the tenant or the tenant’s family.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     },
+     {
+      "node_id": "request_lease_extension",
+      "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+      "must_show": "That termination would cause hardship for the tenant or the tenant’s family.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "hardship_evidence",
+     "property_management_statement"
+    ],
+    "still_missing": [
+     "hardship_evidence",
+     "property_management_statement"
+    ],
+    "justified_by": [
+     {
+      "node_id": "unjustified_hardship",
+      "fact": "The hardship caused by termination cannot be justified by the landlord’s interests.",
+      "must_show": "The landlord’s interests relevant to the termination and whether those interests justify the hardship caused to the tenant or the tenant’s family.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     },
+     {
+      "node_id": "request_lease_extension",
+      "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+      "must_show": "That the hardship cannot be justified by the landlord’s interests.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "hardship_evidence",
+     "landlord_correspondence"
+    ],
+    "still_missing": [
+     "hardship_evidence",
+     "landlord_correspondence"
+    ],
+    "justified_by": [
+     {
+      "node_id": "unjustified_hardship",
+      "fact": "The hardship caused by termination cannot be justified by the landlord’s interests.",
+      "must_show": "The landlord’s interests relevant to the termination and whether those interests justify the hardship caused to the tenant or the tenant’s family.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     },
+     {
+      "node_id": "request_lease_extension",
+      "fact": "Termination would cause hardship for the tenant or the tenant’s family that cannot be justified by the landlord’s interests.",
+      "must_show": "That the hardship cannot be justified by the landlord’s interests.",
+      "authorities": [
+       "or-art-272-para1-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "hardship_evidence",
+     "household_registration",
+     "marriage_certificate",
+     "medical_certificate",
+     "property_management_statement"
+    ],
+    "still_missing": [
+     "hardship_evidence",
+     "household_registration",
+     "marriage_certificate",
+     "medical_certificate",
+     "property_management_statement"
+    ],
+    "justified_by": [
+     {
+      "node_id": "weigh_extension_interests",
+      "fact": "The personal, family, and economic circumstances of each party.",
+      "must_show": "Shows each party's personal, family, and economic circumstances relevant to the weighing of interests.",
+      "authorities": [
+       "or-art-272-para2-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "landlord_correspondence",
+     "tenant_correspondence",
+     "hardship_evidence"
+    ],
+    "still_missing": [
+     "landlord_correspondence",
+     "tenant_correspondence",
+     "hardship_evidence"
+    ],
+    "justified_by": [
+     {
+      "node_id": "weigh_extension_interests",
+      "fact": "The personal, family, and economic circumstances of each party.",
+      "must_show": "Shows each party's personal, family, and economic circumstances relevant to the weighing of interests.",
+      "authorities": [
+       "or-art-272-para2-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "payment_reminder_letter",
+     "rent_payment_records",
+     "bank_statement",
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "still_missing": [
+     "payment_reminder_letter",
+     "rent_payment_records",
+     "bank_statement",
+     "landlord_correspondence",
+     "tenant_correspondence"
+    ],
+    "justified_by": [
+     {
+      "node_id": "weigh_extension_interests",
+      "fact": "The conduct of each party.",
+      "must_show": "Shows the conduct of each party relevant to the weighing of interests.",
+      "authorities": [
+       "or-art-272-para2-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "replacement_housing_search_records"
+    ],
+    "still_missing": [
+     "replacement_housing_search_records"
+    ],
+    "justified_by": [
+     {
+      "node_id": "weigh_extension_interests",
+      "fact": "Conditions on the local market for residential and commercial premises.",
+      "must_show": "Shows the conditions in the relevant local market for residential and commercial premises.",
+      "authorities": [
+       "or-art-272-para2-20260101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "conciliation_authorisation_to_sue"
+    ],
+    "still_missing": [
+     "conciliation_authorisation_to_sue"
+    ],
+    "justified_by": [
+     {
+      "node_id": "conciliation_hearing",
+      "fact": "The conciliation authority attempted to reconcile the parties through informal negotiations.",
+      "must_show": "That the conciliation authority conducted or attempted informal negotiations between the parties for the purpose of reconciliation.",
+      "authorities": [
+       "zpo-art-201-para1-20250101-de"
+      ]
+     },
+     {
+      "node_id": "conciliation_hearing",
+      "fact": "The application was received by the conciliation authority.",
+      "must_show": "The date on which the conciliation authority received the application.",
+      "authorities": [
+       "zpo-art-203-para1-20250101-de"
+      ]
+     },
+     {
+      "node_id": "authorization_to_sue",
+      "fact": "No agreement has been reached in the conciliation matter.",
+      "must_show": "Whether an agreement has been reached in the conciliation matter.",
+      "authorities": [
+       "zpo-art-209-para1-20250101-de"
+      ]
+     },
+     {
+      "node_id": "authorization_to_sue",
+      "fact": "The case is an \"all other cases\" case for which the authorization to sue must be issued to the claimant.",
+      "must_show": "Whether the case falls within the category of all other cases under which the authorization to sue is issued to the claimant.",
+      "authorities": [
+       "zpo-art-209-para1-20250101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "conciliation_request",
+     "conciliation_authorisation_to_sue"
+    ],
+    "still_missing": [
+     "conciliation_request",
+     "conciliation_authorisation_to_sue"
+    ],
+    "justified_by": [
+     {
+      "node_id": "conciliation_hearing",
+      "fact": "The conciliation authority sought an agreement between the parties that covered the entire tenancy.",
+      "must_show": "That the authority sought an agreement between the parties and that the agreement sought covered the entire tenancy.",
+      "authorities": [
+       "vmwg-art-21-20250101-de"
+      ]
+     },
+     {
+      "node_id": "conciliation_hearing",
+      "fact": "The hearing took place within two months of the applicable triggering event.",
+      "must_show": "The date on which the hearing took place and the date of the applicable triggering event, sufficient to determine that no more than two months elapsed.",
+      "authorities": [
+       "zpo-art-203-para1-20250101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "property_management_statement"
+    ],
+    "still_missing": [
+     "property_management_statement"
+    ],
+    "justified_by": [
+     {
+      "node_id": "claimant_default",
+      "fact": "The claimant is in default.",
+      "must_show": "That the claimant is in default.",
+      "authorities": [
+       "zpo-art-206-para1-20250101-de"
+      ]
+     }
+    ]
+   },
+   {
+    "document_types": [
+     "conciliation_request"
+    ],
+    "still_missing": [
+     "conciliation_request"
+    ],
+    "justified_by": [
+     {
+      "node_id": "file_court_action",
+      "fact": "The dispute affects deposit of rent or lease payments, protection against abusive rent or lease payments, protection against termination, or extension of the lease relationship.",
+      "must_show": "which of the specified matters is affected by the dispute, including whether it concerns protection against termination or extension of the lease relationship.",
+      "authorities": [
+       "zpo-art-243-para2-20250101-de",
+       "zpo-art-247-para2-20250101-de"
+      ]
+     }
+    ]
+   }
+  ],
+  "count": 19
+ }
+}
