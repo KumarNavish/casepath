@@ -49,9 +49,11 @@ and tracing credentials, and forces deterministic reference mode.
    content appears separately from interpretation or process guidance.
 3. Assign an owner.
 4. Start the assessment and inspect the current process node.
-5. Open the evidence view and identify a missing item or unresolved condition.
-6. Export current status.
-7. Stop the server and replay the selected claim:
+5. Open **Agent review** and inspect the six-role reference chain, handoffs, and
+   recorded source grounding.
+6. Open the evidence view and identify a missing item or unresolved condition.
+7. Export current status.
+8. Stop the server and replay the selected claim:
 
 ```bash
 ./bin/casepath replay <claim-id>
@@ -68,6 +70,7 @@ Runtime files are ignored by Git:
 | --- | --- |
 | `.runtime/casepath-dev-v2` | pinned environment, source capsules, boot receipts, and temporary files |
 | `.runtime/casepath-data-v1/casepath.db` | durable hash-chained SQLite journal |
+| `.runtime/casepath-data-v1/agent-work-v1.sqlite3` | persisted six-role review work and events |
 | `.runtime/casepath-data-v1/artifact-registry` | locally registered source artifacts |
 | `casepath-api/artifacts` | generated source artifacts |
 | `casepath-public` | generated same-origin static build |
@@ -80,5 +83,6 @@ existing `.runtime/casepath-data-v1` to fix a launch error; preserve it and use
 
 - Run `./bin/casepath adapter-check examples/local_source_adapter.py` to verify
   the provider-neutral source registration boundary.
+- Read [Agent review workflow](AGENT_REVIEW.md) for the six-role and external-Facts boundaries.
 - Read [API and configuration](contracts-api.md) before calling mutations.
 - Read [Contributing](../CONTRIBUTING.md) before changing source.

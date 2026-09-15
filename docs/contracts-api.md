@@ -36,7 +36,7 @@ same-origin, lock, and durable-state guarantees.
 | GET | `/api/claims/{claim_id}` | legacy focused-demo claim detail |
 | GET | `/api/artifacts/{artifact_id}` | legacy artifact bytes |
 
-The browser's current 60-claim workflow uses the claim-loop workspace routes
+The browser's current 150-claim workflow uses the claim-loop workspace routes
 below. Older `/api/runs`, foundation, shadow, and native research routes remain
 for compatibility and tests; they are not the first integration surface for a
 new client.
@@ -66,6 +66,28 @@ schemas. Mutation requests require `X-CasePath-Idempotency-Key` and an expected
 revision where the schema defines one. Cursor tokens bind query, sort, page
 size, `as_of`, and the full journal roster. Concurrent state changes produce an
 explicit stale-cursor failure instead of skipped or duplicated rows.
+
+## Agent review API
+
+All paths below use `/api/agent-work/v1`. The browser exposes work requests and
+read projections; it does not expose arbitrary model tools.
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/capabilities` | six-role and external-worker capability projection |
+| GET | `/workforce` | latest review state across claims |
+| GET | `/claims/{claim_id}/context` | authority-bound review context |
+| GET | `/claims/{claim_id}/runs` | persisted runs for one claim |
+| POST | `/claims/{claim_id}/runs` | start a reference or explicitly external-Facts review |
+| GET | `/claims/{claim_id}/runs/{run_id}` | inspect one run |
+| GET | `/claims/{claim_id}/runs/{run_id}/events` | paged persisted work events |
+| POST | `/claims/{claim_id}/runs/{run_id}/resume` | resume the same recoverable run |
+
+Agent-work mutations require the same-origin `X-CasePath-Agent-Work: 1` guard.
+The normal launcher remains provider-free. External Facts additionally requires
+explicit server configuration and `facts_worker: "external_facts"`; invalid
+configuration is rejected rather than silently falling back. See
+[AGENT_REVIEW.md](AGENT_REVIEW.md).
 
 ## Source contracts
 

@@ -31,10 +31,11 @@ validated hash chain; replay reads it without repair.
 
 ## Source and evidence authority
 
-Each of the 60 cases has an immutable claim binding for the observable message,
-attachments, source registry, and static policy template. File hashes and
-self-hashes are verified before the API starts. An artifact identifier supplied
-by a caller is a lookup request, not proof of content or claim scope.
+Each of the 150 operational intake cases has an immutable claim binding for the
+observable message, attachments, source registry, and static policy template. File
+hashes and self-hashes are verified before the API starts. The legacy 60-case
+corpus remains unchanged for regression tests. An artifact identifier supplied by
+a caller is a lookup request, not proof of content or claim scope.
 
 An observation records what a source reports. An interpretation records its
 bounded meaning. A proposal recommends an action. Only a validated accepted
@@ -48,9 +49,13 @@ deterministic reference runner. The logical specialist roles and deterministic
 gates still execute, but no model or provider call occurs. This validates
 orchestration and authority mechanics, not the quality of model reasoning.
 
-The codebase retains guarded model interfaces and historical acceptance records.
-Paid native-source review is not verified for this standalone package and is
-outside the supported local path.
+The same application also mounts a persisted six-role Agent review layer. Its
+work database records source reads, proposals, handoffs, gates, and completion
+coverage but does not become claim lifecycle authority. `./bin/casepath dev` uses
+the provider-free reference Facts worker. A separately configured external Facts
+worker has been accepted through the same tools and gates; configuration or model
+failure cannot silently promote a claim or substitute another worker. See
+[Agent review workflow](AGENT_REVIEW.md).
 
 ## Runtime boundaries
 
@@ -60,6 +65,7 @@ outside the supported local path.
 | Generated source artifacts | `casepath-api/artifacts/artifact-manifest.json` |
 | Runtime source identity | immutable capsule and boot receipt |
 | Claim lifecycle | hash-chained `claim_loop_events` |
+| Agent review work | `agent-work-v1.sqlite3`; inspectable work, never lifecycle authority |
 | Local uploaded bytes | server-owned artifact registry receipts |
 | Browser and queue | read-only projections of validated state |
 

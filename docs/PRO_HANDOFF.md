@@ -13,11 +13,11 @@ session. The current source is:
 - Local product: `http://127.0.0.1:4173/` after `./bin/casepath dev`
 - First read: the root `README.md`, then this file and `AGENTS.md`
 
-The repository contains the claim workspace, source previews, evidence
-investigation, hash-chained journal, same-origin API, deterministic tests,
-release tools, and 60 public synthetic development claims. It does not contain
-the 90 reserved research inputs, credentials, local coordinator records, or a
-deployment target.
+The repository contains the complete 150-claim intake workspace, source previews,
+evidence investigation, hash-chained journal, persisted six-role Agent review
+layer, same-origin API, deterministic tests, release tools, and research/evaluation
+support files. It contains no private real claims, provider credentials, local
+coordinator state, or current hosted deployment handoff.
 
 ## Give Pro one bounded implementation task
 
@@ -66,8 +66,10 @@ operation; and desktop and mobile layouts when the change touches them.
 | API mounting | `casepath-api/casepath_api/app.py`, `claim_loop_router.py` |
 | Workspace state | `claim_workspace_v1.py`, `workspace_claim_loop_v1.py`, `workspace_operational_projection_v1.py` |
 | Evidence investigation | `native_live_workspace_v1.py`, `native_workspace_inquiry_v1.py`, `native_claim_loop_bridge_v1.py` |
+| Agent review | `agent_work/service.py`, `agent_work/runtime.py`, `agent_work/api.py`, `casepath/assets/agent-work-v1.*` |
 | Authority and persistence | `claim_loop_service.py`, `claim_loop_store.py`, `workspace_evidence_authority_v1.py` |
-| Public data | `casepath-api/casepath_api/corpora/synthetic-dev-60/manifest.json` |
+| Operational intake data | `casepath-api/casepath_api/corpora/synthetic-150/manifest.json` |
+| Legacy regression data | `casepath-api/casepath_api/corpora/synthetic-dev-60/manifest.json` |
 | Launch and release | `bin/casepath`, `casepath/tools/casepath_release.py`, `build_static_site.py` |
 | Tests | `casepath-api/tests/`, `casepath/tools/test_*.py`, `casepath-qa/` |
 
@@ -80,11 +82,14 @@ zero model calls, credential reads, or provider spend. It proves orchestration,
 source, journal, and UI mechanics. It does not prove model competence, legal
 correctness, real-world claim outcomes, or production readiness.
 
-Paid native-source review has not been verified for this standalone package.
-Historical release files describe guarded model acceptance criteria and failed
-closed attempts; they do not establish a currently accepted paid run. Keep
-unknown evidence sufficiency, deadlines, decisions, and readiness unknown until
-supported by admitted evidence and a supported processing cycle.
+The six-role Agent review path has been accepted against the actual installed
+application in deterministic reference mode, and one bounded external Facts-worker
+substitution has also been accepted through the same source tools and gates. The
+external proof used OpenRouter with `cohere/north-mini-code:free` for 6 genuine
+provider responses, then survived a credential-free restart without another model
+call. This establishes the integration path only; keep unknown evidence sufficiency,
+deadlines, decisions, and readiness unknown until supported by admitted evidence
+and a supported processing cycle. See [AGENT_REVIEW.md](AGENT_REVIEW.md).
 
 The named Render frontend and API host an older release from another source
 line. Do not deploy this repository or use those services to judge local work.

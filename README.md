@@ -4,7 +4,11 @@ CasePath is a local claims workbench for inspecting original sources, tracking
 evidence, recording handling actions, and replaying the resulting journal. This
 repository contains the complete standalone product, tests, release tools, and
 **all 150 original synthetic intake claims**. The default runtime is deterministic:
-it reads no model API key and makes no provider call.
+it reads no model API key and makes no provider call. The current workbench also
+includes a persisted six-role **Agent review** chain with inspectable source reads,
+handoffs, gates, process/evidence mappings, and readiness checks. An external model
+may replace Facts only through an explicit, bounded developer path; it is never an
+automatic fallback.
 
 For a manual ChatGPT Pro implementation session, start with
 [the Pro handoff](docs/PRO_HANDOFF.md). For local use, the path from a fresh
@@ -23,10 +27,12 @@ needs internet access. Later deterministic use requires no provider account,
 credential, database server, or cloud service. See [local setup](docs/setup.md)
 for platform details.
 
-Open **http://127.0.0.1:4173/**. Search for a claim, open its original message
-or attachment, assign an owner, start the assessment, inspect the missing
-evidence, and export the current status. Stop the server with Ctrl-C. The
-journal and registered artifacts remain under `.runtime/casepath-data-v1`.
+Open **http://127.0.0.1:4173/**. Search for a claim, inspect its original packet,
+start the assessment, and open **Agent review** to see the six specialists and their
+recorded handoffs. Evidence, process, correction, and next-action surfaces remain
+connected to the same authoritative claim journal. Stop the server with Ctrl-C.
+The journal, agent-work store, and registered artifacts remain under
+`.runtime/casepath-data-v1`.
 
 ## Useful commands
 
@@ -68,10 +74,17 @@ Deterministic tests establish product mechanics, not legal correctness, model
 quality, production readiness, or fitness for real claims. See
 [the intake-packet release](docs/INTAKE_PACKET_150.md) for provenance and scope.
 
-Paid native-source review has not been verified for this standalone package.
-The Render services named in historical release records run an older,
-separately sourced release. This repository has no deployment handoff and the
-local package should not be judged against those hosted services.
+A real external Facts-worker acceptance has now been verified against the actual
+installed application. The accepted run used OpenRouter with
+`cohere/north-mini-code:free`, produced 6 genuine provider responses, completed
+through the same grounded tools and deterministic gates, and survived a later
+credential-free restart without another model call. This proves one bounded
+external-worker substitution, not general model quality or legal correctness. See
+[Agent review workflow](docs/AGENT_REVIEW.md).
+
+The Render services named in historical release records run an older, separately
+sourced release. This repository has no deployment handoff and the local package
+should not be judged against those hosted services.
 
 ## Documentation
 
@@ -79,6 +92,7 @@ local package should not be judged against those hosted services.
 - [Local setup and first claim](docs/setup.md)
 - [Manual Pro implementation handoff](docs/PRO_HANDOFF.md)
 - [Architecture and authority](docs/architecture-authority.md)
+- [Agent review workflow and acceptance](docs/AGENT_REVIEW.md)
 - [API and configuration](docs/contracts-api.md)
 - [Troubleshooting and recovery](docs/troubleshooting.md)
 - [Contributing and source sealing](CONTRIBUTING.md)

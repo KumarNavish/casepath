@@ -1,3 +1,5 @@
+> **Historical migration record.** Statements about the predecessor 60-case package are preserved for provenance. Current operational scope is the 150-claim workspace plus Agent review; see [AGENT_REVIEW.md](AGENT_REVIEW.md).
+
 # Standalone repository provenance
 
 This repository was exported on 2026-09-12 from the public source commit

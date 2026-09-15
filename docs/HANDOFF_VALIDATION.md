@@ -1,3 +1,5 @@
+> **Historical predecessor validation.** This file records the earlier 60-case packaging handoff. The current 150-claim Agent review acceptance is documented in [AGENT_REVIEW.md](AGENT_REVIEW.md).
+
 # Handoff validation
 
 This record covers the source package exported to

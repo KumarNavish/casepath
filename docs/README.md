@@ -8,9 +8,11 @@ Use these documents in this order for a fresh local or manual Pro session:
    task and preserve the product boundaries.
 3. [Architecture and authority](architecture-authority.md) — understand which
    records can change claim state.
-4. [API and configuration](contracts-api.md) — same-origin routes, mutation
+4. [Agent review workflow](AGENT_REVIEW.md) — inspect the six-role chain, its
+   persisted handoffs, external Facts boundary, and accepted validation scope.
+5. [API and configuration](contracts-api.md) — same-origin routes, mutation
    requirements, and local runtime configuration.
-5. [Troubleshooting](troubleshooting.md) — diagnose source, port, environment,
+6. [Troubleshooting](troubleshooting.md) — diagnose source, port, environment,
    journal, and replay failures without losing state.
 
 Developer references:

@@ -1,3 +1,5 @@
+> **Historical UI release record.** The current product extends this surface with the persisted six-role Agent review and real external-Facts acceptance described in [AGENT_REVIEW.md](AGENT_REVIEW.md).
+
 # Claims journey UI release
 
 This change improves the existing claims workspace; it does not introduce a second workflow controller or change claim authority.
