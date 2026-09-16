@@ -62,3 +62,45 @@ another one. If the held-out scope is admitted and CasePath loses, that is the f
 
 The scope admitted under this protocol is read **once**, after the method is frozen, under
 `FINAL_PREREGISTRATION.md`. No tuning may use it.
+
+---
+
+# Amendment log
+
+The protocol is frozen. Amendments are appended here with the date, the evidence that forced them, and an explicit
+statement of which already-admitted scopes would not have passed the amended form. Nothing above is edited.
+
+## A1 — 2026-09-16 — add C8, observed branch closure
+
+**What forced it.** Rent increase passes C5 comfortably: 6 of its 11 contract documents are required by exactly one
+decision (55%, against a 25% threshold). Yet on 15 real cases the reference contract produced only **2 distinct
+checklists**, with 14 of 15 identical. The static task is saturated and cannot separate any two methods.
+
+**Why C5 missed it.** C5 asks whether closing a branch *would* remove a document. It never asks whether any such
+branch *does* close in the case distribution. Rent increase has six uniquely-owned documents, but all six belong to
+just two decisions — D3 (date of receipt) and D12 (substantive abusiveness) — and a first-contact customer message
+settles neither. The decisions that do get settled (D11 nine times, D5 and D6 four times each) own no document
+uniquely, so closing them changes nothing. Structural discriminability and observed discriminability came apart.
+
+**C8.** On a sample of at least 15 real cases of the scope, the reference contract must yield **≥ 3 distinct
+reference checklists**, and at least one branch-discriminating decision must be settled in **≥ 20%** of them.
+
+| | measured on rent increase |
+|---|---|
+| distinct reference checklists over 15 cases | 2 |
+| branch-discriminating decisions settled | D3 in 1/15 (7%), D12 in 1/15 (7%) |
+| C8 | **fails** |
+
+**Consequence, stated plainly.** Rent increase was admitted before C8 existed and **would not be admitted under it**.
+It is retained, because the work is done and the dynamic result on it is real, but it is hereafter reported as a
+scope that fails observed discriminability, and **no static-checklist claim is drawn from it**. Its role is the
+branch-intervention experiment, where the requirement is not that branches close on their own but that the system
+responds correctly when a fact closes one.
+
+C8 applies prospectively to every scope admitted after this date, including the held-out scope and the insurance
+transfer scope. A scope that fails C8 may still be used for intervention experiments, and may not carry a static
+claim.
+
+**Cost of the amendment.** C8 cannot be scored from sources alone — it needs a reference contract *and* an
+adjudicated sample of real cases. Admission therefore becomes more expensive than C1–C7 implied. That is the price
+of the criterion being about the case distribution rather than about the law.
