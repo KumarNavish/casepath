@@ -1,0 +1,52 @@
+{
+  "bfcl_commit": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+  "conditions": {
+    "full": {
+      "ast_accuracy": 0.0,
+      "ast_correct": 0,
+      "distinct_function_names": 0,
+      "distinct_normalized_calls": 0,
+      "function_name_accuracy": 0.0,
+      "function_name_correct": 0,
+      "parse_rate": 0.0,
+      "parse_valid": 0
+    },
+    "query_removed": {
+      "ast_accuracy": 0.0,
+      "ast_correct": 0,
+      "distinct_function_names": 0,
+      "distinct_normalized_calls": 0,
+      "function_name_accuracy": 0.0,
+      "function_name_correct": 0,
+      "parse_rate": 0.0,
+      "parse_valid": 0
+    }
+  },
+  "contract": "casepath.bfcl-positive-control/1.0.0",
+  "execution": {
+    "failed_or_unparseable": 400,
+    "physical_calls": 400,
+    "reported_cost_usd": 0.0,
+    "returned_models": []
+  },
+  "model": "google/gemini-3.8-flash",
+  "n": 200,
+  "protocol_commit": "dbad05fde48b3b9a2b21da0f42c1392eff1bc4d5",
+  "source_hashes": {
+    "checker": "2aae7a68461a8f76c0be3894c8901b66b56967a1989d3ab066051e3fb97f1538",
+    "data": "aef168155ebd74b7ac2401198b201343bc7d16d7a3d7e0d4e6d8ee82c6969b2a",
+    "gold": "244e00ce9395df948bcafc7bee64e8f9c87ef70887587d83cae45b13699f3047"
+  },
+  "wrong_pairing_permutation": {
+    "draws": 5000,
+    "null_95": [
+      0.0,
+      0.0
+    ],
+    "null_max": 0.0,
+    "null_mean": 0.0,
+    "observed_ast_accuracy": 0.0,
+    "p_ge_plus1": 1.0,
+    "seed": 20260916
+  }
+}

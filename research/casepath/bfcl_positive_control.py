@@ -46,7 +46,7 @@ def normalize(content):
 
 def provider_call(item,condition):
     import httpx
-    payload={'model':MODEL,'messages':[{'role':'system','content':SYSTEM},{'role':'user','content':make_user(item,condition=='query_removed')}], 'temperature':TEMP,'max_tokens':MAXTOK,'response_format':{'type':'json_object'},'usage':{'include':True},'provider':{'only':['google'],'allow_fallbacks':False}}
+    payload={'model':MODEL,'messages':[{'role':'system','content':SYSTEM},{'role':'user','content':make_user(item,condition=='query_removed')}], 'temperature':TEMP,'max_tokens':MAXTOK,'response_format':{'type':'json_object'},'usage':{'include':True},'provider':{'only':['google-ai-studio'],'allow_fallbacks':False}}
     headers={'Authorization':'Bearer '+KEY_FILE.read_text().strip(),'Content-Type':'application/json','HTTP-Referer':'https://casepath.local/research','X-Title':'CasePath BFCL validity audit'}
     t=time.time()
     try:
