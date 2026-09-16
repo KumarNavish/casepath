@@ -51,3 +51,35 @@ zero. Whether that reproduces here is the single most interesting thing this tra
 required for support.
 
 No amendment after the first termination result is read.
+
+---
+
+## Amendment T1 — 2026-09-16 — enlarge the sample; no arm outcome has been computed
+
+**The uninformative condition triggered.** On 24 pairs (3 per scenario), **13** have a non-empty expected
+withdrawal against a threshold of 15. Under the plan above, no primary comparison may be reported.
+
+**State of my own knowledge when making this amendment.** I have computed the reference sets and their properties
+— pair count, unanimity, expected-withdrawal sizes per scenario — and nothing else. I have **not** run
+`transfer_analysis.py`, and no withdrawal recall, precision, retention or control figure exists for any termination
+arm. The only arm output I have seen is the per-unit *request count* printed by the run log (b5 requests about 17
+of 18 catalogue documents), which is a property of the request, not of its correctness.
+
+**Why the sample, not the design, is at fault.** The non-empty rate is 13/24 ≈ 54%, and it is not uniform: two of
+the eight scenarios — `T5_conflicting_notices` and `T6_two_notices` — yield **zero** expected withdrawal in every
+case, because they are service-defect disputes in which no extension question arises for `DEC-09` to settle. The
+other six average 2.8. Three cases per scenario was simply too few.
+
+**The amendment.** Extend from 3 cases per scenario to all **50** termination cases, which at the observed 54%
+rate gives roughly 27 non-empty pairs. This changes the number of cases per scenario and **not** the scenario mix,
+the probe, the arms, the metric, the contract, the graph, or the criteria. The two structurally-zero scenarios stay
+in and will continue to contribute zeros, which is correct — they are part of the scope.
+
+**Why this is a power decision and not fishing.** The criterion it responds to is about whether the data can
+support an estimate, and its own wording says a trigger "would mean the intervention does not bite on these
+scenarios, which is a property of the scenarios, not evidence about the arms". Adding cases within the same eight
+scenarios tests that property with more data; it cannot select a scenario mix that favours any arm, and no arm
+outcome was available to select on.
+
+If the enlarged sample still yields fewer than 15 non-empty pairs, the transfer is reported as uninformative and
+no comparison is given. One read after that, and no further amendment.
