@@ -1,57 +1,63 @@
-# The pipeline runs end to end, and one scope does not discriminate
+# Where the work stands — 2026-09-16
 
-Every component of the chain now exists and has been executed on real Swiss law and a real claim from the
-150-claim corpus. This records what works, and the one finding that changes how the benchmark must be built.
+## The claim, as currently supportable
 
-## Components built
+A source-grounded process graph produces document requirements that carry a verifiable chain back to authoritative
+text, and that change when the case changes. **The second half is not yet demonstrated.** On development data the
+effect is small, its interval includes zero, and the arm with the best withdrawal recall has no obligation compiler
+at all.
 
-| stage | module | what it does |
-|---|---|---|
-| A + B | `process_induction_v1` | passages → typed propositions with exact quotes → graph, every object citing its propositions |
-| D | `case_interpreter_v1` | branch predicates → true / false / unresolved against a case, then deterministic activation |
-| E + F | `obligation_compiler_v1` | active node → required facts → evidence capabilities → document routes, with the four faults |
-| corpus | `authority_corpus_v1` | Fedlex Akoma Ntoso → exact passages, verified against the repository's own 19 |
+Two things the paper can state without qualification, because they are measured:
 
-Three grounding gates run automatically and all were clean on the full run: a proposition whose quote is
-not verbatim in its passage is dropped, a fact or capability citing an unknown proposition is reported, and
-a document route naming a type outside the catalogue is rejected.
+- Every request traces to a passage fetched from Fedlex and hashed, and every quoted span verifies as a verbatim
+  substring of it. The gate that enforces this caught a **fabricated statutory article** — VMWG Art. 19a, cited at
+  a consolidation date Fedlex does not serve, with a fluent and sourceless quote — inside a reference contract
+  authored to be authoritative.
+- The direct baseline's apparent responsiveness to the case is largely noise: of the documents it changed between
+  two materially different variants, **76% were ones the contract says should not have changed**.
 
-## The interpreter's rule holds
+## What is settled
 
-At intake the real claim leaves **all nine branch predicates unresolved**, so eleven of twelve nodes are
-unresolved and none is inactive. That is correct: a first customer message cannot establish whether a
-termination complied with the formalities or violated good faith. Those are exactly the determinations the
-process exists to make, and leaving them open is what keeps the evidence requests alive. An absence of
-evidence never became a false.
+| | |
+|---|---|
+| Authority corpus | 86 passages, OR / VMWG / ZPO / VVG, one extraction identity, hashed |
+| Reference contract | 12 decisions, 11 documents, 44 of 58 quotes verbatim-verified, voted document layer |
+| Corpus | 10 scenarios × exactly 5 cases = 50 clean rent-increase cases |
+| Split | 4 scenarios development, 6 confirmatory and **unread** |
+| Static task | saturated — 1 to 2 distinct checklists across cases; carries no claim |
+| Product surface | composes the four pipeline modules and adds no logic of its own |
 
-When a returned document arrives — the cantonal official form, served separately on the spouse — three
-predicates resolve, `termination_void` goes **inactive**, and two chains become wrong-branch requests.
+## Three defects found by measurement, not inspection
 
-## The finding that matters for the benchmark
+1. **No applicability gate.** The graph's entry node had no incoming condition, so the process assumed a rent
+   increase existed and could not be told otherwise. Still open.
+2. **Contradictory branch verdicts.** Alternatives out of one step were decided independently, so a claim and its
+   negation could both hold and every branch stayed alive. **Fixed** at `c43bc22`; the fix visibly unfreezes the
+   arm.
+3. **Coverage.** 8 of 13 nodes emitted no obligation and the graph modelled the forum where abusiveness is argued
+   but never the determination itself. **Repair in progress**: synthesis now requires a node for every substantive
+   standard the propositions state, and obligations wherever a party must show something. Re-induction yields
+   `determine_non_abusive_grounds` carrying the landlord's justification obligation — the mechanism the experiment
+   was looking for. Evaluation on development pairs is running.
 
-| | intake | after the form |
-|---|---|---|
-| clean chains | 38 | 36 |
-| wrong-branch chains | 0 | **2** |
-| justifications | 35 | **33** |
-| distinct requests | 19 | **19** |
-| distinct document types | 16 | **16** |
+## One analytical error, corrected
 
-Resolving the branch withdrew two justifications and produced two wrong-branch requests, exactly as
-designed. **But no document dropped off the checklist**, because on this scope the documents are
-over-determined: most are justified by several nodes at once, so losing one justification leaves the
-document still required by another.
+I computed that B5's maximum achievable withdrawal recall was 0.000 and committed a document calling the primary
+outcome structurally impossible. The computation pooled each node's document supply across cases when the compiler
+recompiles it per case, which turns an upper bound on supply into a false lower bound on release. Development data
+refuted it directly: B5 correctly withdrew two documents the computation said it never could. Corrected at
+`df63478`; the wrong version is retained in history and named in the corrected document.
 
-That is a real limitation of this scope, not of the machinery. The causal claim the paper wants — that
-resolving the process removes unnecessary requests — cannot be demonstrated on a graph where every document
-has three reasons to exist.
+## Held-out data
 
-**What the benchmark must therefore contain**, and what the sufficiency gate already flagged as available:
-cases where a document is justified by exactly one branch, so that resolving that branch removes it. The
-gate's S2 (rent increase, where a nullity finding under VMWG 19 forecloses the whole justification route)
-and S7 (legal-expenses cover, where a waiting-period exclusion removes the entire downstream obligation)
-both have that shape. The termination scope, for all its richness, does not.
+Unread. It will be read once — after the coverage repair is evaluated on development and the preregistration is
+rewritten with the changes logged, or to report a preregistered null if the repair does not move the development
+picture. Not spent on a system with known, specific, in-progress defects.
 
-This is the difference between a benchmark that measures the claim and one that cannot. It was found by
-running the pipeline rather than by reasoning about it, and it is why the next step is scope selection on
-discriminating power rather than on graph size.
+## Honest assessment
+
+The measurement apparatus is sound and has repeatedly caught real faults, including two of my own. The headline
+claim is not yet earned. What would earn it is the coverage repair working on development, followed by one clean
+read of the held-out scenarios — and if it does not work, the paper is a negative result with three well-diagnosed
+failure modes and a verification gate that caught a fabricated law, which is worth publishing and is not what was
+originally hoped for.
