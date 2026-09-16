@@ -1,5 +1,15 @@
 """The single confirmatory read. Fixed before the data existed; run once."""
 import sys, json, collections, random
+
+import os as _os
+_A = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "artifacts")
+if not _os.path.isdir(_A):
+    _A = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "casepath", "artifacts")
+def _p(name):
+    """Committed artifact if present, else the /tmp path the run originally wrote."""
+    c = _os.path.join(_A, _os.path.basename(name))
+    return c if _os.path.exists(c) else name
+
 sys.path.insert(0,'.')
 from pathlib import Path
 from casepath_api import contract_scoring_v1 as cs
@@ -82,14 +92,6 @@ print(f"withdrawal recall difference: {o5:+.3f}   95% CI [{lo5:+.3f}, {hi5:+.3f}
 # ITSELF dropping the same number of its own requested documents at random.
 import random as _rnd
 
-import os as _os
-_A = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "artifacts")
-if not _os.path.isdir(_A):
-    _A = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "casepath", "artifacts")
-def _p(name):
-    """Committed artifact if present, else the /tmp path the run originally wrote."""
-    c = _os.path.join(_A, _os.path.basename(name))
-    return c if _os.path.exists(c) else name
 
 _r=_rnd.Random(20260916)
 print("\n--- volume control: withdrawal recall above each arm's own random-drop baseline ---")

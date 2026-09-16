@@ -1,16 +1,18 @@
 """Model-generality: does b1's anti-correlation and b5's signal survive a change of reasoner?"""
 import sys, json, collections, random
-sys.path.insert(0,'.')
-from pathlib import Path
 
 import os as _os
 _A = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "artifacts")
 if not _os.path.isdir(_A):
-    _A = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "casepath", "artifacts")
+    _A = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "casepath", "artifacts")
 def _p(name):
     """Committed artifact if present, else the /tmp path the run originally wrote."""
     c = _os.path.join(_A, _os.path.basename(name))
     return c if _os.path.exists(c) else name
+
+sys.path.insert(0,'.')
+from pathlib import Path
+
 
 from casepath_api import contract_scoring_v1 as cs
 C=json.load(open("../research/casepath/reference_contracts/rent_increase.json"))
