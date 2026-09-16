@@ -1,0 +1,1476 @@
+{
+ "b1_direct": [
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "envelope_copy",
+    "property_management_statement",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "tenant_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  }
+ ],
+ "b2_retrieval": [
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.6,
+   "f1": 0.7499999999999999,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 6,
+   "n_reference": 10,
+   "burden": 6,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.6,
+   "f1": 0.7499999999999999,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 6,
+   "n_reference": 10,
+   "burden": 6,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "registered_mail_receipt",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  }
+ ],
+ "b3_graph_then_list": [
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "property_management_statement",
+    "registered_mail_receipt",
+    "tenant_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.7,
+   "f1": 0.8235294117647058,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "property_management_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 7,
+   "n_reference": 10,
+   "burden": 7,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.6,
+   "f1": 0.7499999999999999,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "property_management_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 6,
+   "n_reference": 10,
+   "burden": 6,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "property_management_statement",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  }
+ ],
+ "b3t_summary_then_list": [
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "property_management_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.6,
+   "f1": 0.7499999999999999,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 6,
+   "n_reference": 10,
+   "burden": 6,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.6,
+   "f1": 0.7499999999999999,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 6,
+   "n_reference": 10,
+   "burden": 6,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  }
+ ],
+ "b6_prior_composition": [
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.5,
+   "f1": 0.6666666666666666,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.6,
+   "f1": 0.7499999999999999,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "property_management_statement",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "renovation_cost_statement",
+    "tenant_correspondence"
+   ],
+   "n_requested": 6,
+   "n_reference": 10,
+   "burden": 6,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.4,
+   "f1": 0.5714285714285715,
+   "hit": [
+    "comparable_rents_evidence",
+    "envelope_copy",
+    "landlord_correspondence",
+    "registered_mail_receipt"
+   ],
+   "over_requested": [],
+   "missed": [
+    "cost_increase_statement",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "n_requested": 4,
+   "n_reference": 10,
+   "burden": 4,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 0,
+   "j_chain_shares_an_authority_with_the_contract": 0,
+   "j_chain_rate": 0.0,
+   "j_grounded_rate": 0.0,
+   "j_ungrounded": []
+  }
+ ],
+ "b5_induced_graph": [
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 4,
+   "j_chain_shares_an_authority_with_the_contract": 3,
+   "j_chain_rate": 0.4,
+   "j_grounded_rate": 0.3,
+   "j_ungrounded": [
+    "tenant_correspondence"
+   ]
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 4,
+   "j_chain_shares_an_authority_with_the_contract": 3,
+   "j_chain_rate": 0.4,
+   "j_grounded_rate": 0.3,
+   "j_ungrounded": [
+    "tenant_correspondence"
+   ]
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 4,
+   "j_chain_shares_an_authority_with_the_contract": 3,
+   "j_chain_rate": 0.4,
+   "j_grounded_rate": 0.3,
+   "j_ungrounded": [
+    "tenant_correspondence"
+   ]
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 4,
+   "j_chain_shares_an_authority_with_the_contract": 3,
+   "j_chain_rate": 0.4,
+   "j_grounded_rate": 0.3,
+   "j_ungrounded": [
+    "tenant_correspondence"
+   ]
+  },
+  {
+   "precision": 1.0,
+   "recall": 0.3,
+   "f1": 0.4615384615384615,
+   "hit": [
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "envelope_copy",
+    "landlord_correspondence",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 3,
+   "n_reference": 10,
+   "burden": 3,
+   "unjustified_burden": 0,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 4,
+   "j_chain_shares_an_authority_with_the_contract": 3,
+   "j_chain_rate": 0.4,
+   "j_grounded_rate": 0.3,
+   "j_ungrounded": [
+    "tenant_correspondence"
+   ]
+  },
+  {
+   "precision": 0.8,
+   "recall": 0.4,
+   "f1": 0.5333333333333333,
+   "hit": [
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [
+    "conciliation_request"
+   ],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "envelope_copy",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 1,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 4,
+   "j_chain_shares_an_authority_with_the_contract": 3,
+   "j_chain_rate": 0.4,
+   "j_grounded_rate": 0.3,
+   "j_ungrounded": [
+    "tenant_correspondence"
+   ]
+  },
+  {
+   "precision": 0.8,
+   "recall": 0.4,
+   "f1": 0.5333333333333333,
+   "hit": [
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [
+    "conciliation_request"
+   ],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "envelope_copy",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 1,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 4,
+   "j_chain_shares_an_authority_with_the_contract": 3,
+   "j_chain_rate": 0.4,
+   "j_grounded_rate": 0.3,
+   "j_ungrounded": [
+    "tenant_correspondence"
+   ]
+  },
+  {
+   "precision": 0.8,
+   "recall": 0.4,
+   "f1": 0.5333333333333333,
+   "hit": [
+    "landlord_correspondence",
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "over_requested": [
+    "conciliation_request"
+   ],
+   "missed": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "envelope_copy",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement"
+   ],
+   "n_requested": 5,
+   "n_reference": 10,
+   "burden": 5,
+   "unjustified_burden": 1,
+   "j_n_reference_documents": 10,
+   "j_documents_with_a_chain": 4,
+   "j_chain_shares_an_authority_with_the_contract": 3,
+   "j_chain_rate": 0.4,
+   "j_grounded_rate": 0.3,
+   "j_ungrounded": [
+    "tenant_correspondence"
+   ]
+  }
+ ]
+}
