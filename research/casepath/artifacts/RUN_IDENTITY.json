@@ -1,0 +1,89 @@
+{
+  "contract": "casepath.run-identity/1.0.0",
+  "limitation": "Historical arm runners persisted final successful unit outputs, not a per-call transport/error ledger. A 58/58 final roster proves no unit is missing from each committed artifact, but transient retries or failed calls before a final output cannot be reconstructed.",
+  "reference_adjudication": {
+    "artifact": "research/casepath/artifacts/conf_ref_raw.json",
+    "artifact_sha256": "50eb1b2c8a6ffc65c8a2d8568f003c709fa70023e5409dd0f7ae49b52ce8a8cd",
+    "max_tokens": 8000,
+    "model_from_runner": "openai/gpt-5.6-terra",
+    "provider_constraint": "openai",
+    "repeats_per_unit": 3,
+    "rows": 174,
+    "runner": "research/casepath/runners/conf_ref.py",
+    "runner_sha256": "ce9c7c7bf6a85d71b65e511a6217cb2772a2f9f4c67051fea9ced6ad8d20581e",
+    "system_prompt": "research/casepath/prompts/reference_adjudication_system.txt",
+    "system_prompt_sha256": "c7c7fc6561303b1982fd82c0e6b12b76d7f9b929a910eaed818c89fe7304a8aa",
+    "temperature": 0.0,
+    "unique_units": 58
+  },
+  "runs": {
+    "claude-haiku-4.5": {
+      "artifact": "research/casepath/artifacts/mm_haiku.json",
+      "artifact_sha256": "45ef6aff6230a0f6aa1e45ace097d80166cbc526d8415b748006256a96e48094",
+      "complete_58_unit_roster": true,
+      "max_tokens": 8000,
+      "model_from_runner": "anthropic/claude-haiku-4.5",
+      "model_values_embedded_in_rows": [
+        "anthropic/claude-haiku-4.5"
+      ],
+      "provider_constraint": null,
+      "rows": 58,
+      "runner": "research/casepath/runners/multimodel.py",
+      "runner_sha256": "8f456a745930fd2bf68b6de7a59985f5a8cc3bea92f669b6566a92996a0d3a7c",
+      "temperature": 0.0,
+      "unique_units": 58
+    },
+    "deepseek-v3.2": {
+      "artifact": "research/casepath/artifacts/mm_deepseek.json",
+      "artifact_sha256": "03fdc1ec166428ccd2b2ba424d7655dc199c764a16b0c199067999b0975f9a85",
+      "complete_58_unit_roster": true,
+      "max_tokens": 8000,
+      "model_from_runner": "deepseek/deepseek-v3.2",
+      "model_values_embedded_in_rows": [
+        "deepseek/deepseek-v3.2"
+      ],
+      "provider_constraint": null,
+      "rows": 58,
+      "runner": "research/casepath/runners/multimodel.py",
+      "runner_sha256": "8f456a745930fd2bf68b6de7a59985f5a8cc3bea92f669b6566a92996a0d3a7c",
+      "temperature": 0.0,
+      "unique_units": 58
+    },
+    "gemini-2.5-flash": {
+      "artifact": "research/casepath/artifacts/mm_gemini.json",
+      "artifact_sha256": "f9190c1217a417bd6772707f45ad7cf35c46a01dc23c526e97510659116be236",
+      "complete_58_unit_roster": true,
+      "max_tokens": 8000,
+      "model_from_runner": "google/gemini-2.5-flash",
+      "model_values_embedded_in_rows": [
+        "google/gemini-2.5-flash"
+      ],
+      "provider_constraint": null,
+      "rows": 58,
+      "runner": "research/casepath/runners/multimodel.py",
+      "runner_sha256": "8f456a745930fd2bf68b6de7a59985f5a8cc3bea92f669b6566a92996a0d3a7c",
+      "temperature": 0.0,
+      "unique_units": 58
+    },
+    "gpt-5.6-terra": {
+      "artifact": "research/casepath/artifacts/conf_arms.json",
+      "artifact_sha256": "39e344ed6ba9db7d81829f2063e4c8f121c2784da37e5f4121904918455f398a",
+      "complete_58_unit_roster": true,
+      "max_tokens": 8000,
+      "model_from_runner": "openai/gpt-5.6-terra",
+      "model_values_embedded_in_rows": [],
+      "provider_constraint": "openai",
+      "rows": 58,
+      "runner": "research/casepath/runners/conf_arms.py",
+      "runner_sha256": "0f012c2390d3b61c97a599b57dc61b33d156aabeb746108515b6ad9249799263",
+      "temperature": 0.0,
+      "unique_units": 58
+    }
+  },
+  "shared_prompt_code_sha256": {
+    "case_interpreter_v1.py": "3aae68b2c87f7b541c4986538bf16e24ec423535ffbdbfb8d55cd2d3293d8a89",
+    "checklist_baselines_v1.py": "e41539528fb69fbcd264e01c4e28249532f6d7fde3356eb86bcf23d1b2496b89",
+    "obligation_compiler_v1.py": "07d2f7808f6e67c02836b435eb68d8127e7a45fd3d65ed41a62ff6ada6beae8c",
+    "process_experiment_v1.py": "d3a47da3afe222f63364e29b531f3259429343615dda8530ff2e84f851fd56e3"
+  }
+}

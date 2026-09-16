@@ -41,3 +41,6 @@ The progress counter reported 178 valid parses among the first 180 completed cal
 ## Amendment A2 — family-balanced independent consensus (2026-09-16, during execution, before inspecting response content)
 
 The primary evaluator-independent reference is defined before reading any judgment: compute one majority status per decision within each of the three non-OpenAI adjudicator families, then give each family exactly one vote and apply the existing tie-falls-open rule across those three family votes. This consensus excludes the original GPT adjudicator entirely. The complete original-GPT + three-family matrix remains mandatory; consensus is not a replacement for any individual-family result.
+## Amendment A3 — consensus complete-case rule (2026-09-16, before response content inspection)
+
+Family-balanced consensus requires a valid family-level adjudication from all three external families for the unit. If any family has fewer than 2 valid calls for that unit, the unit is excluded from consensus analyses; the remaining families are not reweighted. The number and identities of excluded units are reported.
