@@ -69,28 +69,56 @@ def score(requested: Sequence[str], reference: Mapping[str, Any], held: Sequence
 
 
 def score_justification(chains: Sequence[Mapping[str, Any]], reference: Mapping[str, Any],
-                        contract: Mapping[str, Any]) -> dict[str, Any]:
+                        contract: Mapping[str, Any], graph: Mapping[str, Any] | None = None,
+                        propositions: Mapping[str, Mapping[str, Any]] | None = None) -> dict[str, Any]:
     """Whether a request that was right was right *for a reason the contract also holds*.
 
-    An arm can name the correct document from a wrong node. Document-set F1 cannot see that; this can. Arms that
-    emit no chains score zero here by construction, which is the honest reading: they offered no justification to
-    check, not a justification that failed.
+    Node identifiers cannot be compared directly. The induced graph and the reference contract are built
+    independently and partition the same law differently — on this scope the graph runs downstream into the
+    conciliation and court stages while the contract stays upstream on form, timing and substance. Neither is
+    wrong; they are different cuts. Requiring their names to match would measure agreement on vocabulary and call
+    it agreement on law.
+
+    They do share one vocabulary: the authorities. Both cite Fedlex passages by identifier, and those identifiers
+    are fixed by the corpus rather than chosen by either author. So a chain counts as justified when the authority
+    it rests on is an authority the contract also relies on for a decision that requires that same document.
+
+    Arms that emit no chains score zero, which is the honest reading — no justification was offered to check,
+    rather than one offered and found wanting.
     """
-    valid = {d["decision_id"] for d in contract["decisions"]}
-    by_doc: dict[str, set[str]] = collections.defaultdict(set)
+    # document -> authorities the contract relies on for it
+    want: dict[str, set[str]] = collections.defaultdict(set)
+    for d in contract["decisions"]:
+        auth = {e["authority_id"] for e in d.get("evidence") or []}
+        for doc in d.get("required_documents") or []:
+            want[doc] |= auth
+
+    node_auth: dict[str, set[str]] = collections.defaultdict(set)
+    if graph and propositions:
+        for n in graph.get("nodes") or []:
+            for pid in n.get("supported_by") or []:
+                pr = propositions.get(pid) or {}
+                for a in ([pr.get("authority_id")] if pr.get("authority_id") else pr.get("authorities") or []):
+                    if a:
+                        node_auth[n["node_id"]].add(a)
+
+    got: dict[str, set[str]] = collections.defaultdict(set)
     for ch in chains or []:
-        for doc in ch.get("document_types") or ([ch["document_type"]] if ch.get("document_type") else []):
-            src = ch.get("decision_id") or ch.get("node_id")
-            if src:
-                by_doc[doc].add(src)
+        docs = ch.get("document_types") or ([ch["document_type"]] if ch.get("document_type") else [])
+        auths = set(ch.get("authorities") or [])
+        src = ch.get("decision_id") or ch.get("node_id")
+        if src:
+            auths |= node_auth.get(src, set())
+        for doc in docs:
+            got[doc] |= auths
+
     ref_because = reference.get("because") or {}
-    grounded = sum(1 for doc in ref_because
-                   if by_doc.get(doc) and (by_doc[doc] & set(ref_because[doc]) or by_doc[doc] & valid))
-    aligned = sum(1 for doc in ref_because if by_doc.get(doc) and (by_doc[doc] & set(ref_because[doc])))
     n = len(ref_because)
-    return {"documents_with_a_chain": sum(1 for d in ref_because if by_doc.get(d)),
-            "chain_reaches_a_contract_decision": grounded,
-            "chain_reaches_the_right_decision": aligned,
-            "justified_rate": grounded / n if n else 0.0,
-            "correctly_justified_rate": aligned / n if n else 0.0,
-            "n_reference_documents": n}
+    with_chain = [d for d in ref_because if got.get(d)]
+    shared = [d for d in with_chain if got[d] & want.get(d, set())]
+    return {"n_reference_documents": n,
+            "documents_with_a_chain": len(with_chain),
+            "chain_shares_an_authority_with_the_contract": len(shared),
+            "chain_rate": len(with_chain) / n if n else 0.0,
+            "grounded_rate": len(shared) / n if n else 0.0,
+            "ungrounded": sorted(set(with_chain) - set(shared))}
