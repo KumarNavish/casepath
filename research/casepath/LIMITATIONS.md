@@ -28,13 +28,25 @@ more decisions, so closing any one decision releases nothing — and of intake m
 decisions and not the discriminating ones. No static claim is drawn, and the admission protocol was amended (C8,
 observed branch closure) because it could not have caught this in advance.
 
-## The obligation compiler does not pay for itself on these measurements
+## The development half was unrepresentative, and the split did not prevent it
 
-`b3_graph_then_list` — hand the model the graph, ask for a checklist — withdrew correctly more often than the full
-pipeline. What the compiler buys is narrower: better retention, fewer false withdrawals, and the only justification
-chains available to audit. If the contribution is stated as "the deterministic compilation improves the checklist",
-the evidence contradicts it. Stated as "the source-grounded process structure is what lets a checklist respond, and
-compilation makes the response auditable", it holds.
+All four development scenarios were form-defect disputes. Those activate graph nodes that carry no evidentiary
+obligation, so the compiler requested 3.9 documents and could release almost nothing — it scored 0.033 while the
+graph-only arm scored 0.148, and I amended the preregistered primary away from the compiler on that basis. The six
+held-out scenarios are substantive rent-calculation disputes, the compiler requests 10.0 documents, and it is the
+only arm with signal.
+
+Splitting on scenarios prevented case leakage and did not prevent the development half being systematically
+unlike the held-out half in the property that determined the outcome. Nothing in the admission protocol checks
+that development and held-out scenarios exercise the same parts of the process, and they did not.
+
+## Raw withdrawal recall is not comparable across arms
+
+The compiler requests about twice as many documents as the other arms, so it has more to drop. Its raw +0.553 over
+direct prediction is mostly that: its own random-drop baseline is 0.473 of the 0.591. The controlled figure is
++0.118. Any withdrawal metric reported without this control overstates whichever arm asks for more, and the
+preregistration did not require it — it was added after the read because the request counts made it obviously
+necessary.
 
 ## Coverage bounds what any intervention can show
 

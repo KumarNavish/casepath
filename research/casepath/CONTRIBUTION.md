@@ -36,9 +36,19 @@ released when every node requiring it closes.
 document, and *which* predicate closed it. A predictor cannot, because it has no representation in which anything
 closes — it re-predicts, and any change is incidental.
 
-**Measured.** Direct prediction withdrew correctly **0 times in 61 opportunities** across 14 development pairs
-while making 11 withdrawals. Supplying the source-grounded graph lifted withdrawal recall to 0.148, difference
-+0.148 with a 95% interval of [+0.038, +0.267] over scenario-level resampling.
+**Measured on 28 held-out pairs across 6 scenarios.** Compared against each arm dropping the same number of its
+own requested documents at random — the control that makes arms requesting different amounts comparable:
+
+| arm | withdrawal recall | own random baseline | excess | 95% CI |
+|---|---|---|---|---|
+| direct prediction | 0.038 | 0.099 | **−0.061** | [−0.096, −0.026] |
+| graph, then ask the model for a checklist | 0.121 | 0.110 | +0.011 | [−0.017, +0.038] |
+| full pipeline | 0.591 | 0.473 | **+0.118** | **[+0.106, +0.126]** |
+
+Direct prediction is *worse than chance*: the documents it stops requesting are anti-correlated with the ones the
+process releases. Giving the model the graph removes the anti-correlation without making the withdrawals
+informative. Only the compiled chain — node closes, obligation lapses, capability no longer needed, document
+released — carries signal, on all six scenarios individually.
 
 ## 3. An evaluation that scores change rather than level
 
@@ -56,10 +66,17 @@ anything.
 
 Reported because they are what the measurements support, not despite it.
 
-- **The deterministic obligation compiler does not pay for itself.** Handing the model the graph and asking for a
-  checklist beat the full pipeline on withdrawal recall. What compilation buys is retention, fewer false
-  withdrawals, and the only auditable chains — not a better checklist. The value is in the **process structure**;
-  the compiler makes the response *checkable*, not *better*.
+- **Development data can be unrepresentative in a way a scenario split does not prevent.** On the development
+  scenarios the compiler looked useless and I amended the preregistered primary away from it. On held-out data it
+  is the only arm that works. All four development scenarios were form-defect disputes, which activate nodes
+  carrying no evidentiary obligation, so the compiler requested 3.9 documents and had nothing to release; the
+  held-out substantive-calculation scenarios activate the nodes that do carry obligations and it requests 10.0.
+  The amendment was declared before the read, so the demoted comparison survives in the record — which is the only
+  reason the result is recoverable.
+- **Raw withdrawal recall is not comparable across arms that request different amounts.** The full pipeline's
+  +0.553 over direct prediction is mostly volume: dropping the same number of its own documents at random scores
+  0.473 of the 0.591. What survives the control is +0.118 [+0.106, +0.126] — real, and four times smaller than the
+  raw number.
 - **Two independent source-grounded inductions of one scope partition it differently** — one downstream into
   procedure, one upstream into validity — so the induced graph is not uniquely determined by the sources, and no
   claim that the method recovers *the* implied process is available.

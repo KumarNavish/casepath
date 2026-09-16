@@ -76,7 +76,44 @@ print("\n--- SECONDARY (formerly primary): b5_induced_graph vs b1_direct ---")
 o5,lo5,hi5,_=boot("b5_induced_graph","b1_direct")
 print(f"withdrawal recall difference: {o5:+.3f}   95% CI [{lo5:+.3f}, {hi5:+.3f}]  "
       f"{'excludes zero' if lo5>0 or hi5<0 else 'includes zero'}")
+# --- volume control -------------------------------------------------------------------------------
+# b5 requests about twice as many documents as the others, and an arm that asks for more has more to
+# drop. A raw withdrawal recall is therefore not comparable across arms. Compare each arm against
+# ITSELF dropping the same number of its own requested documents at random.
+import random as _rnd
+_r=_rnd.Random(20260916)
+print("\n--- volume control: withdrawal recall above each arm's own random-drop baseline ---")
+print(f"{'arm':24} {'recall':>7} {'random':>7} {'excess':>8} {'95% CI':>20}")
+ctl={}
+for arm in rows:
+    rs=[]
+    for o,m in pairs:
+        Ew=set(ref[o]["documents"])-set(ref[m]["documents"])
+        b=set(A[o]["arms"][arm].get("documents") or [])-set(HELD)
+        af=set(A[m]["arms"][arm].get("documents") or [])-set(HELD)
+        w=b-af; pool=sorted(b); rok=0.0
+        if pool and w:
+            for _ in range(300):
+                s_=set(_r.sample(pool,min(len(w),len(pool)))); rok+=len(s_&Ew)/300
+        rs.append({"sc":meta[o],"E":len(Ew),"ok":len(w&Ew),"rok":rok})
+    sc=collections.defaultdict(list)
+    for i,x in enumerate(rs): sc[x["sc"]].append(i)
+    names=list(sc); rb=random.Random(7)
+    def _lift(idx):
+        return (sum(rs[i]["ok"] for i in idx)-sum(rs[i]["rok"] for i in idx))/max(1e-9,sum(rs[i]["E"] for i in idx))
+    obs=_lift(range(len(rs))); d=[]
+    for _ in range(5000):
+        idx=[i for _ in names for i in sc[names[rb.randrange(len(names))]]]
+        d.append(_lift(idx))
+    d.sort()
+    E=sum(x["E"] for x in rs); ok=sum(x["ok"] for x in rs); rk=sum(x["rok"] for x in rs)
+    ctl[arm]={"recall":ok/E,"random":rk/E,"excess":obs,"ci":[d[125],d[4875]]}
+    tag="anti-correlated" if d[4875]<0 else ("real signal" if d[125]>0 else "no signal")
+    print(f"{arm:24} {ok/E:7.3f} {rk/E:7.3f} {obs:+8.3f}  [{d[125]:+.3f}, {d[4875]:+.3f}]  {tag}")
+print("  An interval above zero means the arm's choice of WHICH documents to drop carries information.")
+print("  An interval below zero means its withdrawals are worse than dropping at random.")
+
 Path("/tmp/confirmatory_result.json").write_text(json.dumps(
-  {"pairs":len(pairs),"rows":rows,"primary":{"delta":o,"ci":[lo,hi],"retention_delta":rd,"supported":ok},
+  {"pairs":len(pairs),"rows":rows,"volume_control":ctl,"primary":{"delta":o,"ci":[lo,hi],"retention_delta":rd,"supported":ok},
    "secondary_b5":{"delta":o5,"ci":[lo5,hi5]}},ensure_ascii=False,indent=1))
 print("\nwritten /tmp/confirmatory_result.json")
