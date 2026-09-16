@@ -1,0 +1,512 @@
+{
+ "contract": "casepath.reference-contract/1.0.0",
+ "scope": "rent_increase",
+ "label": "Tenancy: a tenant challenging a rent increase, including nullity for defect of form",
+ "scope_statement": "TENANCY (Switzerland, federal law): a residential or commercial tenant challenging a rent increase — or another unilateral change of the lease to the tenant's detriment — notified by the landlord under OR 269d, INCLUDING the branch in which the increase is null for defect of form (OR 269d Abs. 2 read with VMWG Art. 19/19a and the cantonally approved form). Runs from the applicability gate (OR 253a/253b) through characterisation of the communication and of the rent regime (ordinary / index-linked OR 269b / staggered OR 269c), the formal validity and content of the notification, the nullity determination, the timing rules (OR 269d Abs. 1; VMWG 17 Abs. 3, 19 Abs. 2, 19a), the 30-day challenge to the conciliation authority (OR 270b Abs. 1), the conciliation procedure (ZPO 197-213), the ROLE-REVERSED allocation of the Klagebewilligung (ZPO 209 Abs. 1 lit. a), the 30-day Klagefrist (ZPO 209 Abs. 4) and the court stage in the simplified procedure (ZPO 243 Abs. 2 lit. c, 244, 247 Abs. 2), plus the rent owed pendente lite (OR 270e), the cost regime (ZPO 113, 207) and the separately-clocked contestability of a termination coupled to the increase (OR 271a Abs. 1 lit. b/d, 273 Abs. 1).\n\nEXCLUDED: the challenge of the INITIAL rent (OR 270, VMWG 19 Abs. 3) and the termination/extension procedure itself (OR 271 ff., 272 ff.) beyond the single determination D25.\n\nSTATUTORY SNAPSHOTS: OR (SR 220) consolidated 01.01.2026; ZPO (SR 272) consolidated 01.01.2025; VMWG (SR 221.213.11) consolidated 01.10.2025.\n\nAUTHORITY-ID CONVENTION. Ids of the form <act>-art-<n>-para<n>-<consolidation>-de are taken verbatim from swiss-authority-bundle-v1.json where that bundle contains the passage (OR 269a, 269d Abs. 1-2, 270b Abs. 1, 271 Abs. 1-2, 273 Abs. 1; VMWG 11 Abs. 1, 19 Abs. 1-2, 20, 21, 22; ZPO 197, 198, 200, 201, 202 Abs. 1, 203 Abs. 1, 205 Abs. 1, 206 Abs. 1, 208 Abs. 1, 209 Abs. 1/3/4, 243 Abs. 2, 244 Abs. 3, 247 Abs. 2). Passages NOT in the bundle carry the same id shape with the consolidation date of the Fedlex snapshot independently fetched and string-matched for this contract. Operational sources carry ids <canton>-<artefact>-<date>.\n\nQUOTE NORMALISATION (declared so every quote is mechanically checkable). All quotes were string-matched after collapsing runs of whitespace and non-breaking spaces. Two rendering differences are absorbed by that normalisation and by nothing else: (a) Fedlex's HTML renders an article suffix letter with an intervening space (\"Artikel 269 a\", \"Art. 19 a\", \"1 bis\") where the XML and the bundle have none (\"Artikel 269a\", \"Art. 19a\", \"1bis\") — quotes are given in the XML/bundle form; (b) the cantonal PDFs break words across lines with a soft hyphen — quotes were chosen to avoid hyphenated spans wherever possible, and where a span could not be avoided the hyphen-plus-linebreak is normalised to a plain hyphen. Every quote below was re-verified by this adjudication, not taken on either annotator's word.\n\nADJUDICATION RECORD — what was verified, merged, corrected and dropped.\n\nVERIFIED INDEPENDENTLY: the three Fedlex consolidated texts were re-fetched (OR 2 660 898 bytes, ZPO 508 829, VMWG 45 554, all HTTP 200, sizes matching both annotators' reports); the Aargau Schlichtungsgesuch re-hashes to 588ae9817d29420c10f1145c7607ff2867fbcb5ebd8403a7136e8f71242735aa, the Zurich Formular-Mietzinserhoehung to 4c02dfcb92d096e435b9a4935bc20be4284b5f73df7dacef52ae837b37e27ccf, the Geneva Requete-contestation-hausse to d9572223ebb9527283438fe59216b96bc80acbd4fdfb0519b1b5451d06fcd48a, the Zurich Merkblatt to 3254a78daddf68b07b7f188743302385f3b8fc7ab65109bb62f9c0bc306c6037 and the Zurich Mietzinsanfechtung form to 2a4359be32824ed66fb7d0b8b7eb6a7340c4ee2a55a2ea622e62e7e8b910994d — all matching what the annotators recorded. 130 distinct quoted spans were batch-matched against those sources; 0 failed.\n\nKEPT FROM ANNOTATOR 2 ALONE (annotator 1 missed them, the source supports them): the applicability gate D1/P1 (OR 253a Abs. 1, 253b Abs. 2, 253b Abs. 3) — a predicate whose falsity closes the entire scope before any form question arises; the ZPO 142/143/144/145 mechanics of the 30-day period, in particular that the Fristenstillstand does NOT apply to the conciliation procedure (ZPO 145 Abs. 2 lit. a) and that the period cannot be extended (ZPO 144 Abs. 1); the waiver/exception determination D15 (ZPO 198, 199), which is what makes ZPO 244 Abs. 3 lit. b a genuine document ALTERNATIVE rather than a single required annex; the personal-appearance exemptions and the duty to inform the opposing party of a representation in advance (ZPO 204 Abs. 3, Abs. 4); the cost determination D24 (ZPO 113 Abs. 1, 113 Abs. 2 lit. c against ZPO 207 Abs. 1 lit. c); the both-parties-default terminal (ZPO 206 Abs. 3); the reinstatement window (ZPO 148 Abs. 2); D25, the separate 30-day clock for a termination given to push the increase through (OR 271a Abs. 1 lit. b/d, 273 Abs. 1), which annotator 1 excluded — it is kept because OR 271a Abs. 1 lit. b defines the ground BY REFERENCE to this scope's trigger, so it is a conditional dependency the sources genuinely impose here; and the version warning about the bundle's VMWG snapshot.\n\nKEPT FROM ANNOTATOR 1 ALONE (annotator 2 missed them, the source supports them): the receipt-date determination as a node of its own (D3), which anchors two independent clocks running in opposite directions; the DEFERRAL consequence of a late-but-valid notification — \"Sonst wirkt die Erhoehung erst auf den uebernaechsten Kuendigungstermin\" — which distinguishes a timing defect from nullity and which annotator 2's D4 left without a consequence; the reservation of an unexercised adjustment in francs or per cent (VMWG 18 plus the Zurich judiciary page's \"bezifferter Vorbehalt\"), a form-content item annotator 2 omitted entirely; VMWG 20 Abs. 1's non-tolling rule stated as a DEADLINE element of its own (DL11) rather than only as a clause inside a decision; the rent last validly fixed and its three alternative instruments, grounded on the Zurich Merkblatt (\"gerichtlicher Vergleich, rechtskraeftige Mietzinserhoehung oder Anfangsmietzins\"); VMWG 21 Abs. 1's rule that the settlement sought must extend to the whole tenancy relationship; the express Geneva alternative of \"une simple lettre, signee\" to the cantonal request form; VMWG 12a (the WBF's quarterly reference rate) and VMWG 16 (40 % of the CPI movement) as the parameters against which a per-ground amount is checked; and the 2-month/12-month conciliation windows (ZPO 203 Abs. 1, Abs. 4).\n\nCORRECTED: annotator 1 paired the quote \"Bei der Miete von Wohnungen koennen die Parteien mit einer Frist von drei Monaten ... kuendigen\" with or-art-266a-para1; that sentence is OR 266c, and OR 266a Abs. 1 reads \"Die Parteien koennen das unbefristete Mietverhaeltnis unter Einhaltung der gesetzlichen Fristen und Termine kuendigen, sofern sie keine laengere Frist oder keinen anderen Termin vereinbart haben.\" Both are kept, correctly attributed. Annotator 1 attributed \"Formular genehmigt durch die Direktion der Justiz und des Innern des Kantons Zuerich am\" to the Zurich FORM; it is on the Zurich DJI web page (the form's own footer reads \"Formular bereitgestellt durch ...\"). Re-attributed. Annotator 1's two hyphen-spanning cantonal quotes (\"Paritaetischen Schlichtungs- behoerde\", \"Vermieter- schaft\") were replaced with shorter spans that match without hyphen normalisation.\n\nDROPPED, WITH REASONS. (1) Annotator 2's entire initial-rent variant — D17, P16, F11/F43/F44/F45 and the documents Anfangsmietzins-Formular, the OR 256a Abs. 2 statement of the previous tenant's rent, the Uebergabeprotokoll and the evidence of a Notlage. All are quotable and in force, but they belong to the OR 270 scope, which this scope's own statement excludes; carrying them would inflate the document count without a decision in this scope needing them. The Zurich Mietzinsanfechtung form's two-column enclosure table is nonetheless cited under P2, because it is the operational demonstration that the enclosure set is branch-specific. (2) Annotator 2's document \"Kopie der Mietzinsvereinbarung\" as a legally sufficient form — that sentence stood in VMWG Art. 19 Abs. 2 in the 01.01.2025 text (and therefore in the shipped bundle) but was REMOVED by AS 2025 191 with effect from 01.10.2025. It is not a live alternative and is recorded as a version hazard instead. (3) Annotator 1's \"op-zh-gerichte-merkblatt\" cantonal working figures (3 % of net rent per 0.25 % of reference-rate movement; the 0/0.25/0.5 % cost-increase flat rates) as contract elements — the Merkblatt itself says flat rates are admitted only exceptionally before a court, so they are practice, not a requirement any correct reconstruction must contain; they survive only in unsupported_but_material. (4) Annotator 1's separate predicate P3/P4/P6 restating the three nullity limbs as standalone predicates that close nothing — merged into P4/P5/P7 with real closure lists, since a predicate that closes no decision carries no benchmark weight. (5) Annotator 2's ZPO 130 electronic-signature detail as a decision element — kept only as a fact about the form of filing, not as a determination of its own. (6) Annotator 1's claim that the increase becomes effective on a missed deadline was kept, but its converse — that nullity may still be raised after the 30 days — was NOT encoded, because no source read says so; it is listed as the single most material gap.",
+ "provenance": {
+  "spine": "authored by an independent agent from Swiss federal sources; no access to the induced process graph",
+  "quote_gate": "a quote is admitted only if it is a verbatim substring of a fetched, hashed Fedlex passage cited by that decision",
+  "document_layer": "three independent authors from the gated spine alone; a document is admitted on >=2 of 3 votes",
+  "conditions": "one adjudicator over the three authors' live/dead formulations",
+  "catalogue_restriction": "proposals outside the fixed document catalogue are rejected (0 occurred)",
+  "superseded_draft": "the first workflow emitted free-text document types and a capability layer that did not survive the run; kept at research/casepath/reference_contracts/_superseded_draft_fragment.txt and not used"
+ },
+ "audit": {
+  "decisions_in": 12,
+  "decisions_kept": 12,
+  "quotes_in": 58,
+  "quotes_kept": 44,
+  "quotes_dropped": 14,
+  "document_votes": {
+   "unanimous": 27,
+   "majority_only": 3,
+   "singleton_dropped": 7
+  },
+  "dropped_quotes": [
+   {
+    "decision_id": "D2",
+    "quote": "Anfechtung einer Mietzinserhöhung (Art. 270b Abs. 1/Art. 269 ff. OR).",
+    "cited": [
+     "zh-gerichte-mietzinsanfechtung-formular-de"
+    ]
+   },
+   {
+    "decision_id": "D3",
+    "quote": "Mitteilung erhalten am",
+    "cited": [
+     "zh-gerichte-mietzinsanfechtung-formular-de",
+     "zh-dji-formular-mietzinserhoehung-nov2025-de",
+     "ge-requete-contestation-hausse-202102-fr"
+    ]
+   },
+   {
+    "decision_id": "D3",
+    "quote": "innert 30 Tagen nach Empfang der Mitteilung",
+    "cited": [
+     "zh-gerichte-mietzinsanfechtung-formular-de",
+     "zh-dji-formular-mietzinserhoehung-nov2025-de",
+     "ge-requete-contestation-hausse-202102-fr"
+    ]
+   },
+   {
+    "decision_id": "D3",
+    "quote": "dans les 30 jours dès la réception de l’avis de hausse de loyer ou d’autres modifications du bail",
+    "cited": [
+     "zh-gerichte-mietzinsanfechtung-formular-de",
+     "zh-dji-formular-mietzinserhoehung-nov2025-de",
+     "ge-requete-contestation-hausse-202102-fr"
+    ]
+   },
+   {
+    "decision_id": "D4",
+    "quote": "Vermieterinnen und Vermieter, welche nicht die amtlichen Formulare gebrauchen möchten, können eigene Formulare verwenden. Ein solches Formular muss aber vor seiner Verwendung von der Direktion der Justiz und des Innern genehmigt werden.",
+    "cited": [
+     "vmwg-art-19-para4-20251001-de",
+     "zh-dji-formulare-mietwesen-de",
+     "ti-la-locazione-it"
+    ]
+   },
+   {
+    "decision_id": "D4",
+    "quote": "Auf dem Formular muss folgender Genehmigungsvermerk angebracht werden:",
+    "cited": [
+     "vmwg-art-19-para4-20251001-de",
+     "zh-dji-formulare-mietwesen-de",
+     "ti-la-locazione-it"
+    ]
+   },
+   {
+    "decision_id": "D4",
+    "quote": "occorre far capo obbligatoriamente ai moduli allestiti dal Dipartimento delle istituzioni, pena la nullità delle relative notifiche.",
+    "cited": [
+     "vmwg-art-19-para4-20251001-de",
+     "zh-dji-formulare-mietwesen-de",
+     "ti-la-locazione-it"
+    ]
+   },
+   {
+    "decision_id": "D5",
+    "quote": "Begründung gemäss separatem Begleitschreiben",
+    "cited": [
+     "vmwg-art-19-para1bis-20251001-de",
+     "vmwg-art-18-20251001-de",
+     "zh-dji-formular-mietzinserhoehung-nov2025-de",
+     "zh-gerichte-mietzinserhoehung-de"
+    ]
+   },
+   {
+    "decision_id": "D5",
+    "quote": "Ist der Vermieter der Meinung, dass er die ihm zustehende Erhöhung nicht voll ausschöpft, so muss er in der Begründung einen bezifferten Vorbehalt anbringen",
+    "cited": [
+     "vmwg-art-19-para1bis-20251001-de",
+     "vmwg-art-18-20251001-de",
+     "zh-dji-formular-mietzinserhoehung-nov2025-de",
+     "zh-gerichte-mietzinserhoehung-de"
+    ]
+   },
+   {
+    "decision_id": "D6",
+    "quote": "Der Auszug aus den massgeblichen Bestimmungen des Obligationenrechts auf Seite 3 ist Bestandteil dieses amtlichen Formulars.",
+    "cited": [
+     "zh-dji-formular-mietzinserhoehung-nov2025-de"
+    ]
+   },
+   {
+    "decision_id": "D7",
+    "quote": "Die Mietzinserhöhung ist nichtig (ohne Anfechtung unwirksam), wenn sie ohne Formular erfolgt, nicht klar begründet wird oder wenn mit ihr eine Kündigungsdrohung einher geht",
+    "cited": [
+     "zh-gerichte-mietzinserhoehung-de"
+    ]
+   },
+   {
+    "decision_id": "D8",
+    "quote": "Sonst wirkt die Erhöhung erst auf den übernächsten Kündigungstermin",
+    "cited": [
+     "zh-gerichte-mietzinserhoehung-de"
+    ]
+   },
+   {
+    "decision_id": "D9",
+    "quote": "Bei gestaffelten Mietzinsen darf die schriftliche Mitteilung frühestens vier Monate vor Eintritt jeder Mietzinserhöhung erfolgen.",
+    "cited": [
+     "vmwg-art-19a-20251001-de"
+    ]
+   },
+   {
+    "decision_id": "D12",
+    "quote": "Mietzinserhöhungen werden grundsätzlich von der letzten verbindlichen Mietzinsfestsetzung (gerichtlicher Vergleich, rechtskräftige Mietzinserhöhung oder Anfangsmietzins) her berechnet.",
+    "cited": [
+     "vmwg-art-12-20251001-de",
+     "vmwg-art-12a-20251001-de",
+     "vmwg-art-14-20251001-de",
+     "vmwg-art-16-20251001-de",
+     "zh-gerichte-merkblatt-mietzinserhoehung-de"
+    ]
+   }
+  ]
+ },
+ "documents_in_contract": [
+  "comparable_rents_evidence",
+  "cost_increase_statement",
+  "envelope_copy",
+  "landlord_correspondence",
+  "lease_contract",
+  "previous_rent_statement",
+  "property_management_statement",
+  "registered_mail_receipt",
+  "renovation_cost_statement",
+  "rent_increase_official_form",
+  "tenant_correspondence"
+ ],
+ "decisions": [
+  {
+   "decision_id": "D1",
+   "must_determine": "Whether the abusive-rent protection of OR 269 ff. reaches this object and this lease at all: that the let object is Wohn- oder Geschaeftsraeume (or a thing let together with such rooms), that it is not a luxury dwelling or a single-family house with six or more habitable rooms excluding the kitchen, and that it is not publicly promoted housing whose rent is controlled by an authority. A negative answer ends the scope before any question of form, timing or substance arises.",
+   "evidence": [
+    {
+     "authority_id": "or-art-253a-para1-20260101-de",
+     "quote": "Die Bestimmungen über die Miete von Wohn- und Geschäftsräumen gelten auch für Sachen, die der Vermieter zusammen mit diesen Räumen dem Mieter zum Gebrauch überlässt."
+    },
+    {
+     "authority_id": "or-art-253b-para2-20260101-de",
+     "quote": "Sie gelten nicht für die Miete von luxuriösen Wohnungen und Einfamilienhäusern mit sechs oder mehr Wohnräumen (ohne Anrechnung der Küche)."
+    },
+    {
+     "authority_id": "or-art-253b-para3-20260101-de",
+     "quote": "Die Bestimmungen über die Anfechtung missbräuchlicher Mietzinse gelten nicht für Wohnräume, deren Bereitstellung von der öffentlichen Hand gefördert wurde und deren Mietzinse durch eine Behörde kontrolliert werden."
+    },
+    {
+     "authority_id": "zpo-art-200-para1-20250101-de",
+     "quote": "Bei Streitigkeiten aus Miete und Pacht von Wohn- und Geschäftsräumen besteht die Schlichtungsbehörde aus einer vorsitzenden Person und einer paritätischen Vertretung."
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "lease_contract"
+   ],
+   "live_when": "It is not established whether the let object is residential or commercial premises, or let with them, or whether it is excluded as luxury housing, a large single-family house, or publicly controlled housing.",
+   "dead_when": "The object's use and any luxury, large-house, or publicly controlled-housing status have been established, showing either that these rent rules apply or that an exclusion applies.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D2",
+   "must_determine": "How the landlord's communication is characterised, and under which rent regime the lease stands. Two things must come out: (a) that the communication is a rent increase or another unilateral change of the lease to the tenant's detriment within OR 269d — as opposed to an initial-rent fixing or a mere ancillary-cost statement; and (b) whether the rent is ordinary, index-linked under OR 269b, or staggered under OR 269c. This classification selects which of D9, D10, D12 and D13 is live and which formal regime applies. A reconstruction may split it into 'is it an increase' and 'which regime' and still satisfy the requirement.",
+   "evidence": [
+    {
+     "authority_id": "or-art-269d-para1-20260101-de",
+     "quote": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen."
+    },
+    {
+     "authority_id": "or-art-269d-para3-20260101-de",
+     "quote": "Die Absätze 1 und 2 gelten auch, wenn der Vermieter beabsichtigt, sonstwie den Mietvertrag einseitig zu Lasten des Mieters zu ändern, namentlich seine bisherigen Leistungen zu vermindern oder neue Nebenkosten einzuführen."
+    },
+    {
+     "authority_id": "or-art-270b-para2-20260101-de",
+     "quote": "Absatz 1 gilt auch, wenn der Vermieter sonstwie den Mietvertrag einseitig zu Lasten des Mieters ändert, namentlich seine bisherigen Leistungen vermindert oder neue Nebenkosten einführt."
+    },
+    {
+     "authority_id": "or-art-269b-20260101-de",
+     "quote": "Die Vereinbarung, dass der Mietzins einem Index folgt, ist nur gültig, wenn der Mietvertrag für mindestens fünf Jahre abgeschlossen und als Index der Landesindex der Konsumentenpreise vorgesehen wird."
+    },
+    {
+     "authority_id": "or-art-269c-20260101-de",
+     "quote": "Die Vereinbarung, dass sich der Mietzins periodisch um einen bestimmten Betrag erhöht, ist nur gültig, wenn: a. der Mietvertrag für mindestens drei Jahre abgeschlossen wird; b. der Mietzins höchstens einmal jährlich erhöht wird; und c. der Betrag der Erhöhung in Franken festgelegt wird."
+    }
+   ],
+   "conditional_on": "P1",
+   "required_documents": [
+    "landlord_correspondence",
+    "lease_contract",
+    "rent_increase_official_form"
+   ],
+   "live_when": "These rent rules apply, and it is not established whether the landlord's communication is a rent increase or other detrimental unilateral change, or whether the lease is ordinary, index-linked, or staggered.",
+   "dead_when": "These rent rules do not apply, or both the communication's character and the lease's ordinary, index-linked, or staggered regime have been established.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D3",
+   "must_determine": "The date on which the notification reached the tenant. This single determination anchors two clocks that run in opposite directions: forward, the 30-day challenge period, which begins on the day AFTER the communication; and backward, the ten-day minimum lead before the start of the notice period. Any reconstruction that fixes a receipt date satisfies this, however it names the node; a reconstruction that fixes only the date of dispatch does not.",
+   "evidence": [
+    {
+     "authority_id": "or-art-270b-para1-20260101-de",
+     "quote": "Der Mieter kann eine Mietzinserhöhung innert 30 Tagen, nachdem sie ihm mitgeteilt worden ist, bei der Schlichtungsbehörde als missbräuchlich im Sinne der Artikel 269 und 269a anfechten."
+    },
+    {
+     "authority_id": "zpo-art-142-para1-20250101-de",
+     "quote": "Fristen, die durch eine Mitteilung oder den Eintritt eines Ereignisses ausgelöst werden, beginnen am folgenden Tag zu laufen."
+    }
+   ],
+   "conditional_on": "P2",
+   "required_documents": [
+    "envelope_copy",
+    "registered_mail_receipt",
+    "tenant_correspondence"
+   ],
+   "live_when": "There is a covered rent increase or detrimental unilateral change, but the date the tenant received it has not been established.",
+   "dead_when": "There is no covered rent increase or detrimental unilateral change, or the date the tenant received it has been established.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D4",
+   "must_determine": "Whether the increase was notified on the PRESCRIBED form, i.e. on a form approved by the canton in which the premises lie — either the form the canton itself issues, or the landlord's own form carrying that canton's approval endorsement with its date. A mechanically reproduced signature on the prescribed form suffices and does not defeat the requirement.",
+   "evidence": [
+    {
+     "authority_id": "or-art-269d-para1-20260101-de",
+     "quote": "Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen."
+    },
+    {
+     "authority_id": "or-art-269d-para2-20260101-de",
+     "quote": "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet; c. mit der Mitteilung die Kündigung androht oder ausspricht."
+    },
+    {
+     "authority_id": "or-art-269d-para4-20260101-de",
+     "quote": "Für die Mitteilung einer Mietzinserhöhung und anderer einseitiger Vertragsänderungen genügt eine auf mechanischem Weg nachgebildete Unterschrift auf dem vorgeschriebenen Formular."
+    },
+    {
+     "authority_id": "vmwg-art-19-para4-20250101-de",
+     "quote": "Die Kantone sorgen dafür, dass in den Gemeinden Formulare in genügender Zahl zur Verfügung stehen."
+    }
+   ],
+   "conditional_on": "P3",
+   "required_documents": [
+    "rent_increase_official_form"
+   ],
+   "live_when": "There is a covered, non-staggered rent increase or detrimental unilateral change, and it is not established whether the served form was approved by the canton where the premises are located.",
+   "dead_when": "There is no covered non-staggered increase or detrimental change, or it has been established whether the served form was cantonally approved.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D5",
+   "must_determine": "Whether the form as served carries every mandatory item of VMWG Art. 19 Abs. 1: the previous rent and previous ancillary-cost burden; the new rent and new burden; the date the increase takes effect; a clear reason with each asserted ground shown as a separate franc amount; where improvements are invoked, the statement whether the landlord receives subsidies; plus, in every case, the statutory conditions of challenge and the register of conciliation authorities with their local jurisdiction. Where the reasons are given in an accompanying letter, whether the form expressly says so. Where the landlord exercises only part of the adjustment open to him, whether the reservation is expressed in francs or as a percentage.",
+   "evidence": [
+    {
+     "authority_id": "vmwg-art-19-para1-20250101-de",
+     "quote": "Das Formular für die Mitteilung von Mietzinserhöhungen und anderen einseitigen Vertragsänderungen im Sinne von Artikel 269d OR muss enthalten:"
+    },
+    {
+     "authority_id": "vmwg-art-19-para1-20250101-de",
+     "quote": "den bisherigen Mietzins und die bisherige Belastung des Mieters für Nebenkosten;"
+    },
+    {
+     "authority_id": "vmwg-art-19-para1-20250101-de",
+     "quote": "den neuen Mietzins und die neue Belastung des Mieters für Nebenkosten;"
+    },
+    {
+     "authority_id": "vmwg-art-19-para1-20250101-de",
+     "quote": "den Zeitpunkt, auf den die Erhöhung in Kraft tritt;"
+    },
+    {
+     "authority_id": "vmwg-art-19-para1-20250101-de",
+     "quote": "die klare Begründung der Erhöhung. Werden mehrere Erhöhungsgründe geltend gemacht, so sind diese je in Einzelbeträgen auszuweisen;"
+    },
+    {
+     "authority_id": "vmwg-art-19-para1-20250101-de",
+     "quote": "bei Mehrleistungen die Angabe, ob der Vermieter Förderbeiträge für wertvermehrende Verbesserungen erhält."
+    },
+    {
+     "authority_id": "vmwg-art-19-para1-20250101-de",
+     "quote": "die gesetzlichen Voraussetzungen der Anfechtung; 2. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit."
+    },
+    {
+     "authority_id": "vmwg-art-19-para1bis-20250101-de",
+     "quote": "Erfolgt die Begründung in einem Begleitschreiben, so hat der Vermieter im Formular ausdrücklich darauf hinzuweisen."
+    },
+    {
+     "authority_id": "vmwg-art-18-20250101-de",
+     "quote": "Macht der Vermieter die ihm zustehende Mietzinsanpassung nicht vollständig geltend, hat er diesen Vorbehalt in Franken oder in Prozenten des Mietzinses festzulegen."
+    },
+    {
+     "authority_id": "or-art-269d-para2-20260101-de",
+     "quote": "sie nicht begründet;"
+    }
+   ],
+   "conditional_on": "P3",
+   "required_documents": [
+    "landlord_correspondence",
+    "rent_increase_official_form"
+   ],
+   "live_when": "There is a covered, non-staggered rent increase or detrimental unilateral change, and it is not established whether the served form and any expressly referenced letter contain all required information and reasons.",
+   "dead_when": "There is no covered non-staggered increase or detrimental change, or the form's required content and stated reasons have been established as complete or defective.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D6",
+   "must_determine": "Whether the notification, or anything served together with it, threatens or declares a termination of the lease. This is a self-standing limb of the nullity rule and is decided independently of the form's provenance and of its content.",
+   "evidence": [
+    {
+     "authority_id": "or-art-269d-para2-20260101-de",
+     "quote": "mit der Mitteilung die Kündigung androht oder ausspricht."
+    }
+   ],
+   "conditional_on": "P2",
+   "required_documents": [
+    "landlord_correspondence",
+    "rent_increase_official_form"
+   ],
+   "live_when": "There is a covered rent increase or detrimental unilateral change, and it is not established whether the notification or material served with it threatens or declares termination.",
+   "dead_when": "There is no covered rent increase or detrimental unilateral change, or it has been established whether termination was threatened or declared with the notification.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D7",
+   "must_determine": "Whether the increase is NULL under OR 269d Abs. 2 — whether any one of the three independent limbs (not notified on the prescribed form; not reasoned; termination threatened or declared with it) is made out — and, if so, that the increase produces no effect at all and requires no challenge by the tenant. A reconstruction that folds the three limbs into one nullity node, or splits nullity into three, still satisfies this requirement provided the DISJUNCTIVE structure and the no-challenge-needed consequence both survive. This is the scope's second, independent route to a terminal outcome and it requires no substantive assessment of the rent.",
+   "evidence": [
+    {
+     "authority_id": "or-art-269d-para2-20260101-de",
+     "quote": "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet; c. mit der Mitteilung die Kündigung androht oder ausspricht."
+    }
+   ],
+   "conditional_on": "P2",
+   "required_documents": [],
+   "live_when": "There is a covered rent increase or detrimental unilateral change, and it remains unresolved whether the form, stated reasons, or a coupled termination makes it ineffective.",
+   "dead_when": "There is no covered rent increase or detrimental unilateral change, or all form, reasons, and coupled-termination findings have established whether the increase is ineffective.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D8",
+   "must_determine": "Whether the notification observed the timing rule of OR 269d Abs. 1: the increase may bite only on the next possible termination date, and the notification must reach the tenant at least ten days before the notice period running to that date begins. Making the determination requires identifying the applicable notice period and termination dates from the lease, or in their absence from the statutory default for the type of premises. The consequence of a late but otherwise valid notification is DEFERRAL, not nullity: the increase then takes effect only at the next-but-one termination date. A reconstruction that treats a short lead as a nullity ground has failed this decision.",
+   "evidence": [
+    {
+     "authority_id": "or-art-269d-para1-20260101-de",
+     "quote": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen."
+    },
+    {
+     "authority_id": "or-art-266a-para1-20260101-de",
+     "quote": "Die Parteien können das unbefristete Mietverhältnis unter Einhaltung der gesetzlichen Fristen und Termine kündigen, sofern sie keine längere Frist oder keinen anderen Termin vereinbart haben."
+    },
+    {
+     "authority_id": "or-art-266a-para2-20260101-de",
+     "quote": "Halten die Parteien die Frist oder den Termin nicht ein, so gilt die Kündigung für den nächstmöglichen Termin."
+    },
+    {
+     "authority_id": "or-art-266c-20260101-de",
+     "quote": "Bei der Miete von Wohnungen können die Parteien mit einer Frist von drei Monaten auf einen ortsüblichen Termin oder, wenn es keinen Ortsgebrauch gibt, auf Ende einer dreimonatigen Mietdauer kündigen."
+    },
+    {
+     "authority_id": "or-art-266d-20260101-de",
+     "quote": "Bei der Miete von Geschäftsräumen können die Parteien mit einer Frist von sechs Monaten auf einen ortsüblichen Termin oder, wenn es keinen Ortsgebrauch gibt, auf Ende einer dreimonatigen Mietdauer kündigen."
+    }
+   ],
+   "conditional_on": "P2",
+   "required_documents": [
+    "envelope_copy",
+    "lease_contract",
+    "registered_mail_receipt",
+    "rent_increase_official_form"
+   ],
+   "live_when": "There is a covered increase that is not already ineffective, and the receipt date, notice period, termination dates, or stated effective date are not established sufficiently to test its timing.",
+   "dead_when": "There is no covered effective increase, or the relevant dates and notice period have established whether it takes effect on the next possible termination date or a later one.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D9",
+   "must_determine": "For a staggered rent: whether the written notification of the step was given no earlier than four months before that step takes effect, and whether written form was used at all. On this branch written form SUFFICES and the cantonally approved official form is not required — which is why D4 and D5 close here.",
+   "evidence": [
+    {
+     "authority_id": "or-art-269d-para5-20260101-de",
+     "quote": "Für die Mitteilung von Mietzinserhöhungen, die in einer Vereinbarung nach Artikel 269c vorgesehen sind, genügt die schriftliche Form."
+    },
+    {
+     "authority_id": "or-art-269c-20260101-de",
+     "quote": "Die Vereinbarung, dass sich der Mietzins periodisch um einen bestimmten Betrag erhöht, ist nur gültig, wenn: a. der Mietvertrag für mindestens drei Jahre abgeschlossen wird; b. der Mietzins höchstens einmal jährlich erhöht wird; und c. der Betrag der Erhöhung in Franken festgelegt wird."
+    }
+   ],
+   "conditional_on": "P12",
+   "required_documents": [
+    "landlord_correspondence",
+    "lease_contract"
+   ],
+   "live_when": "The lease is staggered, and it is not established whether the particular rent step was notified in writing no earlier than four months before it took effect.",
+   "dead_when": "The lease is not staggered, or the step notification's written form and timing have been established.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D10",
+   "must_determine": "For an index-linked lease: whether the notification was given only AFTER the new index level had been publicly announced, and, for an increase based on the consumer price index, whether it was announced with at least 30 days' notice to the end of a month.",
+   "evidence": [
+    {
+     "authority_id": "vmwg-art-19-para2-20250101-de",
+     "quote": "Bei indexgebundenen Mietverhältnissen darf die Mitteilung frühestens nach der öffentlichen Bekanntgabe des neuen Indexstandes erfolgen."
+    },
+    {
+     "authority_id": "vmwg-art-17-para3-20250101-de",
+     "quote": "Mietzinserhöhungen gestützt auf den Landesindex der Konsumentenpreise können unter Einhaltung einer Frist von mindestens 30 Tagen auf ein Monatsende angekündigt werden."
+    },
+    {
+     "authority_id": "or-art-269b-20260101-de",
+     "quote": "Die Vereinbarung, dass der Mietzins einem Index folgt, ist nur gültig, wenn der Mietvertrag für mindestens fünf Jahre abgeschlossen und als Index der Landesindex der Konsumentenpreise vorgesehen wird."
+    }
+   ],
+   "conditional_on": "P11",
+   "required_documents": [
+    "lease_contract",
+    "rent_increase_official_form"
+   ],
+   "live_when": "The lease is index-linked, and it is not established whether notification followed public announcement of the new index and gave at least 30 days' notice to month-end.",
+   "dead_when": "The lease is not index-linked, or the notification's timing against the public index announcement and month-end requirement has been established.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D11",
+   "must_determine": "Whether to demand from the landlord that the claimed differential be substantiated in figures, and to register that making that demand does NOT extend, suspend or otherwise touch the 30-day challenge period. The interaction rule is part of the decision: a reconstruction that records the demand but not its non-tolling effect has not made this decision. The right exists only where the increase rests on cost increases or value-adding improvements.",
+   "evidence": [
+    {
+     "authority_id": "vmwg-art-20-20250101-de",
+     "quote": "Bei Mietzinserhöhungen wegen Kostensteigerungen oder wegen wertvermehrenden Verbesserungen des Vermieters kann der Mieter verlangen, dass der geltend gemachte Differenzbetrag zahlenmässig begründet wird. Die 30-tägige Anfechtungsfrist wird dadurch nicht berührt."
+    },
+    {
+     "authority_id": "or-art-269a-20260101-de",
+     "quote": "durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;"
+    }
+   ],
+   "conditional_on": "P13",
+   "required_documents": [
+    "landlord_correspondence",
+    "rent_increase_official_form"
+   ],
+   "live_when": "The landlord actually stated cost increases or value-adding improvements as a reason, and it is not recorded whether the tenant will request figures while the 30-day challenge deadline remains unchanged.",
+   "dead_when": "No such reason was stated, or the tenant's decision on requesting figures and the fact that the request does not change the 30-day deadline have been recorded.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "D12",
+   "must_determine": "Whether the increased rent is abusive within the meaning of OR 269, and whether each ground the landlord ACTUALLY STATED on the form brings it within one of the OR 269a safe harbours as those grounds are concretised by VMWG Art. 11-16. The determination is per stated ground and cumulative: it must establish which grounds were asserted, and whether the amount attributed to each stays within the corresponding statutory limit, measured from the rent last validly fixed. A reconstruction that assesses the total increase without decomposing it by stated ground has not made this decision.",
+   "evidence": [
+    {
+     "authority_id": "or-art-269-20260101-de",
+     "quote": "Mietzinse sind missbräuchlich, wenn damit ein übersetzter Ertrag aus der Mietsache erzielt wird oder wenn sie auf einem offensichtlich übersetzten Kaufpreis beruhen."
+    },
+    {
+     "authority_id": "or-art-269a-20260101-de",
+     "quote": "Mietzinse sind in der Regel nicht missbräuchlich, wenn sie insbesondere: a. im Rahmen der orts- oder quartierüblichen Mietzinse liegen; b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;"
+    },
+    {
+     "authority_id": "vmwg-art-12-20250101-de",
+     "quote": "Als Kostensteigerungen im Sinne von Artikel 269a Buchstabe b OR gelten insbesondere Erhöhungen des Hypothekarzinssatzes, der Gebühren, Objektsteuern, Baurechtszinse, Versicherungsprämien sowie Erhöhungen der Unterhaltskosten."
+    },
+    {
+     "authority_id": "vmwg-art-12a-20250101-de",
+     "quote": "Das Eidgenössische Departement für Wirtschaft, Bildung und Forschung (WBF)"
+    },
+    {
+     "authority_id": "vmwg-art-16-20250101-de",
+     "quote": "Zum Ausgleich der Teuerung auf dem risikotragenden Kapital im Sinne von Artikel 269a Buchstabe e OR darf der Mietzins um höchstens 40 Prozent der Steigerung des Landesindexes der Konsumentenpreise erhöht werden."
+    }
+   ],
+   "conditional_on": "P10",
+   "required_documents": [
+    "comparable_rents_evidence",
+    "cost_increase_statement",
+    "landlord_correspondence",
+    "lease_contract",
+    "previous_rent_statement",
+    "property_management_statement",
+    "renovation_cost_statement",
+    "rent_increase_official_form"
+   ],
+   "live_when": "A covered increase is not ineffective and was challenged within 30 days, but its stated grounds, separate amounts, last valid rent, or supporting evidence have not been assessed.",
+   "dead_when": "There is no covered increase timely challenged and still effective, or every ground actually stated has been separately assessed against the applicable rent limit.",
+   "necessity": "required"
+  }
+ ]
+}
