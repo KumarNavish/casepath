@@ -72,3 +72,32 @@ contract where withdrawal is measurable at all, which is the same structural fac
 Targeting the two decisions with unique documents means the causal result speaks to those two branches of this
 scope, not to the scope as a whole. A second scope with a flatter document-to-decision mapping is needed before the
 dynamic claim can be stated generally. That is a load-bearing limitation and belongs in the paper, not a footnote.
+
+
+---
+
+# It is two scopes, not one
+
+Termination was built independently — its own spine, its own gate pass, its own voted document layer, its own
+catalogue of 18 — and measured the same way on 49 cases across 8 scenarios.
+
+| scope | cases | distinct reference checklists | mean reference set | catalogue |
+|---|---|---|---|---|
+| rent increase | 30 | **1** | 10.0 | 11 |
+| termination | 49 | **1** | 17.0 | 18 |
+
+Termination is the more saturated of the two: the contract requires 17 of its 18 documents in every case measured.
+Both scopes **fail C8**, the observed-branch-closure criterion added as amendment A1 after rent increase exposed
+the gap — and A1 was written before termination existed, so this is the criterion catching a second case rather
+than being fitted to one.
+
+The cause is the same in both. A document is released only when *every* decision requiring it is settled, most
+documents are required by several decisions, and a first-contact message settles the redundant decisions rather
+than the discriminating ones. This is not an artifact of one contract's granularity: two contracts built by the
+same procedure from different acts, with different decision counts (12 and 21) and different catalogues, land in
+the same place.
+
+**Consequence for the benchmark, not just for this paper.** A static document-checklist task over intake messages
+in Swiss tenancy cannot separate methods, and a benchmark built that way would report noise however carefully it
+was scored. What separates methods is what happens when a fact arrives — which is why the intervention design is
+the measurement here and the static table is reported only as a floor.
