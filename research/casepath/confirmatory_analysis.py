@@ -21,6 +21,9 @@ pairs=[(u,u[:-6]+"__e07") for u in sorted(A) if u.endswith("__orig")
 E_nonempty=sum(1 for o,m in pairs if set(ref[o]["documents"])-set(ref[m]["documents"]))
 print("="*96); print("CONFIRMATORY READ — rent increase, 6 held-out scenarios"); print("="*96)
 print(f"pairs: {len(pairs)}   scenarios: {len(set(meta[o] for o,_ in pairs))}")
+if not pairs:
+    print("NO PAIRS — a unit is missing its ground truth or its arm run. Nothing is reported.")
+    raise SystemExit(1)
 print(f"pairs with a non-empty expected withdrawal: {E_nonempty}")
 print(f"adjudicator unanimity: {sum(ref[u]['unanimity'] for u,_ in pairs)/len(pairs):.0%}")
 if E_nonempty < 15:
