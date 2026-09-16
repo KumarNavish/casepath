@@ -382,6 +382,61 @@ def audit_dynamic_subset(A, ref, meta, suffix, arms, exclude_scenarios):
     return out
 
 
+
+def set_micro_f1(rows):
+    """Symmetric release-set score: rows are (predicted withdrawal, gold release)."""
+    tp=sum(len(p & g) for p,g in rows)
+    pred=sum(len(p) for p,g in rows)
+    gold=sum(len(g) for p,g in rows)
+    micro=(2*tp/(pred+gold)) if pred+gold else 1.0
+    macro=sum((2*len(p&g)/(len(p)+len(g)) if len(p)+len(g) else 1.0) for p,g in rows)/len(rows)
+    exact=sum(p==g for p,g in rows)/len(rows)
+    return {"micro_f1":micro,"macro_f1":macro,"exact_set_accuracy":exact,
+            "true_positive_documents":tp,"predicted_documents":pred,"gold_documents":gold}
+
+
+def best_constant_release(train_gold, universe):
+    """Exact best fixed release set for micro-F1 on training units."""
+    n=len(train_gold); total_gold=sum(map(len,train_gold))
+    freq=collections.Counter(d for g in train_gold for d in g)
+    ranked=sorted(universe,key=lambda d:(-freq[d],d))
+    best_score=(1.0 if total_gold==0 else 0.0); best=set(); tp=0
+    for k,d in enumerate(ranked,1):
+        tp += freq[d]
+        score=2*tp/(n*k+total_gold) if n*k+total_gold else 1.0
+        if score > best_score + 1e-15:
+            best_score=score; best=set(ranked[:k])
+    return best_score,best
+
+
+def release_prediction_audit(A, ref, meta, suffix, arms):
+    pairs=paired_ids(A,ref,suffix)
+    scenarios=sorted({meta[o] for o,_ in pairs})
+    universe=set().union(*(set(ref[o]["documents"]) | set(ref[m]["documents"]) for o,m in pairs))
+    # Train a fixed release set on all other scenarios; never read the held-out case.
+    policies={}; constant_rows=[]; fold_scores={}
+    for held in scenarios:
+        train=[set(ref[o]["documents"])-set(ref[m]["documents"]) for o,m in pairs if meta[o]!=held]
+        _,W=best_constant_release(train,universe); policies[held]=W
+        fold=[]
+        for o,m in pairs:
+            if meta[o]==held:
+                g=set(ref[o]["documents"])-set(ref[m]["documents"])
+                constant_rows.append((set(W),g)); fold.append((set(W),g))
+        fold_scores[held]=set_micro_f1(fold)
+    out={"crossfit_constant":{**set_micro_f1(constant_rows),
+                               "policy_count":len({tuple(sorted(v)) for v in policies.values()}),
+                               "policies":{k:sorted(v) for k,v in policies.items()},
+                               "fold_metrics":fold_scores},"arms":{}}
+    for arm in arms:
+        rows=[]
+        for o,m in pairs:
+            b=set(A[o]["arms"][arm].get("documents") or [])-HELD
+            af=set(A[m]["arms"][arm].get("documents") or [])-HELD
+            rows.append((b-af,set(ref[o]["documents"])-set(ref[m]["documents"])))
+        out["arms"][arm]=set_micro_f1(rows)
+    return out
+
 def main():
     rent = contract("rent_increase.json")
     term = contract("termination.gated.json")
@@ -431,6 +486,9 @@ def main():
     result["rent_dynamic"]["constant_oracle"] = first_model["constant_oracle"]
     result["rent_dynamic"]["best_input_independent_oracle"] = first_model["best_input_independent_oracle"]
     result["rent_dynamic"]["crossfit_input_independent_oracle"] = first_model["crossfit_input_independent_oracle"]
+    rent_gpt_A={r["unit_id"]:r for r in load("conf_arms.json")}
+    result["rent_dynamic"]["release_set_prediction"] = release_prediction_audit(
+        rent_gpt_A,rent_ref,rent_meta,"__e07",["b1_direct","b3_graph_then_list","b5_induced_graph"])
     contrasts = {}
     models = list(model_files)
     for i, left in enumerate(models):
@@ -455,6 +513,8 @@ def main():
         ["b1_direct", "b3_graph_then_list", "b5_induced_graph"],
     )
     result["termination_dynamic"] = term_audit
+    result["termination_dynamic"]["release_set_prediction"] = release_prediction_audit(
+        term_A,term_ref,term_meta,"__e05",["b1_direct","b3_graph_then_list","b5_induced_graph"])
 
     out = ART / "EVALUATION_VALIDITY.json"
     out.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")

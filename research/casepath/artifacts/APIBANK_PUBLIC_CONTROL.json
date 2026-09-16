@@ -1,0 +1,228 @@
+{
+  "benchmark": "API-Bank released level-2 ToolSearcher samples",
+  "contract": "casepath.public-benchmark-control/1.0.0",
+  "excluded": [
+    {
+      "file": "AddMeeting-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "AddMeeting-level-3-2.jsonl",
+      "filename_target": "AddMeeting",
+      "reason": "downstream-called target absent from returned candidates",
+      "target": "AddMeeting"
+    },
+    {
+      "file": "AppointmentRegistration-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "BookHotel-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "BookHotel-level-3-2.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "BookHotel-level-3-3.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "Calculator-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "Calculator-level-3-2.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "DeleteMeeting-level-3-2.jsonl",
+      "filename_target": "DeleteMeeting",
+      "reason": "downstream-called target absent from returned candidates",
+      "target": "DeleteMeeting"
+    },
+    {
+      "file": "DeleteReminder-level-3-1.jsonl",
+      "filename_target": "DeleteReminder",
+      "reason": "downstream-called target absent from returned candidates",
+      "target": "DeleteReminder"
+    },
+    {
+      "file": "EmergencyKnowledge-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "GetToday-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "ModifyRegistration-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "QueryBalance-level-3-1.jsonl",
+      "reason": "missing user, ToolSearcher, or downstream task API"
+    },
+    {
+      "file": "QueryBalance-level-3-2.jsonl",
+      "reason": "missing user, ToolSearcher, or downstream task API"
+    },
+    {
+      "file": "QueryHealthData-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "QueryHistoryToday-level-3-2.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "QueryHistoryToday-level-3-3.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "QueryMeeting-level-3-1.jsonl",
+      "filename_target": "QueryMeeting",
+      "reason": "downstream-called target absent from returned candidates",
+      "target": "QueryMeeting"
+    },
+    {
+      "file": "QueryRegistration-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "QueryRegistration-level-3-2.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "QueryReminder-level-3-1.jsonl",
+      "reason": "missing user, ToolSearcher, or downstream task API"
+    },
+    {
+      "file": "QueryReminder-level-3-2.jsonl",
+      "reason": "missing user, ToolSearcher, or downstream task API"
+    },
+    {
+      "file": "QueryReminder-level-3-3.jsonl",
+      "reason": "missing user, ToolSearcher, or downstream task API"
+    },
+    {
+      "file": "QueryStock-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "RecordHealthData-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "RecordHealthData-level-3-2.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "RecordHealthData-level-3-3.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "SymptomSearch-level-3-1.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "SymptomSearch-level-3-2.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "SymptomSearch-level-3-3.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "SymptomSearch-level-3-4.jsonl",
+      "reason": "fewer than two returned candidates"
+    },
+    {
+      "file": "SymptomSearch-level-3-5.jsonl",
+      "reason": "fewer than two returned candidates"
+    }
+  ],
+  "excluded_count": 33,
+  "interpretation": "diagnostic warning: in every evaluable multi-candidate ToolSearcher sample, the API actually called later in the released transcript is at returned candidate position 1, so this released sample layer is solvable without the query",
+  "n_multi_candidate_evaluable": 17,
+  "paper": "Li et al., EMNLP 2023, API-Bank: A Comprehensive Benchmark for Tool-Augmented LLMs",
+  "query_blind_oracle": {
+    "accuracy": 1.0,
+    "hits": 17,
+    "policy": "always choose returned candidate position 1",
+    "position_counts": {
+      "1": 17
+    }
+  },
+  "query_conditioned_lexical_selector": {
+    "accuracy": 0.9411764705882353,
+    "hits": 16
+  },
+  "repository_commit": "188835d4f9948563a6b9c8ac50cd0f3ae4021ed6",
+  "sample_directory": "api-bank/lv1-lv2-samples/level-2-toolsearcher",
+  "scope_limit": "This finding applies only to the small released level-2 ToolSearcher sample directory after explicit exclusions. It is not a claim about API-Bank overall scores or the full evaluation corpus.",
+  "source_sha256": {
+    "AddAgenda-level-3-1.jsonl": "73930c44517fa3132cb539db53da364ef69bb7432a0db8b78746e32630d40ddb",
+    "AddAgenda-level-3-2.jsonl": "cfbfae8abb324d6941b6e550179ff1a33776698c93ad3166583e361947767133",
+    "AddAlarm-level-3-1.jsonl": "56d141debd1d0f2eb0599297094513fd772add5d913e78eff29def46cd94ac80",
+    "AddAlarm-level-3-2.jsonl": "e60f5b29cd04fa3a6347062aab0691a372af983b6012cb462fb99273af808257",
+    "AddMeeting-level-3-1.jsonl": "275c96d40b3df847304922ddcadfa77e279bf459e18d3cd28b814cdb28f70e08",
+    "AddMeeting-level-3-2.jsonl": "4238777387a319837d83f5e5aee4c3c34e63cdda8b70a406289275a63ef04262",
+    "AddReminder-level-3-1.jsonl": "6b77f806fc2fc9ae1edb81eab2a95d1bc6d2669f4f67bb89311ccf30fefeb0e5",
+    "AppointmentRegistration-level-3-1.jsonl": "53ee39a7529abab1aed16bffad0f62a1f11502aab7a393bd012650946db9a9f5",
+    "BookHotel-level-3-1.jsonl": "77c9f9ba666012d61f1ba36e8fc74b79dc6e04b0ce3e8451fb19d3b8c3816f82",
+    "BookHotel-level-3-2.jsonl": "0caea92b274352d240d40b04c075948f1f589a20c2de7530770503c7403e966f",
+    "BookHotel-level-3-3.jsonl": "1eb703a2c681209ffa306197d624be070545f05c60cade41352f0247ea0fe0a0",
+    "Calculator-level-3-1.jsonl": "dd37423c6752b677885977948ba9bd8a2da0ffa97a338f38484599db5e1ab017",
+    "Calculator-level-3-2.jsonl": "a2b8760aa0aab605b3a7295f9f6ffae4e5236b6189f5645db3bfcd55bcddbcbc",
+    "DeleteAccount-level-3-1.jsonl": "44fd815a0b86fe946264092ff0b920b635e622111ece1694d9c6c9b121e19980",
+    "DeleteAccount-level-3-2.jsonl": "ee22d79d936beaba80dd8a991524b26686f3ce3c7d3def925bb4985366f3e1ea",
+    "DeleteAccount-level-3-3.jsonl": "0a62ffc172c5011f4e4cf4dcdfdf625efb3ae8ec78405cdf17f508f262336b6f",
+    "DeleteAgenda-level-3-1.jsonl": "384dbdd79258a8d616cedf5b593e5aeff447bc7716209e02561f94a2cbdf48a5",
+    "DeleteAgenda-level-3-2.jsonl": "2708fa9d9df9794ff91c0394188e86fad8258ff9dcd8f7fd392a30fa502be6b0",
+    "DeleteAlarm-level-3-1.jsonl": "1471f1fa716995a288ae671b4e69d2b1401c67b4cd2ab93c725e2d3ba750ef08",
+    "DeleteMeeting-level-3-1.jsonl": "a8c665133e97bd99b93bc17d01c1e707b6fc3e689900dc0cbd5fffab007867db",
+    "DeleteMeeting-level-3-2.jsonl": "6c00e209e7f02d00234c5cb525d1093e1fd90a6df7e88c5d88d0f16dc9c83811",
+    "DeleteReminder-level-3-1.jsonl": "14018ecad4b5f2ce83ae0358e9ca86a9c5c3bac7b165cfcf1e7c405546581bbd",
+    "EmergencyKnowledge-level-3-1.jsonl": "12b33432b122127d28b6df4ea23de3cfa0c42e61b1c6938b742476e77dd1c264",
+    "GetToday-level-3-1.jsonl": "588f2ec3a1cf70b2ac7a8e86ac1f9f6653dbfccac662867f794e75685d68f770",
+    "ModifyAgenda-level-3-1.jsonl": "55f9c2e495f411bc0c79d80c9ef1db9e1bb252ba3e4a405fba87679aaa031dc7",
+    "ModifyMeeting-level-3-1.jsonl": "f03bc90437a6c11b1f55a50dcecd49e76ac75e92840810e5447cc99b9bbf0189",
+    "ModifyRegistration-level-3-1.jsonl": "cae8f88a593812b86d528eff6440c6be79b9ef7e99eed64d283a1dd05e3559aa",
+    "ModifyReminder-level-3-1.jsonl": "8eeeaecb5f34b804079d6db909eb3e7e186d74b44ffbc394b6f56119bec50982",
+    "QueryAlarm-level-3-1.jsonl": "6065eaa7a86475bfa87b820144b1f610ebd7eb74bddc5ad5f0a1d194726d911a",
+    "QueryBalance-level-3-1.jsonl": "6be40b16df01f91cd0b2a16454ce8a7340dceac5d1e86bb5bb1757456d734024",
+    "QueryBalance-level-3-2.jsonl": "1d51e21e244e04aadcf0b1303d5e7e339a28949492f77681c4a99e74da49c56c",
+    "QueryHealthData-level-3-1.jsonl": "6744fdcbe55f53488dfbf9441ecb7d39a6d5fa62d5a846e1832e08ab24835672",
+    "QueryHistoryToday-level-3-2.jsonl": "a6ea8e0717cad626f46b2b3018aa1e83d3abf50b60dd1e2c997008a1388af0b8",
+    "QueryHistoryToday-level-3-3.jsonl": "e2fc6f7b339baeeedf69660745aaf20077348eaec0a5ad1d0fc3ba2100745c93",
+    "QueryMeeting-level-3-1.jsonl": "df66cfcbeeff89f7fb9b084e001fa5b54923d6f99d9e573fb677db8bd908f3ae",
+    "QueryMeeting-level-3-2.jsonl": "531363706cc30700561ad71ba41e6abbda7854d51e9de3937c5a3fd64ae59c30",
+    "QueryRegistration-level-3-1.jsonl": "ee6b92ca7f0e7c0e1c192cd17d88cf8f8cee9021520cf0b3b2b7c9648795342b",
+    "QueryRegistration-level-3-2.jsonl": "751205e44567bb1fb5b53f6fc812ce6bfcede618ca48424e4f9a95cadc2f540b",
+    "QueryReminder-level-3-1.jsonl": "efcbdf89289c5fc1efc8d048f849be0447668f7dc1b1c316884ca861f1ae7a41",
+    "QueryReminder-level-3-2.jsonl": "c0ee5be09febfcff5bfffbb8d47478b6056bf1abf297eff5487f2adb9ddc8021",
+    "QueryReminder-level-3-3.jsonl": "842442888d07ed0c0cd1ba2344213143171f6b2c51c2f0a63894ad5f918d7237",
+    "QueryStock-level-3-1.jsonl": "0524f1c43e1bff8fd126ee9c81ae1964388bf51ad5b5c1e35ada36762431d03a",
+    "RecordHealthData-level-3-1.jsonl": "4c0a29d2880bbba93bcc45e183dea46896fc6339b4d11f8893a38da319dc7924",
+    "RecordHealthData-level-3-2.jsonl": "0bb199c29a1770ff896869c43fa3fc79d0d6b1df241538673f2af8b1c906245c",
+    "RecordHealthData-level-3-3.jsonl": "142bd858a319c0422ba2fb02cdc9f7ad76c9bd0ae36f159a5519a9aa89e80c0d",
+    "SymptomSearch-level-3-1.jsonl": "2cb26c43e02272e238fa5f2e7d440b1853e6450147ac6ad78098038832da54a8",
+    "SymptomSearch-level-3-2.jsonl": "62676f9a4119cc26b5fb31551d3217d291619bd2caf947be23cfc1600e99a8c9",
+    "SymptomSearch-level-3-3.jsonl": "30c185ff6364c6895fd14a9f1d53e3c27bc217be78706bd71952a1eacbf1872a",
+    "SymptomSearch-level-3-4.jsonl": "59ad179f239f03b6cbcd4e02ccac232cc7d3b819e7a59c02b590cdbfbc7b38c5",
+    "SymptomSearch-level-3-5.jsonl": "05da48adea64f26a4650d8f02e2aaa86c19761fe94885168fa6f9245a8cc90e9"
+  },
+  "wrong_query_permutation": {
+    "draws": 1000,
+    "max_accuracy": 0.9411764705882353,
+    "mean_accuracy": 0.6818235294117637,
+    "p_ge_observed_plus1": 0.002997002997002997,
+    "range95": [
+      0.5294117647058824,
+      0.8823529411764706
+    ],
+    "seed": 20260916
+  }
+}

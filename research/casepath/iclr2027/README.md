@@ -12,3 +12,5 @@ cd research/casepath/iclr2027
 Compile from this directory with a LaTeX engine that supports the ICLR style. The development checkout uses Tectonic. No author-identifying repository URL appears in the paper. Submit `main.pdf` as the paper+text supplement; submit the anonymized code ZIP produced by `build_anonymous_supplement.py` as code supplementary material.
 
 Canonical numerical sources are `../artifacts/EVALUATION_VALIDITY.json` and `../artifacts/ADJUDICATOR_ROBUSTNESS.json`. Run `../verify_artifacts.py` before any submission build.
+
+The appendix also contains a tightly scoped API-Bank ToolSearcher sample diagnostic; see `artifacts/APIBANK_PUBLIC_CONTROL.json`.
