@@ -1,0 +1,137 @@
+{
+  "contract": "casepath.adjudicator-missingness/1.0.0",
+  "families": {
+    "deepseekv4pro": {
+      "excluded": {
+        "max_chars": 1599,
+        "mean_chars": 1466.875,
+        "median_chars": 1504,
+        "n": 8
+      },
+      "excluded_by_scenario": {
+        "S4_miscalculated": 5,
+        "S5_refrate_inconsistent": 1,
+        "S6_refrate_double_count": 1,
+        "S8_nebenkosten_reclass": 1
+      },
+      "included": {
+        "max_chars": 168316,
+        "mean_chars": 24856.94,
+        "median_chars": 1555,
+        "n": 50
+      },
+      "included_by_scenario": {
+        "S4_miscalculated": 4,
+        "S5_refrate_inconsistent": 9,
+        "S6_refrate_double_count": 9,
+        "S7_renovation_unclear": 10,
+        "S8_nebenkosten_reclass": 8,
+        "S9_provisional_budget": 10
+      }
+    },
+    "gemini31pro": {
+      "excluded": {
+        "max_chars": 168308,
+        "mean_chars": 72695.0,
+        "median_chars": 1518,
+        "n": 7
+      },
+      "excluded_by_scenario": {
+        "S4_miscalculated": 1,
+        "S6_refrate_double_count": 1,
+        "S7_renovation_unclear": 2,
+        "S8_nebenkosten_reclass": 3
+      },
+      "included": {
+        "max_chars": 168316,
+        "mean_chars": 14621.901960784313,
+        "median_chars": 1519,
+        "n": 51
+      },
+      "included_by_scenario": {
+        "S4_miscalculated": 8,
+        "S5_refrate_inconsistent": 10,
+        "S6_refrate_double_count": 9,
+        "S7_renovation_unclear": 8,
+        "S8_nebenkosten_reclass": 6,
+        "S9_provisional_budget": 10
+      }
+    },
+    "opus5": {
+      "excluded": {
+        "max_chars": null,
+        "mean_chars": null,
+        "median_chars": null,
+        "n": 0
+      },
+      "excluded_by_scenario": {},
+      "included": {
+        "max_chars": 168316,
+        "mean_chars": 21630.724137931036,
+        "median_chars": 1519,
+        "n": 58
+      },
+      "included_by_scenario": {
+        "S4_miscalculated": 9,
+        "S5_refrate_inconsistent": 10,
+        "S6_refrate_double_count": 10,
+        "S7_renovation_unclear": 10,
+        "S8_nebenkosten_reclass": 9,
+        "S9_provisional_budget": 10
+      }
+    }
+  },
+  "pair_retention": {
+    "S4_miscalculated": {
+      "kept": 0,
+      "rate": 0.0,
+      "total": 4
+    },
+    "S5_refrate_inconsistent": {
+      "kept": 4,
+      "rate": 0.8,
+      "total": 5
+    },
+    "S6_refrate_double_count": {
+      "kept": 3,
+      "rate": 0.6,
+      "total": 5
+    },
+    "S7_renovation_unclear": {
+      "kept": 4,
+      "rate": 0.8,
+      "total": 5
+    },
+    "S8_nebenkosten_reclass": {
+      "kept": 1,
+      "rate": 0.25,
+      "total": 4
+    },
+    "S9_provisional_budget": {
+      "kept": 5,
+      "rate": 1.0,
+      "total": 5
+    }
+  },
+  "three_family_complete_case": {
+    "excluded": {
+      "max_chars": 168308,
+      "mean_chars": 34706.666666666664,
+      "median_chars": 1504,
+      "n": 15
+    },
+    "excluded_by_scenario": {
+      "S4_miscalculated": 6,
+      "S5_refrate_inconsistent": 1,
+      "S6_refrate_double_count": 2,
+      "S7_renovation_unclear": 2,
+      "S8_nebenkosten_reclass": 4
+    },
+    "included": {
+      "max_chars": 168316,
+      "mean_chars": 17069.3488372093,
+      "median_chars": 1555,
+      "n": 43
+    }
+  }
+}
