@@ -1,0 +1,128 @@
+{
+ "claim": "clm_0c1a91bc008f8747",
+ "report": {
+  "contract": "casepath.case-interpreter/1.0.0",
+  "activation": {
+   "request_lease_extension": "unresolved",
+   "weigh_extension_interests": "unresolved",
+   "submit_termination_challenge": "unresolved",
+   "file_court_action": "unresolved",
+   "termination_void": "unresolved",
+   "agreement_reached": "unresolved",
+   "claimant_default": "unresolved",
+   "termination_formal_compliance": "active",
+   "good_faith_violation": "unresolved",
+   "authorization_to_sue": "unresolved",
+   "conciliation_hearing": "unresolved",
+   "unjustified_hardship": "unresolved"
+  },
+  "activation_counts": {
+   "active": 1,
+   "inactive": 0,
+   "unresolved": 11
+  },
+  "verdict_counts": {
+   "true": 0,
+   "false": 0,
+   "unresolved": 9
+  },
+  "ungrounded_verdicts": [],
+  "unresolved_predicates": [
+   {
+    "predicate_id": "e01",
+    "what_would_settle_it": "Information about the termination notice and whether it complies with Articles 266l–266n."
+   },
+   {
+    "predicate_id": "e02",
+    "what_would_settle_it": "The termination notice and facts showing whether all required formalities were met."
+   },
+   {
+    "predicate_id": "e03",
+    "what_would_settle_it": "The termination notice and facts showing whether all required formalities were met."
+   },
+   {
+    "predicate_id": "e04",
+    "what_would_settle_it": "Facts establishing a good-faith violation and a statement that the tenant intends to challenge the termination."
+   },
+   {
+    "predicate_id": "e05",
+    "what_would_settle_it": "Facts comparing the tenant's hardship with the landlord's interests and establishing that the hardship cannot be justified by those interests."
+   },
+   {
+    "predicate_id": "e08",
+    "what_would_settle_it": "Information that the parties reached an agreement."
+   },
+   {
+    "predicate_id": "e09",
+    "what_would_settle_it": "Facts showing that the claimant is in default."
+   },
+   {
+    "predicate_id": "e10",
+    "what_would_settle_it": "Information about settlement discussions or an express statement that no agreement was reached."
+   },
+   {
+    "predicate_id": "e11",
+    "what_would_settle_it": "A statement or filing showing that the holder elected to bring an action within the applicable period."
+   }
+  ]
+ },
+ "verdicts": {
+  "verdicts": {
+   "e01": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "Information about the termination notice and whether it complies with Articles 266l–266n."
+   },
+   "e02": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "The termination notice and facts showing whether all required formalities were met."
+   },
+   "e03": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "The termination notice and facts showing whether all required formalities were met."
+   },
+   "e04": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "Facts establishing a good-faith violation and a statement that the tenant intends to challenge the termination."
+   },
+   "e05": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "Facts comparing the tenant's hardship with the landlord's interests and establishing that the hardship cannot be justified by those interests."
+   },
+   "e08": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "Information that the parties reached an agreement."
+   },
+   "e09": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "Facts showing that the claimant is in default."
+   },
+   "e10": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "Information about settlement discussions or an express statement that no agreement was reached."
+   },
+   "e11": {
+    "verdict": "unresolved",
+    "quote": null,
+    "source_ref": null,
+    "what_would_settle_it": "A statement or filing showing that the holder elected to bring an action within the applicable period."
+   }
+  },
+  "ungrounded": []
+ }
+}
