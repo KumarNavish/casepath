@@ -64,7 +64,7 @@ model changes.**
 Spread on one identical artifact: **+0.119 to −0.077**, intervals non-overlapping.
 
 **Not an execution failure.** Zero `b5` errors on every model. All four resolve 10–12% of predicates and leave the
-rest unresolved at near-identical rates (true/false/unresolved: 27/28/467, 32/28/462, 32/29/461, 13/15/232).
+rest unresolved at near-identical rates (true/false/unresolved: 27/28/467, 32/28/462, 32/29/461, 30/29/463).
 `claude-haiku-4.5` compiles roughly twice as many chains (67.6 vs 31–39) and requests twice as many documents (12.6
 vs 6.5–7.4), and still withdraws nothing correct.
 

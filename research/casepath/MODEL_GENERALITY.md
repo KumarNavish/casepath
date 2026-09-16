@@ -35,7 +35,7 @@ Checked before drawing any conclusion:
 | gpt-5.6-terra | **0** | 7.4 | 34.0 | 27 / 28 / 467 |
 | claude-haiku-4.5 | **0** | 12.6 | 67.6 | 32 / 28 / 462 |
 | gemini-2.5-flash | **0** | 6.5 | 31.0 | 32 / 29 / 461 |
-| deepseek-v3.2 | **0** | 6.5 | 39.0 | 13 / 15 / 232 |
+| deepseek-v3.2 | **0** | 6.5 | 39.0 | 30 / 29 / 463 |
 
 Zero errors anywhere. Every model resolves 10–12% of predicates and leaves the rest unresolved — near-identical
 rates. The pipeline executed the same way in all four; what differs is *which* documents each asks for and releases.

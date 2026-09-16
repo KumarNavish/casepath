@@ -1,0 +1,420 @@
+{
+ "nodes": [
+  {
+   "node_id": "notify_rent_increase",
+   "label": "landlord notifies the tenant of the rent increase for the next possible termination date",
+   "kind": "step",
+   "supported_by": [
+    "or-art-269d-para1-20260101-de#p1",
+    "or-art-269d-para1-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "The landlord may increase rent for the next possible termination date but must notify the tenant on a canton-approved form and state the reasons."
+  },
+  {
+   "node_id": "determine_form_compliance",
+   "label": "determine whether the rent-increase notification uses the prescribed form",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-269d-para1-20260101-de#p2",
+    "or-art-269d-para2-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A rent increase must be notified on a canton-approved form and is void if the prescribed form is not used."
+  },
+  {
+   "node_id": "rent_increase_void",
+   "label": "rent increase is void for failure to use the prescribed form",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-269d-para2-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The proposition expressly makes a rent increase void where the landlord does not notify it using the prescribed form."
+  },
+  {
+   "node_id": "tenant_challenges_increase",
+   "label": "tenant challenges the rent increase before the conciliation authority as abusive",
+   "kind": "step",
+   "supported_by": [
+    "or-art-270b-para1-20260101-de#p1",
+    "zpo-art-202-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The tenant may challenge an abusive rent increase before the conciliation authority, and the procedure is initiated by a conciliation request."
+  },
+  {
+   "node_id": "determine_timely_challenge",
+   "label": "determine whether the tenant challenged within 30 days after communication",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-270b-para1-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "The challenge of a rent increase must be made within 30 days after it is communicated to the tenant."
+  },
+  {
+   "node_id": "challenge_period_expired",
+   "label": "challenge was not made within the stated 30-day period",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-270b-para1-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "The propositions state the 30-day period for making the challenge but do not state a further consequence of expiry."
+  },
+  {
+   "node_id": "determine_non_abusive_grounds",
+   "label": "determine whether the increase is generally not abusive under a stated Article 269a ground",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-269a-20260101-de#p1",
+    "or-art-269a-20260101-de#p2",
+    "or-art-269a-20260101-de#p3",
+    "or-art-269a-20260101-de#p4",
+    "or-art-269a-20260101-de#p5",
+    "or-art-269a-20260101-de#p6",
+    "vmwg-art-11-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The listed propositions identify circumstances in which rent is generally not abusive, including customary comparable rents and specified justifications."
+  },
+  {
+   "node_id": "conciliation_hearing",
+   "label": "conciliation authority attempts to reconcile the parties in informal negotiations",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-201-para1-20250101-de#p1",
+    "vmwg-art-21-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The conciliation authority must attempt informal reconciliation and seek an agreement covering the entire tenancy."
+  },
+  {
+   "node_id": "settlement_reached",
+   "label": "record settlement, acknowledgment of claim, or unconditional withdrawal of claim",
+   "kind": "terminal",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p1",
+    "zpo-art-208-para1-20250101-de#p2",
+    "zpo-art-208-para1-20250101-de#p3",
+    "zpo-art-208-para1-20250101-de#p4"
+   ],
+   "support": "supported",
+   "why": "Where agreement is reached, the conciliation authority must record the matter, obtain signatures, and provide each party a copy."
+  },
+  {
+   "node_id": "issue_landlord_authorization",
+   "label": "record lack of agreement and issue authorization to sue to the landlord",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p1",
+    "zpo-art-209-para1-20250101-de#p2",
+    "zpo-art-209-para1-20250101-de#p3",
+    "zpo-art-209-para1-20250101-de#p4"
+   ],
+   "support": "supported",
+   "why": "If no agreement is reached in a challenged rent-increase matter, the authority must record that fact and issue authorization to sue to the landlord or lessor."
+  },
+  {
+   "node_id": "landlord_files_court_action",
+   "label": "landlord files action with the court under the authorization to sue",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-209-para3-20250101-de#p1",
+    "zpo-art-209-para4-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The authorization entitles its holder to file an action with the court, and the action period is 30 days in residential and commercial lease disputes."
+  },
+  {
+   "node_id": "court_establishes_facts",
+   "label": "court establishes the facts ex officio in the rent-protection dispute",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-243-para2-20250101-de#p3",
+    "zpo-art-247-para2-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "Protection against abusive rent is within Article 243 paragraph 2 matters, for which the court must establish the facts ex officio."
+  }
+ ],
+ "transitions": [
+  {
+   "edge_id": "e01",
+   "source_node_id": "notify_rent_increase",
+   "target_node_id": "determine_form_compliance",
+   "condition": null,
+   "supported_by": [
+    "or-art-269d-para1-20260101-de#p2",
+    "or-art-269d-para2-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e02",
+   "source_node_id": "determine_form_compliance",
+   "target_node_id": "rent_increase_void",
+   "condition": "the prescribed form was not used",
+   "supported_by": [
+    "or-art-269d-para2-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e03",
+   "source_node_id": "determine_form_compliance",
+   "target_node_id": "tenant_challenges_increase",
+   "condition": "the prescribed form was used and the tenant challenges the increase as abusive",
+   "supported_by": [
+    "or-art-269d-para2-20260101-de#p1",
+    "or-art-270b-para1-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e04",
+   "source_node_id": "tenant_challenges_increase",
+   "target_node_id": "determine_timely_challenge",
+   "condition": null,
+   "supported_by": [
+    "or-art-270b-para1-20260101-de#p2"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e05",
+   "source_node_id": "determine_timely_challenge",
+   "target_node_id": "challenge_period_expired",
+   "condition": "the challenge was not made within 30 days after communication",
+   "supported_by": [
+    "or-art-270b-para1-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e06",
+   "source_node_id": "determine_timely_challenge",
+   "target_node_id": "determine_non_abusive_grounds",
+   "condition": "the challenge was made within 30 days after communication",
+   "supported_by": [
+    "or-art-270b-para1-20260101-de#p2",
+    "or-art-269a-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e07",
+   "source_node_id": "determine_non_abusive_grounds",
+   "target_node_id": "conciliation_hearing",
+   "condition": null,
+   "supported_by": [
+    "or-art-270b-para1-20260101-de#p1",
+    "zpo-art-201-para1-20250101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e08",
+   "source_node_id": "conciliation_hearing",
+   "target_node_id": "settlement_reached",
+   "condition": "an agreement is reached",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e09",
+   "source_node_id": "conciliation_hearing",
+   "target_node_id": "issue_landlord_authorization",
+   "condition": "no agreement is reached",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p1",
+    "zpo-art-209-para1-20260101-de#p4"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e10",
+   "source_node_id": "issue_landlord_authorization",
+   "target_node_id": "landlord_files_court_action",
+   "condition": "the landlord files within the applicable action period",
+   "supported_by": [
+    "zpo-art-209-para3-20250101-de#p1",
+    "zpo-art-209-para4-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e11",
+   "source_node_id": "landlord_files_court_action",
+   "target_node_id": "court_establishes_facts",
+   "condition": null,
+   "supported_by": [
+    "zpo-art-247-para2-20250101-de#p1"
+   ],
+   "support": "supported"
+  }
+ ],
+ "deadlines": [
+  {
+   "deadline_id": "d01",
+   "governs_node_id": "notify_rent_increase",
+   "period": "at least ten days before the beginning of the notice period",
+   "runs_from": "before the beginning of the notice period",
+   "supported_by": [
+    "or-art-269d-para1-20260101-de#p3"
+   ]
+  },
+  {
+   "deadline_id": "d02",
+   "governs_node_id": "tenant_challenges_increase",
+   "period": "within 30 days",
+   "runs_from": "after the rent increase has been communicated to the tenant",
+   "supported_by": [
+    "or-art-270b-para1-20260101-de#p2"
+   ]
+  },
+  {
+   "deadline_id": "d03",
+   "governs_node_id": "conciliation_hearing",
+   "period": "within two months",
+   "runs_from": "receipt of the application or completion of the exchange of written submissions",
+   "supported_by": [
+    "zpo-art-203-para1-20250101-de#p1"
+   ]
+  },
+  {
+   "deadline_id": "d04",
+   "governs_node_id": "landlord_files_court_action",
+   "period": "30 days",
+   "runs_from": "after the opening of the authorization to bring an action",
+   "supported_by": [
+    "zpo-art-209-para3-20250101-de#p2",
+    "zpo-art-209-para4-20250101-de#p1"
+   ]
+  }
+ ],
+ "obligations": [
+  {
+   "obligation_id": "o01",
+   "node_id": "notify_rent_increase",
+   "party": "landlord",
+   "statement": "Notify the tenant of the rent increase on a form approved by the canton and state the reasons for it.",
+   "supported_by": [
+    "or-art-269d-para1-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o02",
+   "node_id": "notify_rent_increase",
+   "party": "landlord",
+   "statement": "Provide the notification and reasons at least ten days before the beginning of the notice period.",
+   "supported_by": [
+    "or-art-269d-para1-20260101-de#p3"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o03",
+   "node_id": "notify_rent_increase",
+   "party": "landlord through the rent-increase form",
+   "statement": "State the previous rent and ancillary-cost charge, the new rent and ancillary-cost charge, the effective date, and the reason for the increase; separately state each asserted increase reason as an amount.",
+   "supported_by": [
+    "vmwg-art-19-para1-20250101-de#p1",
+    "vmwg-art-19-para1-20250101-de#p2",
+    "vmwg-art-19-para1-20250101-de#p3",
+    "vmwg-art-19-para1-20250101-de#p4",
+    "vmwg-art-19-para1-20250101-de#p5"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o04",
+   "node_id": "notify_rent_increase",
+   "party": "landlord through the rent-increase form",
+   "statement": "State whether the landlord receives subsidies for value-enhancing improvements where additional services are asserted, and include statutory contestation requirements plus the list and local jurisdiction of conciliation authorities.",
+   "supported_by": [
+    "vmwg-art-19-para1-20250101-de#p6",
+    "vmwg-art-19-para1-20250101-de#p10",
+    "vmwg-art-19-para1-20250101-de#p11"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o05",
+   "node_id": "determine_non_abusive_grounds",
+   "party": "landlord",
+   "statement": "Justify the rent by cost increases or additional services provided by the landlord if relying on that stated non-abusive ground.",
+   "supported_by": [
+    "or-art-269a-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o06",
+   "node_id": "conciliation_hearing",
+   "party": "conciliation authority",
+   "statement": "Attempt to reconcile the parties in informal negotiations and seek an agreement covering the entire tenancy.",
+   "supported_by": [
+    "zpo-art-201-para1-20250101-de#p1",
+    "vmwg-art-21-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o07",
+   "node_id": "settlement_reached",
+   "party": "conciliation authority",
+   "statement": "Record the settlement, acknowledgment of claim, or unconditional withdrawal in the minutes and have the parties sign it.",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p2",
+    "zpo-art-208-para1-20250101-de#p3"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o08",
+   "node_id": "issue_landlord_authorization",
+   "party": "conciliation authority",
+   "statement": "Record the lack of agreement in the minutes and issue an authorization to sue to the landlord or lessor in a challenged rent-increase matter.",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p2",
+    "zpo-art-209-para1-20250101-de#p3",
+    "zpo-art-209-para1-20250101-de#p4"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o09",
+   "node_id": "court_establishes_facts",
+   "party": "court",
+   "statement": "Establish the facts ex officio.",
+   "supported_by": [
+    "zpo-art-247-para2-20250101-de#p1"
+   ],
+   "support": "supported"
+  }
+ ],
+ "unsupported_gaps": [
+  {
+   "what_is_missing": "A stated legal consequence for defects in the required rent-increase form other than failure to use the prescribed form.",
+   "why_it_matters": "The sources expressly make non-use of the prescribed form void, but do not state whether omissions or inaccuracies in the Article 19 form content also make the increase void."
+  },
+  {
+   "what_is_missing": "The substantive standard in Article 269 for deciding whether a rent increase is abusive, and the consequence of a finding that the increase is abusive.",
+   "why_it_matters": "Article 270b permits a challenge as abusive under Articles 269 and 269a, but only Article 269a grounds are supplied and no proposition states the remedy following an abusive-increase finding."
+  },
+  {
+   "what_is_missing": "A stated outcome after the court establishes the facts.",
+   "why_it_matters": "The propositions require ex officio fact-finding but do not state the court's resulting decision or its effect on the challenged rent increase."
+  }
+ ],
+ "contract": "casepath.process-induction/1.0.0",
+ "scope": "a tenant challenging a rent increase imposed by the landlord, including whether the increase is void for defect of form",
+ "grounding_problems": [
+  "transitions e09 cites unknown propositions ['zpo-art-209-para1-20260101-de#p4']"
+ ]
+}

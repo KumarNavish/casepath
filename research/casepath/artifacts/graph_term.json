@@ -1,0 +1,792 @@
+{
+ "nodes": [
+  {
+   "node_id": "determine_notice_compliance",
+   "label": "determine whether the termination complies with the required written form, approved landlord form, required form content, and separate service requirements",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-266l-para1-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p2",
+    "or-art-266n-20260101-de#p1",
+    "vmwg-art-9-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "These propositions prescribe writing, an approved form, specified form information, and separate service where applicable."
+  },
+  {
+   "node_id": "termination_void",
+   "label": "termination is void",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-266o-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A termination that does not comply with Articles 266l–266n is void."
+  },
+  {
+   "node_id": "request_termination_justification",
+   "label": "request justification for the termination",
+   "kind": "step",
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p1",
+    "vmwg-art-9-para1-20250101-de#p4"
+   ],
+   "support": "supported",
+   "why": "The landlord's duty to justify is triggered when the tenant requests justification."
+  },
+  {
+   "node_id": "provide_termination_justification",
+   "label": "provide justification for the termination upon request",
+   "kind": "step",
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p1",
+    "or-art-271-para2-20260101-de#p2",
+    "vmwg-art-9-para1-20250101-de#p4"
+   ],
+   "support": "supported",
+   "why": "The propositions require the termination to be justified upon request."
+  },
+  {
+   "node_id": "determine_good_faith_violation",
+   "label": "determine whether the termination violates the principle of good faith",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-271-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A termination is contestable if it violates the principle of good faith."
+  },
+  {
+   "node_id": "determine_retaliatory_termination",
+   "label": "determine whether the landlord terminated because the tenant asserted tenancy claims in good faith",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-271a-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A landlord termination issued for that reason is contestable."
+  },
+  {
+   "node_id": "termination_contestable",
+   "label": "termination is contestable",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-271-para1-20260101-de#p1",
+    "or-art-271a-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The propositions identify good-faith violations and specified retaliatory terminations as grounds of contestability."
+  },
+  {
+   "node_id": "submit_challenge_request",
+   "label": "submit a request challenging the termination to the conciliation authority",
+   "kind": "step",
+   "supported_by": [
+    "or-art-273-para1-20260101-de#p1",
+    "or-art-273-para1-20260101-de#p3",
+    "zpo-art-202-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A party intending to challenge must submit the request within the stated period, and the procedure is initiated by a conciliation request."
+  },
+  {
+   "node_id": "determine_extension_exclusion",
+   "label": "determine whether extension is excluded by the termination ground or equivalent replacement offer",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-272a-para1-20260101-de#p1",
+    "or-art-272a-para1-20260101-de#p2",
+    "or-art-272a-para1-20260101-de#p3",
+    "or-art-272a-para1-20260101-de#p4",
+    "or-art-272a-para2-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The propositions exclude extension for specified termination grounds and generally where an equivalent replacement is offered."
+  },
+  {
+   "node_id": "extension_excluded",
+   "label": "extension is excluded",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-272a-para1-20260101-de#p1",
+    "or-art-272a-para1-20260101-de#p2",
+    "or-art-272a-para1-20260101-de#p3",
+    "or-art-272a-para1-20260101-de#p4",
+    "or-art-272a-para2-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "These provisions expressly exclude or generally exclude an extension in the stated circumstances."
+  },
+  {
+   "node_id": "submit_extension_request",
+   "label": "submit a request for extension to the conciliation authority",
+   "kind": "step",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1",
+    "or-art-273-para2-20260101-de#p1",
+    "or-art-273-para2-20260101-de#p2",
+    "zpo-art-202-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A tenant may seek an extension and must submit that request to the conciliation authority."
+  },
+  {
+   "node_id": "determine_extension_hardship",
+   "label": "determine whether termination causes unjustified hardship to the tenant or the tenant's family",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1",
+    "or-art-272-para1-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "Extension depends on hardship that cannot be justified by the landlord's interests."
+  },
+  {
+   "node_id": "weigh_extension_interests",
+   "label": "weigh the tenant's hardship against the landlord's interests using the specified circumstances",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-272-para2-20260101-de#p1",
+    "or-art-272-para2-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p3",
+    "or-art-272-para2-20260101-de#p4",
+    "or-art-272-para2-20260101-de#p5"
+   ],
+   "support": "supported",
+   "why": "The competent authority must consider the listed contractual, personal, need-based, and market circumstances in weighing interests."
+  },
+  {
+   "node_id": "determine_second_extension_efforts",
+   "label": "determine whether the tenant did everything reasonably expected to avert hardship for a second extension",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-272-para3-20260101-de#p1",
+    "or-art-272-para3-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "For a second extension request, the authority must also consider the tenant's reasonable efforts to avert hardship."
+  },
+  {
+   "node_id": "determine_extension_terms",
+   "label": "determine permitted extension duration, number of extensions, and any contract adaptation",
+   "kind": "decision",
+   "supported_by": [
+    "or-art-272b-para1-20260101-de#p1",
+    "or-art-272b-para1-20260101-de#p2",
+    "or-art-272b-para2-20260101-de#p1",
+    "or-art-272b-para2-20260101-de#p2",
+    "or-art-272c-para1-20260101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The propositions set residential and business maximums, permit one or two extensions, except agreed extensions from the maximum, and allow adaptation to changed circumstances."
+  },
+  {
+   "node_id": "extension_granted",
+   "label": "extension is granted on determined terms",
+   "kind": "terminal",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1",
+    "or-art-272b-para1-20260101-de#p1",
+    "or-art-272b-para1-20260101-de#p2"
+   ],
+   "support": "supported",
+   "why": "An extension may be granted where the hardship standard is met, subject to the stated duration and number rules."
+  },
+  {
+   "node_id": "determine_conciliation_omission_or_waiver",
+   "label": "determine whether conciliation is omitted or validly waived",
+   "kind": "decision",
+   "supported_by": [
+    "zpo-art-198-20250101-de#p1",
+    "zpo-art-198-20250101-de#p2",
+    "zpo-art-198-20250101-de#p3",
+    "zpo-art-198-20250101-de#p4",
+    "zpo-art-198-20250101-de#p5",
+    "zpo-art-198-20250101-de#p6",
+    "zpo-art-198-20250101-de#p7",
+    "zpo-art-198-20250101-de#p8",
+    "zpo-art-198-20250101-de#p9",
+    "zpo-art-198-20250101-de#p10",
+    "zpo-art-198-20250101-de#p11",
+    "zpo-art-199-para1-20250101-de#p1",
+    "zpo-art-199-para1-20250101-de#p2",
+    "zpo-art-199-para2-20250101-de#p1",
+    "zpo-art-199-para2-20250101-de#p2",
+    "zpo-art-199-para2-20250101-de#p3"
+   ],
+   "support": "supported",
+   "why": "The propositions enumerate omitted proceedings and conditions for joint or unilateral waiver."
+  },
+  {
+   "node_id": "conduct_conciliation",
+   "label": "serve the request, summon the parties, and attempt informal conciliation",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-197-20250101-de#p1",
+    "zpo-art-201-para1-20250101-de#p1",
+    "zpo-art-202-para3-20250101-de#p1",
+    "zpo-art-202-para3-20250101-de#p2",
+    "zpo-art-204-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "Conciliation precedes decision proceedings unless omitted, and the authority must serve, summon, and attempt reconciliation."
+  },
+  {
+   "node_id": "claimant_default",
+   "label": "determine whether the claimant is in default at conciliation",
+   "kind": "decision",
+   "supported_by": [
+    "zpo-art-206-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "Claimant default causes the request to be deemed withdrawn and the proceedings to be struck off."
+  },
+  {
+   "node_id": "request_withdrawn",
+   "label": "conciliation request is deemed withdrawn and proceedings are struck off",
+   "kind": "terminal",
+   "supported_by": [
+    "zpo-art-206-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The stated consequence follows if the claimant is in default."
+  },
+  {
+   "node_id": "determine_agreement",
+   "label": "determine whether an agreement, acknowledgment, or unconditional withdrawal is reached",
+   "kind": "decision",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p1",
+    "zpo-art-209-para1-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The authority's recording duties differ depending on whether agreement is reached."
+  },
+  {
+   "node_id": "record_binding_agreement",
+   "label": "record and sign settlement, acknowledgment, or unconditional withdrawal and distribute minutes",
+   "kind": "terminal",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p2",
+    "zpo-art-208-para1-20250101-de#p3",
+    "zpo-art-208-para1-20250101-de#p4",
+    "zpo-art-208-para2-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "The authority must record and obtain signatures, parties receive copies, and the recorded outcome has final and binding effect."
+  },
+  {
+   "node_id": "determine_proposed_decision",
+   "label": "determine whether the conciliation authority submits a proposed decision",
+   "kind": "decision",
+   "supported_by": [
+    "zpo-art-210-para1-20250101-de#p2"
+   ],
+   "support": "supported",
+   "why": "A proposed decision may be submitted in covered residential or commercial lease disputes affecting protection against termination or extension."
+  },
+  {
+   "node_id": "determine_proposed_decision_rejection",
+   "label": "determine whether a party rejects the proposed decision within 20 days",
+   "kind": "decision",
+   "supported_by": [
+    "zpo-art-211-para1-20250101-de#p1",
+    "zpo-art-211-para1-20250101-de#p2"
+   ],
+   "support": "supported",
+   "why": "Absent a timely rejection, the proposed decision is deemed accepted and final."
+  },
+  {
+   "node_id": "proposed_decision_final",
+   "label": "proposed decision is deemed accepted and final",
+   "kind": "terminal",
+   "supported_by": [
+    "zpo-art-211-para1-20250101-de#p1",
+    "zpo-art-211-para3-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "A proposed decision is final if unchallenged within 20 days or if a timely action is not filed after rejection."
+  },
+  {
+   "node_id": "issue_authorization_to_sue",
+   "label": "record lack of agreement and issue authorization to sue",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p1",
+    "zpo-art-209-para1-20250101-de#p2",
+    "zpo-art-209-para1-20250101-de#p3",
+    "zpo-art-209-para1-20250101-de#p5",
+    "zpo-art-211-para2-20250101-de#p1"
+   ],
+   "support": "supported",
+   "why": "If no agreement is reached, the authority must record that fact and issue authorization to sue to the claimant, including after rejection in covered proposed-decision matters."
+  },
+  {
+   "node_id": "file_court_action",
+   "label": "file action with the court at the location of the immovable property",
+   "kind": "step",
+   "supported_by": [
+    "zpo-art-209-para3-20250101-de#p1",
+    "zpo-art-209-para3-20250101-de#p2",
+    "zpo-art-209-para4-20250101-de#p1",
+    "zpo-art-33-20250101-de#p1",
+    "zpo-art-33-20250101-de#p2"
+   ],
+   "support": "supported",
+   "why": "Authorization entitles court action after opening, the lease-dispute action period is 30 days, and the court at the property's location has jurisdiction."
+  }
+ ],
+ "transitions": [
+  {
+   "edge_id": "e01",
+   "source_node_id": "determine_notice_compliance",
+   "target_node_id": "termination_void",
+   "condition": "the termination does not comply with Articles 266l–266n",
+   "supported_by": [
+    "or-art-266o-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e02",
+   "source_node_id": "request_termination_justification",
+   "target_node_id": "provide_termination_justification",
+   "condition": "justification is requested",
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p1",
+    "or-art-271-para2-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e03",
+   "source_node_id": "submit_challenge_request",
+   "target_node_id": "conduct_conciliation",
+   "condition": "conciliation is not omitted or waived",
+   "supported_by": [
+    "zpo-art-197-20250101-de#p1",
+    "zpo-art-198-20250101-de#p1",
+    "zpo-art-199-para1-20250101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e04",
+   "source_node_id": "submit_extension_request",
+   "target_node_id": "determine_extension_exclusion",
+   "condition": null,
+   "supported_by": [
+    "or-art-272a-para1-20260101-de#p1",
+    "or-art-272a-para2-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e05",
+   "source_node_id": "determine_extension_exclusion",
+   "target_node_id": "extension_excluded",
+   "condition": "an exclusion applies",
+   "supported_by": [
+    "or-art-272a-para1-20260101-de#p1",
+    "or-art-272a-para2-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e06",
+   "source_node_id": "determine_extension_exclusion",
+   "target_node_id": "determine_extension_hardship",
+   "condition": "no exclusion applies",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e07",
+   "source_node_id": "determine_extension_hardship",
+   "target_node_id": "weigh_extension_interests",
+   "condition": "hardship and landlord interests must be weighed",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e08",
+   "source_node_id": "weigh_extension_interests",
+   "target_node_id": "determine_extension_terms",
+   "condition": "the hardship is not justified by the landlord's interests",
+   "supported_by": [
+    "or-art-272-para1-20260101-de#p1",
+    "or-art-272b-para1-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e09",
+   "source_node_id": "determine_extension_terms",
+   "target_node_id": "extension_granted",
+   "condition": "an extension is granted within the applicable terms",
+   "supported_by": [
+    "or-art-272b-para1-20260101-de#p1",
+    "or-art-272b-para1-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e10",
+   "source_node_id": "conduct_conciliation",
+   "target_node_id": "claimant_default",
+   "condition": "the claimant is in default",
+   "supported_by": [
+    "zpo-art-206-para1-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e11",
+   "source_node_id": "claimant_default",
+   "target_node_id": "request_withdrawn",
+   "condition": "the claimant is in default",
+   "supported_by": [
+    "zpo-art-206-para1-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e12",
+   "source_node_id": "conduct_conciliation",
+   "target_node_id": "determine_agreement",
+   "condition": "the claimant is not in default",
+   "supported_by": [
+    "zpo-art-206-para1-20250101-de#p1",
+    "zpo-art-208-para1-20250101-de#p1"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e13",
+   "source_node_id": "determine_agreement",
+   "target_node_id": "record_binding_agreement",
+   "condition": "an agreement, acknowledgment, or unconditional withdrawal is reached",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p1",
+    "zpo-art-208-para2-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e14",
+   "source_node_id": "determine_agreement",
+   "target_node_id": "determine_proposed_decision",
+   "condition": "no agreement is reached",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p1",
+    "zpo-art-210-para1-20250101-de#p2"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e15",
+   "source_node_id": "determine_proposed_decision",
+   "target_node_id": "determine_proposed_decision_rejection",
+   "condition": "a proposed decision is submitted",
+   "supported_by": [
+    "zpo-art-210-para1-20250101-de#p2",
+    "zpo-art-211-para1-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e16",
+   "source_node_id": "determine_proposed_decision_rejection",
+   "target_node_id": "proposed_decision_final",
+   "condition": "no party rejects within 20 days of written notification",
+   "supported_by": [
+    "zpo-art-211-para1-20250101-de#p1",
+    "zpo-art-211-para1-20250101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e17",
+   "source_node_id": "determine_proposed_decision_rejection",
+   "target_node_id": "issue_authorization_to_sue",
+   "condition": "a party rejects the proposed decision",
+   "supported_by": [
+    "zpo-art-211-para2-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "edge_id": "e18",
+   "source_node_id": "determine_proposed_decision",
+   "target_node_id": "issue_authorization_to_sue",
+   "condition": "no proposed decision is submitted",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p1",
+    "zpo-art-209-para1-20260101-de#p3"
+   ],
+   "support": "uncertain"
+  },
+  {
+   "edge_id": "e19",
+   "source_node_id": "issue_authorization_to_sue",
+   "target_node_id": "file_court_action",
+   "condition": null,
+   "supported_by": [
+    "zpo-art-209-para3-20250101-de#p1"
+   ],
+   "support": "supported"
+  }
+ ],
+ "deadlines": [
+  {
+   "deadline_id": "d01",
+   "governs_node_id": "submit_challenge_request",
+   "period": "within 30 days",
+   "runs_from": "after receipt of the termination",
+   "supported_by": [
+    "or-art-273-para1-20260101-de#p3"
+   ]
+  },
+  {
+   "deadline_id": "d02",
+   "governs_node_id": "submit_extension_request",
+   "period": "within 30 days for an indefinite tenancy",
+   "runs_from": "after receipt of the notice of termination",
+   "supported_by": [
+    "or-art-273-para2-20260101-de#p3"
+   ]
+  },
+  {
+   "deadline_id": "d03",
+   "governs_node_id": "submit_extension_request",
+   "period": "no later than 60 days",
+   "runs_from": "before the end of the contractual term for a fixed-term tenancy",
+   "supported_by": [
+    "or-art-273-para2-20260101-de#p4"
+   ]
+  },
+  {
+   "deadline_id": "d04",
+   "governs_node_id": "determine_proposed_decision_rejection",
+   "period": "within 20 days",
+   "runs_from": "written notification of the proposed decision",
+   "supported_by": [
+    "zpo-art-211-para1-20250101-de#p2"
+   ]
+  },
+  {
+   "deadline_id": "d05",
+   "governs_node_id": "file_court_action",
+   "period": "three months",
+   "runs_from": "after the opening of the authorization to bring an action",
+   "supported_by": [
+    "zpo-art-209-para3-20250101-de#p2"
+   ]
+  },
+  {
+   "deadline_id": "d06",
+   "governs_node_id": "file_court_action",
+   "period": "30 days in disputes arising from residential and commercial lease and tenancy",
+   "runs_from": "not stated",
+   "supported_by": [
+    "zpo-art-209-para4-20250101-de#p1"
+   ]
+  }
+ ],
+ "obligations": [
+  {
+   "obligation_id": "o01",
+   "node_id": "determine_notice_compliance",
+   "party": "landlord and tenant of residential and commercial premises",
+   "statement": "Give notice of termination in writing.",
+   "supported_by": [
+    "or-art-266l-para1-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o02",
+   "node_id": "determine_notice_compliance",
+   "party": "landlord",
+   "statement": "Use a canton-approved termination form that states how the tenant may challenge termination or request extension and identifies the leased object.",
+   "supported_by": [
+    "or-art-266l-para2-20260101-de#p1",
+    "or-art-266l-para2-20260101-de#p2",
+    "vmwg-art-9-para1-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o03",
+   "node_id": "determine_notice_compliance",
+   "party": "landlord",
+   "statement": "Serve landlord termination separately on the tenant and the tenant's spouse or registered partner.",
+   "supported_by": [
+    "or-art-266n-20260101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o04",
+   "node_id": "provide_termination_justification",
+   "party": "landlord",
+   "statement": "Justify the termination upon request.",
+   "supported_by": [
+    "or-art-271-para2-20260101-de#p2",
+    "vmwg-art-9-para1-20250101-de#p4"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o05",
+   "node_id": "submit_challenge_request",
+   "party": "party challenging the termination",
+   "statement": "Submit the challenge request within 30 days after receipt of termination.",
+   "supported_by": [
+    "or-art-273-para1-20260101-de#p3"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o06",
+   "node_id": "submit_extension_request",
+   "party": "tenant",
+   "statement": "Submit an extension request to the conciliation authority within the deadline applicable to the tenancy term.",
+   "supported_by": [
+    "or-art-273-para2-20260101-de#p2",
+    "or-art-273-para2-20260101-de#p3",
+    "or-art-273-para2-20260101-de#p4"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o07",
+   "node_id": "weigh_extension_interests",
+   "party": "competent authority",
+   "statement": "Take into account the specified contractual circumstances, tenancy duration, party circumstances and conduct, landlord own need and urgency, and local market conditions.",
+   "supported_by": [
+    "or-art-272-para2-20260101-de#p1",
+    "or-art-272-para2-20260101-de#p2",
+    "or-art-272-para2-20260101-de#p3",
+    "or-art-272-para2-20260101-de#p4",
+    "or-art-272-para2-20260101-de#p5"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o08",
+   "node_id": "determine_second_extension_efforts",
+   "party": "competent authority",
+   "statement": "Also consider whether the tenant did everything reasonably expected to avert hardship.",
+   "supported_by": [
+    "or-art-272-para3-20260101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o09",
+   "node_id": "conduct_conciliation",
+   "party": "party submitting the conciliation request",
+   "statement": "Identify the opposing party, legal relief sought, and subject matter of the dispute in the request.",
+   "supported_by": [
+    "zpo-art-202-para2-20250101-de#p1"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o10",
+   "node_id": "conduct_conciliation",
+   "party": "conciliation authority",
+   "statement": "Serve the request without delay, simultaneously summon the parties, and attempt reconciliation in informal negotiations.",
+   "supported_by": [
+    "zpo-art-201-para1-20250101-de#p1",
+    "zpo-art-202-para3-20250101-de#p1",
+    "zpo-art-202-para3-20250101-de#p2"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o11",
+   "node_id": "conduct_conciliation",
+   "party": "parties",
+   "statement": "Appear in person at the conciliation hearing, subject to the stated exceptions.",
+   "supported_by": [
+    "zpo-art-204-para1-20250101-de#p1",
+    "zpo-art-204-para3-20250101-de#p1",
+    "zpo-art-204-para3-20250101-de#p3",
+    "zpo-art-204-para3-20250101-de#p5",
+    "zpo-art-204-para3-20250101-de#p7"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o12",
+   "node_id": "record_binding_agreement",
+   "party": "conciliation authority",
+   "statement": "Record the settlement, acknowledgment, or unconditional withdrawal in the minutes and have the parties sign it.",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p2",
+    "zpo-art-208-para1-20250101-de#p3"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o13",
+   "node_id": "record_binding_agreement",
+   "party": "each party",
+   "statement": "Receive one copy of the minutes.",
+   "supported_by": [
+    "zpo-art-208-para1-20250101-de#p4"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o14",
+   "node_id": "issue_authorization_to_sue",
+   "party": "conciliation authority",
+   "statement": "Record lack of agreement in the minutes and issue authorization to sue.",
+   "supported_by": [
+    "zpo-art-209-para1-20250101-de#p2",
+    "zpo-art-209-para1-20250101-de#p3"
+   ],
+   "support": "supported"
+  },
+  {
+   "obligation_id": "o15",
+   "node_id": "file_court_action",
+   "party": "submitting party",
+   "statement": "Attach the authorization to bring the action or a declaration that conciliation is waived, available evidentiary documents, and a power of attorney where represented.",
+   "supported_by": [
+    "zpo-art-244-para3-20250101-de#p1",
+    "zpo-art-244-para3-20250101-de#p2",
+    "zpo-art-244-para3-20250101-de#p3"
+   ],
+   "support": "supported"
+  }
+ ],
+ "unsupported_gaps": [
+  {
+   "what_is_missing": "The propositions do not state the decision or remedy that follows a finding that a termination is contestable.",
+   "why_it_matters": "They establish contestability standards but do not specify whether the termination is annulled or what other relief is granted."
+  },
+  {
+   "what_is_missing": "The propositions do not state the precise relationship between the three-month authorization period and the 30-day action period for residential and commercial lease disputes.",
+   "why_it_matters": "Both periods are supplied for court action, but the sources do not resolve which controls in this case."
+  },
+  {
+   "what_is_missing": "The propositions refer to Article 271a paragraph 1 letters d and e but do not provide their substantive contestability standards.",
+   "why_it_matters": "The supplied exception cannot be applied to those unidentified underlying grounds."
+  }
+ ],
+ "contract": "casepath.process-induction/1.0.0",
+ "scope": "a tenant who has received a termination of a residential or commercial lease and is considering challenging it as void, abusive or improperly served, or requesting an extension",
+ "grounding_problems": [
+  "transitions e18 cites unknown propositions ['zpo-art-209-para1-20260101-de#p3']"
+ ]
+}

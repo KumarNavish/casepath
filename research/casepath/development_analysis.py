@@ -1,6 +1,16 @@
 import sys, json, collections, random
 sys.path.insert(0,'.')
 from pathlib import Path
+
+import os as _os
+_A = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "artifacts")
+if not _os.path.isdir(_A):
+    _A = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "casepath", "artifacts")
+def _p(name):
+    """Committed artifact if present, else the /tmp path the run originally wrote."""
+    c = _os.path.join(_A, _os.path.basename(name))
+    return c if _os.path.exists(c) else name
+
 from casepath_api import contract_scoring_v1 as cs
 C=json.load(open("../research/casepath/reference_contracts/rent_increase.json"))
 HELD=["lease_contract"]
@@ -23,8 +33,8 @@ def load(*ps):
 MX=load("/tmp/matrix.json","/tmp/matrix.partial.json")
 V1=load("/tmp/e1_arms.json","/tmp/e1_arms.partial.json","/tmp/e07_arms.json","/tmp/e07_arms.partial.json")
 V2=load("/tmp/v2_arms.json","/tmp/v2_arms.partial.json")
-graph1=json.load(open("/tmp/graph_s2.json")); graph2=json.load(open("/tmp/graph_s2_v2.json"))
-props={p["proposition_id"]:p for p in json.load(open("/tmp/props_bundle.json"))}
+graph1=json.load(open(_p("/tmp/graph_s2.json"))); graph2=json.load(open(_p("/tmp/graph_s2_v2.json")))
+props={p["proposition_id"]:p for p in json.load(open(_p("/tmp/props_bundle.json")))}
 out={}
 
 print("="*100); print("TABLE 1 — static floor check, clean development originals"); print("="*100)

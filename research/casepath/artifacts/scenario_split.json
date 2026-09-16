@@ -1,0 +1,91 @@
+{
+ "contract": "casepath.scenario-split/1.0.0",
+ "note": "German and English subjects are translations of the same generated scenario; they are one family. Splitting on the raw subject would have put a scenario's German cases in development and its English twins in the confirmatory set.",
+ "rule": "a scenario containing any already-run case is development; the remainder are ordered by sha256 of the scenario id and the first joins development; the rest are confirmatory and unread.",
+ "scenarios": {
+  "S1_form_defective": [
+   "clm_29cfae9067da08bd",
+   "clm_4335669eb30c238b",
+   "clm_58a690d3e8748a6d",
+   "clm_5c6863b143c9c001",
+   "clm_64a401e6678f4871"
+  ],
+  "S2_form_no_reason": [
+   "clm_2c55cdd816b1d0e8",
+   "clm_543f08f2415b2a33",
+   "clm_7dbd7c7d1c4ddf90",
+   "clm_bdb9322222de3810",
+   "clm_fe914f68772c8f3b"
+  ],
+  "S3_retroactive_start": [
+   "clm_366b82c3e3dd7442",
+   "clm_3f3c313482ea5657",
+   "clm_c7ffe208c9390ad5",
+   "clm_cf91859f633a8189",
+   "clm_ee0cd23eb1730f9d"
+  ],
+  "S4_miscalculated": [
+   "clm_324cd9e32649ba74",
+   "clm_401e7d78a88016c6",
+   "clm_7ace38ce2814fdb9",
+   "clm_c9029af5de9fa5a6",
+   "clm_f7cd8b8d07f8c933"
+  ],
+  "S5_refrate_inconsistent": [
+   "clm_6f04d0907ecb96bb",
+   "clm_9a179a4481767d43",
+   "clm_de7ddb30509c2358",
+   "clm_fc970e956872f431",
+   "clm_ff0434f401f4c442"
+  ],
+  "S6_refrate_double_count": [
+   "clm_15dc0a0f31eced5a",
+   "clm_30cac536260351c8",
+   "clm_44bf2425a1373f3f",
+   "clm_7078fe1804ad03cc",
+   "clm_76238b1a82b5c877"
+  ],
+  "S7_renovation_unclear": [
+   "clm_1bad44cf27f47443",
+   "clm_28950c69c5992e15",
+   "clm_ac7d7a08ca8d5a55",
+   "clm_c8b46247757abe15",
+   "clm_e4a8342461b8cf79"
+  ],
+  "S8_nebenkosten_reclass": [
+   "clm_0c7beda7583b3558",
+   "clm_1f1dffaac057e7e4",
+   "clm_6ecae3f11685e3b2",
+   "clm_c44ddc0914ba9298",
+   "clm_ee6628dbc9cd16ff"
+  ],
+  "S9_provisional_budget": [
+   "clm_4f7e346be88ed820",
+   "clm_5e2271e9b416dd22",
+   "clm_93efa6c5f16b2da5",
+   "clm_cbfda394bc5fc2d3",
+   "clm_f8d04bdabc36bfe8"
+  ],
+  "S10_grant_allocation": [
+   "clm_0c373e693a363f9e",
+   "clm_329b8e1bf37554bf",
+   "clm_99cc6719f9923d03",
+   "clm_bd74de2a73d9e05a",
+   "clm_fd8e5004c663cecb"
+  ]
+ },
+ "development": [
+  "S1_form_defective",
+  "S2_form_no_reason",
+  "S3_retroactive_start",
+  "S10_grant_allocation"
+ ],
+ "confirmatory": [
+  "S4_miscalculated",
+  "S5_refrate_inconsistent",
+  "S6_refrate_double_count",
+  "S7_renovation_unclear",
+  "S8_nebenkosten_reclass",
+  "S9_provisional_budget"
+ ]
+}
