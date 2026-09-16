@@ -112,3 +112,23 @@ shrink its request whenever a fact arrives. Reported descriptively, carrying no 
 
 **What this amendment does not do.** It does not change the arms, the metric, the split, the frozen method, or the
 criteria for support and refutation. The confirmatory scenarios remain unread.
+
+---
+
+## Amendment A2 — 2026-09-16 — the confirmatory run is withheld, not run
+
+**Made before any confirmatory case was run or read.**
+
+The primary outcome is structurally determined to be 0.000 for B5 on every probe available, computable from the
+frozen contract and the frozen graph without running anything. On `e07` the contract releases six documents, all
+of them D12's; B5 can release one, `conciliation_request`; the sets are disjoint. The full computation and its
+cause are in `WHY_THE_CONFIRMATORY_RUN_IS_WITHHELD.md`.
+
+Running the confirmatory set would consume the only clean held-out data to observe a predetermined zero, and would
+present a structural fact as an empirical result. It is therefore **not run**. The six confirmatory scenarios
+remain unread.
+
+This preregistration is **not** void: the method, split, metric and criteria stand. It is suspended pending the
+method changes that would make the primary outcome attainable — obligation coverage across nodes, and a node for
+the substantive OR 269/269a determination the graph currently omits. When those are made on development data, this
+preregistration is rewritten, the changes are logged, and only then is the held-out set read.
