@@ -79,3 +79,36 @@ promotion is logged as an amendment.
 ## Amendments
 
 Appended below with date and reason. Nothing above is edited after the first confirmatory case is read.
+
+---
+
+## Amendment A1 — 2026-09-16 — the primary intervention becomes e07
+
+**Made before any confirmatory case was run or read, and before the development e03 results were read.** The
+reason is structural and is computed from the reference contract alone, with no experimental outcome involved.
+
+A document is withdrawn only when **every** decision requiring it is settled. Reading that off the contract:
+
+| intervention | decisions it settles | documents it can withdraw |
+|---|---|---|
+| `e03` the notice does use the prescribed form | D4, D7 | **0** |
+| `e06` the tenant did challenge within 30 days | D3 | 1 |
+| `e07` the tenant did not challenge within 30 days | D3, D11, D12 | **6** |
+
+`e03` cannot withdraw anything. `rent_increase_official_form` is required by eight of the twelve decisions, so
+settling the form question releases nothing, and D7 requires no document at all. A withdrawal-recall comparison on
+`e03` would have measured zero against zero and told us nothing about any arm — it would have triggered this
+preregistration's own "uninformative" clause for a reason that was knowable in advance and that I failed to check
+when writing it.
+
+**Amended plan.** The primary outcome is unchanged — withdrawal recall, B5 against B1, paired by case, bootstrapped
+over scenarios — but the intervention is `e07`: a minimal factual addition establishing that the tenant did not
+bring a challenge to the conciliation authority within 30 days. Expected withdrawal is 6 documents where the
+contract leaves those decisions open.
+
+`e03` is retained as a **secondary** probe in the opposite direction. Settling the form as valid opens the
+challenge branch, so it should *add* documents rather than remove them; it tests that the arm does not merely
+shrink its request whenever a fact arrives. Reported descriptively, carrying no inference.
+
+**What this amendment does not do.** It does not change the arms, the metric, the split, the frozen method, or the
+criteria for support and refutation. The confirmatory scenarios remain unread.
