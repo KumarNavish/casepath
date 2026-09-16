@@ -1,0 +1,20 @@
+# External positive-control protocol — BFCL V4 Multiple
+
+Frozen before any BFCL model call. Source is Berkeley Function Calling Leaderboard (BFCL) commit `6ea57973c7a6097fd7c5915698c54c17c5b1b6c8`, category `BFCL_v4_multiple` (200 items), Apache-2.0. Exact dataset, possible-answer file, and AST checker are copied under `research/casepath/external/bfcl/` with SHA-256 metadata in `SOURCE.json`.
+
+## Question
+Does the same input-dependence audit that falsifies CasePath also reject a public structured-agent benchmark intended to require the user query? BFCL is a **positive control**, not a benchmark we expect to break.
+
+## Conditions
+One fixed model: `google/gemini-3.8-flash` through OpenRouter, temperature 0, max 900 output tokens, one physical call per item/condition, no semantic retries. Both conditions receive identical function schemas and identical response-format instruction. `full`: receives the official user query. `query_removed`: user query is replaced by `[REMOVED BY INPUT-DEPENDENCE AUDIT]`. Only this field differs.
+
+The model must return JSON `{ "calls": [{"name": <exact BFCL function name>, "arguments": {...}}] }`. The response is normalized to BFCL's list-of-dictionaries format and scored using the exact copied BFCL AST checker logic from the frozen source commit. Parse failures score incorrect and are never semantically rerun.
+
+## Analyses fixed before execution
+1. AST accuracy for `full` and `query_removed` over all 200 items.
+2. Exact function-name selection accuracy separately, to distinguish tool selection from argument filling.
+3. Output diversity (distinct normalized calls and distinct selected function names).
+4. Pairing sensitivity of the `full` condition: 5,000 seeded permutations (seed 20260916) that reassign complete model outputs to different BFCL items while keeping each item's function descriptions and gold answer fixed; report observed AST accuracy and permutation distribution/p-value.
+5. Report the BFCL source commit, all source hashes, model identity, physical-call count, parse failures, and reported provider cost.
+
+Interpretation is symmetric: if full-input performance is materially above query-removed and wrong-pairing performance, the audit passes on this public control. We will not tune the prompt/model after seeing results; an execution bug before provider calls may be repaired and committed separately.

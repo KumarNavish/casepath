@@ -1,0 +1,22 @@
+{
+  "checker": "berkeley-function-call-leaderboard/bfcl_eval/eval_checker/ast_eval/ast_checker.py",
+  "dataset": "berkeley-function-call-leaderboard/bfcl_eval/data/BFCL_v4_multiple.json",
+  "files": {
+    "BFCL_v4_multiple.json": {
+      "bytes": 316583,
+      "sha256": "aef168155ebd74b7ac2401198b201343bc7d16d7a3d7e0d4e6d8ee82c6969b2a"
+    },
+    "BFCL_v4_multiple_possible_answer.json": {
+      "bytes": 32254,
+      "sha256": "244e00ce9395df948bcafc7bee64e8f9c87ef70887587d83cae45b13699f3047"
+    },
+    "ast_checker_bfcl.py": {
+      "bytes": 25032,
+      "sha256": "2aae7a68461a8f76c0be3894c8901b66b56967a1989d3ab066051e3fb97f1538"
+    }
+  },
+  "gold": "berkeley-function-call-leaderboard/bfcl_eval/data/possible_answer/BFCL_v4_multiple.json",
+  "license": "Apache-2.0",
+  "source_commit": "6ea57973c7a6097fd7c5915698c54c17c5b1b6c8",
+  "source_repository": "https://github.com/ShishirPatil/gorilla"
+}
