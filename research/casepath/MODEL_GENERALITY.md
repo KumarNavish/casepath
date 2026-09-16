@@ -11,8 +11,8 @@ temperature. **Only the model doing the case interpretation and compilation chan
 | | b5_induced_graph | 0.000 | 0.077 | **−0.077** | [−0.092, −0.070] | **anti-correlated** |
 | gemini-2.5-flash | b1_direct | 0.038 | 0.037 | +0.001 | [−0.010, +0.012] | none |
 | | b5_induced_graph | 0.189 | 0.080 | **+0.109** | [+0.107, +0.112] | **signal** |
-| deepseek-v3.2 *(partial, 12 pairs)* | b1_direct | 0.031 | 0.018 | +0.013 | [+0.000, +0.039] | none |
-| | b5_induced_graph | 0.000 | 0.039 | **−0.039** | [−0.043, −0.030] | **anti-correlated** |
+| deepseek-v3.2 | b1_direct | 0.045 | 0.035 | +0.010 | [−0.026, +0.041] | none |
+| | b5_induced_graph | 0.000 | 0.034 | **−0.034** | [−0.037, −0.031] | **anti-correlated** |
 
 ## The two headline numbers both fail to replicate
 
@@ -35,7 +35,7 @@ Checked before drawing any conclusion:
 | gpt-5.6-terra | **0** | 7.4 | 34.0 | 27 / 28 / 467 |
 | claude-haiku-4.5 | **0** | 12.6 | 67.6 | 32 / 28 / 462 |
 | gemini-2.5-flash | **0** | 6.5 | 31.0 | 32 / 29 / 461 |
-| deepseek-v3.2 | **0** | 6.5 | 39.0 | 12 / 13 / 200 |
+| deepseek-v3.2 | **0** | 6.5 | 39.0 | 13 / 15 / 232 |
 
 Zero errors anywhere. Every model resolves 10–12% of predicates and leaves the rest unresolved — near-identical
 rates. The pipeline executed the same way in all four; what differs is *which* documents each asks for and releases.
