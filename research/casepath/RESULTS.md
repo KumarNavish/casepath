@@ -58,12 +58,80 @@ its answer, but the change does not track what the new fact settled. The source-
 The deterministic obligation compiler does not add to it and costs recall, buying retention, fewer false
 withdrawals, and the only auditable chains.
 
-## 3. Confirmatory read
+## 3. Confirmatory read — one read, 28 pairs across 6 held-out scenarios
 
-*(Pending — 28 pairs across 6 held-out scenarios, 25 with a non-empty expected withdrawal, adjudicator unanimity
-93%. The preregistered uninformative condition does not trigger. The primary comparison, amended and declared in
-`PREREGISTRATION.md` A3 before the data was read, is `b3_graph_then_list` against `b1_direct`; the original
-primary `b5_induced_graph` against `b1_direct` is reported alongside as a secondary.)*
+Adjudicator unanimity 93%. 25 of 28 pairs have a non-empty expected withdrawal, so the preregistered
+uninformative condition does not trigger. The contract releases a mean of 4.7 documents.
+
+| arm | expected | correct | false | **withdrawal recall** | precision | retention | documents requested |
+|---|---|---|---|---|---|---|---|
+| b1_direct | 132 | 5 | 35 | 0.038 | 0.125 | 0.573 | 5.3 |
+| b3_graph_then_list | 132 | 16 | 28 | 0.121 | 0.364 | 0.641 | 5.5 |
+| b5_induced_graph | 132 | **78** | 52 | **0.591** | **0.600** | 0.544 | 10.0 |
+
+| preregistered comparison | Δ recall | 95% CI | retention Δ | verdict |
+|---|---|---|---|---|
+| **primary (A3)** b3 − b1 | +0.083 | [+0.018, +0.151] | +0.068 | **SUPPORTED** |
+| **secondary** (original primary, `ee6f266`) b5 − b1 | +0.553 | [+0.459, +0.613] | −0.029 | passes the same criteria |
+
+### The volume control, which changes what these numbers mean
+
+`b5_induced_graph` requests 10.0 documents where the others request ~5.4, and the reference set is 10.0. An arm
+that asks for more has more to drop, so a raw withdrawal recall is not comparable across arms. Each arm is
+therefore compared against **itself dropping the same number of its own requested documents at random** (300 draws
+per pair, bootstrapped over scenarios):
+
+| arm | recall | own random baseline | **excess over random** | 95% CI | |
+|---|---|---|---|---|---|
+| b1_direct | 0.038 | 0.099 | **−0.061** | [−0.096, −0.026] | **anti-correlated** |
+| b3_graph_then_list | 0.121 | 0.110 | +0.011 | [−0.017, +0.038] | no signal |
+| b5_induced_graph | 0.591 | 0.473 | **+0.118** | **[+0.106, +0.126]** | **real signal** |
+
+Three things follow, and the second is a correction to the headline above.
+
+**Direct prediction is worse than chance.** Its interval lies entirely below zero. It is not merely failing to
+track the process — the documents it stops requesting are *anti-correlated* with the documents the process
+releases. Re-predicting from a changed narrative moves the checklist away from the right answer.
+
+**The preregistered primary is supported for the wrong reason.** `b3_graph_then_list` beats `b1_direct` because
+b1 is anti-correlated, not because b3 is informative: b3's excess over its own random baseline is +0.011 with an
+interval spanning zero. Handing the model the graph stops it making anti-correlated withdrawals; it does not make
+its withdrawals *informative*. Reporting the +0.083 without this control would have been misleading, and the
+preregistered verdict is recorded with that qualification attached.
+
+**The obligation compiler is the only arm whose withdrawals carry information.** +0.118 above its own random
+baseline, interval [+0.106, +0.126], tight and far from zero. The deterministic chain — node closes, obligation
+lapses, capability is no longer needed, document is released — is what produces the signal.
+
+### This reverses the development result, and amendment A3 was a mistake
+
+| arm | development recall | confirmatory recall | documents requested, dev → conf |
+|---|---|---|---|
+| b1_direct | 0.000 | 0.038 | 4.4 → 5.3 |
+| b3_graph_then_list | **0.148** | 0.121 | 4.2 → 5.5 |
+| b5_induced_graph | 0.033 | **0.591** | 3.9 → **10.0** |
+
+On development the compiler looked useless and I amended the preregistered primary away from it (A3). On held-out
+data it is the only arm that works. The mechanism is visible in the last column: the development scenarios are all
+**form-defect** disputes, which activate nodes carrying no evidentiary obligation, so the compiler had almost
+nothing to compile or release — it requested 3.9 documents. The confirmatory scenarios are **substantive
+rent-calculation** disputes (miscalculation, reference rate, renovation, ancillary charges), which activate the
+nodes that do carry obligations, and it requests 10.0.
+
+The four development scenarios were unrepresentative of the scope in exactly the way that mattered. A3 was
+declared before the held-out data was read and is therefore in the record rather than hidden, and the original
+primary it demoted is reported above — which is the whole reason preregistration is worth doing. But the amendment
+was wrong, and it was wrong because development data can be unrepresentative in ways a split on scenarios does not
+prevent.
+
+b5 wins on **all six** held-out scenarios individually (0.481–0.630), so this is not one scenario carrying the
+result.
+
+### Honest cost
+
+`b5_induced_graph` has the **worst retention** of the three (0.544 against 0.573 and 0.641). It withdraws
+aggressively and drops documents it should have kept. It satisfies the preregistered tolerance (−0.029, within
+−0.050) but the trade is real: it is right about *what* to release far more often, and it releases too much.
 
 ## 4. What the verification gate caught
 
