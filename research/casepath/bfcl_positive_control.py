@@ -58,21 +58,25 @@ def provider_call(item,condition):
         return {'id':item['id'],'condition':condition,'ok':norm is not None,'content':content,'normalized':norm,'parse_error':err,'model':body.get('model'),'provider':body.get('provider'),'generation_id':body.get('id'),'usage':usage,'cost_usd':usage.get('cost'),'latency_s':time.time()-t,'payload_sha256':hashlib.sha256(json.dumps(payload,sort_keys=True,ensure_ascii=False).encode()).hexdigest()}
     except Exception as e: return {'id':item['id'],'condition':condition,'ok':False,'status':None,'error':f'{type(e).__name__}: {e}'[:500],'latency_s':time.time()-t}
 
-def representative_gold_call(gold):
-    """Choose one concrete accepted value from BFCL's possible-answer encoding."""
+def representative_gold_call(gold, item=None):
+    """Construct one concrete call accepted by BFCL's possible-answer encoding."""
     call=gold['ground_truth'][0]
     name,args=next(iter(call.items()))
-    def choose(v):
-        if isinstance(v,list):
-            # BFCL possible answers: a list of accepted alternatives; empty string marks optional.
-            candidates=[x for x in v if x!='']
-            if not candidates: return None
-            return choose(candidates[0])
-        if isinstance(v,dict): return {k:choose(x) for k,x in v.items()}
-        return v
+    fd=None if item is None else next(x for x in item['function'] if x['name']==name)
+    props=(fd or {}).get('parameters',{}).get('properties',{})
+    def choose(options, desc):
+        candidates=[x for x in options if x!=''] if isinstance(options,list) else [options]
+        if not candidates: return None
+        typ=(desc or {}).get('type')
+        if typ in ('array','tuple'):
+            return candidates[0]  # one complete accepted array/tuple
+        if typ=='dict' and isinstance(candidates[0],dict):
+            sub=(desc or {}).get('properties',{})
+            return {k:choose(v,sub.get(k,{})) for k,v in candidates[0].items()}
+        return candidates[0]
     out={}
     for k,v in args.items():
-        chosen=choose(v)
+        chosen=choose(v,props.get(k,{}))
         if chosen is not None: out[k]=chosen
     return [{name:out}]
 
@@ -88,7 +92,7 @@ def main(execute=True):
     # BFCL scorer self-test on its official possible answers.
     ok=0
     for item in data:
-        gt=representative_gold_call(gmap[item['id']])
+        gt=representative_gold_call(gmap[item['id']],item)
         ok += score_one(checker,Language,item,gmap[item['id']],gt)
     if ok!=200: raise RuntimeError(f'BFCL checker self-test failed: {ok}/200')
     raw_path=ART/'BFCL_POSITIVE_CONTROL_RAW.json'; existing=[]
