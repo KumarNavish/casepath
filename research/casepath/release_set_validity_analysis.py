@@ -1,6 +1,6 @@
 """Symmetric release-set validity analysis; no network/model calls."""
 from __future__ import annotations
-import collections,json,math
+import collections,json,math,random
 from pathlib import Path
 HERE=Path(__file__).resolve().parent; ART=HERE/'artifacts'
 
@@ -46,6 +46,20 @@ def crossfit_constants(ps,gold,meta):
   pred_micro.append(set(micro_policy[meta[p[0]]])); pred_exact.append(set(exact_policy[meta[p[0]]]))
  return pred_micro,pred_exact,micro_policy,exact_policy
 
+
+def pairing_null(pred,gold,ps,meta,draws=5000,seed=20260916):
+ by=collections.defaultdict(list)
+ for i,(o,m) in enumerate(ps): by[meta[o]].append(i)
+ rng=random.Random(seed); vals=[]
+ for _ in range(draws):
+  assigned=list(gold)
+  for idx in by.values():
+   g=[gold[i] for i in idx]; rng.shuffle(g)
+   for i,x in zip(idx,g): assigned[i]=x
+  vals.append(metrics(pred,assigned)['micro_f1'])
+ vals.sort(); obs=metrics(pred,gold)['micro_f1']; ge=sum(v>=obs-1e-15 for v in vals)
+ return {'observed_micro_f1':obs,'null_mean':sum(vals)/draws,'null_95':[vals[int(.025*draws)],vals[int(.975*draws)]],'null_min':vals[0],'null_max':vals[-1],'p_ge_plus1':(ge+1)/(draws+1),'draws':draws,'seed':seed}
+
 def arm_predictions(A,ps,arm):
  out=[]
  for o,m in ps:
@@ -58,14 +72,17 @@ def audit(scope):
  else: ref,meta=reference('term_ref_raw.json'); A={r['unit_id']:r for r in load('term_arms.json')}; suffix='__e05'; arms=['b1_direct','b3_graph_then_list','b5_induced_graph']
  ps=pairs(A,ref,suffix); gold=gold_sets(ref,ps); pm,pe,mp,ep=crossfit_constants(ps,gold,meta)
  out={'pairs':len(ps),'scenarios':sorted({meta[o] for o,_ in ps}),'gold':{'distinct_sets':len({tuple(sorted(g)) for g in gold}),'total_items':sum(map(len,gold))},'crossfit_no_input_micro_opt':{**metrics(pm,gold),'policy_count':len({tuple(sorted(x)) for x in mp.values()}),'policies':{k:sorted(v) for k,v in mp.items()}},'crossfit_no_input_exact_opt':{**metrics(pe,gold),'policy_count':len({tuple(sorted(x)) for x in ep.values()}),'policies':{k:sorted(v) for k,v in ep.items()}},'arms':{}}
- for a in arms: out['arms'][a]=metrics(arm_predictions(A,ps,a),gold)
+ for a in arms:
+  pred=arm_predictions(A,ps,a); out['arms'][a]={**metrics(pred,gold),'within_scenario_pairing_null':pairing_null(pred,gold,ps,meta)}
  return out
 
 def main():
  out={'contract':'casepath.release-set-validity/1.0.0','metric_definition':'All policies predict exactly the release set E. micro-F1 pools TP/predicted/gold items; exact match is per pair. No request-set-volume baseline is used.','rent':audit('rent'),'termination':audit('term')}
  # sensitivity: rent without corrupted S8 scenario, evaluated with cross-fitting among remaining scenarios
  ref,meta=reference('conf_ref_raw.json'); A={r['unit_id']:r for r in load('conf_arms.json')}; ps=[p for p in pairs(A,ref,'__e07') if meta[p[0]]!='S8_nebenkosten_reclass']; gold=gold_sets(ref,ps); pm,pe,mp,ep=crossfit_constants(ps,gold,meta)
- out['rent_without_S8']={'pairs':len(ps),'crossfit_no_input_micro_opt':metrics(pm,gold),'crossfit_no_input_exact_opt':metrics(pe,gold),'arms':{a:metrics(arm_predictions(A,ps,a),gold) for a in ['b1_direct','b3_graph_then_list','b5_induced_graph']}}
+ out['rent_without_S8']={'pairs':len(ps),'crossfit_no_input_micro_opt':metrics(pm,gold),'crossfit_no_input_exact_opt':metrics(pe,gold),'arms':{}}
+ for a in ['b1_direct','b3_graph_then_list','b5_induced_graph']:
+  pred=arm_predictions(A,ps,a); out['rent_without_S8']['arms'][a]={**metrics(pred,gold),'within_scenario_pairing_null':pairing_null(pred,gold,ps,meta)}
  (ART/'RELEASE_SET_VALIDITY.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
  print(json.dumps(out,indent=2))
 if __name__=='__main__': main()
