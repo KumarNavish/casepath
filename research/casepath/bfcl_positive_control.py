@@ -69,7 +69,12 @@ def representative_gold_call(gold, item=None):
         if not candidates: return None
         typ=(desc or {}).get('type')
         if typ in ('array','tuple'):
-            return candidates[0]  # one complete accepted array/tuple
+            first=candidates[0]  # one complete accepted array/tuple
+            item_desc=(desc or {}).get('items',{})
+            if isinstance(first,list) and item_desc.get('type')=='dict':
+                sub=item_desc.get('properties',{})
+                return [{k:choose(v,sub.get(k,{})) for k,v in elem.items()} if isinstance(elem,dict) else elem for elem in first]
+            return first
         if typ=='dict' and isinstance(candidates[0],dict):
             sub=(desc or {}).get('properties',{})
             return {k:choose(v,sub.get(k,{})) for k,v in candidates[0].items()}
