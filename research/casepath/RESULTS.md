@@ -1,142 +1,122 @@
 # Results
 
-All numbers come from committed intermediates and reproduce by running
-`research/casepath/development_analysis.py` and `research/casepath/confirmatory_analysis.py`, neither of which
-makes a network call.
+Every number below is reproduced from `CANONICAL_RESULTS.json` and the committed intermediates. The analysis
+scripts (`development_analysis.py`, `confirmatory_analysis.py`, `transfer_analysis.py`,
+`model_generality_analysis.py`) make no network calls.
 
-## Setup
+**The metric.** *Withdrawal recall above the arm's own random-drop baseline.* When a new fact settles a legal
+predicate, the reference contract stops requiring certain documents. Withdrawal recall is the fraction of those an
+arm stops requesting. Because an arm that requests more items has more to drop, each arm is scored against **itself
+dropping the same number of its own requested items at random** (300 draws per pair). Intervals bootstrap over
+**scenarios**, 5000 draws, seed 20260916. An interval above zero means the arm's choice of *which* items to drop
+carries information; below zero means its withdrawals are worse than chance.
 
-50 real Swiss tenancy claims in 10 scenarios of exactly 5 cases, split before any held-out case was read: 4
-scenarios (20 cases) development, 6 scenarios (30 cases) confirmatory. Ground truth is a reference contract built
-from Swiss federal sources by agents that never saw the induced graph, under a verbatim-quote gate, with a voted
-document layer. Per case, three adjudicators mark each of its 12 decisions live / dead / unknown; unknown keeps a
-decision open.
+---
 
-Intervals bootstrap over **scenarios**, 5000 draws, seed 20260916.
+## 1. The static checklist task is degenerate on both scopes
 
-## 1. The static task is saturated — reported as a floor check only
-
-Six arms on clean development originals:
-
-| arm | F1 | precision | recall | documents requested | chain rate | grounded rate |
-|---|---|---|---|---|---|---|
-| b1_direct | 0.605 | 1.000 | 0.438 | 4.4 | 0.000 | 0.000 |
-| b2_retrieval | 0.601 | 1.000 | 0.438 | 4.4 | 0.000 | 0.000 |
-| b3_graph_then_list | 0.635 | 1.000 | 0.475 | 4.8 | 0.000 | 0.000 |
-| b3t_summary_then_list | 0.601 | 1.000 | 0.438 | 4.4 | 0.000 | 0.000 |
-| b6_prior_composition | 0.618 | 1.000 | 0.450 | 4.5 | 0.000 | 0.000 |
-| b5_induced_graph | 0.488 | 0.925 | 0.338 | 3.8 | 0.400 | 0.300 |
-| **modal-list oracle** | **1.000** | 1.000 | 1.000 | 10.0 | — | — |
-
-One distinct reference checklist across the cases. A predictor that ignores the case and emits the modal list
-scores a perfect 1.000, and five of six arms sit within 0.034 F1 of one another — including the minimal obvious
-fix, which uses no law and no graph. **No comparative claim is drawn from this table.** Details and the cause in
-`STATIC_FLOOR.md` and `STATIC_TASK_SATURATION.md`.
-
-Two things it does establish. Every arm is precise and partial — precision 1.000 for five of six, asking about
-four of the ten documents the contract requires, because the reference set is a completion set rather than a
-triage list. And only `b5_induced_graph` produces justification chains at all.
-
-## 2. Branch intervention — development
-
-14 paired cases, 3 scenarios. Each pair is a case and the same case with a minimal factual addition establishing
-that the tenant did not challenge within 30 days. The contract releases a mean of 4.6 documents when that settles.
-
-| arm | expected withdrawals | correct | false | **withdrawal recall** | precision | retention |
-|---|---|---|---|---|---|---|
-| b1_direct | 61 | **0** | 11 | **0.000** | 0.000 | 0.792 |
-| b3_graph_then_list | 61 | 9 | 7 | **0.148** | 0.562 | 0.851 |
-| b5_induced_graph | 61 | 2 | 6 | 0.033 | 0.250 | 0.824 |
-
-| comparison | Δ recall | 95% CI | |
-|---|---|---|---|
-| b3_graph_then_list − b1_direct | **+0.148** | **[+0.038, +0.267]** | excludes zero |
-| b5_induced_graph − b1_direct | +0.033 | [+0.000, +0.133] | includes zero |
-
-**Direct prediction withdrew correctly zero times in 61 opportunities** while making 11 withdrawals — it changes
-its answer, but the change does not track what the new fact settled. The source-grounded graph is what fixes that.
-The deterministic obligation compiler does not add to it and costs recall, buying retention, fewer false
-withdrawals, and the only auditable chains.
-
-## 3. Confirmatory read — one read, 28 pairs across 6 held-out scenarios
-
-Adjudicator unanimity 93%. 25 of 28 pairs have a non-empty expected withdrawal, so the preregistered
-uninformative condition does not trigger. The contract releases a mean of 4.7 documents.
-
-| arm | expected | correct | false | **withdrawal recall** | precision | retention | documents requested |
-|---|---|---|---|---|---|---|---|
-| b1_direct | 132 | 5 | 35 | 0.038 | 0.125 | 0.573 | 5.3 |
-| b3_graph_then_list | 132 | 16 | 28 | 0.121 | 0.364 | 0.641 | 5.5 |
-| b5_induced_graph | 132 | **78** | 52 | **0.591** | **0.600** | 0.544 | 10.0 |
-
-| preregistered comparison | Δ recall | 95% CI | retention Δ | verdict |
+| scope | cases | distinct ground-truth checklists | mean reference set | catalogue |
 |---|---|---|---|---|
-| **primary (A3)** b3 − b1 | +0.083 | [+0.018, +0.151] | +0.068 | **SUPPORTED** |
-| **secondary** (original primary, `ee6f266`) b5 − b1 | +0.553 | [+0.459, +0.613] | −0.029 | passes the same criteria |
+| rent increase | 30 | **1** | 10.0 | 11 |
+| termination | 49 | **1** | 17.0 | 18 |
 
-### The volume control, which changes what these numbers mean
+Six arms on rent increase (8 development originals): F1 0.605 (`b1_direct`), 0.601 (`b2_retrieval`), 0.635
+(`b3_graph_then_list`), 0.601 (`b3t_summary_then_list`), 0.618 (`b6_prior_composition`), 0.488
+(`b5_induced_graph`). A **modal-list oracle that ignores the case scores F1 1.000**. Five of six arms fall within
+0.034 F1 of one another, including the minimal obvious fix which uses no law and no graph.
 
-`b5_induced_graph` requests 10.0 documents where the others request ~5.4, and the reference set is 10.0. An arm
-that asks for more has more to drop, so a raw withdrawal recall is not comparable across arms. Each arm is
-therefore compared against **itself dropping the same number of its own requested documents at random** (300 draws
-per pair, bootstrapped over scenarios):
+**No comparative claim is drawn from the static task.** It is reported as a floor. Both scopes fail criterion C8
+(observed branch closure), which was added to the admission protocol after the first scope exposed the gap and
+*before* the second scope existed.
 
-| arm | recall | own random baseline | **excess over random** | 95% CI | |
+---
+
+## 2. Confirmatory read, rent increase, `gpt-5.6-terra` — 28 held-out pairs, 6 scenarios
+
+| arm | recall | own random baseline | **excess** | 95% CI | |
 |---|---|---|---|---|---|
-| b1_direct | 0.038 | 0.099 | **−0.061** | [−0.096, −0.026] | **anti-correlated** |
+| b1_direct | 0.038 | 0.099 | **−0.061** | [−0.096, −0.026] | anti-correlated |
 | b3_graph_then_list | 0.121 | 0.110 | +0.011 | [−0.017, +0.038] | no signal |
-| b5_induced_graph | 0.591 | 0.473 | **+0.118** | **[+0.106, +0.126]** | **real signal** |
+| b5_induced_graph | 0.591 | 0.473 | **+0.118** | [+0.106, +0.126] | signal |
 
-Three things follow, and the second is a correction to the headline above.
+**The volume control changes the conclusion.** Uncontrolled, `b5 − b1` reads **+0.553** [+0.459, +0.613]. Four
+fifths of that is volume: b5 requests 10.0 documents where the others request ~5.4. The control also changes a
+sign — uncontrolled, `b3 − b1` is +0.083 with an interval excluding zero, which reads as b3 being informative; the
+control shows b3 carries no signal and the gap exists only because b1 is *below* chance.
 
-**Direct prediction is worse than chance.** Its interval lies entirely below zero. It is not merely failing to
-track the process — the documents it stops requesting are *anti-correlated* with the documents the process
-releases. Re-predicting from a changed narrative moves the checklist away from the right answer.
+The preregistered primary (`b3 − b1`, amendment A3) is therefore **supported for the wrong reason**, and is
+recorded with that qualification permanently attached.
 
-**The preregistered primary is supported for the wrong reason.** `b3_graph_then_list` beats `b1_direct` because
-b1 is anti-correlated, not because b3 is informative: b3's excess over its own random baseline is +0.011 with an
-interval spanning zero. Handing the model the graph stops it making anti-correlated withdrawals; it does not make
-its withdrawals *informative*. Reporting the +0.083 without this control would have been misleading, and the
-preregistered verdict is recorded with that qualification attached.
+---
 
-**The obligation compiler is the only arm whose withdrawals carry information.** +0.118 above its own random
-baseline, interval [+0.106, +0.126], tight and far from zero. The deterministic chain — node closes, obligation
-lapses, capability is no longer needed, document is released — is what produces the signal.
+## 3. The central result — the same artifact reverses sign across reasoners
 
-### This reverses the development result, and amendment A3 was a mistake
+Same 28 pairs, same frozen graph, same contract, same code, same prompts, same temperature. **Only the interpreting
+model changes.**
 
-| arm | development recall | confirmatory recall | documents requested, dev → conf |
-|---|---|---|---|
-| b1_direct | 0.000 | 0.038 | 4.4 → 5.3 |
-| b3_graph_then_list | **0.148** | 0.121 | 4.2 → 5.5 |
-| b5_induced_graph | 0.033 | **0.591** | 3.9 → **10.0** |
+| model | b1_direct excess [95% CI] | b5_induced_graph excess [95% CI] |
+|---|---|---|
+| gpt-5.6-terra | **−0.061** [−0.096, −0.026] *anti-corr* | **+0.119** [+0.108, +0.125] *signal* |
+| claude-haiku-4.5 | +0.003 [−0.011, +0.016] *none* | **−0.077** [−0.092, −0.070] *anti-corr* |
+| gemini-2.5-flash | +0.001 [−0.010, +0.012] *none* | **+0.109** [+0.107, +0.112] *signal* |
+| deepseek-v3.2 | +0.013 [+0.000, +0.039] *none* | **−0.039** [−0.043, −0.030] *anti-corr* |
 
-On development the compiler looked useless and I amended the preregistered primary away from it (A3). On held-out
-data it is the only arm that works. The mechanism is visible in the last column: the development scenarios are all
-**form-defect** disputes, which activate nodes carrying no evidentiary obligation, so the compiler had almost
-nothing to compile or release — it requested 3.9 documents. The confirmatory scenarios are **substantive
-rent-calculation** disputes (miscalculation, reference rate, renovation, ancillary charges), which activate the
-nodes that do carry obligations, and it requests 10.0.
+Spread on one identical artifact: **+0.119 to −0.077**, intervals non-overlapping.
 
-The four development scenarios were unrepresentative of the scope in exactly the way that mattered. A3 was
-declared before the held-out data was read and is therefore in the record rather than hidden, and the original
-primary it demoted is reported above — which is the whole reason preregistration is worth doing. But the amendment
-was wrong, and it was wrong because development data can be unrepresentative in ways a split on scenarios does not
-prevent.
+**Not an execution failure.** Zero `b5` errors on every model. All four resolve 10–12% of predicates and leave the
+rest unresolved at near-identical rates (true/false/unresolved: 27/28/467, 32/28/462, 32/29/461, 12/13/200).
+`claude-haiku-4.5` compiles roughly twice as many chains (67.6 vs 31–39) and requests twice as many documents (12.6
+vs 6.5–7.4), and still withdraws nothing correct.
 
-b5 wins on **all six** held-out scenarios individually (0.481–0.630), so this is not one scenario carrying the
-result.
+**Neither headline effect is a property of the method.** Direct prediction is anti-correlated on **1 of 4** models.
+The compiled chain carries signal on **2 of 4**, and is anti-correlated on the other two.
 
-### Honest cost
+*Note on two figures for the same quantity:* `gpt-5.6-terra / b5` appears as +0.118 [+0.106, +0.126] in §2 and
++0.119 [+0.108, +0.125] here. These are the same measurement computed by two scripts whose random-drop simulations
+draw from different RNG streams; the difference is simulation noise of order 0.001.
 
-`b5_induced_graph` has the **worst retention** of the three (0.544 against 0.573 and 0.641). It withdraws
-aggressively and drops documents it should have kept. It satisfies the preregistered tolerance (−0.029, within
-−0.050) but the trade is real: it is right about *what* to release far more often, and it releases too much.
+---
 
-## 4. What the verification gate caught
+## 4. Transfer to a second scope fails
 
-Of 58 quotes proposed for the reference contract, 44 verified verbatim against the Fedlex passage each was
-attributed to. One failure was a fabrication of a kind reading cannot catch: `vmwg-art-19a-20251001-de`, cited at
-a consolidation date Fedlex does not serve, for an article that exists at no consolidation, with a fluent and
-sourceless quote. See `CITATION_FIDELITY.md`, which also retracts a cross-scope fabrication rate that turned out
-to be an artifact of how the other contracts store their citations.
+Termination, 49 pairs, 8 scenarios, one read.
+
+| arm | recall | own random baseline | excess | 95% CI | retention | requested |
+|---|---|---|---|---|---|---|
+| b1_direct | 0.065 | 0.050 | +0.015 | [−0.011, +0.051] | 0.723 | 6.4 |
+| b3_graph_then_list | 0.078 | 0.059 | +0.019 | [−0.008, +0.057] | 0.756 | 6.3 |
+| b5_induced_graph | 0.000 | 0.012 | −0.012 | [−0.024, +0.000] | 0.992 | 16.0 |
+
+**No arm's interval excludes zero.** `b5` requests 16 of 18 catalogue documents, retains 0.992, and withdrew 6
+documents across 49 pairs, none correct.
+
+**The failure was computable before the run.** The preregistration recorded that settling `DEC-09` releases 3
+documents and no other single decision releases more than 1, against 6 for the rent-increase probe. Measured, the
+contract released a mean of 1.57 documents per pair. The probe closes 4 graph nodes carrying 1 obligation between
+them. There was nothing for the mechanism to release.
+
+---
+
+## 5. What the verification gate caught
+
+Of 58 quotes proposed for the rent-increase reference contract, 44 verified verbatim against the Fedlex passage
+each was attributed to. One failure was a fabrication reading cannot catch: `vmwg-art-19a-20251001-de`, cited at a
+consolidation date Fedlex does not serve, for an article that **exists at no consolidation**, carrying a fluent,
+correctly styled, sourceless quote.
+
+`CITATION_FIDELITY.md` also records a cross-scope fabrication rate of 25–60% that was computed, found to be an
+artifact of contracts storing sources and quotes as unmapped parallel lists, and **retracted before publication**.
+Once the corpus covered the cited articles, the same termination contract verified at 85.8% (91 of 106).
+
+---
+
+## What this establishes, and what it does not
+
+**Establishes:** that a static document-checklist benchmark in this domain cannot separate methods; that retraction
+metrics require a per-arm volume control or they overstate by ~4× and can invert a sign; and that a frozen,
+source-grounded process representation does **not** confer correct retraction behaviour independent of the reasoner
+interpreting it.
+
+**Does not establish:** that the method works in general. The positive effect holds on one scope of two and two
+reasoners of four, and the boundary is not predictable in advance except by the ceiling computation, which
+correctly predicted the transfer failure.
