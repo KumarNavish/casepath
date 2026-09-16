@@ -51,6 +51,12 @@ Return one JSON object with exactly these keys:
  "unsupported_gaps": [{"what_is_missing": "<a step the sources plainly do not cover>", "why_it_matters": "..."}]
 }
 
+Two kinds of coverage are required, and both stay inside the grounding rule above — they tell you what to do with the propositions you were given, never to go beyond them.
+
+COVERAGE OF DETERMINATIONS. Wherever the propositions state a substantive standard, test or entitlement — a condition on which a right, a defence or a sum depends — there must be a node whose job is to DETERMINE it. It is not enough to model the forum in which that question would be argued, or the procedure that follows it. A process that models where a dispute is heard but never models the question being decided is incomplete even when every node in it is grounded. Name such a node for the determination itself ("determine whether X"), and support it with the propositions that state the standard.
+
+COVERAGE OF OBLIGATIONS. For every node, ask what a party must establish for that node to be decided, and attach an obligation wherever the propositions say someone must show, prove, justify, substantiate or notify something. Obligations are how a node comes to require evidence; a node with none demands nothing of anyone, and if most nodes carry none the graph cannot express what a case needs. If a node genuinely carries no obligation — a purely terminal or bookkeeping step — that is a real answer, but do not leave a node bare simply because the obligation was less obvious than the step.
+
 Mark support honestly. "supported" means one or more propositions state it. "uncertain" means the propositions imply it but do not state it. "unsupported" means you believe it belongs in the process but no proposition supports it — and anything you mark unsupported must also appear in unsupported_gaps. Every supported_by entry must be a proposition_id that was given to you. JSON only."""
 
 
