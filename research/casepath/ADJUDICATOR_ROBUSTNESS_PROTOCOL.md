@@ -35,3 +35,6 @@ Each adjudicator receives the identical system prompt and case/decision payload 
 5. The study ends after the frozen three families; no post-result adjudicator shopping.
 
 Raw responses, model identities, usage metadata and prompt hashes must be committed before the analysis claim is finalized. The OpenRouter credential is read only from the existing local key file and must never be printed or committed.
+## Amendment A1 — missing-vote rule (2026-09-16, during execution, before inspecting any response content)
+
+The progress counter reported 178 valid parses among the first 180 completed calls. No response identity or adjudication content was inspected. To avoid post-result repair: calls that fail parsing remain failed and are never semantically rerun. A unit is adjudicated for a model family only when at least 2 of its 3 frozen calls are valid; majority/tie handling uses the available valid calls. If fewer than 2 are valid, that unit is excluded for that adjudicator family and the exclusion count is reported. Cross-adjudicator comparisons use the intersection of adjudicated units unless explicitly labelled otherwise.
