@@ -32,8 +32,10 @@ def load_bfcl_checker():
 
 def question_text(item):
     return '\n'.join(m.get('content','') for turn in item['question'] for m in turn if m.get('role')=='user')
-def make_user(item,removed):
-    q='[REMOVED BY INPUT-DEPENDENCE AUDIT]' if removed else question_text(item)
+def make_user(item,condition,query_override=None):
+    if condition=='query_removed': q='[REMOVED BY INPUT-DEPENDENCE AUDIT]'
+    elif condition=='query_shuffled': q=query_override
+    else: q=question_text(item)
     return 'USER_QUERY:\n'+q+'\n\nAVAILABLE_FUNCTIONS:\n'+json.dumps(item['function'],ensure_ascii=False,separators=(',',':'))
 def normalize(content):
     try:
@@ -44,9 +46,9 @@ def normalize(content):
         return [{name:args}],None
     except Exception as e: return None,'json_parse:'+type(e).__name__
 
-def provider_call(item,condition):
+def provider_call(item,condition,query_override=None):
     import httpx
-    payload={'model':MODEL,'messages':[{'role':'system','content':SYSTEM},{'role':'user','content':make_user(item,condition=='query_removed')}], 'temperature':TEMP,'max_tokens':MAXTOK,'response_format':{'type':'json_object'},'usage':{'include':True},'provider':{'only':['google-ai-studio'],'allow_fallbacks':False}}
+    payload={'model':MODEL,'messages':[{'role':'system','content':SYSTEM},{'role':'user','content':make_user(item,condition,query_override)}], 'temperature':TEMP,'max_tokens':MAXTOK,'response_format':{'type':'json_object'},'usage':{'include':True},'provider':{'only':['google-ai-studio'],'allow_fallbacks':False}}
     headers={'Authorization':'Bearer '+KEY_FILE.read_text().strip(),'Content-Type':'application/json','HTTP-Referer':'https://casepath.local/research','X-Title':'CasePath BFCL validity audit'}
     t=time.time()
     try:
@@ -100,13 +102,22 @@ def main(execute=True):
         gt=representative_gold_call(gmap[item['id']],item)
         ok += score_one(checker,Language,item,gmap[item['id']],gt)
     if ok!=200: raise RuntimeError(f'BFCL checker self-test failed: {ok}/200')
+    # Deterministic derangement for R1: every item gets another item's genuine BFCL query.
+    qids=[x['id'] for x in data]; queries=[question_text(x) for x in data]
+    order=list(range(len(data))); rng_map=random.Random(SEED+77)
+    while True:
+        rng_map.shuffle(order)
+        if all(i!=j for i,j in enumerate(order)): break
+    shuffled_query={data[i]['id']:queries[order[i]] for i in range(len(data))}
+    mapping_payload=json.dumps({k:shuffled_query[k] for k in sorted(shuffled_query)},sort_keys=True,ensure_ascii=False).encode()
+    mapping_sha256=hashlib.sha256(mapping_payload).hexdigest()
     raw_path=ART/'BFCL_POSITIVE_CONTROL_RAW.json'; existing=[]
     if raw_path.exists(): existing=json.loads(raw_path.read_text()).get('rows',[])
     done={(r['condition'],r['id']) for r in existing}; rows=list(existing)
     if execute:
-        jobs=[(item,c) for c in ('full','query_removed') for item in data if (c,item['id']) not in done]
+        jobs=[(item,c,shuffled_query[item['id']] if c=='query_shuffled' else None) for c in ('full','query_removed','query_shuffled') for item in data if (c,item['id']) not in done]
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as ex:
-            futs={ex.submit(provider_call,item,c):(item,c) for item,c in jobs}
+            futs={ex.submit(provider_call,item,c,q):(item,c) for item,c,q in jobs}
             for k,f in enumerate(concurrent.futures.as_completed(futs),1):
                 rows.append(f.result())
                 raw={'contract':'casepath.bfcl-positive-control.raw/1.0.0','protocol_commit':'dbad05fde48b3b9a2b21da0f42c1392eff1bc4d5','bfcl_commit':'6ea57973c7a6097fd7c5915698c54c17c5b1b6c8','model':MODEL,'temperature':TEMP,'max_tokens':MAXTOK,'rows':rows}
@@ -115,7 +126,7 @@ def main(execute=True):
     raw=json.loads(raw_path.read_text()); lookup={(r['condition'],r['id']):r for r in raw['rows']}
     out={'contract':'casepath.bfcl-positive-control/1.0.0','protocol_commit':raw['protocol_commit'],'bfcl_commit':raw['bfcl_commit'],'model':MODEL,'n':200,'source_hashes':{'data':sha(DATA),'gold':sha(GOLD),'checker':sha(CHECKER)},'conditions':{}}
     outputs={}
-    for cond in ('full','query_removed'):
+    for cond in ('full','query_removed','query_shuffled'):
         ast=fn=parsed=0; norms=[]
         for item in data:
             r=lookup[(cond,item['id'])]; norm=r.get('normalized'); norms.append(norm)
@@ -132,7 +143,7 @@ def main(execute=True):
         vals.append(sum(score_one(checker,Language,item,gmap[item['id']],norm) for item,norm in zip(data,perm))/200)
     vals.sort(); obs=out['conditions']['full']['ast_accuracy']; ge=sum(v>=obs-1e-15 for v in vals)
     out['wrong_pairing_permutation']={'draws':NPERM,'seed':SEED,'observed_ast_accuracy':obs,'null_mean':sum(vals)/len(vals),'null_95':[vals[int(.025*NPERM)],vals[int(.975*NPERM)]],'null_max':max(vals),'p_ge_plus1':(ge+1)/(NPERM+1)}
-    out['execution']={'physical_calls':len(raw['rows']),'failed_or_unparseable':sum(not r.get('ok') for r in raw['rows']),'reported_cost_usd':sum(float(r.get('cost_usd') or 0) for r in raw['rows']),'returned_models':sorted({r.get('model') for r in raw['rows'] if r.get('model')})}
+    out['execution']={'physical_calls':len(raw['rows']),'failed_or_unparseable':sum(not r.get('ok') for r in raw['rows']),'reported_cost_usd':sum(float(r.get('cost_usd') or 0) for r in raw['rows']),'returned_models':sorted({r.get('model') for r in raw['rows'] if r.get('model')}),'query_shuffled_mapping_sha256':mapping_sha256}
     (ART/'BFCL_POSITIVE_CONTROL.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
     print(json.dumps(out,indent=2))
 if __name__=='__main__': main(execute=os.environ.get('BFCL_NO_EXECUTE')!='1')

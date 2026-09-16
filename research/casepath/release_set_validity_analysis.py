@@ -47,6 +47,26 @@ def crossfit_constants(ps,gold,meta):
  return pred_micro,pred_exact,micro_policy,exact_policy
 
 
+def scenario_target_summary(ps,gold,meta):
+ out={}
+ for sc in sorted({meta[o] for o,_ in ps}):
+  gs=[g for p,g in zip(ps,gold) if meta[p[0]]==sc]
+  counts=collections.Counter(tuple(sorted(g)) for g in gs)
+  modal_n=counts.most_common(1)[0][1]
+  probs=[n/len(gs) for n in counts.values()]
+  entropy=-sum(q*math.log2(q) for q in probs if q)
+  out[sc]={'n':len(gs),'distinct_gold_sets':len(counts),'modal_share':modal_n/len(gs),
+           'entropy_bits':entropy,'total_gold_items':sum(map(len,gs)),
+           'set_counts':{'|'.join(k) if k else '<empty>':v for k,v in counts.items()}}
+ return out
+
+def fold_metrics(ps,gold,meta,pred_by_name):
+ out={}
+ for sc in sorted({meta[o] for o,_ in ps}):
+  idx=[i for i,p in enumerate(ps) if meta[p[0]]==sc]
+  out[sc]={name:metrics([pred[i] for i in idx],[gold[i] for i in idx]) for name,pred in pred_by_name.items()}
+ return out
+
 def pairing_null(pred,gold,ps,meta,draws=5000,seed=20260916):
  by=collections.defaultdict(list)
  for i,(o,m) in enumerate(ps): by[meta[o]].append(i)
@@ -71,9 +91,16 @@ def audit(scope):
  if scope=='rent': ref,meta=reference('conf_ref_raw.json'); A={r['unit_id']:r for r in load('conf_arms.json')}; suffix='__e07'; arms=['b1_direct','b3_graph_then_list','b5_induced_graph']
  else: ref,meta=reference('term_ref_raw.json'); A={r['unit_id']:r for r in load('term_arms.json')}; suffix='__e05'; arms=['b1_direct','b3_graph_then_list','b5_induced_graph']
  ps=pairs(A,ref,suffix); gold=gold_sets(ref,ps); pm,pe,mp,ep=crossfit_constants(ps,gold,meta)
- out={'pairs':len(ps),'scenarios':sorted({meta[o] for o,_ in ps}),'gold':{'distinct_sets':len({tuple(sorted(g)) for g in gold}),'total_items':sum(map(len,gold))},'crossfit_no_input_micro_opt':{**metrics(pm,gold),'policy_count':len({tuple(sorted(x)) for x in mp.values()}),'policies':{k:sorted(v) for k,v in mp.items()}},'crossfit_no_input_exact_opt':{**metrics(pe,gold),'policy_count':len({tuple(sorted(x)) for x in ep.values()}),'policies':{k:sorted(v) for k,v in ep.items()}},'arms':{}}
- for a in arms:
-  pred=arm_predictions(A,ps,a); out['arms'][a]={**metrics(pred,gold),'within_scenario_pairing_null':pairing_null(pred,gold,ps,meta)}
+ arm_preds={a:arm_predictions(A,ps,a) for a in arms}
+ out={'pairs':len(ps),'scenarios':sorted({meta[o] for o,_ in ps}),
+      'gold':{'distinct_sets':len({tuple(sorted(g)) for g in gold}),'total_items':sum(map(len,gold)),
+              'by_scenario':scenario_target_summary(ps,gold,meta)},
+      'crossfit_no_input_micro_opt':{**metrics(pm,gold),'policy_count':len({tuple(sorted(x)) for x in mp.values()}),'policies':{k:sorted(v) for k,v in mp.items()}},
+      'crossfit_no_input_exact_opt':{**metrics(pe,gold),'policy_count':len({tuple(sorted(x)) for x in ep.values()}),'policies':{k:sorted(v) for k,v in ep.items()}},
+      'arms':{}}
+ for a,pred in arm_preds.items():
+  out['arms'][a]={**metrics(pred,gold),'within_scenario_pairing_null':pairing_null(pred,gold,ps,meta)}
+ out['fold_metrics']=fold_metrics(ps,gold,meta,{'no_input_micro_opt':pm,'no_input_exact_opt':pe,**arm_preds})
  return out
 
 def main():

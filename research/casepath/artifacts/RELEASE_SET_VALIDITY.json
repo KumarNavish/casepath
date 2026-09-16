@@ -173,7 +173,328 @@
       "predicted_items": 140,
       "tp": 125
     },
+    "fold_metrics": {
+      "S4_miscalculated": {
+        "b1_direct": {
+          "exact_match": 0.0,
+          "gold_items": 20,
+          "macro_f1": 0.0,
+          "micro_f1": 0.0,
+          "predicted_items": 1,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 20,
+          "macro_f1": 0.0,
+          "micro_f1": 0.0,
+          "predicted_items": 3,
+          "tp": 0
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.0,
+          "gold_items": 20,
+          "macro_f1": 0.46153846153846156,
+          "micro_f1": 0.46153846153846156,
+          "predicted_items": 32,
+          "tp": 12
+        },
+        "no_input_exact_opt": {
+          "exact_match": 1.0,
+          "gold_items": 20,
+          "macro_f1": 1.0,
+          "micro_f1": 1.0,
+          "predicted_items": 20,
+          "tp": 20
+        },
+        "no_input_micro_opt": {
+          "exact_match": 1.0,
+          "gold_items": 20,
+          "macro_f1": 1.0,
+          "micro_f1": 1.0,
+          "predicted_items": 20,
+          "tp": 20
+        }
+      },
+      "S5_refrate_inconsistent": {
+        "b1_direct": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.14444444444444443,
+          "micro_f1": 0.16216216216216217,
+          "predicted_items": 10,
+          "tp": 3
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.15,
+          "micro_f1": 0.1935483870967742,
+          "predicted_items": 4,
+          "tp": 3
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.39120879120879126,
+          "micro_f1": 0.4406779661016949,
+          "predicted_items": 32,
+          "tp": 13
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.6,
+          "gold_items": 27,
+          "macro_f1": 0.9636363636363636,
+          "micro_f1": 0.9615384615384616,
+          "predicted_items": 25,
+          "tp": 25
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.6,
+          "gold_items": 27,
+          "macro_f1": 0.9636363636363636,
+          "micro_f1": 0.9615384615384616,
+          "predicted_items": 25,
+          "tp": 25
+        }
+      },
+      "S6_refrate_double_count": {
+        "b1_direct": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.0,
+          "micro_f1": 0.0,
+          "predicted_items": 8,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.05714285714285714,
+          "micro_f1": 0.06666666666666667,
+          "predicted_items": 3,
+          "tp": 1
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.5054945054945055,
+          "micro_f1": 0.5074626865671642,
+          "predicted_items": 40,
+          "tp": 17
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.6,
+          "gold_items": 27,
+          "macro_f1": 0.9636363636363636,
+          "micro_f1": 0.9615384615384616,
+          "predicted_items": 25,
+          "tp": 25
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.6,
+          "gold_items": 27,
+          "macro_f1": 0.9636363636363636,
+          "micro_f1": 0.9615384615384616,
+          "predicted_items": 25,
+          "tp": 25
+        }
+      },
+      "S7_renovation_unclear": {
+        "b1_direct": {
+          "exact_match": 0.0,
+          "gold_items": 26,
+          "macro_f1": 0.05,
+          "micro_f1": 0.05555555555555555,
+          "predicted_items": 10,
+          "tp": 1
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 26,
+          "macro_f1": 0.2688888888888889,
+          "micro_f1": 0.3076923076923077,
+          "predicted_items": 13,
+          "tp": 6
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.0,
+          "gold_items": 26,
+          "macro_f1": 0.4835164835164836,
+          "micro_f1": 0.48484848484848486,
+          "predicted_items": 40,
+          "tp": 16
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.8,
+          "gold_items": 26,
+          "macro_f1": 0.9818181818181818,
+          "micro_f1": 0.9803921568627451,
+          "predicted_items": 25,
+          "tp": 25
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.8,
+          "gold_items": 26,
+          "macro_f1": 0.9818181818181818,
+          "micro_f1": 0.9803921568627451,
+          "predicted_items": 25,
+          "tp": 25
+        }
+      },
+      "S8_nebenkosten_reclass": {
+        "b1_direct": {
+          "exact_match": 0.5,
+          "gold_items": 5,
+          "macro_f1": 0.5,
+          "micro_f1": 0.0,
+          "predicted_items": 3,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 5,
+          "macro_f1": 0.07142857142857142,
+          "micro_f1": 0.125,
+          "predicted_items": 11,
+          "tp": 1
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.25,
+          "gold_items": 5,
+          "macro_f1": 0.3653846153846154,
+          "micro_f1": 0.20689655172413793,
+          "predicted_items": 24,
+          "tp": 3
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.25,
+          "gold_items": 5,
+          "macro_f1": 0.25,
+          "micro_f1": 0.4,
+          "predicted_items": 20,
+          "tp": 5
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.25,
+          "gold_items": 5,
+          "macro_f1": 0.25,
+          "micro_f1": 0.4,
+          "predicted_items": 20,
+          "tp": 5
+        }
+      },
+      "S9_provisional_budget": {
+        "b1_direct": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.05,
+          "micro_f1": 0.05128205128205128,
+          "predicted_items": 12,
+          "tp": 1
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.2116161616161616,
+          "micro_f1": 0.23255813953488372,
+          "predicted_items": 16,
+          "tp": 5
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.0,
+          "gold_items": 27,
+          "macro_f1": 0.5054945054945055,
+          "micro_f1": 0.5074626865671642,
+          "predicted_items": 40,
+          "tp": 17
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.6,
+          "gold_items": 27,
+          "macro_f1": 0.9636363636363636,
+          "micro_f1": 0.9615384615384616,
+          "predicted_items": 25,
+          "tp": 25
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.6,
+          "gold_items": 27,
+          "macro_f1": 0.9636363636363636,
+          "micro_f1": 0.9615384615384616,
+          "predicted_items": 25,
+          "tp": 25
+        }
+      }
+    },
     "gold": {
+      "by_scenario": {
+        "S4_miscalculated": {
+          "distinct_gold_sets": 1,
+          "entropy_bits": -0.0,
+          "modal_share": 1.0,
+          "n": 4,
+          "set_counts": {
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement": 4
+          },
+          "total_gold_items": 20
+        },
+        "S5_refrate_inconsistent": {
+          "distinct_gold_sets": 2,
+          "entropy_bits": 0.9709505944546686,
+          "modal_share": 0.6,
+          "n": 5,
+          "set_counts": {
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement": 3,
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement|tenant_correspondence": 2
+          },
+          "total_gold_items": 27
+        },
+        "S6_refrate_double_count": {
+          "distinct_gold_sets": 2,
+          "entropy_bits": 0.9709505944546686,
+          "modal_share": 0.6,
+          "n": 5,
+          "set_counts": {
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement": 3,
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement|tenant_correspondence": 2
+          },
+          "total_gold_items": 27
+        },
+        "S7_renovation_unclear": {
+          "distinct_gold_sets": 2,
+          "entropy_bits": 0.7219280948873623,
+          "modal_share": 0.8,
+          "n": 5,
+          "set_counts": {
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement": 4,
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement|tenant_correspondence": 1
+          },
+          "total_gold_items": 26
+        },
+        "S8_nebenkosten_reclass": {
+          "distinct_gold_sets": 2,
+          "entropy_bits": 0.8112781244591328,
+          "modal_share": 0.75,
+          "n": 4,
+          "set_counts": {
+            "<empty>": 3,
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement": 1
+          },
+          "total_gold_items": 5
+        },
+        "S9_provisional_budget": {
+          "distinct_gold_sets": 2,
+          "entropy_bits": 0.9709505944546686,
+          "modal_share": 0.6,
+          "n": 5,
+          "set_counts": {
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement": 3,
+            "comparable_rents_evidence|cost_increase_statement|previous_rent_statement|property_management_statement|renovation_cost_statement|tenant_correspondence": 2
+          },
+          "total_gold_items": 27
+        }
+      },
       "distinct_sets": 3,
       "total_items": 132
     },
@@ -407,7 +728,440 @@
       "predicted_items": 147,
       "tp": 66
     },
+    "fold_metrics": {
+      "T1_arrears_disputed_time": {
+        "b1_direct": {
+          "exact_match": 0.2857142857142857,
+          "gold_items": 13,
+          "macro_f1": 0.2857142857142857,
+          "micro_f1": 0.0,
+          "predicted_items": 2,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.14285714285714285,
+          "gold_items": 13,
+          "macro_f1": 0.22448979591836735,
+          "micro_f1": 0.19047619047619047,
+          "predicted_items": 8,
+          "tp": 2
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.2857142857142857,
+          "gold_items": 13,
+          "macro_f1": 0.2857142857142857,
+          "micro_f1": 0.0,
+          "predicted_items": 3,
+          "tp": 0
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.42857142857142855,
+          "gold_items": 13,
+          "macro_f1": 0.42857142857142855,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.42857142857142855,
+          "gold_items": 13,
+          "macro_f1": 0.5510204081632654,
+          "micro_f1": 0.7058823529411765,
+          "predicted_items": 21,
+          "tp": 12
+        }
+      },
+      "T2_arrears_mixed_demand": {
+        "b1_direct": {
+          "exact_match": 0.14285714285714285,
+          "gold_items": 17,
+          "macro_f1": 0.3197278911564626,
+          "micro_f1": 0.25806451612903225,
+          "predicted_items": 14,
+          "tp": 4
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 17,
+          "macro_f1": 0.20952380952380953,
+          "micro_f1": 0.2857142857142857,
+          "predicted_items": 11,
+          "tp": 4
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.2857142857142857,
+          "gold_items": 17,
+          "macro_f1": 0.2857142857142857,
+          "micro_f1": 0.0,
+          "predicted_items": 3,
+          "tp": 0
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.2857142857142857,
+          "gold_items": 17,
+          "macro_f1": 0.2857142857142857,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.42857142857142855,
+          "gold_items": 17,
+          "macro_f1": 0.673469387755102,
+          "micro_f1": 0.7894736842105263,
+          "predicted_items": 21,
+          "tp": 15
+        }
+      },
+      "T3_abusive_after_rights": {
+        "b1_direct": {
+          "exact_match": 0.2,
+          "gold_items": 13,
+          "macro_f1": 0.2,
+          "micro_f1": 0.0,
+          "predicted_items": 4,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.2,
+          "gold_items": 13,
+          "macro_f1": 0.2,
+          "micro_f1": 0.0,
+          "predicted_items": 1,
+          "tp": 0
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.2,
+          "gold_items": 13,
+          "macro_f1": 0.2,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.2,
+          "gold_items": 13,
+          "macro_f1": 0.2,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.6,
+          "gold_items": 13,
+          "macro_f1": 0.7714285714285715,
+          "micro_f1": 0.8571428571428571,
+          "predicted_items": 15,
+          "tp": 12
+        }
+      },
+      "T4_family_home_service": {
+        "b1_direct": {
+          "exact_match": 0.16666666666666666,
+          "gold_items": 8,
+          "macro_f1": 0.16666666666666666,
+          "micro_f1": 0.0,
+          "predicted_items": 10,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.3333333333333333,
+          "gold_items": 8,
+          "macro_f1": 0.3333333333333333,
+          "micro_f1": 0.0,
+          "predicted_items": 7,
+          "tp": 0
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.6666666666666666,
+          "gold_items": 8,
+          "macro_f1": 0.6666666666666666,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.6666666666666666,
+          "gold_items": 8,
+          "macro_f1": 0.6666666666666666,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.0,
+          "gold_items": 8,
+          "macro_f1": 0.2857142857142857,
+          "micro_f1": 0.46153846153846156,
+          "predicted_items": 18,
+          "tp": 6
+        }
+      },
+      "T5_conflicting_notices": {
+        "b1_direct": {
+          "exact_match": 0.16666666666666666,
+          "gold_items": 4,
+          "macro_f1": 0.2222222222222222,
+          "micro_f1": 0.11764705882352941,
+          "predicted_items": 13,
+          "tp": 1
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 4,
+          "macro_f1": 0.0,
+          "micro_f1": 0.0,
+          "predicted_items": 13,
+          "tp": 0
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.8333333333333334,
+          "gold_items": 4,
+          "macro_f1": 0.8333333333333334,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.8333333333333334,
+          "gold_items": 4,
+          "macro_f1": 0.8333333333333334,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.0,
+          "gold_items": 4,
+          "macro_f1": 0.14285714285714285,
+          "micro_f1": 0.2727272727272727,
+          "predicted_items": 18,
+          "tp": 3
+        }
+      },
+      "T6_two_notices": {
+        "b1_direct": {
+          "exact_match": 0.5,
+          "gold_items": 0,
+          "macro_f1": 0.5,
+          "micro_f1": 0.0,
+          "predicted_items": 8,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.3333333333333333,
+          "gold_items": 0,
+          "macro_f1": 0.3333333333333333,
+          "micro_f1": 0.0,
+          "predicted_items": 7,
+          "tp": 0
+        },
+        "b5_induced_graph": {
+          "exact_match": 1.0,
+          "gold_items": 0,
+          "macro_f1": 1.0,
+          "micro_f1": 1.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_exact_opt": {
+          "exact_match": 1.0,
+          "gold_items": 0,
+          "macro_f1": 1.0,
+          "micro_f1": 1.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.0,
+          "gold_items": 0,
+          "macro_f1": 0.0,
+          "micro_f1": 0.0,
+          "predicted_items": 18,
+          "tp": 0
+        }
+      },
+      "T7_renovation": {
+        "b1_direct": {
+          "exact_match": 0.0,
+          "gold_items": 15,
+          "macro_f1": 0.0,
+          "micro_f1": 0.0,
+          "predicted_items": 11,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.0,
+          "gold_items": 15,
+          "macro_f1": 0.0,
+          "micro_f1": 0.0,
+          "predicted_items": 14,
+          "tp": 0
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.3333333333333333,
+          "gold_items": 15,
+          "macro_f1": 0.3333333333333333,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.3333333333333333,
+          "gold_items": 15,
+          "macro_f1": 0.3333333333333333,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.3333333333333333,
+          "gold_items": 15,
+          "macro_f1": 0.6011904761904762,
+          "micro_f1": 0.7272727272727273,
+          "predicted_items": 18,
+          "tp": 12
+        }
+      },
+      "T8_email_no_form": {
+        "b1_direct": {
+          "exact_match": 0.16666666666666666,
+          "gold_items": 7,
+          "macro_f1": 0.16666666666666666,
+          "micro_f1": 0.0,
+          "predicted_items": 23,
+          "tp": 0
+        },
+        "b3_graph_then_list": {
+          "exact_match": 0.16666666666666666,
+          "gold_items": 7,
+          "macro_f1": 0.16666666666666666,
+          "micro_f1": 0.0,
+          "predicted_items": 15,
+          "tp": 0
+        },
+        "b5_induced_graph": {
+          "exact_match": 0.6666666666666666,
+          "gold_items": 7,
+          "macro_f1": 0.6666666666666666,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_exact_opt": {
+          "exact_match": 0.6666666666666666,
+          "gold_items": 7,
+          "macro_f1": 0.6666666666666666,
+          "micro_f1": 0.0,
+          "predicted_items": 0,
+          "tp": 0
+        },
+        "no_input_micro_opt": {
+          "exact_match": 0.16666666666666666,
+          "gold_items": 7,
+          "macro_f1": 0.30952380952380953,
+          "micro_f1": 0.48,
+          "predicted_items": 18,
+          "tp": 6
+        }
+      }
+    },
     "gold": {
+      "by_scenario": {
+        "T1_arrears_disputed_time": {
+          "distinct_gold_sets": 3,
+          "entropy_bits": 1.4488156357251847,
+          "modal_share": 0.42857142857142855,
+          "n": 7,
+          "set_counts": {
+            "<empty>": 3,
+            "bank_statement|extension_request|payment_deadline_warning_letter|rent_payment_records": 1,
+            "bank_statement|payment_deadline_warning_letter|rent_payment_records": 3
+          },
+          "total_gold_items": 13
+        },
+        "T2_arrears_mixed_demand": {
+          "distinct_gold_sets": 3,
+          "entropy_bits": 1.5566567074628228,
+          "modal_share": 0.42857142857142855,
+          "n": 7,
+          "set_counts": {
+            "<empty>": 2,
+            "bank_statement|extension_request|payment_deadline_warning_letter|rent_payment_records": 2,
+            "bank_statement|payment_deadline_warning_letter|rent_payment_records": 3
+          },
+          "total_gold_items": 17
+        },
+        "T3_abusive_after_rights": {
+          "distinct_gold_sets": 3,
+          "entropy_bits": 1.3709505944546687,
+          "modal_share": 0.6,
+          "n": 5,
+          "set_counts": {
+            "<empty>": 1,
+            "bank_statement|extension_request|payment_deadline_warning_letter|rent_payment_records": 1,
+            "bank_statement|payment_deadline_warning_letter|rent_payment_records": 3
+          },
+          "total_gold_items": 13
+        },
+        "T4_family_home_service": {
+          "distinct_gold_sets": 2,
+          "entropy_bits": 0.9182958340544896,
+          "modal_share": 0.6666666666666666,
+          "n": 6,
+          "set_counts": {
+            "<empty>": 4,
+            "bank_statement|extension_request|payment_deadline_warning_letter|rent_payment_records": 2
+          },
+          "total_gold_items": 8
+        },
+        "T5_conflicting_notices": {
+          "distinct_gold_sets": 2,
+          "entropy_bits": 0.6500224216483541,
+          "modal_share": 0.8333333333333334,
+          "n": 6,
+          "set_counts": {
+            "<empty>": 5,
+            "bank_statement|extension_request|payment_deadline_warning_letter|rent_payment_records": 1
+          },
+          "total_gold_items": 4
+        },
+        "T6_two_notices": {
+          "distinct_gold_sets": 1,
+          "entropy_bits": -0.0,
+          "modal_share": 1.0,
+          "n": 6,
+          "set_counts": {
+            "<empty>": 6
+          },
+          "total_gold_items": 0
+        },
+        "T7_renovation": {
+          "distinct_gold_sets": 4,
+          "entropy_bits": 1.9182958340544896,
+          "modal_share": 0.3333333333333333,
+          "n": 6,
+          "set_counts": {
+            "<empty>": 2,
+            "bank_statement|contract_change_notices|extension_request|payment_deadline_warning_letter|rent_payment_records": 1,
+            "bank_statement|extension_request|payment_deadline_warning_letter|rent_payment_records": 1,
+            "bank_statement|payment_deadline_warning_letter|rent_payment_records": 2
+          },
+          "total_gold_items": 15
+        },
+        "T8_email_no_form": {
+          "distinct_gold_sets": 3,
+          "entropy_bits": 1.2516291673878228,
+          "modal_share": 0.6666666666666666,
+          "n": 6,
+          "set_counts": {
+            "<empty>": 4,
+            "bank_statement|extension_request|payment_deadline_warning_letter|rent_payment_records": 1,
+            "bank_statement|payment_deadline_warning_letter|rent_payment_records": 1
+          },
+          "total_gold_items": 7
+        }
+      },
       "distinct_sets": 4,
       "total_items": 77
     },
