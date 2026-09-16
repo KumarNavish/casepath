@@ -1,0 +1,767 @@
+{
+ "contract": "casepath.reference-contract/1.0.0",
+ "scope": "termination",
+ "scope_statement": "Tenancy (Switzerland): a residential or commercial tenant who has received a landlord's termination and who contests it and/or seeks an extension of the lease, through the parity conciliation authority (Schlichtungsbehoerde) and, on failure, the court. Statutory spine: OR (SR 220) Art. 266l, 266m, 266n, 266o, 271, 271a, 272, 272a, 272b, 272c, 272d, 273, 273a, 273b, 273c; VMWG (SR 221.213.11) Art. 9, 21, 22; ZPO (SR 272) Art. 33, 63, 113, 142, 143, 145, 197-213, 243(2), 244, 247(2). Operational layer: cantonal conciliation forms and guidance (AG, GE, BE, TI, ZH). This contract is built from the public sources alone; no CasePath artefact was read. Reading discipline observed: no file whose name contains INDUCTION, COMPILER, PIPELINE or SCOPE_SELECTION was opened. Annotator 1. All quotes verified verbatim against the fetched sources by automated substring check under NFC normalisation, whitespace collapsing and soft-hyphen removal (135 of 135 candidate quotes passed; the two that failed an earlier casing/line-break form were corrected before inclusion).",
+ "provenance": {
+  "spine": "authored by an independent agent from Swiss federal sources; no access to the induced graph",
+  "quote_gate": "a quote is admitted only if it is a verbatim substring of a fetched, hashed Fedlex passage cited by that decision",
+  "document_layer": "three independent authors from the gated spine alone; admitted on >=2 of 3",
+  "conditions": "one adjudicator over the three authors' live/dead formulations",
+  "catalogue_restriction": "proposals outside the fixed catalogue are rejected (0 occurred)"
+ },
+ "audit": {
+  "decisions_in": 21,
+  "decisions_kept": 21,
+  "quotes_in": 106,
+  "quotes_kept": 91,
+  "quotes_dropped": 15,
+  "document_votes": {
+   "unanimous": 34,
+   "majority_only": 13,
+   "singleton_dropped": 16
+  },
+  "dropped_quotes": [
+   {
+    "decision_id": "DEC-02-identify-the-notice-and-the-parties",
+    "quote": "die Bezeichnung der Parteien gemäss Mietvertrag."
+   },
+   {
+    "decision_id": "DEC-03-determine-date-of-receipt",
+    "quote": "Als Erhalt gelten der Empfang im Briefkasten, die Übergabe durch die Post oder der erste Tag, an dem Sie die Sendung mit einer Abholungseinladung auf der Post a"
+   },
+   {
+    "decision_id": "DEC-04-formal-validity-and-nullity",
+    "quote": "occorre far capo obbligatoriamente ai moduli allestiti dal Dipartimento delle istituzioni, pena la nullità delle relative notifiche."
+   },
+   {
+    "decision_id": "DEC-04-formal-validity-and-nullity",
+    "quote": "Ein solches Formular muss aber vor seiner Verwendung von der Direktion der Justiz und des Innern genehmigt werden."
+   },
+   {
+    "decision_id": "DEC-08-fixed-or-indefinite-term",
+    "quote": "ou au plus tard 60 jours avant l'expiration du contrat"
+   },
+   {
+    "decision_id": "DEC-09-extension-excluded",
+    "quote": "Wenn die Vermieterin oder der Vermieter den Mietvertrag insbesondere wegen Zahlungsrückstand oder schwerer Verletzung der Pflicht zur Sorgfalt und Rücksichtnahm"
+   },
+   {
+    "decision_id": "DEC-11-extension-duration-and-count",
+    "quote": "Eine Erstreckung ist bei Wohnräumen für maximal vier Jahre und bei Geschäftsräumen für maximal sechs Jahre möglich."
+   },
+   {
+    "decision_id": "DEC-11-extension-duration-and-count",
+    "quote": "Das Mietverhältnis sei bis"
+   },
+   {
+    "decision_id": "DEC-12-competent-conciliation-authority",
+    "quote": "Es ist jeweils diejenige Schlichtungsbehörde zuständig, in deren Gerichtsregion sich die Wohn- oder Geschäftsräume befinden."
+   },
+   {
+    "decision_id": "DEC-14-compose-and-file-the-schlichtungsgesuch",
+    "quote": "die Urkunden (in Kopie und im Doppel), welche als Beweismittel dienen sollen. Der Mietvertrag ist immer einzureichen."
+   },
+   {
+    "decision_id": "DEC-14-compose-and-file-the-schlichtungsgesuch",
+    "quote": "in doppelter Ausführung einreichen (Art. 131 ZPO)"
+   },
+   {
+    "decision_id": "DEC-14-compose-and-file-the-schlichtungsgesuch",
+    "quote": "pièces utiles, notamment le contrat de bail"
+   },
+   {
+    "decision_id": "DEC-15-appearance-and-representation",
+    "quote": "Bei Vertretung der klagenden Partei: eine Vollmacht oder den Verwaltungsvertrag"
+   },
+   {
+    "decision_id": "DEC-19-file-the-action-in-court",
+    "quote": "In caso contrario l'autorità di conciliazione rilascerà l'autorizzazione ad agire, che permette di inoltrare al Pretore l'azione di merito entro 30 giorni."
+   },
+   {
+    "decision_id": "DEC-20-ex-officio-extension-after-dismissal",
+    "quote": "Weist das Gericht die Anfechtung der Kündigung ab, prüft es stets, ob das Mietverhältnis zu erstrecken ist."
+   }
+  ]
+ },
+ "documents_in_contract": [
+  "bank_statement",
+  "conciliation_minutes",
+  "conciliation_request",
+  "contract_change_notices",
+  "envelope_copy",
+  "extension_request",
+  "landlord_correspondence",
+  "lease_contract",
+  "leave_to_proceed_klagebewilligung",
+  "payment_deadline_warning_letter",
+  "postal_collection_invitation",
+  "power_of_attorney",
+  "property_management_contract",
+  "registered_mail_receipt",
+  "rent_payment_records",
+  "statement_of_reasons_for_termination",
+  "tenant_correspondence",
+  "termination_notice_official_form"
+ ],
+ "decisions": [
+  {
+   "decision_id": "DEC-01-object-is-wohn-oder-geschaeftsraeume",
+   "must_determine": "Whether the let object consists of Wohn- oder Geschaeftsraeume (residential or commercial premises). This is the gate for the entire protective regime: the written-form and cantonally-approved-form duties, the parity composition of the conciliation authority, the simplified procedure with ex officio establishment of the facts, the availability of an Entscheidvorschlag, the absence of court costs, and the 30-day (rather than three-month) Klagefrist. A reconstruction may site this determination anywhere, but it must exist as a determination whose outcome switches those consequences on or off.",
+   "evidence": [
+    {
+     "authority_id": "or-art-266l-para1-20260101-de",
+     "quote": "Vermieter und Mieter von Wohn- und Geschäftsräumen müssen schriftlich kündigen."
+    },
+    {
+     "authority_id": "zpo-art-200-para1-20250101-de",
+     "quote": "Bei Streitigkeiten aus Miete und Pacht von Wohn- und Geschäftsräumen besteht die Schlichtungsbehörde aus einer vorsitzenden Person und einer paritätischen Vertretung."
+    },
+    {
+     "authority_id": "zpo-art-209-para4-20250101-de",
+     "quote": "In Streitigkeiten aus Miete und Pacht von Wohn- und Geschäftsräumen sowie aus landwirtschaftlicher Pacht beträgt die Klagefrist 30 Tage."
+    },
+    {
+     "authority_id": "zpo-art-113-para2-20250101-de",
+     "quote": "Keine Gerichtskosten werden gesprochen in Streitigkeiten:"
+    },
+    {
+     "authority_id": "zpo-art-113-para2-20250101-de",
+     "quote": "aus Miete und Pacht von Wohn- und Geschäftsräumen sowie aus landwirtschaftlicher Pacht;"
+    },
+    {
+     "authority_id": "zpo-art-247-para2-20250101-de",
+     "quote": "Das Gericht stellt den Sachverhalt von Amtes wegen fest:"
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "lease_contract"
+   ],
+   "live_when": "It is unresolved whether the leased object is residential or commercial premises.",
+   "dead_when": "It has been established whether the leased object is, or is not, residential or commercial premises.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-02-identify-the-notice-and-the-parties",
+   "must_determine": "Whether a termination has been given, by whom, to whom, in respect of which object, and with effect from which date. The parties must be identified as the lease names them, and it must be settled whether the party appearing on the landlord's side is the owner or the managing agent, because that determines who is named as a party and who as a representative.",
+   "evidence": [
+    {
+     "authority_id": "vmwg-art-9-para1-20250101-de",
+     "quote": "die Bezeichnung des Mietgegenstandes, auf welchen sich die Kündigung bezieht;"
+    },
+    {
+     "authority_id": "vmwg-art-9-para1-20250101-de",
+     "quote": "den Zeitpunkt, auf den die Kündigung wirksam wird;"
+    },
+    {
+     "authority_id": "zpo-art-202-para2-20250101-de",
+     "quote": "Im Schlichtungsgesuch sind die Gegenpartei, das Rechtsbegehren und der Streitgegenstand zu bezeichnen."
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "lease_contract",
+    "property_management_contract",
+    "termination_notice_official_form"
+   ],
+   "live_when": "The termination, object, effective date, contractual parties, or landlord-side sender's role as owner or managing agent remains unidentified.",
+   "dead_when": "The termination identifies its sender, recipient, object, effective date, contractual parties, and any managing-agent role.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-03-determine-date-of-receipt",
+   "must_determine": "The calendar date on which the termination was received (Empfang) by the tenant, and from that the last day of the period. Receipt has three limbs — delivery into the letter box, handover by the post, or the first day on which the item could have been collected against a collection invitation — and the period then starts on the following day and, if its last day is a Saturday, Sunday or recognised holiday, ends on the next working day. This is the single determination on which both the contestation deadline and the indefinite-term extension deadline hang.",
+   "evidence": [
+    {
+     "authority_id": "or-art-273-para1-20260101-de",
+     "quote": "Will eine Partei die Kündigung anfechten, so muss sie das Begehren innert 30 Tagen nach Empfang der Kündigung der Schlichtungsbehörde einreichen."
+    },
+    {
+     "authority_id": "zpo-art-142-para1-20250101-de",
+     "quote": "Fristen, die durch eine Mitteilung oder den Eintritt eines Ereignisses ausgelöst werden, beginnen am folgenden Tag zu laufen."
+    },
+    {
+     "authority_id": "zpo-art-142-para3-20250101-de",
+     "quote": "Fällt der letzte Tag einer Frist auf einen Samstag, einen Sonntag oder einen am Gerichtsort vom Bundesrecht oder vom kantonalen Recht anerkannten Feiertag, so endet sie am nächsten Werktag."
+    },
+    {
+     "authority_id": "zpo-art-143-para1-20250101-de",
+     "quote": "Eingaben müssen spätestens am letzten Tag der Frist beim Gericht eingereicht oder zu dessen Handen der Schweizerischen Post oder einer schweizerischen diplomatischen oder konsularischen Vertretung übergeben werden."
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "envelope_copy",
+    "postal_collection_invitation",
+    "registered_mail_receipt"
+   ],
+   "live_when": "The date the tenant received the termination, or first could collect it, remains unknown.",
+   "dead_when": "The relevant receipt date and resulting filing deadline have been established.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-04-formal-validity-and-nullity",
+   "must_determine": "Whether the notice complies with OR 266l-266n — written form; for a landlord's notice, a form approved by the canton; that form carrying all five contents prescribed by VMWG Art. 9(1)(a)-(e); and separate service on the spouse or registered partner where the premises are the family home — and therefore whether the notice is void. A reconstruction may split this into one check per element or merge it into a single validity node; what must be preserved is a determination whose negative outcome makes the notice void rather than merely contestable.",
+   "evidence": [
+    {
+     "authority_id": "or-art-266o-20260101-de",
+     "quote": "Die Kündigung ist nichtig, wenn sie den Artikeln 266l–266n nicht entspricht."
+    },
+    {
+     "authority_id": "or-art-266l-para2-20260101-de",
+     "quote": "Der Vermieter muss mit einem Formular kündigen, das vom Kanton genehmigt ist und das angibt, wie der Mieter vorzugehen hat, wenn er die Kündigung anfechten oder eine Erstreckung des Mietverhältnisses verlangen will."
+    },
+    {
+     "authority_id": "vmwg-art-9-para1-20250101-de",
+     "quote": "Das Formular für die Mitteilung der Kündigung im Sinne von Artikel 266l Absatz 2 OR muss enthalten:"
+    }
+   ],
+   "conditional_on": "P01-premises-are-wohn-oder-geschaeftsraeume",
+   "required_documents": [
+    "termination_notice_official_form"
+   ],
+   "live_when": "For residential or commercial premises, it remains unresolved whether the landlord's notice met the required written-form, official-form, and content requirements.",
+   "dead_when": "The notice has been found formally compliant or non-compliant, or the premises have been found outside the residential/commercial-premises regime.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-05-family-home-and-separate-service",
+   "must_determine": "Whether the let object serves as the family home and whether the tenant has a spouse or registered partner, and if so whether the landlord served a separate copy of the notice on that person. The same finding also gives the spouse or registered partner independent standing to contest the notice and to demand an extension, and makes any extension agreement valid only if concluded with both spouses.",
+   "evidence": [
+    {
+     "authority_id": "or-art-266n-20260101-de",
+     "quote": "sind dem Mieter und seinem Ehegatten, seiner eingetragenen Partnerin oder seinem eingetragenen Partner separat zuzustellen."
+    },
+    {
+     "authority_id": "or-art-273a-para1-20260101-de",
+     "quote": "Dient die gemietete Sache als Wohnung der Familie, so kann auch der Ehegatte des Mieters die Kündigung anfechten, die Erstreckung des Mietverhältnisses verlangen oder die übrigen Rechte ausüben, die dem Mieter bei Kündigung zustehen."
+    },
+    {
+     "authority_id": "or-art-273a-para2-20260101-de",
+     "quote": "Vereinbarungen über die Erstreckung sind nur gültig, wenn sie mit beiden Ehegatten abgeschlossen werden."
+    }
+   ],
+   "conditional_on": "P02-notice-given-by-the-landlord",
+   "required_documents": [
+    "envelope_copy",
+    "lease_contract",
+    "postal_collection_invitation",
+    "registered_mail_receipt",
+    "termination_notice_official_form"
+   ],
+   "live_when": "For a landlord's notice, it remains unresolved whether the premises are the family home, whether the tenant has a spouse or registered partner, or whether that person received a separate notice.",
+   "dead_when": "It has been established that the family-home rule does not apply, or whether required separate service was made.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-06-contestability",
+   "must_determine": "Whether the notice offends the principle of good faith, and in particular whether it falls within one of the enumerated cases in OR 271a(1)(a)-(f) — retaliation for the tenant's good-faith assertion of claims, pressure to impose a unilateral contract change or rent adjustment, inducement to buy the dwelling, notice during a related conciliation or court proceeding, notice within three years of the conclusion of such a proceeding that went against the landlord, or notice because of changes in the tenant's family situation — subject to the disapplication of (d) and (e) by OR 271a(3).",
+   "evidence": [
+    {
+     "authority_id": "or-art-271-para1-20260101-de",
+     "quote": "Die Kündigung ist anfechtbar, wenn sie gegen den Grundsatz von Treu und Glauben verstösst."
+    },
+    {
+     "authority_id": "or-art-271a-para1-20260101-de",
+     "quote": "Die Kündigung durch den Vermieter ist insbesondere anfechtbar, wenn sie ausgesprochen wird:"
+    },
+    {
+     "authority_id": "or-art-271a-para1-20260101-de",
+     "quote": "weil der Mieter nach Treu und Glauben Ansprüche aus dem Mietverhältnis geltend macht;"
+    },
+    {
+     "authority_id": "or-art-271a-para1-20260101-de",
+     "quote": "weil der Vermieter eine einseitige Vertragsänderung zu Lasten des Mieters oder eine Mietzinsanpassung durchsetzen will;"
+    },
+    {
+     "authority_id": "or-art-271a-para3-20260101-de",
+     "quote": "Absatz 1 Buchstaben d und e sind nicht anwendbar bei Kündigungen:"
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "conciliation_minutes",
+    "conciliation_request",
+    "contract_change_notices",
+    "landlord_correspondence",
+    "statement_of_reasons_for_termination",
+    "tenant_correspondence"
+   ],
+   "live_when": "If the notice is not void, the landlord's actual reason and relevant surrounding facts remain insufficiently established to assess whether the termination was in good faith.",
+   "dead_when": "The good-faith challenge has been resolved, withdrawn, or is unnecessary because the notice is void.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-07-demand-and-assess-reasons",
+   "must_determine": "Whether to demand reasons for the termination from the landlord and, once given, whether the stated ground is the real one. The duty to give reasons arises only on request; the approved form must itself tell the tenant that this is so.",
+   "evidence": [
+    {
+     "authority_id": "or-art-271-para2-20260101-de",
+     "quote": "Die Kündigung muss auf Verlangen begründet werden."
+    },
+    {
+     "authority_id": "vmwg-art-9-para1-20250101-de",
+     "quote": "den Hinweis, dass der Vermieter die Kündigung auf Verlangen des Mieters begründen muss;"
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "landlord_correspondence",
+    "statement_of_reasons_for_termination",
+    "tenant_correspondence"
+   ],
+   "live_when": "The tenant has not decided whether to request reasons, or requested reasons have not been supplied and checked against the surrounding facts.",
+   "dead_when": "No request for reasons is pursued, or the landlord's reasons have been supplied and assessed.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-08-fixed-or-indefinite-term",
+   "must_determine": "Whether the lease is for a fixed or an indefinite term, and, if fixed, the date on which the contract term expires — because the extension request is due 30 days after receipt of the notice on an indefinite-term lease but at the latest 60 days before expiry of the term on a fixed-term lease, a backward-running deadline that can already have passed when the notice arrives.",
+   "evidence": [
+    {
+     "authority_id": "or-art-272-para1-20260101-de",
+     "quote": "Der Mieter kann die Erstreckung eines befristeten oder unbefristeten Mietverhältnisses verlangen, wenn die Beendigung der Miete für ihn oder seine Familie eine Härte zur Folge hätte, die durch die Interessen des Vermieters nicht zu rechtfertigen wäre."
+    },
+    {
+     "authority_id": "or-art-273-para2-20260101-de",
+     "quote": "bei einem unbefristeten Mietverhältnis innert 30 Tagen nach Empfang der Kündigung;"
+    },
+    {
+     "authority_id": "or-art-273-para2-20260101-de",
+     "quote": "bei einem befristeten Mietverhältnis spätestens 60 Tage vor Ablauf der Vertragsdauer."
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "lease_contract"
+   ],
+   "live_when": "It remains unresolved whether the lease is fixed or indefinite, or, if fixed, when its contractual term expires.",
+   "dead_when": "The lease type, any fixed expiry date, and the applicable extension-request deadline have been established.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-09-extension-excluded",
+   "must_determine": "Whether extension is excluded outright by the ground of termination (arrears under OR 257d; serious breach of the duty of care and consideration under OR 257f(3)/(4); the tenant's bankruptcy under OR 266h; a lease expressly concluded only for the limited period up to the start of building works or the grant of a permit) or, as a rule, by the landlord's offer of equivalent replacement premises. This determination is what makes the hardship layer of the contract removable in its entirety.",
+   "evidence": [
+    {
+     "authority_id": "or-art-272a-para1-20260101-de",
+     "quote": "Die Erstreckung ist ausgeschlossen bei Kündigungen:"
+    },
+    {
+     "authority_id": "or-art-272a-para1-20260101-de",
+     "quote": "wegen Zahlungsrückstand des Mieters (Art. 257"
+    },
+    {
+     "authority_id": "or-art-272a-para1-20260101-de",
+     "quote": "wegen schwerer Verletzung der Pflicht des Mieters zu Sorgfalt und Rücksichtnahme (Art. 257"
+    },
+    {
+     "authority_id": "or-art-272a-para1-20260101-de",
+     "quote": "wegen Konkurs des Mieters (Art. 266"
+    },
+    {
+     "authority_id": "or-art-272a-para1-20260101-de",
+     "quote": "eines Mietvertrages, welcher im Hinblick auf ein bevorstehendes Umbau- oder Abbruchvorhaben ausdrücklich nur für die beschränkte Zeit bis zum Baubeginn oder bis zum Erhalt der erforderlichen Bewilligung abgeschlossen wurde."
+    },
+    {
+     "authority_id": "or-art-272a-para2-20260101-de",
+     "quote": "Die Erstreckung ist in der Regel ausgeschlossen, wenn der Vermieter dem Mieter einen gleichwertigen Ersatz für die Wohn- oder Geschäftsräume anbietet."
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "bank_statement",
+    "landlord_correspondence",
+    "lease_contract",
+    "payment_deadline_warning_letter",
+    "rent_payment_records",
+    "statement_of_reasons_for_termination"
+   ],
+   "live_when": "Where an extension is sought or considered, it remains unresolved whether the stated termination ground or an offer of equivalent replacement premises excludes an extension.",
+   "dead_when": "Extension has been found excluded or not excluded, or no extension issue remains.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-10-hardship-weighing",
+   "must_determine": "Whether the ending of the tenancy would cause the tenant or the tenant's family a hardship not justified by the landlord's interests, weighing in particular the circumstances of the conclusion and the content of the contract, the duration of the tenancy, the personal, family and economic circumstances of both parties and their conduct, any own need of the landlord and its urgency, and conditions on the local market; and, on a second extension, whether the tenant did everything that could reasonably be required of him to avert the hardship.",
+   "evidence": [
+    {
+     "authority_id": "or-art-272-para2-20260101-de",
+     "quote": "Bei der Interessenabwägung berücksichtigt die zuständige Behörde insbesondere:"
+    },
+    {
+     "authority_id": "or-art-272-para2-20260101-de",
+     "quote": "die Umstände des Vertragsabschlusses und den Inhalt des Vertrags;"
+    },
+    {
+     "authority_id": "or-art-272-para2-20260101-de",
+     "quote": "die Dauer des Mietverhältnisses;"
+    },
+    {
+     "authority_id": "or-art-272-para2-20260101-de",
+     "quote": "die persönlichen, familiären und wirtschaftlichen Verhältnisse der Parteien und deren Verhalten;"
+    },
+    {
+     "authority_id": "or-art-272-para2-20260101-de",
+     "quote": "einen allfälligen Eigenbedarf des Vermieters für sich, nahe Verwandte oder Verschwägerte sowie die Dringlichkeit dieses Bedarfs;"
+    },
+    {
+     "authority_id": "or-art-272-para2-20260101-de",
+     "quote": "die Verhältnisse auf dem örtlichen Markt für Wohn- und Geschäftsräume."
+    },
+    {
+     "authority_id": "or-art-272-para3-20260101-de",
+     "quote": "Verlangt der Mieter eine zweite Erstreckung, so berücksichtigt die zuständige Behörde auch, ob er zur Abwendung der Härte alles unternommen hat, was ihm zuzumuten war."
+    }
+   ],
+   "conditional_on": "P06-extension-not-excluded",
+   "required_documents": [
+    "extension_request",
+    "landlord_correspondence",
+    "lease_contract",
+    "tenant_correspondence"
+   ],
+   "live_when": "Extension is not excluded and the tenant's hardship, landlord's interests, and any reasonable efforts before a requested second extension have not been weighed.",
+   "dead_when": "The hardship balancing has been completed, extension is excluded, or no extension is sought.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-11-extension-duration-and-count",
+   "must_determine": "The extension sought and its admissible length and number: at most four years for residential and six years for commercial premises, granted as one or two extensions within that maximum; and, where the parties agree an extension themselves, that no maximum binds them and the tenant may waive a second extension. Where the tenancy is a sublease, the extension can run only for the duration of the head lease.",
+   "evidence": [
+    {
+     "authority_id": "or-art-272b-para1-20260101-de",
+     "quote": "Das Mietverhältnis kann für Wohnräume um höchstens vier, für Geschäftsräume um höchstens sechs Jahre erstreckt werden. Im Rahmen der Höchstdauer können eine oder zwei Erstreckungen gewährt werden."
+    },
+    {
+     "authority_id": "or-art-272b-para2-20260101-de",
+     "quote": "Vereinbaren die Parteien eine Erstreckung des Mietverhältnisses, so sind sie an keine Höchstdauer gebunden, und der Mieter kann auf eine zweite Erstreckung verzichten."
+    },
+    {
+     "authority_id": "or-art-273b-para1-20260101-de",
+     "quote": "Dieser Abschnitt gilt für die Untermiete, solange das Hauptmietverhältnis nicht aufgelöst ist."
+    }
+   ],
+   "conditional_on": "P06-extension-not-excluded",
+   "required_documents": [
+    "extension_request",
+    "lease_contract"
+   ],
+   "live_when": "Extension is available, but the requested duration, previous extensions, premises category, or any sublease limit remains unknown.",
+   "dead_when": "The extension's duration and number have been fixed, refused, agreed, or extension is no longer available.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-12-competent-conciliation-authority",
+   "must_determine": "Which conciliation authority is competent — the one covering the place where the premises are situated. The list of authorities and their territorial competence is itself a mandatory content of the termination form, and the cantons are obliged to publish their composition and competence periodically.",
+   "evidence": [
+    {
+     "authority_id": "zpo-art-33-20250101-de",
+     "quote": "Für Klagen aus Miete und Pacht unbeweglicher Sachen ist das Gericht am Ort der gelegenen Sache zuständig."
+    },
+    {
+     "authority_id": "vmwg-art-9-para1-20250101-de",
+     "quote": "das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit."
+    },
+    {
+     "authority_id": "vmwg-art-22-20250101-de",
+     "quote": "Die Kantone sind verpflichtet, die Zusammensetzung der Schlichtungsbehörden und deren Zuständigkeit periodisch zu veröffentlichen."
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "lease_contract"
+   ],
+   "live_when": "The location of the leased premises, and therefore the territorially competent conciliation authority, remains unknown.",
+   "dead_when": "The premises location and the competent conciliation authority have been identified.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-13-conciliation-required-or-waived",
+   "must_determine": "Whether an attempt at conciliation must precede the decision proceedings, and whether any statutory exemption (ZPO 198) or waiver (ZPO 199 — joint waiver at a value of at least CHF 100,000; unilateral waiver where the defendant is domiciled abroad or whose whereabouts are unknown) applies. The outcome decides whether the court-stage annex is the Klagebewilligung or the declaration that conciliation is waived.",
+   "evidence": [
+    {
+     "authority_id": "zpo-art-197-20250101-de",
+     "quote": "Dem Entscheidverfahren geht ein Schlichtungsversuch vor einer Schlichtungsbehörde voraus."
+    },
+    {
+     "authority_id": "zpo-art-198-20250101-de",
+     "quote": "Das Schlichtungsverfahren entfällt:"
+    },
+    {
+     "authority_id": "zpo-art-199-para1-20250101-de",
+     "quote": "Bei vermögensrechtlichen Streitigkeiten mit einem Streitwert von mindestens 100 000 Franken können die Parteien gemeinsam auf die Durchführung des Schlichtungsverfahrens verzichten."
+    },
+    {
+     "authority_id": "zpo-art-199-para2-20250101-de",
+     "quote": "Die klagende Partei kann einseitig auf das Schlichtungsverfahren verzichten, wenn:"
+    },
+    {
+     "authority_id": "zpo-art-244-para3-20250101-de",
+     "quote": "die Klagebewilligung oder die Erklärung, dass auf das Schlichtungsverfahren verzichtet werde;"
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [],
+   "live_when": "It remains unresolved whether conciliation is required, legally exempted, or waived by the parties.",
+   "dead_when": "It has been established that conciliation is required, exempted, or validly waived.",
+   "necessity": "corroborating"
+  },
+  {
+   "decision_id": "DEC-14-compose-and-file-the-schlichtungsgesuch",
+   "must_determine": "What the conciliation request must contain and by when and in what form it must be filed: the opposing party, the prayer for relief and the subject matter, in the forms of ZPO 130 or orally on the record, with the supporting documents, in the number of paper copies the cantonal authority requires. The authority then serves it on the opposing party without delay and summons both parties at the same time.",
+   "evidence": [
+    {
+     "authority_id": "zpo-art-202-para1-20250101-de",
+     "quote": "Das Verfahren wird durch das Schlichtungsgesuch eingeleitet."
+    },
+    {
+     "authority_id": "zpo-art-202-para2-20250101-de",
+     "quote": "Im Schlichtungsgesuch sind die Gegenpartei, das Rechtsbegehren und der Streitgegenstand zu bezeichnen."
+    },
+    {
+     "authority_id": "zpo-art-202-para3-20250101-de",
+     "quote": "Die Schlichtungsbehörde stellt der Gegenpartei das Schlichtungsgesuch unverzüglich zu und lädt gleichzeitig die Parteien zur Vermittlung vor."
+    }
+   ],
+   "conditional_on": "P15-conciliation-attempt-required",
+   "required_documents": [
+    "conciliation_request"
+   ],
+   "live_when": "Conciliation is required and no conciliation request has been filed and checked for the opposing party, relief sought, subject matter, and timeliness.",
+   "dead_when": "A compliant request has been filed, withdrawn, or filed too late, or conciliation is waived or exempted.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-15-appearance-and-representation",
+   "must_determine": "Who must appear personally at the conciliation hearing and whether a representation exception applies: parties must appear in person and may be accompanied by counsel or a person of trust; a party domiciled outside the canton or abroad, a party prevented by illness, age or other important reasons, and — on the landlord's side — a delegated Liegenschaftsverwaltung may be represented, the last only if authorised in writing to conclude a settlement. The opposing party must be informed of the representation in advance.",
+   "evidence": [
+    {
+     "authority_id": "zpo-art-204-para1-20250101-de",
+     "quote": "Die Parteien müssen persönlich zur Schlichtungsverhandlung erscheinen."
+    },
+    {
+     "authority_id": "zpo-art-204-para3-20250101-de",
+     "quote": "in Streitigkeiten nach Artikel 243 als Arbeitgeber beziehungsweise als Versicherer eine angestellte Person oder als Vermieter die Liegenschaftsverwaltung delegiert, sofern diese zum Abschluss eines Vergleichs schriftlich ermächtigt sind;"
+    },
+    {
+     "authority_id": "zpo-art-244-para3-20250101-de",
+     "quote": "eine Vollmacht bei Vertretung;"
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "power_of_attorney",
+    "property_management_contract"
+   ],
+   "live_when": "A conciliation hearing is pending and it remains unresolved whether each party will attend personally or may attend through a representative.",
+   "dead_when": "Personal attendance or permitted representation, including any written settlement authority, has been settled, or the hearing stage has ended.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-16-evidence-at-the-hearing",
+   "must_determine": "What must be produced at the conciliation hearing: the authority has documents laid before it and may carry out an inspection, and where an Entscheidvorschlag or a decision of its own is in contemplation it may also take the other means of proof so long as this does not materially delay the proceedings. The hearing is informal and, as a rule, not public, and party statements may neither be recorded nor later used in the decision proceedings except where the authority issues a proposal or a decision.",
+   "evidence": [
+    {
+     "authority_id": "zpo-art-203-para2-20250101-de",
+     "quote": "Die Schlichtungsbehörde lässt sich allfällige Urkunden vorlegen und kann einen Augenschein durchführen."
+    },
+    {
+     "authority_id": "zpo-art-203-para2-20250101-de",
+     "quote": "Soweit ein Entscheidvorschlag nach Artikel 210 oder ein Entscheid nach Artikel 212 in Frage kommt, kann sie auch die übrigen Beweismittel abnehmen, wenn dies das Verfahren nicht wesentlich verzögert."
+    },
+    {
+     "authority_id": "zpo-art-203-para3-20250101-de",
+     "quote": "Die Verhandlung ist nicht öffentlich."
+    },
+    {
+     "authority_id": "zpo-art-201-para1-20250101-de",
+     "quote": "Die Schlichtungsbehörde versucht in formloser Verhandlung, die Parteien zu versöhnen. Dient es der Beilegung des Streites, so können in einen Vergleich auch ausserhalb des Verfahrens liegende Streitfragen zwischen den Parteien einbezogen werden."
+    },
+    {
+     "authority_id": "zpo-art-201-para2-20250101-de",
+     "quote": "In den Angelegenheiten nach Artikel 200 ist die Schlichtungsbehörde auch Rechtsberatungsstelle."
+    },
+    {
+     "authority_id": "zpo-art-205-para1-20250101-de",
+     "quote": "Aussagen der Parteien dürfen weder protokolliert noch später im Entscheidverfahren verwendet werden."
+    },
+    {
+     "authority_id": "vmwg-art-21-20250101-de",
+     "quote": "Die Schlichtungsbehörden haben im Schlichtungsverfahren eine Einigung der Parteien anzustreben, die sich auf das gesamte Mietverhältnis (Höhe des Mietzinses, Dauer des Vertrags, Kündigungsfrist usw.) erstreckt."
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [],
+   "live_when": "A conciliation hearing is pending and the authority has not determined what available documents or other evidence it will receive.",
+   "dead_when": "The hearing has ended or the authority has settled the evidence to be received.",
+   "necessity": "corroborating"
+  },
+  {
+   "decision_id": "DEC-17-conciliation-outcome",
+   "must_determine": "Which of the statutory outcomes the conciliation stage produces: an agreement recorded as a Vergleich, a Klageanerkennung or an unqualified Klagerueckzug, signed by the parties and issued to each in one copy; a proposed decision under ZPO 210(1)(b); a decision of the authority itself in a pecuniary dispute up to CHF 2000 on the claimant's application; or, failing agreement, the Klagebewilligung, which in a termination contest goes to the claimant. Claimant default makes the request deemed withdrawn; defendant default is treated as a failure to agree. Any agreement is constrained by the mandatory character of the Kuendigungsschutz provisions: the tenant can waive rights under that section only where waiver is expressly provided for, and deviating agreements are void.",
+   "evidence": [
+    {
+     "authority_id": "zpo-art-208-para1-20250101-de",
+     "quote": "Kommt es zu einer Einigung, so nimmt die Schlichtungsbehörde einen Vergleich, eine Klageanerkennung oder einen vorbehaltlosen Klagerückzug zu Protokoll und lässt die Parteien dieses unterzeichnen. Jede Partei erhält ein Exemplar des Protokolls."
+    },
+    {
+     "authority_id": "zpo-art-208-para2-20250101-de",
+     "quote": "Ein Vergleich, eine Klageanerkennung oder ein vorbehaltloser Klagerückzug haben die Wirkung eines rechtskräftigen Entscheids."
+    },
+    {
+     "authority_id": "zpo-art-209-para1-20250101-de",
+     "quote": "Kommt es zu keiner Einigung, so hält die Schlichtungsbehörde dies im Protokoll fest und erteilt die Klagebewilligung:"
+    },
+    {
+     "authority_id": "zpo-art-209-para1-20250101-de",
+     "quote": "in den übrigen Fällen: der klagenden Partei."
+    },
+    {
+     "authority_id": "zpo-art-210-para1-20250101-de",
+     "quote": "Die Schlichtungsbehörde kann den Parteien einen Entscheidvorschlag unterbreiten in:"
+    },
+    {
+     "authority_id": "zpo-art-212-para1-20250101-de",
+     "quote": "Vermögensrechtliche Streitigkeiten bis zu einem Streitwert von 2000 Franken kann die Schlichtungsbehörde entscheiden, sofern die klagende Partei einen entsprechenden Antrag stellt."
+    },
+    {
+     "authority_id": "zpo-art-206-para1-20250101-de",
+     "quote": "Bei Säumnis der klagenden Partei gilt das Schlichtungsgesuch als zurückgezogen; das Verfahren wird als gegenstandslos abgeschrieben."
+    },
+    {
+     "authority_id": "zpo-art-206-para2-20250101-de",
+     "quote": "Bei Säumnis der beklagten Partei verfährt die Schlichtungsbehörde, wie wenn keine Einigung zu Stande gekommen wäre (Art. 209–212)."
+    },
+    {
+     "authority_id": "or-art-273c-para1-20260101-de",
+     "quote": "Der Mieter kann auf Rechte, die ihm nach diesem Abschnitt zustehen, nur verzichten, wenn dies ausdrücklich vorgesehen ist."
+    },
+    {
+     "authority_id": "or-art-273c-para2-20260101-de",
+     "quote": "Abweichende Vereinbarungen sind nichtig."
+    }
+   ],
+   "conditional_on": null,
+   "required_documents": [
+    "conciliation_minutes",
+    "leave_to_proceed_klagebewilligung"
+   ],
+   "live_when": "The conciliation stage has occurred or is ending, but its outcome has not yet been recorded or issued.",
+   "dead_when": "A settlement-type record, proposed decision, authority decision, withdrawal consequence, or leave to proceed has been issued and identifies the outcome.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-18-accept-or-reject-the-entscheidvorschlag",
+   "must_determine": "Whether to reject the proposed decision within 20 days of its written opening and, if a party rejects, that in a tenancy protection or extension matter the Klagebewilligung goes to the rejecting party rather than to the claimant — together with the consequence that if the action is then not filed in time the proposal is deemed acknowledged and has the effect of a legally binding decision. Rejection needs no reasons, and the proposal must itself point the parties to these effects.",
+   "evidence": [
+    {
+     "authority_id": "zpo-art-210-para1-20250101-de",
+     "quote": "Streitigkeiten aus Miete und Pacht von Wohn- und Geschäftsräumen sowie aus landwirtschaftlicher Pacht, sofern die Hinterlegung von Miet- und Pachtzinsen, der Schutz vor missbräuchlichen Miet- und Pachtzinsen, der Kündigungsschutz oder die Erstreckung des Miet- und Pachtverhältnisses betroffen ist;"
+    },
+    {
+     "authority_id": "zpo-art-211-para1-20250101-de",
+     "quote": "Der Entscheidvorschlag gilt als angenommen und hat die Wirkungen eines rechtskräftigen Entscheids, wenn ihn keine Partei innert 20 Tagen seit der schriftlichen Eröffnung ablehnt. Die Ablehnung bedarf keiner Begründung."
+    },
+    {
+     "authority_id": "zpo-art-211-para2-20250101-de",
+     "quote": "in den Angelegenheiten nach Artikel 210 Absatz 1 Buchstabe b: der ablehnenden Partei;"
+    },
+    {
+     "authority_id": "zpo-art-211-para3-20250101-de",
+     "quote": "Wird die Klage in den Angelegenheiten nach Artikel 210 Absatz 1 Buchstabe b nicht rechtzeitig eingereicht, so gilt der Entscheidvorschlag als anerkannt und er hat die Wirkungen eines rechtskräftigen Entscheides."
+    },
+    {
+     "authority_id": "zpo-art-211-para4-20250101-de",
+     "quote": "Die Parteien sind im Entscheidvorschlag auf die Wirkungen nach den Absätzen 1–3 hinzuweisen."
+    }
+   ],
+   "conditional_on": "P10-entscheidvorschlag-issued",
+   "required_documents": [],
+   "live_when": "A written proposed decision has been received and the 20-day rejection period has not expired or a rejection has not yet been recorded.",
+   "dead_when": "The proposal has become binding, or it was rejected and the resulting leave-to-proceed position has been settled.",
+   "necessity": "corroborating"
+  },
+  {
+   "decision_id": "DEC-19-file-the-action-in-court",
+   "must_determine": "Whether to bring the action before the court at the place where the premises lie within the Klagefrist, and what must be annexed: a power of attorney where there is representation, the Klagebewilligung or the declaration that conciliation is waived, and the available documents intended to serve as evidence. The claim may be filed in the ZPO 130 forms or made orally on the record and need not be reasoned.",
+   "evidence": [
+    {
+     "authority_id": "zpo-art-209-para3-20250101-de",
+     "quote": "Nach Eröffnung berechtigt die Klagebewilligung während dreier Monate zur Einreichung der Klage beim Gericht."
+    },
+    {
+     "authority_id": "zpo-art-209-para4-20250101-de",
+     "quote": "In Streitigkeiten aus Miete und Pacht von Wohn- und Geschäftsräumen sowie aus landwirtschaftlicher Pacht beträgt die Klagefrist 30 Tage."
+    },
+    {
+     "authority_id": "zpo-art-244-para3-20250101-de",
+     "quote": "Als Beilagen sind einzureichen:"
+    },
+    {
+     "authority_id": "zpo-art-244-para3-20250101-de",
+     "quote": "eine Vollmacht bei Vertretung;"
+    },
+    {
+     "authority_id": "zpo-art-244-para3-20250101-de",
+     "quote": "die Klagebewilligung oder die Erklärung, dass auf das Schlichtungsverfahren verzichtet werde;"
+    },
+    {
+     "authority_id": "zpo-art-244-para3-20250101-de",
+     "quote": "die verfügbaren Urkunden, welche als Beweismittel dienen sollen."
+    },
+    {
+     "authority_id": "zpo-art-244-para2-20250101-de",
+     "quote": "Eine Begründung der Klage ist nicht erforderlich."
+    }
+   ],
+   "conditional_on": "P09-no-agreement-reached-at-conciliation",
+   "required_documents": [
+    "leave_to_proceed_klagebewilligung",
+    "power_of_attorney"
+   ],
+   "live_when": "A leave to proceed or conciliation waiver exists, the court-filing period remains open, and no court action has yet been filed.",
+   "dead_when": "A timely court action has been filed, the filing period has expired, or the matter has been finally settled.",
+   "necessity": "required"
+  },
+  {
+   "decision_id": "DEC-20-ex-officio-extension-after-dismissal",
+   "must_determine": "Where the competent authority dismisses the tenant's application to set the notice aside, whether the tenancy can be extended — a question the authority must examine of its own motion, without a fresh application by the tenant.",
+   "evidence": [
+    {
+     "authority_id": "or-art-273-para5-20260101-de",
+     "quote": "Weist die zuständige Behörde ein Begehren des Mieters betreffend Anfechtung der Kündigung ab, so prüft sie von Amtes wegen, ob das Mietverhältnis erstreckt werden kann."
+    }
+   ],
+   "conditional_on": "P08-contestation-dismissed",
+   "required_documents": [],
+   "live_when": "The authority has dismissed the tenant's challenge to the termination and has not yet examined whether an extension can be granted.",
+   "dead_when": "The authority has examined whether an extension can be granted, or the tenant's challenge was not dismissed.",
+   "necessity": "corroborating"
+  },
+  {
+   "decision_id": "DEC-21-terms-during-the-extension",
+   "must_determine": "Whether either party asks for the contract to be adapted to changed circumstances in the extension decision, and, failing adaptation, that the contract runs on unchanged during the extension subject to the statutory adjustment possibilities; and on what notice the tenant may himself terminate during the extension (one month to the end of a month for an extension of up to a year; three months to a statutory date for a longer one) unless the extension decision or agreement provides otherwise.",
+   "evidence": [
+    {
+     "authority_id": "or-art-272c-para1-20260101-de",
+     "quote": "Jede Partei kann verlangen, dass der Vertrag im Erstreckungsentscheid veränderten Verhältnissen angepasst wird."
+    },
+    {
+     "authority_id": "or-art-272d-20260101-de",
+     "quote": "Legt der Erstreckungsentscheid oder die Erstreckungsvereinbarung nichts anderes fest, so kann der Mieter das Mietverhältnis wie folgt kündigen:"
+    }
+   ],
+   "conditional_on": "P06-extension-not-excluded",
+   "required_documents": [
+    "extension_request",
+    "landlord_correspondence",
+    "lease_contract",
+    "tenant_correspondence"
+   ],
+   "live_when": "An extension is being decided or has been agreed, and it remains unresolved whether terms must be adapted or what notice rule applies to the tenant during the extension.",
+   "dead_when": "The extension decision or agreement fixes the applicable terms and notice arrangements, or no extension is granted.",
+   "necessity": "required"
+  }
+ ]
+}
