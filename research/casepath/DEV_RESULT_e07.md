@@ -1,3 +1,10 @@
+> **Superseded by the held-out read.** The conclusion below — that the process graph earns its place and the
+> obligation compiler does not — is the opposite of what the confirmatory scenarios show. See `RESULTS.md` §3.
+> All four development scenarios here are form-defect disputes, which activate graph nodes carrying no evidentiary
+> obligation, so the compiler requested 3.9 documents and had nothing to release. On substantive rent-calculation
+> scenarios it requests 10.0 and is the only arm with signal. The document is kept unedited because amendment A3
+> was made on the strength of it.
+
 # Development result: the process graph earns its place, the obligation compiler does not
 
 12 paired development cases across 3 scenarios. Each pair is one case and the same case with a minimal factual

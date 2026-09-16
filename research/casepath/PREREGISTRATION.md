@@ -181,3 +181,36 @@ confirmatory run: it was produced after development results were seen, its evalu
 substituting it would make the held-out read a test of an unevaluated artifact. It is reported as development work.
 
 No further amendment is permitted after the first confirmatory case is read.
+
+---
+
+## Outcome — 2026-09-16, one read, no further amendment
+
+28 pairs, 6 held-out scenarios, adjudicator unanimity 93%. The uninformative condition did not trigger.
+
+| comparison | Δ withdrawal recall | 95% CI | retention Δ | preregistered verdict |
+|---|---|---|---|---|
+| **primary (A3)** `b3_graph_then_list` − `b1_direct` | +0.083 | [+0.018, +0.151] | +0.068 | **SUPPORTED** |
+| **original primary (`ee6f266`)** `b5_induced_graph` − `b1_direct` | +0.553 | [+0.459, +0.613] | −0.029 | passes the same criteria |
+
+**A control the preregistration did not require, added after the read because the request counts made it
+necessary.** `b5` requests 10.0 documents where the others request ~5.4, so it has more to drop; each arm is
+therefore compared against itself dropping the same number of its own documents at random.
+
+| arm | recall | own random baseline | excess | 95% CI | |
+|---|---|---|---|---|---|
+| b1_direct | 0.038 | 0.099 | −0.061 | [−0.096, −0.026] | anti-correlated |
+| b3_graph_then_list | 0.121 | 0.110 | +0.011 | [−0.017, +0.038] | no signal |
+| b5_induced_graph | 0.591 | 0.473 | **+0.118** | **[+0.106, +0.126]** | real signal |
+
+**The primary is supported for the wrong reason.** `b3` beats `b1` because `b1` is anti-correlated with the
+correct withdrawals, not because `b3` is informative — `b3`'s excess over its own random baseline spans zero. The
+verdict stands as recorded, with that qualification attached to it permanently.
+
+**Amendment A3 was a mistake.** It moved the primary away from the arm that turned out to be the only one that
+works, on development evidence that was unrepresentative: all four development scenarios were form-defect disputes
+which activate nodes carrying no evidentiary obligation. Because A3 was declared before the read and did not
+delete the original primary, that comparison is still in the record and still preregistered, with its criteria
+fixed at `ee6f266`. That is the entire value of having written this down in advance.
+
+No further amendment. The held-out set has been read.
