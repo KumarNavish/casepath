@@ -1,63 +1,61 @@
-# Where the work stands — 2026-09-16
+# Where the work stands — 2026-09-16, after the held-out read
 
-## The claim, as currently supportable
+## The result
 
-A source-grounded process graph produces document requirements that carry a verifiable chain back to authoritative
-text, and that change when the case changes. **The second half is not yet demonstrated.** On development data the
-effect is small, its interval includes zero, and the arm with the best withdrawal recall has no obligation compiler
-at all.
+On 28 paired cases across 6 held-out scenarios, with each arm compared against **itself dropping the same number
+of its own requested documents at random**:
 
-Two things the paper can state without qualification, because they are measured:
+| arm | withdrawal recall | own random baseline | excess | 95% CI | |
+|---|---|---|---|---|---|
+| direct prediction | 0.038 | 0.099 | **−0.061** | [−0.096, −0.026] | **worse than chance** |
+| graph → ask the model for a checklist | 0.121 | 0.110 | +0.011 | [−0.017, +0.038] | no signal |
+| **full pipeline** | **0.591** | 0.473 | **+0.118** | **[+0.106, +0.126]** | **real signal** |
 
-- Every request traces to a passage fetched from Fedlex and hashed, and every quoted span verifies as a verbatim
-  substring of it. The gate that enforces this caught a **fabricated statutory article** — VMWG Art. 19a, cited at
-  a consolidation date Fedlex does not serve, with a fluent and sourceless quote — inside a reference contract
-  authored to be authoritative.
-- The direct baseline's apparent responsiveness to the case is largely noise: of the documents it changed between
-  two materially different variants, **76% were ones the contract says should not have changed**.
+Deriving documents through active process obligations produces withdrawals that carry information about what the
+process actually released. Direct prediction produces withdrawals that are *anti-correlated* with them. Giving a
+model the graph and letting it write the checklist removes the anti-correlation without creating signal — the
+compiled chain is what does the work, on all six scenarios individually.
+
+The cost is retention: the compiler has the worst of the three at 0.544 against 0.573 and 0.641. It is right about
+what to release far more often, and it releases too much.
 
 ## What is settled
 
 | | |
 |---|---|
-| Authority corpus | 86 passages, OR / VMWG / ZPO / VVG, one extraction identity, hashed |
+| Authority corpus | 86 passages, OR / VMWG / ZPO / VVG, one extraction identity, every passage hashed |
 | Reference contract | 12 decisions, 11 documents, 44 of 58 quotes verbatim-verified, voted document layer |
-| Corpus | 10 scenarios × exactly 5 cases = 50 clean rent-increase cases |
-| Split | 4 scenarios development, 6 confirmatory and **unread** |
-| Static task | saturated — 1 to 2 distinct checklists across cases; carries no claim |
-| Product surface | composes the four pipeline modules and adds no logic of its own |
+| Corpus | 10 scenarios × exactly 5 cases = 50 clean cases, 0 leakage between splits |
+| Static task | saturated — one distinct checklist; six arms within 0.034 F1; all lose to a trivial oracle |
+| Held-out read | done, once, under a script committed before the data existed |
+| Product | runs the four pipeline modules and adds no logic of its own; full trace verified end to end |
+| Artifact check | `verify_artifacts.py` passes: 0 hash mismatches, 44/44 quotes verbatim, 0 cases leaked |
 
-## Three defects found by measurement, not inspection
+## Three defects found by measurement
 
-1. **No applicability gate.** The graph's entry node had no incoming condition, so the process assumed a rent
-   increase existed and could not be told otherwise. Still open.
+1. **No applicability gate.** The graph's entry node has no incoming condition, so the process cannot be told the
+   scope does not apply. Still open.
 2. **Contradictory branch verdicts.** Alternatives out of one step were decided independently, so a claim and its
-   negation could both hold and every branch stayed alive. **Fixed** at `c43bc22`; the fix visibly unfreezes the
-   arm.
-3. **Coverage.** 8 of 13 nodes emitted no obligation and the graph modelled the forum where abusiveness is argued
-   but never the determination itself. **Repair in progress**: synthesis now requires a node for every substantive
-   standard the propositions state, and obligations wherever a party must show something. Re-induction yields
-   `determine_non_abusive_grounds` carrying the landlord's justification obligation — the mechanism the experiment
-   was looking for. Evaluation on development pairs is running.
+   negation could both hold and nothing could ever be withdrawn. Fixed at `c43bc22`.
+3. **Sparse obligation coverage.** 8 of 13 nodes emitted no obligation. Synthesis now requires a determination node
+   for every substantive standard and obligations wherever a party must show something; the re-induced graph gains
+   the substantive-review node the first lacked. Its evaluation is incomplete and it was excluded from the held-out
+   read.
 
-## One analytical error, corrected
+## Three errors of mine, all corrected in the record
 
-I computed that B5's maximum achievable withdrawal recall was 0.000 and committed a document calling the primary
-outcome structurally impossible. The computation pooled each node's document supply across cases when the compiler
-recompiles it per case, which turns an upper bound on supply into a false lower bound on release. Development data
-refuted it directly: B5 correctly withdrew two documents the computation said it never could. Corrected at
-`df63478`; the wrong version is retained in history and named in the corrected document.
+1. Computed that the primary outcome was structurally impossible and committed a document acting on it. The
+   computation pooled each node's document supply across cases when the compiler recomputes it per case. Refuted by
+   data; corrected at `df63478`.
+2. Nearly reported a cross-scope citation-fabrication rate of 25–60% that was an artifact of contracts storing
+   sources and quotes as unmapped parallel lists. Retracted before publication at `b6c9195`.
+3. Amended the preregistered primary away from the compiler on development evidence that was unrepresentative —
+   all four development scenarios were form-defect disputes, which activate nodes carrying no evidentiary
+   obligation. The amendment was declared before the read, so the original primary survives in the record.
 
-## Held-out data
+## What remains before submission
 
-Unread. It will be read once — after the coverage repair is evaluated on development and the preregistration is
-rewritten with the changes logged, or to report a preregistered null if the repair does not move the development
-picture. Not spent on a system with known, specific, in-progress defects.
-
-## Honest assessment
-
-The measurement apparatus is sound and has repeatedly caught real faults, including two of my own. The headline
-claim is not yet earned. What would earn it is the coverage repair working on development, followed by one clean
-read of the held-out scenarios — and if it does not work, the paper is a negative result with three well-diagnosed
-failure modes and a verification gate that caught a fabricated law, which is worth publishing and is not what was
-originally hoped for.
+- Manuscript assembly from these documents and the committed tables.
+- The full test suite has not been run to completion since the interpreter change.
+- Transfer: contracts exist for termination, theft and legal expenses; none has been run through the pipeline.
+- The applicability-gate defect is unrepaired, and the re-induced graph is unevaluated.
