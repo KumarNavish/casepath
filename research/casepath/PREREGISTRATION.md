@@ -132,3 +132,52 @@ This preregistration is **not** void: the method, split, metric and criteria sta
 method changes that would make the primary outcome attainable — obligation coverage across nodes, and a node for
 the substantive OR 269/269a determination the graph currently omits. When those are made on development data, this
 preregistration is rewritten, the changes are logged, and only then is the held-out set read.
+
+---
+
+## Amendment A3 — 2026-09-16 — new primary comparison, and the held-out set is read once
+
+**Made after reading development data and before any confirmatory case is run or read.** The change is driven by a
+development result and is therefore declared, not quietly adopted.
+
+### What development showed
+
+On 12 paired development cases across 3 scenarios, with the e07 intervention:
+
+| comparison | Δ withdrawal recall | 95% CI | |
+|---|---|---|---|
+| `b3_graph_then_list` − `b1_direct` | +0.137 | [+0.038, +0.267] | excludes zero |
+| `b5_induced_graph` − `b1_direct` | +0.039 | [+0.000, +0.133] | includes zero |
+
+`b1_direct` withdrew correctly **0 times in 51 opportunities**. The preregistered primary comparison, B5 against
+B1, does not separate. The comparison that does separate was found by looking at development data and cannot be
+claimed from it.
+
+### Amended primary outcome
+
+**`b3_graph_then_list` against `b1_direct`, on withdrawal recall, paired by case, bootstrapped over scenarios.**
+
+This tests the claim that survives the development evidence: that a **source-grounded process graph** is what lets
+a checklist respond to a fact, independently of whether the deterministic obligation compiler sits on top of it.
+
+`b5_induced_graph` is retained as a **secondary** arm and reported alongside, with its withdrawal precision,
+retention, and justification-chain rates. Its comparison against B1 remains reported but is now descriptive, and
+the earlier primary is recorded as not separating rather than dropped.
+
+### Support and refutation, restated for the amended primary
+
+**Supported** if the B3 − B1 withdrawal-recall interval excludes zero in B3's favour on the confirmatory
+scenarios, and B3's retention is not worse than B1's by more than 0.05.
+
+**Refuted** if that interval includes zero or lies below it. Given that B1 scored exactly zero on development, a
+confirmatory null would most likely mean the development effect was scenario-specific, and would be reported as
+such.
+
+### One read
+
+The six confirmatory scenarios are read **once**, under this amended plan, with the method frozen at `c43bc22`
+and the graph `graph_s2` as used throughout development. The re-induced `graph_s2_v2` is **not** used for the
+confirmatory run: it was produced after development results were seen, its evaluation is still incomplete, and
+substituting it would make the held-out read a test of an unevaluated artifact. It is reported as development work.
+
+No further amendment is permitted after the first confirmatory case is read.
