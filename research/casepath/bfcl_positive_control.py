@@ -58,6 +58,24 @@ def provider_call(item,condition):
         return {'id':item['id'],'condition':condition,'ok':norm is not None,'content':content,'normalized':norm,'parse_error':err,'model':body.get('model'),'provider':body.get('provider'),'generation_id':body.get('id'),'usage':usage,'cost_usd':usage.get('cost'),'latency_s':time.time()-t,'payload_sha256':hashlib.sha256(json.dumps(payload,sort_keys=True,ensure_ascii=False).encode()).hexdigest()}
     except Exception as e: return {'id':item['id'],'condition':condition,'ok':False,'status':None,'error':f'{type(e).__name__}: {e}'[:500],'latency_s':time.time()-t}
 
+def representative_gold_call(gold):
+    """Choose one concrete accepted value from BFCL's possible-answer encoding."""
+    call=gold['ground_truth'][0]
+    name,args=next(iter(call.items()))
+    def choose(v):
+        if isinstance(v,list):
+            # BFCL possible answers: a list of accepted alternatives; empty string marks optional.
+            candidates=[x for x in v if x!='']
+            if not candidates: return None
+            return choose(candidates[0])
+        if isinstance(v,dict): return {k:choose(x) for k,x in v.items()}
+        return v
+    out={}
+    for k,v in args.items():
+        chosen=choose(v)
+        if chosen is not None: out[k]=chosen
+    return [{name:out}]
+
 def score_one(checker,Language,item,gold,norm):
     if norm is None: return False
     try: return bool(checker.ast_checker(item['function'],norm,gold['ground_truth'],Language.PYTHON,'bfcl-local')['valid'])
@@ -70,7 +88,7 @@ def main(execute=True):
     # BFCL scorer self-test on its official possible answers.
     ok=0
     for item in data:
-        gt=gmap[item['id']]['ground_truth']
+        gt=representative_gold_call(gmap[item['id']])
         ok += score_one(checker,Language,item,gmap[item['id']],gt)
     if ok!=200: raise RuntimeError(f'BFCL checker self-test failed: {ok}/200')
     raw_path=ART/'BFCL_POSITIVE_CONTROL_RAW.json'; existing=[]
