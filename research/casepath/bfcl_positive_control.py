@@ -78,7 +78,7 @@ def representative_gold_call(gold):
 
 def score_one(checker,Language,item,gold,norm):
     if norm is None: return False
-    try: return bool(checker.ast_checker(item['function'],norm,gold['ground_truth'],Language.PYTHON,'bfcl-local')['valid'])
+    try: return bool(checker.ast_checker(item['function'],norm,gold['ground_truth'],Language.PYTHON,'multiple','bfcl-local')['valid'])
     except Exception: return False
 
 def main(execute=True):
