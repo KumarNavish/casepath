@@ -2,22 +2,27 @@
 
 ## The result
 
-On 28 paired cases across 6 held-out scenarios, with each arm compared against **itself dropping the same number
-of its own requested documents at random**:
+**A frozen, source-grounded process representation does not by itself confer correct retraction behaviour. The
+reasoner interpreting it decides the sign.**
 
-| arm | withdrawal recall | own random baseline | excess | 95% CI | |
-|---|---|---|---|---|---|
-| direct prediction | 0.038 | 0.099 | **−0.061** | [−0.096, −0.026] | **worse than chance** |
-| graph → ask the model for a checklist | 0.121 | 0.110 | +0.011 | [−0.017, +0.038] | no signal |
-| **full pipeline** | **0.591** | 0.473 | **+0.118** | **[+0.106, +0.126]** | **real signal** |
+Same 28 held-out pairs, same graph, same contract, same code, same prompts, same temperature — only the model
+changes. Withdrawal recall above each arm's own random-drop baseline:
 
-Deriving documents through active process obligations produces withdrawals that carry information about what the
-process actually released. Direct prediction produces withdrawals that are *anti-correlated* with them. Giving a
-model the graph and letting it write the checklist removes the anti-correlation without creating signal — the
-compiled chain is what does the work, on all six scenarios individually.
+| model | b1_direct | b5_induced_graph |
+|---|---|---|
+| gpt-5.6-terra | **−0.061** [−0.096, −0.026] anti-corr | **+0.119** [+0.108, +0.125] signal |
+| claude-haiku-4.5 | +0.003 none | **−0.077** [−0.092, −0.070] anti-corr |
+| gemini-2.5-flash | +0.001 none | **+0.109** [+0.107, +0.112] signal |
+| deepseek-v3.2 | +0.013 none | **−0.039** [−0.043, −0.030] anti-corr |
 
-The cost is retention: the compiler has the worst of the three at 0.544 against 0.573 and 0.641. It is right about
-what to release far more often, and it releases too much.
+Spread on one identical artifact: **+0.119 to −0.077**, non-overlapping intervals, zero execution errors, and
+near-identical predicate-resolution rates across all four. Neither headline effect is a property of the method:
+direct prediction is anti-correlated on 1 of 4 models, the compiled chain carries signal on 2 of 4.
+
+Transfer to a second scope (termination, 49 pairs) produced **no arm with signal**, and the ceiling that explains
+it was computed from the contract before the run.
+
+The paper is therefore a measurement and negative-results paper, not a method paper.
 
 ## What is settled
 
