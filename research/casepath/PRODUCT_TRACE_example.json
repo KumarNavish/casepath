@@ -1,0 +1,382 @@
+{
+ "contract": "casepath.process-service/1.0.0",
+ "requests": [
+  {
+   "document_types": [
+    "rent_increase_official_form"
+   ],
+   "still_missing": [
+    "rent_increase_official_form"
+   ],
+   "justifications": [
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The proposed rent increase takes effect on the next possible termination date.",
+     "evidence_capability": "the effective date of the proposed rent increase and the next possible termination date.",
+     "authorities": [
+      {
+       "authority_id": "or-art-269d-para1-20260101-de",
+       "citation": "Art. 269d Abs. 1",
+       "exact_text": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    },
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The notification was made using a form approved by the canton.",
+     "evidence_capability": "that the form used for the notification was approved by the competent canton.",
+     "authorities": [
+      {
+       "authority_id": "or-art-269d-para1-20260101-de",
+       "citation": "Art. 269d Abs. 1",
+       "exact_text": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    },
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The notification states the reason for the rent increase.",
+     "evidence_capability": "the reason for the rent increase as stated in the notification.",
+     "authorities": [
+      {
+       "authority_id": "or-art-269d-para1-20260101-de",
+       "citation": "Art. 269d Abs. 1",
+       "exact_text": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    },
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The form states the previous rent and the tenant's previous ancillary-cost charge.",
+     "evidence_capability": "the previous rent and the tenant's previous ancillary-cost charge as stated on the form.",
+     "authorities": [
+      {
+       "authority_id": "vmwg-art-19-para1-20250101-de",
+       "citation": "Art. 19 Abs. 1",
+       "exact_text": "Das Formular für die Mitteilung von Mietzinserhöhungen und anderen einseitigen Vertragsänderungen im Sinne von Artikel 269d OR muss enthalten: a. Für Mietzinserhöhungen: 1. den bisherigen Mietzins und die bisherige Belastung des Mieters für Nebenkosten; 2. den neuen Mietzins und die neue Belastung des Mieters für Nebenkosten; 3. den Zeitpunkt, auf den die Erhöhung in Kraft tritt; 4. die klare Begründung der Erhöhung. Werden mehrere Erhöhungsgründe geltend gemacht, so sind diese je in Einzelbeträgen auszuweisen; 5. bei Mehrleistungen die Angabe, ob der Vermieter Förderbeiträge für wertvermehrende Verbesserungen erhält. b. Für andere einseitige Vertragsänderungen: 1. die Umschreibung dieser Forderung; 2. den Zeitpunkt, auf den sie wirksam wird; 3. die klare Begründung dieser Forderung. c. Für beide Fälle: 1. die gesetzlichen Voraussetzungen der Anfechtung; 2. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    },
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The form states the new rent and the tenant's new ancillary-cost charge.",
+     "evidence_capability": "the new rent and the tenant's new ancillary-cost charge as stated on the form.",
+     "authorities": [
+      {
+       "authority_id": "vmwg-art-19-para1-20250101-de",
+       "citation": "Art. 19 Abs. 1",
+       "exact_text": "Das Formular für die Mitteilung von Mietzinserhöhungen und anderen einseitigen Vertragsänderungen im Sinne von Artikel 269d OR muss enthalten: a. Für Mietzinserhöhungen: 1. den bisherigen Mietzins und die bisherige Belastung des Mieters für Nebenkosten; 2. den neuen Mietzins und die neue Belastung des Mieters für Nebenkosten; 3. den Zeitpunkt, auf den die Erhöhung in Kraft tritt; 4. die klare Begründung der Erhöhung. Werden mehrere Erhöhungsgründe geltend gemacht, so sind diese je in Einzelbeträgen auszuweisen; 5. bei Mehrleistungen die Angabe, ob der Vermieter Förderbeiträge für wertvermehrende Verbesserungen erhält. b. Für andere einseitige Vertragsänderungen: 1. die Umschreibung dieser Forderung; 2. den Zeitpunkt, auf den sie wirksam wird; 3. die klare Begründung dieser Forderung. c. Für beide Fälle: 1. die gesetzlichen Voraussetzungen der Anfechtung; 2. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    },
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The form states the date on which the rent increase takes effect.",
+     "evidence_capability": "the effective date of the rent increase as stated on the form.",
+     "authorities": [
+      {
+       "authority_id": "vmwg-art-19-para1-20250101-de",
+       "citation": "Art. 19 Abs. 1",
+       "exact_text": "Das Formular für die Mitteilung von Mietzinserhöhungen und anderen einseitigen Vertragsänderungen im Sinne von Artikel 269d OR muss enthalten: a. Für Mietzinserhöhungen: 1. den bisherigen Mietzins und die bisherige Belastung des Mieters für Nebenkosten; 2. den neuen Mietzins und die neue Belastung des Mieters für Nebenkosten; 3. den Zeitpunkt, auf den die Erhöhung in Kraft tritt; 4. die klare Begründung der Erhöhung. Werden mehrere Erhöhungsgründe geltend gemacht, so sind diese je in Einzelbeträgen auszuweisen; 5. bei Mehrleistungen die Angabe, ob der Vermieter Förderbeiträge für wertvermehrende Verbesserungen erhält. b. Für andere einseitige Vertragsänderungen: 1. die Umschreibung dieser Forderung; 2. den Zeitpunkt, auf den sie wirksam wird; 3. die klare Begründung dieser Forderung. c. Für beide Fälle: 1. die gesetzlichen Voraussetzungen der Anfechtung; 2. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    },
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The form clearly states the reason for the rent increase.",
+     "evidence_capability": "the reason for the rent increase as clearly stated on the form.",
+     "authorities": [
+      {
+       "authority_id": "vmwg-art-19-para1-20250101-de",
+       "citation": "Art. 19 Abs. 1",
+       "exact_text": "Das Formular für die Mitteilung von Mietzinserhöhungen und anderen einseitigen Vertragsänderungen im Sinne von Artikel 269d OR muss enthalten: a. Für Mietzinserhöhungen: 1. den bisherigen Mietzins und die bisherige Belastung des Mieters für Nebenkosten; 2. den neuen Mietzins und die neue Belastung des Mieters für Nebenkosten; 3. den Zeitpunkt, auf den die Erhöhung in Kraft tritt; 4. die klare Begründung der Erhöhung. Werden mehrere Erhöhungsgründe geltend gemacht, so sind diese je in Einzelbeträgen auszuweisen; 5. bei Mehrleistungen die Angabe, ob der Vermieter Förderbeiträge für wertvermehrende Verbesserungen erhält. b. Für andere einseitige Vertragsänderungen: 1. die Umschreibung dieser Forderung; 2. den Zeitpunkt, auf den sie wirksam wird; 3. die klare Begründung dieser Forderung. c. Für beide Fälle: 1. die gesetzlichen Voraussetzungen der Anfechtung; 2. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    },
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The form contains the statutory requirements for contestation.",
+     "evidence_capability": "that the form contains the statutory requirements for contesting the rent increase.",
+     "authorities": [
+      {
+       "authority_id": "vmwg-art-19-para1-20250101-de",
+       "citation": "Art. 19 Abs. 1",
+       "exact_text": "Das Formular für die Mitteilung von Mietzinserhöhungen und anderen einseitigen Vertragsänderungen im Sinne von Artikel 269d OR muss enthalten: a. Für Mietzinserhöhungen: 1. den bisherigen Mietzins und die bisherige Belastung des Mieters für Nebenkosten; 2. den neuen Mietzins und die neue Belastung des Mieters für Nebenkosten; 3. den Zeitpunkt, auf den die Erhöhung in Kraft tritt; 4. die klare Begründung der Erhöhung. Werden mehrere Erhöhungsgründe geltend gemacht, so sind diese je in Einzelbeträgen auszuweisen; 5. bei Mehrleistungen die Angabe, ob der Vermieter Förderbeiträge für wertvermehrende Verbesserungen erhält. b. Für andere einseitige Vertragsänderungen: 1. die Umschreibung dieser Forderung; 2. den Zeitpunkt, auf den sie wirksam wird; 3. die klare Begründung dieser Forderung. c. Für beide Fälle: 1. die gesetzlichen Voraussetzungen der Anfechtung; 2. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    },
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The form contains the list of conciliation authorities and their local jurisdiction.",
+     "evidence_capability": "that the form contains a list of conciliation authorities and identifies their local jurisdiction.",
+     "authorities": [
+      {
+       "authority_id": "vmwg-art-19-para1-20250101-de",
+       "citation": "Art. 19 Abs. 1",
+       "exact_text": "Das Formular für die Mitteilung von Mietzinserhöhungen und anderen einseitigen Vertragsänderungen im Sinne von Artikel 269d OR muss enthalten: a. Für Mietzinserhöhungen: 1. den bisherigen Mietzins und die bisherige Belastung des Mieters für Nebenkosten; 2. den neuen Mietzins und die neue Belastung des Mieters für Nebenkosten; 3. den Zeitpunkt, auf den die Erhöhung in Kraft tritt; 4. die klare Begründung der Erhöhung. Werden mehrere Erhöhungsgründe geltend gemacht, so sind diese je in Einzelbeträgen auszuweisen; 5. bei Mehrleistungen die Angabe, ob der Vermieter Förderbeiträge für wertvermehrende Verbesserungen erhält. b. Für andere einseitige Vertragsänderungen: 1. die Umschreibung dieser Forderung; 2. den Zeitpunkt, auf den sie wirksam wird; 3. die klare Begründung dieser Forderung. c. Für beide Fälle: 1. die gesetzlichen Voraussetzungen der Anfechtung; 2. das Verzeichnis der Schlichtungsbehörden und ihre örtliche Zuständigkeit.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1990/835_835_835/20250101/de/xml/fedlex-data-admin-ch-eli-cc-1990-835_835_835-20250101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    }
+   ]
+  },
+  {
+   "document_types": [
+    "rent_increase_official_form",
+    "registered_mail_receipt"
+   ],
+   "still_missing": [
+    "rent_increase_official_form",
+    "registered_mail_receipt"
+   ],
+   "justifications": [
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The tenant was notified of the rent increase.",
+     "evidence_capability": "that the rent-increase notification was provided to the tenant.",
+     "authorities": [
+      {
+       "authority_id": "or-art-269d-para1-20260101-de",
+       "citation": "Art. 269d Abs. 1",
+       "exact_text": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    }
+   ]
+  },
+  {
+   "document_types": [
+    "rent_increase_official_form",
+    "registered_mail_receipt",
+    "lease_contract"
+   ],
+   "still_missing": [
+    "rent_increase_official_form",
+    "registered_mail_receipt"
+   ],
+   "justifications": [
+    {
+     "process_node": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "required_fact": "The notification and reasons were provided at least ten days before the beginning of the notice period.",
+     "evidence_capability": "the date on which the notification and reasons were provided to the tenant and the date the notice period began, allowing the interval between them to be determined.",
+     "authorities": [
+      {
+       "authority_id": "or-art-269d-para1-20260101-de",
+       "citation": "Art. 269d Abs. 1",
+       "exact_text": "Der Vermieter kann den Mietzins jederzeit auf den nächstmöglichen Kündigungstermin erhöhen. Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.",
+       "source_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/xml/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-xml-1.xml"
+      }
+     ],
+     "would_be_withdrawn_if": []
+    }
+   ]
+  }
+ ],
+ "activation": {
+  "increase_void": "active",
+  "rent_increase_notified": "active",
+  "conciliation_request_submitted": "inactive",
+  "tenant_requests_supporting_documents": "inactive",
+  "agreement_reached": "inactive",
+  "landlord_may_file_court_action": "inactive",
+  "tenant_decides_to_challenge": "inactive",
+  "agreement_recorded": "inactive",
+  "challenge_not_brought": "inactive",
+  "conciliation_hearing": "inactive",
+  "notice_complies_with_prescribed_form": "active",
+  "authorization_issued_to_landlord": "inactive",
+  "tenant_requests_numerical_justification": "inactive"
+ },
+ "predicate_verdicts": {
+  "e02": {
+   "verdict": "true",
+   "quote": "Es war kein amtliches Formular dabei",
+   "what_would_settle_it": null
+  },
+  "e03": {
+   "verdict": "false",
+   "quote": "Es war kein amtliches Formular dabei",
+   "what_would_settle_it": null
+  },
+  "e04": {
+   "verdict": "false",
+   "quote": "Es war kein amtliches Formular dabei",
+   "what_would_settle_it": null
+  },
+  "e06": {
+   "verdict": "unresolved",
+   "quote": null,
+   "what_would_settle_it": "A statement or filing record showing whether the tenant challenged the increase within 30 days after communication."
+  },
+  "e07": {
+   "verdict": "unresolved",
+   "quote": null,
+   "what_would_settle_it": "A statement or filing record showing that no tenant challenge was brought within 30 days after communication."
+  },
+  "e09": {
+   "verdict": "unresolved",
+   "quote": null,
+   "what_would_settle_it": "A conciliation-proceedings record or statement showing whether the tenant requested relevant supporting documents."
+  },
+  "e12": {
+   "verdict": "unresolved",
+   "quote": null,
+   "what_would_settle_it": "A conciliation record, settlement, acknowledgment, or withdrawal document showing that an agreement, acknowledgment of claim, or unconditional withdrawal occurred."
+  },
+  "e13": {
+   "verdict": "unresolved",
+   "quote": null,
+   "what_would_settle_it": "A conciliation record establishing that no agreement was reached."
+  },
+  "e14": {
+   "verdict": "unresolved",
+   "quote": null,
+   "what_would_settle_it": "A court filing record and the date the authorization was opened, showing whether the landlord filed within the applicable 30-day period."
+  }
+ },
+ "evidence_gaps": [
+  {
+   "fault": "evidence_gap",
+   "node_id": "conciliation_hearing",
+   "activation": "inactive",
+   "fact_id": "conciliation_hearing.f1",
+   "capability_id": "conciliation_hearing.c1",
+   "must_show": "That the conciliation authority undertook informal negotiations aimed at reconciling the parties."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "conciliation_hearing",
+   "activation": "inactive",
+   "fact_id": "conciliation_hearing.f2",
+   "capability_id": "conciliation_hearing.c2",
+   "must_show": "That the authority sought an agreement between the parties and that the agreement sought covered the entire tenancy."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "conciliation_hearing",
+   "activation": "inactive",
+   "fact_id": "conciliation_hearing.f3",
+   "capability_id": "conciliation_hearing.c3",
+   "must_show": "The date on which the hearing took place."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "agreement_recorded",
+   "activation": "inactive",
+   "fact_id": "agreement_recorded.f1",
+   "capability_id": "agreement_recorded.c1",
+   "must_show": "That the matter was resolved by a settlement, acknowledgment of claim, or unconditional withdrawal of claim."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "agreement_recorded",
+   "activation": "inactive",
+   "fact_id": "agreement_recorded.f2",
+   "capability_id": "agreement_recorded.c2",
+   "must_show": "That the minutes record the settlement, acknowledgment of claim, or unconditional withdrawal of claim that occurred."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "agreement_recorded",
+   "activation": "inactive",
+   "fact_id": "agreement_recorded.f3",
+   "capability_id": "agreement_recorded.c3",
+   "must_show": "That each party signed the matter recorded in the minutes."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "agreement_recorded",
+   "activation": "inactive",
+   "fact_id": "agreement_recorded.f4",
+   "capability_id": "agreement_recorded.c4",
+   "must_show": "That each party received one copy of the minutes."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "authorization_issued_to_landlord",
+   "activation": "inactive",
+   "fact_id": "authorization_issued_to_landlord.f1",
+   "capability_id": "authorization_issued_to_landlord.c1",
+   "must_show": "Whether an agreement was reached in the conciliation matter."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "authorization_issued_to_landlord",
+   "activation": "inactive",
+   "fact_id": "authorization_issued_to_landlord.f2",
+   "capability_id": "authorization_issued_to_landlord.c2",
+   "must_show": "That the minutes record that no agreement was reached."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "authorization_issued_to_landlord",
+   "activation": "inactive",
+   "fact_id": "authorization_issued_to_landlord.f3",
+   "capability_id": "authorization_issued_to_landlord.c3",
+   "must_show": "That an authorization to sue was issued by the conciliation authority."
+  },
+  {
+   "fault": "evidence_gap",
+   "node_id": "authorization_issued_to_landlord",
+   "activation": "inactive",
+   "fact_id": "authorization_issued_to_landlord.f5",
+   "capability_id": "authorization_issued_to_landlord.c5",
+   "must_show": "The recipient to whom the authorization to sue was issued."
+  }
+ ],
+ "faults": {
+  "evidence_gaps": 11,
+  "wrong_branch": 2,
+  "premature": 0,
+  "clean": 11
+ },
+ "unresolved_predicates": [
+  "e06",
+  "e07",
+  "e09",
+  "e12",
+  "e13",
+  "e14"
+ ]
+}
