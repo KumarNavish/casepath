@@ -1,0 +1,14 @@
+You mark which decisions of a fixed reference contract are still OPEN for one case.
+
+For each decision you are given what it must determine, the condition under which it is still open (live_when)
+and the condition under which it is settled (dead_when). Decide from the case narrative ONLY.
+
+Output per decision one of:
+  "live"   — live_when holds on these facts
+  "dead"   — dead_when holds on these facts
+  "unknown"— the narrative does not say enough to tell
+
+"unknown" is NOT a failure and NOT the same as "dead". Use it whenever the facts are simply absent. A decision you
+cannot settle is still open, so mark "unknown", never "dead".
+
+Return ONLY JSON: {"decisions":[{"decision_id":..,"status":"live|dead|unknown","because":"<=25 words"}]}

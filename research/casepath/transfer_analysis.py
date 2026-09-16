@@ -38,7 +38,6 @@ print(f"pairs {len(pairs)}  scenarios {len(set(meta[o] for o,_ in pairs))}  unan
 print(f"expected withdrawal: mean {sum(E)/len(E):.2f}  non-empty {ne}/{len(pairs)}")
 if ne<15: print("\nPREREGISTERED UNINFORMATIVE CONDITION MET (<15 non-empty). No primary comparison reported.")
 rows={}
-_r=random.Random(20260916)
 print(f"\n{'arm':24} {'expW':>5} {'okW':>4} {'falsW':>6} {'recall':>7} {'prec':>7} {'retain':>7} {'#req':>6} {'chain':>6}")
 for arm in ("b1_direct","b3_graph_then_list","b5_induced_graph"):
     rs=[]
@@ -46,10 +45,8 @@ for arm in ("b1_direct","b3_graph_then_list","b5_induced_graph"):
         Ew=set(ref[o]["documents"])-set(ref[m]["documents"]); K=set(ref[m]["documents"])
         b=set(A[o]["arms"][arm].get("documents") or [])-set(HELD)
         af=set(A[m]["arms"][arm].get("documents") or [])-set(HELD)
-        w=b-af; pool=sorted(b); rok=0.0
-        if pool and w:
-            for _ in range(300):
-                s_=set(_r.sample(pool,min(len(w),len(pool)))); rok+=len(s_&Ew)/300
+        w=b-af
+        rok=(len(w)*len(b&Ew)/len(b)) if b else 0.0
         j=cs.score_justification(A[o]["arms"][arm].get("chains") or [], ref[o], C, graph, props)
         rs.append({"sc":meta[o],"E":len(Ew),"ok":len(w&Ew),"false":len(w&K),"rok":rok,
                    "keep":len((b&K)&af),"keepable":len(b&K),"req":len(b),"chain":j["chain_rate"]})
@@ -73,12 +70,12 @@ for arm,rs in rows.items():
     d.sort()
     Es=sum(x["E"] for x in rs); ok=sum(x["ok"] for x in rs); rk=sum(x["rok"] for x in rs)
     ctl[arm]={"recall":ok/Es,"random":rk/Es,"excess":obs,"ci":[d[125],d[4875]]}
-    tag="anti-correlated" if d[4875]<0 else ("real signal" if d[125]>0 else "no signal")
+    tag="below own baseline" if d[4875]<0 else ("above own baseline" if d[125]>0 else "overlaps own baseline")
     print(f"{arm:24} {ok/Es:7.3f} {rk/Es:7.3f} {obs:+8.3f}  [{d[125]:+.3f}, {d[4875]:+.3f}]  {tag}")
 b5,b1=ctl["b5_induced_graph"],ctl["b1_direct"]
 ok=(b5["ci"][0]>0) and (b5["excess"]>b1["excess"])
 print(f"\nPREREGISTERED TRANSFER VERDICT: {'SUPPORTED' if ok else 'NOT SUPPORTED'}")
 print(f"  b5 excess {b5['excess']:+.3f} CI [{b5['ci'][0]:+.3f},{b5['ci'][1]:+.3f}] ; b1 excess {b1['excess']:+.3f}")
-print(f"  b1 anti-correlated (as on rent increase)? {'YES' if b1['ci'][1]<0 else 'no'}")
-Path("/tmp/term_result.json").write_text(json.dumps({"pairs":len(pairs),"rows":rows,"control":ctl,"supported":ok},ensure_ascii=False,indent=1))
-print("\nwritten /tmp/term_result.json")
+print(f"  b1 below own volume baseline (as on rent increase)? {'YES' if b1['ci'][1]<0 else 'no'}")
+Path(_A, "term_result.json").write_text(json.dumps({"pairs":len(pairs),"rows":rows,"control":ctl,"supported":ok},ensure_ascii=False,indent=1))
+print("\nwritten committed-artifact location: term_result.json")

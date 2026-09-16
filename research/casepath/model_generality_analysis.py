@@ -39,17 +39,14 @@ for name,path in SRC:
            and u in ref and u[:-6]+"__e07" in ref]
     if len(pairs)<8: print(f"{name:18} only {len(pairs)} pairs so far — skipped"); continue
     arms=[a for a in ("b1_direct","b5_induced_graph") if all(a in A[o]["arms"] for o,_ in pairs)]
-    _r=random.Random(20260916)
     for arm in arms:
         rs=[]
         for o,m in pairs:
             Ew=set(ref[o]["documents"])-set(ref[m]["documents"])
             b=set(A[o]["arms"][arm].get("documents") or [])-HELD
             af=set(A[m]["arms"][arm].get("documents") or [])-HELD
-            w=b-af; pool=sorted(b); rok=0.0
-            if pool and w:
-                for _ in range(300):
-                    s_=set(_r.sample(pool,min(len(w),len(pool)))); rok+=len(s_&Ew)/300
+            w=b-af
+            rok=(len(w)*len(b&Ew)/len(b)) if b else 0.0
             rs.append({"sc":meta[o],"E":len(Ew),"ok":len(w&Ew),"rok":rok,"req":len(b)})
         sc=collections.defaultdict(list)
         for i,x in enumerate(rs): sc[x["sc"]].append(i)
@@ -61,14 +58,14 @@ for name,path in SRC:
             d.append(lift(idx))
         d.sort()
         E=sum(x["E"] for x in rs); ok=sum(x["ok"] for x in rs); rk=sum(x["rok"] for x in rs)
-        tag="ANTI-CORR" if d[4875]<0 else ("signal" if d[125]>0 else "none")
+        tag="below-baseline" if d[4875]<0 else ("above-baseline" if d[125]>0 else "overlaps-baseline")
         allres[(name,arm)]={"excess":obs,"ci":[d[125],d[4875]],"recall":ok/E,"random":rk/E,"n":len(pairs),
                             "req":sum(x['req'] for x in rs)/len(rs)}
         print(f"{name:18} {arm:22} {len(pairs):3} {ok/E:7.3f} {rk/E:7.3f} {obs:+8.3f}  [{d[125]:+.3f},{d[4875]:+.3f}] {tag}")
-Path("/tmp/mm_result.json").write_text(json.dumps({f"{k[0]}|{k[1]}":v for k,v in allres.items()},indent=1))
+Path(_A, "mm_result.json").write_text(json.dumps({f"{k[0]}|{k[1]}":v for k,v in allres.items()},indent=1))
 print("\nreplication check")
 b1=[(m,v) for (m,a),v in allres.items() if a=="b1_direct"]
 b5=[(m,v) for (m,a),v in allres.items() if a=="b5_induced_graph"]
-print(f"  b1 anti-correlated (CI entirely below 0): {sum(1 for _,v in b1 if v['ci'][1]<0)}/{len(b1)} models")
-print(f"  b5 real signal     (CI entirely above 0): {sum(1 for _,v in b5 if v['ci'][0]>0)}/{len(b5)} models")
+print(f"  b1 below own volume baseline (CI entirely below 0): {sum(1 for _,v in b1 if v['ci'][1]<0)}/{len(b1)} models")
+print(f"  b5 above own volume baseline (CI entirely above 0): {sum(1 for _,v in b5 if v['ci'][0]>0)}/{len(b5)} models")
 print(f"  b5 excess > b1 excess in every model    : {all(dict(b5)[m]['excess']>dict(b1)[m]['excess'] for m,_ in b1 if m in dict(b5))}")
