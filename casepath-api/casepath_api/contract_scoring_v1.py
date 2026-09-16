@@ -98,7 +98,8 @@ def score_justification(chains: Sequence[Mapping[str, Any]], reference: Mapping[
         for n in graph.get("nodes") or []:
             for pid in n.get("supported_by") or []:
                 pr = propositions.get(pid) or {}
-                for a in ([pr.get("authority_id")] if pr.get("authority_id") else pr.get("authorities") or []):
+                # propositions name their passage as `source_id`; accept the other spellings too
+                for a in [pr.get("source_id"), pr.get("authority_id"), *(pr.get("authorities") or [])]:
                     if a:
                         node_auth[n["node_id"]].add(a)
 
