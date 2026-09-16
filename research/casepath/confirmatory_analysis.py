@@ -1,0 +1,79 @@
+"""The single confirmatory read. Fixed before the data existed; run once."""
+import sys, json, collections, random
+sys.path.insert(0,'.')
+from pathlib import Path
+from casepath_api import contract_scoring_v1 as cs
+C=json.load(open("../research/casepath/reference_contracts/rent_increase.json"))
+graph=json.load(open("/tmp/graph_s2.json"))
+props={p["proposition_id"]:p for p in json.load(open("/tmp/props_bundle.json"))}
+HELD=["lease_contract"]
+by=collections.defaultdict(list); meta={}
+for r in json.load(open("/tmp/conf_ref_raw.json")):
+    if r.get("decisions"): by[r["unit_id"]].append(r); meta[r["unit_id"]]=r["scenario"]
+ref={}
+for u,v in by.items():
+    st=cs.adjudicate(v)
+    ref[u]={**cs.reference_set(C,st,held=HELD),
+            "unanimity":sum(1 for x in st.values() if x["unanimous"])/len(st)}
+A={r["unit_id"]:r for r in json.load(open("/tmp/conf_arms.json"))}
+pairs=[(u,u[:-6]+"__e07") for u in sorted(A) if u.endswith("__orig")
+       and (u[:-6]+"__e07") in A and u in ref and (u[:-6]+"__e07") in ref]
+E_nonempty=sum(1 for o,m in pairs if set(ref[o]["documents"])-set(ref[m]["documents"]))
+print("="*96); print("CONFIRMATORY READ — rent increase, 6 held-out scenarios"); print("="*96)
+print(f"pairs: {len(pairs)}   scenarios: {len(set(meta[o] for o,_ in pairs))}")
+print(f"pairs with a non-empty expected withdrawal: {E_nonempty}")
+print(f"adjudicator unanimity: {sum(ref[u]['unanimity'] for u,_ in pairs)/len(pairs):.0%}")
+if E_nonempty < 15:
+    print("\nPREREGISTERED UNINFORMATIVE CONDITION MET (<15 pairs with a non-empty expected withdrawal).")
+    print("No primary comparison is reported. The intervention does not bite on these scenarios.")
+rows={}
+for arm in ("b1_direct","b3_graph_then_list","b5_induced_graph"):
+    rs=[]
+    for o,m in pairs:
+        Ew=set(ref[o]["documents"])-set(ref[m]["documents"]); K=set(ref[m]["documents"])
+        b=set(A[o]["arms"][arm].get("documents") or [])-set(HELD)
+        af=set(A[m]["arms"][arm].get("documents") or [])-set(HELD)
+        w=b-af
+        j=cs.score_justification(A[o]["arms"][arm].get("chains") or [], ref[o], C, graph, props)
+        rs.append({"scenario":meta[o],"E":len(Ew),"ok":len(w&Ew),"false":len(w&K),
+                   "keep":len((b&K)&af),"keepable":len(b&K),"req":len(b),
+                   "grnd":j["grounded_rate"],"chain":j["chain_rate"]})
+    rows[arm]=rs
+print(f"\n{'arm':24} {'expW':>5} {'okW':>4} {'falsW':>6} {'recall':>7} {'prec':>7} {'retain':>7} {'#req':>6} {'chain':>6} {'grnd':>6}")
+for arm,rs in rows.items():
+    E=sum(r["E"] for r in rs); ok=sum(r["ok"] for r in rs); fa=sum(r["false"] for r in rs)
+    kp=sum(r["keepable"] for r in rs); st=sum(r["keep"] for r in rs)
+    print(f"{arm:24} {E:5} {ok:4} {fa:6} {ok/E if E else 0:7.3f} {ok/(ok+fa) if ok+fa else 0:7.3f} "
+          f"{st/kp if kp else 0:7.3f} {sum(r['req'] for r in rs)/len(rs):6.1f} "
+          f"{sum(r['chain'] for r in rs)/len(rs):6.3f} {sum(r['grnd'] for r in rs)/len(rs):6.3f}")
+def boot(a,b):
+    sc=collections.defaultdict(list)
+    for i,x in enumerate(rows[a]): sc[x["scenario"]].append(i)
+    names=list(sc); rnd=random.Random(20260916)
+    def rate(arm,idx):
+        E=sum(rows[arm][i]["E"] for i in idx); return sum(rows[arm][i]["ok"] for i in idx)/E if E else 0.0
+    allidx=list(range(len(rows[a])))
+    obs=rate(a,allidx)-rate(b,allidx); d=[]
+    for _ in range(5000):
+        idx=[i for _ in names for i in sc[names[rnd.randrange(len(names))]]]
+        d.append(rate(a,idx)-rate(b,idx))
+    d.sort(); return obs,d[125],d[4875],len(names)
+def ret(arm):
+    kp=sum(r["keepable"] for r in rows[arm]); return sum(r["keep"] for r in rows[arm])/kp if kp else 0
+print("\n--- PRIMARY (amendment A3): b3_graph_then_list vs b1_direct ---")
+o,lo,hi,ns=boot("b3_graph_then_list","b1_direct")
+print(f"withdrawal recall difference: {o:+.3f}   95% CI [{lo:+.3f}, {hi:+.3f}]   ({ns} scenarios, {len(pairs)} pairs)")
+rd=ret("b3_graph_then_list")-ret("b1_direct")
+print(f"retention difference: {rd:+.3f}  (support requires not worse than -0.050)")
+ok = (lo>0) and (rd>=-0.05)
+print(f"\nPREREGISTERED VERDICT: {'SUPPORTED' if ok else 'NOT SUPPORTED'}")
+if not ok:
+    print("  reason:", "interval includes or lies below zero" if lo<=0 else "retention penalty exceeds 0.050")
+print("\n--- SECONDARY (formerly primary): b5_induced_graph vs b1_direct ---")
+o5,lo5,hi5,_=boot("b5_induced_graph","b1_direct")
+print(f"withdrawal recall difference: {o5:+.3f}   95% CI [{lo5:+.3f}, {hi5:+.3f}]  "
+      f"{'excludes zero' if lo5>0 or hi5<0 else 'includes zero'}")
+Path("/tmp/confirmatory_result.json").write_text(json.dumps(
+  {"pairs":len(pairs),"rows":rows,"primary":{"delta":o,"ci":[lo,hi],"retention_delta":rd,"supported":ok},
+   "secondary_b5":{"delta":o5,"ci":[lo5,hi5]}},ensure_ascii=False,indent=1))
+print("\nwritten /tmp/confirmatory_result.json")
