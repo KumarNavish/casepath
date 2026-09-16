@@ -1696,6 +1696,331 @@
         }
       }
     },
+    "sensitivity_excluding_truncated_S8": {
+      "arms": {
+        "b1_direct": {
+          "ceiling": 0.15521184851893513,
+          "ci95_cluster_scenario": [
+            -0.0903687790905836,
+            -0.019270833333333334
+          ],
+          "correct_withdrawals": 5,
+          "coverage": 39,
+          "coverage_normalized_recall": 0.1282051282051282,
+          "coverage_rate": 0.30708661417322836,
+          "distinct_request_sets": 17,
+          "distinct_withdrawal_sets": 14,
+          "exact_random_baseline": 0.09675665541807274,
+          "excess": -0.05738657667791526,
+          "expected_withdrawals": 127,
+          "fraction_of_ceiling": -0.3697306437975601,
+          "global_permutation": {
+            "null_max": -0.057386576677915274,
+            "null_mean": -0.057386576677915274,
+            "null_min": -0.057386576677915274,
+            "null_range95": [
+              -0.057386576677915274,
+              -0.057386576677915274
+            ],
+            "observed": -0.05738657667791526,
+            "p_ge_observed_plus1": 1.0,
+            "p_le_observed_plus1": 1.0,
+            "permutations": 5000,
+            "within_scenario": false
+          },
+          "mean_requested": 5.708333333333333,
+          "mean_withdrawn": 1.7083333333333333,
+          "n": 24,
+          "withdrawal_recall": 0.03937007874015748,
+          "within_scenario_permutation": {
+            "null_max": -0.057386576677915274,
+            "null_mean": -0.057386576677915274,
+            "null_min": -0.057386576677915274,
+            "null_range95": [
+              -0.057386576677915274,
+              -0.057386576677915274
+            ],
+            "observed": -0.05738657667791526,
+            "p_ge_observed_plus1": 1.0,
+            "p_le_observed_plus1": 1.0,
+            "permutations": 5000,
+            "within_scenario": true
+          }
+        },
+        "b3_graph_then_list": {
+          "ceiling": 0.09130108736407949,
+          "ci95_cluster_scenario": [
+            -0.017001180637544272,
+            0.039455782312925174
+          ],
+          "correct_withdrawals": 15,
+          "coverage": 44,
+          "coverage_normalized_recall": 0.3409090909090909,
+          "coverage_rate": 0.3464566929133858,
+          "distinct_request_sets": 12,
+          "distinct_withdrawal_sets": 14,
+          "exact_random_baseline": 0.10554930633670792,
+          "excess": 0.012560929883764527,
+          "expected_withdrawals": 127,
+          "fraction_of_ceiling": 0.13757700205338805,
+          "global_permutation": {
+            "null_max": 0.012560929883764541,
+            "null_mean": 0.012560929883764541,
+            "null_min": 0.012560929883764541,
+            "null_range95": [
+              0.012560929883764541,
+              0.012560929883764541
+            ],
+            "observed": 0.012560929883764527,
+            "p_ge_observed_plus1": 1.0,
+            "p_le_observed_plus1": 1.0,
+            "permutations": 5000,
+            "within_scenario": false
+          },
+          "mean_requested": 5.625,
+          "mean_withdrawn": 1.625,
+          "n": 24,
+          "withdrawal_recall": 0.11811023622047244,
+          "within_scenario_permutation": {
+            "null_max": 0.012560929883764541,
+            "null_mean": 0.012560929883764541,
+            "null_min": 0.012560929883764541,
+            "null_range95": [
+              0.012560929883764541,
+              0.012560929883764541
+            ],
+            "observed": 0.012560929883764527,
+            "p_ge_observed_plus1": 1.0,
+            "p_le_observed_plus1": 1.0,
+            "permutations": 5000,
+            "within_scenario": true
+          }
+        },
+        "b5_induced_graph": {
+          "ceiling": 0.11811023622047244,
+          "ci95_cluster_scenario": [
+            0.10625000000000001,
+            0.1253731343283582
+          ],
+          "correct_withdrawals": 75,
+          "coverage": 79,
+          "coverage_normalized_recall": 0.9493670886075949,
+          "coverage_rate": 0.6220472440944882,
+          "distinct_request_sets": 1,
+          "distinct_withdrawal_sets": 2,
+          "exact_random_baseline": 0.47244094488188976,
+          "excess": 0.11811023622047244,
+          "expected_withdrawals": 127,
+          "fraction_of_ceiling": 1.0,
+          "global_permutation": {
+            "null_max": 0.11968503937007893,
+            "null_mean": 0.11922677165354337,
+            "null_min": 0.11811023622047238,
+            "null_range95": [
+              0.11811023622047244,
+              0.11968503937007888
+            ],
+            "observed": 0.11811023622047244,
+            "p_ge_observed_plus1": 1.0,
+            "p_le_observed_plus1": 0.29114177164567084,
+            "permutations": 5000,
+            "within_scenario": false
+          },
+          "mean_requested": 10.0,
+          "mean_withdrawn": 7.666666666666667,
+          "n": 24,
+          "withdrawal_recall": 0.5905511811023622,
+          "within_scenario_permutation": {
+            "null_max": 0.11968503937007888,
+            "null_mean": 0.1190418897637796,
+            "null_min": 0.11811023622047244,
+            "null_range95": [
+              0.1181102362204725,
+              0.11968503937007882
+            ],
+            "observed": 0.11811023622047244,
+            "p_ge_observed_plus1": 1.0,
+            "p_le_observed_plus1": 0.40851829634073183,
+            "permutations": 5000,
+            "within_scenario": true
+          }
+        }
+      },
+      "constant_oracle": {
+        "ceiling": 0.4448818897637795,
+        "ci95_cluster_scenario": [
+          0.42592592592592593,
+          0.47345132743362833
+        ],
+        "correct_withdrawals": 120,
+        "coverage": 127,
+        "coverage_normalized_recall": 0.9448818897637795,
+        "coverage_rate": 1.0,
+        "distinct_request_sets": 1,
+        "distinct_withdrawal_sets": 1,
+        "exact_random_baseline": 0.5,
+        "excess": 0.4448818897637795,
+        "expected_withdrawals": 127,
+        "fraction_of_ceiling": 1.0,
+        "mean_requested": 10.0,
+        "mean_withdrawn": 5.0,
+        "n": 24,
+        "withdrawal_recall": 0.9448818897637795
+      },
+      "crossfit_input_independent_oracle": {
+        "ceiling": 0.4448818897637795,
+        "ci95_cluster_scenario": [
+          0.42592592592592593,
+          0.47345132743362833
+        ],
+        "correct_withdrawals": 120,
+        "coverage": 127,
+        "coverage_normalized_recall": 0.9448818897637795,
+        "coverage_rate": 1.0,
+        "distinct_request_sets": 1,
+        "distinct_withdrawal_sets": 1,
+        "exact_random_baseline": 0.5,
+        "excess": 0.4448818897637795,
+        "expected_withdrawals": 127,
+        "fraction_of_ceiling": 1.0,
+        "mean_requested": 10.0,
+        "mean_withdrawn": 5.0,
+        "n": 24,
+        "policies": {
+          "S4_miscalculated": {
+            "requested": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "envelope_copy",
+              "landlord_correspondence",
+              "previous_rent_statement",
+              "property_management_statement",
+              "registered_mail_receipt",
+              "renovation_cost_statement",
+              "rent_increase_official_form",
+              "tenant_correspondence"
+            ],
+            "withdrawn": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "previous_rent_statement",
+              "property_management_statement",
+              "renovation_cost_statement"
+            ]
+          },
+          "S5_refrate_inconsistent": {
+            "requested": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "envelope_copy",
+              "landlord_correspondence",
+              "previous_rent_statement",
+              "property_management_statement",
+              "registered_mail_receipt",
+              "renovation_cost_statement",
+              "rent_increase_official_form",
+              "tenant_correspondence"
+            ],
+            "withdrawn": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "previous_rent_statement",
+              "property_management_statement",
+              "renovation_cost_statement"
+            ]
+          },
+          "S6_refrate_double_count": {
+            "requested": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "envelope_copy",
+              "landlord_correspondence",
+              "previous_rent_statement",
+              "property_management_statement",
+              "registered_mail_receipt",
+              "renovation_cost_statement",
+              "rent_increase_official_form",
+              "tenant_correspondence"
+            ],
+            "withdrawn": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "previous_rent_statement",
+              "property_management_statement",
+              "renovation_cost_statement"
+            ]
+          },
+          "S7_renovation_unclear": {
+            "requested": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "envelope_copy",
+              "landlord_correspondence",
+              "previous_rent_statement",
+              "property_management_statement",
+              "registered_mail_receipt",
+              "renovation_cost_statement",
+              "rent_increase_official_form",
+              "tenant_correspondence"
+            ],
+            "withdrawn": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "previous_rent_statement",
+              "property_management_statement",
+              "renovation_cost_statement"
+            ]
+          },
+          "S9_provisional_budget": {
+            "requested": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "envelope_copy",
+              "landlord_correspondence",
+              "previous_rent_statement",
+              "property_management_statement",
+              "registered_mail_receipt",
+              "renovation_cost_statement",
+              "rent_increase_official_form",
+              "tenant_correspondence"
+            ],
+            "withdrawn": [
+              "comparable_rents_evidence",
+              "cost_increase_statement",
+              "previous_rent_statement",
+              "property_management_statement",
+              "renovation_cost_statement"
+            ]
+          }
+        },
+        "policy_count": 1,
+        "withdrawal_recall": 0.9448818897637795
+      },
+      "pairs": 24,
+      "scenarios": [
+        "S4_miscalculated",
+        "S5_refrate_inconsistent",
+        "S6_refrate_double_count",
+        "S7_renovation_unclear",
+        "S9_provisional_budget"
+      ],
+      "target": {
+        "distinct_release_sets": 2,
+        "modal_core_coverage_rate": 0.9448818897637795,
+        "modal_core_withdrawal_coverage": 120,
+        "modal_pair_count": 17,
+        "modal_pair_share": 0.7083333333333334,
+        "modal_release_set": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "release_set_entropy_bits": 0.8708644692353644,
+        "total_expected_withdrawals": 127
+      }
+    },
     "target": {
       "distinct_release_sets": 3,
       "modal_core_coverage_rate": 0.946969696969697,

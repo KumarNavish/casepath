@@ -363,6 +363,25 @@ def crossfit_constant_rows(ref, meta, pairs):
         policies[held]=best_constant_policy(ref,meta,pairs,train_ids)
     return policy_rows(ref,meta,pairs,policies), policies
 
+def audit_dynamic_subset(A, ref, meta, suffix, arms, exclude_scenarios):
+    pairs=[p for p in paired_ids(A,ref,suffix) if meta[p[0]] not in set(exclude_scenarios)]
+    oracle=constant_oracle_rows(ref,meta,pairs)
+    cf,pol=crossfit_constant_rows(ref,meta,pairs)
+    out={"pairs":len(pairs),"scenarios":sorted({meta[o] for o,_ in pairs}),
+         "target":target_summary(oracle),
+         "constant_oracle":summarize_rows(oracle),
+         "crossfit_input_independent_oracle":{**summarize_rows(cf),
+             "policy_count":len({(tuple(sorted(B)),tuple(sorted(W))) for B,W in pol.values()}),
+             "policies":{k:{"requested":sorted(B),"withdrawn":sorted(W)} for k,(B,W) in pol.items()}},
+         "arms":{}}
+    for arm in arms:
+        rows=records_for_arm(A,ref,meta,pairs,arm)
+        out["arms"][arm]={**summarize_rows(rows),
+            "global_permutation":permutation_null(rows),
+            "within_scenario_permutation":permutation_null(rows,within_scenario=True)}
+    return out
+
+
 def main():
     rent = contract("rent_increase.json")
     term = contract("termination.gated.json")
@@ -420,6 +439,12 @@ def main():
                 b5_rows[left], b5_rows[right], seed=SEED + 10 + i
             )
     result["rent_dynamic"]["b5_cross_model_contrasts"] = contrasts
+    gpt_A={r["unit_id"]:r for r in load("conf_arms.json")}
+    result["rent_dynamic"]["sensitivity_excluding_truncated_S8"] = audit_dynamic_subset(
+        gpt_A,rent_ref,rent_meta,"__e07",
+        ["b1_direct","b3_graph_then_list","b5_induced_graph"],
+        ["S8_nebenkosten_reclass"]
+    )
 
     term_A = {r["unit_id"]: r for r in load("term_arms.json")}
     term_audit, _ = audit_dynamic(
