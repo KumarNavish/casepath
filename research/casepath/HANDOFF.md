@@ -1,3 +1,22 @@
+> ## ⚠ SUPERSEDED IN PART — read `PAIRED_DESIGN_DEGENERACY.md` first
+>
+> An adversarial review panel (verdict: **reject as submitted**) overturned the central claim after this handoff
+> was written. **Three results below are withdrawn:** that the compiled pipeline carries signal, that direct
+> prediction is anti-correlated, and that the paired design escapes degeneracy.
+>
+> A case-ignoring constant scores **+0.447 [+0.429, +0.476]** against the best arm's **+0.118** — 3.8×. The winning
+> arm emits **one** distinct request set across 28 pairs. A permutation null leaves one "signal" arm's statistic
+> *exactly invariant*. The ground truth was authored by **the same model that wins** (`gpt-5.6-terra`,
+> `runners/conf_ref.py:29`), so every unanimity figure is self-consistency, not inter-rater agreement.
+>
+> §2's tables remain accurate as *computations*; what is withdrawn is what they were taken to mean. §3 (errors) and
+> §5 (traps) remain fully valid — and two further errors are added: I failed to run a constant-output oracle while
+> explicitly hunting the static version of that same degeneracy, and I did not notice the adjudicator was drawn
+> from the systems under test.
+>
+> Current paper: **"A Case-Ignoring Constant Beats Every Arm: Degeneracy Survives the Move from Static Checklists
+> to Paired Retraction"** (`PAPER.md`, 1694 lines, 29 TODOs, panel-revised). Binding limit: **zero scopes of two**.
+
 # Research handoff — CasePath, 2026-09-16
 
 Everything needed to resume without re-deriving anything. Read this first, then `PAPER.md`.
