@@ -1,0 +1,309 @@
+{
+  "contract": "casepath.release-set-validity/1.0.0",
+  "metric_definition": "All policies predict exactly the release set E. micro-F1 pools TP/predicted/gold items; exact match is per pair. No request-set-volume baseline is used.",
+  "rent": {
+    "arms": {
+      "b1_direct": {
+        "exact_match": 0.07142857142857142,
+        "gold_items": 132,
+        "macro_f1": 0.11507936507936509,
+        "micro_f1": 0.056818181818181816,
+        "predicted_items": 44,
+        "tp": 5
+      },
+      "b3_graph_then_list": {
+        "exact_match": 0.0,
+        "gold_items": 132,
+        "macro_f1": 0.13299835085549372,
+        "micro_f1": 0.17582417582417584,
+        "predicted_items": 50,
+        "tp": 16
+      },
+      "b5_induced_graph": {
+        "exact_match": 0.03571428571428571,
+        "gold_items": 132,
+        "macro_f1": 0.45486656200941916,
+        "micro_f1": 0.4588235294117647,
+        "predicted_items": 208,
+        "tp": 78
+      }
+    },
+    "crossfit_no_input_exact_opt": {
+      "exact_match": 0.6428571428571429,
+      "gold_items": 132,
+      "macro_f1": 0.8701298701298701,
+      "micro_f1": 0.9191176470588235,
+      "policies": {
+        "S4_miscalculated": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S5_refrate_inconsistent": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S6_refrate_double_count": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S7_renovation_unclear": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S8_nebenkosten_reclass": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S9_provisional_budget": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ]
+      },
+      "policy_count": 1,
+      "predicted_items": 140,
+      "tp": 125
+    },
+    "crossfit_no_input_micro_opt": {
+      "exact_match": 0.6428571428571429,
+      "gold_items": 132,
+      "macro_f1": 0.8701298701298701,
+      "micro_f1": 0.9191176470588235,
+      "policies": {
+        "S4_miscalculated": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S5_refrate_inconsistent": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S6_refrate_double_count": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S7_renovation_unclear": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S8_nebenkosten_reclass": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ],
+        "S9_provisional_budget": [
+          "comparable_rents_evidence",
+          "cost_increase_statement",
+          "previous_rent_statement",
+          "property_management_statement",
+          "renovation_cost_statement"
+        ]
+      },
+      "policy_count": 1,
+      "predicted_items": 140,
+      "tp": 125
+    },
+    "gold": {
+      "distinct_sets": 3,
+      "total_items": 132
+    },
+    "pairs": 28,
+    "scenarios": [
+      "S4_miscalculated",
+      "S5_refrate_inconsistent",
+      "S6_refrate_double_count",
+      "S7_renovation_unclear",
+      "S8_nebenkosten_reclass",
+      "S9_provisional_budget"
+    ]
+  },
+  "rent_without_S8": {
+    "arms": {
+      "b1_direct": {
+        "exact_match": 0.0,
+        "gold_items": 127,
+        "macro_f1": 0.05092592592592593,
+        "micro_f1": 0.05952380952380952,
+        "predicted_items": 41,
+        "tp": 5
+      },
+      "b3_graph_then_list": {
+        "exact_match": 0.0,
+        "gold_items": 127,
+        "macro_f1": 0.14325998075998075,
+        "micro_f1": 0.18072289156626506,
+        "predicted_items": 39,
+        "tp": 15
+      },
+      "b5_induced_graph": {
+        "exact_match": 0.0,
+        "gold_items": 127,
+        "macro_f1": 0.46978021978021983,
+        "micro_f1": 0.48231511254019294,
+        "predicted_items": 184,
+        "tp": 75
+      }
+    },
+    "crossfit_no_input_exact_opt": {
+      "exact_match": 0.7083333333333334,
+      "gold_items": 127,
+      "macro_f1": 0.9734848484848485,
+      "micro_f1": 0.97165991902834,
+      "predicted_items": 120,
+      "tp": 120
+    },
+    "crossfit_no_input_micro_opt": {
+      "exact_match": 0.7083333333333334,
+      "gold_items": 127,
+      "macro_f1": 0.9734848484848485,
+      "micro_f1": 0.97165991902834,
+      "predicted_items": 120,
+      "tp": 120
+    },
+    "pairs": 24
+  },
+  "termination": {
+    "arms": {
+      "b1_direct": {
+        "exact_match": 0.20408163265306123,
+        "gold_items": 77,
+        "macro_f1": 0.23615160349854228,
+        "micro_f1": 0.06172839506172839,
+        "predicted_items": 85,
+        "tp": 5
+      },
+      "b3_graph_then_list": {
+        "exact_match": 0.14285714285714285,
+        "gold_items": 77,
+        "macro_f1": 0.18445092322643342,
+        "micro_f1": 0.0784313725490196,
+        "predicted_items": 76,
+        "tp": 6
+      },
+      "b5_induced_graph": {
+        "exact_match": 0.5306122448979592,
+        "gold_items": 77,
+        "macro_f1": 0.5306122448979592,
+        "micro_f1": 0.0,
+        "predicted_items": 6,
+        "tp": 0
+      }
+    },
+    "crossfit_no_input_exact_opt": {
+      "exact_match": 0.5510204081632653,
+      "gold_items": 77,
+      "macro_f1": 0.5510204081632653,
+      "micro_f1": 0.0,
+      "policies": {
+        "T1_arrears_disputed_time": [],
+        "T2_arrears_mixed_demand": [],
+        "T3_abusive_after_rights": [],
+        "T4_family_home_service": [],
+        "T5_conflicting_notices": [],
+        "T6_two_notices": [],
+        "T7_renovation": [],
+        "T8_email_no_form": []
+      },
+      "policy_count": 1,
+      "predicted_items": 0,
+      "tp": 0
+    },
+    "crossfit_no_input_micro_opt": {
+      "exact_match": 0.24489795918367346,
+      "gold_items": 77,
+      "macro_f1": 0.4176384839650146,
+      "micro_f1": 0.5892857142857143,
+      "policies": {
+        "T1_arrears_disputed_time": [
+          "bank_statement",
+          "payment_deadline_warning_letter",
+          "rent_payment_records"
+        ],
+        "T2_arrears_mixed_demand": [
+          "bank_statement",
+          "payment_deadline_warning_letter",
+          "rent_payment_records"
+        ],
+        "T3_abusive_after_rights": [
+          "bank_statement",
+          "payment_deadline_warning_letter",
+          "rent_payment_records"
+        ],
+        "T4_family_home_service": [
+          "bank_statement",
+          "payment_deadline_warning_letter",
+          "rent_payment_records"
+        ],
+        "T5_conflicting_notices": [
+          "bank_statement",
+          "payment_deadline_warning_letter",
+          "rent_payment_records"
+        ],
+        "T6_two_notices": [
+          "bank_statement",
+          "payment_deadline_warning_letter",
+          "rent_payment_records"
+        ],
+        "T7_renovation": [
+          "bank_statement",
+          "payment_deadline_warning_letter",
+          "rent_payment_records"
+        ],
+        "T8_email_no_form": [
+          "bank_statement",
+          "payment_deadline_warning_letter",
+          "rent_payment_records"
+        ]
+      },
+      "policy_count": 1,
+      "predicted_items": 147,
+      "tp": 66
+    },
+    "gold": {
+      "distinct_sets": 4,
+      "total_items": 77
+    },
+    "pairs": 49,
+    "scenarios": [
+      "T1_arrears_disputed_time",
+      "T2_arrears_mixed_demand",
+      "T3_abusive_after_rights",
+      "T4_family_home_service",
+      "T5_conflicting_notices",
+      "T6_two_notices",
+      "T7_renovation",
+      "T8_email_no_form"
+    ]
+  }
+}
