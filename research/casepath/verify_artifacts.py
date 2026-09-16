@@ -11,6 +11,26 @@ def norm(s): return re.sub(r"\s+", " ", unicodedata.normalize("NFC", s)).strip()
 
 fails = []
 
+# Manifest is a complete integrity roster for committed JSON analysis artifacts.
+manifest_path = R / "artifacts/MANIFEST.json"
+manifest = json.loads(manifest_path.read_text())
+artifact_files = sorted(p.name for p in (R / "artifacts").glob("*.json") if p.name != "MANIFEST.json")
+manifest_files = sorted(manifest)
+missing_from_manifest = sorted(set(artifact_files) - set(manifest_files))
+missing_on_disk = sorted(set(manifest_files) - set(artifact_files))
+if missing_from_manifest: fails.append(f"analysis artifacts missing from manifest: {missing_from_manifest}")
+if missing_on_disk: fails.append(f"manifest entries missing on disk: {missing_on_disk}")
+manifest_bad=[]
+for name, rec in manifest.items():
+    q=R / "artifacts" / name
+    if not q.is_file(): continue
+    data=q.read_bytes()
+    got=hashlib.sha256(data).hexdigest()
+    if got != rec.get("sha256") or len(data) != rec.get("bytes"):
+        manifest_bad.append(name)
+print(f"artifact manifest: {len(manifest_files)} entries, {len(missing_from_manifest)} unmanifested, {len(missing_on_disk)} missing, {len(manifest_bad)} hash/size mismatches")
+if manifest_bad: fails.append(f"artifact manifest mismatch: {manifest_bad[:5]}")
+
 b = json.loads((API / "casepath_api/corpora/authority/swiss-authority-bundle-v1.json").read_text())
 bad = [p["authority_id"] for p in b["passages"]
        if hashlib.sha256(p["exact_text"].encode()).hexdigest() != p["text_sha256"]]
