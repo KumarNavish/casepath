@@ -86,3 +86,46 @@ constant-output oracle, and adjudicator provenance.
 
 That is a stronger and more useful contribution than the method claim, and unlike the method claim it is what the
 evidence supports.
+
+
+---
+
+# Addendum — the review panel's re-analysis, which is stronger than the above
+
+Verified by the panel against the same artifacts, and now the paper's headline.
+
+**Under the volume control, the case-ignoring constant scores +0.447 [+0.429, +0.476] excess withdrawal recall —
+3.8× the best arm's +0.118.** (The 0.947 figure above is the oracle's *raw* recall; +0.447 is its excess over its
+own random-drop baseline, which is the comparable quantity.)
+
+**Permutation null.** Shuffling which case's release set attaches to which arm's behaviour: the winning arm's
+statistic sits *inside* the null at **p = 0.21**, and `gemini-2.5-flash`'s excess is **exactly invariant** to the
+shuffle — range [+0.1082, +0.1082]. Zero case-specific information, arithmetically.
+
+**Both "signal" arms sit at exactly 100% of their achievable ceiling** — metric saturation, not effect.
+
+**The effects are single events, multiply counted.** `gpt-5.6-terra`'s b5 applies the *identical 8-document
+withdrawal* on 26 of 28 pairs: "+0.118 is one event scored 26 times." `gemini-2.5-flash`'s entire "+0.109" is **one
+document** — `property_management_statement` — dropped 28/28.
+
+**The transfer null is un-interpretable, not merely negative.** Restricting to pairs where adjudicators agreed on
+the decisions the probe touches leaves **0 of 49**. Not one unit reached agreement. The paper cannot distinguish a
+real transfer failure from labels too noisy to detect one. (I had written that the null "survives" this
+restriction; the panel ran it, found it impossible, and corrected me.)
+
+**Three "empty-E" pairs are an artifact of truncation.** Those narratives are 166–168 KB and the adjudicator
+prompt truncates at 9,200 characters, so it read byte-identical text for both members of the pair.
+
+**A scoring dead zone.** 5 of 16 catalogue documents appear in no decision, so 78 of 208 of gpt-b5's withdrawals
+are invisible to precision, and `conciliation_request` can never be scored correct.
+
+**Multiplicity was never applied.** The headline reversal pair is the argmax/argmin of 8 model×arm cells. Under the
+paired cluster bootstrap the panel added, `gpt − gemini` is **+0.010 [−0.001, +0.018] — includes zero**: the two
+"signal" reasoners are not distinguishable from each other.
+
+**Four objections cannot be answered with the exhausted budget** and are conceded in the paper rather than dodged:
+the adjudicator confound; whether anything here measures case-sensitive retraction at all; the legal validity of the
+single load-bearing decision (D12 closing on a 30-day deadline that does not bind D7); and the transfer sensitivity
+check, which is un-runnable.
+
+**Binding limit, restated by the panel and adopted:** the paper's scope is **zero scopes of two**, not one of two.
