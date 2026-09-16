@@ -1,0 +1,928 @@
+{
+ "contract": "casepath.process-experiment/1.0.0",
+ "scope": "a tenant challenging a rent increase, including nullity for defect of form",
+ "arms": {
+  "b1_direct": {
+   "requests": [
+    {
+     "document_types": [
+      "landlord_correspondence"
+     ],
+     "still_missing": [
+      "landlord_correspondence"
+     ],
+     "why": "The landlord’s original rent-increase notice is needed to verify the absence of the required official form and the stated justification."
+    }
+   ],
+   "count": 1,
+   "documents": [
+    "landlord_correspondence"
+   ],
+   "rejected_out_of_catalogue": [],
+   "chains": []
+  },
+  "b2_retrieval": {
+   "requests": [
+    {
+     "document_types": [
+      "landlord_correspondence",
+      "envelope_copy"
+     ],
+     "still_missing": [
+      "landlord_correspondence",
+      "envelope_copy"
+     ],
+     "why": "Diese Unterlagen belegen Inhalt, behaupteten Zustellzeitpunkt und das Fehlen des vorgeschriebenen kantonalen Formulars bei der Mietzinserhöhung."
+    }
+   ],
+   "count": 1,
+   "documents": [
+    "envelope_copy",
+    "landlord_correspondence"
+   ],
+   "rejected_out_of_catalogue": [],
+   "chains": [],
+   "retrieved": [
+    "or-art-266l-para2-20260101-de",
+    "or-art-269d-para1-20260101-de",
+    "vmwg-art-19-para2-20250101-de",
+    "or-art-257e-para1-20260101-de",
+    "or-art-257e-para3-20260101-de",
+    "or-art-259a-para1-20260101-de",
+    "or-art-269a-20260101-de",
+    "or-art-269d-para2-20260101-de",
+    "or-art-270b-para1-20260101-de",
+    "vmwg-art-9-para1-20250101-de",
+    "vmwg-art-19-para1-20250101-de",
+    "zpo-art-198-20250101-de"
+   ]
+  },
+  "b3_graph_then_list": {
+   "requests": [
+    {
+     "document_types": [
+      "landlord_correspondence"
+     ],
+     "still_missing": [
+      "landlord_correspondence"
+     ],
+     "why": "A copy of the 3 September 2025 rent-increase letter is needed to document that the landlord used no canton-approved official form and to verify its stated contents and effective date."
+    }
+   ],
+   "count": 1,
+   "documents": [
+    "landlord_correspondence"
+   ],
+   "rejected_out_of_catalogue": [],
+   "chains": []
+  },
+  "b3t_summary_then_list": {
+   "requests": [
+    {
+     "document_types": [
+      "rent_increase_official_form",
+      "landlord_correspondence",
+      "envelope_copy"
+     ],
+     "still_missing": [
+      "rent_increase_official_form",
+      "landlord_correspondence",
+      "envelope_copy"
+     ],
+     "why": "These documents are needed to verify whether a cantonal-approved, properly reasoned rent-increase form was issued and how the notice was sent, since the described ordinary letter may render the increase void."
+    }
+   ],
+   "count": 1,
+   "documents": [
+    "envelope_copy",
+    "landlord_correspondence",
+    "rent_increase_official_form"
+   ],
+   "rejected_out_of_catalogue": [],
+   "chains": [],
+   "summary_chars": 4245
+  },
+  "b6_prior_composition": {
+   "requests": [
+    {
+     "document_types": [
+      "landlord_correspondence"
+     ],
+     "still_missing": [
+      "landlord_correspondence"
+     ],
+     "why": "Obtain the complete rent-increase letter and any enclosures to verify that no prescribed official form was used and that the stated reason was limited to “Anpassung an die Marktmiete.”"
+    }
+   ],
+   "count": 1,
+   "documents": [
+    "landlord_correspondence"
+   ],
+   "rejected_out_of_catalogue": [],
+   "chains": [],
+   "extracted_items": 10,
+   "retrieved": [
+    "or-art-266l-para2-20260101-de",
+    "or-art-269d-para1-20260101-de",
+    "vmwg-art-19-para2-20250101-de",
+    "or-art-257e-para1-20260101-de",
+    "or-art-257e-para3-20260101-de",
+    "or-art-259a-para1-20260101-de",
+    "or-art-269a-20260101-de",
+    "or-art-269d-para2-20260101-de",
+    "or-art-270b-para1-20260101-de",
+    "vmwg-art-9-para1-20250101-de",
+    "vmwg-art-19-para1-20250101-de",
+    "zpo-art-198-20250101-de"
+   ]
+  },
+  "b5_induced_graph": {
+   "requests": [
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "still_missing": [
+      "rent_increase_official_form"
+     ],
+     "justified_by": [
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The rent increase is for the next possible termination date.",
+       "must_show": "the effective date of the rent increase and the next possible termination date applicable to the tenancy",
+       "authorities": [
+        "or-art-269d-para1-20260101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The notification was made on a form approved by the canton.",
+       "must_show": "that the form used for the notification was approved by the canton",
+       "authorities": [
+        "or-art-269d-para1-20260101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The notification states the reasons for the rent increase.",
+       "must_show": "the reasons for the rent increase as stated in the notification",
+       "authorities": [
+        "or-art-269d-para1-20260101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The form states the previous rent and the tenant's previous ancillary-cost charge.",
+       "must_show": "that the form states a previous rent and a previous ancillary-cost charge for the tenant",
+       "authorities": [
+        "vmwg-art-19-para1-20250101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The form states the new rent and the tenant's new ancillary-cost charge.",
+       "must_show": "that the form states a new rent and a new ancillary-cost charge for the tenant",
+       "authorities": [
+        "vmwg-art-19-para1-20250101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The form states the date on which the rent increase takes effect.",
+       "must_show": "that the form states an effective date for the rent increase",
+       "authorities": [
+        "vmwg-art-19-para1-20250101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The form clearly states the reason for the rent increase.",
+       "must_show": "that the form clearly states the reason for the rent increase",
+       "authorities": [
+        "vmwg-art-19-para1-20250101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The form contains the statutory requirements for contestation.",
+       "must_show": "that the form contains the statutory requirements for contestation",
+       "authorities": [
+        "vmwg-art-19-para1-20250101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The form contains the list of conciliation authorities and their local jurisdiction.",
+       "must_show": "that the form contains a list of conciliation authorities and their local jurisdiction",
+       "authorities": [
+        "vmwg-art-19-para1-20250101-de"
+       ]
+      },
+      {
+       "node_id": "notice_complies_with_prescribed_form",
+       "fact": "The landlord notified the tenant of the rent increase using a form approved by the canton (the prescribed form).",
+       "must_show": "That the rent-increase notice sent to the tenant used a particular form.",
+       "authorities": [
+        "or-art-269d-para1-20260101-de",
+        "or-art-269d-para2-20260101-de"
+       ]
+      },
+      {
+       "node_id": "notice_complies_with_prescribed_form",
+       "fact": "The landlord notified the tenant of the rent increase using a form approved by the canton (the prescribed form).",
+       "must_show": "That the form used for the rent-increase notice was approved by the canton as the prescribed form.",
+       "authorities": [
+        "or-art-269d-para1-20260101-de",
+        "or-art-269d-para2-20260101-de"
+       ]
+      }
+     ]
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form",
+      "registered_mail_receipt"
+     ],
+     "still_missing": [
+      "rent_increase_official_form",
+      "registered_mail_receipt"
+     ],
+     "justified_by": [
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The landlord notified the tenant of the rent increase.",
+       "must_show": "that a rent-increase notification was provided by the landlord to the tenant",
+       "authorities": [
+        "or-art-269d-para1-20260101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The notification and reasons were provided at least ten days before the beginning of the notice period.",
+       "must_show": "the date on which the notification and reasons were provided to the tenant and the date on which the notice period began",
+       "authorities": [
+        "or-art-269d-para1-20260101-de"
+       ]
+      }
+     ]
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form",
+      "tenant_correspondence"
+     ],
+     "still_missing": [
+      "rent_increase_official_form",
+      "tenant_correspondence"
+     ],
+     "justified_by": [
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The landlord notified the tenant of the rent increase.",
+       "must_show": "that a rent-increase notification was provided by the landlord to the tenant",
+       "authorities": [
+        "or-art-269d-para1-20260101-de"
+       ]
+      },
+      {
+       "node_id": "rent_increase_notified",
+       "fact": "The notification and reasons were provided at least ten days before the beginning of the notice period.",
+       "must_show": "the date on which the notification and reasons were provided to the tenant and the date on which the notice period began",
+       "authorities": [
+        "or-art-269d-para1-20260101-de"
+       ]
+      }
+     ]
+    }
+   ],
+   "count": 3,
+   "documents": [
+    "registered_mail_receipt",
+    "rent_increase_official_form",
+    "tenant_correspondence"
+   ],
+   "chains": [
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c1",
+     "must_show": "the effective date of the rent increase and the next possible termination date applicable to the tenancy",
+     "fact_id": "rent_increase_notified.f1",
+     "fact": "The rent increase is for the next possible termination date.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p1"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form",
+      "registered_mail_receipt"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c2",
+     "must_show": "that a rent-increase notification was provided by the landlord to the tenant",
+     "fact_id": "rent_increase_notified.f2",
+     "fact": "The landlord notified the tenant of the rent increase.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p2"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form",
+      "tenant_correspondence"
+     ],
+     "route_id": "r2",
+     "capability_id": "rent_increase_notified.c2",
+     "must_show": "that a rent-increase notification was provided by the landlord to the tenant",
+     "fact_id": "rent_increase_notified.f2",
+     "fact": "The landlord notified the tenant of the rent increase.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p2"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c3",
+     "must_show": "that the form used for the notification was approved by the canton",
+     "fact_id": "rent_increase_notified.f3",
+     "fact": "The notification was made on a form approved by the canton.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p2"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c4",
+     "must_show": "the reasons for the rent increase as stated in the notification",
+     "fact_id": "rent_increase_notified.f4",
+     "fact": "The notification states the reasons for the rent increase.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p2"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form",
+      "registered_mail_receipt"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c5",
+     "must_show": "the date on which the notification and reasons were provided to the tenant and the date on which the notice period began",
+     "fact_id": "rent_increase_notified.f5",
+     "fact": "The notification and reasons were provided at least ten days before the beginning of the notice period.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p3"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form",
+      "tenant_correspondence"
+     ],
+     "route_id": "r2",
+     "capability_id": "rent_increase_notified.c5",
+     "must_show": "the date on which the notification and reasons were provided to the tenant and the date on which the notice period began",
+     "fact_id": "rent_increase_notified.f5",
+     "fact": "The notification and reasons were provided at least ten days before the beginning of the notice period.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p3"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c6",
+     "must_show": "that the form states a previous rent and a previous ancillary-cost charge for the tenant",
+     "fact_id": "rent_increase_notified.f6",
+     "fact": "The form states the previous rent and the tenant's previous ancillary-cost charge.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "vmwg-art-19-para1-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-19-para1-20250101-de#p1"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c7",
+     "must_show": "that the form states a new rent and a new ancillary-cost charge for the tenant",
+     "fact_id": "rent_increase_notified.f7",
+     "fact": "The form states the new rent and the tenant's new ancillary-cost charge.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "vmwg-art-19-para1-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-19-para1-20250101-de#p2"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c8",
+     "must_show": "that the form states an effective date for the rent increase",
+     "fact_id": "rent_increase_notified.f8",
+     "fact": "The form states the date on which the rent increase takes effect.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "vmwg-art-19-para1-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-19-para1-20250101-de#p3"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c9",
+     "must_show": "that the form clearly states the reason for the rent increase",
+     "fact_id": "rent_increase_notified.f9",
+     "fact": "The form clearly states the reason for the rent increase.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "vmwg-art-19-para1-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-19-para1-20250101-de#p4"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c10",
+     "must_show": "that the form contains the statutory requirements for contestation",
+     "fact_id": "rent_increase_notified.f10",
+     "fact": "The form contains the statutory requirements for contestation.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "vmwg-art-19-para1-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-19-para1-20250101-de#p10"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "rent_increase_notified.c11",
+     "must_show": "that the form contains a list of conciliation authorities and their local jurisdiction",
+     "fact_id": "rent_increase_notified.f11",
+     "fact": "The form contains the list of conciliation authorities and their local jurisdiction.",
+     "only_if": null,
+     "node_id": "rent_increase_notified",
+     "node_label": "Landlord notifies the tenant of a rent increase for the next possible termination date",
+     "activation": "active",
+     "authorities": [
+      "vmwg-art-19-para1-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-19-para1-20250101-de#p11"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "notice_complies_with_prescribed_form.c1",
+     "must_show": "That the rent-increase notice sent to the tenant used a particular form.",
+     "fact_id": "notice_complies_with_prescribed_form.f1",
+     "fact": "The landlord notified the tenant of the rent increase using a form approved by the canton (the prescribed form).",
+     "only_if": null,
+     "node_id": "notice_complies_with_prescribed_form",
+     "node_label": "Determine whether the rent-increase notice uses the canton-approved prescribed form",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de",
+      "or-art-269d-para2-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p2",
+      "or-art-269d-para2-20260101-de#p1"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "notice_complies_with_prescribed_form.c2",
+     "must_show": "That the form used for the rent-increase notice was approved by the canton as the prescribed form.",
+     "fact_id": "notice_complies_with_prescribed_form.f1",
+     "fact": "The landlord notified the tenant of the rent increase using a form approved by the canton (the prescribed form).",
+     "only_if": null,
+     "node_id": "notice_complies_with_prescribed_form",
+     "node_label": "Determine whether the rent-increase notice uses the canton-approved prescribed form",
+     "activation": "active",
+     "authorities": [
+      "or-art-269d-para1-20260101-de",
+      "or-art-269d-para2-20260101-de"
+     ],
+     "propositions": [
+      "or-art-269d-para1-20260101-de#p2",
+      "or-art-269d-para2-20260101-de#p1"
+     ],
+     "fault": null
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "tenant_requests_numerical_justification.c1",
+     "must_show": "Whether the claimed rent increase is based on cost increases or on value-enhancing improvements by the landlord.",
+     "fact_id": "tenant_requests_numerical_justification.f1",
+     "fact": "The claimed rent increase is due to cost increases or to value-enhancing improvements by the landlord.",
+     "only_if": null,
+     "node_id": "tenant_requests_numerical_justification",
+     "node_label": "Tenant requests a numerical justification of the claimed difference amount",
+     "activation": "inactive",
+     "authorities": [
+      "vmwg-art-20-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-20-20250101-de#p1"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "cost_increase_statement"
+     ],
+     "route_id": "r2",
+     "capability_id": "tenant_requests_numerical_justification.c1",
+     "must_show": "Whether the claimed rent increase is based on cost increases or on value-enhancing improvements by the landlord.",
+     "fact_id": "tenant_requests_numerical_justification.f1",
+     "fact": "The claimed rent increase is due to cost increases or to value-enhancing improvements by the landlord.",
+     "only_if": null,
+     "node_id": "tenant_requests_numerical_justification",
+     "node_label": "Tenant requests a numerical justification of the claimed difference amount",
+     "activation": "inactive",
+     "authorities": [
+      "vmwg-art-20-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-20-20250101-de#p1"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "renovation_cost_statement"
+     ],
+     "route_id": "r3",
+     "capability_id": "tenant_requests_numerical_justification.c1",
+     "must_show": "Whether the claimed rent increase is based on cost increases or on value-enhancing improvements by the landlord.",
+     "fact_id": "tenant_requests_numerical_justification.f1",
+     "fact": "The claimed rent increase is due to cost increases or to value-enhancing improvements by the landlord.",
+     "only_if": null,
+     "node_id": "tenant_requests_numerical_justification",
+     "node_label": "Tenant requests a numerical justification of the claimed difference amount",
+     "activation": "inactive",
+     "authorities": [
+      "vmwg-art-20-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-20-20250101-de#p1"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "tenant_correspondence"
+     ],
+     "route_id": "r1",
+     "capability_id": "tenant_requests_numerical_justification.c2",
+     "must_show": "That the tenant requested a numerical justification of the claimed difference amount.",
+     "fact_id": "tenant_requests_numerical_justification.f2",
+     "fact": "The tenant requests a numerical justification of the claimed difference amount.",
+     "only_if": null,
+     "node_id": "tenant_requests_numerical_justification",
+     "node_label": "Tenant requests a numerical justification of the claimed difference amount",
+     "activation": "inactive",
+     "authorities": [
+      "vmwg-art-20-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-20-20250101-de#p2"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "conciliation_request"
+     ],
+     "route_id": "r1",
+     "capability_id": "conciliation_hearing.c4",
+     "must_show": "The date on which the application was received by the conciliation authority.",
+     "fact_id": "conciliation_hearing.f3",
+     "fact": "The hearing took place within two months from the applicable triggering event.",
+     "only_if": null,
+     "node_id": "conciliation_hearing",
+     "node_label": "Conciliation authority conducts informal negotiations and seeks an agreement covering the tenancy",
+     "activation": "inactive",
+     "authorities": [
+      "zpo-art-203-para1-20250101-de"
+     ],
+     "propositions": [
+      "zpo-art-203-para1-20250101-de#p1"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "conciliation_request"
+     ],
+     "route_id": "r1",
+     "capability_id": "tenant_requests_supporting_documents.c1",
+     "must_show": "That the matter is in conciliation proceedings.",
+     "fact_id": "tenant_requests_supporting_documents.f1",
+     "fact": "The matter is in conciliation proceedings.",
+     "only_if": null,
+     "node_id": "tenant_requests_supporting_documents",
+     "node_label": "Tenant requests production of relevant supporting documents for the asserted increase grounds",
+     "activation": "inactive",
+     "authorities": [
+      "vmwg-art-20-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-20-20250101-de#p4"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form"
+     ],
+     "route_id": "r1",
+     "capability_id": "tenant_requests_supporting_documents.c2",
+     "must_show": "The grounds asserted for the rent increase.",
+     "fact_id": "tenant_requests_supporting_documents.f2",
+     "fact": "There are asserted grounds for a rent increase.",
+     "only_if": null,
+     "node_id": "tenant_requests_supporting_documents",
+     "node_label": "Tenant requests production of relevant supporting documents for the asserted increase grounds",
+     "activation": "inactive",
+     "authorities": [
+      "vmwg-art-20-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-20-20250101-de#p5"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "rent_increase_official_form",
+      "tenant_correspondence"
+     ],
+     "route_id": "r1",
+     "capability_id": "tenant_requests_supporting_documents.c3",
+     "must_show": "How each requested supporting document relates to an asserted ground for the rent increase.",
+     "fact_id": "tenant_requests_supporting_documents.f3",
+     "fact": "The supporting documents requested are relevant to the asserted grounds for the rent increase.",
+     "only_if": null,
+     "node_id": "tenant_requests_supporting_documents",
+     "node_label": "Tenant requests production of relevant supporting documents for the asserted increase grounds",
+     "activation": "inactive",
+     "authorities": [
+      "vmwg-art-20-20250101-de"
+     ],
+     "propositions": [
+      "vmwg-art-20-20250101-de#p5"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "landlord_correspondence",
+      "tenant_correspondence"
+     ],
+     "route_id": "r1",
+     "capability_id": "agreement_reached.c1",
+     "must_show": "Whether the parties reached an agreement, an acknowledgment of claim, or an unconditional withdrawal of claim.",
+     "fact_id": "agreement_reached.f1",
+     "fact": "Whether an agreement, acknowledgment of claim, or unconditional withdrawal of claim has been reached.",
+     "only_if": null,
+     "node_id": "agreement_reached",
+     "node_label": "Determine whether an agreement, acknowledgment of claim, or unconditional withdrawal of claim is reached",
+     "activation": "inactive",
+     "authorities": [
+      "zpo-art-208-para1-20250101-de",
+      "zpo-art-209-para1-20250101-de"
+     ],
+     "propositions": [
+      "zpo-art-208-para1-20250101-de#p1",
+      "zpo-art-209-para1-20250101-de#p1"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "conciliation_request"
+     ],
+     "route_id": "r1",
+     "capability_id": "authorization_issued_to_landlord.c2",
+     "must_show": "Whether the matter challenges an increase in rent or lease payments.",
+     "fact_id": "authorization_issued_to_landlord.f2",
+     "fact": "An increase in rent or lease payments is challenged in the matter.",
+     "only_if": null,
+     "node_id": "authorization_issued_to_landlord",
+     "node_label": "Conciliation authority records lack of agreement and issues authorization to sue to the landlord",
+     "activation": "inactive",
+     "authorities": [
+      "zpo-art-209-para1-20250101-de"
+     ],
+     "propositions": [
+      "zpo-art-209-para1-20250101-de#p4"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "conciliation_request"
+     ],
+     "route_id": "r1",
+     "capability_id": "authorization_issued_to_landlord.c3",
+     "must_show": "The identity of the landlord or lessor to whom the authorization is to be issued.",
+     "fact_id": "authorization_issued_to_landlord.f3",
+     "fact": "The recipient to whom the authorization is to be issued is the landlord or lessor.",
+     "only_if": "An increase in rent or lease payments is challenged in the matter.",
+     "node_id": "authorization_issued_to_landlord",
+     "node_label": "Conciliation authority records lack of agreement and issues authorization to sue to the landlord",
+     "activation": "inactive",
+     "authorities": [
+      "zpo-art-209-para1-20250101-de"
+     ],
+     "propositions": [
+      "zpo-art-209-para1-20250101-de#p4"
+     ],
+     "fault": "wrong_branch_request"
+    },
+    {
+     "document_types": [
+      "lease_contract"
+     ],
+     "route_id": "r1",
+     "capability_id": "landlord_may_file_court_action.c4",
+     "must_show": "whether the dispute arises from the lease or tenancy of residential premises, commercial premises, or agricultural tenancy.",
+     "fact_id": "landlord_may_file_court_action.f4",
+     "fact": "The dispute arises from the lease or tenancy of residential premises, commercial premises, or agricultural tenancy.",
+     "only_if": "If the 30-day action period in Art. 209 Abs. 4 is potentially applicable.",
+     "node_id": "landlord_may_file_court_action",
+     "node_label": "Landlord may file an action with the court under the authorization to sue",
+     "activation": "inactive",
+     "authorities": [
+      "zpo-art-209-para4-20250101-de"
+     ],
+     "propositions": [
+      "zpo-art-209-para4-20250101-de#p1"
+     ],
+     "fault": "wrong_branch_request"
+    }
+   ],
+   "activation": {
+    "conciliation_request_submitted": "inactive",
+    "tenant_decides_to_challenge": "inactive",
+    "rent_increase_notified": "active",
+    "increase_void": "active",
+    "agreement_recorded": "inactive",
+    "conciliation_hearing": "inactive",
+    "notice_complies_with_prescribed_form": "active",
+    "authorization_issued_to_landlord": "inactive",
+    "tenant_requests_numerical_justification": "inactive",
+    "challenge_not_brought": "inactive",
+    "tenant_requests_supporting_documents": "inactive",
+    "landlord_may_file_court_action": "inactive",
+    "agreement_reached": "inactive"
+   },
+   "verdicts": {
+    "e02": "true",
+    "e03": "false",
+    "e04": "false",
+    "e06": "unresolved",
+    "e07": "unresolved",
+    "e09": "unresolved",
+    "e12": "unresolved",
+    "e13": "unresolved",
+    "e14": "unresolved"
+   },
+   "counts": {
+    "chains": 27,
+    "evidence_gaps": 14,
+    "wrong_branch": 12,
+    "premature": 0,
+    "clean": 15
+   }
+  }
+ },
+ "timing": {
+  "b1_direct": 7.2,
+  "b2_retrieval": 7.7,
+  "b3_graph_then_list": 4.6,
+  "b3t_summary_then_list": 17.8,
+  "b6_prior_composition": 25.5,
+  "b5_induced_graph": 41.9
+ }
+}
