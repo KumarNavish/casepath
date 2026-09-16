@@ -45,10 +45,12 @@ own requested documents at random — the control that makes arms requesting dif
 | graph, then ask the model for a checklist | 0.121 | 0.110 | +0.011 | [−0.017, +0.038] |
 | full pipeline | 0.591 | 0.473 | **+0.118** | **[+0.106, +0.126]** |
 
-Direct prediction is *worse than chance*: the documents it stops requesting are anti-correlated with the ones the
-process releases. Giving the model the graph removes the anti-correlation without making the withdrawals
-informative. Only the compiled chain — node closes, obligation lapses, capability no longer needed, document
-released — carries signal, on all six scenarios individually.
+On `gpt-5.6-terra` direct prediction is *worse than chance*, and only the compiled chain carries signal. **That
+pairing is not the method's property.** Re-run with the interpreting model changed and nothing else, the same
+frozen artifact scores +0.119 and +0.109 on two reasoners and **−0.077 and −0.039 on the other two** — the
+compiled chain becomes anti-correlated. Direct prediction is anti-correlated on one model of four. See
+`MODEL_GENERALITY.md`. The contribution is therefore the measurement, not the method: a single-model result about a
+structured method measures the pairing and attributes it to the structure.
 
 ## 3. An evaluation that scores change rather than level
 

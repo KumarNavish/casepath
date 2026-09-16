@@ -1,3 +1,7 @@
+> **SUPERSEDED.** The confirmatory run was subsequently executed and read once; see `RESULTS.md` §2. This document
+> is retained because it contains an error I made and corrected — a false proof that the primary outcome was
+> structurally impossible — and the correction is part of the record. Its current decision section is obsolete.
+
 # Withholding the confirmatory run — the original argument was wrong, and the corrected one is weaker
 
 **This document previously claimed that the primary outcome was structurally impossible: that B5's maximum
