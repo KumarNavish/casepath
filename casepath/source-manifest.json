@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1348,
+  "file_count": 1443,
   "files": [
     {
       "executable": false,
@@ -113,8 +113,8 @@
     {
       "executable": false,
       "path": ".gitignore",
-      "sha256": "b057d4a45d6b24693c6282e59e7439687a1066c8c00c8587779de684fc696cc5",
-      "size_bytes": 289
+      "sha256": "2344f34a89f8c50dbe5496672ad1a4df64b89ff3aa8bffa55a10fba51995fb50",
+      "size_bytes": 529
     },
     {
       "executable": false,
@@ -550,6 +550,42 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/arena_v1_data/decisive/CASE_IDS.txt",
+      "sha256": "0185ba345c69deb14179a52de3b395f13e779d05735e8ac47be5ebe19857353b",
+      "size_bytes": 1304
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/decisive/SHORTCUT_AUDIT.json",
+      "sha256": "81c0cee2f901d4e29a6930ba8bf9d1c9f0d994a0d8eb1cf8dce557e9af059970",
+      "size_bytes": 982
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/decisive/cases_decisive.json",
+      "sha256": "5c3781f6a36e3fb35082fe2e5c80737dfea9a61c51c28361398075c425eacbf3",
+      "size_bytes": 653761
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/decisive/latents.json",
+      "sha256": "1d3679612fba93cd34aadff1dc27c6160a42371c1516f94c726d4e54b27184de",
+      "size_bytes": 27279
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/decisive_swap/CASE_IDS.txt",
+      "sha256": "0185ba345c69deb14179a52de3b395f13e779d05735e8ac47be5ebe19857353b",
+      "size_bytes": 1304
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/decisive_swap/cases_decisive.json",
+      "sha256": "6f6605af0a0c7680c5e5dad908aa4191580cbf7b95ec1d52abbd52ed9f1ed5a1",
+      "size_bytes": 669636
+    },
+    {
+      "executable": false,
       "path": "casepath-api/arena_v1_data/frozen/METHOD_ARENA_MANIFEST.json",
       "sha256": "95af1bf8f1ac42704b9878c69371972690d1bd846f278d7e231a5c4c801d472f",
       "size_bytes": 3092
@@ -583,6 +619,30 @@
       "path": "casepath-api/arena_v1_data/latents.json",
       "sha256": "5e95d8956937cd80262177e442898298c0e5e25249bbd52cd95d2198e0dd8f35",
       "size_bytes": 29829
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/submission/CASE_IDS.txt",
+      "sha256": "5a80a8092b5ef60b2034e47adacaae476ad16e1aa0fedf82c37b7bdfdf5436db",
+      "size_bytes": 1946
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/submission/SHORTCUT_AUDIT.json",
+      "sha256": "05d57bfdffd555a239885f5d5da5dc2da06372cffc9e47be59ae3beb1c435dd8",
+      "size_bytes": 966
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/submission/cases_submission.json",
+      "sha256": "e7040b5e33b8e2a53e3ef9472720ee1d9536e094b24436399e64cc93de43b739",
+      "size_bytes": 945092
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/arena_v1_data/submission/latents.json",
+      "sha256": "3b24b1f5aabf01f0ac42229ef97466523932532229e1403f5716beb0100c667c",
+      "size_bytes": 42114
     },
     {
       "executable": false,
@@ -641,8 +701,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/agent_work/runtime.py",
-      "sha256": "32c485a2ce00311493941d0dcd1183a460fadb492dc54018f1168ade51bc038c",
-      "size_bytes": 41073
+      "sha256": "350fbb07e8524794256f2bfdb338df6ae9ec7d44d0d3b3416470944a22e43f2c",
+      "size_bytes": 42816
     },
     {
       "executable": false,
@@ -659,8 +719,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/app.py",
-      "sha256": "8ff6c3262c1eae5cd068e7ac207f3694b6ea9a8ea20383f87b16e7139e4005d2",
-      "size_bytes": 32703
+      "sha256": "d09cc12f2c8ddc47d69d213ee6dfb8b42609ccaad674b01c60f6d0f98293effe",
+      "size_bytes": 33321
     },
     {
       "executable": false,
@@ -700,6 +760,24 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/decide_decisive.py",
+      "sha256": "5b0fe5918bbc03ceabd0a2d67f5e6582bbff1d266b0abc2aedc774f611394766",
+      "size_bytes": 5019
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/decide_submission.py",
+      "sha256": "158d8c5aa9546da2c33b5b8c354b8874b8df26f400b315e9ea9e0852f7911be3",
+      "size_bytes": 6665
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/arena_v1/decide_swap.py",
+      "sha256": "dd6016516f4a643fb36794c4fbbaa03c3a7720d945de6fe958a500ba993eb654",
+      "size_bytes": 3754
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/arena_v1/evaluation.py",
       "sha256": "96fb4225f2834c24ad64c776693d2b144bc1fc400fcef3a26d223adf04cd6ff5",
       "size_bytes": 33285
@@ -707,8 +785,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/arena_v1/generator.py",
-      "sha256": "f5e00ff23eee2ea1dca1dbdaf339be1863ecb16ae915a240166e7dbcb85964de",
-      "size_bytes": 30362
+      "sha256": "77c3644d2be9f2b72915943ce3c63051ce448ab5340ac318cd92dd96167491fa",
+      "size_bytes": 35489
     },
     {
       "executable": false,
@@ -725,8 +803,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/arena_v1/product_corpus_study.py",
-      "sha256": "c987be882464703a43ef20c53d5c7b9607d6de45fa77f827dafdaec6a40fe149",
-      "size_bytes": 6360
+      "sha256": "3685e5d9849ae8b56c9078e17c2a053e79174a18c5f470702ac28df87ac22871",
+      "size_bytes": 6642
     },
     {
       "executable": false,
@@ -737,14 +815,14 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/arena_v1/run_turn.py",
-      "sha256": "969ebd58ea8c55c348e3c6a00dea5190c4172149568b6c1b2e56c2b67e002236",
-      "size_bytes": 3233
+      "sha256": "e5b82f1e4542834b7b4ca7dba6b2d6063949c2bf50df4a089ab642f97717f588",
+      "size_bytes": 4047
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/arena_v1/runner.py",
-      "sha256": "9f5d8be43fdcf8bb7b0a96600b64495b5b5edb8be113f878d332d4e89d782c81",
-      "size_bytes": 17621
+      "sha256": "5d0f8339674c4186358adefc5b8f039aa71f1e19e8079b785f90a67b94096157",
+      "size_bytes": 19073
     },
     {
       "executable": false,
@@ -767,14 +845,86 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/arena_v1/write_episodes.py",
-      "sha256": "1101c37946361bbd4a3ee43ba1548a78a17cf37735e85e6f7bf89b757311fedc",
-      "size_bytes": 8001
+      "sha256": "1ba853e52f862a0d6820acb2008925fb41a5a839175b0fb9723fdb3952a1cc6a",
+      "size_bytes": 8456
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/artifact_gate_v1.py",
+      "sha256": "c3b3dcfeef17f711187fff9087d1542389e33147a042fbc022ae8a65115b543e",
+      "size_bytes": 3760
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/authority_corpus_v1.py",
+      "sha256": "030bcff86f8e62a5fc81ea5eb1bc753dc543421b690134a90b6d6e4f9789fd36",
+      "size_bytes": 5983
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/canonicalizer.py",
       "sha256": "e50e365b0d2ddec4808b258afc566721e9f0ffc27cc6a69631bc8c15f24c1121",
       "size_bytes": 91033
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/case_interpreter_v1.py",
+      "sha256": "3aae68b2c87f7b541c4986538bf16e24ec423535ffbdbfb8d55cd2d3293d8a89",
+      "size_bytes": 9167
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/case_interpreter_v2.py",
+      "sha256": "f88ecf1b62f2181327698a44e1ab1c3377895aaced1793c85981e9ba5f06e6c8",
+      "size_bytes": 6802
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/case_interpreter_v3.py",
+      "sha256": "8c1a32d3bc9d63c74bc9daa0c7e6a6c0e10e9b0e831e459ea31308f32ad7012d",
+      "size_bytes": 4585
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/case_interpreter_v4.py",
+      "sha256": "a31b305b2369181c44b2e84000ee914dfb85af764a9bd90403417aca15a5700a",
+      "size_bytes": 6237
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/casepath_process_router_v2.py",
+      "sha256": "a785fd9cf7d930c07b8e4f9d92a989ab82f91c9d91f3b7e00f89146ddd7a9944",
+      "size_bytes": 2364
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/casepath_process_router_v3.py",
+      "sha256": "835e61ea3b7bad5d347a0dd6785d2d76b5546b913db72d253226bc194373b9fd",
+      "size_bytes": 2364
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/casepath_process_service_v1.py",
+      "sha256": "9e7112a9a895c25d494ef237966386a07b90b724357fa85934ecc928b72c75d4",
+      "size_bytes": 5523
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/casepath_process_service_v2.py",
+      "sha256": "8348bcee5118bad4f6adf99a59aaaa504d6d52c45461f5a7355dbbfcad87a728",
+      "size_bytes": 8977
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/casepath_process_service_v3.py",
+      "sha256": "82f29703977b001fc759deb52dd9eeb3426a52f5ceeec612650d3bf25ed37a4b",
+      "size_bytes": 9567
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/checklist_baselines_v1.py",
+      "sha256": "e41539528fb69fbcd264e01c4e28249532f6d7fde3356eb86bcf23d1b2496b89",
+      "size_bytes": 7160
     },
     {
       "executable": false,
@@ -829,6 +979,120 @@
       "path": "casepath-api/casepath_api/cli.py",
       "sha256": "60475261b389e0b144831a937af57c1ddab03dfc490995fb1e26bcb5a0faa7a5",
       "size_bytes": 36057
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/contract_scoring_v1.py",
+      "sha256": "890191d1031ac4fbbae0612e1d5b6aff1c262bd16e3301865a024143bc80bd23",
+      "size_bytes": 6715
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/authority/swiss-authority-bundle-v1.json",
+      "sha256": "2086e76e1412568a385d98560a5a8cf9ca8eaaf78be44395a1719170f4ed4978",
+      "size_bytes": 94732
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/PACK_RECEIPT.json",
+      "sha256": "2767d83d2ec11f1acc5baa5af962ab4ae23405a8f9603ef8814ae76f132014a8",
+      "size_bytes": 1779
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/BENCHMARK.json",
+      "sha256": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc",
+      "size_bytes": 141478
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/DEMO_CASE.json",
+      "sha256": "e3c915b9cbff279066687e08a7b41a2c5237fb1adfbeed22dd6bdfe2dcf9b8ff",
+      "size_bytes": 1270
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/HIDDEN_RESULT.json",
+      "sha256": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47",
+      "size_bytes": 44796
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/METHOD_MANIFEST.json",
+      "sha256": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15",
+      "size_bytes": 20217
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/PACK_MANIFEST.json",
+      "sha256": "4b13cf3b36f60c4722bf61776a3f3f0e6d3f0bce6ffe274b718d26ea342df564",
+      "size_bytes": 1353
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/PREPARED.json",
+      "sha256": "95f9208d47e5c0193c4c3056226a2bcaa3a37b023098d97e5d0307d52fd5db28",
+      "size_bytes": 406933
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/PROPOSITIONS.json",
+      "sha256": "bd89ac3100dc1ba44a901efedf18092d0a1566f55100e3bf48f9226270b4c553",
+      "size_bytes": 159458
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/SOURCE_SNAPSHOT.json",
+      "sha256": "9d34231a655d16ef55348bc3018e90a3276ed8022859d8b3064177b0b4afb2d1",
+      "size_bytes": 176520
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/theft-v5-b6c1545bf581b7f9/BENCHMARK.json",
+      "sha256": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc",
+      "size_bytes": 141478
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/theft-v5-b6c1545bf581b7f9/DEMO_CASE.json",
+      "sha256": "e3c915b9cbff279066687e08a7b41a2c5237fb1adfbeed22dd6bdfe2dcf9b8ff",
+      "size_bytes": 1270
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/theft-v5-b6c1545bf581b7f9/HIDDEN_RESULT.json",
+      "sha256": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47",
+      "size_bytes": 44796
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/theft-v5-b6c1545bf581b7f9/METHOD_MANIFEST.json",
+      "sha256": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15",
+      "size_bytes": 20217
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/theft-v5-b6c1545bf581b7f9/PACK_MANIFEST.json",
+      "sha256": "4b13cf3b36f60c4722bf61776a3f3f0e6d3f0bce6ffe274b718d26ea342df564",
+      "size_bytes": 1353
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/theft-v5-b6c1545bf581b7f9/PREPARED.json",
+      "sha256": "95f9208d47e5c0193c4c3056226a2bcaa3a37b023098d97e5d0307d52fd5db28",
+      "size_bytes": 406933
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/theft-v5-b6c1545bf581b7f9/PROPOSITIONS.json",
+      "sha256": "bd89ac3100dc1ba44a901efedf18092d0a1566f55100e3bf48f9226270b4c553",
+      "size_bytes": 159458
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/corpora/paper_method/theft-v5-b6c1545bf581b7f9/SOURCE_SNAPSHOT.json",
+      "sha256": "9d34231a655d16ef55348bc3018e90a3276ed8022859d8b3064177b0b4afb2d1",
+      "size_bytes": 176520
     },
     {
       "executable": false,
@@ -6382,6 +6646,42 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/evidence_document_mapper_v2.py",
+      "sha256": "430d65ac3fc6b7792e73b46f14af39ac2d4486aed18d1b913b5ba86d8746034b",
+      "size_bytes": 4737
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/evidence_overlay_v1.py",
+      "sha256": "8999ff6a17da8c76b5d8d5cb5b685b5663582a5d684252c81c7b9b674e4a9fe4",
+      "size_bytes": 11635
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/evidence_overlay_v2.py",
+      "sha256": "a5464330865c7cf8a6b0427655e802f03cc8aebb21a5e335c81bb6154be33880",
+      "size_bytes": 854
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/evidence_overlay_v3.py",
+      "sha256": "832e3568b6d5e688fa3ff24e30a672d45900a9a50a04fbeb0a6f139790346112",
+      "size_bytes": 12508
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/evidence_refinement_v1.py",
+      "sha256": "7bb74dce80b3e2a8c8d200d482813dd6b0d6ee39471cd7fe1bd4f2071b3ab085",
+      "size_bytes": 12612
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/evidence_refinement_v2.py",
+      "sha256": "c4506b91499735f6bc96bd43a52e404da2aa128596d2be19b522b6ef782ade5b",
+      "size_bytes": 29547
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/evidence_relations.py",
       "sha256": "5ff0e38d011631070f4c5a5bf084d4e7d2629434de745c9f581b1b00ebd37ccc",
       "size_bytes": 11039
@@ -6395,8 +6695,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/evidential_channel_v1.py",
-      "sha256": "d8170df1b179740f393757c5bd4e553fbe39e8d6e86d57cd97c05b1b80a87d72",
-      "size_bytes": 18434
+      "sha256": "bb355763b7b79c5134844ddef57f6cf419d16a0a4820561ca221daae92e18394",
+      "size_bytes": 19732
     },
     {
       "executable": false,
@@ -6496,6 +6796,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/guard_materialization_v1.py",
+      "sha256": "5e16e54476b7849714ee6e2718022a7c16cd1236bb9ddfa4d64f4a8d16583b54",
+      "size_bytes": 5851
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/insurance_correction_v1.py",
       "sha256": "46f49d0d20aec7f681ee3e2fda6ad70eb0337553e9e1596be318e664a3c86167",
       "size_bytes": 4863
@@ -6569,14 +6875,14 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/native_inference_v1.py",
-      "sha256": "ef616579b3725fa18fd2ac751ec4bc57acff2007335bdcce6765a394b6b579a1",
-      "size_bytes": 47735
+      "sha256": "4179e5c287751fb94f28e9bb813d69cc8a4861a0fb71afddbe0e7c5ecc03f1ae",
+      "size_bytes": 48235
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/native_live_workspace_v1.py",
-      "sha256": "67dfdbe6fb64aca50737256817d1a43492372a86ab8a38ad511a1f5a3337c769",
-      "size_bytes": 99207
+      "sha256": "a33e313b39d3247ad31916f40e8df2d2c0d5d788132af405a497e09cd7d6881b",
+      "size_bytes": 99486
     },
     {
       "executable": false,
@@ -6589,6 +6895,18 @@
       "path": "casepath-api/casepath_api/native_workspace_inquiry_v1.py",
       "sha256": "7fc212ec90eed216d7784d037c2e572d5455f50ee708c54f2bb2c0963d3ded35",
       "size_bytes": 57375
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/obligation_compiler_v1.py",
+      "sha256": "07d2f7808f6e67c02836b435eb68d8127e7a45fd3d65ed41a62ff6ada6beae8c",
+      "size_bytes": 10688
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/obligation_compiler_v2.py",
+      "sha256": "274646d37e96838f3d7f420df93d54e8ec08e27e68d8c100944739ce7a120a4a",
+      "size_bytes": 8674
     },
     {
       "executable": false,
@@ -6646,6 +6964,18 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/paper_method_runtime_v2.py",
+      "sha256": "fb3cccf4e136a68fc0be9875cc881dd76205cc2cf2cd7f1835e297e5bf7b0fb8",
+      "size_bytes": 4029
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/paper_method_runtime_v3.py",
+      "sha256": "2114f2e3fc08babffe7361bc941f6d70a14302fb17522232011bb9be69c0fa65",
+      "size_bytes": 4029
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/pipeline.py",
       "sha256": "87bdaa1ec925ea5bf6d9f91eed41141bac91de6c0b7ae511cddc7663bfbad911",
       "size_bytes": 31368
@@ -6676,6 +7006,36 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/process_evaluation_v1.py",
+      "sha256": "e4a257ba381a3ee12fe9ff72a6c25b8969d79d73b796f9c89df1d0b21dbcd4d2",
+      "size_bytes": 7569
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/process_experiment_v1.py",
+      "sha256": "d3a47da3afe222f63364e29b531f3259429343615dda8530ff2e84f851fd56e3",
+      "size_bytes": 6641
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/process_induction_v1.py",
+      "sha256": "d0712c585ddad2384f4d048e1fa763645cfddad2055a309553e2450706943ccc",
+      "size_bytes": 9873
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/process_induction_v2.py",
+      "sha256": "9ae0f1ddfdc71f0e4f94bf5aebb698a1ae26fd2668d7af42342c5e2beab107f1",
+      "size_bytes": 8325
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/process_induction_v3.py",
+      "sha256": "62d0eddbfd0e51d6583583e149f6bdc0bde67e600d89f66eac2368a21f1c4275",
+      "size_bytes": 4305
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/projections.py",
       "sha256": "0619bf5fe732ee53c2f7a25f4367fdf41917feb914401b91988b187649468123",
       "size_bytes": 22165
@@ -6694,9 +7054,21 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/casepath_api/refinement_repairs_v1.py",
+      "sha256": "2e0cd6b6f2dd652cbfefedd2e43c652bd03a466d65bab826917a42c8c6d12c7c",
+      "size_bytes": 5418
+    },
+    {
+      "executable": false,
       "path": "casepath-api/casepath_api/source_preserving_shadow_v1.py",
       "sha256": "562313f184b15b7678218fbd2946e7032e38ef1be0315b70fc9374c5634a27ab",
       "size_bytes": 32485
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/state_refinement_v1.py",
+      "sha256": "7ea865bc97a30cc48a561a8400dee17c85cb246e19ddbedae93624c8d4d24738",
+      "size_bytes": 8437
     },
     {
       "executable": false,
@@ -6709,6 +7081,12 @@
       "path": "casepath-api/casepath_api/study_runtime.py",
       "sha256": "4686221d1beb4ac5b68dc0ad7f8c5276cadd1c683f0c5c96cb58f7422860226e",
       "size_bytes": 19432
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/two_tier_planner_v1.py",
+      "sha256": "5a81ace6943885c056406e929749a33fe8cd4802c5846fc35f3e65492774d06b",
+      "size_bytes": 7247
     },
     {
       "executable": false,
@@ -6970,9 +7348,57 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_artifact_gate_v1.py",
+      "sha256": "fd72bfa311f030a8b4adcab7ebe464b07b0d9c3c90a28eed5ddeef88b959d5e9",
+      "size_bytes": 4670
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_build_paper_method_pack_v5.py",
+      "sha256": "6d38700764a87c68fa3a9c6c646a857629de5a26a460119f7fc50a3df50520c3",
+      "size_bytes": 4942
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_canonicalizer_v15.py",
       "sha256": "5508fe8c9802aa060979a682f88e91c818e0d99d2dd429f5f883886a87b5a8b8",
       "size_bytes": 114953
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_case_interpreter_v3.py",
+      "sha256": "4da9bcb213de105a94e2bed4dbf3679b70a261067ded49b07d948d5204a24a5a",
+      "size_bytes": 2904
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_case_interpreter_v4.py",
+      "sha256": "85a6fa41746fa41ce0f2c98dc270b1d0b43a6313a219e1eed2ae90cdc33eb650",
+      "size_bytes": 3346
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_casepath_process_router_v2.py",
+      "sha256": "bb43050994a4a03b72311988ba883df24b3026db671b12ba10cdfff8cf6b711e",
+      "size_bytes": 2273
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_casepath_process_service_v2.py",
+      "sha256": "089c5e7587c333805fb5983de641f454592a60848788f84412897bb518ef39a9",
+      "size_bytes": 4874
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_casepath_process_service_v3.py",
+      "sha256": "1f34ff946c8e7493e937a311c5dd5e4774476776939d03b442d554c1ac9fcb8b",
+      "size_bytes": 4952
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_causal_confirmatory_analysis_v1.py",
+      "sha256": "fd34e9c9388478c73f23af2a4a4294b24ea5a26cc9e0fded9ada554e32417348",
+      "size_bytes": 3093
     },
     {
       "executable": false,
@@ -7018,6 +7444,48 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_evidence_document_mapper_v2.py",
+      "sha256": "36a60feda257cec5eb2ea6fcf7e61b587d5b57beb00c57c14d5da3f8e30e37c4",
+      "size_bytes": 2519
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidence_overlay_v1.py",
+      "sha256": "3c61eab3ac1c42ea3495d5375dfcd764a8f376622c2bdc3f52f4ff2c7c494019",
+      "size_bytes": 3507
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidence_overlay_v3.py",
+      "sha256": "1c9aa5937de63abceb41aa2f90e566ddaa07c7b9619d188b590a810c99d05f9d",
+      "size_bytes": 3349
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidence_refinement_v1.py",
+      "sha256": "3b99c177450f2d7cf63c8f6ea08ac752da809a50b6ddf7c070993f24f484c0c8",
+      "size_bytes": 1432
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidence_refinement_v2.py",
+      "sha256": "f24d88b770143b962cb65ad64c60a1c72e6fd0bb65016c4f8ab8c2700be8aa45",
+      "size_bytes": 5687
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidence_refinement_v2_batched.py",
+      "sha256": "49fa96d2ca1f7f5bb4a288d880d1edb69ea997116072c5da071d38f86e443dda",
+      "size_bytes": 5175
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidence_refinement_v2_normalize.py",
+      "sha256": "dd5ddb8c8b8a421eb79e2b018b3e7bb4dc333ea8bf9a9a87884bafb5b9269880",
+      "size_bytes": 1199
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_evidence_relations_v15.py",
       "sha256": "c9f937dc4d7100d0e37ff172e42d63462871607309f54553a7b68b618a3fb2b2",
       "size_bytes": 4579
@@ -7033,6 +7501,12 @@
       "path": "casepath-api/tests/test_evidential_channel_gate_v1.py",
       "sha256": "cb451ad3799c20757b2ca3cc9e9bae879cc798a2a437d533a29166e2ad80abab",
       "size_bytes": 10529
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_evidential_channel_requirement_scope.py",
+      "sha256": "0c200776961dfd0689af8331e817327073f92daf8ec4050164e63f172cf9989f",
+      "size_bytes": 2632
     },
     {
       "executable": false,
@@ -7057,6 +7531,18 @@
       "path": "casepath-api/tests/test_grounding_integration_v15.py",
       "sha256": "ebdc9b0a06682aef3bb23dfaea710262087fb57c8715749ec7a726e77cbf9d0b",
       "size_bytes": 18583
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_guard_complete_v2.py",
+      "sha256": "376f8305ff0442efb041b0e50e8a281ae0aa1998384977e402ad8dddde70a47a",
+      "size_bytes": 3995
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_guard_materialization_v1.py",
+      "sha256": "292d8397817f899e7c1e8705ea1e3109f9be73152cc44d902692d789c1e00617",
+      "size_bytes": 3218
     },
     {
       "executable": false,
@@ -7093,6 +7579,12 @@
       "path": "casepath-api/tests/test_multi_agent_v15.py",
       "sha256": "b365886b11a18a8bbadee3c0f593cfb8444b803322ce94e2f50d534e2ca44c06",
       "size_bytes": 161848
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_native_asset_write_concurrency.py",
+      "sha256": "56c7e537c4e2c085c77ba6fd644fb782e3d3cb1f935ba96461304c2b5bdbef86",
+      "size_bytes": 3935
     },
     {
       "executable": false,
@@ -7138,6 +7630,18 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_paper_method_runtime_v2.py",
+      "sha256": "795dc68a16d6841b401ae31ff47a19474a2741d6e6ba4960a1dbfecfd717b526",
+      "size_bytes": 3786
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_paper_method_runtime_v3.py",
+      "sha256": "6f3f6a870970de8ae7b86b5bf7f04436f687f65f978a3839c11a6362ea1fc291",
+      "size_bytes": 4370
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_pipeline.py",
       "sha256": "7a187053ab2e6ba99e2728f939c7c6282a7745e468af56b4826d0e2380160bcf",
       "size_bytes": 99196
@@ -7156,9 +7660,21 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_process_induction_v3.py",
+      "sha256": "7b97fb040fc7719efdaa39bc1325fdbd4830a18e5798769dc504980416700244",
+      "size_bytes": 2750
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_provisional_inquiry_v1.py",
       "sha256": "b99a023842c8bdd2d678a76208f851b805d4ac12bf19f12700ca9bfdc4bbf199",
       "size_bytes": 15347
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_refinement_repairs_v1.py",
+      "sha256": "d238fdf049d281c0171f2d5d5885fafb0d6e89b6641a8084e6e4ff2d4fac8eda",
+      "size_bytes": 3817
     },
     {
       "executable": false,
@@ -7168,9 +7684,51 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_state_refinement_v1.py",
+      "sha256": "f4a67f452eb3b276444be1cddf2df233d9e6be627d6ca67afba32f7e679a2d0a",
+      "size_bytes": 2210
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_study_runtime_v1.py",
       "sha256": "00db23dc1caae7646624e986c6fb244ecdaa25d2a8678cffa5f8005d8da1c094",
       "size_bytes": 13247
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_theft_benchmark_v2.py",
+      "sha256": "8cff806d729a6e31882200c0d747a953ad7351af5d3d9c65f1067b67ecaed67a",
+      "size_bytes": 1440
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_theft_benchmark_v3.py",
+      "sha256": "932ff33049c63637290b99b3a3cd8ce45dbc66e0f193127b9f4ab1eb00ca6388",
+      "size_bytes": 1992
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_theft_confirmatory_analysis_v3.py",
+      "sha256": "03294576d60e62b8af352421311b4f62beb8de48864895688086678a0b0e52a7",
+      "size_bytes": 1221
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_theft_confirmatory_analysis_v4.py",
+      "sha256": "efdaa9284351454b598418b42375f37a4c64adb164dc4ec5e97dc788bab9bf6d",
+      "size_bytes": 2855
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py",
+      "sha256": "cd510afc33b09e2977330ff27d1ac47fd59ae737d8e846b313b0f9a810a21be6",
+      "size_bytes": 2855
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_two_tier_planner_v1.py",
+      "sha256": "376cd98901fe50022f47c127f26914cf916ceaaf1b7ad2c2e3a9263bac8794df",
+      "size_bytes": 3194
     },
     {
       "executable": false,
@@ -7792,6 +8350,18 @@
     },
     {
       "executable": false,
+      "path": "casepath/assets/process-evidence-v2.css",
+      "sha256": "453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+      "size_bytes": 2197
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/process-evidence-v2.js",
+      "sha256": "007bc2ad438b32e265da97f33866999ed3745c35107249eafd35191d210aaa8b",
+      "size_bytes": 5389
+    },
+    {
+      "executable": false,
       "path": "casepath/assets/process-story.css",
       "sha256": "028f57c0f811924598ad3dd1c44e0a822f1835c34d8751a5ca88b866d0d2cbf2",
       "size_bytes": 9009
@@ -7835,8 +8405,8 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "a0b4d8579f1ab7375445646399893583265e4081b45107452d8b417e64535c5e",
-      "size_bytes": 23353
+      "sha256": "8bda943bed857cfc33ed07b602de1b378404e394bf016ce61b8f2d39884133c1",
+      "size_bytes": 23623
     },
     {
       "executable": false,
@@ -8027,8 +8597,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "a43a48f2cb9ee6334c18d4c76897777fcdb83f849b1d8958a92f53c4fcda1aa6",
-      "size_bytes": 9966
+      "sha256": "f8b9dfd0641f94d28ac51648fbb4cb803f9a963883f5dd7743d33e85c0a12b85",
+      "size_bytes": 10116
     },
     {
       "executable": false,
@@ -8051,7 +8621,7 @@
     {
       "executable": false,
       "path": "casepath/tools/test_build_deployment_identity.py",
-      "sha256": "8f3300d1b55927014447a93eb53c18ae2c440976b6ea2fa8ba7fd4f5a0fea3cc",
+      "sha256": "e251063aaa7cf2e4e4a5f82f59d0b9fd9bc3ba8d171973dff568e71f9e27b11b",
       "size_bytes": 9202
     },
     {

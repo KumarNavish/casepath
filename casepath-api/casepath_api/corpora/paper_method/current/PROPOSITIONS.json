@@ -1,0 +1,3082 @@
+[
+  {
+    "proposition_id": "theft-source-0001#p1",
+    "source_id": "theft-source-0001",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8 | vvg-art-41-para1-20240101-de",
+    "kind": "condition",
+    "statement": "The condition is that the insurer has received the documents needed to assess the amount of the loss and its obligation to provide benefits.",
+    "quote": "nachdem wir die benötigten Unterlagen erhalten haben, um die Höhe des Schadens und unsere Leistungspflicht zu beurteilen",
+    "party": null,
+    "governs": "assessment of the loss amount and the insurer's obligation to provide benefits"
+  },
+  {
+    "proposition_id": "theft-source-0002#p1",
+    "source_id": "theft-source-0002",
+    "citation": "svv-hausrat-2022-B2-1",
+    "kind": "condition",
+    "statement": "Losses caused by theft qualify as simple theft only if they are neither considered burglary theft nor robbery.",
+    "quote": "Schäden durch Diebstahl die weder als Einbruchdiebstahl noch als Beraubung gelten",
+    "party": null,
+    "governs": "Einfacher Diebstahl"
+  },
+  {
+    "proposition_id": "theft-source-0003#p1",
+    "source_id": "theft-source-0003",
+    "citation": "css-avb-519d-0224-cl30",
+    "kind": "condition",
+    "statement": "The compensation cannot be determined or paid because of culpable conduct by the policyholder or the beneficiary.",
+    "quote": "solange die Entschädigung aufgrund schuldhaften Verhaltens des Versicherungsnehmers oder des Anspruchsberechtigten nicht ermittelt oder ausgerichtet werden kann",
+    "party": "Versicherungsnehmer oder Anspruchsberechtigter",
+    "governs": "determination or payment of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0003#p2",
+    "source_id": "theft-source-0003",
+    "citation": "css-avb-519d-0224-cl30",
+    "kind": "dependency",
+    "statement": "CSS's payment obligation is postponed for as long as compensation cannot be determined or paid due to culpable conduct by the policyholder or beneficiary.",
+    "quote": "Die Zahlungspflicht der CSS wird aufgeschoben, solange die Entschädigung aufgrund schuldhaften Verhaltens des Versicherungsnehmers oder des Anspruchsberechtigten nicht ermittelt oder ausgerichtet werden kann.",
+    "party": "CSS",
+    "governs": "CSS payment obligation"
+  },
+  {
+    "proposition_id": "theft-source-0004#p1",
+    "source_id": "theft-source-0004",
+    "citation": "svv-hausrat-2022-E9",
+    "kind": "condition",
+    "statement": "The rule applies if the insurer rejects the indemnity claim.",
+    "quote": "Lehnt der Versicherer die Entschädigungsforderung ab",
+    "party": "Versicherer",
+    "governs": "rejection of the indemnity claim"
+  },
+  {
+    "proposition_id": "theft-source-0004#p3",
+    "source_id": "theft-source-0004",
+    "citation": "svv-hausrat-2022-E9",
+    "kind": "deadline",
+    "statement": "The claim must be asserted in court within 2 years after the occurrence of the event.",
+    "quote": "innert 2 Jahren nach Eintritt des Ereignisses",
+    "party": "Anspruchsberechtigter",
+    "governs": "judicial assertion of the indemnity claim"
+  },
+  {
+    "proposition_id": "theft-source-0004#p4",
+    "source_id": "theft-source-0004",
+    "citation": "svv-hausrat-2022-E9",
+    "kind": "dependency",
+    "statement": "If the claimant does not assert the claim in court within the stated period, the claimant loses their rights by forfeiture.",
+    "quote": "andernfalls er seine Rechte verliert (Verwirkung)",
+    "party": "Anspruchsberechtigter",
+    "governs": "rights arising from the indemnity claim"
+  },
+  {
+    "proposition_id": "theft-source-0005#p1",
+    "source_id": "theft-source-0005",
+    "citation": "svv-hausrat-2022-B2-3",
+    "kind": "condition",
+    "statement": "Damage that cannot be plausibly proven by traces, witnesses, or the circumstances is subject to the stated rule.",
+    "quote": "Schäden, die nicht durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesen werden können.",
+    "party": null,
+    "governs": "damage claims"
+  },
+  {
+    "proposition_id": "theft-source-0007#p1",
+    "source_id": "theft-source-0007",
+    "citation": "vvg-art-46-para2-20240101-de",
+    "kind": "exception",
+    "statement": "The provision of Article 39 paragraph 2 number 2 of this Act remains reserved.",
+    "quote": "Vorbehalten bleibt die Bestimmung des Artikels 39 Absatz 2 Ziffer 2 dieses Gesetzes.",
+    "party": null,
+    "governs": "the application of the provision containing this reservation"
+  },
+  {
+    "proposition_id": "theft-source-0008#p1",
+    "source_id": "theft-source-0008",
+    "citation": "css-avb-519d-0224-cl14 | css-avb-519d-0224-cl17a | css-form-15d-0826-s5",
+    "kind": "obligation",
+    "statement": "Recipient account details must be provided.",
+    "quote": "Kontoangaben des Empfängers",
+    "party": null,
+    "governs": "recipient account details"
+  },
+  {
+    "proposition_id": "theft-source-0009#p1",
+    "source_id": "theft-source-0009",
+    "citation": "axa-haushalt-1021-I3-2 | axa-haushalt-1021-I4 | css-avb-519d-0224-cl29 | generali-haushalt-2022-E13 | svv-hausrat-2022-F2 | svv-hausrat-2022-F3",
+    "kind": "allowed_action",
+    "statement": "The damage to household contents and valuables may be determined by you, by us, by a jointly appointed expert, or in proceedings by an expert assessor.",
+    "quote": "Der Schaden wird entweder durch Sie oder uns selbst, durch einen gemeinsamen Experten oder in einem Verfahren durch einen Sachverständigen festgestellt.",
+    "party": null,
+    "governs": "determination of damage to household contents and valuables"
+  },
+  {
+    "proposition_id": "theft-source-0010#p1",
+    "source_id": "theft-source-0010",
+    "citation": "css-avb-519d-0224-cl23-3d",
+    "kind": "condition",
+    "statement": "Wristwatches and pocket watches count as jewellery when their individual value exceeds CHF 5000.",
+    "quote": "Als Schmucksachen gelten auch Armband- und Taschenuhren mit Einzelwerten über CHF 5000.",
+    "party": null,
+    "governs": "the classification of wristwatches and pocket watches as jewellery"
+  },
+  {
+    "proposition_id": "theft-source-0011#p1",
+    "source_id": "theft-source-0011",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "condition",
+    "statement": "Items or animals for which compensation has already been paid are recovered.",
+    "quote": "Werden Sachen oder Tiere, für die bereits eine Entschädigung geleistet wurde, wieder beigebracht",
+    "party": null,
+    "governs": "recovered items or animals for which compensation has already been paid"
+  },
+  {
+    "proposition_id": "theft-source-0011#p2",
+    "source_id": "theft-source-0011",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The policyholder must repay the compensation to the insurer when such items or animals are recovered.",
+    "quote": "muss uns der Versicherungsnehmer die Entschädigung zurückzahlen",
+    "party": "Versicherungsnehmer",
+    "governs": "compensation already paid for recovered items or animals"
+  },
+  {
+    "proposition_id": "theft-source-0012#p1",
+    "source_id": "theft-source-0012",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "condition",
+    "statement": "The duty applies if stolen items return to the person's possession or the person receives information about them.",
+    "quote": "wenn gestohlene Sachen wieder in seinen Besitz gelangen oder er über sie Nachricht erhält",
+    "party": null,
+    "governs": "stolen items"
+  },
+  {
+    "proposition_id": "theft-source-0012#p2",
+    "source_id": "theft-source-0012",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The insurer must be informed without delay.",
+    "quote": "dem Versicherer unverzüglich mitzuteilen",
+    "party": null,
+    "governs": "the return of stolen items to possession or receipt of information about them"
+  },
+  {
+    "proposition_id": "theft-source-0013#p1",
+    "source_id": "theft-source-0013",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "condition",
+    "statement": "The insured person does not comply with the duties to cooperate in substantiating the insurance claim.",
+    "quote": "Sollten Sie den Mitwirkungspflichten zur Begründung des Versicherungsanspruches nicht nachkommen",
+    "party": "Sie",
+    "governs": "substantiation of the insurance claim"
+  },
+  {
+    "proposition_id": "theft-source-0013#p2",
+    "source_id": "theft-source-0013",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "allowed_action",
+    "statement": "If the insured person does not comply with the cooperation duties for substantiating the insurance claim, the insurer may request compliance in writing while setting a 10-day time limit.",
+    "quote": "können wir Sie schriftlich unter Ansetzung von einer Frist von 10 Tagen dazu auffordern.",
+    "party": "wir",
+    "governs": "requesting compliance with cooperation duties"
+  },
+  {
+    "proposition_id": "theft-source-0013#p3",
+    "source_id": "theft-source-0013",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "deadline",
+    "statement": "The written request may set a time limit of 10 days.",
+    "quote": "unter Ansetzung von einer Frist von 10 Tagen",
+    "party": "wir",
+    "governs": "compliance with the written request"
+  },
+  {
+    "proposition_id": "theft-source-0013#p4",
+    "source_id": "theft-source-0013",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "condition",
+    "statement": "The insured person does not comply with the written request.",
+    "quote": "Sollten Sie dieser Aufforderung nicht nachkommen",
+    "party": "Sie",
+    "governs": "the insurer's obligation to provide benefits"
+  },
+  {
+    "proposition_id": "theft-source-0013#p5",
+    "source_id": "theft-source-0013",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "exception",
+    "statement": "If the insured person does not comply with the written request, the insurer's obligation to provide benefits lapses.",
+    "quote": "Sollten Sie dieser Aufforderung nicht nachkommen, entfällt die Leistungspflicht.",
+    "party": "wir",
+    "governs": "the insurer's obligation to provide benefits"
+  },
+  {
+    "proposition_id": "theft-source-0014#p1",
+    "source_id": "theft-source-0014",
+    "citation": "css-avb-519d-0224-cl23-3",
+    "kind": "condition",
+    "statement": "The provision applies to damage caused by persons who live in the same household as the policyholder.",
+    "quote": "Schäden, verursacht durch Personen, die mit dem Versicherungsnehmer im gleichen Haushalt leben.",
+    "party": null,
+    "governs": "damage"
+  },
+  {
+    "proposition_id": "theft-source-0015#p1",
+    "source_id": "theft-source-0015",
+    "citation": "vvg-art-46-para2-20240101-de",
+    "kind": "exception",
+    "statement": "Contractual agreements that subject the claim against the insurance undertaking to a shorter limitation period or a shorter time limitation are invalid.",
+    "quote": "Vertragsabreden, die den Anspruch gegen das Versicherungsunternehmen einer kürzern Verjährung oder einer zeitlich kürzern Beschränkung unterwerfen, sind ungültig.",
+    "party": null,
+    "governs": "contractual agreements concerning claims against the insurance undertaking"
+  },
+  {
+    "proposition_id": "theft-source-0016#p1",
+    "source_id": "theft-source-0016",
+    "citation": "css-avb-519d-0224-cl23-3a",
+    "kind": "condition",
+    "statement": "Burglary theft is theft committed by perpetrators who forcibly enter a building or a room within a building and/or forcibly open a container there.",
+    "quote": "Einbruchdiebstahl ist Diebstahl durch Täter, die gewaltsam in ein Gebäude oder in den Raum eines Gebäudes eindringen und/oder darin ein Behältnis aufbrechen",
+    "party": "Täter",
+    "governs": "Einbruchdiebstahl"
+  },
+  {
+    "proposition_id": "theft-source-0017#p1",
+    "source_id": "theft-source-0017",
+    "citation": "vvg-art-38b-para2-20240101-de",
+    "kind": "exception",
+    "statement": "The insurance undertaking is not bound by the contract vis-à-vis the entitled claimant.",
+    "quote": "so ist das Versicherungsunternehmen gegenüber dem Anspruchsberechtigten an den Vertrag nicht gebunden.",
+    "party": "Versicherungsunternehmen",
+    "governs": "binding effect of the contract vis-à-vis the entitled claimant"
+  },
+  {
+    "proposition_id": "theft-source-0018#p1",
+    "source_id": "theft-source-0018",
+    "citation": "generali-haushalt-2022-F14",
+    "kind": "condition",
+    "statement": "A police or criminal investigation of the loss is being conducted and the proceedings against you or the entitled claimant have not been concluded.",
+    "quote": "wie eine polizeiliche oder strafrechtliche Untersuchung des Schadens geführt wird und das Verfahren gegen Sie oder den Anspruchsberechtigten nicht abgeschlossen ist",
+    "party": null,
+    "governs": "maturity of the payment obligation"
+  },
+  {
+    "proposition_id": "theft-source-0018#p2",
+    "source_id": "theft-source-0018",
+    "citation": "generali-haushalt-2022-F14",
+    "kind": "dependency",
+    "statement": "The insurer's payment obligation does not become due while the investigation is being conducted and the proceedings against you or the entitled claimant remain unconcluded.",
+    "quote": "Unsere Zahlungspflicht wird so lange nicht fällig, wie eine polizeiliche oder strafrechtliche Untersuchung des Schadens geführt wird und das Verfahren gegen Sie oder den Anspruchsberechtigten nicht abgeschlossen ist.",
+    "party": null,
+    "governs": "payment obligation"
+  },
+  {
+    "proposition_id": "theft-source-0019#p1",
+    "source_id": "theft-source-0019",
+    "citation": "simpego-home-1224-A5-7",
+    "kind": "obligation",
+    "statement": "You must report theft losses to the police.",
+    "quote": "Diebstahlschäden müssen Sie der Polizei anzeigen",
+    "party": "Sie",
+    "governs": "Diebstahlschäden"
+  },
+  {
+    "proposition_id": "theft-source-0019#p2",
+    "source_id": "theft-source-0019",
+    "citation": "simpego-home-1224-A5-7",
+    "kind": "dependency",
+    "statement": "Reporting theft losses to the police enables an official investigation to be conducted.",
+    "quote": "damit eine amtliche Untersuchung durchgeführt wird",
+    "party": null,
+    "governs": "amtliche Untersuchung"
+  },
+  {
+    "proposition_id": "theft-source-0020#p1",
+    "source_id": "theft-source-0020",
+    "citation": "axa-haushalt-1021-J6 | css-avb-519d-0224-cl13 | svv-hausrat-2022-E9 | vvg-art-46-para1-20240101-de | vvg-art-46-para2-20240101-de",
+    "kind": "deadline",
+    "statement": "Claims arising from the insurance contract become time-barred within five years after the occurrence of the fact giving rise to the obligation to provide benefits.",
+    "quote": "Die Forderungen aus dem Versicherungsvertrag verjähren innert fünf Jahren nach Eintritt der Tatsache, welche die Leistungspflicht begründet.",
+    "party": null,
+    "governs": "claims arising from the insurance contract"
+  },
+  {
+    "proposition_id": "theft-source-0021#p1",
+    "source_id": "theft-source-0021",
+    "citation": "css-avb-519d-0224-cl23-3d",
+    "kind": "condition",
+    "statement": "Jewellery is kept in a locked security container, namely a built-in wall safe or a safe cabinet weighing more than 100 kg.",
+    "quote": "Erfolgt die Aufbewahrung der Schmucksachen in einem abgeschlossenen Sicherheitsbehältnis (eingemauerter Wandtresor oder Kassenschrank über 100 kg)",
+    "party": null,
+    "governs": "the applicability of the benefit limitation"
+  },
+  {
+    "proposition_id": "theft-source-0021#p2",
+    "source_id": "theft-source-0021",
+    "citation": "css-avb-519d-0224-cl23-3d",
+    "kind": "exception",
+    "statement": "The benefit limitation does not apply when the jewellery is kept in the specified locked security container.",
+    "quote": "gilt diese Leistungsbegrenzung nicht.",
+    "party": null,
+    "governs": "the benefit limitation"
+  },
+  {
+    "proposition_id": "theft-source-0022#p1",
+    "source_id": "theft-source-0022",
+    "citation": "axa-haushalt-1021-D7-3-1 | css-avb-519d-0224-cl23-3a | css-avb-519d-0224-cl23-3b | css-avb-519d-0224-cl23-3c | generali-haushalt-2022-diebstahl-def | svv-hausrat-2022-B2-1",
+    "kind": "condition",
+    "statement": "Theft qualifies as burglary theft when perpetrators forcibly enter a building or a room in a building and/or break open a container inside it.",
+    "quote": "Einbruchdiebstahl ist Diebstahl durch Täter, die gewaltsam in ein Gebäude oder in den Raum eines Gebäudes eindringen und/oder darin ein Behältnis aufbrechen",
+    "party": "Täter",
+    "governs": "the classification of theft as burglary theft"
+  },
+  {
+    "proposition_id": "theft-source-0022#p2",
+    "source_id": "theft-source-0022",
+    "citation": "axa-haushalt-1021-D7-3-1 | css-avb-519d-0224-cl23-3a | css-avb-519d-0224-cl23-3b | css-avb-519d-0224-cl23-3c | generali-haushalt-2022-diebstahl-def | svv-hausrat-2022-B2-1",
+    "kind": "condition",
+    "statement": "Theft qualifies as burglary theft when it is committed by opening with the correct keys or codes, provided that the perpetrator obtained them through burglary theft or robbery.",
+    "quote": "sowie Diebstahl durch Aufschliessen mit den richtigen Schlüsseln oder Codes, sofern sich der Täter diese durch Einbruchdiebstahl oder Beraubung angeeignet hat.",
+    "party": "Täter",
+    "governs": "the classification of theft as burglary theft"
+  },
+  {
+    "proposition_id": "theft-source-0023#p1",
+    "source_id": "theft-source-0023",
+    "citation": "svv-hausrat-2022-F3",
+    "kind": "deadline",
+    "statement": "A party must appoint its expert within 14 days after being requested in writing to do so.",
+    "quote": "innert 14 Tagen, nachdem sie dazu schriftlich aufgefordert wurde",
+    "party": "eine Partei",
+    "governs": "the appointment of that party's expert"
+  },
+  {
+    "proposition_id": "theft-source-0023#p2",
+    "source_id": "theft-source-0023",
+    "citation": "svv-hausrat-2022-F3",
+    "kind": "condition",
+    "statement": "The alternative appointment process applies if a party fails to appoint its expert within the stated period after written notice.",
+    "quote": "Unterlässt eine Partei die Ernennung ihres Sachverständigen innert 14 Tagen, nachdem sie dazu schriftlich aufgefordert wurde",
+    "party": "eine Partei",
+    "governs": "appointment of the party's expert"
+  },
+  {
+    "proposition_id": "theft-source-0023#p3",
+    "source_id": "theft-source-0023",
+    "citation": "svv-hausrat-2022-F3",
+    "kind": "allowed_action",
+    "statement": "The other party may apply for appointment of the expert when the party required to appoint one fails to do so within 14 days after written notice.",
+    "quote": "auf Antrag der anderen Partei",
+    "party": "die andere Partei",
+    "governs": "appointment of the unappointed expert"
+  },
+  {
+    "proposition_id": "theft-source-0023#p4",
+    "source_id": "theft-source-0023",
+    "citation": "svv-hausrat-2022-F3",
+    "kind": "required_decision",
+    "statement": "Upon the other party's application, the competent judge appoints the expert if the party has failed to appoint its expert within 14 days after written notice.",
+    "quote": "wird er auf Antrag der anderen Partei durch den zuständigen Richter ernannt",
+    "party": "der zuständige Richter",
+    "governs": "appointment of the expert"
+  },
+  {
+    "proposition_id": "theft-source-0024#p1",
+    "source_id": "theft-source-0024",
+    "citation": "css-avb-519d-0224-cl23-3c",
+    "kind": "obligation",
+    "statement": "Separate supplementary insurance must be concluded for simple theft away from home.",
+    "quote": "Für den einfachen Diebstahl auswärts ist eine separate Zusatzversicherung abzuschliessen.",
+    "party": null,
+    "governs": "simple theft away from home"
+  },
+  {
+    "proposition_id": "theft-source-0025#p1",
+    "source_id": "theft-source-0025",
+    "citation": "css-avb-519d-0224-cl23-3",
+    "kind": "condition",
+    "statement": "Damage to household contents is covered only if it is conclusively proven by traces, witnesses, or the circumstances.",
+    "quote": "durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden am Hausrat",
+    "party": null,
+    "governs": "proof of damage to household contents"
+  },
+  {
+    "proposition_id": "theft-source-0025#p2",
+    "source_id": "theft-source-0025",
+    "citation": "css-avb-519d-0224-cl23-3",
+    "kind": "condition",
+    "statement": "Covered damage to household contents must result from burglary, robbery, or simple theft, including vandalism.",
+    "quote": "durch Einbruch, Beraubung und einfacher Diebstahl (inkl. Vandalismus)",
+    "party": null,
+    "governs": "covered causes of damage"
+  },
+  {
+    "proposition_id": "theft-source-0025#p3",
+    "source_id": "theft-source-0025",
+    "citation": "css-avb-519d-0224-cl23-3",
+    "kind": "condition",
+    "statement": "The burglary, robbery, or simple theft, including vandalism, must occur at the insured location.",
+    "quote": "am Versicherungsort",
+    "party": null,
+    "governs": "location of the covered event"
+  },
+  {
+    "proposition_id": "theft-source-0025#p4",
+    "source_id": "theft-source-0025",
+    "citation": "css-avb-519d-0224-cl23-3",
+    "kind": "exception",
+    "statement": "Damage to household contents may be covered even when nothing was stolen.",
+    "quote": "auch wenn dabei nichts entwendet wurde",
+    "party": null,
+    "governs": "coverage for damage arising from the listed theft-related events"
+  },
+  {
+    "proposition_id": "theft-source-0026#p1",
+    "source_id": "theft-source-0026",
+    "citation": "css-avb-519d-0224-cl10",
+    "kind": "allowed_action",
+    "statement": "CSS may terminate the insurance or withdraw from it if the insurance claim is fraudulently asserted, the prohibition on alterations in a loss event is breached, the insured event is intentionally caused, or there is multiple insurance.",
+    "quote": "Die CSS kann die Versicherung bei betrügerischer Begründung des Versicherungsanspruchs, bei Verletzung des Veränderungsverbotes im Schadenfall, bei absichtlicher Herbeiführung des versicherten Ereignisses und bei Mehrfachversicherung kündigen oder davon zurücktreten.",
+    "party": "CSS",
+    "governs": "termination of or withdrawal from the insurance"
+  },
+  {
+    "proposition_id": "theft-source-0027#p1",
+    "source_id": "theft-source-0027",
+    "citation": "css-avb-519d-0224-cl23-3c | css-avb-519d-0224-cl24-2 | css-avb-519d-0224-cl26 | css-form-15d-0826-s31 | svv-hausrat-2022-B2-1",
+    "kind": "obligation",
+    "statement": "The date and place of the loss must be provided or recorded.",
+    "quote": "Schadendatum /-ort",
+    "party": null,
+    "governs": "date and place of the loss"
+  },
+  {
+    "proposition_id": "theft-source-0028#p1",
+    "source_id": "theft-source-0028",
+    "citation": "css-avb-519d-0224-cl8-theft-intro",
+    "kind": "condition",
+    "statement": "The following requirements apply in the event of theft.",
+    "quote": "Bei Diebstahl",
+    "party": "Versicherungsnehmer",
+    "governs": "theft"
+  },
+  {
+    "proposition_id": "theft-source-0028#p2",
+    "source_id": "theft-source-0028",
+    "citation": "css-avb-519d-0224-cl8-theft-intro",
+    "kind": "dependency",
+    "statement": "The policyholder has additional requirements in the event of theft, but the passage does not state what they are.",
+    "quote": "hat der Versicherungsnehmer ferner:",
+    "party": "Versicherungsnehmer",
+    "governs": "theft"
+  },
+  {
+    "proposition_id": "theft-source-0029#p1",
+    "source_id": "theft-source-0029",
+    "citation": "css-avb-519d-0224-cl29d",
+    "kind": "required_decision",
+    "statement": "It must be determined whether additional insurance exists for the above-mentioned items.",
+    "quote": "Bestehen weitere Versicherungen für die obenerwähnten Sachen?",
+    "party": null,
+    "governs": "additional insurance for the above-mentioned items"
+  },
+  {
+    "proposition_id": "theft-source-0030#p1",
+    "source_id": "theft-source-0030",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The insured person must inform simpego immediately if stolen items are recovered.",
+    "quote": "Werden gestohlene Sachen wieder beigebracht, hat der Versicherte simpego unverzüglich zu informieren.",
+    "party": "der Versicherte",
+    "governs": "the recovery of stolen items"
+  },
+  {
+    "proposition_id": "theft-source-0031#p1",
+    "source_id": "theft-source-0031",
+    "citation": "svv-hausrat-2022-F3",
+    "kind": "obligation",
+    "statement": "Each party must appoint an expert in writing.",
+    "quote": "Jede Partei ernennt schriftlich einen Sachverständigen.",
+    "party": "Jede Partei",
+    "governs": "appointment of an expert"
+  },
+  {
+    "proposition_id": "theft-source-0032#p1",
+    "source_id": "theft-source-0032",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "condition",
+    "statement": "Items or animals for which compensation has already been paid are recovered.",
+    "quote": "Werden Sachen oder Tiere, für die bereits eine Entschädigung geleistet wurde, wieder beigebracht",
+    "party": null,
+    "governs": "repayment of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0032#p2",
+    "source_id": "theft-source-0032",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The policyholder must repay the compensation, less reimbursement for any repairs or depreciation.",
+    "quote": "muss uns der Versicherungsnehmer die Entschädigung zurückzahlen, abzüglich einer Vergütung für allfällige Reparaturen oder einen Minderwert.",
+    "party": "Versicherungsnehmer",
+    "governs": "compensation for recovered items or animals"
+  },
+  {
+    "proposition_id": "theft-source-0033#p1",
+    "source_id": "theft-source-0033",
+    "citation": "generali-haushalt-2022-E121",
+    "kind": "obligation",
+    "statement": "You must not make any alteration at the place of damage or to the damaged property.",
+    "quote": "Nehmen Sie am Ort des Schadens oder an der beschädigten Sache keine Veränderung vor.",
+    "party": "Sie",
+    "governs": "alterations at the place of damage or to damaged property"
+  },
+  {
+    "proposition_id": "theft-source-0033#p2",
+    "source_id": "theft-source-0033",
+    "citation": "generali-haushalt-2022-E121",
+    "kind": "allowed_action",
+    "statement": "You may make an alteration only if the police agree, if it reduces the damage, or if it is in the public interest.",
+    "quote": "Sie dürfen eine Veränderung nur dann vornehmen, wenn die Polizei zustimmt, wenn Sie damit den Schaden mindern oder wenn es im öffentlichen Interesse liegt.",
+    "party": "Sie",
+    "governs": "alterations at the place of damage or to damaged property"
+  },
+  {
+    "proposition_id": "theft-source-0033#p3",
+    "source_id": "theft-source-0033",
+    "citation": "generali-haushalt-2022-E121",
+    "kind": "condition",
+    "statement": "Police consent is one condition under which an alteration may be made.",
+    "quote": "wenn die Polizei zustimmt",
+    "party": "Sie",
+    "governs": "permission to make an alteration"
+  },
+  {
+    "proposition_id": "theft-source-0033#p4",
+    "source_id": "theft-source-0033",
+    "citation": "generali-haushalt-2022-E121",
+    "kind": "condition",
+    "statement": "Reducing the damage is one condition under which an alteration may be made.",
+    "quote": "wenn Sie damit den Schaden mindern",
+    "party": "Sie",
+    "governs": "permission to make an alteration"
+  },
+  {
+    "proposition_id": "theft-source-0033#p5",
+    "source_id": "theft-source-0033",
+    "citation": "generali-haushalt-2022-E121",
+    "kind": "condition",
+    "statement": "Public interest is one condition under which an alteration may be made.",
+    "quote": "wenn es im öffentlichen Interesse liegt",
+    "party": "Sie",
+    "governs": "permission to make an alteration"
+  },
+  {
+    "proposition_id": "theft-source-0034#p2",
+    "source_id": "theft-source-0034",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8 | vvg-art-41-para1-20240101-de",
+    "kind": "deadline",
+    "statement": "The insurance claim becomes due upon expiry of four weeks calculated from the time the insurance undertaking receives sufficient information to verify the correctness of the claim.",
+    "quote": "Die Forderung aus dem Versicherungsvertrage wird mit dem Ablaufe von vier Wochen, von dem Zeitpunkte an gerechnet, fällig",
+    "party": null,
+    "governs": "the claim under the insurance contract"
+  },
+  {
+    "proposition_id": "theft-source-0035#p1",
+    "source_id": "theft-source-0035",
+    "citation": "css-form-15d-0826-decl",
+    "kind": "obligation",
+    "statement": "The undersigned person must declare that they have answered all questions on all pages truthfully and completely.",
+    "quote": "Die unterzeichnende Person erklärt, alle Fragen auf allen Seiten wahrheitsgetreu und vollständig beantwortet zu haben.",
+    "party": "Die unterzeichnende Person",
+    "governs": "answers to all questions on all pages"
+  },
+  {
+    "proposition_id": "theft-source-0036#p1",
+    "source_id": "theft-source-0036",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "allowed_action",
+    "statement": "The insurer may request the addressee in writing to act and set a deadline of 10 days.",
+    "quote": "können wir Sie schriftlich unter Ansetzung von einer Frist von 10 Tagen dazu auffordern.",
+    "party": null,
+    "governs": "a written request to the addressee"
+  },
+  {
+    "proposition_id": "theft-source-0036#p2",
+    "source_id": "theft-source-0036",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "condition",
+    "statement": "The consequence applies if the addressee does not comply with the request.",
+    "quote": "Sollten Sie dieser Aufforderung nicht nachkommen",
+    "party": null,
+    "governs": "compliance with the written request"
+  },
+  {
+    "proposition_id": "theft-source-0036#p3",
+    "source_id": "theft-source-0036",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "exception",
+    "statement": "The insurer's obligation to provide benefits ceases if the addressee does not comply with the request.",
+    "quote": "Sollten Sie dieser Aufforderung nicht nachkommen, entfällt die Leistungspflicht.",
+    "party": null,
+    "governs": "the insurer's obligation to provide benefits"
+  },
+  {
+    "proposition_id": "theft-source-0037#p1",
+    "source_id": "theft-source-0037",
+    "citation": "axa-haushalt-1021-I3-2",
+    "kind": "obligation",
+    "statement": "The claimant must prove the amount of the damage.",
+    "quote": "Der Anspruchsberechtigte muss die Höhe des Schadens nachweisen.",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "die Höhe des Schadens"
+  },
+  {
+    "proposition_id": "theft-source-0038#p1",
+    "source_id": "theft-source-0038",
+    "citation": "vvg-art-46-para2-20240101-de",
+    "kind": "exception",
+    "statement": "The rule invalidating contractual provisions that subject claims against the insurance undertaking to a shorter limitation period or shorter time restriction is subject to Article 39 paragraph 2 number 2 of this Act.",
+    "quote": "Vorbehalten bleibt die Bestimmung des Artikels 39 Absatz 2 Ziffer 2 dieses Gesetzes.",
+    "party": null,
+    "governs": "the invalidity of contractual provisions imposing shorter limitation periods or time restrictions on claims against the insurance undertaking"
+  },
+  {
+    "proposition_id": "theft-source-0039#p1",
+    "source_id": "theft-source-0039",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "The insurer must be notified immediately.",
+    "quote": "den Versicherer sofort zu benachrichtigen;",
+    "party": null,
+    "governs": "notification of the insurer"
+  },
+  {
+    "proposition_id": "theft-source-0040#p1",
+    "source_id": "theft-source-0040",
+    "citation": "vvg-art-38-para1-20240101-de",
+    "kind": "condition",
+    "statement": "The notification duty applies if the feared event has occurred.",
+    "quote": "Ist das befürchtete Ereignis eingetreten",
+    "party": null,
+    "governs": "the occurrence of the insured feared event"
+  },
+  {
+    "proposition_id": "theft-source-0040#p2",
+    "source_id": "theft-source-0040",
+    "citation": "vvg-art-38-para1-20240101-de",
+    "kind": "obligation",
+    "statement": "The entitled claimant must notify the insurance company as soon as they become aware of the event and of their claim under the insurance.",
+    "quote": "so muss der Anspruchsberechtigte, sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt, das Versicherungsunternehmen benachrichtigen.",
+    "party": "der Anspruchsberechtigte",
+    "governs": "notification of the insurance company"
+  },
+  {
+    "proposition_id": "theft-source-0041#p1",
+    "source_id": "theft-source-0041",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8 | vvg-art-41a-para1-20240101-de | vvg-art-41a-para2-20240101-de",
+    "kind": "condition",
+    "statement": "The rule referred to as applying equally applies if it is unclear how the insurance benefit should be allocated among multiple entitled persons.",
+    "quote": "Gleiches gilt, wenn nicht geklärt ist, wie die Versicherungsleistung auf mehrere Anspruchsberechtigte aufgeteilt werden soll.",
+    "party": null,
+    "governs": "the application of the same unspecified rule"
+  },
+  {
+    "proposition_id": "theft-source-0042#p1",
+    "source_id": "theft-source-0042",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | svv-hausrat-2022-E5",
+    "kind": "condition",
+    "statement": "Underinsurance exists when assessing whether benefits may be reduced and damage is indemnified proportionally.",
+    "quote": "bei Vorliegen einer Unterversicherung",
+    "party": null,
+    "governs": "reduction of benefits and proportional indemnification"
+  },
+  {
+    "proposition_id": "theft-source-0042#p2",
+    "source_id": "theft-source-0042",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | svv-hausrat-2022-E5",
+    "kind": "allowed_action",
+    "statement": "CSS may reduce benefits if underinsurance exists.",
+    "quote": "Die CSS kann die Leistungen bei Vorliegen einer Unterversicherung kürzen",
+    "party": "CSS",
+    "governs": "benefits"
+  },
+  {
+    "proposition_id": "theft-source-0042#p3",
+    "source_id": "theft-source-0042",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | svv-hausrat-2022-E5",
+    "kind": "dependency",
+    "statement": "CSS indemnifies damage only in the ratio of the household contents basic insurance sum to the actual total value.",
+    "quote": "ersetzt den Schaden nur in dem Verhältnis, wie die Versicherungssumme für die Hausrat-Grundversicherung zum tatsächlichen Gesamtwert steht",
+    "party": "CSS",
+    "governs": "damage indemnification"
+  },
+  {
+    "proposition_id": "theft-source-0043#p1",
+    "source_id": "theft-source-0043",
+    "citation": "css-avb-519d-0224-cl8f",
+    "kind": "obligation",
+    "statement": "The police authority must be notified immediately.",
+    "quote": "die Polizeibehörde umgehend zu benachrichtigen",
+    "party": null,
+    "governs": "notification of the police authority"
+  },
+  {
+    "proposition_id": "theft-source-0043#p2",
+    "source_id": "theft-source-0043",
+    "citation": "css-avb-519d-0224-cl8f",
+    "kind": "obligation",
+    "statement": "An official investigation must be requested.",
+    "quote": "eine amtliche Untersuchung zu beantragen",
+    "party": null,
+    "governs": "requesting an official investigation"
+  },
+  {
+    "proposition_id": "theft-source-0043#p3",
+    "source_id": "theft-source-0043",
+    "citation": "css-avb-519d-0224-cl8f",
+    "kind": "condition",
+    "statement": "Police consent is required before crime-scene traces may be removed or altered.",
+    "quote": "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern",
+    "party": null,
+    "governs": "removal or alteration of crime-scene traces"
+  },
+  {
+    "proposition_id": "theft-source-0043#p4",
+    "source_id": "theft-source-0043",
+    "citation": "css-avb-519d-0224-cl8f",
+    "kind": "obligation",
+    "statement": "Crime-scene traces must not be removed or altered without police consent.",
+    "quote": "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern",
+    "party": null,
+    "governs": "crime-scene traces"
+  },
+  {
+    "proposition_id": "theft-source-0043#p5",
+    "source_id": "theft-source-0043",
+    "citation": "css-avb-519d-0224-cl8f",
+    "kind": "allowed_action",
+    "statement": "CSS may request a corresponding police report.",
+    "quote": "Ein entsprechender Polizeirapport kann durch die CSS einverlangt werden;",
+    "party": "CSS",
+    "governs": "a corresponding police report"
+  },
+  {
+    "proposition_id": "theft-source-0044#p1",
+    "source_id": "theft-source-0044",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "exception",
+    "statement": "Personal sentimental value is not compensated.",
+    "quote": "Ein persönlicher Liebhaberwert wird nicht entschädigt.",
+    "party": null,
+    "governs": "compensation for personal sentimental value"
+  },
+  {
+    "proposition_id": "theft-source-0045#p1",
+    "source_id": "theft-source-0045",
+    "citation": "axa-haushalt-1021-I3-2 | axa-haushalt-1021-I4 | css-avb-519d-0224-cl29 | generali-haushalt-2022-E13 | svv-hausrat-2022-F2 | svv-hausrat-2022-F3",
+    "kind": "obligation",
+    "statement": "The policyholder must assist CSS in determining the loss.",
+    "quote": "Die CSS ermittelt den Schaden unter Mithilfe des Versicherungsnehmers",
+    "party": "Versicherungsnehmer",
+    "governs": "determination of the loss"
+  },
+  {
+    "proposition_id": "theft-source-0045#p2",
+    "source_id": "theft-source-0045",
+    "citation": "axa-haushalt-1021-I3-2 | axa-haushalt-1021-I4 | css-avb-519d-0224-cl29 | generali-haushalt-2022-E13 | svv-hausrat-2022-F2 | svv-hausrat-2022-F3",
+    "kind": "allowed_action",
+    "statement": "CSS may determine the loss with a joint expert.",
+    "quote": "und/oder mit einem gemeinsamen Experten",
+    "party": "CSS",
+    "governs": "determination of the loss"
+  },
+  {
+    "proposition_id": "theft-source-0046#p1",
+    "source_id": "theft-source-0046",
+    "citation": "svv-hausrat-2022-F2",
+    "kind": "allowed_action",
+    "statement": "The insurer may determine which contractors must carry out the repair work.",
+    "quote": "Der Versicherer kann bestimmen, durch welche Unternehmer die Reparaturarbeiten auszuführen sind.",
+    "party": "Der Versicherer",
+    "governs": "Reparaturarbeiten"
+  },
+  {
+    "proposition_id": "theft-source-0047#p1",
+    "source_id": "theft-source-0047",
+    "citation": "css-avb-519d-0224-cl14 | css-avb-519d-0224-cl17a | css-form-15d-0826-s5",
+    "kind": "obligation",
+    "statement": "The name of the financial institution must be provided.",
+    "quote": "Name des Finanzinstituts",
+    "party": null,
+    "governs": "financial institution identification"
+  },
+  {
+    "proposition_id": "theft-source-0048#p1",
+    "source_id": "theft-source-0048",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8c | generali-haushalt-2022-unterlagen | svv-hausrat-2022-F1 | vvg-art-39-para2-20240101-de",
+    "kind": "condition",
+    "statement": "The duties apply upon request.",
+    "quote": "auf Verlangen",
+    "party": null,
+    "governs": "creating an inventory and providing original receipts"
+  },
+  {
+    "proposition_id": "theft-source-0048#p2",
+    "source_id": "theft-source-0048",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8c | generali-haushalt-2022-unterlagen | svv-hausrat-2022-F1 | vvg-art-39-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "Upon request, an inventory of the items affected by the loss, including value information, must be prepared.",
+    "quote": "ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen",
+    "party": null,
+    "governs": "items affected by the loss"
+  },
+  {
+    "proposition_id": "theft-source-0048#p3",
+    "source_id": "theft-source-0048",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8c | generali-haushalt-2022-unterlagen | svv-hausrat-2022-F1 | vvg-art-39-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "Upon request, original receipts must be provided.",
+    "quote": "Originalbelege beizubringen",
+    "party": null,
+    "governs": "original receipts"
+  },
+  {
+    "proposition_id": "theft-source-0049#p1",
+    "source_id": "theft-source-0049",
+    "citation": "css-avb-519d-0224-cl14 | css-avb-519d-0224-cl17a | css-form-15d-0826-s5",
+    "kind": "obligation",
+    "statement": "The payment recipient must be recorded.",
+    "quote": "Zahlung an",
+    "party": null,
+    "governs": "payment recipient"
+  },
+  {
+    "proposition_id": "theft-source-0050#p1",
+    "source_id": "theft-source-0050",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "condition",
+    "statement": "The relevant timing requirement is triggered as soon as the person becomes aware of the event and of their insurance claim.",
+    "quote": "sobald er von diesem Ereignisse und seinem Anspruche aus der Versicherung Kenntnis erlangt",
+    "party": null,
+    "governs": "the timing of an unspecified required action"
+  },
+  {
+    "proposition_id": "theft-source-0051#p1",
+    "source_id": "theft-source-0051",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8c | generali-haushalt-2022-unterlagen | svv-hausrat-2022-F1 | vvg-art-39-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "You must provide us, upon request, with the following information and documents to assist with the handling of the loss.",
+    "quote": "Folgende Angaben und Unterlagen müssen Sie uns auf Verlangen zur Mithilfe bei der Abwicklung des Schadens zur Verfügung stellen.",
+    "party": "Sie",
+    "governs": "the provision of information and documents for handling the loss"
+  },
+  {
+    "proposition_id": "theft-source-0052#p1",
+    "source_id": "theft-source-0052",
+    "citation": "vvg-art-39-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "The communications provided for in paragraph 1 and paragraph 2 number 1 of this article must be made within a specified reasonable period, failing which the insurance claim is lost.",
+    "quote": "dass die in Absatz 1 und Absatz 2 Ziffer 1 dieses Artikels vorgesehenen Mitteilungen, bei Verlust des Versicherungsanspruches, binnen bestimmter, angemessener Frist gemacht werden müssen.",
+    "party": null,
+    "governs": "the communications provided for in paragraph 1 and paragraph 2 number 1 of this article"
+  },
+  {
+    "proposition_id": "theft-source-0052#p2",
+    "source_id": "theft-source-0052",
+    "citation": "vvg-art-39-para2-20240101-de",
+    "kind": "deadline",
+    "statement": "The period begins on the day the insurance undertaking has requested the entitled person in writing, with warning of the consequences of default, to make those communications.",
+    "quote": "Die Frist läuft von dem Tage an, an dem das Versicherungsunternehmen den Anspruchsberechtigten, unter Androhung der Säumnisfolgen, schriftlich aufgefordert hat, diese Mitteilungen zu machen.",
+    "party": "Versicherungsunternehmen",
+    "governs": "the period for making the communications"
+  },
+  {
+    "proposition_id": "theft-source-0053#p1",
+    "source_id": "theft-source-0053",
+    "citation": "generali-haushalt-2022-E13",
+    "kind": "allowed_action",
+    "statement": "You and we may demand that such proceedings be conducted.",
+    "quote": "Sie und wir können die Durchführung eines solchen Verfahrens verlangen.",
+    "party": "Sie und wir",
+    "governs": "the conduct of such proceedings"
+  },
+  {
+    "proposition_id": "theft-source-0054#p1",
+    "source_id": "theft-source-0054",
+    "citation": "css-avb-519d-0224-cl23-3c",
+    "kind": "condition",
+    "statement": "Simple theft at the insured location is theft that is neither classified as burglary theft nor as robbery.",
+    "quote": "Einfacher Diebstahl am Versicherungsort ist Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt.",
+    "party": null,
+    "governs": "simple theft at the insured location"
+  },
+  {
+    "proposition_id": "theft-source-0055#p1",
+    "source_id": "theft-source-0055",
+    "citation": "css-avb-519d-0224-cl15 | css-form-15d-0826-s35 | css-form-15d-0826-s36 | generali-haushalt-2022-E122",
+    "kind": "condition",
+    "statement": "The rule applies if CSS has provided benefits under this contract for which the policyholder could assert claims against third parties.",
+    "quote": "Sofern die CSS aus diesem Vertrag Leistungen erbracht hat, für welche der Versicherungsnehmer gegenüber Dritten Ansprüche geltend machen könnte",
+    "party": "Versicherungsnehmer",
+    "governs": "claims against third parties corresponding to benefits provided by CSS"
+  },
+  {
+    "proposition_id": "theft-source-0055#p2",
+    "source_id": "theft-source-0055",
+    "citation": "css-avb-519d-0224-cl15 | css-form-15d-0826-s35 | css-form-15d-0826-s36 | generali-haushalt-2022-E122",
+    "kind": "obligation",
+    "statement": "The policyholder must assign to CSS their claims against third parties up to the amount of the benefits provided.",
+    "quote": "hat der Versicherungsnehmer diese Ansprüche bis zur Höhe der erbrachten Leistungen an die CSS abzutreten.",
+    "party": "Versicherungsnehmer",
+    "governs": "claims against third parties up to the amount of benefits provided by CSS"
+  },
+  {
+    "proposition_id": "theft-source-0056#p1",
+    "source_id": "theft-source-0056",
+    "citation": "svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "Take measures in cooperation with the investigating authorities and the insurer to identify the perpetrator and regain possession of the missing items.",
+    "quote": "in Zusammenarbeit mit den Untersuchungsbehörden und dem Versicherer Massnahmen zu treffen, um die Täterschaft zu ermitteln und wieder in den Besitz der abhandengekommenen Sachen zu gelangen;",
+    "party": null,
+    "governs": "identifying the perpetrator and recovering missing items"
+  },
+  {
+    "proposition_id": "theft-source-0057#p1",
+    "source_id": "theft-source-0057",
+    "citation": "generali-haushalt-2022-unterlagen | simpego-home-1224-A5-5 | vvg-art-39-para2-20240101-de",
+    "kind": "condition",
+    "statement": "The rule applies in the event of accidents involving personal injury.",
+    "quote": "Bei Unfällen mit Personenschaden",
+    "party": null,
+    "governs": "accidents involving personal injury"
+  },
+  {
+    "proposition_id": "theft-source-0057#p2",
+    "source_id": "theft-source-0057",
+    "citation": "generali-haushalt-2022-unterlagen | simpego-home-1224-A5-5 | vvg-art-39-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "The treating doctor must be released from the duty of confidentiality.",
+    "quote": "ist der behandelnde Arzt von der Schweigepflicht zu entbinden",
+    "party": null,
+    "governs": "the treating doctor’s duty of confidentiality"
+  },
+  {
+    "proposition_id": "theft-source-0058#p1",
+    "source_id": "theft-source-0058",
+    "citation": "axa-haushalt-1021-D7-3-1",
+    "kind": "condition",
+    "statement": "Theft qualifies as breakout burglary theft when it is committed by perpetrators who forcibly break out of a building or a room within a building.",
+    "quote": "Ausbruchdiebstahl, d.h. Diebstahl durch Täter, die gewaltsam aus einem Gebäude oder einem Raum eines Gebäudes ausbrechen;",
+    "party": "Täter",
+    "governs": "Ausbruchdiebstahl"
+  },
+  {
+    "proposition_id": "theft-source-0059#p1",
+    "source_id": "theft-source-0059",
+    "citation": "css-avb-519d-0224-cl10 | vvg-art-38b-para2-20240101-de",
+    "kind": "condition",
+    "statement": "The condition is that the entitled claimant breaches this duty with fraudulent intent.",
+    "quote": "Handelt der Anspruchsberechtigte dieser Pflicht in betrügerischer Absicht zuwider",
+    "party": "Anspruchsberechtigte",
+    "governs": "the insurer's contractual binding"
+  },
+  {
+    "proposition_id": "theft-source-0059#p2",
+    "source_id": "theft-source-0059",
+    "citation": "css-avb-519d-0224-cl10 | vvg-art-38b-para2-20240101-de",
+    "kind": "exception",
+    "statement": "If that condition is met, the insurance undertaking is not bound by the contract.",
+    "quote": "so ist das Versicherungsunternehmen an den Vertrag nicht gebunden.",
+    "party": "Versicherungsunternehmen",
+    "governs": "the contract"
+  },
+  {
+    "proposition_id": "theft-source-0060#p1",
+    "source_id": "theft-source-0060",
+    "citation": "css-avb-519d-0224-cl18g | css-form-15d-0826-s39 | generali-haushalt-2022-unterlagen",
+    "kind": "condition",
+    "statement": "Whether the bicycle was locked is to be determined.",
+    "quote": "War das Fahrrad abgeschlossen?",
+    "party": null,
+    "governs": "the bicycle's locked status"
+  },
+  {
+    "proposition_id": "theft-source-0062#p1",
+    "source_id": "theft-source-0062",
+    "citation": "css-avb-519d-0224-cl20",
+    "kind": "condition",
+    "statement": "The provision applies to costs arising from simple theft at home or away from home.",
+    "quote": "Kosten bei einfachem Diebstahl (zu Hause oder auswärts).",
+    "party": null,
+    "governs": "costs associated with simple theft"
+  },
+  {
+    "proposition_id": "theft-source-0063#p1",
+    "source_id": "theft-source-0063",
+    "citation": "generali-haushalt-2022-E13",
+    "kind": "obligation",
+    "statement": "You must prove the amount of the damage.",
+    "quote": "Sie müssen die Höhe des Schadens nachweisen.",
+    "party": "Sie",
+    "governs": "the amount of the damage"
+  },
+  {
+    "proposition_id": "theft-source-0064#p1",
+    "source_id": "theft-source-0064",
+    "citation": "axa-haushalt-1021-J6 | css-avb-519d-0224-cl13 | svv-hausrat-2022-E9 | vvg-art-46-para1-20240101-de | vvg-art-46-para2-20240101-de",
+    "kind": "deadline",
+    "statement": "Claims arising from the insurance contract become time-barred 5 years after the occurrence of the fact giving rise to the obligation to provide benefits.",
+    "quote": "Die Forderungen aus dem Versicherungsvertrag verjähren in 5 Jahren nach Eintritt der Tatsache, welche die Leistungspflicht begründet.",
+    "party": null,
+    "governs": "Claims arising from the insurance contract"
+  },
+  {
+    "proposition_id": "theft-source-0065#p1",
+    "source_id": "theft-source-0065",
+    "citation": "vvg-art-45-para1-20240101-de",
+    "kind": "condition",
+    "statement": "A violation must be regarded as unintentional in light of the circumstances as alternative a.",
+    "quote": "die Verletzung den Umständen nach als eine unverschuldete anzusehen ist",
+    "party": null,
+    "governs": "alternative a"
+  },
+  {
+    "proposition_id": "theft-source-0065#p2",
+    "source_id": "theft-source-0065",
+    "citation": "vvg-art-45-para1-20240101-de",
+    "kind": "prerequisite",
+    "statement": "The policyholder must prove that the violation had no influence on the occurrence of the feared event or on the extent of benefits owed by the insurance undertaking as alternative b.",
+    "quote": "der Versicherungsnehmer nachweist, dass die Verletzung keinen Einfluss auf den Eintritt des befürchteten Ereignisses und auf den Umfang der vom Versicherungsunternehmen geschuldeten Leistungen gehabt hat",
+    "party": "Versicherungsnehmer",
+    "governs": "alternative b"
+  },
+  {
+    "proposition_id": "theft-source-0065#p3",
+    "source_id": "theft-source-0065",
+    "citation": "vvg-art-45-para1-20240101-de",
+    "kind": "allowed_action",
+    "statement": "Either alternative a or alternative b may apply.",
+    "quote": "a. die Verletzung den Umständen nach als eine unverschuldete anzusehen ist; oder b. der Versicherungsnehmer nachweist",
+    "party": null,
+    "governs": "the alternatives"
+  },
+  {
+    "proposition_id": "theft-source-0066#p1",
+    "source_id": "theft-source-0066",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | svv-hausrat-2022-E8 | vvg-art-41a-para2-20240101-de",
+    "kind": "condition",
+    "statement": "There are doubts about the beneficiary's entitlement to receive payment.",
+    "quote": "Zweifel über die Berechtigung des Anspruchsberechtigten zum Zahlungsempfang bestehen",
+    "party": null,
+    "governs": "the beneficiary's entitlement to receive payment"
+  },
+  {
+    "proposition_id": "theft-source-0067#p1",
+    "source_id": "theft-source-0067",
+    "citation": "generali-haushalt-2022-diebstahl-def",
+    "kind": "prerequisite",
+    "statement": "This must be conclusively proven by traces, witnesses, or the circumstances.",
+    "quote": "wenn dies durch Spuren, Zeugen oder die Umstände schlüssig nachgewiesen wurde",
+    "party": null,
+    "governs": "proof of the referenced matter"
+  },
+  {
+    "proposition_id": "theft-source-0069#p1",
+    "source_id": "theft-source-0069",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | svv-hausrat-2022-G3 | vvg-art-45-para1-20240101-de",
+    "kind": "condition",
+    "statement": "The insured persons violate statutory or contractual duties through their own fault.",
+    "quote": "Wenn die Versicherten die gesetzlichen oder vertraglichen Pflichten aus eigener Schuld verletzen",
+    "party": "die Versicherten",
+    "governs": "reduction or cancellation of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0069#p2",
+    "source_id": "theft-source-0069",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | svv-hausrat-2022-G3 | vvg-art-45-para1-20240101-de",
+    "kind": "allowed_action",
+    "statement": "We may reduce or cancel compensation if the insured persons culpably violate statutory or contractual duties.",
+    "quote": "können wir die Entschädigung herabsetzen oder streichen.",
+    "party": "wir",
+    "governs": "die Entschädigung"
+  },
+  {
+    "proposition_id": "theft-source-0071#p1",
+    "source_id": "theft-source-0071",
+    "citation": "css-avb-519d-0224-cl18g | css-form-15d-0826-s39 | generali-haushalt-2022-unterlagen",
+    "kind": "obligation",
+    "statement": "Original purchase receipts must be enclosed for the bicycle.",
+    "quote": "Fahrrad (bitte Originalkaufbelege beilegen)",
+    "party": null,
+    "governs": "bicycle"
+  },
+  {
+    "proposition_id": "theft-source-0072#p1",
+    "source_id": "theft-source-0072",
+    "citation": "css-avb-519d-0224-cl8f",
+    "kind": "obligation",
+    "statement": "Crime-scene traces must not be removed or altered without the consent of the police.",
+    "quote": "ohne Zustimmung der Polizei die Tatspuren nicht zu entfernen oder zu verändern",
+    "party": null,
+    "governs": "Tatspuren"
+  },
+  {
+    "proposition_id": "theft-source-0073#p1",
+    "source_id": "theft-source-0073",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | svv-hausrat-2022-E5",
+    "kind": "condition",
+    "statement": "The rule applies where insurance is provided on a first-risk basis.",
+    "quote": "Bei der Versicherung auf Erstes Risiko",
+    "party": null,
+    "governs": "insurance on a first-risk basis"
+  },
+  {
+    "proposition_id": "theft-source-0073#p2",
+    "source_id": "theft-source-0073",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | svv-hausrat-2022-E5",
+    "kind": "dependency",
+    "statement": "Under first-risk insurance, loss is covered up to the agreed sum insured without calculating underinsurance.",
+    "quote": "wird der Schaden bis zur Höhe der vereinbarten Versicherungssumme ohne Berechnung einer Unterversicherung übernommen.",
+    "party": null,
+    "governs": "loss coverage"
+  },
+  {
+    "proposition_id": "theft-source-0074#p1",
+    "source_id": "theft-source-0074",
+    "citation": "css-avb-519d-0224-cl14 | css-avb-519d-0224-cl17a | css-form-15d-0826-s5",
+    "kind": "obligation",
+    "statement": "Obligations arising from the insurance policies must be performed in Switzerland and in Swiss currency.",
+    "quote": "Die Verpflichtungen aus den Versicherungen sind in der Schweiz und in schweizerischer Währung zu erfüllen.",
+    "party": null,
+    "governs": "obligations arising from the insurance policies"
+  },
+  {
+    "proposition_id": "theft-source-0075#p1",
+    "source_id": "theft-source-0075",
+    "citation": "css-avb-519d-0224-cl15 | css-form-15d-0826-s35 | css-form-15d-0826-s36 | generali-haushalt-2022-E122",
+    "kind": "obligation",
+    "statement": "The policy number or claim number must be recorded.",
+    "quote": "Policen-Nr. / Schaden-Nr.",
+    "party": null,
+    "governs": "policy number or claim number"
+  },
+  {
+    "proposition_id": "theft-source-0076#p1",
+    "source_id": "theft-source-0076",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "condition",
+    "statement": "This rule applies if the entitled claimant breaches these obligations in an inexcusable manner.",
+    "quote": "Hat der Anspruchsberechtigte diese Pflichten in nicht zu entschuldigender Weise verletzt",
+    "party": "Anspruchsberechtigte",
+    "governs": "breach of these obligations"
+  },
+  {
+    "proposition_id": "theft-source-0076#p2",
+    "source_id": "theft-source-0076",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "allowed_action",
+    "statement": "The insurance company may reduce compensation by the amount by which it would have been reduced had those obligations been fulfilled.",
+    "quote": "so ist das Versicherungsunternehmen berechtigt, die Entschädigung um den Betrag zu kürzen, um den sie sich bei Erfüllung jener Obliegenheiten vermindert hätte.",
+    "party": "Versicherungsunternehmen",
+    "governs": "compensation following an inexcusable breach of these obligations"
+  },
+  {
+    "proposition_id": "theft-source-0077#p1",
+    "source_id": "theft-source-0077",
+    "citation": "css-avb-519d-0224-cl11d",
+    "kind": "condition",
+    "statement": "The policyholder has breached the duties or obligations under sections 5, 6, 7, and 8 toward CSS for the purpose of deception.",
+    "quote": "wenn der Versicherungsnehmer die Pflichten oder Obliegenheiten gemäss den Ziffern 5, 6, 7 und 8 gegenüber der CSS zum Zwecke der Täuschung verletzt hat",
+    "party": "Versicherungsnehmer",
+    "governs": "duties or obligations under sections 5, 6, 7, and 8 toward CSS"
+  },
+  {
+    "proposition_id": "theft-source-0078#p1",
+    "source_id": "theft-source-0078",
+    "citation": "svv-hausrat-2022-E8",
+    "kind": "condition",
+    "statement": "The entitlement to request a first partial payment applies four weeks after the occurrence of the loss.",
+    "quote": "4 Wochen nach Eintritt des Schadens",
+    "party": null,
+    "governs": "requesting a first partial payment"
+  },
+  {
+    "proposition_id": "theft-source-0078#p2",
+    "source_id": "theft-source-0078",
+    "citation": "svv-hausrat-2022-E8",
+    "kind": "allowed_action",
+    "statement": "A first partial payment may be requested in the amount shown by the current status of the loss investigation.",
+    "quote": "kann eine erste Teilzahlung im Umfang des Betrags, der nach dem Stand der Schadenermittlung ausgewiesen ist, verlangt werden.",
+    "party": null,
+    "governs": "first partial payment"
+  },
+  {
+    "proposition_id": "theft-source-0079#p1",
+    "source_id": "theft-source-0079",
+    "citation": "generali-haushalt-2022-unterlagen | simpego-home-1224-A5-5 | vvg-art-39-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "A medical certificate must be provided in the event of bodily injury.",
+    "quote": "Arztzeugnis (bei Personenschaden)",
+    "party": null,
+    "governs": "bodily injury"
+  },
+  {
+    "proposition_id": "theft-source-0080#p1",
+    "source_id": "theft-source-0080",
+    "citation": "css-avb-519d-0224-cl23-3d",
+    "kind": "condition",
+    "statement": "The limitation applies to jewellery items in cases of simple theft at the insured location.",
+    "quote": "Für Schmucksachen ist die Leistung bei einfachem Diebstahl am Versicherungsort",
+    "party": null,
+    "governs": "benefits for jewellery items"
+  },
+  {
+    "proposition_id": "theft-source-0080#p2",
+    "source_id": "theft-source-0080",
+    "citation": "css-avb-519d-0224-cl23-3d",
+    "kind": "dependency",
+    "statement": "For jewellery items, the benefit for simple theft at the insured location is limited to 20% of the sum insured, with a maximum of CHF 30,000.",
+    "quote": "auf 20 % der Versicherungssumme, max. CHF 30 000 begrenzt.",
+    "party": null,
+    "governs": "benefits for jewellery items"
+  },
+  {
+    "proposition_id": "theft-source-0081#p1",
+    "source_id": "theft-source-0081",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "condition",
+    "statement": "The rule applies unless a different agreement has been made.",
+    "quote": "Ohne abweichende Vereinbarung",
+    "party": null,
+    "governs": "the deductible per loss event"
+  },
+  {
+    "proposition_id": "theft-source-0081#p2",
+    "source_id": "theft-source-0081",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "obligation",
+    "statement": "The policyholder bears a deductible of CHF 200 for each loss event.",
+    "quote": "trägt der Versicherungsnehmer einen Selbstbehalt von CHF 200 pro Schadenereignis",
+    "party": "Versicherungsnehmer",
+    "governs": "deductible per loss event"
+  },
+  {
+    "proposition_id": "theft-source-0082#p1",
+    "source_id": "theft-source-0082",
+    "citation": "generali-haushalt-2022-E11",
+    "kind": "condition",
+    "statement": "The duty applies in the event of theft or robbery, or if Generali requests it.",
+    "quote": "Bei Diebstahl, Beraubung oder auf Wunsch von Generali",
+    "party": "Sie",
+    "governs": "Wertsachenversicherung"
+  },
+  {
+    "proposition_id": "theft-source-0082#p2",
+    "source_id": "theft-source-0082",
+    "citation": "generali-haushalt-2022-E11",
+    "kind": "obligation",
+    "statement": "You must notify the police without delay.",
+    "quote": "müssen Sie unverzüglich die Polizei benachrichtigen",
+    "party": "Sie",
+    "governs": "Wertsachenversicherung"
+  },
+  {
+    "proposition_id": "theft-source-0082#p3",
+    "source_id": "theft-source-0082",
+    "citation": "generali-haushalt-2022-E11",
+    "kind": "obligation",
+    "statement": "You must request an official investigation without delay.",
+    "quote": "und eine amtliche Untersuchung beantragen",
+    "party": "Sie",
+    "governs": "Wertsachenversicherung"
+  },
+  {
+    "proposition_id": "theft-source-0083#p1",
+    "source_id": "theft-source-0083",
+    "citation": "svv-hausrat-2022-B2-3",
+    "kind": "condition",
+    "statement": "The provision applies to damage caused by persons living in the same household as the insured person.",
+    "quote": "Schäden verursacht durch Personen, die mit dem Versicherten in Hausgemeinschaft leben",
+    "party": null,
+    "governs": "damage caused by cohabitants of the insured person"
+  },
+  {
+    "proposition_id": "theft-source-0083#p2",
+    "source_id": "theft-source-0083",
+    "citation": "svv-hausrat-2022-B2-3",
+    "kind": "condition",
+    "statement": "The provision applies to damage caused by persons employed by the insured person only where their employment position enables them to access the insured premises.",
+    "quote": "oder in seinen Diensten stehen, sofern ihre dienstliche Stellung ihnen den Zutritt zu den versicherten Räumen ermöglicht.",
+    "party": null,
+    "governs": "damage caused by persons employed by the insured person"
+  },
+  {
+    "proposition_id": "theft-source-0084#p1",
+    "source_id": "theft-source-0084",
+    "citation": "simpego-home-1224-A5-6",
+    "kind": "condition",
+    "statement": "The condition is that the expected repair costs exceed CHF 500.",
+    "quote": "sofern die Kosten voraussichtlich CHF 500 übersteigen",
+    "party": null,
+    "governs": "repairs to insured property"
+  },
+  {
+    "proposition_id": "theft-source-0084#p2",
+    "source_id": "theft-source-0084",
+    "citation": "simpego-home-1224-A5-6",
+    "kind": "obligation",
+    "statement": "Repairs to insured property require simpego's consent if the expected costs exceed CHF 500.",
+    "quote": "Reparaturen an versicherten Sachen bedürfen der Zustimmung der simpego, sofern die Kosten voraussichtlich CHF 500 übersteigen.",
+    "party": null,
+    "governs": "repairs to insured property"
+  },
+  {
+    "proposition_id": "theft-source-0085#p1",
+    "source_id": "theft-source-0085",
+    "citation": "css-avb-519d-0224-cl27d",
+    "kind": "deadline",
+    "statement": "The policyholder must reimburse CSS within 30 days after becoming aware of the settlement.",
+    "quote": "der Versicherungsnehmer der CSS innert 30 Tagen, nachdem er von der Erledigung Kenntnis hat, alle von der CSS dafür geleisteten Entschädigungen zurück",
+    "party": "Versicherungsnehmer",
+    "governs": "reimbursement to CSS of compensation paid by CSS"
+  },
+  {
+    "proposition_id": "theft-source-0085#p2",
+    "source_id": "theft-source-0085",
+    "citation": "css-avb-519d-0224-cl27d",
+    "kind": "condition",
+    "statement": "If the policyholder reimburses CSS all compensation paid by CSS for the matter within 30 days after becoming aware of the settlement, the claim is treated as not having occurred and without consequences.",
+    "quote": "vergütet der Versicherungsnehmer der CSS innert 30 Tagen, nachdem er von der Erledigung Kenntnis hat, alle von der CSS dafür geleisteten Entschädigungen zurück, so wird der Schadenfall als nicht eingetreten und folgenlos betrachtet.",
+    "party": "Versicherungsnehmer",
+    "governs": "treatment of the Schadenfall"
+  },
+  {
+    "proposition_id": "theft-source-0085#p3",
+    "source_id": "theft-source-0085",
+    "citation": "css-avb-519d-0224-cl27d",
+    "kind": "required_decision",
+    "statement": "The claim must be treated as not having occurred and without consequences when the policyholder timely reimburses CSS all compensation paid by CSS for the matter.",
+    "quote": "so wird der Schadenfall als nicht eingetreten und folgenlos betrachtet.",
+    "party": null,
+    "governs": "Schadenfall"
+  },
+  {
+    "proposition_id": "theft-source-0086#p1",
+    "source_id": "theft-source-0086",
+    "citation": "svv-hausrat-2022-F1",
+    "kind": "condition",
+    "statement": "The requirement applies upon request.",
+    "quote": "auf Ersuchen",
+    "party": null,
+    "governs": "preparation of the signed inventory"
+  },
+  {
+    "proposition_id": "theft-source-0086#p2",
+    "source_id": "theft-source-0086",
+    "citation": "svv-hausrat-2022-F1",
+    "kind": "obligation",
+    "statement": "A signed inventory of the items existing before and after the event and of the damaged items, including value information, must be prepared.",
+    "quote": "ein unterzeichnetes Verzeichnis der vor und nach dem Ereignis vorhandenen und der beschädigten Sachen mit Wertangaben zu erstellen",
+    "party": null,
+    "governs": "items existing before and after the event and damaged items"
+  },
+  {
+    "proposition_id": "theft-source-0086#p3",
+    "source_id": "theft-source-0086",
+    "citation": "svv-hausrat-2022-F1",
+    "kind": "allowed_action",
+    "statement": "The insurer may set reasonable time limits.",
+    "quote": "wobei der Versicherer angemessene Fristen ansetzen kann",
+    "party": "der Versicherer",
+    "governs": "the preparation of the signed inventory"
+  },
+  {
+    "proposition_id": "theft-source-0087#p1",
+    "source_id": "theft-source-0087",
+    "citation": "axa-haushalt-1021-J5 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8 | vvg-art-41a-para1-20240101-de | vvg-art-41a-para2-20240101-de",
+    "kind": "condition",
+    "statement": "The rule applies if the insurance undertaking disputes its obligation to provide benefits and the period referred to in Article 41 paragraph 1 has expired.",
+    "quote": "Bestreitet das Versicherungsunternehmen seine Leistungspflicht, so kann die anspruchsberechtigte Person nach Ablauf der in Artikel 41 Absatz 1 genannten Frist",
+    "party": "Versicherungsunternehmen",
+    "governs": "entitlement to request advance payments"
+  },
+  {
+    "proposition_id": "theft-source-0087#p2",
+    "source_id": "theft-source-0087",
+    "citation": "axa-haushalt-1021-J5 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8 | vvg-art-41a-para1-20240101-de | vvg-art-41a-para2-20240101-de",
+    "kind": "allowed_action",
+    "statement": "After the specified period has expired, the entitled person may demand advance payments up to the amount that is undisputed.",
+    "quote": "kann die anspruchsberechtigte Person nach Ablauf der in Artikel 41 Absatz 1 genannten Frist Abschlagszahlungen bis zur Höhe des unbestrittenen Betrags verlangen.",
+    "party": "anspruchsberechtigte Person",
+    "governs": "advance payments up to the undisputed amount"
+  },
+  {
+    "proposition_id": "theft-source-0088#p1",
+    "source_id": "theft-source-0088",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl2 | css-avb-519d-0224-cl8-theft-intro | css-form-15d-0826-s1 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "allowed_action",
+    "statement": "CSS insures against the risks of fire, natural hazards, earthquakes and volcanic eruptions, water, theft, and glass breakage.",
+    "quote": "Die CSS Versicherung AG (nachfolgend «CSS» genannt) versichert die Gefahren von Feuer, Elementarereignissen, Erdbeben und vulkanischen Eruptionen, Wasser, Diebstahl sowie Glasbruch.",
+    "party": "CSS Versicherung AG",
+    "governs": "insurance coverage for the listed risks"
+  },
+  {
+    "proposition_id": "theft-source-0089#p1",
+    "source_id": "theft-source-0089",
+    "citation": "css-avb-519d-0224-cl15 | css-form-15d-0826-s35 | css-form-15d-0826-s36 | generali-haushalt-2022-E122",
+    "kind": "obligation",
+    "statement": "The name of the insurance company must be provided.",
+    "quote": "Name der Versicherungsgesellschaft",
+    "party": null,
+    "governs": "insurance company name"
+  },
+  {
+    "proposition_id": "theft-source-0090#p1",
+    "source_id": "theft-source-0090",
+    "citation": "generali-haushalt-2022-F14",
+    "kind": "deadline",
+    "statement": "A partial payment may be demanded 4 weeks after the loss occurs.",
+    "quote": "4 Wochen nach Eintritt des Schadens",
+    "party": "Sie",
+    "governs": "the timing for demanding a partial payment"
+  },
+  {
+    "proposition_id": "theft-source-0090#p2",
+    "source_id": "theft-source-0090",
+    "citation": "generali-haushalt-2022-F14",
+    "kind": "allowed_action",
+    "statement": "You may demand a partial payment equal to the minimum compensation that we must pay based on the status of the loss investigation.",
+    "quote": "können Sie eine Teilzahlung in Höhe der Entschädigung, die wir nach dem Stand der Schadenermittlung mindestens zahlen müssen, verlangen.",
+    "party": "Sie",
+    "governs": "partial payment following a loss"
+  },
+  {
+    "proposition_id": "theft-source-0090#p3",
+    "source_id": "theft-source-0090",
+    "citation": "generali-haushalt-2022-F14",
+    "kind": "dependency",
+    "statement": "The amount of the partial payment depends on the minimum compensation that must be paid according to the status of the loss investigation.",
+    "quote": "in Höhe der Entschädigung, die wir nach dem Stand der Schadenermittlung mindestens zahlen müssen",
+    "party": null,
+    "governs": "the amount of the partial payment"
+  },
+  {
+    "proposition_id": "theft-source-0091#p1",
+    "source_id": "theft-source-0091",
+    "citation": "css-avb-519d-0224-cl14 | css-avb-519d-0224-cl17a | css-form-15d-0826-s5",
+    "kind": "obligation",
+    "statement": "An IBAN must be provided or recorded.",
+    "quote": "IBAN",
+    "party": null,
+    "governs": "bank account details"
+  },
+  {
+    "proposition_id": "theft-source-0092#p1",
+    "source_id": "theft-source-0092",
+    "citation": "generali-haushalt-2022-E122",
+    "kind": "allowed_action",
+    "statement": "The issuer may request the recipient in writing to do so and set a deadline of 10 days.",
+    "quote": "können wir Sie schriftlich unter Ansetzung von einer Frist von 10 Tagen dazu auffordern",
+    "party": null,
+    "governs": null
+  },
+  {
+    "proposition_id": "theft-source-0093#p1",
+    "source_id": "theft-source-0093",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The CSS must be informed immediately if stolen items are recovered or if news about them is received.",
+    "quote": "der CSS umgehend zu melden, wenn gestohlene Sachen wieder beigebracht werden oder wenn über diese Nachricht eingeht.",
+    "party": null,
+    "governs": "recovery of stolen items or receipt of information about them"
+  },
+  {
+    "proposition_id": "theft-source-0094#p1",
+    "source_id": "theft-source-0094",
+    "citation": "css-form-15d-0826-s6",
+    "kind": "obligation",
+    "statement": "Additional information must be completed in every case.",
+    "quote": "Zusätzliche Angaben (in jedem Fall auszufüllen)",
+    "party": null,
+    "governs": "additional information"
+  },
+  {
+    "proposition_id": "theft-source-0095#p1",
+    "source_id": "theft-source-0095",
+    "citation": "axa-haushalt-1021-J5",
+    "kind": "condition",
+    "statement": "Police or investigating authorities are investigating in connection with the event, or criminal proceedings against the policyholder or entitled claimant have not been concluded.",
+    "quote": "Polizei oder Untersuchungsbehörden im Zusammenhang mit dem Ereignis ermitteln oder ein Strafverfahren gegen den Versicherungsnehmer oder Anspruchsberechtigten nicht abgeschlossen ist.",
+    "party": null,
+    "governs": "the event or criminal proceedings against the policyholder or entitled claimant"
+  },
+  {
+    "proposition_id": "theft-source-0096#p1",
+    "source_id": "theft-source-0096",
+    "citation": "simpego-home-1224-A5-2",
+    "kind": "condition",
+    "statement": "The restriction applies before the damage has been assessed.",
+    "quote": "Bevor der Schaden ermittelt ist",
+    "party": null,
+    "governs": "changes to damaged items or use of assistance services"
+  },
+  {
+    "proposition_id": "theft-source-0096#p2",
+    "source_id": "theft-source-0096",
+    "citation": "simpego-home-1224-A5-2",
+    "kind": "obligation",
+    "statement": "Before the damage is assessed, no changes may be made to damaged items and no assistance services may be used without simpego's consent, or, for travel insurance, TAS's consent.",
+    "quote": "Bevor der Schaden ermittelt ist, darf ohne Zustimmung der simpego resp. bei Reiseversicherung ohne Zustimmung der TAS an den beschädigten Gegenständen keine Veränderung vorgenommen oder Hilfeleistungen in Anspruch genommen werden.",
+    "party": null,
+    "governs": "damaged items and assistance services"
+  },
+  {
+    "proposition_id": "theft-source-0097#p1",
+    "source_id": "theft-source-0097",
+    "citation": "svv-hausrat-2022-F1",
+    "kind": "condition",
+    "statement": "The following requirements apply when an insured event occurs.",
+    "quote": "Bei Eintritt eines versicherten Ereignisses",
+    "party": null,
+    "governs": "the occurrence of an insured event"
+  },
+  {
+    "proposition_id": "theft-source-0098#p1",
+    "source_id": "theft-source-0098",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | svv-hausrat-2022-E5",
+    "kind": "exception",
+    "statement": "CSS does not apply underinsurance in the event of damage to household contents.",
+    "quote": "Die CSS verzichtet auf die Anrechnung einer Unterversicherung bei Schäden am Hausrat",
+    "party": "CSS",
+    "governs": "damage to household contents"
+  },
+  {
+    "proposition_id": "theft-source-0099#p1",
+    "source_id": "theft-source-0099",
+    "citation": "css-avb-519d-0224-cl8g",
+    "kind": "obligation",
+    "statement": "All measures suitable for discovering the perpetrator and recovering the stolen items must be taken to the best of the party's knowledge and in accordance with instructions from the police or CSS.",
+    "quote": "nach bestem Wissen und nach Anleitung der Polizei oder der CSS alle zur Entdeckung des Täters und zur Wiedererlangung der gestohlenen Sachen geeigneten Massnahmen zu treffen;",
+    "party": null,
+    "governs": "measures to discover the perpetrator and recover stolen items"
+  },
+  {
+    "proposition_id": "theft-source-0100#p1",
+    "source_id": "theft-source-0100",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "The policyholder must notify simpego without delay of all loss events, using online, email, post, or telephone.",
+    "quote": "Der Versicherungsnehmer muss simpego über alle Schadenereignisse unverzüglich online / per E-Mail / per Post / per Telefon benachrichtigen",
+    "party": "Versicherungsnehmer",
+    "governs": "notification of all loss events"
+  },
+  {
+    "proposition_id": "theft-source-0100#p2",
+    "source_id": "theft-source-0100",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "The policyholder must follow simpego's instructions.",
+    "quote": "die Weisungen von simpego befolgen",
+    "party": "Versicherungsnehmer",
+    "governs": "instructions from simpego"
+  },
+  {
+    "proposition_id": "theft-source-0101#p1",
+    "source_id": "theft-source-0101",
+    "citation": "vvg-art-39-para2-20240101-de",
+    "kind": "deadline",
+    "statement": "The period begins on the day on which the insurance undertaking has requested the entitled claimant in writing, while threatening the consequences of default, to provide those notifications.",
+    "quote": "Die Frist läuft von dem Tage an, an dem das Versicherungsunternehmen den Anspruchsberechtigten, unter Androhung der Säumnisfolgen, schriftlich aufgefordert hat, diese Mitteilungen zu machen.",
+    "party": "Versicherungsunternehmen",
+    "governs": "the commencement of the period for the notifications"
+  },
+  {
+    "proposition_id": "theft-source-0102#p1",
+    "source_id": "theft-source-0102",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "condition",
+    "statement": "Underinsurance exists when the insured sum is lower than the actual total replacement value of the insured items immediately before the loss event occurs.",
+    "quote": "Eine Unterversicherung liegt vor, wenn die Versicherungssumme niedriger ausfällt als der tatsächliche Gesamtwert (Neuwert) der versicherten Sachen unmittelbar vor Eintritt des Schadenereignisses.",
+    "party": null,
+    "governs": "the existence of underinsurance"
+  },
+  {
+    "proposition_id": "theft-source-0103#p1",
+    "source_id": "theft-source-0103",
+    "citation": "svv-hausrat-2022-F1-theft-intro",
+    "kind": "condition",
+    "statement": "The following additional requirements apply in the event of theft or robbery.",
+    "quote": "Bei Diebstahl oder Beraubung hat er zusätzlich:",
+    "party": null,
+    "governs": "additional requirements following this introduction"
+  },
+  {
+    "proposition_id": "theft-source-0104#p1",
+    "source_id": "theft-source-0104",
+    "citation": "css-avb-519d-0224-cl4",
+    "kind": "dependency",
+    "statement": "The content of the contract is determined by these General Insurance Conditions, the policy, and the statutory provisions.",
+    "quote": "Der Vertragsinhalt ergibt sich aus diesen AVB, der Police und den gesetzlichen Bestimmungen.",
+    "party": null,
+    "governs": "the content of the contract"
+  },
+  {
+    "proposition_id": "theft-source-0105#p1",
+    "source_id": "theft-source-0105",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | svv-hausrat-2022-G3 | vvg-art-45-para1-20240101-de",
+    "kind": "obligation",
+    "statement": "The insured persons, including policyholders and beneficiaries, must exercise due care.",
+    "quote": "Die Versicherten (Versicherungsnehmer und Anspruchsberechtigte) sind zur Sorgfalt verpflichtet.",
+    "party": "Die Versicherten (Versicherungsnehmer und Anspruchsberechtigte)",
+    "governs": "Sorgfalt"
+  },
+  {
+    "proposition_id": "theft-source-0106#p1",
+    "source_id": "theft-source-0106",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl29e | css-avb-519d-0224-cl8h | simpego-home-1224-A5-8 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "condition",
+    "statement": "The condition applies when stolen items are recovered or when notice concerning them is received.",
+    "quote": "wenn gestohlene Sachen wieder beigebracht werden oder wenn über diese Nachricht eingeht",
+    "party": null,
+    "governs": "recovered stolen items or notice concerning them"
+  },
+  {
+    "proposition_id": "theft-source-0107#p1",
+    "source_id": "theft-source-0107",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "CSS must be notified immediately.",
+    "quote": "die CSS umgehend zu benachrichtigen",
+    "party": null,
+    "governs": "notification of CSS"
+  },
+  {
+    "proposition_id": "theft-source-0108#p1",
+    "source_id": "theft-source-0108",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | svv-hausrat-2022-G3 | vvg-art-45-para1-20240101-de",
+    "kind": "condition",
+    "statement": "A legal disadvantage for the policyholder or beneficiary due to breach of an obligation applies only if this has been agreed.",
+    "quote": "Ist vereinbart worden, dass der Versicherungsnehmer oder der Anspruchsberechtigte wegen Verletzung einer Obliegenheit von einem Rechtsnachteil betroffen wird",
+    "party": "Versicherungsnehmer oder Anspruchsberechtigte",
+    "governs": "legal disadvantage resulting from breach of an obligation"
+  },
+  {
+    "proposition_id": "theft-source-0109#p1",
+    "source_id": "theft-source-0109",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8c | generali-haushalt-2022-unterlagen | svv-hausrat-2022-F1 | vvg-art-39-para2-20240101-de",
+    "kind": "allowed_action",
+    "statement": "The contract may provide that the entitled claimant must submit specified supporting documents that can be obtained without significant cost, including medical certificates.",
+    "quote": "Der Vertrag kann verfügen: 1. dass der Anspruchsberechtigte bestimmte Belege, deren Beschaffung ihm ohne erhebliche Kosten möglich ist, insbesondere auch ärztliche Bescheinigungen, beizubringen hat;",
+    "party": "Der Vertrag",
+    "governs": "submission of specified supporting documents by the entitled claimant"
+  },
+  {
+    "proposition_id": "theft-source-0110#p1",
+    "source_id": "theft-source-0110",
+    "citation": "axa-haushalt-1021-I3-2",
+    "kind": "obligation",
+    "statement": "A report must be filed immediately with the local police for all losses connected with theft or an attempted theft.",
+    "quote": "Bei allen Schäden im Zusammenhang mit Diebstahl oder dem Versuch dazu ist unverzüglich bei der örtlichen Polizei Anzeige zu erstatten.",
+    "party": null,
+    "governs": "all losses connected with theft or an attempted theft"
+  },
+  {
+    "proposition_id": "theft-source-0111#p1",
+    "source_id": "theft-source-0111",
+    "citation": "axa-haushalt-1021-I4",
+    "kind": "deadline",
+    "statement": "A party must appoint its expert within 14 days after being requested in writing to do so.",
+    "quote": "Ernennung ihres Sachverständigen innert 14 Tagen, nachdem sie dazu schriftlich aufgefordert wurde",
+    "party": "eine Partei",
+    "governs": "appointment of that party's expert"
+  },
+  {
+    "proposition_id": "theft-source-0111#p2",
+    "source_id": "theft-source-0111",
+    "citation": "axa-haushalt-1021-I4",
+    "kind": "condition",
+    "statement": "The replacement appointment procedure applies if a party fails to appoint its expert within 14 days after a written request.",
+    "quote": "Unterlässt eine Partei die Ernennung ihres Sachverständigen innert 14 Tagen, nachdem sie dazu schriftlich aufgefordert wurde",
+    "party": "eine Partei",
+    "governs": "appointment of that party's expert"
+  },
+  {
+    "proposition_id": "theft-source-0111#p3",
+    "source_id": "theft-source-0111",
+    "citation": "axa-haushalt-1021-I4",
+    "kind": "allowed_action",
+    "statement": "The other party may apply for appointment of the expert when the party concerned fails to make the appointment in time.",
+    "quote": "auf Antrag der anderen Partei",
+    "party": "die andere Partei",
+    "governs": "appointment of the expert"
+  },
+  {
+    "proposition_id": "theft-source-0111#p4",
+    "source_id": "theft-source-0111",
+    "citation": "axa-haushalt-1021-I4",
+    "kind": "required_decision",
+    "statement": "Upon the other party's application, the competent judge appoints the expert if the party concerned fails to appoint its expert in time after written request.",
+    "quote": "wird dieser auf Antrag der anderen Partei durch den zuständigen Richter ernannt",
+    "party": "der zuständige Richter",
+    "governs": "appointment of the expert"
+  },
+  {
+    "proposition_id": "theft-source-0112#p1",
+    "source_id": "theft-source-0112",
+    "citation": "simpego-home-1224-A5-4",
+    "kind": "obligation",
+    "statement": "All information about the loss event and all facts that influence the determination of the circumstances of the loss must be communicated completely, factually correctly, in good time, and voluntarily.",
+    "quote": "Alle Angaben zum Schadenfall und sämtliche Tatsachen, die die Feststellung der Schadenumstände beeinflussen, sind vollständig, inhaltlich korrekt, rechtzeitig und freiwillig mitzuteilen.",
+    "party": null,
+    "governs": "information about the loss event and facts influencing the determination of the loss circumstances"
+  },
+  {
+    "proposition_id": "theft-source-0112#p2",
+    "source_id": "theft-source-0112",
+    "citation": "simpego-home-1224-A5-4",
+    "kind": "obligation",
+    "statement": "The same duty applies to statements made to the police, authorities, experts, and doctors.",
+    "quote": "Dies gilt auch für Aussagen gegenüber Polizei, Behörden, Sachverständigen und Ärzten.",
+    "party": null,
+    "governs": "statements to police, authorities, experts, and doctors"
+  },
+  {
+    "proposition_id": "theft-source-0113#p1",
+    "source_id": "theft-source-0113",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8f | simpego-home-1224-A5-7 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The police must be notified without delay.",
+    "quote": "die Polizei unverzüglich zu benachrichtigen",
+    "party": null,
+    "governs": "notification of the police"
+  },
+  {
+    "proposition_id": "theft-source-0113#p2",
+    "source_id": "theft-source-0113",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8f | simpego-home-1224-A5-7 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "An official investigation must be requested.",
+    "quote": "eine amtliche Untersuchung zu beantragen",
+    "party": null,
+    "governs": "requesting an official investigation"
+  },
+  {
+    "proposition_id": "theft-source-0114#p1",
+    "source_id": "theft-source-0114",
+    "citation": "css-avb-519d-0224-cl15 | css-form-15d-0826-s35 | css-form-15d-0826-s36 | generali-haushalt-2022-E122",
+    "kind": "obligation",
+    "statement": "The person who caused the damage must be identified or recorded.",
+    "quote": "Wer hat den Schaden verursacht?",
+    "party": null,
+    "governs": "the person responsible for causing the damage"
+  },
+  {
+    "proposition_id": "theft-source-0116#p1",
+    "source_id": "theft-source-0116",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "The entitled claimant must, after the feared event occurs, take reasonable steps to mitigate the damage.",
+    "quote": "Der Anspruchsberechtigte ist verpflichtet, nach Eintritt des befürchteten Ereignisses tunlichst für Minderung des Schadens zu sorgen.",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "damage mitigation after the feared event occurs"
+  },
+  {
+    "proposition_id": "theft-source-0116#p2",
+    "source_id": "theft-source-0116",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "condition",
+    "statement": "The duty to mitigate damage applies after the feared event occurs.",
+    "quote": "nach Eintritt des befürchteten Ereignisses",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "the damage-mitigation duty"
+  },
+  {
+    "proposition_id": "theft-source-0116#p3",
+    "source_id": "theft-source-0116",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "The entitled claimant must obtain and follow the insurer's instructions concerning measures to be taken, unless there is imminent danger.",
+    "quote": "Er muss, wenn nicht Gefahr im Verzug liegt, über die zu ergreifenden Massnahmen die Weisung des Versicherungsunternehmens einholen und befolgen.",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "measures to be taken after the feared event"
+  },
+  {
+    "proposition_id": "theft-source-0116#p4",
+    "source_id": "theft-source-0116",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "exception",
+    "statement": "The requirement to obtain and follow the insurer's instructions does not apply where there is imminent danger.",
+    "quote": "wenn nicht Gefahr im Verzug liegt",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "the duty to obtain and follow the insurer's instructions"
+  },
+  {
+    "proposition_id": "theft-source-0117#p1",
+    "source_id": "theft-source-0117",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "dependency",
+    "statement": "CSS calculates compensation based on the replacement value of the insured items immediately before the loss event, minus their residual value (depreciation).",
+    "quote": "Die CSS berechnet die Entschädigung aufgrund des Ersatzwertes der versicherten Sachen unmittelbar vor Eintritt des Schadenereignisses, abzüglich des Restwertes (Wertverminderung).",
+    "party": "CSS",
+    "governs": "calculation of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0118#p1",
+    "source_id": "theft-source-0118",
+    "citation": "axa-haushalt-1021-I4",
+    "kind": "condition",
+    "statement": "The rule applies to findings made by experts within the scope of their authority.",
+    "quote": "Die Feststellungen, welche die Sachverständigen im Rahmen ihrer Zuständigkeit treffen",
+    "party": "Sachverständigen",
+    "governs": "findings made by experts"
+  },
+  {
+    "proposition_id": "theft-source-0118#p2",
+    "source_id": "theft-source-0118",
+    "citation": "axa-haushalt-1021-I4",
+    "kind": "required_decision",
+    "statement": "Experts' findings are binding.",
+    "quote": "sind verbindlich",
+    "party": null,
+    "governs": "findings made by experts within the scope of their authority"
+  },
+  {
+    "proposition_id": "theft-source-0118#p3",
+    "source_id": "theft-source-0118",
+    "citation": "axa-haushalt-1021-I4",
+    "kind": "exception",
+    "statement": "The binding effect does not apply if a party proves that the findings materially deviate from the actual facts.",
+    "quote": "es sei denn, eine Partei weise nach, dass die Feststellungen von der wirklichen Sachlage erheblich abweichen",
+    "party": "eine Partei",
+    "governs": "the binding effect of experts' findings"
+  },
+  {
+    "proposition_id": "theft-source-0118#p4",
+    "source_id": "theft-source-0118",
+    "citation": "axa-haushalt-1021-I4",
+    "kind": "prerequisite",
+    "statement": "To displace the binding effect, a party must prove that the findings materially deviate from the actual facts.",
+    "quote": "eine Partei weise nach, dass die Feststellungen von der wirklichen Sachlage erheblich abweichen",
+    "party": "eine Partei",
+    "governs": "displacing the binding effect of experts' findings"
+  },
+  {
+    "proposition_id": "theft-source-0119#p1",
+    "source_id": "theft-source-0119",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "In the event of a loss, the entitled claimant must inform AXA or service providers authorized and identified by AXA without delay.",
+    "quote": "Der Anspruchsberechtigte muss im Schadenfall die AXA oder von ihr autorisierte und ausgewiesene Dienstleister/Provider unverzüglich informieren.",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "notification of AXA or AXA-authorized and identified service providers in the event of a loss"
+  },
+  {
+    "proposition_id": "theft-source-0120#p1",
+    "source_id": "theft-source-0120",
+    "citation": "vvg-art-39-para1-20240101-de",
+    "kind": "obligation",
+    "statement": "Upon request by the insurance undertaking, the entitled claimant must provide every piece of information about facts known to them that is useful for determining the circumstances in which the feared event occurred or for establishing the consequences of the event.",
+    "quote": "Der Anspruchsberechtigte muss auf Begehren des Versicherungsunternehmens jede Auskunft über solche ihm bekannte Tatsachen erteilen, die zur Ermittlung der Umstände, unter denen das befürchtete Ereignis eingetreten ist, oder zur Feststellung der Folgen des Ereignisses dienlich sind.",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "information about known facts useful for determining the circumstances of the event or its consequences"
+  },
+  {
+    "proposition_id": "theft-source-0121#p1",
+    "source_id": "theft-source-0121",
+    "citation": "svv-hausrat-2022-F2",
+    "kind": "allowed_action",
+    "statement": "Either party may request that the expert procedure under F3 be carried out.",
+    "quote": "Jede Partei kann die Durchführung des Sachverständigenverfahrens gemäss F3 verlangen.",
+    "party": "Jede Partei",
+    "governs": "die Durchführung des Sachverständigenverfahrens gemäss F3"
+  },
+  {
+    "proposition_id": "theft-source-0122#p1",
+    "source_id": "theft-source-0122",
+    "citation": "svv-hausrat-2022-B2-1",
+    "kind": "condition",
+    "statement": "The provision applies to losses occurring outside the locations designated in the policy, worldwide.",
+    "quote": "auswärts, d.h. Schäden ausserhalb der in der Police bezeichneten Standorte auf der ganzen Welt;",
+    "party": null,
+    "governs": "losses occurring away from the locations designated in the policy"
+  },
+  {
+    "proposition_id": "theft-source-0123#p1",
+    "source_id": "theft-source-0123",
+    "citation": "css-avb-519d-0224-cl18g | css-form-15d-0826-s39 | generali-haushalt-2022-unterlagen",
+    "kind": "obligation",
+    "statement": "A detailed cost estimate with a photo of the damaged or stolen bicycle or part must be provided.",
+    "quote": "Detaillierter Kostenvoranschlag (mit Foto des beschädigten oder gestohlenen Fahrrads oder Teils)",
+    "party": null,
+    "governs": "evidence for a damaged or stolen bicycle or part"
+  },
+  {
+    "proposition_id": "theft-source-0124#p1",
+    "source_id": "theft-source-0124",
+    "citation": "generali-haushalt-2022-diebstahl-def",
+    "kind": "condition",
+    "statement": "Household contents losses are insured if they were caused by the following events.",
+    "quote": "Versichert sind Schäden am Hausrat, wenn sie durch folgende Ereignisse verursacht wurden",
+    "party": null,
+    "governs": "insurance coverage for household contents losses"
+  },
+  {
+    "proposition_id": "theft-source-0124#p2",
+    "source_id": "theft-source-0124",
+    "citation": "generali-haushalt-2022-diebstahl-def",
+    "kind": "prerequisite",
+    "statement": "The occurrence must be plausibly proven by traces, witnesses, or the circumstances.",
+    "quote": "wenn dies durch Spuren, Zeugen oder die Umstände schlüssig nachgewiesen wurde",
+    "party": null,
+    "governs": "insurance coverage for household contents losses"
+  },
+  {
+    "proposition_id": "theft-source-0125#p1",
+    "source_id": "theft-source-0125",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8",
+    "kind": "condition",
+    "statement": "A police or criminal investigation is being conducted because of the loss, and proceedings against the policyholder or entitled claimant have not been concluded.",
+    "quote": "eine polizeiliche oder strafrechtliche Untersuchung wegen des Schadens geführt wird und das Verfahren gegen den Versicherungsnehmer oder Anspruchsberechtigten nicht abgeschlossen ist",
+    "party": null,
+    "governs": "the status of the investigation and proceedings concerning the loss"
+  },
+  {
+    "proposition_id": "theft-source-0126#p1",
+    "source_id": "theft-source-0126",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "exception",
+    "statement": "The disadvantage does not occur if the breach is considered non-culpable in the circumstances.",
+    "quote": "so tritt dieser Nachteil nicht ein, wenn: a. die Verletzung den Umständen nach als eine unverschuldete anzusehen ist",
+    "party": null,
+    "governs": "the disadvantage resulting from a breach"
+  },
+  {
+    "proposition_id": "theft-source-0126#p2",
+    "source_id": "theft-source-0126",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "exception",
+    "statement": "The disadvantage does not occur if the policyholder proves that the breach had no effect on the occurrence of the feared event or on the extent of benefits owed by the insurer.",
+    "quote": "b. der Versicherungsnehmer nachweist, dass die Verletzung keinen Einfluss auf den Eintritt des befürchteten Ereignisses und auf den Umfang der vom Versicherungsunternehmen geschuldeten Leistungen gehabt hat.",
+    "party": "Versicherungsnehmer",
+    "governs": "the disadvantage resulting from a breach"
+  },
+  {
+    "proposition_id": "theft-source-0126#p3",
+    "source_id": "theft-source-0126",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "prerequisite",
+    "statement": "To invoke the no-disadvantage exception under letter b, the policyholder must prove that the breach had no effect on the occurrence of the feared event and on the extent of benefits owed by the insurer.",
+    "quote": "der Versicherungsnehmer nachweist, dass die Verletzung keinen Einfluss auf den Eintritt des befürchteten Ereignisses und auf den Umfang der vom Versicherungsunternehmen geschuldeten Leistungen gehabt hat.",
+    "party": "Versicherungsnehmer",
+    "governs": "the exception in letter b"
+  },
+  {
+    "proposition_id": "theft-source-0127#p1",
+    "source_id": "theft-source-0127",
+    "citation": "svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The police must be notified without delay.",
+    "quote": "die Polizei unverzüglich zu benachrichtigen",
+    "party": null,
+    "governs": "theft incident reporting"
+  },
+  {
+    "proposition_id": "theft-source-0127#p2",
+    "source_id": "theft-source-0127",
+    "citation": "svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "An official investigation must be requested.",
+    "quote": "eine amtliche Untersuchung zu beantragen",
+    "party": null,
+    "governs": "theft incident investigation"
+  },
+  {
+    "proposition_id": "theft-source-0127#p3",
+    "source_id": "theft-source-0127",
+    "citation": "svv-hausrat-2022-F1-theft-intro",
+    "kind": "condition",
+    "statement": "Authorities' consent is required before crime-scene traces may be removed or altered.",
+    "quote": "ohne Zustimmung der Behörden die Tatspuren nicht zu entfernen oder zu verändern",
+    "party": null,
+    "governs": "crime-scene traces"
+  },
+  {
+    "proposition_id": "theft-source-0127#p4",
+    "source_id": "theft-source-0127",
+    "citation": "svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "Crime-scene traces must not be removed or altered without authorities' consent.",
+    "quote": "ohne Zustimmung der Behörden die Tatspuren nicht zu entfernen oder zu verändern",
+    "party": null,
+    "governs": "crime-scene traces"
+  },
+  {
+    "proposition_id": "theft-source-0128#p1",
+    "source_id": "theft-source-0128",
+    "citation": "svv-hausrat-2022-F1",
+    "kind": "allowed_action",
+    "statement": "The insurer may set reasonable time limits.",
+    "quote": "der Versicherer angemessene Fristen ansetzen kann",
+    "party": "der Versicherer",
+    "governs": "angemessene Fristen"
+  },
+  {
+    "proposition_id": "theft-source-0129#p1",
+    "source_id": "theft-source-0129",
+    "citation": "css-avb-519d-0224-cl14 | css-avb-519d-0224-cl17a | css-form-15d-0826-s5",
+    "kind": "allowed_action",
+    "statement": "The policyholder may assign benefit claims against CSS to third parties only with CSS's written consent.",
+    "quote": "Leistungsansprüche gegenüber der CSS darf der Versicherungsnehmer nur mit schriftlicher Zustimmung der CSS an Dritte abtreten.",
+    "party": "Versicherungsnehmer",
+    "governs": "assignment of benefit claims against CSS to third parties"
+  },
+  {
+    "proposition_id": "theft-source-0130#p1",
+    "source_id": "theft-source-0130",
+    "citation": "css-avb-519d-0224-cl15 | css-form-15d-0826-s35 | css-form-15d-0826-s36 | generali-haushalt-2022-E122",
+    "kind": "required_decision",
+    "statement": "It must be determined whether liability insurance exists.",
+    "quote": "Besteht eine Haftpflicht-Versicherung?",
+    "party": null,
+    "governs": "the existence of liability insurance"
+  },
+  {
+    "proposition_id": "theft-source-0131#p1",
+    "source_id": "theft-source-0131",
+    "citation": "vvg-art-46-para1-20240101-de",
+    "kind": "deadline",
+    "statement": "Claims arising from the insurance contract become time-barred five years after the occurrence of the fact that establishes the obligation to provide benefits.",
+    "quote": "Die Forderungen aus dem Versicherungsvertrag verjähren unter Vorbehalt von Absatz 3 fünf Jahre nach Eintritt der Tatsache, welche die Leistungspflicht begründet.",
+    "party": null,
+    "governs": "claims arising from the insurance contract"
+  },
+  {
+    "proposition_id": "theft-source-0131#p2",
+    "source_id": "theft-source-0131",
+    "citation": "vvg-art-46-para1-20240101-de",
+    "kind": "exception",
+    "statement": "The five-year limitation rule is subject to paragraph 3.",
+    "quote": "unter Vorbehalt von Absatz 3",
+    "party": null,
+    "governs": "the limitation period for claims arising from the insurance contract"
+  },
+  {
+    "proposition_id": "theft-source-0133#p1",
+    "source_id": "theft-source-0133",
+    "citation": "vvg-art-40-20240101-de",
+    "kind": "condition",
+    "statement": "Information is reported inaccurately or concealed for the purpose of deception.",
+    "quote": "zum Zwecke der Täuschung unrichtig mitgeteilt oder verschwiegen",
+    "party": null,
+    "governs": "deceptive misrepresentation or concealment"
+  },
+  {
+    "proposition_id": "theft-source-0134#p1",
+    "source_id": "theft-source-0134",
+    "citation": "css-avb-519d-0224-cl8c",
+    "kind": "condition",
+    "statement": "The duties apply upon request.",
+    "quote": "auf Verlangen",
+    "party": null,
+    "governs": "preparation of an itemized list and provision of original receipts"
+  },
+  {
+    "proposition_id": "theft-source-0134#p2",
+    "source_id": "theft-source-0134",
+    "citation": "css-avb-519d-0224-cl8c",
+    "kind": "obligation",
+    "statement": "Upon request, a list of the items affected by the loss, including value information, must be prepared.",
+    "quote": "ein Verzeichnis der vom Schaden betroffenen Sachen mit Wertangaben zu erstellen",
+    "party": null,
+    "governs": "items affected by the loss"
+  },
+  {
+    "proposition_id": "theft-source-0134#p3",
+    "source_id": "theft-source-0134",
+    "citation": "css-avb-519d-0224-cl8c",
+    "kind": "obligation",
+    "statement": "Upon request, original receipts must be provided.",
+    "quote": "Originalbelege beizubringen",
+    "party": null,
+    "governs": "original receipts"
+  },
+  {
+    "proposition_id": "theft-source-0136#p1",
+    "source_id": "theft-source-0136",
+    "citation": "svv-hausrat-2022-F1",
+    "kind": "obligation",
+    "statement": "Damaged items must not be altered or disposed of for the purpose of determining the cause and amount of damage.",
+    "quote": "im Hinblick auf die Feststellung von Schadenursache und -höhe keine beschädigten Sachen zu verändern oder zu entsorgen",
+    "party": null,
+    "governs": "damaged items"
+  },
+  {
+    "proposition_id": "theft-source-0136#p2",
+    "source_id": "theft-source-0136",
+    "citation": "svv-hausrat-2022-F1",
+    "kind": "exception",
+    "statement": "The prohibition on altering or disposing of damaged items does not apply where loss mitigation or public interests take precedence.",
+    "quote": "sofern nicht die Schadenminderung oder öffentliche Interessen vorgehen",
+    "party": null,
+    "governs": "the prohibition on altering or disposing of damaged items"
+  },
+  {
+    "proposition_id": "theft-source-0137#p1",
+    "source_id": "theft-source-0137",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "condition",
+    "statement": "A culpable breach of regulations, duties of care, or obligations is relevant where it influenced the occurrence, extent, or determination of the loss.",
+    "quote": "Bei schuldhafter Verletzung von Vorschriften, Sorgfaltspflichten oder von Obliegenheiten kann die Entschädigung in dem Ausmass herabgesetzt werden oder gänzlich entfallen, als dadurch Eintritt, Ausmass oder Feststellung des Schadens beeinflusst wurde.",
+    "party": null,
+    "governs": "reduction or loss of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0137#p2",
+    "source_id": "theft-source-0137",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "allowed_action",
+    "statement": "Compensation may be reduced, or may be entirely denied, to the extent that a culpable breach influenced the occurrence, extent, or determination of the loss.",
+    "quote": "kann die Entschädigung in dem Ausmass herabgesetzt werden oder gänzlich entfallen, als dadurch Eintritt, Ausmass oder Feststellung des Schadens beeinflusst wurde.",
+    "party": null,
+    "governs": "compensation"
+  },
+  {
+    "proposition_id": "theft-source-0137#p3",
+    "source_id": "theft-source-0137",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "exception",
+    "statement": "No reduction is made if the entitled claimant proves that the conduct did not influence the loss.",
+    "quote": "Keine Kürzung erfolgt, wenn der Anspruchsberechtigte beweist, dass das Verhalten den Schaden nicht beeinflusst hat.",
+    "party": "der Anspruchsberechtigte",
+    "governs": "reduction of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0137#p4",
+    "source_id": "theft-source-0137",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "prerequisite",
+    "statement": "To prevent a reduction under this exception, the entitled claimant must prove that the conduct did not influence the loss.",
+    "quote": "wenn der Anspruchsberechtigte beweist, dass das Verhalten den Schaden nicht beeinflusst hat",
+    "party": "der Anspruchsberechtigte",
+    "governs": "no reduction of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0138#p1",
+    "source_id": "theft-source-0138",
+    "citation": "axa-haushalt-1021-D7-3-1 | css-avb-519d-0224-cl23-3a | css-avb-519d-0224-cl23-3b | css-avb-519d-0224-cl23-3c | generali-haushalt-2022-diebstahl-def | svv-hausrat-2022-B2-1",
+    "kind": "condition",
+    "statement": "Robbery includes theft committed under the threat and/or use of violence against the policyholder or persons living in the same household.",
+    "quote": "Beraubung ist Diebstahl unter Androhung und/oder Anwendung von Gewalt gegen den Versicherungsnehmer und die mit ihm im gleichen Haushalt lebenden Personen",
+    "party": null,
+    "governs": "the classification of theft as robbery"
+  },
+  {
+    "proposition_id": "theft-source-0138#p2",
+    "source_id": "theft-source-0138",
+    "citation": "axa-haushalt-1021-D7-3-1 | css-avb-519d-0224-cl23-3a | css-avb-519d-0224-cl23-3b | css-avb-519d-0224-cl23-3c | generali-haushalt-2022-diebstahl-def | svv-hausrat-2022-B2-1",
+    "kind": "condition",
+    "statement": "Robbery includes theft where the victim is unable to resist because of unconsciousness, an accident, or death.",
+    "quote": "sowie Diebstahl bei Unfähigkeit zum Widerstand infolge Ohnmacht, Unfall oder Tod.",
+    "party": null,
+    "governs": "the classification of theft as robbery"
+  },
+  {
+    "proposition_id": "theft-source-0139#p1",
+    "source_id": "theft-source-0139",
+    "citation": "svv-hausrat-2022-F2",
+    "kind": "prerequisite",
+    "statement": "Proof of the existence and value of the insured items at the time of the event cannot be established by the police and the insured sum.",
+    "quote": "Police und Versicherungssumme sind kein Beweis für das Vorhandensein und den Wert der versicherten Sachen bei Eintritt des Ereignisses.",
+    "party": null,
+    "governs": "proof of the existence and value of insured items at the time of the event"
+  },
+  {
+    "proposition_id": "theft-source-0140#p1",
+    "source_id": "theft-source-0140",
+    "citation": "css-avb-519d-0224-cl29a",
+    "kind": "obligation",
+    "statement": "The policyholder must prove the amount of the loss.",
+    "quote": "Der Versicherungsnehmer muss die Schadenhöhe beweisen.",
+    "party": "Der Versicherungsnehmer",
+    "governs": "die Schadenhöhe"
+  },
+  {
+    "proposition_id": "theft-source-0142#p1",
+    "source_id": "theft-source-0142",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "condition",
+    "statement": "The entitled claimant must have culpably breached the duty to give notice.",
+    "quote": "Hat der Anspruchsberechtigte die Anzeigepflicht schuldhafterweise verletzt",
+    "party": "Anspruchsberechtigte",
+    "governs": "the insurer's right to reduce compensation"
+  },
+  {
+    "proposition_id": "theft-source-0142#p2",
+    "source_id": "theft-source-0142",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "allowed_action",
+    "statement": "The insurance undertaking may reduce the compensation by the amount by which it would have been reduced if notice had been given in time.",
+    "quote": "so ist das Versicherungsunternehmen befugt, die Entschädigung um den Betrag zu kürzen, um den sie sich bei rechtzeitiger Anzeige gemindert haben würde.",
+    "party": "Versicherungsunternehmen",
+    "governs": "compensation following a culpable breach of the duty to give notice"
+  },
+  {
+    "proposition_id": "theft-source-0143#p1",
+    "source_id": "theft-source-0143",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "allowed_action",
+    "statement": "The contract may provide that the notice must be submitted in writing.",
+    "quote": "Der Vertrag kann verfügen, dass die Anzeige schriftlich erstattet werden muss.",
+    "party": null,
+    "governs": "the form in which the notice is submitted"
+  },
+  {
+    "proposition_id": "theft-source-0144#p1",
+    "source_id": "theft-source-0144",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "condition",
+    "statement": "Underinsurance exists if the insured sum is lower than the replacement value.",
+    "quote": "Ist die Versicherungssumme niedriger als der Ersatzwert (Unterversicherung)",
+    "party": null,
+    "governs": "underinsurance"
+  },
+  {
+    "proposition_id": "theft-source-0144#p2",
+    "source_id": "theft-source-0144",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "dependency",
+    "statement": "If there is underinsurance, the loss is compensated only in the ratio of the insured sum to the replacement value.",
+    "quote": "wird der Schaden nur im Verhältnis ersetzt, in dem die Versicherungssumme zum Ersatzwert steht.",
+    "party": null,
+    "governs": "compensation for loss under underinsurance"
+  },
+  {
+    "proposition_id": "theft-source-0145#p1",
+    "source_id": "theft-source-0145",
+    "citation": "css-avb-519d-0224-cl28e",
+    "kind": "condition",
+    "statement": "An activated and permanently installed alarm system must be present for the no-deductible rule to apply to burglary theft.",
+    "quote": "Bei Vorhandensein einer aktivierten und festinstallierten Alarmanlage",
+    "party": null,
+    "governs": "application of the deductible rule for burglary theft"
+  },
+  {
+    "proposition_id": "theft-source-0145#p2",
+    "source_id": "theft-source-0145",
+    "citation": "css-avb-519d-0224-cl28e",
+    "kind": "exception",
+    "statement": "No deductible is deducted in the event of burglary theft when an activated and permanently installed alarm system is present.",
+    "quote": "wird bei Einbruchdiebstahl kein Selbstbehalt in Abzug gebracht.",
+    "party": null,
+    "governs": "deductible for burglary theft"
+  },
+  {
+    "proposition_id": "theft-source-0146#p1",
+    "source_id": "theft-source-0146",
+    "citation": "axa-haushalt-1021-D7-3",
+    "kind": "condition",
+    "statement": "Damage to household contents is included if it is conclusively proven by traces, witnesses, or the circumstances.",
+    "quote": "durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden an Hausrat",
+    "party": null,
+    "governs": "damage to household contents"
+  },
+  {
+    "proposition_id": "theft-source-0147#p1",
+    "source_id": "theft-source-0147",
+    "citation": "generali-haushalt-2022-unterlagen",
+    "kind": "obligation",
+    "statement": "A list of the existing or affected items must be provided, including their value before and after the loss.",
+    "quote": "Verzeichnis der vorhandenen respektive betroffenen Sachen inklusive Angabe des Werts vor und nach dem Schaden.",
+    "party": null,
+    "governs": "household contents insurance"
+  },
+  {
+    "proposition_id": "theft-source-0148#p1",
+    "source_id": "theft-source-0148",
+    "citation": "css-avb-519d-0224-cl8e",
+    "kind": "obligation",
+    "statement": "The party must refrain from making changes to damaged property that could hinder or prevent determination of the cause or amount of the loss.",
+    "quote": "Veränderungen an den beschädigten Sachen, welche die Feststellung der Schadenursache oder der Höhe des Schadens erschweren oder vereiteln können, zu unterlassen",
+    "party": null,
+    "governs": "changes to damaged property that could hinder or prevent determination of the cause or amount of the loss"
+  },
+  {
+    "proposition_id": "theft-source-0148#p2",
+    "source_id": "theft-source-0148",
+    "citation": "css-avb-519d-0224-cl8e",
+    "kind": "exception",
+    "statement": "Changes to damaged property are permitted if they serve loss mitigation or are in the public interest.",
+    "quote": "sofern sie nicht der Schadenminderung dienen oder im öffentlichen Interesse liegen",
+    "party": null,
+    "governs": "the obligation to refrain from changes to damaged property"
+  },
+  {
+    "proposition_id": "theft-source-0149#p1",
+    "source_id": "theft-source-0149",
+    "citation": "css-avb-519d-0224-cl23-3c | css-avb-519d-0224-cl24-2 | css-avb-519d-0224-cl26 | css-form-15d-0826-s31 | svv-hausrat-2022-B2-1",
+    "kind": "condition",
+    "statement": "Insurance coverage applies at home, meaning at the locations listed in the policy within Switzerland.",
+    "quote": "Der Versicherungsschutz gilt zu Hause, d.h. an den in der Police aufgeführten Standorten innerhalb der Schweiz.",
+    "party": null,
+    "governs": "insurance coverage"
+  },
+  {
+    "proposition_id": "theft-source-0150#p1",
+    "source_id": "theft-source-0150",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "required_decision",
+    "statement": "For movable property (household contents), the replacement value must be used.",
+    "quote": "bei Fahrhabe (Hausrat) der Neuwert.",
+    "party": null,
+    "governs": "movable property (household contents)"
+  },
+  {
+    "proposition_id": "theft-source-0150#p2",
+    "source_id": "theft-source-0150",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "dependency",
+    "statement": "The replacement value is the amount required to purchase a new item at the time of the loss event.",
+    "quote": "Das ist der Betrag, den die Neuanschaffung zum Zeitpunkt des Schadenfalles erfordert;",
+    "party": null,
+    "governs": "replacement value"
+  },
+  {
+    "proposition_id": "theft-source-0151#p1",
+    "source_id": "theft-source-0151",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8c | generali-haushalt-2022-unterlagen | svv-hausrat-2022-F1 | vvg-art-39-para2-20240101-de",
+    "kind": "condition",
+    "statement": "A request triggers the requirement to provide a signed inventory.",
+    "quote": "auf Ersuchen",
+    "party": null,
+    "governs": "the provision of a signed inventory"
+  },
+  {
+    "proposition_id": "theft-source-0151#p2",
+    "source_id": "theft-source-0151",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8c | generali-haushalt-2022-unterlagen | svv-hausrat-2022-F1 | vvg-art-39-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "A signed inventory must be provided upon request.",
+    "quote": "ein unterzeichnetes Verzeichnis",
+    "party": null,
+    "governs": "evidence or documentation"
+  },
+  {
+    "proposition_id": "theft-source-0152#p1",
+    "source_id": "theft-source-0152",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8f | simpego-home-1224-A5-7 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The relevant party must notify the police authority immediately.",
+    "quote": "die Polizeibehörde umgehend zu benachrichtigen",
+    "party": null,
+    "governs": "theft-related reporting or investigation"
+  },
+  {
+    "proposition_id": "theft-source-0152#p2",
+    "source_id": "theft-source-0152",
+    "citation": "axa-haushalt-1021-I3-2 | css-avb-519d-0224-cl8f | simpego-home-1224-A5-7 | svv-hausrat-2022-F1-theft-intro",
+    "kind": "obligation",
+    "statement": "The relevant party must request an official investigation.",
+    "quote": "eine amtliche Untersuchung zu beantragen",
+    "party": null,
+    "governs": "theft-related reporting or investigation"
+  },
+  {
+    "proposition_id": "theft-source-0153#p1",
+    "source_id": "theft-source-0153",
+    "citation": "css-avb-519d-0224-cl26",
+    "kind": "exception",
+    "statement": "Simple theft is excluded from the category of theft addressed.",
+    "quote": "Diebstahl (ohne einfachen Diebstahl)",
+    "party": null,
+    "governs": "theft"
+  },
+  {
+    "proposition_id": "theft-source-0154#p1",
+    "source_id": "theft-source-0154",
+    "citation": "css-avb-519d-0224-cl23-3c | css-avb-519d-0224-cl24-2 | css-avb-519d-0224-cl26 | css-form-15d-0826-s31 | svv-hausrat-2022-B2-1",
+    "kind": "condition",
+    "statement": "The provision applies to damage occurring at the locations designated in the policy.",
+    "quote": "zu Hause, d.h. Schäden an den in der Police bezeichneten Standorten;",
+    "party": null,
+    "governs": "damage at insured locations"
+  },
+  {
+    "proposition_id": "theft-source-0155#p1",
+    "source_id": "theft-source-0155",
+    "citation": "axa-haushalt-1021-J4-1",
+    "kind": "condition",
+    "statement": "The entitlement holder must prove that the conduct did not influence the loss for there to be no reduction.",
+    "quote": "wenn der Anspruchsberechtigte beweist, dass das Verhalten den Schaden nicht beeinflusst hat",
+    "party": "Anspruchsberechtigte",
+    "governs": "whether a reduction occurs"
+  },
+  {
+    "proposition_id": "theft-source-0155#p2",
+    "source_id": "theft-source-0155",
+    "citation": "axa-haushalt-1021-J4-1",
+    "kind": "exception",
+    "statement": "No reduction occurs if the entitlement holder proves that the conduct did not influence the loss.",
+    "quote": "Keine Kürzung erfolgt, wenn der Anspruchsberechtigte beweist, dass das Verhalten den Schaden nicht beeinflusst hat.",
+    "party": null,
+    "governs": "reduction"
+  },
+  {
+    "proposition_id": "theft-source-0156#p1",
+    "source_id": "theft-source-0156",
+    "citation": "vvg-art-38b-para1-20240101-de",
+    "kind": "condition",
+    "statement": "The restriction applies before the damage has been determined.",
+    "quote": "Bevor der Schaden ermittelt ist",
+    "party": null,
+    "governs": "changes to damaged items"
+  },
+  {
+    "proposition_id": "theft-source-0156#p2",
+    "source_id": "theft-source-0156",
+    "citation": "vvg-art-38b-para1-20240101-de",
+    "kind": "obligation",
+    "statement": "The entitled claimant must not, without the insurer's consent, alter damaged items in a way that could hinder or prevent determination of the cause or extent of the damage.",
+    "quote": "darf der Anspruchsberechtigte ohne Zustimmung des Versicherungsunternehmens an den beschädigten Gegenständen keine Veränderung vornehmen, welche die Feststellung der Schadensursache oder des Schadens erschweren oder vereiteln könnte",
+    "party": "Anspruchsberechtigte",
+    "governs": "changes to damaged items before the damage is determined"
+  },
+  {
+    "proposition_id": "theft-source-0156#p3",
+    "source_id": "theft-source-0156",
+    "citation": "vvg-art-38b-para1-20240101-de",
+    "kind": "exception",
+    "statement": "The restriction does not apply where the alteration appears necessary for loss mitigation or in the public interest.",
+    "quote": "es sei denn die Veränderung erscheint zum Zweck der Schadensminderung oder im öffentlichen Interesse als geboten",
+    "party": "Anspruchsberechtigte",
+    "governs": "alterations to damaged items that could hinder or prevent determination of the cause or extent of damage"
+  },
+  {
+    "proposition_id": "theft-source-0157#p1",
+    "source_id": "theft-source-0157",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8 | vvg-art-41-para1-20240101-de",
+    "kind": "deadline",
+    "statement": "Compensation becomes due 4 weeks after the time when the insurer has all information required to determine the insurance benefit.",
+    "quote": "Die Entschädigung wird 4 Wochen nach dem Zeitpunkt, in dem der Versicherer über alle zur Bestimmung der Versicherungsleistung erforderlichen Angaben verfügt, fällig.",
+    "party": "insurer",
+    "governs": "the due date of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0157#p2",
+    "source_id": "theft-source-0157",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8 | vvg-art-41-para1-20240101-de",
+    "kind": "prerequisite",
+    "statement": "The insurer must have all information required to determine the insurance benefit before the 4-week period leading to compensation becoming due begins.",
+    "quote": "in dem der Versicherer über alle zur Bestimmung der Versicherungsleistung erforderlichen Angaben verfügt",
+    "party": "insurer",
+    "governs": "the commencement of the period until compensation is due"
+  },
+  {
+    "proposition_id": "theft-source-0158#p1",
+    "source_id": "theft-source-0158",
+    "citation": "axa-haushalt-1021-D7-3",
+    "kind": "condition",
+    "statement": "Damage to household contents must be conclusively proven by traces, witnesses, or the circumstances.",
+    "quote": "durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden an Hausrat",
+    "party": null,
+    "governs": "damage to household contents"
+  },
+  {
+    "proposition_id": "theft-source-0158#p2",
+    "source_id": "theft-source-0158",
+    "citation": "axa-haushalt-1021-D7-3",
+    "kind": "dependency",
+    "statement": "Qualifying damage to household contents falls within this category when it arises from burglary theft, robbery, or simple theft.",
+    "quote": "die durch Einbruchdiebstahl, Beraubung oder einfachen Diebstahl entstehen",
+    "party": null,
+    "governs": "damage to household contents"
+  },
+  {
+    "proposition_id": "theft-source-0159#p1",
+    "source_id": "theft-source-0159",
+    "citation": "simpego-home-1224-B10-15",
+    "kind": "condition",
+    "statement": "The provision applies to valuables or individual objects listed in the insurance contract with an insured value of at least CHF 1'000.",
+    "quote": "im Versicherungsvertrag aufgeführten Wertsachen / Einzelobjekte mit einem Versicherungswert von mind. CHF 1'000",
+    "party": null,
+    "governs": "valuables / individual objects"
+  },
+  {
+    "proposition_id": "theft-source-0159#p2",
+    "source_id": "theft-source-0159",
+    "citation": "simpego-home-1224-B10-15",
+    "kind": "condition",
+    "statement": "The stated condition applies if, in the event of a loss, neither a receipt nor an expert valuation can be produced.",
+    "quote": "wenn im Schadenfall keine Quittung oder ein Wertgutachten eines Sachverständigen vorgewiesen werden kann",
+    "party": null,
+    "governs": "evidence for the listed valuables / individual objects"
+  },
+  {
+    "proposition_id": "theft-source-0160#p1",
+    "source_id": "theft-source-0160",
+    "citation": "css-avb-519d-0224-cl23",
+    "kind": "condition",
+    "statement": "CSS insures the hazards and losses described below only if the policyholder has requested them.",
+    "quote": "sofern diese vom Versicherungsnehmer gewünscht",
+    "party": "Versicherungsnehmer",
+    "governs": "the insurance of the hazards and losses described below"
+  },
+  {
+    "proposition_id": "theft-source-0160#p2",
+    "source_id": "theft-source-0160",
+    "citation": "css-avb-519d-0224-cl23",
+    "kind": "prerequisite",
+    "statement": "The hazards and losses described below must be listed in the policy for CSS to insure them.",
+    "quote": "und in der Police aufgeführt worden sind",
+    "party": null,
+    "governs": "the insurance of the hazards and losses described below"
+  },
+  {
+    "proposition_id": "theft-source-0162#p1",
+    "source_id": "theft-source-0162",
+    "citation": "css-avb-519d-0224-cl24-2",
+    "kind": "condition",
+    "statement": "The theft must qualify neither as burglary theft nor as robbery and must occur outside the insured location.",
+    "quote": "Diebstahl, der weder als Einbruchdiebstahl noch als Beraubung gilt und sich ausserhalb des versicherten Standortes ereignet",
+    "party": null,
+    "governs": "coverage for damage to household contents caused by theft"
+  },
+  {
+    "proposition_id": "theft-source-0162#p2",
+    "source_id": "theft-source-0162",
+    "citation": "css-avb-519d-0224-cl24-2",
+    "kind": "dependency",
+    "statement": "Damage to household contents caused by such theft is co-insured up to the insured sum agreed in the policy.",
+    "quote": "sind bis zu der in der Police vereinbarten Versicherungssumme mitversichert.",
+    "party": null,
+    "governs": "coverage limit for damage to household contents caused by qualifying theft"
+  },
+  {
+    "proposition_id": "theft-source-0163#p1",
+    "source_id": "theft-source-0163",
+    "citation": "axa-haushalt-1021-I3-2",
+    "kind": "condition",
+    "statement": "The requirement applies upon request.",
+    "quote": "auf Verlangen",
+    "party": "er",
+    "governs": "preparing the inventory"
+  },
+  {
+    "proposition_id": "theft-source-0163#p2",
+    "source_id": "theft-source-0163",
+    "citation": "axa-haushalt-1021-I3-2",
+    "kind": "obligation",
+    "statement": "He must prepare an inventory, including value information, of items existing before and after the loss and of items affected by the loss.",
+    "quote": "muss er auf Verlangen ein Verzeichnis der vor und nach dem Schaden vorhandenen und der vom Schaden betroffenen Sachen mit Wertangaben erstellen",
+    "party": "er",
+    "governs": "items existing before and after the loss and items affected by the loss"
+  },
+  {
+    "proposition_id": "theft-source-0164#p1",
+    "source_id": "theft-source-0164",
+    "citation": "css-avb-519d-0224-cl9a",
+    "kind": "allowed_action",
+    "statement": "CSS may terminate the contract no later than when compensation is paid out.",
+    "quote": "kann die CSS spätestens bei Auszahlung der Entschädigung",
+    "party": "CSS",
+    "governs": "termination of the contract"
+  },
+  {
+    "proposition_id": "theft-source-0164#p2",
+    "source_id": "theft-source-0164",
+    "citation": "css-avb-519d-0224-cl9a",
+    "kind": "allowed_action",
+    "statement": "The policyholder may terminate the contract no later than 14 days after becoming aware of the compensation payment.",
+    "quote": "der Versicherungsnehmer spätestens 14 Tage, nachdem er von der Auszahlung Kenntnis erhalten hat, den Vertrag schriftlich kündigen",
+    "party": "Versicherungsnehmer",
+    "governs": "termination of the contract"
+  },
+  {
+    "proposition_id": "theft-source-0164#p3",
+    "source_id": "theft-source-0164",
+    "citation": "css-avb-519d-0224-cl9a",
+    "kind": "obligation",
+    "statement": "The policyholder must terminate the contract in writing when exercising this termination right.",
+    "quote": "den Vertrag schriftlich kündigen",
+    "party": "Versicherungsnehmer",
+    "governs": "termination of the contract"
+  },
+  {
+    "proposition_id": "theft-source-0165#p1",
+    "source_id": "theft-source-0165",
+    "citation": "css-avb-519d-0224-cl15 | css-form-15d-0826-s35 | css-form-15d-0826-s36 | generali-haushalt-2022-E122",
+    "kind": "condition",
+    "statement": "The rule applies if the damage or loss was caused or increased by the fault of a third party.",
+    "quote": "sofern der Schaden oder Verlust durch die Schuld eines Dritten entstanden oder vergrössert worden ist",
+    "party": null,
+    "governs": "recourse against third parties"
+  },
+  {
+    "proposition_id": "theft-source-0165#p2",
+    "source_id": "theft-source-0165",
+    "citation": "css-avb-519d-0224-cl15 | css-form-15d-0826-s35 | css-form-15d-0826-s36 | generali-haushalt-2022-E122",
+    "kind": "obligation",
+    "statement": "You must secure recourse against third parties, such as a transport company.",
+    "quote": "Sie müssen den Rückgriff gegen Dritte (z. B. eine Transportfirma) sicherstellen",
+    "party": "you",
+    "governs": "recourse against third parties"
+  },
+  {
+    "proposition_id": "theft-source-0166#p1",
+    "source_id": "theft-source-0166",
+    "citation": "css-avb-519d-0224-cl29a",
+    "kind": "condition",
+    "statement": "The insured sums do not constitute proof of the existence or value of the insured items.",
+    "quote": "Die Versicherungssummen bilden keinen Beweis für das Vorhandensein sowie den Wert der versicherten Sachen.",
+    "party": null,
+    "governs": "proof of the existence and value of insured items"
+  },
+  {
+    "proposition_id": "theft-source-0167#p1",
+    "source_id": "theft-source-0167",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "obligation",
+    "statement": "The entitled claimant must bear the deductible agreed in the policy for each event.",
+    "quote": "Der Anspruchsberechtigte hat pro Ereignis den in der Police vereinbarten Selbstbehalt zu tragen.",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "the policy-agreed deductible per event"
+  },
+  {
+    "proposition_id": "theft-source-0167#p2",
+    "source_id": "theft-source-0167",
+    "citation": "axa-haushalt-1021-J4-2 | css-avb-519d-0224-cl22 | css-avb-519d-0224-cl28 | css-avb-519d-0224-cl29b | svv-hausrat-2022-E5 | svv-hausrat-2022-E6",
+    "kind": "dependency",
+    "statement": "The agreed deductible is deducted from the calculated compensation.",
+    "quote": "Dieser wird von der errechneten Entschädigung abgezogen.",
+    "party": null,
+    "governs": "the calculated compensation"
+  },
+  {
+    "proposition_id": "theft-source-0168#p1",
+    "source_id": "theft-source-0168",
+    "citation": "axa-haushalt-1021-I3-2",
+    "kind": "obligation",
+    "statement": "In the event of theft, the insured person must notify the police without delay.",
+    "quote": "Bei Diebstahl hat die versicherte Person die Polizei unverzüglich zu benachrichtigen.",
+    "party": "versicherte Person",
+    "governs": "theft"
+  },
+  {
+    "proposition_id": "theft-source-0169#p1",
+    "source_id": "theft-source-0169",
+    "citation": "generali-haushalt-2022-E12",
+    "kind": "condition",
+    "statement": "The insured persons must prove that their conduct did not influence the occurrence or extent of the loss for the non-reduction rule to apply.",
+    "quote": "Wenn die Versicherten beweisen, dass ihr Verhalten das Eintreten oder das Ausmass des Schadens nicht beeinflusst hat",
+    "party": "die Versicherten",
+    "governs": "reduction of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0169#p2",
+    "source_id": "theft-source-0169",
+    "citation": "generali-haushalt-2022-E12",
+    "kind": "exception",
+    "statement": "If the insured persons provide that proof, we do not reduce the compensation.",
+    "quote": "Wenn die Versicherten beweisen, dass ihr Verhalten das Eintreten oder das Ausmass des Schadens nicht beeinflusst hat, kürzen wir die Entschädigung nicht.",
+    "party": "wir",
+    "governs": "compensation reduction"
+  },
+  {
+    "proposition_id": "theft-source-0170#p1",
+    "source_id": "theft-source-0170",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "During and after the loss event, insured property must, where possible, be preserved and salvaged and the loss mitigated.",
+    "quote": "während und nach dem Schadenereignis nach Möglichkeit für die Erhaltung und Rettung der versicherten Sachen und für die Minderung des Schadens zu sorgen",
+    "party": null,
+    "governs": "preservation and salvage of insured property and mitigation of loss"
+  },
+  {
+    "proposition_id": "theft-source-0170#p2",
+    "source_id": "theft-source-0170",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "CSS instructions must be followed when preserving or salvaging insured property and mitigating the loss.",
+    "quote": "dabei die Anordnungen der CSS zu befolgen",
+    "party": null,
+    "governs": "CSS instructions relating to preservation, salvage, and loss mitigation"
+  },
+  {
+    "proposition_id": "theft-source-0171#p1",
+    "source_id": "theft-source-0171",
+    "citation": "axa-haushalt-1021-J5",
+    "kind": "condition",
+    "statement": "The right to request a partial payment applies 30 days after the loss occurs.",
+    "quote": "30 Tage nach Eintritt des Schadens",
+    "party": null,
+    "governs": "requesting a partial payment"
+  },
+  {
+    "proposition_id": "theft-source-0171#p2",
+    "source_id": "theft-source-0171",
+    "citation": "axa-haushalt-1021-J5",
+    "kind": "allowed_action",
+    "statement": "A partial payment may be requested in the amount that, based on the current status of the loss assessment, is at least payable.",
+    "quote": "kann als Teilzahlung der Betrag verlangt werden, der nach dem Stand der Schadenermittlung mindestens zu zahlen ist.",
+    "party": null,
+    "governs": "partial payment after a loss"
+  },
+  {
+    "proposition_id": "theft-source-0172#p1",
+    "source_id": "theft-source-0172",
+    "citation": "css-avb-519d-0224-cl25d",
+    "kind": "condition",
+    "statement": "A multiple insurance exists when the interest insured by this contract is also insured under other insurance contracts against the same risks and for the same period.",
+    "quote": "Wird das durch diesen Vertrag versicherte Interesse gegen dieselben Gefahren und für dieselbe Zeit auch in anderen Versicherungsverträgen versichert (Mehrfachversicherung)",
+    "party": null,
+    "governs": "Mehrfachversicherung"
+  },
+  {
+    "proposition_id": "theft-source-0172#p2",
+    "source_id": "theft-source-0172",
+    "citation": "css-avb-519d-0224-cl25d",
+    "kind": "obligation",
+    "statement": "The multiple insurance must be reported to the insurer immediately.",
+    "quote": "muss dies dem Versicherer sofort mitgeteilt werden.",
+    "party": null,
+    "governs": "Mehrfachversicherung"
+  },
+  {
+    "proposition_id": "theft-source-0173#p1",
+    "source_id": "theft-source-0173",
+    "citation": "css-avb-519d-0224-cl18g | css-form-15d-0826-s39 | generali-haushalt-2022-unterlagen",
+    "kind": "obligation",
+    "statement": "A frame number must be recorded or supplied.",
+    "quote": "Rahmennummer",
+    "party": null,
+    "governs": "frame number"
+  },
+  {
+    "proposition_id": "theft-source-0174#p1",
+    "source_id": "theft-source-0174",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "condition",
+    "statement": "Costs are covered if the loss mitigation was ordered by CSS.",
+    "quote": "wenn die Schadenminderung von der CSS angeordnet wurde",
+    "party": "CSS",
+    "governs": "coverage of costs"
+  },
+  {
+    "proposition_id": "theft-source-0174#p2",
+    "source_id": "theft-source-0174",
+    "citation": "css-avb-519d-0224-cl20g | css-avb-519d-0224-cl8d | svv-hausrat-2022-F1 | vvg-art-38a-para1-20240101-de | vvg-art-38a-para2-20240101-de",
+    "kind": "allowed_action",
+    "statement": "CSS may order loss mitigation.",
+    "quote": "die Schadenminderung von der CSS angeordnet wurde",
+    "party": "CSS",
+    "governs": "loss mitigation"
+  },
+  {
+    "proposition_id": "theft-source-0175#p1",
+    "source_id": "theft-source-0175",
+    "citation": "svv-hausrat-2022-E8",
+    "kind": "condition",
+    "statement": "It is unclear to whom the insurance benefit must lawfully be paid.",
+    "quote": "unklar ist, an wen die Versicherungsleistung rechtmässig auszurichten ist",
+    "party": null,
+    "governs": "the lawful recipient of the insurance benefit"
+  },
+  {
+    "proposition_id": "theft-source-0176#p1",
+    "source_id": "theft-source-0176",
+    "citation": "css-form-15d-0826-s37",
+    "kind": "obligation",
+    "statement": "Original purchase receipts must be attached for damaged or stolen items.",
+    "quote": "bitte Originalkaufbelege beilegen",
+    "party": null,
+    "governs": "damaged or stolen items"
+  },
+  {
+    "proposition_id": "theft-source-0177#p1",
+    "source_id": "theft-source-0177",
+    "citation": "svv-hausrat-2022-F2",
+    "kind": "obligation",
+    "statement": "The claimant must, at their own expense, prove that the event occurred and the amount of the loss.",
+    "quote": "Der Anspruchsberechtigte hat den Eintritt des Ereignisses und die Schadenhöhe auf eigene Kosten nachzuweisen.",
+    "party": "Der Anspruchsberechtigte",
+    "governs": "proof of the occurrence of the event and the amount of loss"
+  },
+  {
+    "proposition_id": "theft-source-0178#p1",
+    "source_id": "theft-source-0178",
+    "citation": "axa-haushalt-1021-I3-2 | axa-haushalt-1021-I4 | css-avb-519d-0224-cl29 | generali-haushalt-2022-E13 | svv-hausrat-2022-F2 | svv-hausrat-2022-F3",
+    "kind": "required_decision",
+    "statement": "The loss must be determined by the parties themselves, by an expert jointly appointed by them, or through expert proceedings.",
+    "quote": "Der Schaden wird durch die Parteien selbst, durch einen gemeinsam bestimmten Experten oder im Sachverständigenverfahren festgestellt.",
+    "party": "die Parteien",
+    "governs": "determination of the loss"
+  },
+  {
+    "proposition_id": "theft-source-0179#p1",
+    "source_id": "theft-source-0179",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8 | vvg-art-41-para1-20240101-de",
+    "kind": "deadline",
+    "statement": "Compensation becomes due 30 days after AXA has received the documents required to determine the amount of the loss and its obligation to pay benefits.",
+    "quote": "Die Entschädigung wird 30 Tage nach dem Zeitpunkt fällig, in dem die AXA die zur Feststellung der Höhe des Schadens und ihrer Leistungspflicht erforderlichen Unterlagen erhalten hat.",
+    "party": "AXA",
+    "governs": "the due date of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0180#p1",
+    "source_id": "theft-source-0180",
+    "citation": "css-avb-519d-0224-cl23-3 | css-avb-519d-0224-cl29c | generali-haushalt-2022-unterlagen | simpego-home-1224-A5-5 | svv-hausrat-2022-E9 | vvg-art-39-para2-20240101-de | vvg-art-40-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "condition",
+    "statement": "A medical certificate or police proof is absent.",
+    "quote": "Bei Fehlen eines Arztzeugnisses oder des Polizeibelegs",
+    "party": null,
+    "governs": "eligibility for compensation"
+  },
+  {
+    "proposition_id": "theft-source-0180#p2",
+    "source_id": "theft-source-0180",
+    "citation": "css-avb-519d-0224-cl23-3 | css-avb-519d-0224-cl29c | generali-haushalt-2022-unterlagen | simpego-home-1224-A5-5 | svv-hausrat-2022-E9 | vvg-art-39-para2-20240101-de | vvg-art-40-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "allowed_action",
+    "statement": "Compensation may be refused if a medical certificate or police proof is absent.",
+    "quote": "Bei Fehlen eines Arztzeugnisses oder des Polizeibelegs kann eine Entschädigung verweigert werden.",
+    "party": null,
+    "governs": "compensation"
+  },
+  {
+    "proposition_id": "theft-source-0181#p1",
+    "source_id": "theft-source-0181",
+    "citation": "simpego-home-1224-A5-3",
+    "kind": "obligation",
+    "statement": "The policyholder must prove that an insured event occurred and the amount of the loss.",
+    "quote": "Der Versicherungsnehmer hat die Pflicht, das Vorliegen eines versicherten Ereignisses sowie die Höhe des Schadens nachzuweisen.",
+    "party": "Der Versicherungsnehmer",
+    "governs": "proof of an insured event and the amount of the loss"
+  },
+  {
+    "proposition_id": "theft-source-0182#p1",
+    "source_id": "theft-source-0182",
+    "citation": "css-avb-519d-0224-cl23-3d",
+    "kind": "condition",
+    "statement": "For burglary theft, the condition for the benefit limitation is that the jewelry is not locked in a safe weighing at least 100 kg or in a built-in wall safe.",
+    "quote": "sofern die Schmucksachen nicht in einem Kassenschrank von mindestens 100 kg Gewicht oder in einem eingemauerten Wandtresor eingeschlossen sind",
+    "party": null,
+    "governs": "jewelry in cases of burglary theft"
+  },
+  {
+    "proposition_id": "theft-source-0182#p2",
+    "source_id": "theft-source-0182",
+    "citation": "css-avb-519d-0224-cl23-3d",
+    "kind": "dependency",
+    "statement": "The benefit limitation also applies to burglary theft when the jewelry is not locked in either specified safe.",
+    "quote": "Diese Leistungsbegrenzung gilt auch bei Einbruchdiebstahl, sofern die Schmucksachen nicht in einem Kassenschrank von mindestens 100 kg Gewicht oder in einem eingemauerten Wandtresor eingeschlossen sind.",
+    "party": null,
+    "governs": "benefits for burglary theft"
+  },
+  {
+    "proposition_id": "theft-source-0183#p1",
+    "source_id": "theft-source-0183",
+    "citation": "vvg-art-40-20240101-de",
+    "kind": "condition",
+    "statement": "The rule applies if the entitled claimant or their representative, for the purpose of deception, incorrectly communicates or conceals facts that would exclude or reduce the insurer's duty to provide benefits.",
+    "quote": "Hat der Anspruchsberechtigte oder sein Vertreter Tatsachen, welche die Leistungspflicht des Versicherungsunternehmens ausschliessen oder mindern würden, zum Zwecke der Täuschung unrichtig mitgeteilt oder verschwiegen",
+    "party": "Anspruchsberechtigter oder sein Vertreter",
+    "governs": "facts that would exclude or reduce the insurer's duty to provide benefits"
+  },
+  {
+    "proposition_id": "theft-source-0183#p2",
+    "source_id": "theft-source-0183",
+    "citation": "vvg-art-40-20240101-de",
+    "kind": "condition",
+    "statement": "The rule also applies if the entitled claimant or their representative, for the purpose of deception, makes communications required under Article 39 late or does not make them at all.",
+    "quote": "oder hat er die ihm nach Massgabe des Artikels 39 dieses Gesetzes obliegenden Mitteilungen zum Zwecke der Täuschung zu spät oder gar nicht gemacht",
+    "party": "Anspruchsberechtigter oder sein Vertreter",
+    "governs": "communications required under Article 39 of this law"
+  },
+  {
+    "proposition_id": "theft-source-0183#p3",
+    "source_id": "theft-source-0183",
+    "citation": "vvg-art-40-20240101-de",
+    "kind": "exception",
+    "statement": "Where either deception-related condition is met, the insurance undertaking is not bound by the contract toward the entitled claimant.",
+    "quote": "so ist das Versicherungsunternehmen gegenüber dem Anspruchsberechtigten an den Vertrag nicht gebunden.",
+    "party": "Versicherungsunternehmen",
+    "governs": "the insurance contract toward the entitled claimant"
+  },
+  {
+    "proposition_id": "theft-source-0184#p1",
+    "source_id": "theft-source-0184",
+    "citation": "css-avb-519d-0224-cl14 | css-avb-519d-0224-cl17a | css-form-15d-0826-s5",
+    "kind": "obligation",
+    "statement": "The recipient’s name and address must be provided.",
+    "quote": "Name und Adresse des Empfängers",
+    "party": null,
+    "governs": "the recipient’s identifying and address information"
+  },
+  {
+    "proposition_id": "theft-source-0185#p1",
+    "source_id": "theft-source-0185",
+    "citation": "css-avb-519d-0224-cl24-5",
+    "kind": "condition",
+    "statement": "The specified condition concerns financial losses caused by misuse of SIM cards that do not occur during the period between the theft and reporting it to CSS.",
+    "quote": "Vermögensschäden aufgrund von missbräuchlicher Nutzung von SIM-Karten, sofern sie nicht in der Zeit zwischen dem Diebstahl und der Meldung bei der CSS erfolgen.",
+    "party": null,
+    "governs": "financial losses due to misuse of SIM cards"
+  },
+  {
+    "proposition_id": "theft-source-0186#p1",
+    "source_id": "theft-source-0186",
+    "citation": "css-avb-519d-0224-cl25d | css-avb-519d-0224-cl29d | css-form-15d-0826-s6 | svv-hausrat-2022-G8",
+    "kind": "condition",
+    "statement": "The rule applies if there are also insurance policies with other companies for the same items and perils (multiple insurance).",
+    "quote": "Bestehen bei anderen Gesellschaften ebenfalls Versicherungen für die gleichen Sachen und Gefahren (Mehrfachversicherung)",
+    "party": null,
+    "governs": "multiple insurance for the same items and perils"
+  },
+  {
+    "proposition_id": "theft-source-0186#p2",
+    "source_id": "theft-source-0186",
+    "citation": "css-avb-519d-0224-cl25d | css-avb-519d-0224-cl29d | css-form-15d-0826-s6 | svv-hausrat-2022-G8",
+    "kind": "dependency",
+    "statement": "Where multiple insurance exists, the entitlement across all named insurance policies exists only once per loss.",
+    "quote": "so besteht für sämtliche genannten Versicherungen insgesamt der Anspruch pro Schaden nur einmal.",
+    "party": null,
+    "governs": "the claim entitlement per loss across all named insurance policies"
+  },
+  {
+    "proposition_id": "theft-source-0187#p1",
+    "source_id": "theft-source-0187",
+    "citation": "axa-haushalt-1021-I1 | css-avb-519d-0224-cl8a | generali-haushalt-2022-E11 | simpego-home-1224-A5-1 | svv-hausrat-2022-F1 | vvg-art-38-para1-20240101-de | vvg-art-38-para2-20240101-de",
+    "kind": "obligation",
+    "statement": "You must report a loss immediately to the relevant company.",
+    "quote": "Sie müssen einen Schaden sofort der jeweiligen Gesellschaft melden.",
+    "party": "Sie",
+    "governs": "reporting a loss"
+  },
+  {
+    "proposition_id": "theft-source-0188#p1",
+    "source_id": "theft-source-0188",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | svv-hausrat-2022-G3 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "condition",
+    "statement": "A reduction of compensation may apply if legal or contractual duties or provisions are violated.",
+    "quote": "Bei Verletzung gesetzlicher oder vertraglicher Pflichten oder Vorschriften",
+    "party": null,
+    "governs": "reduction of compensation"
+  },
+  {
+    "proposition_id": "theft-source-0188#p2",
+    "source_id": "theft-source-0188",
+    "citation": "axa-haushalt-1021-J4-1 | css-avb-519d-0224-cl29c | generali-haushalt-2022-E12 | svv-hausrat-2022-G3 | vvg-art-38-para2-20240101-de | vvg-art-38a-para2-20240101-de | vvg-art-45-para1-20240101-de",
+    "kind": "allowed_action",
+    "statement": "Compensation may be reduced within the limits of the law.",
+    "quote": "kann die Entschädigung im Rahmen des Gesetzes gekürzt werden.",
+    "party": null,
+    "governs": "compensation"
+  },
+  {
+    "proposition_id": "theft-source-0190#p1",
+    "source_id": "theft-source-0190",
+    "citation": "axa-haushalt-1021-J5 | css-avb-519d-0224-cl30 | generali-haushalt-2022-F14 | svv-hausrat-2022-E8",
+    "kind": "condition",
+    "statement": "The due date does not occur for as long as the unspecified condition continues to apply.",
+    "quote": "Die Fälligkeit tritt insbesondere so lange nicht ein, als",
+    "party": null,
+    "governs": "the due date"
+  },
+  {
+    "proposition_id": "theft-source-0191#p1",
+    "source_id": "theft-source-0191",
+    "citation": "generali-haushalt-2022-unterlagen",
+    "kind": "obligation",
+    "statement": "Invoices, receipts, valuations, and similar documentation must be provided for valuables insurance.",
+    "quote": "Wertsachenversicherung: Rechnungen, Quittungen, Schätzungen usw.",
+    "party": null,
+    "governs": "valuables insurance"
+  },
+  {
+    "proposition_id": "theft-source-0192#p1",
+    "source_id": "theft-source-0192",
+    "citation": "svv-hausrat-2022-G2",
+    "kind": "deadline",
+    "statement": "The policyholder's cancellation notice period is 14 days.",
+    "quote": "Die Kündigungsfrist beträgt für den Versicherungsnehmer 14 Tage",
+    "party": "Versicherungsnehmer",
+    "governs": "cancellation notice period"
+  },
+  {
+    "proposition_id": "theft-source-0192#p2",
+    "source_id": "theft-source-0192",
+    "citation": "svv-hausrat-2022-G2",
+    "kind": "dependency",
+    "statement": "The policyholder's 14-day cancellation notice period begins when the policyholder becomes aware of the payment of compensation.",
+    "quote": "beginnt zu laufen, wenn dieser von der Auszahlung der Entschädigung Kenntnis erhält",
+    "party": "Versicherungsnehmer",
+    "governs": "start of the cancellation notice period"
+  },
+  {
+    "proposition_id": "theft-source-0193#p1",
+    "source_id": "theft-source-0193",
+    "citation": "axa-haushalt-1021-I3-2 | axa-haushalt-1021-I4 | css-avb-519d-0224-cl29 | generali-haushalt-2022-E13 | svv-hausrat-2022-F2 | svv-hausrat-2022-F3",
+    "kind": "allowed_action",
+    "statement": "The entitled claimant and the insurer may each demand that the damage be assessed immediately.",
+    "quote": "Sowohl der Anspruchsberechtigte als auch der Versicherer können die sofortige Feststellung des Schadens verlangen.",
+    "party": "Anspruchsberechtigte und Versicherer",
+    "governs": "immediate assessment of the damage"
+  },
+  {
+    "proposition_id": "theft-source-0193#p2",
+    "source_id": "theft-source-0193",
+    "citation": "axa-haushalt-1021-I3-2 | axa-haushalt-1021-I4 | css-avb-519d-0224-cl29 | generali-haushalt-2022-E13 | svv-hausrat-2022-F2 | svv-hausrat-2022-F3",
+    "kind": "required_decision",
+    "statement": "The damage must be determined either by the parties, by a joint expert, or through an expert procedure.",
+    "quote": "Der Schaden wird entweder durch die Parteien, durch einen gemeinsamen Experten oder im Sachverständigenverfahren ermittelt.",
+    "party": null,
+    "governs": "determination of the damage"
+  },
+  {
+    "proposition_id": "theft-source-0193#p3",
+    "source_id": "theft-source-0193",
+    "citation": "axa-haushalt-1021-I3-2 | axa-haushalt-1021-I4 | css-avb-519d-0224-cl29 | generali-haushalt-2022-E13 | svv-hausrat-2022-F2 | svv-hausrat-2022-F3",
+    "kind": "allowed_action",
+    "statement": "Each party may demand that the expert procedure be carried out in accordance with F3.",
+    "quote": "Jede Partei kann die Durchführung des Sachverständigenverfahrens gemäss F3 verlangen.",
+    "party": "Jede Partei",
+    "governs": "the expert procedure"
+  },
+  {
+    "proposition_id": "theft-source-0194#p1",
+    "source_id": "theft-source-0194",
+    "citation": "css-avb-519d-0224-cl24-5",
+    "kind": "condition",
+    "statement": "The condition is that the theft is not reported to CSS or the provider within 24 hours.",
+    "quote": "sofern der Diebstahl nicht innert 24 Stunden bei der CSS oder dem Provider gemeldet wird",
+    "party": null,
+    "governs": "financial losses caused by the misuse of SIM cards"
+  },
+  {
+    "proposition_id": "theft-source-0195#p1",
+    "source_id": "theft-source-0195",
+    "citation": "css-avb-519d-0224-cl23-3",
+    "kind": "prerequisite",
+    "statement": "Damage to household contents must be conclusively proven by traces, witnesses, or the circumstances in order to be insured.",
+    "quote": "durch Spuren, Zeugen oder nach den Umständen schlüssig nachgewiesene Schäden am Hausrat",
+    "party": null,
+    "governs": "insurance coverage for damage to household contents"
+  },
+  {
+    "proposition_id": "theft-source-0196#p1",
+    "source_id": "theft-source-0196",
+    "citation": "svv-hausrat-2022-G8",
+    "kind": "dependency",
+    "statement": "The provisions pursuant to Article 46c of the VVG apply.",
+    "quote": "Es gelten die Bestimmungen gemäss Art. 46c VVG.",
+    "party": null,
+    "governs": "applicable provisions"
+  },
+  {
+    "proposition_id": "theft-source-0197#p1",
+    "source_id": "theft-source-0197",
+    "citation": "css-avb-519d-0224-cl18g | css-form-15d-0826-s39 | generali-haushalt-2022-unterlagen",
+    "kind": "obligation",
+    "statement": "A purchase receipt for the bicycle must be provided.",
+    "quote": "Kaufbeleg des Fahrrads",
+    "party": null,
+    "governs": "evidence for the bicycle"
+  }
+]

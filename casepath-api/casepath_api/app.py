@@ -30,6 +30,8 @@ from .claim_loop import (
 )
 from .claim_loop_router import create_claim_loop_router
 from .claim_loop_service import ClaimLoopService
+from .casepath_process_router_v3 import create_process_router_v3
+from .paper_method_runtime_v3 import PaperMethodRuntimeV3
 from .claim_workspace_v1 import ClaimWorkspaceService
 from .data import (
     ARTIFACTS,
@@ -338,6 +340,13 @@ def run_pipeline_for_claim(claim_id: str) -> ClaimPipeline:
     return held_out_pipeline if claim_id == LATER_CLAIM["claim_id"] else pipeline
 
 
+@lru_cache(maxsize=1)
+def paper_method_runtime() -> PaperMethodRuntimeV3:
+    default_pack = Path(__file__).resolve().parent / "corpora" / "paper_method" / "current"
+    configured = os.getenv("CASEPATH_PAPER_METHOD_PACK")
+    return PaperMethodRuntimeV3(Path(configured) if configured else default_pack)
+
+
 app = FastAPI(
     title="CasePath full-process demo API",
     version=__version__,
@@ -366,6 +375,11 @@ app.include_router(create_foundation_router(service_from_environment()))
 app.include_router(create_source_preserving_shadow_router())
 app.include_router(create_document_lifecycle_shadow_router())
 app.include_router(create_packet_preview_router(claim_workspace_service))
+app.include_router(create_process_router_v3(
+    lambda case, held: paper_method_runtime().plan(case, held),
+    PaperMethodRuntimeV3.diff,
+    lambda: paper_method_runtime().status(),
+))
 # Provider-neutral work events; original claim services remain authoritative.
 from .agent_work.install import install_agent_work
 install_agent_work(app, claim_workspace_service, workspace_claim_loop_service,

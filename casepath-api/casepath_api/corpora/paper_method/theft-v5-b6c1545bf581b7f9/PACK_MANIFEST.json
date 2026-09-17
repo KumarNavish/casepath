@@ -1,0 +1,26 @@
+{
+  "benchmark_sha256": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc",
+  "contract": "casepath.paper-method-pack/5.0.0",
+  "files": {
+    "BENCHMARK.json": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc",
+    "DEMO_CASE.json": "e3c915b9cbff279066687e08a7b41a2c5237fb1adfbeed22dd6bdfe2dcf9b8ff",
+    "HIDDEN_RESULT.json": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47",
+    "METHOD_MANIFEST.json": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15",
+    "PREPARED.json": "95f9208d47e5c0193c4c3056226a2bcaa3a37b023098d97e5d0307d52fd5db28",
+    "PROPOSITIONS.json": "bd89ac3100dc1ba44a901efedf18092d0a1566f55100e3bf48f9226270b4c553",
+    "SOURCE_SNAPSHOT.json": "9d34231a655d16ef55348bc3018e90a3276ed8022859d8b3064177b0b4afb2d1"
+  },
+  "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+  "hidden_result_sha256": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47",
+  "method_freeze_sha256": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15",
+  "model": {
+    "max_tokens": 10000,
+    "name": "openai/gpt-5.6-terra",
+    "provider_only": [
+      "openai"
+    ],
+    "temperature": 0.0
+  },
+  "scope": "authoritative Swiss household-theft claim evidence planning",
+  "version": "theft-v5-b6c1545bf581b7f9"
+}

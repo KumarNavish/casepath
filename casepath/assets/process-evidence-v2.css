@@ -1,0 +1,23 @@
+.paper-method-panel{margin:22px 0 0;padding:18px 20px;border:1px solid #d9dcdf;border-radius:14px;background:#fff;box-shadow:0 10px 30px rgba(25,29,34,.05)}
+.paper-method-panel[hidden]{display:none!important}
+.paper-method-head{display:flex;gap:18px;align-items:flex-start;justify-content:space-between}
+.paper-method-kicker{display:block;margin-bottom:5px;color:#8f1924;font-size:10px;font-weight:780;letter-spacing:.075em;text-transform:uppercase}
+.paper-method-head h3{margin:0;color:#22262b;font-size:18px;letter-spacing:-.025em}
+.paper-method-head p{max-width:600px;margin:7px 0 0;color:#656b73;font-size:12px;line-height:1.55}
+.paper-method-run{flex:none;min-height:38px;padding:0 14px;border:0;border-radius:8px;background:#22262b;color:#fff;font:700 12px/1 system-ui;cursor:pointer}
+.paper-method-run:disabled{opacity:.5;cursor:wait}
+.paper-method-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.paper-method-chip{padding:5px 8px;border-radius:999px;background:#f2f3f3;color:#575d65;font-size:10px;font-weight:700}
+.paper-method-result{margin-top:16px;padding-top:16px;border-top:1px solid #eceeef}
+.paper-method-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.paper-method-card{padding:14px;border:1px solid #e5e7e8;border-radius:10px;background:#fafafa}
+.paper-method-card h4{margin:0 0 9px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#6d737a}
+.paper-method-card strong{display:block;color:#22262b;font-size:13px;line-height:1.4}
+.paper-method-card p{margin:6px 0 0;color:#666d74;font-size:11px;line-height:1.5}
+.paper-method-request{padding:11px 0;border-top:1px solid #e6e7e8}
+.paper-method-request:first-of-type{border-top:0;padding-top:0}
+.paper-method-doc{font-size:13px;font-weight:760;color:#25292e}
+.paper-method-chain{margin-top:5px;color:#5f666e;font-size:11px;line-height:1.5}
+.paper-method-source{margin-top:6px;padding-left:9px;border-left:2px solid #d7dadd;color:#676e75;font-size:10px;line-height:1.45}
+.paper-method-error{margin-top:12px;color:#8f1924;font-size:11px}
+@media(max-width:760px){.paper-method-head{display:block}.paper-method-run{margin-top:12px}.paper-method-grid{grid-template-columns:1fr}}
