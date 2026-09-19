@@ -1,0 +1,229 @@
+{
+  "contract": "casepath.native150-prospective-comparison/1.0.0",
+  "study_id": "N150-OBLIGATION-CONTROL-1",
+  "status": "construction_configuration_not_admitted",
+  "provider_execution_enabled": false,
+  "authorized_additional_spend_usd": "0.00",
+  "proposed_hard_ceiling_usd": "4164.40",
+  "claims_novelty": false,
+  "uses_fresh_confirmation": false,
+  "canonical_owner": "6aada8a3-0f78-83eb-b2fe-f0ea64167eaf",
+  "owner_receipt": "casepath-owner-handoff-final-p-20260919",
+  "owner_state_hash_at_handoff": "3d0f1631fb843f058b7d4b7bc59ec138d9afccac97a1692e844a16359aa4331c",
+  "canonical_admission_receipt": null,
+  "numeric_spend_authority_receipt": null,
+  "native_release": {
+    "raw_manifest_sha256": "638630886a1d291dfe9009839eb0519130e56700bb4d454277ce2e45c6044f4c",
+    "declared_manifest_id": "ff5aec73ae3c7de03b1caa23e476701653539c0c0ec45f0b2427348b25c6af47",
+    "frozen_prompt_raw_sha256": "2e09439bb984bb0e8029eb0250a44e785e51009a9d5c884633fc09da82ce91b5",
+    "frozen_root": "/Users/kumar0002/Documents/Die Mobiliar/casepath-iclr-eval/casepath-eval/.work/casepath-bench-v3-public-current-20260821l",
+    "cases": 150,
+    "families": 28,
+    "domains": 3,
+    "split": {
+      "development": {
+        "cases": 60,
+        "families": 11
+      },
+      "protected": {
+        "cases": 90,
+        "families": 17
+      }
+    },
+    "input_exposure": "All 150 original intake packets inspected during product development; not untouched-input generalization",
+    "protected_target_history": "Must bind existing evaluator access ledger; no inference from missing records",
+    "evaluator": "unchanged original native evaluator",
+    "reuse_case_or_gold_bytes_for_construction": false
+  },
+  "price_snapshot": {
+    "source_url": "https://openrouter.ai/api/v1/models/openai/gpt-5.6-terra/endpoints",
+    "observed_at": "2026-09-19T18:44:40.968940+00:00",
+    "raw_sha256": "7539ceec75f6151b0568b96d401ee297c2ff4058c68f986ebcb8cfca98bd8383",
+    "endpoint_tag": "openai",
+    "endpoint_name": "OpenAI | openai/gpt-5.6-terra-20260709",
+    "prompt": "0.000002",
+    "completion": "0.000012",
+    "input_cache_read": "0.0000002",
+    "input_cache_write": "0.0000025",
+    "long_context_threshold": 272000,
+    "web_search": "0.01",
+    "other_billable_services_allowed": false,
+    "price_provenance": "User-supplied unauthenticated endpoint receipt; no canary performed here"
+  },
+  "reservation_buckets": [
+    {
+      "name": "source_preparation",
+      "units": 1,
+      "max_requests_per_unit": 100,
+      "max_input_tokens_per_request": 65536,
+      "max_output_tokens_per_request": 8192,
+      "max_total_input_tokens_per_unit": 2000000,
+      "max_total_output_tokens_per_unit": 262144
+    },
+    {
+      "name": "excluded_route_parameter_checks",
+      "units": 5,
+      "max_requests_per_unit": 1,
+      "max_input_tokens_per_request": 4096,
+      "max_output_tokens_per_request": 1024,
+      "max_total_input_tokens_per_unit": 4096,
+      "max_total_output_tokens_per_unit": 1024
+    },
+    {
+      "name": "development_five_learned_paths",
+      "units": 300,
+      "max_requests_per_unit": 129,
+      "max_input_tokens_per_request": 65536,
+      "max_output_tokens_per_request": 16384,
+      "max_total_input_tokens_per_unit": 1000000,
+      "max_total_output_tokens_per_unit": 69632
+    },
+    {
+      "name": "protected_five_learned_paths",
+      "units": 450,
+      "max_requests_per_unit": 129,
+      "max_input_tokens_per_request": 65536,
+      "max_output_tokens_per_request": 16384,
+      "max_total_input_tokens_per_unit": 1000000,
+      "max_total_output_tokens_per_unit": 69632
+    }
+  ],
+  "accounting": {
+    "input_reservation": "charge prompt + cache-read + cache-write for EVERY input token; conservative even if billing categories are disjoint",
+    "cache_discount_assumed": false,
+    "request_charge": "No unpriced category may be enabled; unresolved category blocks dispatch",
+    "long_context": "per-physical-request input strictly below 272000; exceeding 65536 rejects that request",
+    "automatic_retries": 0,
+    "unknown_charge": "retain full reservation, never coerce to zero",
+    "rejected_or_failed_attempts_count": true,
+    "preparation_counted": true,
+    "physical_shared_cost_and_standalone_arm_cost_both_reported": true
+  },
+  "model": {
+    "requested_id": "openai/gpt-5.6-terra",
+    "required_returned_canonical_id": "openai/gpt-5.6-terra-20260709",
+    "provider_only": [
+      "openai"
+    ],
+    "allow_fallbacks": false,
+    "temperature": {
+      "send": false,
+      "effective": "unverified provider default; cannot claim temperature=0"
+    },
+    "seed": {
+      "send": false,
+      "claim_deterministic_sampling": false
+    },
+    "reasoning": {
+      "send": "medium",
+      "effective_binding_requires_canary": true
+    },
+    "response_format": "json_object",
+    "tools": [],
+    "web_search_enabled": false,
+    "case_batch_size": 1,
+    "samples_per_condition": 1
+  },
+  "learned_paths": [
+    {
+      "id": "CASEPATH_CONTROL",
+      "entrypoint": "casepath_api.obligation_control.source_only_runtime_v1.SourceOnlyRuntime.run",
+      "inference_adapter": "exact singleton case_interpreter_v4 plus one explicitly named evidence-adequacy assessment",
+      "max_guard_calls": 128,
+      "guard_output_cap": 512,
+      "max_adequacy_calls": 1,
+      "adequacy_output_cap": 4096,
+      "runtime_model_calls": 0,
+      "source_binding_pending": true
+    },
+    {
+      "id": "DIRECT_REVIEWED",
+      "stages": [
+        "direct_complete_artifact",
+        "source_and_case_review",
+        "revise_if_warranted",
+        "finalize"
+      ],
+      "per_stage_output_cap": 16384,
+      "prompt": "Given exactly the shared source pack and observable case material, produce the complete native CandidateArtifact and the actual immediate/conditional document requests. No reasoning order is imposed. Review source support, branch applicability, proof alternatives and document adequacy; revise only using the same visible information. Do not receive scorer output or reference answers. All intermediate responses and changes are retained."
+    },
+    {
+      "id": "DOCUMENT_FIRST_REVIEWED",
+      "stages": [
+        "document_hypotheses_and_states",
+        "construct_process_and_chains",
+        "source_and_case_review",
+        "finalize"
+      ],
+      "per_stage_output_cap": 16384,
+      "prompt": "Begin with candidate document needs and their evidence states from the observable material. Then construct the complete native process/fact/evidence artifact, review its support and branch applicability, and finalize the requests. The final contract, information and aggregate resource limits are identical to the other learned arms. No reference answers or evaluator feedback."
+    },
+    {
+      "id": "PROCESS_CONTEXT_REVIEWED",
+      "stages": [
+        "case_process_state",
+        "propose_evidence_plan",
+        "source_and_case_review",
+        "finalize"
+      ],
+      "per_stage_output_cap": 16384,
+      "prompt": "Use the same supplied source-only process/obligation representation to reason about the case. The model, rather than the deterministic request controller, selects the requested documents and emits the complete native CandidateArtifact. Review the plan under the same information and resource envelope; no target, scorer, or hidden family routing."
+    },
+    {
+      "id": "PRESERVED_MODEL_KERNEL",
+      "stages": [
+        "extract_routing_flags_and_evidence_state",
+        "review_extraction",
+        "repair_extraction_if_warranted",
+        "finalize_extraction"
+      ],
+      "per_stage_output_cap": 16384,
+      "prompt": "Infer routing, primitive flags, capability-specific evidence adequacy and exact source references from the same observable packet. Do not receive family labels or oracle routing. Pass the retained extraction to the preserved kernel. Review only observable support, not evaluator output.",
+      "preserved_kernel_identity": null,
+      "fallback_reimplementation_allowed": false,
+      "binding_pending": true
+    }
+  ],
+  "deterministic_rows": [
+    {
+      "id": "V5_NATIVE_RULE_LOCAL",
+      "implementation": "frozen evidence_overlay_v3.py 832e3568b6d5e688fa3ff24e30a672d45900a9a50a04fbeb0a6f139790346112",
+      "semantics": "actual predecessor with a prospectively source-only native-domain preparation, not the historical theft predictions",
+      "requires_exact_legacy_pack_adapter": true
+    },
+    {
+      "id": "V5_ROUTE_CORRECTED",
+      "semantics": "only same-capability alternative-route discharge corrected; other predecessor behavior retained",
+      "requires_separate_patch_identity": true
+    },
+    {
+      "id": "COMPILED_EQUIVALENT",
+      "semantics": "compile the same full applicability expressions and evidence routes into a rule executor; exact agreement expected conditional on same inferred state",
+      "no_novelty_from_equality": true
+    }
+  ],
+  "shared_inference_rule": "Only byte-identical prompts, source packets, model/parameter bindings and fresh request receipts may be shared by deterministic conditions. No historical predictions. Non-identical extra inference needs a newly costed prospective plan.",
+  "comparison_population": "all 150 where existing label access permits, failures retained; development and protected results separate",
+  "primary_endpoint": "emitted_now_complete_checklist_f1",
+  "primary_contrasts": "CASEPATH_CONTROL against each of the four independent serious learned comparators; all four disclosed",
+  "weighting": "equal domain -> equal family within domain -> equal case within family",
+  "uncertainty": "preserve the native family-cluster estimator; freeze added paired contrast implementation and multiplicity before provider execution",
+  "native_endpoint_semantics": "unchanged; locator exactness is not entailment, contract acceptance is not genuine end-to-end success",
+  "derivative_interventions": "source applicability vs rule-local control; route correction separate; compiled-equivalent agreement; no macro-edge deletion claim for historical V5",
+  "failure_policy": "Original conservative native intention-to-evaluate scoring; keep operation states distinct from scored failures; incomplete matrix cannot be promoted",
+  "generation_failure_policy": "No target-driven or unbounded preparation repairs. Exceeding any capacity is an explicit stopped/failed state; preserve bytes and spent budget.",
+  "existing_factorial": {
+    "new_calls_in_this_study": 0,
+    "reason": "Distinct historical Nemotron order/representation protocol is preserved, not silently rebound or added to this allocation"
+  },
+  "dispatch_barriers": [
+    "canonical prospective preflight/admission and frozen validation contract",
+    "terminal live jobs/receipts reconciled",
+    "actual source-only preparation, native binding and five learned adapters pinned",
+    "preserved kernel implementation recovered or honest pre-outcome protocol revision",
+    "effective model/parameter route binding",
+    "actual numerical spending authority covers 4164.40 plus pre-existing liabilities",
+    "rendered worst-case envelopes fit every aggregate bucket",
+    "protected-label history and evaluator boundary bound"
+  ]
+}
