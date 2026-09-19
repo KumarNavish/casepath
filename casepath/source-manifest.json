@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1381,
+  "file_count": 1382,
   "files": [
     {
       "executable": false,
@@ -6887,8 +6887,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/validate_journal.py",
-      "sha256": "e9683aef3e9968bdb55604a94e7911893ee550f65873113fa4f4a930f66a3ab7",
-      "size_bytes": 5677
+      "sha256": "614d74f6a287d06a9f20394cdd2c976f6383ff742e9757a4a84d34cfb6f3294f",
+      "size_bytes": 7189
     },
     {
       "executable": false,
@@ -7255,6 +7255,12 @@
       "path": "casepath-api/tests/test_interrupted_review_setup.py",
       "sha256": "8a1b21ce12770476c7993eec8f1adc1633cfce1863c1f20a1eafa61135d1bf38",
       "size_bytes": 2213
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_journal_corpus_restart.py",
+      "sha256": "93cd1df865e62917968d974ecd45bc737f082211692f22a9802f25962c83ec40",
+      "size_bytes": 3186
     },
     {
       "executable": false,

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 import sqlite3
@@ -16,7 +17,12 @@ from .claim_workspace_v1 import (
     WORKSPACE_SESSION_ID,
 )
 from .foundation.common import canonical_json_bytes, digest_value
-from .workspace_corpus import PublicCorpus, default_public_corpus_root
+from .workspace_corpus import (
+    CORPUS_PROFILES,
+    PublicCorpus,
+    WorkspaceCorpusError,
+    default_public_corpus_root,
+)
 
 
 class JournalValidationError(RuntimeError):
@@ -75,9 +81,7 @@ def validate_journal(database: Path) -> dict[str, object]:
                 "loop_roster_sha256": digest_value([]),
             }
             return {**receipt, "receipt_sha256": digest_value(receipt)}
-        workspace_store = ClaimWorkspaceStore.open_read_only(
-            database, PublicCorpus(default_public_corpus_root())
-        )
+        workspace_stores: dict[str, ClaimWorkspaceStore] = {}
         identities = list(
             connection.execute(
                 """SELECT session_id,loop_id,COUNT(*) AS event_count
@@ -97,6 +101,26 @@ def validate_journal(database: Path) -> dict[str, object]:
                 )
             try:
                 if is_workspace_session:
+                    # The import identifies which immutable bundled corpus to
+                    # replay. It selects a verifier, never grants authority:
+                    # _replay_rows still checks the entire hash chain and exact
+                    # corpus identity/binding against that admitted bundle.
+                    try:
+                        imported = json.loads(rows[0]["event_json"])
+                        manifest_sha256 = imported["command"]["corpus_identity"]["manifest_sha256"]
+                    except (IndexError, KeyError, TypeError, json.JSONDecodeError) as exc:
+                        raise ClaimWorkspaceError("workspace import corpus identity is invalid") from exc
+                    if not isinstance(manifest_sha256, str):
+                        raise ClaimWorkspaceError("workspace import corpus identity is unsupported")
+                    if not workspace_stores:
+                        for corpus_id in CORPUS_PROFILES:
+                            corpus = PublicCorpus(default_public_corpus_root(corpus_id))
+                            workspace_stores[corpus.identity["manifest_sha256"]] = (
+                                ClaimWorkspaceStore.open_read_only(database, corpus)
+                            )
+                    if manifest_sha256 not in workspace_stores:
+                        raise ClaimWorkspaceError("workspace import corpus identity is unsupported")
+                    workspace_store = workspace_stores[manifest_sha256]
                     state = workspace_store._replay_rows(rows)
                     last_event_sha256 = state["last_event_sha256"]
                     state_sha256 = state["state_sha256"]
@@ -106,7 +130,7 @@ def validate_journal(database: Path) -> dict[str, object]:
                     )
                     last_event_sha256 = loop_state.last_event_sha256
                     state_sha256 = loop_state.state_sha256
-            except (ClaimLoopStoreError, ClaimWorkspaceError) as exc:
+            except (ClaimLoopStoreError, ClaimWorkspaceError, WorkspaceCorpusError) as exc:
                 raise JournalValidationError(
                     f"durable claim-loop replay failed: {session_id}/{loop_id}"
                 ) from exc
