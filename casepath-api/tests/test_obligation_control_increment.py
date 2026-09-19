@@ -402,9 +402,8 @@ class CostContract(unittest.TestCase):
 class NativeSchemaCompatibility(FixtureCase):
     def test_export_validates_with_supplied_native_schema(self):
         import importlib.util, os, sys, types
-        directory = os.environ.get('CASEPATH_NATIVE_SCHEMA_DIR')
-        if directory is None:
-            self.skipTest('native schema directory not supplied; do not infer native compatibility')
+        from native_schema_fixture import native_schema_directory
+        directory = str(native_schema_directory())
         # Load ONLY the unmodified schema and its expression parser. No evaluator,
         # contract targets, contracts/__init__.py or experiment runner is imported.
         namespace = '_oc_native_schema_check'
