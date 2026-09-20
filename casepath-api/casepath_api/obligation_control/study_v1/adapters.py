@@ -170,7 +170,7 @@ class StudyRunner:
             for arm in self.plan['case_schedule'][case['case_id']]:
                 rec=self.run_cell(case,arm);records.append(rec)
                 if arm=='CASEPATH_CONTROL':full=rec
-                facts=self.executor.journal.facts(self.plan['plan_id'])
+                facts=self.executor.journal.facts(self.plan['plan_id'],include_events=False)
                 if any(r['state'] in {'sent','uncertain','cost_unknown','overrun'} for r in facts['requests']):
                     save(self.output/'STOP.json',{'reason':'unreconciled request or charge','at_cell':[case['case_id'],arm],'automatic_retry':False})
                     return records

@@ -26,6 +26,7 @@ class Journal:
 CREATE TABLE IF NOT EXISTS studies(plan_id TEXT PRIMARY KEY, plan_sha TEXT NOT NULL, allocation TEXT NOT NULL, reserved TEXT NOT NULL, origin TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS requests(request_id TEXT PRIMARY KEY,plan_id TEXT NOT NULL,slot_id TEXT NOT NULL,reserved TEXT NOT NULL,state TEXT NOT NULL,actual TEXT, UNIQUE(plan_id,slot_id));
 CREATE TABLE IF NOT EXISTS events(seq INTEGER PRIMARY KEY AUTOINCREMENT,time TEXT NOT NULL,plan_id TEXT NOT NULL,request_id TEXT,kind TEXT NOT NULL,body TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS event_request_kind_seq ON events(request_id,kind,seq);
 CREATE TRIGGER IF NOT EXISTS events_no_update BEFORE UPDATE ON events BEGIN SELECT RAISE(ABORT,'append only'); END;
 CREATE TRIGGER IF NOT EXISTS events_no_delete BEFORE DELETE ON events BEGIN SELECT RAISE(ABORT,'append only'); END;
 ''')
@@ -119,11 +120,19 @@ CREATE TRIGGER IF NOT EXISTS events_no_delete BEFORE DELETE ON events BEGIN SELE
             db.execute('UPDATE requests SET state=?,actual=? WHERE request_id=?',(final,str(actual) if actual is not None else None,request_id))
             self._event(db,row['plan_id'],request_id,'OBSERVATION',{'state':state,'ledger_state':final,'actual_usd':str(actual) if actual is not None else None,'evidence':evidence})
 
-    def facts(self,plan_id:str) -> dict:
+    def last_observation(self,request_id:str) -> dict | None:
+        """Recover one receipt without materializing unrelated provider payloads."""
+        with self.connect() as db:
+            row=db.execute("SELECT body FROM events WHERE request_id=? AND kind='OBSERVATION' ORDER BY seq DESC LIMIT 1",(request_id,)).fetchone()
+        return json.loads(row['body']) if row else None
+
+    def facts(self,plan_id:str,*,include_events:bool=True) -> dict:
+        """Full audit by default; hot-path status checks explicitly omit events."""
         with self.connect() as db:
             rows=[dict(r) for r in db.execute('SELECT * FROM requests WHERE plan_id=? ORDER BY rowid',(plan_id,))]
-            events=[dict(r) for r in db.execute('SELECT * FROM events WHERE plan_id=? ORDER BY seq',(plan_id,))]
+            events=([dict(r) for r in db.execute('SELECT * FROM events WHERE plan_id=? ORDER BY seq',(plan_id,))]
+                    if include_events else None)
         known=sum((money(r['actual']) for r in rows if r['actual'] is not None),Decimal(0))
-        return {'requests':rows,'events':events,'known_cost_usd':str(known),
+        return {'requests':rows,**({'events':events} if include_events else {}),'known_cost_usd':str(known),
                 'unknown_cost_count':sum(r['actual'] is None for r in rows),
                 'complete_cost_known':all(r['actual'] is not None for r in rows)}

@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1413,
+  "file_count": 1414,
   "files": [
     {
       "executable": false,
@@ -6761,8 +6761,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/obligation_control/study_v1/adapters.py",
-      "sha256": "6d272c940e65bd496a9640b4b6158d2eb93ccb99f15d7e1642a9140f7e9fee0b",
-      "size_bytes": 13190
+      "sha256": "5dbbf78215416cb307e75aeb93b9a87c72af9c388ccbddc0e00bfb1f7c8d0320",
+      "size_bytes": 13211
     },
     {
       "executable": false,
@@ -6821,8 +6821,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/obligation_control/study_v1/journal.py",
-      "sha256": "a2a386c95629dfa315618167e8f0ffce6ef120297cb0cd8cd7eb4a16d5d98232",
-      "size_bytes": 9340
+      "sha256": "047be4d52e7873ca759fa7918d42a739326709cf00115f3e60b17c5f17297b05",
+      "size_bytes": 10001
     },
     {
       "executable": false,
@@ -6863,8 +6863,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/obligation_control/study_v1/transport.py",
-      "sha256": "445bb5ad0fbbea2f4b140089bb2ed63f24d7a1c4482b0bde0e762fb3a807eb34",
-      "size_bytes": 8642
+      "sha256": "dda21a44cefad97b978585d6ac1dc45c75a52d44d8f6a326976f284542a26ed9",
+      "size_bytes": 8557
     },
     {
       "executable": false,
@@ -7555,6 +7555,12 @@
       "path": "casepath-api/tests/test_source_preserving_shadow_v1.py",
       "sha256": "5ef3518d425f8c1612191d291da2e7cec659a25eb898484c19fe75d8fa29e88f",
       "size_bytes": 28100
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_study_journal_projection.py",
+      "sha256": "59e0744e57072f44652339469b76b3dbeb33ea03488aa9b652d270c1b6582236",
+      "size_bytes": 2137
     },
     {
       "executable": false,

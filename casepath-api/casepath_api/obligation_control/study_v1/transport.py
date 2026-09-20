@@ -50,7 +50,7 @@ class BoundExecutor:
         if self.plan['bindings']['code_identity']!=implementation_identity():
             raise Invalid('implementation changed since request freeze')
         request=self.render(slot_id,parents)
-        rows=self.journal.facts(self.plan['plan_id'])['requests']
+        rows=self.journal.facts(self.plan['plan_id'],include_events=False)['requests']
         matches=[r for r in rows if r['slot_id']==slot_id]
         if not matches:return None
         if len(matches)!=1 or matches[0]['request_id']!=request['request_id']:
@@ -62,8 +62,8 @@ class BoundExecutor:
         receipt=decode(receipt_raw);body_raw=(directory/'PROVIDER.raw').read_bytes()
         if receipt.get('plan_id')!=self.plan['plan_id'] or receipt.get('request_id')!=request['request_id'] or receipt.get('payload_sha256')!=request['payload_sha256'] or receipt.get('body_sha256')!=sha(body_raw) or receipt.get('state')!='completed':
             raise Invalid('recovered receipt differs from exact request/result binding')
-        evidence=[json.loads(e['body']) for e in self.journal.facts(self.plan['plan_id'])['events'] if e['request_id']==request['request_id'] and e['kind']=='OBSERVATION']
-        if not evidence or evidence[-1].get('evidence',{}).get('receipt_sha256')!=sha(receipt_raw):
+        evidence=self.journal.last_observation(request['request_id'])
+        if not evidence or evidence.get('evidence',{}).get('receipt_sha256')!=sha(receipt_raw):
             raise Invalid('receipt is not the journaled successful observation')
         body=decode(body_raw);raw=body['choices'][0]['message']['content'].encode('utf-8')
         if raw!=(directory/'MODEL_OUTPUT.raw').read_bytes():raise Invalid('recovered model output changed')
