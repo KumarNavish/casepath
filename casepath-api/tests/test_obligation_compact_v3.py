@@ -67,6 +67,24 @@ class CompactTests(unittest.TestCase):
         return {'guard_verdicts':{v:{'value':truth,'source_id':'m' if truth is not None else None,'quote':'The route is selected.' if truth is not None else None} for v in self.book.variables},
            'evidence':{'documents':{d:{'presence':'missing','native_state':'missing','source_refs':['m']} for d in self.book.documents},'slot_assessments':[],'joint_assessments':[]}}
     def plan(self):return render_plan(self.cfg,self.sources,[self.case],self.native,engineering_fixture=True)
+    def test_capability_legend_is_common_to_every_arm_and_stage(self):
+        from casepath_api.obligation_control.study_v1.compact_v3.schedule import CAPABILITY_INDEX_LEGEND
+        plan=self.plan()
+        for slot,row in plan['slots'].items():
+            if not slot.startswith('prep:'):
+                self.assertIn(CAPABILITY_INDEX_LEGEND,row['fixed_messages'][0]['content'])
+    def test_fact_labels_are_not_capability_or_route_indices(self):
+        view=make_view(self.sources,self.book)
+        wire=self.book.encode_state(self.state())
+        label=view['capabilities'][0][0]
+        self.assertGreaterEqual(label,len(self.book.capabilities))
+        doc=view['capabilities'][0][2][0][0]
+        wire['s']=[[label,0,doc,False,[0]]]
+        with self.assertRaises(Invalid):self.book.decode_state(wire)
+        wire['s']=[[0,len(self.book.capabilities[0]['routes']),doc,False,[0]]]
+        with self.assertRaises(Invalid):self.book.decode_state(wire)
+        wire['s']=[[0,0,doc,False,[0]]]
+        self.assertEqual(self.book.decode_state(wire)['evidence']['slot_assessments'][0]['capability_id'],self.book.capabilities[0]['capability_id'])
     def test_shared_source_text_is_recoverable_exactly(self):
         view=make_view(self.sources,self.book)
         for i,ref in enumerate(self.book.source_refs):

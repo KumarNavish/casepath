@@ -25,9 +25,13 @@ OUTPUT_DIRECTORY_NAME = DEFAULT_OUTPUT.name
 PUBLIC_ROOT_FILES = (
     "_headers",
     "index.html",
+    "method.html",
     "release.json",
 )
 PUBLIC_ASSETS = (
+    "assets/method-guide.css",
+    "assets/method-guide.js",
+    "assets/method-guide-data.json",
     "assets/live-v16-viewer-fix.css",
     "assets/live-v16.css",
     "assets/live-v16.js",
