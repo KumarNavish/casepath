@@ -32,3 +32,5 @@ instructions are not current operating guidance for this standalone package.
 
 - [Interactive method guide](method-guide.md)
 - [Benchmark and exact comparison conditions](benchmark-and-baselines.md)
+
+- [Paired-study evidence, uncertainty and provenance](research-evidence.md)

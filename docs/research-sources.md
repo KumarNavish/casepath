@@ -1,44 +1,39 @@
 # Sources, benchmarks and comparison provenance
 
-Every comparison needs an exact identity. The native-150 experiment uses
-CasePath's release corpus and native evaluator. Its five learned conditions are
-custom implementations defined in
-[the executed schedule](../casepath-api/casepath_api/obligation_control/study_v1/compact_v3/schedule.py),
-with two [dependent controls](../casepath-api/casepath_api/obligation_control/study_v1/adapters.py).
-They are not reproductions of the papers below.
+The paired V5 study and the complete native150 comparison use custom comparison
+conditions. The works below establish antecedents and neighboring tasks; none is
+an additional executed benchmark or a reproduced baseline in these studies.
 
-The corpus is this work's dataset: cite its dataset section, release version,
-source manifests and evaluator alongside the final paper. Do not assign it an
-external benchmark's citation or an unregistered DOI. Original legal and
-procedural sources must be cited through their exact source registry records;
-a later webpage is not a substitute for the snapshot supplied to a model.
-
-## Read the closest ideas first
-
-| Work | What to read it for | Relation to this comparison |
+| Primary source | Operation supported | Evidence role |
 |---|---|---|
-| [Kim, *Evidence-Obligation Pool-Gated Retrieval* (2026)](https://www.preprints.org/manuscript/202607.1060) | Conditional evidence obligations, a ledger and warrant judgments | A close conceptual predecessor; a non-peer-reviewed preprint, not an evaluated baseline here. |
-| [Yu et al., *Compile, Then Page* (2026), v3](https://arxiv.org/abs/2607.11346v3) | Compiled SOP programs and a capability-gated runtime | Related procedural control; not a reproduced implementation here. |
-| [Xiao et al., *FlowBench* (2024)](https://aclanthology.org/2024.findings-emnlp.638/) | Workflow-guided planning and alternative workflow representations | A neighboring evaluation task; no current-method FlowBench score is claimed. |
-| [Qiao et al., *Benchmarking Agentic Workflow Generation* (2024 preprint)](https://arxiv.org/abs/2410.07869) | WorFBench and sequence/subgraph-based workflow evaluation | A neighboring graph-evaluation object; CasePath's native scorer is separate. |
-| [Du et al., *PAGED* (2024)](https://aclanthology.org/2024.acl-long.583/) | Procedural graph extraction from documents | Named in the original corpus manifest for earlier discovery evidence; no transfer score for the current method is claimed. |
-| [Dhuliawala et al., *Chain-of-Verification* (2024)](https://aclanthology.org/2024.findings-acl.212/) | Drafting, independent verification and revision | Review is an established idea; CasePath's two-call review is not a CoVe reproduction. |
+| [Evidence-Obligation Pool-Gated Retrieval: Stable Multi-Cycle Retrieval via Evidence Ledger and Warrant Judge (2026)](https://www.preprints.org/manuscript/202607.1060) | Conditional evidence obligations, a turn-scoped ledger and semantic warrant judgments govern retrieval and finalization. | Sections 4.2–4.4, 5 and 6; preprint, not peer reviewed. |
+| [Compile, Then Page: Executable SOP Programs and a Capability-Gated Runtime for Procedural LLM Agents (2026)](https://arxiv.org/html/2607.11346v3) | Deterministic compilation of SOP constraints into executable procedures, evidence-bearing returns and a runtime that exposes the active frame. | Version 3; method/runtime description. Soft enforcement is not a proof guarantee. |
+| [FlowBench: Revisiting and Benchmarking Workflow-Guided Planning for LLM-based Agents (2024)](https://aclanthology.org/2024.findings-emnlp.638/) | Workflow-guided planning is evaluated across workflow-knowledge formats. | Official ACL Anthology abstract and paper. |
+| [Benchmarking Agentic Workflow Generation (2025)](https://arxiv.org/abs/2410.07869v3) | WorFBench evaluates workflow generation using sequence and graph matching. | Version 3, February 23, 2025; initially posted 2024. |
+| [PAGED: A Benchmark for Procedural Graphs Extraction from Documents (2024)](https://aclanthology.org/2024.acl-long.583/) | PAGED evaluates extraction of procedural graphs from documents. | Official ACL Anthology publication and metadata. |
+| [ReAct: Synergizing Reasoning and Acting in Language Models (2023)](https://arxiv.org/abs/2210.03629) | ReAct interleaves reasoning and actions. | Primary preprint; not the no-tools comparator implementation. |
+| [Chain-of-Verification Reduces Hallucination in Large Language Models (2024)](https://aclanthology.org/2024.findings-acl.212/) | Chain-of-Verification generates a draft, plans verification questions, independently answers them and revises. | Official ACL Anthology; our two-call review does not reproduce this four-step procedure. |
+| [Case Management Model and Notation (CMMN), Version 1.1 (2016)](https://www.omg.org/spec/CMMN/1.1) | CMMN 1.1 defines case management models with case state and conditions. | Specification, December 2016; not a comparative evidence-planning evaluation. |
+| [Decision Model and Notation (DMN), Version 1.5 (2024)](https://www.omg.org/spec/DMN/1.5) | DMN 1.5 standardizes decision models and decision tables. | Specification, August 2024; no claim that CasePath invented executable decisions. |
+| [LegalRuleML Core Specification Version 1.0 (2021)](https://docs.oasis-open.org/legalruleml/legalruleml-core-spec/v1.0/os/legalruleml-core-spec-v1.0-os.html) | LegalRuleML represents normative rules, deontic operators, alternatives and source associations. | OASIS Standard, 30 August 2021; sections 4.2 and 4.3. |
+| [Catala: A Programming Language for the Law (2021)](https://arxiv.org/abs/2103.03198) | Catala is a programming language for translating legislative rules into executable code. | Primary preprint v2 and DOI 10.1145/3473582; authored formalization, not automatic legal truth. |
+| [Teaching Language Models to Support Answers with Verified Quotes (2022)](https://arxiv.org/abs/2203.11147) | Verified source quotations support answers that readers can inspect. | Exact quotation establishes textual provenance, not semantic entailment by itself. |
+| [GraphCompliance: Aligning Policy and Context Graphs for LLM-Based Regulatory Compliance (2025)](https://arxiv.org/abs/2510.26309) | GraphCompliance aligns policy and context graphs for regulatory compliance assessment. | Primary abstract; do not describe it as procedural graph extraction. |
+| [InfoGatherer: Principled Information Seeking via Evidence Retrieval and Strategic Questioning (2026)](https://arxiv.org/abs/2603.05909) | InfoGatherer combines retrieval and targeted questions using belief assignments over an evidential network. | Primary v1 abstract; legal and medical tasks; not a CasePath reproduction. |
+| [CLER: A Benchmark for Chinese Litigation Evidence Reasoning (2026)](https://www.sciencedirect.com/science/article/pii/S0306457326000592) | CLER evaluates structured evidence lists and the legal facts they support from claims and factual premises. | Publisher abstract, introduction and dataset analysis; DOI 10.1016/j.ipm.2026.104667. |
+| [Add a Document List Definition to a Service Definition (2026)](https://www.servicenow.com/docs/r/financial-services-operations/insurance-claims/add-document-list-definition-to-service-definition.html) | Insurance-claim decision tables associate service definitions with document lists and create verification tasks. | Official Australia documentation updated 12 March 2026; industrial antecedent, not experimental comparator. |
 
-Full attributable records are in [the bibliography](research-references.bib).
-The bibliography is shared with the paper's working citation inventory. A
-citation supports the operation actually described; it does not establish that
-CasePath reproduced the cited method or transferred to the cited benchmark.
+Full author, title, venue, version and identifier records are in
+[the shared paper bibliography](research-references.bib). This file is byte-identical
+to the current manuscript bibliography.
 
-## Keep mechanism and evidence separate
+The corpus is this work’s dataset. Cite its version, source manifests and native
+evaluator with the paper; do not assign it a different benchmark’s citation or an
+unregistered DOI. Original legal and procedural sources are identified by their
+exact preserved passage/version records. A current web page is not a substitute
+for the actual snapshot supplied to a model.
 
-The [interactive guide](method-guide.md) demonstrates deterministic semantics on
-authored teaching states. The native-150 study measures complete pipeline
-behavior on the released corpus. A model receipt identifies an actual invocation;
-a successful UI test establishes an interaction; a native evaluation establishes
-only the endpoints and population it scores. These are complementary records,
-with different claims.
-
-The final numerical audit must connect each reported value to the exact result
-field, split, denominator, weighting, failure treatment and source digest. The
-same record should generate manuscript tables, public result summaries and app
-comparison views.
+Read the [paired result](research-evidence.md), [native comparison definitions](benchmark-and-baselines.md)
+and [teaching guide](method-guide.md) separately. The same original result hash
+binds the paper’s paired figure and table to the app’s measured comparison.
+Native150 performance is added only from its completed authenticated evaluation.

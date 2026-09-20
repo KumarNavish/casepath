@@ -10,7 +10,8 @@ keeps original sources and handling actions inspectable alongside that logic.
 Start with the [interactive method guide](docs/method-guide.md), then inspect
 the [exact comparison conditions](docs/benchmark-and-baselines.md). The guide
 runs an invented teaching example through the actual controller; it is separate
-from the 150-claim empirical evaluation.
+from the 150-claim empirical evaluation. Read the [paired-study evidence](docs/research-evidence.md)
+for the paper’s measured selectivity result, its recall trade-off and exact provenance.
 
 CasePath is a local claims workbench for inspecting original sources, tracking
 evidence, recording handling actions, and replaying the resulting journal. This

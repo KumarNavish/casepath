@@ -1,5 +1,9 @@
 # What the comparison tests
 
+The [paired V5 study](research-evidence.md) supplies a separate, already measured
+branch-change result. The comparison below uses a different controller,
+population and endpoint; the two results must not be pooled.
+
 The native-150 study asks whether explicit obligation execution changes the
 quality of document planning when every learned pipeline receives the same
 public knowledge and observable case packet. The corpus contains 150 synthetic

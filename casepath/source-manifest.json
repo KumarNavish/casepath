@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1423,
+  "file_count": 1428,
   "files": [
     {
       "executable": false,
@@ -143,8 +143,8 @@
     {
       "executable": false,
       "path": "README.md",
-      "sha256": "72e8630357a8adcd8dba14c384a791421e5dc7e3de6d8ffbd51b271edf55a492",
-      "size_bytes": 5774
+      "sha256": "c3fb1ccaa5312d18dbe57ddac8aa31853fbbeb7c2da6ad1f909492c5e6dce877",
+      "size_bytes": 5924
     },
     {
       "executable": false,
@@ -8195,14 +8195,20 @@
     {
       "executable": false,
       "path": "casepath/assets/method-guide.css",
-      "sha256": "4003c483352206928a8d2ce3f09d6f688a16cdb56f7ab0e8c09978683ddb07eb",
-      "size_bytes": 6396
+      "sha256": "3e9c51bbb485803af261ddfcd2796c4c9a0a809f5000a40cc76268eba38f068e",
+      "size_bytes": 6465
     },
     {
       "executable": false,
       "path": "casepath/assets/method-guide.js",
       "sha256": "48f11ae874724a5ed29d3aa380c04a1283ee778d32f9f614b0787127797c94aa",
       "size_bytes": 4067
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/paired-study-evidence.json",
+      "sha256": "263b4cf3719f4de8c3887d72d63b238180d280b03f075dd647ef123630741dfa",
+      "size_bytes": 3712
     },
     {
       "executable": false,
@@ -8227,6 +8233,12 @@
       "path": "casepath/assets/process-v11.js",
       "sha256": "6408d8b70f84f81579a328eb5cfd15a94d4452f004c58ed62c334c4cc8a58804",
       "size_bytes": 8919
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/research-evidence.css",
+      "sha256": "cec9994346b7278efd03f060194022d42ece82ff6eed8bb9f5270ab39b7acc3b",
+      "size_bytes": 4071
     },
     {
       "executable": false,
@@ -8255,8 +8267,8 @@
     {
       "executable": false,
       "path": "casepath/method.html",
-      "sha256": "b7eb89ce3edcb6a2e45327ce62cb079586ef2939ea374511342d757685c64791",
-      "size_bytes": 5796
+      "sha256": "fbf8cea5e10cbd49de51c021cf37fe9a1295955874d8f709bdae3c4af4555196",
+      "size_bytes": 5798
     },
     {
       "executable": false,
@@ -8428,6 +8440,12 @@
     },
     {
       "executable": false,
+      "path": "casepath/research.html",
+      "sha256": "6e6967313b6632e0b8fb4ffc3f7e5ec9feb10275feefeb63b78cf7706818d661",
+      "size_bytes": 8584
+    },
+    {
+      "executable": false,
       "path": "casepath/tools/browser_qa.py",
       "sha256": "ee0d546fdf234d66aa066ddf6cd63678a61f46d0ffadae2835613c89218704e3",
       "size_bytes": 9405
@@ -8447,8 +8465,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "0cec160e43502204b9d9cd48d1e71898c0fb8bff23d7d5d9e4b92d44facab146",
-      "size_bytes": 10083
+      "sha256": "644c8abc820abb5bc9616c9e3c00f4f8cb0a3ff7dcb0e5a2c02b9359c109ee69",
+      "size_bytes": 10181
     },
     {
       "executable": false,
@@ -8471,8 +8489,8 @@
     {
       "executable": false,
       "path": "casepath/tools/test_build_deployment_identity.py",
-      "sha256": "ee4e6fb5920172494d6a367ea545eb75a705a43bdf7e951440de3fed7decc2c5",
-      "size_bytes": 9438
+      "sha256": "4fe8a6871035cd5e26128ede6d7693c207da50d1a4e37f74310f4006d0ec16c0",
+      "size_bytes": 9545
     },
     {
       "executable": false,
@@ -8537,8 +8555,8 @@
     {
       "executable": false,
       "path": "docs/README.md",
-      "sha256": "6d06f8ca1aa996f699fc1c616b9cd9ff967cac8e05aa235f61afbdc6f7135d1e",
-      "size_bytes": 1578
+      "sha256": "530714d69658388c1ceba89fb40c2a99ebb358d1bbd96dfd64c3437d3859b506",
+      "size_bytes": 1655
     },
     {
       "executable": false,
@@ -8561,8 +8579,8 @@
     {
       "executable": false,
       "path": "docs/benchmark-and-baselines.md",
-      "sha256": "6d7e041e5dd1a3585abd268e6ab0e4b98ad4f3028c836b8d04d719487872cc08",
-      "size_bytes": 4218
+      "sha256": "88f1d5f74f6eaa1e0248d5d950ee380a10205b5a4bbab515896612f37074b384",
+      "size_bytes": 4434
     },
     {
       "executable": false,
@@ -8608,15 +8626,21 @@
     },
     {
       "executable": false,
+      "path": "docs/research-evidence.md",
+      "sha256": "8c74d0d3d73da359c9c55f917a0bbcb51124e91566b19745b431c4af50b85a7a",
+      "size_bytes": 3373
+    },
+    {
+      "executable": false,
       "path": "docs/research-references.bib",
-      "sha256": "d685f2b1aacb536a5ee529debf40c69484986fc8aac8e5597d02c0d34ebd76fc",
-      "size_bytes": 2722
+      "sha256": "abc2f95e6182d05761542f3b713c989548bdbe6f81df38aad23bcf3a75a3ab4b",
+      "size_bytes": 6769
     },
     {
       "executable": false,
       "path": "docs/research-sources.md",
-      "sha256": "eabbd308c365d72530c9761f1dd6b3bc87db8b628b6c48b198f75e07b2007794",
-      "size_bytes": 3466
+      "sha256": "3239f21166bc849f1c47bf72593f32173cbb5582c5ff2e88f325b86b6ad2b92f",
+      "size_bytes": 6042
     },
     {
       "executable": false,
@@ -8635,6 +8659,12 @@
       "path": "examples/build_method_guide.py",
       "sha256": "eae68eb0a079bf4b8fe7b364af80e7b3dfee73a226551f0c4fc84c8fb1d5469f",
       "size_bytes": 4729
+    },
+    {
+      "executable": false,
+      "path": "examples/build_research_evidence.py",
+      "sha256": "fa4b0518ba59834397cc8ccabd9208b8fb1c2a31c14d978b32a840d02c3eb0c6",
+      "size_bytes": 11656
     },
     {
       "executable": false,
