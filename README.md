@@ -72,8 +72,9 @@ projections remain separate. A model proposal never establishes a decision.
 
 The operational workspace includes every original intake packet in `synthetic-150`:
 150 customer communications and their 57 attached documents (47 PDFs and 10 JPEGs).
-The original source bytes and claim identifiers are preserved. No sealed answers,
-expected outputs, evaluator gold, or selected process paths are included. The prior
+The original source bytes and claim identifiers are preserved. The operational intake package contains no sealed answers,
+expected outputs, evaluator gold, or selected process paths. Licensed research references
+are distributed separately in the anonymous reproducibility archive. The prior
 `synthetic-dev-60` package remains immutable for regression tests; it is not the
 main workspace. These inputs have now been inspected during product development
 and must not be described as untouched evaluation inputs.
@@ -108,11 +109,13 @@ number with its evidence pointer, and the reproducibility notes live in
 
 - Study A: a branch-intervention benchmark (36 case pairs over 9 branch concepts, one changed fact per pair,
   reference contract derived from the public sources) with built-in falsifiers; the frozen planner makes
-  15 spurious signed document changes on the 27 held-out pairs against 27, 41 and 52 for three matched
-  comparators, while a preregistered broad-superiority gate fails and is reported.
+  15 spurious signed document changes on the 27 held-out pairs against 27, 41 and 52 for three implemented
+  comparators with unequal computation, while a preregistered broad-superiority gate fails and is reported.
 - Study B: the complete 150-claim corpus shipped in this repository, evaluated under a frozen
-  finite-corpus analysis contract (protocol and execution record in the paper; results are integrated when
-  the frozen analysis code produces them). The evaluated case identifiers are exactly the 150 claim files
+  finite-corpus analysis contract. The original native interface failure is preserved. A separate
+  retrospective current-case comparison isolates inherited scope: protected-family reference-chain
+  precision is 0.732 with scope versus 0.318 without it, with a positive conservative paired benefit
+  of 0.103 after penalizing unavailable pairs. This is not new hidden confirmation or primary success. The evaluated case identifiers are exactly the 150 claim files
   the product loads from `casepath-api/casepath_api/corpora/synthetic-150/claims/`, and the verifier below
   checks that identity, so the paper measures the corpus this repository ships.
 - [`research/casepath/branch-benchmark/`](research/casepath/branch-benchmark/README.md) ships the

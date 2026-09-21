@@ -142,38 +142,45 @@ def principle() -> None:
 
 
 def scope_effect() -> None:
-    """Same-assessment dependent control; frozen diagnostic, not a new analysis."""
-    report = json.loads((HERE / 'native150/REQUEST_ONLY_REPORT.json').read_text())
-    splits = [('public_dev', 'Development'), ('hidden_test', 'Protected families'), ('all150', 'All claims')]
-    fig, axes = plt.subplots(1, 2, figsize=(6.7, 2.15), sharey=True)
-    for ax, metric, title in zip(axes, ('emitted_checklist_f1', 'emitted_unnecessary_fraction'),
-                                 ('Checklist $F_1$  ↑', 'Unnecessary fraction  ↓')):
-        for y, (split, _) in enumerate(splits[::-1]):
-            arms = report['splits'][split]['arms']
-            local = arms['LOCAL_SCOPE_ABLATION']['metrics'][metric]['value']
-            full = arms['CASEPATH_CONTROL']['metrics'][metric]['value']
-            ax.plot([local, full], [y, y], color=LIGHT, lw=2, zorder=1)
-            ax.plot(local, y, marker='s', ms=6, color=MUTED, mfc='white', zorder=2)
-            ax.plot(full, y, marker='o', ms=7, color=ACCENT, zorder=3)
-            ax.text(local, y - .16, f'{local:.3f}', ha='center', va='top', fontsize=8, color=INK)
-            ax.text(full, y + .13, f'{full:.3f}', ha='center', va='bottom', fontsize=8, color=INK)
-        ax.set_title(title, loc='left', fontsize=9.5, pad=12, color=INK)
-        ax.set_xlim(0, 1)
-        ax.set_xticks([0, .25, .5, .75, 1], ['0', '.25', '.50', '.75', '1'])
-        ax.set_ylim(-.48, 2.5)
-        ax.set_yticks(range(3), [label for _, label in splits[::-1]], fontsize=8.5)
-        ax.tick_params(length=0, pad=5, labelsize=8)
-        ax.grid(axis='x', color=LIGHT, lw=.5)
-        ax.set_axisbelow(True)
-        for side in ('top', 'left', 'right'):
-            ax.spines[side].set_visible(False)
+    """Fixed-assessment scope intervention under the separate current-case contract."""
+    report = json.loads((HERE / 'native150/ASSESSED_STATE_REPORT.json').read_text())
+    splits = [('all150', 'All claims'), ('hidden_test', 'Protected families'), ('public_dev', 'Development')]
+    fig, (left, right) = plt.subplots(1, 2, figsize=(6.7, 2.55), gridspec_kw={'width_ratios': [1, 1.1]})
+    for y, (split, _) in enumerate(splits):
+        arms = report['splits'][split]['arms']
+        local = arms['LOCAL_SCOPE_ABLATION']['metrics']['valid_chain_precision']['value']
+        full = arms['CASEPATH_CONTROL']['metrics']['valid_chain_precision']['value']
+        left.plot([local, full], [y, y], color=LIGHT, lw=2)
+        left.plot(local, y, marker='s', ms=6, color=MUTED, mfc='white')
+        left.plot(full, y, marker='o', ms=7, color=ACCENT)
+        left.text(local, y-.15, f'{local:.3f}', ha='center', va='top', fontsize=8, color=INK)
+        left.text(full, y+.13, f'{full:.3f}', ha='center', va='bottom', fontsize=8, color=INK)
+    left.set_title('Reference-chain precision', loc='left', fontsize=9.5, pad=26)
+    left.set(xlim=(0,1), ylim=(-.45,2.5), xlabel='All scheduled claims, including failures')
+    left.set_yticks(range(3), [label for _,label in splits], fontsize=8)
+    left.set_xticks([0,.25,.5,.75,1],['0','.25','.50','.75','1'])
+    left.legend(handles=[Line2D([],[],color=ACCENT,marker='o',ls='none',label='Full scope'),
+                         Line2D([],[],color=MUTED,marker='s',mfc='white',ls='none',label='Local only')],
+                loc='lower left',bbox_to_anchor=(-.03,1.0),ncol=2,frameon=False,fontsize=8,handletextpad=.3)
+    dev = report['splits']['public_dev']['arms']
+    for y, arm in [(1,'CASEPATH_CONTROL'),(0,'LOCAL_SCOPE_ABLATION')]:
+        counts=dev[arm]['raw_native_counts']; valid=counts['evidence/valid_chain_documents']
+        total=counts['evidence/requested_documents']; extra=total-valid
+        right.barh(y,valid,height=.34,color=ACCENT)
+        right.barh(y,extra,left=valid,height=.34,color=LIGHT)
+        right.text(8,y,f'{valid} valid',ha='left',va='center',color='white',fontsize=8)
+        right.text(valid+extra/2,y+.28,f'{extra} unjustified',ha='center',va='center',fontsize=8,color=INK)
+    right.set_title('Same development cases and assessments',loc='left',fontsize=9.1,pad=26)
+    right.set(xlim=(0,625),ylim=(-.45,1.8),xlabel='Active document requests')
+    right.set_yticks([0,1],['Local only','Full scope'],fontsize=8)
+    right.set_xticks([0,200,400,600])
+    for ax in (left,right):
+        ax.tick_params(length=0,pad=4,labelsize=8)
+        ax.grid(axis='x',color=LIGHT,lw=.5);ax.set_axisbelow(True)
+        for side in ('top','left','right'):ax.spines[side].set_visible(False)
         ax.spines['bottom'].set_color(LIGHT)
-    handles = [Line2D([], [], color=ACCENT, marker='o', ls='none', label='CasePath: enclosing scope'),
-               Line2D([], [], color=MUTED, marker='s', mfc='white', ls='none', label='Local scope only')]
-    fig.legend(handles=handles, loc='upper center', bbox_to_anchor=(.55, 1.07), ncol=2,
-               frameon=False, fontsize=8.5, handletextpad=.4)
-    fig.subplots_adjust(left=.21, right=.99, bottom=.15, top=.76, wspace=.25)
-    fig.savefig(DOC / 'fig_scope_control.pdf', metadata={'CreationDate': None}, bbox_inches='tight', pad_inches=.02)
+    fig.subplots_adjust(left=.18,right=.99,bottom=.2,top=.7,wspace=.5)
+    fig.savefig(DOC/'fig_scope_control.pdf',metadata={'CreationDate':None},bbox_inches='tight',pad_inches=.02)
     plt.close(fig)
 
 
@@ -217,7 +224,7 @@ def recorded_case() -> None:
 def audit() -> None:
     sources = {
         'fig_family_results.pdf': ('PAIRED_V5_REPRODUCED_RESULT.json', '/scores/*/family_pair_f1', 'held-out Study A measurement'),
-        'fig_scope_control.pdf': ('native150/REQUEST_ONLY_REPORT.json', '/splits/*/arms/{CASEPATH_CONTROL,LOCAL_SCOPE_ABLATION}/metrics', 'post-hoc dependent request-only diagnostic'),
+        'fig_scope_control.pdf': ('native150/ASSESSED_STATE_REPORT.json', '/splits/*/arms/{CASEPATH_CONTROL,LOCAL_SCOPE_ABLATION}/{metrics,raw_native_counts}', 'separate retrospective current-case scope intervention'),
         'fig_native_case.pdf': ('native150/RECORDED_CASE_STATES.json', '/', 'recorded development prediction; not a native acceptance claim'),
         'fig_process_principle.pdf': (None, None, 'authored teaching schematic; no measured values'),
     }

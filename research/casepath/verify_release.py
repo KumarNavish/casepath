@@ -57,7 +57,7 @@ SELF_LINK = re.compile(r"github\.com/KumarNavish|casepath\.git", re.I)
 PAPER_SOURCES = ["main.tex", "submitted_frontmatter.tex", "introduction.tex", "method.tex",
                  "benchmark.tex", "paired_results.tex", "native_study.tex", "related.tex",
                  "release.tex", "discussion.tex", "statements.tex", "appendix_studya.tex",
-                 "appendix_native.tex", "numbers.tex", "native_final_numbers.tex", "references.bib"]
+                 "appendix_native.tex", "numbers.tex", "native_final_numbers.tex", "assessed_state_numbers.tex", "error_origin_numbers.tex", "references.bib"]
 
 results: list[tuple[str, str, str]] = []
 
@@ -93,21 +93,21 @@ def check_explorer() -> None:
 
 def check_numbers_stable() -> None:
     """Regenerated publication artifacts must match the files being packaged."""
-    names = ['numbers.tex', 'native_final_numbers.tex', 'table_main_results.tex',
+    names = ['numbers.tex', 'native_final_numbers.tex', 'assessed_state_numbers.tex', 'error_origin_numbers.tex', 'table_assessed_state.tex', 'table_main_results.tex',
              'table_claim_gates.tex', 'table_family_results.tex', 'table_costs.tex',
              'table_native_execution.tex', 'table_native_final.tex',
              'table_native_request_counts.tex', 'table_native_request_contrasts.tex',
              'fig_family_results.pdf', 'fig_process_principle.pdf',
              'fig_scope_control.pdf', 'fig_native_case.pdf']
     before = {n: hashlib.sha256((DOC/n).read_bytes()).hexdigest() for n in names}
-    for script in ['build_manuscript_numbers.py', 'build_final_native_tables.py', 'build_figures.py']:
+    for script in ['build_manuscript_numbers.py', 'build_final_native_tables.py', 'build_assessed_state_tables.py', 'build_error_origin_numbers.py', 'build_figures.py']:
         code, out = run([sys.executable, 'evidence/' + script], DOC)
         if code:
             record('Manuscript numbers', False, script + ': ' + out[-140:])
             return
     changed = [n for n in names if hashlib.sha256((DOC/n).read_bytes()).hexdigest() != before[n]]
     record('Manuscript numbers', not changed,
-           'all 14 macro/table/figure files reproduce byte for byte' if not changed else ', '.join(changed))
+           f'all {len(names)} macro/table/figure files reproduce byte for byte' if not changed else ', '.join(changed))
 
 
 def check_literals() -> None:
@@ -242,13 +242,28 @@ def check_study_b() -> None:
         report = json.loads(z.read('recorded-native/REPLAY_MANIFEST.json'))
         bound = report['expected_reports']['finite_descriptive']['sha256'] == receipt['primary']['finite_report_sha256']
         bound &= report['request_only_diagnostic']['report']['sha256'] == receipt['request_only']['report_sha256']
+        assessed = json.loads(z.read('assessed-state/REPLAY_VERIFICATION.json'))
+        assessed_manifest = json.loads(z.read('assessed-state/MANIFEST.json'))
+        bound &= assessed['state'] == 'exact_retrospective_reproduction_verified'
+        bound &= assessed['report_file_sha256'] == hashlib.sha256(z.read('manuscript/evidence/native150/ASSESSED_STATE_REPORT.json')).hexdigest()
+        for name, digest in assessed_manifest['files'].items():
+            bound &= hashlib.sha256(z.read('assessed-state/' + name)).hexdigest() == digest
+        for row in assessed_manifest['shared_release_files']:
+            bound &= hashlib.sha256(z.read(row['path'])).hexdigest() == row['sha256']
     record('Study B evidence closure', not bad and bound,
-           f"{len(manifest['files'])} archive files verified; exact primary and post-hoc replay receipts bound; no new scoring")
+           f"{len(manifest['files'])} archive files verified; all three exact replay receipts and shared inputs bound; no new scoring")
+
+
+def check_error_origin() -> None:
+    code, _ = run([sys.executable, 'analyze_spurious_origin.py'], BENCH)
+    same = (BENCH / 'SPURIOUS_ORIGIN.json').read_bytes() == (DOC / 'evidence/SPURIOUS_ORIGIN.json').read_bytes()
+    record('Error partition reproduces', code == 0 and same,
+           'descriptive partition exactly matches the manuscript evidence')
 
 
 def main() -> int:
     print("CasePath release verification\n")
-    for check in (check_study_a, check_explorer, check_numbers_stable, check_literals,
+    for check in (check_study_a, check_explorer, check_error_origin, check_numbers_stable, check_literals,
                   check_cross, check_build, check_anonymity, check_corpus, check_bundle,
                   check_study_b):
         check()

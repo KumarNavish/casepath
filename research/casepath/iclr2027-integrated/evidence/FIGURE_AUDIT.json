@@ -10,11 +10,11 @@
     },
     {
       "figure": "fig_scope_control.pdf",
-      "sha256": "f938e66c9177c0e603d0f3c24d0cdb86c56907a7bb14ea415845de413c84d3c3",
-      "evidence_file": "native150/REQUEST_ONLY_REPORT.json",
-      "evidence_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
-      "json_pointer_pattern": "/splits/*/arms/{CASEPATH_CONTROL,LOCAL_SCOPE_ABLATION}/metrics",
-      "scope": "post-hoc dependent request-only diagnostic"
+      "sha256": "432bd71a5b4bb615588ea467d83207e82ace1ba4d51aa84efbd1ce943dc956e0",
+      "evidence_file": "native150/ASSESSED_STATE_REPORT.json",
+      "evidence_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer_pattern": "/splits/*/arms/{CASEPATH_CONTROL,LOCAL_SCOPE_ABLATION}/{metrics,raw_native_counts}",
+      "scope": "separate retrospective current-case scope intervention"
     },
     {
       "figure": "fig_native_case.pdf",

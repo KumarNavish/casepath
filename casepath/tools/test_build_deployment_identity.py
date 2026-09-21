@@ -64,10 +64,10 @@ def test_curated_static_build_has_exact_runtime_inventory(
     files, directories = static_site.inventory(output)
     assert files == static_site.PUBLIC_INVENTORY
     assert directories == static_site.PUBLIC_DIRECTORIES
-    assert len(files) == 43
+    assert len(files) == 44
     assert {"method.html", "assets/method-guide.js", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files
-    assert {"research.html", "assets/research-evidence.css", "assets/paired-study-evidence.json"} <= files
+    assert {"research.html", "assets/research-evidence.css", "assets/paired-study-evidence.json", "assets/native-study-evidence.json"} <= files
     assert {"assets/agent-work-v1.js", "assets/agent-work-v1.css"} <= files
     assert {"assets/claims-workspace-presentation-v1.js", "assets/claims-workspace-presentation-v1.css"} <= files
     assert json.loads((output / "deployment.json").read_text(encoding="utf-8")) == (

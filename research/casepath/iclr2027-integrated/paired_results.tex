@@ -29,6 +29,14 @@ spurious ones. In this comparison, providing the graph as context improves
 recall but does not impose the controller's restriction on what may be requested. The contrast with Direct is precise:
 twelve fewer false-positive changes for one fewer correct change.
 
+A retrospective partition sharpens the interpretation: \eoCpOutside{} of
+\casepath's \cpSpur{} spurious changes concern documents outside the
+benchmark's branch-governed set, compared with all \eoDirOutside,
+\eoGcOutside{} and \eoEfOutside{} comparator errors. Process control reduces
+this form of checklist drift; it does not eliminate it. The partition does
+not identify universally required baseline documents, which the signed-change
+references do not specify.
+
 \paragraph{How much does the result generalize?}
 Family-cluster intervals are wide: $F_1$ \cpF{} $[\cpCIlo,\cpCIhi]$ for
 \casepath against $[\dirCIlo,\dirCIhi]$ and $[\gcCIlo,\gcCIhi]$ for the two

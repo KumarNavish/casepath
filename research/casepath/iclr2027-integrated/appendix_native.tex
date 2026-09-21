@@ -167,3 +167,61 @@ every request-only row and its descriptive report by exact canonical JSON
 comparison, without a numerical tolerance. This reproduces scoring from
 recorded model outputs; it does not regenerate those outputs or provide the
 remote model checkpoint.
+
+\section{Retrospective Assessed-State Evaluation}
+\label{app:assessed-state}
+
+\paragraph{Evaluation object.}
+The assessed-state interface binds every compiler predicate to the complete
+three-valued assessment saved with that prediction. Each original condition
+is evaluated under this predicted state. Known-active entities enter a
+current-case snapshot; unresolved entities remain explicitly recorded and
+are not asserted active. Counterfactual branch predicates are omitted from
+this snapshot, so branch-probe accuracy and full-program acceptance are not
+endpoints. The envelope retains the original artefact, assessment and every
+activation decision. Reference states are never used to decide predicted
+activation. Native reference graphs, scoring functions and entity matchers
+are unchanged.
+
+Negation swaps true and false; conjunction is true only if all children are
+true and false if any is false; disjunction uses the dual rules. Each control
+retains its own graph and requests, bound to its saved \casepath assessment.
+All \asAllCpN{} compiled-equivalent snapshots and scores match \casepath.
+No immediate request is filtered out. The release preserves the derivatives,
+identity checks and execution receipts.
+
+\paragraph{Endpoints and interpretation.}
+Native valid-chain precision counts active requested document entities
+linked through a reference-aligned decision--fact--capability--document
+chain, divided by active requested documents. Critical-evidence recall
+weights covered reference facts by their supplied criticality. Obligation
+completeness counts reference obligations with a valid matching chain.
+Unnecessary fraction counts requests that are not necessary under the
+reference. In this corpus the valid-chain and necessary-document sets
+coincide, so precision and unnecessary fraction are complementary, and
+critical-evidence recall equals obligation completeness. They are not
+independent confirmations. Exact-source entailment is not established:
+provenance-chain inheritance scores zero, and all-object source support is
+unavailable for this predicate-excluding interface.
+
+\begin{table}[h]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\input{table_assessed_state.tex}
+\caption{\textbf{Current-case structure and evidence at fixed assessment.}
+Full denotes \casepath with inherited domain scope; Local uses only the
+obligation's local scope. All scheduled cases contribute with the original
+failure penalties and domain--family--case weights. Raw counts describe
+available outputs; protected and combined output coverage differs across
+controllers. Compiled-equivalent reproduces Full exactly.}
+\label{tab:assessed-state}
+\end{table}
+
+The conservative paired benefit uses the benefit-oriented per-case difference
+when both endpoints exist and $-1$ otherwise. Chain-precision benefits are
+\asDevCChain{} in development, \asHidCChain{} in protected families and
+\asAllCChain{} overall; critical-recall benefits are \asDevCCrit,
+\asHidCCrit{} and \asAllCCrit. This supports selectivity at comparable
+coverage. The report includes every family and paired contrast. These are
+descriptive finite-corpus quantities, without post-hoc significance tests or
+confidence intervals.

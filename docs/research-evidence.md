@@ -66,3 +66,21 @@ used to explain away V5's errors or inherit V5's measured performance.
 The original recorded-guard replay matches 72 unit outputs and 36 pair deltas.
 It establishes downstream replay correspondence, not fresh model inference,
 current native150 parity or hosted deployment identity.
+
+## Complete native corpus: current-case scope intervention
+
+The paper and `research.html` now share the authenticated retrospective report.
+On the same 44 completed development cases, both controllers recover 259 valid
+requests; inherited domain scope reduces total requests from 592 to 275.
+Protected-family reference-chain precision is 0.732 versus 0.318, with a
+conservative paired benefit of +0.103. The original registered interface failure,
+all unavailable outputs and all seven-arm request contrasts remain preserved.
+This is a current-case snapshot comparison of dependent controls, not a new
+hidden evaluation or a claim of correct counterfactual branch execution.
+
+`assets/native-study-evidence.json` records all split aggregates, per-family
+results, paired contrasts and source hashes. Regenerate both evidence pages
+with `python3 examples/build_research_evidence.py`; `--check` verifies the
+rendered page and published data against the manuscript's evidence manifest.
+The anonymous research archive contains reference targets; the operational
+claims workspace continues to load intake inputs only.

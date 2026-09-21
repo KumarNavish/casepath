@@ -1,0 +1,1685 @@
+{
+  "schema": "casepath.assessed-state-publication-audit/1",
+  "numbers": [
+    {
+      "macro": "asDevCpN",
+      "value": 44,
+      "rendered": "44",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asDevCpNP",
+      "value": 0.5226208024002141,
+      "rendered": "0.523",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asDevCpNR",
+      "value": 0.5417866603831516,
+      "rendered": "0.542",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asDevCpNF",
+      "value": 0.5297604612461615,
+      "rendered": "0.530",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asDevCpEP",
+      "value": 0.6758047325892426,
+      "rendered": "0.676",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asDevCpER",
+      "value": 0.3744653014070163,
+      "rendered": "0.374",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asDevCpEF",
+      "value": 0.47962867463107833,
+      "rendered": "0.480",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asDevCpCrit",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asDevCpObl",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asDevCpChain",
+      "value": 0.7043158436213992,
+      "rendered": "0.704",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asDevCpU",
+      "value": 0.2956841563786008,
+      "rendered": "0.296",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asDevCpSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asDevCpValid",
+      "value": 259,
+      "rendered": "259",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asDevCpReq",
+      "value": 275,
+      "rendered": "275",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asDevCpObligations",
+      "value": 300,
+      "rendered": "300",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asDevCpOrphans",
+      "value": 16,
+      "rendered": "16",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asDevCeN",
+      "value": 44,
+      "rendered": "44",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asDevCeNP",
+      "value": 0.5226208024002141,
+      "rendered": "0.523",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asDevCeNR",
+      "value": 0.5417866603831516,
+      "rendered": "0.542",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asDevCeNF",
+      "value": 0.5297604612461615,
+      "rendered": "0.530",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asDevCeEP",
+      "value": 0.6758047325892426,
+      "rendered": "0.676",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asDevCeER",
+      "value": 0.3744653014070163,
+      "rendered": "0.374",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asDevCeEF",
+      "value": 0.47962867463107833,
+      "rendered": "0.480",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asDevCeCrit",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asDevCeObl",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asDevCeChain",
+      "value": 0.7043158436213992,
+      "rendered": "0.704",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asDevCeU",
+      "value": 0.2956841563786008,
+      "rendered": "0.296",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asDevCeSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asDevCeValid",
+      "value": 259,
+      "rendered": "259",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asDevCeReq",
+      "value": 275,
+      "rendered": "275",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asDevCeObligations",
+      "value": 300,
+      "rendered": "300",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asDevCeOrphans",
+      "value": 16,
+      "rendered": "16",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asDevLsN",
+      "value": 44,
+      "rendered": "44",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asDevLsNP",
+      "value": 0.262740307853785,
+      "rendered": "0.263",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asDevLsNR",
+      "value": 0.5417866603831516,
+      "rendered": "0.542",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asDevLsNF",
+      "value": 0.35334955894710834,
+      "rendered": "0.353",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asDevLsEP",
+      "value": 0.37788531808905995,
+      "rendered": "0.378",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asDevLsER",
+      "value": 0.3744653014070163,
+      "rendered": "0.374",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asDevLsEF",
+      "value": 0.37552022448107486,
+      "rendered": "0.376",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asDevLsCrit",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asDevLsObl",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asDevLsChain",
+      "value": 0.3311434597148883,
+      "rendered": "0.331",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asDevLsU",
+      "value": 0.6688565402851117,
+      "rendered": "0.669",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asDevLsSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asDevLsValid",
+      "value": 259,
+      "rendered": "259",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asDevLsReq",
+      "value": 592,
+      "rendered": "592",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asDevLsObligations",
+      "value": 300,
+      "rendered": "300",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asDevLsOrphans",
+      "value": 333,
+      "rendered": "333",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asDevDNP",
+      "value": 0.25988049454642914,
+      "rendered": "+0.260",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/11/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCNP",
+      "value": -0.0012306165646819684,
+      "rendered": "-0.001",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/11/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDNR",
+      "value": 0.0,
+      "rendered": "+0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/12/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCNR",
+      "value": -0.2611111111111111,
+      "rendered": "-0.261",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/12/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDNF",
+      "value": 0.17641090229905312,
+      "rendered": "+0.176",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/13/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCNF",
+      "value": -0.08470020881205796,
+      "rendered": "-0.085",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/13/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDEP",
+      "value": 0.29791941450018267,
+      "rendered": "+0.298",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/14/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCEP",
+      "value": 0.036808303389071546,
+      "rendered": "+0.037",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/14/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDER",
+      "value": 0.0,
+      "rendered": "+0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/15/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCER",
+      "value": -0.2611111111111111,
+      "rendered": "-0.261",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/15/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDEF",
+      "value": 0.1041084501500035,
+      "rendered": "+0.104",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/16/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCEF",
+      "value": -0.1570026609611076,
+      "rendered": "-0.157",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/16/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDCrit",
+      "value": 0.0,
+      "rendered": "+0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/17/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCCrit",
+      "value": -0.2611111111111111,
+      "rendered": "-0.261",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/17/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDObl",
+      "value": 0.0,
+      "rendered": "+0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/18/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCObl",
+      "value": -0.2611111111111111,
+      "rendered": "-0.261",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/18/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDChain",
+      "value": 0.37317238390651086,
+      "rendered": "+0.373",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/19/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCChain",
+      "value": 0.11206127279539976,
+      "rendered": "+0.112",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/19/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDU",
+      "value": 0.37317238390651086,
+      "rendered": "+0.373",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/20/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCU",
+      "value": 0.11206127279539976,
+      "rendered": "+0.112",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/20/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asDevDSource",
+      "value": 0.0,
+      "rendered": "+0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/21/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asDevCSource",
+      "value": -0.2611111111111111,
+      "rendered": "-0.261",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/public_dev/paired_contrasts/21/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidCpN",
+      "value": 66,
+      "rendered": "66",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asHidCpNP",
+      "value": 0.5360564037371601,
+      "rendered": "0.536",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asHidCpNR",
+      "value": 0.5436706589150008,
+      "rendered": "0.544",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asHidCpNF",
+      "value": 0.5388510255384681,
+      "rendered": "0.539",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asHidCpEP",
+      "value": 0.6789757756118523,
+      "rendered": "0.679",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asHidCpER",
+      "value": 0.38143167610980144,
+      "rendered": "0.381",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asHidCpEF",
+      "value": 0.48747212094494125,
+      "rendered": "0.487",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asHidCpCrit",
+      "value": 0.6449074074074074,
+      "rendered": "0.645",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asHidCpObl",
+      "value": 0.6449074074074074,
+      "rendered": "0.645",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asHidCpChain",
+      "value": 0.7319444444444445,
+      "rendered": "0.732",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asHidCpU",
+      "value": 0.26805555555555555,
+      "rendered": "0.268",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asHidCpSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asHidCpValid",
+      "value": 384,
+      "rendered": "384",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asHidCpReq",
+      "value": 385,
+      "rendered": "385",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asHidCpObligations",
+      "value": 438,
+      "rendered": "438",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asHidCpOrphans",
+      "value": 1,
+      "rendered": "1",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asHidCeN",
+      "value": 66,
+      "rendered": "66",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asHidCeNP",
+      "value": 0.5360564037371601,
+      "rendered": "0.536",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asHidCeNR",
+      "value": 0.5436706589150008,
+      "rendered": "0.544",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asHidCeNF",
+      "value": 0.5388510255384681,
+      "rendered": "0.539",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asHidCeEP",
+      "value": 0.6789757756118523,
+      "rendered": "0.679",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asHidCeER",
+      "value": 0.38143167610980144,
+      "rendered": "0.381",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asHidCeEF",
+      "value": 0.48747212094494125,
+      "rendered": "0.487",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asHidCeCrit",
+      "value": 0.6449074074074074,
+      "rendered": "0.645",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asHidCeObl",
+      "value": 0.6449074074074074,
+      "rendered": "0.645",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asHidCeChain",
+      "value": 0.7319444444444445,
+      "rendered": "0.732",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asHidCeU",
+      "value": 0.26805555555555555,
+      "rendered": "0.268",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asHidCeSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asHidCeValid",
+      "value": 384,
+      "rendered": "384",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asHidCeReq",
+      "value": 385,
+      "rendered": "385",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asHidCeObligations",
+      "value": 438,
+      "rendered": "438",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asHidCeOrphans",
+      "value": 1,
+      "rendered": "1",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asHidLsN",
+      "value": 64,
+      "rendered": "64",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asHidLsNP",
+      "value": 0.2558728262934151,
+      "rendered": "0.256",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asHidLsNR",
+      "value": 0.5262793545671747,
+      "rendered": "0.526",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asHidLsNF",
+      "value": 0.3436894423356801,
+      "rendered": "0.344",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asHidLsEP",
+      "value": 0.36842285629851435,
+      "rendered": "0.368",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asHidLsER",
+      "value": 0.3701289941174643,
+      "rendered": "0.370",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asHidLsEF",
+      "value": 0.3685532046845772,
+      "rendered": "0.369",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asHidLsCrit",
+      "value": 0.6271296296296296,
+      "rendered": "0.627",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asHidLsObl",
+      "value": 0.6271296296296296,
+      "rendered": "0.627",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asHidLsChain",
+      "value": 0.31790029415029414,
+      "rendered": "0.318",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asHidLsU",
+      "value": 0.6820997058497059,
+      "rendered": "0.682",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asHidLsSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asHidLsValid",
+      "value": 376,
+      "rendered": "376",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asHidLsReq",
+      "value": 853,
+      "rendered": "853",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asHidLsObligations",
+      "value": 428,
+      "rendered": "428",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asHidLsOrphans",
+      "value": 477,
+      "rendered": "477",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asHidDNP",
+      "value": 0.28018357744374506,
+      "rendered": "+0.280",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/11/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCNP",
+      "value": -0.02408992682975924,
+      "rendered": "-0.024",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/11/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDNR",
+      "value": 0.017391304347826087,
+      "rendered": "+0.017",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/12/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCNR",
+      "value": -0.2888888888888889,
+      "rendered": "-0.289",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/12/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDNF",
+      "value": 0.195161583202788,
+      "rendered": "+0.195",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/13/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCNF",
+      "value": -0.11005383629834578,
+      "rendered": "-0.110",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/13/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDEP",
+      "value": 0.310552919313338,
+      "rendered": "+0.311",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/14/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCEP",
+      "value": 0.00013625264667132273,
+      "rendered": "+0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/14/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDER",
+      "value": 0.011302681992337166,
+      "rendered": "+0.011",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/15/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCER",
+      "value": -0.2888888888888889,
+      "rendered": "-0.289",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/15/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDEF",
+      "value": 0.11891891626036405,
+      "rendered": "+0.119",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/16/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCEF",
+      "value": -0.18479210701587664,
+      "rendered": "-0.185",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/16/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDCrit",
+      "value": 0.017777777777777778,
+      "rendered": "+0.018",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/17/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCCrit",
+      "value": -0.2888888888888889,
+      "rendered": "-0.289",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/17/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDObl",
+      "value": 0.017777777777777778,
+      "rendered": "+0.018",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/18/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCObl",
+      "value": -0.2888888888888889,
+      "rendered": "-0.289",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/18/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDChain",
+      "value": 0.4140441502941503,
+      "rendered": "+0.414",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/19/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCChain",
+      "value": 0.10293303918303918,
+      "rendered": "+0.103",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/19/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDU",
+      "value": 0.4140441502941503,
+      "rendered": "+0.414",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/20/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCU",
+      "value": 0.10293303918303918,
+      "rendered": "+0.103",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/20/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asHidDSource",
+      "value": 0.0,
+      "rendered": "+0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/21/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asHidCSource",
+      "value": -0.2888888888888889,
+      "rendered": "-0.289",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/21/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllCpN",
+      "value": 110,
+      "rendered": "110",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asAllCpNP",
+      "value": 0.5310435379387565,
+      "rendered": "0.531",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asAllCpNR",
+      "value": 0.5431144920413252,
+      "rendered": "0.543",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asAllCpNF",
+      "value": 0.535527229967508,
+      "rendered": "0.536",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asAllCpEP",
+      "value": 0.678052665726036,
+      "rendered": "0.678",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asAllCpER",
+      "value": 0.3787843222579763,
+      "rendered": "0.379",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asAllCpEF",
+      "value": 0.48455572293611715,
+      "rendered": "0.485",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asAllCpCrit",
+      "value": 0.6411250944822373,
+      "rendered": "0.641",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asAllCpObl",
+      "value": 0.6411250944822373,
+      "rendered": "0.641",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asAllCpChain",
+      "value": 0.7214691358024692,
+      "rendered": "0.721",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asAllCpU",
+      "value": 0.27853086419753087,
+      "rendered": "0.279",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asAllCpSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asAllCpValid",
+      "value": 643,
+      "rendered": "643",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asAllCpReq",
+      "value": 660,
+      "rendered": "660",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asAllCpObligations",
+      "value": 738,
+      "rendered": "738",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asAllCpOrphans",
+      "value": 17,
+      "rendered": "17",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asAllCeN",
+      "value": 110,
+      "rendered": "110",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asAllCeNP",
+      "value": 0.5310435379387565,
+      "rendered": "0.531",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asAllCeNR",
+      "value": 0.5431144920413252,
+      "rendered": "0.543",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asAllCeNF",
+      "value": 0.535527229967508,
+      "rendered": "0.536",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asAllCeEP",
+      "value": 0.678052665726036,
+      "rendered": "0.678",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asAllCeER",
+      "value": 0.3787843222579763,
+      "rendered": "0.379",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asAllCeEF",
+      "value": 0.48455572293611715,
+      "rendered": "0.485",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asAllCeCrit",
+      "value": 0.6411250944822373,
+      "rendered": "0.641",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asAllCeObl",
+      "value": 0.6411250944822373,
+      "rendered": "0.641",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asAllCeChain",
+      "value": 0.7214691358024692,
+      "rendered": "0.721",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asAllCeU",
+      "value": 0.27853086419753087,
+      "rendered": "0.279",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asAllCeSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asAllCeValid",
+      "value": 643,
+      "rendered": "643",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asAllCeReq",
+      "value": 660,
+      "rendered": "660",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asAllCeObligations",
+      "value": 738,
+      "rendered": "738",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asAllCeOrphans",
+      "value": 17,
+      "rendered": "17",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asAllLsN",
+      "value": 108,
+      "rendered": "108",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_count_contributing_cells"
+    },
+    {
+      "macro": "asAllLsNP",
+      "value": 0.2584965602405516,
+      "rendered": "0.258",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_precision/value"
+    },
+    {
+      "macro": "asAllLsNR",
+      "value": 0.5324623181282817,
+      "rendered": "0.532",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_recall/value"
+    },
+    {
+      "macro": "asAllLsNF",
+      "value": 0.3474367800787318,
+      "rendered": "0.347",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/required_node_f1/value"
+    },
+    {
+      "macro": "asAllLsEP",
+      "value": 0.3720161426420156,
+      "rendered": "0.372",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_precision/value"
+    },
+    {
+      "macro": "asAllLsER",
+      "value": 0.37186382417368513,
+      "rendered": "0.372",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_recall/value"
+    },
+    {
+      "macro": "asAllLsEF",
+      "value": 0.37124874922242757,
+      "rendered": "0.371",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/required_edge_f1/value"
+    },
+    {
+      "macro": "asAllLsCrit",
+      "value": 0.6302362055933485,
+      "rendered": "0.630",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/critical_evidence_recall/value"
+    },
+    {
+      "macro": "asAllLsObl",
+      "value": 0.6302362055933485,
+      "rendered": "0.630",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/evidence_obligation_completeness/value"
+    },
+    {
+      "macro": "asAllLsChain",
+      "value": 0.32297591694020267,
+      "rendered": "0.323",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/valid_chain_precision/value"
+    },
+    {
+      "macro": "asAllLsU",
+      "value": 0.6770240830597973,
+      "rendered": "0.677",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/unnecessary_document_rate/value"
+    },
+    {
+      "macro": "asAllLsSource",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/provenance_chain_inheritance_rate/value"
+    },
+    {
+      "macro": "asAllLsValid",
+      "value": 635,
+      "rendered": "635",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1valid_chain_documents"
+    },
+    {
+      "macro": "asAllLsReq",
+      "value": 1445,
+      "rendered": "1445",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1requested_documents"
+    },
+    {
+      "macro": "asAllLsObligations",
+      "value": 728,
+      "rendered": "728",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1active_evidence_obligations"
+    },
+    {
+      "macro": "asAllLsOrphans",
+      "value": 810,
+      "rendered": "810",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_native_counts/evidence~1orphan_documents"
+    },
+    {
+      "macro": "asAllDNP",
+      "value": 0.2725469776982049,
+      "rendered": "+0.273",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/11/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCNP",
+      "value": -0.01493165478042758,
+      "rendered": "-0.015",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/11/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDNR",
+      "value": 0.010652173913043479,
+      "rendered": "+0.011",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/12/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCNR",
+      "value": -0.27805555555555556,
+      "rendered": "-0.278",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/12/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDNF",
+      "value": 0.18809044988877624,
+      "rendered": "+0.188",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/13/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCNF",
+      "value": -0.09996510566677931,
+      "rendered": "-0.100",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/13/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDEP",
+      "value": 0.3060365230840203,
+      "rendered": "+0.306",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/14/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCEP",
+      "value": 0.014803884195131393,
+      "rendered": "+0.015",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/14/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDER",
+      "value": 0.0069204980842911875,
+      "rendered": "+0.007",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/15/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCER",
+      "value": -0.27805555555555556,
+      "rendered": "-0.278",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/15/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDEF",
+      "value": 0.11330697371368958,
+      "rendered": "+0.113",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/16/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCEF",
+      "value": -0.17382302189456691,
+      "rendered": "-0.174",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/16/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDCrit",
+      "value": 0.010888888888888889,
+      "rendered": "+0.011",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/17/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCCrit",
+      "value": -0.27805555555555556,
+      "rendered": "-0.278",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/17/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDObl",
+      "value": 0.010888888888888889,
+      "rendered": "+0.011",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/18/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCObl",
+      "value": -0.27805555555555556,
+      "rendered": "-0.278",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/18/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDChain",
+      "value": 0.3984932188622665,
+      "rendered": "+0.398",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/19/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCChain",
+      "value": 0.10682655219559982,
+      "rendered": "+0.107",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/19/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDU",
+      "value": 0.39849321886226646,
+      "rendered": "+0.398",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/20/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCU",
+      "value": 0.10682655219559982,
+      "rendered": "+0.107",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/20/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "asAllDSource",
+      "value": 0.0,
+      "rendered": "+0.000",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/21/conventional_paired_difference/value"
+    },
+    {
+      "macro": "asAllCSource",
+      "value": -0.27805555555555556,
+      "rendered": "-0.278",
+      "source": "native150/ASSESSED_STATE_REPORT.json",
+      "source_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
+      "json_pointer": "/splits/all150/paired_contrasts/21/conservative_paired_benefit/value"
+    }
+  ]
+}

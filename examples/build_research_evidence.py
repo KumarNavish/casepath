@@ -85,10 +85,43 @@ def render(data: dict) -> str:
 <details class="evidence-details"><summary>What was — and was not — matched?</summary><p>All arms used the recorded <code>openai/gpt-5.6-terra</code> alias, OpenAI provider restriction and temperature zero. The receipts do not independently attest a dated backend checkpoint. Retrieval, context and computation differed: Direct received sources; Graph as context also received the process and evidence representation; Evidence-first retrieved twelve passages by keyword. CasePath assessed source guards and projected requests in code.</p><p>Direct and Graph as context allowed 14,000 completion tokens per call. Evidence-first allowed 18,000 for extraction and 14,000 for planning; CasePath allowed 10,000 per guard batch. This is a comparison of those implemented pipelines, not an equal-compute test or a reproduction of a named published agent.</p></details>
 </section>
 <section class="study-scope" aria-labelledby="scope-title"><div class="section-heading"><h2 id="scope-title">Keep the questions distinct.</h2><p>The paper, repository and app use these same evidence boundaries.</p></div>
-<div class="scope-grid"><article><span class="eyebrow">Study A · Paired interventions</span><h3>Does a branch change alter the right requests?</h3><p>The result above comes from 27 held-out theft pairs after nine development pairs. Splits share the nine branch concepts. V5 uses local guards and unions mapped document routes; its macrograph does not gate requests.</p></article><article><span class="eyebrow">Study B · Complete native corpus</span><h3>Is the whole evidence plan useful?</h3><p>The separate tenancy benchmark contains 150 claims: 60 development and 90 in family-disjoint protected custody. Its newer controller separates applicability, acquisition permission and evidence adequacy. This page reports no native150 performance.</p></article><article><span class="eyebrow">Interactive method guide</span><h3>What changes when the case state changes?</h3><p>The <a href="method.html">teaching example</a> runs authored repair states through the newer deterministic controller. It explains behavior; it is not a benchmark case or a model-quality result.</p></article></div></section>
-<section class="provenance"><h2>Follow the evidence.</h2><p>The original analysis was rerun from preserved outputs and reproduced the frozen result byte for byte. The data below contains all four aggregate results, interval and cost fields, failed gates and source hashes. It contains no current protected labels.</p><a class="button" href="assets/paired-study-evidence.json" download>Download the measured comparison ↓</a><details class="evidence-details"><summary>Inspect the original result identity</summary><code class="digest">''' + RESULT_SHA256 + '''</code><p>SHA-256 of the preserved V5 result. This is the same result used for the manuscript’s paired-study figure and table. Recorded-decision product replay is separate from fresh model inference and deployment parity.</p></details></section>
+<div class="scope-grid"><article><span class="eyebrow">Study A · Paired interventions</span><h3>Does a branch change alter the right requests?</h3><p>The result above comes from 27 held-out theft pairs after nine development pairs. Splits share the nine branch concepts. V5 uses local guards and unions mapped document routes; its macrograph does not gate requests.</p></article><article><span class="eyebrow">Study B · Complete native corpus</span><h3>Is the whole evidence plan useful?</h3><p>The separate tenancy benchmark contains 150 claims: 60 development and 90 in family-disjoint protected custody. Its newer controller separates applicability, acquisition permission and evidence adequacy. The current-case comparison above isolates inherited scope; the complete seven-arm request comparison is available in the paper and download.</p></article><article><span class="eyebrow">Interactive method guide</span><h3>What changes when the case state changes?</h3><p>The <a href="method.html">teaching example</a> runs authored repair states through the newer deterministic controller. It explains behavior; it is not a benchmark case or a model-quality result.</p></article></div></section>
+<section class="provenance"><h2>Follow the evidence.</h2><p>The original analysis was rerun from preserved outputs and reproduced the frozen result byte for byte. The data below contains all four aggregate results, interval and cost fields, failed gates and source hashes. The public summaries contain measured aggregates and provenance; exact released targets belong to the research archive, not the intake workspace.</p><a class="button" href="assets/paired-study-evidence.json" download>Download the measured comparison ↓</a><details class="evidence-details"><summary>Inspect the original result identity</summary><code class="digest">''' + RESULT_SHA256 + '''</code><p>SHA-256 of the preserved V5 result. This is the same result used for the manuscript’s paired-study figure and table. Recorded-decision product replay is separate from fresh model inference and deployment parity.</p></details></section>
 </main><footer><span>CasePath · Research evidence</span><span>Source → process → obligation → fact → evidence → document → action</span></footer></body></html>
 '''
+
+
+def native_summary():
+    evidence = ROOT / "research/casepath/iclr2027-integrated/evidence/native150"
+    manifest = json.loads((evidence / "MANIFEST.json").read_text())
+    reports = {}
+    for name in ("REQUEST_ONLY_REPORT.json", "ASSESSED_STATE_REPORT.json", "EVIDENCE_SCOPE.json"):
+        raw = (evidence / name).read_bytes()
+        if hashlib.sha256(raw).hexdigest() != manifest[name]:
+            raise ValueError("Changed native evidence: " + name)
+        reports[name] = json.loads(raw)
+    req, state, scope = (reports[n] for n in ("REQUEST_ONLY_REPORT.json", "ASSESSED_STATE_REPORT.json", "EVIDENCE_SCOPE.json"))
+    return {"schema": "casepath.public-native-evidence/1", "claims": 150,
+            "primary": "All 1,050 cells receive the registered adverse policy penalties after native interface failure.",
+            "request_only": req["splits"], "current_case": state["splits"],
+            "cost": scope["cost"], "source_sha256": {n:manifest[n] for n in reports},
+            "limits": "Separate retrospective analyses, not registered success or new hidden confirmation. All original failures retained; no new inference. Reference-chain matching does not establish source entailment."}
+
+
+def render_native(d):
+    rows=[]
+    for split,label in (("public_dev","Development · 60 claims"),("hidden_test","Protected families · 90 claims"),("all150","Combined · 150 claims")):
+        state=d["current_case"][split]; cp=state["arms"]["CASEPATH_CONTROL"]; ls=state["arms"]["LOCAL_SCOPE_ABLATION"]
+        benefit=next(x["conservative_paired_benefit"]["value"] for x in state["paired_contrasts"] if x["comparator"]=="LOCAL_SCOPE_ABLATION" and x["metric"]=="valid_chain_precision")
+        rows.append(f'<tr><th scope="row">{label}</th><td>{cp["metrics"]["valid_chain_precision"]["value"]:.3f}</td><td>{ls["metrics"]["valid_chain_precision"]["value"]:.3f}</td><td>{benefit:+.3f}</td></tr>')
+    dev=d['current_case']['public_dev']['arms']; cp=dev['CASEPATH_CONTROL']; ls=dev['LOCAL_SCOPE_ABLATION']
+    valid=cp['raw_native_counts']['evidence/valid_chain_documents']; full=cp['raw_native_counts']['evidence/requested_documents']; local=ls['raw_native_counts']['evidence/requested_documents']
+    return f'''<section aria-labelledby="native-title"><div class="section-heading"><h2 id="native-title">The same evidence.<br>Fewer unjustified demands.</h2><p>Study B · all 150 released tenancy claims · retrospective scope intervention</p></div>
+<p class="lead">On the same {cp['raw_count_contributing_cells']} completed development cases, both controllers recover {valid} valid requests. Requiring obligations to inherit their enclosing process scope reduces total requests from {local} to {full}.</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Current-case scope comparison"><table><caption>Reference-chain precision, with failed outputs retained</caption><thead><tr><th scope="col">Split</th><th scope="col">Full scope</th><th scope="col">Local only</th><th scope="col">Conservative paired benefit</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div>
+<p class="chart-note">The same saved assessment drives both controllers. The conservative contrast assigns −1 whenever either endpoint is unavailable; the precision benefit remains positive in every split. It is a descriptive finite-corpus contrast, not a confidence interval. Reference-chain precision checks decision–fact–capability–document links against the reference, not source entailment.</p>
+<details class="evidence-details"><summary>The original failure and what the repaired interface evaluates</summary><p>The registered native evaluation failed because compiler predicates were not bound in its reference scenario. All 1,050 primary cells retain their adverse penalties. The separate current-case interface binds each artifact to its own recorded three-valued assessment, retains unknown states and all literal immediate requests, and scores the resulting snapshot. All 328 available artifacts across the three dependent arms score; 122 original failures remain included. This does not validate counterfactual branch programs or establish superiority over the four learned alternatives.</p><p>The protected label records the historical family split, not untouched inputs. The complete producer I/O audit is unavailable and target non-access cannot be attested retrospectively. Targets are now released. The separate seven-arm request analysis and all negative conservative contrasts remain in the paper and download. Study inference cost was $89.06; historical total $89.66. These offline analyses made no new provider calls.</p></details>
+<a class="button" href="assets/native-study-evidence.json" download>Download all native comparisons and provenance ↓</a></section>'''
 
 
 def main() -> None:
@@ -100,14 +133,19 @@ def main() -> None:
     if bool(args.result) != bool(args.costs):
         parser.error("--result and --costs must be supplied together")
     data = export_summary(args.result, args.costs) if args.result else json.loads(DATA.read_text())
-    output = render(data)
+    native = native_summary()
+    native_path = ROOT / "casepath/assets/native-study-evidence.json"
+    output = render(data).replace('<section class="study-scope"', render_native(native) + '<section class="study-scope"')
     if args.check:
+        if json.loads(native_path.read_text()) != native:
+            raise SystemExit("Native evidence summary is stale")
         if args.result and data != json.loads(DATA.read_text()):
             raise SystemExit("Measured summary differs from authenticated outputs")
         if output != PAGE.read_text():
             raise SystemExit("Evidence page is stale")
         print("Paired evidence and generated page verified; no provider or target access.")
     else:
+        native_path.write_text(json.dumps(native, indent=2) + "\n")
         DATA.write_text(json.dumps(data, indent=2) + "\n")
         PAGE.write_text(output)
 

@@ -6,8 +6,8 @@ are preserved in `submitted_frontmatter.tex`.
 
 Study A tests the signed checklist change caused by one changed case fact. Study B
 uses all 150 released claims and separates native graph conformance from a
-post-hoc diagnostic of literal requests. The paper, tables and figures preserve
-that distinction.
+post-hoc diagnostic of literal requests and a separately specified current-case
+scope intervention. The paper, tables and figures preserve those distinctions.
 
 ## Read and build
 
@@ -29,18 +29,26 @@ archive must build to the same PDF under the recorded Tectonic build.
 ```sh
 python3 evidence/build_manuscript_numbers.py
 python3 evidence/build_final_native_tables.py
+python3 evidence/build_assessed_state_tables.py
+python3 evidence/build_error_origin_numbers.py
 python3 evidence/build_figures.py
 ```
 
 The figure generator needs Matplotlib. The LaTeX build uses the supplied PDFs and
 does not require plotting software. The four figures are a teaching schematic,
-Study A's measured family behavior, the post-hoc scope-control comparison, and a
+Study A's measured family behavior, the retrospective current-case scope comparison, and a
 recorded development case. Their provenance is recorded in `evidence/FIGURE_AUDIT.json`.
 
 `evidence/NUMERICAL_AUDIT.json` and `evidence/NATIVE_FINAL_NUMERICAL_AUDIT.json`
-map numerical macros to values, source hashes and JSON pointers. The native
+map numerical macros to values, source hashes and JSON pointers.
+`evidence/ASSESSED_STATE_NUMERICAL_AUDIT.json` and
+`evidence/ERROR_ORIGIN_NUMERICAL_AUDIT.json` do the same for the
+separate current-case and descriptive error-origin analyses. The native
 reports and their manifest are in `evidence/native150/`. These files include
-both the registered primary failure and the separate request diagnostic.
+the registered primary failure, separate request diagnostic and current-case
+analysis. The scope intervention increases protected-family reference-chain
+precision from 0.318 to 0.732; the conservative paired benefit is +0.103.
+It does not establish counterfactual branch correctness or exact-source entailment.
 `evidence/CITATION_VERIFICATION.json` records the checked bibliography metadata.
 
 ## Reproduce the measurements
