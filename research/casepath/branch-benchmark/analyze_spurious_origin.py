@@ -1,129 +1,135 @@
 #!/usr/bin/env python3
-"""Where do the spurious signed changes come from?
+"""Attribute every spurious signed change on the held-out split.
 
     python3 analyze_spurious_origin.py
 
-Aggregate counts say CasePath makes fewer unjustified changes. This asks whether they are the
-*kind* of error the architecture predicts.
+Aggregate counts say CasePath makes fewer unjustified changes. This partitions them to see whether
+they are also a different kind. It reports only what the benchmark's own fields support.
 
-Each held-out pair intervenes on exactly one branch concept, and in this benchmark every reference
-atom belongs to exactly one concept, so each spurious change can be attributed:
+A document counts as *branch-governed* if it appears in any unit's `gold_branch_documents` or in any
+pair's `acceptable_signed_deltas`. Each spurious change is then one of:
 
-  on-branch    the atom belongs to the intervened concept - the system moved the right branch but
-               chose the wrong route, or moved it in the wrong direction
-  off-branch   the atom belongs to a different concept - the system moved documents that the
-               changed fact cannot justify
-  off-vocab    the atom is no concept's reference document - a document no branch intervention
-               should ever move
+  required_in_one_unit    branch-governed, and required in exactly one unit of this very pair, so
+                          the system moved a document this intervention does govern, wrongly
+  governed_elsewhere      branch-governed, but not required in either unit of this pair
+  not_branch_governed     not branch-governed anywhere in this benchmark
 
-CasePath projects its plan from guards, and only a changed guard can change a document, so its
-errors should concentrate on-branch. A generator has no such constraint. If that separation does
-not appear, the mechanism claim is weaker than the aggregate suggests.
+`not_branch_governed` means exactly that. It does **not** establish that the document is a
+universally required baseline: the benchmark fixes branch documents and signed deltas, not a full
+per-unit reference checklist, so that stronger statement cannot be tested here.
 
-Reads only released files; writes SPURIOUS_ORIGIN.json and table_spurious_origin.tex.
+Also reports how many guards the controller's extractor changed per pair, which bounds any
+monotonicity reading, and the direction split of the reference and the predictions.
+
+Reads released files only. Writes SPURIOUS_ORIGIN.json and table_spurious_origin.tex.
 """
 from __future__ import annotations
 
 import json
-from collections import defaultdict
+from collections import Counter
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ARMS = [("b5_process_compiled", r"\casepath"), ("b1_direct", "Direct"),
         ("b3_representation_then_list", "Graph as context"), ("b6_evidence_first", "Evidence-first")]
+KINDS = ["required_in_one_unit", "governed_elsewhere", "not_branch_governed"]
 
 
 def main() -> None:
     bench = json.loads((HERE / "benchmark" / "BENCHMARK_V3.json").read_text())
     report = json.loads((HERE / "expected" / "HELDOUT_RESULT.json").read_text())
-    rows = [dict(r, arm="b5_process_compiled")
-            for r in json.loads((HERE / "predictions" / "heldout" / "casepath.json").read_text())]
+    casepath_rows = json.loads((HERE / "predictions" / "heldout" / "casepath.json").read_text())
+    rows = [dict(r, arm="b5_process_compiled") for r in casepath_rows]
     rows += json.loads((HERE / "predictions" / "heldout" / "comparators.json").read_text())
 
-    # Which concept can justify which document? Built from the reference contract's own
-    # acceptable realisations, so it is the benchmark's definition, not a judgement made here.
-    owner: dict[str, set[str]] = defaultdict(set)
-    for pair in bench["pairs"]:
-        for alt in pair["acceptable_signed_deltas"]:
-            for atom in alt:
-                owner[atom.lstrip("+-")].add(pair["scenario"])
-    ambiguous = {d for d, cs in owner.items() if len(cs) > 1}
-    if ambiguous:
-        raise SystemExit(f"attribution is not well defined: {len(ambiguous)} atom(s) span concepts")
+    unit_gold = {u["unit_id"]: set(u["gold_branch_documents"]) for u in bench["units"]}
+    delta_atoms = {a.lstrip("+-") for p in bench["pairs"]
+                   for alt in p["acceptable_signed_deltas"] for a in alt}
+    governed = set().union(*unit_gold.values()) | delta_atoms
+    pairs = {p["pair_id"]: p for p in bench["pairs"]}
 
-    pair_concept = {p["pair_id"]: p["scenario"] for p in bench["pairs"]}
-    counts = {a: defaultdict(int) for a, _ in ARMS}
+    counts = {a: Counter() for a, _ in ARMS}
     distinct: dict[str, set] = {a: set() for a, _ in ARMS}
-    examples: dict[str, list] = {a: [] for a, _ in ARMS}
     for row in rows:
         arm, pid = row["arm"], row["pair_id"]
-        if arm not in counts or pid not in pair_concept:
+        if arm not in counts or pid not in pairs:
             continue
+        pair = pairs[pid]
+        before, after = unit_gold[pair["false_unit_id"]], unit_gold[pair["true_unit_id"]]
         selected = set(report["scores"][arm]["selected_gold_realizations"][pid])
         for atom in row["predicted_signed_delta"]:
             if atom in selected:
                 continue
             doc = atom.lstrip("+-")
-            concepts = owner.get(doc)
-            if concepts is None:
-                kind = "off_vocab"
-            elif pair_concept[pid] in concepts:
-                kind = "on_branch"
+            if doc not in governed:
+                kind = "not_branch_governed"
+            elif (doc in before) != (doc in after):
+                kind = "required_in_one_unit"
             else:
-                kind = "off_branch"
+                kind = "governed_elsewhere"
             counts[arm][kind] += 1
             counts[arm]["added" if atom.startswith("+") else "withdrawn"] += 1
             distinct[arm].add(doc)
-            if kind != "on_branch" and len(examples[arm]) < 3:
-                examples[arm].append({"pair": pid, "intervened": pair_concept[pid], "atom": atom,
-                                      "belongs_to": sorted(concepts) if concepts else None})
 
-    # Direction of the justified changes: needed to read the withdrawal counts honestly.
-    ref_dir = defaultdict(int)
-    for pid, atoms in report["scores"]["b5_process_compiled"]["selected_gold_realizations"].items():
-        for atom in atoms:
-            ref_dir["added" if atom.startswith("+") else "withdrawn"] += 1
+    guards = Counter(r.get("changed_guard_count", len(r.get("changed_guard_ids") or []))
+                     for r in casepath_rows)
+    silent = [r["pair_id"] for r in casepath_rows
+              if not r.get("changed_guard_count") and r["predicted_signed_delta"]]
+    ref_dir = Counter(a[0] for atoms in
+                      report["scores"]["b5_process_compiled"]["selected_gold_realizations"].values()
+                      for a in atoms)
 
-    out = {"schema": "casepath.spurious-origin/1",
-           "note": "Attribution of every spurious signed change on the held-out split. Concept "
-                   "ownership comes from the reference contract's acceptable realisations; the "
-                   "selected realisation per pair and arm is the frozen scorer's own choice.",
-           "atoms_in_reference_vocabulary": len(owner),
-           "reference_changes_by_direction": dict(ref_dir),
-           "reading_note": "Every justified change on this split is an addition, so each withdrawal "
-                           "any system makes is unjustified. CasePath's plan is a projection of "
-                           "active rules, so a branch turning on can only add documents: its zero "
-                           "withdrawals are a structural property of the architecture, not a "
-                           "measured surprise. The split therefore does not test whether a system "
-                           "correctly withdraws a document when a branch turns off.",
-           "arms": {}}
+    out = {
+        "schema": "casepath.spurious-origin/2",
+        "branch_governed_documents": len(governed),
+        "branch_governed_definition": "union of every unit's gold_branch_documents and every "
+                                      "acceptable_signed_deltas atom",
+        "bound": "not_branch_governed means outside that union. It does not establish that a "
+                 "document is universally required; the benchmark contains no full per-unit "
+                 "reference checklist, so that cannot be tested here.",
+        "reference_changes_by_direction": {"added": ref_dir["+"], "withdrawn": ref_dir["-"]},
+        "changed_guards_per_pair": {str(k): v for k, v in sorted(guards.items())},
+        "pairs_with_more_than_one_changed_guard": sum(v for k, v in guards.items() if k > 1),
+        "pairs_total": len(casepath_rows),
+        "pairs_with_zero_changed_guards_and_a_predicted_change": silent,
+        "monotonicity_bound": "The reference intervention edits one sentence, but the extractor "
+                              "changed more than one guard on most pairs, so zero withdrawals "
+                              "cannot be attributed to a single branch turning on.",
+        "benchmark_note": "Amendment V3 added the bicycle purchase voucher to expected_added and "
+                          "acceptable_signed_deltas but not to gold_branch_documents or "
+                          "branch_document_universe. Scoring uses the amended fields and the "
+                          "voucher never appears as a spurious atom, so no count here changes; "
+                          "those two auxiliary fields are stale.",
+        "arms": {},
+    }
     lines = [r"\begin{tabular}{lrrrrrr}", r"\toprule",
-             r"& \multicolumn{3}{c}{Spurious change belongs to} & \multicolumn{3}{c}{Of those} \\",
-             r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
-             r"Method & the intervened branch & another branch & no branch & added & withdrawn & distinct docs \\",
+             r"& & \multicolumn{2}{c}{Branch-governed} & & \multicolumn{2}{c}{Direction} \\",
+             r"\cmidrule(lr){3-4}\cmidrule(lr){6-7}",
+             r"Method & Spurious & this pair & elsewhere & Not governed & added & withdrawn \\",
              r"\midrule"]
     for arm, label in ARMS:
         c = counts[arm]
-        total = c["on_branch"] + c["off_branch"] + c["off_vocab"]
+        total = sum(c[k] for k in KINDS)
         assert total == report["scores"][arm]["spurious_atoms"], \
             f"{label}: attributed {total} != report {report['scores'][arm]['spurious_atoms']}"
         out["arms"][arm] = {"label": label.replace("\\casepath", "CasePath"), "spurious": total,
-                            "on_branch": c["on_branch"], "off_branch": c["off_branch"],
-                            "off_vocab": c["off_vocab"], "added": c["added"],
-                            "withdrawn": c["withdrawn"], "distinct_documents": len(distinct[arm]),
-                            "examples_not_on_branch": examples[arm]}
-        lines.append(f"{label} & {c['on_branch']} & {c['off_branch']} & {c['off_vocab']} & "
-                     f"{c['added']} & {c['withdrawn']} & {len(distinct[arm])} \\\\")
-        print(f"  {label.replace(chr(92)+'casepath','CasePath'):<18} spurious {total:>3} = "
-              f"branch {c['on_branch']:>3} / other {c['off_branch']:>3} / none {c['off_vocab']:>3}"
-              f"   (+{c['added']} -{c['withdrawn']}, {len(distinct[arm])} distinct)")
+                            **{k: c[k] for k in KINDS}, "added": c["added"],
+                            "withdrawn": c["withdrawn"], "distinct_documents": len(distinct[arm])}
+        lines.append(f"{label} & {total} & {c['required_in_one_unit']} & {c['governed_elsewhere']}"
+                     f" & {c['not_branch_governed']} & {c['added']} & {c['withdrawn']} \\\\")
+        print(f"  {label.replace(chr(92) + 'casepath', 'CasePath'):<18} spurious {total:>3} = "
+              f"this pair {c['required_in_one_unit']:>2} / elsewhere {c['governed_elsewhere']:>2} / "
+              f"not governed {c['not_branch_governed']:>3}   (+{c['added']} -{c['withdrawn']}, "
+              f"{len(distinct[arm])} distinct)")
     lines += [r"\bottomrule", r"\end{tabular}"]
 
     (HERE / "SPURIOUS_ORIGIN.json").write_text(json.dumps(out, indent=1) + "\n")
     (HERE / "table_spurious_origin.tex").write_text("\n".join(lines) + "\n")
-    print(f"\n  reference changes by direction: {dict(ref_dir)}")
-    print(f"\nwrote SPURIOUS_ORIGIN.json and table_spurious_origin.tex "
-          f"({len(owner)} atoms in the reference vocabulary)")
+    print(f"\n  branch-governed documents: {len(governed)}")
+    print(f"  reference changes: {ref_dir['+']} added, {ref_dir['-']} withdrawn")
+    print(f"  changed guards per pair: {dict(sorted(guards.items()))} "
+          f"(more than one on {out['pairs_with_more_than_one_changed_guard']} of {len(casepath_rows)})")
+    print(f"  pairs with no changed guard yet a predicted change: {silent or 'none'}")
 
 
 if __name__ == "__main__":
