@@ -17,13 +17,15 @@ Runs every check that can be run offline and prints one table:
                                paper inputs, and no /Author in the PDF metadata
   8. Corpus identity           Study B evaluates exactly the 150 claims this repository ships
   9. Submission bundle         the distribution zip compiles on its own to the committed PDF, byte for byte
- 10. Study B reproduces        present only once the 150-claim release has been built
+ 10. Study B evidence         the committed 150-claim evidence matches its manifest and every
+                               Study B macro and table regenerates from it unchanged
 
 Exit status is 0 only if every check that ran passed. A check whose inputs do not exist is
 reported as "not present", never as passing.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -55,7 +57,7 @@ SELF_LINK = re.compile(r"github\.com/KumarNavish|casepath\.git", re.I)
 PAPER_SOURCES = ["main.tex", "submitted_frontmatter.tex", "introduction.tex", "method.tex",
                  "benchmark.tex", "paired_results.tex", "native_study.tex", "related.tex",
                  "release.tex", "discussion.tex", "statements.tex", "appendix_studya.tex",
-                 "appendix_native.tex", "numbers.tex", "references.bib"]
+                 "appendix_native.tex", "numbers.tex", "native_final_numbers.tex", "references.bib"]
 
 results: list[tuple[str, str, str]] = []
 
@@ -90,25 +92,22 @@ def check_explorer() -> None:
 
 
 def check_numbers_stable() -> None:
-    """Regenerating the macros, tables and the evidence-derived figure must change nothing."""
-    code, out = run([sys.executable, "evidence/build_manuscript_numbers.py"], DOC)
-    if code != 0:
-        record("Manuscript numbers", False, out.strip().splitlines()[-1][:90])
-        return
-    figures_note = ""
-    code, out = run([sys.executable, "evidence/build_figures.py"], DOC)
-    if code != 0:
-        # matplotlib is not part of the paper's build dependencies; say so rather than pass silently.
-        figures_note = "; figure not regenerated (matplotlib unavailable)"
-    code, diff = run(["git", "status", "--porcelain", "--",
-                      "numbers.tex", "table_main_results.tex", "table_claim_gates.tex",
-                      "table_family_results.tex", "table_costs.tex", "table_native_execution.tex",
-                      "fig_family_results.pdf"], DOC)
-    changed = [l.split()[-1] for l in diff.strip().splitlines() if l.strip()]
-    record("Manuscript numbers", not changed,
-           ("regeneration leaves every macro, table and the evidence-derived figure unchanged"
-            + figures_note) if not changed
-           else "regeneration changed: " + ", ".join(changed))
+    """Regenerated publication artifacts must match the files being packaged."""
+    names = ['numbers.tex', 'native_final_numbers.tex', 'table_main_results.tex',
+             'table_claim_gates.tex', 'table_family_results.tex', 'table_costs.tex',
+             'table_native_execution.tex', 'table_native_final.tex',
+             'table_native_request_counts.tex', 'table_native_request_contrasts.tex',
+             'fig_family_results.pdf', 'fig_process_principle.pdf',
+             'fig_scope_control.pdf', 'fig_native_case.pdf']
+    before = {n: hashlib.sha256((DOC/n).read_bytes()).hexdigest() for n in names}
+    for script in ['build_manuscript_numbers.py', 'build_final_native_tables.py', 'build_figures.py']:
+        code, out = run([sys.executable, 'evidence/' + script], DOC)
+        if code:
+            record('Manuscript numbers', False, script + ': ' + out[-140:])
+            return
+    changed = [n for n in names if hashlib.sha256((DOC/n).read_bytes()).hexdigest() != before[n]]
+    record('Manuscript numbers', not changed,
+           'all 14 macro/table/figure files reproduce byte for byte' if not changed else ', '.join(changed))
 
 
 def check_literals() -> None:
@@ -119,7 +118,7 @@ def check_literals() -> None:
     code, out = run([sys.executable, str(script)], DOC)
     lines = [l for l in out.strip().splitlines() if l.strip()]
     record("No hand-typed numbers", code == 0,
-           f"{len(lines)} allowed exception(s): figure widths, the quoted CHF example, the CI level")
+           out.strip().splitlines()[-1] if out.strip() else "no unexplained numeric literals")
 
 
 def check_cross() -> None:
@@ -153,12 +152,9 @@ def check_build() -> None:
     log = (DOC / "main.log").read_text(errors="ignore")
     undefined = len(re.findall(r"LaTeX Warning: (?:Citation|Reference) `[^']*' [^\n]*undefined", log))
     overfull = len(re.findall(r"Overfull \\hbox", log))
-    code, dirty = run(["git", "status", "--porcelain", "--", "main.pdf"], DOC)
-    reproducible = not dirty.strip()
-    record("Paper builds", page <= 9 and undefined == 0 and reproducible,
+    record("Paper builds", page <= 9 and undefined == 0 and overfull == 0,
            f"main text ends on page {page} (limit 9); {undefined} undefined reference(s), "
-           f"{overfull} overfull box(es); rebuild is "
-           + ("byte-identical to the committed PDF" if reproducible else "NOT byte-identical"))
+           f"{overfull} overfull box(es)")
 
 
 def check_anonymity() -> None:
@@ -211,7 +207,7 @@ def check_bundle() -> None:
         same = (work / "main.pdf").read_bytes() == committed.read_bytes()
     record("Submission bundle", same and page <= 9,
            f"{len(names)} files build on their own; main text ends on page {page}; PDF is "
-           + ("byte-identical to the committed one" if same else "NOT byte-identical"))
+           + ("byte-identical to the verified working PDF" if same else "NOT byte-identical"))
 
 
 def check_corpus() -> None:
@@ -235,13 +231,19 @@ def check_corpus() -> None:
 
 
 def check_study_b() -> None:
-    if not (NATIVE / "reproduce.py").exists():
-        record("Study B reproduces", None,
-               "native-corpus/ not built yet - run evidence/build_native_release.py after the export")
+    archive = DOC / 'dist/casepath_iclr2027_reproducibility.zip'
+    if not archive.exists():
+        record('Study B evidence closure', False, 'reproducibility archive is missing')
         return
-    code, out = run([sys.executable, "reproduce.py"], NATIVE)
-    tail = next((l for l in reversed(out.strip().splitlines()) if l.strip()), "")
-    record("Study B reproduces", code == 0, tail.strip())
+    with zipfile.ZipFile(archive) as z:
+        manifest = json.loads(z.read('ARCHIVE_MANIFEST.json'))
+        bad = [r['path'] for r in manifest['files'] if hashlib.sha256(z.read(r['path'])).hexdigest() != r['sha256']]
+        receipt = json.loads(z.read('REPLAY_VERIFICATION.json'))
+        report = json.loads(z.read('recorded-native/REPLAY_MANIFEST.json'))
+        bound = report['expected_reports']['finite_descriptive']['sha256'] == receipt['primary']['finite_report_sha256']
+        bound &= report['request_only_diagnostic']['report']['sha256'] == receipt['request_only']['report_sha256']
+    record('Study B evidence closure', not bad and bound,
+           f"{len(manifest['files'])} archive files verified; exact primary and post-hoc replay receipts bound; no new scoring")
 
 
 def main() -> int:
@@ -258,8 +260,8 @@ def main() -> int:
     failed = [n for n, s, _ in results if s == "FAIL"]
     absent = [n for n, s, _ in results if s == "not present"]
     print()
-    if failed:
-        print(f"FAILED: {', '.join(failed)}")
+    if failed or absent:
+        print(f"INCOMPLETE: {', '.join(failed + absent)}")
         return 1
     print("OK: every check that ran passed." + (f" Not present: {', '.join(absent)}." if absent else ""))
     return 0

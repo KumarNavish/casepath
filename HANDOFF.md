@@ -195,22 +195,31 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
 
 ## 7. GAPS
 
-1. **Study B results are absent; predictions are complete.** As of 2026-09-21 13:56 UTC the run
-   `mac-571f0e07-021f-4b22-878a-11c2f457de0b` recorded **all 1,050 scheduled cells** (558 completed,
-   412 failed, 80 blocked dependents; `walltime-get-continuation/work/output/`), at USD 89.66 of the
-   USD 236.80 ceiling with zero outstanding liability. It then **terminated before native scoring**:
-   `run/RESULT.json` has `state: incomplete_or_blocked`, `failure_category: predict_exit_3`,
-   `numeric_reports: {}`, and `run/stderr.log` reports `missing_or_oversized_regular_file`. The
-   integrity block shows `all_prediction_records_frozen: false` and `both_phase_manifests_frozen:
-   false`, and `EVALUATOR_BOUNDARY.json` confirms `targets_read: false` — no target was ever read, so
-   the evidence is intact and scoring is a pure offline computation over the recorded cells. Codex is
-   tracing the file-validation error. **Do not attempt the scoring here:** it needs the native
-   evaluator and the target container, which CONTINUE.md step 7 places under a custody grant this
-   session does not hold. The paper honestly reports protocol + execution record. When Codex produces
-   `FINITE_REPORT.json` (state `finite_corpus_evaluated`), run the injector, add
-   `\input{native_results_numbers.tex}` to `main.tex`, write the results paragraph in `native_study.tex` from
-   the generated macros, recompile, and re-run the two check scripts. If Study B never completes, the paper is
-   submittable as is; the abstract's claim rests on Study A.
+1. **Study B is integrated, and its registered result is a failure.** The run
+   `mac-571f0e07-021f-4b22-878a-11c2f457de0b` recorded all 1,050 scheduled cells (558 completed,
+   412 failed, 80 blocked dependents) at USD 89.66 of the USD 236.80 ceiling with zero outstanding
+   liability, then terminated before native scoring (`state: incomplete_or_blocked`,
+   `failure_category: predict_exit_3`, `stderr: missing_or_oversized_regular_file`). Scoring was
+   completed separately; the evidence now committed at
+   `research/casepath/iclr2027-integrated/evidence/native150/` records the outcome:
+   **every generated artefact failed native evaluation**, so the frozen policy penalises all 1,050
+   cells and **0 of 12** protected-split practical targets are met, with **zero** observable quality
+   cells. A separately specified post-hoc analysis scores the literal request lists (558 observed,
+   492 penalised); its conservative contrasts stay negative against all four learned alternatives.
+   The paper reports both, labels the diagnostic as post hoc, and claims better realized request
+   output under this budget rather than paired superiority.
+   **Correction to an earlier version of this file:** it stated that `EVALUATOR_BOUNDARY.json`
+   confirmed `targets_read: false` and therefore that no target was ever read. The authoritative
+   scope record (`evidence/native150/EVIDENCE_SCOPE.json`) says
+   `historical_complete_no_target_read_attestation: NOT_ESTABLISHED`, because the producer
+   terminated without its complete I/O audit. Non-access is **not** established retrospectively, and
+   the targets have since been released, so this corpus cannot serve as newly hidden confirmation.
+   Both caveats are stated in the paper's main text and appendix.
+   The `REQUEST_ONLY_REPORT.json` was produced by a modified reporting wrapper that is not in this
+   repository, so the stock frozen module does not reproduce it here; `verify_release.py` therefore
+   checks the evidence hashes and macro regeneration rather than recomputing that report.
+   `evidence/build_native_results.py` and `evidence/build_native_release.py` were written for a
+   `finite_corpus_evaluated` export that never happened and are now unused.
 2. **Overleaf sync.** After any local change, re-upload `dist/casepath_iclr2027_submission_source.zip` into
    project `6ab0eea72f79f49c515c7853` (replace all files), compile there and confirm the main text ends on
    page 9. Codex's automation writes only to its own project `6ab03c46…`; do not let the two be confused at
