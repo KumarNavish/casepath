@@ -125,6 +125,15 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
 * **Study B injector:** `evidence/build_native_results.py FINITE_REPORT.json` → `native_results_numbers.tex`,
   `table_native_results.tex`, `evidence/NATIVE_RESULTS_AUDIT.json` (smoke-tested on a synthetic report in a
   scratch directory only).
+* **Study B release builder (new 2026-09-21):** `research/casepath/iclr2027-integrated/evidence/build_native_release.py
+  --evidence <final-evidence-dir>` assembles `research/casepath/native-corpus/`: the scored rows of both splits,
+  the released report, the frozen `finite_reporting.py` (byte-identical, with a shim for its one infrastructure
+  import), the analysis contract, the cell plan, a target-free per-cell execution index, a hash manifest, a
+  generated `README.md` whose numbers all come from the report, and a generated `reproduce.py` that recomputes
+  the report from the rows. It refuses to build unless `RESULT.state == finite_corpus_evaluated` and the report
+  declares `statistical_significance_computed = false`, and it verifies the bundle by running the reproduction.
+  Validated end to end on a synthetic export in a scratch directory (13 files, exact recomputation); `--dry-run`
+  validates an export without writing.
 * **Authenticated Study A evidence (Codex):** `~/.local/state/navish-acceptance-20260919/final-publication/submitted-foundation/`
   (`PAIRED_V5_REPRODUCED_RESULT.json`, `PAIRED_V5_RECEIPT_ACCOUNTING.json`, `PAIRED_V5_REPRODUCED_PARITY.json`,
   `CasePath_ICLR2027_Anonymous_Release_v5.zip` = the V5 reproducibility archive, 3.2 MB).
@@ -165,9 +174,16 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
    cautious two-study assembly this rewrite started from; this checkout's version supersedes it.
 4. **OpenReview submission** must be done by the author: anonymous PDF, supplementary zip (V5 archive + Study B
    release when available), and the mandatory AI-use disclosure form.
-5. **Git:** `main` is pushed to `github/main` (checked 2026-09-21 12:30 UTC; `git status -sb` shows no
-   ahead/behind). Re-check after further commits.
-6. **Unverified claims to avoid:** any Study B score; any statement that CasePath is statistically superior;
+5. **Git:** `main` is pushed to `github/main` (re-checked 2026-09-21 13:00 UTC). Re-check after further commits.
+6. **Uncommitted work in the older research line (deliberately not landed).** `git status` shows ~26 modified
+   and ~117 untracked files under `research/casepath/` outside the submission directories: substantive Sep 16-17
+   work on the falsification-audit line, including the separate unsubmitted paper `research/casepath/iclr2027/`
+   (main.tex/main.pdf/figures), `release_set_validity_analysis.py` (~312 changed lines) and artifact JSONs that
+   embed raw provider responses — about 8,700 added lines in total. This session landed **only** the seven
+   Markdown notice headers (commit `4ce8a1b`), because the committed copies of `PAPER.md`, `RESULTS.md` and
+   their siblings otherwise present withdrawn claims with no notice. Everything else is left for the author to
+   review; it is not needed for the submission and was not read line by line here.
+7. **Unverified claims to avoid:** any Study B score; any statement that CasePath is statistically superior;
    any transfer to unseen rules or domains; live-inference product parity (parity is conditional on recorded
    guard decisions).
 
