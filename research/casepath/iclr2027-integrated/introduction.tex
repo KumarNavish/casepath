@@ -1,72 +1,70 @@
 \section{Introduction}
 \label{sec:intro}
 
-A customer reports a burglary. A stolen watch is separately scheduled under
-an insurance policy. That fact activates a requirement to establish its value,
-through a purchase receipt or an expert valuation. Remove the fact and the
-requirement disappears. Leave it uncertain and the next step is a clarification
-question. A receipt may therefore be necessary, irrelevant, premature, or one
-of several sufficient alternatives within the same claim category. The
-requirement depends on the active obligation, not simply on the document's
-association with theft.
+A customer reports a burglary. One stolen watch is separately scheduled
+under the insurance policy, which creates an obligation to establish its
+value. A purchase receipt or an expert valuation can do so. If the watch is
+not separately scheduled, that obligation disappears. If its status is
+unclear, the handler must first ask a question. Within the same claim
+category, a document can therefore be required, irrelevant, premature, or
+one of several sufficient alternatives.
 
-A direct predictor can learn this dependency. Its checklist, however, does
-not reveal whether a request follows from the applicable rule or from a
-plausible document prior. \casepath makes the dependency executable:
+Predicting a checklist directly leaves the reason for each request implicit.
+A model may have learned the applicable rule, or it may simply associate a
+familiar document with theft. \casepath expresses the dependency as an
+executable chain:
 \begin{equation}
 \text{source}\to\text{process node}\to\text{obligation}\to
 \text{required fact}\to\text{evidence capability}\to\text{document route}.
 \label{eq:spine}
 \end{equation}
-The model reads passages and assesses case conditions; a controller derives
-the requests from active obligations. An unresolved condition yields a
-question. A false condition contributes no branch-specific demand. Each
-request retains its source, condition and evidentiary purpose, and new
-evidence updates the state from which the plan is derived
-(Figure~\ref{fig:principle}). This leads to a testable prediction:
-\emph{resolving process obligations before predicting documents should make
-evidence plans more selective when a case changes.}
+The model interprets source passages and assesses the case. A controller
+then derives requests from the active obligations. It asks a question when
+a condition is unresolved and makes no branch-specific request when the
+condition is false. Each request records its source, condition and purpose.
+As evidence arrives, the controller updates the case state and recomputes
+the plan (Figure~\ref{fig:principle}). We test whether this order of operations
+makes evidence plans more selective when a case changes.
 
 \begin{figure}[t]
 \centering\includegraphics[width=\linewidth]{fig_process_principle.pdf}
-\caption{\textbf{The active branch controls the request.} Schematic of the
-motivating example. A source condition determines whether an obligation is
-active, inactive or unresolved. An active obligation connects a required fact
-to an evidence capability and its document routes; uncertainty calls for
-clarification. The version-specific rules for choosing routes and judging
-sufficiency are defined in Section~\ref{sec:method}.}
+\caption{How the active branch determines a request. In this schematic
+example, a source condition makes an obligation active, inactive or
+unresolved. An active obligation specifies a fact to establish, an evidence
+capability and the document routes that can provide it. An unresolved
+condition calls for clarification. Section~\ref{sec:method} defines each
+version's route-selection and sufficiency rules.}
 \label{fig:principle}
 \end{figure}
 
-We test selectivity directly rather than equating it with document recall.
-Study~A changes one branch-defining fact in each of \nPairsAll{} matched
-case pairs and scores the justified change in their checklists. On the
-\nPairsHid{} held-out pairs, \casepath makes \cpSpur{} false-positive changes,
-against \dirSpur{} for Direct, \gcSpur{} for Graph as context and \efSpur{}
-for Evidence-first. Against Direct, it avoids twelve false-positive changes
-while recovering one fewer correct change; its signed-change $F_1$ is
-\cpF{} versus \dirF. The improvement is concentrated in procedural branches
-whose required documents are poorly suggested by the claim category alone.
-The family analysis identifies both these strengths and the semantic errors
-that still generate wrong requests.
+Study~A measures whether a system changes the right requests after one case
+fact changes. It contains \nPairsAll{} matched pairs. On the \nPairsHid{}
+held-out pairs, \casepath makes \cpSpur{} false-positive document changes,
+compared with \dirSpur{} for Direct, \gcSpur{} for Graph as context and
+\efSpur{} for Evidence-first. Against Direct, this is twelve fewer
+false-positive changes for one fewer correct change; signed-change $F_1$
+is \cpF{} versus \dirF. The advantage is concentrated in procedural
+branches, where the claim category gives little indication of the required
+document. Results by family also expose semantic errors that continue to
+produce wrong requests.
 
-Study~B tests the same principle on the complete \nbClaims-claim tenancy
-release. It exposes a native interface failure, then separates literal-request
-agreement from a retrospective evaluation at the model's recorded assessed
-state. That second comparison isolates inherited process scope. On the
-\nbHidClaims{} protected-family cases, scope raises reference-chain precision
-from \asHidLsChain{} to \asHidCpChain; the conservative paired benefit remains
-\asHidCChain{} with unavailable pairs penalized. On the same completed
-development cases, both controllers recover \asDevCpValid{} valid requests,
-while scope reduces total requests from \asDevLsReq{} to \asDevCpReq.
-The mechanism is selective acquisition: keep the evidence that active
-obligations require and suppress demands inherited from inapplicable processes.
+Study~B evaluates complete plans on the \nbClaims-claim tenancy release.
+The registered evaluation encounters a native interface failure. Separate
+retrospective analyses measure literal-request agreement and evaluate plans
+at the model's saved assessment. The latter isolates the effect of inherited
+process scope. On the \nbHidClaims{} protected-family cases, scope increases
+reference-chain precision from \asHidLsChain{} to \asHidCpChain, with a
+conservative paired benefit of \asHidCChain{} after penalizing unavailable
+pairs. On the same completed development cases, both controllers recover
+\asDevCpValid{} valid requests, while total requests fall from
+\asDevLsReq{} to \asDevCpReq. Obligations that inherit the conditions of
+their enclosing process produce fewer unjustified demands.
 
-The contribution is the coupling of a source-grounded document-planning
-object to an executable controller, tested at the level of branch-induced
-changes and full request lists. Compiled procedures and evidence ledgers
-already separate semantic judgement from control
-\citep{kim2026evidenceobligation,yu2026compile}; we examine the consequence
-for evidence acquisition. The release joins the method, benchmarks, recorded
-outputs, evaluator and workbench so that a reader can inspect why a request
-was made and reproduce what the experiments measured.
+We contribute a source-grounded representation of evidence requirements,
+an executable controller and evaluations of branch-induced changes and
+complete request lists. Compiled procedures and evidence ledgers already
+separate semantic judgement from control
+\citep{kim2026evidenceobligation,yu2026compile}. We study how that separation
+affects evidence acquisition. The released benchmarks, outputs and evaluator
+allow readers to reproduce the measurements; the workbench exposes the
+source and obligation behind each request.

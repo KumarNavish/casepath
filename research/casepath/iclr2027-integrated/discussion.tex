@@ -1,39 +1,39 @@
-\section{Discussion and Limitations}
+\section{Discussion and limitations}
 \label{sec:limitations}
 
-The practical value of process control is selectivity with an inspectable
-reason. In Study~A, \casepath removes false-positive changes while retaining
-nearly as many correct changes as Direct. The benefit is largest on
-procedural branches, where a familiar claimant document is a poor substitute
-for the particular notice or confirmation that the rule requires. Study~B's
-current-case scope intervention establishes a related design choice: an obligation
-must inherit the conditions of its enclosing process, not merely satisfy its
-own local condition. A system builder can inspect and test both dependencies
-before asking a customer for another document.
+Process control helps a system explain why a request belongs in the plan.
+In Study~A, it reduces false-positive changes while recovering nearly as
+many correct changes as Direct. The advantage is largest on procedural
+branches, where the applicable rule calls for a particular notice or
+confirmation that a familiar claimant document cannot replace. Study~B
+isolates a related requirement: an obligation must inherit the conditions
+of its enclosing process as well as satisfy its local guard. A system
+builder can inspect these dependencies and test their effect on requests.
 
-The evidence has specific limits. Study~A tests known concepts in new
-contexts and additions rather than justified withdrawals, uses unequal computation across pipelines, and does not meet its
-preregistered broad-superiority gate. Its source-derived references contain
-author judgements about which documents establish a fact, rather than expert
-consensus; a deployed system would also need to select the governing policy
-instead of combining rules from multiple insurers. Study~B tests complete
-synthetic claims under matched budgets, but its native interface failure
-leaves counterfactual graph correctness unvalidated. Its retrospective
-current-case analysis isolates scope within dependent controls; the broader
-request comparison measures realized output under failures.
-Neither study measures customer effort, expert agreement, autonomous
-acquisition or performance in another jurisdiction.
+The studies support these conclusions within defined settings. Study~A
+covers known concepts in new contexts, with reference additions but no
+justified withdrawals. Computation differs across pipelines, and the
+preregistered broad-superiority gate fails. Its references reflect author
+judgements about which documents establish a fact, without expert consensus.
+Deployment would also require selecting the governing policy; the study
+combines rules from several insurers.
+
+Study~B uses complete synthetic claims and matched budgets. The native
+interface failure leaves counterfactual graph correctness unvalidated.
+Its retrospective current-case analysis isolates scope within dependent
+controls, while the broader request comparison measures realized output
+including failures. Neither study measures customer effort, expert agreement,
+autonomous acquisition or performance in another jurisdiction.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-Evidence planning benefits from making the reason for a request executable.
-\casepath represents the dependency from source condition to obligation,
-fact, capability and document, and lets case state determine which demands
-are active. The controlled comparison finds fewer unjustified checklist
-changes; the current-case intervention shows that inherited scope removes
-unjustified demand while retaining the same recovered obligations in development. These results support a concrete design
-principle: derive evidence demands from explicit, case-conditioned
-obligations, and validate both the requests and the process semantics that
-produce them. The released benchmarks, controller, traces and offline
-reproduction make that principle inspectable and testable.
+\casepath derives document demands from source conditions, active obligations
+and the facts that evidence must establish. The controlled comparison finds
+fewer unjustified checklist changes. The current-case intervention shows
+that inherited scope removes unjustified requests while preserving the
+same recovered obligations in development. These findings support deriving
+evidence demands from explicit obligations evaluated against the case state.
+Both the resulting requests and the process semantics need validation.
+The released benchmarks, controller, traces and offline analyses make these
+checks reproducible.

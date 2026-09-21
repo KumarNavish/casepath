@@ -1,104 +1,109 @@
-\section{Study B: Complete Claims and the Value of Process Scope}
+\section{Study B: complete claims and inherited process scope}
 \label{sec:native}
 
-\paragraph{A matched complete-corpus comparison.}
-Study~B evaluates all \nbClaims{} released synthetic tenancy claims across
-\nbFamilies{} families in three domains: defects, mould and heating;
-termination; and rent increase. Development contains \nbDevClaims{} claims
-in \nbDevFamilies{} families; the protected split contains \nbHidClaims{}
-claims in \nbHidFamilies{} disjoint families. Five learned pipelines share
-the compiled public representation, observable packet, source access,
-model alias and budget: \nbCallsPerCell{} calls per cell, \nbReasoning{}
-reasoning, \nbTokens{} completion tokens per call, no tools or resampling.
-\casepath emits an assessment that code compiles into the artefact;
-Direct, Document-first, Process-context and Rule-first generate the artefact.
-Compiled-equivalent and local-scope controls reuse \casepath's assessments.
-This compares complete pipelines under matched information and budget.
+\paragraph{Corpus and matched conditions.}
+Study~B includes all \nbClaims{} released synthetic tenancy claims,
+covering \nbFamilies{} families in three domains: defects, mould and
+heating; termination; and rent increase. The development split contains
+\nbDevClaims{} claims in \nbDevFamilies{} families. The protected split
+contains \nbHidClaims{} claims in \nbHidFamilies{} disjoint families.
+Five learned pipelines share the compiled public representation, observable
+packet, source access and model alias. Each has the same budget of
+\nbCallsPerCell{} calls per cell, \nbReasoning{} reasoning and
+\nbTokens{} completion tokens per call, with no tools or resampling.
+\casepath produces an assessment that code compiles into an artefact.
+Direct, Document-first, Process-context and Rule-first generate the artefact
+themselves. Compiled-equivalent and local-scope controls reuse \casepath's
+assessments. The comparison therefore holds the available information and
+budget fixed across complete pipelines.
 
-\paragraph{Registered primary and separately specified analyses.}
+\paragraph{Registered evaluation and retrospective analyses.}
 All \nrArtifactFailures{} generated artefacts fail the original native
-interface: the compiler's condition names are not bound in the reference
-scenario. The frozen policy penalizes all \nbCells{} cells, including
-\nrRequestPenalties{} failed or blocked outputs; \nrPrimaryMet{} of
-\nrPrimaryTotal{} protected-split practical targets are met. The primary
-report and failures remain unchanged. Two retrospective analyses answer
-narrower questions: whether literal requests agree with reference sets, and
-whether inherited scope improves a plan evaluated at its recorded assessed
-state. Neither replaces the registered result.
+interface because the reference scenario does not bind the compiler's
+condition names. Under the frozen policy, all \nbCells{} cells receive
+adverse penalties, including \nrRequestPenalties{} failed or blocked
+outputs. The primary result meets \nrPrimaryMet{} of \nrPrimaryTotal{}
+protected-split practical targets. We preserve that report and every failure.
+Two separately specified retrospective analyses examine what the saved
+outputs can establish: agreement between literal requests and reference
+sets, and the effect of inherited scope on a plan evaluated at its recorded
+assessment. These analyses leave the registered result unchanged.
 
-\paragraph{Realized request quality across all pipelines.}
-The first analysis scores literal immediate requests with the original
-reference and counting functions, without interpreting guards. All
-\nrRequestObserved{} generated lists are scoreable; failed outputs retain
+\paragraph{Request quality across the complete comparison.}
+The first analysis applies the original reference and counting functions to
+literal immediate requests, without interpreting guards. All
+\nrRequestObserved{} generated lists can be scored. Failed outputs retain
 zero quality scores and an unnecessary-fraction penalty of one.
-Table~\ref{tab:native-final} shows the complete comparison. \casepath produces
-\rqHidCpN{} lists on protected families, with failure-penalized $F_1$
-\rqHidCpF{} against \rqHidPcF{} for the strongest comparator,
-Process-context. The difference includes output availability: the
-conventional paired advantage is \rqHidDPcF, but the conservative contrast,
-assigning $-1$ whenever either endpoint is unobserved, is \rqHidCPcF.
-This supports better realized output under the budget, not reliable paired
-superiority over the learned alternatives.
+Table~\ref{tab:native-final} reports every arm. On protected families,
+\casepath produces \rqHidCpN{} lists and reaches failure-penalized $F_1$
+\rqHidCpF. Process-context, the strongest comparator, reaches \rqHidPcF.
+Output availability contributes to this difference. The conventional paired
+advantage is \rqHidDPcF; a conservative contrast that assigns $-1$ whenever
+either endpoint is unobserved gives \rqHidCPcF. \casepath has better
+realized output under the budget, but these comparisons do not establish
+reliable paired superiority over the learned alternatives.
 
 \begin{table}[t]
 \centering\small
 \setlength{\tabcolsep}{4pt}
 \input{table_native_final.tex}
-\caption{\textbf{Complete-corpus request comparison.} Retrospective agreement
-of literal request lists with reference sets. Scores weight domains equally,
-families equally within domains and cases equally within families. Failed
-outputs remain in the denominator; ``Unnecessary'' includes their unit
-penalty. Dependent controls reuse the same recorded assessments.}
+\caption{Agreement of literal request lists with reference sets across the
+complete corpus. This is a retrospective analysis. Domains receive equal
+weight, as do families within a domain and cases within a family. Failed
+outputs remain in the denominator; their ``Unnecessary'' penalty is one.
+The dependent controls use the same recorded assessments.}
 \label{tab:native-final}
 \end{table}
 
-\paragraph{Making the assessed state explicit.}
-The second analysis specializes each saved artefact to its own authenticated
-assessment. A condition known true activates its entities; a false condition
-does not; unresolved entities remain recorded as unresolved and are not
-asserted active. The resulting current-case snapshot can be scored without
-substituting the reference scenario for the model's beliefs. The original
-requests and all failed cells are retained. Only \casepath and its two
-dependent controls have the required saved assessments. Every available
-snapshot scores successfully, and none excludes a literal immediate request.
-This interface evaluates current-case structure, not the program's response
-to hypothetical branch changes (Appendix~\ref{app:assessed-state}).
+\paragraph{Evaluation at the recorded assessment.}
+The second analysis binds each saved artefact to its own authenticated
+assessment. Conditions known to be true activate their entities; false
+conditions leave them inactive. Unresolved entities remain recorded as
+unresolved and are not asserted active. This creates a snapshot of the
+current case that can be scored using the model's recorded beliefs. The
+original requests and all failed cells are retained. Only \casepath and its
+two dependent controls have the saved assessments required for this analysis.
+Every available snapshot scores successfully, and none excludes a literal
+immediate request. The snapshot evaluates current-case structure; it cannot
+test the program's response to hypothetical changes in branch conditions
+(Appendix~\ref{app:assessed-state}).
 
 \begin{figure}[t]
 \centering\includegraphics[width=\linewidth]{fig_scope_control.pdf}
-\caption{\textbf{Inherited scope removes unjustified demand.} Left:
-reference-chain precision in the retrospective current-case evaluation,
-including every scheduled case and failure penalty. Right: on the same
-\asDevCpN{} completed development cases, both controllers retain
-\asDevCpValid{} valid requests; enclosing scope reduces total requests
-from \asDevLsReq{} to \asDevCpReq. The assessment and source representation
-are fixed.}
+\caption{Effect of inherited scope at fixed assessment. Left: reference-chain
+precision in the retrospective current-case evaluation, with every scheduled
+case and failure penalty included. Right: on the same \asDevCpN{} completed
+development cases, both controllers retain \asDevCpValid{} valid requests,
+while inherited scope reduces total requests from \asDevLsReq{} to
+\asDevCpReq. The assessment and source representation are fixed.}
 \label{fig:scope}
 \end{figure}
 
-\paragraph{The benefit is selectivity at fixed assessment.}
-Figure~\ref{fig:scope} isolates inherited domain scope: an obligation must
-satisfy the enclosing process conditions as well as its local guard.
-On protected families, native valid-chain precision rises from
-\asHidLsChain{} to \asHidCpChain; the conservative paired benefit remains
-positive at \asHidCChain{} even after penalizing unavailable pairs. The
-corresponding unnecessary fraction falls from \asHidLsU{} to
-\asHidCpU. These are complementary views of the same requests, not
-independent effects. On the same \asDevCpN{} completed development cases,
-both controllers recover \asDevCpValid{} valid requests, while total
-requests fall from \asDevLsReq{} to \asDevCpReq. Scope therefore removes
-unjustified demands without sacrificing those recovered obligations.
-The compiled-equivalent control matches \casepath exactly. The intervention
-establishes the value of inherited domain applicability; it does not isolate
-arbitrary graph topology. Native chain matching checks agreement with
-reference decision--fact--capability--document links, not exact-source
-entailment: provenance-chain inheritance is zero in both controllers.
+\paragraph{Scope removes unjustified demand.}
+The intervention in Figure~\ref{fig:scope} requires each obligation to satisfy
+its enclosing process conditions as well as its local guard. On protected
+families, this increases native valid-chain precision from \asHidLsChain{}
+to \asHidCpChain. Even after penalizing unavailable pairs, the conservative
+paired benefit is positive at \asHidCChain. The unnecessary fraction falls
+from \asHidLsU{} to \asHidCpU. Precision and unnecessary fraction describe
+complementary parts of the same requests, so they count as one effect.
 
-The family label records the original target-custody split: observable
-inputs had been inspected during product work, historical target non-access
-is not established because the producer's complete I/O audit is missing,
-and targets are now released. These are finite-corpus descriptive analyses,
-not fresh hidden confirmation. Costs are \$\nrStudyCost{} for the study and
-\$\nrTotalCost{} including earlier activity; the retrospective analyses add
-no provider calls. Full endpoints, raw counts and paired contrasts are in
-Appendix~\ref{app:request-diagnostic} and Appendix~\ref{app:assessed-state}.
+On the same \asDevCpN{} completed development cases, both controllers
+recover \asDevCpValid{} valid requests. Total requests fall from
+\asDevLsReq{} to \asDevCpReq. Inherited scope removes unjustified demands
+while preserving those recovered obligations. The compiled-equivalent
+control matches \casepath exactly. This intervention tests inherited domain
+applicability, without isolating arbitrary graph topology. Native chain
+matching compares the decision, fact, capability and document links with
+the reference. It does not establish exact-source entailment:
+provenance-chain inheritance scores zero for both controllers.
+
+The protected-family label denotes the original target-custody split.
+Product development had exposed the observable inputs, and the missing
+producer I/O audit prevents a retrospective claim of target non-access.
+The targets are now released. These descriptive finite-corpus analyses
+therefore provide no fresh hidden confirmation. The study cost is
+\$\nrStudyCost, or \$\nrTotalCost{} including earlier activity; the
+retrospective analyses require no additional provider calls.
+Appendices~\ref{app:request-diagnostic} and~\ref{app:assessed-state} give
+the full endpoints, raw counts and paired contrasts.

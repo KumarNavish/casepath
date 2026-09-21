@@ -1,227 +1,229 @@
-\section{Versioned Correspondence Between the Two Studies}
+\section{Correspondence between the two studies}
 \label{app:correspondence}
 \input{table_full_correspondence.tex}
 
-The shared interface is source specification, case assessment, evidence
-planning, state replacement and a justified next action. It does not assert
-identical knowledge, algorithms, estimands or validation across the two
-implementations. Study~A is bound to
-\path{casepath.theft-method-freeze/5.0.0}, interpreter V4 and evidence
-overlay V3; Study~B is bound to the compact native producer and its
-\texttt{obligation\_control\_v1} and \texttt{evidence\_demand\_v1}
-controller. The native public template union is not a transfer of the theft
-source pack, and the theft pairs are not transformations of the native claim
-roster. V5 judges local guards and projects every mapped route on active
-rules plus mapped confirmation evidence for true unconfirmed guards, minus
-held document types; it implements neither capability-specific nor joint
-adequacy. The native controller distinguishes applicability from
-acquisition, unknown from missing evidence, and per-capability route
-selection from route union. These are substantive version differences, and
-no benchmark comparison between the runtimes is claimed. Study~A's
-preparation extracted propositions, synthesised and refined rules and mapped
-capabilities with model calls and retained source-only corrections; its
-reported held-out costs exclude that preparation. Study~B's compilation is
-deterministic and shared by all arms.
+Both implementations take a source specification, assess case state, plan
+evidence, replace the state when observations change and derive a justified
+next action. They differ in knowledge, algorithms, estimands and validation.
+Study~A uses \path{casepath.theft-method-freeze/5.0.0}, interpreter V4 and
+evidence overlay V3. Study~B uses the compact native producer with
+\texttt{obligation\_control\_v1} and \texttt{evidence\_demand\_v1}.
+Its public template union does not transfer the theft source pack, and
+Study~A's theft pairs are not transformations of the native claim roster.
 
-\section{Study B: Native Measurements and Analysis Contract}
+V5 evaluates local guards, projects all mapped routes for active rules,
+adds mapped confirmation evidence for true but unconfirmed guards and
+subtracts held document types. It has no capability-specific or joint
+adequacy assessment. The native controller separates applicability from
+acquisition permission and unknown evidence from missing evidence, and
+selects a route for each capability. The studies make no performance
+comparison between these runtimes.
+
+Study~A's preparation used model calls to extract propositions, synthesise
+and refine rules, and map capabilities. The source-only corrections remain
+in the record, and the held-out cost excludes this preparation. Study~B's
+compilation is deterministic and shared by every arm.
+
+\section{Study B: native metrics and analysis contract}
 \label{app:native-metrics}
 
-\paragraph{Native endpoints.}
-Native critical-evidence recall is criticality-weighted coverage of active
-evidence obligations through any complete permitted document alternative.
-Evidence-obligation completeness additionally requires valid
-decision--fact--capability--document relations. Valid-chain precision counts
-requested items with such a chain over all requested items; its empty-set
-value is one and must be read beside coverage. Wrong-branch and premature
-requests, document states, node and edge scores, branch and path probes and
-source locators retain their native contracts; locator agreement is not
-semantic entailment, and probe accuracy is not a direct measure of inferred
-case-predicate accuracy. The emitted endpoint counts unique immediate
-request identities without activating candidate conditions from the
-reference scenario, and is available only when the reference has a unique
-allowed document set for every active obligation, complete consistent
-document states and the public label mapping. For predicted and reference
-sets $P,G$: $F_1=2|P\cap G|/(|P|+|G|)$ and unnecessary fraction
-$U=|P\setminus G|/|P|$; both-empty $F_1$, empty-prediction precision and
-empty-reference recall are one, and empty-prediction burden is zero. Failed
-cells use adverse frozen unit penalties instead: zero for higher-is-better
-rates, one for lower-is-better rates. Unavailable reference labels never
-become empty sets or silently shrink a denominator.
+\paragraph{Endpoints.}
+Native critical-evidence recall measures criticality-weighted coverage of
+active evidence obligations through a complete permitted document
+alternative. Evidence-obligation completeness also requires valid relations
+from the decision through the fact and capability to the document.
+Valid-chain precision is the fraction of requested items with such a chain.
+It is one for an empty request set, so it must be read alongside coverage.
 
-\paragraph{Estimation.}
-For a split or the complete corpus, each scheduled case has weight
-$\omega_i=1/(3\,m_{d(i)}\,n_{f(i)})$, where $m_d$ is its domain's family
-count and $n_f$ its family's scheduled case count. Conventional differences
-use adverse-imputed unit scores; conservative benefit-oriented differences
-contribute $-1$ whenever either producer endpoint is unobserved. Every
-single-family deletion is reported with remaining weights renormalised
-within the affected domain; these ranges are composition sensitivity, not
-confidence intervals. A comparator is counted as beaten only when all three
-conservative contrasts strictly exceed their boundaries on the complete
-protected population under the original references and integrity checks;
-otherwise the report labels the outcome as not met, a partial practical
-signal, or not evaluable.
+The native contracts define wrong-branch and premature requests, document
+states, node and edge scores, branch and path probes, and source locators.
+Locator agreement does not establish semantic entailment; probe accuracy
+does not directly measure the accuracy of inferred case predicates.
+The emitted endpoint counts unique immediate request identities without
+using the reference scenario to activate candidate conditions. It is
+available only when the reference supplies a unique allowed document set
+for each active obligation, complete and consistent document states, and
+the public label mapping.
 
-\paragraph{Execution and failure classes.}
-Each cell records its arm, case, state and either the validated artefact or
-the retained provider output with the reason validation failed. Unknown
-relation endpoint: a candidate artefact relation references a node identity
-that does not exist in the artefact. Truncated or non-terminal: the
-completion reached the \nbTokens-token limit or ended without a terminal
-outcome. Invalid codebook index: a reference into the shared public codebook
-that does not resolve. Contradictory presence state: a document marked both
-present and absent, or present with an inconsistent state. Blocked
-dependency: a dependent control whose \casepath source cell failed. Every
-failure retains its charge; a repaired version can never replace a failed
-cell in the frozen comparison.
+For predicted and reference sets $P,G$, checklist
+$F_1=2|P\cap G|/(|P|+|G|)$ and unnecessary fraction
+$U=|P\setminus G|/|P|$. When both sets are empty, $F_1$ is one. Empty
+predictions receive precision one and burden zero; an empty reference
+receives recall one. Failed cells instead receive the frozen adverse unit
+penalties: zero for higher-is-better rates and one for lower-is-better
+rates. Unavailable reference labels cannot be substituted with empty sets
+or used to reduce a denominator.
 
-\section{Post-hoc Request-Only Diagnostic}
+\paragraph{Weights and contrasts.}
+For either a split or the complete corpus, scheduled case $i$ receives
+weight $\omega_i=1/(3\,m_{d(i)}\,n_{f(i)})$, where $m_d$ is the number of
+families in its domain and $n_f$ is the number of scheduled cases in its
+family. Conventional differences use unit scores with adverse imputations.
+Conservative benefit-oriented differences contribute $-1$ whenever either
+producer endpoint is unobserved. The report also deletes each family in
+turn and renormalises the remaining weights within the affected domain.
+The resulting ranges measure sensitivity to corpus composition, without
+providing confidence intervals.
+
+A comparator counts as beaten only if all three conservative contrasts
+strictly exceed their boundaries over the complete protected population,
+using the original references and integrity checks. Otherwise the report
+records the outcome as not met, a partial practical signal or not evaluable.
+
+\paragraph{Recorded outcomes and failures.}
+Each cell records the arm, case and state, followed by either a validated
+artefact or the provider output and validation failure. An unknown relation
+endpoint references a node absent from the candidate artefact. A truncated
+or non-terminal completion reaches the \nbTokens-token limit or ends
+without a terminal outcome. An invalid codebook index fails to resolve in
+the shared public codebook. A contradictory presence state marks a document
+as both present and absent, or as present with an inconsistent state. A
+blocked dependency occurs when a control's \casepath source cell fails.
+Charges remain attached to every failure, and a repaired version cannot
+replace a failed cell in the frozen comparison.
+
+\section{Retrospective request-only diagnostic}
 \label{app:request-diagnostic}
 
 The registered wrapper scores emitted requests only after a native receipt
-has no evaluation failures. A common expression-namespace mismatch therefore
-suppresses request scoring for every generated artefact. The post-hoc
-diagnostic changes that availability rule alone: it reads the unchanged
-\texttt{request\_mode=now} items, maps their labels with the original public
-mapping, and applies the original emitted-set scorer. It never evaluates a
-candidate condition against a reference state. All original artefacts,
-producer failures, native failures, primary penalties and costs remain
-separately available.
+passes evaluation. The shared expression-namespace mismatch therefore
+prevents it from scoring any generated request list. The retrospective
+diagnostic changes this availability rule alone. It reads the unchanged
+\texttt{request\_mode=now} items, maps labels through the original public
+mapping and applies the original emitted-set scorer. It does not evaluate
+candidate conditions against reference states. The original artefacts,
+producer and native failures, primary penalties and costs remain available
+separately.
 
-All \nbClaims{} references yield an eligible unique document set. The
-\nrRequestObserved{} generated lists receive observed request-only scores;
-\nrRequestPenalties{} failed or blocked outputs receive the original adverse
-checklist penalties, with no invented requests. Domain--family--case
-weighting is unchanged. For benefit direction $b_m\in\{-1,1\}$, the
-conventional paired contribution is
-$b_m(s_{i,\mathrm{CP},m}-s_{i,a,m})$; the conservative contribution is the
-same quantity when both request-only endpoints are observed and $-1$
-otherwise. A graph's native failure does not make an independently scoreable
-request list unobserved in this diagnostic. No practical threshold,
-significance test or confidence interval is applied.
+All \nbClaims{} references provide an eligible unique document set.
+The \nrRequestObserved{} generated lists receive observed request-only
+scores. The \nrRequestPenalties{} failed or blocked outputs retain the
+original adverse checklist penalties; no requests are imputed. The original
+weights for domains, families and cases remain in force. For benefit
+direction $b_m\in\{-1,1\}$, the conventional paired contribution is
+$b_m(s_{i,\mathrm{CP},m}-s_{i,a,m})$. The conservative contribution uses
+this value when both request-only endpoints are observed and $-1$ otherwise.
+A native graph failure does not make a separately scoreable request list
+unobserved. This diagnostic applies no practical threshold, significance
+test or confidence interval.
 
 \begin{table}[htb]
 \centering\small
 \setlength{\tabcolsep}{4pt}
 \input{table_native_request_counts.tex}
-\caption{\textbf{Request counts and coverage.} Lists counts the generated
-artefacts that contribute raw counts. Correct/req., Missed and Cond. sum only
-those artefacts; Cond. counts documents deferred conditionally, not immediate
-requests. Precision and recall are full-population, failure-penalized weighted
-scores, and therefore differ from the ratios of the displayed raw counts.
-Dependent controls reuse the same assessments.}
+\caption{Request counts and output coverage. Lists counts artefacts that
+supply raw counts. Correct/req., Missed and Cond. sum over those artefacts
+only; Cond. counts conditionally deferred documents. Precision and recall
+use the full population with failure penalties and the specified weights,
+so they differ from ratios of the raw counts. Dependent controls reuse the
+same assessments.}
 \label{tab:native-counts}
 \end{table}
 
 \begin{table}[htb]
 \centering\small
 \input{table_native_request_contrasts.tex}
-\caption{Protected-family paired request-only contrasts. Positive values
-favor \casepath; the unnecessary-fraction difference reverses its sign so
-that less burden is positive. The conservative rule assigns $-1$ when either
-endpoint is unobserved. All endpoint contrasts, all families and every
-family-deletion result are included in the machine-readable report.}
+\caption{Paired request-only contrasts on protected families. Positive values
+favour \casepath. The unnecessary-fraction contrast reverses sign so that a
+reduction in burden is positive. The conservative contrast assigns $-1$
+when either endpoint is unobserved. The machine-readable report includes
+every endpoint, family and family-deletion result.}
 \label{tab:native-contrasts}
 \end{table}
 
-\paragraph{The boundary is semantic, not just syntactic.}
-The public compiler introduces \nrNativeSymbols{} condition symbols shared
-by all arms. None of the emitted symbols lies outside that namespace. The
-native expression language evaluates them against the contract's scenario,
-which does not provide the needed assignment. An authored, target-blind
-counterexample makes the difference explicit: the product controller returns
-unresolved for an absent condition; the native parser raises a missing-variable
-error. Assigning null instead makes the native Boolean evaluation false,
-while the controller still returns unresolved. Without a public state
-correspondence, a rename, default or injected predicted state would change
-meaning. No such correction is made.
+\paragraph{Condition names and their meanings.}
+The public compiler introduces \nrNativeSymbols{} condition symbols used
+by all arms; every emitted symbol belongs to that namespace. The native
+expression language evaluates them against the contract's scenario, which
+does not supply the required assignment. A target-blind authored
+counterexample shows why filling this gap requires a semantic choice.
+For an absent condition, the product controller returns unresolved while
+the native parser raises a missing-variable error. Substituting null makes
+the native Boolean evaluation false, whereas the controller still returns
+unresolved. Renaming a symbol, supplying a default or injecting a predicted
+state would change its meaning without an explicit state correspondence.
+The request-only diagnostic makes none of these changes.
 
 \begin{figure}[htb]
 \centering\includegraphics[width=.85\linewidth]{fig_native_case.pdf}
-\caption{\textbf{A recorded controller decision.} In the first completed
-\casepath development case in sorted cohort order, arrears is true and
-family-home status unresolved. The cure notice is requested now; the spouse
-notice remains conditional. This shows two routes within the recorded plan,
-not an accepted native graph: its exported predicate namespace encounters the
-same interface failure as the other generated artefacts. The release includes
-the complete case trace and selection rule.}
+\caption{A recorded controller decision. The first completed \casepath
+development case in sorted cohort order has true arrears and unresolved
+family-home status. The controller requests the cure notice immediately
+and keeps the spouse notice conditional. These are two routes in the saved
+plan. The exported graph has the same predicate-interface failure as the
+other generated artefacts. The release provides the full trace and case
+selection rule.}
 \label{fig:native-case}
 \end{figure}
 
-\paragraph{Execution evidence and historical access.}
+\paragraph{Custody and release.}
 The primary scoring task authenticates both complete prediction inventories
-before reading references. The original producer terminated without its
-complete I/O audit; historical non-access to protected targets is therefore
-not established retrospectively. Scoring, the compatibility diagnosis and
-the request-only analysis are separately recorded, with original failures
-preserved. All original target containers are subsequently released as exact
-bytes under their recorded data license. This version is now a public
-benchmark and cannot serve as newly hidden confirmation.
+before it reads references. The original producer ended without its complete
+I/O audit, leaving historical non-access to protected targets unestablished.
+Scoring, the compatibility diagnosis and the request-only analysis have
+separate records that preserve the original failures. All original target
+containers were then released as exact bytes under the recorded data
+license. The released version is a public benchmark and cannot provide a
+new hidden confirmation.
 
 \paragraph{Offline reproduction.}
-The anonymous artifact contains all \nbCells{} prediction and failure cells,
-the exact \nbClaims{} reference containers, original native evaluator,
-reporting code, source commitments and request-only wrapper. Network-disabled
-replay reproduces both primary phase reports, the complete primary report,
-every request-only row and its descriptive report by exact canonical JSON
-comparison, without a numerical tolerance. This reproduces scoring from
-recorded model outputs; it does not regenerate those outputs or provide the
-remote model checkpoint.
+The anonymous artifact contains all \nbCells{} prediction and failure
+cells, the exact \nbClaims{} reference containers, original native evaluator,
+reporting code, source commitments and request-only wrapper. Offline replay
+reproduces both primary phase reports, the full primary report, every
+request-only row and the descriptive report with exact canonical JSON
+equality. It rescores saved outputs without numerical tolerance; it does
+not regenerate them or include the remote model checkpoint.
 
-\section{Retrospective Assessed-State Evaluation}
+\section{Retrospective evaluation at the assessed state}
 \label{app:assessed-state}
 
-\paragraph{Evaluation object.}
-The assessed-state interface binds every compiler predicate to the complete
-three-valued assessment saved with that prediction. Each original condition
-is evaluated under this predicted state. Known-active entities enter a
-current-case snapshot; unresolved entities remain explicitly recorded and
-are not asserted active. Counterfactual branch predicates are omitted from
-this snapshot, so branch-probe accuracy and full-program acceptance are not
-endpoints. The envelope retains the original artefact, assessment and every
-activation decision. Reference states are never used to decide predicted
-activation. Native reference graphs, scoring functions and entity matchers
-are unchanged.
+\paragraph{The evaluated object.}
+The assessed-state interface evaluates each original condition against the
+complete three-valued assessment saved with its prediction. Known-active
+entities enter a current-case snapshot; unresolved entities remain recorded
+but inactive. Counterfactual branch predicates are omitted, excluding
+branch-probe accuracy and full-program acceptance. The envelope preserves
+the original artefact, assessment and every activation decision. Predicted
+activation uses no reference state; native reference graphs, scoring
+functions and entity matchers are unchanged.
 
-Negation swaps true and false; conjunction is true only if all children are
-true and false if any is false; disjunction uses the dual rules. Each control
-retains its own graph and requests, bound to its saved \casepath assessment.
-All \asAllCpN{} compiled-equivalent snapshots and scores match \casepath.
-No immediate request is filtered out. The release preserves the derivatives,
-identity checks and execution receipts.
+Negation swaps true and false. Conjunction is true when all children are
+true and false when any is false; disjunction uses the dual rules.
+Each control keeps its own graph and requests, bound to its saved
+\casepath assessment. All \asAllCpN{} compiled-equivalent snapshots and
+scores match \casepath, and no immediate request is filtered out.
+The release includes the derivatives, identity checks and execution receipts.
 
-\paragraph{Endpoints and interpretation.}
-Native valid-chain precision counts active requested document entities
-linked through a reference-aligned decision--fact--capability--document
-chain, divided by active requested documents. Critical-evidence recall
-weights covered reference facts by their supplied criticality. Obligation
-completeness counts reference obligations with a valid matching chain.
-Unnecessary fraction counts requests that are not necessary under the
-reference. In this corpus the valid-chain and necessary-document sets
-coincide, so precision and unnecessary fraction are complementary, and
-critical-evidence recall equals obligation completeness. They are not
-independent confirmations. Exact-source entailment is not established:
-provenance-chain inheritance scores zero, and all-object source support is
-unavailable for this predicate-excluding interface.
+\paragraph{Metrics and interpretation.}
+Native valid-chain precision counts active requested documents with a
+reference-aligned decision, fact, capability and document chain as a fraction
+of all active requests. Critical-evidence recall weights covered reference
+facts by criticality; obligation completeness counts obligations with valid
+matching chains. Unnecessary fraction counts requests absent from the
+reference requirements. Here, valid-chain and necessary documents coincide, making
+precision and unnecessary fraction complementary. Critical-evidence recall
+also equals obligation completeness. These are not independent confirmations.
+Exact-source entailment remains unestablished: provenance-chain inheritance
+is zero, and omitting predicates makes all-object source support unavailable.
 
 \begin{table}[h]
 \centering\small
 \setlength{\tabcolsep}{4pt}
 \input{table_assessed_state.tex}
-\caption{\textbf{Current-case structure and evidence at fixed assessment.}
-Full denotes \casepath with inherited domain scope; Local uses only the
-obligation's local scope. All scheduled cases contribute with the original
-failure penalties and domain--family--case weights. Raw counts describe
-available outputs; protected and combined output coverage differs across
-controllers. Compiled-equivalent reproduces Full exactly.}
+\caption{Current-case structure and evidence at fixed assessment. Full is
+\casepath with inherited domain scope; Local uses each obligation's local
+scope only. Every scheduled case contributes under the original failure
+penalties and weights for domains, families and cases. Raw counts describe
+available outputs; coverage differs between controllers on the protected
+and combined populations. Compiled-equivalent matches Full exactly.}
 \label{tab:assessed-state}
 \end{table}
 
-The conservative paired benefit uses the benefit-oriented per-case difference
-when both endpoints exist and $-1$ otherwise. Chain-precision benefits are
-\asDevCChain{} in development, \asHidCChain{} in protected families and
-\asAllCChain{} overall; critical-recall benefits are \asDevCCrit,
-\asHidCCrit{} and \asAllCCrit. This supports selectivity at comparable
-coverage. The report includes every family and paired contrast. These are
-descriptive finite-corpus quantities, without post-hoc significance tests or
-confidence intervals.
+Using per-case benefit when both endpoints exist and $-1$ otherwise gives
+chain-precision benefits of \asDevCChain{} in development,
+\asHidCChain{} on protected families and \asAllCChain{} overall.
+Critical-recall benefits are \asDevCCrit,
+\asHidCCrit{} and \asAllCCrit. These finite-corpus results describe selectivity at comparable coverage.
+The report gives every family and paired contrast, without post-hoc tests
+or confidence intervals.

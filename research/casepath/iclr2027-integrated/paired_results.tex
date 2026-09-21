@@ -1,94 +1,97 @@
-\section{Study A: Selective Branch Adaptation}
+\section{Study A: fewer unjustified checklist changes}
 \label{sec:paired-results}
 
 \begin{table}[t]
 \centering\small
 \setlength{\tabcolsep}{5pt}
 \input{table_main_results.tex}
-\caption{\textbf{Held-out signed-change evaluation} (\nPairsHid{} pairs,
-\nGoldAtoms{} reference changes). Correct, spurious and missed count signed changes. Exact counts pairs
-whose entire signed set is reproduced; $F_1$ includes its 95\%
-family-cluster bootstrap interval. These are errors in changes between two checklists, not
-requests in a complete claim.}
+\caption{Signed-change results on \nPairsHid{} held-out pairs with
+\nGoldAtoms{} reference changes. Correct, spurious and missed count signed
+changes; Exact counts pairs whose full signed set is reproduced. The $F_1$
+interval is a 95\% family-cluster bootstrap interval. These counts describe
+changes between two checklists, not requests for a complete claim.}
 \label{tab:main}
 \end{table}
 
+\paragraph{Selectivity and recall.}
+\casepath predicts \cpPred{} signed changes against \nGoldAtoms{}
+reference changes: \cpTP{} are correct, \cpSpur{} are spurious and
+\cpMiss{} are missed (Table~\ref{tab:main}). Direct predicts \dirPred{}
+changes, with \dirTP{} correct and \dirSpur{} spurious; Graph as context
+predicts \gcPred{}, with \gcTP{} correct and \gcSpur{} spurious; and
+Evidence-first predicts \efPred{}, with \efTP{} correct and \efSpur{}
+spurious. At recall \cpRec, \casepath makes \redDir\%, \redGc\% and
+\redEf\% fewer spurious changes than these alternatives. It reproduces
+the whole signed set on \cpExactN{} of \nPairsHid{} pairs, compared with
+\dirExactN, \gcExactN{} and \efExactN.
 
+Graph as context recovers the most reference changes, \gcTP{} of
+\nGoldAtoms, but also produces \gcSpur{} spurious changes. Supplying a
+graph helps recall in this comparison; enforcing its rules restricts the
+requests. Against Direct, \casepath makes twelve fewer false-positive
+changes while missing one additional correct change.
 
-\paragraph{Fewer unjustified changes.}
-Table~\ref{tab:main} reports the held-out comparison. \casepath predicts \cpPred{} signed changes for \nGoldAtoms{}
-reference changes: \cpTP{} correct, \cpSpur{} spurious, \cpMiss{} missed.
-Direct predicts \dirPred{} (\dirTP{} correct, \dirSpur{} spurious), Graph as
-context \gcPred{} (\gcTP, \gcSpur) and Evidence-first \efPred{} (\efTP,
-\efSpur). \casepath thus makes \redDir\%, \redGc\% and \redEf\% fewer
-spurious changes than the three alternatives while keeping recall \cpRec,
-and it reproduces the whole signed set on \cpExactN{} of \nPairsHid{} pairs
-against \dirExactN, \gcExactN{} and \efExactN. Graph as context recovers the
-most reference changes (\gcTP{} of \nGoldAtoms) at the cost of \gcSpur{}
-spurious ones. In this comparison, providing the graph as context improves
-recall but does not impose the controller's restriction on what may be requested. The contrast with Direct is precise:
-twelve fewer false-positive changes for one fewer correct change.
+A retrospective error partition identifies documents outside the benchmark's
+branch-governed set. They account for \eoCpOutside{} of \casepath's
+\cpSpur{} spurious changes and all \eoDirOutside, \eoGcOutside{} and
+\eoEfOutside{} comparator errors. The controller reduces this checklist
+drift without eliminating it. The signed-change references do not identify
+which baseline documents would be required in every case, so this partition
+cannot establish that those documents are universally necessary.
 
-A retrospective partition sharpens the interpretation: \eoCpOutside{} of
-\casepath's \cpSpur{} spurious changes concern documents outside the
-benchmark's branch-governed set, compared with all \eoDirOutside,
-\eoGcOutside{} and \eoEfOutside{} comparator errors. Process control reduces
-this form of checklist drift; it does not eliminate it. The partition does
-not identify universally required baseline documents, which the signed-change
-references do not specify.
+\paragraph{Uncertainty and the preregistered gate.}
+The family-cluster interval for \casepath's $F_1$ of \cpF{} is
+$[\cpCIlo,\cpCIhi]$; Direct and Graph as context have intervals
+$[\dirCIlo,\dirCIhi]$ and $[\gcCIlo,\gcCIhi]$. The paired-difference
+intervals against those two systems, $[\dDirLo,\dDirHi]$ and
+$[\dGcLo,\dGcHi]$, include zero. Only the interval against Evidence-first
+excludes zero ($[\dEfLo,\dEfHi]$). Three of the eight preregistered gate
+conditions fail (Table~\ref{tab:gates}): the margins \mDir{} and \mGc{}
+are below $\gateMargin$, and precision \cpPrec{} is below $\gatePrec$.
+The Holm-adjusted family-swap $p$-values are \pHolmDir, \pHolmGc{} and
+\pHolmEf. The lower error count supports selectivity on these pairs, while
+the preregistered criterion for broad superiority remains unmet.
 
-\paragraph{How much does the result generalize?}
-Family-cluster intervals are wide: $F_1$ \cpF{} $[\cpCIlo,\cpCIhi]$ for
-\casepath against $[\dirCIlo,\dirCIhi]$ and $[\gcCIlo,\gcCIhi]$ for the two
-strongest comparators, with paired differences $[\dDirLo,\dDirHi]$ and
-$[\dGcLo,\dGcHi]$ that include zero; only the contrast with Evidence-first
-excludes it ($[\dEfLo,\dEfHi]$). The broad-superiority gate fails on three
-of its eight conditions (Table~\ref{tab:gates}): margins \mDir{} and \mGc{}
-fall short of $\gateMargin$, precision \cpPrec{} falls short of $\gatePrec$, and the
-Holm-adjusted family-swap $p$-values are \pHolmDir, \pHolmGc{} and \pHolmEf.
-The count reduction supports selectivity on these pairs; the preregistered
-criterion for broad superiority is not met.
+\paragraph{Dependence on the branch.}
+Reassigning the saved outputs to the wrong branch families reduces
+signed-change $F_1$ from \wpObs{} to at most \wpMax{} over \wpEvaluated{}
+evaluated reassignments (mean \wpMean; add-one randomisation $p=\wpP$).
+Thus the document changes depend on which branch was changed. This test
+does not isolate the representation as their cause, since a family-specific
+lookup could also pass.
 
-\paragraph{Branch specificity.}
-Holding \casepath's outputs fixed and pairing them with the wrong branch
-families collapses signed-change $F_1$ from \wpObs{} to a maximum of
-\wpMax{} over the \wpEvaluated{} evaluated reassignments (mean \wpMean;
-add-one randomisation $p=\wpP$). The changes are specific to the intervened
-branch. This does not identify the internal representation as the only
-possible cause; a family-specific lookup would also pass. Two structural
-facts are separate from accuracy: all \chainAttributed{} of \chainPredicted{}
-predicted changes are attributed in the retained records to a changed guard,
-including the incorrect ones, and \chainCovered{} of \nGoldAtoms{} reference
-changes (\chainCoverage\%) are reachable through a source chain in the frozen
-representation. Attribution is an invariant of the architecture, not evidence
-that a mapping was right; reachability says a route existed, not that it was
-emitted.
+The records attribute all \chainAttributed{} of \chainPredicted{}
+predicted changes, including errors, to a changed guard. The frozen
+representation also contains a source chain for \chainCovered{} of
+\nGoldAtoms{} reference changes (\chainCoverage\%). These checks establish
+traceability and representational coverage. A trace can contain an incorrect
+mapping, and an available route need not appear in the emitted plan.
 
 \begin{figure}[t]
 \centering\includegraphics[width=\linewidth]{fig_family_results.pdf}
-\caption{\textbf{Where the semantics holds and where it fails.} Mean pair
-$F_1$ per branch concept on the held-out contexts: the marker is \casepath,
-the square, triangle and cross identify Direct, Graph as context and
-Evidence-first. Small vertical offsets separate coincident values. \casepath is
-exact on \nFamExact{} concepts where the comparators are not, and scores zero
-on \nFamZero{} where they succeed. Concepts are ordered by \casepath's score,
-so the failures sit at the bottom beside the comparators that solved them.}
+\caption{Mean pair $F_1$ for each branch concept in the held-out contexts.
+The \casepath marker is compared with squares for Direct, triangles for
+Graph as context and crosses for Evidence-first. Small vertical offsets
+separate coincident values. \casepath is exact on \nFamExact{} concepts
+where the comparators are not, and scores zero on \nFamZero{} where they
+succeed. Concepts are ordered by \casepath's score.}
 \label{fig:family}
 \end{figure}
 
-\paragraph{Procedural branches explain the advantage.}
-Figure~\ref{fig:family} shows the structure the aggregate hides. \casepath is
-exact on all three held-out contexts of \nFamExact{} concepts (bicycle, declination,
-recovery, \emph{Nachfrist}), reaches $\cpFamScheduled$ on scheduled valuables and
-SIM-card theft, $\cpFamRepair$ on repair consent, and scores zero on third-party
-causation and the formal expert procedure. The zeros are systematic rather
-than random: an alternative route is over-requested where one would suffice,
-a condition is attached at the wrong semantic granularity, or an adjacent
-procedural guard activates the wrong confirmation document. The
-comparators are strong where the plausible claimant document is the right
-answer (third party, repair consent) and weak where the justified change is a
-procedural artefact that a checklist prior does not suggest (declination,
-\emph{Nachfrist}); per-concept values are in Appendix~\ref{app:family}.
-Finally, a change metric is blind to a document omitted or over-requested in
-both members of a pair, and these cases are rule units rather than whole
-claims; Study~B therefore scores complete plans on whole cases.
+\paragraph{What the family results explain.}
+\casepath is exact in all three held-out contexts of \nFamExact{} concepts:
+bicycle, declination, recovery and \emph{Nachfrist}. It reaches
+$\cpFamScheduled$ on scheduled valuables and SIM-card theft,
+$\cpFamRepair$ on repair consent, and zero on third-party causation and
+the formal expert procedure (Figure~\ref{fig:family}). The failures recur
+across contexts. They arise when the planner requests an alternative route
+in addition to a sufficient one, a condition has the wrong semantic scope,
+or an adjacent procedural guard activates the wrong confirmation document.
+
+The comparators do well when a plausible claimant document supplies the
+answer, as with third-party causation and repair consent. They struggle
+when the required change concerns a procedural artefact, as with declination
+and \emph{Nachfrist}. Appendix~\ref{app:family} reports every concept's
+score. These paired rule units leave one question open: a document wrongly
+included or omitted in both checklists produces no signed error. Study~B
+therefore evaluates complete plans for whole claims.

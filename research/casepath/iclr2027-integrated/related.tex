@@ -1,62 +1,68 @@
-\section{Related Work}
+\section{Related work}
 \label{sec:related}
 
-\paragraph{Executable rules and adaptive case state.}
-LegalRuleML represents norms with their source associations
-\citep{oasis2021legalruleml}; Catala makes legislative computation
-executable \citep{merigoux2021catala}; DMN formalises decisions and CMMN
-guard-activated case work \citep{omg2024dmn,omg2016cmmn}; Guard--Stage--Milestone
-models and DCR reference models of law connect data-driven activation to
-compliance \citep{vaculin2011gsm,lopez2020dcrlaw}; proactive enforcement
-derives actions from active obligations \citep{basin2024proactive}; and
-insurance software conditions document lists on service definitions
-\citep{servicenow2026documentlists}. This established separation of rules and state underlies \casepath; we couple it to language-model assessments and a measurement of
-the resulting evidence-planning errors.
+\paragraph{Executable rules and case state.}
+\casepath builds on the established separation of rules from the state to
+which they apply. LegalRuleML records norms and their source associations
+\citep{oasis2021legalruleml}, and Catala makes legislative computation
+executable \citep{merigoux2021catala}. DMN formalises decisions; CMMN
+represents case work activated by guards \citep{omg2024dmn,omg2016cmmn}.
+Guard--Stage--Milestone models and DCR reference models of law connect
+activation driven by data to compliance
+\citep{vaculin2011gsm,lopez2020dcrlaw}. Proactive enforcement derives actions
+from active obligations \citep{basin2024proactive}, while insurance software
+conditions document lists on service definitions
+\citep{servicenow2026documentlists}. We combine this approach with
+language-model assessments and measure the resulting evidence-planning
+errors.
 
-\paragraph{Procedure extraction and process-guided agents.}
-PAGED extracts procedural graphs from documents \citep{du2024paged}; BREX
-benchmarks business-rule flows with executable grounding \citep{yang2026brex};
-Guideline2Graph compiles clinical guidelines into provenance-preserving
-decision graphs \citep{kilic2026guideline2graph}; \citet{graus2026decisionmodels}
-evaluate structured representations for legal decision models; CANONIC frames
-governance as compilation \citep{hadley2026canonic}. FlowBench and WorFBench
-evaluate workflow-guided planning and workflow generation
-\citep{xiao2024flowbench,qiao2024worfbench}; Procedural Graphs localise an
-agent to an active node \citep{lu2026proceduralgraphs}; ReAct interleaves
-reasoning and action \citep{yao2022react}. Our evaluation instead asks whether changing a case fact changes exactly
-the evidence justified by that branch.
+\paragraph{Procedural graphs and workflow agents.}
+PAGED extracts procedural graphs from documents \citep{du2024paged}.
+BREX evaluates business-rule flows with executable grounding
+\citep{yang2026brex}, and Guideline2Graph compiles clinical guidelines into
+decision graphs that retain provenance \citep{kilic2026guideline2graph}.
+\citet{graus2026decisionmodels} evaluate structured representations for
+legal decision models; CANONIC treats governance as compilation
+\citep{hadley2026canonic}. FlowBench and WorFBench evaluate workflow-guided
+planning and workflow generation \citep{xiao2024flowbench,qiao2024worfbench}.
+Procedural Graphs place an agent at an active node
+\citep{lu2026proceduralgraphs}, while ReAct interleaves reasoning and action
+\citep{yao2022react}. Our experiments ask whether changing a case fact changes
+exactly the evidence justified by the affected branch.
 
-\paragraph{Obligation-controlled acquisition.}
-The closest precedents are \citet{kim2026evidenceobligation}, whose evidence
-ledger activates branch-specific knowledge obligations while a model judges
-semantic warrant and code manages closure, and \citet{yu2026compile}, who
-compile SOP constraints into verification routines with evidence-bearing
-returns and an active execution frame. \casepath studies their application to a
-document-planning object: applicability separated from acquisition
-permission, presence from capability-specific and joint adequacy,
-alternative routes kept as alternatives, and a benchmark that tests the
-consequence downstream. Neither system is reproduced as an arm, and no
-superiority over them is claimed.
+\paragraph{Evidence obligations and acquisition.}
+\citet{kim2026evidenceobligation} provide the closest evidence-ledger
+precedent: branch conditions activate knowledge obligations, a model judges
+semantic warrant and code manages closure. \citet{yu2026compile} compile
+SOP constraints into verification routines with evidence-bearing returns
+and an active execution frame. We study these principles for document
+planning, where applicability and acquisition permission can differ, a
+present document may be inadequate, and several documents may need joint
+assessment. The representation retains alternative evidence routes, and
+the benchmark measures their effect on requests. Neither prior system is
+reproduced as an experimental arm, so our comparisons do not establish
+superiority over them.
 
-\paragraph{Grounding, evidence and information seeking.}
+\paragraph{Grounding and information seeking.}
 GraphCompliance aligns policy and context graphs for regulatory assessment
-\citep{chung2025graphcompliance}; CLER scores litigation evidence lists and
-the facts they prove \citep{bi2026cler}; InfoGatherer selects retrieval and
-questions by evidential uncertainty \citep{taranukhin2026infogatherer};
-verified quotation and chain-of-verification make support inspectable
-\citep{menick2022verifiedquotes,dhuliawala2024chain}. Tool-use benchmarks
-score whether the right function was called \citep{li2023apibank,patil2025bfcl},
-whereas the present studies evaluate the case-specific justification for
-an evidence request.
+\citep{chung2025graphcompliance}. CLER scores litigation evidence lists and
+the facts they prove \citep{bi2026cler}. InfoGatherer uses evidential
+uncertainty to select retrieval and questions
+\citep{taranukhin2026infogatherer}. Verified quotations and
+chain-of-verification expose the support for a response
+\citep{menick2022verifiedquotes,dhuliawala2024chain}. API-Bank and BFCL
+evaluate function selection in tool use \citep{li2023apibank,patil2025bfcl}.
+Our measured object is the justification for requesting evidence in a
+particular case.
 
-\paragraph{Benchmark validity.}
-Partial-input baselines, annotation artefacts and shortcut learning motivate
-the input-free control and the wrong-pairing permutation
+\paragraph{Evaluation validity.}
+Work on partial-input baselines, annotation artefacts and shortcut learning
+motivates our input-free and wrong-pairing controls
 \citep{kaushik2018reading,poliak2018hypothesis,gururangan2018artifacts,mccoy2019hans,sugawara2018easier,geirhos2020shortcut,bowman2021benchmarking,yuan2024shortcut}.
-Study~A's references are authored from sources rather than adjudicated by a
-model, avoiding the preference leakage that arises when judged and judging
-models coincide \citep{li2026preference}; work on evaluation validity
-\citep{thomas2026validity} and critiques of legal benchmarks that reward
-outcome prediction over practitioners' work
-\citep{medvedeva2023right,lou2026lawyering} motivate signed document changes
-and emitted requests as the measured objects.
+We authored Study~A's references from the sources. No model adjudicated them,
+which avoids the preference leakage that can arise when the judged and
+judging models coincide \citep{li2026preference}. Evaluation-validity research
+\citep{thomas2026validity} and critiques of legal benchmarks focused on
+outcome prediction instead of practitioners' work
+\citep{medvedeva2023right,lou2026lawyering} motivate our use of signed
+document changes and emitted requests as outcomes.
