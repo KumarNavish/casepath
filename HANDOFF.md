@@ -107,6 +107,7 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
   ends on page 9 (`\label{end-of-main-text}` → `main.aux`); AI-use statement and references follow.
 * **Deliverables:** `research/casepath/iclr2027-integrated/dist/casepath_iclr2027_submission_source.zip`
   (Overleaf-ready) and `dist/casepath_iclr2027_submission.pdf`.
+* **One-command release check:** `python3 research/casepath/verify_release.py` — see below.
 * **Benchmark release (new 2026-09-21):** `research/casepath/branch-benchmark/` — the 36-pair
   benchmark, source snapshot, admission controls, recorded predictions of all four arms for both
   splits, the frozen scorer/statistics, freeze records and the product-parity report, with
@@ -152,6 +153,29 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
   2026-09-21)"), confirmed reachable from the author's logged-in browser on 2026-09-21 12:30 UTC; `numbers.tex` and
   `table_native_execution.tex` were re-uploaded there at 12:45 UTC (829-cell execution record) and the
   project recompiles to 16 pages.
+
+## 5b. WHAT THIS SESSION ADDED (2026-09-21, Claude)
+
+* `research/casepath/branch-benchmark/` — the benchmark, all four arms' recorded predictions, the frozen
+  scorer, and `reproduce.py` (offline, ~7 s, exits non-zero on any substantive difference). Also
+  `explore.html`, a single self-contained page showing each pair's changed sentence, the justified change
+  with its alternative routes, and every system's request marked correct / spurious / missed; its data is
+  built by `build_explorer_data.py`, which asserts the marks sum to the preserved report's totals.
+* `research/casepath/verify_release.py` — the one-command check of the whole release (nine checks).
+* `research/casepath/iclr2027-integrated/evidence/check_against_benchmark_release.py` — confirms 86 paper
+  macros against a fresh recomputation from the released benchmark.
+* `research/casepath/iclr2027-integrated/evidence/build_figures.py` — regenerates `fig_family_results.pdf`
+  from the held-out report. The inherited figure used four bar shades (illegible in grayscale) and the
+  withdrawn line's vocabulary in its title; the replacement encodes the comparison by shape and is
+  byte-deterministic.
+* `research/casepath/iclr2027-integrated/evidence/build_native_release.py` — the Study B release builder,
+  validated on a synthetic export.
+* Reproducible paper build: `SOURCE_DATE_EPOCH=1789948800` makes `main.pdf` byte-identical across rebuilds,
+  and the verifier fails if it is not.
+* Corpus identity: the 150 case identifiers Study B evaluates are exactly the 150 claim files the product
+  ships at `casepath-api/casepath_api/corpora/synthetic-150/claims/`; the verifier asserts it.
+* Commit `4ce8a1b` added correct historical notices to the withdrawn process-induction Markdown files, whose
+  committed copies had been presenting retracted claims with no notice.
 
 ## 6. REPO MAP (this checkout)
 
