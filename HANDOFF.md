@@ -195,7 +195,18 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
 
 ## 7. GAPS
 
-1. **Study B results are absent.** The paper honestly reports protocol + execution record. When Codex produces
+1. **Study B results are absent; predictions are complete.** As of 2026-09-21 13:56 UTC the run
+   `mac-571f0e07-021f-4b22-878a-11c2f457de0b` recorded **all 1,050 scheduled cells** (558 completed,
+   412 failed, 80 blocked dependents; `walltime-get-continuation/work/output/`), at USD 89.66 of the
+   USD 236.80 ceiling with zero outstanding liability. It then **terminated before native scoring**:
+   `run/RESULT.json` has `state: incomplete_or_blocked`, `failure_category: predict_exit_3`,
+   `numeric_reports: {}`, and `run/stderr.log` reports `missing_or_oversized_regular_file`. The
+   integrity block shows `all_prediction_records_frozen: false` and `both_phase_manifests_frozen:
+   false`, and `EVALUATOR_BOUNDARY.json` confirms `targets_read: false` — no target was ever read, so
+   the evidence is intact and scoring is a pure offline computation over the recorded cells. Codex is
+   tracing the file-validation error. **Do not attempt the scoring here:** it needs the native
+   evaluator and the target container, which CONTINUE.md step 7 places under a custody grant this
+   session does not hold. The paper honestly reports protocol + execution record. When Codex produces
    `FINITE_REPORT.json` (state `finite_corpus_evaluated`), run the injector, add
    `\input{native_results_numbers.tex}` to `main.tex`, write the results paragraph in `native_study.tex` from
    the generated macros, recompile, and re-run the two check scripts. If Study B never completes, the paper is
