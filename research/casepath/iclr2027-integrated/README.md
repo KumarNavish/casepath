@@ -7,8 +7,12 @@ Determining Evidence Requirements"** (title and abstract preserved verbatim from
 ## Build
 
 ```bash
-../../../.runtime/tools/tectonic/tectonic main.tex     # Tectonic 0.17 (XeTeX); any XeLaTeX/pdfLaTeX + BibTeX works
+SOURCE_DATE_EPOCH=1789948800 ../../../.runtime/tools/tectonic/tectonic main.tex
 ```
+
+Tectonic 0.17 (XeTeX); any XeLaTeX/pdfLaTeX with BibTeX also works. Pinning `SOURCE_DATE_EPOCH`
+makes the build byte-reproducible, so a rebuild of an unchanged source tree reproduces
+`main.pdf` exactly; `verify_release.py` checks that.
 
 16 pages: main text ends on page 9 (`\label{end-of-main-text}` in `statements.tex` records the page in
 `main.aux`); the ethics, reproducibility and AI-use statements, references and appendices follow and are

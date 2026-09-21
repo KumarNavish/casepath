@@ -22,6 +22,7 @@ reported as "not present", never as passing.
 """
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import sys
@@ -33,6 +34,9 @@ DOC = HERE / "iclr2027-integrated"
 BENCH = HERE / "branch-benchmark"
 NATIVE = HERE / "native-corpus"
 TECTONIC = REPO / ".runtime" / "tools" / "tectonic" / "tectonic"
+# Pinning the build clock makes the PDF byte-reproducible: without it every rebuild differs only
+# by its embedded creation timestamp. 1789948800 = 2026-09-21T00:00:00Z.
+SOURCE_DATE_EPOCH = "1789948800"
 
 # Author-identifying tokens: these must not appear anywhere in the paper's sources.
 IDENTITY = re.compile(r"navish|kumar|mobiliar|codex|chatgpt|astra|anthropic|"
@@ -52,8 +56,9 @@ def record(name: str, ok: bool | None, detail: str) -> None:
     results.append((name, "pass" if ok else ("not present" if ok is None else "FAIL"), detail))
 
 
-def run(cmd: list[str], cwd: Path) -> tuple[int, str]:
-    proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+def run(cmd: list[str], cwd: Path, env: dict | None = None) -> tuple[int, str]:
+    proc = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True,
+                          env={**os.environ, **env} if env else None)
     return proc.returncode, (proc.stdout + proc.stderr)
 
 
@@ -118,7 +123,8 @@ def check_build() -> None:
         return
     for stale in ("main.aux", "main.bbl"):
         (DOC / stale).unlink(missing_ok=True)
-    code, out = run([str(TECTONIC), "--keep-logs", "--keep-intermediates", "main.tex"], DOC)
+    code, out = run([str(TECTONIC), "--keep-logs", "--keep-intermediates", "main.tex"], DOC,
+                    env={"SOURCE_DATE_EPOCH": SOURCE_DATE_EPOCH})
     if code != 0:
         record("Paper builds", False, "tectonic failed")
         return
@@ -131,8 +137,12 @@ def check_build() -> None:
     log = (DOC / "main.log").read_text(errors="ignore")
     undefined = len(re.findall(r"LaTeX Warning: (?:Citation|Reference) `[^']*' [^\n]*undefined", log))
     overfull = len(re.findall(r"Overfull \\hbox", log))
-    record("Paper builds", page <= 9 and undefined == 0,
-           f"main text ends on page {page} (limit 9); {undefined} undefined reference(s), {overfull} overfull box(es)")
+    code, dirty = run(["git", "status", "--porcelain", "--", "main.pdf"], DOC)
+    reproducible = not dirty.strip()
+    record("Paper builds", page <= 9 and undefined == 0 and reproducible,
+           f"main text ends on page {page} (limit 9); {undefined} undefined reference(s), "
+           f"{overfull} overfull box(es); rebuild is "
+           + ("byte-identical to the committed PDF" if reproducible else "NOT byte-identical"))
 
 
 def check_anonymity() -> None:
