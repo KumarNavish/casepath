@@ -1,3 +1,11 @@
+> **HISTORICAL RESEARCH RECORD — not the submission claim.** This file documents the earlier
+> process-induction line, whose positive claims were **withdrawn** after a constant-oracle and
+> wrong-pairing audit; see `PAIRED_DESIGN_DEGENERACY.md` for what failed and why. The submitted
+> ICLR 2027 paper is `research/casepath/iclr2027-integrated/`, and its Study A benchmark reproduces
+> offline from `research/casepath/branch-benchmark/`. `research/casepath/iclr2027/` is a separate,
+> unsubmitted paper from this same historical line. Numbers in this file must not be quoted as
+> current results.
+
 > ## ⚠ SUPERSEDED IN PART — read `PAIRED_DESIGN_DEGENERACY.md` first
 >
 > An adversarial review panel (verdict: **reject as submitted**) overturned the central claim after this handoff
