@@ -1,40 +1,52 @@
 {
- "snapshot_cells": 829,
- "cells_sha256_concat": "2c440138a17371ebb3b9d5a63a32b004c236e0ffbd227b4689f68fb3a00b8fe0",
- "scheduled": {
-  "public_dev": 420,
-  "hidden_test": 630,
-  "total": 1050
+ "schema": "casepath.studyb-execution-status/2.0.0",
+ "generated_by": "evidence/build_execution_snapshot.py",
+ "scope": "Execution status only. No score, target or model output is read; this file is reportable before the prediction freezes are scored. Failed cells enter the final report with adverse unit penalties.",
+ "cells_dir": "/Users/kumar0002/.local/state/navish-acceptance-20260919/mac-native150/walltime-get-continuation/work/output/cells",
+ "snapshot_cells": 1050,
+ "scheduled_cells": 1050,
+ "cells_sha256_concat": "f5b975f865488456f656b18520bf8f60c8e127b880cc6528bb70f90cf4479dc2",
+ "domain_family_counts": {
+  "hidden_test": {
+   "defect_mold_heating": 6,
+   "lease_termination_dispute": 5,
+   "rent_increase_dispute": 6
+  },
+  "public_dev": {
+   "defect_mold_heating": 4,
+   "lease_termination_dispute": 3,
+   "rent_increase_dispute": 4
+  }
  },
  "by_split_arm": {
   "hidden_test|CASEPATH_CONTROL": {
-   "completed": 44,
-   "failed": 15
+   "completed": 66,
+   "failed": 24
   },
   "hidden_test|COMPILED_EQUIVALENT": {
-   "completed": 43,
-   "blocked_dependency": 15
+   "completed": 66,
+   "blocked_dependency": 24
   },
   "hidden_test|DIRECT_REVIEWED": {
-   "failed": 38,
-   "completed": 20
+   "failed": 60,
+   "completed": 30
   },
   "hidden_test|DOCUMENT_FIRST_REVIEWED": {
-   "completed": 16,
-   "failed": 42
+   "completed": 24,
+   "failed": 66
   },
   "hidden_test|LOCAL_SCOPE_ABLATION": {
-   "blocked_dependency": 15,
-   "completed": 41,
+   "blocked_dependency": 24,
+   "completed": 64,
    "failed": 2
   },
   "hidden_test|PROCESS_CONTEXT_REVIEWED": {
-   "completed": 29,
-   "failed": 30
+   "completed": 43,
+   "failed": 47
   },
   "hidden_test|RULE_FIRST_REVIEWED": {
-   "completed": 26,
-   "failed": 33
+   "failed": 48,
+   "completed": 42
   },
   "public_dev|CASEPATH_CONTROL": {
    "failed": 16,
@@ -67,44 +79,45 @@
  },
  "failure_taxonomy_by_split_arm": {
   "hidden_test|CASEPATH_CONTROL": {
-   "document_outside_route": 2,
-   "review_envelope": 1,
-   "other_validation": 1,
-   "contradictory_presence_state": 4,
-   "truncated_or_nonterminal": 5,
-   "invalid_codebook_index": 2
+   "document_outside_route": 3,
+   "review_envelope": 7,
+   "other_validation": 2,
+   "contradictory_presence_state": 5,
+   "invalid_codebook_index": 5,
+   "truncated_or_nonterminal": 2
   },
   "hidden_test|DIRECT_REVIEWED": {
-   "unknown_relation_endpoint": 17,
-   "truncated_or_nonterminal": 9,
-   "invalid_codebook_index": 11,
-   "other_validation": 1
+   "unknown_relation_endpoint": 28,
+   "truncated_or_nonterminal": 18,
+   "other_validation": 2,
+   "invalid_codebook_index": 12
   },
   "hidden_test|DOCUMENT_FIRST_REVIEWED": {
-   "truncated_or_nonterminal": 19,
-   "invalid_codebook_index": 12,
-   "unknown_relation_endpoint": 11
+   "unknown_relation_endpoint": 19,
+   "truncated_or_nonterminal": 31,
+   "invalid_codebook_index": 15,
+   "review_envelope": 1
   },
   "hidden_test|LOCAL_SCOPE_ABLATION": {
-   "other_validation": 2
+   "contradictory_presence_state": 2
   },
   "hidden_test|PROCESS_CONTEXT_REVIEWED": {
-   "truncated_or_nonterminal": 10,
-   "unknown_relation_endpoint": 19,
-   "invalid_codebook_index": 1
+   "truncated_or_nonterminal": 16,
+   "unknown_relation_endpoint": 29,
+   "invalid_codebook_index": 2
   },
   "hidden_test|RULE_FIRST_REVIEWED": {
-   "unknown_relation_endpoint": 17,
-   "truncated_or_nonterminal": 9,
+   "unknown_relation_endpoint": 24,
+   "truncated_or_nonterminal": 16,
    "other_validation": 1,
-   "invalid_codebook_index": 6
+   "invalid_codebook_index": 7
   },
   "public_dev|CASEPATH_CONTROL": {
    "document_outside_route": 2,
    "invalid_codebook_index": 4,
    "contradictory_presence_state": 7,
-   "truncated_or_nonterminal": 2,
-   "review_envelope": 1
+   "truncated_or_nonterminal": 1,
+   "review_envelope": 2
   },
   "public_dev|DIRECT_REVIEWED": {
    "unknown_relation_endpoint": 21,
@@ -131,18 +144,33 @@
    "invalid_codebook_index": 3
   }
  },
- "domain_family_counts": {
-  "public_dev": {
-   "defect_mold_heating": 4,
-   "lease_termination_dispute": 3,
-   "rent_increase_dispute": 4
-  },
-  "hidden_test": {
-   "defect_mold_heating": 6,
-   "lease_termination_dispute": 5,
-   "rent_increase_dispute": 6
-  }
+ "classification_rules": {
+  "unknown_relation_endpoint": [
+   "unknown endpoint"
+  ],
+  "invalid_codebook_index": [
+   "codebook"
+  ],
+  "truncated_or_nonterminal": [
+   "truncated or nonterminal",
+   "charged transport failure"
+  ],
+  "contradictory_presence_state": [
+   "contradictory document presence",
+   "contradicts upstream document-state"
+  ],
+  "review_envelope": [
+   "review notes required",
+   "incomplete assessment"
+  ],
+  "document_outside_route": [
+   "document outside assessed route"
+  ]
  },
- "note": "Execution status only; no scores exist before both prediction freezes. Failed cells receive frozen adverse penalties in the finite report. Snapshot taken from the newest continuation cell directory.",
- "cells_dir": "/Users/kumar0002/.local/state/navish-acceptance-20260919/mac-native150/walltime-get-continuation/work/output/cells"
+ "unmatched_error_first_lines": {
+  "source list required": 2,
+  "1 validation error for CandidateArtifact": 5,
+  "invalid native selector": 1,
+  "20 validation errors for CandidateArtifact": 1
+ }
 }

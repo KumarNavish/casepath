@@ -53,10 +53,10 @@ controls are blocked when the \casepath cell they replay failed.}
 
 \paragraph{Execution record.}
 Prediction freezes precede all scoring, and no score exists until both splits
-are frozen. At the time of writing, \nbRecorded{} of \nbCells{} cells are
-recorded: all \nbDevCells{} development cells and \nbHidRecorded{} of
-\nbHidCells{} protected cells. The completed development phase already
-exposes a property of the interface (Table~\ref{tab:native-execution}).
+are frozen. All \nbRecorded{} scheduled cells are recorded, \nbDevCells{} on
+the development split and \nbHidRecorded{} on the protected split. The
+development record alone already exposes a property of the interface
+(Table~\ref{tab:native-execution}).
 Under the same budget, the generative arms fail schema validation in
 \bDirDevFail, \bDocDevFail, \bPcDevFail{} and \bRfDevFail{} of \nbDevClaims{}
 cells, against \bCpDevFail{} for \casepath. Their dominant failure is an

@@ -8,7 +8,7 @@
   "PAIRED_V5_REPRODUCED_PARITY.json": "f17d59b1e7a4e390b9ab3a24d402d4b35a99b05c7b4c36896f2bdba277432494",
   "HISTORICAL_AUDIT.json": "03dc60b675a0e47fe263996ee931b19296c6caaf58e1f0de9d71213c11a44f8a",
   "PUBLICATION_STATIC_FACTS.json": "73bce43ad51ececc32d1fe43b26b66905984ecf3c841f5a62035cea5077a5728",
-  "studyB_execution_status.json": "ef6e9ca10ce9458d7bfe239dd9bf1f302efa9eeae7aba3bb53fd8f478268a343",
+  "studyB_execution_status.json": "cd6a6923ba1b026efecaebd5f95f909ee25d867a9a1393a2b16ea230e6867153",
   "ANALYSIS_CONTRACT.json": "196b3ce4a43f9887cd4773216c117055bf2850732f307367a7a44e77a3785bcf",
   "BENCHMARK_V3_pair_theft-01-04.json": "cd831ca172819d653a8bff82a768a695960259693e6230eec3cace9b11dcd514"
  },
@@ -1216,8 +1216,8 @@
   },
   {
    "macro": "nbRecorded",
-   "rendered": "829",
-   "value": 829,
+   "rendered": "1050",
+   "value": 1050,
    "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/snapshot_cells",
    "derivation": ""
@@ -1232,8 +1232,8 @@
   },
   {
    "macro": "nbHidRecorded",
-   "rendered": "409",
-   "value": 409,
+   "rendered": "630",
+   "value": 630,
    "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/hidden_test|*",
    "derivation": "sum of states"
@@ -1272,8 +1272,8 @@
   },
   {
    "macro": "bCpDevTrunc",
-   "rendered": "2",
-   "value": 2,
+   "rendered": "1",
+   "value": 1,
    "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/truncated_or_nonterminal",
    "derivation": ""
