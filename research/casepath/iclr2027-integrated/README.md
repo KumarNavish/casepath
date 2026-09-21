@@ -1,80 +1,76 @@
-# CasePath — ICLR 2027 submission source
+# CasePath: process-first evidence planning
 
-This directory is the submission manuscript for **"CasePath: An Agentic, Process-First Architecture for
-Determining Evidence Requirements"** (title and abstract preserved verbatim from the registered submission in
-`submitted_frontmatter.tex`).
+The manuscript develops one dependency: a document is required because it can
+establish a fact needed by an active obligation. The submitted title and abstract
+are preserved in `submitted_frontmatter.tex`.
 
-## Build
+Study A tests the signed checklist change caused by one changed case fact. Study B
+uses all 150 released claims and separates native graph conformance from a
+post-hoc diagnostic of literal requests. The paper, tables and figures preserve
+that distinction.
 
-```bash
-SOURCE_DATE_EPOCH=1789948800 ../../../.runtime/tools/tectonic/tectonic main.tex
+## Read and build
+
+`dist/casepath_iclr2027_submission.pdf` contains the anonymous paper, references
+and supplement. `dist/casepath_iclr2027_submission_source.zip` builds independently
+in Overleaf with XeLaTeX, or locally with Tectonic:
+
+```sh
+SOURCE_DATE_EPOCH=1789948800 tectonic main.tex
 ```
 
-Tectonic 0.17 (XeTeX); any XeLaTeX/pdfLaTeX with BibTeX also works. Pinning `SOURCE_DATE_EPOCH`
-makes the build byte-reproducible, so a rebuild of an unchanged source tree reproduces
-`main.pdf` exactly; `verify_release.py` checks that.
+The main-text boundary is marked before the reproducibility, ethics and AI-use
+statements. The release verifier checks the nine-page main-text limit, unresolved
+references, overflowing boxes and anonymity. A clean extraction of the source
+archive must build to the same PDF under the recorded Tectonic build.
 
-16 pages: main text ends on page 9 (`\label{end-of-main-text}` in `statements.tex` records the page in
-`main.aux`); the ethics, reproducibility and AI-use statements, references and appendices follow and are
-excluded from the ICLR page limit. `dist/` holds the Overleaf-ready source zip and the compiled PDF.
+## Reproduce the figures and tables
 
-## Every number is generated
-
-No number in the prose or tables is typed by hand.
-
-* `evidence/build_manuscript_numbers.py` regenerates `numbers.tex` (all macros) and the five tables
-  (`table_main_results.tex`, `table_claim_gates.tex`, `table_family_results.tex`, `table_costs.tex`,
-  `table_native_execution.tex`) from the evidence files in `evidence/` and writes
-  `evidence/NUMERICAL_AUDIT.json` (macro → value → evidence file SHA-256 → JSON pointer).
-* `evidence/build_figures.py` regenerates `fig_family_results.pdf` from the same held-out report, so
-  the per-concept figure plots the values the tables report. It is byte-deterministic and encodes the
-  comparison by shape rather than hue, so it stays legible in grayscale. It needs matplotlib, which the
-  LaTeX build does not.
-* `evidence/check_literal_numbers.py` lists any literal number left in the prose.
-* `evidence/CITATION_VERIFICATION.json` records how every cited key in `references.bib` was verified
-  (arXiv id, DOI, PMLR listing or reachable URL).
-
-Evidence provenance: Study A files (`PAIRED_V5_REPRODUCED_RESULT.json`, `PAIRED_V5_RECEIPT_ACCOUNTING.json`,
-`PAIRED_V5_REPRODUCED_PARITY.json`, `SHORTCUT_PREFLIGHT_V3.json`, `HISTORICAL_AUDIT.json`) are the
-authenticated reproduction of the frozen V5 paired-intervention study; `PUBLICATION_STATIC_FACTS.json` and
-`ANALYSIS_CONTRACT.json` are the frozen Study B design and analysis contract; `studyB_execution_status.json`
-is a target-free snapshot of recorded Study B cells (execution status only, no scores).
-
-## One-command verification
-
-`python3 ../verify_release.py` runs every offline check and prints one table: Study A reproduces,
-the explorer marks sum to the report, regenerating the macros leaves the committed files unchanged,
-no number is hand-typed, every recomputable macro matches a fresh recomputation, the paper builds
-with its main text ending on page 9 or earlier, and the sources and PDF carry no identifying token.
-It exits non-zero if any check fails and reports a check whose inputs are absent as "not present".
-
-## Cross-check against the released benchmark
-
-`evidence/check_against_benchmark_release.py` reruns the frozen analysis in
-[`../branch-benchmark/`](../branch-benchmark/README.md) on the recorded predictions and confirms
-that every macro traceable to the held-out report, the shortcut preflight or the product-parity
-report equals the freshly recomputed value (86 macros at the time of writing). Macros that come
-from design or accounting records are reported as having no recomputation path rather than as
-passing.
-
-## Study B results (pending)
-
-Scoring of the 150-claim study is contractually deferred until both prediction phases are frozen, so the
-paper reports the protocol and the completed development-split execution record. When the frozen analysis
-code produces `FINITE_REPORT.json` (schema `casepath.finite-corpus-descriptive/1.0.0`):
-
-```bash
-python3 evidence/build_native_results.py /path/to/FINITE_REPORT.json
+```sh
+python3 evidence/build_manuscript_numbers.py
+python3 evidence/build_final_native_tables.py
+python3 evidence/build_figures.py
 ```
 
-writes `native_results_numbers.tex`, `table_native_results.tex` and `evidence/NATIVE_RESULTS_AUDIT.json`;
-then add `\input{native_results_numbers.tex}` to `main.tex`, write the results paragraph in
-`native_study.tex` from the generated macros only, recompile and re-run the two check scripts.
+The figure generator needs Matplotlib. The LaTeX build uses the supplied PDFs and
+does not require plotting software. The four figures are a teaching schematic,
+Study A's measured family behavior, the post-hoc scope-control comparison, and a
+recorded development case. Their provenance is recorded in `evidence/FIGURE_AUDIT.json`.
 
-## Layout
+`evidence/NUMERICAL_AUDIT.json` and `evidence/NATIVE_FINAL_NUMERICAL_AUDIT.json`
+map numerical macros to values, source hashes and JSON pointers. The native
+reports and their manifest are in `evidence/native150/`. These files include
+both the registered primary failure and the separate request diagnostic.
+`evidence/CITATION_VERIFICATION.json` records the checked bibliography metadata.
 
-`main.tex` → `submitted_frontmatter` → `introduction` → `method` → `benchmark` → `paired_results` →
-`native_study` → `related` → `release` → `discussion` (limitations, conclusion) → `statements` → references →
-`appendix_studya` → `appendix_native`. Files inherited from earlier assemblies that `main.tex` does not input
-(`studies.tex`, `related_product.tex`, `table_correspondence.tex`, `technical_correspondence.tex`) are kept
-for history only.
+## Reproduce the measurements
+
+The companion `dist/casepath_iclr2027_reproducibility.zip` contains the original
+method, source snapshots, licensed exact reference containers, all prediction
+and failure cells, provider usage, native evaluator and offline replay commands.
+Its README explains the separate Study A and Study B commands. No provider calls
+are needed. The archive manifest verifies every file; the exact-replay receipt
+binds the reproduced reports to those used in this manuscript.
+
+From the repository root, run:
+
+```sh
+python3 research/casepath/verify_release.py
+```
+
+This recomputes Study A, checks all generated publication artifacts, compiles the
+paper and a clean source extraction, and checks the full reproduction archive
+against its manifest and recorded exact native-replay receipt. It does not launch
+new inference or repeat native scoring.
+
+## Measurement boundaries
+
+Study A evaluates known branch concepts in held-out contexts, with unequal
+computation across pipelines. Study B fixes shared knowledge and call budgets;
+its protected-family label records the original target boundary, not untouched
+observable inputs. Those targets are now released. The primary graph-interface
+failure, unavailable outputs and negative conservative paired contrasts remain
+part of the evidence. Request-list agreement is not native contract acceptance.
+
+Files not reached from `main.tex` are historical sources; only the actual input
+closure is included in the submission source archive.
