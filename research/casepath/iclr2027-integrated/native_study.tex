@@ -1,94 +1,108 @@
-\section{Study B: The Complete Released Corpus}
+\section{Study B: Complete Claims, Executability and Request Quality}
 \label{sec:native}
 
-\paragraph{Corpus and arms.}
-Study~B evaluates \nbClaims{} synthetic tenancy claims in \nbFamilies{}
-families across three domains (defect, mould and heating; lease termination;
-rent increase). The development split holds \nbDevClaims{} claims in
-\nbDevFamilies{} families; the protected split holds \nbHidClaims{} claims in
-\nbHidFamilies{} disjoint families. Five learned arms share one
-deterministically compiled public representation and the same observable
-case packet, with \nbCallsPerCell{} calls per cell (draft and review),
-\nbReasoning{} reasoning, \nbTokens{} completion tokens per call, no tools
-and no resampling, on the same model alias as Study~A. \casepath predicts an
-assessment that code compiles through
-Equations~\ref{eq:native-activation}--\ref{eq:native-route}; the reviewed
-Direct, Document-first, Process-context and Rule-first arms generate the
-artefact themselves. Two dependent controls, a compiled equivalent and a
-local-scope ablation, replay \casepath's assessment through alternative
-executions, giving \nbLearnedCells{} learned and \nbDependentCells{}
-dependent cells, \nbCells{} in all. Because the arms differ in what the model
-emits, Study~B is a pipeline comparison under matched information and budget,
-not an isolated test of graph storage or prompting order.
+\paragraph{A matched complete-corpus comparison.}
+Study~B evaluates all \nbClaims{} released synthetic tenancy claims across
+\nbFamilies{} families and three domains: defects, mould and heating;
+termination; and rent increase. Development contains \nbDevClaims{} claims
+in \nbDevFamilies{} families; the protected split contains \nbHidClaims{}
+claims in \nbHidFamilies{} disjoint families. Five learned pipelines share
+the compiled public representation, observable case packet, source access,
+model alias and budget: \nbCallsPerCell{} calls per cell, \nbReasoning{}
+reasoning, \nbTokens{} completion tokens per call, no tools or resampling.
+\casepath emits an assessment that code compiles into the artefact;
+Direct, Document-first, Process-context and Rule-first generate the artefact.
+The compiled-equivalent and local-scope controls reuse \casepath's
+assessments, adding no independent model trials. This tests complete pipelines
+under matched information and budget, rather than isolating a prompting order.
 
-\paragraph{Endpoints and contract.}
-The native evaluator scores graph structure, branch and path probes, evidence
-obligations, chains, document states and exact source locators; a separate
-endpoint counts the immediate requests a system actually emitted
-(Appendix~\ref{app:native-metrics}). Three primary endpoints are reported
-against each learned comparator: emitted-checklist $F_1$, critical-evidence
-recall and the fraction of unnecessary requests. The frozen contract fixes
-descriptive estimation on the protected split with domains, families and
-cases weighted equally; conservative contrasts assign $-1$ whenever either
-endpoint is unobserved and must jointly exceed the boundaries $\bndF$,
-$\bndCer$ and $\bndUdr$ before a comparator counts as beaten; single-family
-deletion ranges replace confidence intervals, and no $p$-values are computed.
-Failed, truncated or blocked cells stay in the denominator with adverse
-penalties. All \nbClaims{} inputs were inspected during product work, so
-``protected'' denotes custody and family disjointness, not untouched-input
-generalisation.
+\paragraph{Registered primary: a common interface failure.}
+The complete \nbCells-cell evaluation retains \nrArtifactFailures{}
+generated artefacts and \nrRequestPenalties{} failed or blocked outputs.
+Every generated artefact encounters native evaluation failures: the public
+compiler's condition names are not bound in the native reference scenario.
+A target-blind census finds \nrNativeSymbols{} distinct symbols, all from
+the common compiler; no public, meaning-preserving translation is established.
+The frozen policy therefore assigns adverse penalties to every cell, and
+\nrPrimaryMet{} of \nrPrimaryTotal{} protected-split practical targets are
+met. These zeros and ones are policy penalties. They do not show that every
+requested document was wrong or that the pipelines had equal request quality.
+The complete primary report, failure messages and unchanged evaluator are
+included in the release.
+
+\paragraph{Post-hoc diagnostic: what did the systems actually request?}
+A separate analysis scores the literal immediate-request lists in the saved
+artefacts against the original generator-assigned document sets. It uses the
+original reference and request-counting functions, with no graph repair,
+guard interpretation or new model calls. All \nrRequestObserved{}
+generated lists are scoreable; the \nrRequestPenalties{} failed or blocked
+outputs retain zero precision, recall, $F_1$ and exact accuracy, and an
+unnecessary-fraction penalty of one. Their raw request counts remain
+unavailable. This diagnostic was specified after the interface failure and
+is reported separately from the registered comparison.
 
 \begin{table}[t]
-\centering\footnotesize
-\setlength{\tabcolsep}{3pt}
-\input{table_native_execution.tex}
-\caption{\textbf{Development-split execution record} (\nbDevCells{} cells,
-complete). Failed cells are retained with their charge and enter the final
-report with adverse penalties. Endpoint: an artefact relation names a node
-that does not exist; Trunc.: completion limit reached; Codebook: invalid
-codebook index; Presence: contradictory document-presence state. Dependent
-controls are blocked when the \casepath cell they replay failed.}
-\label{tab:native-execution}
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\input{table_native_final.tex}
+\caption{\textbf{Post-hoc agreement of recorded requests with reference
+sets.} Development has \nbDevClaims{} claims; protected families have
+\nbHidClaims. Scores weight domains equally, families equally within domains,
+and cases equally within families. Failed outputs remain in the denominator;
+``Unnecessary'' includes their unit penalty, so it is not the raw fraction of
+observed requests. All generated graphs failed the registered native
+evaluation. Dependent controls reuse the same assessments.}
+\label{tab:native-final}
 \end{table}
 
-\paragraph{Execution record.}
-Prediction freezes precede all scoring, and no score exists until both splits
-are frozen. All \nbRecorded{} scheduled cells are recorded, \nbDevCells{} on
-the development split and \nbHidRecorded{} on the protected split. The
-development record alone already exposes a property of the interface
-(Table~\ref{tab:native-execution}).
-Under the same budget, the generative arms fail schema validation in
-\bDirDevFail, \bDocDevFail, \bPcDevFail{} and \bRfDevFail{} of \nbDevClaims{}
-cells, against \bCpDevFail{} for \casepath. Their dominant failure is an
-artefact relation whose endpoint does not exist (\bDirDevEndpoint,
-\bDocDevEndpoint, \bPcDevEndpoint{} and \bRfDevEndpoint{} cells), a failure
-\casepath cannot produce because it emits an assessment that code turns into
-a graph. Truncation at the completion limit follows (\bDirDevTrunc,
-\bDocDevTrunc, \bPcDevTrunc{} and \bRfDevTrunc{} against \bCpDevTrunc).
-\casepath's own failures are contradictory presence states
-(\bCpDevPresence) and invalid codebook indices (\bCpDevCodebook). These are
-execution outcomes, not quality scores, and they penalise every arm alike in
-the final report.
+\casepath produces \rqHidCpN{} request lists on the protected split,
+compared with \rqHidDirN, \rqHidDocN, \rqHidPcN{} and \rqHidRfN{} for the
+learned alternatives. Its failure-penalized $F_1$ is \rqHidCpF{} against
+\rqHidPcF{} for the strongest comparator, Process-context
+(Table~\ref{tab:native-final}); on the combined corpus, \casepath scores
+\rqAllCpF{} against \rqAllRfF{} for the strongest comparator there,
+Rule-first. The difference includes a substantial output-availability
+advantage. The \rqHidCpN{} observed \casepath lists contain
+\rqHidCpCorrect{} correct requests among \rqHidCpRequested{} emitted,
+with \rqHidCpMissed{} reference documents missed. Those counts describe the
+observed lists only, not all \nbHidClaims{} claims.
+
+The distinction matters for the paired result. The conventional protected
+$F_1$ difference against Process-context is \rqHidDPcF. The conservative
+contrast, which assigns $-1$ whenever either request-only endpoint is
+unobserved, is \rqHidCPcF. Conservative contrasts remain negative against
+all four learned alternatives (Appendix~\ref{app:request-diagnostic}).
+The diagnostic supports better realized request output under this budget;
+it does not establish reliable paired superiority.
 
 \begin{figure}[t]
-\centering\includegraphics[width=.56\linewidth]{fig_native_case.pdf}
-\caption{\textbf{Missing does not yet mean required.} One recorded
-development prediction (the first completed \casepath record in sorted
-cohort order, selected without target access): arrears true, family-home
-status unresolved, both documents missing. The controller requests the cure
-notice now and keeps the spouse notice conditional on a clarification; each
-request preserves its source--obligation--fact--capability--route chain.
-This shows the executed mechanism, not correctness.}
-\label{fig:native-case}
+\centering\includegraphics[width=\linewidth]{fig_scope_control.pdf}
+\caption{\textbf{Enclosing scope changes the evidence plan.} The same recorded
+assessments feed the full controller and its local-scope ablation. In the
+post-hoc diagnostic, the full controller raises checklist $F_1$ and reduces
+the unnecessary-fraction score in both splits. All scheduled cases contribute,
+including failed-output penalties; these are dependent controls, not new model
+trials. Combined scores use the frozen domain--family--case weights.}
+\label{fig:scope}
 \end{figure}
 
-\paragraph{What the design supports.}
-Figure~\ref{fig:native-case} shows the mechanism on one recorded case. When
-both freezes are complete, the frozen code produces a single descriptive
-finite-corpus report, and the release contains the contract, producer,
-evaluator and every recorded cell so that the report can be regenerated
-rather than trusted. A positive report would show that explicit obligation
-execution yields better-justified complete plans than generative pipelines
-given the same compiled information on this corpus, and nothing about
-population superiority, mechanism isolation or unseen-input generalisation;
-it is not pooled with Study~A.
+\paragraph{Why scope matters to acquisition.}
+The compiled-equivalent control reproduces \casepath's request scores
+exactly. Reusing the same assessments with only local scope reduces
+protected $F_1$ to \rqHidLsF{} and raises the failure-penalized unnecessary
+fraction from \rqHidCpU{} to \rqHidLsU. Figure~\ref{fig:scope} connects the
+ancestor-scope mechanism to what the controller emits: a locally plausible
+obligation can request a document even when its enclosing branch is inactive.
+It remains a dependent, post-hoc request diagnostic; it supplies no evidence
+of correct native branches, valid chains or authoritative support.
+
+All \nbClaims{} observable inputs had been inspected during product work;
+``protected'' denotes target custody and family disjointness, not untouched
+inputs. The producer terminated without its complete I/O audit, so historical
+non-access to the protected targets is not established retrospectively, and
+the target containers have since been released, so this corpus cannot serve
+as newly hidden confirmation (Appendix~\ref{app:request-diagnostic}). Combined estimates recompute the domain--family--case weights.
+Family-deletion ranges describe composition sensitivity, with no confidence
+intervals or significance tests. Study-attributed inference cost is
+\$\nrStudyCost{}; total historical spending is \$\nrTotalCost. Offline
+scoring and reproduction add computation but no provider calls.

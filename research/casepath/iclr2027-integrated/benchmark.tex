@@ -1,4 +1,4 @@
-\section{Study A: A Benchmark Only the Branch Can Pass}
+\section{Study A: Intervening on the Active Branch}
 \label{sec:benchmark}
 
 \paragraph{Construction.}
@@ -22,8 +22,8 @@ once. The held-out split therefore tests context robustness for known rule
 concepts, not unseen-rule or unseen-policy transfer.
 
 \paragraph{Falsifiers built into the benchmark.}
-Static, volume and pairing shortcuts are excluded before evaluation rather
-than argued away afterwards
+The benchmark tests whether gains can be explained by static predictions,
+request volume or branch-independent changes
 \citep{kaushik2018reading,sugawara2018easier,mccoy2019hans,bowman2021benchmarking,yuan2024shortcut}.
 (i)~\emph{Input-free control}: a constant signed-set predictor fitted on
 eight branch families and evaluated on the ninth has maximum held-out

@@ -1,28 +1,38 @@
-\section{Limitations}
+\section{Discussion and Limitations}
 \label{sec:limitations}
-Study~A federates statute wording with several insurers' policies; a pair
-tests one rule consequence, and deployment requires selecting the governing
-policy first. The reference contract is authored from sources and
-mechanically checkable for spans and routes, but which documents
-operationalise a fact is a modelling judgement, not expert consensus.
-Held-out contexts cover known concepts only, and no case-only ablation
-isolates the necessity of source text at inference time. Spurious signed
-changes proxy unnecessary acquisition rather than measured claimant burden.
-The V5 planner unions routes and does not judge adequacy; the Study~B
-controller does, but its comparison is pipeline-level, its inputs were
-previously inspected, and its finite-corpus report supports no population
-inference. Neither study measures autonomous acquisition, expert agreement
-or customer outcomes.
+
+The practical value of process control is selectivity with an inspectable
+reason. In Study~A, \casepath removes false-positive changes while retaining
+nearly as many correct changes as Direct. The benefit is largest on
+procedural branches, where a familiar claimant document is a poor substitute
+for the particular notice or confirmation that the rule requires. Study~B's
+same-assessment scope control points to a related design choice: an obligation
+must inherit the conditions of its enclosing process, not merely satisfy its
+own local condition. A system builder can inspect and test both dependencies
+before asking a customer for another document.
+
+The evidence has specific limits. Study~A tests known concepts in new
+contexts, uses unequal computation across pipelines, and does not meet its
+preregistered broad-superiority gate. Its source-derived references contain
+author judgements about which documents establish a fact, rather than expert
+consensus; a deployed system would also need to select the governing policy
+instead of combining rules from multiple insurers. Study~B tests complete
+synthetic claims under matched budgets, but its native interface failure
+leaves full graph correctness unvalidated. The separate request diagnostic
+measures realized output under failures, not reliable paired superiority.
+Neither study measures customer effort, expert agreement, autonomous
+acquisition or performance in another jurisdiction.
 
 \section{Conclusion}
 \label{sec:conclusion}
-\casepath makes one distinction executable: uncertain applicability triggers
-state resolution, and only active, source-backed obligations generate
-evidence requirements. Under matched interventions this yields document
-changes that are selective (\cpSpur{} spurious against \dirSpur, \gcSpur{}
-and \efSpur), branch-specific (wrong pairing collapses $F_1$ from \wpObs{}
-to at most \wpMax) and traceable, while a preregistered gate rightly denies
-broad superiority and the family analysis names the semantics that still
-fail. The complete-corpus study, the method pack and the workbench turn
-document prediction into evidence planning that can be inspected, replayed
-and falsified.
+
+Evidence planning benefits from making the reason for a request executable.
+\casepath represents the dependency from source condition to obligation,
+fact, capability and document, and lets case state determine which demands
+are active. The controlled comparison finds fewer unjustified checklist
+changes; the complete-corpus diagnostic shows the contribution of enclosing
+scope to the recorded requests. These results support a concrete design
+principle: derive evidence demands from explicit, case-conditioned
+obligations, and validate both the requests and the process semantics that
+produce them. The released benchmarks, controller, traces and offline
+reproduction make that principle inspectable and testable.

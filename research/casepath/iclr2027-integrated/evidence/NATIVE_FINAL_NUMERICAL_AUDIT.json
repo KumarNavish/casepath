@@ -1,0 +1,3053 @@
+{
+  "schema": "casepath.native-publication-audit/1",
+  "numbers": [
+    {
+      "macro": "rqDevCpN",
+      "value": 44,
+      "rendered": "44",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqDevCpP",
+      "value": 0.7043158436213992,
+      "rendered": "0.704",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqDevCpR",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqDevCpF",
+      "value": 0.6566241438300262,
+      "rendered": "0.657",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqDevCpExact",
+      "value": 0.2468253968253968,
+      "rendered": "0.247",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqDevCpU",
+      "value": 0.2956841563786008,
+      "rendered": "0.296",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqDevCpCorrect",
+      "value": 259,
+      "rendered": "259",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqDevCpRequested",
+      "value": 275,
+      "rendered": "275",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqDevCpMissed",
+      "value": 41,
+      "rendered": "41",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqDevCpExtra",
+      "value": 16,
+      "rendered": "16",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqDevCpRequired",
+      "value": 300,
+      "rendered": "300",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqDevCpConditional",
+      "value": 811,
+      "rendered": "811",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/CASEPATH_CONTROL/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqDevDirN",
+      "value": 19,
+      "rendered": "19",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqDevDirP",
+      "value": 0.31267195767195766,
+      "rendered": "0.313",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqDevDirR",
+      "value": 0.2810657596371882,
+      "rendered": "0.281",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqDevDirF",
+      "value": 0.2953123265623266,
+      "rendered": "0.295",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqDevDirExact",
+      "value": 0.11587301587301588,
+      "rendered": "0.116",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqDevDirU",
+      "value": 0.6873280423280423,
+      "rendered": "0.687",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqDevDirCorrect",
+      "value": 114,
+      "rendered": "114",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqDevDirRequested",
+      "value": 116,
+      "rendered": "116",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqDevDirMissed",
+      "value": 16,
+      "rendered": "16",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqDevDirExtra",
+      "value": 2,
+      "rendered": "2",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqDevDirRequired",
+      "value": 130,
+      "rendered": "130",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqDevDirConditional",
+      "value": 23,
+      "rendered": "23",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DIRECT_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqDevDocN",
+      "value": 17,
+      "rendered": "17",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqDevDocP",
+      "value": 0.26846560846560846,
+      "rendered": "0.268",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqDevDocR",
+      "value": 0.2331254724111867,
+      "rendered": "0.233",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqDevDocF",
+      "value": 0.24662528647822765,
+      "rendered": "0.247",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqDevDocExact",
+      "value": 0.049206349206349205,
+      "rendered": "0.049",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqDevDocU",
+      "value": 0.7315343915343915,
+      "rendered": "0.732",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqDevDocCorrect",
+      "value": 95,
+      "rendered": "95",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqDevDocRequested",
+      "value": 103,
+      "rendered": "103",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqDevDocMissed",
+      "value": 22,
+      "rendered": "22",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqDevDocExtra",
+      "value": 8,
+      "rendered": "8",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqDevDocRequired",
+      "value": 117,
+      "rendered": "117",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqDevDocConditional",
+      "value": 84,
+      "rendered": "84",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqDevPcN",
+      "value": 27,
+      "rendered": "27",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqDevPcP",
+      "value": 0.43042328042328043,
+      "rendered": "0.430",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqDevPcR",
+      "value": 0.39387755102040817,
+      "rendered": "0.394",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqDevPcF",
+      "value": 0.407388830305497,
+      "rendered": "0.407",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqDevPcExact",
+      "value": 0.16587301587301587,
+      "rendered": "0.166",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqDevPcU",
+      "value": 0.5695767195767195,
+      "rendered": "0.570",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqDevPcCorrect",
+      "value": 163,
+      "rendered": "163",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqDevPcRequested",
+      "value": 169,
+      "rendered": "169",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqDevPcMissed",
+      "value": 23,
+      "rendered": "23",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqDevPcExtra",
+      "value": 6,
+      "rendered": "6",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqDevPcRequired",
+      "value": 186,
+      "rendered": "186",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqDevPcConditional",
+      "value": 15,
+      "rendered": "15",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqDevRfN",
+      "value": 28,
+      "rendered": "28",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqDevRfP",
+      "value": 0.4551322751322751,
+      "rendered": "0.455",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqDevRfR",
+      "value": 0.4143424036281179,
+      "rendered": "0.414",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqDevRfF",
+      "value": 0.4328081640581641,
+      "rendered": "0.433",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqDevRfExact",
+      "value": 0.19682539682539682,
+      "rendered": "0.197",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqDevRfU",
+      "value": 0.5448677248677248,
+      "rendered": "0.545",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqDevRfCorrect",
+      "value": 171,
+      "rendered": "171",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqDevRfRequested",
+      "value": 174,
+      "rendered": "174",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqDevRfMissed",
+      "value": 21,
+      "rendered": "21",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqDevRfExtra",
+      "value": 3,
+      "rendered": "3",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqDevRfRequired",
+      "value": 192,
+      "rendered": "192",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqDevRfConditional",
+      "value": 11,
+      "rendered": "11",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqDevCeN",
+      "value": 44,
+      "rendered": "44",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqDevCeP",
+      "value": 0.7043158436213992,
+      "rendered": "0.704",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqDevCeR",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqDevCeF",
+      "value": 0.6566241438300262,
+      "rendered": "0.657",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqDevCeExact",
+      "value": 0.2468253968253968,
+      "rendered": "0.247",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqDevCeU",
+      "value": 0.2956841563786008,
+      "rendered": "0.296",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqDevCeCorrect",
+      "value": 259,
+      "rendered": "259",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqDevCeRequested",
+      "value": 275,
+      "rendered": "275",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqDevCeMissed",
+      "value": 41,
+      "rendered": "41",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqDevCeExtra",
+      "value": 16,
+      "rendered": "16",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqDevCeRequired",
+      "value": 300,
+      "rendered": "300",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqDevCeConditional",
+      "value": 811,
+      "rendered": "811",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqDevLsN",
+      "value": 44,
+      "rendered": "44",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqDevLsP",
+      "value": 0.3311434597148883,
+      "rendered": "0.331",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqDevLsR",
+      "value": 0.6349773242630385,
+      "rendered": "0.635",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqDevLsF",
+      "value": 0.4199804610839551,
+      "rendered": "0.420",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqDevLsExact",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqDevLsU",
+      "value": 0.6688565402851117,
+      "rendered": "0.669",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqDevLsCorrect",
+      "value": 259,
+      "rendered": "259",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqDevLsRequested",
+      "value": 592,
+      "rendered": "592",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqDevLsMissed",
+      "value": 41,
+      "rendered": "41",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqDevLsExtra",
+      "value": 333,
+      "rendered": "333",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqDevLsRequired",
+      "value": 300,
+      "rendered": "300",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqDevLsConditional",
+      "value": 560,
+      "rendered": "560",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqDevDDirP",
+      "value": 0.3916438859494415,
+      "rendered": "+0.392",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/0/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDirP",
+      "value": -0.771957671957672,
+      "rendered": "-0.772",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/0/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDirR",
+      "value": 0.35391156462585033,
+      "rendered": "+0.354",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/1/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDirR",
+      "value": -0.7673280423280423,
+      "rendered": "-0.767",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/1/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDirF",
+      "value": 0.3613118172676996,
+      "rendered": "+0.361",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/2/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDirF",
+      "value": -0.7703905680376268,
+      "rendered": "-0.770",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/2/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDirExact",
+      "value": 0.13095238095238096,
+      "rendered": "+0.131",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/3/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDirExact",
+      "value": -0.7645502645502645,
+      "rendered": "-0.765",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/3/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDirU",
+      "value": 0.3916438859494415,
+      "rendered": "+0.392",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/4/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDirU",
+      "value": -0.771957671957672,
+      "rendered": "-0.772",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/4/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDocP",
+      "value": 0.4358502351557907,
+      "rendered": "+0.436",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/5/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDocP",
+      "value": -0.7874566431510875,
+      "rendered": "-0.787",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/5/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDocR",
+      "value": 0.40185185185185185,
+      "rendered": "+0.402",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/6/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDocR",
+      "value": -0.783994708994709,
+      "rendered": "-0.784",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/6/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDocF",
+      "value": 0.40999885735179853,
+      "rendered": "+0.410",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/7/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDocF",
+      "value": -0.7859017834017834,
+      "rendered": "-0.786",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/7/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDocExact",
+      "value": 0.1976190476190476,
+      "rendered": "+0.198",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/8/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDocExact",
+      "value": -0.7952380952380952,
+      "rendered": "-0.795",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/8/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDDocU",
+      "value": 0.4358502351557907,
+      "rendered": "+0.436",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/9/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCDocU",
+      "value": -0.7874566431510875,
+      "rendered": "-0.787",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/9/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDPcP",
+      "value": 0.2738925631981187,
+      "rendered": "+0.274",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/10/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCPcP",
+      "value": -0.6317460317460317,
+      "rendered": "-0.632",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/10/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDPcR",
+      "value": 0.24109977324263038,
+      "rendered": "+0.241",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/11/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCPcR",
+      "value": -0.6472978080120937,
+      "rendered": "-0.647",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/11/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDPcF",
+      "value": 0.2492353135245292,
+      "rendered": "+0.249",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/12/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCPcF",
+      "value": -0.6458916102053357,
+      "rendered": "-0.646",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/12/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDPcExact",
+      "value": 0.08095238095238094,
+      "rendered": "+0.081",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/13/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCPcExact",
+      "value": -0.6354497354497355,
+      "rendered": "-0.635",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/13/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDPcU",
+      "value": 0.2738925631981187,
+      "rendered": "+0.274",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/14/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCPcU",
+      "value": -0.6317460317460317,
+      "rendered": "-0.632",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/14/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDRfP",
+      "value": 0.24918356848912404,
+      "rendered": "+0.249",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/15/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCRfP",
+      "value": -0.6395767195767196,
+      "rendered": "-0.640",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/15/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDRfR",
+      "value": 0.22063492063492063,
+      "rendered": "+0.221",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/16/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCRfR",
+      "value": -0.6394368858654573,
+      "rendered": "-0.639",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/16/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDRfF",
+      "value": 0.22381597977186213,
+      "rendered": "+0.224",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/17/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCRfF",
+      "value": -0.6403237829708418,
+      "rendered": "-0.640",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/17/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDRfExact",
+      "value": 0.05,
+      "rendered": "+0.050",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/18/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCRfExact",
+      "value": -0.651058201058201,
+      "rendered": "-0.651",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/18/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqDevDRfU",
+      "value": 0.24918356848912404,
+      "rendered": "+0.249",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/19/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqDevCRfU",
+      "value": -0.6395767195767196,
+      "rendered": "-0.640",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/public_dev/paired_contrasts/19/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidCpN",
+      "value": 66,
+      "rendered": "66",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqHidCpP",
+      "value": 0.7319444444444445,
+      "rendered": "0.732",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqHidCpR",
+      "value": 0.6449074074074074,
+      "rendered": "0.645",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqHidCpF",
+      "value": 0.6773014023014023,
+      "rendered": "0.677",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqHidCpExact",
+      "value": 0.33333333333333337,
+      "rendered": "0.333",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqHidCpU",
+      "value": 0.26805555555555555,
+      "rendered": "0.268",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqHidCpCorrect",
+      "value": 384,
+      "rendered": "384",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqHidCpRequested",
+      "value": 385,
+      "rendered": "385",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqHidCpMissed",
+      "value": 54,
+      "rendered": "54",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqHidCpExtra",
+      "value": 1,
+      "rendered": "1",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqHidCpRequired",
+      "value": 438,
+      "rendered": "438",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqHidCpConditional",
+      "value": 1195,
+      "rendered": "1195",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/CASEPATH_CONTROL/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqHidDirN",
+      "value": 30,
+      "rendered": "30",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqHidDirP",
+      "value": 0.3125,
+      "rendered": "0.312",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqHidDirR",
+      "value": 0.3098148148148148,
+      "rendered": "0.310",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqHidDirF",
+      "value": 0.30987580320913655,
+      "rendered": "0.310",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqHidDirExact",
+      "value": 0.15555555555555556,
+      "rendered": "0.156",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqHidDirU",
+      "value": 0.6875,
+      "rendered": "0.688",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqHidDirCorrect",
+      "value": 187,
+      "rendered": "187",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqHidDirRequested",
+      "value": 200,
+      "rendered": "200",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqHidDirMissed",
+      "value": 14,
+      "rendered": "14",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqHidDirExtra",
+      "value": 13,
+      "rendered": "13",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqHidDirRequired",
+      "value": 201,
+      "rendered": "201",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqHidDirConditional",
+      "value": 42,
+      "rendered": "42",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DIRECT_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqHidDocN",
+      "value": 24,
+      "rendered": "24",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqHidDocP",
+      "value": 0.26305555555555554,
+      "rendered": "0.263",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqHidDocR",
+      "value": 0.2384920634920635,
+      "rendered": "0.238",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqHidDocF",
+      "value": 0.24874421874421876,
+      "rendered": "0.249",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqHidDocExact",
+      "value": 0.14444444444444446,
+      "rendered": "0.144",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqHidDocU",
+      "value": 0.7369444444444445,
+      "rendered": "0.737",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqHidDocCorrect",
+      "value": 142,
+      "rendered": "142",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqHidDocRequested",
+      "value": 144,
+      "rendered": "144",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqHidDocMissed",
+      "value": 17,
+      "rendered": "17",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqHidDocExtra",
+      "value": 2,
+      "rendered": "2",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqHidDocRequired",
+      "value": 159,
+      "rendered": "159",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqHidDocConditional",
+      "value": 55,
+      "rendered": "55",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqHidPcN",
+      "value": 43,
+      "rendered": "43",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqHidPcP",
+      "value": 0.4617724867724868,
+      "rendered": "0.462",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqHidPcR",
+      "value": 0.45630952380952383,
+      "rendered": "0.456",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqHidPcF",
+      "value": 0.4580128513461847,
+      "rendered": "0.458",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqHidPcExact",
+      "value": 0.2777777777777778,
+      "rendered": "0.278",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqHidPcU",
+      "value": 0.5382275132275133,
+      "rendered": "0.538",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqHidPcCorrect",
+      "value": 270,
+      "rendered": "270",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqHidPcRequested",
+      "value": 280,
+      "rendered": "280",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqHidPcMissed",
+      "value": 13,
+      "rendered": "13",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqHidPcExtra",
+      "value": 10,
+      "rendered": "10",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqHidPcRequired",
+      "value": 283,
+      "rendered": "283",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqHidPcConditional",
+      "value": 16,
+      "rendered": "16",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqHidRfN",
+      "value": 42,
+      "rendered": "42",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqHidRfP",
+      "value": 0.4599867724867725,
+      "rendered": "0.460",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqHidRfR",
+      "value": 0.44332010582010584,
+      "rendered": "0.443",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqHidRfF",
+      "value": 0.4501946201946202,
+      "rendered": "0.450",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqHidRfExact",
+      "value": 0.3111111111111111,
+      "rendered": "0.311",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqHidRfU",
+      "value": 0.5400132275132276,
+      "rendered": "0.540",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqHidRfCorrect",
+      "value": 261,
+      "rendered": "261",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqHidRfRequested",
+      "value": 265,
+      "rendered": "265",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqHidRfMissed",
+      "value": 15,
+      "rendered": "15",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqHidRfExtra",
+      "value": 4,
+      "rendered": "4",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqHidRfRequired",
+      "value": 276,
+      "rendered": "276",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqHidRfConditional",
+      "value": 25,
+      "rendered": "25",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqHidCeN",
+      "value": 66,
+      "rendered": "66",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqHidCeP",
+      "value": 0.7319444444444445,
+      "rendered": "0.732",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqHidCeR",
+      "value": 0.6449074074074074,
+      "rendered": "0.645",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqHidCeF",
+      "value": 0.6773014023014023,
+      "rendered": "0.677",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqHidCeExact",
+      "value": 0.33333333333333337,
+      "rendered": "0.333",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqHidCeU",
+      "value": 0.26805555555555555,
+      "rendered": "0.268",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqHidCeCorrect",
+      "value": 384,
+      "rendered": "384",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqHidCeRequested",
+      "value": 385,
+      "rendered": "385",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqHidCeMissed",
+      "value": 54,
+      "rendered": "54",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqHidCeExtra",
+      "value": 1,
+      "rendered": "1",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqHidCeRequired",
+      "value": 438,
+      "rendered": "438",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqHidCeConditional",
+      "value": 1195,
+      "rendered": "1195",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqHidLsN",
+      "value": 64,
+      "rendered": "64",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqHidLsP",
+      "value": 0.31790029415029414,
+      "rendered": "0.318",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqHidLsR",
+      "value": 0.6271296296296296,
+      "rendered": "0.627",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqHidLsF",
+      "value": 0.4108136951241676,
+      "rendered": "0.411",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqHidLsExact",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqHidLsU",
+      "value": 0.6820997058497059,
+      "rendered": "0.682",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqHidLsCorrect",
+      "value": 376,
+      "rendered": "376",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqHidLsRequested",
+      "value": 853,
+      "rendered": "853",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqHidLsMissed",
+      "value": 52,
+      "rendered": "52",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqHidLsExtra",
+      "value": 477,
+      "rendered": "477",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqHidLsRequired",
+      "value": 428,
+      "rendered": "428",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqHidLsConditional",
+      "value": 827,
+      "rendered": "827",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqHidDDirP",
+      "value": 0.41944444444444445,
+      "rendered": "+0.419",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/0/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDirP",
+      "value": -0.743915343915344,
+      "rendered": "-0.744",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/0/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDirR",
+      "value": 0.3350925925925926,
+      "rendered": "+0.335",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/1/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDirR",
+      "value": -0.7692857142857144,
+      "rendered": "-0.769",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/1/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDirF",
+      "value": 0.3674255990922658,
+      "rendered": "+0.367",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/2/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDirF",
+      "value": -0.7580029846696513,
+      "rendered": "-0.758",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/2/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDirExact",
+      "value": 0.17777777777777778,
+      "rendered": "+0.178",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/3/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDirExact",
+      "value": -0.8222222222222223,
+      "rendered": "-0.822",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/3/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDirU",
+      "value": 0.41944444444444445,
+      "rendered": "+0.419",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/4/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDirU",
+      "value": -0.743915343915344,
+      "rendered": "-0.744",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/4/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDocP",
+      "value": 0.4688888888888889,
+      "rendered": "+0.469",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/5/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDocP",
+      "value": -0.7852777777777779,
+      "rendered": "-0.785",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/5/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDocR",
+      "value": 0.4064153439153439,
+      "rendered": "+0.406",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/6/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDocR",
+      "value": -0.7898809523809525,
+      "rendered": "-0.790",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/6/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDocF",
+      "value": 0.4285571835571836,
+      "rendered": "+0.429",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/7/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDocF",
+      "value": -0.787909867909868,
+      "rendered": "-0.788",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/7/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDocExact",
+      "value": 0.18888888888888888,
+      "rendered": "+0.189",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/8/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDocExact",
+      "value": -0.788888888888889,
+      "rendered": "-0.789",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/8/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDDocU",
+      "value": 0.4688888888888889,
+      "rendered": "+0.469",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/9/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCDocU",
+      "value": -0.7852777777777779,
+      "rendered": "-0.785",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/9/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDPcP",
+      "value": 0.2701719576719577,
+      "rendered": "+0.270",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/10/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCPcP",
+      "value": -0.6570767195767196,
+      "rendered": "-0.657",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/10/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDPcR",
+      "value": 0.1885978835978836,
+      "rendered": "+0.189",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/11/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCPcR",
+      "value": -0.6861640211640212,
+      "rendered": "-0.686",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/11/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDPcF",
+      "value": 0.21928855095521763,
+      "rendered": "+0.219",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/12/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCPcF",
+      "value": -0.6733060149726816,
+      "rendered": "-0.673",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/12/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDPcExact",
+      "value": 0.05555555555555556,
+      "rendered": "+0.056",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/13/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCPcExact",
+      "value": -0.7111111111111111,
+      "rendered": "-0.711",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/13/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDPcU",
+      "value": 0.2701719576719577,
+      "rendered": "+0.270",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/14/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCPcU",
+      "value": -0.6570767195767196,
+      "rendered": "-0.657",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/14/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDRfP",
+      "value": 0.27195767195767195,
+      "rendered": "+0.272",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/15/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCRfP",
+      "value": -0.6502645502645503,
+      "rendered": "-0.650",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/15/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDRfR",
+      "value": 0.2015873015873016,
+      "rendered": "+0.202",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/16/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCRfR",
+      "value": -0.6788492063492064,
+      "rendered": "-0.679",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/16/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDRfF",
+      "value": 0.22710678210678212,
+      "rendered": "+0.227",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/17/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCRfF",
+      "value": -0.6710054143387477,
+      "rendered": "-0.671",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/17/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDRfExact",
+      "value": 0.022222222222222223,
+      "rendered": "+0.022",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/18/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCRfExact",
+      "value": -0.7111111111111111,
+      "rendered": "-0.711",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/18/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqHidDRfU",
+      "value": 0.27195767195767195,
+      "rendered": "+0.272",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/19/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqHidCRfU",
+      "value": -0.6502645502645503,
+      "rendered": "-0.650",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/hidden_test/paired_contrasts/19/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllCpN",
+      "value": 110,
+      "rendered": "110",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqAllCpP",
+      "value": 0.7214691358024692,
+      "rendered": "0.721",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqAllCpR",
+      "value": 0.6411250944822373,
+      "rendered": "0.641",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqAllCpF",
+      "value": 0.6694180659119385,
+      "rendered": "0.669",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqAllCpExact",
+      "value": 0.3004761904761905,
+      "rendered": "0.300",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqAllCpU",
+      "value": 0.27853086419753087,
+      "rendered": "0.279",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqAllCpCorrect",
+      "value": 643,
+      "rendered": "643",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqAllCpRequested",
+      "value": 660,
+      "rendered": "660",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqAllCpMissed",
+      "value": 95,
+      "rendered": "95",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqAllCpExtra",
+      "value": 17,
+      "rendered": "17",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqAllCpRequired",
+      "value": 738,
+      "rendered": "738",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqAllCpConditional",
+      "value": 2006,
+      "rendered": "2006",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/CASEPATH_CONTROL/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqAllDirN",
+      "value": 49,
+      "rendered": "49",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqAllDirP",
+      "value": 0.3123554894179894,
+      "rendered": "0.312",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqAllDirR",
+      "value": 0.2983956916099773,
+      "rendered": "0.298",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqAllDirF",
+      "value": 0.30398188231521567,
+      "rendered": "0.304",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqAllDirExact",
+      "value": 0.13956349206349208,
+      "rendered": "0.140",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqAllDirU",
+      "value": 0.6876445105820106,
+      "rendered": "0.688",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqAllDirCorrect",
+      "value": 301,
+      "rendered": "301",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqAllDirRequested",
+      "value": 316,
+      "rendered": "316",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqAllDirMissed",
+      "value": 30,
+      "rendered": "30",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqAllDirExtra",
+      "value": 15,
+      "rendered": "15",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqAllDirRequired",
+      "value": 331,
+      "rendered": "331",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqAllDirConditional",
+      "value": 65,
+      "rendered": "65",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DIRECT_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqAllDocN",
+      "value": 41,
+      "rendered": "41",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqAllDocP",
+      "value": 0.26516666666666666,
+      "rendered": "0.265",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqAllDocR",
+      "value": 0.23633408919123206,
+      "rendered": "0.236",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqAllDocF",
+      "value": 0.24791071129306425,
+      "rendered": "0.248",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqAllDocExact",
+      "value": 0.10706349206349207,
+      "rendered": "0.107",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqAllDocU",
+      "value": 0.7348333333333333,
+      "rendered": "0.735",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqAllDocCorrect",
+      "value": 237,
+      "rendered": "237",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqAllDocRequested",
+      "value": 247,
+      "rendered": "247",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqAllDocMissed",
+      "value": 39,
+      "rendered": "39",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqAllDocExtra",
+      "value": 10,
+      "rendered": "10",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqAllDocRequired",
+      "value": 276,
+      "rendered": "276",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqAllDocConditional",
+      "value": 139,
+      "rendered": "139",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/DOCUMENT_FIRST_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqAllPcN",
+      "value": 70,
+      "rendered": "70",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqAllPcP",
+      "value": 0.45079034391534395,
+      "rendered": "0.451",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqAllPcR",
+      "value": 0.4335374149659864,
+      "rendered": "0.434",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqAllPcF",
+      "value": 0.4397236590569924,
+      "rendered": "0.440",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqAllPcExact",
+      "value": 0.23567460317460318,
+      "rendered": "0.236",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqAllPcU",
+      "value": 0.5492096560846561,
+      "rendered": "0.549",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqAllPcCorrect",
+      "value": 433,
+      "rendered": "433",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqAllPcRequested",
+      "value": 449,
+      "rendered": "449",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqAllPcMissed",
+      "value": 36,
+      "rendered": "36",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqAllPcExtra",
+      "value": 16,
+      "rendered": "16",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqAllPcRequired",
+      "value": 469,
+      "rendered": "469",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqAllPcConditional",
+      "value": 31,
+      "rendered": "31",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/PROCESS_CONTEXT_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqAllRfN",
+      "value": 70,
+      "rendered": "70",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqAllRfP",
+      "value": 0.4577473544973545,
+      "rendered": "0.458",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqAllRfR",
+      "value": 0.43171768707482994,
+      "rendered": "0.432",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqAllRfF",
+      "value": 0.44308607133607136,
+      "rendered": "0.443",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqAllRfExact",
+      "value": 0.26630952380952383,
+      "rendered": "0.266",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqAllRfU",
+      "value": 0.5422526455026455,
+      "rendered": "0.542",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqAllRfCorrect",
+      "value": 432,
+      "rendered": "432",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqAllRfRequested",
+      "value": 439,
+      "rendered": "439",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqAllRfMissed",
+      "value": 36,
+      "rendered": "36",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqAllRfExtra",
+      "value": 7,
+      "rendered": "7",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqAllRfRequired",
+      "value": 468,
+      "rendered": "468",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqAllRfConditional",
+      "value": 36,
+      "rendered": "36",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/RULE_FIRST_REVIEWED/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqAllCeN",
+      "value": 110,
+      "rendered": "110",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqAllCeP",
+      "value": 0.7214691358024692,
+      "rendered": "0.721",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqAllCeR",
+      "value": 0.6411250944822373,
+      "rendered": "0.641",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqAllCeF",
+      "value": 0.6694180659119385,
+      "rendered": "0.669",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqAllCeExact",
+      "value": 0.3004761904761905,
+      "rendered": "0.300",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqAllCeU",
+      "value": 0.27853086419753087,
+      "rendered": "0.279",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqAllCeCorrect",
+      "value": 643,
+      "rendered": "643",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqAllCeRequested",
+      "value": 660,
+      "rendered": "660",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqAllCeMissed",
+      "value": 95,
+      "rendered": "95",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqAllCeExtra",
+      "value": 17,
+      "rendered": "17",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqAllCeRequired",
+      "value": 738,
+      "rendered": "738",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqAllCeConditional",
+      "value": 2006,
+      "rendered": "2006",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/COMPILED_EQUIVALENT/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqAllLsN",
+      "value": 108,
+      "rendered": "108",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/request_count_eligible_cases"
+    },
+    {
+      "macro": "rqAllLsP",
+      "value": 0.32297591694020267,
+      "rendered": "0.323",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_precision/value"
+    },
+    {
+      "macro": "rqAllLsR",
+      "value": 0.6302362055933485,
+      "rendered": "0.630",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_recall/value"
+    },
+    {
+      "macro": "rqAllLsF",
+      "value": 0.4142643735897382,
+      "rendered": "0.414",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_f1/value"
+    },
+    {
+      "macro": "rqAllLsExact",
+      "value": 0.0,
+      "rendered": "0.000",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_checklist_exact/value"
+    },
+    {
+      "macro": "rqAllLsU",
+      "value": 0.6770240830597973,
+      "rendered": "0.677",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/metrics/emitted_unnecessary_fraction/value"
+    },
+    {
+      "macro": "rqAllLsCorrect",
+      "value": 635,
+      "rendered": "635",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/correct"
+    },
+    {
+      "macro": "rqAllLsRequested",
+      "value": 1445,
+      "rendered": "1445",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/requested"
+    },
+    {
+      "macro": "rqAllLsMissed",
+      "value": 93,
+      "rendered": "93",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/missed"
+    },
+    {
+      "macro": "rqAllLsExtra",
+      "value": 810,
+      "rendered": "810",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/unnecessary"
+    },
+    {
+      "macro": "rqAllLsRequired",
+      "value": 728,
+      "rendered": "728",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/required"
+    },
+    {
+      "macro": "rqAllLsConditional",
+      "value": 1387,
+      "rendered": "1387",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/arms/LOCAL_SCOPE_ABLATION/raw_request_counts_where_available/conditional_requested"
+    },
+    {
+      "macro": "rqAllDDirP",
+      "value": 0.4091136463844797,
+      "rendered": "+0.409",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/0/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDirP",
+      "value": -0.7554414682539683,
+      "rendered": "-0.755",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/0/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDirR",
+      "value": 0.34272940287226,
+      "rendered": "+0.343",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/1/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDirR",
+      "value": -0.7691507936507936,
+      "rendered": "-0.769",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/1/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDirF",
+      "value": 0.3654361835967228,
+      "rendered": "+0.365",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/2/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDirF",
+      "value": -0.7634260445436916,
+      "rendered": "-0.763",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/2/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDirExact",
+      "value": 0.16091269841269842,
+      "rendered": "+0.161",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/3/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDirExact",
+      "value": -0.7992063492063493,
+      "rendered": "-0.799",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/3/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDirU",
+      "value": 0.4091136463844797,
+      "rendered": "+0.409",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/4/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDirU",
+      "value": -0.7554414682539683,
+      "rendered": "-0.755",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/4/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDocP",
+      "value": 0.45630246913580247,
+      "rendered": "+0.456",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/5/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDocP",
+      "value": -0.7863403880070547,
+      "rendered": "-0.786",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/5/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDocR",
+      "value": 0.4047910052910053,
+      "rendered": "+0.405",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/6/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDocR",
+      "value": -0.7877777777777778,
+      "rendered": "-0.788",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/6/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDocF",
+      "value": 0.42150735461887423,
+      "rendered": "+0.422",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/7/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDocF",
+      "value": -0.7873156033781034,
+      "rendered": "-0.787",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/7/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDocExact",
+      "value": 0.19341269841269842,
+      "rendered": "+0.193",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/8/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDocExact",
+      "value": -0.7918253968253969,
+      "rendered": "-0.792",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/8/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDDocU",
+      "value": 0.45630246913580247,
+      "rendered": "+0.456",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/9/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCDocU",
+      "value": -0.7863403880070547,
+      "rendered": "-0.786",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/9/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDPcP",
+      "value": 0.27067879188712524,
+      "rendered": "+0.271",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/10/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCPcP",
+      "value": -0.645082671957672,
+      "rendered": "-0.645",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/10/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDPcR",
+      "value": 0.20758767951625096,
+      "rendered": "+0.208",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/11/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCPcR",
+      "value": -0.6694172335600908,
+      "rendered": "-0.669",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/11/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDPcF",
+      "value": 0.2296944068549461,
+      "rendered": "+0.230",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/12/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCPcF",
+      "value": -0.6608885588812059,
+      "rendered": "-0.661",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/12/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDPcExact",
+      "value": 0.0648015873015873,
+      "rendered": "+0.065",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/13/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCPcExact",
+      "value": -0.6799603174603175,
+      "rendered": "-0.680",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/13/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDPcU",
+      "value": 0.27067879188712524,
+      "rendered": "+0.271",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/14/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCPcU",
+      "value": -0.645082671957672,
+      "rendered": "-0.645",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/14/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDRfP",
+      "value": 0.26372178130511464,
+      "rendered": "+0.264",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/15/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCRfP",
+      "value": -0.6454140211640211,
+      "rendered": "-0.645",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/15/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDRfR",
+      "value": 0.2094074074074074,
+      "rendered": "+0.209",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/16/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCRfR",
+      "value": -0.662953514739229,
+      "rendered": "-0.663",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/16/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDRfF",
+      "value": 0.22633199457586714,
+      "rendered": "+0.226",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/17/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCRfF",
+      "value": -0.6583796680806485,
+      "rendered": "-0.658",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/17/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDRfExact",
+      "value": 0.034166666666666665,
+      "rendered": "+0.034",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/18/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCRfExact",
+      "value": -0.6873412698412699,
+      "rendered": "-0.687",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/18/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "rqAllDRfU",
+      "value": 0.26372178130511464,
+      "rendered": "+0.264",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/19/conventional_paired_difference/value"
+    },
+    {
+      "macro": "rqAllCRfU",
+      "value": -0.6454140211640211,
+      "rendered": "-0.645",
+      "source": "REQUEST_ONLY_REPORT.json",
+      "source_sha256": "a6944f96bede03d4ec3b57d0d6229f3cca275a7574fd7f74b7dd37032bfee8db",
+      "json_pointer": "/splits/all150/paired_contrasts/19/conservative_paired_benefit/value"
+    },
+    {
+      "macro": "nrArtifactFailures",
+      "value": 558,
+      "rendered": "558",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/primary_native_evaluation_failures"
+    },
+    {
+      "macro": "nrPrimaryPenalties",
+      "value": 1050,
+      "rendered": "1050",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/primary_penalty_cells"
+    },
+    {
+      "macro": "nrRequestObserved",
+      "value": 558,
+      "rendered": "558",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/request_only_observed_cells"
+    },
+    {
+      "macro": "nrRequestPenalties",
+      "value": 492,
+      "rendered": "492",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/request_only_penalty_cells"
+    },
+    {
+      "macro": "nrPrimaryMet",
+      "value": 0,
+      "rendered": "0",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/registered_practical_targets_met"
+    },
+    {
+      "macro": "nrPrimaryTotal",
+      "value": 12,
+      "rendered": "12",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/registered_practical_targets_total"
+    },
+    {
+      "macro": "nrNativeSymbols",
+      "value": 50,
+      "rendered": "50",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/native_symbols"
+    },
+    {
+      "macro": "nrTotalCost",
+      "value": "89.6560225",
+      "rendered": "89.66",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/cost/all_history_outlay_usd"
+    },
+    {
+      "macro": "nrStudyCost",
+      "value": "89.0641105",
+      "rendered": "89.06",
+      "source": "EVIDENCE_SCOPE.json",
+      "source_sha256": "57914c266d68fb3ed26afcd50aa65412a52a56d94753116940e814d4ae4fc00c",
+      "json_pointer": "/cost/attributed_final_study_usd"
+    }
+  ]
+}

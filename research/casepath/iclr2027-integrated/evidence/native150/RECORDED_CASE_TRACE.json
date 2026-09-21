@@ -1,0 +1,451 @@
+{
+  "schema": "casepath.recorded-development-case-explorer/1",
+  "case_id": "clm_0e11979130681bd0",
+  "source_record_sha256": "f34cca52abd70225f71e41d95a4b54d897a5715bf3c4827e3c091abb9abfcb84",
+  "plan_id": "8b0a01cf5f31df1bbdfb3b95959530cfc932e0deff701cea27ccf3dabfa4849d",
+  "implementation_identity": "0a8a60a78b0c49d3228d95b151eba4314330cf96cc5c91c34f9d60f6d188d602",
+  "selection": "First case in sorted public-development IDs with a completed CASEPATH_CONTROL cell at this snapshot; all available development cells replayed.",
+  "scope": "Actual recorded public-development prediction; unscored. No target or correctness claim.",
+  "requests": [
+    {
+      "document_id": "lease_contract",
+      "chains": [
+        {
+          "capability_id": "cap_lease_termination_dispute_0",
+          "document_id": "lease_contract",
+          "fact_id": "fact_lease_termination_dispute_0",
+          "must_show": "Evidence capable of resolving Lease contract",
+          "obligation_id": "obligation_lease_termination_dispute_0",
+          "route_id": "route_lease_termination_dispute_0",
+          "scope_id": "need_scope_lease_termination_dispute_0",
+          "source_refs": [
+            "s_ded537d927e8c2b816584ddc"
+          ],
+          "source_support": [
+            {
+              "locator": {
+                "artifact_id": "policy-lease_termination_dispute-v1.structured",
+                "artifact_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+                "canonical_value_sha256": "cf98acd7c9ae908ba133605133f9376650f2b899acbd49ed03f1d9d601ad8c11",
+                "effective_date": null,
+                "exact_text": null,
+                "image_region": null,
+                "json_pointer": "/process_catalog/documents/0/assertion",
+                "locator_kind": "json_pointer",
+                "page": null,
+                "source_version": "casepath.static-rule-templates/3.0.0",
+                "text_end": null,
+                "text_start": null
+              },
+              "source_kind": "case_invariant_rule",
+              "support_scope": "normative",
+              "text": "'Lease contract' is a mandatory evidence item for process step(s) lt_form."
+            }
+          ],
+          "decision": "need_lease_termination_dispute_0",
+          "obligation_state": {
+            "acquisition": "true",
+            "applicability": "true",
+            "capability_ids": [
+              "cap_lease_termination_dispute_0"
+            ],
+            "scope_id": "need_scope_lease_termination_dispute_0",
+            "source_refs": [
+              "s_ded537d927e8c2b816584ddc"
+            ]
+          },
+          "fact_statement": "Evidence state for Lease contract",
+          "document_state": {
+            "native_state": "missing",
+            "presence": "missing",
+            "source_refs": [
+              "observable_inventory"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "notice_period_evidence",
+      "chains": [
+        {
+          "capability_id": "cap_lease_termination_dispute_3",
+          "document_id": "notice_period_evidence",
+          "fact_id": "fact_lease_termination_dispute_3",
+          "must_show": "Evidence capable of resolving Notice period evidence",
+          "obligation_id": "obligation_lease_termination_dispute_3",
+          "route_id": "route_lease_termination_dispute_3",
+          "scope_id": "need_scope_lease_termination_dispute_3",
+          "source_refs": [
+            "s_1bbbee98ab493bd936a6db02"
+          ],
+          "source_support": [
+            {
+              "locator": {
+                "artifact_id": "policy-lease_termination_dispute-v1.structured",
+                "artifact_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+                "canonical_value_sha256": "bfe2941e955bd4eadf8fa0d5028ce133860a5a3af7f7fc52ba67d91e7376953b",
+                "effective_date": null,
+                "exact_text": null,
+                "image_region": null,
+                "json_pointer": "/process_catalog/documents/3/assertion",
+                "locator_kind": "json_pointer",
+                "page": null,
+                "source_version": "casepath.static-rule-templates/3.0.0",
+                "text_end": null,
+                "text_start": null
+              },
+              "source_kind": "case_invariant_rule",
+              "support_scope": "normative",
+              "text": "'Notice period evidence' is a mandatory evidence item for process step(s) lt_deadline."
+            }
+          ],
+          "decision": "need_lease_termination_dispute_3",
+          "obligation_state": {
+            "acquisition": "true",
+            "applicability": "true",
+            "capability_ids": [
+              "cap_lease_termination_dispute_3"
+            ],
+            "scope_id": "need_scope_lease_termination_dispute_3",
+            "source_refs": [
+              "s_1bbbee98ab493bd936a6db02"
+            ]
+          },
+          "fact_statement": "Evidence state for Notice period evidence",
+          "document_state": {
+            "native_state": "missing",
+            "presence": "missing",
+            "source_refs": [
+              "observable_inventory"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "payment_deadline_letter",
+      "chains": [
+        {
+          "capability_id": "cap_lease_termination_dispute_6",
+          "document_id": "payment_deadline_letter",
+          "fact_id": "fact_lease_termination_dispute_6",
+          "must_show": "Evidence capable of resolving Cure notice with termination warning",
+          "obligation_id": "obligation_lease_termination_dispute_6",
+          "route_id": "route_lease_termination_dispute_6",
+          "scope_id": "need_scope_lease_termination_dispute_6",
+          "source_refs": [
+            "s_56ef4223b8e9ce5c885e2218"
+          ],
+          "source_support": [
+            {
+              "locator": {
+                "artifact_id": "policy-lease_termination_dispute-v1.structured",
+                "artifact_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+                "canonical_value_sha256": "d088dbb3cb4d415efa91a080e445772f052a29159f6eb4b2570a339c7cfa398e",
+                "effective_date": null,
+                "exact_text": null,
+                "image_region": null,
+                "json_pointer": "/process_catalog/documents/6/assertion",
+                "locator_kind": "json_pointer",
+                "page": null,
+                "source_version": "casepath.static-rule-templates/3.0.0",
+                "text_end": null,
+                "text_start": null
+              },
+              "source_kind": "case_invariant_rule",
+              "support_scope": "normative",
+              "text": "'Cure notice with termination warning' is a conditional evidence item when scenario flag 'arrears' is active for process step(s) lt_arrears."
+            }
+          ],
+          "decision": "need_lease_termination_dispute_6",
+          "obligation_state": {
+            "acquisition": "true",
+            "applicability": "true",
+            "capability_ids": [
+              "cap_lease_termination_dispute_6"
+            ],
+            "scope_id": "need_scope_lease_termination_dispute_6",
+            "source_refs": [
+              "s_56ef4223b8e9ce5c885e2218"
+            ]
+          },
+          "fact_statement": "Evidence state for Cure notice with termination warning",
+          "document_state": {
+            "native_state": "missing",
+            "presence": "missing",
+            "source_refs": [
+              "observable_inventory"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "proof_of_receipt",
+      "chains": [
+        {
+          "capability_id": "cap_lease_termination_dispute_2",
+          "document_id": "proof_of_receipt",
+          "fact_id": "fact_lease_termination_dispute_2",
+          "must_show": "Evidence capable of resolving Proof of receipt",
+          "obligation_id": "obligation_lease_termination_dispute_2",
+          "route_id": "route_lease_termination_dispute_2",
+          "scope_id": "need_scope_lease_termination_dispute_2",
+          "source_refs": [
+            "s_cf8be10f88a6ab15738d24b3"
+          ],
+          "source_support": [
+            {
+              "locator": {
+                "artifact_id": "policy-lease_termination_dispute-v1.structured",
+                "artifact_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+                "canonical_value_sha256": "f1cd2a0a074729df415472c22385b85d8f7ac12b02007f8131362bc8d9b24aee",
+                "effective_date": null,
+                "exact_text": null,
+                "image_region": null,
+                "json_pointer": "/process_catalog/documents/2/assertion",
+                "locator_kind": "json_pointer",
+                "page": null,
+                "source_version": "casepath.static-rule-templates/3.0.0",
+                "text_end": null,
+                "text_start": null
+              },
+              "source_kind": "case_invariant_rule",
+              "support_scope": "normative",
+              "text": "'Proof of receipt' is a mandatory evidence item for process step(s) lt_deadline."
+            }
+          ],
+          "decision": "need_lease_termination_dispute_2",
+          "obligation_state": {
+            "acquisition": "true",
+            "applicability": "true",
+            "capability_ids": [
+              "cap_lease_termination_dispute_2"
+            ],
+            "scope_id": "need_scope_lease_termination_dispute_2",
+            "source_refs": [
+              "s_cf8be10f88a6ab15738d24b3"
+            ]
+          },
+          "fact_statement": "Evidence state for Proof of receipt",
+          "document_state": {
+            "native_state": "missing",
+            "presence": "missing",
+            "source_refs": [
+              "observable_inventory"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "rent_ledger_payment_evidence",
+      "chains": [
+        {
+          "capability_id": "cap_lease_termination_dispute_7",
+          "document_id": "rent_ledger_payment_evidence",
+          "fact_id": "fact_lease_termination_dispute_7",
+          "must_show": "Evidence capable of resolving Rent ledger and payment evidence",
+          "obligation_id": "obligation_lease_termination_dispute_7",
+          "route_id": "route_lease_termination_dispute_7",
+          "scope_id": "need_scope_lease_termination_dispute_7",
+          "source_refs": [
+            "s_05729a376f182ce851bb36f0"
+          ],
+          "source_support": [
+            {
+              "locator": {
+                "artifact_id": "policy-lease_termination_dispute-v1.structured",
+                "artifact_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+                "canonical_value_sha256": "65f3bd88b095ad4a85f5edf490aa9f19be73ebae646f8eff24a3f28d26d3e135",
+                "effective_date": null,
+                "exact_text": null,
+                "image_region": null,
+                "json_pointer": "/process_catalog/documents/7/assertion",
+                "locator_kind": "json_pointer",
+                "page": null,
+                "source_version": "casepath.static-rule-templates/3.0.0",
+                "text_end": null,
+                "text_start": null
+              },
+              "source_kind": "case_invariant_rule",
+              "support_scope": "normative",
+              "text": "'Rent ledger and payment evidence' is a conditional evidence item when scenario flag 'arrears' is active for process step(s) lt_arrears."
+            }
+          ],
+          "decision": "need_lease_termination_dispute_7",
+          "obligation_state": {
+            "acquisition": "true",
+            "applicability": "true",
+            "capability_ids": [
+              "cap_lease_termination_dispute_7"
+            ],
+            "scope_id": "need_scope_lease_termination_dispute_7",
+            "source_refs": [
+              "s_05729a376f182ce851bb36f0"
+            ]
+          },
+          "fact_statement": "Evidence state for Rent ledger and payment evidence",
+          "document_state": {
+            "native_state": "missing",
+            "presence": "missing",
+            "source_refs": [
+              "observable_inventory"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "stated_reason",
+      "chains": [
+        {
+          "capability_id": "cap_lease_termination_dispute_4",
+          "document_id": "stated_reason",
+          "fact_id": "fact_lease_termination_dispute_4",
+          "must_show": "Evidence capable of resolving Stated termination reason",
+          "obligation_id": "obligation_lease_termination_dispute_4",
+          "route_id": "route_lease_termination_dispute_4",
+          "scope_id": "need_scope_lease_termination_dispute_4",
+          "source_refs": [
+            "s_5e9b8f7ad01d414f316dd1f8"
+          ],
+          "source_support": [
+            {
+              "locator": {
+                "artifact_id": "policy-lease_termination_dispute-v1.structured",
+                "artifact_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+                "canonical_value_sha256": "f678095391520a5a174a671bfa527422f867288210bdd24c0e20c1b6c80fb42a",
+                "effective_date": null,
+                "exact_text": null,
+                "image_region": null,
+                "json_pointer": "/process_catalog/documents/4/assertion",
+                "locator_kind": "json_pointer",
+                "page": null,
+                "source_version": "casepath.static-rule-templates/3.0.0",
+                "text_end": null,
+                "text_start": null
+              },
+              "source_kind": "case_invariant_rule",
+              "support_scope": "normative",
+              "text": "'Stated termination reason' is a mandatory evidence item for process step(s) lt_abuse."
+            }
+          ],
+          "decision": "need_lease_termination_dispute_4",
+          "obligation_state": {
+            "acquisition": "true",
+            "applicability": "true",
+            "capability_ids": [
+              "cap_lease_termination_dispute_4"
+            ],
+            "scope_id": "need_scope_lease_termination_dispute_4",
+            "source_refs": [
+              "s_5e9b8f7ad01d414f316dd1f8"
+            ]
+          },
+          "fact_statement": "Evidence state for Stated termination reason",
+          "document_state": {
+            "native_state": "missing",
+            "presence": "missing",
+            "source_refs": [
+              "observable_inventory"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "document_id": "termination_notice",
+      "chains": [
+        {
+          "capability_id": "cap_lease_termination_dispute_1",
+          "document_id": "termination_notice",
+          "fact_id": "fact_lease_termination_dispute_1",
+          "must_show": "Evidence capable of resolving Termination notice",
+          "obligation_id": "obligation_lease_termination_dispute_1",
+          "route_id": "route_lease_termination_dispute_1",
+          "scope_id": "need_scope_lease_termination_dispute_1",
+          "source_refs": [
+            "s_54060e364eda5aa7d471a12d"
+          ],
+          "source_support": [
+            {
+              "locator": {
+                "artifact_id": "policy-lease_termination_dispute-v1.structured",
+                "artifact_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+                "canonical_value_sha256": "8c83746881dad1e4b0de34ac56bae26cb6d4682c2b5ede9e79bd5f550447112e",
+                "effective_date": null,
+                "exact_text": null,
+                "image_region": null,
+                "json_pointer": "/process_catalog/documents/1/assertion",
+                "locator_kind": "json_pointer",
+                "page": null,
+                "source_version": "casepath.static-rule-templates/3.0.0",
+                "text_end": null,
+                "text_start": null
+              },
+              "source_kind": "case_invariant_rule",
+              "support_scope": "normative",
+              "text": "'Termination notice' is a mandatory evidence item for process step(s) lt_form."
+            }
+          ],
+          "decision": "need_lease_termination_dispute_1",
+          "obligation_state": {
+            "acquisition": "true",
+            "applicability": "true",
+            "capability_ids": [
+              "cap_lease_termination_dispute_1"
+            ],
+            "scope_id": "need_scope_lease_termination_dispute_1",
+            "source_refs": [
+              "s_54060e364eda5aa7d471a12d"
+            ]
+          },
+          "fact_statement": "Evidence state for Termination notice",
+          "document_state": {
+            "native_state": "missing",
+            "presence": "missing",
+            "source_refs": [
+              "observable_inventory"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "conditional_documents": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "prior_rights_correspondence",
+    "spouse_notice_copy"
+  ],
+  "questions": [
+    {
+      "kind": "resolve_applicability",
+      "obligation_id": "obligation_lease_termination_dispute_10",
+      "scope_id": "need_scope_lease_termination_dispute_10"
+    },
+    {
+      "kind": "resolve_applicability",
+      "obligation_id": "obligation_lease_termination_dispute_5",
+      "scope_id": "need_scope_lease_termination_dispute_5"
+    },
+    {
+      "kind": "resolve_applicability",
+      "obligation_id": "obligation_lease_termination_dispute_8",
+      "scope_id": "need_scope_lease_termination_dispute_8"
+    },
+    {
+      "kind": "resolve_applicability",
+      "obligation_id": "obligation_lease_termination_dispute_9",
+      "scope_id": "need_scope_lease_termination_dispute_9"
+    }
+  ],
+  "next_action": {
+    "kind": "resolve_applicability",
+    "obligation_id": "obligation_lease_termination_dispute_10",
+    "scope_id": "need_scope_lease_termination_dispute_10"
+  },
+  "source_trace_sha256": "5c770e1bf917b9157bff79c2d42b2ffdc434825a197ed7e68a1e1a105405a0d9"
+}

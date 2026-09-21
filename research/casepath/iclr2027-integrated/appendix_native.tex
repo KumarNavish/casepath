@@ -74,3 +74,96 @@ present and absent, or present with an inconsistent state. Blocked
 dependency: a dependent control whose \casepath source cell failed. Every
 failure retains its charge; a repaired version can never replace a failed
 cell in the frozen comparison.
+
+\section{Post-hoc Request-Only Diagnostic}
+\label{app:request-diagnostic}
+
+The registered wrapper scores emitted requests only after a native receipt
+has no evaluation failures. A common expression-namespace mismatch therefore
+suppresses request scoring for every generated artefact. The post-hoc
+diagnostic changes that availability rule alone: it reads the unchanged
+\texttt{request\_mode=now} items, maps their labels with the original public
+mapping, and applies the original emitted-set scorer. It never evaluates a
+candidate condition against a reference state. All original artefacts,
+producer failures, native failures, primary penalties and costs remain
+separately available.
+
+All \nbClaims{} references yield an eligible unique document set. The
+\nrRequestObserved{} generated lists receive observed request-only scores;
+\nrRequestPenalties{} failed or blocked outputs receive the original adverse
+checklist penalties, with no invented requests. Domain--family--case
+weighting is unchanged. For benefit direction $b_m\in\{-1,1\}$, the
+conventional paired contribution is
+$b_m(s_{i,\mathrm{CP},m}-s_{i,a,m})$; the conservative contribution is the
+same quantity when both request-only endpoints are observed and $-1$
+otherwise. A graph's native failure does not make an independently scoreable
+request list unobserved in this diagnostic. No practical threshold,
+significance test or confidence interval is applied.
+
+\begin{table}[htb]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\input{table_native_request_counts.tex}
+\caption{\textbf{Request counts and coverage.} Lists counts the generated
+artefacts that contribute raw counts. Correct/req., Missed and Cond. sum only
+those artefacts; Cond. counts documents deferred conditionally, not immediate
+requests. Precision and recall are full-population, failure-penalized weighted
+scores, and therefore differ from the ratios of the displayed raw counts.
+Dependent controls reuse the same assessments.}
+\label{tab:native-counts}
+\end{table}
+
+\begin{table}[htb]
+\centering\small
+\input{table_native_request_contrasts.tex}
+\caption{Protected-family paired request-only contrasts. Positive values
+favor \casepath; the unnecessary-fraction difference reverses its sign so
+that less burden is positive. The conservative rule assigns $-1$ when either
+endpoint is unobserved. All endpoint contrasts, all families and every
+family-deletion result are included in the machine-readable report.}
+\label{tab:native-contrasts}
+\end{table}
+
+\paragraph{The boundary is semantic, not just syntactic.}
+The public compiler introduces \nrNativeSymbols{} condition symbols shared
+by all arms. None of the emitted symbols lies outside that namespace. The
+native expression language evaluates them against the contract's scenario,
+which does not provide the needed assignment. An authored, target-blind
+counterexample makes the difference explicit: the product controller returns
+unresolved for an absent condition; the native parser raises a missing-variable
+error. Assigning null instead makes the native Boolean evaluation false,
+while the controller still returns unresolved. Without a public state
+correspondence, a rename, default or injected predicted state would change
+meaning. No such correction is made.
+
+\begin{figure}[htb]
+\centering\includegraphics[width=.85\linewidth]{fig_native_case.pdf}
+\caption{\textbf{A recorded controller decision.} In the first completed
+\casepath development case in sorted cohort order, arrears is true and
+family-home status unresolved. The cure notice is requested now; the spouse
+notice remains conditional. This shows two routes within the recorded plan,
+not an accepted native graph: its exported predicate namespace encounters the
+same interface failure as the other generated artefacts. The release includes
+the complete case trace and selection rule.}
+\label{fig:native-case}
+\end{figure}
+
+\paragraph{Execution evidence and historical access.}
+The primary scoring task authenticates both complete prediction inventories
+before reading references. The original producer terminated without its
+complete I/O audit; historical non-access to protected targets is therefore
+not established retrospectively. Scoring, the compatibility diagnosis and
+the request-only analysis are separately recorded, with original failures
+preserved. All original target containers are subsequently released as exact
+bytes under their recorded data license. This version is now a public
+benchmark and cannot serve as newly hidden confirmation.
+
+\paragraph{Offline reproduction.}
+The anonymous artifact contains all \nbCells{} prediction and failure cells,
+the exact \nbClaims{} reference containers, original native evaluator,
+reporting code, source commitments and request-only wrapper. Network-disabled
+replay reproduces both primary phase reports, the complete primary report,
+every request-only row and its descriptive report by exact canonical JSON
+comparison, without a numerical tolerance. This reproduces scoring from
+recorded model outputs; it does not regenerate those outputs or provide the
+remote model checkpoint.

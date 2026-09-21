@@ -10,8 +10,7 @@ models and DCR reference models of law connect data-driven activation to
 compliance \citep{vaculin2011gsm,lopez2020dcrlaw}; proactive enforcement
 derives actions from active obligations \citep{basin2024proactive}; and
 insurance software conditions document lists on service definitions
-\citep{servicenow2026documentlists}. These are prior art; \casepath adds
-their explicit coupling to language-model assessments and a measurement of
+\citep{servicenow2026documentlists}. This established separation of rules and state underlies \casepath; we couple it to language-model assessments and a measurement of
 the resulting evidence-planning errors.
 
 \paragraph{Procedure extraction and process-guided agents.}
@@ -24,15 +23,15 @@ governance as compilation \citep{hadley2026canonic}. FlowBench and WorFBench
 evaluate workflow-guided planning and workflow generation
 \citep{xiao2024flowbench,qiao2024worfbench}; Procedural Graphs localise an
 agent to an active node \citep{lu2026proceduralgraphs}; ReAct interleaves
-reasoning and action \citep{yao2022react}. None scores whether a changed
-case fact changes exactly the justified evidence.
+reasoning and action \citep{yao2022react}. Our evaluation instead asks whether changing a case fact changes exactly
+the evidence justified by that branch.
 
 \paragraph{Obligation-controlled acquisition.}
 The closest precedents are \citet{kim2026evidenceobligation}, whose evidence
 ledger activates branch-specific knowledge obligations while a model judges
 semantic warrant and code manages closure, and \citet{yu2026compile}, who
 compile SOP constraints into verification routines with evidence-bearing
-returns and an active execution frame. \casepath's residual is the
+returns and an active execution frame. \casepath studies their application to a
 document-planning object: applicability separated from acquisition
 permission, presence from capability-specific and joint adequacy,
 alternative routes kept as alternatives, and a benchmark that tests the
@@ -47,8 +46,8 @@ questions by evidential uncertainty \citep{taranukhin2026infogatherer};
 verified quotation and chain-of-verification make support inspectable
 \citep{menick2022verifiedquotes,dhuliawala2024chain}. Tool-use benchmarks
 score whether the right function was called \citep{li2023apibank,patil2025bfcl},
-the analogue of asking for a plausible document; \casepath asks whether the
-call was justified by the case.
+whereas the present studies evaluate the case-specific justification for
+an evidence request.
 
 \paragraph{Benchmark validity.}
 Partial-input baselines, annotation artefacts and shortcut learning motivate

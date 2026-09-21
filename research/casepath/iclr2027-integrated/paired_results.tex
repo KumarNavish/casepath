@@ -1,4 +1,4 @@
-\section{Study A Results: Selective and Branch-Specific, Not Broadly Superior}
+\section{Study A: Selective Branch Adaptation}
 \label{sec:paired-results}
 
 \begin{table}[t]
@@ -6,27 +6,17 @@
 \setlength{\tabcolsep}{5pt}
 \input{table_main_results.tex}
 \caption{\textbf{Held-out signed-change evaluation} (\nPairsHid{} pairs,
-\nGoldAtoms{} reference changes). Exact is the fraction of pairs whose entire
-signed set is reproduced; Pred./Gold counts predicted changes against
-reference changes; Spurious and Missed are false-positive and false-negative
-signed changes. These are errors in changes between two checklists, not
+\nGoldAtoms{} reference changes). Correct, spurious and missed count signed changes. Exact counts pairs
+whose entire signed set is reproduced; $F_1$ includes its 95\%
+family-cluster bootstrap interval. These are errors in changes between two checklists, not
 requests in a complete claim.}
 \label{tab:main}
 \end{table}
 
-\begin{figure}[t]
-\centering\includegraphics[width=.6\linewidth]{fig_paired_results.pdf}
-\caption{\textbf{Fewer unjustified changes.} Spurious and missed signed
-changes on all \nPairsHid{} held-out pairs, with signed-change $F_1$ and
-95\% family-cluster bootstrap intervals over the nine branch concepts.
-\casepath reduces the spurious count; Graph as context recovers more
-reference changes at the cost of the most spurious ones.}
-\label{fig:paired-results}
-\end{figure}
+
 
 \paragraph{Fewer unjustified changes.}
-Table~\ref{tab:main} and Figure~\ref{fig:paired-results} report the single
-held-out read. \casepath predicts \cpPred{} signed changes for \nGoldAtoms{}
+Table~\ref{tab:main} reports the held-out comparison. \casepath predicts \cpPred{} signed changes for \nGoldAtoms{}
 reference changes: \cpTP{} correct, \cpSpur{} spurious, \cpMiss{} missed.
 Direct predicts \dirPred{} (\dirTP{} correct, \dirSpur{} spurious), Graph as
 context \gcPred{} (\gcTP, \gcSpur) and Evidence-first \efPred{} (\efTP,
@@ -35,11 +25,11 @@ spurious changes than the three alternatives while keeping recall \cpRec,
 and it reproduces the whole signed set on \cpExactN{} of \nPairsHid{} pairs
 against \dirExactN, \gcExactN{} and \efExactN. Graph as context recovers the
 most reference changes (\gcTP{} of \nGoldAtoms) at the cost of \gcSpur{}
-spurious ones: handing a generator the representation as context makes it ask
-for more, not for the right things. The contrast with Direct is precise:
+spurious ones. In this comparison, providing the graph as context improves
+recall but does not impose the controller's restriction on what may be requested. The contrast with Direct is precise:
 twelve fewer false-positive changes for one fewer correct change.
 
-\paragraph{The preregistered boundary.}
+\paragraph{How much does the result generalize?}
 Family-cluster intervals are wide: $F_1$ \cpF{} $[\cpCIlo,\cpCIhi]$ for
 \casepath against $[\dirCIlo,\dirCIhi]$ and $[\gcCIlo,\gcCIhi]$ for the two
 strongest comparators, with paired differences $[\dDirLo,\dDirHi]$ and
@@ -48,8 +38,8 @@ excludes it ($[\dEfLo,\dEfHi]$). The broad-superiority gate fails on three
 of its eight conditions (Table~\ref{tab:gates}): margins \mDir{} and \mGc{}
 fall short of $\gateMargin$, precision \cpPrec{} falls short of $\gatePrec$, and the
 Holm-adjusted family-swap $p$-values are \pHolmDir, \pHolmGc{} and \pHolmEf.
-We therefore claim selectivity, not dominance. The failed gate is part of the
-result, fixed before the read rather than chosen after it.
+The count reduction supports selectivity on these pairs; the preregistered
+criterion for broad superiority is not met.
 
 \paragraph{Branch specificity.}
 Holding \casepath's outputs fixed and pairing them with the wrong branch
@@ -67,17 +57,18 @@ that a mapping was right; reachability says a route existed, not that it was
 emitted.
 
 \begin{figure}[t]
-\centering\includegraphics[width=.82\linewidth]{fig_family_results.pdf}
+\centering\includegraphics[width=\linewidth]{fig_family_results.pdf}
 \caption{\textbf{Where the semantics holds and where it fails.} Mean pair
 $F_1$ per branch concept on the held-out contexts: the marker is \casepath,
-the ticks are the three comparators and the band is their range. \casepath is
+the square, triangle and cross identify Direct, Graph as context and
+Evidence-first. Small vertical offsets separate coincident values. \casepath is
 exact on \nFamExact{} concepts where the comparators are not, and scores zero
 on \nFamZero{} where they succeed. Concepts are ordered by \casepath's score,
 so the failures sit at the bottom beside the comparators that solved them.}
 \label{fig:family}
 \end{figure}
 
-\paragraph{Where the semantics fails.}
+\paragraph{Procedural branches explain the advantage.}
 Figure~\ref{fig:family} shows the structure the aggregate hides. \casepath is
 exact on all three held-out contexts of \nFamExact{} concepts (bicycle, declination,
 recovery, \emph{Nachfrist}), reaches $\cpFamScheduled$ on scheduled valuables and

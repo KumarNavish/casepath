@@ -1,0 +1,56 @@
+{
+  "schema": "casepath.recorded-figure-state/1",
+  "source_trace_sha256": "5c770e1bf917b9157bff79c2d42b2ffdc434825a197ed7e68a1e1a105405a0d9",
+  "source_record_sha256": "f34cca52abd70225f71e41d95a4b54d897a5715bf3c4827e3c091abb9abfcb84",
+  "case_id": "clm_0e11979130681bd0",
+  "selection": "First case in sorted public-development IDs with a completed CASEPATH_CONTROL cell at this snapshot; all available development cells replayed.",
+  "guards": {
+    "arrears": {
+      "quote": "The manager says the money was posted only afterwards;",
+      "source_id": "com_9f730054a0e2f248",
+      "value": true
+    },
+    "family_home": {
+      "quote": null,
+      "source_id": null,
+      "value": null
+    }
+  },
+  "documents": {
+    "payment_deadline_letter": {
+      "native_state": "missing",
+      "presence": "missing",
+      "source_refs": [
+        "observable_inventory"
+      ]
+    },
+    "spouse_notice_copy": {
+      "native_state": "missing",
+      "presence": "missing",
+      "source_refs": [
+        "observable_inventory"
+      ]
+    }
+  },
+  "documents_now": [
+    "lease_contract",
+    "notice_period_evidence",
+    "payment_deadline_letter",
+    "proof_of_receipt",
+    "rent_ledger_payment_evidence",
+    "stated_reason",
+    "termination_notice"
+  ],
+  "documents_conditional": [
+    "housing_search_log",
+    "landlord_correspondence",
+    "prior_rights_correspondence",
+    "spouse_notice_copy"
+  ],
+  "next_action": {
+    "kind": "resolve_applicability",
+    "obligation_id": "obligation_lease_termination_dispute_10",
+    "scope_id": "need_scope_lease_termination_dispute_10"
+  },
+  "scope": "Recorded development assessment and controller output; selection preceded target scoring; no native acceptance assertion."
+}

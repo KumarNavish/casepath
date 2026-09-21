@@ -227,9 +227,13 @@ def wr(name, text):
 rows = []
 for tag in ("dir", "gc", "ef", "cp"):
     s = R["scores"][ARMS[tag]]
-    b = (lambda v: f"\\textbf{{{v}}}") if tag == "cp" else (lambda v: v)
-    rows.append(f"{LABEL[tag]} & {b(f3(s['precision']))} & {f3(s['recall'])} & {b(f3(s['micro_f1']))} & {b(f3(s['exact_rate']))} & {s['predicted_atoms']}/{gold} & {b(str(s['spurious_atoms']))} & {s['missed_atoms']} \\\\")
-wr("table_main_results.tex", "\\begin{tabular}{lrrrrrrr}\n\\toprule\nMethod & Prec. & Recall & $F_1$ & Exact & Pred./Gold & Spurious & Missed \\\\\n\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n")
+    ci = R["cluster_bootstrap"]["arms"][ARMS[tag]]
+    fval = f3(s["micro_f1"])
+    if tag == "cp":
+        fval = "\\textbf{" + fval + "}"
+    exact = round(s["exact_rate"] * pairs)
+    rows.append(LABEL[tag] + " & " + " & ".join((str(s["tp"]), str(s["spurious_atoms"]), str(s["missed_atoms"]), f"{exact}/{pairs}", f"{fval} [{ci['low']:.3f}, {ci['high']:.3f}]")) + r" \\")
+wr("table_main_results.tex", r"\begin{tabular}{lrrrrl}" + "\n" + r"\toprule" + "\n" + r"& \multicolumn{3}{c}{Signed changes} & \multicolumn{2}{c}{Agreement} \\" + "\n" + r"\cmidrule(lr){2-4}\cmidrule(lr){5-6}" + "\n" + r"Method & Correct & Spurious & Missed & Exact pairs & $F_1$ [95\% CI] \\" + "\n" + r"\midrule" + "\n" + "\n".join(rows) + "\n" + r"\bottomrule" + "\n" + r"\end{tabular}" + "\n")
 
 GATES = [("margin_at_least_0_10_against_all", "$F_1$ margin $\\geq 0.10$ against every comparator"),
          ("holm_p_at_most_0_05_against_all", "Holm-adjusted family-swap $p\\leq 0.05$ against every comparator"),
