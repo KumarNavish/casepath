@@ -106,7 +106,8 @@ number with its evidence pointer, and the reproducibility notes live in
   benchmark itself, the recorded predictions of all four systems, the frozen scorer and statistics,
   and a single offline command that recomputes every Study A number and diffs it against the
   preserved report: `python3 research/casepath/branch-benchmark/reproduce.py` (about seven seconds,
-  no network or API key).
+  no network, no API key and no third-party packages). `explore.html` in the same directory reads the
+  benchmark case by case and opens straight from disk.
 - [`research/casepath/verify_release.py`](research/casepath/verify_release.py) verifies the whole
   release in one command: Study A reproduces, the paper's numbers regenerate unchanged and match a
   fresh recomputation, the paper builds within the page limit, and the submission stays anonymous.

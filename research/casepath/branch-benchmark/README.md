@@ -25,9 +25,10 @@ frozen analysis code, and a single command that recomputes every Study A number 
 python3 reproduce.py
 ```
 
-No network, no API key, no provider account. It verifies file hashes, prints the benchmark's
-admission controls, reruns the frozen statistics on the recorded predictions, and diffs the result
-against the preserved held-out report. Runtime is about seven seconds.
+No network, no API key, no provider account, and no third-party packages: the reproduction path
+imports only the Python standard library and runs on Python 3.9. It verifies file hashes, prints the
+benchmark's admission controls, reruns the frozen statistics on the recorded predictions, and diffs
+the result against the preserved held-out report. Runtime is about seven seconds.
 
 To read the benchmark case by case instead, open `explore.html` — it carries its own data, so it
 works straight from disk with no server.
