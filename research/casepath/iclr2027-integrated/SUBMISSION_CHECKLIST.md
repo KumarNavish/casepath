@@ -93,7 +93,10 @@ page count matches the local build. Codex's separate project `6ab03c462d2eaea03e
 
 ## 6. Before pressing submit
 
-Run `python3 research/casepath/verify_release.py` and confirm every check passes.
+Run `python3 research/casepath/verify_release.py` and confirm every check passes. Its
+**Submission bundle** check extracts `dist/casepath_iclr2027_submission_source.zip` into a clean
+directory, builds it with no other files present, and requires the result to be byte-identical to the
+verified PDF, so the artifact you upload is the artifact that was checked.
 
 * Title and abstract fields identical to `submitted_frontmatter.tex`.
 * Primary area / keywords chosen by the author; reciprocal-reviewing and ethics questions answered.

@@ -16,7 +16,8 @@ Runs every check that can be run offline and prints one table:
   7. Anonymity                 no author, employer, agent or repository token in the sources the
                                paper inputs, and no /Author in the PDF metadata
   8. Corpus identity           Study B evaluates exactly the 150 claims this repository ships
-  9. Study B reproduces        present only once the 150-claim release has been built
+  9. Submission bundle         the distribution zip compiles on its own to the committed PDF, byte for byte
+ 10. Study B reproduces        present only once the 150-claim release has been built
 
 Exit status is 0 only if every check that ran passed. A check whose inputs do not exist is
 reported as "not present", never as passing.
@@ -26,8 +27,11 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
+import zipfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -184,6 +188,32 @@ def check_anonymity() -> None:
     record("Anonymity", ok, detail)
 
 
+def check_bundle() -> None:
+    """The zip that gets uploaded must build, unaided, to exactly the PDF that was verified."""
+    zip_path = DOC / "dist" / "casepath_iclr2027_submission_source.zip"
+    committed = DOC / "main.pdf"
+    if not zip_path.exists() or not committed.exists() or not TECTONIC.exists():
+        record("Submission bundle", None, "distribution zip or tectonic not present")
+        return
+    with tempfile.TemporaryDirectory() as tmp:
+        work = Path(tmp)
+        with zipfile.ZipFile(zip_path) as zf:
+            names = zf.namelist()
+            zf.extractall(work)
+        code, _ = run([str(TECTONIC), "--keep-intermediates", "--keep-logs", "main.tex"], work,
+                      env={"SOURCE_DATE_EPOCH": SOURCE_DATE_EPOCH})
+        if code != 0:
+            record("Submission bundle", False, f"{len(names)} files extracted; tectonic failed")
+            return
+        aux = (work / "main.aux").read_text(errors="ignore")
+        m = re.search(r"\\newlabel\{end-of-main-text\}\{\{[^}]*\}\{(\d+)\}", aux)
+        page = int(m.group(1)) if m else 99
+        same = (work / "main.pdf").read_bytes() == committed.read_bytes()
+    record("Submission bundle", same and page <= 9,
+           f"{len(names)} files build on their own; main text ends on page {page}; PDF is "
+           + ("byte-identical to the committed one" if same else "NOT byte-identical"))
+
+
 def check_corpus() -> None:
     """Study B must evaluate exactly the corpus this repository ships."""
     if not CORPUS.is_dir():
@@ -217,7 +247,8 @@ def check_study_b() -> None:
 def main() -> int:
     print("CasePath release verification\n")
     for check in (check_study_a, check_explorer, check_numbers_stable, check_literals,
-                  check_cross, check_build, check_anonymity, check_corpus, check_study_b):
+                  check_cross, check_build, check_anonymity, check_corpus, check_bundle,
+                  check_study_b):
         check()
     width = max(len(n) for n, _, _ in results)
     print(f"  {'check'.ljust(width)}  status       detail")
