@@ -32,13 +32,58 @@ optional ethics / reproducibility statements are excluded; the AI-use statement 
 
 ## 4. Study B integration (if the finite report arrives before the deadline)
 
-1. `python3 evidence/build_native_results.py <FINITE_REPORT.json>`
-2. add `\input{native_results_numbers.tex}` after `\input{numbers.tex}` in `main.tex`
-3. insert the results paragraph and table in `native_study.tex` using only the generated macros; update the
-   sentence "Its development phase is complete and its protected phase is executing" in `introduction.tex`
-4. recompile; re-run `evidence/check_literal_numbers.py`; confirm `end-of-main-text` ≤ 9 (move the table to
-   `appendix_native.tex` if needed); rebuild `dist/`; re-upload to Overleaf; commit.
-If the report does not arrive, submit as is: the abstract's claim rests on Study A.
+1. `python3 evidence/build_native_results.py <FINITE_REPORT.json>` → `native_results_numbers.tex`,
+   `table_native_results.tex`, `evidence/NATIVE_RESULTS_AUDIT.json`.
+2. `python3 evidence/build_native_release.py --evidence <final-evidence-dir>` → `research/casepath/native-corpus/`
+   (it self-verifies by recomputing the report from the released rows).
+3. Add `\input{native_results_numbers.tex}` after `\input{numbers.tex}` in `main.tex`.
+4. In `native_study.tex`, replace the **Execution record** paragraph with the text below, keeping whichever
+   closing sentence the report supports, and update `introduction.tex` where it says the protected phase is
+   executing.
+5. `python3 research/casepath/verify_release.py` — all checks including "Study B reproduces" must pass.
+6. Rebuild `dist/`, re-upload to Overleaf, commit and push.
+
+If the report does not arrive, submit as is: the abstract's claim rests on Study A, and the paper already
+reports Study B's protocol and execution record honestly.
+
+### Paste-ready results text (macro names match `build_native_results.py`)
+
+```latex
+\paragraph{Protected-split result.}
+Table~\ref{tab:native-results} reports the frozen descriptive analysis on the \nrHidCases{} protected
+claims in \nrHidFamilies{} families. On the emitted checklist, \casepath reaches $F_1=\nrHidbCpF$ against
+\nrHidbDirF{} (Direct), \nrHidbDocF{} (Document-first), \nrHidbPcF{} (Process-context) and \nrHidbRfF{}
+(Rule-first); critical-evidence recall is \nrHidbCpCer{} against \nrHidbDirCer, \nrHidbDocCer,
+\nrHidbPcCer{} and \nrHidbRfCer; the unnecessary fraction is \nrHidbCpUdr{} against \nrHidbDirUdr,
+\nrHidbDocUdr, \nrHidbPcUdr{} and \nrHidbRfUdr. These means are adverse-imputed: every failed, truncated
+or blocked cell counts at its worst value. The conservative paired contrasts, which assign $-1$ whenever
+either endpoint is unobserved, are \nrCbDirF, \nrCbDocF, \nrCbPcF{} and \nrCbRfF{} on checklist $F_1$;
+\nrTargetsMet{} of the \nrTargetsTotal{} preregistered practical targets are met. The compiled equivalent
+reaches \nrHidbCeF{} and the local-scope ablation \nrHidbLsF, so the stored graph is not what carries the
+result.
+% Closing sentence A - use only if \nrTargetsMet equals \nrTargetsTotal:
+On this corpus, executing applicability, acquisition permission and route sufficiency therefore yields
+better-justified complete plans than every generative pipeline given the same compiled information, within
+the frozen boundaries and with every failure charged to the arm that produced it. This is a finite-corpus
+statement about this corpus, not population inference.
+% Closing sentence B - use if fewer targets are met:
+The all-comparator practical claim is therefore not demonstrated in this run. Table~\ref{tab:native-results}
+states which comparators and endpoints separate and how far single-family deletion moves each contrast, and
+the execution failures of Table~\ref{tab:native-execution} account for part of the gap.
+
+\begin{table}[t]
+\centering\scriptsize
+\setlength{\tabcolsep}{3pt}
+\input{table_native_results.tex}
+\caption{Study~B protected-split report. Means are adverse-imputed over all scheduled cells; conservative
+contrasts assign $-1$ when either endpoint is unobserved; ranges are single-family-deletion sensitivity.
+No $p$-values or confidence intervals are computed, by contract.}
+\label{tab:native-results}
+\end{table}
+```
+
+If the main text exceeds page 9 after this, move `table_native_results.tex` into `appendix_native.tex` and
+keep the paragraph in the main text.
 
 ## 5. Overleaf
 
