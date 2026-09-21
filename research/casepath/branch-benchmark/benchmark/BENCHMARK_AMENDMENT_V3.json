@@ -1,0 +1,21 @@
+{
+  "affected_scenarios": [
+    "PR_bicycle_claimed"
+  ],
+  "contract": "casepath.theft-benchmark-amendment/3.0.0",
+  "development_pairs_opened_before_amendment": 9,
+  "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+  "hidden_pairs_opened_before_amendment": 0,
+  "hidden_units_remaining": 54,
+  "new_benchmark_sha256": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc",
+  "new_preflight_sha256": "a4fba156de466ee4fc13e4a84fe14f423be6ce9f4eb9292c9426cf1f0fc11a2e",
+  "old_artifacts_preserved": true,
+  "parent_benchmark_sha256": "7e04d2d6d549cccc1e037f69d37c7faa5e155e9cef1eff70c4e8fca1598a22b6",
+  "reason": "The independent theft reference contract states that the bicycle branch opens both the bicycle purchase voucher and the detailed photographed cost estimate. Benchmark v2 projected only the estimate. Version 3 restores the omitted source-named requirement.",
+  "reference_contract_sha256": "4684811171059a121f4153b21e87cc35ea64f0987a80ae712f4aeeda7b9ca5cc",
+  "reference_projection": [
+    "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+    "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+  ],
+  "scientific_effect": "Both source-distinct bicycle evidence requirements receive gold credit; neither is an alternative."
+}

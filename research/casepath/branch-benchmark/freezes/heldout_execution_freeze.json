@@ -1,0 +1,171 @@
+{
+  "authorization": "ONE_SHOT_HIDDEN_READ",
+  "bound": {
+    "analysis": {
+      "bytes": 17834,
+      "path": "research/casepath/theft_confirmatory_analysis_v5.py",
+      "sha256": "3e4316521b8bf64d0857bae8066ecb00c53a5e922a6252b2b46a25abe371139f"
+    },
+    "b5_hidden_runner": {
+      "bytes": 10967,
+      "path": "research/casepath/runners/theft_b5_hidden_v5.py",
+      "sha256": "e790b003610e765e907f2cc45122e0eec475403efdb5c5411c33d1879773c207"
+    },
+    "baseline_hidden_runner": {
+      "bytes": 10126,
+      "path": "research/casepath/runners/theft_baselines_hidden_v5.py",
+      "sha256": "780509f1f27b2351fca46bd6df57fc528e6ca825ae45972bf7cd61f5ab00dac5"
+    },
+    "benchmark": {
+      "bytes": 141478,
+      "path": "research/casepath/theft_causal/BENCHMARK_V3.json",
+      "sha256": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc"
+    },
+    "development_admission": {
+      "bytes": 1816,
+      "path": "research/casepath/theft_causal/v10-development-analysis-v5/ADMISSION.json",
+      "sha256": "f4e38680bc7c7cf2f93c17237126acd85a77bf77cc4b4b3e7b0250b7e8a38545"
+    },
+    "development_analysis": {
+      "bytes": 20753,
+      "path": "research/casepath/theft_causal/v10-development-analysis-v5/RESULT.json",
+      "sha256": "6079823e5819a04c782a1a19370e3ed98d5e6c794b52dc665b5005894c2dcd98"
+    },
+    "development_b5_summary": {
+      "bytes": 1312,
+      "path": "research/casepath/theft_causal/v10-b5-development-v5/SUMMARY.json",
+      "sha256": "de8c5375252d080bcf87f5e2781e46e95b92cffcd892ab8548141926f2ee01be"
+    },
+    "development_baseline_summary": {
+      "bytes": 1691,
+      "path": "research/casepath/theft_causal/v10-baselines-development/SUMMARY.json",
+      "sha256": "99e16d47e285606ccaaff075015c6220be7103fdbc43c09d74b34998b9604551"
+    },
+    "development_split": {
+      "bytes": 1390,
+      "path": "research/casepath/theft_causal/v10-dev-freeze-v5.json",
+      "sha256": "1eaf1f5a9291e923f7542434b7637473871b0813bb1a1caa455682f696ef078c"
+    },
+    "method_manifest": {
+      "bytes": 20217,
+      "path": "research/casepath/theft_causal/v10-method-freeze-v5/METHOD_MANIFEST.json",
+      "sha256": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15"
+    },
+    "method_receipt": {
+      "bytes": 429,
+      "path": "research/casepath/theft_causal/v10-method-freeze-v5/FREEZE_RECEIPT.json",
+      "sha256": "6607a0f9bd0810dd6a82fd1cdfcc8fc5fbd97c49b74159af6f2274625e16d4fe"
+    },
+    "prepared": {
+      "bytes": 406933,
+      "path": "research/casepath/theft_causal/v9-rich-map-final/PREPARED_ACTIVE_V5.json",
+      "sha256": "95f9208d47e5c0193c4c3056226a2bcaa3a37b023098d97e5d0307d52fd5db28"
+    },
+    "route_audit": {
+      "bytes": 34059,
+      "path": "research/casepath/theft_causal/v9-rich-map-final/TARGET_ROUTE_AUDIT_ACTIVE_V5.json",
+      "sha256": "ddb368ae5bd5bcef6cbbda4fd54602ccc9a34094f52b626dd84b6e9138300bbf"
+    },
+    "statistical_protocol": {
+      "bytes": 9205,
+      "path": "research/casepath/THEFT_STATISTICAL_PROTOCOL_V5.md",
+      "sha256": "420b4f577b2a2f6c722008a51299ca82e88ee2c0a62d6dd559e763cf97484697"
+    }
+  },
+  "contract": "casepath.theft-hidden-execution-freeze/5.0.0",
+  "executions_consumed_at_freeze": 0,
+  "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+  "hidden_pair_ids": [
+    "theft-01-02",
+    "theft-01-03",
+    "theft-01-04",
+    "theft-02-02",
+    "theft-02-03",
+    "theft-02-04",
+    "theft-03-02",
+    "theft-03-03",
+    "theft-03-04",
+    "theft-04-02",
+    "theft-04-03",
+    "theft-04-04",
+    "theft-05-02",
+    "theft-05-03",
+    "theft-05-04",
+    "theft-06-02",
+    "theft-06-03",
+    "theft-06-04",
+    "theft-07-02",
+    "theft-07-03",
+    "theft-07-04",
+    "theft-08-02",
+    "theft-08-03",
+    "theft-08-04",
+    "theft-09-02",
+    "theft-09-03",
+    "theft-09-04"
+  ],
+  "hidden_pairs": 27,
+  "hidden_unit_ids": [
+    "theft-01-02-false",
+    "theft-01-02-true",
+    "theft-01-03-false",
+    "theft-01-03-true",
+    "theft-01-04-false",
+    "theft-01-04-true",
+    "theft-02-02-false",
+    "theft-02-02-true",
+    "theft-02-03-false",
+    "theft-02-03-true",
+    "theft-02-04-false",
+    "theft-02-04-true",
+    "theft-03-02-false",
+    "theft-03-02-true",
+    "theft-03-03-false",
+    "theft-03-03-true",
+    "theft-03-04-false",
+    "theft-03-04-true",
+    "theft-04-02-false",
+    "theft-04-02-true",
+    "theft-04-03-false",
+    "theft-04-03-true",
+    "theft-04-04-false",
+    "theft-04-04-true",
+    "theft-05-02-false",
+    "theft-05-02-true",
+    "theft-05-03-false",
+    "theft-05-03-true",
+    "theft-05-04-false",
+    "theft-05-04-true",
+    "theft-06-02-false",
+    "theft-06-02-true",
+    "theft-06-03-false",
+    "theft-06-03-true",
+    "theft-06-04-false",
+    "theft-06-04-true",
+    "theft-07-02-false",
+    "theft-07-02-true",
+    "theft-07-03-false",
+    "theft-07-03-true",
+    "theft-07-04-false",
+    "theft-07-04-true",
+    "theft-08-02-false",
+    "theft-08-02-true",
+    "theft-08-03-false",
+    "theft-08-03-true",
+    "theft-08-04-false",
+    "theft-08-04-true",
+    "theft-09-02-false",
+    "theft-09-02-true",
+    "theft-09-03-false",
+    "theft-09-03-true",
+    "theft-09-04-false",
+    "theft-09-04-true"
+  ],
+  "hidden_units": 54,
+  "model": "openai/gpt-5.6-terra",
+  "provider_only": [
+    "openai"
+  ],
+  "temperature": 0.0,
+  "terminal_artifacts_present_at_freeze": []
+}
