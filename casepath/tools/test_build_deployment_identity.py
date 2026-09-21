@@ -16,7 +16,7 @@ import build_static_site as static_site  # noqa: E402
 
 
 ASSET_REFERENCE = re.compile(
-    r"[\"'](?P<path>assets/[A-Za-z0-9._/-]+\.(?:css|js))(?:\?[^\"']*)?[\"']"
+    r"[\"'](?P<path>assets/[A-Za-z0-9._/-]+\.(?:css|js|json))(?:\?[^\"']*)?[\"']"
 )
 
 
@@ -64,7 +64,10 @@ def test_curated_static_build_has_exact_runtime_inventory(
     files, directories = static_site.inventory(output)
     assert files == static_site.PUBLIC_INVENTORY
     assert directories == static_site.PUBLIC_DIRECTORIES
-    assert len(files) == 36
+    assert len(files) == 43
+    assert {"method.html", "assets/method-guide.js", "assets/method-guide.css",
+            "assets/method-guide-data.json"} <= files
+    assert {"research.html", "assets/research-evidence.css", "assets/paired-study-evidence.json"} <= files
     assert {"assets/agent-work-v1.js", "assets/agent-work-v1.css"} <= files
     assert {"assets/claims-workspace-presentation-v1.js", "assets/claims-workspace-presentation-v1.css"} <= files
     assert json.loads((output / "deployment.json").read_text(encoding="utf-8")) == (
@@ -98,8 +101,10 @@ def test_curated_static_build_has_exact_runtime_inventory(
 def test_curated_asset_allowlist_is_the_recursive_runtime_closure() -> None:
     discovered = {
         match.group("path")
+        for entry_point in static_site.PUBLIC_ROOT_FILES
+        if entry_point.endswith(".html")
         for match in ASSET_REFERENCE.finditer(
-            (static_site.SOURCE_ROOT / "index.html").read_text(encoding="utf-8")
+            (static_site.SOURCE_ROOT / entry_point).read_text(encoding="utf-8")
         )
     }
     pending = list(discovered)

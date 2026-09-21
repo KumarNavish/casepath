@@ -27,3 +27,10 @@ Developer references:
 `CASEPATH_MASTER_KNOWLEDGE_TRANSFER.md` is retained at the repository root as a
 historical record. Its old repository, branch, deployment, and research
 instructions are not current operating guidance for this standalone package.
+
+## Understand the method and comparison
+
+- [Interactive method guide](method-guide.md)
+- [Benchmark and exact comparison conditions](benchmark-and-baselines.md)
+
+- [Paired-study evidence, uncertainty and provenance](research-evidence.md)

@@ -1,5 +1,18 @@
 # CasePath
 
+**Why request this document, on this branch, now?**
+
+CasePath's obligation controller makes that dependency explicit: assess the
+active scope, identify the required fact, check what the available evidence
+establishes, and derive a justified request or review. The claims workbench
+keeps original sources and handling actions inspectable alongside that logic.
+
+Start with the [interactive method guide](docs/method-guide.md), then inspect
+the [exact comparison conditions](docs/benchmark-and-baselines.md). The guide
+runs an invented teaching example through the actual controller; it is separate
+from the 150-claim empirical evaluation. Read the [paired-study evidence](docs/research-evidence.md)
+for the paper’s measured selectivity result, its recall trade-off and exact provenance.
+
 CasePath is a local claims workbench for inspecting original sources, tracking
 evidence, recording handling actions, and replaying the resulting journal. This
 repository contains the complete standalone product, tests, release tools, and
