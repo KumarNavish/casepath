@@ -22,11 +22,11 @@ RC = load("PAIRED_V5_RECEIPT_ACCOUNTING.json")
 PA = load("PAIRED_V5_REPRODUCED_PARITY.json")
 HA = load("HISTORICAL_AUDIT.json")
 SF = load("PUBLICATION_STATIC_FACTS.json")
-EX = load("studyB_execution_status_695.json")
+EX = load("studyB_execution_status.json")
 
 SHAS = {n: sha(n) for n in ["PAIRED_V5_REPRODUCED_RESULT.json", "SHORTCUT_PREFLIGHT_V3.json",
         "PAIRED_V5_RECEIPT_ACCOUNTING.json", "PAIRED_V5_REPRODUCED_PARITY.json",
-        "HISTORICAL_AUDIT.json", "PUBLICATION_STATIC_FACTS.json", "studyB_execution_status_695.json"]}
+        "HISTORICAL_AUDIT.json", "PUBLICATION_STATIC_FACTS.json", "studyB_execution_status.json"]}
 
 macros = []
 def m(name, value, rendered, file, pointer, note=""):
@@ -156,7 +156,7 @@ m("nbReasoning", cfg["reasoning_effort"], cfg["reasoning_effort"], SFF, "/config
 m("nbLearnedArms", len(SF["learned_arms"]), str(len(SF["learned_arms"])), SFF, "/learned_arms", "len")
 m("nbDependentArms", len(SF["dependent_arms"]), str(len(SF["dependent_arms"])), SFF, "/dependent_arms", "len")
 
-EXF = "studyB_execution_status_695.json"
+EXF = "studyB_execution_status.json"
 m("nbRecorded", EX["snapshot_cells"], str(EX["snapshot_cells"]), EXF, "/snapshot_cells")
 by = EX["by_split_arm"]
 dev_total = sum(sum(v.values()) for k, v in by.items() if k.startswith("public_dev|"))

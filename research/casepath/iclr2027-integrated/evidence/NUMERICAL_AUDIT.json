@@ -8,7 +8,7 @@
   "PAIRED_V5_REPRODUCED_PARITY.json": "f17d59b1e7a4e390b9ab3a24d402d4b35a99b05c7b4c36896f2bdba277432494",
   "HISTORICAL_AUDIT.json": "03dc60b675a0e47fe263996ee931b19296c6caaf58e1f0de9d71213c11a44f8a",
   "PUBLICATION_STATIC_FACTS.json": "73bce43ad51ececc32d1fe43b26b66905984ecf3c841f5a62035cea5077a5728",
-  "studyB_execution_status_695.json": "769342a7969c0954397b5a07a06f2a8e21b28e8f4e4d5cad5edbc7bb644ff386",
+  "studyB_execution_status.json": "ef6e9ca10ce9458d7bfe239dd9bf1f302efa9eeae7aba3bb53fd8f478268a343",
   "ANALYSIS_CONTRACT.json": "196b3ce4a43f9887cd4773216c117055bf2850732f307367a7a44e77a3785bcf",
   "BENCHMARK_V3_pair_theft-01-04.json": "cd831ca172819d653a8bff82a768a695960259693e6230eec3cace9b11dcd514"
  },
@@ -1216,9 +1216,9 @@
   },
   {
    "macro": "nbRecorded",
-   "rendered": "695",
-   "value": 695,
-   "evidence_file": "studyB_execution_status_695.json",
+   "rendered": "829",
+   "value": 829,
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/snapshot_cells",
    "derivation": ""
   },
@@ -1226,15 +1226,15 @@
    "macro": "nbDevRecorded",
    "rendered": "420",
    "value": 420,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|*",
    "derivation": "sum of states"
   },
   {
    "macro": "nbHidRecorded",
-   "rendered": "275",
-   "value": 275,
-   "evidence_file": "studyB_execution_status_695.json",
+   "rendered": "409",
+   "value": 409,
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/hidden_test|*",
    "derivation": "sum of states"
   },
@@ -1242,7 +1242,7 @@
    "macro": "bCpDevOk",
    "rendered": "44",
    "value": 44,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|CASEPATH_CONTROL/completed",
    "derivation": ""
   },
@@ -1250,7 +1250,7 @@
    "macro": "bCpDevFail",
    "rendered": "16",
    "value": 16,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|CASEPATH_CONTROL/failed",
    "derivation": ""
   },
@@ -1258,7 +1258,7 @@
    "macro": "bCpDevBlocked",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|CASEPATH_CONTROL/blocked_dependency",
    "derivation": ""
   },
@@ -1266,7 +1266,7 @@
    "macro": "bCpDevEndpoint",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/unknown_relation_endpoint",
    "derivation": ""
   },
@@ -1274,7 +1274,7 @@
    "macro": "bCpDevTrunc",
    "rendered": "2",
    "value": 2,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/truncated_or_nonterminal",
    "derivation": ""
   },
@@ -1282,7 +1282,7 @@
    "macro": "bCpDevCodebook",
    "rendered": "4",
    "value": 4,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/invalid_codebook_index",
    "derivation": ""
   },
@@ -1290,7 +1290,7 @@
    "macro": "bCpDevPresence",
    "rendered": "7",
    "value": 7,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/contradictory_presence_state",
    "derivation": ""
   },
@@ -1298,7 +1298,7 @@
    "macro": "bDirDevOk",
    "rendered": "19",
    "value": 19,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|DIRECT_REVIEWED/completed",
    "derivation": ""
   },
@@ -1306,7 +1306,7 @@
    "macro": "bDirDevFail",
    "rendered": "41",
    "value": 41,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|DIRECT_REVIEWED/failed",
    "derivation": ""
   },
@@ -1314,7 +1314,7 @@
    "macro": "bDirDevBlocked",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|DIRECT_REVIEWED/blocked_dependency",
    "derivation": ""
   },
@@ -1322,7 +1322,7 @@
    "macro": "bDirDevEndpoint",
    "rendered": "21",
    "value": 21,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DIRECT_REVIEWED/unknown_relation_endpoint",
    "derivation": ""
   },
@@ -1330,7 +1330,7 @@
    "macro": "bDirDevTrunc",
    "rendered": "10",
    "value": 10,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DIRECT_REVIEWED/truncated_or_nonterminal",
    "derivation": ""
   },
@@ -1338,7 +1338,7 @@
    "macro": "bDirDevCodebook",
    "rendered": "8",
    "value": 8,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DIRECT_REVIEWED/invalid_codebook_index",
    "derivation": ""
   },
@@ -1346,7 +1346,7 @@
    "macro": "bDirDevPresence",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DIRECT_REVIEWED/contradictory_presence_state",
    "derivation": ""
   },
@@ -1354,7 +1354,7 @@
    "macro": "bDocDevOk",
    "rendered": "17",
    "value": 17,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/completed",
    "derivation": ""
   },
@@ -1362,7 +1362,7 @@
    "macro": "bDocDevFail",
    "rendered": "43",
    "value": 43,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/failed",
    "derivation": ""
   },
@@ -1370,7 +1370,7 @@
    "macro": "bDocDevBlocked",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/blocked_dependency",
    "derivation": ""
   },
@@ -1378,7 +1378,7 @@
    "macro": "bDocDevEndpoint",
    "rendered": "13",
    "value": 13,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/unknown_relation_endpoint",
    "derivation": ""
   },
@@ -1386,7 +1386,7 @@
    "macro": "bDocDevTrunc",
    "rendered": "16",
    "value": 16,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/truncated_or_nonterminal",
    "derivation": ""
   },
@@ -1394,7 +1394,7 @@
    "macro": "bDocDevCodebook",
    "rendered": "11",
    "value": 11,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/invalid_codebook_index",
    "derivation": ""
   },
@@ -1402,7 +1402,7 @@
    "macro": "bDocDevPresence",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/contradictory_presence_state",
    "derivation": ""
   },
@@ -1410,7 +1410,7 @@
    "macro": "bPcDevOk",
    "rendered": "27",
    "value": 27,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/completed",
    "derivation": ""
   },
@@ -1418,7 +1418,7 @@
    "macro": "bPcDevFail",
    "rendered": "33",
    "value": 33,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/failed",
    "derivation": ""
   },
@@ -1426,7 +1426,7 @@
    "macro": "bPcDevBlocked",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/blocked_dependency",
    "derivation": ""
   },
@@ -1434,7 +1434,7 @@
    "macro": "bPcDevEndpoint",
    "rendered": "26",
    "value": 26,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/unknown_relation_endpoint",
    "derivation": ""
   },
@@ -1442,7 +1442,7 @@
    "macro": "bPcDevTrunc",
    "rendered": "5",
    "value": 5,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/truncated_or_nonterminal",
    "derivation": ""
   },
@@ -1450,7 +1450,7 @@
    "macro": "bPcDevCodebook",
    "rendered": "1",
    "value": 1,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/invalid_codebook_index",
    "derivation": ""
   },
@@ -1458,7 +1458,7 @@
    "macro": "bPcDevPresence",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/contradictory_presence_state",
    "derivation": ""
   },
@@ -1466,7 +1466,7 @@
    "macro": "bRfDevOk",
    "rendered": "28",
    "value": 28,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|RULE_FIRST_REVIEWED/completed",
    "derivation": ""
   },
@@ -1474,7 +1474,7 @@
    "macro": "bRfDevFail",
    "rendered": "32",
    "value": 32,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|RULE_FIRST_REVIEWED/failed",
    "derivation": ""
   },
@@ -1482,7 +1482,7 @@
    "macro": "bRfDevBlocked",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|RULE_FIRST_REVIEWED/blocked_dependency",
    "derivation": ""
   },
@@ -1490,7 +1490,7 @@
    "macro": "bRfDevEndpoint",
    "rendered": "21",
    "value": 21,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|RULE_FIRST_REVIEWED/unknown_relation_endpoint",
    "derivation": ""
   },
@@ -1498,7 +1498,7 @@
    "macro": "bRfDevTrunc",
    "rendered": "8",
    "value": 8,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|RULE_FIRST_REVIEWED/truncated_or_nonterminal",
    "derivation": ""
   },
@@ -1506,7 +1506,7 @@
    "macro": "bRfDevCodebook",
    "rendered": "3",
    "value": 3,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|RULE_FIRST_REVIEWED/invalid_codebook_index",
    "derivation": ""
   },
@@ -1514,7 +1514,7 @@
    "macro": "bRfDevPresence",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|RULE_FIRST_REVIEWED/contradictory_presence_state",
    "derivation": ""
   },
@@ -1522,7 +1522,7 @@
    "macro": "bCeDevOk",
    "rendered": "44",
    "value": 44,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|COMPILED_EQUIVALENT/completed",
    "derivation": ""
   },
@@ -1530,7 +1530,7 @@
    "macro": "bCeDevFail",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|COMPILED_EQUIVALENT/failed",
    "derivation": ""
   },
@@ -1538,7 +1538,7 @@
    "macro": "bCeDevBlocked",
    "rendered": "16",
    "value": 16,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|COMPILED_EQUIVALENT/blocked_dependency",
    "derivation": ""
   },
@@ -1546,7 +1546,7 @@
    "macro": "bCeDevEndpoint",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|COMPILED_EQUIVALENT/unknown_relation_endpoint",
    "derivation": ""
   },
@@ -1554,7 +1554,7 @@
    "macro": "bCeDevTrunc",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|COMPILED_EQUIVALENT/truncated_or_nonterminal",
    "derivation": ""
   },
@@ -1562,7 +1562,7 @@
    "macro": "bCeDevCodebook",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|COMPILED_EQUIVALENT/invalid_codebook_index",
    "derivation": ""
   },
@@ -1570,7 +1570,7 @@
    "macro": "bCeDevPresence",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|COMPILED_EQUIVALENT/contradictory_presence_state",
    "derivation": ""
   },
@@ -1578,7 +1578,7 @@
    "macro": "bLsDevOk",
    "rendered": "44",
    "value": 44,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/completed",
    "derivation": ""
   },
@@ -1586,7 +1586,7 @@
    "macro": "bLsDevFail",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/failed",
    "derivation": ""
   },
@@ -1594,7 +1594,7 @@
    "macro": "bLsDevBlocked",
    "rendered": "16",
    "value": 16,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/blocked_dependency",
    "derivation": ""
   },
@@ -1602,7 +1602,7 @@
    "macro": "bLsDevEndpoint",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/unknown_relation_endpoint",
    "derivation": ""
   },
@@ -1610,7 +1610,7 @@
    "macro": "bLsDevTrunc",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/truncated_or_nonterminal",
    "derivation": ""
   },
@@ -1618,7 +1618,7 @@
    "macro": "bLsDevCodebook",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/invalid_codebook_index",
    "derivation": ""
   },
@@ -1626,7 +1626,7 @@
    "macro": "bLsDevPresence",
    "rendered": "0",
    "value": 0,
-   "evidence_file": "studyB_execution_status_695.json",
+   "evidence_file": "studyB_execution_status.json",
    "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/contradictory_presence_state",
    "derivation": ""
   },
