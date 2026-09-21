@@ -32,6 +32,15 @@ authenticated reproduction of the frozen V5 paired-intervention study; `PUBLICAT
 `ANALYSIS_CONTRACT.json` are the frozen Study B design and analysis contract; `studyB_execution_status.json`
 is a target-free snapshot of recorded Study B cells (execution status only, no scores).
 
+## Cross-check against the released benchmark
+
+`evidence/check_against_benchmark_release.py` reruns the frozen analysis in
+[`../branch-benchmark/`](../branch-benchmark/README.md) on the recorded predictions and confirms
+that every macro traceable to the held-out report, the shortcut preflight or the product-parity
+report equals the freshly recomputed value (86 macros at the time of writing). Macros that come
+from design or accounting records are reported as having no recomputation path rather than as
+passing.
+
 ## Study B results (pending)
 
 Scoring of the 150-claim study is contractually deferred until both prediction phases are frozen, so the

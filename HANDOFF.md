@@ -107,6 +107,15 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
   ends on page 9 (`\label{end-of-main-text}` → `main.aux`); AI-use statement and references follow.
 * **Deliverables:** `research/casepath/iclr2027-integrated/dist/casepath_iclr2027_submission_source.zip`
   (Overleaf-ready) and `dist/casepath_iclr2027_submission.pdf`.
+* **Benchmark release (new 2026-09-21):** `research/casepath/branch-benchmark/` — the 36-pair
+  benchmark, source snapshot, admission controls, recorded predictions of all four arms for both
+  splits, the frozen scorer/statistics, freeze records and the product-parity report, with
+  `MANIFEST.json` giving each file's sha256 and its path inside the release archive (bytes
+  unchanged; only the layout was reorganised). `python3 reproduce.py` verifies the hashes and
+  recomputes the held-out result offline in ~7 s; it matched the preserved report on every value
+  (10 values differ only by floating-point summation order, largest deviation 1.1e-16).
+  `research/casepath/iclr2027-integrated/evidence/check_against_benchmark_release.py` then confirms
+  86 paper macros against that fresh recomputation.
 * **Numerical audit:** `evidence/build_manuscript_numbers.py` regenerates every number macro and table from the
   evidence files and writes `evidence/NUMERICAL_AUDIT.json` (215 macros; each with evidence file SHA-256 and
   JSON pointer). `evidence/check_literal_numbers.py` lists any literal number left in prose (only figure widths,

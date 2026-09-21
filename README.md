@@ -100,6 +100,11 @@ number with its evidence pointer, and the reproducibility notes live in
 - Study B: the complete 150-claim corpus shipped in this repository, evaluated under a frozen
   finite-corpus analysis contract (protocol and execution record in the paper; results are integrated when
   the frozen analysis code produces them).
+- [`research/casepath/branch-benchmark/`](research/casepath/branch-benchmark/README.md) ships the
+  benchmark itself, the recorded predictions of all four systems, the frozen scorer and statistics,
+  and a single offline command that recomputes every Study A number and diffs it against the
+  preserved report: `python3 research/casepath/branch-benchmark/reproduce.py` (about seven seconds,
+  no network or API key).
 - [`HANDOFF.md`](HANDOFF.md) at the repository root records the verified state of both studies, every
   artifact path, and the open gaps; [`SUBMISSION_CHECKLIST.md`](research/casepath/iclr2027-integrated/SUBMISSION_CHECKLIST.md)
   lists the submission steps.

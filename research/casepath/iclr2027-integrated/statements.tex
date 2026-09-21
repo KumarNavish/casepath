@@ -5,9 +5,12 @@ provider receipts, analysis code, the preregistered gate and the product
 replay verifier, and for Study~B its corpus, compiled representation,
 producer, evaluator, analysis contract and every recorded cell, including
 failures. Every number in this paper is generated from those files by a
-script that records the file hash and JSON pointer behind each value;
-reproducing scores from recorded outputs is distinct from regenerating model
-outputs.
+script that records the file hash and JSON pointer behind each value, and a
+single command in the release recomputes the Study~A scores from the recorded
+predictions of all four arms and diffs them against the preserved report
+without network or provider access. Reproducing scores from recorded outputs
+is distinct from regenerating model outputs, which requires provider access
+and is not deterministic.
 
 \section*{Ethics Statement}
 \casepath is a research architecture for evidence planning, not legal advice
