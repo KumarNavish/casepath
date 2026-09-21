@@ -33,6 +33,7 @@ BRIDGE = Path("/Users/kumar0002/.local/state/navish-acceptance-20260919/final-ex
 CONTRACT = BRIDGE / "ANALYSIS_CONTRACT.json"
 REPORTING = BRIDGE / "casepath_execution_bridge" / "finite_reporting.py"
 MATRIX = Path("/Users/kumar0002/.local/state/navish-acceptance-20260919/PRO_NATIVE150_MATRIX.jsonl")
+CORPUS = Path(__file__).resolve().parents[4] / "casepath-api" / "casepath_api" / "corpora" / "synthetic-150" / "claims"
 CELLS_ROOT = Path("/Users/kumar0002/.local/state/navish-acceptance-20260919/mac-native150")
 
 REPORT_SCHEMA = "casepath.finite-corpus-descriptive/1.0.0"
@@ -263,6 +264,10 @@ def readme(report: dict, rows_by_split: dict, contract: dict, n_cells: int) -> s
         "Raw producer cells (~64 MB) stay in the supplementary archive; the per-cell index here",
         "records each cell's execution state and error class without any model output.",
         "",
+        "The claims themselves are not duplicated here: the evaluated case identifiers are exactly the",
+        "150 claim files this repository ships at `casepath-api/casepath_api/corpora/synthetic-150/claims/`,",
+        "which the product loads at runtime. `research/casepath/verify_release.py` checks that identity.",
+        "",
         "## What this establishes, and what it does not",
         "",
         "A complete run supports a **pipeline-level, finite-corpus** statement about this corpus",
@@ -308,6 +313,13 @@ def main() -> int:
     if args.dry_run:
         print("dry run: nothing written")
         return 0
+
+    planned = {json.loads(line)["case_id"] for line in MATRIX.open()}
+    shipped = {p.stem for p in CORPUS.glob("*.json")} if CORPUS.is_dir() else set()
+    if shipped and shipped != planned:
+        print(f"corpus mismatch: {len(shipped - planned)} shipped-only, {len(planned - shipped)} planned-only")
+        return 1
+    print(f"corpus identity OK: the {len(planned)} evaluated cases are exactly the claims the product ships")
 
     contract = json.loads(CONTRACT.read_text())
     for sub in ("evaluation", "expected", "analysis", "contract", "execution"):

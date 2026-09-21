@@ -99,7 +99,9 @@ number with its evidence pointer, and the reproducibility notes live in
   comparators, while a preregistered broad-superiority gate fails and is reported.
 - Study B: the complete 150-claim corpus shipped in this repository, evaluated under a frozen
   finite-corpus analysis contract (protocol and execution record in the paper; results are integrated when
-  the frozen analysis code produces them).
+  the frozen analysis code produces them). The evaluated case identifiers are exactly the 150 claim files
+  the product loads from `casepath-api/casepath_api/corpora/synthetic-150/claims/`, and the verifier below
+  checks that identity, so the paper measures the corpus this repository ships.
 - [`research/casepath/branch-benchmark/`](research/casepath/branch-benchmark/README.md) ships the
   benchmark itself, the recorded predictions of all four systems, the frozen scorer and statistics,
   and a single offline command that recomputes every Study A number and diffs it against the

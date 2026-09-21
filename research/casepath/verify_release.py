@@ -15,13 +15,15 @@ Runs every check that can be run offline and prints one table:
   6. Paper builds              Tectonic compiles it and the main text ends on page 9 or earlier
   7. Anonymity                 no author, employer, agent or repository token in the sources the
                                paper inputs, and no /Author in the PDF metadata
-  8. Study B reproduces        present only once the 150-claim release has been built
+  8. Corpus identity           Study B evaluates exactly the 150 claims this repository ships
+  9. Study B reproduces        present only once the 150-claim release has been built
 
 Exit status is 0 only if every check that ran passed. A check whose inputs do not exist is
 reported as "not present", never as passing.
 """
 from __future__ import annotations
 
+import json
 import os
 import re
 import subprocess
@@ -33,6 +35,8 @@ REPO = HERE.parent.parent
 DOC = HERE / "iclr2027-integrated"
 BENCH = HERE / "branch-benchmark"
 NATIVE = HERE / "native-corpus"
+CORPUS = REPO / "casepath-api" / "casepath_api" / "corpora" / "synthetic-150" / "claims"
+MATRIX = Path("/Users/kumar0002/.local/state/navish-acceptance-20260919/PRO_NATIVE150_MATRIX.jsonl")
 TECTONIC = REPO / ".runtime" / "tools" / "tectonic" / "tectonic"
 # Pinning the build clock makes the PDF byte-reproducible: without it every rebuild differs only
 # by its embedded creation timestamp. 1789948800 = 2026-09-21T00:00:00Z.
@@ -172,6 +176,26 @@ def check_anonymity() -> None:
     record("Anonymity", ok, detail)
 
 
+def check_corpus() -> None:
+    """Study B must evaluate exactly the corpus this repository ships."""
+    if not CORPUS.is_dir():
+        record("Corpus identity", None, "synthetic-150 corpus not present")
+        return
+    shipped = {p.stem for p in CORPUS.glob("*.json")}
+    planned = None
+    if MATRIX.exists():
+        planned = {json.loads(line)["case_id"] for line in MATRIX.open()}
+    elif (NATIVE / "contract" / "cell_plan.jsonl").exists():
+        planned = {json.loads(line)["case_id"] for line in (NATIVE / "contract" / "cell_plan.jsonl").open()}
+    if planned is None:
+        record("Corpus identity", None, f"{len(shipped)} claims shipped; no cell plan available to compare")
+        return
+    ok = shipped == planned
+    record("Corpus identity", ok,
+           f"the {len(shipped)} claims shipped in casepath-api are exactly the cases Study B evaluates"
+           if ok else f"{len(shipped - planned)} shipped-only and {len(planned - shipped)} planned-only case(s)")
+
+
 def check_study_b() -> None:
     if not (NATIVE / "reproduce.py").exists():
         record("Study B reproduces", None,
@@ -185,7 +209,7 @@ def check_study_b() -> None:
 def main() -> int:
     print("CasePath release verification\n")
     for check in (check_study_a, check_explorer, check_numbers_stable, check_literals,
-                  check_cross, check_build, check_anonymity, check_study_b):
+                  check_cross, check_build, check_anonymity, check_corpus, check_study_b):
         check()
     width = max(len(n) for n, _, _ in results)
     print(f"  {'check'.ljust(width)}  status       detail")
