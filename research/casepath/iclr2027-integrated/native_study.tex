@@ -103,8 +103,12 @@ controllers recovering \asDevCpValid{} valid requests at identical recall
 control matches \casepath exactly. This intervention tests inherited domain
 applicability, without isolating arbitrary graph topology. Native chain
 matching compares the decision, fact, capability and document links with
-the reference. It does not establish exact-source entailment:
-provenance-chain inheritance scores zero for both controllers.
+the reference. It does not establish exact-source entailment. The evaluator's
+separate inheritance score is zero for both controllers, but it demands a
+produced locator equal to a reference locator on all twelve fields including
+text offsets, while the controller emits JSON-pointer locators with those
+fields empty: it records differing source granularity, not a failure to
+inherit.
 
 The protected-family label denotes the original target-custody split.
 Product development had exposed the observable inputs, and the missing
