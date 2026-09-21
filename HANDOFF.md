@@ -81,7 +81,11 @@ interpretation); code owns activation, projection, route selection, next action 
   11:22 UTC cutoff; the pre-approved one-day extension is now ACTIVE (latest allowed send 2026-09-22 11:16 UTC);
   a four-request-concurrency worker was relaunched by Codex at 12:11 UTC with USD 70.04 charged against the
   USD 236.80 ceiling and 233 cells remaining. **Whether Study B finishes remains outside this checkout's
-  control; nothing under `mac-native150/` was touched.**
+  control; nothing under `mac-native150/` was touched.** Operational note: the run's own
+  `mac-native150/CAFFEINATE.json` holds the Mac awake only until 2026-09-21 11:26:29 UTC, the original
+  hard stop, so after that time the extended run depends on something else keeping the machine awake.
+  This session held it awake from 13:10 UTC. Idle sleep is prevented; **a closed lid still sleeps**, which
+  is what destroyed the 07:01 UTC run.
 
 ## 4. RESULTS
 
