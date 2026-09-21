@@ -125,8 +125,9 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
   Codex's project `https://www.overleaf.com/project/6ab03c462d2eaea03e194fb2` holds **Codex's older
   manuscript**; **this manuscript** was uploaded to a separate project
   `https://www.overleaf.com/project/6ab0eea72f79f49c515c7853` ("CasePath - ICLR 2027 Submission (integrated,
-  2026-09-21)"), confirmed reachable from the author's logged-in browser on 2026-09-21 12:30 UTC. Its contents
-  predate the 829-cell execution-record refresh unless the dist zip was re-uploaded after that (see §7).
+  2026-09-21)"), confirmed reachable from the author's logged-in browser on 2026-09-21 12:30 UTC; `numbers.tex` and
+  `table_native_execution.tex` were re-uploaded there at 12:45 UTC (829-cell execution record) and the
+  project recompiles to 16 pages.
 
 ## 6. REPO MAP (this checkout)
 
