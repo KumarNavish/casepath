@@ -86,16 +86,24 @@ def check_explorer() -> None:
 
 
 def check_numbers_stable() -> None:
+    """Regenerating the macros, tables and the evidence-derived figure must change nothing."""
     code, out = run([sys.executable, "evidence/build_manuscript_numbers.py"], DOC)
     if code != 0:
         record("Manuscript numbers", False, out.strip().splitlines()[-1][:90])
         return
+    figures_note = ""
+    code, out = run([sys.executable, "evidence/build_figures.py"], DOC)
+    if code != 0:
+        # matplotlib is not part of the paper's build dependencies; say so rather than pass silently.
+        figures_note = "; figure not regenerated (matplotlib unavailable)"
     code, diff = run(["git", "status", "--porcelain", "--",
                       "numbers.tex", "table_main_results.tex", "table_claim_gates.tex",
-                      "table_family_results.tex", "table_costs.tex", "table_native_execution.tex"], DOC)
+                      "table_family_results.tex", "table_costs.tex", "table_native_execution.tex",
+                      "fig_family_results.pdf"], DOC)
     changed = [l.split()[-1] for l in diff.strip().splitlines() if l.strip()]
     record("Manuscript numbers", not changed,
-           "regeneration leaves every macro and table unchanged" if not changed
+           ("regeneration leaves every macro, table and the evidence-derived figure unchanged"
+            + figures_note) if not changed
            else "regeneration changed: " + ", ".join(changed))
 
 

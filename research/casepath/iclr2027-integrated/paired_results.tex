@@ -67,17 +67,19 @@ that a mapping was right; reachability says a route existed, not that it was
 emitted.
 
 \begin{figure}[t]
-\centering\includegraphics[width=.66\linewidth]{fig_family_results.pdf}
+\centering\includegraphics[width=.82\linewidth]{fig_family_results.pdf}
 \caption{\textbf{Where the semantics holds and where it fails.} Mean pair
-$F_1$ by branch concept on the held-out contexts. \casepath is exact on four
-concepts and scores zero on two; the comparators are strongest where the
-plausible claimant document is the right answer.}
+$F_1$ per branch concept on the held-out contexts: the marker is \casepath,
+the ticks are the three comparators and the band is their range. \casepath is
+exact on \nFamExact{} concepts where the comparators are not, and scores zero
+on \nFamZero{} where they succeed. Concepts are ordered by \casepath's score,
+so the failures sit at the bottom beside the comparators that solved them.}
 \label{fig:family}
 \end{figure}
 
 \paragraph{Where the semantics fails.}
 Figure~\ref{fig:family} shows the structure the aggregate hides. \casepath is
-exact on all three held-out contexts of four concepts (bicycle, declination,
+exact on all three held-out contexts of \nFamExact{} concepts (bicycle, declination,
 recovery, \emph{Nachfrist}), reaches $\cpFamScheduled$ on scheduled valuables and
 SIM-card theft, $\cpFamRepair$ on repair consent, and scores zero on third-party
 causation and the formal expert procedure. The zeros are systematic rather

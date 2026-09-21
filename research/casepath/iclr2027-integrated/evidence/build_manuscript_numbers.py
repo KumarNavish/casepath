@@ -185,6 +185,14 @@ fam = R["scores"]["b5_process_compiled"]["family_pair_f1"]
 m("cpFamScheduled", fam["PR_scheduled_valuable_1000"], f3(fam["PR_scheduled_valuable_1000"]), RF, "/scores/b5_process_compiled/family_pair_f1/PR_scheduled_valuable_1000")
 m("cpFamSim", fam["PR_sim_card_stolen"], f3(fam["PR_sim_card_stolen"]), RF, "/scores/b5_process_compiled/family_pair_f1/PR_sim_card_stolen")
 m("cpFamRepair", fam["PR_repair_over_500"], f3(fam["PR_repair_over_500"]), RF, "/scores/b5_process_compiled/family_pair_f1/PR_repair_over_500")
+WORDS = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
+         6: "six", 7: "seven", 8: "eight", 9: "nine"}
+n_exact = sum(1 for v in fam.values() if v == 1.0)
+n_zero = sum(1 for v in fam.values() if v == 0.0)
+m("nFamExact", n_exact, WORDS[n_exact], RF, "/scores/b5_process_compiled/family_pair_f1",
+  "count of concepts with mean pair F1 == 1.0, spelled out")
+m("nFamZero", n_zero, WORDS[n_zero], RF, "/scores/b5_process_compiled/family_pair_f1",
+  "count of concepts with mean pair F1 == 0.0, spelled out")
 # ---- gate thresholds are encoded in the frozen gate names ----
 m("gateMargin", 0.10, "0.10", RF, "/positive_claim_gates/margin_at_least_0_10_against_all", "threshold encoded in gate key")
 m("gatePrec", 0.70, "0.70", RF, "/positive_claim_gates/delta_precision_at_least_0_70", "threshold encoded in gate key")

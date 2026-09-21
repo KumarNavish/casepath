@@ -12,7 +12,7 @@
   "ANALYSIS_CONTRACT.json": "196b3ce4a43f9887cd4773216c117055bf2850732f307367a7a44e77a3785bcf",
   "BENCHMARK_V3_pair_theft-01-04.json": "cd831ca172819d653a8bff82a768a695960259693e6230eec3cace9b11dcd514"
  },
- "macro_count": 215,
+ "macro_count": 217,
  "tables": [
   "table_main_results.tex",
   "table_claim_gates.tex",
@@ -1653,6 +1653,22 @@
    "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
    "json_pointer": "/scores/b5_process_compiled/family_pair_f1/PR_repair_over_500",
    "derivation": ""
+  },
+  {
+   "macro": "nFamExact",
+   "rendered": "four",
+   "value": 4,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/family_pair_f1",
+   "derivation": "count of concepts with mean pair F1 == 1.0, spelled out"
+  },
+  {
+   "macro": "nFamZero",
+   "rendered": "two",
+   "value": 2,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/family_pair_f1",
+   "derivation": "count of concepts with mean pair F1 == 0.0, spelled out"
   },
   {
    "macro": "gateMargin",

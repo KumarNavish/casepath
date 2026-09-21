@@ -26,6 +26,10 @@ No number in the prose or tables is typed by hand.
   (`table_main_results.tex`, `table_claim_gates.tex`, `table_family_results.tex`, `table_costs.tex`,
   `table_native_execution.tex`) from the evidence files in `evidence/` and writes
   `evidence/NUMERICAL_AUDIT.json` (macro → value → evidence file SHA-256 → JSON pointer).
+* `evidence/build_figures.py` regenerates `fig_family_results.pdf` from the same held-out report, so
+  the per-concept figure plots the values the tables report. It is byte-deterministic and encodes the
+  comparison by shape rather than hue, so it stays legible in grayscale. It needs matplotlib, which the
+  LaTeX build does not.
 * `evidence/check_literal_numbers.py` lists any literal number left in the prose.
 * `evidence/CITATION_VERIFICATION.json` records how every cited key in `references.bib` was verified
   (arXiv id, DOI, PMLR listing or reachable URL).
