@@ -29,6 +29,19 @@ No network, no API key, no provider account. It verifies file hashes, prints the
 admission controls, reruns the frozen statistics on the recorded predictions, and diffs the result
 against the preserved held-out report. Runtime is about seven seconds.
 
+To read the benchmark case by case instead, serve this directory and open `explore.html`:
+
+```bash
+python3 -m http.server -d research/casepath/branch-benchmark 8000   # then open localhost:8000/explore.html
+```
+
+Each pair shows the sentence that changed, the justified change with its alternative routes, and
+what all four systems asked for, marked correct / spurious / missed. The marks are read from the
+frozen scorer's preserved report, and `build_explorer_data.py` asserts that they sum to the totals
+the paper reports. It is the fastest way to see *why* a score is what it is: on the scheduled-valuable
+pairs, for instance, CasePath requests the receipt (correct) and also the expert valuation
+(spurious) because the frozen planner unions alternative routes instead of selecting one.
+
 ## Why signed changes
 
 A checklist metric rewards a system for listing what usually appears in claims of this kind. Such a

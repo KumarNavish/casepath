@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Branch-Intervention Benchmark</title>
+<style>
+:root{
+  --bg:#fbfbfa; --panel:#fff; --ink:#1a1a18; --muted:#6b6b66; --line:#e3e2dd;
+  --add:#1f6f43; --add-bg:#e8f4ed; --rm:#8a4b12; --rm-bg:#fbefe2;
+  --bad:#a4262c; --bad-bg:#fbeaea; --miss:#7a6a1f; --miss-bg:#f7f2dc;
+  --accent:#2a4c8f; --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17181a; --panel:#1f2023; --ink:#e9e8e4; --muted:#9a9a93; --line:#31333799;
+  --add:#6fd39b; --add-bg:#1b3328; --rm:#e0a76a; --rm-bg:#33281a;
+  --bad:#f08a8f; --bad-bg:#3a2223; --miss:#d9c76a; --miss-bg:#332f1c; --accent:#8fb0ee;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.55 ui-sans-serif,-apple-system,"Segoe UI",Inter,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 16px 80px}
+h1{font-size:26px;letter-spacing:-.02em;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 28px;max-width:70ch}
+.totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-bottom:26px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px}
+.card.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.card h3{margin:0 0 8px;font-size:13px;letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+.big{font-variant-numeric:tabular-nums;font-size:25px;letter-spacing:-.02em}
+.row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);
+  font-variant-numeric:tabular-nums;margin-top:3px}
+.row b{color:var(--ink);font-weight:600}
+.bar{display:flex;height:5px;border-radius:3px;overflow:hidden;margin-top:9px;background:var(--line)}
+.bar i{display:block;height:100%}
+.controls{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:0 0 18px}
+button{font:inherit;font-size:13px;color:var(--ink);background:var(--panel);cursor:pointer;
+  border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.pair{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden}
+.phead{display:flex;gap:12px;align-items:baseline;padding:13px 16px;cursor:pointer}
+.phead:hover{background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.pid{font:12px var(--mono);color:var(--muted)}
+.ptitle{font-weight:600;flex:1;min-width:0}
+.chips{display:flex;gap:5px;flex-shrink:0}
+.chip{font:11px var(--mono);border-radius:5px;padding:2px 6px;white-space:nowrap}
+.chip.ok{background:var(--add-bg);color:var(--add)} .chip.sp{background:var(--bad-bg);color:var(--bad)}
+.chip.ms{background:var(--miss-bg);color:var(--miss)}
+.body{display:none;padding:0 16px 18px;border-top:1px solid var(--line)}
+.pair.open .body{display:block}
+.stmt{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 20px}
+@media(max-width:700px){.stmt{grid-template-columns:1fr}.totals{grid-template-columns:1fr 1fr}}
+.stmt div{border:1px solid var(--line);border-radius:8px;padding:11px 13px;background:var(--bg)}
+.stmt h4{margin:0 0 5px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.stmt p{margin:0;font-size:14px}
+.stmt .after{border-color:var(--accent)}
+h4.sec{margin:20px 0 8px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+ul{list-style:none;margin:0;padding:0}
+li.atom{display:flex;gap:8px;align-items:flex-start;padding:4px 0;font-size:13.5px}
+.sign{font:12px var(--mono);font-weight:700;flex-shrink:0;width:15px;text-align:center;
+  border-radius:4px;padding:1px 0;margin-top:2px}
+.sign.p{color:var(--add);background:var(--add-bg)} .sign.m{color:var(--rm);background:var(--rm-bg)}
+.mark{font:10px var(--mono);letter-spacing:.04em;text-transform:uppercase;border-radius:4px;
+  padding:2px 5px;flex-shrink:0;margin-top:2px}
+.mark.ok{background:var(--add-bg);color:var(--add)} .mark.sp{background:var(--bad-bg);color:var(--bad)}
+.mark.ms{background:var(--miss-bg);color:var(--miss)}
+.alt{border-left:2px solid var(--line);padding-left:11px;margin-bottom:9px}
+.alt em{font-style:normal;font:11px var(--mono);color:var(--muted)}
+.arm{border:1px solid var(--line);border-radius:8px;padding:11px 13px;margin-bottom:9px;background:var(--bg)}
+.arm.cp{border-color:var(--accent)}
+.armhead{display:flex;gap:9px;align-items:baseline;margin-bottom:7px}
+.armhead b{font-size:14px} .armhead span{font:12px var(--mono);color:var(--muted)}
+.guards{font:11px var(--mono);color:var(--muted);margin-top:8px;word-break:break-all}
+.none{color:var(--muted);font-size:13px;font-style:italic}
+footer{color:var(--muted);font-size:13px;margin-top:34px;border-top:1px solid var(--line);
+  padding-top:16px;max-width:75ch}
+code{font:12.5px var(--mono);background:var(--line);padding:1px 5px;border-radius:4px}
+.err{border:1px solid var(--bad);background:var(--bad-bg);color:var(--bad);padding:14px 16px;border-radius:9px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Branch-intervention benchmark</h1>
+  <p class="sub">Twenty-seven held-out case pairs. The two versions of a pair differ in one
+  sentence that decides which source rule applies. Each system is scored on the <em>change</em>
+  between the two document checklists it produces, never on either checklist alone. Click a pair
+  to see what changed and what each system asked for.</p>
+
+  <div id="totals" class="totals"></div>
+  <div id="controls" class="controls"></div>
+  <div id="list"></div>
+
+  <footer>
+    Marks come from the frozen scorer's preserved held-out report: for each pair and system the
+    reference realisation shown is the one the scorer selected, so the counts here are exactly the
+    ones the paper reports. Where a requirement admits alternative routes, satisfying one is
+    correct and adding the other is a spurious request. Rebuild this page's data with
+    <code>python3 build_explorer_data.py</code>; recompute every score with
+    <code>python3 reproduce.py</code>.
+  </footer>
+</div>
+
+<script>
+const FMT = n => n.toFixed(3);
+let DATA = null, armFilter = null, conceptFilter = null;
+
+fetch('explorer_data.json').then(r => {
+  if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+  return r.json();
+}).then(d => { DATA = d; render(); }).catch(e => {
+  document.getElementById('list').innerHTML =
+    '<div class="err"><b>Could not load explorer_data.json.</b><br>' + e.message +
+    '<br><br>Browsers block local file reads, so serve the directory first:<br>' +
+    '<code>python3 -m http.server -d research/casepath/branch-benchmark 8000</code><br>' +
+    'then open <code>http://localhost:8000/explore.html</code>.</div>';
+});
+
+function render() {
+  const t = document.getElementById('totals');
+  t.innerHTML = DATA.arms.map(a => {
+    const s = DATA.totals[a.key], tp = s.predicted_atoms - s.spurious_atoms;
+    const tot = Math.max(1, s.predicted_atoms + s.missed_atoms);
+    return `<div class="card ${armFilter === a.key ? 'sel' : ''}" data-arm="${a.key}" role="button" tabindex="0">
+      <h3>${a.label}</h3>
+      <div class="big">${FMT(s.micro_f1)}</div>
+      <div class="row"><span>signed-change F1</span></div>
+      <div class="bar">
+        <i style="width:${100*tp/tot}%;background:var(--add)"></i>
+        <i style="width:${100*s.spurious_atoms/tot}%;background:var(--bad)"></i>
+        <i style="width:${100*s.missed_atoms/tot}%;background:var(--miss)"></i>
+      </div>
+      <div class="row"><span>correct</span><b>${tp}</b></div>
+      <div class="row"><span>spurious</span><b>${s.spurious_atoms}</b></div>
+      <div class="row"><span>missed</span><b>${s.missed_atoms}</b></div>
+      <div class="row"><span>exact pairs</span><b>${Math.round(s.exact_rate * DATA.pairs.length)}/${DATA.pairs.length}</b></div>
+    </div>`;
+  }).join('');
+  t.querySelectorAll('.card').forEach(c => {
+    const pick = () => { armFilter = armFilter === c.dataset.arm ? null : c.dataset.arm; render(); };
+    c.onclick = pick;
+    c.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } };
+  });
+
+  const concepts = [...new Set(DATA.pairs.map(p => p.concept))]
+    .sort((a, b) => label(a).localeCompare(label(b)));
+  document.getElementById('controls').innerHTML =
+    `<button data-c="" aria-pressed="${conceptFilter === null}">All ${DATA.pairs.length} pairs</button>` +
+    concepts.map(c => {
+      const n = DATA.pairs.filter(p => p.concept === c).length;
+      return `<button data-c="${c}" aria-pressed="${conceptFilter === c}">${label(c)} (${n})</button>`;
+    }).join('');
+  document.getElementById('controls').querySelectorAll('button').forEach(b => {
+    b.onclick = () => { conceptFilter = b.dataset.c || null; render(); };
+  });
+
+  const shown = DATA.pairs.filter(p => !conceptFilter || p.concept === conceptFilter);
+  document.getElementById('list').innerHTML = shown.map(pairHTML).join('');
+  document.querySelectorAll('.phead').forEach(h => {
+    h.onclick = () => h.parentElement.classList.toggle('open');
+  });
+}
+
+const label = c => (DATA.pairs.find(p => p.concept === c) || {}).concept_label || c;
+const atom = i => DATA.vocabulary[i];
+const signed = i => {
+  const a = atom(i), plus = a.startsWith('+');
+  return `<li class="atom"><span class="sign ${plus ? 'p' : 'm'}">${plus ? '+' : '−'}</span>
+    <span>${esc(a.slice(1))}</span></li>`;
+};
+const marked = (i, kind) => {
+  const a = atom(i), plus = a.startsWith('+');
+  const name = { ok: 'correct', sp: 'spurious', ms: 'missed' }[kind];
+  return `<li class="atom"><span class="sign ${plus ? 'p' : 'm'}">${plus ? '+' : '−'}</span>
+    <span class="mark ${kind}">${name}</span><span>${esc(a.slice(1))}</span></li>`;
+};
+const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+function pairHTML(p) {
+  const arms = DATA.arms.filter(a => !armFilter || a.key === armFilter);
+  const chips = arms.map(a => {
+    const m = p.arms[a.key];
+    return `<span class="chip ok" title="${a.label}: correct">${m.correct.length}</span>
+      <span class="chip sp" title="${a.label}: spurious">${m.spurious.length}</span>
+      <span class="chip ms" title="${a.label}: missed">${m.missed.length}</span>`;
+  }).join(armFilter ? '' : '<span style="width:9px"></span>');
+
+  return `<div class="pair">
+    <div class="phead">
+      <span class="pid">${p.pair_id}</span>
+      <span class="ptitle">${esc(p.concept_label)}</span>
+      <span class="chips">${chips}</span>
+    </div>
+    <div class="body">
+      <div class="stmt">
+        <div><h4>Before</h4><p>${esc(p.statement_before)}</p></div>
+        <div class="after"><h4>After — the one sentence that changes</h4><p>${esc(p.statement_after)}</p></div>
+      </div>
+
+      <h4 class="sec">Justified change, from the source contract</h4>
+      ${p.acceptable.map((alt, i) => `<div class="alt">
+        ${p.acceptable.length > 1 ? `<em>route ${i + 1} of ${p.acceptable.length} — satisfying any one is correct</em>` : ''}
+        <ul>${alt.map(signed).join('') || '<li class="none">no change</li>'}</ul></div>`).join('')}
+
+      <h4 class="sec">What each system asked for</h4>
+      ${arms.map(a => {
+        const m = p.arms[a.key];
+        const items = [...m.correct.map(i => marked(i, 'ok')),
+                       ...m.spurious.map(i => marked(i, 'sp')),
+                       ...m.missed.map(i => marked(i, 'ms'))].join('');
+        const guards = m.changed_guards && m.changed_guards.length
+          ? `<div class="guards">changed source guards: ${m.changed_guards.map(esc).join(', ')}${
+              m.all_requests_source_chained ? ' · every request carries a source chain' : ''}</div>` : '';
+        return `<div class="arm ${a.key === 'b5_process_compiled' ? 'cp' : ''}">
+          <div class="armhead"><b>${a.label}</b>
+            <span>${m.before_count} → ${m.after_count} documents on the checklist</span></div>
+          <ul>${items || '<li class="none">predicted no change, and none was required</li>'}</ul>
+          ${guards}</div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+</script>
+</body>
+</html>
