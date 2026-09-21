@@ -86,6 +86,24 @@ The Render services named in historical release records run an older, separately
 sourced release. This repository has no deployment handoff and the local package
 should not be judged against those hosted services.
 
+## Research: the ICLR 2027 paper and its evidence
+
+The claims-workbench behaviour above is the subject of *CasePath: An Agentic, Process-First Architecture
+for Determining Evidence Requirements* (ICLR 2027 submission). The manuscript source, every generated
+number with its evidence pointer, and the reproducibility notes live in
+[`research/casepath/iclr2027-integrated/`](research/casepath/iclr2027-integrated/README.md):
+
+- Study A: a branch-intervention benchmark (36 case pairs over 9 branch concepts, one changed fact per pair,
+  reference contract derived from the public sources) with built-in falsifiers; the frozen planner makes
+  15 spurious signed document changes on the 27 held-out pairs against 27, 41 and 52 for three matched
+  comparators, while a preregistered broad-superiority gate fails and is reported.
+- Study B: the complete 150-claim corpus shipped in this repository, evaluated under a frozen
+  finite-corpus analysis contract (protocol and execution record in the paper; results are integrated when
+  the frozen analysis code produces them).
+- [`HANDOFF.md`](HANDOFF.md) at the repository root records the verified state of both studies, every
+  artifact path, and the open gaps; [`SUBMISSION_CHECKLIST.md`](research/casepath/iclr2027-integrated/SUBMISSION_CHECKLIST.md)
+  lists the submission steps.
+
 ## Documentation
 
 - [Documentation index](docs/README.md)
