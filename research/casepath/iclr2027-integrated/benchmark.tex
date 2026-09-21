@@ -1,0 +1,67 @@
+\section{Study A: A Benchmark Only the Branch Can Pass}
+\label{sec:benchmark}
+
+\paragraph{Construction.}
+We select \nConcepts{} branch concepts whose truth changes at least one
+evidence requirement under the sources: a scheduled valuable at or above the
+policy threshold, a bicycle among the stolen items, SIM-card theft with
+misuse, an identifiable third-party causer, a formal expert procedure, a
+repair above the consent threshold, a written demand with a forfeiture period
+(\emph{Nachfrist}), recovery of stolen goods, and insurer declination. Each
+concept is instantiated in four neutral household-theft contexts, giving
+\nPairsAll{} pairs and \nUnitsAll{} case units. The members of a pair differ
+in one statement: for the watch above, ``\pairExampleFalse'' becomes ``\pairExampleTrue''. A
+reference contract authored from the same sources before any system was run
+fixes the acceptable signed changes; where the wording admits alternatives
+(receipt \emph{or} expert valuation) they remain alternatives, and both
+pre-hidden amendments are preserved with the earlier versions. One context per concept forms the
+development split (\nPairsDev{} pairs, \nUnitsDev{} units); the remaining
+three contexts (\nPairsHid{} pairs, \nUnitsHid{} units) stayed sealed until
+the method, benchmark, analysis code and gate were hash-frozen, and were read
+once. The held-out split therefore tests context robustness for known rule
+concepts, not unseen-rule or unseen-policy transfer.
+
+\paragraph{Falsifiers built into the benchmark.}
+Static, volume and pairing shortcuts are excluded before evaluation rather
+than argued away afterwards
+\citep{kaushik2018reading,sugawara2018easier,mccoy2019hans,bowman2021benchmarking,yuan2024shortcut}.
+(i)~\emph{Input-free control}: a constant signed-set predictor fitted on
+eight branch families and evaluated on the ninth has maximum held-out
+micro-$F_1$ \pfNoInputMax{}; the nine target signatures are distinct
+(\pfEntropy{} bits of entropy over \pfUniverse{} signed document atoms).
+(ii)~\emph{Wrong-pairing permutation}: \casepath's outputs are held fixed
+and reassigned to other branch families under \wpShifts{} cyclic shifts and
+\wpDraws{} seeded derangements; a system whose changes are not
+branch-specific keeps its score. (iii)~\emph{One-shot read with a
+preregistered gate}: eight conditions (Table~\ref{tab:gates}) were fixed
+before the held-out execution, including a deliberately strong
+broad-superiority requirement.
+
+\paragraph{Scoring.}
+For a pair $(x^-,x^+)$, a system's signed change is
+\begin{equation}
+\Delta(D)=\{+d:d\in D(x^+)\setminus D(x^-)\}\cup\{-d:d\in D(x^-)\setminus D(x^+)\}.
+\label{eq:delta}
+\end{equation}
+The route-aware scorer compares $\Delta$ with every acceptable reference
+realisation and keeps the best under a frozen lexicographic rule
+(Appendix~\ref{app:paired-metrics}); requesting the union of two alternatives
+is not credited as correct. True positives, predictions and references are
+pooled over the \nPairsHid{} pairs into micro precision, recall and $F_1$.
+Spurious changes are unjustified additions or withdrawals; missed changes are
+required ones not made; an exact pair reproduces the entire signed set. These
+count changes between two checklists, not total requests in a claim.
+Uncertainty uses \bootDraws{} whole-family bootstrap draws; pairwise
+contrasts use the exact $2^9=\swapAssignments$ family sign-flip test with
+Holm adjustment.
+
+\paragraph{Comparators and budget.}
+\emph{Direct} predicts the document set from the case and source material.
+\emph{Graph as context} additionally receives the induced process and
+evidence-rule representation but still generates the set in one step.
+\emph{Evidence-first} derives evidence needs, retrieves twelve passages by
+keyword matching, and then predicts documents. All arms use the same model
+setting (\texttt{\cpModel}), provider restriction, temperature zero, source
+snapshot, catalogue and case texts; the held-out receipts record \dirCalls,
+\gcCalls, \efCalls{} and \cpCalls{} calls. Inputs and model conditions are
+matched; compute is not (Appendix~\ref{app:costs}).

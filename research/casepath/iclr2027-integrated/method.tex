@@ -1,0 +1,109 @@
+\section{Method: Source-Grounded Process State Controls Evidence}
+\label{sec:method}
+
+\subsection{The planning object}
+A source specification $K$ records process nodes, conditions, obligations,
+required facts, evidence capabilities and document routes over a closed
+catalogue $\mathcal D$. A capability states what must be shown; a route is a
+subset of $\mathcal D$ that can establish it, and alternative routes remain
+alternatives. Case state $s=(z,E)$ pairs the assessment $z$ of source
+conditions with the recorded evidence $E$. A versioned planner returns the
+requested documents, a justified next action and the justification chains,
+\begin{equation}
+(D_t,a_t,J_t)=\Pi_K(s_t),\qquad s_{t+1}=U(s_t,e_{t+1}),
+\label{eq:loop}
+\end{equation}
+where $U$ admits a new observation or correction. Two properties hold by
+construction. \emph{Non-prematurity}: an unresolved condition can emit a
+question but never a branch-specific document. \emph{Provenance closure}:
+$D_t$ is a projection of active chains, so no document can enter a plan
+without an obligation, a fact, a capability and a route behind it.
+
+\subsection{Agentic roles, and where code takes over}
+Semantic work is done by model calls in fixed roles: offline, extracting
+quote-anchored propositions from admitted passages, synthesising the macro
+process, refining propositions into guarded evidence rules and mapping
+capabilities onto the catalogue; online, deciding for each guard whether a
+case satisfies it. Every role returns a structured judgement, never a
+checklist. Code owns activation, projection, route selection, next-action
+priority and the justification record (Appendix~\ref{app:studya},
+Figure~\ref{fig:method}): a model may
+say what a passage means or whether a case meets a condition, but it cannot
+add a document to the plan.
+
+\subsection{Study A planner: guarded rules over a closed catalogue}
+\label{sec:v5}
+The frozen Study~A specification was compiled from \nPassages{} exact
+passages of Swiss insurance law and public household-insurance policies and
+forms (Fedlex, CSS, AXA, Generali, Simpego and the Swiss Insurance
+Association), with recorded URLs and content hashes. Extraction yields
+\nPropositions{} operational propositions. A deterministic check requires
+every proposition to be either assigned to an evidence rule or explicitly
+classified as non-evidentiary; the frozen representation has \nRules{}
+evidence rules, \nNonEvidentiary{} non-evidentiary classifications,
+\nGuards{} case guards and a catalogue of \nCatalogue{} document types.
+Completeness holds over this extracted inventory only.
+
+Each rule $r$ has a local applicability guard $g_r$, required capabilities
+$\mathcal C_r$ and, for each capability $c$, routes $\mathcal R_c$. The
+interpreter assigns $z_g(x)\in\{\T,\F,\U\}$ to guard $g$ for case $x$. A true
+or false verdict is accepted only with an exact quotation from that same case;
+otherwise it reverts to unresolved. Absence of evidence is unresolved, never
+false. Each guard is decided in its own call, with case packets batched only
+as an execution optimisation, so every branch decision is auditable on its
+own. Let $A(x)$ be the unconditional rules and the rules whose guards are
+true, and let $\mathcal R^{\rm conf}_g$ be the confirmation routes mapped for
+a guard that is true in the narrative but not yet established by admitted
+evidence. With held document types $H$, the plan is
+\begin{equation}
+D(x,H)=\Bigl[\bigcup_{r\in A(x)}\bigcup_{c\in\mathcal C_r}\bigcup_{\rho\in\mathcal R_c}\rho
+\;\cup\bigcup_{g\ \text{true, unconfirmed}}\ \bigcup_{\rho\in\mathcal R^{\rm conf}_g}\rho\Bigr]\setminus H .
+\label{eq:v5}
+\end{equation}
+An unresolved guard yields a clarification question; a false guard
+contributes nothing; no generative step runs after the verdicts. Each request
+retains its rule, fact, must-show statement and source spans. Two boundaries
+of this version matter for reading the results: Equation~\ref{eq:v5} unions
+mapped routes, so V5 neither selects one sufficient alternative nor judges
+whether a held document is adequate for a specific capability; and the gate
+is rule-local, so changing macro-process edges while keeping rules and
+verdicts fixed cannot change $D$. ``Active path'' in Study~A means the
+case-conditioned applicability structure, not traversal of every edge.
+
+\subsection{Study B controller: applicability, acquisition and adequacy}
+\label{sec:native-method}
+The complete-corpus controller compiles three public tenancy templates
+deterministically into one representation shared by every arm; it performs no
+model-based source induction. Its assessment separates predicate truth,
+document presence, individual adequacy and joint adequacy. On the
+applicability graph,
+\begin{equation}
+q_s(z)=\phi_s(z)\land_3 J_s\bigl(\{q_p(z)\}_{p\in\mathrm{pa}(s)}\bigr),\ \ 
+a_o(z)=q_{\mathrm{scope}(o)}(z)\land_3\phi_o(z),\ \ 
+b_o(z)=a_o(z)\land_3\psi_o(z),
+\label{eq:native-activation}
+\end{equation}
+where $J_s$ is the declared all/any join over parents (roots use the empty
+all-join, which is true), $\land_3$ is false if any input is false, true if
+all are true and unresolved otherwise, $a_o$ is applicability and $\psi_o$ a
+separate acquisition permission. Only $b_o=\T$ permits an immediate request.
+For capability $c$, a route $\rho$ is satisfied only when its required
+evidence is present and adequate and the joint assessment is sufficient;
+write this state $\rho_c(E)$, with missing or inadequate documents
+$M_{c\rho}$ and unknown presence or adequacy forming review items
+$V_{c\rho}$. The controller selects
+\begin{equation}
+\rho_c^*=\operatorname*{arg\,min}^{\rm lex}_{\rho\in\mathcal R_c}
+\bigl(\mathbf 1\{\rho_c(E)\ne\T\},\,|M_{c\rho}|,\,|V_{c\rho}|,\,
+\operatorname{sort}(M_{c\rho}),\,\operatorname{id}(\rho)\bigr),
+\label{eq:native-route}
+\end{equation}
+per capability rather than by global minimisation, and requests
+$\bigcup_c M_{c\rho_c^*}$ over eligible obligations. Inactive obligations add
+no demand; unresolved eligibility produces conditional candidates and
+questions; an empty route set is an evidence gap, not licence to invent a
+document. The next action follows a fixed priority: resolve questions, review
+evidence, request a document, review an active gap, then choose an eligible
+substantive action. This controller extends the Study~A planning object with
+sufficiency semantics; it is not a repair of V5, and no comparison between
+the runtimes is claimed (Appendix~\ref{app:correspondence}).

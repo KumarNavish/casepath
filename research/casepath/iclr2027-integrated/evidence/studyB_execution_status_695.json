@@ -1,0 +1,145 @@
+{
+ "snapshot_cells": 695,
+ "cells_sha256_concat": "189921c6079246e0597bc46a98088b9d6e7b058f0208a12b811e4310438f4472",
+ "scheduled": {
+  "public_dev": 420,
+  "hidden_test": 630,
+  "total": 1050
+ },
+ "by_split_arm": {
+  "hidden_test|CASEPATH_CONTROL": {
+   "completed": 33,
+   "failed": 7
+  },
+  "hidden_test|COMPILED_EQUIVALENT": {
+   "completed": 33,
+   "blocked_dependency": 6
+  },
+  "hidden_test|DIRECT_REVIEWED": {
+   "failed": 27,
+   "completed": 12
+  },
+  "hidden_test|DOCUMENT_FIRST_REVIEWED": {
+   "completed": 10,
+   "failed": 29
+  },
+  "hidden_test|LOCAL_SCOPE_ABLATION": {
+   "completed": 32,
+   "blocked_dependency": 6,
+   "failed": 1
+  },
+  "hidden_test|PROCESS_CONTEXT_REVIEWED": {
+   "completed": 20,
+   "failed": 19
+  },
+  "hidden_test|RULE_FIRST_REVIEWED": {
+   "failed": 24,
+   "completed": 16
+  },
+  "public_dev|CASEPATH_CONTROL": {
+   "failed": 16,
+   "completed": 44
+  },
+  "public_dev|COMPILED_EQUIVALENT": {
+   "completed": 44,
+   "blocked_dependency": 16
+  },
+  "public_dev|DIRECT_REVIEWED": {
+   "failed": 41,
+   "completed": 19
+  },
+  "public_dev|DOCUMENT_FIRST_REVIEWED": {
+   "failed": 43,
+   "completed": 17
+  },
+  "public_dev|LOCAL_SCOPE_ABLATION": {
+   "completed": 44,
+   "blocked_dependency": 16
+  },
+  "public_dev|PROCESS_CONTEXT_REVIEWED": {
+   "failed": 33,
+   "completed": 27
+  },
+  "public_dev|RULE_FIRST_REVIEWED": {
+   "failed": 32,
+   "completed": 28
+  }
+ },
+ "failure_taxonomy_by_split_arm": {
+  "hidden_test|CASEPATH_CONTROL": {
+   "review_envelope": 1,
+   "other_validation": 1,
+   "contradictory_presence_state": 3,
+   "invalid_codebook_index": 1,
+   "truncated_or_nonterminal": 1
+  },
+  "hidden_test|DIRECT_REVIEWED": {
+   "unknown_relation_endpoint": 12,
+   "truncated_or_nonterminal": 6,
+   "invalid_codebook_index": 9
+  },
+  "hidden_test|DOCUMENT_FIRST_REVIEWED": {
+   "truncated_or_nonterminal": 12,
+   "invalid_codebook_index": 9,
+   "unknown_relation_endpoint": 8
+  },
+  "hidden_test|LOCAL_SCOPE_ABLATION": {
+   "other_validation": 1
+  },
+  "hidden_test|PROCESS_CONTEXT_REVIEWED": {
+   "unknown_relation_endpoint": 13,
+   "truncated_or_nonterminal": 5,
+   "invalid_codebook_index": 1
+  },
+  "hidden_test|RULE_FIRST_REVIEWED": {
+   "unknown_relation_endpoint": 12,
+   "truncated_or_nonterminal": 7,
+   "other_validation": 1,
+   "invalid_codebook_index": 4
+  },
+  "public_dev|CASEPATH_CONTROL": {
+   "document_outside_route": 2,
+   "invalid_codebook_index": 4,
+   "contradictory_presence_state": 7,
+   "truncated_or_nonterminal": 2,
+   "review_envelope": 1
+  },
+  "public_dev|DIRECT_REVIEWED": {
+   "unknown_relation_endpoint": 21,
+   "invalid_codebook_index": 8,
+   "truncated_or_nonterminal": 10,
+   "other_validation": 2
+  },
+  "public_dev|DOCUMENT_FIRST_REVIEWED": {
+   "invalid_codebook_index": 11,
+   "truncated_or_nonterminal": 16,
+   "unknown_relation_endpoint": 13,
+   "review_envelope": 2,
+   "other_validation": 1
+  },
+  "public_dev|PROCESS_CONTEXT_REVIEWED": {
+   "unknown_relation_endpoint": 26,
+   "truncated_or_nonterminal": 5,
+   "invalid_codebook_index": 1,
+   "other_validation": 1
+  },
+  "public_dev|RULE_FIRST_REVIEWED": {
+   "unknown_relation_endpoint": 21,
+   "truncated_or_nonterminal": 8,
+   "invalid_codebook_index": 3
+  }
+ },
+ "domain_family_counts": {
+  "public_dev": {
+   "defect_mold_heating": 4,
+   "lease_termination_dispute": 3,
+   "rent_increase_dispute": 4
+  },
+  "hidden_test": {
+   "defect_mold_heating": 6,
+   "lease_termination_dispute": 5,
+   "rent_increase_dispute": 6
+  }
+ },
+ "note": "Execution status only; no scores exist before both prediction freezes. Failed cells receive frozen adverse penalties in the finite report."
+}

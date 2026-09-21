@@ -1,0 +1,609 @@
+{
+ "b5_minus_comparator_micro_f1": {
+  "b1_direct": 0.07843137254901955,
+  "b3_representation_then_list": 0.07619047619047614,
+  "b6_evidence_first": 0.3498349834983498
+ },
+ "benchmark_semantics": "one acceptable document route per independently frozen requirement",
+ "claim_status": "UNSUPPORTED",
+ "cluster_bootstrap": {
+  "arms": {
+   "b1_direct": {
+    "high": 0.7586206896551724,
+    "low": 0.4044943820224719
+   },
+   "b3_representation_then_list": {
+    "high": 0.7155963302752294,
+    "low": 0.47058823529411764
+   },
+   "b5_process_compiled": {
+    "high": 0.88,
+    "low": 0.43478260869565216
+   },
+   "b6_evidence_first": {
+    "high": 0.4,
+    "low": 0.23911547666533708
+   }
+  },
+  "b5_minus": {
+   "b1_direct": {
+    "high": 0.4202376514445479,
+    "low": -0.2531871639674291
+   },
+   "b3_representation_then_list": {
+    "high": 0.33274492497793473,
+    "low": -0.1990359155407699
+   },
+   "b6_evidence_first": {
+    "high": 0.5648148148148148,
+    "low": 0.11045828437132782
+   }
+  },
+  "draws": 10000,
+  "seed": 20260917,
+  "unit": "branch_family"
+ },
+ "contract": "casepath.theft-confirmatory-analysis/5.0.0",
+ "family_swap_tests": {
+  "b1_direct": {
+   "assignments": 512,
+   "families": [
+    "PR_bicycle_claimed",
+    "PR_declined",
+    "PR_expert_procedure_requested",
+    "PR_goods_recovered",
+    "PR_nachfrist_set",
+    "PR_repair_over_500",
+    "PR_scheduled_valuable_1000",
+    "PR_sim_card_stolen",
+    "PR_third_party_causer"
+   ],
+   "family_differences": [
+    0.38888888888888895,
+    1.0,
+    -0.48888888888888893,
+    0.20000000000000007,
+    0.8333333333333334,
+    -0.2777777777777777,
+    -0.33333333333333337,
+    -0.11111111111111105,
+    -0.8888888888888888
+   ],
+   "holm_adjusted_p": 0.796875,
+   "null_max": 0.5024691358024691,
+   "null_min": -0.5024691358024691,
+   "observed_mean_difference": 0.035802469135802505,
+   "one_sided_p": 0.435546875
+  },
+  "b3_representation_then_list": {
+   "assignments": 512,
+   "families": [
+    "PR_bicycle_claimed",
+    "PR_declined",
+    "PR_expert_procedure_requested",
+    "PR_goods_recovered",
+    "PR_nachfrist_set",
+    "PR_repair_over_500",
+    "PR_scheduled_valuable_1000",
+    "PR_sim_card_stolen",
+    "PR_third_party_causer"
+   ],
+   "family_differences": [
+    0.1777777777777777,
+    0.7222222222222223,
+    -0.4444444444444444,
+    0.47777777777777775,
+    0.6111111111111112,
+    -0.38888888888888884,
+    -0.022222222222222143,
+    0.05555555555555558,
+    -0.8000000000000002
+   ],
+   "holm_adjusted_p": 0.796875,
+   "null_max": 0.41111111111111115,
+   "null_min": -0.41111111111111115,
+   "observed_mean_difference": 0.04320987654320988,
+   "one_sided_p": 0.3984375
+  },
+  "b6_evidence_first": {
+   "assignments": 512,
+   "families": [
+    "PR_bicycle_claimed",
+    "PR_declined",
+    "PR_expert_procedure_requested",
+    "PR_goods_recovered",
+    "PR_nachfrist_set",
+    "PR_repair_over_500",
+    "PR_scheduled_valuable_1000",
+    "PR_sim_card_stolen",
+    "PR_third_party_causer"
+   ],
+   "family_differences": [
+    0.7936507936507936,
+    0.7777777777777778,
+    -0.5555555555555555,
+    0.6111111111111112,
+    0.7714285714285715,
+    0.5,
+    0.16666666666666663,
+    0.2777777777777778,
+    -0.3333333333333333
+   ],
+   "holm_adjusted_p": 0.12890625,
+   "null_max": 0.5319223985890652,
+   "null_min": -0.5319223985890652,
+   "observed_mean_difference": 0.3343915343915344,
+   "one_sided_p": 0.04296875
+  }
+ },
+ "gate_pass": false,
+ "mode": "hidden",
+ "positive_claim_gates": {
+  "correct_pairing_above_null_97_5": true,
+  "delta_precision_at_least_0_70": false,
+  "gold_chain_coverage_at_least_0_80": true,
+  "holm_p_at_most_0_05_against_all": false,
+  "margin_at_least_0_10_against_all": false,
+  "no_orphan_insertion_path": true,
+  "predicted_chain_attribution_at_least_0_90": true,
+  "predicted_gold_ratio_in_range": true
+ },
+ "scores": {
+  "b1_direct": {
+   "exact_rate": 0.3333333333333333,
+   "family_macro_pair_f1": 0.6123456790123457,
+   "family_pair_f1": {
+    "PR_bicycle_claimed": 0.611111111111111,
+    "PR_declined": 0.0,
+    "PR_expert_procedure_requested": 0.48888888888888893,
+    "PR_goods_recovered": 0.7999999999999999,
+    "PR_nachfrist_set": 0.16666666666666666,
+    "PR_repair_over_500": 0.7777777777777777,
+    "PR_scheduled_valuable_1000": 1.0,
+    "PR_sim_card_stolen": 0.7777777777777777,
+    "PR_third_party_causer": 0.8888888888888888
+   },
+   "gold_atoms": 33,
+   "micro_f1": 0.5882352941176471,
+   "missed_atoms": 8,
+   "never_changed_rate": 0.0,
+   "pairs": 27,
+   "precision": 0.4807692307692308,
+   "predicted_atoms": 52,
+   "recall": 0.7575757575757576,
+   "selected_gold_realizations": {
+    "theft-01-02": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-01-03": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-01-04": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-02-02": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-02-03": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-02-04": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-03-02": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-03-03": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-03-04": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-04-02": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-04-03": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-04-04": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-05-02": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-05-03": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-05-04": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-06-02": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-06-03": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-06-04": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-07-02": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-07-03": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-07-04": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-08-02": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-08-03": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-08-04": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-09-02": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "theft-09-03": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "theft-09-04": [
+     "+Insurer's declination of the claim for indemnity"
+    ]
+   },
+   "spurious_atoms": 27,
+   "tp": 25
+  },
+  "b3_representation_then_list": {
+   "exact_rate": 0.14814814814814814,
+   "family_macro_pair_f1": 0.6049382716049383,
+   "family_pair_f1": {
+    "PR_bicycle_claimed": 0.8222222222222223,
+    "PR_declined": 0.27777777777777773,
+    "PR_expert_procedure_requested": 0.4444444444444444,
+    "PR_goods_recovered": 0.5222222222222223,
+    "PR_nachfrist_set": 0.38888888888888884,
+    "PR_repair_over_500": 0.8888888888888888,
+    "PR_scheduled_valuable_1000": 0.6888888888888888,
+    "PR_sim_card_stolen": 0.611111111111111,
+    "PR_third_party_causer": 0.8000000000000002
+   },
+   "gold_atoms": 33,
+   "micro_f1": 0.5904761904761905,
+   "missed_atoms": 2,
+   "never_changed_rate": 0.0,
+   "pairs": 27,
+   "precision": 0.4305555555555556,
+   "predicted_atoms": 72,
+   "recall": 0.9393939393939394,
+   "selected_gold_realizations": {
+    "theft-01-02": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-01-03": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-01-04": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-02-02": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-02-03": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-02-04": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-03-02": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-03-03": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-03-04": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-04-02": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-04-03": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-04-04": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-05-02": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-05-03": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-05-04": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-06-02": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-06-03": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-06-04": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-07-02": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-07-03": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-07-04": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-08-02": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-08-03": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-08-04": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-09-02": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "theft-09-03": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "theft-09-04": [
+     "+Insurer's declination of the claim for indemnity"
+    ]
+   },
+   "spurious_atoms": 41,
+   "tp": 31
+  },
+  "b5_process_compiled": {
+   "exact_rate": 0.4444444444444444,
+   "family_macro_pair_f1": 0.6481481481481481,
+   "family_pair_f1": {
+    "PR_bicycle_claimed": 1.0,
+    "PR_declined": 1.0,
+    "PR_expert_procedure_requested": 0.0,
+    "PR_goods_recovered": 1.0,
+    "PR_nachfrist_set": 1.0,
+    "PR_repair_over_500": 0.5,
+    "PR_scheduled_valuable_1000": 0.6666666666666666,
+    "PR_sim_card_stolen": 0.6666666666666666,
+    "PR_third_party_causer": 0.0
+   },
+   "gold_atoms": 33,
+   "micro_f1": 0.6666666666666666,
+   "missed_atoms": 9,
+   "never_changed_rate": 0.1111111111111111,
+   "pairs": 27,
+   "precision": 0.6153846153846154,
+   "predicted_atoms": 39,
+   "recall": 0.7272727272727273,
+   "selected_gold_realizations": {
+    "theft-01-02": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-01-03": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-01-04": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-02-02": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-02-03": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-02-04": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-03-02": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-03-03": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-03-04": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-04-02": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-04-03": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-04-04": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-05-02": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-05-03": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-05-04": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-06-02": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-06-03": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-06-04": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-07-02": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-07-03": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-07-04": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-08-02": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-08-03": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-08-04": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-09-02": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "theft-09-03": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "theft-09-04": [
+     "+Insurer's declination of the claim for indemnity"
+    ]
+   },
+   "spurious_atoms": 15,
+   "tp": 24
+  },
+  "b6_evidence_first": {
+   "exact_rate": 0.07407407407407407,
+   "family_macro_pair_f1": 0.31375661375661373,
+   "family_pair_f1": {
+    "PR_bicycle_claimed": 0.20634920634920637,
+    "PR_declined": 0.2222222222222222,
+    "PR_expert_procedure_requested": 0.5555555555555555,
+    "PR_goods_recovered": 0.38888888888888884,
+    "PR_nachfrist_set": 0.22857142857142856,
+    "PR_repair_over_500": 0.0,
+    "PR_scheduled_valuable_1000": 0.5,
+    "PR_sim_card_stolen": 0.38888888888888884,
+    "PR_third_party_causer": 0.3333333333333333
+   },
+   "gold_atoms": 33,
+   "micro_f1": 0.31683168316831684,
+   "missed_atoms": 17,
+   "never_changed_rate": 0.14814814814814814,
+   "pairs": 27,
+   "precision": 0.23529411764705882,
+   "predicted_atoms": 68,
+   "recall": 0.48484848484848486,
+   "selected_gold_realizations": {
+    "theft-01-02": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-01-03": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-01-04": [
+     "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "theft-02-02": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-02-03": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-02-04": [
+     "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+     "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "theft-03-02": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-03-03": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-03-04": [
+     "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "theft-04-02": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-04-03": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-04-04": [
+     "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+     "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "theft-05-02": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-05-03": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-05-04": [
+     "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "theft-06-02": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-06-03": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-06-04": [
+     "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "theft-07-02": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-07-03": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-07-04": [
+     "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "theft-08-02": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-08-03": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-08-04": [
+     "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "theft-09-02": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "theft-09-03": [
+     "+Insurer's declination of the claim for indemnity"
+    ],
+    "theft-09-04": [
+     "+Insurer's declination of the claim for indemnity"
+    ]
+   },
+   "spurious_atoms": 52,
+   "tp": 16
+  }
+ }
+}

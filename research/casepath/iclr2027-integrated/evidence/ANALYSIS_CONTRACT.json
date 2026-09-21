@@ -1,0 +1,339 @@
+{
+  "contract": "casepath.compact-v3.finite-corpus-analysis/1.0.0",
+  "study_id": "N150-SHARED-COMPILED-COMPACT-3",
+  "amendment_id": "N150-COMPACT-V3-FINITE-CORPUS-AMENDMENT-1",
+  "parent_analysis_sha256": "2a10d7637ab36aa243059ef465f53e7606f4c4681b623b96ddf4ca849122cb7c",
+  "status": "PROSPECTIVE_SCIENTIFIC_AMENDMENT_NOT_CANONICAL_ADMISSION",
+  "decision": "ADMIT_SAME_COMPLETE_COMPARISON_AS_FINITE_CORPUS_EXPLORATORY_MEASUREMENT",
+  "unchanged_execution_bindings": {
+    "implementation_commit": "7027d9e7a6f29b286ec1f9f57aec3e7ba32a37df",
+    "method_execution_plan_id": "df27d39ea05ff8b8ca0436e0f3e7ad0c1fa6042920a05f24e75eab8abab97090",
+    "method_implementation_identity": "89b7ab89e4ee9dd588d651b43876b526b645adc16d8499b9a3f3f9fb9984f86d",
+    "reserved_schedule_usd": "234.895614",
+    "reservation_rounded_up_usd": "234.90"
+  },
+  "estimand": {
+    "target": "Realized performance of the five fixed singleton two-call pipelines on every scheduled native150 case, conditional on the identical public compilation, fixed observable projections, fixed generator reference and one recorded provider trajectory per stage.",
+    "population": "This finite 150-case/28-family/3-domain release only; no sampled new-population, next-run, causal-component or real-customer estimand.",
+    "primary": "90 protected-split cases/17 families; inputs previously inspected; evaluator target access separately governed.",
+    "development": "60 public-development cases/11 families, separate descriptive reporting; no scores released between phases.",
+    "combined": "All150/28families descriptive census using combined family weights; never an unlabelled 60:90 average or a replacement for the primary protected-split display.",
+    "preparation": "Deterministic public-template compilation supplied equally to all arms, not learned source-to-process induction.",
+    "sampling": "One planned sample per learned stage, unchanged; repeat-inference variability cannot be estimated or declared zero.",
+    "full_planning_object": "Retained for route grouping and joint adequacy; unchanged native export is a projection."
+  },
+  "matrix": {
+    "learned_arms": [
+      "CASEPATH_CONTROL",
+      "DIRECT_REVIEWED",
+      "DOCUMENT_FIRST_REVIEWED",
+      "PROCESS_CONTEXT_REVIEWED",
+      "RULE_FIRST_REVIEWED"
+    ],
+    "deterministic_controls": [
+      "COMPILED_EQUIVALENT",
+      "LOCAL_SCOPE_ABLATION"
+    ],
+    "cases": 150,
+    "learned_cells": 750,
+    "total_cells": 1050,
+    "phase_cells": {
+      "public_dev": 420,
+      "hidden_test": 630
+    },
+    "request_slots": 1502,
+    "phase_requests": {
+      "route_validation": 2,
+      "public_dev": 600,
+      "hidden_test": 900
+    }
+  },
+  "endpoint_hierarchy": {
+    "primary_practical_contrasts": [
+      {
+        "id": "F1__DIRECT_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "DIRECT_REVIEWED",
+        "metric": "emitted_checklist_f1",
+        "direction": 1,
+        "practical_boundary": 0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "superiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "CER__DIRECT_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "DIRECT_REVIEWED",
+        "metric": "critical_evidence_recall",
+        "direction": 1,
+        "practical_boundary": -0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "noninferiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "UDR__DIRECT_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "DIRECT_REVIEWED",
+        "metric": "emitted_unnecessary_fraction",
+        "direction": -1,
+        "practical_boundary": -0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "noninferiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "F1__DOCUMENT_FIRST_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "DOCUMENT_FIRST_REVIEWED",
+        "metric": "emitted_checklist_f1",
+        "direction": 1,
+        "practical_boundary": 0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "superiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "CER__DOCUMENT_FIRST_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "DOCUMENT_FIRST_REVIEWED",
+        "metric": "critical_evidence_recall",
+        "direction": 1,
+        "practical_boundary": -0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "noninferiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "UDR__DOCUMENT_FIRST_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "DOCUMENT_FIRST_REVIEWED",
+        "metric": "emitted_unnecessary_fraction",
+        "direction": -1,
+        "practical_boundary": -0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "noninferiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "F1__PROCESS_CONTEXT_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "PROCESS_CONTEXT_REVIEWED",
+        "metric": "emitted_checklist_f1",
+        "direction": 1,
+        "practical_boundary": 0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "superiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "CER__PROCESS_CONTEXT_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "PROCESS_CONTEXT_REVIEWED",
+        "metric": "critical_evidence_recall",
+        "direction": 1,
+        "practical_boundary": -0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "noninferiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "UDR__PROCESS_CONTEXT_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "PROCESS_CONTEXT_REVIEWED",
+        "metric": "emitted_unnecessary_fraction",
+        "direction": -1,
+        "practical_boundary": -0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "noninferiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "F1__RULE_FIRST_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "RULE_FIRST_REVIEWED",
+        "metric": "emitted_checklist_f1",
+        "direction": 1,
+        "practical_boundary": 0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "superiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "CER__RULE_FIRST_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "RULE_FIRST_REVIEWED",
+        "metric": "critical_evidence_recall",
+        "direction": 1,
+        "practical_boundary": -0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "noninferiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      },
+      {
+        "id": "UDR__RULE_FIRST_REVIEWED",
+        "treatment": "CASEPATH_CONTROL",
+        "control": "RULE_FIRST_REVIEWED",
+        "metric": "emitted_unnecessary_fraction",
+        "direction": -1,
+        "practical_boundary": -0.03,
+        "comparison": "strictly_greater_than",
+        "role": "finite_corpus_practical_contrast_not_hypothesis_test",
+        "parent_role": "noninferiority",
+        "threshold_origin": "Numerically unchanged from the pre-outcome parent; now used only as an operational magnitude/loss-tolerance target, not a significance or population noninferiority rule."
+      }
+    ],
+    "number_of_primary_practical_contrasts": 12,
+    "p_values": false,
+    "confidence_intervals": false,
+    "multiplicity_testing": false,
+    "report_all_competitors": true,
+    "per_comparator_rule": "Report all three signed conservative contrasts with the unchanged numerical boundaries. A finite practical target is met only if all three strictly exceed their boundaries and complete-run/label/integrity conditions hold. This is not a significance or population noninferiority result.",
+    "all_comparator_rule": "An all-comparator finite practical target requires all12 magnitudes to meet the fixed criteria on the protected split; no best-baseline selection and no development or combined result can rescue a failed protected-split target.",
+    "secondary": "All previously specified native structural, branch, path, evidence, request, grounding and acceptance metrics remain reported with their exact native meanings, plus interpretable raw counts and complete statuses. No post-result promotion to a new primary claim.",
+    "mechanistic": "compiled equivalence and domain-applicability ablation conditional on fresh CASEPATH_CONTROL state; no independent model replication; no general macro-topology claim"
+  },
+  "failure_policy": {
+    "successful_empty_artifact": "score as actually emitted under native semantics; do not mark an intentional empty response failed solely for being empty",
+    "missing_malformed_failed_unknown": "high-unit metrics 0; low-unit rates1; native contract acceptance0; preserve exact execution status and reason separately",
+    "pairwise_primary": "If either endpoint is unobserved for a case, oriented contrast=-1, as native _pairwise_case_effects. Otherwise direction*(treatment-control). This conservative contrast is distinct from difference of displayed ITT means.",
+    "table_estimator": "Display per-arm worst-score ITT means; also show actual statuses and conventional ITT differences separately labelled",
+    "raw_counts": "Never fabricate an empty successful prediction for failures. Accepted-output TP/FP/FN are actual counts; failed-output TP/FP/FN are null. Scorable and failed coverage counts accompany totals.",
+    "no_complete_case_rescue": true,
+    "uncertain_request": "stop new sends, preserve liability and collect same identity; timeout is not a failed physical attempt",
+    "target_unavailable": "endpoint unavailable for all arms on that case, not an empty target and not a producer failure. Do not issue a full-primary decision if any primary label is unavailable. Preserve cohort and report missing-label coverage.",
+    "scorer_failure": "contract/provenance/internal errors halt protected reporting; malformed candidate or native evaluation_failures becomes a scored system_failure with original worst scores. No label values in errors."
+  },
+  "descriptive_estimation": {
+    "weight": "For subset s in public_dev, hidden_test or all: w_i=1/(3*m_{s,d(i)}*n_{s,f(i)}), where m is the number of original families in domain d within s and n is the number of original scheduled cases in that family. Weights are fixed from public roster, not from observed successes.",
+    "domain_family_counts": {
+      "public_dev": {
+        "defect_mold_heating": 4,
+        "lease_termination_dispute": 3,
+        "rent_increase_dispute": 4
+      },
+      "hidden_test": {
+        "defect_mold_heating": 6,
+        "lease_termination_dispute": 5,
+        "rent_increase_dispute": 6
+      },
+      "all": {
+        "defect_mold_heating": 10,
+        "lease_termination_dispute": 8,
+        "rent_increase_dispute": 10
+      }
+    },
+    "displayed_system_mean": "mu[a,k,s]=sum_i(w_i*y[a,k,i]); y is the unchanged native/adapter score for an observed output and unchanged worst-score imputation for producer failures. Do not impute unavailable reference labels.",
+    "conventional_paired_difference": "delta_itt[a,b,k,s]=sum_i w_i*direction_k*(y[a,k,i]-y[b,k,i]); explicitly distinct from the conservative primary contrast.",
+    "primary_conservative_pair": "z[a,b,k,i]=direction_k*(raw[a,k,i]-raw[b,k,i]) if BOTH corresponding endpoint statuses are observed, else -1 for producer failure/missing/unknown. d_conservative=sum_i w_i*z. If a reference label is unavailable, the full endpoint estimate/decision is unavailable, not z=-1.",
+    "units": "Display unit-rate means as percentages and differences as percentage points; apply boundaries to unrounded unit-scale results.",
+    "rounding": "Do not round before a target comparison. Exactly at a boundary is not strictly greater and therefore does not meet that target. No outcome-selected epsilon.",
+    "raw_counts": "Observed TP/FP/FN, emitted NOW count, conditional-request count and accepted count are raw sums with scorable denominators. Failed/unavailable count entries remain null; report separate status counts rather than inventing zero documents.",
+    "practical_translation": "For observed requests report unnecessary items and missed required items, with raw and hierarchy-weighted means. Describe fewer generated requests, not observed customer contacts, time savings or completed claims."
+  },
+  "family_reporting": {
+    "full_tables": "Every original family, domain and split; planned/observed/failed/unknown/unavailable counts for every arm; per-family native and emitted scores; all four comparator contrasts.",
+    "family_counts": "For each primary contrast count positive, zero and negative conservative family means, and separately conventional ITT family means. Label which is used; never interpret counts as binomial samples.",
+    "family_range": "Report min/max family means and all individual values, with domain identifiers; no hidden family omission or post-result grouping.",
+    "worst_family": "Show the least favorable family contrast together with its coverage, even when pooled target is met."
+  },
+  "uncertainty_and_sensitivity": {
+    "sampling_uncertainty": "No population standard error, t interval, bootstrap confidence interval, sign test, permutation p-value or calibrated significance claim. The finite-corpus average conditional on the retained outputs/reference is an exact descriptive functional up to numeric evaluation, not an estimate whose population uncertainty was proved small.",
+    "stochastic_provider": "One run does not quantify provider/model randomness or predict reproducibility; stochastic uncertainty remains unmeasured.",
+    "reference_uncertainty": "Generator-derived reference errors and semantic/legal sufficiency are not eliminated by exact numeric scoring; no expert-gold or real-world-validity claim.",
+    "leave_one_family_out": {
+      "operation": "For each subset s, compute every deletion of ONE original family, retain all other families, renormalize equally within the affected domain, keep all three domains equally weighted, and leave every remaining failure score unchanged. Report the list, min, max and maximum absolute displacement from the full-corpus contrast.",
+      "deletions": {
+        "public_dev": 11,
+        "hidden_test": 17,
+        "all": 28
+      },
+      "label": "family-composition sensitivity range, NOT confidence/credible/prediction interval",
+      "decision_use": "Explanatory sensitivity only; full-corpus primary results always remain the decision basis, never a favorable deletion. A stable sign does not prove new-family generalization.",
+      "incomplete_references": "Do not use deletion to cure a missing label or claim full evaluability; corresponding full-endpoint sensitivity is unavailable."
+    },
+    "unresolved_cases": "Coverage and execution states, not narrower denominators. No complete-case rescue. Truly unavailable references block the affected full endpoint and associated practical classification.",
+    "failed_calibration": "Keep every native12 calibration byte, seed, threshold, scenario and adverse decision. Do not rerun or search for another significance rule."
+  },
+  "finite_decision_labels": {
+    "finite_target_met": "All three conservative contrasts for that comparator strictly meet the unchanged practical boundaries on the complete protected population, original references for those endpoints are available for all90, all1050 scheduled cells are reconciled/accounted, the same output/analysis freezes hold and the run is complete under its stop/recovery rules. Supports an observed finite-run pipeline advantage with explicit coverage, not population superiority.",
+    "finite_target_not_met": "One or more criteria are not met in a complete/evaluable run. The corresponding prospective practical claim was not demonstrated in this run. Small positive differences, parity, adverse differences and recall/burden trade-offs must be distinguished. Non-attainment alone is not equivalence or proof of universal inferiority.",
+    "partial_practical_signal": "Some observed contrasts improve but a joint target is not met, domains/families differ, or gains are dominated by execution failures. Report exact endpoint-specific finite observations and trade-offs without rescuing the joint target.",
+    "inconclusive_or_not_evaluable": "Missing target authority, missing reference support, integrity failures, truly unresolved runs, or premature terminal abandonment prevent calling this a complete measured comparison. Preserve full scheduled denominators and valid observed fragments; no automatic rerun, fabricated completed cells or favorable subset."
+  },
+  "outcome_dependent_actions": {
+    "positive": "Retain the working pipeline for this finite shared-representation benchmark and use the complete errors/costs to decide whether separately authorized external or repeated-run evidence is worth collecting. No automatic validation expansion or publication-completion promotion.",
+    "negative": "Preserve the entire comparison; stop the claimed practical advantage against the relevant comparator on this run. Localize state extraction, domain restriction, request construction, schema/capacity or resource failures using retained traces after embargo release. No automatic repair/resubmission or tuning followed by fresh-label claims.",
+    "inconclusive": "Record the exact coverage/measurement dependency or trade-off and retain all outcomes; do not manufacture superiority, equivalence, a narrower benchmark or additional authority."
+  },
+  "frozen_phase_policy": {
+    "before_any_provider_call": "Freeze complete code/prompt/model/codec/projection/estimator/failure contracts; reserve whole schedule; verify current owner and job state. Two route checks remain excluded observations, not statistical samples.",
+    "public_dev": "Generate all300 learned cells and120 dependent controls; preserve600 planned sends and actual calls/failures. No accuracy-based stop, tuning, prompt selection or repair between phases.",
+    "label_embargo": "No label-derived scores from this V3 run return to the producer/scientist until BOTH phases predictions and failure ledger have immutable freezes, or the experiment is terminally abandoned with no automatic continuation.",
+    "protected_transition": "Explicit managed phase grant for this exact plan after operational review. No favourable-performance trigger.",
+    "protected_phase": "All450 learned cells and180 controls; original17-family split. No target bodies accessible to producer.",
+    "legitimate_defect": "Preserve interrupted/adverse predecessor; no in-place repair. A changed scientific or prediction program requires new identity, review and affordable whole-comparison reservation. No reuse as untouched confirmation.",
+    "stops": "Only documented correctness/access/ownership/resource or uncertain-payment faults; not underperformance."
+  },
+  "access_history": {
+    "all150_observable_inputs": "inspected during product development; not untouched",
+    "public_development_labels": "public and previously used in project; do not imply pristine development",
+    "protected_labels": "body-access and prior-result history unresolved; evaluator custodian must supply history for the exact bundle and cases. Missing history remains unknown, never audited_unused.",
+    "uses_fresh_confirmation": false,
+    "permitted_split_label": "protected-label, family-disjoint evaluation with previously inspected inputs and explicitly qualified target history",
+    "no_hidden_tuning": true
+  },
+  "native_semantics": {
+    "source": "unchanged scorers.aggregate.evaluate_candidate(AcceptanceContract,CandidateArtifact)",
+    "code_binding": "BINDINGS.json native_source_hashes",
+    "process_metrics": "Native node/edge metrics cover native concept/relation graph, not only process steps. valid_path_rate is behavioral probes, not executed claim resolution.",
+    "branch_metric": "predicate truth-table probes, not independent extraction correctness",
+    "evidence_native": "uses reference scenario activation and counts request_mode!=none. Keep these definitions unchanged.",
+    "emitted_checklist": "unique emitted NOW document types before reference activation; target comes only from evaluator; conditional emissions counted separately",
+    "grounding": "exact locator/support agreement, not semantic entailment or legal correctness",
+    "alternative_targets": "Existing unique-set checklist extraction supported only if active contracts admit one unique document set with fully known consistent states. If not, mark checklist endpoints unavailable, do not select the easiest alternative. Native evidence alternatives remain scored by original evaluator.",
+    "end_to_end": "not measured; no expert, legal or interactive outcome reported"
+  },
+  "external_evaluator": {
+    "base_interface": "unchanged evaluator_interface.py from the prior review; raw_sha256=5ba976e0b28b18c962cb49601c372622cc75a6929816da753d4561d74418f7e1",
+    "entrypoint": "Custodian-authenticated evaluate_phase delegates to hash-pinned scorers.aggregate.evaluate_candidate(AcceptanceContract,CandidateArtifact).",
+    "population": "Validate all150*7 scheduled cells and their failure ledgers before scoring; failed cells remain records. Use every label-eligible case without target-driven selection.",
+    "producer_boundary": "Producer receives neither target bodies nor label-derived scores while either phase remains unfrozen. External custodian alone loads exact target commitments and retains native receipts; return numeric scores/counts/statuses and receipt hashes only.",
+    "score_input": "Immutable per-cell successful native projections or explicit producer-failure records, complete matrix, and authenticated output freezes; never infer output from the target.",
+    "reporting_only_change": "Compute the finite weighted means, conservative pairs and deterministic family-composition sensitivity from the numeric cell table. Do not call native12 empirical significance operation or modify native scoring/extraction/empty-denominator behavior.",
+    "fresh_confirmation": "Not requested. Resolve and record actual protected-target history without manufacturing audited_unused; exposure alone does not erase descriptive data, but unapproved access or target leakage is a protocol violation."
+  },
+  "validation_scope": {
+    "contract": "VALIDATION_CONTRACT.integrity.json",
+    "ops": "unchanged documented stock equals/range integrity checks only",
+    "empirical_native12_operation_used": false,
+    "integrity_PASS": "Only declared accounting/control checks; not efficacy, calibration, novelty, scientific admission, spending or significance.",
+    "prior_inferential_HOLD": "Remains unchanged for the original native12 rule; this is an explicit new analysis scope, not a retroactive PASS."
+  },
+  "no_automatic_promotion": [
+    "novelty",
+    "SOTA",
+    "independent_confirmation",
+    "general_process_topology",
+    "unseen_inputs",
+    "full_six_role_execution",
+    "final_paper_completion",
+    "population_statistical_superiority",
+    "population_noninferiority",
+    "calibrated_confidence_intervals",
+    "cross_run_reliability",
+    "complete_overarching_paper"
+  ]
+}

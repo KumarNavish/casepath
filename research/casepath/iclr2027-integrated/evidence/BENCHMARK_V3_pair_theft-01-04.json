@@ -1,0 +1,44 @@
+{
+ "source": "theft_causal/BENCHMARK_V3.json",
+ "contract": "casepath.theft-causal-branch-benchmark/3.0.0",
+ "pair": {
+  "acceptable_signed_deltas": [
+   [
+    "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+   ],
+   [
+    "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+   ]
+  ],
+  "changed_statement_false": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+  "changed_statement_true": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+  "context_index": 3,
+  "expected_added": [
+   "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+   "Receipt for the scheduled valuable (Quittung / Rechnung)"
+  ],
+  "expected_added_requirements": [
+   {
+    "acceptable_routes": [
+     [
+      "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+     ],
+     [
+      "Receipt for the scheduled valuable (Quittung / Rechnung)"
+     ]
+    ],
+    "requirement_id": "theft-01-04-added-01",
+    "source_documents": [
+     "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+     "Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ]
+   }
+  ],
+  "expected_withdrawn": [],
+  "expected_withdrawn_requirements": [],
+  "false_unit_id": "theft-01-04-false",
+  "pair_id": "theft-01-04",
+  "scenario": "PR_scheduled_valuable_1000",
+  "true_unit_id": "theft-01-04-true"
+ }
+}

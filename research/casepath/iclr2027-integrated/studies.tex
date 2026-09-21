@@ -1,0 +1,107 @@
+\section{Two Complementary Evidence Layers}
+\label{sec:studies}
+
+\subsection{Study A: one fact changes, the case context stays fixed}
+
+The paired benchmark combines source-grounded rule-level requirements from
+multiple legal and insurance documents; its cases are not complete claims
+under one identified policy. It covers nine branch concepts in four
+contexts. One context per concept supplies nine development pairs; the
+remaining three supply 27 held-out pairs, or 54 case units. The concepts,
+source vocabulary and document types are shared across splits, so this is
+context variation within known rules, not unseen-rule transfer. Benchmark
+amendments, the 9/27 split and the V5 method are separately hash-bound.
+
+For a pair $(x^-,x^+)$ differing in one branch-defining fact, score additions
+and withdrawals:
+\begin{equation}
+\Delta(D)=\{+d:d\in D(x^+)\setminus D(x^-)\}
+ \cup\{-d:d\in D(x^-)\setminus D(x^+)\}.
+\label{eq:delta}
+\end{equation}
+The route-aware scorer compares the prediction with each permitted signed
+reference realization and selects the highest pair $F_1$, with the frozen
+tie-breaking rule. It then pools true-positive, predicted and reference
+atoms for micro precision, recall and $F_1$. Exact-pair accuracy requires
+the entire selected signed set. Requesting the union of alternatives is
+not automatically treated as correct. False-positive changes include both
+unjustified additions and unjustified withdrawals; they are not counts of
+extra requests in a complete claim.
+
+Direct predicts documents from the case and source material. Graph as
+context additionally receives the macro process and refined evidence
+representation, but still generates the checklist. Evidence-first derives
+evidence needs, retrieves twelve passages by keyword matching, and then
+predicts documents. Its retrieval and context differ from the other arms. V5 assesses
+guards and projects requests deterministically. All use the recorded
+\texttt{openai/gpt-5.6-terra} model setting, OpenAI provider restriction and
+sent temperature zero. Structured context and inference organization differ;
+this is not an equal-compute comparison. The held-out receipts record
+54, 54, 108 and 87 calls respectively. Direct and Graph as context allow
+14,000 completion tokens per call; Evidence-first allows 18,000 for
+extraction and 14,000 for planning; V5 allows 10,000 per guard batch.
+Receipts record the model alias, not an independently attested dated checkpoint.
+
+The frozen report includes 10,000 whole-family bootstrap draws and exact
+$2^9$ family-level sign-flip comparisons with Holm adjustment. A separate
+specificity diagnostic reassigns unchanged predictions to wrong families,
+preserving within-family context positions. Its recorded null consists of
+eight cyclic shifts and 5,000 sampled complete misassignments. This tests
+output--family correspondence. It does not isolate graph topology or rule
+out a different implementation producing the same signed changes.
+
+\subsection{Study B: the complete released corpus}
+
+The native extension evaluates 150 synthetic tenancy claims across 28
+families in three domains: defect/mould/heating, lease termination and rent
+increase. Development contains 60 cases in 11 families with domain-family
+counts $(4,3,4)$; the protected split contains 90 cases in 17 disjoint
+families with counts $(6,5,6)$. Domains contribute 20 and 30 cases per split.
+These claims are a separate population from Study~A: no pair-to-native-claim
+lineage or pooled sample size is asserted.
+
+The five learned arms are CasePath control, reviewed direct, reviewed
+document-first, reviewed process-context and reviewed Rule-First. They
+share the compiled public representation and observable packet, with two
+calls for draft and review, medium reasoning, 4,096 completion tokens per
+call, no tools and no resampling. Temperature is omitted and its effective
+default is unknown. Requests use the same model alias restricted to OpenAI;
+a dated endpoint label and generation metadata are retained without claiming
+independent checkpoint attestation. CasePath predicts an assessment for
+code execution; comparators predict artifacts. These different downstream
+computations make the comparison a pipeline comparison, not isolated
+causal evidence for graph storage or prompting order. The custom Rule-First
+arm is not the unavailable historical template kernel or an external-system
+reproduction.
+
+Compiled-equivalent and local-scope controls reuse the fresh CasePath
+assessment, giving 750 learned and 300 dependent cells. In this compilation,
+inherited scope concerns domain eligibility; its ablation is not a general
+macro-topology intervention. All scheduled failures, truncations and blocked
+controls remain in the 1,050-cell inventory with adverse unit penalties.
+Both phases freeze before current target parsing and scoring. All 150
+observable inputs were inspected during product work; historical semantic
+target exposure is unknown. Protected labels therefore denote current
+custody and a family-disjoint split, not untouched-input generalization.
+
+The native evaluator scores graph structure, branch/path probes, evidence
+obligations, chains, document states, exact source locators and contract
+acceptance. It can activate artifact conditions using a reference scenario.
+A separate emitted-checklist endpoint therefore counts the actual
+\texttt{request\_mode=now} identities without reference-side predicate
+resolution. Native branch probes are not direct accuracy of the model's
+inferred case state; exact locator agreement is not semantic entailment.
+The emitted reference is available only when permitted document sets,
+known states and public label mapping yield an unambiguous target.
+
+The primary reporting population is the protected split. Descriptive
+estimates weight domains equally, families equally within domains and
+scheduled cases equally within families. Conventional adverse-imputed
+paired differences are reported separately from conservative contrasts
+that assign $-1$ when either producer endpoint is unobserved. Against each
+of four learned comparators, the practical target requires conservative
+$F_1$ benefit above $0.03$, critical-evidence-recall benefit above $-0.03$,
+and lower-burden-oriented benefit above $-0.03$. All 12 and complete endpoint
+coverage are required for an all-comparator statement. These are finite
+practical criteria, not population significance tests. Family-deletion
+ranges quantify composition sensitivity, not confidence intervals.

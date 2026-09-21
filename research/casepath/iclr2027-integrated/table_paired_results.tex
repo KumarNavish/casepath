@@ -1,0 +1,13 @@
+\begin{tabular}{lrrrr}
+\toprule
+& \multicolumn{2}{c}{Signed-change accuracy} & \multicolumn{2}{c}{Change errors} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Method & F1 [95\% CI] $\uparrow$ & Exact pairs $\uparrow$ & Spurious $\downarrow$ & Missed $\downarrow$ \\
+\midrule
+Direct & 0.59 [0.40, 0.76] & 9/27 & 27 & 8 \\
+Graph as context & 0.59 [0.47, 0.72] & 4/27 & 41 & 2 \\
+Evidence-first & 0.32 [0.24, 0.40] & 2/27 & 52 & 17 \\
+\addlinespace[2pt]
+\textbf{CasePath} & 0.67 [0.43, 0.88] & 12/27 & \textbf{15} & 9 \\
+\bottomrule
+\end{tabular}

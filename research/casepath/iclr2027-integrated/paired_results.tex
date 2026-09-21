@@ -1,0 +1,93 @@
+\section{Study A Results: Selective and Branch-Specific, Not Broadly Superior}
+\label{sec:paired-results}
+
+\begin{table}[t]
+\centering\small
+\setlength{\tabcolsep}{5pt}
+\input{table_main_results.tex}
+\caption{\textbf{Held-out signed-change evaluation} (\nPairsHid{} pairs,
+\nGoldAtoms{} reference changes). Exact is the fraction of pairs whose entire
+signed set is reproduced; Pred./Gold counts predicted changes against
+reference changes; Spurious and Missed are false-positive and false-negative
+signed changes. These are errors in changes between two checklists, not
+requests in a complete claim.}
+\label{tab:main}
+\end{table}
+
+\begin{figure}[t]
+\centering\includegraphics[width=.6\linewidth]{fig_paired_results.pdf}
+\caption{\textbf{Fewer unjustified changes.} Spurious and missed signed
+changes on all \nPairsHid{} held-out pairs, with signed-change $F_1$ and
+95\% family-cluster bootstrap intervals over the nine branch concepts.
+\casepath reduces the spurious count; Graph as context recovers more
+reference changes at the cost of the most spurious ones.}
+\label{fig:paired-results}
+\end{figure}
+
+\paragraph{Fewer unjustified changes.}
+Table~\ref{tab:main} and Figure~\ref{fig:paired-results} report the single
+held-out read. \casepath predicts \cpPred{} signed changes for \nGoldAtoms{}
+reference changes: \cpTP{} correct, \cpSpur{} spurious, \cpMiss{} missed.
+Direct predicts \dirPred{} (\dirTP{} correct, \dirSpur{} spurious), Graph as
+context \gcPred{} (\gcTP, \gcSpur) and Evidence-first \efPred{} (\efTP,
+\efSpur). \casepath thus makes \redDir\%, \redGc\% and \redEf\% fewer
+spurious changes than the three alternatives while keeping recall \cpRec,
+and it reproduces the whole signed set on \cpExactN{} of \nPairsHid{} pairs
+against \dirExactN, \gcExactN{} and \efExactN. Graph as context recovers the
+most reference changes (\gcTP{} of \nGoldAtoms) at the cost of \gcSpur{}
+spurious ones: handing a generator the representation as context makes it ask
+for more, not for the right things. The contrast with Direct is precise:
+twelve fewer false-positive changes for one fewer correct change.
+
+\paragraph{The preregistered boundary.}
+Family-cluster intervals are wide: $F_1$ \cpF{} $[\cpCIlo,\cpCIhi]$ for
+\casepath against $[\dirCIlo,\dirCIhi]$ and $[\gcCIlo,\gcCIhi]$ for the two
+strongest comparators, with paired differences $[\dDirLo,\dDirHi]$ and
+$[\dGcLo,\dGcHi]$ that include zero; only the contrast with Evidence-first
+excludes it ($[\dEfLo,\dEfHi]$). The broad-superiority gate fails on three
+of its eight conditions (Table~\ref{tab:gates}): margins \mDir{} and \mGc{}
+fall short of $\gateMargin$, precision \cpPrec{} falls short of $\gatePrec$, and the
+Holm-adjusted family-swap $p$-values are \pHolmDir, \pHolmGc{} and \pHolmEf.
+We therefore claim selectivity, not dominance. The failed gate is part of the
+result, fixed before the read rather than chosen after it.
+
+\paragraph{Branch specificity.}
+Holding \casepath's outputs fixed and pairing them with the wrong branch
+families collapses signed-change $F_1$ from \wpObs{} to a maximum of
+\wpMax{} over the \wpEvaluated{} evaluated reassignments (mean \wpMean;
+add-one randomisation $p=\wpP$). The changes are specific to the intervened
+branch. This does not identify the internal representation as the only
+possible cause; a family-specific lookup would also pass. Two structural
+facts are separate from accuracy: all \chainAttributed{} of \chainPredicted{}
+predicted changes are attributed in the retained records to a changed guard,
+including the incorrect ones, and \chainCovered{} of \nGoldAtoms{} reference
+changes (\chainCoverage\%) are reachable through a source chain in the frozen
+representation. Attribution is an invariant of the architecture, not evidence
+that a mapping was right; reachability says a route existed, not that it was
+emitted.
+
+\begin{figure}[t]
+\centering\includegraphics[width=.66\linewidth]{fig_family_results.pdf}
+\caption{\textbf{Where the semantics holds and where it fails.} Mean pair
+$F_1$ by branch concept on the held-out contexts. \casepath is exact on four
+concepts and scores zero on two; the comparators are strongest where the
+plausible claimant document is the right answer.}
+\label{fig:family}
+\end{figure}
+
+\paragraph{Where the semantics fails.}
+Figure~\ref{fig:family} shows the structure the aggregate hides. \casepath is
+exact on all three held-out contexts of four concepts (bicycle, declination,
+recovery, \emph{Nachfrist}), reaches $\cpFamScheduled$ on scheduled valuables and
+SIM-card theft, $\cpFamRepair$ on repair consent, and scores zero on third-party
+causation and the formal expert procedure. The zeros are systematic rather
+than random: an alternative route is over-requested where one would suffice,
+a condition is attached at the wrong semantic granularity, or an adjacent
+procedural guard activates the wrong confirmation document. The
+comparators are strong where the plausible claimant document is the right
+answer (third party, repair consent) and weak where the justified change is a
+procedural artefact that a checklist prior does not suggest (declination,
+\emph{Nachfrist}); per-concept values are in Appendix~\ref{app:family}.
+Finally, a change metric is blind to a document omitted or over-requested in
+both members of a pair, and these cases are rule units rather than whole
+claims; Study~B therefore scores complete plans on whole cases.

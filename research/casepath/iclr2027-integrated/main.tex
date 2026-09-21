@@ -1,0 +1,38 @@
+% CasePath: An Agentic, Process-First Architecture for Determining Evidence Requirements
+% ICLR 2027 submission. The submitted title and abstract are preserved verbatim.
+% All numbers are macros generated from preserved evidence (evidence/build_manuscript_numbers.py).
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\ifdefined\XeTeXversion
+\usepackage{newunicodechar}
+\newunicodechar{—}{\textemdash}
+\fi
+\usepackage{iclr2027_conference,times}
+\input{math_commands.tex}
+\usepackage{hyperref,url,booktabs,amsmath,amssymb,graphicx,microtype,xurl,xcolor,array,xspace,placeins,tabularx}
+\hypersetup{colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+\newcommand{\casepath}{\textsc{CasePath}\xspace}
+\newcommand{\T}{\mathsf{T}}
+\newcommand{\F}{\mathsf{F}}
+\newcommand{\U}{\mathsf{U}}
+\input{numbers.tex}
+\begin{document}
+\raggedbottom
+\input{submitted_frontmatter.tex}
+\input{introduction.tex}
+\input{method.tex}
+\input{benchmark.tex}
+\input{paired_results.tex}
+\FloatBarrier
+\input{native_study.tex}
+\FloatBarrier
+\input{related.tex}
+\input{release.tex}
+\input{discussion.tex}
+\input{statements.tex}
+\bibliography{references}
+\bibliographystyle{iclr2027_conference}
+\appendix
+\input{appendix_studya.tex}
+\input{appendix_native.tex}
+\end{document}

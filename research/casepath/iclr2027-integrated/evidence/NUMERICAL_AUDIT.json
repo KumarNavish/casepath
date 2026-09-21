@@ -1,0 +1,1754 @@
+{
+ "schema": "casepath.manuscript-numerical-audit/2.0.0",
+ "generated_by": "evidence/build_manuscript_numbers.py",
+ "evidence_sha256": {
+  "PAIRED_V5_REPRODUCED_RESULT.json": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47",
+  "SHORTCUT_PREFLIGHT_V3.json": "a4fba156de466ee4fc13e4a84fe14f423be6ce9f4eb9292c9426cf1f0fc11a2e",
+  "PAIRED_V5_RECEIPT_ACCOUNTING.json": "310c76941a8e2644e33615476f12da9826527bcbcfc065b1a3835292c659d447",
+  "PAIRED_V5_REPRODUCED_PARITY.json": "f17d59b1e7a4e390b9ab3a24d402d4b35a99b05c7b4c36896f2bdba277432494",
+  "HISTORICAL_AUDIT.json": "03dc60b675a0e47fe263996ee931b19296c6caaf58e1f0de9d71213c11a44f8a",
+  "PUBLICATION_STATIC_FACTS.json": "73bce43ad51ececc32d1fe43b26b66905984ecf3c841f5a62035cea5077a5728",
+  "studyB_execution_status_695.json": "769342a7969c0954397b5a07a06f2a8e21b28e8f4e4d5cad5edbc7bb644ff386",
+  "ANALYSIS_CONTRACT.json": "196b3ce4a43f9887cd4773216c117055bf2850732f307367a7a44e77a3785bcf",
+  "BENCHMARK_V3_pair_theft-01-04.json": "cd831ca172819d653a8bff82a768a695960259693e6230eec3cace9b11dcd514"
+ },
+ "macro_count": 215,
+ "tables": [
+  "table_main_results.tex",
+  "table_claim_gates.tex",
+  "table_family_results.tex",
+  "table_costs.tex",
+  "table_native_execution.tex"
+ ],
+ "macros": [
+  {
+   "macro": "nGoldAtoms",
+   "rendered": "33",
+   "value": 33,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/gold_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "nPairsHid",
+   "rendered": "27",
+   "value": 27,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/pairs",
+   "derivation": ""
+  },
+  {
+   "macro": "cpPrec",
+   "rendered": "0.615",
+   "value": 0.6153846153846154,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/precision",
+   "derivation": ""
+  },
+  {
+   "macro": "cpRec",
+   "rendered": "0.727",
+   "value": 0.7272727272727273,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/recall",
+   "derivation": ""
+  },
+  {
+   "macro": "cpF",
+   "rendered": "0.667",
+   "value": 0.6666666666666666,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/micro_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "cpExact",
+   "rendered": "0.444",
+   "value": 0.4444444444444444,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/exact_rate",
+   "derivation": ""
+  },
+  {
+   "macro": "cpExactN",
+   "rendered": "12",
+   "value": 12,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/exact_rate",
+   "derivation": "round(exact_rate*27)"
+  },
+  {
+   "macro": "cpPred",
+   "rendered": "39",
+   "value": 39,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/predicted_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "cpTP",
+   "rendered": "24",
+   "value": 24,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/tp",
+   "derivation": ""
+  },
+  {
+   "macro": "cpSpur",
+   "rendered": "15",
+   "value": 15,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/spurious_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "cpMiss",
+   "rendered": "9",
+   "value": 9,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/missed_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "cpRatio",
+   "rendered": "1.18",
+   "value": 1.1818181818181819,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/predicted_atoms",
+   "derivation": "predicted_atoms/33"
+  },
+  {
+   "macro": "cpMacro",
+   "rendered": "0.648",
+   "value": 0.6481481481481481,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/family_macro_pair_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "cpCIlo",
+   "rendered": "0.435",
+   "value": 0.43478260869565216,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/arms/b5_process_compiled/low",
+   "derivation": ""
+  },
+  {
+   "macro": "cpCIhi",
+   "rendered": "0.880",
+   "value": 0.88,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/arms/b5_process_compiled/high",
+   "derivation": ""
+  },
+  {
+   "macro": "dirPrec",
+   "rendered": "0.481",
+   "value": 0.4807692307692308,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/precision",
+   "derivation": ""
+  },
+  {
+   "macro": "dirRec",
+   "rendered": "0.758",
+   "value": 0.7575757575757576,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/recall",
+   "derivation": ""
+  },
+  {
+   "macro": "dirF",
+   "rendered": "0.588",
+   "value": 0.5882352941176471,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/micro_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "dirExact",
+   "rendered": "0.333",
+   "value": 0.3333333333333333,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/exact_rate",
+   "derivation": ""
+  },
+  {
+   "macro": "dirExactN",
+   "rendered": "9",
+   "value": 9,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/exact_rate",
+   "derivation": "round(exact_rate*27)"
+  },
+  {
+   "macro": "dirPred",
+   "rendered": "52",
+   "value": 52,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/predicted_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "dirTP",
+   "rendered": "25",
+   "value": 25,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/tp",
+   "derivation": ""
+  },
+  {
+   "macro": "dirSpur",
+   "rendered": "27",
+   "value": 27,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/spurious_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "dirMiss",
+   "rendered": "8",
+   "value": 8,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/missed_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "dirRatio",
+   "rendered": "1.58",
+   "value": 1.5757575757575757,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/predicted_atoms",
+   "derivation": "predicted_atoms/33"
+  },
+  {
+   "macro": "dirMacro",
+   "rendered": "0.612",
+   "value": 0.6123456790123457,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/family_macro_pair_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "dirCIlo",
+   "rendered": "0.404",
+   "value": 0.4044943820224719,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/arms/b1_direct/low",
+   "derivation": ""
+  },
+  {
+   "macro": "dirCIhi",
+   "rendered": "0.759",
+   "value": 0.7586206896551724,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/arms/b1_direct/high",
+   "derivation": ""
+  },
+  {
+   "macro": "gcPrec",
+   "rendered": "0.431",
+   "value": 0.4305555555555556,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/precision",
+   "derivation": ""
+  },
+  {
+   "macro": "gcRec",
+   "rendered": "0.939",
+   "value": 0.9393939393939394,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/recall",
+   "derivation": ""
+  },
+  {
+   "macro": "gcF",
+   "rendered": "0.590",
+   "value": 0.5904761904761905,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/micro_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "gcExact",
+   "rendered": "0.148",
+   "value": 0.14814814814814814,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/exact_rate",
+   "derivation": ""
+  },
+  {
+   "macro": "gcExactN",
+   "rendered": "4",
+   "value": 4,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/exact_rate",
+   "derivation": "round(exact_rate*27)"
+  },
+  {
+   "macro": "gcPred",
+   "rendered": "72",
+   "value": 72,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/predicted_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "gcTP",
+   "rendered": "31",
+   "value": 31,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/tp",
+   "derivation": ""
+  },
+  {
+   "macro": "gcSpur",
+   "rendered": "41",
+   "value": 41,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/spurious_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "gcMiss",
+   "rendered": "2",
+   "value": 2,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/missed_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "gcRatio",
+   "rendered": "2.18",
+   "value": 2.1818181818181817,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/predicted_atoms",
+   "derivation": "predicted_atoms/33"
+  },
+  {
+   "macro": "gcMacro",
+   "rendered": "0.605",
+   "value": 0.6049382716049383,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/family_macro_pair_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "gcCIlo",
+   "rendered": "0.471",
+   "value": 0.47058823529411764,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/arms/b3_representation_then_list/low",
+   "derivation": ""
+  },
+  {
+   "macro": "gcCIhi",
+   "rendered": "0.716",
+   "value": 0.7155963302752294,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/arms/b3_representation_then_list/high",
+   "derivation": ""
+  },
+  {
+   "macro": "efPrec",
+   "rendered": "0.235",
+   "value": 0.23529411764705882,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/precision",
+   "derivation": ""
+  },
+  {
+   "macro": "efRec",
+   "rendered": "0.485",
+   "value": 0.48484848484848486,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/recall",
+   "derivation": ""
+  },
+  {
+   "macro": "efF",
+   "rendered": "0.317",
+   "value": 0.31683168316831684,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/micro_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "efExact",
+   "rendered": "0.074",
+   "value": 0.07407407407407407,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/exact_rate",
+   "derivation": ""
+  },
+  {
+   "macro": "efExactN",
+   "rendered": "2",
+   "value": 2,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/exact_rate",
+   "derivation": "round(exact_rate*27)"
+  },
+  {
+   "macro": "efPred",
+   "rendered": "68",
+   "value": 68,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/predicted_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "efTP",
+   "rendered": "16",
+   "value": 16,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/tp",
+   "derivation": ""
+  },
+  {
+   "macro": "efSpur",
+   "rendered": "52",
+   "value": 52,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/spurious_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "efMiss",
+   "rendered": "17",
+   "value": 17,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/missed_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "efRatio",
+   "rendered": "2.06",
+   "value": 2.0606060606060606,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/predicted_atoms",
+   "derivation": "predicted_atoms/33"
+  },
+  {
+   "macro": "efMacro",
+   "rendered": "0.314",
+   "value": 0.31375661375661373,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/family_macro_pair_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "efCIlo",
+   "rendered": "0.239",
+   "value": 0.23911547666533708,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/arms/b6_evidence_first/low",
+   "derivation": ""
+  },
+  {
+   "macro": "efCIhi",
+   "rendered": "0.400",
+   "value": 0.4,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/arms/b6_evidence_first/high",
+   "derivation": ""
+  },
+  {
+   "macro": "dDirLo",
+   "rendered": "-0.253",
+   "value": -0.2531871639674291,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/b5_minus/b1_direct/low",
+   "derivation": ""
+  },
+  {
+   "macro": "dDirHi",
+   "rendered": "+0.420",
+   "value": 0.4202376514445479,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/b5_minus/b1_direct/high",
+   "derivation": ""
+  },
+  {
+   "macro": "mDir",
+   "rendered": "+0.078",
+   "value": 0.07843137254901955,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/b5_minus_comparator_micro_f1/b1_direct",
+   "derivation": ""
+  },
+  {
+   "macro": "pHolmDir",
+   "rendered": "0.797",
+   "value": 0.796875,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/family_swap_tests/b1_direct/holm_adjusted_p",
+   "derivation": ""
+  },
+  {
+   "macro": "pRawDir",
+   "rendered": "0.436",
+   "value": 0.435546875,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/family_swap_tests/b1_direct/one_sided_p",
+   "derivation": ""
+  },
+  {
+   "macro": "redDir",
+   "rendered": "44.4",
+   "value": 0.4444444444444444,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b1_direct/spurious_atoms",
+   "derivation": "(27-15)/27"
+  },
+  {
+   "macro": "dGcLo",
+   "rendered": "-0.199",
+   "value": -0.1990359155407699,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/b5_minus/b3_representation_then_list/low",
+   "derivation": ""
+  },
+  {
+   "macro": "dGcHi",
+   "rendered": "+0.333",
+   "value": 0.33274492497793473,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/b5_minus/b3_representation_then_list/high",
+   "derivation": ""
+  },
+  {
+   "macro": "mGc",
+   "rendered": "+0.076",
+   "value": 0.07619047619047614,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/b5_minus_comparator_micro_f1/b3_representation_then_list",
+   "derivation": ""
+  },
+  {
+   "macro": "pHolmGc",
+   "rendered": "0.797",
+   "value": 0.796875,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/family_swap_tests/b3_representation_then_list/holm_adjusted_p",
+   "derivation": ""
+  },
+  {
+   "macro": "pRawGc",
+   "rendered": "0.398",
+   "value": 0.3984375,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/family_swap_tests/b3_representation_then_list/one_sided_p",
+   "derivation": ""
+  },
+  {
+   "macro": "redGc",
+   "rendered": "63.4",
+   "value": 0.6341463414634146,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b3_representation_then_list/spurious_atoms",
+   "derivation": "(41-15)/41"
+  },
+  {
+   "macro": "dEfLo",
+   "rendered": "+0.110",
+   "value": 0.11045828437132782,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/b5_minus/b6_evidence_first/low",
+   "derivation": ""
+  },
+  {
+   "macro": "dEfHi",
+   "rendered": "+0.565",
+   "value": 0.5648148148148148,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/b5_minus/b6_evidence_first/high",
+   "derivation": ""
+  },
+  {
+   "macro": "mEf",
+   "rendered": "+0.350",
+   "value": 0.3498349834983498,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/b5_minus_comparator_micro_f1/b6_evidence_first",
+   "derivation": ""
+  },
+  {
+   "macro": "pHolmEf",
+   "rendered": "0.129",
+   "value": 0.12890625,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/family_swap_tests/b6_evidence_first/holm_adjusted_p",
+   "derivation": ""
+  },
+  {
+   "macro": "pRawEf",
+   "rendered": "0.043",
+   "value": 0.04296875,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/family_swap_tests/b6_evidence_first/one_sided_p",
+   "derivation": ""
+  },
+  {
+   "macro": "redEf",
+   "rendered": "71.2",
+   "value": 0.7115384615384616,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b6_evidence_first/spurious_atoms",
+   "derivation": "(52-15)/52"
+  },
+  {
+   "macro": "wpObs",
+   "rendered": "0.667",
+   "value": 0.6666666666666666,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/wrong_pairing/observed_micro_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "wpMax",
+   "rendered": "0.083",
+   "value": 0.08333333333333333,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/wrong_pairing/null_max",
+   "derivation": ""
+  },
+  {
+   "macro": "wpNinetySevenFive",
+   "rendered": "0.083",
+   "value": 0.08333333333333333,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/wrong_pairing/null_95/1",
+   "derivation": ""
+  },
+  {
+   "macro": "wpMean",
+   "rendered": "0.011",
+   "value": 0.010682907348242811,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/wrong_pairing/null_mean",
+   "derivation": ""
+  },
+  {
+   "macro": "wpP",
+   "rendered": "1.996\\times10^{-4}",
+   "value": 0.00019964064683569574,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/wrong_pairing/p_ge_plus1",
+   "derivation": ""
+  },
+  {
+   "macro": "wpDraws",
+   "rendered": "5,000",
+   "value": 5000,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/wrong_pairing/random_draws",
+   "derivation": ""
+  },
+  {
+   "macro": "wpShifts",
+   "rendered": "8",
+   "value": 8,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/wrong_pairing/cyclic_shifts",
+   "derivation": "len"
+  },
+  {
+   "macro": "wpEvaluated",
+   "rendered": "5,008",
+   "value": 5008,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/wrong_pairing",
+   "derivation": "cyclic_shifts+random_draws"
+  },
+  {
+   "macro": "chainAttributed",
+   "rendered": "39",
+   "value": 39,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/chain_metrics/attributed_predicted_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "chainPredicted",
+   "rendered": "39",
+   "value": 39,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/chain_metrics/predicted_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "chainCovered",
+   "rendered": "27",
+   "value": 27,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/chain_metrics/covered_gold_atoms",
+   "derivation": ""
+  },
+  {
+   "macro": "chainCoverage",
+   "rendered": "81.8",
+   "value": 0.8181818181818182,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/chain_metrics/gold_chain_coverage",
+   "derivation": ""
+  },
+  {
+   "macro": "bootDraws",
+   "rendered": "10,000",
+   "value": 10000,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/draws",
+   "derivation": ""
+  },
+  {
+   "macro": "bootSeed",
+   "rendered": "20260917",
+   "value": 20260917,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/cluster_bootstrap/seed",
+   "derivation": ""
+  },
+  {
+   "macro": "swapAssignments",
+   "rendered": "512",
+   "value": 512,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/family_swap_tests/b1_direct/assignments",
+   "derivation": ""
+  },
+  {
+   "macro": "ratioAll",
+   "rendered": "1.18",
+   "value": 1.1818181818181819,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/predicted_to_gold_atom_ratio",
+   "derivation": ""
+  },
+  {
+   "macro": "pfNoInputMax",
+   "rendered": "0.0",
+   "value": 0.0,
+   "evidence_file": "SHORTCUT_PREFLIGHT_V3.json",
+   "json_pointer": "/max_held_out_no_input_micro_f1",
+   "derivation": ""
+  },
+  {
+   "macro": "pfSignatures",
+   "rendered": "9",
+   "value": 9,
+   "evidence_file": "SHORTCUT_PREFLIGHT_V3.json",
+   "json_pointer": "/distinct_acceptable_target_signatures",
+   "derivation": ""
+  },
+  {
+   "macro": "pfEntropy",
+   "rendered": "3.17",
+   "value": 3.169925001442312,
+   "evidence_file": "SHORTCUT_PREFLIGHT_V3.json",
+   "json_pointer": "/target_signature_entropy_bits",
+   "derivation": ""
+  },
+  {
+   "macro": "nPairsAll",
+   "rendered": "36",
+   "value": 36,
+   "evidence_file": "SHORTCUT_PREFLIGHT_V3.json",
+   "json_pointer": "/pairs",
+   "derivation": ""
+  },
+  {
+   "macro": "nUnitsAll",
+   "rendered": "72",
+   "value": 72,
+   "evidence_file": "SHORTCUT_PREFLIGHT_V3.json",
+   "json_pointer": "/units",
+   "derivation": ""
+  },
+  {
+   "macro": "nConcepts",
+   "rendered": "9",
+   "value": 9,
+   "evidence_file": "SHORTCUT_PREFLIGHT_V3.json",
+   "json_pointer": "/scenarios",
+   "derivation": ""
+  },
+  {
+   "macro": "pfUniverse",
+   "rendered": "12",
+   "value": 12,
+   "evidence_file": "SHORTCUT_PREFLIGHT_V3.json",
+   "json_pointer": "/signed_document_universe",
+   "derivation": "len"
+  },
+  {
+   "macro": "nPassages",
+   "rendered": "197",
+   "value": 197,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/source_inventory/passages",
+   "derivation": ""
+  },
+  {
+   "macro": "nPropositions",
+   "rendered": "308",
+   "value": 308,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/source_inventory/propositions",
+   "derivation": ""
+  },
+  {
+   "macro": "nRules",
+   "rendered": "98",
+   "value": 98,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/source_inventory/overlay_rules",
+   "derivation": ""
+  },
+  {
+   "macro": "nGuards",
+   "rendered": "87",
+   "value": 87,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/source_inventory/overlay_guards",
+   "derivation": ""
+  },
+  {
+   "macro": "nNonEvidentiary",
+   "rendered": "13",
+   "value": 13,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/source_inventory/non_evidentiary_classifications",
+   "derivation": ""
+  },
+  {
+   "macro": "nCatalogue",
+   "rendered": "33",
+   "value": 33,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/source_inventory/catalogue_documents",
+   "derivation": ""
+  },
+  {
+   "macro": "nPairsDev",
+   "rendered": "9",
+   "value": 9,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/split/development_pairs",
+   "derivation": ""
+  },
+  {
+   "macro": "nUnitsDev",
+   "rendered": "18",
+   "value": 18,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/split/development_units",
+   "derivation": ""
+  },
+  {
+   "macro": "nUnitsHid",
+   "rendered": "54",
+   "value": 54,
+   "evidence_file": "HISTORICAL_AUDIT.json",
+   "json_pointer": "/split/heldout_units",
+   "derivation": ""
+  },
+  {
+   "macro": "cpCalls",
+   "rendered": "87",
+   "value": 87,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b5_process_compiled/receipts",
+   "derivation": ""
+  },
+  {
+   "macro": "cpCost",
+   "rendered": "5.44",
+   "value": 5.439589,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b5_process_compiled/cost_usd",
+   "derivation": ""
+  },
+  {
+   "macro": "cpPromptTok",
+   "rendered": "1.01M",
+   "value": 1005211,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b5_process_compiled/prompt_tokens",
+   "derivation": "tokens/1e6"
+  },
+  {
+   "macro": "cpComplTok",
+   "rendered": "243.9k",
+   "value": 243891,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b5_process_compiled/completion_tokens",
+   "derivation": "tokens/1e3"
+  },
+  {
+   "macro": "cpMaxTok",
+   "rendered": "10,000",
+   "value": {
+    "10000": 87
+   },
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b5_process_compiled/max_tokens",
+   "derivation": ""
+  },
+  {
+   "macro": "cpModel",
+   "rendered": "openai/gpt-5.6-terra",
+   "value": "openai/gpt-5.6-terra",
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b5_process_compiled/models/0",
+   "derivation": ""
+  },
+  {
+   "macro": "dirCalls",
+   "rendered": "54",
+   "value": 54,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b1_direct/receipts",
+   "derivation": ""
+  },
+  {
+   "macro": "dirCost",
+   "rendered": "4.83",
+   "value": 4.8347335,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b1_direct/cost_usd",
+   "derivation": ""
+  },
+  {
+   "macro": "dirPromptTok",
+   "rendered": "2.90M",
+   "value": 2900625,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b1_direct/prompt_tokens",
+   "derivation": "tokens/1e6"
+  },
+  {
+   "macro": "dirComplTok",
+   "rendered": "45.7k",
+   "value": 45678,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b1_direct/completion_tokens",
+   "derivation": "tokens/1e3"
+  },
+  {
+   "macro": "dirMaxTok",
+   "rendered": "14,000",
+   "value": {
+    "14000": 54
+   },
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b1_direct/max_tokens",
+   "derivation": ""
+  },
+  {
+   "macro": "dirModel",
+   "rendered": "openai/gpt-5.6-terra",
+   "value": "openai/gpt-5.6-terra",
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b1_direct/models/0",
+   "derivation": ""
+  },
+  {
+   "macro": "gcCalls",
+   "rendered": "54",
+   "value": 54,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b3_representation_then_list/receipts",
+   "derivation": ""
+  },
+  {
+   "macro": "gcCost",
+   "rendered": "8.41",
+   "value": 8.4114187,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b3_representation_then_list/cost_usd",
+   "derivation": ""
+  },
+  {
+   "macro": "gcPromptTok",
+   "rendered": "5.35M",
+   "value": 5345421,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b3_representation_then_list/prompt_tokens",
+   "derivation": "tokens/1e6"
+  },
+  {
+   "macro": "gcComplTok",
+   "rendered": "42.7k",
+   "value": 42663,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b3_representation_then_list/completion_tokens",
+   "derivation": "tokens/1e3"
+  },
+  {
+   "macro": "gcMaxTok",
+   "rendered": "14,000",
+   "value": {
+    "14000": 54
+   },
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b3_representation_then_list/max_tokens",
+   "derivation": ""
+  },
+  {
+   "macro": "gcModel",
+   "rendered": "openai/gpt-5.6-terra",
+   "value": "openai/gpt-5.6-terra",
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b3_representation_then_list/models/0",
+   "derivation": ""
+  },
+  {
+   "macro": "efCalls",
+   "rendered": "108",
+   "value": 108,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b6_evidence_first/receipts",
+   "derivation": ""
+  },
+  {
+   "macro": "efCost",
+   "rendered": "1.06",
+   "value": 1.0630999,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b6_evidence_first/cost_usd",
+   "derivation": ""
+  },
+  {
+   "macro": "efPromptTok",
+   "rendered": "0.26M",
+   "value": 259890,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b6_evidence_first/prompt_tokens",
+   "derivation": "tokens/1e6"
+  },
+  {
+   "macro": "efComplTok",
+   "rendered": "66.5k",
+   "value": 66450,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b6_evidence_first/completion_tokens",
+   "derivation": "tokens/1e3"
+  },
+  {
+   "macro": "efMaxTok",
+   "rendered": "14,000/18,000",
+   "value": {
+    "14000": 54,
+    "18000": 54
+   },
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b6_evidence_first/max_tokens",
+   "derivation": ""
+  },
+  {
+   "macro": "efModel",
+   "rendered": "openai/gpt-5.6-terra",
+   "value": "openai/gpt-5.6-terra",
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b6_evidence_first/models/0",
+   "derivation": ""
+  },
+  {
+   "macro": "parityUnits",
+   "rendered": "72",
+   "value": 72,
+   "evidence_file": "PAIRED_V5_REPRODUCED_PARITY.json",
+   "json_pointer": "/benchmark_units",
+   "derivation": ""
+  },
+  {
+   "macro": "parityPairs",
+   "rendered": "36",
+   "value": 36,
+   "evidence_file": "PAIRED_V5_REPRODUCED_PARITY.json",
+   "json_pointer": "/benchmark_pairs",
+   "derivation": ""
+  },
+  {
+   "macro": "parityAllMatch",
+   "rendered": "all",
+   "value": true,
+   "evidence_file": "PAIRED_V5_REPRODUCED_PARITY.json",
+   "json_pointer": "/all_*_match",
+   "derivation": "conjunction of four flags"
+  },
+  {
+   "macro": "nbClaims",
+   "rendered": "150",
+   "value": 150,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/combined/claims",
+   "derivation": ""
+  },
+  {
+   "macro": "nbFamilies",
+   "rendered": "28",
+   "value": 28,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/combined/families",
+   "derivation": ""
+  },
+  {
+   "macro": "nbCells",
+   "rendered": "1,050",
+   "value": 1050,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/combined/scheduled_cells",
+   "derivation": ""
+  },
+  {
+   "macro": "nbLearnedCells",
+   "rendered": "750",
+   "value": 750,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/combined/learned_cells",
+   "derivation": ""
+  },
+  {
+   "macro": "nbDependentCells",
+   "rendered": "300",
+   "value": 300,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/combined/dependent_cells",
+   "derivation": ""
+  },
+  {
+   "macro": "nbDevClaims",
+   "rendered": "60",
+   "value": 60,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/public_dev/claims",
+   "derivation": ""
+  },
+  {
+   "macro": "nbDevFamilies",
+   "rendered": "11",
+   "value": 11,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/public_dev/families",
+   "derivation": ""
+  },
+  {
+   "macro": "nbDevCells",
+   "rendered": "420",
+   "value": 420,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/public_dev/scheduled_cells",
+   "derivation": ""
+  },
+  {
+   "macro": "nbHidClaims",
+   "rendered": "90",
+   "value": 90,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/hidden_test/claims",
+   "derivation": ""
+  },
+  {
+   "macro": "nbHidFamilies",
+   "rendered": "17",
+   "value": 17,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/hidden_test/families",
+   "derivation": ""
+  },
+  {
+   "macro": "nbHidCells",
+   "rendered": "630",
+   "value": 630,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/splits/hidden_test/scheduled_cells",
+   "derivation": ""
+  },
+  {
+   "macro": "nbTokens",
+   "rendered": "4,096",
+   "value": 4096,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/configuration/case_output_tokens",
+   "derivation": ""
+  },
+  {
+   "macro": "nbCallsPerCell",
+   "rendered": "2",
+   "value": 2,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/learned_calls_per_cell",
+   "derivation": ""
+  },
+  {
+   "macro": "nbModel",
+   "rendered": "openai/gpt-5.6-terra",
+   "value": "openai/gpt-5.6-terra",
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/configuration/model",
+   "derivation": ""
+  },
+  {
+   "macro": "nbReasoning",
+   "rendered": "medium",
+   "value": "medium",
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/configuration/reasoning_effort",
+   "derivation": ""
+  },
+  {
+   "macro": "nbLearnedArms",
+   "rendered": "5",
+   "value": 5,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/learned_arms",
+   "derivation": "len"
+  },
+  {
+   "macro": "nbDependentArms",
+   "rendered": "2",
+   "value": 2,
+   "evidence_file": "PUBLICATION_STATIC_FACTS.json",
+   "json_pointer": "/dependent_arms",
+   "derivation": "len"
+  },
+  {
+   "macro": "nbRecorded",
+   "rendered": "695",
+   "value": 695,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/snapshot_cells",
+   "derivation": ""
+  },
+  {
+   "macro": "nbDevRecorded",
+   "rendered": "420",
+   "value": 420,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|*",
+   "derivation": "sum of states"
+  },
+  {
+   "macro": "nbHidRecorded",
+   "rendered": "275",
+   "value": 275,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/hidden_test|*",
+   "derivation": "sum of states"
+  },
+  {
+   "macro": "bCpDevOk",
+   "rendered": "44",
+   "value": 44,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|CASEPATH_CONTROL/completed",
+   "derivation": ""
+  },
+  {
+   "macro": "bCpDevFail",
+   "rendered": "16",
+   "value": 16,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|CASEPATH_CONTROL/failed",
+   "derivation": ""
+  },
+  {
+   "macro": "bCpDevBlocked",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|CASEPATH_CONTROL/blocked_dependency",
+   "derivation": ""
+  },
+  {
+   "macro": "bCpDevEndpoint",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/unknown_relation_endpoint",
+   "derivation": ""
+  },
+  {
+   "macro": "bCpDevTrunc",
+   "rendered": "2",
+   "value": 2,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/truncated_or_nonterminal",
+   "derivation": ""
+  },
+  {
+   "macro": "bCpDevCodebook",
+   "rendered": "4",
+   "value": 4,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/invalid_codebook_index",
+   "derivation": ""
+  },
+  {
+   "macro": "bCpDevPresence",
+   "rendered": "7",
+   "value": 7,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|CASEPATH_CONTROL/contradictory_presence_state",
+   "derivation": ""
+  },
+  {
+   "macro": "bDirDevOk",
+   "rendered": "19",
+   "value": 19,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|DIRECT_REVIEWED/completed",
+   "derivation": ""
+  },
+  {
+   "macro": "bDirDevFail",
+   "rendered": "41",
+   "value": 41,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|DIRECT_REVIEWED/failed",
+   "derivation": ""
+  },
+  {
+   "macro": "bDirDevBlocked",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|DIRECT_REVIEWED/blocked_dependency",
+   "derivation": ""
+  },
+  {
+   "macro": "bDirDevEndpoint",
+   "rendered": "21",
+   "value": 21,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DIRECT_REVIEWED/unknown_relation_endpoint",
+   "derivation": ""
+  },
+  {
+   "macro": "bDirDevTrunc",
+   "rendered": "10",
+   "value": 10,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DIRECT_REVIEWED/truncated_or_nonterminal",
+   "derivation": ""
+  },
+  {
+   "macro": "bDirDevCodebook",
+   "rendered": "8",
+   "value": 8,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DIRECT_REVIEWED/invalid_codebook_index",
+   "derivation": ""
+  },
+  {
+   "macro": "bDirDevPresence",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DIRECT_REVIEWED/contradictory_presence_state",
+   "derivation": ""
+  },
+  {
+   "macro": "bDocDevOk",
+   "rendered": "17",
+   "value": 17,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/completed",
+   "derivation": ""
+  },
+  {
+   "macro": "bDocDevFail",
+   "rendered": "43",
+   "value": 43,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/failed",
+   "derivation": ""
+  },
+  {
+   "macro": "bDocDevBlocked",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/blocked_dependency",
+   "derivation": ""
+  },
+  {
+   "macro": "bDocDevEndpoint",
+   "rendered": "13",
+   "value": 13,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/unknown_relation_endpoint",
+   "derivation": ""
+  },
+  {
+   "macro": "bDocDevTrunc",
+   "rendered": "16",
+   "value": 16,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/truncated_or_nonterminal",
+   "derivation": ""
+  },
+  {
+   "macro": "bDocDevCodebook",
+   "rendered": "11",
+   "value": 11,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/invalid_codebook_index",
+   "derivation": ""
+  },
+  {
+   "macro": "bDocDevPresence",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|DOCUMENT_FIRST_REVIEWED/contradictory_presence_state",
+   "derivation": ""
+  },
+  {
+   "macro": "bPcDevOk",
+   "rendered": "27",
+   "value": 27,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/completed",
+   "derivation": ""
+  },
+  {
+   "macro": "bPcDevFail",
+   "rendered": "33",
+   "value": 33,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/failed",
+   "derivation": ""
+  },
+  {
+   "macro": "bPcDevBlocked",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/blocked_dependency",
+   "derivation": ""
+  },
+  {
+   "macro": "bPcDevEndpoint",
+   "rendered": "26",
+   "value": 26,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/unknown_relation_endpoint",
+   "derivation": ""
+  },
+  {
+   "macro": "bPcDevTrunc",
+   "rendered": "5",
+   "value": 5,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/truncated_or_nonterminal",
+   "derivation": ""
+  },
+  {
+   "macro": "bPcDevCodebook",
+   "rendered": "1",
+   "value": 1,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/invalid_codebook_index",
+   "derivation": ""
+  },
+  {
+   "macro": "bPcDevPresence",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|PROCESS_CONTEXT_REVIEWED/contradictory_presence_state",
+   "derivation": ""
+  },
+  {
+   "macro": "bRfDevOk",
+   "rendered": "28",
+   "value": 28,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|RULE_FIRST_REVIEWED/completed",
+   "derivation": ""
+  },
+  {
+   "macro": "bRfDevFail",
+   "rendered": "32",
+   "value": 32,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|RULE_FIRST_REVIEWED/failed",
+   "derivation": ""
+  },
+  {
+   "macro": "bRfDevBlocked",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|RULE_FIRST_REVIEWED/blocked_dependency",
+   "derivation": ""
+  },
+  {
+   "macro": "bRfDevEndpoint",
+   "rendered": "21",
+   "value": 21,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|RULE_FIRST_REVIEWED/unknown_relation_endpoint",
+   "derivation": ""
+  },
+  {
+   "macro": "bRfDevTrunc",
+   "rendered": "8",
+   "value": 8,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|RULE_FIRST_REVIEWED/truncated_or_nonterminal",
+   "derivation": ""
+  },
+  {
+   "macro": "bRfDevCodebook",
+   "rendered": "3",
+   "value": 3,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|RULE_FIRST_REVIEWED/invalid_codebook_index",
+   "derivation": ""
+  },
+  {
+   "macro": "bRfDevPresence",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|RULE_FIRST_REVIEWED/contradictory_presence_state",
+   "derivation": ""
+  },
+  {
+   "macro": "bCeDevOk",
+   "rendered": "44",
+   "value": 44,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|COMPILED_EQUIVALENT/completed",
+   "derivation": ""
+  },
+  {
+   "macro": "bCeDevFail",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|COMPILED_EQUIVALENT/failed",
+   "derivation": ""
+  },
+  {
+   "macro": "bCeDevBlocked",
+   "rendered": "16",
+   "value": 16,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|COMPILED_EQUIVALENT/blocked_dependency",
+   "derivation": ""
+  },
+  {
+   "macro": "bCeDevEndpoint",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|COMPILED_EQUIVALENT/unknown_relation_endpoint",
+   "derivation": ""
+  },
+  {
+   "macro": "bCeDevTrunc",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|COMPILED_EQUIVALENT/truncated_or_nonterminal",
+   "derivation": ""
+  },
+  {
+   "macro": "bCeDevCodebook",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|COMPILED_EQUIVALENT/invalid_codebook_index",
+   "derivation": ""
+  },
+  {
+   "macro": "bCeDevPresence",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|COMPILED_EQUIVALENT/contradictory_presence_state",
+   "derivation": ""
+  },
+  {
+   "macro": "bLsDevOk",
+   "rendered": "44",
+   "value": 44,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/completed",
+   "derivation": ""
+  },
+  {
+   "macro": "bLsDevFail",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/failed",
+   "derivation": ""
+  },
+  {
+   "macro": "bLsDevBlocked",
+   "rendered": "16",
+   "value": 16,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/blocked_dependency",
+   "derivation": ""
+  },
+  {
+   "macro": "bLsDevEndpoint",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/unknown_relation_endpoint",
+   "derivation": ""
+  },
+  {
+   "macro": "bLsDevTrunc",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/truncated_or_nonterminal",
+   "derivation": ""
+  },
+  {
+   "macro": "bLsDevCodebook",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/invalid_codebook_index",
+   "derivation": ""
+  },
+  {
+   "macro": "bLsDevPresence",
+   "rendered": "0",
+   "value": 0,
+   "evidence_file": "studyB_execution_status_695.json",
+   "json_pointer": "/failure_taxonomy_by_split_arm/public_dev|LOCAL_SCOPE_ABLATION/contradictory_presence_state",
+   "derivation": ""
+  },
+  {
+   "macro": "cpFamScheduled",
+   "rendered": "0.667",
+   "value": 0.6666666666666666,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/family_pair_f1/PR_scheduled_valuable_1000",
+   "derivation": ""
+  },
+  {
+   "macro": "cpFamSim",
+   "rendered": "0.667",
+   "value": 0.6666666666666666,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/family_pair_f1/PR_sim_card_stolen",
+   "derivation": ""
+  },
+  {
+   "macro": "cpFamRepair",
+   "rendered": "0.500",
+   "value": 0.5,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/scores/b5_process_compiled/family_pair_f1/PR_repair_over_500",
+   "derivation": ""
+  },
+  {
+   "macro": "gateMargin",
+   "rendered": "0.10",
+   "value": 0.1,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/positive_claim_gates/margin_at_least_0_10_against_all",
+   "derivation": "threshold encoded in gate key"
+  },
+  {
+   "macro": "gatePrec",
+   "rendered": "0.70",
+   "value": 0.7,
+   "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+   "json_pointer": "/positive_claim_gates/delta_precision_at_least_0_70",
+   "derivation": "threshold encoded in gate key"
+  },
+  {
+   "macro": "bndF",
+   "rendered": "+0.03",
+   "value": 0.03,
+   "evidence_file": "ANALYSIS_CONTRACT.json",
+   "json_pointer": "/endpoint_hierarchy/primary_practical_contrasts/[F1__DIRECT_REVIEWED]/practical_boundary",
+   "derivation": ""
+  },
+  {
+   "macro": "bndCer",
+   "rendered": "-0.03",
+   "value": -0.03,
+   "evidence_file": "ANALYSIS_CONTRACT.json",
+   "json_pointer": "/endpoint_hierarchy/primary_practical_contrasts/[CER__DIRECT_REVIEWED]/practical_boundary",
+   "derivation": ""
+  },
+  {
+   "macro": "bndUdr",
+   "rendered": "-0.03",
+   "value": -0.03,
+   "evidence_file": "ANALYSIS_CONTRACT.json",
+   "json_pointer": "/endpoint_hierarchy/primary_practical_contrasts/[UDR__DIRECT_REVIEWED]/practical_boundary",
+   "derivation": ""
+  },
+  {
+   "macro": "nbPrimaryContrasts",
+   "rendered": "12",
+   "value": 12,
+   "evidence_file": "ANALYSIS_CONTRACT.json",
+   "json_pointer": "/endpoint_hierarchy/number_of_primary_practical_contrasts",
+   "derivation": ""
+  },
+  {
+   "macro": "efMaxTokExtract",
+   "rendered": "18,000",
+   "value": 18000,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b6_evidence_first/max_tokens",
+   "derivation": "larger of the two stage limits"
+  },
+  {
+   "macro": "efMaxTokPlan",
+   "rendered": "14,000",
+   "value": 14000,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b6_evidence_first/max_tokens",
+   "derivation": "smaller of the two stage limits"
+  },
+  {
+   "macro": "cpMaxTokGuard",
+   "rendered": "10,000",
+   "value": 10000,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b5_process_compiled/max_tokens",
+   "derivation": ""
+  },
+  {
+   "macro": "dirMaxTokCall",
+   "rendered": "14,000",
+   "value": 14000,
+   "evidence_file": "PAIRED_V5_RECEIPT_ACCOUNTING.json",
+   "json_pointer": "/b1_direct/max_tokens",
+   "derivation": ""
+  },
+  {
+   "macro": "pairExampleFalse",
+   "rendered": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more",
+   "value": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+   "evidence_file": "BENCHMARK_V3_pair_theft-01-04.json",
+   "json_pointer": "/pair/changed_statement_false",
+   "derivation": "trailing period stripped"
+  },
+  {
+   "macro": "pairExampleTrue",
+   "rendered": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000",
+   "value": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+   "evidence_file": "BENCHMARK_V3_pair_theft-01-04.json",
+   "json_pointer": "/pair/changed_statement_true",
+   "derivation": "trailing period stripped"
+  }
+ ]
+}

@@ -1,0 +1,91 @@
+{
+  "b5_process_compiled": {
+    "receipts": 87,
+    "ok": 87,
+    "models": [
+      "openai/gpt-5.6-terra"
+    ],
+    "providers": [
+      "OpenAI"
+    ],
+    "temperature": [
+      "0.0"
+    ],
+    "max_tokens": {
+      "10000": 87
+    },
+    "cost_usd": "5.4395890",
+    "prompt_tokens": 1005211,
+    "completion_tokens": 243891,
+    "attempts_per_receipt": {
+      "1": 87
+    }
+  },
+  "b6_evidence_first": {
+    "receipts": 108,
+    "ok": 108,
+    "models": [
+      "openai/gpt-5.6-terra"
+    ],
+    "providers": [
+      "OpenAI"
+    ],
+    "temperature": [
+      "0.0"
+    ],
+    "max_tokens": {
+      "14000": 54,
+      "18000": 54
+    },
+    "cost_usd": "1.0630999",
+    "prompt_tokens": 259890,
+    "completion_tokens": 66450,
+    "attempts_per_receipt": {
+      "1": 108
+    }
+  },
+  "b1_direct": {
+    "receipts": 54,
+    "ok": 54,
+    "models": [
+      "openai/gpt-5.6-terra"
+    ],
+    "providers": [
+      "OpenAI"
+    ],
+    "temperature": [
+      "0.0"
+    ],
+    "max_tokens": {
+      "14000": 54
+    },
+    "cost_usd": "4.8347335",
+    "prompt_tokens": 2900625,
+    "completion_tokens": 45678,
+    "attempts_per_receipt": {
+      "1": 54
+    }
+  },
+  "b3_representation_then_list": {
+    "receipts": 54,
+    "ok": 54,
+    "models": [
+      "openai/gpt-5.6-terra"
+    ],
+    "providers": [
+      "OpenAI"
+    ],
+    "temperature": [
+      "0.0"
+    ],
+    "max_tokens": {
+      "14000": 54
+    },
+    "cost_usd": "8.4114187",
+    "prompt_tokens": 5345421,
+    "completion_tokens": 42663,
+    "attempts_per_receipt": {
+      "1": 54
+    }
+  }
+}

@@ -1,0 +1,1487 @@
+{
+  "scope": "historical_v5_archive_internal_and_report_audit",
+  "fresh_scoring": false,
+  "benchmark_target_files_parsed": false,
+  "native150_data_read": false,
+  "provider_calls": 0,
+  "archive": {
+    "name": "CasePath_ICLR2027_Release_v5_observed_e3656756.zip",
+    "bytes": 3236732,
+    "sha256": "e3656756d673e66e335ba3137d47b4b6eb765b4bfc4eb6ff7aed61e79905bcd3"
+  },
+  "release_manifest": {
+    "sha256": "43e35752d97b94c4df9c23e172687b87bca9ab48bd7d3ba4e84deff7a4096a04",
+    "declared_payloads": 1276,
+    "verified_payloads": 1276,
+    "hash_mismatches": [],
+    "unexpected_members": [],
+    "missing_members": []
+  },
+  "checksum_file": {
+    "entries": 1277,
+    "all_match": true
+  },
+  "key_artifacts": {
+    "method_freeze": {
+      "path": "research/casepath/theft_causal/v10-method-freeze-v5/METHOD_MANIFEST.json",
+      "bytes": 20217,
+      "sha256": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15"
+    },
+    "hidden_freeze": {
+      "path": "research/casepath/theft_causal/v11-hidden-freeze-v5/HIDDEN_EXECUTION_FREEZE.json",
+      "bytes": 5396,
+      "sha256": "b9a05e86beb7f1e46d8833f9428e7e9f527668058b58dc67eb69f73bf3e48de2"
+    },
+    "dev_split": {
+      "path": "research/casepath/theft_causal/v10-dev-freeze-v5.json",
+      "bytes": 1390,
+      "sha256": "1eaf1f5a9291e923f7542434b7637473871b0813bb1a1caa455682f696ef078c"
+    },
+    "terminal_result": {
+      "path": "research/casepath/theft_causal/v11-hidden-analysis-v5/RESULT.json",
+      "bytes": 44796,
+      "sha256": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47"
+    },
+    "terminal_receipt": {
+      "path": "research/casepath/theft_causal/v11-hidden-analysis-v5/TERMINAL_RECEIPT.json",
+      "bytes": 1872,
+      "sha256": "4393081cf2acfe299f347b059844b64a2aa9824087894380ea5daa0023ded263"
+    },
+    "benchmark": {
+      "path": "research/casepath/theft_causal/BENCHMARK_V3.json",
+      "bytes": 141478,
+      "sha256": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc"
+    },
+    "amendment_v2": {
+      "path": "research/casepath/theft_causal/BENCHMARK_AMENDMENT_V2.json",
+      "bytes": 1103,
+      "sha256": "664b8696c96a5c31d9f17c9f33a25d50af9244c6455d8ef4fdee80c9e444ab1b"
+    },
+    "amendment_v3": {
+      "path": "research/casepath/theft_causal/BENCHMARK_AMENDMENT_V3.json",
+      "bytes": 1406,
+      "sha256": "bedc131ec0ff193fcedb84727b15679ecaf5ac356896e29c21215fa390e4216b"
+    },
+    "analysis": {
+      "path": "research/casepath/theft_confirmatory_analysis_v5.py",
+      "bytes": 17834,
+      "sha256": "3e4316521b8bf64d0857bae8066ecb00c53a5e922a6252b2b46a25abe371139f"
+    },
+    "protocol": {
+      "path": "research/casepath/THEFT_STATISTICAL_PROTOCOL_V5.md",
+      "bytes": 9205,
+      "sha256": "420b4f577b2a2f6c722008a51299ca82e88ee2c0a62d6dd559e763cf97484697"
+    },
+    "parity": {
+      "path": "research/casepath/PRODUCT_METHOD_PARITY_V5.json",
+      "bytes": 6829,
+      "sha256": "38f0fe84f50ce78cf7014674fcc7fe9aacc0f400b5c449a1f6e7d31354ce6a57"
+    },
+    "parity_verifier": {
+      "path": "research/casepath/verify_product_method_parity_v5.py",
+      "bytes": 7582,
+      "sha256": "728df0f4ea1de35e938b61d9a146ddc23eccae269cf3e81be9033a6c9d54c945"
+    },
+    "source_snapshot": {
+      "path": "research/casepath/theft_causal/SOURCE_SNAPSHOT_V2.json",
+      "bytes": 176520,
+      "sha256": "9d34231a655d16ef55348bc3018e90a3276ed8022859d8b3064177b0b4afb2d1"
+    },
+    "propositions": {
+      "path": "research/casepath/theft_causal/v3-source/PROPOSITIONS.json",
+      "bytes": 159458,
+      "sha256": "bd89ac3100dc1ba44a901efedf18092d0a1566f55100e3bf48f9226270b4c553"
+    },
+    "prepared": {
+      "path": "research/casepath/theft_causal/v9-rich-map-final/PREPARED_ACTIVE_V5.json",
+      "bytes": 406933,
+      "sha256": "95f9208d47e5c0193c4c3056226a2bcaa3a37b023098d97e5d0307d52fd5db28"
+    },
+    "refinement": {
+      "path": "research/casepath/theft_causal/v8-refinement-final/REFINEMENT_FINAL.json",
+      "bytes": 241923,
+      "sha256": "c0010b155b6cb0b90ee660b4d07553c522c5522cda4324f599107c146b623571"
+    },
+    "catalogue": {
+      "path": "research/casepath/theft_causal/FULL_CATALOGUE.json",
+      "bytes": 8427,
+      "sha256": "7dbd0c23d6452f85b47854d39122bdf44fc1ae196e152888ee24828e21344572"
+    }
+  },
+  "split": {
+    "development_pairs": 9,
+    "development_units": 18,
+    "heldout_pairs": 27,
+    "heldout_units": 54,
+    "overlap_pairs": [],
+    "union_pairs": 36,
+    "from": "method/execution freezes; benchmark not parsed"
+  },
+  "method_freeze_dependencies": {
+    "matched_count": 51,
+    "missing": [],
+    "mismatched": []
+  },
+  "hidden_freeze_dependencies": {
+    "matched_count": 10,
+    "missing": [
+      {
+        "section": "bound",
+        "name": "b5_hidden_runner",
+        "bytes": 10967,
+        "path": "research/casepath/runners/theft_b5_hidden_v5.py",
+        "sha256": "e790b003610e765e907f2cc45122e0eec475403efdb5c5411c33d1879773c207"
+      },
+      {
+        "section": "bound",
+        "name": "baseline_hidden_runner",
+        "bytes": 10126,
+        "path": "research/casepath/runners/theft_baselines_hidden_v5.py",
+        "sha256": "780509f1f27b2351fca46bd6df57fc528e6ca825ae45972bf7cd61f5ab00dac5"
+      },
+      {
+        "section": "bound",
+        "name": "development_admission",
+        "bytes": 1816,
+        "path": "research/casepath/theft_causal/v10-development-analysis-v5/ADMISSION.json",
+        "sha256": "f4e38680bc7c7cf2f93c17237126acd85a77bf77cc4b4b3e7b0250b7e8a38545"
+      },
+      {
+        "section": "bound",
+        "name": "development_analysis",
+        "bytes": 20753,
+        "path": "research/casepath/theft_causal/v10-development-analysis-v5/RESULT.json",
+        "sha256": "6079823e5819a04c782a1a19370e3ed98d5e6c794b52dc665b5005894c2dcd98"
+      }
+    ],
+    "mismatched": []
+  },
+  "terminal_links": {
+    "matched_count": 7,
+    "missing": [],
+    "mismatched": []
+  },
+  "scores": {
+    "b1_direct": {
+      "recomputed_against_archived_selected_routes": {
+        "pairs": 27,
+        "tp": 25,
+        "predicted_atoms": 52,
+        "gold_atoms": 33,
+        "spurious_atoms": 27,
+        "missed_atoms": 8,
+        "precision": 0.4807692307692308,
+        "recall": 0.7575757575757576,
+        "micro_f1": 0.5882352941176471,
+        "exact_rate": 0.3333333333333333
+      },
+      "all_reported_fields_match": true,
+      "numeric_pair_rows": [
+        {
+          "pair_id": "theft-01-02",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-01-03",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-01-04",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-02-02",
+          "family": "PR_bicycle_claimed",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 2,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-03",
+          "family": "PR_bicycle_claimed",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 2,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-04",
+          "family": "PR_bicycle_claimed",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 2,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-02",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-03",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-03-04",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-02",
+          "family": "PR_third_party_causer",
+          "tp": 2,
+          "predicted": 4,
+          "gold": 2,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-03",
+          "family": "PR_third_party_causer",
+          "tp": 2,
+          "predicted": 2,
+          "gold": 2,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-04-04",
+          "family": "PR_third_party_causer",
+          "tp": 2,
+          "predicted": 2,
+          "gold": 2,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-05-02",
+          "family": "PR_expert_procedure_requested",
+          "tp": 1,
+          "predicted": 4,
+          "gold": 1,
+          "f1": 0.4,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-03",
+          "family": "PR_expert_procedure_requested",
+          "tp": 1,
+          "predicted": 4,
+          "gold": 1,
+          "f1": 0.4,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-04",
+          "family": "PR_expert_procedure_requested",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-02",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-06-03",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-04",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-02",
+          "family": "PR_nachfrist_set",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-03",
+          "family": "PR_nachfrist_set",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-04",
+          "family": "PR_nachfrist_set",
+          "tp": 0,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-08-02",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 4,
+          "gold": 1,
+          "f1": 0.4,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-08-03",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-08-04",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-09-02",
+          "family": "PR_declined",
+          "tp": 0,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-09-03",
+          "family": "PR_declined",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-09-04",
+          "family": "PR_declined",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        }
+      ],
+      "route_selection_independently_reverified": false
+    },
+    "b3_representation_then_list": {
+      "recomputed_against_archived_selected_routes": {
+        "pairs": 27,
+        "tp": 31,
+        "predicted_atoms": 72,
+        "gold_atoms": 33,
+        "spurious_atoms": 41,
+        "missed_atoms": 2,
+        "precision": 0.4305555555555556,
+        "recall": 0.9393939393939394,
+        "micro_f1": 0.5904761904761905,
+        "exact_rate": 0.14814814814814814
+      },
+      "all_reported_fields_match": true,
+      "numeric_pair_rows": [
+        {
+          "pair_id": "theft-01-02",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 4,
+          "gold": 1,
+          "f1": 0.4,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-01-03",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-01-04",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-02",
+          "family": "PR_bicycle_claimed",
+          "tp": 2,
+          "predicted": 3,
+          "gold": 2,
+          "f1": 0.8,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-03",
+          "family": "PR_bicycle_claimed",
+          "tp": 2,
+          "predicted": 4,
+          "gold": 2,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-04",
+          "family": "PR_bicycle_claimed",
+          "tp": 2,
+          "predicted": 2,
+          "gold": 2,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-03-02",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-03",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-04",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-02",
+          "family": "PR_third_party_causer",
+          "tp": 2,
+          "predicted": 3,
+          "gold": 2,
+          "f1": 0.8,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-03",
+          "family": "PR_third_party_causer",
+          "tp": 2,
+          "predicted": 3,
+          "gold": 2,
+          "f1": 0.8,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-04",
+          "family": "PR_third_party_causer",
+          "tp": 2,
+          "predicted": 3,
+          "gold": 2,
+          "f1": 0.8,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-02",
+          "family": "PR_expert_procedure_requested",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-03",
+          "family": "PR_expert_procedure_requested",
+          "tp": 1,
+          "predicted": 5,
+          "gold": 1,
+          "f1": 0.3333333333333333,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-04",
+          "family": "PR_expert_procedure_requested",
+          "tp": 1,
+          "predicted": 5,
+          "gold": 1,
+          "f1": 0.3333333333333333,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-02",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-06-03",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-06-04",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-02",
+          "family": "PR_nachfrist_set",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-03",
+          "family": "PR_nachfrist_set",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-04",
+          "family": "PR_nachfrist_set",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-08-02",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-08-03",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-08-04",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 4,
+          "gold": 1,
+          "f1": 0.4,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-09-02",
+          "family": "PR_declined",
+          "tp": 1,
+          "predicted": 5,
+          "gold": 1,
+          "f1": 0.3333333333333333,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-09-03",
+          "family": "PR_declined",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-09-04",
+          "family": "PR_declined",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        }
+      ],
+      "route_selection_independently_reverified": false
+    },
+    "b5_process_compiled": {
+      "recomputed_against_archived_selected_routes": {
+        "pairs": 27,
+        "tp": 24,
+        "predicted_atoms": 39,
+        "gold_atoms": 33,
+        "spurious_atoms": 15,
+        "missed_atoms": 9,
+        "precision": 0.6153846153846154,
+        "recall": 0.7272727272727273,
+        "micro_f1": 0.6666666666666666,
+        "exact_rate": 0.4444444444444444
+      },
+      "all_reported_fields_match": true,
+      "numeric_pair_rows": [
+        {
+          "pair_id": "theft-01-02",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-01-03",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-01-04",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-02",
+          "family": "PR_bicycle_claimed",
+          "tp": 2,
+          "predicted": 2,
+          "gold": 2,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-02-03",
+          "family": "PR_bicycle_claimed",
+          "tp": 2,
+          "predicted": 2,
+          "gold": 2,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-02-04",
+          "family": "PR_bicycle_claimed",
+          "tp": 2,
+          "predicted": 2,
+          "gold": 2,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-03-02",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-03",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-04",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-02",
+          "family": "PR_third_party_causer",
+          "tp": 0,
+          "predicted": 0,
+          "gold": 2,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-03",
+          "family": "PR_third_party_causer",
+          "tp": 0,
+          "predicted": 0,
+          "gold": 2,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-04",
+          "family": "PR_third_party_causer",
+          "tp": 0,
+          "predicted": 0,
+          "gold": 2,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-02",
+          "family": "PR_expert_procedure_requested",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-03",
+          "family": "PR_expert_procedure_requested",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-04",
+          "family": "PR_expert_procedure_requested",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-02",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-03",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-04",
+          "family": "PR_repair_over_500",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-02",
+          "family": "PR_nachfrist_set",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-07-03",
+          "family": "PR_nachfrist_set",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-07-04",
+          "family": "PR_nachfrist_set",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-08-02",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-08-03",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-08-04",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-09-02",
+          "family": "PR_declined",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-09-03",
+          "family": "PR_declined",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-09-04",
+          "family": "PR_declined",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        }
+      ],
+      "route_selection_independently_reverified": false
+    },
+    "b6_evidence_first": {
+      "recomputed_against_archived_selected_routes": {
+        "pairs": 27,
+        "tp": 16,
+        "predicted_atoms": 68,
+        "gold_atoms": 33,
+        "spurious_atoms": 52,
+        "missed_atoms": 17,
+        "precision": 0.23529411764705882,
+        "recall": 0.48484848484848486,
+        "micro_f1": 0.31683168316831684,
+        "exact_rate": 0.07407407407407407
+      },
+      "all_reported_fields_match": true,
+      "numeric_pair_rows": [
+        {
+          "pair_id": "theft-01-02",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 5,
+          "gold": 1,
+          "f1": 0.3333333333333333,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-01-03",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-01-04",
+          "family": "PR_scheduled_valuable_1000",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-02",
+          "family": "PR_bicycle_claimed",
+          "tp": 1,
+          "predicted": 4,
+          "gold": 2,
+          "f1": 0.3333333333333333,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-03",
+          "family": "PR_bicycle_claimed",
+          "tp": 1,
+          "predicted": 5,
+          "gold": 2,
+          "f1": 0.2857142857142857,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-02-04",
+          "family": "PR_bicycle_claimed",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 2,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-02",
+          "family": "PR_sim_card_stolen",
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-03",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-03-04",
+          "family": "PR_sim_card_stolen",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-02",
+          "family": "PR_third_party_causer",
+          "tp": 2,
+          "predicted": 2,
+          "gold": 2,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-04-03",
+          "family": "PR_third_party_causer",
+          "tp": 0,
+          "predicted": 3,
+          "gold": 2,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-04-04",
+          "family": "PR_third_party_causer",
+          "tp": 0,
+          "predicted": 5,
+          "gold": 2,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-02",
+          "family": "PR_expert_procedure_requested",
+          "tp": 1,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 1.0,
+          "exact": true
+        },
+        {
+          "pair_id": "theft-05-03",
+          "family": "PR_expert_procedure_requested",
+          "tp": 0,
+          "predicted": 5,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-05-04",
+          "family": "PR_expert_procedure_requested",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-02",
+          "family": "PR_repair_over_500",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-03",
+          "family": "PR_repair_over_500",
+          "tp": 0,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-06-04",
+          "family": "PR_repair_over_500",
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-02",
+          "family": "PR_nachfrist_set",
+          "tp": 1,
+          "predicted": 6,
+          "gold": 1,
+          "f1": 0.2857142857142857,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-03",
+          "family": "PR_nachfrist_set",
+          "tp": 0,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-07-04",
+          "family": "PR_nachfrist_set",
+          "tp": 1,
+          "predicted": 4,
+          "gold": 1,
+          "f1": 0.4,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-08-02",
+          "family": "PR_goods_recovered",
+          "tp": 0,
+          "predicted": 1,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-08-03",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 3,
+          "gold": 1,
+          "f1": 0.5,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-08-04",
+          "family": "PR_goods_recovered",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-09-02",
+          "family": "PR_declined",
+          "tp": 1,
+          "predicted": 2,
+          "gold": 1,
+          "f1": 0.6666666666666666,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-09-03",
+          "family": "PR_declined",
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        },
+        {
+          "pair_id": "theft-09-04",
+          "family": "PR_declined",
+          "tp": 0,
+          "predicted": 0,
+          "gold": 1,
+          "f1": 0.0,
+          "exact": false
+        }
+      ],
+      "route_selection_independently_reverified": false
+    }
+  },
+  "report_input_hashes": {
+    "analysis": true,
+    "b5": true,
+    "baselines": true,
+    "benchmark": true
+  },
+  "family_swap_numeric_recheck": {
+    "b1_direct": {
+      "one_sided_p": 0.435546875,
+      "assignments": 512,
+      "matches_archived": true,
+      "holm_adjusted_p": 0.796875,
+      "holm_matches_archived": true
+    },
+    "b3_representation_then_list": {
+      "one_sided_p": 0.3984375,
+      "assignments": 512,
+      "matches_archived": true,
+      "holm_adjusted_p": 0.796875,
+      "holm_matches_archived": true
+    },
+    "b6_evidence_first": {
+      "one_sided_p": 0.04296875,
+      "assignments": 512,
+      "matches_archived": true,
+      "holm_adjusted_p": 0.12890625,
+      "holm_matches_archived": true
+    }
+  },
+  "wrong_pairing_archived": {
+    "cyclic_shifts": [
+      0.0,
+      0.08333333333333333,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "null_95": [
+      0.0,
+      0.08333333333333333
+    ],
+    "null_max": 0.08333333333333333,
+    "null_mean": 0.010682907348242811,
+    "null_min": 0.0,
+    "observed_micro_f1": 0.6666666666666666,
+    "p_ge_plus1": 0.00019964064683569574,
+    "random_draws": 5000,
+    "seed": 20260917,
+    "finite_null_size": 5008,
+    "add_one_arithmetic_matches": true,
+    "fresh_randomization_executed": false
+  },
+  "cluster_bootstrap_archived": {
+    "arms": {
+      "b1_direct": {
+        "high": 0.7586206896551724,
+        "low": 0.4044943820224719
+      },
+      "b3_representation_then_list": {
+        "high": 0.7155963302752294,
+        "low": 0.47058823529411764
+      },
+      "b5_process_compiled": {
+        "high": 0.88,
+        "low": 0.43478260869565216
+      },
+      "b6_evidence_first": {
+        "high": 0.4,
+        "low": 0.23911547666533708
+      }
+    },
+    "b5_minus": {
+      "b1_direct": {
+        "high": 0.4202376514445479,
+        "low": -0.2531871639674291
+      },
+      "b3_representation_then_list": {
+        "high": 0.33274492497793473,
+        "low": -0.1990359155407699
+      },
+      "b6_evidence_first": {
+        "high": 0.5648148148148148,
+        "low": 0.11045828437132782
+      }
+    },
+    "draws": 10000,
+    "seed": 20260917,
+    "unit": "branch_family"
+  },
+  "gate": {
+    "gate_pass": false,
+    "claim_status": "UNSUPPORTED",
+    "checks": {
+      "correct_pairing_above_null_97_5": true,
+      "delta_precision_at_least_0_70": false,
+      "gold_chain_coverage_at_least_0_80": true,
+      "holm_p_at_most_0_05_against_all": false,
+      "margin_at_least_0_10_against_all": false,
+      "no_orphan_insertion_path": true,
+      "predicted_chain_attribution_at_least_0_90": true,
+      "predicted_gold_ratio_in_range": true
+    },
+    "fresh_gate_execution": false
+  },
+  "hidden_receipts": {
+    "b5_process_compiled": {
+      "receipt_count": 87,
+      "known_cost_sum_usd": "5.4395890",
+      "unknown_cost_count": 0,
+      "logged_attempts": 87,
+      "all_ok": true,
+      "prompt_tokens": 1005211,
+      "completion_tokens": 243891,
+      "generation_ids_unique": true,
+      "answer_files_present": true,
+      "provider_origin": "retained provider-reported receipts; no fresh provider attestation"
+    },
+    "b1_direct": {
+      "receipt_count": 54,
+      "known_cost_sum_usd": "4.8347335",
+      "unknown_cost_count": 0,
+      "logged_attempts": 54,
+      "all_ok": true,
+      "prompt_tokens": 2900625,
+      "completion_tokens": 45678,
+      "generation_ids_unique": true,
+      "answer_files_present": true,
+      "provider_origin": "retained provider-reported receipts; no fresh provider attestation"
+    },
+    "b3_representation_then_list": {
+      "receipt_count": 54,
+      "known_cost_sum_usd": "8.4114187",
+      "unknown_cost_count": 0,
+      "logged_attempts": 54,
+      "all_ok": true,
+      "prompt_tokens": 5345421,
+      "completion_tokens": 42663,
+      "generation_ids_unique": true,
+      "answer_files_present": true,
+      "provider_origin": "retained provider-reported receipts; no fresh provider attestation"
+    },
+    "b6_evidence_first": {
+      "receipt_count": 108,
+      "known_cost_sum_usd": "1.0630999",
+      "unknown_cost_count": 0,
+      "logged_attempts": 108,
+      "all_ok": true,
+      "prompt_tokens": 259890,
+      "completion_tokens": 66450,
+      "generation_ids_unique": true,
+      "answer_files_present": true,
+      "provider_origin": "retained provider-reported receipts; no fresh provider attestation"
+    }
+  },
+  "parity_report": {
+    "all_pair_deltas_match": true,
+    "all_product_requests_have_exact_source_spans": true,
+    "all_unit_documents_match": true,
+    "all_unit_guard_states_match": true,
+    "all_unit_next_actions_match": true,
+    "benchmark_pairs": 36,
+    "benchmark_units": 72,
+    "contract": "casepath.product-method-parity/5.0.0",
+    "duplicate_text_semantic_invariant": true,
+    "focused_tests_passed": true,
+    "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+    "http_mount_status_contract": "casepath.paper-method-status/3.0.0",
+    "method_freeze_sha256": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15",
+    "pack_manifest_sha256": "4b13cf3b36f60c4722bf61776a3f3f0e6d3f0bce6ffe274b718d26ea342df564",
+    "passed": true,
+    "fresh_replay_executed": false
+  },
+  "parity_dependencies": {
+    "matched_count": 23,
+    "missing": [
+      {
+        "section": "files",
+        "name": "research/casepath/PRODUCT_METHOD_PARITY_V5.core.json",
+        "bytes": 1470,
+        "path": "research/casepath/PRODUCT_METHOD_PARITY_V5.core.json",
+        "sha256": "f17d59b1e7a4e390b9ab3a24d402d4b35a99b05c7b4c36896f2bdba277432494"
+      }
+    ],
+    "mismatched": []
+  },
+  "source_inventory": {
+    "passages": 197,
+    "propositions": 308,
+    "overlay_rules": 98,
+    "overlay_guards": 87,
+    "non_evidentiary_classifications": 13,
+    "catalogue_documents": 33
+  },
+  "manifest_license": "The MIT License (MIT)\n\nCopyright (c) 2022 Maruan Al-Shedivat.\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of\nthis software and associated documentation files (the \"Software\"), to deal in\nthe Software without restriction, including without limitation the rights to\nuse, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of\nthe Software, and to permit persons to whom the Software is furnished to do so,\nsubject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS\nFOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR\nCOPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER\nIN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN\nCONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+  "third_party_notices": "# Third-party notices\n\nCasePath application source is distributed under the repository's existing\n`LICENSE`. That file is retained verbatim; this package makes no new licensing\ndecision or ownership claim over third-party components or data.\n\nThe bundled `synthetic-dev-60` public synthetic development corpus includes its\nown `LICENSE-DATA` file with SHA-256\n`b0db9041285c34543d62e1c0dc3a524ca60fd0723f9a77d12f6ab0e94f506cdc`.\nIt states `CC-BY-4.0` and is hash-bound in the corpus manifest. The package\ncontains observable claims, model-visible source registries, source documents,\nand public policy or authority files. It excludes the 90 reserved research\ninputs, benchmark targets, and evaluator output.\n\nPython and JavaScript dependencies retain their upstream licenses. See\n`casepath-api/requirements.lock`, `casepath-api/requirements.txt`, and\n`casepath-qa/package-lock.json` for the exact resolved packages.\n",
+  "key_sources_copied": [
+    "retained/analysis/theft_confirmatory_analysis_v5.py",
+    "retained/protocol/THEFT_STATISTICAL_PROTOCOL_V5.md",
+    "retained/method_freeze/METHOD_MANIFEST.json",
+    "retained/hidden_freeze/HIDDEN_EXECUTION_FREEZE.json",
+    "retained/dev_split/v10-dev-freeze-v5.json",
+    "retained/terminal_result/RESULT.json",
+    "retained/terminal_receipt/TERMINAL_RECEIPT.json",
+    "retained/parity/PRODUCT_METHOD_PARITY_V5.json",
+    "retained/parity_verifier/verify_product_method_parity_v5.py"
+  ],
+  "limitations": [
+    "No fresh benchmark-target scoring, acceptable-route selection, wrong-family randomization, or product replay was run; numeric bootstrap resampling from archived selected-reference counts is recorded separately when performed.",
+    "Counts are recalculated against the selected route already recorded in the archived RESULT; admissibility/selection of that route was not independently rejudged.",
+    "Cryptographic checks establish archive/internal binding consistency, not remote provider attestation.",
+    "Some freeze-referenced source and governance files are absent from this release and are listed explicitly.",
+    "Original historical benchmark bytes were hashed/copied but not parsed; archived historical RESULT contains selected-reference-route records. No native150 protected files were accessed."
+  ],
+  "bootstrap_numeric_recheck": {
+    "basis": "raw predicted deltas scored against archived selected reference realization, not fresh route selection or target loading",
+    "result": {
+      "seed": 20260917,
+      "draws": 10000,
+      "unit": "branch_family",
+      "arms": {
+        "b1_direct": {
+          "low": 0.4044943820224719,
+          "high": 0.7586206896551724
+        },
+        "b3_representation_then_list": {
+          "low": 0.47058823529411764,
+          "high": 0.7155963302752294
+        },
+        "b5_process_compiled": {
+          "low": 0.43478260869565216,
+          "high": 0.88
+        },
+        "b6_evidence_first": {
+          "low": 0.23911547666533708,
+          "high": 0.4
+        }
+      },
+      "b5_minus": {
+        "b1_direct": {
+          "low": -0.2531871639674291,
+          "high": 0.4202376514445479
+        },
+        "b3_representation_then_list": {
+          "low": -0.1990359155407699,
+          "high": 0.33274492497793473
+        },
+        "b6_evidence_first": {
+          "low": 0.11045828437132782,
+          "high": 0.5648148148148148
+        }
+      }
+    },
+    "exact_match": true
+  },
+  "baseline_raw_result_join": {
+    "matched": 162,
+    "total": 162,
+    "all_match": true
+  },
+  "observed_hidden_completion_ceilings": {
+    "b5_process_compiled": [
+      10000
+    ],
+    "b1_direct": [
+      14000
+    ],
+    "b3_representation_then_list": [
+      14000
+    ],
+    "b6_evidence_first": [
+      14000,
+      18000
+    ]
+  }
+}

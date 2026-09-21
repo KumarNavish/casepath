@@ -1,0 +1,115 @@
+\section{Study A: Benchmark and Analysis Details}
+\label{app:studya}
+
+\begin{figure}[htb]
+\centering\includegraphics[width=.94\linewidth]{fig_method_pipeline.pdf}
+\caption{\textbf{The frozen Study~A pipeline.} Admitted authority spans are
+extracted into operational propositions, organised by a macro process, refined
+into guarded evidence rules and mapped onto a closed document catalogue. At
+case time only the guards are decided by the model; the plan is a
+deterministic projection of the active chains.}
+\label{fig:method}
+\end{figure}
+
+\begin{figure}[htb]
+\centering\includegraphics[width=\linewidth]{fig_benchmark_construction.pdf}
+\caption{Benchmark construction and admission controls. Held-out contexts
+remained sealed until the method, benchmark, statistics and runners were
+hash-frozen.}
+\label{fig:benchmark}
+\end{figure}
+
+\begin{figure}[htb]
+\centering\includegraphics[width=\linewidth]{fig_branch_causality.pdf}
+\caption{A benchmark intervention changes one process fact. The expected
+signed checklist change is derived from the source contract, not from any
+system's output.}
+\label{fig:branch}
+\end{figure}
+
+\paragraph{Branch concepts.}
+The \nConcepts{} concepts are: a scheduled valuable at or above the
+source-defined threshold; a bicycle or e-bike among the stolen items;
+SIM-card theft with a misuse claim; an identifiable third-party causer;
+selection of formal expert proceedings; contemplated repairs above the
+consent threshold; a written demand with a forfeiture warning and period;
+recovery of, or news about, stolen items; and insurer declination. Each has
+four neutral contexts; a pair changes only the branch statement.
+
+\paragraph{Signed-change scoring.}
+\label{app:paired-metrics}
+For pair $i$ the scorer evaluates each acceptable signed reference
+realisation $G\in\mathcal G_i$ against the prediction $P_i=\Delta(D_i)$ and
+selects the maximum of the lexicographic tuple
+$\bigl(F_1(P_i,G),\,|P_i\cap G|,\,\mathrm{Prec}(P_i,G),\,\mathrm{Rec}(P_i,G),\,-|G|,\,\mathrm{sort}(G)\bigr)$,
+whose last component is the frozen deterministic tie-break. Precision and
+recall use zero for empty denominators; $F_1$ is one when prediction and
+reference are both empty. Micro scores pool the selected realisation counts
+across the \nPairsHid{} pairs; family means average pair $F_1$ within each
+of the nine concepts. The family bootstrap resamples nine whole families
+with replacement on each of \bootDraws{} draws (seed \bootSeed), retaining
+all three held-out contexts of each selected family. The exact family-swap
+test enumerates \swapAssignments{} sign assignments of the nine family mean
+differences; the three one-sided $p$-values (\pRawDir, \pRawGc, \pRawEf)
+receive Holm adjustment (\pHolmDir, \pHolmGc, \pHolmEf). The wrong-pairing
+diagnostic uses \wpShifts{} cyclic shifts and \wpDraws{} sampled
+derangements with add-one score $(1+N_{\ge})/(1+\wpEvaluated)$; the reported
+maximum is over this evaluated collection, not all derangements.
+
+\paragraph{Per-concept results.}
+\label{app:family}
+Table~\ref{tab:family} lists the held-out mean pair $F_1$ for every branch
+concept and arm.
+\begin{table}[htb]
+\centering\small
+\input{table_family_results.tex}
+\caption{Held-out mean pair $F_1$ by branch concept.}
+\label{tab:family}
+\end{table}
+
+\paragraph{Preregistered gate.}
+Table~\ref{tab:gates} lists the eight conditions fixed before the one-shot
+read and their outcomes.
+\begin{table}[htb]
+\centering\small
+\input{table_claim_gates.tex}
+\caption{Preregistered held-out gate, fixed before the one-shot read. The
+provenance, volume and pairing conditions pass; the broad-superiority
+conditions do not.}
+\label{tab:gates}
+\end{table}
+
+\paragraph{Frozen record and development separation.}
+The method freeze \path{casepath.theft-method-freeze/5.0.0} binds source
+bytes, benchmark v3 and both amendments, the proposition-complete refinement,
+document mapping, interpreter V4, planner V3, model, provider and temperature
+settings, analysis code, the development split, the matched comparators' raw
+predictions and the focused method tests. Development used \nPairsDev{}
+pairs (\nUnitsDev{} units), one context per concept, and its predeclared
+admission checks authorised exactly one held-out read of the remaining
+\nPairsHid{} pairs (\nUnitsHid{} units) under a separately hash-bound
+execution freeze. After the held-out result, the method was marked locked
+and no scientific file was adapted from held-out outcomes.
+
+\paragraph{Calls and recorded costs.}
+\label{app:costs}
+Table~\ref{tab:costs} lists the held-out provider receipts per arm.
+\begin{table}[htb]
+\centering\small
+\input{table_costs.tex}
+\caption{Held-out provider receipts, one logged attempt per call, model
+\texttt{\cpModel}, temperature $0$. Evidence-first allows \efMaxTokExtract{} completion
+tokens for extraction and \efMaxTokPlan{} for planning; \casepath allows \cpMaxTokGuard{} per
+guard batch; Direct and Graph as context allow \dirMaxTokCall{} per call. Costs are provider-reported charges, exclusive of source
+preparation; the arms are not compute-matched.}
+\label{tab:costs}
+\end{table}
+
+\paragraph{Product-parity contract.}
+The parity verifier loads the installed hash-bound method pack and the real
+product service, replays all \parityUnits{} units with the recorded guard
+decisions, compares guard verdicts, document sets and next actions, compares
+all \parityPairs{} pair deltas through the product diff surface, and checks
+that every rendered quotation is an exact substring of its source passage.
+A successful HTTP response or a plausible demo is not treated as evidence of
+implementation identity.

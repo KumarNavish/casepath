@@ -1,0 +1,94 @@
+\section{Study B: The Complete Released Corpus}
+\label{sec:native}
+
+\paragraph{Corpus and arms.}
+Study~B evaluates \nbClaims{} synthetic tenancy claims in \nbFamilies{}
+families across three domains (defect, mould and heating; lease termination;
+rent increase). The development split holds \nbDevClaims{} claims in
+\nbDevFamilies{} families; the protected split holds \nbHidClaims{} claims in
+\nbHidFamilies{} disjoint families. Five learned arms share one
+deterministically compiled public representation and the same observable
+case packet, with \nbCallsPerCell{} calls per cell (draft and review),
+\nbReasoning{} reasoning, \nbTokens{} completion tokens per call, no tools
+and no resampling, on the same model alias as Study~A. \casepath predicts an
+assessment that code compiles through
+Equations~\ref{eq:native-activation}--\ref{eq:native-route}; the reviewed
+Direct, Document-first, Process-context and Rule-first arms generate the
+artefact themselves. Two dependent controls, a compiled equivalent and a
+local-scope ablation, replay \casepath's assessment through alternative
+executions, giving \nbLearnedCells{} learned and \nbDependentCells{}
+dependent cells, \nbCells{} in all. Because the arms differ in what the model
+emits, Study~B is a pipeline comparison under matched information and budget,
+not an isolated test of graph storage or prompting order.
+
+\paragraph{Endpoints and contract.}
+The native evaluator scores graph structure, branch and path probes, evidence
+obligations, chains, document states and exact source locators; a separate
+endpoint counts the immediate requests a system actually emitted
+(Appendix~\ref{app:native-metrics}). Three primary endpoints are reported
+against each learned comparator: emitted-checklist $F_1$, critical-evidence
+recall and the fraction of unnecessary requests. The frozen contract fixes
+descriptive estimation on the protected split with domains, families and
+cases weighted equally; conservative contrasts assign $-1$ whenever either
+endpoint is unobserved and must jointly exceed the boundaries $\bndF$,
+$\bndCer$ and $\bndUdr$ before a comparator counts as beaten; single-family
+deletion ranges replace confidence intervals, and no $p$-values are computed.
+Failed, truncated or blocked cells stay in the denominator with adverse
+penalties. All \nbClaims{} inputs were inspected during product work, so
+``protected'' denotes custody and family disjointness, not untouched-input
+generalisation.
+
+\begin{table}[t]
+\centering\footnotesize
+\setlength{\tabcolsep}{3pt}
+\input{table_native_execution.tex}
+\caption{\textbf{Development-split execution record} (\nbDevCells{} cells,
+complete). Failed cells are retained with their charge and enter the final
+report with adverse penalties. Endpoint: an artefact relation names a node
+that does not exist; Trunc.: completion limit reached; Codebook: invalid
+codebook index; Presence: contradictory document-presence state. Dependent
+controls are blocked when the \casepath cell they replay failed.}
+\label{tab:native-execution}
+\end{table}
+
+\paragraph{Execution record.}
+Prediction freezes precede all scoring, and no score exists until both splits
+are frozen. At the time of writing, \nbRecorded{} of \nbCells{} cells are
+recorded: all \nbDevCells{} development cells and \nbHidRecorded{} of
+\nbHidCells{} protected cells. The completed development phase already
+exposes a property of the interface (Table~\ref{tab:native-execution}).
+Under the same budget, the generative arms fail schema validation in
+\bDirDevFail, \bDocDevFail, \bPcDevFail{} and \bRfDevFail{} of \nbDevClaims{}
+cells, against \bCpDevFail{} for \casepath. Their dominant failure is an
+artefact relation whose endpoint does not exist (\bDirDevEndpoint,
+\bDocDevEndpoint, \bPcDevEndpoint{} and \bRfDevEndpoint{} cells), a failure
+\casepath cannot produce because it emits an assessment that code turns into
+a graph. Truncation at the completion limit follows (\bDirDevTrunc,
+\bDocDevTrunc, \bPcDevTrunc{} and \bRfDevTrunc{} against \bCpDevTrunc).
+\casepath's own failures are contradictory presence states
+(\bCpDevPresence) and invalid codebook indices (\bCpDevCodebook). These are
+execution outcomes, not quality scores, and they penalise every arm alike in
+the final report.
+
+\begin{figure}[t]
+\centering\includegraphics[width=.56\linewidth]{fig_native_case.pdf}
+\caption{\textbf{Missing does not yet mean required.} One recorded
+development prediction (the first completed \casepath record in sorted
+cohort order, selected without target access): arrears true, family-home
+status unresolved, both documents missing. The controller requests the cure
+notice now and keeps the spouse notice conditional on a clarification; each
+request preserves its source--obligation--fact--capability--route chain.
+This shows the executed mechanism, not correctness.}
+\label{fig:native-case}
+\end{figure}
+
+\paragraph{What the design supports.}
+Figure~\ref{fig:native-case} shows the mechanism on one recorded case. When
+both freezes are complete, the frozen code produces a single descriptive
+finite-corpus report, and the release contains the contract, producer,
+evaluator and every recorded cell so that the report can be regenerated
+rather than trusted. A positive report would show that explicit obligation
+execution yields better-justified complete plans than generative pipelines
+given the same compiled information on this corpus, and nothing about
+population superiority, mechanism isolation or unseen-input generalisation;
+it is not pooled with Study~A.
