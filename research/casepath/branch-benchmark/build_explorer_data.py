@@ -115,6 +115,17 @@ def main() -> None:
     path = HERE / "explorer_data.json"
     path.write_text(json.dumps(payload, indent=1) + "\n")
 
+    # Inline the same payload into the page so it opens from disk without a web server.
+    # `</` cannot appear inside a script element, and the data is JSON, so escaping the
+    # slash is both sufficient and value-preserving.
+    page = HERE / "explore.html"
+    compact = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
+    html = page.read_text()
+    marker = '<script id="inline-data" type="application/json">'
+    start = html.index(marker) + len(marker)
+    end = html.index("</script>", start)
+    page.write_text(html[:start] + compact + html[end:])
+
     # Consistency check: the per-pair marks must sum to the totals the paper reports.
     for arm, label in ARMS:
         spur = sum(len(p["arms"][arm]["spurious"]) for p in out_pairs)
@@ -124,8 +135,9 @@ def main() -> None:
         assert (spur, miss, pred) == (t["spurious_atoms"], t["missed_atoms"], t["predicted_atoms"]), \
             f"{label}: per-pair marks {spur}/{miss}/{pred} != report {t['spurious_atoms']}/{t['missed_atoms']}/{t['predicted_atoms']}"
         print(f"  {label:<18} predicted {pred:>3}  spurious {spur:>3}  missed {miss:>3}  (matches the report)")
-    print(f"\nwrote {path.name}: {len(out_pairs)} pairs, {len(vocab)} distinct signed atoms, "
-          f"{path.stat().st_size / 1024:.0f} KB")
+    print(f"\nwrote {path.name} ({path.stat().st_size / 1024:.0f} KB) and inlined it into "
+          f"{page.name} ({page.stat().st_size / 1024:.0f} KB): {len(out_pairs)} pairs, "
+          f"{len(vocab)} distinct signed atoms")
 
 
 if __name__ == "__main__":
