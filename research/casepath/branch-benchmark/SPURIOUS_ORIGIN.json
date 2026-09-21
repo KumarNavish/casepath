@@ -1,0 +1,131 @@
+{
+ "schema": "casepath.spurious-origin/1",
+ "note": "Attribution of every spurious signed change on the held-out split. Concept ownership comes from the reference contract's acceptable realisations; the selected realisation per pair and arm is the frozen scorer's own choice.",
+ "atoms_in_reference_vocabulary": 12,
+ "reference_changes_by_direction": {
+  "added": 33
+ },
+ "reading_note": "Every justified change on this split is an addition, so each withdrawal any system makes is unjustified. CasePath's plan is a projection of active rules, so a branch turning on can only add documents: its zero withdrawals are a structural property of the architecture, not a measured surprise. The split therefore does not test whether a system correctly withdraws a document when a branch turns off.",
+ "arms": {
+  "b5_process_compiled": {
+   "label": "CasePath",
+   "spurious": 15,
+   "on_branch": 3,
+   "off_branch": 3,
+   "off_vocab": 9,
+   "added": 15,
+   "withdrawn": 0,
+   "distinct_documents": 5,
+   "examples_not_on_branch": [
+    {
+     "pair": "theft-03-02",
+     "intervened": "PR_sim_card_stolen",
+     "atom": "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "belongs_to": null
+    },
+    {
+     "pair": "theft-03-03",
+     "intervened": "PR_sim_card_stolen",
+     "atom": "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "belongs_to": null
+    },
+    {
+     "pair": "theft-03-04",
+     "intervened": "PR_sim_card_stolen",
+     "atom": "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "belongs_to": null
+    }
+   ]
+  },
+  "b1_direct": {
+   "label": "Direct",
+   "spurious": 27,
+   "on_branch": 0,
+   "off_branch": 0,
+   "off_vocab": 27,
+   "added": 16,
+   "withdrawn": 11,
+   "distinct_documents": 9,
+   "examples_not_on_branch": [
+    {
+     "pair": "theft-02-03",
+     "intervened": "PR_bicycle_claimed",
+     "atom": "+Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+     "belongs_to": null
+    },
+    {
+     "pair": "theft-03-02",
+     "intervened": "PR_sim_card_stolen",
+     "atom": "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+     "belongs_to": null
+    },
+    {
+     "pair": "theft-03-04",
+     "intervened": "PR_sim_card_stolen",
+     "atom": "-Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+     "belongs_to": null
+    }
+   ]
+  },
+  "b3_representation_then_list": {
+   "label": "Graph as context",
+   "spurious": 41,
+   "on_branch": 0,
+   "off_branch": 0,
+   "off_vocab": 41,
+   "added": 18,
+   "withdrawn": 23,
+   "distinct_documents": 8,
+   "examples_not_on_branch": [
+    {
+     "pair": "theft-01-02",
+     "intervened": "PR_scheduled_valuable_1000",
+     "atom": "-Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+     "belongs_to": null
+    },
+    {
+     "pair": "theft-01-02",
+     "intervened": "PR_scheduled_valuable_1000",
+     "atom": "-Payment instruction with payee name and address, IBAN and name of the financial institution",
+     "belongs_to": null
+    },
+    {
+     "pair": "theft-01-02",
+     "intervened": "PR_scheduled_valuable_1000",
+     "atom": "-Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+     "belongs_to": null
+    }
+   ]
+  },
+  "b6_evidence_first": {
+   "label": "Evidence-first",
+   "spurious": 52,
+   "on_branch": 0,
+   "off_branch": 0,
+   "off_vocab": 52,
+   "added": 22,
+   "withdrawn": 30,
+   "distinct_documents": 11,
+   "examples_not_on_branch": [
+    {
+     "pair": "theft-01-02",
+     "intervened": "PR_scheduled_valuable_1000",
+     "atom": "+Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+     "belongs_to": null
+    },
+    {
+     "pair": "theft-01-02",
+     "intervened": "PR_scheduled_valuable_1000",
+     "atom": "-Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+     "belongs_to": null
+    },
+    {
+     "pair": "theft-01-02",
+     "intervened": "PR_scheduled_valuable_1000",
+     "atom": "-Payment instruction with payee name and address, IBAN and name of the financial institution",
+     "belongs_to": null
+    }
+   ]
+  }
+ }
+}
