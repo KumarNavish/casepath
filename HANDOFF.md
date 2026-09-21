@@ -116,6 +116,12 @@ Per-concept F1 and gate table: `research/casepath/iclr2027-integrated/table_fami
   (10 values differ only by floating-point summation order, largest deviation 1.1e-16).
   `research/casepath/iclr2027-integrated/evidence/check_against_benchmark_release.py` then confirms
   86 paper macros against that fresh recomputation.
+* **One-command verification:** `python3 research/casepath/verify_release.py` — Study A reproduction,
+  explorer-mark consistency, macro regeneration, literal-number check, paper-vs-benchmark cross-check,
+  Tectonic build with the page-limit label, and an anonymity scan of the sources and PDF metadata.
+  All eight checks passed on 2026-09-21 13:05 UTC (Study B reported as "not present" until its release
+  is built). Note: the anonymity scan covers the LaTeX sources and PDF metadata; the PDF's rendered text
+  was additionally checked once via PDF.js on 2026-09-21 with no hits.
 * **Numerical audit:** `evidence/build_manuscript_numbers.py` regenerates every number macro and table from the
   evidence files and writes `evidence/NUMERICAL_AUDIT.json` (215 macros; each with evidence file SHA-256 and
   JSON pointer). `evidence/check_literal_numbers.py` lists any literal number left in prose (only figure widths,

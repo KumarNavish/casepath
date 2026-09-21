@@ -32,6 +32,14 @@ authenticated reproduction of the frozen V5 paired-intervention study; `PUBLICAT
 `ANALYSIS_CONTRACT.json` are the frozen Study B design and analysis contract; `studyB_execution_status.json`
 is a target-free snapshot of recorded Study B cells (execution status only, no scores).
 
+## One-command verification
+
+`python3 ../verify_release.py` runs every offline check and prints one table: Study A reproduces,
+the explorer marks sum to the report, regenerating the macros leaves the committed files unchanged,
+no number is hand-typed, every recomputable macro matches a fresh recomputation, the paper builds
+with its main text ending on page 9 or earlier, and the sources and PDF carry no identifying token.
+It exits non-zero if any check fails and reports a check whose inputs are absent as "not present".
+
 ## Cross-check against the released benchmark
 
 `evidence/check_against_benchmark_release.py` reruns the frozen analysis in

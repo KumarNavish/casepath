@@ -48,6 +48,8 @@ page count matches the local build. Codex's separate project `6ab03c462d2eaea03e
 
 ## 6. Before pressing submit
 
+Run `python3 research/casepath/verify_release.py` and confirm every check passes.
+
 * Title and abstract fields identical to `submitted_frontmatter.tex`.
 * Primary area / keywords chosen by the author; reciprocal-reviewing and ethics questions answered.
 * Final `git status` clean and pushed; `HANDOFF.md` at the repository root current.
