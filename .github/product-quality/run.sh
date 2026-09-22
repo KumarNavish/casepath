@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Disposable product QA only: no provider, deployment, benchmark scoring or push.
 set -euo pipefail
+export UV_LINK_MODE=copy
 out="$RUNNER_TEMP/product-quality"
 mkdir -p "$out"
 git rev-parse HEAD > "$out/commit.txt"
@@ -9,6 +10,7 @@ python3 -m pip install --disable-pip-version-check 'uv==0.10.0'
 ./bin/casepath prepare
 npm ci --prefix casepath-qa --ignore-scripts
 (cd casepath-qa && npx playwright install --with-deps chromium)
+cp /usr/bin/lsof "$out/lsof"
 # Keep a portable copy of the admitted interpreter and packages for the same
 # source's local design loop. No data root, credentials or browser profile.
 mkdir -p "$RUNNER_TEMP/qa-runtime"
