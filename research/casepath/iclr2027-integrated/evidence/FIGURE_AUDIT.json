@@ -1,49 +1,89 @@
 {
   "figures": [
     {
-      "figure": "fig_family_results.pdf",
-      "sha256": "97a210923fdb81797b7e1990490f76ed87a8b54e6802495016bec7b7185317ee",
-      "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
-      "evidence_sha256": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47",
-      "json_pointer_pattern": "/scores/*/family_pair_f1",
-      "scope": "held-out Study A measurement",
-      "style": "SciencePlots science+no-latex: frame, inward major and minor ticks, style colour cycle, frameless legend. Minor ticks off on the category axis; light x grid added."
+      "figure": "fig_process_principle.pdf",
+      "sha256": "ce9f1c196d1e79e05a04ac49a88a1ae44f118a67c5c0e3195f8ac545190b279e",
+      "evidence_file": "branch-benchmark/benchmark/BENCHMARK_V3.json",
+      "evidence_sha256": {
+        "branch-benchmark/benchmark/BENCHMARK_V3.json": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc"
+      },
+      "json_pointer_pattern": "/pairs/[pair_id=theft-01-01]/{changed_statement_true,expected_added_requirements,expected_withdrawn}",
+      "scope": "one frozen benchmark intervention: the changed sentence, its added requirement and its acceptable routes are read from the reference contract; the three condition states are the method's semantics, not a measurement",
+      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
     },
     {
-      "figure": "fig_error_origin.pdf",
-      "sha256": "cee95865479fda3816536968c90887bb27b37076e209eb3066559b6bc5212f7f",
-      "evidence_file": "SPURIOUS_ORIGIN.json",
-      "evidence_sha256": "98f35443b76fb908611d702cf6e7f6e968c5d17dbd159182eabea90dbfdba994",
-      "json_pointer_pattern": "/arms/*",
-      "scope": "descriptive partition of the held-out Study A spurious changes",
-      "style": "SciencePlots science+no-latex: frame, inward major and minor ticks, style colour cycle, frameless legend. Minor ticks off on the category axis; light x grid added."
+      "figure": "fig_selectivity.pdf",
+      "sha256": "2fc8051b906098b745e6f731844d43199865322b905ccd041892fd4cf0215b3b",
+      "evidence_file": [
+        "branch-benchmark/benchmark/BENCHMARK_V3.json",
+        "branch-benchmark/predictions/heldout/casepath.json",
+        "branch-benchmark/predictions/heldout/comparators.json",
+        "PAIRED_V5_REPRODUCED_RESULT.json"
+      ],
+      "evidence_sha256": {
+        "branch-benchmark/benchmark/BENCHMARK_V3.json": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc",
+        "branch-benchmark/predictions/heldout/casepath.json": "037b96a79274665dba0d3f7dc2e301b96016084f574461193a8b69e79697a142",
+        "branch-benchmark/predictions/heldout/comparators.json": "4999f81011ece9af3d1da8e920029ab25d95e06a7617f8382f4c09a860fc2e27",
+        "PAIRED_V5_REPRODUCED_RESULT.json": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47"
+      },
+      "json_pointer_pattern": "/pairs/*/acceptable_signed_deltas, /*/predicted_signed_delta, and /scores/b5_process_compiled/family_pair_f1 for the column order",
+      "scope": "frozen reference contract and the preserved held-out predictions; the reference panel is what the sources justify, not a system output",
+      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
+    },
+    {
+      "figure": "fig_family_results.pdf",
+      "sha256": "ce2b1f9efabe94bccd7e6f9ff40f56c283b77e7f5f2e1a103a903fe574ea88cf",
+      "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+      "evidence_sha256": {
+        "PAIRED_V5_REPRODUCED_RESULT.json": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47"
+      },
+      "json_pointer_pattern": "/scores/*/family_pair_f1",
+      "scope": "held-out Study A measurement",
+      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
     },
     {
       "figure": "fig_scope_control.pdf",
-      "sha256": "1ba23dcfc9642cef03818fa00bc138f5a0c68bb9c2ddca43cefd5c6991752d98",
-      "evidence_file": "native150/ASSESSED_STATE_REPORT.json",
-      "evidence_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
-      "json_pointer_pattern": "/splits/*/arms/{CASEPATH_CONTROL,LOCAL_SCOPE_ABLATION}/{metrics,raw_native_counts,raw_count_contributing_cells}",
-      "scope": "separate retrospective current-case scope intervention; counts are divided by each arm's contributing cells, which differ by two on the protected split",
-      "style": "SciencePlots science+no-latex: frame, inward major and minor ticks, style colour cycle, frameless legend. Minor ticks off on the category axis; light x grid added."
+      "sha256": "578b03e5479bdd6967784d6cb0c2665577a1bd9c3bedaa504a25fa047226e477",
+      "evidence_file": "native150/ASSESSED_STATE_ROWS.json",
+      "evidence_sha256": {
+        "native150/ASSESSED_STATE_ROWS.json": "cdeaa87af56c385210f5d4738cb6fa3fb38bdc1a7832127b9489b8f01fba99a4"
+      },
+      "json_pointer_pattern": "/*/native_counts/evidence/{requested_documents,valid_chain_documents} on the protected split, and ASSESSED_STATE_REPORT.json /splits/hidden_test/arms/*/metrics",
+      "scope": "separate retrospective current-case scope intervention; the scatter is restricted to the cases observed in both arms, which is two fewer than CasePath's own observed set",
+      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
     },
     {
       "figure": "fig_native_case.pdf",
-      "sha256": "4533d0bcdffd49dd7a1a7ed1a7e413e324ccc018cd5750251dcce9279a0dca14",
-      "evidence_file": "native150/RECORDED_CASE_STATES.json",
-      "evidence_sha256": "b68e70658bd5a50f0a9556988af6293d3adaa3dbdd719b0cdf11a4e7c47f3979",
-      "json_pointer_pattern": "/",
+      "sha256": "4a6169fdcb9b3efeef69762419096d352b2ab0433818311d3626ed8e853fb891",
+      "evidence_file": "native150/RECORDED_CASE_TRACE.json",
+      "evidence_sha256": {
+        "native150/RECORDED_CASE_TRACE.json": "acdf5911b44eb02d95894509d9a7569c1d1260481eb2f5c2c4b6df3946ec50a4"
+      },
+      "json_pointer_pattern": "/requests, /conditional_documents, /questions",
       "scope": "recorded development prediction; not a native acceptance claim",
-      "style": "Diagram, not a plot: no axes, so only the style's typography and colours apply."
+      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
     },
     {
-      "figure": "fig_process_principle.pdf",
-      "sha256": "e5ef0a97787165b193aa2d549979330629fa77baa80538b86d1064b712b78cd8",
-      "evidence_file": null,
-      "evidence_sha256": null,
-      "json_pointer_pattern": null,
-      "scope": "authored teaching schematic; no measured values",
-      "style": "Diagram, not a plot: no axes, so only the style's typography and colours apply."
+      "figure": "fig_error_origin.pdf",
+      "sha256": "fc40b62f04bab2e08bff13ad784456b863b1b7bbd59894bbf66f858d893892b3",
+      "evidence_file": "SPURIOUS_ORIGIN.json",
+      "evidence_sha256": {
+        "SPURIOUS_ORIGIN.json": "98f35443b76fb908611d702cf6e7f6e968c5d17dbd159182eabea90dbfdba994"
+      },
+      "json_pointer_pattern": "/arms/*, /reference_changes_by_direction",
+      "scope": "descriptive partition of the held-out Study A spurious changes",
+      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
+    },
+    {
+      "figure": "fig_falsifiers.pdf",
+      "sha256": "904564c4fc0e4cc2049235919c15ba23334506f16189d91a6be21d228ef527d7",
+      "evidence_file": "WRONG_PAIRING_NULL.json",
+      "evidence_sha256": {
+        "WRONG_PAIRING_NULL.json": "da680b926a99cea50c4ee1043251c3e8fcb0759d418afc2e41845ef63a7e2b5d"
+      },
+      "json_pointer_pattern": "/null, /observed_micro_f1, /p_ge_plus1, and PAIRED_V5_REPRODUCED_RESULT.json /family_swap_tests/*",
+      "scope": "preregistered falsifiers, including the family-swap contrast that does not reach significance",
+      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
     }
   ]
 }

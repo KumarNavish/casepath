@@ -14,6 +14,35 @@ test.}
 \label{fig:error-origin}
 \end{figure}
 
+\begin{figure}[htb]
+\centering\includegraphics[width=\linewidth]{fig_selectivity.pdf}
+\caption{\textbf{Where each system's changes land on the dependency.} Rows are
+the documents some branch governs, columns the branch concepts, ordered by
+\casepath's accuracy on them. \emph{Left:} what the sources justify adding once
+a concept's condition turns true, from the reference contract written before any
+system ran; each concept governs its own documents, so the justified change
+identifies the branch. \emph{Centre and right:} the signed changes each system
+made on the held-out contexts. \casepath{} reproduces the pattern and leaves the
+governed vocabulary \eoCpOutside{} times; the graph comparator leaves it
+\eoGcOutside{} times, on every concept, and withdraws documents the sources
+never withdraw.}
+\label{fig:selectivity}
+\end{figure}
+
+\begin{figure}[htb]
+\centering\includegraphics[width=\linewidth]{fig_falsifiers.pdf}
+\caption{\textbf{What the result survives, and what it does not.}
+\emph{Left:} \casepath's held-out outputs are held fixed and reassigned to the
+wrong branch family. The entire null mass lies at or below one twelfth, while
+the correct assignment scores \cpF{}; the outputs therefore carry
+branch-specific content rather than a single checklist that fits any branch.
+\emph{Right:} the preregistered family-swap contrast. Concepts fall on both
+sides of zero for every comparator and no Holm-adjusted test reaches
+significance, which is why this paper claims selectivity and traceability
+rather than statistical dominance.}
+\label{fig:falsifiers}
+\end{figure}
+
 \paragraph{Branch concepts.}
 The \nConcepts{} concepts cover a scheduled valuable at or above the
 source-defined threshold; a stolen bicycle or e-bike; SIM-card theft with
