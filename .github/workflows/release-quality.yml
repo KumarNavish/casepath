@@ -13,59 +13,73 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  source-verification:
-    # Never consume private-repository or larger-runner minutes.
+  prepare-verification:
+    # Standard public-repository runners only; never private or larger runners.
     if: github.event.repository.private == false
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 20
     steps:
       - name: Check out the exact candidate without retaining credentials
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
           fetch-depth: 1
-      - name: Snapshot source and verify its committed byte bindings
+      - name: Install the launcher dependency
+        shell: bash
+        run: python3 -m pip install --disable-pip-version-check uv==0.10.0
+      - name: Verify sealed source and run the documented preparation
         shell: bash
         run: |
           set -euo pipefail
-          out="$RUNNER_TEMP/casepath-source"
-          mkdir -p "$out"
-          git archive --format=zip HEAD > "$out/source.zip"
-          git cat-file commit HEAD > "$out/head.commit"
-          python3 - "$out" <<'PY'
-          import hashlib, json, os, pathlib, subprocess, sys
+          mkdir -p "$RUNNER_TEMP/casepath-runtime"
+          python3 - <<'PY'
+          import hashlib, json, pathlib
           root = pathlib.Path.cwd()
+          rows = json.loads((root / 'casepath/source-manifest.json').read_text())['files']
+          failures = [r['path'] for r in rows if hashlib.sha256((root / r['path']).read_bytes()).hexdigest() != r['sha256']]
+          print(json.dumps({'files_checked': len(rows), 'mismatches': failures}))
+          if failures:
+              raise SystemExit('Source bindings differ; do not reseal an unexplained baseline.')
+          PY
+          ./bin/casepath prepare 2>&1 | tee "$RUNNER_TEMP/casepath-runtime/prepare.log"
+      - name: Retain a provider-free runtime for offline verification
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/casepath-runtime"
+          base_python="$(uv python find 3.13.9)"
+          base_root="$(dirname "$(dirname "$base_python")")"
+          mkdir -p "$out/portable"
+          cp -a "$base_root" "$out/portable/python"
+          cp -a .runtime/casepath-dev-v2/venv "$out/portable/venv"
+          cp -a "$(command -v lsof)" "$out/portable/lsof"
+          tar -C "$out/portable" -czf "$out/runtime.tar.gz" .
+          rm -rf "$out/portable"
+          .runtime/casepath-dev-v2/venv/bin/python - "$out" <<'PY'
+          import hashlib, importlib.metadata, json, pathlib, platform, subprocess, sys
           out = pathlib.Path(sys.argv[1])
-          manifest = json.loads((root / 'casepath/source-manifest.json').read_text())
-          rows = manifest['files']
-          failures = []
-          for row in rows:
-              path = root / row['path']
-              actual = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
-              if actual != row['sha256']:
-                  failures.append({'path': row['path'], 'expected': row['sha256'], 'actual': actual})
           record = {
-              'contract': 'casepath.release-source-observation/1',
+              'contract': 'casepath.pinned-runtime-observation/1',
               'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
               'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
-              'source_archive_sha256': hashlib.sha256((out / 'source.zip').read_bytes()).hexdigest(),
-              'manifest_file_count': len(rows),
-              'source_binding_failures': failures,
-              'claim_bytes_modified': False,
+              'python_version': platform.python_version(),
+              'distributions': sorted(f"{d.metadata['Name']}=={d.version}" for d in importlib.metadata.distributions()),
+              'requirements_lock_sha256': hashlib.sha256(pathlib.Path('casepath-api/requirements.lock').read_bytes()).hexdigest(),
+              'runtime_archive_sha256': hashlib.sha256((out / 'runtime.tar.gz').read_bytes()).hexdigest(),
+              'prepare_exit_code': 0,
               'provider_calls': 0,
-              'scope': 'Source integrity only; not product, browser, scientific, or legal certification.'
+              'scope': 'Fresh preparation only; not a complete product or scientific verification.'
           }
           (out / 'observation.json').write_text(json.dumps(record, indent=2) + '\n')
           print(json.dumps(record, indent=2))
-          if failures:
-              raise SystemExit('Committed source bindings do not match; preserve this observation before repairing.')
           PY
-      - name: Retain the exact source and observation for inspection
+          git cat-file commit HEAD > "$out/head.commit"
+      - name: Retain runtime and exact preparation evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: casepath-source-${{ github.sha }}
-          path: ${{ runner.temp }}/casepath-source/
+          name: casepath-runtime-${{ github.sha }}
+          path: ${{ runner.temp }}/casepath-runtime/
           retention-days: 1
           compression-level: 0
           if-no-files-found: error
