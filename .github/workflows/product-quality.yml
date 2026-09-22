@@ -1,0 +1,47 @@
+name: Product quality preview
+
+on:
+  push:
+    branches:
+      - product/release-quality-20260922-1941
+  workflow_dispatch:
+
+# This is a public-repository, standard-runner check. It never deploys, pushes,
+# reads provider credentials, or invokes a model. Artifacts contain tracked
+# public source and disposable synthetic-preview evidence only.
+permissions:
+  contents: read
+concurrency:
+  group: casepath-product-quality-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  preview:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      SOURCE_DATE_EPOCH: '1786406400'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Preserve exact public source snapshot
+        run: |
+          mkdir -p "$RUNNER_TEMP/product-quality"
+          git archive --format=zip HEAD -o "$RUNNER_TEMP/product-quality/source.zip"
+          git rev-parse HEAD > "$RUNNER_TEMP/product-quality/commit.txt"
+      - name: Run product quality checks when present
+        run: |
+          if test -f casepath-qa/product-quality/run-ci.sh; then
+            bash casepath-qa/product-quality/run-ci.sh "$RUNNER_TEMP/product-quality"
+          else
+            printf 'Source snapshot only. No product or browser acceptance is claimed.\n' > "$RUNNER_TEMP/product-quality/STATUS.txt"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: casepath-product-quality-${{ github.sha }}
+          path: ${{ runner.temp }}/product-quality/
+          retention-days: 1
+          if-no-files-found: error
