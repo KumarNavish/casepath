@@ -98,7 +98,7 @@ def check_numbers_stable() -> None:
              'table_native_execution.tex', 'table_native_final.tex',
              'table_native_request_counts.tex', 'table_native_request_contrasts.tex',
              'fig_family_results.pdf', 'fig_process_principle.pdf',
-             'fig_scope_control.pdf', 'fig_native_case.pdf']
+             'fig_scope_control.pdf', 'fig_native_case.pdf', 'fig_error_origin.pdf']
     before = {n: hashlib.sha256((DOC/n).read_bytes()).hexdigest() for n in names}
     for script in ['build_manuscript_numbers.py', 'build_final_native_tables.py', 'build_assessed_state_tables.py', 'build_error_origin_numbers.py', 'build_figures.py']:
         code, out = run([sys.executable, 'evidence/' + script], DOC)

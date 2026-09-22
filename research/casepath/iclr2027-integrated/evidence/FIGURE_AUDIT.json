@@ -1,24 +1,33 @@
 {
+  "style": "SciencePlots science+no-latex",
   "figures": [
     {
       "figure": "fig_family_results.pdf",
-      "sha256": "f961b0f8c8c03dda58833529c5373fefa3250221d0d123d8657af082f8f80c2b",
+      "sha256": "fa5db80dd6314aca2a53aeec29d943bff83537ad60e7238c78787d0019664203",
       "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
       "evidence_sha256": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47",
       "json_pointer_pattern": "/scores/*/family_pair_f1",
       "scope": "held-out Study A measurement"
     },
     {
+      "figure": "fig_error_origin.pdf",
+      "sha256": "9a19126b03f4f7ad5349d7483d65aa55849f8cca934ae8d9b0e3565bc7f97de0",
+      "evidence_file": "SPURIOUS_ORIGIN.json",
+      "evidence_sha256": "98f35443b76fb908611d702cf6e7f6e968c5d17dbd159182eabea90dbfdba994",
+      "json_pointer_pattern": "/arms/*",
+      "scope": "descriptive partition of the held-out Study A spurious changes"
+    },
+    {
       "figure": "fig_scope_control.pdf",
-      "sha256": "432bd71a5b4bb615588ea467d83207e82ace1ba4d51aa84efbd1ce943dc956e0",
+      "sha256": "f177e69b66a5a65d47c06fd009b3ea38075975812278757ff7b25edff4117607",
       "evidence_file": "native150/ASSESSED_STATE_REPORT.json",
       "evidence_sha256": "df2a111f12e8e5634124879bb109a46a6a098c29bd8f0d149c3cf584b6c05763",
-      "json_pointer_pattern": "/splits/*/arms/{CASEPATH_CONTROL,LOCAL_SCOPE_ABLATION}/{metrics,raw_native_counts}",
-      "scope": "separate retrospective current-case scope intervention"
+      "json_pointer_pattern": "/splits/*/arms/{CASEPATH_CONTROL,LOCAL_SCOPE_ABLATION}/{metrics,raw_native_counts,raw_count_contributing_cells}",
+      "scope": "separate retrospective current-case scope intervention; counts are divided by each arm's contributing cells, which differ by two on the protected split"
     },
     {
       "figure": "fig_native_case.pdf",
-      "sha256": "1c33143c0c693fca4d27665d99f1f2981026271c1edeb8e9f229079c5f3d912a",
+      "sha256": "7f8e535e0f903271c407da82a2a84a48293bc3f5bd1e2bfdd6e12aa5e18a6a6f",
       "evidence_file": "native150/RECORDED_CASE_STATES.json",
       "evidence_sha256": "b68e70658bd5a50f0a9556988af6293d3adaa3dbdd719b0cdf11a4e7c47f3979",
       "json_pointer_pattern": "/",
@@ -26,7 +35,7 @@
     },
     {
       "figure": "fig_process_principle.pdf",
-      "sha256": "6d4f310858e0a4e42a5323f534bc403dd362e64c2c8e3c6f2bbbd7529fd79dd2",
+      "sha256": "8fa63e611f3a557debf53bf256f1dc79e37addd825ff8cce9280d34b5b7fcfd2",
       "evidence_file": null,
       "evidence_sha256": null,
       "json_pointer_pattern": null,

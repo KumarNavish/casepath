@@ -1,6 +1,19 @@
 \section{Study A: benchmark and analysis details}
 \label{app:studya}
 
+\begin{figure}[htb]
+\centering\includegraphics[width=\linewidth]{fig_error_origin.pdf}
+\caption{\textbf{The unjustified changes differ in kind, not only in count.}
+Every unjustified signed change made by the three comparators moves a document
+that no branch in this benchmark governs. \casepath makes \eoCpOutside{} such
+changes rather than \eoDirOutside, \eoGcOutside{} or \eoEfOutside, and six of
+its fifteen fall on a governed branch. Governed means the document appears in
+some unit's reference branch set or in an acceptable signed change; it does not
+mean the remainder are documents every claim needs, which this benchmark cannot
+test.}
+\label{fig:error-origin}
+\end{figure}
+
 \paragraph{Branch concepts.}
 The \nConcepts{} concepts cover a scheduled valuable at or above the
 source-defined threshold; a stolen bicycle or e-bike; SIM-card theft with
