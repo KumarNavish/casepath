@@ -1,55 +1,96 @@
 name: CasePath release-quality verification
-
 on:
   push:
     branches: [release/product-quality-20260922-1822]
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
   group: casepath-release-quality-${{ github.ref }}
   cancel-in-progress: false
-
 jobs:
-  browser-baseline:
+  browser-iteration:
     if: github.event.repository.private == false
     runs-on: ubuntu-24.04
     timeout-minutes: 20
-    env:
-      UV_LINK_MODE: copy
     steps:
-      - name: Check out the exact candidate without retaining credentials
+      - name: Check out the exact branch without retaining credentials
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
           fetch-depth: 1
       - name: Install the launcher dependency
         run: python3 -m pip install --disable-pip-version-check uv==0.10.0
-      - name: Prepare the unchanged, pinned product
+      - name: Prepare the original pinned runtime
+        env:
+          UV_LINK_MODE: copy
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/casepath-browser"
-          ./bin/casepath prepare 2>&1 | tee "$RUNNER_TEMP/casepath-browser/prepare.log"
+          ./bin/casepath prepare 2>&1 | tee "$RUNNER_TEMP/casepath-browser/baseline-prepare.log"
+          python3 - "$RUNNER_TEMP/casepath-browser/frozen-before.json" <<'PY'
+          from pathlib import Path
+          import hashlib,json,subprocess,sys
+          names=subprocess.check_output(['git','ls-files','research/casepath','casepath-api/casepath_api/corpora'],text=True).splitlines()
+          rows={n:hashlib.sha256(Path(n).read_bytes()).hexdigest() for n in names}
+          Path(sys.argv[1]).write_text(json.dumps(rows,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Apply and verify the authored UI bytes
+        run: |
+          set -euo pipefail
+          python3 .github/qa/apply-ui-iteration.py
+          python3 .github/qa/verify-ui-iteration.py "$RUNNER_TEMP/casepath-browser/ui-byte-parity.json"
+          python3 .github/qa/extend-ui-inspection.py
+      - name: Seal the candidate through the repository's actual release commands
+        env:
+          SOURCE_DATE_EPOCH: 1786406400
+          PYTHONDONTWRITEBYTECODE: 1
+        run: |
+          set -euo pipefail
+          export CASEPATH_SOURCE_COMMIT="$(git rev-parse HEAD)"
+          py=.runtime/casepath-dev-v2/venv/bin/python
+          "$py" casepath-api/generate_artifacts.py
+          "$py" casepath-api/replace_photographic_evidence.py .
+          "$py" casepath/tools/build_static_site.py --require-known-commit
+          "$py" casepath/tools/casepath_release.py generate
+          "$py" examples/build_method_guide.py --check
+          "$py" examples/build_research_evidence.py --check
+          python3 - "$RUNNER_TEMP/casepath-browser/frozen-before.json" <<'PY'
+          from pathlib import Path
+          import hashlib,json,sys
+          rows=json.loads(Path(sys.argv[1]).read_text())
+          bad=[n for n,h in rows.items() if not Path(n).is_file() or hashlib.sha256(Path(n).read_bytes()).hexdigest()!=h]
+          print(json.dumps({'original_scientific_files_checked':len(rows),'mismatches':bad}))
+          if bad:raise SystemExit('Scientific bytes changed; do not certify this candidate.')
+          PY
+          git diff --check
+          git diff --binary > "$RUNNER_TEMP/casepath-browser/authored-candidate.patch"
+          git add bin/casepath casepath examples .github/qa/release-browser.mjs
+          git -c user.name='CasePath release workbench' -c user.email='release-workbench@example.invalid' commit -m 'ui: isolated action-first candidate for inspection'
+          git cat-file commit HEAD > "$RUNNER_TEMP/casepath-browser/head.commit"
+          git archive --format=zip HEAD casepath/assets casepath/index.html casepath/method.html casepath/research.html casepath/source-manifest.json bin/casepath .github > "$RUNNER_TEMP/casepath-browser/inspected-source.zip"
+      - name: Verify preparation without the Linux environment workaround
+        run: |
+          set -euo pipefail
+          ./bin/casepath prepare 2>&1 | tee "$RUNNER_TEMP/casepath-browser/candidate-prepare.log"
+          node --test casepath-qa/*presentation-v1.test.cjs > "$RUNNER_TEMP/casepath-browser/presentation-tests.log" 2>&1
       - name: Install the repository's browser QA dependencies
         working-directory: casepath-qa
         run: |
           npm ci --ignore-scripts
           npx playwright install chromium
-      - name: Exercise a real isolated claim and capture its baseline
+      - name: Exercise the real candidate and capture desktop and mobile
         run: node .github/qa/release-browser.mjs "$RUNNER_TEMP/casepath-browser"
-      - name: Preserve exact source identity and observed results
+      - name: Retain exact identity, code and observed results
         if: always()
         run: |
           cp -a .github "$RUNNER_TEMP/casepath-browser/github"
-          git cat-file commit HEAD > "$RUNNER_TEMP/casepath-browser/head.commit"
           git status --short > "$RUNNER_TEMP/casepath-browser/source-status.txt"
-      - name: Retain browser evidence
+      - name: Retain iteration evidence; no merge, push or deployment
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: casepath-browser-${{ github.sha }}
+          name: casepath-ui-iteration-${{ github.sha }}
           path: ${{ runner.temp }}/casepath-browser/
           retention-days: 1
           compression-level: 6
