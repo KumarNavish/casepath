@@ -2,18 +2,40 @@
   "figures": [
     {
       "figure": "fig_process_principle.pdf",
-      "sha256": "ce9f1c196d1e79e05a04ac49a88a1ae44f118a67c5c0e3195f8ac545190b279e",
+      "sha256": "f343526dc5523795ff0766856778ac1e617feb3c64a0a37daafbd634763ebb7e",
       "evidence_file": "branch-benchmark/benchmark/BENCHMARK_V3.json",
       "evidence_sha256": {
         "branch-benchmark/benchmark/BENCHMARK_V3.json": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc"
       },
-      "json_pointer_pattern": "/pairs/[pair_id=theft-01-01]/{changed_statement_true,expected_added_requirements,expected_withdrawn}",
-      "scope": "one frozen benchmark intervention: the changed sentence, its added requirement and its acceptable routes are read from the reference contract; the three condition states are the method's semantics, not a measurement",
-      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
+      "json_pointer_pattern": "/pairs/[pair_id=theft-01-01]/{expected_added_requirements,expected_withdrawn}",
+      "scope": "one frozen benchmark intervention: the added requirement and its acceptable routes are read from the reference contract; the three condition states are the method's semantics, not a measurement",
+      "style": "SciencePlots science+no-latex, or science+grid+no-latex for the dot matrix. The style sets every colour, line width, tick and type size; a dense panel lowers font.size once inside the context so the whole type scale moves together. Nothing is drawn on the canvas but the data, the axes and one legend."
+    },
+    {
+      "figure": "fig_family_results.pdf",
+      "sha256": "d32cad9d3f477ad55d8a81814b4303ed521ad285488eb04368bad98d325160a1",
+      "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+      "evidence_sha256": {
+        "PAIRED_V5_REPRODUCED_RESULT.json": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47"
+      },
+      "json_pointer_pattern": "/scores/*/family_pair_f1",
+      "scope": "held-out Study A measurement",
+      "style": "SciencePlots science+no-latex, or science+grid+no-latex for the dot matrix. The style sets every colour, line width, tick and type size; a dense panel lowers font.size once inside the context so the whole type scale moves together. Nothing is drawn on the canvas but the data, the axes and one legend."
+    },
+    {
+      "figure": "fig_scope_control.pdf",
+      "sha256": "9b4ce3cab0047e27faf69072674d3e7bd7b883a4b173040c78fb22538e438253",
+      "evidence_file": "native150/ASSESSED_STATE_ROWS.json",
+      "evidence_sha256": {
+        "native150/ASSESSED_STATE_ROWS.json": "cdeaa87af56c385210f5d4738cb6fa3fb38bdc1a7832127b9489b8f01fba99a4"
+      },
+      "json_pointer_pattern": "/*/native_counts/evidence/{requested_documents,valid_chain_documents}, protected split",
+      "scope": "separate retrospective current-case scope intervention; restricted to the cases observed in both arms, which is two fewer than CasePath's own observed set",
+      "style": "SciencePlots science+no-latex, or science+grid+no-latex for the dot matrix. The style sets every colour, line width, tick and type size; a dense panel lowers font.size once inside the context so the whole type scale moves together. Nothing is drawn on the canvas but the data, the axes and one legend."
     },
     {
       "figure": "fig_selectivity.pdf",
-      "sha256": "2fc8051b906098b745e6f731844d43199865322b905ccd041892fd4cf0215b3b",
+      "sha256": "10fff94dc1d98f7f4c9ef567ba2db3169a6bc6bc2f08f161a799344845c6edd5",
       "evidence_file": [
         "branch-benchmark/benchmark/BENCHMARK_V3.json",
         "branch-benchmark/predictions/heldout/casepath.json",
@@ -28,62 +50,44 @@
       },
       "json_pointer_pattern": "/pairs/*/acceptable_signed_deltas, /*/predicted_signed_delta, and /scores/b5_process_compiled/family_pair_f1 for the column order",
       "scope": "frozen reference contract and the preserved held-out predictions; the reference panel is what the sources justify, not a system output",
-      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
+      "style": "SciencePlots science+no-latex, or science+grid+no-latex for the dot matrix. The style sets every colour, line width, tick and type size; a dense panel lowers font.size once inside the context so the whole type scale moves together. Nothing is drawn on the canvas but the data, the axes and one legend."
     },
     {
-      "figure": "fig_family_results.pdf",
-      "sha256": "ce2b1f9efabe94bccd7e6f9ff40f56c283b77e7f5f2e1a103a903fe574ea88cf",
-      "evidence_file": "PAIRED_V5_REPRODUCED_RESULT.json",
+      "figure": "fig_falsifiers.pdf",
+      "sha256": "4400829e43874371cb012bb8fb4c416ec06691d07764b65cde02b750e559c504",
+      "evidence_file": [
+        "WRONG_PAIRING_NULL.json",
+        "PAIRED_V5_REPRODUCED_RESULT.json"
+      ],
       "evidence_sha256": {
+        "WRONG_PAIRING_NULL.json": "da680b926a99cea50c4ee1043251c3e8fcb0759d418afc2e41845ef63a7e2b5d",
         "PAIRED_V5_REPRODUCED_RESULT.json": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47"
       },
-      "json_pointer_pattern": "/scores/*/family_pair_f1",
-      "scope": "held-out Study A measurement",
-      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
-    },
-    {
-      "figure": "fig_scope_control.pdf",
-      "sha256": "578b03e5479bdd6967784d6cb0c2665577a1bd9c3bedaa504a25fa047226e477",
-      "evidence_file": "native150/ASSESSED_STATE_ROWS.json",
-      "evidence_sha256": {
-        "native150/ASSESSED_STATE_ROWS.json": "cdeaa87af56c385210f5d4738cb6fa3fb38bdc1a7832127b9489b8f01fba99a4"
-      },
-      "json_pointer_pattern": "/*/native_counts/evidence/{requested_documents,valid_chain_documents} on the protected split, and ASSESSED_STATE_REPORT.json /splits/hidden_test/arms/*/metrics",
-      "scope": "separate retrospective current-case scope intervention; the scatter is restricted to the cases observed in both arms, which is two fewer than CasePath's own observed set",
-      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
-    },
-    {
-      "figure": "fig_native_case.pdf",
-      "sha256": "4a6169fdcb9b3efeef69762419096d352b2ab0433818311d3626ed8e853fb891",
-      "evidence_file": "native150/RECORDED_CASE_TRACE.json",
-      "evidence_sha256": {
-        "native150/RECORDED_CASE_TRACE.json": "acdf5911b44eb02d95894509d9a7569c1d1260481eb2f5c2c4b6df3946ec50a4"
-      },
-      "json_pointer_pattern": "/requests, /conditional_documents, /questions",
-      "scope": "recorded development prediction; not a native acceptance claim",
-      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
+      "json_pointer_pattern": "/null, /observed_micro_f1, and /family_swap_tests/*",
+      "scope": "preregistered falsifiers, including the family-swap contrast that does not reach significance",
+      "style": "SciencePlots science+no-latex, or science+grid+no-latex for the dot matrix. The style sets every colour, line width, tick and type size; a dense panel lowers font.size once inside the context so the whole type scale moves together. Nothing is drawn on the canvas but the data, the axes and one legend."
     },
     {
       "figure": "fig_error_origin.pdf",
-      "sha256": "fc40b62f04bab2e08bff13ad784456b863b1b7bbd59894bbf66f858d893892b3",
+      "sha256": "b2d10e23365a0415f739b3ee807c1d97a9b01fe5bd5f0bc986ba9a96cff56b56",
       "evidence_file": "SPURIOUS_ORIGIN.json",
       "evidence_sha256": {
         "SPURIOUS_ORIGIN.json": "98f35443b76fb908611d702cf6e7f6e968c5d17dbd159182eabea90dbfdba994"
       },
       "json_pointer_pattern": "/arms/*, /reference_changes_by_direction",
       "scope": "descriptive partition of the held-out Study A spurious changes",
-      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
+      "style": "SciencePlots science+no-latex, or science+grid+no-latex for the dot matrix. The style sets every colour, line width, tick and type size; a dense panel lowers font.size once inside the context so the whole type scale moves together. Nothing is drawn on the canvas but the data, the axes and one legend."
     },
     {
-      "figure": "fig_falsifiers.pdf",
-      "sha256": "904564c4fc0e4cc2049235919c15ba23334506f16189d91a6be21d228ef527d7",
-      "evidence_file": "WRONG_PAIRING_NULL.json",
+      "figure": "fig_native_case.pdf",
+      "sha256": "1711abc7b70d0d84a97ece9ef14910b2fba9968713eb901a9d29abe76abfb635",
+      "evidence_file": "native150/RECORDED_CASE_TRACE.json",
       "evidence_sha256": {
-        "WRONG_PAIRING_NULL.json": "da680b926a99cea50c4ee1043251c3e8fcb0759d418afc2e41845ef63a7e2b5d"
+        "native150/RECORDED_CASE_TRACE.json": "acdf5911b44eb02d95894509d9a7569c1d1260481eb2f5c2c4b6df3946ec50a4"
       },
-      "json_pointer_pattern": "/null, /observed_micro_f1, /p_ge_plus1, and PAIRED_V5_REPRODUCED_RESULT.json /family_swap_tests/*",
-      "scope": "preregistered falsifiers, including the family-swap contrast that does not reach significance",
-      "style": "SciencePlots science+no-latex: boxed frame, inward major and minor ticks, axes.linewidth 0.5, frameless legend, serif face, and every colour taken from the style's own cycle. Departures: minor ticks off on categorical axes; a faint grid; text-width figure size."
+      "json_pointer_pattern": "/requests, /conditional_documents, /questions",
+      "scope": "recorded development prediction; not a native acceptance claim",
+      "style": "SciencePlots science+no-latex, or science+grid+no-latex for the dot matrix. The style sets every colour, line width, tick and type size; a dense panel lowers font.size once inside the context so the whole type scale moves together. Nothing is drawn on the canvas but the data, the axes and one legend."
     }
   ]
 }

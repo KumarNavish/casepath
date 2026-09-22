@@ -69,13 +69,13 @@ test the program's response to hypothetical changes in branch conditions
 (Appendix~\ref{app:assessed-state}).
 
 \begin{figure}[t]
-\centering\includegraphics[width=\linewidth]{fig_scope_control.pdf}
-\caption{Effect of inherited scope at fixed assessment. Left: reference-chain
-precision in the retrospective current-case evaluation, with every scheduled
-case and failure penalty included. Right: on the same \asDevCpN{} completed
-development cases, both controllers retain \asDevCpValid{} valid requests,
-while inherited scope reduces total requests from \asDevLsReq{} to
-\asDevCpReq. The assessment and source representation are fixed.}
+\centering\includegraphics[width=0.54\linewidth]{fig_scope_control.pdf}
+\caption{\textbf{Inherited scope withdraws demand without losing evidence.}
+One point per protected case, on the \asHidLsN{} cases observed in both arms at
+fixed assessment; marker area is how many cases share a count. The diagonal is
+the plan in which every request has a valid chain. Inherited scope lies on it
+for every case but one; the ablation lies far to its right, issuing many more
+requests to recover the same evidence.}
 \label{fig:scope}
 \end{figure}
 
