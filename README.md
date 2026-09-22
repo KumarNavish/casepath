@@ -1,149 +1,65 @@
 # CasePath
 
-**Why request this document, on this branch, now?**
+CasePath helps a claims handler answer a practical question: **why is this document needed for this claim now?** Its workbench keeps the original packet beside the process path, evidence state, and next action. It shows when a supporting source link has not been established.
 
-CasePath's obligation controller makes that dependency explicit: assess the
-active scope, identify the required fact, check what the available evidence
-establishes, and derive a justified request or review. The claims workbench
-keeps original sources and handling actions inspectable alongside that logic.
+The local workbench opens all 150 synthetic intake claims. It keeps source files, recorded observations, proposed work, and accepted handling events separate. Its default review is deterministic and makes no model API calls.
 
-Start with the [interactive method guide](docs/method-guide.md), then inspect
-the [exact comparison conditions](docs/benchmark-and-baselines.md). The guide
-runs an invented teaching example through the actual controller; it is separate
-from the 150-claim empirical evaluation. Read the [paired-study evidence](docs/research-evidence.md)
-for the paper’s measured selectivity result, its recall trade-off and exact provenance.
+![CasePath workbench after a deterministic review of a fictional claim, with the next action beside two original PDF notices](docs/images/workbench-review.png)
 
-CasePath is a local claims workbench for inspecting original sources, tracking
-evidence, recording handling actions, and replaying the resulting journal. This
-repository contains the complete standalone product, tests, release tools, and
-**all 150 original synthetic intake claims**. The default runtime is deterministic:
-it reads no model API key and makes no provider call. The current workbench also
-includes a persisted six-role **Agent review** chain with inspectable source reads,
-handoffs, gates, process/evidence mappings, and readiness checks. An external model
-may replace Facts only through an explicit, bounded developer path; it is never an
-automatic fallback.
+*A fictional claim after local review. The original notices remain visible beside the proposed next action; this product example is not a benchmark result.*
 
-For a manual ChatGPT Pro implementation session, start with
-[the Pro handoff](docs/PRO_HANDOFF.md). For local use, the path from a fresh
-clone to a useful claim journey is:
+## See one claim
 
-```bash
+After starting the app, open [a family-home termination claim with two original notices](http://127.0.0.1:4173/#claim=clm_f69b1747447bc221). Read the message and both PDFs in **Sources**, then select **Start agent review**. The saved review shows what each role inspected and handed off. **Process** shows the current step and alternatives; **Evidence** shows what is present, missing, or unresolved. Select an item to inspect its reason and any accepted source link. Nothing is sent to a customer or settled by this review.
+
+The [interactive method guide](docs/method-guide.md) gives a smaller teaching example: a repair may need an inspection report, or a service note and photo together. Changing the active condition or the available evidence changes the request. This authored example explains the controller; it is separate from measured benchmark cases.
+
+## Run it locally
+
+```sh
 git clone https://github.com/KumarNavish/casepath.git
 cd casepath
 ./bin/casepath prepare
 ./bin/casepath dev
 ```
 
-You need Git, `uv`, `lsof`, and either `lockf` on macOS or `flock` on Linux.
-The first `prepare` installs pinned Python 3.13.9 dependencies and therefore
-needs internet access. Later deterministic use requires no provider account,
-credential, database server, or cloud service. See [local setup](docs/setup.md)
-for platform details.
+Open <http://127.0.0.1:4173/>. The first `prepare` installs pinned Python 3.13.9 dependencies, so it needs internet access. Local use after preparation needs no provider account, API key, database service, or paid infrastructure. You also need Git, `uv`, `lsof`, and `lockf` on macOS or `flock` on Linux. Stop the server with Ctrl-C. Saved claim and review state stays in `.runtime/casepath-data-v1`; use a fresh clone for disposable tests. [Setup](docs/setup.md) covers replay, export, safe reset, and platform details.
 
-Open **http://127.0.0.1:4173/**. Search for a claim, inspect its original packet,
-start the assessment, and open **Agent review** to see the six specialists and their
-recorded handoffs. Evidence, process, correction, and next-action surfaces remain
-connected to the same authoritative claim journal. Stop the server with Ctrl-C.
-The journal, agent-work store, and registered artifacts remain under
-`.runtime/casepath-data-v1`.
-
-## Useful commands
-
-```bash
-./bin/casepath prepare
-./bin/casepath dev
+```sh
 ./bin/casepath test
-./bin/casepath seed --corpus synthetic-150
 ./bin/casepath replay <claim-id>
-./bin/casepath adapter-check examples/local_source_adapter.py
 ```
 
-`prepare` verifies the committed source manifest before generating ignored
-artifacts or runtime state. It rejects an edited or incomplete source tree.
-After authoring changes, follow the exact [source sealing
-procedure](CONTRIBUTING.md#seal-authored-changes) before another launch.
+## What the release contains
 
-## What the package establishes
+| Start here | What you will find |
+| --- | --- |
+| [Claims workbench](casepath/README.md) | Claim queue, verified source previews, assessment, process and evidence views, Agent review, correction, export, and replay. |
+| [150-claim data card](docs/INTAKE_PACKET_150.md) | Original intake inputs, attachment counts, schema, license, integrity checks, and limits. |
+| [Method guide](docs/method-guide.md) | One executable teaching example of obligation-led evidence planning. |
+| [Research evidence](docs/research-evidence.md) | Measured results, adverse findings, costs, and exact provenance. |
+| [Paper and reproduction](research/casepath/iclr2027-integrated/README.md) | Manuscript, numerical audit, figures, benchmark outputs, and offline verification. |
+| [Developer documentation](docs/README.md) | Setup, source authority, API contracts, recovery, and contribution rules. |
 
-The local workspace supports claim search, original-source inspection,
-assignment, assessment start, evidence actions, status export, and journal
-replay. Source bytes, observations, proposals, accepted actions, and read-only
-projections remain separate. A model proposal never establishes a decision.
+## What was measured
 
-The operational workspace includes every original intake packet in `synthetic-150`:
-150 customer communications and their 57 attached documents (47 PDFs and 10 JPEGs).
-The original source bytes and claim identifiers are preserved. The operational intake package contains no sealed answers,
-expected outputs, evaluator gold, or selected process paths. Licensed research references
-are distributed separately in the anonymous reproducibility archive. The prior
-`synthetic-dev-60` package remains immutable for regression tests; it is not the
-main workspace. These inputs have now been inspected during product development
-and must not be described as untouched evaluation inputs.
+The paired branch study changes one case fact at a time. On 27 held-out pairs, CasePath made 15 unjustified signed document changes, versus 27 for Direct, 41 for Graph as context, and 52 for Evidence-first. It recovered 24 of 33 required changes; Direct recovered 25 and Graph as context 31. This is a selectivity result with a recall trade-off. The registered broad-superiority gate failed, and the historical arms used unequal computation.
 
-The packet viewer renders PDF pages and images from the original bytes, supports
-bounded Word text and saved spreadsheet-cell previews, and never turns a preview
-into accepted evidence. The original 150 inputs contain no Word or spreadsheet
-attachments; those formats are verified with separate synthetic unit fixtures.
+The complete 150-claim study preserved its original native graph-interface failure. A separate retrospective current-case comparison found that inherited process scope reduced requests while retaining the same valid requests in the completed development subset. It does not turn the failed registered comparison into a success or establish counterfactual branch correctness. [Read the study definitions and exact results](docs/benchmark-and-baselines.md) before comparing numbers across studies.
 
-Deterministic tests establish product mechanics, not legal correctness, model
-quality, production readiness, or fitness for real claims. See
-[the intake-packet release](docs/INTAKE_PACKET_150.md) for provenance and scope.
+Reproduce the released checks offline, without new inference:
 
-A real external Facts-worker acceptance has now been verified against the actual
-installed application. The accepted run used OpenRouter with
-`cohere/north-mini-code:free`, produced 6 genuine provider responses, completed
-through the same grounded tools and deterministic gates, and survived a later
-credential-free restart without another model call. This proves one bounded
-external-worker substitution, not general model quality or legal correctness. See
-[Agent review workflow](docs/AGENT_REVIEW.md).
+```sh
+python3 research/casepath/verify_release.py
+```
 
-The Render services named in historical release records run an older, separately
-sourced release. This repository has no deployment handoff and the local package
-should not be judged against those hosted services.
+The paper build also needs Tectonic, Matplotlib and SciencePlots. Put `tectonic` on `PATH`, or set `CASEPATH_TECTONIC` to its executable. The verifier reports any missing tool or failed check; it never calls a model.
 
-## Research: the ICLR 2027 paper and its evidence
+The local workbench and Agent review demonstrate product mechanics, not legal correctness or general model quality. The current hosted Render services use an older source line; this repository's verified experience is the local one.
 
-The claims-workbench behaviour above is the subject of *CasePath: An Agentic, Process-First Architecture
-for Determining Evidence Requirements* (ICLR 2027 submission). The manuscript source, every generated
-number with its evidence pointer, and the reproducibility notes live in
-[`research/casepath/iclr2027-integrated/`](research/casepath/iclr2027-integrated/README.md):
+## Go deeper
 
-- Study A: a branch-intervention benchmark (36 case pairs over 9 branch concepts, one changed fact per pair,
-  reference contract derived from the public sources) with built-in falsifiers; the frozen planner makes
-  15 spurious signed document changes on the 27 held-out pairs against 27, 41 and 52 for three implemented
-  comparators with unequal computation, while a preregistered broad-superiority gate fails and is reported.
-- Study B: the complete 150-claim corpus shipped in this repository, evaluated under a frozen
-  finite-corpus analysis contract. The original native interface failure is preserved. A separate
-  retrospective current-case comparison isolates inherited scope: protected-family reference-chain
-  precision is 0.732 with scope versus 0.318 without it, with a positive conservative paired benefit
-  of 0.103 after penalizing unavailable pairs. This is not new hidden confirmation or primary success. The evaluated case identifiers are exactly the 150 claim files
-  the product loads from `casepath-api/casepath_api/corpora/synthetic-150/claims/`, and the verifier below
-  checks that identity, so the paper measures the corpus this repository ships.
-- [`research/casepath/branch-benchmark/`](research/casepath/branch-benchmark/README.md) ships the
-  benchmark itself, the recorded predictions of all four systems, the frozen scorer and statistics,
-  and a single offline command that recomputes every Study A number and diffs it against the
-  preserved report: `python3 research/casepath/branch-benchmark/reproduce.py` (about seven seconds,
-  no network, no API key and no third-party packages). `explore.html` in the same directory reads the
-  benchmark case by case and opens straight from disk.
-- [`research/casepath/verify_release.py`](research/casepath/verify_release.py) verifies the whole
-  release in one command: Study A reproduces, the paper's numbers regenerate unchanged and match a
-  fresh recomputation, the paper builds within the page limit, and the submission stays anonymous.
-- [`HANDOFF.md`](HANDOFF.md) at the repository root records the verified state of both studies, every
-  artifact path, and the open gaps; [`SUBMISSION_CHECKLIST.md`](research/casepath/iclr2027-integrated/SUBMISSION_CHECKLIST.md)
-  lists the submission steps.
-
-## Documentation
-
-- [Documentation index](docs/README.md)
-- [Local setup and first claim](docs/setup.md)
-- [Manual Pro implementation handoff](docs/PRO_HANDOFF.md)
-- [Architecture and authority](docs/architecture-authority.md)
-- [Agent review workflow and acceptance](docs/AGENT_REVIEW.md)
-- [API and configuration](docs/contracts-api.md)
-- [Troubleshooting and recovery](docs/troubleshooting.md)
-- [Contributing and source sealing](CONTRIBUTING.md)
-- [Migration provenance](docs/migration-provenance.md)
-- [Validation record](docs/HANDOFF_VALIDATION.md)
-
-The existing [LICENSE](LICENSE) is preserved from the source repository. See
-[third-party notices](THIRD_PARTY_NOTICES.md) for bundled data and dependency
-licensing.
+- [How claim state is authorized](docs/architecture-authority.md)
+- [Agent review and its verified external-worker boundary](docs/AGENT_REVIEW.md)
+- [Contribution and source-sealing rules](CONTRIBUTING.md)
+- [License](LICENSE) and [third-party notices](THIRD_PARTY_NOTICES.md)

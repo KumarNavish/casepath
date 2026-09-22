@@ -2252,8 +2252,8 @@
   window.addEventListener('beforeunload',savePresentation);
   function updateQueueHeading(){
     const search=$('#cwSearch').value.trim(),selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
-    const names={all:'All claims',urgent:'Urgent claims',evidence:'Waiting for evidence',ready:'Ready for review',attention:'Action issues',unassigned:'Unassigned claims'};
-    const descriptions={all:'All incoming claims, with the next step in view.',urgent:'High-urgency claims to look at first.',evidence:'The current handling path needs more evidence.',ready:'Ready for a separate claim review, not automatic approval.',attention:'Check these action outcomes before continuing.',unassigned:'Choose a handler to take the next step.'};
+    const names={all:'All claims',urgent:'30+ days since intake',evidence:'Waiting for evidence',ready:'Ready for review',attention:'Action issues',unassigned:'Unassigned claims'};
+    const descriptions={all:'All incoming claims, with the next step in view.',urgent:'Age is measured from the original intake date; it does not establish a legal deadline.',evidence:'The current handling path needs more evidence.',ready:'Ready for a separate claim review, not automatic approval.',attention:'Check these action outcomes before continuing.',unassigned:'Choose a handler to take the next step.'};
     $('#cpQueueTitle').textContent=search?'Search results':names[selected];
     $('#cpQueueSubtitle').textContent=search?'Matching claims and handlers.':descriptions[selected];
   }

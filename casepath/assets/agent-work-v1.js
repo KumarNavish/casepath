@@ -65,7 +65,9 @@
     if(!claim)return;
     const work=root.querySelector('.cp-work-column');if(!work)return;
     if(!document.getElementById('awClaimWork')){
-      const section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent review');work.prepend(section);state.renderKey=null;
+      const section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent review');
+      const tabs=work.querySelector('.cp-tabs');if(tabs)work.insertBefore(section,tabs);else work.append(section);
+      state.renderKey=null;
     }
     const start=document.getElementById('cwStart');
     if(start&&!start.dataset.agentWorkEntry){start.dataset.agentWorkEntry='true';start.textContent='Start agent review';}
@@ -103,6 +105,7 @@
   function renderClaim(){
     const host=document.getElementById('awClaimWork');if(!host)return;
     const summary=state.summary,hasStart=Boolean(document.getElementById('cwStart'));
+    host.hidden=!summary&&hasStart&&!pendingRequest()&&!state.busy;
     const key=JSON.stringify([summary?.run_id,summary?.last_sequence,summary?.status,summary?.currentness,state.busy,hasStart,summary?.recovery,state.events.length,state.run?.objects?.length,state.timelineExpanded]);
     if(state.renderKey===key)return;
     state.renderKey=key;

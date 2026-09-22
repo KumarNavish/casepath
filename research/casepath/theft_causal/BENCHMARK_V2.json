@@ -1,0 +1,1927 @@
+{
+  "alternative_semantics": "Each requirement has one or more acceptable document routes. A valid realization selects exactly one route per requirement; documents beyond the selected realization are spurious.",
+  "branch_document_universe": [
+    "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+    "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "Insurer's declination of the claim for indemnity",
+    "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+    "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+    "Report to the insurer that stolen items have been recovered or news of them received",
+    "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+  ],
+  "contract": "casepath.theft-causal-branch-benchmark/2.0.0",
+  "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+  "pairs": [
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+        ],
+        [
+          "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+        ]
+      ],
+      "changed_statement_false": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+      "changed_statement_true": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+      "context_index": 0,
+      "expected_added": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+            ],
+            [
+              "Receipt for the scheduled valuable (Quittung / Rechnung)"
+            ]
+          ],
+          "requirement_id": "theft-01-01-added-01",
+          "source_documents": [
+            "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+            "Receipt for the scheduled valuable (Quittung / Rechnung)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-01-01-false",
+      "pair_id": "theft-01-01",
+      "scenario": "PR_scheduled_valuable_1000",
+      "true_unit_id": "theft-01-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+        ],
+        [
+          "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+        ]
+      ],
+      "changed_statement_false": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+      "changed_statement_true": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+      "context_index": 1,
+      "expected_added": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+            ],
+            [
+              "Receipt for the scheduled valuable (Quittung / Rechnung)"
+            ]
+          ],
+          "requirement_id": "theft-01-02-added-01",
+          "source_documents": [
+            "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+            "Receipt for the scheduled valuable (Quittung / Rechnung)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-01-02-false",
+      "pair_id": "theft-01-02",
+      "scenario": "PR_scheduled_valuable_1000",
+      "true_unit_id": "theft-01-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+        ],
+        [
+          "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+        ]
+      ],
+      "changed_statement_false": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+      "changed_statement_true": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+      "context_index": 2,
+      "expected_added": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+            ],
+            [
+              "Receipt for the scheduled valuable (Quittung / Rechnung)"
+            ]
+          ],
+          "requirement_id": "theft-01-03-added-01",
+          "source_documents": [
+            "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+            "Receipt for the scheduled valuable (Quittung / Rechnung)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-01-03-false",
+      "pair_id": "theft-01-03",
+      "scenario": "PR_scheduled_valuable_1000",
+      "true_unit_id": "theft-01-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+        ],
+        [
+          "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+        ]
+      ],
+      "changed_statement_false": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+      "changed_statement_true": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+      "context_index": 3,
+      "expected_added": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)"
+            ],
+            [
+              "Receipt for the scheduled valuable (Quittung / Rechnung)"
+            ]
+          ],
+          "requirement_id": "theft-01-04-added-01",
+          "source_documents": [
+            "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+            "Receipt for the scheduled valuable (Quittung / Rechnung)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-01-04-false",
+      "pair_id": "theft-01-04",
+      "scenario": "PR_scheduled_valuable_1000",
+      "true_unit_id": "theft-01-04-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+        ]
+      ],
+      "changed_statement_false": "No bicycle or e-bike is among the stolen items.",
+      "changed_statement_true": "A bicycle is among the stolen items.",
+      "context_index": 0,
+      "expected_added": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+            ]
+          ],
+          "requirement_id": "theft-02-01-added-01",
+          "source_documents": [
+            "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-02-01-false",
+      "pair_id": "theft-02-01",
+      "scenario": "PR_bicycle_claimed",
+      "true_unit_id": "theft-02-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+        ]
+      ],
+      "changed_statement_false": "No bicycle or e-bike is among the stolen items.",
+      "changed_statement_true": "A bicycle is among the stolen items.",
+      "context_index": 1,
+      "expected_added": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+            ]
+          ],
+          "requirement_id": "theft-02-02-added-01",
+          "source_documents": [
+            "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-02-02-false",
+      "pair_id": "theft-02-02",
+      "scenario": "PR_bicycle_claimed",
+      "true_unit_id": "theft-02-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+        ]
+      ],
+      "changed_statement_false": "No bicycle or e-bike is among the stolen items.",
+      "changed_statement_true": "A bicycle is among the stolen items.",
+      "context_index": 2,
+      "expected_added": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+            ]
+          ],
+          "requirement_id": "theft-02-03-added-01",
+          "source_documents": [
+            "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-02-03-false",
+      "pair_id": "theft-02-03",
+      "scenario": "PR_bicycle_claimed",
+      "true_unit_id": "theft-02-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+        ]
+      ],
+      "changed_statement_false": "No bicycle or e-bike is among the stolen items.",
+      "changed_statement_true": "A bicycle is among the stolen items.",
+      "context_index": 3,
+      "expected_added": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+            ]
+          ],
+          "requirement_id": "theft-02-04-added-01",
+          "source_documents": [
+            "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-02-04-false",
+      "pair_id": "theft-02-04",
+      "scenario": "PR_bicycle_claimed",
+      "true_unit_id": "theft-02-04-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+        ]
+      ],
+      "changed_statement_false": "No SIM card was stolen and no loss from SIM-card misuse is claimed.",
+      "changed_statement_true": "A SIM card was stolen and loss from its misuse is part of the claim.",
+      "context_index": 0,
+      "expected_added": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+            ]
+          ],
+          "requirement_id": "theft-03-01-added-01",
+          "source_documents": [
+            "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-03-01-false",
+      "pair_id": "theft-03-01",
+      "scenario": "PR_sim_card_stolen",
+      "true_unit_id": "theft-03-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+        ]
+      ],
+      "changed_statement_false": "No SIM card was stolen and no loss from SIM-card misuse is claimed.",
+      "changed_statement_true": "A SIM card was stolen and loss from its misuse is part of the claim.",
+      "context_index": 1,
+      "expected_added": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+            ]
+          ],
+          "requirement_id": "theft-03-02-added-01",
+          "source_documents": [
+            "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-03-02-false",
+      "pair_id": "theft-03-02",
+      "scenario": "PR_sim_card_stolen",
+      "true_unit_id": "theft-03-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+        ]
+      ],
+      "changed_statement_false": "No SIM card was stolen and no loss from SIM-card misuse is claimed.",
+      "changed_statement_true": "A SIM card was stolen and loss from its misuse is part of the claim.",
+      "context_index": 2,
+      "expected_added": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+            ]
+          ],
+          "requirement_id": "theft-03-03-added-01",
+          "source_documents": [
+            "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-03-03-false",
+      "pair_id": "theft-03-03",
+      "scenario": "PR_sim_card_stolen",
+      "true_unit_id": "theft-03-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+        ]
+      ],
+      "changed_statement_false": "No SIM card was stolen and no loss from SIM-card misuse is claimed.",
+      "changed_statement_true": "A SIM card was stolen and loss from its misuse is part of the claim.",
+      "context_index": 3,
+      "expected_added": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+            ]
+          ],
+          "requirement_id": "theft-03-04-added-01",
+          "source_documents": [
+            "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-03-04-false",
+      "pair_id": "theft-03-04",
+      "scenario": "PR_sim_card_stolen",
+      "true_unit_id": "theft-03-04-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+          "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+        ]
+      ],
+      "changed_statement_false": "No identifiable third party caused or enlarged the loss apart from the unidentified thief.",
+      "changed_statement_true": "An identified building contractor caused the loss and their identity is known.",
+      "context_index": 0,
+      "expected_added": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+            ]
+          ],
+          "requirement_id": "theft-04-01-added-01",
+          "source_documents": [
+            "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+          ]
+        },
+        {
+          "acceptable_routes": [
+            [
+              "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+            ]
+          ],
+          "requirement_id": "theft-04-01-added-02",
+          "source_documents": [
+            "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-04-01-false",
+      "pair_id": "theft-04-01",
+      "scenario": "PR_third_party_causer",
+      "true_unit_id": "theft-04-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+          "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+        ]
+      ],
+      "changed_statement_false": "No identifiable third party caused or enlarged the loss apart from the unidentified thief.",
+      "changed_statement_true": "An identified building contractor caused the loss and their identity is known.",
+      "context_index": 1,
+      "expected_added": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+            ]
+          ],
+          "requirement_id": "theft-04-02-added-01",
+          "source_documents": [
+            "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+          ]
+        },
+        {
+          "acceptable_routes": [
+            [
+              "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+            ]
+          ],
+          "requirement_id": "theft-04-02-added-02",
+          "source_documents": [
+            "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-04-02-false",
+      "pair_id": "theft-04-02",
+      "scenario": "PR_third_party_causer",
+      "true_unit_id": "theft-04-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+          "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+        ]
+      ],
+      "changed_statement_false": "No identifiable third party caused or enlarged the loss apart from the unidentified thief.",
+      "changed_statement_true": "An identified building contractor caused the loss and their identity is known.",
+      "context_index": 2,
+      "expected_added": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+            ]
+          ],
+          "requirement_id": "theft-04-03-added-01",
+          "source_documents": [
+            "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+          ]
+        },
+        {
+          "acceptable_routes": [
+            [
+              "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+            ]
+          ],
+          "requirement_id": "theft-04-03-added-02",
+          "source_documents": [
+            "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-04-03-false",
+      "pair_id": "theft-04-03",
+      "scenario": "PR_third_party_causer",
+      "true_unit_id": "theft-04-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+          "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+        ]
+      ],
+      "changed_statement_false": "No identifiable third party caused or enlarged the loss apart from the unidentified thief.",
+      "changed_statement_true": "An identified building contractor caused the loss and their identity is known.",
+      "context_index": 3,
+      "expected_added": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+            ]
+          ],
+          "requirement_id": "theft-04-04-added-01",
+          "source_documents": [
+            "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)"
+          ]
+        },
+        {
+          "acceptable_routes": [
+            [
+              "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+            ]
+          ],
+          "requirement_id": "theft-04-04-added-02",
+          "source_documents": [
+            "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-04-04-false",
+      "pair_id": "theft-04-04",
+      "scenario": "PR_third_party_causer",
+      "true_unit_id": "theft-04-04-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+        ]
+      ],
+      "changed_statement_false": "Neither party has requested the formal expert determination procedure.",
+      "changed_statement_true": "The policyholder has requested the formal expert determination procedure in writing.",
+      "context_index": 0,
+      "expected_added": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+            ]
+          ],
+          "requirement_id": "theft-05-01-added-01",
+          "source_documents": [
+            "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-05-01-false",
+      "pair_id": "theft-05-01",
+      "scenario": "PR_expert_procedure_requested",
+      "true_unit_id": "theft-05-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+        ]
+      ],
+      "changed_statement_false": "Neither party has requested the formal expert determination procedure.",
+      "changed_statement_true": "The policyholder has requested the formal expert determination procedure in writing.",
+      "context_index": 1,
+      "expected_added": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+            ]
+          ],
+          "requirement_id": "theft-05-02-added-01",
+          "source_documents": [
+            "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-05-02-false",
+      "pair_id": "theft-05-02",
+      "scenario": "PR_expert_procedure_requested",
+      "true_unit_id": "theft-05-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+        ]
+      ],
+      "changed_statement_false": "Neither party has requested the formal expert determination procedure.",
+      "changed_statement_true": "The policyholder has requested the formal expert determination procedure in writing.",
+      "context_index": 2,
+      "expected_added": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+            ]
+          ],
+          "requirement_id": "theft-05-03-added-01",
+          "source_documents": [
+            "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-05-03-false",
+      "pair_id": "theft-05-03",
+      "scenario": "PR_expert_procedure_requested",
+      "true_unit_id": "theft-05-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+        ]
+      ],
+      "changed_statement_false": "Neither party has requested the formal expert determination procedure.",
+      "changed_statement_true": "The policyholder has requested the formal expert determination procedure in writing.",
+      "context_index": 3,
+      "expected_added": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+            ]
+          ],
+          "requirement_id": "theft-05-04-added-01",
+          "source_documents": [
+            "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-05-04-false",
+      "pair_id": "theft-05-04",
+      "scenario": "PR_expert_procedure_requested",
+      "true_unit_id": "theft-05-04-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+        ]
+      ],
+      "changed_statement_false": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+      "changed_statement_true": "A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.",
+      "context_index": 0,
+      "expected_added": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+            ]
+          ],
+          "requirement_id": "theft-06-01-added-01",
+          "source_documents": [
+            "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-06-01-false",
+      "pair_id": "theft-06-01",
+      "scenario": "PR_repair_over_500",
+      "true_unit_id": "theft-06-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+        ]
+      ],
+      "changed_statement_false": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+      "changed_statement_true": "A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.",
+      "context_index": 1,
+      "expected_added": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+            ]
+          ],
+          "requirement_id": "theft-06-02-added-01",
+          "source_documents": [
+            "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-06-02-false",
+      "pair_id": "theft-06-02",
+      "scenario": "PR_repair_over_500",
+      "true_unit_id": "theft-06-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+        ]
+      ],
+      "changed_statement_false": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+      "changed_statement_true": "A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.",
+      "context_index": 2,
+      "expected_added": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+            ]
+          ],
+          "requirement_id": "theft-06-03-added-01",
+          "source_documents": [
+            "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-06-03-false",
+      "pair_id": "theft-06-03",
+      "scenario": "PR_repair_over_500",
+      "true_unit_id": "theft-06-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+        ]
+      ],
+      "changed_statement_false": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+      "changed_statement_true": "A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.",
+      "context_index": 3,
+      "expected_added": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+            ]
+          ],
+          "requirement_id": "theft-06-04-added-01",
+          "source_documents": [
+            "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-06-04-false",
+      "pair_id": "theft-06-04",
+      "scenario": "PR_repair_over_500",
+      "true_unit_id": "theft-06-04-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+        ]
+      ],
+      "changed_statement_false": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+      "changed_statement_true": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.",
+      "context_index": 0,
+      "expected_added": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+            ]
+          ],
+          "requirement_id": "theft-07-01-added-01",
+          "source_documents": [
+            "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-07-01-false",
+      "pair_id": "theft-07-01",
+      "scenario": "PR_nachfrist_set",
+      "true_unit_id": "theft-07-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+        ]
+      ],
+      "changed_statement_false": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+      "changed_statement_true": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.",
+      "context_index": 1,
+      "expected_added": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+            ]
+          ],
+          "requirement_id": "theft-07-02-added-01",
+          "source_documents": [
+            "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-07-02-false",
+      "pair_id": "theft-07-02",
+      "scenario": "PR_nachfrist_set",
+      "true_unit_id": "theft-07-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+        ]
+      ],
+      "changed_statement_false": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+      "changed_statement_true": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.",
+      "context_index": 2,
+      "expected_added": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+            ]
+          ],
+          "requirement_id": "theft-07-03-added-01",
+          "source_documents": [
+            "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-07-03-false",
+      "pair_id": "theft-07-03",
+      "scenario": "PR_nachfrist_set",
+      "true_unit_id": "theft-07-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+        ]
+      ],
+      "changed_statement_false": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+      "changed_statement_true": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.",
+      "context_index": 3,
+      "expected_added": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+            ]
+          ],
+          "requirement_id": "theft-07-04-added-01",
+          "source_documents": [
+            "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-07-04-false",
+      "pair_id": "theft-07-04",
+      "scenario": "PR_nachfrist_set",
+      "true_unit_id": "theft-07-04-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Report to the insurer that stolen items have been recovered or news of them received"
+        ]
+      ],
+      "changed_statement_false": "None of the stolen items has been recovered and no news of them has been received.",
+      "changed_statement_true": "One of the stolen items has been recovered and the policyholder has received news of its recovery.",
+      "context_index": 0,
+      "expected_added": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Report to the insurer that stolen items have been recovered or news of them received"
+            ]
+          ],
+          "requirement_id": "theft-08-01-added-01",
+          "source_documents": [
+            "Report to the insurer that stolen items have been recovered or news of them received"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-08-01-false",
+      "pair_id": "theft-08-01",
+      "scenario": "PR_goods_recovered",
+      "true_unit_id": "theft-08-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Report to the insurer that stolen items have been recovered or news of them received"
+        ]
+      ],
+      "changed_statement_false": "None of the stolen items has been recovered and no news of them has been received.",
+      "changed_statement_true": "One of the stolen items has been recovered and the policyholder has received news of its recovery.",
+      "context_index": 1,
+      "expected_added": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Report to the insurer that stolen items have been recovered or news of them received"
+            ]
+          ],
+          "requirement_id": "theft-08-02-added-01",
+          "source_documents": [
+            "Report to the insurer that stolen items have been recovered or news of them received"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-08-02-false",
+      "pair_id": "theft-08-02",
+      "scenario": "PR_goods_recovered",
+      "true_unit_id": "theft-08-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Report to the insurer that stolen items have been recovered or news of them received"
+        ]
+      ],
+      "changed_statement_false": "None of the stolen items has been recovered and no news of them has been received.",
+      "changed_statement_true": "One of the stolen items has been recovered and the policyholder has received news of its recovery.",
+      "context_index": 2,
+      "expected_added": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Report to the insurer that stolen items have been recovered or news of them received"
+            ]
+          ],
+          "requirement_id": "theft-08-03-added-01",
+          "source_documents": [
+            "Report to the insurer that stolen items have been recovered or news of them received"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-08-03-false",
+      "pair_id": "theft-08-03",
+      "scenario": "PR_goods_recovered",
+      "true_unit_id": "theft-08-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Report to the insurer that stolen items have been recovered or news of them received"
+        ]
+      ],
+      "changed_statement_false": "None of the stolen items has been recovered and no news of them has been received.",
+      "changed_statement_true": "One of the stolen items has been recovered and the policyholder has received news of its recovery.",
+      "context_index": 3,
+      "expected_added": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Report to the insurer that stolen items have been recovered or news of them received"
+            ]
+          ],
+          "requirement_id": "theft-08-04-added-01",
+          "source_documents": [
+            "Report to the insurer that stolen items have been recovered or news of them received"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-08-04-false",
+      "pair_id": "theft-08-04",
+      "scenario": "PR_goods_recovered",
+      "true_unit_id": "theft-08-04-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's declination of the claim for indemnity"
+        ]
+      ],
+      "changed_statement_false": "The insurer has not declined the claim for indemnity.",
+      "changed_statement_true": "The insurer has declined the claim for indemnity in writing.",
+      "context_index": 0,
+      "expected_added": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's declination of the claim for indemnity"
+            ]
+          ],
+          "requirement_id": "theft-09-01-added-01",
+          "source_documents": [
+            "Insurer's declination of the claim for indemnity"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-09-01-false",
+      "pair_id": "theft-09-01",
+      "scenario": "PR_declined",
+      "true_unit_id": "theft-09-01-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's declination of the claim for indemnity"
+        ]
+      ],
+      "changed_statement_false": "The insurer has not declined the claim for indemnity.",
+      "changed_statement_true": "The insurer has declined the claim for indemnity in writing.",
+      "context_index": 1,
+      "expected_added": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's declination of the claim for indemnity"
+            ]
+          ],
+          "requirement_id": "theft-09-02-added-01",
+          "source_documents": [
+            "Insurer's declination of the claim for indemnity"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-09-02-false",
+      "pair_id": "theft-09-02",
+      "scenario": "PR_declined",
+      "true_unit_id": "theft-09-02-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's declination of the claim for indemnity"
+        ]
+      ],
+      "changed_statement_false": "The insurer has not declined the claim for indemnity.",
+      "changed_statement_true": "The insurer has declined the claim for indemnity in writing.",
+      "context_index": 2,
+      "expected_added": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's declination of the claim for indemnity"
+            ]
+          ],
+          "requirement_id": "theft-09-03-added-01",
+          "source_documents": [
+            "Insurer's declination of the claim for indemnity"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-09-03-false",
+      "pair_id": "theft-09-03",
+      "scenario": "PR_declined",
+      "true_unit_id": "theft-09-03-true"
+    },
+    {
+      "acceptable_signed_deltas": [
+        [
+          "+Insurer's declination of the claim for indemnity"
+        ]
+      ],
+      "changed_statement_false": "The insurer has not declined the claim for indemnity.",
+      "changed_statement_true": "The insurer has declined the claim for indemnity in writing.",
+      "context_index": 3,
+      "expected_added": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "expected_added_requirements": [
+        {
+          "acceptable_routes": [
+            [
+              "Insurer's declination of the claim for indemnity"
+            ]
+          ],
+          "requirement_id": "theft-09-04-added-01",
+          "source_documents": [
+            "Insurer's declination of the claim for indemnity"
+          ]
+        }
+      ],
+      "expected_withdrawn": [],
+      "expected_withdrawn_requirements": [],
+      "false_unit_id": "theft-09-04-false",
+      "pair_id": "theft-09-04",
+      "scenario": "PR_declined",
+      "true_unit_id": "theft-09-04-true"
+    }
+  ],
+  "paper_method_target": "active process state -> obligation -> fact -> evidence capability -> document route",
+  "scope": "held-out household-contents theft",
+  "selected_predicates": [
+    "PR_scheduled_valuable_1000",
+    "PR_bicycle_claimed",
+    "PR_sim_card_stolen",
+    "PR_third_party_causer",
+    "PR_expert_procedure_requested",
+    "PR_repair_over_500",
+    "PR_nachfrist_set",
+    "PR_goods_recovered",
+    "PR_declined"
+  ],
+  "units": [
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_scheduled_valuable_1000",
+      "target_value": false,
+      "unit_id": "theft-01-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "scenario": "PR_scheduled_valuable_1000",
+      "target_value": true,
+      "unit_id": "theft-01-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_scheduled_valuable_1000",
+      "target_value": false,
+      "unit_id": "theft-01-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "scenario": "PR_scheduled_valuable_1000",
+      "target_value": true,
+      "unit_id": "theft-01-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_scheduled_valuable_1000",
+      "target_value": false,
+      "unit_id": "theft-01-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "scenario": "PR_scheduled_valuable_1000",
+      "target_value": true,
+      "unit_id": "theft-01-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_scheduled_valuable_1000",
+      "target_value": false,
+      "unit_id": "theft-01-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+        "Receipt for the scheduled valuable (Quittung / Rechnung)"
+      ],
+      "scenario": "PR_scheduled_valuable_1000",
+      "target_value": true,
+      "unit_id": "theft-01-04-true"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_bicycle_claimed",
+      "target_value": false,
+      "unit_id": "theft-02-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- A bicycle is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "scenario": "PR_bicycle_claimed",
+      "target_value": true,
+      "unit_id": "theft-02-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_bicycle_claimed",
+      "target_value": false,
+      "unit_id": "theft-02-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- A bicycle is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "scenario": "PR_bicycle_claimed",
+      "target_value": true,
+      "unit_id": "theft-02-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_bicycle_claimed",
+      "target_value": false,
+      "unit_id": "theft-02-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- A bicycle is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "scenario": "PR_bicycle_claimed",
+      "target_value": true,
+      "unit_id": "theft-02-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_bicycle_claimed",
+      "target_value": false,
+      "unit_id": "theft-02-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- A bicycle is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+      ],
+      "scenario": "PR_bicycle_claimed",
+      "target_value": true,
+      "unit_id": "theft-02-04-true"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_sim_card_stolen",
+      "target_value": false,
+      "unit_id": "theft-03-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- A SIM card was stolen and loss from its misuse is part of the claim.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "scenario": "PR_sim_card_stolen",
+      "target_value": true,
+      "unit_id": "theft-03-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_sim_card_stolen",
+      "target_value": false,
+      "unit_id": "theft-03-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- A SIM card was stolen and loss from its misuse is part of the claim.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "scenario": "PR_sim_card_stolen",
+      "target_value": true,
+      "unit_id": "theft-03-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_sim_card_stolen",
+      "target_value": false,
+      "unit_id": "theft-03-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- A SIM card was stolen and loss from its misuse is part of the claim.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "scenario": "PR_sim_card_stolen",
+      "target_value": true,
+      "unit_id": "theft-03-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_sim_card_stolen",
+      "target_value": false,
+      "unit_id": "theft-03-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- A SIM card was stolen and loss from its misuse is part of the claim.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+      ],
+      "scenario": "PR_sim_card_stolen",
+      "target_value": true,
+      "unit_id": "theft-03-04-true"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_third_party_causer",
+      "target_value": false,
+      "unit_id": "theft-04-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- An identified building contractor caused the loss and their identity is known.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "scenario": "PR_third_party_causer",
+      "target_value": true,
+      "unit_id": "theft-04-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_third_party_causer",
+      "target_value": false,
+      "unit_id": "theft-04-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- An identified building contractor caused the loss and their identity is known.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "scenario": "PR_third_party_causer",
+      "target_value": true,
+      "unit_id": "theft-04-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_third_party_causer",
+      "target_value": false,
+      "unit_id": "theft-04-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- An identified building contractor caused the loss and their identity is known.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "scenario": "PR_third_party_causer",
+      "target_value": true,
+      "unit_id": "theft-04-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_third_party_causer",
+      "target_value": false,
+      "unit_id": "theft-04-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- An identified building contractor caused the loss and their identity is known.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "scenario": "PR_third_party_causer",
+      "target_value": true,
+      "unit_id": "theft-04-04-true"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_expert_procedure_requested",
+      "target_value": false,
+      "unit_id": "theft-05-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- The policyholder has requested the formal expert determination procedure in writing.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "scenario": "PR_expert_procedure_requested",
+      "target_value": true,
+      "unit_id": "theft-05-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_expert_procedure_requested",
+      "target_value": false,
+      "unit_id": "theft-05-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- The policyholder has requested the formal expert determination procedure in writing.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "scenario": "PR_expert_procedure_requested",
+      "target_value": true,
+      "unit_id": "theft-05-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_expert_procedure_requested",
+      "target_value": false,
+      "unit_id": "theft-05-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- The policyholder has requested the formal expert determination procedure in writing.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "scenario": "PR_expert_procedure_requested",
+      "target_value": true,
+      "unit_id": "theft-05-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_expert_procedure_requested",
+      "target_value": false,
+      "unit_id": "theft-05-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- The policyholder has requested the formal expert determination procedure in writing.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "scenario": "PR_expert_procedure_requested",
+      "target_value": true,
+      "unit_id": "theft-05-04-true"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_repair_over_500",
+      "target_value": false,
+      "unit_id": "theft-06-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "scenario": "PR_repair_over_500",
+      "target_value": true,
+      "unit_id": "theft-06-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_repair_over_500",
+      "target_value": false,
+      "unit_id": "theft-06-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "scenario": "PR_repair_over_500",
+      "target_value": true,
+      "unit_id": "theft-06-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_repair_over_500",
+      "target_value": false,
+      "unit_id": "theft-06-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "scenario": "PR_repair_over_500",
+      "target_value": true,
+      "unit_id": "theft-06-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_repair_over_500",
+      "target_value": false,
+      "unit_id": "theft-06-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+      ],
+      "scenario": "PR_repair_over_500",
+      "target_value": true,
+      "unit_id": "theft-06-04-true"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_nachfrist_set",
+      "target_value": false,
+      "unit_id": "theft-07-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "scenario": "PR_nachfrist_set",
+      "target_value": true,
+      "unit_id": "theft-07-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_nachfrist_set",
+      "target_value": false,
+      "unit_id": "theft-07-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "scenario": "PR_nachfrist_set",
+      "target_value": true,
+      "unit_id": "theft-07-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_nachfrist_set",
+      "target_value": false,
+      "unit_id": "theft-07-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "scenario": "PR_nachfrist_set",
+      "target_value": true,
+      "unit_id": "theft-07-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_nachfrist_set",
+      "target_value": false,
+      "unit_id": "theft-07-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+      ],
+      "scenario": "PR_nachfrist_set",
+      "target_value": true,
+      "unit_id": "theft-07-04-true"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_goods_recovered",
+      "target_value": false,
+      "unit_id": "theft-08-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- One of the stolen items has been recovered and the policyholder has received news of its recovery.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "scenario": "PR_goods_recovered",
+      "target_value": true,
+      "unit_id": "theft-08-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_goods_recovered",
+      "target_value": false,
+      "unit_id": "theft-08-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- One of the stolen items has been recovered and the policyholder has received news of its recovery.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "scenario": "PR_goods_recovered",
+      "target_value": true,
+      "unit_id": "theft-08-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_goods_recovered",
+      "target_value": false,
+      "unit_id": "theft-08-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- One of the stolen items has been recovered and the policyholder has received news of its recovery.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "scenario": "PR_goods_recovered",
+      "target_value": true,
+      "unit_id": "theft-08-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_goods_recovered",
+      "target_value": false,
+      "unit_id": "theft-08-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- One of the stolen items has been recovered and the policyholder has received news of its recovery.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [
+        "Report to the insurer that stolen items have been recovered or news of them received"
+      ],
+      "scenario": "PR_goods_recovered",
+      "target_value": true,
+      "unit_id": "theft-08-04-true"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_declined",
+      "target_value": false,
+      "unit_id": "theft-09-01-false"
+    },
+    {
+      "context_index": 0,
+      "customer_message": "The claim concerns a household-contents theft reported after a forced entry into a Basel apartment on 12 February 2026. Police were notified and a laptop and camera are claimed as stolen.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has declined the claim for indemnity in writing.",
+      "gold_branch_documents": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "scenario": "PR_declined",
+      "target_value": true,
+      "unit_id": "theft-09-01-true"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_declined",
+      "target_value": false,
+      "unit_id": "theft-09-02-false"
+    },
+    {
+      "context_index": 1,
+      "customer_message": "The claim concerns household property stolen after forced entry into a rented flat in Bern on 3 March 2026. The theft was reported to police and to the insurer.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has declined the claim for indemnity in writing.",
+      "gold_branch_documents": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "scenario": "PR_declined",
+      "target_value": true,
+      "unit_id": "theft-09-02-true"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_declined",
+      "target_value": false,
+      "unit_id": "theft-09-03-false"
+    },
+    {
+      "context_index": 2,
+      "customer_message": "The policyholder reports a household-contents theft after a break-in at a Zurich home on 21 April 2026. Police attended and the insurer opened the claim.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has declined the claim for indemnity in writing.",
+      "gold_branch_documents": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "scenario": "PR_declined",
+      "target_value": true,
+      "unit_id": "theft-09-03-true"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has not declined the claim for indemnity.",
+      "gold_branch_documents": [],
+      "scenario": "PR_declined",
+      "target_value": false,
+      "unit_id": "theft-09-04-false"
+    },
+    {
+      "context_index": 3,
+      "customer_message": "The file concerns insured household items stolen during a forced entry in Lausanne on 7 May 2026. Police notification and insurer notification have already occurred.\n\n- No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.\n- No bicycle or e-bike is among the stolen items.\n- No SIM card was stolen and no loss from SIM-card misuse is claimed.\n- No identifiable third party caused or enlarged the loss apart from the unidentified thief.\n- Neither party has requested the formal expert determination procedure.\n- No repair costing more than CHF 500 is contemplated for the damaged insured items.\n- The insurer has not sent a written demand setting a document deadline under a forfeiture warning.\n- None of the stolen items has been recovered and no news of them has been received.\n- The insurer has declined the claim for indemnity in writing.",
+      "gold_branch_documents": [
+        "Insurer's declination of the claim for indemnity"
+      ],
+      "scenario": "PR_declined",
+      "target_value": true,
+      "unit_id": "theft-09-04-true"
+    }
+  ]
+}
