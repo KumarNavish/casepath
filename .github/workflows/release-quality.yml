@@ -1,0 +1,71 @@
+name: CasePath release-quality verification
+
+on:
+  push:
+    branches: [release/product-quality-20260922-1822]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: casepath-release-quality-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source-verification:
+    # Never consume private-repository or larger-runner minutes.
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out the exact candidate without retaining credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Snapshot source and verify its committed byte bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/casepath-source"
+          mkdir -p "$out"
+          git archive --format=zip HEAD > "$out/source.zip"
+          git cat-file commit HEAD > "$out/head.commit"
+          python3 - "$out" <<'PY'
+          import hashlib, json, os, pathlib, subprocess, sys
+          root = pathlib.Path.cwd()
+          out = pathlib.Path(sys.argv[1])
+          manifest = json.loads((root / 'casepath/source-manifest.json').read_text())
+          rows = manifest['files']
+          failures = []
+          for row in rows:
+              path = root / row['path']
+              actual = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+              if actual != row['sha256']:
+                  failures.append({'path': row['path'], 'expected': row['sha256'], 'actual': actual})
+          record = {
+              'contract': 'casepath.release-source-observation/1',
+              'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'source_archive_sha256': hashlib.sha256((out / 'source.zip').read_bytes()).hexdigest(),
+              'manifest_file_count': len(rows),
+              'source_binding_failures': failures,
+              'claim_bytes_modified': False,
+              'provider_calls': 0,
+              'scope': 'Source integrity only; not product, browser, scientific, or legal certification.'
+          }
+          (out / 'observation.json').write_text(json.dumps(record, indent=2) + '\n')
+          print(json.dumps(record, indent=2))
+          if failures:
+              raise SystemExit('Committed source bindings do not match; preserve this observation before repairing.')
+          PY
+      - name: Retain the exact source and observation for inspection
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: casepath-source-${{ github.sha }}
+          path: ${{ runner.temp }}/casepath-source/
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
