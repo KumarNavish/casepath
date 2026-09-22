@@ -17,6 +17,8 @@ jobs:
     if: github.event.repository.private == false
     runs-on: ubuntu-24.04
     timeout-minutes: 20
+    env:
+      UV_LINK_MODE: copy
     steps:
       - name: Check out the exact candidate without retaining credentials
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -40,6 +42,7 @@ jobs:
       - name: Preserve exact source identity and observed results
         if: always()
         run: |
+          cp -a .github "$RUNNER_TEMP/casepath-browser/github"
           git cat-file commit HEAD > "$RUNNER_TEMP/casepath-browser/head.commit"
           git status --short > "$RUNNER_TEMP/casepath-browser/source-status.txt"
       - name: Retain browser evidence
