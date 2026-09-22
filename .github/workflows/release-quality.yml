@@ -13,8 +13,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  prepare-verification:
-    # Standard public-repository runners only; never private or larger runners.
+  browser-baseline:
     if: github.event.repository.private == false
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -25,61 +24,30 @@ jobs:
           persist-credentials: false
           fetch-depth: 1
       - name: Install the launcher dependency
-        shell: bash
         run: python3 -m pip install --disable-pip-version-check uv==0.10.0
-      - name: Verify sealed source and run the documented preparation
-        shell: bash
+      - name: Prepare the unchanged, pinned product
         run: |
           set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/casepath-runtime"
-          python3 - <<'PY'
-          import hashlib, json, pathlib
-          root = pathlib.Path.cwd()
-          rows = json.loads((root / 'casepath/source-manifest.json').read_text())['files']
-          failures = [r['path'] for r in rows if hashlib.sha256((root / r['path']).read_bytes()).hexdigest() != r['sha256']]
-          print(json.dumps({'files_checked': len(rows), 'mismatches': failures}))
-          if failures:
-              raise SystemExit('Source bindings differ; do not reseal an unexplained baseline.')
-          PY
-          ./bin/casepath prepare 2>&1 | tee "$RUNNER_TEMP/casepath-runtime/prepare.log"
-      - name: Retain a provider-free runtime for offline verification
-        shell: bash
+          mkdir -p "$RUNNER_TEMP/casepath-browser"
+          ./bin/casepath prepare 2>&1 | tee "$RUNNER_TEMP/casepath-browser/prepare.log"
+      - name: Install the repository's browser QA dependencies
+        working-directory: casepath-qa
         run: |
-          set -euo pipefail
-          out="$RUNNER_TEMP/casepath-runtime"
-          base_python="$(uv python find 3.13.9)"
-          base_root="$(dirname "$(dirname "$base_python")")"
-          mkdir -p "$out/portable"
-          cp -a "$base_root" "$out/portable/python"
-          cp -a .runtime/casepath-dev-v2/venv "$out/portable/venv"
-          cp -a "$(command -v lsof)" "$out/portable/lsof"
-          tar -C "$out/portable" -czf "$out/runtime.tar.gz" .
-          rm -rf "$out/portable"
-          .runtime/casepath-dev-v2/venv/bin/python - "$out" <<'PY'
-          import hashlib, importlib.metadata, json, pathlib, platform, subprocess, sys
-          out = pathlib.Path(sys.argv[1])
-          record = {
-              'contract': 'casepath.pinned-runtime-observation/1',
-              'commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
-              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
-              'python_version': platform.python_version(),
-              'distributions': sorted(f"{d.metadata['Name']}=={d.version}" for d in importlib.metadata.distributions()),
-              'requirements_lock_sha256': hashlib.sha256(pathlib.Path('casepath-api/requirements.lock').read_bytes()).hexdigest(),
-              'runtime_archive_sha256': hashlib.sha256((out / 'runtime.tar.gz').read_bytes()).hexdigest(),
-              'prepare_exit_code': 0,
-              'provider_calls': 0,
-              'scope': 'Fresh preparation only; not a complete product or scientific verification.'
-          }
-          (out / 'observation.json').write_text(json.dumps(record, indent=2) + '\n')
-          print(json.dumps(record, indent=2))
-          PY
-          git cat-file commit HEAD > "$out/head.commit"
-      - name: Retain runtime and exact preparation evidence
+          npm ci --ignore-scripts
+          npx playwright install chromium
+      - name: Exercise a real isolated claim and capture its baseline
+        run: node .github/qa/release-browser.mjs "$RUNNER_TEMP/casepath-browser"
+      - name: Preserve exact source identity and observed results
+        if: always()
+        run: |
+          git cat-file commit HEAD > "$RUNNER_TEMP/casepath-browser/head.commit"
+          git status --short > "$RUNNER_TEMP/casepath-browser/source-status.txt"
+      - name: Retain browser evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: casepath-runtime-${{ github.sha }}
-          path: ${{ runner.temp }}/casepath-runtime/
+          name: casepath-browser-${{ github.sha }}
+          path: ${{ runner.temp }}/casepath-browser/
           retention-days: 1
-          compression-level: 0
+          compression-level: 6
           if-no-files-found: error
