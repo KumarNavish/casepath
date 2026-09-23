@@ -14,6 +14,9 @@ test('a conflicting record is shown independently of its unknown class',()=>{
 test('an uncertain action outcome takes precedence over readiness',()=>{
  assert.equal(view.readiness({failure_or_unknown_effect:true,readiness_state:'decision_ready'}),'Action needs checking');
 });
+test('an unresolved requirement without an action calls for handler review',()=>{
+ assert.equal(view.copy('mandatory evidence is unresolved and no bounded action remains'),'The evidence remains unresolved. A handler must review it before the process can advance.');
+});
 test('HTML in source material is escaped',()=>{
  assert.equal(view.h('<script>"&'), '&lt;script&gt;&quot;&amp;');
 });
@@ -107,6 +110,22 @@ test('decision trace keeps an opened source separate from accepted evidence',()=
  decision.operational_projection.evidence_items[0].evidence_class='received';
  decision.operational_projection.evidence_items[0].mandatory_now=false;
  assert.match(view.evidenceSource(decision.operational_projection.evidence_items[0],decision,detail),/does not establish every detail in the notice/);
+});
+test('current path opens only evidence needed at the active step',()=>{
+ const decision={loop_state:{process:{nodes:[
+  {node_id:'done',title:'Receive notice',evidence_requirement_ids:['earlier']},
+  {node_id:'now',title:'Check the deadline',answer:'The deadline is unresolved.',evidence_requirement_ids:['required','supported']},
+  {node_id:'later',title:'Decide next step',evidence_requirement_ids:['later']},
+ ],main_spine:['done','now','later'],current_overlay:{current_node_id:'now',completed_node_ids:['done']}}},operational_projection:{evidence_items:[
+  {evidence_item_id:'earlier',title:'Earlier source',mandatory_now:false},
+  {evidence_item_id:'required',title:'Deadline source',mandatory_now:true},
+  {evidence_item_id:'supported',title:'Accepted source',mandatory_now:false},
+  {evidence_item_id:'later',title:'Future source',mandatory_now:false},
+ ]}};
+ const markup=view.canvasPath(decision);
+ assert.match(markup,/Current step · 2 of 3/);
+ assert.match(markup,/data-evidence-source="required"/);
+ assert.doesNotMatch(markup,/data-evidence-source="earlier"|data-evidence-source="supported"|data-evidence-source="later"/);
 });
 test('resize callbacks do not measure a replaced claim header',()=>{
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');

@@ -2214,7 +2214,11 @@
     const trace=$('#cpCanvasTrace');
     if(trace){trace.outerHTML=ui.canvasTrace(state.loop,state.detail,nodeId);}
     root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===nodeId)));
-    if(focus)$('#cpCanvasTrace')?.focus({preventScroll:true});
+    if(focus){
+      const trace=$('#cpCanvasTrace');
+      if(matchMedia('(max-width:900px)').matches)trace?.scrollIntoView({block:'start'});
+      trace?.focus({preventScroll:true});
+    }
     savePresentation();
   }
   function setWorkbenchTab(name,{focus=false,remember=true}={}){
