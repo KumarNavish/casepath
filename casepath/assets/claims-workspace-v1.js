@@ -2451,14 +2451,19 @@
           try {const value=JSON.parse(text);if(typeof value.body==='string') text=(value.subject?value.subject+'\n\n':'')+value.body;} catch(_) { /* Preserve source text when it is not a message object. */ }
         }
         content=ui.textSourceMarkup(text,media,acceptedQuote||'');
+        const sourceDocument=acceptedRef&&detail.state.binding.source_documents.find(source=>source.sha256===acceptedRef.source_sha256);
         const projection=media==='message/rfc822'&&artifact.role==='customer_message'
           &&acceptedRef?.source_id===`${detail.message.message_id}.message-body-projection`
           &&acceptedRef?.source_version==='casepath.message-body-projection/1.0.0'
-          &&detail.state.binding.source_documents.some(source=>source.sha256===acceptedRef.source_sha256);
+          &&sourceDocument;
         if(projection && detail.message.body.includes(acceptedQuote)) {
-          const bodyHash=await sha256Bytes(new TextEncoder().encode(detail.message.body));
+          const readable=detail.message.body;
+          const candidates=[readable];
+          if(new TextEncoder().encode(readable).byteLength+1===sourceDocument.size_bytes)candidates.push(readable+'\n');
+          let verifiedBody=null;
+          for(const candidate of candidates)if(await sha256Bytes(new TextEncoder().encode(candidate))===acceptedRef.source_sha256){verifiedBody=candidate;break;}
           if(!current())return;
-          if(bodyHash===acceptedRef.source_sha256) content=`<p class="cp-source-caption">Readable text from the verified email. The original file remains available below.</p>${ui.textSourceMarkup(detail.message.body,'text/plain',acceptedQuote)}<details class="cp-source-technical"><summary>Original email formatting</summary>${ui.textSourceMarkup(text,media)}</details>`;
+          if(verifiedBody)content=`<p class="cp-source-caption">Readable text from the verified email. The original file remains available below.</p>${ui.textSourceMarkup(verifiedBody,'text/plain',acceptedQuote)}<details class="cp-source-technical"><summary>Original email formatting</summary>${ui.textSourceMarkup(text,media)}</details>`;
         }
       } else if(['image/png','image/jpeg','image/gif','image/webp','image/tiff','image/bmp','application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].includes(media)) {
         const descriptor=await packetMetadata(artifact,claimId,controller.signal);
