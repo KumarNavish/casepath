@@ -2276,6 +2276,11 @@
   function displayWorkspaceOverview(rows){
       const summary=ui.queueSummary(rows);state.overviewSummary=summary;
       root.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
+      root.dataset.uniformAge=String(summary.all>0&&summary.urgent===summary.all);
+      for(const key of ['evidence','ready']){
+        const button=$(`.cp-triage-line [data-queue-view="${key}"]`);
+        if(button)button.hidden=summary[key]===0;
+      }
       $('#cpOverviewState').textContent=summary.unassessed?`${summary.unassessed} awaiting review`:'Overview up to date';
       $('#cpOverviewState').removeAttribute('data-stale');
       $('#cpActionIssuesSummary').hidden=summary.attention===0;

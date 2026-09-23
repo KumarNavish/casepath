@@ -23,6 +23,7 @@
 .cp-triage-line{display:flex;align-items:center;gap:22px;margin:24px 0 26px;min-height:32px;}
 .cp-triage-line button{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:4px 0;color:var(--cp-muted)!important;font-size:12px!important;}
 .cp-triage-line button:hover{color:var(--cp-ink)!important;}
+#claimsWorkspace[data-uniform-age="true"] .cp-priority,#claimsWorkspace[data-uniform-age="true"] [data-queue-view="urgent"],.cp-triage-line button[hidden]{display:none!important;}
 .cp-triage-line strong{font-weight:600;color:var(--cp-ink);font-variant-numeric:tabular-nums;}
 .cp-status-dot{display:inline-block;width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:#9396a1;}
 .cp-red{background:var(--cp-accent);}.cp-green{background:var(--cp-green);}.cp-amber{background:var(--cp-amber);}
