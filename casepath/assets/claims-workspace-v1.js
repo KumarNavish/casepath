@@ -436,6 +436,7 @@
     correctionPreview: null,
     nativeInvestigation: null,
     change: null, sourceSelection: null, sourceRequest: 0, sourceUrl: null, sourceController: null, loadedQuery: null,
+    reasoningOpen: false, focusedEvidenceId: null,
   };
   const EXPECTED_AGENT_IDS = ['canonical_facts','orchestrator_plan','document_source_integrity','process_decision_mapping','evidence_checklist','final_claim_brief_audit'];
   const EXPECTED_GATE_IDS = ['deterministic_process_gate','deterministic_evidence_gate','whole_playbook_gate'];
@@ -1512,6 +1513,7 @@
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
     return ui.workbench(loop,workspaceState,{
       ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,detail:state.detail,canvasNodeId:state.canvasNodeId,
+      reasoningOpen:state.reasoningOpen,focusedEvidenceId:state.focusedEvidenceId,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
       change:state.change?.claimId===id?state.change:null,
@@ -1987,7 +1989,7 @@
       ({loop} = advance);
       state.change = ui.advanceChange(beforeLoop,loop,advance.baseline,advance.recovered);
       if(state.change?.sourceItem)state.sourceSelection={kind:'evidence',id:state.change.sourceItem};
-      state.canvasNodeId=null;
+      state.canvasNodeId=null;state.focusedEvidenceId=null;
       state.loop = loop;
       await loadQueue();
       if (!isActiveDetail(context)) return;
@@ -2195,7 +2197,7 @@
   const compactWorkbench=matchMedia('(max-width:1100px)');
   function savePresentation(){
     if(!state.detail)return;
-    const value={tab:state.workbenchTab||'overview',source:state.sourceSelection||null,canvasNodeId:state.canvasNodeId||null,scroll:state.viewScroll||{}};
+    const value={tab:state.workbenchTab||'overview',source:state.sourceSelection||null,canvasNodeId:state.canvasNodeId||null,reasoningOpen:state.reasoningOpen,focusedEvidenceId:state.focusedEvidenceId||null,scroll:state.viewScroll||{}};
     try{sessionStorage.setItem('casepath:presentation:'+state.detail.state.claim_id,JSON.stringify(value));}catch(_){/* A blocked preference store never blocks claim work. */}
   }
   function recoverPresentation(claimId){
@@ -2205,24 +2207,37 @@
     state.viewScroll=saved?.scroll&&typeof saved.scroll==='object'?saved.scroll:{};
     state.sourceSelection=saved?.source&&['evidence','process','artifact'].includes(saved.source.kind)?saved.source:null;
     state.canvasNodeId=typeof saved?.canvasNodeId==='string'?saved.canvasNodeId:null;
+    state.reasoningOpen=saved?.reasoningOpen===true;
+    state.focusedEvidenceId=typeof saved?.focusedEvidenceId==='string'?saved.focusedEvidenceId:null;
     state.inspectorOpen=!compactWorkbench.matches;
+  }
+  function syncReasoning({focus=false}={}){
+    if(!state.loop||!state.detail)return;
+    const grid=$('.cp-canvas-grid');if(!grid)return;
+    grid.dataset.reasoningOpen=String(state.reasoningOpen);
+    const trace=$('#cpCanvasTrace');
+    if(trace)trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.focusedEvidenceId);
+    const control=$('[data-trace-action]');if(control)control.setAttribute('aria-expanded',String(state.reasoningOpen));
+    const selected=$('#cpCanvasTrace')?.dataset.selectedNode;
+    root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===selected)));
+    root.querySelectorAll('[data-evidence-source]').forEach(button=>button.classList.toggle('cp-source-selected',button.dataset.evidenceSource===state.focusedEvidenceId));
+    if(focus&&state.reasoningOpen){
+      const current=$('#cpCanvasTrace');
+      if(matchMedia('(max-width:900px)').matches)current?.scrollIntoView({block:'start'});
+      current?.focus({preventScroll:true});
+    }
+    savePresentation();
   }
   function selectCanvasNode(nodeId,{focus=false}={}){
     const node=state.loop?.loop_state.process.nodes.find(row=>row.node_id===nodeId);
     if(!node||!state.detail)return;
     state.canvasNodeId=nodeId;
-    const trace=$('#cpCanvasTrace');
-    if(trace){trace.outerHTML=ui.canvasTrace(state.loop,state.detail,nodeId);}
-    root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===nodeId)));
-    if(focus){
-      const trace=$('#cpCanvasTrace');
-      if(matchMedia('(max-width:900px)').matches)trace?.scrollIntoView({block:'start'});
-      trace?.focus({preventScroll:true});
-    }
-    savePresentation();
+    state.focusedEvidenceId=null;state.reasoningOpen=true;
+    syncReasoning({focus});
   }
   function setWorkbenchTab(name,{focus=false,remember=true}={}){
     if(!claimViews.includes(name)||!state.detail)return;
+    if(name!=='overview'&&state.reasoningOpen){state.reasoningOpen=false;syncReasoning();}
     const col=$('.cp-work-column');
     if(state.workbenchTab!==name&&col){state.viewScroll ||= {};state.viewScroll[state.workbenchTab]=col.scrollTop;}
     state.workbenchTab=name;
@@ -2257,6 +2272,7 @@
   }
   function restoreWorkbenchPresentation(){
     setWorkbenchTab(state.workbenchTab||'overview',{remember:false});applyInspectorState();setAdjacentClaims();
+    syncReasoning();
     const col=$('.cp-work-column'),id=state.detail.state.claim_id;
     state.actionObserver?.disconnect();
     const action=$('#cwLoopWorkbench .cw-button-primary'),jump=$('[data-return-next]');
@@ -2306,7 +2322,8 @@
     if(button.matches('[data-close-detail]')){closeDetail();return true;}
     if(button.hasAttribute('data-workbench-tab')){setWorkbenchTab(button.dataset.workbenchTab,{focus:button.getAttribute('role')==='tab'});return true;}
     if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
-    if(button.hasAttribute('data-trace-action')){setWorkbenchTab('overview');selectCanvasNode(state.loop?.loop_state.process.current_overlay.current_node_id,{focus:true});return true;}
+    if(button.hasAttribute('data-trace-action')){state.reasoningOpen=!state.reasoningOpen;if(state.reasoningOpen){setWorkbenchTab('overview');state.canvasNodeId=state.loop?.loop_state.process.current_overlay.current_node_id;state.focusedEvidenceId=null;}syncReasoning({focus:state.reasoningOpen});return true;}
+    if(button.hasAttribute('data-close-reasoning')){state.reasoningOpen=false;syncReasoning();$('[data-trace-action]')?.focus({preventScroll:true});return true;}
     if(button.hasAttribute('data-canvas-source')){resetSource(false);openInspector({focus:true});const rail=$('.cp-source-rail');if(rail)rail.scrollTop=0;(rail?.querySelector('[data-packet-message]')||$('#cwSourceInspector'))?.focus({preventScroll:true});return true;}
     if(button.hasAttribute('data-open-inspector')){openInspector({toggle:button.matches('.cp-source-toggle')});return true;}
     if(button.hasAttribute('data-close-inspector')){closeInspector();return true;}
@@ -2415,6 +2432,10 @@
   function showEvidenceSource(itemId, focus=true) {
     const item=state.loop?.operational_projection.evidence_items.find(i=>i.evidence_item_id===itemId);
     if(!item || !$('#cwSourceContent')) return;
+    const node=state.loop.loop_state.process.nodes.find(row=>row.evidence_requirement_ids?.includes(itemId));
+    if(node)state.canvasNodeId=node.node_id;
+    state.focusedEvidenceId=itemId;if(focus&&state.workbenchTab==='overview')state.reasoningOpen=true;
+    syncReasoning();
     releaseSourcePreview(); state.sourceSelection={kind:'evidence',id:itemId};
     $('#cwSourceHeading').textContent='Evidence & its sources';
     $('#cwSourceContent').innerHTML=ui.evidenceSource(item,state.loop,state.detail);
@@ -2424,6 +2445,8 @@
     const node=state.loop?.loop_state.process.nodes.find(n=>n.node_id===nodeId); if(!node) return;
     const item=state.loop.operational_projection.evidence_items.find(i=>node.evidence_requirement_ids?.includes(i.evidence_item_id));
     if(item){showEvidenceSource(item.evidence_item_id,focus);return;}
+    state.canvasNodeId=nodeId;state.focusedEvidenceId=null;if(focus&&state.workbenchTab==='overview')state.reasoningOpen=true;
+    syncReasoning();
     releaseSourcePreview();state.sourceSelection={kind:'process',id:nodeId};
     $('#cwSourceHeading').textContent='Process step';
     $('#cwSourceContent').innerHTML=`<div class="cw-source-selection"><h4>${esc(node.title)}</h4><p>${esc(node.answer)}</p><p><strong>Recorded process rule</strong><br>${esc(node.why)}</p><p class="cw-note">This view explains the saved process; it does not change the active path.</p></div>`;
@@ -2492,9 +2515,14 @@
   }
   function restoreSourceSelection() {
     const selection=state.sourceSelection;
+    const selectedNode=state.canvasNodeId,selectedEvidence=state.focusedEvidenceId;
     if(selection?.kind==='evidence') showEvidenceSource(selection.id,false);
     else if(selection?.kind==='process') showProcessSource(selection.id,false);
     else if(selection?.kind==='artifact') void showSourceArtifact(selection.index,false,selection.quote);
+    // The source pane and reasoning lens can point at different saved objects.
+    // Restoring the pane must not move a newly replanned action back to its old step.
+    state.canvasNodeId=selectedNode;
+    state.focusedEvidenceId=selectedEvidence;
   }
   function handleWorkspaceClick(event) {
     const button=event.target.closest('button,a');if(!button)return;
@@ -2513,7 +2541,7 @@
     if(button.id==='cwClearFilters') clearQueueFilters();
     if(button.hasAttribute('data-show-evidence'))setWorkbenchTab('evidence',{focus:true});
     if(button.hasAttribute('data-dismiss-change')) {state.change=null;$('#cwReplanDelta')?.remove();$('#cwLoopWorkbench')?.setAttribute('tabindex','-1');$('#cwLoopWorkbench')?.focus({preventScroll:true});}
-    if(button.hasAttribute('data-refresh-claim')) void refreshOpen().catch(error=>{if($('#cwCommandStatus')) $('#cwCommandStatus').textContent='Could not refresh this claim. '+error.message;});
+    if(button.hasAttribute('data-refresh-claim')) void refreshOpen().catch(showRefreshFailure);
     if(button.dataset.retryClaim) void openClaim(button.dataset.retryClaim);
     if(button.hasAttribute('data-load-investigation') && state.detail) {
       button.disabled=true;button.textContent='Loading saved investigation…';
@@ -2522,6 +2550,14 @@
         if(isActiveDetail(context) && !state.nativeInvestigation && button.isConnected) $('#cwEvidenceInvestigationMount').innerHTML='<p class="cw-note">No saved investigation is available for this claim.</p>';
       });
     }
+  }
+  function showRefreshFailure(error) {
+    const status=$('#cwCommandStatus');if(!status)return;
+    const message=error.transportFailure
+      ? 'Cannot reach the local claim service. This claim remains visible. Start the app, then try again.'
+      : `Could not verify a newer claim record: ${error.message}. This claim remains visible.`;
+    const retry=document.createElement('button');retry.type='button';retry.className='cw-text-button';retry.dataset.refreshClaim='';retry.textContent='Try again';
+    status.replaceChildren(document.createTextNode(message+' '),retry);
   }
   async function refreshOpen() {
     if(!state.detail || state.mutationBusy) return;

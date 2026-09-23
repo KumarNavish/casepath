@@ -5,7 +5,7 @@
   const ROOT='/api/agent-work/v1', CONTRACT='casepath.agent-work/1.0.0';
   const h=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const icon=(name)=>`<svg class="aw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${({work:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',close:'m6 6 12 12M6 18 18 6',arrow:'M4 12h15m-5-5 5 5-5 5',source:'M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8M8 16h6',check:'m5 12 4 4L19 6',link:'m9 15 6-6M7 17l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0M17 7l1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0',plan:'M4 6h5m6 0h5M9 6a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h5M4 18h5',process:'M5 3v5m0 0h14v8m-14-8v13m11-5h6M3 3h4M3 21h4',evidence:'M5 3h14v18H5zM8 8l2 2 4-4M8 14h8M8 18h6',audit:'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6zM9 12l2 2 4-4',pulse:'M3 12h4l2-5 4 10 2-5h6'})[name]||'M5 12h14'}"/></svg>`;
-  const state={cap:null,claim:null,run:null,events:[],summary:null,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,repoll:false};
+  const state={cap:null,claim:null,run:null,events:[],summary:null,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,timelineOpen:false,repoll:false};
   const time=t=>t?new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date(t)):'—';
   const label=s=>({not_started:'Not started',working:'Working',completed:'Completed',blocked:'Needs review',unconfirmed:'Outcome unconfirmed',queued:'Queued',running:'Processing',interrupted:'Interrupted',failed:'Needs review'})[s]||s;
   const roleName=r=>state.cap?.roles.find(x=>x.id===r)?.label||'CasePath';
@@ -31,7 +31,6 @@
     if(role.id==='evidence_checklist')return `${c.obligations||0} needs · ${c.process_requirement_links||0} links`;
     return role.status==='completed'?'Readiness and next action checked':label(role.status);
   }
-  function reviewMetrics(summary){return {events:summary?.last_sequence||state.events.length,handoffs:eventsFor('HANDOFF_COMPLETED').length,sourceReads:eventsFor('SOURCE_OPENED').length,gates:eventsFor('GATE_ACCEPTED').length};}
 
   function objectTitle(o){
     const value=o?.value||{};
@@ -61,7 +60,7 @@
       const button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>Review team</span>';button.setAttribute('aria-label','Review team');button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>showWorkforce());nav.append(button);
     }
     const claim=getClaim();
-    if(claim!==state.claim){document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.renderKey=null;state.timelineExpanded=false;state.repoll=Boolean(claim);}
+    if(claim!==state.claim){document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);}
     if(!claim)return;
     const activity=root.querySelector('#cpPanel-activity');if(!activity)return;
     let section=document.getElementById('awClaimWork');
@@ -69,7 +68,9 @@
       section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent review');
       state.renderKey=null;
     }
-    if(section.parentElement!==activity)activity.prepend(section);
+    const savedStages=activity.querySelector('.cp-review-stages');
+    if(savedStages){if(section.previousElementSibling!==savedStages)savedStages.after(section);}
+    else if(section.parentElement!==activity)activity.prepend(section);
     const start=document.getElementById('cwStart');
     if(start&&!start.dataset.agentWorkEntry){start.dataset.agentWorkEntry='true';start.textContent='Start agent review';}
     renderClaim();
@@ -79,11 +80,10 @@
     if(!summary)return `<header class="aw-console-head"><div><span class="aw-kicker">Agent review</span><h2>Ready to review the source packet</h2><p>The review will check the source statements, handling path, evidence needs and next step.</p></div><span class="aw-console-state" data-status="quiet">Ready</span></header>`;
     const active=summary.current_role,complete=summary.status==='completed',blocked=summary.status==='blocked'||summary.status==='unconfirmed';
     const stages={canonical_facts:'Reading source statements',orchestrator_plan:'Checking the review plan',document_source_integrity:'Checking source links',process_decision_mapping:'Mapping the handling path',evidence_checklist:'Checking evidence needs',final_claim_brief_audit:'Checking the next step'};
-    const heading=complete?'Review complete; next step identified':blocked?`Review paused while ${h((stages[active?.id]||active?.label||'a checked gate').toLowerCase())}`:active?h(stages[active.id]||`${active.label} is working on the claim`):summary.status==='queued'?'Review is queued':h(label(summary.status));
+    const heading=complete?'Review execution recorded':blocked?`Review paused while ${h((stages[active?.id]||active?.label||'a checked gate').toLowerCase())}`:active?h(stages[active.id]||`${active.label} is working on the claim`):summary.status==='queued'?'Review is queued':h(label(summary.status));
     const latest=latestVisibleEvent();
-    const description=complete?'Sources and process were checked. The claim may still need evidence before a decision.':blocked?h(summary.last_message):latest?h(latest.message):'The review is moving through the saved checks.';
-    const model=summary.facts_worker==='external_facts'?(modelLabel()||'External model'):'Reference Facts';
-    return `<header class="aw-console-head"><div><span class="aw-kicker">Agent review · ${h(model)}</span><h2>${heading}</h2><p>${description}</p></div><span class="aw-console-state" data-status="${currentTone(summary)}"><strong>${summary.completed_roles}/6</strong>${complete?'Complete':blocked?'Needs review':'In progress'}</span></header>`;
+    const description=complete?'The recorded execution can be inspected below. The claim may still need evidence before a decision.':blocked?h(summary.last_message):latest?h(latest.message):'The review is moving through the saved checks.';
+    return `<header class="aw-console-head"><div><span class="aw-kicker">Review execution</span><h2>${heading}</h2><p>${description}</p></div><span class="aw-console-state" data-status="${currentTone(summary)}"><strong>${complete?'Saved':`${summary.completed_roles}/6`}</strong>${complete?'Recorded':blocked?'Needs review':'In progress'}</span></header>`;
   }
   function roleTrack(summary){
     if(summary&&!summary.roles)return '<div class="aw-agent-flow aw-agent-flow-loading" aria-live="polite"><span>Loading recorded specialist outputs…</span></div>';
@@ -99,8 +99,8 @@
   }
   function liveSignal(summary){
     if(!summary)return '<div class="aw-live-signal aw-live-ready"><span class="aw-live-mark">'+icon('work')+'</span><div><small>Review team</small><strong>Source-grounded collaboration, on demand</strong><p>No work is shown until it actually executes.</p></div></div>';
-    const metrics=reviewMetrics(summary),latest=latestVisibleEvent(),complete=summary.status==='completed';
-    if(complete)return `<div class="aw-live-signal aw-live-complete"><span class="aw-live-mark">${icon('check')}</span><div><small>Recorded outcome</small><strong>One checked chain from source to readiness</strong><p>${metrics.events} recorded actions · ${metrics.handoffs} handoffs · ${metrics.gates} accepted gates · ${metrics.sourceReads} source reads</p></div><button type="button" class="aw-text-button" data-aw-timeline>Open review ${icon('arrow')}</button></div>`;
+    const latest=latestVisibleEvent(),complete=summary.status==='completed';
+    if(complete)return '';
     const role=summary.current_role;
     return `<div class="aw-live-signal" data-live="${summary.status==='running'}"><span class="aw-live-mark">${icon('pulse')}</span><div><small>${summary.status==='running'?'Working now':h(label(summary.status))}</small><strong>${h(role?.label||'Review team')}</strong><p>${h(latest?.message||summary.last_message||'Waiting for the next persisted event')}</p></div><span class="aw-live-time">${latest?h(time(latest.timestamp)):''}</span></div>`;
   }
@@ -168,6 +168,7 @@
     const panel=document.getElementById('cpPanel-activity');if(!panel||!state.run)return;
     let host=document.getElementById('awTimeline');
     if(!host){host=document.createElement('section');host.id='awTimeline';host.className='aw-timeline';const summary=panel.querySelector('#awClaimWork');if(summary)summary.after(host);else panel.prepend(host);}
+    host.hidden=state.summary?.status==='completed'&&!state.timelineOpen;
     const all=state.events.filter(e=>!HIDDEN_OPERATIONS.has(e.operation));
     const events=state.timelineExpanded?all:all.filter(e=>MILESTONE_OPERATIONS.has(e.operation));
     const version=[state.summary.run_id,state.summary.last_sequence,state.timelineExpanded,events.at(-1)?.event_sha256].join(':');
@@ -190,6 +191,7 @@
     panel.classList.add('aw-has-process');
   }
   function openTimeline(role=null){
+    state.timelineOpen=true;const timeline=document.getElementById('awTimeline');if(timeline)timeline.hidden=false;
     document.querySelector('#cpTab-activity')?.click();
     const host=document.getElementById('awTimeline');
     const target=role?host?.querySelector(`[data-role="${CSS.escape(role)}"]`):host;

@@ -4,13 +4,15 @@ CasePath helps a claims handler see what evidence is needed for a claim now, and
 
 The local workbench opens all 150 synthetic intake claims. It keeps source files, recorded observations, proposed work, and accepted handling events separate. Its default review is deterministic and makes no model API calls.
 
-![CasePath workbench showing original claim sources, the active process step, an unresolved evidence requirement, and the next review action](docs/images/workbench-review.png)
+![CasePath workbench linking the next action to evidence, a process obligation, and original sources](docs/images/workbench-review.png)
 
-*A fictional claim after local review. Two original notices remain visible beside the current path and a human-review action. The saved state does not specify a document to request; this product example is not a benchmark result.*
+*A synthetic claim after local review. The explanation connects the current action to its evidence requirement, process step, and source support. An accepted passage can advance the path while the next requirement remains unresolved. This product example is not a benchmark result.*
 
 ## See one claim
 
-After starting the app, append `#claim=clm_f69b1747447bc221` to the address printed by the server. This opens a family-home termination claim with two original notices. Read the message and both PDFs in **Sources**, then select **Start agent review**. **Decision** shows the current process step, evidence to check, and next action; **Evidence** shows what is present, missing, or unresolved. Select a requirement to inspect its reason and any accepted source passage. Nothing is sent to a customer or settled by this review.
+After starting the app, append `#claim=clm_f69b1747447bc221` to the address printed by the server. This opens a family-home termination claim with two original notices. Read the message and both PDFs in **Sources**, then select **Start agent review**. The saved work stages show what the review checked. **Decision** shows the active handling step and next action; **Evidence** separates the current need from conditional requirements.
+
+Select **Why this?** beside the action to follow the evidence, required fact, obligation, process step, and source support. **Check & register evidence** checks the original sources already held by the claim. In this synthetic packet, the first checked passage advances the active path from recording the notice details to preserving the challenge or extension deadline; a later passage is recorded without resolving that new requirement. The update names the changed step and source passage. Reload to inspect the saved state. No document request, customer message, or settlement is issued by this journey.
 
 Select **Data** in the workbench header to read all 150 original messages and their attachment lists before starting a review. The corpus browser uses only observable intake inputs; study labels and predictions are absent.
 

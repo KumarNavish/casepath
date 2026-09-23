@@ -128,11 +128,13 @@ EVENT_TYPES = {
         "LOOP_CREATED",
         "ACTION_SELECTED",
         "OBSERVATION_INGESTED",
+        "EVIDENCE_PROPOSAL_REJECTED",
         "TOOL_UNAVAILABLE",
         "ACTION_DISPATCH_STARTED",
         "DISPATCH_UNKNOWN",
         "CORRECTION_APPLIED",
         "CORRECTION_REUSED",
+        "NATIVE_PROPOSAL_REVISION_RECORDED",
     },
     "casepath.claim-loop-protocol-event/1.0.0": {
         "ACTION_DISPATCH_STARTED",
