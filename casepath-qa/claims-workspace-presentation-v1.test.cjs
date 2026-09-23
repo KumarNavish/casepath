@@ -74,6 +74,25 @@ test('source text has no duplicated focus attributes',()=>{
   assert.doesNotMatch(source,/tabindex="0" tabindex="0"/);
  }
 });
+test('decision trace keeps an opened source separate from accepted evidence',()=>{
+ const decision={
+  loop_state:{
+   process:{nodes:[{node_id:'intake',title:'Capture notice details',evidence_requirement_ids:['item']}],current_overlay:{current_node_id:'intake'},selected_path:['intake']},
+   selected_action:{process_node_id:'gap',evidence_item_id:'item'},
+   obligations:[{obligation_id:'item',status:'active'}],
+   facts:[{fact_id:'fact',label:'Notice details',state:'unknown',source_refs:[{excerpt:'Hello'}]}],
+   checklist:{items:[{item_id:'item',legal_basis_ids:[]}]},observations:[],
+  },
+  operational_projection:{evidence_items:[{...item('missing',true),fact_id:'fact'}]},
+ };
+ const before=view.canvasTrace(decision,detail,'intake');
+ assert.match(before,/No supporting passage accepted yet/);
+ assert.doesNotMatch(before,/Hello|Open original source|Request inspection report/);
+ decision.loop_state.observations.push({evidence_item_id:'item',source_refs:[{source_id:'message-one',source_sha256:rawHash,sanitized_excerpt:'Exact accepted passage'}]});
+ const after=view.canvasTrace(decision,detail,'intake');
+ assert.match(after,/Exact accepted passage/);
+ assert.match(after,/data-source-artifact="0"/);
+});
 test('resize callbacks do not measure a replaced claim header',()=>{
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');
  assert.match(source,/measuredHeader\?\.isConnected && panel\.contains\(measuredHeader\)/);

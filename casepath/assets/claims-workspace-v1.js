@@ -1511,7 +1511,7 @@
     const pendingAdvance=storedCommandIdentity('advance',id);
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
     return ui.workbench(loop,workspaceState,{
-      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,detail:state.detail,
+      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,detail:state.detail,canvasNodeId:state.canvasNodeId,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
       change:state.change?.claimId===id?state.change:null,
@@ -2194,7 +2194,7 @@
   const compactWorkbench=matchMedia('(max-width:1100px)');
   function savePresentation(){
     if(!state.detail)return;
-    const value={tab:state.workbenchTab||'overview',source:state.sourceSelection||null,scroll:state.viewScroll||{}};
+    const value={tab:state.workbenchTab||'overview',source:state.sourceSelection||null,canvasNodeId:state.canvasNodeId||null,scroll:state.viewScroll||{}};
     try{sessionStorage.setItem('casepath:presentation:'+state.detail.state.claim_id,JSON.stringify(value));}catch(_){/* A blocked preference store never blocks claim work. */}
   }
   function recoverPresentation(claimId){
@@ -2203,7 +2203,18 @@
     state.workbenchTab=claimViews.includes(requested)?requested:claimViews.includes(saved?.tab)?saved.tab:'overview';
     state.viewScroll=saved?.scroll&&typeof saved.scroll==='object'?saved.scroll:{};
     state.sourceSelection=saved?.source&&['evidence','process','artifact'].includes(saved.source.kind)?saved.source:null;
+    state.canvasNodeId=typeof saved?.canvasNodeId==='string'?saved.canvasNodeId:null;
     state.inspectorOpen=!compactWorkbench.matches;
+  }
+  function selectCanvasNode(nodeId,{focus=false}={}){
+    const node=state.loop?.loop_state.process.nodes.find(row=>row.node_id===nodeId);
+    if(!node||!state.detail)return;
+    state.canvasNodeId=nodeId;
+    const trace=$('#cpCanvasTrace');
+    if(trace){trace.outerHTML=ui.canvasTrace(state.loop,state.detail,nodeId);}
+    root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===nodeId)));
+    if(focus)$('#cpCanvasTrace')?.focus({preventScroll:true});
+    savePresentation();
   }
   function setWorkbenchTab(name,{focus=false,remember=true}={}){
     if(!claimViews.includes(name)||!state.detail)return;
@@ -2284,6 +2295,9 @@
   function presentationClick(button){
     if(button.matches('[data-close-detail]')){closeDetail();return true;}
     if(button.hasAttribute('data-workbench-tab')){setWorkbenchTab(button.dataset.workbenchTab,{focus:button.getAttribute('role')==='tab'});return true;}
+    if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
+    if(button.hasAttribute('data-trace-action')){setWorkbenchTab('overview');selectCanvasNode(state.loop?.loop_state.process.current_overlay.current_node_id,{focus:true});return true;}
+    if(button.hasAttribute('data-canvas-source')){openInspector({focus:false});const rail=$('.cp-source-rail');if(rail)rail.scrollTop=0;(rail?.querySelector('[data-packet-message]')||$('#cwSourceInspector'))?.focus({preventScroll:true});return true;}
     if(button.hasAttribute('data-open-inspector')){openInspector({toggle:button.matches('.cp-source-toggle')});return true;}
     if(button.hasAttribute('data-close-inspector')){closeInspector();return true;}
     if(button.hasAttribute('data-return-next')){const action=$('#cwLoopWorkbench .cw-button-primary');if(action){action.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'});action.focus({preventScroll:true});}return true;}
