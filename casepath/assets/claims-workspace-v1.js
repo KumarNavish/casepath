@@ -1987,6 +1987,7 @@
       ({loop} = advance);
       state.change = ui.advanceChange(beforeLoop,loop,advance.baseline,advance.recovered);
       if(state.change?.sourceItem)state.sourceSelection={kind:'evidence',id:state.change.sourceItem};
+      state.canvasNodeId=null;
       state.loop = loop;
       await loadQueue();
       if (!isActiveDetail(context)) return;
@@ -2297,7 +2298,7 @@
     if(button.hasAttribute('data-workbench-tab')){setWorkbenchTab(button.dataset.workbenchTab,{focus:button.getAttribute('role')==='tab'});return true;}
     if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
     if(button.hasAttribute('data-trace-action')){setWorkbenchTab('overview');selectCanvasNode(state.loop?.loop_state.process.current_overlay.current_node_id,{focus:true});return true;}
-    if(button.hasAttribute('data-canvas-source')){openInspector({focus:false});const rail=$('.cp-source-rail');if(rail)rail.scrollTop=0;(rail?.querySelector('[data-packet-message]')||$('#cwSourceInspector'))?.focus({preventScroll:true});return true;}
+    if(button.hasAttribute('data-canvas-source')){resetSource(false);openInspector({focus:true});const rail=$('.cp-source-rail');if(rail)rail.scrollTop=0;(rail?.querySelector('[data-packet-message]')||$('#cwSourceInspector'))?.focus({preventScroll:true});return true;}
     if(button.hasAttribute('data-open-inspector')){openInspector({toggle:button.matches('.cp-source-toggle')});return true;}
     if(button.hasAttribute('data-close-inspector')){closeInspector();return true;}
     if(button.hasAttribute('data-return-next')){const action=$('#cwLoopWorkbench .cw-button-primary');if(action){action.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'});action.focus({preventScroll:true});}return true;}

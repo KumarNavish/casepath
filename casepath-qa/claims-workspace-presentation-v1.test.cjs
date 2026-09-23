@@ -89,8 +89,12 @@ test('decision trace keeps an opened source separate from accepted evidence',()=
  assert.match(before,/No supporting passage accepted yet/);
  assert.doesNotMatch(before,/Hello|Open original source|Request inspection report/);
  decision.loop_state.observations.push({evidence_item_id:'item',source_refs:[{source_id:'message-one',source_sha256:rawHash,sanitized_excerpt:'Exact accepted passage'}]});
+ decision.loop_state.facts[0].state='known';
+ decision.loop_state.facts[0].normalized_value='unresolved';
  const after=view.canvasTrace(decision,detail,'intake');
  assert.match(after,/Exact accepted passage/);
+ assert.match(after,/Unresolved condition recorded/);
+ assert.doesNotMatch(after,/>Established</);
  assert.match(after,/data-source-artifact="0"/);
 });
 test('resize callbacks do not measure a replaced claim header',()=>{

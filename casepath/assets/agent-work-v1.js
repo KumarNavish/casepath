@@ -76,11 +76,12 @@
   }
   function compactSummary(summary){
     const roles=summary?.roles||state.cap?.roles.map(r=>({...r,status:'not_started'}))||[];
-    if(!summary)return `<header class="aw-console-head"><div><span class="aw-kicker">Agent review</span><h2>Six specialists are ready to review this claim</h2><p>They read the original packet, ground statements, map the handling path, connect evidence and audit readiness through the existing claim authority.</p></div><span class="aw-console-state" data-status="quiet">Ready</span></header>`;
+    if(!summary)return `<header class="aw-console-head"><div><span class="aw-kicker">Agent review</span><h2>Ready to review the source packet</h2><p>The review will check the source statements, handling path, evidence needs and next step.</p></div><span class="aw-console-state" data-status="quiet">Ready</span></header>`;
     const active=summary.current_role,complete=summary.status==='completed',blocked=summary.status==='blocked'||summary.status==='unconfirmed';
-    const heading=complete?'Six specialists checked this claim':blocked?`Review paused at ${h(active?.label||'a checked gate')}`:active?`${h(active.label)} is working on the claim`:summary.status==='queued'?'Review is queued':h(label(summary.status));
+    const stages={canonical_facts:'Reading source statements',orchestrator_plan:'Checking the review plan',document_source_integrity:'Checking source links',process_decision_mapping:'Mapping the handling path',evidence_checklist:'Checking evidence needs',final_claim_brief_audit:'Checking the next step'};
+    const heading=complete?'Review complete; next step identified':blocked?`Review paused while ${h((stages[active?.id]||active?.label||'a checked gate').toLowerCase())}`:active?h(stages[active.id]||`${active.label} is working on the claim`):summary.status==='queued'?'Review is queued':h(label(summary.status));
     const latest=latestVisibleEvent();
-    const description=complete?'Sources, process, evidence and readiness are connected in one recorded chain.':blocked?h(summary.last_message):latest?h(latest.message):'The review is moving through the saved six-role sequence.';
+    const description=complete?'Sources and process were checked. The claim may still need evidence before a decision.':blocked?h(summary.last_message):latest?h(latest.message):'The review is moving through the saved checks.';
     const model=summary.facts_worker==='external_facts'?(modelLabel()||'External model'):'Reference Facts';
     return `<header class="aw-console-head"><div><span class="aw-kicker">Agent review · ${h(model)}</span><h2>${heading}</h2><p>${description}</p></div><span class="aw-console-state" data-status="${currentTone(summary)}"><strong>${summary.completed_roles}/6</strong>${complete?'Complete':blocked?'Needs review':'In progress'}</span></header>`;
   }
@@ -125,7 +126,8 @@
     const worker=state.cap?.facts_workers?.includes('external_facts')&&!['queued','running'].includes(summary?.status)?`<label class="aw-worker-select"><span>Facts specialist</span><select id="awFactsWorker" aria-label="Facts specialist"><option value="reference">Reference worker</option><option value="external_facts">External model · bounded</option></select></label>`:'';
     const stale=summary?.currentness==='historical'?'<p class="aw-stale">This review belongs to an earlier claim state. It remains inspectable history and does not replace current handling.</p>':summary?.currentness==='unconfirmed'?'<p class="aw-stale">Current claim state could not be confirmed. Saved work remains visible but is not treated as current.</p>':'';
     const focusedRole=host.contains(document.activeElement)?document.activeElement?.dataset?.awRole:null;
-    host.innerHTML=`<div class="aw-review-console">${compactSummary(summary)}${roleTrack(summary)}${liveSignal(summary)}${stale}<div class="aw-review-controls">${actions}${worker}${summary?'<button class="aw-text-button" type="button" data-aw-timeline>Review trace</button>':''}</div><p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></div>`;
+    const roleDetail=summary?.status==='completed'?`<details class="aw-role-details"><summary>Inspect specialist handoffs</summary>${roleTrack(summary)}</details>`:roleTrack(summary);
+    host.innerHTML=`<div class="aw-review-console">${compactSummary(summary)}${liveSignal(summary)}${roleDetail}${stale}<div class="aw-review-controls">${actions}${worker}${summary?'<button class="aw-text-button" type="button" data-aw-timeline>Review trace</button>':''}</div><p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></div>`;
     const pending=pendingRequest();if(pending)document.getElementById('awRequestStatus').innerHTML='A submitted review request is unconfirmed. <button type="button" class="aw-text-button" data-aw-retry>Check the same request</button>';
     if(focusedRole)host.querySelector(`[data-aw-role="${CSS.escape(focusedRole)}"]`)?.focus({preventScroll:true});
     if(state.messages.has(state.claim)&&!pending)document.getElementById('awRequestStatus').textContent=state.messages.get(state.claim);
