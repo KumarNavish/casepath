@@ -89,7 +89,7 @@ test('decision trace keeps an opened source separate from accepted evidence',()=
   operational_projection:{evidence_items:[{...item('missing',true),fact_id:'fact'}]},
  };
  const before=view.canvasTrace(decision,detail,'intake');
- assert.match(before,/No supporting passage accepted yet/);
+ assert.match(before,/No source passage recorded yet/);
  assert.match(before,/Required fact.*?Notice details/s);
  assert.match(before,/Evidence capability.*?Checked observation from an original source/s);
  assert.match(before,/Document requirement.*?No customer document specified/s);
@@ -99,6 +99,7 @@ test('decision trace keeps an opened source separate from accepted evidence',()=
  decision.loop_state.facts[0].normalized_value='unresolved';
  const after=view.canvasTrace(decision,detail,'intake');
  assert.match(after,/Exact accepted passage/);
+ assert.match(after,/Recorded source passages/);
  assert.match(after,/Unresolved condition recorded/);
  assert.doesNotMatch(after,/>Established</);
  assert.match(after,/data-source-artifact="0"/);

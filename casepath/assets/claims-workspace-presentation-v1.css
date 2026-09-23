@@ -348,3 +348,6 @@
 .cp-workspace[data-canvas="true"] .cp-update{padding:14px 19px 16px;}
 .cp-update-path,.cp-workspace[data-canvas="true"] .cp-update-source,.cp-update-more{margin-left:0;padding-left:0;max-width:100%;}
 }
+@media(max-width:360px){
+#claimsWorkspace .cp-brand>span:last-child{display:none;}
+}
