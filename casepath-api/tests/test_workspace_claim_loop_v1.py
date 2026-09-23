@@ -338,6 +338,7 @@ def test_operational_queue_and_workbench_share_the_live_claim_journal(
         "conditional",
         "irrelevant",
         "unknown",
+        "held_not_reviewed",
     }
     assert sum(projection["evidence_class_counts"].values()) == len(
         initial["loop_state"]["checklist"]["items"]

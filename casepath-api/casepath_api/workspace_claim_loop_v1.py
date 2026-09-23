@@ -3045,6 +3045,12 @@ def build_workspace_playbook_v1(
     evidence_capabilities: dict[str, list[str]] = {}
     base_statuses: dict[str, str] = {}
     actor_grants: dict[str, dict[str, Any]] = {}
+    claim_assessment = expected_assessment.get("claim_assessment")
+    node_authorities = {
+        step["node_id"]: step["authority"]
+        for step in claim_assessment["steps"]
+        if step["authority"] is not None
+    } if isinstance(claim_assessment, Mapping) else {}
     for row in decision_rows:
         node_id = str(row["node_id"])
         fact_id = f"fact.workspace.{node_id}.transition"
@@ -3113,10 +3119,13 @@ def build_workspace_playbook_v1(
                 "node_id": node_id,
                 "fact_id": fact_id,
                 "why": "A bounded source observation is required for this policy step.",
-                "legal_basis_ids": [
-                    value["clause_id"]
-                    for value in expected_assessment["policy_clause_refs"]
-                ],
+                "legal_basis_ids": (
+                    [node_authorities[node_id]["authority_id"]]
+                    if node_id in node_authorities else
+                    [expected_assessment["policy_clause_refs"][-1]["clause_id"]]
+                    if isinstance(claim_assessment, Mapping) else
+                    [value["clause_id"] for value in expected_assessment["policy_clause_refs"]]
+                ),
                 "artifact_ids": [],
                 "acceptable_alternatives": [],
                 "applies_when": "always",
@@ -3212,7 +3221,20 @@ def build_workspace_playbook_v1(
         "current_overlay": {},
     }
     record = {"facts": facts, "process": process, "checklist": {"items": items}}
-    legal_sources = expected_assessment["policy_clause_refs"]
+    if isinstance(claim_assessment, Mapping):
+        used_legal_ids = {basis for item in items for basis in item["legal_basis_ids"]}
+        authority_by_id = {
+            value["authority_id"]: value for value in node_authorities.values()
+        }
+        legal_sources = [
+            {"clause_id": basis, "content": authority_by_id[basis]["passage"],
+             "content_sha256": sha256(authority_by_id[basis]["passage"].encode()).hexdigest()}
+            if basis in authority_by_id else
+            next(value for value in expected_assessment["policy_clause_refs"] if value["clause_id"] == basis)
+            for basis in sorted(used_legal_ids)
+        ]
+    else:
+        legal_sources = expected_assessment["policy_clause_refs"]
     route_program = {"start_path": [], "steps": route_steps}
     template_catalog = {
         "supported_claim_ids": [claim_id],

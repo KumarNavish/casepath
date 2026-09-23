@@ -140,7 +140,9 @@ def _validated_state(value: Mapping[str, Any]) -> dict[str, Any]:
                 )
             )
         )
-        or state.get("deadline_at") is not None
+        or state.get("deadline_at") != (
+            state.get("intake_assessment", {}) or {}
+        ).get("claim_assessment", {}).get("candidate_deadline")
         or (
             state.get("pending_evidence_count") is not None
             and (
@@ -279,6 +281,7 @@ def _reduce(
                 "readiness_state": "blocked",
                 "claim_type": assessment["claim_type"],
                 "intake_assessment": assessment,
+                "deadline_at": assessment.get("claim_assessment", {}).get("candidate_deadline"),
                 "principal_blocker": (
                     f"{node['label']} is not yet established from admitted evidence"
                 ),
@@ -755,7 +758,7 @@ def _row(
             if workflow_state in {"failed", "typed_failure"}
             else 1,
         },
-        {"dimension": "deadline", "value": state["deadline_at"] or "unknown"},
+        {"dimension": "deadline", "value": (state["deadline_at"] or {}).get("date") or "unknown"},
         {"dimension": "failed_or_unknown_effect", "value": failure_rank},
         {"dimension": "unresolved_critical_obligation", "value": unresolved_rank},
         {"dimension": "waiting_age_days", "value": age_days},
@@ -784,7 +787,7 @@ def _row(
         "priority_tuple": priority_tuple,
         "_sort": {
             "safety": priority_tuple[0]["value"],
-            "deadline": state["deadline_at"] or "9999-12-31T23:59:59+00:00",
+            "deadline": (state["deadline_at"] or {}).get("date") or "9999-12-31T23:59:59+00:00",
             "failure": failure_rank,
             "unresolved": unresolved_rank,
             "waiting": -age_days,
