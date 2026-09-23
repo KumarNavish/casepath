@@ -63,12 +63,13 @@
     const claim=getClaim();
     if(claim!==state.claim){document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.renderKey=null;state.timelineExpanded=false;state.repoll=Boolean(claim);}
     if(!claim)return;
-    const work=root.querySelector('.cp-work-column');if(!work)return;
-    if(!document.getElementById('awClaimWork')){
-      const section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent review');
-      const tabs=work.querySelector('.cp-tabs');if(tabs)work.insertBefore(section,tabs);else work.append(section);
+    const activity=root.querySelector('#cpPanel-activity');if(!activity)return;
+    let section=document.getElementById('awClaimWork');
+    if(!section){
+      section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent review');
       state.renderKey=null;
     }
+    if(section.parentElement!==activity)activity.prepend(section);
     const start=document.getElementById('cwStart');
     if(start&&!start.dataset.agentWorkEntry){start.dataset.agentWorkEntry='true';start.textContent='Start agent review';}
     renderClaim();
@@ -111,7 +112,8 @@
     state.renderKey=key;
     if(summary?.run_id)host.dataset.awRunId=summary.run_id;else delete host.dataset.awRunId;
     host.dataset.status=summary?.status||'ready';
-    const activityLabel=document.querySelector('#cpTab-activity>span');if(activityLabel)activityLabel.textContent='Agent review';
+    const activityLabel=document.querySelector('#cpTab-activity>span');
+    if(activityLabel)activityLabel.textContent=summary?.currentness==='historical'?'Agent review · previous':summary?.currentness==='unconfirmed'?'Agent review · check state':summary?.status==='completed'?'Agent review · complete':summary&&['blocked','interrupted','failed'].includes(summary.status)?'Agent review · needs attention':summary&&['queued','running'].includes(summary.status)?'Agent review · working':'Agent review';
     const actions=summary?.recovery?.can_resume?`<button type="button" class="aw-review-action" data-aw-resume ${state.busy?'disabled':''}>Resume saved review ${icon('arrow')}</button>`:(!summary&&!hasStart)?`<button type="button" class="aw-review-action" data-aw-start ${state.busy?'disabled':''}>Start agent review ${icon('arrow')}</button>`:(summary?.currentness==='historical'&&!hasStart&&!['queued','running','interrupted'].includes(summary.status))?`<button type="button" class="aw-text-button" data-aw-start ${state.busy?'disabled':''}>Review current claim ${icon('arrow')}</button>`:'';
     const start=document.getElementById('cwStart');
     if(start){
@@ -165,7 +167,7 @@
   function renderTimeline(){
     const panel=document.getElementById('cpPanel-activity');if(!panel||!state.run)return;
     let host=document.getElementById('awTimeline');
-    if(!host){host=document.createElement('section');host.id='awTimeline';host.className='aw-timeline';panel.prepend(host);}
+    if(!host){host=document.createElement('section');host.id='awTimeline';host.className='aw-timeline';const summary=panel.querySelector('#awClaimWork');if(summary)summary.after(host);else panel.prepend(host);}
     const all=state.events.filter(e=>!HIDDEN_OPERATIONS.has(e.operation));
     const events=state.timelineExpanded?all:all.filter(e=>MILESTONE_OPERATIONS.has(e.operation));
     const version=[state.summary.run_id,state.summary.last_sequence,state.timelineExpanded,events.at(-1)?.event_sha256].join(':');
