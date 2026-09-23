@@ -1,16 +1,16 @@
 # CasePath
 
-CasePath helps a claims handler answer a practical question: **why is this document needed for this claim now?** Its workbench keeps the original packet beside the process path, evidence state, and next action. It shows when a supporting source link has not been established.
+CasePath helps a claims handler see what evidence is needed for a claim now, and why. Its workbench keeps the original packet beside the active process step, evidence requirement, and next action. It leaves a document request unspecified when the saved case does not justify one.
 
 The local workbench opens all 150 synthetic intake claims. It keeps source files, recorded observations, proposed work, and accepted handling events separate. Its default review is deterministic and makes no model API calls.
 
-![CasePath workbench after a deterministic review of a fictional claim, with the next action beside two original PDF notices](docs/images/workbench-review.png)
+![CasePath workbench showing original claim sources, the active process step, an unresolved evidence requirement, and the next review action](docs/images/workbench-review.png)
 
-*A fictional claim after local review. The original notices remain visible beside the proposed next action; this product example is not a benchmark result.*
+*A fictional claim after local review. Two original notices remain visible beside the current path and a human-review action. The saved state does not specify a document to request; this product example is not a benchmark result.*
 
 ## See one claim
 
-After starting the app, open [a family-home termination claim with two original notices](http://127.0.0.1:4173/#claim=clm_f69b1747447bc221). Read the message and both PDFs in **Sources**, then select **Start agent review**. The saved review shows what each role inspected and handed off. **Process** shows the current step and alternatives; **Evidence** shows what is present, missing, or unresolved. Select an item to inspect its reason and any accepted source link. Nothing is sent to a customer or settled by this review.
+After starting the app, open [a family-home termination claim with two original notices](http://127.0.0.1:4173/#claim=clm_f69b1747447bc221). Read the message and both PDFs in **Sources**, then select **Start review**. **Decision** shows the current process step, evidence to check, and next action; **Evidence** shows what is present, missing, or unresolved. Select a requirement to inspect its reason and any accepted source passage. Nothing is sent to a customer or settled by this review.
 
 The [interactive method guide](docs/method-guide.md) gives a smaller teaching example: a repair may need an inspection report, or a service note and photo together. Changing the active condition or the available evidence changes the request. This authored example explains the controller; it is separate from measured benchmark cases.
 
