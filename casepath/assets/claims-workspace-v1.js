@@ -2420,10 +2420,11 @@
     $('#cwSourceContent').innerHTML=`<div class="cw-source-selection"><h4>${esc(node.title)}</h4><p>${esc(node.answer)}</p><p><strong>Recorded process rule</strong><br>${esc(node.why)}</p><p class="cw-note">This view explains the saved process; it does not change the active path.</p></div>`;
     focusSource(focus);
   }
-  async function showSourceArtifact(index, focus=true) {
+  async function showSourceArtifact(index, focus=true, quote=null) {
     const detail=state.detail, artifact=detail?.artifacts[index];
     if(!artifact || !Number.isSafeInteger(index)) return;
-    releaseSourcePreview();state.sourceSelection={kind:'artifact',index};
+    const acceptedQuote=quote&&state.loop?.loop_state.observations.some(row=>(row.source_refs||[]).some(ref=>ref.sanitized_excerpt===quote&&ui.sourceArtifactIndex(ref,detail)===index))?quote:null;
+    releaseSourcePreview();state.sourceSelection={kind:'artifact',index,quote:acceptedQuote};
     const ticket=state.sourceRequest, claimId=detail.state.claim_id;
     const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
     $('#cwSourceHeading').textContent=ui.fileTitle(artifact);
@@ -2455,7 +2456,7 @@
         if(descriptor.renderable){state.packetPreview={index,descriptor,page:1};content=packetPreviewShell(artifact,descriptor);renderedPage=true;}
         else content=ui.packetContentMarkup(descriptor);
       } else content='<p class="cw-note">This file type has no inline preview. Open the original file below.</p>';
-      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote?`<aside class="cp-selected-passage"><span>Accepted passage linked to this source</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
       if(renderedPage)await renderPacketPage(1);
     } catch(error) {
       if(!current()) return;
@@ -2467,7 +2468,7 @@
     const selection=state.sourceSelection;
     if(selection?.kind==='evidence') showEvidenceSource(selection.id,false);
     else if(selection?.kind==='process') showProcessSource(selection.id,false);
-    else if(selection?.kind==='artifact') void showSourceArtifact(selection.index,false);
+    else if(selection?.kind==='artifact') void showSourceArtifact(selection.index,false,selection.quote);
   }
   function handleWorkspaceClick(event) {
     const button=event.target.closest('button,a');if(!button)return;
@@ -2480,7 +2481,7 @@
     if(button.dataset.queueView) selectQueueView(button.dataset.queueView);
     if(button.dataset.evidenceSource) showEvidenceSource(button.dataset.evidenceSource);
     if(button.dataset.processNode) showProcessSource(button.dataset.processNode);
-    if(button.hasAttribute('data-source-artifact')) void showSourceArtifact(Number(button.dataset.sourceArtifact));
+    if(button.hasAttribute('data-source-artifact')){const index=Number(button.dataset.sourceArtifact);const quote=button.dataset.sourceQuote||(state.sourceSelection?.kind==='artifact'&&state.sourceSelection.index===index?state.sourceSelection.quote:null);void showSourceArtifact(index,true,quote);}
     if(button.hasAttribute('data-source-reset')) resetSource();
     if(button.hasAttribute('data-show-investigation')){setWorkbenchTab('activity');const section=$('#cwSavedInvestigation');if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});}}
     if(button.id==='cwClearFilters') clearQueueFilters();

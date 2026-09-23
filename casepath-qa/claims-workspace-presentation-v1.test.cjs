@@ -96,6 +96,17 @@ test('decision trace keeps an opened source separate from accepted evidence',()=
  assert.match(after,/Unresolved condition recorded/);
  assert.doesNotMatch(after,/>Established</);
  assert.match(after,/data-source-artifact="0"/);
+ decision.loop_state.process.nodes[0].branches=[{branch_id:'next',target:'deadline'}];
+ decision.loop_state.process.nodes.push({node_id:'deadline',title:'Preserve the deadline'});
+ decision.loop_state.facts[0].normalized_value='next';
+ const branched=view.canvasTrace(decision,detail,'intake');
+ assert.match(branched,/Branch condition/);
+ assert.match(branched,/Path selected/);
+ assert.match(branched,/Preserve the deadline/);
+ assert.doesNotMatch(branched,/>Established</);
+ decision.operational_projection.evidence_items[0].evidence_class='received';
+ decision.operational_projection.evidence_items[0].mandatory_now=false;
+ assert.match(view.evidenceSource(decision.operational_projection.evidence_items[0],decision,detail),/does not establish every detail in the notice/);
 });
 test('resize callbacks do not measure a replaced claim header',()=>{
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');
