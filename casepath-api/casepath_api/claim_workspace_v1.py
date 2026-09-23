@@ -521,7 +521,10 @@ class ClaimWorkspaceStore:
         # Corpus bytes were fully hashed at admission.  This closed-inventory
         # token is checked before and after the SQLite snapshot, so cached
         # semantic states never conceal source replacement or path drift.
-        corpus_token = self.corpus.runtime_identity_token()
+        corpus_identity = getattr(
+            self.corpus, "observed_runtime_identity_token", self.corpus.runtime_identity_token
+        )
+        corpus_token = corpus_identity()
         with self.journal.connect() as connection:
             connection.execute("BEGIN")
             grouped: dict[str, list[sqlite3.Row]] = defaultdict(list)
@@ -543,7 +546,7 @@ class ClaimWorkspaceStore:
                 )
             if roster_bytes is not None:
                 connection.commit()
-                if self.corpus.runtime_identity_token() != corpus_token:  # pragma: no cover
+                if corpus_identity() != corpus_token:  # pragma: no cover
                     raise ClaimWorkspaceError(
                         "public corpus changed during workspace replay"
                     )
@@ -566,7 +569,7 @@ class ClaimWorkspaceStore:
                         self._replay_cache[loop_id] = (fingerprints, state_bytes)
                 values.append(json.loads(state_bytes))
             connection.commit()
-        if self.corpus.runtime_identity_token() != corpus_token:  # pragma: no cover
+        if corpus_identity() != corpus_token:  # pragma: no cover
             raise ClaimWorkspaceError("public corpus changed during workspace replay")
         with self._replay_cache_lock:
             self._state_roster_cache = (

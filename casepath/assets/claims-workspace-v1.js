@@ -1152,15 +1152,26 @@
   }
 
   async function request(path, options = {}) {
-    let response;
+    const {signal: callerSignal, ...fetchOptions} = options;
+    const controller = new AbortController();
+    const isWrite = !['GET', 'HEAD'].includes((options.method || 'GET').toUpperCase());
+    let timedOut = false;
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, isWrite ? 90000 : 12000);
+    const abort = () => controller.abort();
+    callerSignal?.addEventListener('abort', abort, {once: true});
+    if (callerSignal?.aborted) abort();
+    let response, body;
     try {
-      response = await fetch(`${api}${path}`, {cache: 'no-store', ...options});
+      response = await fetch(`${api}${path}`, {cache: 'no-store', ...fetchOptions, signal: controller.signal});
+      body = await response.json().catch(() => null);
     } catch (cause) {
-      const error = new Error(cause?.message || 'No response was received');
+      const error = new Error(timedOut ? 'Request timed out. Try again to check the saved state.' : cause?.message || 'No response was received');
       error.transportFailure = true;
       throw error;
+    } finally {
+      clearTimeout(timer);
+      callerSignal?.removeEventListener('abort', abort);
     }
-    const body = await response.json().catch(() => null);
     if (!response.ok) {
       const detail = body?.detail;
       const message = typeof detail === 'string' ? detail : detail?.reason || `Request failed (${response.status})`;

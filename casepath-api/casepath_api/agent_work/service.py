@@ -132,10 +132,13 @@ class AgentWorkService:
             coverage={'kind':'claim_history','returned_runs':len(runs),'has_more':len(runs)==150}
         summaries=[]
         for run in runs:
-            snapshot=self.store.snapshot(run['run_id'])
-            summary=summarize(self.store,run,snapshot)
-            summary['currentness']=self._currentness(run,snapshot['objects'])
-            summaries.append(summary)
+            summaries.append({
+                'run_id':run['run_id'],'claim_id':run['claim_id'],
+                'subject':run['request']['context'].get('subject','Claim'),
+                'status':run['status'],'created_at':run['created_at'],
+                'facts_worker':run['request']['facts_worker'],
+                'currentness':'not_yet_checked',
+            })
         return {'contract':VERSION,'runs':summaries,
                 'roles':[{'id':r.value,'label':ROLE_LABELS[r]} for r in ROLE_ORDER],
                 'limit':150,'coverage':coverage,'includes_invented_activity':False}

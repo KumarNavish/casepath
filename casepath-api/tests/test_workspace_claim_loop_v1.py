@@ -50,6 +50,7 @@ from casepath_api.workspace_corpus import (
     PublicCorpus,
     WorkspaceCorpusError,
     default_public_corpus_root,
+    default_workspace_corpus_root,
 )
 from casepath_api.workspace_evidence_authority_v1 import (
     EVIDENCE_REGISTRATION_FIELDS,
@@ -457,6 +458,46 @@ def test_operational_queue_cache_never_hides_historical_journal_tamper(
 
     with pytest.raises(WorkspaceClaimLoopError, match="claim loop event"):
         facade.queue(now="2026-08-31T12:00:04+00:00", limit=100)
+
+
+def test_queue_write_reuses_unchanged_claim_loop_replays(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    _, workspace, normal, facade = _system(tmp_path, corpus=corpus)
+    workspace.seed(timestamp="2026-08-31T12:00:00+00:00")
+    claim_ids = sorted(corpus.bindings)
+    for index, claim_id in enumerate(claim_ids[:2]):
+        initial = workspace.store.recover(claim_id)
+        started = workspace.start(
+            claim_id,
+            idempotency_key=f"queue-cache-start-{index}",
+            expected_revision=initial["revision"],
+            timestamp="2026-08-31T12:00:01+00:00",
+        )["state"]
+        facade.ensure(
+            claim_id,
+            expected_workspace_revision=started["revision"],
+            expected_workspace_state_sha256=started["state_sha256"],
+            idempotency_key=f"queue-cache-ensure-{index}",
+        )
+    assert facade.queue(now="2026-08-31T12:00:02+00:00", limit=25)["total_count"] == 150
+
+    third = claim_ids[2]
+    initial = workspace.store.recover(third)
+    workspace.start(
+        third,
+        idempotency_key="queue-cache-start-third",
+        expected_revision=initial["revision"],
+        timestamp="2026-08-31T12:00:03+00:00",
+    )
+
+    def unexpected_replay(*args, **kwargs):
+        raise AssertionError("an unchanged claim loop was replayed")
+
+    monkeypatch.setattr(normal.store, "state_at_revision", unexpected_replay)
+    monkeypatch.setattr(normal.store, "_replay_rows_uncached", unexpected_replay)
+    assert facade.queue(now="2026-08-31T12:00:04+00:00", limit=25)["total_count"] == 150
 
 
 @pytest.mark.parametrize(

@@ -5,7 +5,7 @@
   const ROOT='/api/agent-work/v1', CONTRACT='casepath.agent-work/1.0.0';
   const h=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const icon=(name)=>`<svg class="aw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${({work:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',close:'m6 6 12 12M6 18 18 6',arrow:'M4 12h15m-5-5 5 5-5 5',source:'M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8M8 16h6',check:'m5 12 4 4L19 6',link:'m9 15 6-6M7 17l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0M17 7l1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0',plan:'M4 6h5m6 0h5M9 6a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h5M4 18h5',process:'M5 3v5m0 0h14v8m-14-8v13m11-5h6M3 3h4M3 21h4',evidence:'M5 3h14v18H5zM8 8l2 2 4-4M8 14h8M8 18h6',audit:'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6zM9 12l2 2 4-4',pulse:'M3 12h4l2-5 4 10 2-5h6'})[name]||'M5 12h14'}"/></svg>`;
-  const state={cap:null,claim:null,run:null,events:[],summary:null,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,timelineOpen:false,repoll:false};
+  const state={cap:null,claim:null,run:null,events:[],summary:null,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,timelineOpen:false,repoll:false,stream:null,streamRun:null,streamFailed:null,lastRosterAt:0};
   const time=t=>t?new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date(t)):'—';
   const label=s=>({not_started:'Not started',working:'Working',completed:'Completed',blocked:'Needs review',unconfirmed:'Outcome unconfirmed',queued:'Queued',running:'Processing',interrupted:'Interrupted',failed:'Needs review'})[s]||s;
   const roleName=r=>state.cap?.roles.find(x=>x.id===r)?.label||'CasePath';
@@ -60,7 +60,7 @@
       const button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>Review team</span>';button.setAttribute('aria-label','Review team');button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>showWorkforce());nav.append(button);
     }
     const claim=getClaim();
-    if(claim!==state.claim){document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);}
+    if(claim!==state.claim){closeStream();document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);}
     if(!claim)return;
     const activity=root.querySelector('#cpPanel-activity');if(!activity)return;
     let section=document.getElementById('awClaimWork');
@@ -249,9 +249,8 @@
       const active=data.runs.filter(r=>['queued','running'].includes(r.status)),blocked=data.runs.filter(r=>['blocked','unconfirmed','interrupted'].includes(r.status)||r.currentness==='unconfirmed');
       const key=JSON.stringify(data);if(state.workforceKey===key)return;state.workforceKey=key;
       const focusedClaim=view.contains(document.activeElement)?document.activeElement?.dataset?.awClaim:null,scroll=view.scrollTop;
-      const team=data.roles.map(role=>{const running=data.runs.filter(r=>r.roles.find(x=>x.id===role.id)?.status==='working').length,complete=data.runs.filter(r=>r.roles.find(x=>x.id===role.id)?.status==='completed').length;return `<section class="aw-team-agent"><span class="aw-agent-mark">${roleIcon(role.id)}</span><div><h2>${h(role.label)}</h2><p>${running?`${running} working now`:'Available for checked handoff'}</p><small>${complete} latest completions</small></div></section>`;}).join('');
-      const runs=data.runs.map(r=>{const current=r.current_role?.label||'Review complete',external=r.facts_worker==='external_facts';return `<button type="button" class="aw-run-row" data-aw-claim="${h(r.claim_id)}"><span class="aw-run-main"><strong>${h(r.subject)}</strong><small>${external?'External Facts · ':'Reference Facts · '}${h(current)}</small><span class="aw-mini-flow" aria-label="${r.completed_roles} of 6 review roles completed">${r.roles.map(role=>`<i data-status="${statusClass(role.status)}"></i>`).join('')}</span></span><span class="aw-run-state" data-status="${currentTone(r)}"><strong>${r.completed_roles}/6</strong>${h(currentLabel(r))}</span>${icon('arrow')}</button>`;}).join('');
-      view.innerHTML=`<header class="aw-workforce-heading"><div><span class="aw-kicker">Recorded agent operations</span><h1>Review operations</h1><p>Six specialists move claims from original sources to checked readiness through persisted handoffs and deterministic gates.</p></div><button class="aw-text-button" type="button" data-aw-back>Back to claims</button></header><div class="aw-workforce-stats"><span><strong>${active.length}</strong> active</span><span><strong>${blocked.length}</strong> need review</span><span><strong>${data.runs.filter(r=>r.status==='completed').length}</strong> completed</span><span><strong>${data.coverage?.total_claims||data.runs.length}</strong> claims with recorded work</span></div><div class="aw-team-flow">${team}</div>${data.coverage?.has_more?'<p class="aw-stale">This operations view is a partial roster. Open a claim for its complete work record.</p>':''}<div class="aw-runs-header"><h2>Latest review per claim</h2><span>Source → handoffs → readiness</span></div>${data.runs.length?`<div class="aw-runs">${runs}</div>`:'<div class="aw-empty"><h3>No agent review has run yet</h3><p>Open a claim and start an agent review. This page will show only work that actually executes.</p></div>'}`;
+      const runs=data.runs.map(r=>`<button type="button" class="aw-run-row" data-aw-claim="${h(r.claim_id)}"><span class="aw-run-main"><strong>${h(r.subject)}</strong><small>${h(r.facts_worker==='external_facts'?'External review':'Deterministic review')}</small></span><span class="aw-run-state" data-status="${statusClass(r.status)}">${h(label(r.status))}</span>${icon('arrow')}</button>`).join('');
+      view.innerHTML=`<header class="aw-workforce-heading"><div><span class="aw-kicker">Saved reviews</span><h1>Review operations</h1></div><button class="aw-text-button" type="button" data-aw-back>Back to claims</button></header><div class="aw-workforce-stats"><span><strong>${active.length}</strong> active</span><span><strong>${blocked.length}</strong> need review</span><span><strong>${data.runs.filter(r=>r.status==='completed').length}</strong> completed</span><span><strong>${data.coverage?.total_claims||data.runs.length}</strong> claims with recorded work</span></div>${data.coverage?.has_more?'<p class="aw-stale">Open a claim to inspect its full work history.</p>':''}<div class="aw-runs-header"><h2>Latest review per claim</h2></div>${data.runs.length?`<div class="aw-runs">${runs}</div>`:'<div class="aw-empty"><h3>No review has run yet</h3><p>Open a claim to start a review.</p></div>'}`;
       view.scrollTop=scroll;if(focusedClaim)view.querySelector(`[data-aw-claim="${CSS.escape(focusedClaim)}"]`)?.focus({preventScroll:true});
     }catch(e){view.innerHTML=`<p class="aw-stale">${h(e.message)}</p><button type="button" class="aw-text-button" data-aw-back>Return to claims</button>`;}
   }
@@ -261,9 +260,29 @@
       const run=latest.get(row.dataset.claimId);if(!run)return;
       const cell=row.querySelector('.cp-state-cell')||row.querySelector('td:nth-child(2)');if(!cell)return;
       let el=cell.querySelector('.aw-row-work');if(!el){el=document.createElement('small');el.className='aw-row-work';cell.append(el);}
-      const text=run.currentness==='historical'?`Agent review · previous · ${run.completed_roles}/6`:run.currentness==='unconfirmed'?'Agent review · state unconfirmed':run.current_role?`Agent review · ${run.current_role.label} ${label(run.current_role.status).toLowerCase()} · ${run.completed_roles}/6`:run.status==='completed'?`Agent review · complete · ${run.completed_roles}/6`:`Agent review · ${label(run.status).toLowerCase()} · ${run.completed_roles}/6`;
+      const text=`Review · ${label(run.status).toLowerCase()}`;
       if(el.textContent!==text)el.textContent=text;
     });
+  }
+  function closeStream(){state.stream?.close();state.stream=null;state.streamRun=null;}
+  function openStream(claim,runId){
+    if(state.streamRun===runId||state.streamFailed===runId||!window.EventSource)return;
+    closeStream();
+    const after=state.events.at(-1)?.sequence||0;
+    const stream=new EventSource(`${ROOT}/claims/${encodeURIComponent(claim)}/runs/${encodeURIComponent(runId)}/stream?after=${after}`);
+    state.stream=stream;state.streamRun=runId;
+    stream.addEventListener('work',message=>{
+      if(state.claim!==claim||state.streamRun!==runId)return;
+      const event=JSON.parse(message.data),previous=state.events.at(-1)?.sequence||0;
+      if(event.sequence<=previous)return;
+      if(event.sequence!==previous+1){closeStream();state.streamFailed=runId;void poll();return;}
+      state.events.push(event);
+      if(state.summary){state.summary.last_sequence=event.sequence;state.summary.last_message=event.message;}
+      renderClaim();
+      if(['AGENT_STARTED','AGENT_COMPLETED','AGENT_BLOCKED','RUN_COMPLETED','RUN_BLOCKED','RUN_FAILED'].includes(event.operation))void poll();
+    });
+    stream.addEventListener('done',()=>{closeStream();void poll();});
+    stream.onerror=()=>{closeStream();state.streamFailed=runId;void poll();};
   }
   async function poll(){
     if(state.fetching||document.hidden)return;
@@ -271,11 +290,16 @@
     try{
       mount();
       if(state.workforce)await refreshWorkforce();
-      const all=await request('/workforce');updateQueue(all.runs);
-      const claim=state.claim;if(!claim)return;
-      let latest=all.runs.find(r=>r.claim_id===claim);
-      if(!latest&&all.coverage?.has_more){const scoped=await request(`/claims/${encodeURIComponent(claim)}/runs`);latest=scoped.runs[0];}
+      const claim=state.claim;
+      if(!claim){
+        if(!state.workforce&&Date.now()-state.lastRosterAt>30000){const all=await request('/workforce');updateQueue(all.runs);state.lastRosterAt=Date.now();}
+        return;
+      }
+      const scoped=await request(`/claims/${encodeURIComponent(claim)}/runs`);
+      if(claim!==state.claim)return;
+      const latest=scoped.runs[0];
       if(!latest){state.summary=null;state.run=null;state.renderKey=null;renderClaim();return;}
+      if(state.streamFailed!==latest.run_id)state.streamFailed=null;
       const run=await request(`/claims/${encodeURIComponent(claim)}/runs/${encodeURIComponent(latest.run_id)}`);
       if(claim!==state.claim)return;
       if(state.summary?.run_id!==latest.run_id)state.events=[];
@@ -288,6 +312,8 @@
         if(!batch.events.length)break;
       }
       renderClaim();
+      if(['queued','running'].includes(run.summary.status))openStream(claim,latest.run_id);
+      else closeStream();
       if(run.summary.status==='completed'&&run.summary.currentness==='current'&&state.forceRefresh!==run.summary.run_id){state.forceRefresh=run.summary.run_id;document.querySelector('[data-refresh-claim]')?.click();}
     }catch(e){refreshInspectionContext(true);report(e.name==='AbortError'?'Work status is temporarily unavailable. Saved work has not been replaced.':e.message);}
     finally{state.fetching=false;if(state.repoll){state.repoll=false;queueMicrotask(()=>void poll());}}
@@ -312,7 +338,7 @@
     try{state.cap=await request('/capabilities');}catch(_){return;}
     const observer=new MutationObserver(()=>{if(state.visible){state.visible=false;requestAnimationFrame(()=>{state.visible=true;mount();});}});
     observer.observe(document.body,{childList:true,subtree:true});
-    mount();void poll();state.timer=setInterval(poll,1500);
+    mount();void poll();state.timer=setInterval(()=>{if(!state.stream)void poll();},1500);
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)void poll();});
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else void boot();

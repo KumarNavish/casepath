@@ -4025,7 +4025,14 @@ class ClaimLoopStore:
         )
         for row in rows:
             try:
-                event = load_claim_loop_event_v1(json.loads(row["event_json"]))
+                recorded = json.loads(row["event_json"])
+                if not isinstance(recorded, dict):
+                    raise ClaimLoopStoreError("read-only journal event is invalid")
+                if recorded.get("event_type") not in {
+                    "OBSERVATION_INGESTED", "EVIDENCE_PROPOSAL_REJECTED"
+                }:
+                    continue
+                event = load_claim_loop_event_v1(recorded)
                 if (
                     event.session_id == "casepath-workspace-claim-loop-v1"
                     and event.event_type

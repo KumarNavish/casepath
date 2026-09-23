@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from datetime import datetime, timezone
+from hashlib import sha256
 from pathlib import Path
 from threading import RLock
 from typing import Any
@@ -76,6 +77,7 @@ class WorkStore:
             raise WorkStoreError("work journal path cannot be a symlink")
         self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
         self._lock = RLock()
+        self._validated_event_cache: dict[str, tuple[str, tuple[tuple[int, str, bytes], ...], list[dict]]] = {}
         with self.connect() as db:
             db.executescript(SCHEMA)
             db.execute("PRAGMA journal_mode=WAL")
@@ -114,6 +116,10 @@ class WorkStore:
     def get_run(self, run_id):
         with self.connect() as db:
             run = self._run(db, run_id)
+        return self._decode_run(run)
+
+    @staticmethod
+    def _decode_run(run):
         run["request"] = json.loads(run.pop("request_json"))
         if digest(run["request"]) != run["request_sha256"]:
             raise WorkStoreError("run request identity is invalid")
@@ -245,9 +251,9 @@ class WorkStore:
             return response
 
     @staticmethod
-    def _validate_events(run, rows):
-        previous, result = "0" * 64, []
-        for index, row in enumerate(rows, 1):
+    def _validate_events(run, rows, *, start=0, previous="0" * 64):
+        result = []
+        for index, row in enumerate(rows, start + 1):
             try:
                 event = WorkEvent.model_validate(json.loads(row["event_json"])).model_dump(mode="json")
             except ValueError as exc:
@@ -272,7 +278,28 @@ class WorkStore:
         run["request"] = json.loads(run.pop("request_json"))
         if digest(run["request"]) != run["request_sha256"]:
             raise WorkStoreError("run request identity is invalid")
-        history = self._validate_events(run, rows)
+        # Fingerprint persisted bytes on every read. Pydantic replay is needed
+        # only for the suffix; an altered prefix forces full validation.
+        fingerprints = tuple(
+            (row["sequence"], row["event_sha256"], sha256(row["event_json"].encode()).digest())
+            for row in rows
+        )
+        with self._lock:
+            cached = self._validated_event_cache.get(run_id)
+        if (cached is not None and cached[0] == run["claim_id"]
+                and len(cached[1]) <= len(fingerprints)
+                and fingerprints[:len(cached[1])] == cached[1]):
+            prefix = cached[2]
+            history = prefix + self._validate_events(
+                run, rows[len(prefix):], start=len(prefix),
+                previous=prefix[-1]["event_sha256"] if prefix else "0" * 64,
+            ) if len(prefix) < len(rows) else prefix
+        else:
+            history = self._validate_events(run, rows)
+        with self._lock:
+            self._validated_event_cache[run_id] = (run["claim_id"], fingerprints, history)
+            if len(self._validated_event_cache) > 256:
+                self._validated_event_cache.pop(next(iter(self._validated_event_cache)))
         anchors = {e["sequence"]: e for e in history}
         objects = []
         for row in products:
@@ -334,9 +361,9 @@ class WorkStore:
         if not 1 <= limit <= 500:
             raise WorkStoreError("run limit is invalid")
         with self.connect() as db:
-            sql = "SELECT run_id FROM work_runs" + (" WHERE claim_id=?" if claim_id else "") + " ORDER BY created_at DESC,run_id LIMIT ?"
+            sql = "SELECT * FROM work_runs" + (" WHERE claim_id=?" if claim_id else "") + " ORDER BY created_at DESC,run_id LIMIT ?"
             rows = db.execute(sql, (claim_id, limit) if claim_id else (limit,)).fetchall()
-        return [self.get_run(row["run_id"]) for row in rows]
+        return [self._decode_run(dict(row)) for row in rows]
 
 
     def find_request(self, claim_id, idempotency_key):
@@ -359,12 +386,13 @@ class WorkStore:
                            ROW_NUMBER() OVER (PARTITION BY claim_id ORDER BY created_at DESC,run_id DESC) AS position
                     FROM work_runs
                 )
-                SELECT run_id FROM ranked WHERE position=1
-                ORDER BY CASE WHEN status IN ('queued','running','interrupted') THEN 0 ELSE 1 END,
-                         created_at DESC,run_id DESC LIMIT ?
+                SELECT work_runs.* FROM ranked JOIN work_runs USING(run_id)
+                WHERE position=1
+                ORDER BY CASE WHEN ranked.status IN ('queued','running','interrupted') THEN 0 ELSE 1 END,
+                         ranked.created_at DESC,ranked.run_id DESC LIMIT ?
                 """, (limit,)).fetchall()
             db.commit()
-        runs = [self.get_run(row["run_id"]) for row in rows]
+        runs = [self._decode_run(dict(row)) for row in rows]
         return runs, {"kind":"latest_per_claim", "total_runs":totals["runs"],
                       "total_claims":totals["claims"], "returned_claims":len(runs),
                       "has_more":totals["claims"] > len(runs)}

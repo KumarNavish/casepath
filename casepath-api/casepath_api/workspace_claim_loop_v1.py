@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from .workspace_loop_presence import has_loop_records
 
 import json
 import os
@@ -1086,6 +1085,7 @@ class WorkspaceClaimLoopServiceV1:
         self.correction_adapter = correction_adapter
         self.native_claim_loop = native_claim_loop
         self._operational_projection_lock = RLock()
+        self._authority_store_cache: dict[str, tuple[bytes, Any]] = {}
         self._operational_projection_cache: dict[
             tuple[str, str | None, str | None], bytes
         ] = {}
@@ -1134,10 +1134,19 @@ class WorkspaceClaimLoopServiceV1:
         recorded native binding can be inspected.
         """
 
-        if not has_loop_records(self.claim_loop.store,
-                                session_id=WORKSPACE_CLAIM_LOOP_SESSION_ID,
-                                loop_id=loop_id):
+        with self.claim_loop.store.connect() as connection:
+            creation = connection.execute(
+                """SELECT * FROM claim_loop_events
+                WHERE session_id=? AND loop_id=? AND sequence=1""",
+                (WORKSPACE_CLAIM_LOOP_SESSION_ID, loop_id),
+            ).fetchone()
+        if creation is None:
             raise WorkspaceClaimLoopError("claim loop does not exist")
+        creation_fingerprint = self.claim_loop.store._row_fingerprint(creation)
+        with self._operational_projection_lock:
+            cached = self._authority_store_cache.get(loop_id)
+        if cached is not None and cached[0] == creation_fingerprint:
+            return cached[1]
         try:
             initial_state = self.claim_loop.store.state_at_revision(
                 session_id=WORKSPACE_CLAIM_LOOP_SESSION_ID,
@@ -1146,13 +1155,15 @@ class WorkspaceClaimLoopServiceV1:
             )
         except ClaimLoopStoreError as exc:
             raise WorkspaceClaimLoopError(str(exc)) from exc
-        if self._native_proposal_binding(initial_state) is None:
-            return self.claim_loop.store
-        if self.native_claim_loop is None:
+        native = self._native_proposal_binding(initial_state) is not None
+        if native and self.native_claim_loop is None:
             raise WorkspaceClaimLoopError(
                 "native workspace ClaimLoop authority is unavailable"
             )
-        return self.native_claim_loop.store
+        selected = self.native_claim_loop.store if native else self.claim_loop.store
+        with self._operational_projection_lock:
+            self._authority_store_cache[loop_id] = (creation_fingerprint, selected)
+        return selected
 
     def _validate_authority_sidecars(self, loop_ids: tuple[str, ...]) -> None:
         """Validate each loop with the authority recorded at loop creation."""
@@ -1509,7 +1520,7 @@ class WorkspaceClaimLoopServiceV1:
                 # A database-stable cache still depends on the admitted corpus.
                 # Scan the closed inventory before trusting it; a file edit does
                 # not change SQLite's data-version token.
-                corpus_before = self.workspace.corpus.runtime_identity_token()
+                corpus_before = self.workspace.corpus.observed_runtime_identity_token()
                 if roster_cache[1] != corpus_before:
                     raise WorkspaceClaimLoopError(
                         "operational queue corpus identity differs"
@@ -1553,7 +1564,7 @@ class WorkspaceClaimLoopServiceV1:
             # Recheck both authorities after response construction.  A caller
             # never receives a projection straddling a journal commit or a
             # corpus path/content replacement.
-            corpus_after = self.workspace.corpus.runtime_identity_token()
+            corpus_after = self.workspace.corpus.observed_runtime_identity_token()
             version_after = self.claim_loop.store.journal_version_token()
             if version_after == version_before and corpus_after == corpus_before:
                 return result
