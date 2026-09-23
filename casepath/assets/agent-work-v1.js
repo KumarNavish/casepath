@@ -113,8 +113,6 @@
     state.renderKey=key;
     if(summary?.run_id)host.dataset.awRunId=summary.run_id;else delete host.dataset.awRunId;
     host.dataset.status=summary?.status||'ready';
-    const activityLabel=document.querySelector('#cpTab-activity>span');
-    if(activityLabel)activityLabel.textContent=summary?.currentness==='historical'?'Agent review · previous':summary?.currentness==='unconfirmed'?'Agent review · check state':summary?.status==='completed'?'Agent review · complete':summary&&['blocked','interrupted','failed'].includes(summary.status)?'Agent review · needs attention':summary&&['queued','running'].includes(summary.status)?'Agent review · working':'Agent review';
     const actions=summary?.recovery?.can_resume?`<button type="button" class="aw-review-action" data-aw-resume ${state.busy?'disabled':''}>Resume saved review ${icon('arrow')}</button>`:(!summary&&!hasStart)?`<button type="button" class="aw-review-action" data-aw-start ${state.busy?'disabled':''}>Start agent review ${icon('arrow')}</button>`:(summary?.currentness==='historical'&&!hasStart&&!['queued','running','interrupted'].includes(summary.status))?`<button type="button" class="aw-text-button" data-aw-start ${state.busy?'disabled':''}>Review current claim ${icon('arrow')}</button>`:'';
     const start=document.getElementById('cwStart');
     if(start){
