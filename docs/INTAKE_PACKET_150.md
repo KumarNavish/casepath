@@ -15,6 +15,8 @@ CasePath ships the **original observable intake packets** used in the complete-c
 
 The study groups the claims into 28 scenario families across three tenancy domains. Its development portion contains 60 claims in 11 families; the protected-family portion contains 90 claims in 17 families. The operational packet contains **inputs**, not the reference labels or selected paths. The [study protocol](benchmark-and-baselines.md) defines the split and the [anonymous reproduction archive](../research/casepath/iclr2027-integrated/README.md) contains the licensed reference material. All 150 observable inputs have since been inspected in product work, so the protected-family label no longer means untouched input exposure.
 
+After starting the local app, [browse the observable packets](http://127.0.0.1:4173/corpus.html) by message text, language, and attachment availability. This read-only index is generated from the frozen intake files. It contains no family split, reference answer, process path, or model prediction; opening a packet in the workbench provides the original file viewer.
+
 ## What one claim contains
 
 Open [this claim with two termination notices](http://127.0.0.1:4173/#claim=clm_f69b1747447bc221) after starting the local app. The packet binds one customer message and two PDF attachments. It also has an immutable source registry and the same static policy template used by the other claims. The message reports conflicting dates; the product must inspect the notices and keep unresolved details unresolved.

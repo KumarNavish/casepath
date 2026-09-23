@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1498,
+  "file_count": 1503,
   "files": [
     {
       "executable": false,
@@ -143,8 +143,8 @@
     {
       "executable": false,
       "path": "README.md",
-      "sha256": "05dea22cfa4f57fe457b0e5bdeb208afa71e25e1d36f690254e03432543fcb5e",
-      "size_bytes": 5239
+      "sha256": "518c0ff6bb3a3f6f9ae5d5791eff42036a631490af3cfb03d8a8e9c328672ba7",
+      "size_bytes": 5469
     },
     {
       "executable": false,
@@ -8393,8 +8393,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.js",
-      "sha256": "dc6509f7e467a46b800ad9eb1427d25cc76c1085a4dd639c1ca1270fb0e0be00",
-      "size_bytes": 61709
+      "sha256": "3b8d34739a1cb5f452db9e7b529319ff370a0cdc13e497b0e21953527ebda0fa",
+      "size_bytes": 61739
     },
     {
       "executable": false,
@@ -8407,6 +8407,24 @@
       "path": "casepath/assets/claims-workspace-v1.js",
       "sha256": "b46d921721e04205bec83e10abad3fc045ca73881be6d13ab239ea5dbb5775ec",
       "size_bytes": 177082
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/corpus-index.json",
+      "sha256": "029497e5dddeea2b0fc75e41dad79229aa775ff47557aec828191c288286a391",
+      "size_bytes": 240750
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/corpus.css",
+      "sha256": "c92e7e8d1a71e5eb576029a6e429617a6b5009d5a2e0daf3a853abcca6464cca",
+      "size_bytes": 5718
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/corpus.js",
+      "sha256": "df3368aacba56b7ce5b6165f0a48420c6b1b557c766922f581d50fddbb116702",
+      "size_bytes": 7694
     },
     {
       "executable": false,
@@ -8591,8 +8609,8 @@
     {
       "executable": false,
       "path": "casepath/assets/method-guide.css",
-      "sha256": "aa7380d12f8d7936df98c825c08c597c56847a75ff86813098599553d25a9d54",
-      "size_bytes": 6465
+      "sha256": "d77cbb7dd044b3cb314a0b7513d9f4f2804238dfd74b7e2e868f0431338b0774",
+      "size_bytes": 6578
     },
     {
       "executable": false,
@@ -8662,6 +8680,12 @@
     },
     {
       "executable": false,
+      "path": "casepath/corpus.html",
+      "sha256": "2249c6d91997973f89cbeff23efc12b192e66a91d38995d56f9f6d633792952d",
+      "size_bytes": 3826
+    },
+    {
+      "executable": false,
       "path": "casepath/decision-log.md",
       "sha256": "628be9712a8b8477c9cfd22af87f0c56b5a8fe807d72e4df6a5170d6266e2a6a",
       "size_bytes": 18196
@@ -8675,14 +8699,14 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "d7aaba3edda46a4302277af15d272cc7bf055b0476482439eec045689e114474",
+      "sha256": "67484d03c68dcdf17ad33e21c4c7269c86e7d446f66f6af6961d79e6a948a88b",
       "size_bytes": 23623
     },
     {
       "executable": false,
       "path": "casepath/method.html",
-      "sha256": "fbf8cea5e10cbd49de51c021cf37fe9a1295955874d8f709bdae3c4af4555196",
-      "size_bytes": 5798
+      "sha256": "ac6928c0e961b21392bb12f9bf691ca530a57ec9bc3798536ed3188fff5f6609",
+      "size_bytes": 5819
     },
     {
       "executable": false,
@@ -8855,14 +8879,20 @@
     {
       "executable": false,
       "path": "casepath/research.html",
-      "sha256": "1aebb6cc188ecc7ef4f0f02fbb92bc37653b61c75202cab0ba59e887400a699d",
-      "size_bytes": 11591
+      "sha256": "63ecbaa2d7e5db4563a49eff1fee2696b700b149cb1046a3a99466b9bed85ea0",
+      "size_bytes": 11610
     },
     {
       "executable": false,
       "path": "casepath/tools/browser_qa.py",
       "sha256": "ee0d546fdf234d66aa066ddf6cd63678a61f46d0ffadae2835613c89218704e3",
       "size_bytes": 9405
+    },
+    {
+      "executable": false,
+      "path": "casepath/tools/build_corpus_index.py",
+      "sha256": "6363f329bc540a4210333ffda80ffd5dca775ea5e2908eb22e3802bb76069d7f",
+      "size_bytes": 3373
     },
     {
       "executable": false,
@@ -8879,8 +8909,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "134eeac95e2a3f53bbcccbf968c2bd599811518891df5d7c7863e4b51112b5ca",
-      "size_bytes": 10372
+      "sha256": "108fa40b01b24db39345577ca18b4d99a09774c11fd07c703adad4445e2ad25d",
+      "size_bytes": 10472
     },
     {
       "executable": false,
@@ -8903,8 +8933,8 @@
     {
       "executable": false,
       "path": "casepath/tools/test_build_deployment_identity.py",
-      "sha256": "39c9f72153a390ad46b0a867930e862aeb01fbe9743258808a0ca728ddd13af2",
-      "size_bytes": 9582
+      "sha256": "b802ed96dcd5d2dbde17603bda98c00c4efca50984c586d0ba2c45cccbab0a76",
+      "size_bytes": 9687
     },
     {
       "executable": false,
@@ -8951,8 +8981,8 @@
     {
       "executable": false,
       "path": "docs/INTAKE_PACKET_150.md",
-      "sha256": "e5fe9a84f88002eb2f3c9df34bb23646e84e92af51e37b4ab87425acac7d0fb6",
-      "size_bytes": 4271
+      "sha256": "52081756a2aea1a093713455f89f06e3d7e0d1365c5de31f65b28b09771da1b5",
+      "size_bytes": 4640
     },
     {
       "executable": false,

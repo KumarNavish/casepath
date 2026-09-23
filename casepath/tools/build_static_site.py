@@ -25,11 +25,15 @@ OUTPUT_DIRECTORY_NAME = DEFAULT_OUTPUT.name
 PUBLIC_ROOT_FILES = (
     "_headers",
     "index.html",
+    "corpus.html",
     "method.html",
     "research.html",
     "release.json",
 )
 PUBLIC_ASSETS = (
+    "assets/corpus.css",
+    "assets/corpus.js",
+    "assets/corpus-index.json",
     "assets/method-guide.css",
     "assets/research-evidence.css",
     "assets/paired-study-evidence.json",
