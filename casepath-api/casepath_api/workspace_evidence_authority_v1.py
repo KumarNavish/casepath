@@ -69,6 +69,9 @@ INTERPRETATION_SCHEMA_SHA256 = digest_value(
 )
 INTENT_TTL_SECONDS = 300
 MAX_SOURCE_BYTES = 100_000
+# Read-only replay of authority receipts written before the uncertainty grammar fix.
+# New admissions still bind only the current independent authority source.
+_PREVIOUS_AUTHORITY_SOURCE_SHA256 = "5d570fbdb808d19a01f64d611a8789f4fe492b9d6c66d166fb05df65ebfccc1a"
 
 
 class WorkspaceEvidenceAuthorityError(ValueError):
@@ -915,7 +918,7 @@ class LoopbackSourceByteAcquisitionAdapterV1:
             or value.get("authority_id")
             != "casepath.independent-evidence-authority/1.0.0"
             or value.get("authority_source_sha256")
-            != self._authority_source_sha256
+            not in {self._authority_source_sha256, _PREVIOUS_AUTHORITY_SOURCE_SHA256}
             or value.get("authoritative_semantic_effect") is not False
         ):
             raise WorkspaceEvidenceAuthorityError("authority rejection receipt is invalid")
@@ -1910,7 +1913,7 @@ class LoopbackSourceByteAcquisitionAdapterV1:
             or admission.get("authority_id")
             != "casepath.independent-evidence-authority/1.0.0"
             or admission.get("authority_source_sha256")
-            != self._authority_source_sha256
+            not in {self._authority_source_sha256, _PREVIOUS_AUTHORITY_SOURCE_SHA256}
             or admission.get("decision") != "admitted"
             or admission.get("authoritative_state_effect")
             != "delegated_to_claim_loop_journal"
@@ -2048,8 +2051,8 @@ def _single_edge_intake_is_decisive(process_node_id: str, text: str) -> bool:
 
 
 class _EvidenceSemantics:
-    implementation_id = "casepath.fixed-source-span-interpreter/1.0.0"
-    grammar_id = "casepath.workspace-source-span-grammar/1.0.0"
+    implementation_id = "casepath.fixed-source-span-interpreter/1.0.1"
+    grammar_id = "casepath.workspace-source-span-grammar/1.0.1"
 
     def __init__(self, adapter: LoopbackSourceByteAcquisitionAdapterV1) -> None:
         self.adapter = adapter
@@ -2212,12 +2215,12 @@ class _EvidenceSemantics:
             raise ClaimLoopError("instruction-bearing source content is not evidence")
         if not _substantive(text):
             raise ClaimLoopError("source span is not substantively interpretable")
+        if any(_term_present(folded, term) for term in _UNCERTAINTY_TERMS):
+            return unresolved
         if len(resolved) == 1 and _single_edge_intake_is_decisive(
             action.process_node_id, text
         ):
             return resolved[0]
-        if any(_term_present(folded, term) for term in _UNCERTAINTY_TERMS):
-            return unresolved
         if action.process_node_id.endswith("dh_intake") and set(resolved) == {
             "dh_e01",
             "dh_e02",
@@ -2384,6 +2387,7 @@ class _EvidenceSemantics:
                         "positive": list(_HEALTH_POSITIVE_TERMS),
                         "negative": list(_HEALTH_NEGATIVE_TERMS),
                         "uncertainty": list(_UNCERTAINTY_TERMS),
+                        "uncertainty_precedes_single_edge": True,
                         "lease_termination_intake": list(
                             _LEASE_TERMINATION_INTAKE_TERMS
                         ),

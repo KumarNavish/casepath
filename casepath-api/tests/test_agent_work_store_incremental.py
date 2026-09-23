@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 from casepath_api.agent_work.api import create_agent_work_router
 from casepath_api.agent_work.contracts import Operation, Role
 from casepath_api.agent_work.service import AgentWorkService
-from casepath_api.agent_work.store import WorkStore, WorkStoreError
+from casepath_api.agent_work.store import WorkStore, WorkStoreError, WorkCancelled
 
 
 def test_work_history_validates_only_new_events_and_detects_old_tamper(
@@ -86,3 +86,24 @@ def test_workforce_reads_run_table_and_stream_replays_terminal_events(
         assert "id: 1\n" not in response.text
     finally:
         service.shutdown()
+
+
+def test_stop_is_journaled_and_survives_reload(tmp_path) -> None:
+    path = tmp_path / "work.sqlite3"
+    store = WorkStore(path)
+    queued, _ = store.create("clm_queued", "stop-queued-0001", {"facts_worker": "reference"})
+    store.request_cancel(queued["run_id"])
+    assert store.get_run(queued["run_id"])["status"] == "cancelled"
+    assert store.acquire(queued["run_id"], "worker") is False
+
+    running, _ = store.create("clm_running", "stop-running-0001", {"facts_worker": "reference"})
+    assert store.acquire(running["run_id"], "worker")
+    store.request_cancel(running["run_id"])
+    with pytest.raises(WorkCancelled):
+        store.heartbeat(running["run_id"], "worker")
+    store.finish(running["run_id"], "worker", "cancelled", "Review stopped")
+    reopened = WorkStore(path)
+    assert reopened.snapshot(running["run_id"])["run"]["status"] == "cancelled"
+    assert [event["operation"] for event in reopened.events(running["run_id"])[-2:]] == [
+        "RUN_CANCEL_REQUESTED", "RUN_CANCELLED"
+    ]

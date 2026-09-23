@@ -200,3 +200,27 @@ class ExistingCasePathAuthority:
 
     def snapshot(self, claim_id):
         return normalize_loop(self._loop().view(claim_id))
+
+    def snapshot_is_current(self, claim_id, expected_sha256):
+        """Use the journal checkpoint as a freshness hint between full role checks."""
+        from casepath_api.workspace_claim_loop_v1 import WORKSPACE_CLAIM_LOOP_SESSION_ID
+
+        store = self._loop().claim_loop.store
+        connection = store.connect()
+        try:
+            rows = connection.execute(
+                "SELECT loop_id,last_event_sha256 FROM claim_loop_checkpoints "
+                "WHERE session_id=? AND state_sha256=? LIMIT 2",
+                (WORKSPACE_CLAIM_LOOP_SESSION_ID, expected_sha256),
+            ).fetchall()
+            if len(rows) == 1:
+                latest = connection.execute(
+                    "SELECT event_sha256 FROM claim_loop_events "
+                    "WHERE session_id=? AND loop_id=? ORDER BY sequence DESC LIMIT 1",
+                    (WORKSPACE_CLAIM_LOOP_SESSION_ID, rows[0]["loop_id"]),
+                ).fetchone()
+                if latest and latest["event_sha256"] == rows[0]["last_event_sha256"]:
+                    return True
+        finally:
+            connection.close()
+        return self.snapshot(claim_id)["state_sha256"] == expected_sha256

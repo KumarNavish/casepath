@@ -418,7 +418,7 @@
   const ui = window.CasePathPresentation;
   if (!ui) throw new Error('The claim presentation could not be loaded.');
   const state = {
-    workbenchTab:"overview",viewScroll:{},inspectorOpen:false,overviewLoading:false,overviewQueued:false,overviewSummary:null,
+    inspectorOpen:false,overviewLoading:false,overviewQueued:false,overviewSummary:null,
     cursor: null,
     items: [],
     total: 0,
@@ -436,7 +436,7 @@
     correctionPreview: null,
     nativeInvestigation: null,
     change: null, sourceSelection: null, sourceRequest: 0, sourceUrl: null, sourceController: null, loadedQuery: null,
-    reasoningOpen: false, focusedEvidenceId: null,
+    focusedEvidenceId: null,
   };
   const EXPECTED_AGENT_IDS = ['canonical_facts','orchestrator_plan','document_source_integrity','process_decision_mapping','evidence_checklist','final_claim_brief_audit'];
   const EXPECTED_GATE_IDS = ['deterministic_process_gate','deterministic_evidence_gate','whole_playbook_gate'];
@@ -584,7 +584,7 @@
     const processKeys = ['next_action_node_id','node_id','node_title','overlay_sha256','selected_branch_id'];
     const nextKeys = ['action_id','action_sha256','kind','terminal_mode','title'];
     const evidenceKeys = ['current_path','evidence_class','evidence_item_id','fact_id','fact_state','mandatory_now','obligation_status','provenance_edge_sha256s','raw_status','source_ref_ids','title'];
-    const classes = ['received','missing','insufficient','conditional','irrelevant','unknown'];
+    const classes = ['received','missing','insufficient','conditional','irrelevant','unknown','held_not_reviewed'];
     if (
       !value || typeof value !== 'object' || Array.isArray(value)
       || Object.keys(value).sort().join('|') !== keys.sort().join('|')
@@ -704,7 +704,7 @@
         expectedReadinessRank === undefined
         || !Number.isSafeInteger(item.received_age_days) || item.received_age_days < 0
         || item.priority_tuple[0].value !== (['failed','typed_failure'].includes(item.workflow_state) ? 0 : 1)
-        || item.priority_tuple[1].value !== (item.deadline_at || 'unknown')
+        || item.priority_tuple[1].value !== (item.deadline_at?.date || 'unknown')
         || item.priority_tuple[2].value !== (item.failure_or_unknown_effect ? 0 : 1)
         || item.priority_tuple[3].value !== (item.readiness_state === 'decision_ready' ? 1 : 0)
         || item.priority_tuple[4].value !== item.received_age_days
@@ -801,7 +801,7 @@
         || !Number.isInteger(contract.intent_ttl_seconds) || contract.intent_ttl_seconds !== 300
         || !Number.isInteger(contract.max_content_bytes) || contract.max_content_bytes !== 100000
         || ![contract.interpreter_source_sha256,contract.source_policy_sha256,contract.catalog_sha256].every(value => /^[0-9a-f]{64}$/.test(value || ''))
-        || contract.interpreter_id !== 'casepath.fixed-source-span-interpreter/1.0.0'
+        || contract.interpreter_id !== 'casepath.fixed-source-span-interpreter/1.0.1'
         || contract.authority_id !== 'casepath.independent-evidence-authority/1.0.0'
       ) throw new Error('The evidence input contract failed authority validation');
     } else if (value.input_contract !== null || value.stage_receipt !== null) {
@@ -1353,7 +1353,7 @@
     section.querySelector('[data-priority-status]').hidden = true;
     const urgency=$('#cpClaimUrgency'),deadline=$('#cpClaimDeadline');
     if(urgency)urgency.hidden=priority.urgency!=='high';
-    if(deadline){deadline.hidden=!priority.deadline_at;deadline.textContent=priority.deadline_at?'Due '+ui.date(priority.deadline_at):'';}
+    if(deadline){deadline.hidden=!priority.deadline_at?.date;deadline.textContent=priority.deadline_at?.date?'Candidate '+ui.date(priority.deadline_at.date):'';}
   }
 
   async function loadOpenPriority(claimId, detailStateSha, context, signal) {
@@ -1524,7 +1524,7 @@
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
     return ui.workbench(loop,workspaceState,{
       ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,detail:state.detail,canvasNodeId:state.canvasNodeId,
-      reasoningOpen:state.reasoningOpen,focusedEvidenceId:state.focusedEvidenceId,
+      focusedEvidenceId:state.focusedEvidenceId,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
       change:state.change?.claimId===id?state.change:null,
@@ -2204,37 +2204,29 @@
     }
   }
 
-  const claimViews=['overview','evidence','process','activity'];
-  const compactWorkbench=matchMedia('(max-width:1100px)');
+  const compactWorkbench=matchMedia('(max-width:900px)');
   function savePresentation(){
     if(!state.detail)return;
-    const value={tab:state.workbenchTab||'overview',source:state.sourceSelection||null,canvasNodeId:state.canvasNodeId||null,reasoningOpen:state.reasoningOpen,focusedEvidenceId:state.focusedEvidenceId||null,scroll:state.viewScroll||{}};
+    const value={source:state.sourceSelection||null,canvasNodeId:state.canvasNodeId||null,focusedEvidenceId:state.focusedEvidenceId||null};
     try{sessionStorage.setItem('casepath:presentation:'+state.detail.state.claim_id,JSON.stringify(value));}catch(_){/* A blocked preference store never blocks claim work. */}
   }
   function recoverPresentation(claimId){
     let saved={};try{saved=JSON.parse(sessionStorage.getItem('casepath:presentation:'+claimId)||'{}');}catch(_){}
-    const requested=new URLSearchParams(location.hash.slice(1)).get('view');
-    state.workbenchTab=claimViews.includes(requested)?requested:claimViews.includes(saved?.tab)?saved.tab:'overview';
-    state.viewScroll=saved?.scroll&&typeof saved.scroll==='object'?saved.scroll:{};
     state.sourceSelection=saved?.source&&['evidence','process','artifact'].includes(saved.source.kind)?saved.source:null;
     state.canvasNodeId=typeof saved?.canvasNodeId==='string'?saved.canvasNodeId:null;
-    state.reasoningOpen=saved?.reasoningOpen===true;
     state.focusedEvidenceId=typeof saved?.focusedEvidenceId==='string'?saved.focusedEvidenceId:null;
-    state.inspectorOpen=!compactWorkbench.matches;
+    state.inspectorOpen=true;
   }
   function syncReasoning({focus=false}={}){
     if(!state.loop||!state.detail)return;
-    const grid=$('.cp-canvas-grid');if(!grid)return;
-    grid.dataset.reasoningOpen=String(state.reasoningOpen);
     const trace=$('#cpCanvasTrace');
     if(trace)trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.focusedEvidenceId);
-    const control=$('[data-trace-action]');if(control)control.setAttribute('aria-expanded',String(state.reasoningOpen));
     const selected=$('#cpCanvasTrace')?.dataset.selectedNode;
     root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===selected)));
     root.querySelectorAll('[data-evidence-source]').forEach(button=>button.classList.toggle('cp-source-selected',button.dataset.evidenceSource===state.focusedEvidenceId));
-    if(focus&&state.reasoningOpen){
+    if(focus){
       const current=$('#cpCanvasTrace');
-      if(matchMedia('(max-width:900px)').matches)current?.scrollIntoView({block:'start'});
+      current?.scrollIntoView({block:'nearest'});
       current?.focus({preventScroll:true});
     }
     savePresentation();
@@ -2243,38 +2235,25 @@
     const node=state.loop?.loop_state.process.nodes.find(row=>row.node_id===nodeId);
     if(!node||!state.detail)return;
     state.canvasNodeId=nodeId;
-    state.focusedEvidenceId=null;state.reasoningOpen=true;
+    state.focusedEvidenceId=null;
     syncReasoning({focus});
   }
-  function setWorkbenchTab(name,{focus=false,remember=true}={}){
-    if(!claimViews.includes(name)||!state.detail)return;
-    if(name!=='overview'&&state.reasoningOpen){state.reasoningOpen=false;syncReasoning();}
-    const col=$('.cp-work-column');
-    if(state.workbenchTab!==name&&col){state.viewScroll ||= {};state.viewScroll[state.workbenchTab]=col.scrollTop;}
-    state.workbenchTab=name;
-    root.querySelectorAll('[role="tab"][data-workbench-tab]').forEach(button=>{const chosen=button.dataset.workbenchTab===name;button.setAttribute('aria-selected',String(chosen));button.tabIndex=chosen?0:-1;});
-    for(const key of claimViews){const panel=$('#cpPanel-'+key);if(panel)panel.hidden=key!==name;}
-    if(col)col.scrollTop=Number.isFinite(state.viewScroll?.[name])?state.viewScroll[name]:0;
-    if(focus)$('#cpTab-'+name)?.focus({preventScroll:true});
-    if(remember){const url=new URL(location.href);url.hash=new URLSearchParams({claim:state.detail.state.claim_id,...(name!=='overview'?{view:name}:{})}).toString();history.replaceState(history.state,'',url);savePresentation();}
+  function showWorkspaceSection(name){
+    const target=$(name==='activity'?'#cpPanel-activity':name==='evidence'?'.cp-a-needs':name==='process'?'.cp-a-path':'.cp-a-next');
+    if(name==='activity'&&target)target.open=true;
+    target?.scrollIntoView({block:'start'});
   }
   function applyInspectorState(){
     const panel=$('#cwDetailPanel'),rail=$('.cp-source-rail');if(!rail)return;
-    panel.dataset.inspectorOpen=String(Boolean(state.inspectorOpen));
-    rail.inert=!state.inspectorOpen;
-    const modal=compactWorkbench.matches&&state.inspectorOpen;
-    $('.cp-work-column').inert=Boolean(modal);$('.cp-sidebar').inert=Boolean(modal);
-    if(modal){rail.setAttribute('role','dialog');rail.setAttribute('aria-modal','true');}else{rail.setAttribute('role','complementary');rail.removeAttribute('aria-modal');}
-    root.querySelectorAll('.cp-source-toggle').forEach(b=>b.setAttribute('aria-expanded',String(Boolean(state.inspectorOpen))));
+    panel.dataset.inspectorOpen='true';rail.inert=false;rail.setAttribute('role','complementary');rail.removeAttribute('aria-modal');
   }
-  function openInspector({focus=true,toggle=false}={}){
-    if(!state.detail)return;
-    if(toggle&&state.inspectorOpen){closeInspector();return;}
+  function openInspector({focus=true}={}){
+    const rail=$('.cp-source-rail');if(!rail)return;
     if(focus)state.inspectorReturnFocus=document.activeElement;
-    state.inspectorOpen=true;applyInspectorState();
+    rail.scrollIntoView({block:'start'});
     if(focus)$('#cwSourceInspector')?.focus({preventScroll:true});
   }
-  function closeInspector(){state.inspectorOpen=false;applyInspectorState();const target=state.inspectorReturnFocus?.isConnected?state.inspectorReturnFocus:$('.cp-source-toggle');target?.focus({preventScroll:true});}
+  function closeInspector(){state.inspectorReturnFocus?.focus({preventScroll:true});}
   function openTechnical(){const dialog=$('#cpTechnicalDialog');if(!dialog)return;$('#cpTechnicalLoop').innerHTML=ui.technicalLoop(state.loop);dialog.showModal();}
   function openAssignment(){const dialog=$('#cpOwnerDialog');if(!dialog)return;dialog.showModal();$('#cwOwnerInput')?.focus();}
   function setAdjacentClaims(){
@@ -2282,16 +2261,15 @@
     root.querySelectorAll('[data-adjacent-claim]').forEach(button=>{const to=index+(button.dataset.adjacentClaim==='previous'?-1:1);button.disabled=index<0||!state.items[to]||Boolean(state.mutationBusy);button.dataset.targetClaim=state.items[to]?.claim_id||'';});
   }
   function restoreWorkbenchPresentation(){
-    setWorkbenchTab(state.workbenchTab||'overview',{remember:false});applyInspectorState();setAdjacentClaims();
+    applyInspectorState();setAdjacentClaims();
     syncReasoning();
-    const col=$('.cp-work-column'),id=state.detail.state.claim_id;
+    const col=$('.cp-work-column');
     state.actionObserver?.disconnect();
     const action=$('#cwLoopWorkbench .cw-button-primary'),jump=$('[data-return-next]');
     if(action&&jump){state.actionObserver=new IntersectionObserver(entries=>{if(action.isConnected&&col.contains(action))jump.hidden=entries[0]?.isIntersecting!==false;},{root:col,threshold:0.5});state.actionObserver.observe(action);}
 
-    col?.addEventListener('scroll',()=>{if(state.detail?.state.claim_id!==id)return;state.viewScroll ||= {};state.viewScroll[state.workbenchTab||'overview']=col.scrollTop;clearTimeout(state.presentationSaveTimer);state.presentationSaveTimer=setTimeout(savePresentation,120);},{passive:true});
   }
-  compactWorkbench.addEventListener('change',()=>{if(!state.detail)return;state.inspectorOpen=!compactWorkbench.matches;applyInspectorState();});
+  compactWorkbench.addEventListener('change',()=>{if(state.detail)applyInspectorState();});
   window.addEventListener('beforeunload',savePresentation);
   function updateQueueHeading(){
     const search=$('#cwSearch').value.trim(),selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
@@ -2331,10 +2309,12 @@
   }
   function presentationClick(button){
     if(button.matches('[data-close-detail]')){closeDetail();return true;}
-    if(button.hasAttribute('data-workbench-tab')){setWorkbenchTab(button.dataset.workbenchTab,{focus:button.getAttribute('role')==='tab'});return true;}
+    if(button.hasAttribute('data-workbench-tab')){showWorkspaceSection(button.dataset.workbenchTab);return true;}
     if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
-    if(button.hasAttribute('data-trace-action')){state.reasoningOpen=!state.reasoningOpen;if(state.reasoningOpen){setWorkbenchTab('overview');state.canvasNodeId=state.loop?.loop_state.process.current_overlay.current_node_id;state.focusedEvidenceId=null;}syncReasoning({focus:state.reasoningOpen});return true;}
-    if(button.hasAttribute('data-close-reasoning')){state.reasoningOpen=false;syncReasoning();$('[data-trace-action]')?.focus({preventScroll:true});return true;}
+    if(button.hasAttribute('data-noticed-source')){const index=state.detail?.artifacts?.findIndex(item=>item.artifact_id===button.dataset.noticedSource)??-1;if(index>=0)void showSourceArtifact(index,true,button.dataset.noticedQuote);else resetSource();return true;}
+    if(button.hasAttribute('data-scroll-next')){const target=$('.cp-a-needs')||$('#cwStart');if(target?.id==='cwStart')target.click();else{target?.scrollIntoView({block:'start'});target?.querySelector?.('button')?.focus({preventScroll:true});}return true;}
+
+
     if(button.hasAttribute('data-canvas-source')){resetSource(false);openInspector({focus:true});const rail=$('.cp-source-rail');if(rail)rail.scrollTop=0;(rail?.querySelector('[data-packet-message]')||$('#cwSourceInspector'))?.focus({preventScroll:true});return true;}
     if(button.hasAttribute('data-open-inspector')){openInspector({toggle:button.matches('.cp-source-toggle')});return true;}
     if(button.hasAttribute('data-close-inspector')){closeInspector();return true;}
@@ -2347,21 +2327,12 @@
     if(button.hasAttribute('data-adjacent-claim')){if(button.dataset.targetClaim&&!button.disabled)void openClaim(button.dataset.targetClaim);return true;}
     return false;
   }
-  function visibleFocusables(container){return [...container.querySelectorAll('button,input,select,textarea,a[href],summary,[tabindex]')].filter(el=>{
-    if(el.tabIndex<0||el.matches(':disabled')||el.closest('[inert]')||!el.getClientRects().length)return false;
-    for(let p=el.parentElement;p&&p!==container;p=p.parentElement){if(p.tagName==='DETAILS'&&!p.open&&!p.querySelector(':scope>summary')?.contains(el))return false;}
-    return getComputedStyle(el).visibility!=='hidden';
-  });}
   function workspaceKeyboard(event){
     if(event.defaultPrevented)return;
     if(event.key==='/'&&$('#cwDetail').hidden&&!event.target.matches('input,textarea,select,[contenteditable]')){event.preventDefault();$('#cwSearch').focus();return;}
     if($('#cwDetail').hidden)return;
     if(root.querySelector('dialog[open]'))return;
-    if(event.key==='Escape'){event.preventDefault();if(compactWorkbench.matches&&state.inspectorOpen)closeInspector();else if($('#cpClaimMenu')?.open)$('#cpClaimMenu').open=false;else closeDetail();return;}
-    if(event.target.matches('[role="tab"]')&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
-      event.preventDefault();const at=claimViews.indexOf(event.target.dataset.workbenchTab),to=event.key==='Home'?0:event.key==='End'?3:(at+(event.key==='ArrowRight'?1:3))%4;setWorkbenchTab(claimViews[to],{focus:true});return;
-    }
-    if(event.key==='Tab'&&compactWorkbench.matches&&state.inspectorOpen){const rail=$('.cp-source-rail'),controls=visibleFocusables(rail),first=controls[0],last=controls.at(-1);if(!controls.includes(document.activeElement)||event.shiftKey&&document.activeElement===first||!event.shiftKey&&document.activeElement===last){event.preventDefault();(event.shiftKey?last:first)?.focus();}}
+    if(event.key==='Escape'){event.preventDefault();if($('#cpClaimMenu')?.open)$('#cpClaimMenu').open=false;else closeDetail();}
   }
 
   function packetSelection(){
@@ -2445,7 +2416,7 @@
     if(!item || !$('#cwSourceContent')) return;
     const node=state.loop.loop_state.process.nodes.find(row=>row.evidence_requirement_ids?.includes(itemId));
     if(node)state.canvasNodeId=node.node_id;
-    state.focusedEvidenceId=itemId;if(focus&&state.workbenchTab==='overview')state.reasoningOpen=true;
+    state.focusedEvidenceId=itemId;
     syncReasoning();
     releaseSourcePreview(); state.sourceSelection={kind:'evidence',id:itemId};
     $('#cwSourceHeading').textContent='Evidence & its sources';
@@ -2456,7 +2427,7 @@
     const node=state.loop?.loop_state.process.nodes.find(n=>n.node_id===nodeId); if(!node) return;
     const item=state.loop.operational_projection.evidence_items.find(i=>node.evidence_requirement_ids?.includes(i.evidence_item_id));
     if(item){showEvidenceSource(item.evidence_item_id,focus);return;}
-    state.canvasNodeId=nodeId;state.focusedEvidenceId=null;if(focus&&state.workbenchTab==='overview')state.reasoningOpen=true;
+    state.canvasNodeId=nodeId;state.focusedEvidenceId=null;
     syncReasoning();
     releaseSourcePreview();state.sourceSelection={kind:'process',id:nodeId};
     $('#cwSourceHeading').textContent='Process step';
@@ -2467,7 +2438,9 @@
     const detail=state.detail, artifact=detail?.artifacts[index];
     if(!artifact || !Number.isSafeInteger(index)) return;
     const acceptedRef=quote&&state.loop?.loop_state.observations.flatMap(row=>row.source_refs||[]).find(ref=>ref.sanitized_excerpt===quote&&ui.sourceArtifactIndex(ref,detail)===index);
-    const acceptedQuote=acceptedRef?quote:null;
+    const noticed=quote&&detail.state.intake_assessment?.claim_assessment?.noticed.some(row=>
+      row.source_id===artifact.artifact_id&&(row.text===quote||row.text.endsWith(': '+quote)));
+    const acceptedQuote=acceptedRef||noticed?quote:null;
     releaseSourcePreview();state.sourceSelection={kind:'artifact',index,quote:acceptedQuote};
     const ticket=state.sourceRequest, claimId=detail.state.claim_id;
     const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
@@ -2515,7 +2488,7 @@
         else content=ui.packetContentMarkup(descriptor);
       } else content='<p class="cw-note">This file type has no inline preview. Open the original file below.</p>';
       const highlighted=content.includes('id="cpExactSourcePassage"');
-      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote&&!highlighted?`<aside class="cp-selected-passage"><span>Accepted passage linked to this source</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote&&!highlighted?`<aside class="cp-selected-passage"><span>${acceptedRef?'Accepted passage linked to this source':'Passage noticed in this file'}</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
       $('#cpExactSourcePassage')?.scrollIntoView({block:'center'});
       if(renderedPage)await renderPacketPage(1);
     } catch(error) {
@@ -2548,9 +2521,9 @@
     if(button.dataset.processNode) showProcessSource(button.dataset.processNode);
     if(button.hasAttribute('data-source-artifact')){const index=Number(button.dataset.sourceArtifact);const quote=button.dataset.sourceQuote||(state.sourceSelection?.kind==='artifact'&&state.sourceSelection.index===index?state.sourceSelection.quote:null);void showSourceArtifact(index,true,quote);}
     if(button.hasAttribute('data-source-reset')) resetSource();
-    if(button.hasAttribute('data-show-investigation')){setWorkbenchTab('activity');const section=$('#cwSavedInvestigation');if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});}}
+    if(button.hasAttribute('data-show-investigation')){showWorkspaceSection('activity');const section=$('#cwSavedInvestigation');if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});}}
     if(button.id==='cwClearFilters') clearQueueFilters();
-    if(button.hasAttribute('data-show-evidence'))setWorkbenchTab('evidence',{focus:true});
+    if(button.hasAttribute('data-show-evidence'))showWorkspaceSection('evidence');
     if(button.hasAttribute('data-dismiss-change')) {state.change=null;$('#cwReplanDelta')?.remove();$('#cwLoopWorkbench')?.setAttribute('tabindex','-1');$('#cwLoopWorkbench')?.focus({preventScroll:true});}
     if(button.hasAttribute('data-refresh-claim')) void refreshOpen().catch(showRefreshFailure);
     if(button.dataset.retryClaim) void openClaim(button.dataset.retryClaim);
@@ -2620,7 +2593,7 @@
   function syncClaimFromLocation({refresh=true} = {}) {
     const claimId = claimIdFromLocation();
     if (claimId) {
-      if(!$('#cwDetail').hidden&&state.returnClaimId===claimId){const view=new URLSearchParams(location.hash.slice(1)).get('view')||'overview';if(view!==state.workbenchTab)setWorkbenchTab(view,{remember:false});return;}
+      if(!$('#cwDetail').hidden&&state.returnClaimId===claimId)return;
       void openClaim(claimId);
       return;
     }

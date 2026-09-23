@@ -20,8 +20,8 @@ from .foundation.common import digest_text, digest_value, is_sha256
 
 _ADAPTER_ID = "loopback-source-byte-acquisition-v1"
 _AUTHORITY_ID = "casepath.independent-evidence-authority/1.0.0"
-_INTERPRETER_ID = "casepath.fixed-source-span-interpreter/1.0.0"
-_GRAMMAR_ID = "casepath.workspace-source-span-grammar/1.0.0"
+_INTERPRETER_ID = "casepath.fixed-source-span-interpreter/1.0.1"
+_GRAMMAR_ID = "casepath.workspace-source-span-grammar/1.0.1"
 _SCHEMA_ID = "casepath.workspace-source-span-interpretation/1.0.0"
 _SCHEMA_SHA256 = digest_value(
     {
@@ -216,12 +216,12 @@ def _finding(
         raise ClaimLoopError("instruction-bearing source content is not evidence")
     if not _substantive(text):
         raise ClaimLoopError("source span is not substantively interpretable")
+    if any(_term_present(folded, term) for term in _UNCERTAINTY_TERMS):
+        return unresolved
     if len(resolved) == 1 and _single_edge_intake_is_decisive(
         action.process_node_id, text
     ):
         return resolved[0]
-    if any(_term_present(folded, term) for term in _UNCERTAINTY_TERMS):
-        return unresolved
     if action.process_node_id.endswith("dh_intake") and sorted(resolved) == [
         "dh_e01",
         "dh_e02",
@@ -497,6 +497,7 @@ class IndependentWorkspaceEvidenceAuthorityV1:
                         "positive": list(_POSITIVE_TERMS),
                         "negative": list(_NEGATIVE_TERMS),
                         "uncertainty": list(_UNCERTAINTY_TERMS),
+                        "uncertainty_precedes_single_edge": True,
                         "lease_termination_intake": list(
                             _LEASE_TERMINATION_INTAKE_TERMS
                         ),

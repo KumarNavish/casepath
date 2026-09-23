@@ -16,7 +16,7 @@ from .authority import ClaimAuthority, AuthorityError, SourceChanged
 from . import evidential_channel
 from .contracts import (Role, ROLE_ORDER, ROLE_LABELS, Operation, SourceSpan, GateResult,
                         TOOL_MODELS, ROLE_TOOLS, canonical, digest)
-from .store import WorkStore, WorkStoreError, ConflictError, ReconciliationRequired
+from .store import WorkStore, WorkStoreError, ConflictError, ReconciliationRequired, WorkCancelled
 
 
 
@@ -279,9 +279,15 @@ class ToolRuntime:
                 "branches": [{"object_id": b["object_id"], "state": b.get("state")} for b in snapshot["branches"]]}
 
     def _snapshot(self):
-        snapshot = self._get("authority_snapshot")
-        current = self.authority.snapshot(self.claim_id)
-        if current["state_sha256"] != snapshot["state_sha256"]:
+        snapshot = getattr(self, "_accepted_snapshot", None)
+        if snapshot is None:
+            snapshot = self._get("authority_snapshot")
+            self._accepted_snapshot = snapshot
+        current = getattr(self.authority, "snapshot_is_current", None)
+        unchanged = current(self.claim_id, snapshot["state_sha256"]) if current else (
+            self.authority.snapshot(self.claim_id)["state_sha256"] == snapshot["state_sha256"]
+        )
+        if not unchanged:
             raise SourceChanged("the claim changed after the process snapshot")
         return snapshot
 
@@ -633,9 +639,18 @@ class AgentWorkExecutor:
                     self.facts_worker.run(runtime)
                 else:
                     ReferenceWorker().run(runtime)
+                if role in {Role.PROCESS, Role.EVIDENCE, Role.AUDIT}:
+                    saved = self.store.object(run_id, "authority_snapshot")["value"]
+                    if self.authority.snapshot(run["claim_id"])["state_sha256"] != saved["state_sha256"]:
+                        raise SourceChanged("the claim changed during the review")
             readiness = self.store.object(run_id, "readiness")["value"]
             self.store.finish(run_id, owner, "completed", "All six roles completed. Claim readiness remains governed by the existing authority.",
                               after={"readiness": readiness, "completed_roles": [r.value for r in ROLE_ORDER]})
+        except WorkCancelled:
+            try:
+                self.store.finish(run_id, owner, "cancelled", "Review stopped at a safe checkpoint")
+            except ConflictError:
+                pass
         except (WorkBlocked, GateRejected, AuthorityError, WorkStoreError, ValueError) as exc:
             try:
                 if role:

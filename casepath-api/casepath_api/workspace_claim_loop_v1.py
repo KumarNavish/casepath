@@ -1140,7 +1140,14 @@ class WorkspaceClaimLoopServiceV1:
                 WHERE session_id=? AND loop_id=? AND sequence=1""",
                 (WORKSPACE_CLAIM_LOOP_SESSION_ID, loop_id),
             ).fetchone()
+            checkpoint = connection.execute(
+                """SELECT 1 FROM claim_loop_checkpoints
+                WHERE session_id=? AND loop_id=?""",
+                (WORKSPACE_CLAIM_LOOP_SESSION_ID, loop_id),
+            ).fetchone() if creation is None else None
         if creation is None:
+            if checkpoint is not None:
+                raise WorkspaceClaimLoopError("historical revision is outside the journal")
             raise WorkspaceClaimLoopError("claim loop does not exist")
         creation_fingerprint = self.claim_loop.store._row_fingerprint(creation)
         with self._operational_projection_lock:

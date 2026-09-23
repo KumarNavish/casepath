@@ -74,6 +74,15 @@ class AgentWorkService:
             self._submit(run_id)
         return self.run(claim_id,run_id)
 
+    def cancel(self,claim_id,run_id):
+        with self._lock:
+            self._scoped(claim_id,run_id)
+            self.store.request_cancel(run_id)
+            job=self._jobs.get(run_id)
+            if job is not None:
+                job.cancel()
+        return self.run(claim_id,run_id)
+
     def _scoped(self,claim_id,run_id):
         value=self.store.get_run(run_id)
         if value['claim_id']!=claim_id:raise WorkStoreError('work run is outside this claim')

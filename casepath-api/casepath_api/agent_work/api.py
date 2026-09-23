@@ -62,7 +62,7 @@ def create_agent_work_router(service_getter):
                         cursor=event['sequence']
                         yield f"id: {cursor}\nevent: work\ndata: {json.dumps(event,ensure_ascii=False)}\n\n"
                     run=await asyncio.to_thread(service.store.get_run,run_id)
-                    if run['status'] in {'completed','blocked','failed'} and not packet['events']:
+                    if run['status'] in {'completed','blocked','failed','cancelled'} and not packet['events']:
                         yield 'event: done\ndata: {}\n\n'
                         return
                 except (WorkStoreError,ValueError):
@@ -74,4 +74,8 @@ def create_agent_work_router(service_getter):
     def resume(claim_id:str,run_id:str,request:Request):
         guard(request)
         return invoke(lambda s:s.resume(claim_id,run_id))
+    @router.post('/claims/{claim_id}/runs/{run_id}/cancel')
+    def cancel(claim_id:str,run_id:str,request:Request):
+        guard(request)
+        return invoke(lambda s:s.cancel(claim_id,run_id))
     return router

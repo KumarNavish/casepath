@@ -32,6 +32,10 @@ class ReconciliationRequired(WorkStoreError):
     pass
 
 
+class WorkCancelled(WorkStoreError):
+    pass
+
+
 ACTIVE = ("queued", "running", "interrupted")
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS work_runs (
@@ -44,6 +48,9 @@ CREATE TABLE IF NOT EXISTS work_runs (
 CREATE UNIQUE INDEX IF NOT EXISTS one_active_work_run_per_claim
  ON work_runs(claim_id) WHERE status IN ('queued','running','interrupted');
 CREATE TABLE IF NOT EXISTS work_external_permits (
+ run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
+);
+CREATE TABLE IF NOT EXISTS work_cancellation_requests (
  run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
 );
 CREATE TABLE IF NOT EXISTS work_events (
@@ -195,7 +202,7 @@ class WorkStore:
         self.events(run_id)  # Reject altered history before claiming work.
         with self.transaction() as db:
             run = self._run(db, run_id)
-            if run["status"] in {"completed", "blocked", "failed"}:
+            if run["status"] in {"completed", "blocked", "failed", "cancelled"}:
                 return False
             if run["status"] == "running" and run["lease_until"] > time.time():
                 raise ConflictError("work is already executing")
@@ -210,6 +217,8 @@ class WorkStore:
     def heartbeat(self, run_id, owner, seconds=180):
         with self.transaction() as db:
             self._require_owner(db, run_id, owner)
+            if db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise WorkCancelled("The review was stopped at a safe checkpoint")
             db.execute("UPDATE work_runs SET lease_until=? WHERE run_id=?", (time.time() + seconds, run_id))
 
     def begin_call(self, run_id, owner, role, call_id, tool, arguments):
@@ -218,6 +227,8 @@ class WorkStore:
             raise WorkStoreError("invalid tool call identity")
         with self.transaction() as db:
             self._require_owner(db, run_id, owner)
+            if db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise WorkCancelled("The review was stopped at a safe checkpoint")
             existing = db.execute("SELECT * FROM work_calls WHERE run_id=? AND role=? AND call_id=?", (run_id, str(role), call_id)).fetchone()
             if existing:
                 if existing["request_sha256"] != request_hash:
@@ -310,7 +321,7 @@ class WorkStore:
                     or anchor.get("after") != {"value":value,"value_sha256":row["value_sha256"]}):
                 raise WorkStoreError("work object differs from its immutable event")
             objects.append({"id":row["object_id"],"kind":row["kind"],"value":value,"sha256":row["value_sha256"],"event_sequence":row["event_sequence"]})
-        terminal = {"completed":"RUN_COMPLETED", "blocked":"RUN_BLOCKED", "failed":"RUN_FAILED", "interrupted":"RUN_INTERRUPTED"}
+        terminal = {"completed":"RUN_COMPLETED", "blocked":"RUN_BLOCKED", "failed":"RUN_FAILED", "interrupted":"RUN_INTERRUPTED", "cancelled":"RUN_CANCELLED"}
         if run["status"] in terminal and (not history or history[-1]["operation"] != terminal[run["status"]]):
             raise WorkStoreError("run status differs from its immutable history")
         if run["status"] == "queued" and (len(history)!=1 or history[0]["operation"]!="RUN_QUEUED"):
@@ -331,15 +342,35 @@ class WorkStore:
         return self.snapshot(run_id)["events"][after:after+limit]
 
     def finish(self, run_id, owner, status, message, after=None):
-        operations = {"completed": Operation.RUN_COMPLETED, "blocked": Operation.RUN_BLOCKED, "failed": Operation.RUN_FAILED}
+        operations = {"completed": Operation.RUN_COMPLETED, "blocked": Operation.RUN_BLOCKED, "failed": Operation.RUN_FAILED, "cancelled": Operation.RUN_CANCELLED}
         if status not in operations:
             raise WorkStoreError("invalid terminal work status")
         with self.transaction() as db:
             self._require_owner(db, run_id, owner)
+            if status == "completed" and db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                status, message = "cancelled", "Review stopped after the current source check"
             self._append(db, run_id, operation=operations[status], object_kind="run", object_id=run_id,
-                         status="completed" if status == "completed" else "blocked", message=message,
+                         status="completed" if status in {"completed", "cancelled"} else "blocked", message=message,
                          worker_kind="kernel", after=after)
             db.execute("UPDATE work_runs SET status=?,owner=NULL,lease_until=NULL WHERE run_id=?", (status, run_id))
+
+    def request_cancel(self, run_id):
+        with self.transaction() as db:
+            run = self._run(db, run_id)
+            if run["request_json"] and json.loads(run["request_json"]).get("facts_worker") != "reference":
+                raise ConflictError("Stopping an external inference requires manual reconciliation")
+            if run["status"] == "cancelled":
+                return
+            if run["status"] not in ACTIVE:
+                raise ConflictError("this review has already finished")
+            if not db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                db.execute("INSERT INTO work_cancellation_requests VALUES(?)", (run_id,))
+                self._append(db, run_id, operation=Operation.RUN_CANCEL_REQUESTED, object_kind="run", object_id=run_id,
+                             status="observed", message="Stop requested by the handler", worker_kind="kernel")
+            if run["status"] in {"queued", "interrupted"}:
+                self._append(db, run_id, operation=Operation.RUN_CANCELLED, object_kind="run", object_id=run_id,
+                             status="completed", message="Review stopped before the next source check", worker_kind="kernel")
+                db.execute("UPDATE work_runs SET status='cancelled',owner=NULL,lease_until=NULL WHERE run_id=?", (run_id,))
 
     def mark_expired_interrupted(self):
         """A vanished executor is unconfirmed work, not a scientific/model failure."""

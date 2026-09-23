@@ -64,7 +64,7 @@ def test_curated_static_build_has_exact_runtime_inventory(
     files, directories = static_site.inventory(output)
     assert files == static_site.PUBLIC_INVENTORY
     assert directories == static_site.PUBLIC_DIRECTORIES
-    assert len(files) == 48
+    assert len(files) == 24
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
     assert {"method.html", "assets/method-guide.js", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files
@@ -126,12 +126,10 @@ def test_curated_asset_allowlist_is_the_recursive_runtime_closure() -> None:
         discovered.update(nested)
 
     assert discovered == set(static_site.PUBLIC_ASSETS)
-    assert "assets/live-v16-viewer-fix.css" in discovered
-    assert "assets/live-v18-law-normalize.js" in discovered
-    assert "assets/foundation-live.css" in discovered
-    assert "assets/foundation-live.js" in discovered
-    assert "assets/insurance-protocol-v1.css" in discovered
-    assert "assets/insurance-protocol-v1.js" in discovered
+    assert "assets/claims-workspace-presentation-v1.css" in discovered
+    assert "assets/claims-workspace-presentation-v1.js" in discovered
+    assert "assets/agent-work-v1.css" in discovered
+    assert "assets/agent-work-v1.js" in discovered
     assert "assets/claims-workspace-v1.css" in discovered
     assert "assets/claims-workspace-v1.js" in discovered
 
