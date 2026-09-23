@@ -14,6 +14,9 @@ test('a conflicting record is shown independently of its unknown class',()=>{
 test('an uncertain action outcome takes precedence over readiness',()=>{
  assert.equal(view.readiness({failure_or_unknown_effect:true,readiness_state:'decision_ready'}),'Action needs checking');
 });
+test('an unresolved requirement without an action calls for handler review',()=>{
+ assert.equal(view.copy('mandatory evidence is unresolved and no bounded action remains'),'The evidence remains unresolved. A handler must review it before the process can advance.');
+});
 test('HTML in source material is escaped',()=>{
  assert.equal(view.h('<script>"&'), '&lt;script&gt;&quot;&amp;');
 });
@@ -73,6 +76,60 @@ test('source text has no duplicated focus attributes',()=>{
   const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/'+name),'utf8');
   assert.doesNotMatch(source,/tabindex="0" tabindex="0"/);
  }
+});
+test('decision trace keeps an opened source separate from accepted evidence',()=>{
+ const decision={
+  loop_state:{
+   process:{nodes:[{node_id:'intake',title:'Capture notice details',evidence_requirement_ids:['item']}],current_overlay:{current_node_id:'intake'},selected_path:['intake']},
+   selected_action:{process_node_id:'gap',evidence_item_id:'item'},
+   obligations:[{obligation_id:'item',status:'active'}],
+   facts:[{fact_id:'fact',label:'Notice details',state:'unknown',source_refs:[{excerpt:'Hello'}]}],
+   checklist:{items:[{item_id:'item',legal_basis_ids:[],bounded_tool_id:'source-byte-check',acceptable_alternatives:[]}]},observations:[],
+  },
+  operational_projection:{evidence_items:[{...item('missing',true),fact_id:'fact'}]},
+ };
+ const before=view.canvasTrace(decision,detail,'intake');
+ assert.match(before,/No source passage recorded yet/);
+ assert.match(before,/Required fact.*?Notice details/s);
+ assert.match(before,/Evidence capability.*?Checked observation from an original source/s);
+ assert.match(before,/Document requirement.*?No customer document specified/s);
+ assert.doesNotMatch(before,/Hello|Open original source|Request inspection report/);
+ decision.loop_state.observations.push({evidence_item_id:'item',source_refs:[{source_id:'message-one',source_sha256:rawHash,sanitized_excerpt:'Exact accepted passage'}]});
+ decision.loop_state.facts[0].state='known';
+ decision.loop_state.facts[0].normalized_value='unresolved';
+ const after=view.canvasTrace(decision,detail,'intake');
+ assert.match(after,/Exact accepted passage/);
+ assert.match(after,/Recorded source passages/);
+ assert.match(after,/Unresolved condition recorded/);
+ assert.doesNotMatch(after,/>Established</);
+ assert.match(after,/data-source-artifact="0"/);
+ decision.loop_state.process.nodes[0].branches=[{branch_id:'next',target:'deadline'}];
+ decision.loop_state.process.nodes.push({node_id:'deadline',title:'Preserve the deadline'});
+ decision.loop_state.facts[0].normalized_value='next';
+ const branched=view.canvasTrace(decision,detail,'intake');
+ assert.match(branched,/Branch condition/);
+ assert.match(branched,/Path selected/);
+ assert.match(branched,/Preserve the deadline/);
+ assert.doesNotMatch(branched,/>Established</);
+ decision.operational_projection.evidence_items[0].evidence_class='received';
+ decision.operational_projection.evidence_items[0].mandatory_now=false;
+ assert.match(view.evidenceSource(decision.operational_projection.evidence_items[0],decision,detail),/does not establish every detail in the notice/);
+});
+test('current path opens only evidence needed at the active step',()=>{
+ const decision={loop_state:{process:{nodes:[
+  {node_id:'done',title:'Receive notice',evidence_requirement_ids:['earlier']},
+  {node_id:'now',title:'Check the deadline',answer:'The deadline is unresolved.',evidence_requirement_ids:['required','supported']},
+  {node_id:'later',title:'Decide next step',evidence_requirement_ids:['later']},
+ ],main_spine:['done','now','later'],current_overlay:{current_node_id:'now',completed_node_ids:['done']}}},operational_projection:{evidence_items:[
+  {evidence_item_id:'earlier',title:'Earlier source',mandatory_now:false},
+  {evidence_item_id:'required',title:'Deadline source',mandatory_now:true},
+  {evidence_item_id:'supported',title:'Accepted source',mandatory_now:false},
+  {evidence_item_id:'later',title:'Future source',mandatory_now:false},
+ ]}};
+ const markup=view.canvasPath(decision);
+ assert.match(markup,/Current step · 2 of 3/);
+ assert.match(markup,/data-evidence-source="required"/);
+ assert.doesNotMatch(markup,/data-evidence-source="earlier"|data-evidence-source="supported"|data-evidence-source="later"/);
 });
 test('resize callbacks do not measure a replaced claim header',()=>{
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');

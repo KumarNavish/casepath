@@ -1,5 +1,5 @@
 /* Quiet execution visibility. Status and motion come only from persisted work. */
-#claimsWorkspace { --aw-ink:#242730; --aw-muted:#636978; --aw-line:#e5e7ed; --aw-accent:#8f2335; --aw-soft:#f7f7fa; }
+#claimsWorkspace { --aw-ink:#242730; --aw-muted:#636978; --aw-line:#e5e7ed; --aw-accent:#244e72; --aw-soft:#f7f7fa; }
 .aw-icon{width:17px;height:17px;flex:0 0 17px;vertical-align:middle;display:inline-block}
 .aw-work-strip{margin-bottom:22px;padding:0 0 20px;border-bottom:1px solid var(--aw-line);color:var(--aw-ink)}
 .aw-kicker{display:block;font-size:10px;letter-spacing:.02em;font-weight:550;color:var(--aw-muted);margin-bottom:9px}
@@ -17,7 +17,7 @@
 .aw-role-track strong{display:block;font-size:10px;line-height:1.6;font-weight:550;margin-top:7px;overflow-wrap:anywhere}
 .aw-role-track small{display:block;font-size:9px;line-height:1.5;color:var(--aw-muted);margin-top:1px}
 .aw-role-track [data-status="completed"] .aw-role-dot{background:#eef6f0;border-color:#d0e3d4}
-.aw-role-track [data-status="working"] .aw-role-dot{border:5px solid #8f2335}
+.aw-role-track [data-status="working"] .aw-role-dot{border:5px solid #244e72}
 .aw-role-track [data-status="blocked"] .aw-role-dot,.aw-role-track [data-status="unconfirmed"] .aw-role-dot{border:2px solid #aa7545;background:#fbf7ef}
 .aw-strip-actions{display:flex;gap:15px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:11px}
 #claimsWorkspace .aw-text-button{display:inline-flex;align-items:center;gap:6px;min-height:32px;border:0;background:none;padding:4px 0;color:var(--aw-accent);font:inherit;font-size:11px;text-align:left;cursor:pointer}
@@ -56,7 +56,7 @@
 .aw-graph [data-node-state="current"]>.aw-graph-point{border:6px solid var(--aw-accent)}
 .aw-graph [data-node-state="complete"]>.aw-graph-point{background:#edf5ef;border-color:#d2e4d8}
 .aw-node{flex:1;min-width:0;border:1px solid var(--aw-line);border-radius:8px;overflow:hidden;background:#fff}
-.aw-graph [data-node-state="current"] .aw-node{border-color:#b998a3}
+.aw-graph [data-node-state="current"] .aw-node{border-color:#a5bece}
 .aw-node>button:first-child{display:block;position:relative;border:0;background:none;width:100%;text-align:left;padding:12px 17px;cursor:pointer;color:var(--aw-ink)}
 .aw-node>button:first-child>span{display:block;font-size:9px;color:var(--aw-muted);margin-bottom:5px}
 .aw-node strong{display:block;font-size:13px;font-weight:550;line-height:1.6;padding-right:18px}
@@ -67,7 +67,7 @@
 .aw-linked-requirement>span,.aw-branch>span{flex:1;font-size:11px;line-height:1.6}
 .aw-linked-requirement>small,.aw-branch>small{font-size:9px;line-height:1.6;color:#6d7683;max-width:95px}
 .aw-node .aw-branch{background:#fff;padding-left:27px}
-.aw-node .aw-branch[data-branch="selected"]{background:#faf5f6;color:#8f2335}
+.aw-node .aw-branch[data-branch="selected"]{background:#edf4f8;color:#244e72}
 .aw-branch>.aw-icon{width:13px;height:13px;flex-basis:13px}
 .aw-workforce{position:fixed;z-index:45;inset:0 0 0 var(--cp-rail,200px);background:#fff;padding:38px 36px;overflow:auto;color:var(--aw-ink)}
 .aw-workforce-heading{display:flex;justify-content:space-between;gap:24px;align-items:start;margin-bottom:30px}
@@ -168,8 +168,8 @@
 .aw-live-signal p{margin:2px 0 0!important;font-size:9px;line-height:1.55;color:#626875;}
 .aw-live-time{font-size:9px;color:#767c87;font-variant-numeric:tabular-nums;}
 .aw-review-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:15px;padding-top:14px;border-top:1px solid #ececf1;}
-#claimsWorkspace .aw-review-action{display:inline-flex;align-items:center;gap:7px;min-height:36px;border:0;border-radius:7px;background:#8f2335;color:#fff;padding:8px 12px;font:inherit;font-size:11px;font-weight:600;cursor:pointer;}
-#claimsWorkspace .aw-review-action:hover:not(:disabled){background:#761c2b;}
+#claimsWorkspace .aw-review-action{display:inline-flex;align-items:center;gap:7px;min-height:36px;border:0;border-radius:7px;background:#244e72;color:#fff;padding:8px 12px;font:inherit;font-size:11px;font-weight:600;cursor:pointer;}
+#claimsWorkspace .aw-review-action:hover:not(:disabled){background:#193b58;}
 #claimsWorkspace .aw-review-action .aw-icon{width:14px;height:14px;}
 .aw-review-controls .aw-worker-select{margin-left:auto;}
 .aw-review-controls>.aw-text-button{white-space:nowrap;}
@@ -272,5 +272,14 @@
  .aw-mini-flow i{width:13px;}
 }
 @media(prefers-reduced-motion:reduce){.aw-agent[data-status="working"] .aw-agent-mark,.aw-live-signal[data-live="true"] .aw-live-mark{animation:none!important;}}
+
+.cp-workspace[data-canvas="true"] .aw-review-console{border:0;box-shadow:none;border-radius:0;padding:0;}
+.cp-workspace[data-canvas="true"] .aw-console-head{margin-bottom:12px;}
+.cp-workspace[data-canvas="true"] .aw-console-state[data-status="completed"] strong{color:#244e72;}
+.cp-workspace[data-canvas="true"] .aw-live-complete{background:#f1f6fa;color:#385a73;}
+.cp-workspace[data-canvas="true"] .aw-live-complete .aw-live-mark{background:#e4eef5;color:#244e72;}
+.aw-role-details{margin-top:17px;padding-top:13px;border-top:1px solid #e0e8ee;}
+.aw-role-details>summary{cursor:pointer;width:max-content;max-width:100%;font-size:11px;font-weight:560;color:#244e72;}
+.aw-role-details .aw-agent-flow{margin-top:13px;}
 
 .aw-agent-flow-loading{min-height:82px;display:grid;place-items:center;color:#656b77;font-size:11px;background:#fafafb;border-radius:8px;}

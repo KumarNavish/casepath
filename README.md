@@ -1,100 +1,69 @@
 # CasePath
 
-### Ask for evidence only when the case requires it.
+CasePath helps a claims handler see what evidence is needed for a claim now, and why. Its workbench keeps the original packet beside the active process step, evidence requirement, and next action. It leaves a document request unspecified when the saved case does not justify one.
 
-A plausible checklist can still ask for too much: documents for the wrong kind
-of case, or evidence the claimant has already supplied.
+The local workbench opens all 150 synthetic intake claims. It keeps source files, recorded observations, proposed work, and accepted handling events separate. Its default review is deterministic and makes no model API calls.
 
-CasePath connects each request to the requirement that makes it necessary.
-Language-model agents interpret the case; an executable controller determines
-the evidence needed. This repository includes the method, two studies, and a
-local claims workbench with 150 synthetic cases.
+![CasePath workbench showing original claim sources, the active process step, an unresolved evidence requirement, and the next review action](docs/images/workbench-review.png)
 
-[Read the paper](research/casepath/iclr2027-integrated/dist/casepath_iclr2027_submission.pdf)
-· [Explore the method](docs/method-guide.md)
-· [Reproduce the results](research/casepath/iclr2027-integrated/README.md)
+*A fictional claim after local review. Two original notices remain visible beside the current path and a human-review action. The saved state does not specify a document to request; this product example is not a benchmark result.*
 
-## From a requirement to a request
+## See one claim
 
-> An active requirement needs a fact. Evidence can establish that fact. A
-> document is requested only through that connection.
+After starting the app, open [a family-home termination claim with two original notices](http://127.0.0.1:4173/#claim=clm_f69b1747447bc221). Read the message and both PDFs in **Sources**, then select **Start agent review**. **Decision** shows the current process step, evidence to check, and next action; **Evidence** shows what is present, missing, or unresolved. Select a requirement to inspect its reason and any accepted source passage. Nothing is sent to a customer or settled by this review.
 
-The controller checks applicability, permission to acquire evidence, and what
-the available documents establish. Unknown conditions remain questions. Each
-request points back to its rule, required fact, and evidence route.
+The [corpus browser](http://127.0.0.1:4173/corpus.html) lets you read all 150 original messages and their attachment lists before starting a review. It uses only observable intake inputs; study labels and predictions are absent.
 
-Consider the [guide's invented repair policy](docs/method-guide.md): the cause
-of an eligible repair can be established by an inspection report, or by a
-service note and a photo together.
+The [interactive method guide](docs/method-guide.md) gives a smaller teaching example: a repair may need an inspection report, or a service note and photo together. Changing the active condition or the available evidence changes the request. This authored example explains the controller; it is separate from measured benchmark cases.
 
-| What the case contains | What follows |
-| --- | --- |
-| The repair is outside the policy's scope | No request under this requirement. |
-| Eligibility is unclear | Resolve eligibility first. |
-| Evidence is missing and acquisition is allowed | Request the evidence needed by the selected route. |
-| A report is present but has not been assessed | Review the report. |
-| The note and photo together establish the cause | No additional report is needed. |
+The paper's Study A method is installed as a separate service. It uses the frozen source pack, guard interpreter and document planner. With recorded guard answers, its [replay matches all 72 paper cases and 36 paired changes](research/casepath/branch-benchmark/parity/PRODUCT_METHOD_PARITY_V5.json). The 150-claim workbench shows original sources, the active process, obligations, required facts, accepted evidence and next actions. It names no customer document when the saved review has no document route. The [method guide](casepath/method.html) runs the separate Study B controller on an authored teaching case. Each surface follows the paper's source-to-action chain; their measured results stay separate.
 
-The guide contains 45 teaching examples, separate from the studies below.
+## Run it locally
 
-## What the studies show
-
-**Study A: change one fact in a household-theft case.** On 27 held-out pairs,
-the earlier CasePath planner made fewer incorrect checklist changes, with a
-recall trade-off. The reference requires 33 additions across these pairs.
-
-| System | Required changes recovered, of 33 | Incorrect additions or withdrawals |
-| --- | ---: | ---: |
-| CasePath | 24 | 15 |
-| Direct | 25 | 27 |
-| Graph as context | 31 | 41 |
-| Evidence-first | 16 | 52 |
-
-Errors shared by both checklists are invisible to this metric. Computation
-differed across methods, and the preregistered accuracy criteria were not met.
-[Study details](docs/research-evidence.md) cover uncertainty and how this planner
-differs from the newer controller.
-
-**Study B: keep requests within the right tenancy domain.** A retrospective
-comparison fixes the model's assessments and changes whether the controller
-enforces domain scope, such as rent increase or termination. Both versions
-produced outputs for the same 108 cases:
-
-| Requests across the same 108 cases | Without domain scope | With domain scope |
-| --- | ---: | ---: |
-| All requests | 1,445 | 652 |
-| Requests with a valid reference chain | 635 | 635 |
-| Requests without a valid reference chain | 810 | 17 |
-
-Scope removes unrelated requests here. These synthetic cases had already been
-used in product development. The original full-output evaluation could not bind
-reference conditions and accepted none of 1,050 scheduled cells; this later
-analysis does not replace that failure. Reference-chain agreement does not
-establish legal correctness. The [comparison guide](docs/benchmark-and-baselines.md)
-and [reports](research/casepath/iclr2027-integrated/README.md) explain the limits.
-
-## Explore the evidence
-
-| Start here | What you can inspect |
-| --- | --- |
-| [Study A benchmark](research/casepath/branch-benchmark/README.md) | Cases, predictions, and reference changes. |
-| [Reproducibility archive](research/casepath/iclr2027-integrated/dist/casepath_iclr2027_reproducibility.zip) | Inputs, references, outputs, failures, and replay instructions for both studies. |
-| [Synthetic intake corpus](docs/INTAKE_PACKET_150.md) | 150 case narratives and 57 attachments: 47 PDFs and 10 images. |
-| [Controller](casepath-api/casepath_api/obligation_control/obligation_control_v1.py) and [evidence planner](casepath-api/casepath_api/obligation_control/evidence_demand_v1.py) | The code that determines requests. |
-
-Reproduce Study A from the repository root:
-
-```bash
-python3 research/casepath/branch-benchmark/reproduce.py
+```sh
+git clone https://github.com/KumarNavish/casepath.git
+cd casepath
+./bin/casepath prepare
+./bin/casepath dev
 ```
 
-This uses Python's standard library and recorded outputs. No model or network
-calls are needed.
+Open <http://127.0.0.1:4173/>. The first `prepare` installs pinned Python 3.13.9 dependencies, so it needs internet access. Local use after preparation needs no provider account, API key, database service, or paid infrastructure. You also need Git, `uv`, `lsof`, and `lockf` on macOS or `flock` on Linux. Stop the server with Ctrl-C. Saved claim and review state stays in `.runtime/casepath-data-v1`; use a fresh clone for disposable tests. [Setup](docs/setup.md) covers replay, export, safe reset, and platform details.
 
-## Try the workbench
+```sh
+./bin/casepath test
+./bin/casepath replay <claim-id>
+```
 
-Read a claim packet, inspect its evidence assessment, and follow its handling
-history. The research prototype runs locally in deterministic mode without an
-API key. See [local setup](docs/setup.md) for installation.
+## What the release contains
 
-[License](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md)
+| Start here | What you will find |
+| --- | --- |
+| [Claims workbench](casepath/README.md) | Claim queue, verified source previews, assessment, process and evidence views, Agent review, correction, export, and replay. |
+| [150-claim data card](docs/INTAKE_PACKET_150.md) | Original intake inputs, attachment counts, schema, license, integrity checks, and limits. |
+| [Method guide](docs/method-guide.md) | One executable teaching example of obligation-led evidence planning. |
+| [Research evidence](docs/research-evidence.md) | Measured results, adverse findings, costs, and exact provenance. |
+| [Paper and reproduction](research/casepath/iclr2027-integrated/README.md) | Manuscript, numerical audit, figures, benchmark outputs, and offline verification. |
+| [Developer documentation](docs/README.md) | Setup, source authority, API contracts, recovery, and contribution rules. |
+
+## What was measured
+
+The paired branch study changes one case fact at a time. On 27 held-out pairs, CasePath made 15 unjustified signed document changes, versus 27 for Direct, 41 for Graph as context, and 52 for Evidence-first. It recovered 24 of 33 required changes; Direct recovered 25 and Graph as context 31. This is a selectivity result with a recall trade-off. The registered broad-superiority gate failed, and the historical arms used unequal computation.
+
+The complete 150-claim study preserved its original native graph-interface failure. A separate retrospective current-case comparison found that inherited process scope reduced requests while retaining the same valid requests in the completed development subset. It does not turn the failed registered comparison into a success or establish counterfactual branch correctness. [Read the study definitions and exact results](docs/benchmark-and-baselines.md) before comparing numbers across studies.
+
+Reproduce the released checks offline, without new inference:
+
+```sh
+python3 research/casepath/verify_release.py
+```
+
+The paper build also needs Tectonic, Matplotlib and SciencePlots. Put `tectonic` on `PATH`, or set `CASEPATH_TECTONIC` to its executable. The verifier reports any missing tool or failed check; it never calls a model.
+
+The local workbench and Agent review demonstrate product mechanics, not legal correctness or general model quality. The current hosted Render services use an older source line; this repository's verified experience is the local one.
+
+## Go deeper
+
+- [How claim state is authorized](docs/architecture-authority.md)
+- [Agent review and its verified external-worker boundary](docs/AGENT_REVIEW.md)
+- [Contribution and source-sealing rules](CONTRIBUTING.md)
+- [License](LICENSE) and [third-party notices](THIRD_PARTY_NOTICES.md)

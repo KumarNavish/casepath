@@ -38,7 +38,7 @@ test('causal changes retain exact evidence and distinguish insufficient from res
  const make=(rev,item,observations)=>({claim_id:'c',revision:rev,loop_state:{observations},operational_projection:{evidence_items:[item],readiness_state:'blocked',pending_evidence_count:1,current_process:{node_title:'Review receipt'}}});
  const old=make(2,row('missing',true),[]),next=make(4,row('insufficient',true),[{value:'Exact source passage',evidence_item_id:'e',source_refs:[]}]);
  const delta=view.compareLoops(old,next);assert.equal(delta.accepted,true);assert.equal(delta.sourceQuote,'Exact source passage');
- const html=view.changeMarkup(delta);assert.match(html,/Further evidence is still needed/);assert.doesNotMatch(html,/No longer requested/);
+ const html=view.changeMarkup(delta);assert.match(html,/Further evidence is still needed/);assert.match(html,/Source statement recorded/);assert.doesNotMatch(html,/No longer requested|path updated/);
 });
 test('recovery of committed evidence is never described as a rejected observation',()=>{
  const item={evidence_item_id:'e',title:'Receipt date',evidence_class:'received',mandatory_now:false,current_path:true,raw_status:'provided_sufficient',fact_state:'known'};

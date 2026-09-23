@@ -40,10 +40,11 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parent.parent
 DOC = HERE / "iclr2027-integrated"
 BENCH = HERE / "branch-benchmark"
-NATIVE = HERE / "native-corpus"
 CORPUS = REPO / "casepath-api" / "casepath_api" / "corpora" / "synthetic-150" / "claims"
-MATRIX = Path("/Users/kumar0002/.local/state/navish-acceptance-20260919/PRO_NATIVE150_MATRIX.jsonl")
-TECTONIC = REPO / ".runtime" / "tools" / "tectonic" / "tectonic"
+REPRO_ARCHIVE = DOC / "dist" / "casepath_iclr2027_reproducibility.zip"
+TECTONIC = Path(os.environ.get("CASEPATH_TECTONIC") or
+                shutil.which("tectonic") or
+                REPO / ".runtime" / "tools" / "tectonic" / "tectonic")
 # Pinning the build clock makes the PDF byte-reproducible: without it every rebuild differs only
 # by its embedded creation timestamp. 1789948800 = 2026-09-21T00:00:00Z.
 SOURCE_DATE_EPOCH = "1789948800"
@@ -101,11 +102,15 @@ def check_numbers_stable() -> None:
              'fig_scope_control.pdf', 'fig_native_case.pdf', 'fig_error_origin.pdf',
              'fig_falsifiers.pdf', 'fig_selectivity.pdf']
     before = {n: hashlib.sha256((DOC/n).read_bytes()).hexdigest() for n in names}
-    for script in ['build_manuscript_numbers.py', 'build_final_native_tables.py', 'build_assessed_state_tables.py', 'build_error_origin_numbers.py', 'build_figures.py']:
-        code, out = run([sys.executable, 'evidence/' + script], DOC)
-        if code:
-            record('Manuscript numbers', False, script + ': ' + out[-140:])
-            return
+    # The historical PDFs were built with SciencePlots over Matplotlib's defaults.
+    # Keep the user's current matplotlibrc from changing their bytes.
+    with tempfile.TemporaryDirectory(prefix='casepath-mpl-') as mpl_config:
+        for script in ['build_manuscript_numbers.py', 'build_final_native_tables.py', 'build_assessed_state_tables.py', 'build_error_origin_numbers.py', 'build_figures.py']:
+            env = {'MPLCONFIGDIR': mpl_config} if script == 'build_figures.py' else None
+            code, out = run([sys.executable, 'evidence/' + script], DOC, env=env)
+            if code:
+                record('Manuscript numbers', False, script + ': ' + out[-140:])
+                return
     changed = [n for n in names if hashlib.sha256((DOC/n).read_bytes()).hexdigest() != before[n]]
     record('Manuscript numbers', not changed,
            f'all {len(names)} macro/table/figure files reproduce byte for byte' if not changed else ', '.join(changed))
@@ -217,14 +222,16 @@ def check_corpus() -> None:
         record("Corpus identity", None, "synthetic-150 corpus not present")
         return
     shipped = {p.stem for p in CORPUS.glob("*.json")}
-    planned = None
-    if MATRIX.exists():
-        planned = {json.loads(line)["case_id"] for line in MATRIX.open()}
-    elif (NATIVE / "contract" / "cell_plan.jsonl").exists():
-        planned = {json.loads(line)["case_id"] for line in (NATIVE / "contract" / "cell_plan.jsonl").open()}
-    if planned is None:
-        record("Corpus identity", None, f"{len(shipped)} claims shipped; no cell plan available to compare")
+    if not REPRO_ARCHIVE.exists():
+        record("Corpus identity", None, f"{len(shipped)} claims shipped; reproduction archive missing")
         return
+    with zipfile.ZipFile(REPRO_ARCHIVE) as archive:
+        try:
+            matrix = archive.read("recorded-native/matrix.jsonl")
+        except KeyError:
+            record("Corpus identity", False, "recorded-native/matrix.jsonl is missing")
+            return
+    planned = {json.loads(line)["case_id"] for line in matrix.splitlines()}
     ok = shipped == planned
     record("Corpus identity", ok,
            f"the {len(shipped)} claims shipped in casepath-api are exactly the cases Study B evaluates"

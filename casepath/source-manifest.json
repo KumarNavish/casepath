@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1497,
+  "file_count": 1503,
   "files": [
     {
       "executable": false,
@@ -143,8 +143,8 @@
     {
       "executable": false,
       "path": "README.md",
-      "sha256": "df0b0a6505865aa659418126ef2cbe89a14e95fcdff99e77ef4b2151d41eb0af",
-      "size_bytes": 4783
+      "sha256": "0ea1be9b77ad8f33497387b0813d722c0039cb05c6222cf0b127de0bb19e7380",
+      "size_bytes": 6181
     },
     {
       "executable": false,
@@ -8117,8 +8117,8 @@
     {
       "executable": false,
       "path": "casepath-qa/claims-workspace-presentation-v1.test.cjs",
-      "sha256": "9a7680e601f59eecd60eebc4df5d81ebb848fae7508c09fdc24ca2ec44a85e17",
-      "size_bytes": 5645
+      "sha256": "8a9d983d25d2fe5f263ca606ce1878fafd8465f4fa01ab00a22f54a26085eccf",
+      "size_bytes": 9595
     },
     {
       "executable": false,
@@ -8237,14 +8237,14 @@
     {
       "executable": false,
       "path": "casepath-qa/premium-email-preview.test.cjs",
-      "sha256": "7805ccc3276f42ef4e95f7eb8bd1c0f15c49b39def016ef77e7e696b864c7ae7",
-      "size_bytes": 1456
+      "sha256": "6d76c73512b97566a7993a897c5ad3b1f11371f38b548689e267ae7033bb9378",
+      "size_bytes": 2287
     },
     {
       "executable": false,
       "path": "casepath-qa/premium-presentation-v1.test.cjs",
-      "sha256": "89a20530028e129ad151d58392570ad1b4065791c38fed8b58df59552f6f8e96",
-      "size_bytes": 6188
+      "sha256": "022cc612f7cd043b0051c476cba6108250add134e2c5d7b8006c1ff7d6d35f85",
+      "size_bytes": 6248
     },
     {
       "executable": false,
@@ -8327,14 +8327,14 @@
     {
       "executable": false,
       "path": "casepath/assets/agent-work-v1.css",
-      "sha256": "f0fef2ffcee08c9056312a7754f6f6fbbd35c7d555741bd08dbae201cdaf742f",
-      "size_bytes": 26103
+      "sha256": "d2c5065dde1a6f7138cb43e7e2544a8555a4a334ce1256f06c54a2174660d957",
+      "size_bytes": 26821
     },
     {
       "executable": false,
       "path": "casepath/assets/agent-work-v1.js",
-      "sha256": "4e11b7d7520cbd707d91aab57979f317c614709151c017b6ca267d0aa58cc850",
-      "size_bytes": 39818
+      "sha256": "7ee310a37435051378ef9d34b0986ffe296d0541d7d11ae9a7d0ae75c4d1ec51",
+      "size_bytes": 40393
     },
     {
       "executable": false,
@@ -8387,26 +8387,44 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.css",
-      "sha256": "ecb6421970dac62922002528c9007b63f196e1f38dbb02d4474fff2886164c78",
-      "size_bytes": 43706
+      "sha256": "ad34afda5c25ca13b15962fd249303b8d31596ce3ec68b467aa8ab8b0a152e17",
+      "size_bytes": 55358
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.js",
-      "sha256": "dd305cb007f846906350cbd3a6eec73e805970868f27552cc2a2607ca6cb0065",
-      "size_bytes": 53435
+      "sha256": "3d1afe52afa46dcc278f0b9bb45b7d05ec2507faaf133a4f4a242162cdf4aae2",
+      "size_bytes": 62399
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.css",
-      "sha256": "dca3a81b6a87691bb20f39d8838fb896d1dd103d31fbad85efd032de9d116974",
+      "sha256": "5ae4871a19991d9a27823dbbd2d4b010cec9f562593498428336c6afbde0fe79",
       "size_bytes": 3285
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.js",
-      "sha256": "bfd7f83e7b09ec306f995fa9dafc4b892fd8cf647c5649aaf6548b350b5f51ec",
-      "size_bytes": 173501
+      "sha256": "1deea46dd6e28019970c3c07785c55b116b3b1825dc93de2a7ae106e9d3d617d",
+      "size_bytes": 177339
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/corpus-index.json",
+      "sha256": "029497e5dddeea2b0fc75e41dad79229aa775ff47557aec828191c288286a391",
+      "size_bytes": 240750
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/corpus.css",
+      "sha256": "c92e7e8d1a71e5eb576029a6e429617a6b5009d5a2e0daf3a853abcca6464cca",
+      "size_bytes": 5718
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/corpus.js",
+      "sha256": "df3368aacba56b7ce5b6165f0a48420c6b1b557c766922f581d50fddbb116702",
+      "size_bytes": 7694
     },
     {
       "executable": false,
@@ -8591,8 +8609,8 @@
     {
       "executable": false,
       "path": "casepath/assets/method-guide.css",
-      "sha256": "3e9c51bbb485803af261ddfcd2796c4c9a0a809f5000a40cc76268eba38f068e",
-      "size_bytes": 6465
+      "sha256": "d77cbb7dd044b3cb314a0b7513d9f4f2804238dfd74b7e2e868f0431338b0774",
+      "size_bytes": 6578
     },
     {
       "executable": false,
@@ -8662,6 +8680,12 @@
     },
     {
       "executable": false,
+      "path": "casepath/corpus.html",
+      "sha256": "2249c6d91997973f89cbeff23efc12b192e66a91d38995d56f9f6d633792952d",
+      "size_bytes": 3826
+    },
+    {
+      "executable": false,
       "path": "casepath/decision-log.md",
       "sha256": "628be9712a8b8477c9cfd22af87f0c56b5a8fe807d72e4df6a5170d6266e2a6a",
       "size_bytes": 18196
@@ -8675,14 +8699,14 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "74e758906f1370bbefd312eb3e032ca03acbd801c5cbb32923ab4b5e0e0179ac",
+      "sha256": "bc8963dbbf3e7e6627963a93214758cf7d1944cbe7ac7c78829806f3dfeaa261",
       "size_bytes": 23623
     },
     {
       "executable": false,
       "path": "casepath/method.html",
-      "sha256": "fbf8cea5e10cbd49de51c021cf37fe9a1295955874d8f709bdae3c4af4555196",
-      "size_bytes": 5798
+      "sha256": "ac6928c0e961b21392bb12f9bf691ca530a57ec9bc3798536ed3188fff5f6609",
+      "size_bytes": 5819
     },
     {
       "executable": false,
@@ -8855,14 +8879,20 @@
     {
       "executable": false,
       "path": "casepath/research.html",
-      "sha256": "1aebb6cc188ecc7ef4f0f02fbb92bc37653b61c75202cab0ba59e887400a699d",
-      "size_bytes": 11591
+      "sha256": "63ecbaa2d7e5db4563a49eff1fee2696b700b149cb1046a3a99466b9bed85ea0",
+      "size_bytes": 11610
     },
     {
       "executable": false,
       "path": "casepath/tools/browser_qa.py",
       "sha256": "ee0d546fdf234d66aa066ddf6cd63678a61f46d0ffadae2835613c89218704e3",
       "size_bytes": 9405
+    },
+    {
+      "executable": false,
+      "path": "casepath/tools/build_corpus_index.py",
+      "sha256": "6363f329bc540a4210333ffda80ffd5dca775ea5e2908eb22e3802bb76069d7f",
+      "size_bytes": 3373
     },
     {
       "executable": false,
@@ -8879,8 +8909,8 @@
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "134eeac95e2a3f53bbcccbf968c2bd599811518891df5d7c7863e4b51112b5ca",
-      "size_bytes": 10372
+      "sha256": "108fa40b01b24db39345577ca18b4d99a09774c11fd07c703adad4445e2ad25d",
+      "size_bytes": 10472
     },
     {
       "executable": false,
@@ -8903,8 +8933,8 @@
     {
       "executable": false,
       "path": "casepath/tools/test_build_deployment_identity.py",
-      "sha256": "39c9f72153a390ad46b0a867930e862aeb01fbe9743258808a0ca728ddd13af2",
-      "size_bytes": 9582
+      "sha256": "b802ed96dcd5d2dbde17603bda98c00c4efca50984c586d0ba2c45cccbab0a76",
+      "size_bytes": 9687
     },
     {
       "executable": false,
@@ -8951,14 +8981,14 @@
     {
       "executable": false,
       "path": "docs/INTAKE_PACKET_150.md",
-      "sha256": "3814134144c2478175839e20d9ada2bcb59213f4cc33250c5c74947664acdb54",
-      "size_bytes": 1357
+      "sha256": "52081756a2aea1a093713455f89f06e3d7e0d1365c5de31f65b28b09771da1b5",
+      "size_bytes": 4640
     },
     {
       "executable": false,
       "path": "docs/PREMIUM_WORKSPACE.md",
-      "sha256": "c974e5b7ee9beb84ca26e662cf84a684b3dcf76e6a594eb46bda46d3974f15f3",
-      "size_bytes": 2118
+      "sha256": "c14e34049a65474f73a6006380674babac3a80c0ecaa79d2a549b3b8beeed8c6",
+      "size_bytes": 2898
     },
     {
       "executable": false,
@@ -8969,8 +8999,8 @@
     {
       "executable": false,
       "path": "docs/README.md",
-      "sha256": "530714d69658388c1ceba89fb40c2a99ebb358d1bbd96dfd64c3437d3859b506",
-      "size_bytes": 1655
+      "sha256": "5c0fec3b4ca5d5e8a2b38b352ddb620a927027e0f1c93e243eb14378978985c3",
+      "size_bytes": 1571
     },
     {
       "executable": false,
@@ -8993,8 +9023,8 @@
     {
       "executable": false,
       "path": "docs/benchmark-and-baselines.md",
-      "sha256": "88f1d5f74f6eaa1e0248d5d950ee380a10205b5a4bbab515896612f37074b384",
-      "size_bytes": 4434
+      "sha256": "1c234b097649fd5dd07e07587270c174ca9b0baad8ba0ad3faceb84c7083a011",
+      "size_bytes": 4865
     },
     {
       "executable": false,
@@ -9022,9 +9052,15 @@
     },
     {
       "executable": false,
+      "path": "docs/images/workbench-review.png",
+      "sha256": "c815fbb7bba966c01e0a42b922af0faef87d3f2c50b60e0dbd045bfa728f1682",
+      "size_bytes": 199344
+    },
+    {
+      "executable": false,
       "path": "docs/method-guide.md",
-      "sha256": "d144e9f2ab9970855d292d86a20d67476af04c87a5636422f19f6cb1345b6446",
-      "size_bytes": 3842
+      "sha256": "c71f2e91fceb46fa46e79e1dfde3f2ff49c568c82587da03f3a06628287f2b32",
+      "size_bytes": 3836
     },
     {
       "executable": false,

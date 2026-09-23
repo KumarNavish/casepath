@@ -66,6 +66,8 @@ From the repository root, run:
 python3 research/casepath/verify_release.py
 ```
 
+Install Tectonic, Matplotlib and SciencePlots for the complete build. If Tectonic is outside `PATH`, set `CASEPATH_TECTONIC` to its executable. The historical figure generator uses an isolated Matplotlib configuration so personal plotting defaults cannot change the released PDF bytes.
+
 This recomputes Study A, checks all generated publication artifacts, compiles the
 paper and a clean source extraction, and checks the full reproduction archive
 against its manifest and recorded exact native-replay receipt. It does not launch
