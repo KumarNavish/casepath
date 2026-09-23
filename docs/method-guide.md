@@ -7,7 +7,7 @@ is permitted, and whether something already held establishes the required fact.
 After [starting the local workbench](setup.md), open
 **http://127.0.0.1:4173/method.html**. Change the repair's eligibility, acquisition
 permission and available evidence. The request and next action change together.
-The workbench header links to the same guide under **How it works**.
+The workbench header links to the same guide under **Method**.
 
 ## Understand one request
 

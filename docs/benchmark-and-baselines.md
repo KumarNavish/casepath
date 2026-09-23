@@ -65,7 +65,12 @@ equally. A missing reference endpoint stays unavailable. Family-deletion ranges
 describe corpus-composition sensitivity, not confidence intervals or population
 uncertainty. The compiled and ablated controls are paired, dependent outputs.
 
-The active comparison has not yet produced its complete evaluated result. This
-document defines the executed conditions and does not claim a performance
-ranking. Final paper, repository and app result views must be generated from the
-same authenticated evaluation record.
+All 1,050 primary prediction cells were saved, but the registered native
+evaluation failed at its graph interface. Its adverse penalties remain in the
+release. The paper reports separate request-only and current-case analyses;
+neither is a successful registered evaluation. In the current-case scope
+intervention, full and local-only controllers reuse the same saved assessment.
+On 44 completed development cases, both recover 259 valid requests; inherited
+scope reduces total requests from 592 to 275. See [the evidence record](research-evidence.md)
+for protected-family results, unavailable outputs, costs and provenance. The
+paper, repository and app result views use that same authenticated record.
