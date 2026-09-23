@@ -884,6 +884,51 @@ def test_history_verifier_reconciles_only_canonical_pointer_temps(
         verifier.reconcile_pointer_temps(runtime, allow_reconcile=True)
 
 
+@pytest.mark.parametrize(
+    "event_type",
+    ["EVIDENCE_PROPOSAL_REJECTED", "NATIVE_PROPOSAL_REVISION_RECORDED"],
+)
+def test_history_verifier_accepts_current_claim_loop_event_types(
+    tmp_path: Path, event_type: str,
+) -> None:
+    verifier = _history_verifier_module()
+    command = {"value": "recorded"}
+    material = {
+        "contract": "casepath.claim-loop-event/1.0.0",
+        "session_id": "session-1",
+        "loop_id": "loop-1",
+        "sequence": 1,
+        "previous_event_sha256": None,
+        "event_type": event_type,
+        "idempotency_key": "record-1",
+        "command_sha256": verifier.digest(verifier.canonical(command)),
+        "command": command,
+        "created_at": "2026-08-31T00:00:00+00:00",
+    }
+    event = {
+        **material,
+        "event_sha256": verifier.digest(verifier.canonical(material)),
+        "resulting_state_sha256": "a" * 64,
+    }
+    with sqlite3.connect(tmp_path / "events.db") as connection:
+        connection.execute(
+            """CREATE TABLE claim_loop_events (
+            session_id TEXT, loop_id TEXT, sequence INTEGER,
+            idempotency_key TEXT, command_sha256 TEXT, event_sha256 TEXT,
+            event_json TEXT, created_at TEXT)"""
+        )
+        connection.execute(
+            "INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)",
+            (
+                event["session_id"], event["loop_id"], event["sequence"],
+                event["idempotency_key"], event["command_sha256"],
+                event["event_sha256"], verifier.canonical(event).decode(),
+                event["created_at"],
+            ),
+        )
+        assert verifier.validate_event_journal(connection)[0]["event_sha256"] == event["event_sha256"]
+
+
 def test_history_verifier_rejects_event_json_corruption_and_broken_chain(
     tmp_path: Path,
 ) -> None:
