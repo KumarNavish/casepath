@@ -20,3 +20,14 @@ test('an encoded or multipart email is preserved without pretending to decode it
 test('other source text remains byte-faithful after decoding and HTML escaping',()=>{
  assert.match(view.textSourceMarkup('<b>Receipt</b>','text/plain'),/&lt;b&gt;Receipt&lt;\/b&gt;/);
 });
+test('an accepted passage is highlighted only where it occurs in the original body',()=>{
+ const raw='From: claimant@example.invalid\n\nThe end date remains unresolved; please check the notices.';
+ const exact=view.textSourceMarkup(raw,'message/rfc822','The end date remains unresolved;');
+ assert.match(exact,/<mark class="cp-source-exact" id="cpExactSourcePassage">The end date remains unresolved;<\/mark>/);
+ assert.match(exact,/From: claimant@example.invalid/);
+ const unmatched=view.textSourceMarkup(raw,'message/rfc822','A different claim');
+ assert.doesNotMatch(unmatched,/<mark\b/);
+ const escaped=view.textSourceMarkup('<script>notice</script>','text/plain','<script>');
+ assert.match(escaped,/<mark class="cp-source-exact" id="cpExactSourcePassage">&lt;script&gt;<\/mark>/);
+ assert.doesNotMatch(escaped,/<script>/);
+});

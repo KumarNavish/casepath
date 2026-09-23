@@ -2423,7 +2423,8 @@
   async function showSourceArtifact(index, focus=true, quote=null) {
     const detail=state.detail, artifact=detail?.artifacts[index];
     if(!artifact || !Number.isSafeInteger(index)) return;
-    const acceptedQuote=quote&&state.loop?.loop_state.observations.some(row=>(row.source_refs||[]).some(ref=>ref.sanitized_excerpt===quote&&ui.sourceArtifactIndex(ref,detail)===index))?quote:null;
+    const acceptedRef=quote&&state.loop?.loop_state.observations.flatMap(row=>row.source_refs||[]).find(ref=>ref.sanitized_excerpt===quote&&ui.sourceArtifactIndex(ref,detail)===index);
+    const acceptedQuote=acceptedRef?quote:null;
     releaseSourcePreview();state.sourceSelection={kind:'artifact',index,quote:acceptedQuote};
     const ticket=state.sourceRequest, claimId=detail.state.claim_id;
     const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
@@ -2449,14 +2450,25 @@
         if(media==='application/json') {
           try {const value=JSON.parse(text);if(typeof value.body==='string') text=(value.subject?value.subject+'\n\n':'')+value.body;} catch(_) { /* Preserve source text when it is not a message object. */ }
         }
-        content=ui.textSourceMarkup(text,media);
+        content=ui.textSourceMarkup(text,media,acceptedQuote||'');
+        const projection=media==='message/rfc822'&&artifact.role==='customer_message'
+          &&acceptedRef?.source_id===`${detail.message.message_id}.message-body-projection`
+          &&acceptedRef?.source_version==='casepath.message-body-projection/1.0.0'
+          &&detail.state.binding.source_documents.some(source=>source.sha256===acceptedRef.source_sha256);
+        if(projection && detail.message.body.includes(acceptedQuote)) {
+          const bodyHash=await sha256Bytes(new TextEncoder().encode(detail.message.body));
+          if(!current())return;
+          if(bodyHash===acceptedRef.source_sha256) content=`<p class="cp-source-caption">Readable text from the verified email. The original file remains available below.</p>${ui.textSourceMarkup(detail.message.body,'text/plain',acceptedQuote)}<details class="cp-source-technical"><summary>Original email formatting</summary>${ui.textSourceMarkup(text,media)}</details>`;
+        }
       } else if(['image/png','image/jpeg','image/gif','image/webp','image/tiff','image/bmp','application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].includes(media)) {
         const descriptor=await packetMetadata(artifact,claimId,controller.signal);
         if(!current())return;
         if(descriptor.renderable){state.packetPreview={index,descriptor,page:1};content=packetPreviewShell(artifact,descriptor);renderedPage=true;}
         else content=ui.packetContentMarkup(descriptor);
       } else content='<p class="cw-note">This file type has no inline preview. Open the original file below.</p>';
-      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote?`<aside class="cp-selected-passage"><span>Accepted passage linked to this source</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+      const highlighted=content.includes('id="cpExactSourcePassage"');
+      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote&&!highlighted?`<aside class="cp-selected-passage"><span>Accepted passage linked to this source</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+      $('#cpExactSourcePassage')?.scrollIntoView({block:'center'});
       if(renderedPage)await renderPacketPage(1);
     } catch(error) {
       if(!current()) return;

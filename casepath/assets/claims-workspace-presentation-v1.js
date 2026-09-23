@@ -107,13 +107,14 @@ function canvasTrace(loop,detail,requestedId){
  const chosenBranch=fact?.state==='known'?node.branches?.find(branch=>branch.branch_id===fact.normalized_value):null;
  const chosenTarget=process.nodes.find(row=>row.node_id===chosenBranch?.target);
  const factStatus=chosenBranch?'Path selected':fact?.state==='unknown'?'Not established':fact?.normalized_value==='unresolved'?'Unresolved condition recorded':label(fact?.state);
- const factDetail=chosenBranch?chosenTarget?.title:fact?.label!==node.title?fact?.label:'';
+ const factDetail=chosenBranch?chosenTarget?.title:fact?.state==='unknown'?'The available information does not yet show which path applies.':fact?.label!==node.title?fact?.label:'';
  const obligationStatus=obligation?.status==='active'?'Source observation required':obligation?.status==='conditional'?'Only on this path':label(obligation?.status);
+ const obligationNeed=raw?.why==='A bounded source observation is required for this policy step.'?'A checked source must support this step.':raw?.why||'A source is needed for this step.';
  return `<section class="cp-canvas-trace" id="cpCanvasTrace" tabindex="-1" aria-labelledby="cpTraceTitle" data-selected-node="${h(node.node_id)}">
   <div class="cp-canvas-trace-head"><p class="cp-canvas-eyebrow">${h(statusText)}</p><h3 id="cpTraceTitle">${current?'Why this action':'Selected step'}</h3></div>
   <ol class="cp-trace-list">
-   <li><span>Process step</span><strong>${current?'Current decision':h(node.title)}</strong>${current?'':`<small>${active?'On the active path':'Explore without changing the claim'}</small>`}</li>
-   ${obligation?`<li><span>Obligation</span><strong>${h(obligationStatus)}</strong></li>`:''}
+   <li><span>Process step</span><strong>${h(node.title)}</strong>${current?'':`<small>${active?'On the active path':'Explore without changing the claim'}</small>`}</li>
+   ${obligation?`<li><span>Obligation</span><strong>${h(obligationNeed)}</strong><small>${h(obligationStatus)}</small></li>`:''}
    ${fact?`<li><span>${chosenBranch?'Branch condition':'Fact'}</span><strong>${h(factStatus)}</strong>${factDetail?`<small>${h(factDetail)}</small>`:''}</li>`:''}
    ${item?`<li><span>Evidence</span><strong>${h(evidenceStatus(item))}</strong><small>${h(accepted.length?`${accepted.length} accepted source passage${accepted.length===1?'':'s'}`:'No supporting passage accepted yet')}</small></li>`:''}
   </ol>
@@ -154,7 +155,7 @@ function semanticText(value){if(!value||typeof value!=='object')return 'Not reco
 function correction(loop,opts){const preview=opts.correctionPreview;if(!preview)return '';const item=loop.operational_projection.evidence_items.find(i=>i.fact_id===preview.effect.fact_id);
 return `<section class="cp-correction" id="cwCorrectionPreview" tabindex="-1"><div class="cp-section-heading"><h2>Review the correction</h2><span>Not applied yet</span></div><p>Withdraw the current support for <strong>${h(item?.title||'this finding')}</strong>.</p><div class="cp-comparison"><div><small>Current interpretation</small><strong>${h(item?evidenceStatus(item):'Accepted finding')}</strong></div>${icon('arrow')}<div><small>After correction</small><strong>Unknown · insufficient evidence</strong></div></div><p class="cp-helper">Only this finding and its dependent requirements are reconsidered. Unrelated findings stay unchanged. No replacement fact is created.</p><div class="cp-actions"><button class="cw-button cw-button-primary" type="button" id="cwCorrectionConfirm">Apply correction</button><button class="cw-button" type="button" id="cwCorrectionCancel">Keep current finding</button></div></section>`;}
 function fileKind(media){const type=String(media||'').split(';')[0];return type==='application/pdf'?'PDF document':type==='message/rfc822'?'Email':type.startsWith('image/')?'Image':type.startsWith('text/')?'Text document':'Source file';}
-function textSourceMarkup(text,media){
+function textSourceMarkup(text,media,selectedQuote=''){
  let body=text,headers='',rawEmail=false;
  if(media==='message/rfc822'){
   const split=text.search(/\r?\n\r?\n/);
@@ -164,7 +165,9 @@ function textSourceMarkup(text,media){
   const simple=split>=0&&(!type||type==='text/plain')&&(!transfer||['7bit','8bit','binary'].includes(transfer));
   if(simple){headers=head;body=text.slice(split).replace(/^\r?\n\r?\n/,'');}else rawEmail=true;
  }
- return `${rawEmail?'<p class="cw-note">Original email source · MIME formatting is preserved below.</p>':''}<div class="cw-message" tabindex="0" role="region" aria-label="Source text">${h(body)}</div>${headers?`<details class="cp-source-technical"><summary>Email headers</summary><pre>${h(headers)}</pre></details>`:''}`;
+ const at=selectedQuote?body.indexOf(selectedQuote):-1;
+ const shown=at<0?h(body):`${h(body.slice(0,at))}<mark class="cp-source-exact" id="cpExactSourcePassage">${h(selectedQuote)}</mark>${h(body.slice(at+selectedQuote.length))}`;
+ return `${rawEmail?'<p class="cw-note">Original email source · MIME formatting is preserved below.</p>':''}<div class="cw-message" tabindex="0" role="region" aria-label="Source text">${shown}</div>${headers?`<details class="cp-source-technical"><summary>Email headers</summary><pre>${h(headers)}</pre></details>`:''}`;
 }
 
 function fileTitle(a){return a.role==='customer_message'?'Customer message':String(a.file_name||'Source file').replace(/^\d+-[a-f0-9]{6,}-/,'').replaceAll('_',' ');}
