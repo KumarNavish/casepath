@@ -1,149 +1,100 @@
 # CasePath
 
-**Why request this document, on this branch, now?**
+### Ask for evidence only when the case requires it.
 
-CasePath's obligation controller makes that dependency explicit: assess the
-active scope, identify the required fact, check what the available evidence
-establishes, and derive a justified request or review. The claims workbench
-keeps original sources and handling actions inspectable alongside that logic.
+A plausible checklist can still ask for too much: documents for the wrong kind
+of case, or evidence the claimant has already supplied.
 
-Start with the [interactive method guide](docs/method-guide.md), then inspect
-the [exact comparison conditions](docs/benchmark-and-baselines.md). The guide
-runs an invented teaching example through the actual controller; it is separate
-from the 150-claim empirical evaluation. Read the [paired-study evidence](docs/research-evidence.md)
-for the paper’s measured selectivity result, its recall trade-off and exact provenance.
+CasePath connects each request to the requirement that makes it necessary.
+Language-model agents interpret the case; an executable controller determines
+the evidence needed. This repository includes the method, two studies, and a
+local claims workbench with 150 synthetic cases.
 
-CasePath is a local claims workbench for inspecting original sources, tracking
-evidence, recording handling actions, and replaying the resulting journal. This
-repository contains the complete standalone product, tests, release tools, and
-**all 150 original synthetic intake claims**. The default runtime is deterministic:
-it reads no model API key and makes no provider call. The current workbench also
-includes a persisted six-role **Agent review** chain with inspectable source reads,
-handoffs, gates, process/evidence mappings, and readiness checks. An external model
-may replace Facts only through an explicit, bounded developer path; it is never an
-automatic fallback.
+[Read the paper](research/casepath/iclr2027-integrated/dist/casepath_iclr2027_submission.pdf)
+· [Explore the method](docs/method-guide.md)
+· [Reproduce the results](research/casepath/iclr2027-integrated/README.md)
 
-For a manual ChatGPT Pro implementation session, start with
-[the Pro handoff](docs/PRO_HANDOFF.md). For local use, the path from a fresh
-clone to a useful claim journey is:
+## From a requirement to a request
+
+> An active requirement needs a fact. Evidence can establish that fact. A
+> document is requested only through that connection.
+
+The controller checks applicability, permission to acquire evidence, and what
+the available documents establish. Unknown conditions remain questions. Each
+request points back to its rule, required fact, and evidence route.
+
+Consider the [guide's invented repair policy](docs/method-guide.md): the cause
+of an eligible repair can be established by an inspection report, or by a
+service note and a photo together.
+
+| What the case contains | What follows |
+| --- | --- |
+| The repair is outside the policy's scope | No request under this requirement. |
+| Eligibility is unclear | Resolve eligibility first. |
+| Evidence is missing and acquisition is allowed | Request the evidence needed by the selected route. |
+| A report is present but has not been assessed | Review the report. |
+| The note and photo together establish the cause | No additional report is needed. |
+
+The guide contains 45 teaching examples, separate from the studies below.
+
+## What the studies show
+
+**Study A: change one fact in a household-theft case.** On 27 held-out pairs,
+the earlier CasePath planner made fewer incorrect checklist changes, with a
+recall trade-off. The reference requires 33 additions across these pairs.
+
+| System | Required changes recovered, of 33 | Incorrect additions or withdrawals |
+| --- | ---: | ---: |
+| CasePath | 24 | 15 |
+| Direct | 25 | 27 |
+| Graph as context | 31 | 41 |
+| Evidence-first | 16 | 52 |
+
+Errors shared by both checklists are invisible to this metric. Computation
+differed across methods, and the preregistered accuracy criteria were not met.
+[Study details](docs/research-evidence.md) cover uncertainty and how this planner
+differs from the newer controller.
+
+**Study B: keep requests within the right tenancy domain.** A retrospective
+comparison fixes the model's assessments and changes whether the controller
+enforces domain scope, such as rent increase or termination. Both versions
+produced outputs for the same 108 cases:
+
+| Requests across the same 108 cases | Without domain scope | With domain scope |
+| --- | ---: | ---: |
+| All requests | 1,445 | 652 |
+| Requests with a valid reference chain | 635 | 635 |
+| Requests without a valid reference chain | 810 | 17 |
+
+Scope removes unrelated requests here. These synthetic cases had already been
+used in product development. The original full-output evaluation could not bind
+reference conditions and accepted none of 1,050 scheduled cells; this later
+analysis does not replace that failure. Reference-chain agreement does not
+establish legal correctness. The [comparison guide](docs/benchmark-and-baselines.md)
+and [reports](research/casepath/iclr2027-integrated/README.md) explain the limits.
+
+## Explore the evidence
+
+| Start here | What you can inspect |
+| --- | --- |
+| [Study A benchmark](research/casepath/branch-benchmark/README.md) | Cases, predictions, and reference changes. |
+| [Reproducibility archive](research/casepath/iclr2027-integrated/dist/casepath_iclr2027_reproducibility.zip) | Inputs, references, outputs, failures, and replay instructions for both studies. |
+| [Synthetic intake corpus](docs/INTAKE_PACKET_150.md) | 150 case narratives and 57 attachments: 47 PDFs and 10 images. |
+| [Controller](casepath-api/casepath_api/obligation_control/obligation_control_v1.py) and [evidence planner](casepath-api/casepath_api/obligation_control/evidence_demand_v1.py) | The code that determines requests. |
+
+Reproduce Study A from the repository root:
 
 ```bash
-git clone https://github.com/KumarNavish/casepath.git
-cd casepath
-./bin/casepath prepare
-./bin/casepath dev
+python3 research/casepath/branch-benchmark/reproduce.py
 ```
 
-You need Git, `uv`, `lsof`, and either `lockf` on macOS or `flock` on Linux.
-The first `prepare` installs pinned Python 3.13.9 dependencies and therefore
-needs internet access. Later deterministic use requires no provider account,
-credential, database server, or cloud service. See [local setup](docs/setup.md)
-for platform details.
+This uses Python's standard library and recorded outputs. No model or network
+calls are needed.
 
-Open **http://127.0.0.1:4173/**. Search for a claim, inspect its original packet,
-start the assessment, and open **Agent review** to see the six specialists and their
-recorded handoffs. Evidence, process, correction, and next-action surfaces remain
-connected to the same authoritative claim journal. Stop the server with Ctrl-C.
-The journal, agent-work store, and registered artifacts remain under
-`.runtime/casepath-data-v1`.
+## Try the workbench
 
-## Useful commands
+Read a claim packet, inspect its evidence assessment, and follow its handling
+history. The research prototype runs locally in deterministic mode without an
+API key. See [local setup](docs/setup.md) for installation.
 
-```bash
-./bin/casepath prepare
-./bin/casepath dev
-./bin/casepath test
-./bin/casepath seed --corpus synthetic-150
-./bin/casepath replay <claim-id>
-./bin/casepath adapter-check examples/local_source_adapter.py
-```
-
-`prepare` verifies the committed source manifest before generating ignored
-artifacts or runtime state. It rejects an edited or incomplete source tree.
-After authoring changes, follow the exact [source sealing
-procedure](CONTRIBUTING.md#seal-authored-changes) before another launch.
-
-## What the package establishes
-
-The local workspace supports claim search, original-source inspection,
-assignment, assessment start, evidence actions, status export, and journal
-replay. Source bytes, observations, proposals, accepted actions, and read-only
-projections remain separate. A model proposal never establishes a decision.
-
-The operational workspace includes every original intake packet in `synthetic-150`:
-150 customer communications and their 57 attached documents (47 PDFs and 10 JPEGs).
-The original source bytes and claim identifiers are preserved. The operational intake package contains no sealed answers,
-expected outputs, evaluator gold, or selected process paths. Licensed research references
-are distributed separately in the anonymous reproducibility archive. The prior
-`synthetic-dev-60` package remains immutable for regression tests; it is not the
-main workspace. These inputs have now been inspected during product development
-and must not be described as untouched evaluation inputs.
-
-The packet viewer renders PDF pages and images from the original bytes, supports
-bounded Word text and saved spreadsheet-cell previews, and never turns a preview
-into accepted evidence. The original 150 inputs contain no Word or spreadsheet
-attachments; those formats are verified with separate synthetic unit fixtures.
-
-Deterministic tests establish product mechanics, not legal correctness, model
-quality, production readiness, or fitness for real claims. See
-[the intake-packet release](docs/INTAKE_PACKET_150.md) for provenance and scope.
-
-A real external Facts-worker acceptance has now been verified against the actual
-installed application. The accepted run used OpenRouter with
-`cohere/north-mini-code:free`, produced 6 genuine provider responses, completed
-through the same grounded tools and deterministic gates, and survived a later
-credential-free restart without another model call. This proves one bounded
-external-worker substitution, not general model quality or legal correctness. See
-[Agent review workflow](docs/AGENT_REVIEW.md).
-
-The Render services named in historical release records run an older, separately
-sourced release. This repository has no deployment handoff and the local package
-should not be judged against those hosted services.
-
-## Research: the ICLR 2027 paper and its evidence
-
-The claims-workbench behaviour above is the subject of *CasePath: An Agentic, Process-First Architecture
-for Determining Evidence Requirements* (ICLR 2027 submission). The manuscript source, every generated
-number with its evidence pointer, and the reproducibility notes live in
-[`research/casepath/iclr2027-integrated/`](research/casepath/iclr2027-integrated/README.md):
-
-- Study A: a branch-intervention benchmark (36 case pairs over 9 branch concepts, one changed fact per pair,
-  reference contract derived from the public sources) with built-in falsifiers; the frozen planner makes
-  15 spurious signed document changes on the 27 held-out pairs against 27, 41 and 52 for three implemented
-  comparators with unequal computation, while a preregistered broad-superiority gate fails and is reported.
-- Study B: the complete 150-claim corpus shipped in this repository, evaluated under a frozen
-  finite-corpus analysis contract. The original native interface failure is preserved. A separate
-  retrospective current-case comparison isolates inherited scope: protected-family reference-chain
-  precision is 0.732 with scope versus 0.318 without it, with a positive conservative paired benefit
-  of 0.103 after penalizing unavailable pairs. This is not new hidden confirmation or primary success. The evaluated case identifiers are exactly the 150 claim files
-  the product loads from `casepath-api/casepath_api/corpora/synthetic-150/claims/`, and the verifier below
-  checks that identity, so the paper measures the corpus this repository ships.
-- [`research/casepath/branch-benchmark/`](research/casepath/branch-benchmark/README.md) ships the
-  benchmark itself, the recorded predictions of all four systems, the frozen scorer and statistics,
-  and a single offline command that recomputes every Study A number and diffs it against the
-  preserved report: `python3 research/casepath/branch-benchmark/reproduce.py` (about seven seconds,
-  no network, no API key and no third-party packages). `explore.html` in the same directory reads the
-  benchmark case by case and opens straight from disk.
-- [`research/casepath/verify_release.py`](research/casepath/verify_release.py) verifies the whole
-  release in one command: Study A reproduces, the paper's numbers regenerate unchanged and match a
-  fresh recomputation, the paper builds within the page limit, and the submission stays anonymous.
-- [`HANDOFF.md`](HANDOFF.md) at the repository root records the verified state of both studies, every
-  artifact path, and the open gaps; [`SUBMISSION_CHECKLIST.md`](research/casepath/iclr2027-integrated/SUBMISSION_CHECKLIST.md)
-  lists the submission steps.
-
-## Documentation
-
-- [Documentation index](docs/README.md)
-- [Local setup and first claim](docs/setup.md)
-- [Manual Pro implementation handoff](docs/PRO_HANDOFF.md)
-- [Architecture and authority](docs/architecture-authority.md)
-- [Agent review workflow and acceptance](docs/AGENT_REVIEW.md)
-- [API and configuration](docs/contracts-api.md)
-- [Troubleshooting and recovery](docs/troubleshooting.md)
-- [Contributing and source sealing](CONTRIBUTING.md)
-- [Migration provenance](docs/migration-provenance.md)
-- [Validation record](docs/HANDOFF_VALIDATION.md)
-
-The existing [LICENSE](LICENSE) is preserved from the source repository. See
-[third-party notices](THIRD_PARTY_NOTICES.md) for bundled data and dependency
-licensing.
+[License](LICENSE) · [Third-party notices](THIRD_PARTY_NOTICES.md)
