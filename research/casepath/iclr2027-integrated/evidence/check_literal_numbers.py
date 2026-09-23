@@ -17,7 +17,7 @@ for name in files:
     for line_no, line in enumerate((root/name).read_text().splitlines(), 1):
         if line.lstrip().startswith('%') or re.search(r'\\(?:includegraphics|setlength)\b', line):
             continue
-        text = re.sub(r'\\(?:cite[pt]?|ref|label|eqref|input|path|texttt)\{[^}]*\}', '', line)
+        text = re.sub(r'\\(?:cite[pt]?|ref|label|eqref|input|path|texttt|url)\{[^}]*\}', '', line)
         text = re.sub(r'\\[a-zA-Z]+', '', text)
         nums = re.findall(r'(?<![A-Za-z_\\])\d+(?:[.,]\d+)*(?:\\%|%)?', text)
         nums = [n for n in nums if n not in {'1','2','3','9'}]

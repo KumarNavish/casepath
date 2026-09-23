@@ -10,9 +10,9 @@ The local workbench opens all 150 synthetic intake claims. It keeps source files
 
 ## See one claim
 
-After starting the app, open [a family-home termination claim with two original notices](http://127.0.0.1:4173/#claim=clm_f69b1747447bc221). Read the message and both PDFs in **Sources**, then select **Start agent review**. **Decision** shows the current process step, evidence to check, and next action; **Evidence** shows what is present, missing, or unresolved. Select a requirement to inspect its reason and any accepted source passage. Nothing is sent to a customer or settled by this review.
+After starting the app, append `#claim=clm_f69b1747447bc221` to the address printed by the server. This opens a family-home termination claim with two original notices. Read the message and both PDFs in **Sources**, then select **Start agent review**. **Decision** shows the current process step, evidence to check, and next action; **Evidence** shows what is present, missing, or unresolved. Select a requirement to inspect its reason and any accepted source passage. Nothing is sent to a customer or settled by this review.
 
-The [corpus browser](http://127.0.0.1:4173/corpus.html) lets you read all 150 original messages and their attachment lists before starting a review. It uses only observable intake inputs; study labels and predictions are absent.
+Select **Data** in the workbench header to read all 150 original messages and their attachment lists before starting a review. The corpus browser uses only observable intake inputs; study labels and predictions are absent.
 
 The [interactive method guide](docs/method-guide.md) gives a smaller teaching example: a repair may need an inspection report, or a service note and photo together. Changing the active condition or the available evidence changes the request. This authored example explains the controller; it is separate from measured benchmark cases.
 
@@ -20,14 +20,14 @@ The paper's Study A method is installed as a separate service. It uses the froze
 
 ## Run it locally
 
+Download or clone the repository, enter its root, then run:
+
 ```sh
-git clone https://github.com/KumarNavish/casepath.git
-cd casepath
 ./bin/casepath prepare
 ./bin/casepath dev
 ```
 
-Open <http://127.0.0.1:4173/>. The first `prepare` installs pinned Python 3.13.9 dependencies, so it needs internet access. Local use after preparation needs no provider account, API key, database service, or paid infrastructure. You also need Git, `uv`, `lsof`, and `lockf` on macOS or `flock` on Linux. Stop the server with Ctrl-C. Saved claim and review state stays in `.runtime/casepath-data-v1`; use a fresh clone for disposable tests. [Setup](docs/setup.md) covers replay, export, safe reset, and platform details.
+Open the address printed by the server. The first `prepare` installs pinned Python 3.13.9 dependencies, so it needs internet access. Local use after preparation needs no provider account, API key, database service, or paid infrastructure. You also need Git, `uv`, `lsof`, and `lockf` on macOS or `flock` on Linux. Stop the server with Ctrl-C. Saved claim and review state stays in `.runtime/casepath-data-v1`; use a fresh clone for disposable tests. [Setup](docs/setup.md) covers replay, export, safe reset, and platform details.
 
 ```sh
 ./bin/casepath test
