@@ -226,6 +226,26 @@ def test_handler_condition_note_is_recorded_withdrawn_and_replayed(tmp_path: Pat
     )
     assert refused["replayed"] is False
     assert facade.view(claim_id)["loop_state"] == before["loop_state"]
+    current = workspace.store.recover(claim_id)
+    confirmed = facade.record_handler_observation(
+        claim_id, kind="passage", target=passage["source_entry_sha256"],
+        verdict="sufficient", note="I verified this date against the full notice.",
+        expected_workspace_revision=current["revision"],
+        expected_workspace_state_sha256=current["state_sha256"],
+        idempotency_key="workspace.handler.sufficient.0001",
+    )
+    assert confirmed["replayed"] is False
+    assert facade.view(claim_id)["loop_state"] == before["loop_state"]
+    vacuous = next(row for row in before["finding_options"] if "end date remains unresolved" in row["quote"])
+    current = workspace.store.recover(claim_id)
+    with pytest.raises(WorkspaceClaimLoopError, match="cannot establish"):
+        facade.record_handler_observation(
+            claim_id, kind="passage", target=vacuous["source_entry_sha256"],
+            verdict="sufficient", note="This is not a date.",
+            expected_workspace_revision=current["revision"],
+            expected_workspace_state_sha256=current["state_sha256"],
+            idempotency_key="workspace.handler.vacuous.0001",
+        )
 
 
 def test_selected_pdf_end_date_advances_without_accepting_unresolved_message(tmp_path: Path) -> None:

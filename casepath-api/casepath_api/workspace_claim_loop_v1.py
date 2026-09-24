@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import stat
 import tempfile
 import time
@@ -2584,7 +2585,7 @@ class WorkspaceClaimLoopServiceV1:
             self.what_if(claim_id, condition=target, verdict=verdict)
             quote = source_id = action_id = None
         elif kind == "passage":
-            state, events = self._normal_snapshot(workspace_state)
+            state, _ = self._normal_snapshot(workspace_state)
             package = state.accepted_artifacts.get("observable_package")
             policy = package.get("workspace_evidence_admission") if isinstance(package, Mapping) else None
             entries = policy.get("source_entries") if isinstance(policy, Mapping) else None
@@ -2593,21 +2594,14 @@ class WorkspaceClaimLoopServiceV1:
                 raise WorkspaceClaimLoopError("handler passage is outside the admitted sources")
             entry = matches[0]
             quote, source_id = entry["exact_text"], entry["parent_artifact_id"]
-            if verdict == "sufficient":
-                matching_events = [event for event in events
-                    if event.event_type == "OBSERVATION_INGESTED"
-                    and any(
-                        ref.get("source_id") == entry["artifact_id"]
-                        and ref.get("span_sha256") == entry["span_sha256"]
-                        and ref.get("text_start") == entry["text_start"]
-                        and ref.get("text_end") == entry["text_end"]
-                        for ref in event.command.get("observation", {}).get("source_refs", [])
-                    )]
-                if len(matching_events) != 1:
-                    raise WorkspaceClaimLoopError("mark sufficient requires an accepted source observation")
-                action_id = matching_events[0].command["action_id"]
-            else:
-                action_id = "handler-passage"
+            if verdict == "sufficient" and re.search(
+                r"\b(?:unresolved|unknown|unclear|ungeklärt|unbekannt|cannot|can't)\b",
+                quote, re.IGNORECASE,
+            ):
+                raise WorkspaceClaimLoopError(
+                    "a passage saying the fact is unresolved cannot establish it"
+                )
+            action_id = "handler-passage"
         else:
             raise WorkspaceClaimLoopError("handler observation kind is invalid")
         if not isinstance(note, str) or len(note) > 1_000:
