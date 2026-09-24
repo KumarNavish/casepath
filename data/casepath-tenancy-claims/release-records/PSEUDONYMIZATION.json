@@ -1,0 +1,1507 @@
+{
+  "description": "Each customer message named the intake mailbox of a real legal-expenses insurer as its recipient. In the files below that recipient string was replaced by a fictional one of the same UTF-8 byte length, both in the raw message file and in the base64 copy and sha256 field inside the claim JSON. original_sha256 is the SHA-256 of the replaced string in UTF-8. evaluated_sha256 is the hash recorded in benchmark/manifest.json before the evaluation. Run python3 verify.py --restore-recipient STRING to rebuild the evaluated bytes.",
+  "replacement": "Example Rechtsberatung <fallaufnahme@example.test>",
+  "original_sha256": "4e1015750265569e9f70c0ae011eb04cbf08db986793ece81b01310d9390b156",
+  "files": [
+    {
+      "path": "benchmark/data/dev/claims/clm_0b431bbf8391ce3e.json",
+      "evaluated_sha256": "496a7ff04d465f2b0e89327e71b6778de5311b35a197bf5f2432fc31a69cb043",
+      "released_sha256": "cfeb90b689a295b1ab2ef7a2a3f7f37c2b4d44ee46deb80dba55924452df4c9c"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_0c373e693a363f9e.json",
+      "evaluated_sha256": "f7954e0e07724f355f9cb70f92a654ea0856866035d283a87ce11617b3670e62",
+      "released_sha256": "00fb18500098e9651c66f7d983c7820d6d51e0297389a723b83f9656032997cb"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_0e11979130681bd0.json",
+      "evaluated_sha256": "abbd9812f500a7747a0049d009c7fc859145b25342d755d27e1cf0c395c2917d",
+      "released_sha256": "1d62358389735ad5254f8872af2cd33fb0cbe717f58811b26bed17995e883948"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_136438c6463a5721.json",
+      "evaluated_sha256": "b1885526d4aeed1a35bf35e8f44a3b639206d1111d989b88c3a61ee62de252d7",
+      "released_sha256": "9d03db4cf6c030ee45366e3173aa9e51fbbced37d73d3e5fa452549b95f6fd38"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_16ac3b7054d73cc0.json",
+      "evaluated_sha256": "b6f28e162e193d9f5eadfb079b574c03f5bbae19406291a0554ba1aacfc424cf",
+      "released_sha256": "e296e0622a05988121bc3305a929867607dcf1530e8ff95349e0c44446781d46"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_1afd6bbf29e6539a.json",
+      "evaluated_sha256": "ac665b56f05f4fe30fee1051c2d396e859203e590a8b5f9c520d78ac87afc1f9",
+      "released_sha256": "f67e26aa648a6e7c92412fc5088848d3335311eef0c59d1a1e97dcfe35c2825c"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_280ce47169bdff61.json",
+      "evaluated_sha256": "d497c6b0f5dde0b29e941b11718c467695181aa1529e42a21531054caeefda91",
+      "released_sha256": "f1dc73c4f305cce1571abb557598b6a4ab7274310d9ccdd9a15d3584d25fcd77"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_2a9c260c26afaa34.json",
+      "evaluated_sha256": "206d87c99890b809f83942f69b7247fa2711eb3c3aa526e76efd923163a2f4df",
+      "released_sha256": "f6ba2af218c8da562ff8006d654603cc7f5bfdf24fc87a951359d02c75ad195e"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_2c55cdd816b1d0e8.json",
+      "evaluated_sha256": "6cbcf2a3f1296f0dbc3d8d090e7d044cdb4b606d9e531bb884743f0c974d24e3",
+      "released_sha256": "8f58885c52d153e2314987a3f34def89329f242cd0bc542f655b604ee2ab1472"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_2e6d8907d83dae8f.json",
+      "evaluated_sha256": "c3f3f65dda218b97c94907fa54fea875f40f1862c002a69eb25492b5485e7d17",
+      "released_sha256": "d2d93f79d977af62762ea52936f6903c3536a242d82e9f9a69c772b8f2ad0ec3"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_314f2d309fea25e6.json",
+      "evaluated_sha256": "2ad7c261d17aa37a3fa789611edc709795a4e7ded9d12e99370a83c524cd4acc",
+      "released_sha256": "7e60a6a4171fa4b67891bacace26df8c2a99b84d6908d22b220ae6193123895a"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_329b8e1bf37554bf.json",
+      "evaluated_sha256": "056505a340a69588b28d1c85182916280f48bab21b2bc3f946c6fe19aaed9544",
+      "released_sha256": "adfa2de5cb247e20d8e8013bbd3083421a58400ef8bcd3ca8c9e6d3254d86e15"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_366b82c3e3dd7442.json",
+      "evaluated_sha256": "6960249df1169cab967709ab5bb985fcff01a655febb66af90ca3ab01744e8c0",
+      "released_sha256": "e6e23653efb7cb74c623fe8d38ad92c9516d5a7a0d31ef57655e426ee2cf2d3c"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_37909940906c3d22.json",
+      "evaluated_sha256": "a6cf011dc11e55ea96153b03960f109c06a248d850a24fa3d959d362d7fa434b",
+      "released_sha256": "364532db720d757542803191947226f59cf44537fdee93d0fefb13469e9f2a2f"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_3f3c313482ea5657.json",
+      "evaluated_sha256": "2fef06ae203513cf94c691f6c6b815b925fcf8d75adc5afc94c57f7c629fb085",
+      "released_sha256": "519282615f1b0dbf6937c9fae8bf717677208b30f9956f190fb7bf922b7139f1"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_434b9dace61705ce.json",
+      "evaluated_sha256": "be65728698bfb2d549fb4f75a2cfbad747954f4c93bfe0181245786c03fd7b94",
+      "released_sha256": "4af00a5dad6afa9a4271dc8f57485026ae2f9b8ce4fa974ebee45a695039fc1d"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_4a07dbbbd859a3ce.json",
+      "evaluated_sha256": "9c180ef40e8ae1b986c84948f7849bbf2575881b776806ea765298a82456a552",
+      "released_sha256": "3cab52cf4fc0946b909172aaa125faecca94a56bbb1dbb3131a337516d73e6e1"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_505e3fc9e90f61fa.json",
+      "evaluated_sha256": "db96058c1466be4c9d63951c1023a2ef9c35e5daead249dd8ee4a1b9033a82b1",
+      "released_sha256": "eba7c6f307143f292b9a480f8f3d854ed1b02674778962410467cf93bb33a175"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_5156de89a4189cd1.json",
+      "evaluated_sha256": "2825639d0c6c071eb0511d199e61702f808f635e85fc513cc811f3d638e8c943",
+      "released_sha256": "bc8e1160a0734d534fa752a046deed2b85f874594f023b1b9a8da9848450c8b3"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_521c20913f4e0f9b.json",
+      "evaluated_sha256": "fa1afdae83bcf277e1e7df91696fa18aefe534c1bc8f329d951c690d619cfc19",
+      "released_sha256": "1db39ffd2946b21af6ff37cf799ed8447364529a299fca40ef43f7d24295d02b"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_526d6c802e28b1da.json",
+      "evaluated_sha256": "4697368e716be362685031984be73927bd580c24a1ce0777ec03ae8021b83058",
+      "released_sha256": "c2de5a765e0f859f54379a7e9ebd5a37ada422717098062909f75e083593fbb5"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_53b7982ac9bc1a95.json",
+      "evaluated_sha256": "fa4167dffe9c0938e2af1de803b02006940ff9af34049e7cbec59dd7b2baab98",
+      "released_sha256": "e25186a1a67fe277a2c612a2691cb44ce46406dd1aebaa7a80cd181cd220b29e"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_53e9ef7917c4ae36.json",
+      "evaluated_sha256": "f8c0cbda22e7fb38744cd7c15ee46791bae37e896120a329cdb468d7f8b4eb89",
+      "released_sha256": "e51556b5bbe7bc243b4d386c992bac508a781382e77121a2a731ee5cfe466799"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_543f08f2415b2a33.json",
+      "evaluated_sha256": "f0ccd0fa6d827b4f5b7b016f17885307a9eff2c3de428f33b900edffb71a15cb",
+      "released_sha256": "4e6dba45416d7000334041f8205e079cfcec72a1f610d326a472bd36fdadc81a"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_6f04d0907ecb96bb.json",
+      "evaluated_sha256": "6353555e3b1ed476349cda955f80388ec299d8b0eed933507fa12f4488d08b34",
+      "released_sha256": "276e0ecff85fce377f3b2fc3d9b37716ce31fd66d247da30a6558668f7db4e2f"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_7255037b122de8a3.json",
+      "evaluated_sha256": "6655306e62b3dd30ff0e818aee4c39a4fb7ce3bdb703f15f257e3c78cfcc3a44",
+      "released_sha256": "9b226c0cdb97b6b572fcf3b2032f202c0e093db501d468aba9694d659b454a2c"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_79beea0ce763d9b8.json",
+      "evaluated_sha256": "c5020d7d7e86d7f1d1150b0bbbd808e6618290c78dddcbc24a0bea064f2a63d5",
+      "released_sha256": "54fd6955e673de84251b1827599475c53494b0d3e03278a88c97b93a7c03f7ee"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_7db24a8ce46c8c50.json",
+      "evaluated_sha256": "308f0cec4b6e8232ce95bdc94a7c684c57d71fde176f045f8abb8b7dd6949f9e",
+      "released_sha256": "84443fb0ecbb667f4381fdfc68a90ebcb9720565fb65f8d5d16b71a5cc0d2c9c"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_7dbd7c7d1c4ddf90.json",
+      "evaluated_sha256": "13fe9b0dd05b1e5ea520065d9725cb1b9428e02ea28cb17c63fc1ed94d7a64c9",
+      "released_sha256": "565fe27559dcb8400ab006fcc1482779a4e81d5705bfbbb243ab7464f881eeb3"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_7eb9780fa5d65658.json",
+      "evaluated_sha256": "d68e59bbc005ad0ef0de95c94520beb0288c1b841e354542d64c052461867f54",
+      "released_sha256": "1376fe69d78a38390a1ebc8d31e8bbb84ed899454195f00b921cc0189a62e8a6"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_95d08975bc575592.json",
+      "evaluated_sha256": "7156efa59615334b267af09d6ca41368951bb5b7e519a5e4aedf1f41cc10bb80",
+      "released_sha256": "7a6e3a7764d684f23916f8cd2204ad1305db5d8d345740b34c0075a4151ec157"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_99cc6719f9923d03.json",
+      "evaluated_sha256": "796f4f9e138ca7ea6b98cb2b4938ec5b585b03ee70c7c006d60d1b90a3d41607",
+      "released_sha256": "41253475dec7fcf55f3d4e4833a9a3490a0df729d75b5f39b5b362ca79d3996f"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_9a179a4481767d43.json",
+      "evaluated_sha256": "d226fd384edfc4c4214785e2b5f6c920b7dc3e8f6cbcfb41605517c57eff51e8",
+      "released_sha256": "eb1cedcd62de71c0292983fc2a3522901c597efbc93331632051e41300e42f47"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_a31f0d7e70441f32.json",
+      "evaluated_sha256": "fdcd7143bbb9a0a7e4c81da664684327fd1b29dc1fc37be005c68ef20ae689f4",
+      "released_sha256": "b08c1c62f46e4508a005b1ccb2fd05c6eb2aa0ecd709fd80a14fb07bba7ee82e"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_aba6faab059a697e.json",
+      "evaluated_sha256": "3c0d37ffd7a547c274d718f409a76b37843d4220c5cbbf74f3d981b0df9a10d8",
+      "released_sha256": "9a06cb4eb0a3711516c016f0392ed74fb8aa22590f801b35ba6c98633e98c6a7"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_aeab1f696a63e3f4.json",
+      "evaluated_sha256": "c7fb343b4795ff1836fb59b724e0db845d8dc92379e493a0b49e14befa09a40f",
+      "released_sha256": "d5612f0cc883fca4ed404cc3cd963052d253bc74b7d63cabd93d283a2b3d62db"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_b14c5e2b8f9620a8.json",
+      "evaluated_sha256": "9b4a70768da554fe95f7e4d095a7fcef5eb046ecd069012a37eefefcc83124fc",
+      "released_sha256": "432da5d9a2383f2d485da7d0a091e6d79b8b1754c16acb091ebb6eb92254dbb1"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_bbe4806aa3607ee3.json",
+      "evaluated_sha256": "09ddf9fb930917b5f0eb0dbb8fcf20b551e0f5a42f94d3f437ec07d4f22b7eb0",
+      "released_sha256": "30c2839d0d1245d8d7136edaf1b07def0ce450c85aa74aa6564713d1a2f6049d"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_bd74de2a73d9e05a.json",
+      "evaluated_sha256": "7a6a417f391603f4774938d46a33d1797d639cbf500b3662553c03bb441a5c2d",
+      "released_sha256": "43c1f7226eaf65f4c0e18220d867270df37373cd2ebb2ff755945b9740e555f4"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_bdb9322222de3810.json",
+      "evaluated_sha256": "376cbf210f5477743e22490b6bdb8b7cb64d319dea4d2bf461a38631b2086585",
+      "released_sha256": "78f740daa00a6b14a1e0c058135a5b99203b51d405054d98edf7b02d9f35d484"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_c10b97ecdfea47f5.json",
+      "evaluated_sha256": "4f0cbeba87d8c99a55e8c9e706a747123ef33b3f5a085590756a00668a55121f",
+      "released_sha256": "c8c200fdc61d8f0d65fce5958e2f008160c29901f30b4c4869b2bf25055f91c2"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_c50db5a1837bf4e3.json",
+      "evaluated_sha256": "15ef6da411384797c41f32016e933cd8e433e0c000967bd8d8e056f8a0d1252b",
+      "released_sha256": "a843eb576f22a304eadafe0545d30a40aedb14622d8f33e75d86121295713e00"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_c7ffe208c9390ad5.json",
+      "evaluated_sha256": "36d8c0c39ca298edeebd8cccf4509d56fd8275c9234b8bd0b615aae0bda48281",
+      "released_sha256": "ed8e467ce3734442449aed96bdfc7f1d5a1b4ef6e5b6046d9cacb7310516dbac"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_c9a03c7ad06533fb.json",
+      "evaluated_sha256": "5a7cbee0a6ff638175885e6fcafe632c462f4901ebc64aef0239df7f531499c8",
+      "released_sha256": "96d7bc88256d98c8debde7ed4eb5783d76d3693c7336c6ee7e106eacb369fdee"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_cf91859f633a8189.json",
+      "evaluated_sha256": "4ae9c817a5d3b1ca7ccb83c76856e8d2700acaa90c36e8b72b40d00565075c60",
+      "released_sha256": "99a23b915f8e99f50b22fa71fdadc50c087296dc161a63b220956bb6f6f2dfc5"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_de7ddb30509c2358.json",
+      "evaluated_sha256": "7f9be9110dbe835465a8e03537ffda64e7a40b7dc554b2955c2ec11dd982a8f3",
+      "released_sha256": "dbea03053c013738f6dfd8c32ba15de09461662df9d2dbb97076148530c669b1"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_e262801f9368bc12.json",
+      "evaluated_sha256": "1a3e6b0dcbb3319460d5c465e6e10d3c2fa30d21a155465cb3c742b8385f4305",
+      "released_sha256": "432881b32c6c3744fe3b4029ac66ed48de68a14e2a30fe2165ca89452fc071c6"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_e331d769683c8207.json",
+      "evaluated_sha256": "23f4ac4a5fe7ccf9b5f44f6b82b4aa3a02ecc6a09b6408a26aa31af562350634",
+      "released_sha256": "d1054db692d40846199533427a4688648a0010b6d129591ff7f02cd545d77886"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_e3e0212c8bdc4fb5.json",
+      "evaluated_sha256": "b21b52161d89c70d38d7e9ce4591aec4c63574fdae1f5fdb3a978e0beca8808e",
+      "released_sha256": "e0c3c4a321b017f47f8bbd72544f58b100ade7b6f77b3929ced7ec20626cd811"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_e790e7cc236593e3.json",
+      "evaluated_sha256": "a52b898c4f2422627094965d149e1a2a5edd96131b6c73f43a53a1a6a56e5b58",
+      "released_sha256": "72dd487b89c242d1fd6b28ecc2348ae9d90644c8cf52dc9d8c28ae6d4fc705af"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_e9ab4f62e362fee3.json",
+      "evaluated_sha256": "d5ebed4017db41d2f70735cd4fef12970d9a30a724d980f6d1a1ff1d4af6f347",
+      "released_sha256": "996e16de213bcba138ab24a79661ca0353d44cb2ed4955c0991e28ea77ebe0ba"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_ec246327ccda00a0.json",
+      "evaluated_sha256": "c9e42a481fd5d210a50b0a74dae38343388bf6d98ef3a234502dbe3c4eb46766",
+      "released_sha256": "f0a3072e5f5772d56caac31349bb596a9b56dbf0637ea868efafdbbb74e797c9"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_ee0cd23eb1730f9d.json",
+      "evaluated_sha256": "cb4974ad8b20a1eeea3843b97ea93df3bcc381330072b1ee9a9ac66ba54e6c7f",
+      "released_sha256": "832e831d5d544b5dbdf7ef75742c2647d342b2ddaf4e97d554cef9d92d38f78c"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_ee29ac770b1bf7b9.json",
+      "evaluated_sha256": "c7ec12ee2e5e54d9d9f93fff9c203087acb492b40bb37e158d1833a0db909bb6",
+      "released_sha256": "ce979e74a5159f1a47cc09c8adb445d99a6b1ce658355e40571d999f04203cf3"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_f14f53b1f55c294f.json",
+      "evaluated_sha256": "b8b6a75ffda8acd08c83862adae00e31c832e638d9178426a3a8d0098cad82f2",
+      "released_sha256": "cc732a26e4d84b6a362dc78b9db0d8f258ed0727919a9f58b6450bc7ff0c9741"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_f58dd10e77d46554.json",
+      "evaluated_sha256": "b391732260b0d7b7027c9f44cfddd2995aafbeda6d6d5fee2df4cc3399c3003d",
+      "released_sha256": "ddccbbc5689724503fcbb8337262e50e26f394d6590815f8e8be2aabe5108498"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_fc970e956872f431.json",
+      "evaluated_sha256": "ed304c1ca5f2b1efa999ef092f111f8999b34c7035876d1a2d549e764c14555b",
+      "released_sha256": "533d57d22ae10d9f0d2025cae7d1348b74f55bf2b5e4f7d6a2a5905d2b7d1a3b"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_fd8e5004c663cecb.json",
+      "evaluated_sha256": "b186088f14a935d76dc5360805020b056b0f1e7590c8b604ab00644f687e5c0a",
+      "released_sha256": "9952c615c0e51fc33bee81e3f31d4d070f6677c7bd9aa74e43eeafd0efc0ac68"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_fe914f68772c8f3b.json",
+      "evaluated_sha256": "98fe5719a988d4c47073a422027ce3b124469db303fc46562ebfadc1471df99d",
+      "released_sha256": "4bffbfe871875562fadf44c5daca85e959fb0a8f61bb871d504e0e4cab306ebb"
+    },
+    {
+      "path": "benchmark/data/dev/claims/clm_ff0434f401f4c442.json",
+      "evaluated_sha256": "13d4490c23c1145e9c83c75f3ec02915f262e0bec6d708dc6062f816568882e7",
+      "released_sha256": "522eb87e4902fe09365467f5081865cb01aa13b46d67cdcd150c960405f7ba50"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_0b431bbf8391ce3e/00-Unusual-circumstances-repeated-boiler-failure-during-freezing-weather-in-a-vulnerable-household_2025-01-12_1100_0904f7.txt",
+      "evaluated_sha256": "3fe698dce6b9e8ec48e056a7968a180cc9418863619c5c2e74442a4590a122c3",
+      "released_sha256": "cd14ecfc43693a2898ef60dc1723c2852c945a8fc25766a5975659e379621d34"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_0c373e693a363f9e/00-Request-for-a-detailed-review-conflicting-evidence-about-allocating-a-renovation-grant_2025-07-28_1000_171df9.eml",
+      "evaluated_sha256": "f895c8449639cdff40bf04cd262faee4abfa4bb82ceb3e2ab4169a0295da7c2f",
+      "released_sha256": "72250119c390dbd3d2ae2a473875556db065153c135296f5b93857b3451cf917"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_0e11979130681bd0/00-Documents-still-missing-arrears-termination-with-a-disputed-payment-time_2025-08-24_1000_55a1a5.eml",
+      "evaluated_sha256": "2996b6f17f9dabc3c69d92fb565ef9b65d161501e8dd36c3240604bd7e2338b6",
+      "released_sha256": "aa4cefb093a16fa597833c6379c5c11e58c351e83407a0e14d3c36ed8c847a22"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_136438c6463a5721/00-Besonderer-Umstand-Kuendigung-wegen-Zahlungsverzug-mit-streitigem-Zahlungszeitpunkt_2025-03-03_1200_514233.txt",
+      "evaluated_sha256": "98de7646c970dc935048cf384a2050aa33d660ca73f3ba2714bf0c6b86f62094",
+      "released_sha256": "65dba5c58acea795c096314864a36bfe785a1097d6ee98508ca49ccf8e62ce79"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_16ac3b7054d73cc0/00-Chronology-still-unclear-uninspected-dampness-with-disputed-access-at-scheduled-visits_2025-08-30_1100_ca9dda.eml",
+      "evaluated_sha256": "5ff4b210913e9640cd2826896f02435b318baf65bd951f9e8e27bde723ff472f",
+      "released_sha256": "cab477cf96252c39ab72ff1f00e1dfd80d2789c281ff5fc4e9214d6dcd2185f3"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_1afd6bbf29e6539a/00-Several-details-remain-unclear-arrears-termination-with-a-disputed-payment-time_2025-02-04_1100_843561.eml",
+      "evaluated_sha256": "52a50d0f35dc3ba0671c50fe066675d9561c99c4bf8e8a4cd47e8c2303707a65",
+      "released_sha256": "1f6f92458966e6be510862c44646fe3ac8a913dbef8849d23b6b8e6f1b8030e4"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_280ce47169bdff61/00-Unusual-circumstances-arrears-termination-after-a-mixed-demand-and-unclear-payment-allocation_2026-05-10_1100_906b3c.eml",
+      "evaluated_sha256": "9cdaff859217cc36ceab827c1ac07d8ab086010e1631278deb986b915e0ff6da",
+      "released_sha256": "16eb9c515bc432856c737abb6e1235a39188a0ef1a73205cc7d024175bf030b7"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_2a9c260c26afaa34/00-Request-for-review-arrears-termination-after-a-mixed-demand-and-unclear-payment-allocation_2026-05-12_1000_abc2b8.txt",
+      "evaluated_sha256": "f72f011ef64ed3c2d9273dcca98fa0851f929dadf79ccb04d32a47964af6523e",
+      "released_sha256": "2341ddefeb0e1370663a835235f3a7e716039d52db24af7af70305a5172b7d9e"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_2c55cdd816b1d0e8/00-Mehrere-Angaben-sind-unklar-amtliches-Erhoehungsformular-ohne-eingetragene-Begruendung_2025-11-23_1400_c712ca.txt",
+      "evaluated_sha256": "748837e982b5986188a7a9095bc31b58253a7665fa5d80db67e184072956a70d",
+      "released_sha256": "308227f8ccbcacc340d8cb08a23eab650f37214631fa888880cefe1dbd724373"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_2e6d8907d83dae8f/00-Request-for-review-repeated-boiler-failure-during-freezing-weather-in-a-vulnerable-household_2025-02-07_1300_a3f8d1.txt",
+      "evaluated_sha256": "9fa619c6810ba1f27b3b1c50fc99183d586e929915418f6784fe447a3c06a53c",
+      "released_sha256": "265cf070002937958bc796faddb68f877b09b2780b54b0fabcfba1401ceb0564"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_314f2d309fea25e6/00-Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt",
+      "evaluated_sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2",
+      "released_sha256": "cf03ba1b7b4cd2945ed72b2a56663115f347c4ac515eefa9c2f972608aea1b64"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_329b8e1bf37554bf/00-Several-details-remain-unclear-conflicting-evidence-about-allocating-a-renovation-grant_2025-08-27_1000_1e46e2.txt",
+      "evaluated_sha256": "ee2a5ee66c9efb5523324c7486f2a91d44198a637ba50431feafe76f715696d2",
+      "released_sha256": "508ac8c79d32068c63aaa36aa573e24c31dc83883edc8dfbf4fc8ca0da88fb15"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_366b82c3e3dd7442/00-Unusual-circumstances-officially-notified-increase-with-an-apparently-retroactive-start-and-uncertain-receipt-evidence_2025-09-27_1000_ca46c1.txt",
+      "evaluated_sha256": "56ff439e5b4e035aeb33cbd92aaa840bec64d870223a2eb37d5321dfa9709068",
+      "released_sha256": "20f13ffc59d0ec6bb22c81a85f955248381310e16f160f08e5de05a069ddbad8"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_37909940906c3d22/00-Bitte-um-Pruefung-bestaetigtes-wiederkehrendes-Wasserleck-nach-abgelaufener-Reparaturfrist_2025-09-21_1000_1c7f4d.eml",
+      "evaluated_sha256": "a8a7a6e87e152dfd2768808210271182fff8c8db92397564fb86acb715749b02",
+      "released_sha256": "399cdb5d2cf9c536005da75a6611a578b79530f41216fc49a1b6b9de13443b17"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_3f3c313482ea5657/00-Bitte-um-Pruefung-amtlich-mitgeteilte-Erhoehung-mit-rueckwirkend-wirkendem-Beginn-und-unklarem-Zugang_2025-05-20_1200_be30ec.txt",
+      "evaluated_sha256": "9623d0334711b84120f9b8225dade4e07e573c61070ddba61ed50145a58269d7",
+      "released_sha256": "841df7a07c2559cada717018a7a98a8b61231931560dee1e51421062980c3447"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_434b9dace61705ce/00-Datumsangaben-noch-zu-klaeren-bestaetigtes-wiederkehrendes-Wasserleck-nach-abgelaufener-Reparaturfrist_2025-09-30_1300_535ad9.txt",
+      "evaluated_sha256": "73c97fc6f47de9eed8f7b89cf7b2ceacc05c1eb937b3d9599a56a5057473b89a",
+      "released_sha256": "6a61ac94e52e6c8073c28ad7c6029d50aa5915cbd6401fa59575cc84270fe076"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_4a07dbbbd859a3ce/00-Mehrere-Angaben-sind-unklar-wiederholter-Heizungsausfall_2025-01-29_1200_0b5656.txt",
+      "evaluated_sha256": "15ca97c3a12cb41e617f62c1d32f0ca6af35c9936eeef41aaf7e8567f0172321",
+      "released_sha256": "37bd57cd8db9141e1f2c90fe4efced0608391dd6a03ad8159658552554f7a75d"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_505e3fc9e90f61fa/00-Several-details-remain-unclear-uninspected-dampness-with-disputed-access-at-scheduled-visits_2025-04-17_1200_6bec6f.eml",
+      "evaluated_sha256": "e1bff972d07b7f0027710557de51544f8d8b560a2351e2a3251cb69582afdcd2",
+      "released_sha256": "d5fc5903f5d55bebb42ea1ff920f4426a74e00b5dde65e44b2b80486371a33bd"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_5156de89a4189cd1/00-Frage-zu-meinen-Unterlagen-ungepruefte-Feuchtigkeit-mit-streitigem-Zugang-zu-Besichtigungsterminen_2025-10-10_1000_d7294e.txt",
+      "evaluated_sha256": "8a2a4f3a5ca1b2f5cf666cfdfb5cb88f3f549caf600238def73ea8861b1799eb",
+      "released_sha256": "340716ebc33b5aeb308111d4944fd20aba4a1160349d8aa10236b6324c5327c0"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_521c20913f4e0f9b/00-Unusual-circumstances-repeated-boiler-failure-during-freezing-weather-in-a-vulnerable-household_2025-01-12_0900_4c721a.txt",
+      "evaluated_sha256": "2f1b53f2d716152c1ef32bacdbf08a9f3fcba604d227223d2c49d7af4be9b81a",
+      "released_sha256": "f3ff6e51b78c73cb2e3c75e1862a1d5b06dc7f8a20bda96df8895ca586f5003b"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_526d6c802e28b1da/00-Bitte-um-Pruefung-Kuendigung-wegen-Zahlungsverzug-mit-streitigem-Zahlungszeitpunkt_2025-07-11_1300_618b05.txt",
+      "evaluated_sha256": "fa3d08c2d4f5b7ea0b653d83514797c0c38eddc787232e414e3bf2a9aba204fe",
+      "released_sha256": "b73bba2a030ad57ef12c4ec0900b31a9732cba0c873b08635072af1a4217d47f"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_53b7982ac9bc1a95/00-Bitte-um-erste-Einschaetzung-wiederholter-Heizkesselausfall-bei-Frost-in-einem-verletzlichen-Haushalt_2025-01-15_1000_29edc8.txt",
+      "evaluated_sha256": "21b0969b310050a7e0add1abcf96b1e313cd1370fd7d664ca3bcc2fae268a461",
+      "released_sha256": "5bedd28be58d102d4391b854b69e3a40cd711452595303de1141e873894c07af"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_53e9ef7917c4ae36/00-Unusual-circumstances-acknowledged-recurring-water-leak-after-the-repair-deadline-expired_2025-02-21_1200_009608.eml",
+      "evaluated_sha256": "fcade4deda4bb7a58bbb72d2599b5d4397a86bb358107e071bbf7a2e1616db85",
+      "released_sha256": "b9749023209e54d16804cf71216cc314cd0cd8936f63431ce105ca8e7a35fd29"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_543f08f2415b2a33/00-Bitte-um-Pruefung-amtliches-Erhoehungsformular-ohne-eingetragene-Begruendung_2025-11-24_1200_4ba7ff.txt",
+      "evaluated_sha256": "ce190ad8186b33d6b2d9bf9657f4a1e48a8958f34ce1c7b5eeca6702a0a47c27",
+      "released_sha256": "cd9c574095e4f26004a8e7807c9fad58f60d05776067dc4ed260612ce8de8a65"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_6f04d0907ecb96bb/00-Unusual-circumstances-reference-rate-calculation-with-a-chronologically-inconsistent-rate-entry_2025-04-28_0900_b36496.eml",
+      "evaluated_sha256": "53bd4874d59bcd92ede5c1ca230989707c24a9262967fb02fa9ea6df47cd77a6",
+      "released_sha256": "a2755494d049264c8f9e8b0289b57ee14e88b7d2f9aa04d9aa16e5a889f3c6fc"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_7255037b122de8a3/00-Dates-still-need-confirmation-arrears-termination-after-a-mixed-demand-and-unclear-payment-allocation_2026-05-07_1400_da0c38.txt",
+      "evaluated_sha256": "c52669b39a2d146b995e43a7d90208b709547aad5ea01fb4e210691188f33b4f",
+      "released_sha256": "d730bfdace2d2516636c418955b7c7c8f99f9b96c40521105ecf4918e1ec7c76"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_79beea0ce763d9b8/00-Request-for-a-detailed-review-potentially-abusive-termination-after-asserting-tenancy-rights_2025-07-02_1200_15524b.txt",
+      "evaluated_sha256": "addd8ab0ab3e403dc649d89e74c7e09b26c9bbaf8d79861e4d106f354cf9ffeb",
+      "released_sha256": "71cec4f9c00c74a258b2b77710c30f41bf565f7c2fae3127132c2f77303c0039"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_7db24a8ce46c8c50/00-Besonderer-Umstand-Verzugskuendigung-nach-gemischter-Forderung-und-unklarer-Zahlungsanrechnung_2026-05-08_1300_6f8c0a.eml",
+      "evaluated_sha256": "590c2c6a85f0d645c4a272b82f8be497c581804e8a41b5067dc39e0d3b48b148",
+      "released_sha256": "8f5a46b9c7650586c5184fe193493fc63e5a0289489f85bc78c1ca3b79ac60da"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_7dbd7c7d1c4ddf90/00-Chronology-still-unclear-official-increase-form-with-no-stated-reason_2025-11-28_0900_58dc2c.eml",
+      "evaluated_sha256": "d94224aafa20713b7f38ff42050b0cc34f20b4e587aa2850a95c4ba81d1331f6",
+      "released_sha256": "ece2844bf61349af8059befe4ee6512d5988ef25a1abe937f6d31a4765711866"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_7eb9780fa5d65658/00-Datumsangaben-noch-zu-klaeren-bestaetigtes-wiederkehrendes-Wasserleck-nach-abgelaufener-Reparaturfrist_2025-02-08_0900_d6bef7.eml",
+      "evaluated_sha256": "1feb2e350e31cae932c602467660e932e33193af73e22fa72f8d18f0d3797f07",
+      "released_sha256": "f9124c2bbd0d299f5dd958d7d0e154bd31789201877df0ae56ae22844397bc4d"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_95d08975bc575592/00-Sichere-Einordnung-erbeten-wiederholter-Heizungsausfall_2025-02-05_1300_78cc26.txt",
+      "evaluated_sha256": "044073bfc4da25b4a9f1a7df70ebcca61be23070abe111ae9bcd2c7aac96f5bb",
+      "released_sha256": "82588b39b3c228d20c47a390901860d031ca3c83d1354d269f652f8b8142c72e"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_99cc6719f9923d03/00-Frage-zu-meinen-Unterlagen-widerspruechliche-Angaben-zur-Anrechnung-eines-Sanierungsbeitrags_2025-06-30_1300_5cd203.eml",
+      "evaluated_sha256": "4d1c27841d32ad190a2757cfd699f81ceaf1677cc7be3bfc9706260e3894acc6",
+      "released_sha256": "677b181258f88001da2d32da930d708e30749f352b64d8b9024e4ae4a035f687"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_9a179a4481767d43/00-Zeitliche-Abfolge-unklar-Referenzzinsberechnung-mit-zeitlich-widerspruechlicher-Satzangabe_2025-02-15_1000_e7f1fa.txt",
+      "evaluated_sha256": "3ed0a2540759901821fae78bdc523c3e9aeb229a17419b096fb54c642adf86c2",
+      "released_sha256": "77acafe39c284458a2cb9cf33ff9ac122f4ded6685f5119ace5c024ff45e8679"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_a31f0d7e70441f32/00-Unterlagen-fehlen-Verzugskuendigung-nach-gemischter-Forderung-und-unklarer-Zahlungsanrechnung_2026-05-06_1400_b5f91c.eml",
+      "evaluated_sha256": "a4585c25505b60fe19a7af13cecac6d565847417248fe44329a5d158b76ec3d7",
+      "released_sha256": "d506757b4c42bf6d8fb1afb428100bbbedda950a14459d57c99d3a6a02b77360"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_aba6faab059a697e/00-Documents-still-missing-arrears-termination-with-a-disputed-payment-time_2025-02-21_1400_6bafd5.eml",
+      "evaluated_sha256": "65c5ba95981d7822aede31c54627ae69debcb2ea5e10b128987bbf9f696e0068",
+      "released_sha256": "19ea8bb83eaaab26b20107261439ab8fe11fbc4e01b500504d4e06a193102d58"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_aeab1f696a63e3f4/00-Documents-still-missing-arrears-termination-after-a-mixed-demand-and-unclear-payment-allocation_2026-05-10_1200_fea139.txt",
+      "evaluated_sha256": "0875226f0d1d3f77675afe1ebbae4725d347f890b29608919b04edba2e3b8f8c",
+      "released_sha256": "6b3edfc59a2f2c537f21e9b0d46a7ad58be8438497a0fe0f4a68055dafb417af"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_b14c5e2b8f9620a8/00-Unterlagen-fehlen-moeglicherweise-missbraeuchliche-Kuendigung-nach-Rechtsausuebung_2025-02-07_1400_f82465.txt",
+      "evaluated_sha256": "0f1e6fb3b03f680be423f145aabfe7b0902402251b1c75acbf26df528904a680",
+      "released_sha256": "d07dcd655f9e8925596eb91e8b7cabf97d41cecef848259c8e7ae66aff03ca6e"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_bbe4806aa3607ee3/00-Unterlagen-fehlen-wiederholter-Heizungsausfall_2025-01-12_1200_f838ad.txt",
+      "evaluated_sha256": "c86dd715f37f582231ba5c3b427d484bd6d8e949b8922d443285a8daa59cb00b",
+      "released_sha256": "3edaa2f3c922e2a911ea35b54ee60471f0f6ed34a2cf82e2179e2ba38b367bf6"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_bd74de2a73d9e05a/00-Dates-still-need-confirmation-conflicting-evidence-about-allocating-a-renovation-grant_2025-08-27_0900_1f5068.eml",
+      "evaluated_sha256": "d86c521ac614371bb397b41f6839abc009826377b6c068c2998c98ac42c41c5f",
+      "released_sha256": "bdc14d812e0746ff511d048f88b1e0abe76031c445cde01c96860f75d7719476"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_bdb9322222de3810/00-Dringende-vertiefte-Pruefung-amtliches-Erhoehungsformular-ohne-eingetragene-Begruendung_2025-11-21_1000_fc4948.txt",
+      "evaluated_sha256": "7a21753f3a07bdc667c65812de986e31b9522e81c87d74172b5e1d0b0b80790a",
+      "released_sha256": "8449d7215e2531474505bcc2e52239cb377fc1b973aaa1744c4a23aabdf2a7cc"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_c10b97ecdfea47f5/00-Request-for-an-initial-view-uninspected-dampness-with-disputed-access-at-scheduled-visits_2025-08-25_1300_7ffbc5.eml",
+      "evaluated_sha256": "ddb9da3029a6f2c457c9434654f6e350c609668ccfc3b085c33f5a1a32d2d406",
+      "released_sha256": "208d0c02b971fa4d77e26cfca749dbff69329567a33564a8fd6f85df43f7aa3c"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_c50db5a1837bf4e3/00-Unterlagen-fehlen-wiederholter-Heizkesselausfall-bei-Frost-in-einem-verletzlichen-Haushalt_2025-02-03_1200_38ef9f.txt",
+      "evaluated_sha256": "e76a370187b53f372468c14a40da94c69316f54d2c785fbb24115593202d88a6",
+      "released_sha256": "fe353591b445a8ff68abedb04176f3b0c1ba4669e66d0c04178118a6f511bf01"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_c7ffe208c9390ad5/00-Request-for-an-initial-view-officially-notified-increase-with-an-apparently-retroactive-start-and-uncertain-receipt-evidence_2025-01-21_0900_53a059.eml",
+      "evaluated_sha256": "ccee4d36cdd66d322a58cde6051a1d067049288b04f507f73f10c48757d9fd81",
+      "released_sha256": "671ca724f2b6d76ec3b35a87d8a7147b654ee3936d7143bc0ac44af267d7299a"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_c9a03c7ad06533fb/00-Dringende-vertiefte-Pruefung-moeglicherweise-missbraeuchliche-Kuendigung-nach-Rechtsausuebung_2025-09-20_1200_05ad81.eml",
+      "evaluated_sha256": "e2cb50f0149e70d13129346c47d8303e41b52abb31aa1e2499e6d8725904803b",
+      "released_sha256": "3bc8a7f94908f2ba98f276b42eb5bd7d032b75eb900f86570996deecf4c8f50c"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_cf91859f633a8189/00-Unterlagen-fehlen-amtlich-mitgeteilte-Erhoehung-mit-rueckwirkend-wirkendem-Beginn-und-unklarem-Zugang_2025-03-07_1300_ac89b6.txt",
+      "evaluated_sha256": "01e736c14a05d9f4fc3875a3ca148358a743b93d04ec764b0cac86bff0a9fffd",
+      "released_sha256": "36e2baa80d608129875f8b7ecf215ba91cc0d7c945e7c4483265c521ce9290bd"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_de7ddb30509c2358/00-Unusual-circumstances-reference-rate-calculation-with-a-chronologically-inconsistent-rate-entry_2025-08-26_1300_f9c032.txt",
+      "evaluated_sha256": "ffbdd70a777cef2def94128a55077d45d89b6c838f2b0f3cb8c87ea66ed25873",
+      "released_sha256": "fc92153416b043972a4573ce22020473f39db4d3123d3aac6a78b0fa1bac806f"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_e262801f9368bc12/00-Bitte-um-Pruefung-bestaetigtes-wiederkehrendes-Wasserleck-nach-abgelaufener-Reparaturfrist_2025-05-24_1300_f8bea1.txt",
+      "evaluated_sha256": "f877fc5bd65e45a0d5505b541727aa13740fe3b398b0e207eab239f8c763f721",
+      "released_sha256": "0368ca5ae19ed68a4a020003c094ac54ea5438ad44da776b5afa17b92bb0be70"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_e331d769683c8207/00-Bitte-um-Pruefung-Verzugskuendigung-nach-gemischter-Forderung-und-unklarer-Zahlungsanrechnung_2026-05-08_1100_3f7000.txt",
+      "evaluated_sha256": "ec14b21aa1b3b7a7184057dae33d87d0eec102fc7badf55d061c902d8c48b642",
+      "released_sha256": "36043b2592c6be77de7b39d67724cb208d55b52f97130b7f64dfb8156b4886ff"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_e3e0212c8bdc4fb5/00-Request-for-an-initial-view-arrears-termination-with-a-disputed-payment-time_2025-10-18_1100_387fc9.eml",
+      "evaluated_sha256": "386cc491e1c5edc13c1cac531632e42b26448e566b3c5feee0c2a078fae0c01c",
+      "released_sha256": "a0c740ec9e3c9276739da86b1f16c18fabd83fc3dd46900e4851f25d8bbc915a"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_e790e7cc236593e3/00-Chronology-still-unclear-potentially-abusive-termination-after-asserting-tenancy-rights_2025-06-05_1300_eaba34.eml",
+      "evaluated_sha256": "f0419831da0e300f85b2a24bdb6a5a8dd58c8f090373ec17005faf2119bd490f",
+      "released_sha256": "0645153ef585e824c9df16b40fe7154195ebd0684f0332122516158145a3e96b"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_e9ab4f62e362fee3/00-Sichere-Einordnung-erbeten-moeglicherweise-missbraeuchliche-Kuendigung-nach-Rechtsausuebung_2025-10-13_1000_cd3c23.txt",
+      "evaluated_sha256": "1db7331edbe45b0c4f940f2be78e98e14d9931b5586b34f17844bbe4da6a40c2",
+      "released_sha256": "f0e928442e5c1b7868d735b46bfc1bdb6e4ce9410ce970896aefce7465b0b9d0"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_ec246327ccda00a0/00-Besonderer-Umstand-Kuendigung-wegen-Zahlungsverzug-mit-streitigem-Zahlungszeitpunkt_2025-07-05_1300_389076.txt",
+      "evaluated_sha256": "4bb8b376029a3e5a624aaac3239962f72ebb8d03cf657219aabbe24d9c5fbfdf",
+      "released_sha256": "60243fc39dc8bc18804d3f4d3f7b9d475ec9fc99ad67fd3b5bf566a8eece9efb"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_ee0cd23eb1730f9d/00-Request-for-a-detailed-review-officially-notified-increase-with-an-apparently-retroactive-start-and-uncertain-receipt-evidence_2025-09-26_1200_5adbbf.eml",
+      "evaluated_sha256": "018fe95dc008315bbe815594794bac64706e83e7f1b0d85a78f816a1d92b5866",
+      "released_sha256": "1c0c986665a10d462509385b92e76cee6667582461d201fe4a668d035d5a897e"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_ee29ac770b1bf7b9/00-Unusual-circumstances-uninspected-dampness-with-disputed-access-at-scheduled-visits_2025-02-05_1400_98e09e.txt",
+      "evaluated_sha256": "75268f43ce2ee9156e3f9c977e32d907abca97de9927badb656e1e7c1256a2fc",
+      "released_sha256": "d37855c22688e7814454b688e5a9619d87ab3cfde1f17f416596056ddb69d4b7"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_f14f53b1f55c294f/00-Dates-still-need-confirmation-potentially-abusive-termination-after-asserting-tenancy-rights_2025-09-18_1000_4e5b09.eml",
+      "evaluated_sha256": "ad1bafce532687f498464be0f74cd1935340316389fb614e76056eb74a5b608a",
+      "released_sha256": "204c4e3f49b7296d0f98a6141e938f6b498e3bce55e53f2be0f6b04f09123102"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_f58dd10e77d46554/00-Bitte-um-erste-Einschaetzung-wiederholter-Heizungsausfall_2025-02-14_0900_61807d.txt",
+      "evaluated_sha256": "a2665d86cb6ec4e1d92a0ef73564524602938503bb2914892419bc628e8157a6",
+      "released_sha256": "92773fa811ba6ed42237e5ae159657e2e2170404c157298314f784e11d044610"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_fc970e956872f431/00-Dringende-vertiefte-Pruefung-Referenzzinsberechnung-mit-zeitlich-widerspruechlicher-Satzangabe_2025-05-05_1300_623afa.txt",
+      "evaluated_sha256": "675bba3c27966442a3b6331d4a410568f842648567f8f0610bd4e5bcd07d85ff",
+      "released_sha256": "1811750e6a43a0934597ac44d3d1c3c1126c0c2e525c4a47b42abb4f23944513"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_fd8e5004c663cecb/00-Mehrere-Angaben-sind-unklar-widerspruechliche-Angaben-zur-Anrechnung-eines-Sanierungsbeitrags_2025-03-02_1100_6cbc49.txt",
+      "evaluated_sha256": "ba05b54a23115db44ea671a261c2c8b2e5ca83ea813c330d6944792bc9e2353c",
+      "released_sha256": "5b1a2dd4969158394cb82720f2d38788e0a636ef87899ca59c7956a435b5d1c1"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_fe914f68772c8f3b/00-Chronology-still-unclear-official-increase-form-with-no-stated-reason_2025-11-24_0900_b6a9ee.eml",
+      "evaluated_sha256": "c5d036bd59f1857fd683f44a9ee524bf1aaa797ce4118e84d451aefb7ae53444",
+      "released_sha256": "e6b4b4701277aaea9b11e02320851f10b541417788af847e37433e308a03e8bd"
+    },
+    {
+      "path": "benchmark/data/dev/sources/clm_ff0434f401f4c442/00-Mehrere-Angaben-sind-unklar-Referenzzinsberechnung-mit-zeitlich-widerspruechlicher-Satzangabe_2025-01-13_1300_103043.eml",
+      "evaluated_sha256": "2564a232b988337918e0d04d3b7a9d2c922e5109bb7bec508b7b59bc1b733216",
+      "released_sha256": "2e1000aeb5a65f2a0e4d210d2ad15f8f81832801a4d8794b98846f56c3fa8bd7"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_06400c75399e7f37.json",
+      "evaluated_sha256": "7bdbe4676970c3b0479d679ab2e07d8860f5397a439ba7af7cf1ce200b69dfd4",
+      "released_sha256": "3fe2a5958ebd604806de51db99d8ccbf4f6211e24e7f720214593480b3f5275c"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_0c1a91bc008f8747.json",
+      "evaluated_sha256": "526b5b4a3bef4ae550078b8b72be6130781342e2e78b1277e7d3e376d550869f",
+      "released_sha256": "8944f544f9bcbc923b8c67efcca4a9935585d432e385983fc6026f2bbff23bdf"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_0c5e7c7723a3c694.json",
+      "evaluated_sha256": "4ede32cf7f4d02dc9801eadaed1513697badd13631c50eeec1b8ccd9fcb194ea",
+      "released_sha256": "9e37f6738bf66540ffc34fc69623837de98fcedef711503fa47f3470263099ca"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_0c7beda7583b3558.json",
+      "evaluated_sha256": "b3e4c2a19a96a7de900a8b1e73cfb161419dfe04be1613d7ad7ff2add43fb2cf",
+      "released_sha256": "be3b7fbe448921e764b389e4b84d3bb12690ca1e79673dfabd5de3219104b50d"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_0e538990cc6ba7ef.json",
+      "evaluated_sha256": "6d8474425fc8246c2656ccfbb3153acb5a21168af7c67cff283f0282741133f4",
+      "released_sha256": "597e86dcc3d858f5b75174c896a605dc7cb1e8dbba313c3f506c458bc6bc44ed"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_0f4f13b1e3e1328c.json",
+      "evaluated_sha256": "176b8fd364009c8477c46ddf9fbe90bb0a9cdb82e12bdf24239bf43fa2d69b03",
+      "released_sha256": "1aa16eef1b24c1014a3e729f9737e2c54b36542328f1e15d9415ca4672f7a059"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_1093c1917b109a21.json",
+      "evaluated_sha256": "fc16699b6fc0cc7d38037df56c80eed0f81bd62e78ef868324ead437ec0aa66c",
+      "released_sha256": "cf6f3fd8f9bd46f170ae7741d2f84bddfe84eedac8f11f44cc007f061d58678b"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_125b6fe2f3cada64.json",
+      "evaluated_sha256": "d0718fe8f7a9c806e5c90208998b6f1c36991267b62bc3390dca2a3bae43209b",
+      "released_sha256": "a7df7535ac844461048532eead634db6be73a714f3faf828d775a70483db8fd9"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_14970d755f5b88ed.json",
+      "evaluated_sha256": "49e3fb5539cefe274cfa07b09df41645a7f595d74f80ed95861cbe36561cc419",
+      "released_sha256": "97133940cc3c1707f3e67f3a36aebdf2434c6722aa1efc50616a4ad924e50284"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_15dc0a0f31eced5a.json",
+      "evaluated_sha256": "a2c3a702da17025ecab45b0a0912514e02835770d5fdefbeb54795c448476cbb",
+      "released_sha256": "42258736eac1995c6d13ee1f1a94709c72bf67d6b0213bdff8832f2c8537b890"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_1ba0a82246459c6f.json",
+      "evaluated_sha256": "7f376a7d7bf7c9493cb64764677d5de945a28e9c29c05e02b70ec284cc86c5ea",
+      "released_sha256": "7f5c6376c18b1880a7b3ca03ac98bee56e2fbc9fd2786d077a37b6341a774824"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_1bad44cf27f47443.json",
+      "evaluated_sha256": "8cf36ea34b33892d75ef178574e7f4f0e1238273120fcfeee3f8238ea07d149b",
+      "released_sha256": "b1c1b06d54d88d0f9e90c857c77a67f7777797adb0529ce0f9478014cc0fee51"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_1bf3e350283511e5.json",
+      "evaluated_sha256": "c471e90c2e6ee4d7a6d430d7abb685335a5cd3a686130c6680c3f2e8a8d1e8df",
+      "released_sha256": "7b89b3c9cdfdcf8e0ea9af26add5b7cd3b549a4f42833cae6dce85e565168077"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_1e3f5e4acec3ef7f.json",
+      "evaluated_sha256": "44ab8caa00e8f7ac0992be104c37d007c187218daf7ed489531c5c1e98ce8e0c",
+      "released_sha256": "c4b13c7ee913ab9d97a0bb3c8f0dc8e5417f762317ba2569483e3294cc506189"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_1e7d16e71afda920.json",
+      "evaluated_sha256": "fc3037ed69a0f6679ac4084d2b32a56798232749ebd4266eef76cedab5516d50",
+      "released_sha256": "1ad6ee6092eda6266eded0ec89c1ed1b7f27e8dfd567a4aff0680599af450b38"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_1f1dffaac057e7e4.json",
+      "evaluated_sha256": "4b38aef7cc60e6e94b725cc173fbaff7a145698667cef5ae31ded1c0071b30a8",
+      "released_sha256": "7eebedc0e8a7093a3d30157fb05cf6b0ae9f2da6748989ff411d7c0b7da082ec"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_24a7ac8c2e07dd51.json",
+      "evaluated_sha256": "00f2f034b88cf35b7d62a59f34877dd3b9c111ed76bb13721d4c06018c91f87b",
+      "released_sha256": "8779f1d164f21437415dda54ec3754c618943973e1936f4ca9e2c39fcecbb9c7"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_28950c69c5992e15.json",
+      "evaluated_sha256": "fe2c3d75e67edf075e2d301429ff240bbf09fd3e363b593c828ce518de106e1b",
+      "released_sha256": "d8fe95785ec4d7353925468d6701f8b3e487fc093103b902a22502b7d2f78ad6"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_29cfae9067da08bd.json",
+      "evaluated_sha256": "998d0e2927c1cc3106035b65d3c010ddac5bc9c1221e2991ede6f08550025f33",
+      "released_sha256": "0922952d1815e7e9b2db7a0064186ba560e0e845a4951161c916c2b73b04ff76"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_2bfdbc92e9178821.json",
+      "evaluated_sha256": "0211f063553bc6557cb475d50211757b0efb1ea37ab7a46112228af63963e9cc",
+      "released_sha256": "b020296d1ffd0261e9932b93bcfb8ad73538423e373b2f39eb3ca001b3670e46"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_3051e263a9581028.json",
+      "evaluated_sha256": "27f15b3b8ec39c5efc0a43aa73eff9495c08c874efe1f524c32fbbecf1799c10",
+      "released_sha256": "041dcb7faf02ffbf929325003d97ebe2b9f78911c79e029f1e346342ccabc04a"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_30cac536260351c8.json",
+      "evaluated_sha256": "8d19093df806d1669c430c0eec5a9a2946af37e3889c5e8d1db68f00912e56b9",
+      "released_sha256": "4fb52c2e6e139181ab7ec8ea8be9a05d5853a4709ec70691f33231635e343a5d"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_324cd9e32649ba74.json",
+      "evaluated_sha256": "f98bb1541997cb2ec2ffda32bf708e0c7bfd2f51e1307f281673aafc5527a720",
+      "released_sha256": "7ef1d9cae9603b0588e6c4ff836f5872feda0e23019060216be4b7fd5ce07f45"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_393285577dcb12c4.json",
+      "evaluated_sha256": "55c11da2a36f6257ea615d21c74977db95531d129717c7541751a61a4b4044d1",
+      "released_sha256": "92f11883c0617b2d9a8f47de19fb6897ba75acdc70e4bd3718d303319439eee1"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_3ad3b76f5da143ca.json",
+      "evaluated_sha256": "565041cad5ff0a2c23a46e783a71db1bb9562dd486437e923c9d5f8f902be6b8",
+      "released_sha256": "3e1418a75e4f25e86578ab6c3bc51b7fc30ba8a13fe3a1aa39a9a88d7a5033b8"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_3c803e1aa2da483a.json",
+      "evaluated_sha256": "6bc5923ce88327a99e6f17a43f2f12c94a73c44bce00efafb804f9cd6d56ed1a",
+      "released_sha256": "b80f89fab8ca4057afeb7b827d9bd326502d5adbbd05ea9c8a5d1a0a38c992ec"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_401e7d78a88016c6.json",
+      "evaluated_sha256": "c67753ee540a0c22196d492cf7585044206eb53ee2a77d040c52f4723db3253c",
+      "released_sha256": "1b6d3e4c45d122b3018c830efc1fb0d64003f499c8c7cd0c5d33e8d7aad7eee2"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_4335669eb30c238b.json",
+      "evaluated_sha256": "5c64e0b8028d4e541d0c612eab2fa0a8138efd6c235bb5c0985b5d3e2e4dc119",
+      "released_sha256": "66ebcaa119d0562d5fa368b4b7d7b2e25208791ef60caabe757fb5739b0e8fba"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_44bf2425a1373f3f.json",
+      "evaluated_sha256": "3f4b8e6b06795081d947082da77ed5580687252f8be0d84ee4e33e9ae998b59e",
+      "released_sha256": "482f5ceaf1cded939e913a041b1ea42ff66c47224f2752318ce89e736c91a882"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_470f9c19b4ae7713.json",
+      "evaluated_sha256": "ab0535c3575bb8d754a61d486ef8843db2ea7e4002725867269b8467d7ceaba6",
+      "released_sha256": "a0f37649edfa73dfe082edaee1bd5406379b231add4e37c66147936d0af5517d"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_478488eeea2665d7.json",
+      "evaluated_sha256": "62313d71d60d926912415d14ba5d23d99bda39ac644212da2832996cfeab5192",
+      "released_sha256": "0fc05300ead2904fcbc0eac5e3636c4bb054adac3fb2427a2ecb337181fad488"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_4a53299cfe619303.json",
+      "evaluated_sha256": "fc2597080b6fc1439aa1b84b17e816576889cffe818684be18bbc2511a5988cd",
+      "released_sha256": "544a6199cb50b34204a22c7bd91090c47b4d5757ab443df041c961927ba53745"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_4f7e346be88ed820.json",
+      "evaluated_sha256": "abb909f65dccb24e27a98141ef79df07252c65eacb21c214a10223d2e3fb951d",
+      "released_sha256": "57ca3240e9bb469079f777ccfddbf388d6b554099ddfae41e0268702a73fce7c"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_4fc7750e99cdf8fe.json",
+      "evaluated_sha256": "f314948d8b073f25e672b7c8994add3bad186ee9023bc0ae7024e97f33d37b28",
+      "released_sha256": "cf40ea66ea0fd38307ddcf9c80a4ff9577573783ec986f2337a7c6dad1fd46f9"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_58a690d3e8748a6d.json",
+      "evaluated_sha256": "c7b35191dd025eda5a6760d26de0f30e6920e12deacae8da1609a67697e6967c",
+      "released_sha256": "5189ef5165726e2eda6b0a56c42480e3397abe9b8e15155829eb791bf56ead2a"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_5a25bfdab3e98a61.json",
+      "evaluated_sha256": "19b5d030cf01f39d244d72191ea0ec9e888d00419d40c63fce000b9f4c65e623",
+      "released_sha256": "03e181f7b97dc015ca08f11409d737e56bb75148c71f64b4ecfbd9f09eb1fbca"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_5ada7e71f6f329e1.json",
+      "evaluated_sha256": "eee6e4621ce40568dcfc52723a79fd02d86ec6aec4b3ba5189a14b04b8516cbf",
+      "released_sha256": "a59eed7573f22a08fd57367685c832f98612e54beb3a2a24da3999dc4d7a316a"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_5c6863b143c9c001.json",
+      "evaluated_sha256": "aed0ff32bfbc8f0081dea5adaa31a31de86196bc872f2bd4707ecc6cbd11ca35",
+      "released_sha256": "bfb1b0e08cc71beeb7b78b81c110bbe9c0870cd8b846869d476f5a89c2759e4a"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_5e2271e9b416dd22.json",
+      "evaluated_sha256": "6c57737527132dbf5758560814b0cf1d38eb9c4777cb14d188050db7f89614c1",
+      "released_sha256": "69c0ef727c1c99ff32eccbf26f03de51131e3a9c0a755126870d0c7383e4282b"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_5f1fbce88f6e5a92.json",
+      "evaluated_sha256": "1d471161cc3f170e9bb949d6251c6efaef986644d0bdc1afbc7c55b1b3b8e941",
+      "released_sha256": "dc1636d8e86585fbfcbf16891fc29dea3e2d6f49e381e1cb1f4f3450b673e84d"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_64a401e6678f4871.json",
+      "evaluated_sha256": "1a14012508549618368bec1f5d2ba5706bbb2ab4d134cd1753dbb3862973255a",
+      "released_sha256": "762c3ba1df07f54c75c8d496a11812a3fbf2a92dfe29bce231c2cf0a5f0f926b"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_672f2604d8f44888.json",
+      "evaluated_sha256": "0ce1bf5f35526c8e0a549db57644149b8071e31633b737c2fc95187efa24c771",
+      "released_sha256": "cea102bb9c0a490b37d9b601295bbd64b83a247205e36355dff6a4b380d75125"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_6e2d3a5178b4bce5.json",
+      "evaluated_sha256": "af6d1217a4f91009b6974564e399a8860371c056ef2c3fe356e421c7e36507a9",
+      "released_sha256": "173c7acbc0a7186b5a423360fad3293ea0de28b54694dc34089b7b5c048ca52a"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_6ecae3f11685e3b2.json",
+      "evaluated_sha256": "88bc2a0ad778e8c951e7ebcb7bda2fb2eedc6dc83f1095fa7f2a73ac458f1889",
+      "released_sha256": "3cd00b0c89f7a6bb9db19c78b1fdc39cb3191ae572b9a5cf167ac887afc2db53"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_7078fe1804ad03cc.json",
+      "evaluated_sha256": "1a222f3ed95e01269c365664bfab7328d03db67808d9921d747b997abf5322cd",
+      "released_sha256": "dbb8d68511614846ee74d62fb6ec7945c75b6c9e3b03cfa629f0e6ca7a3bf4e6"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_7108870bd133fed4.json",
+      "evaluated_sha256": "2b716cf9fe135bedafc0a6fb4fc04b83d8c98be5ef438c1f6de1dac1b5bc069b",
+      "released_sha256": "b987f712840a9ad1dc0c397998de0b69c628ea2b5d8c54dd0f8015116df8c199"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_72b3020bfe3de742.json",
+      "evaluated_sha256": "1e1defd4451fb5503a87aaea9e406772b565a622ac51492408106ab6b598890a",
+      "released_sha256": "3f2c7a336c9358b12086eb63b379b723e9b8149cbf6498a3aa010b90883b940f"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_731b214dde882f89.json",
+      "evaluated_sha256": "5fef4e30f5fe8ae17bd7928614a718393621be4c74973c79bb871737d75fb9dc",
+      "released_sha256": "eec690f0cb28e9ac8b7886ffa14687ef8abef0ed8bba86c490d2a7bc282cc250"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_76238b1a82b5c877.json",
+      "evaluated_sha256": "73e6e9c709b9aedab9006932cf942fc8f3c47edc32c8433437fa86b29402a5ec",
+      "released_sha256": "031753501e15eb702a2bb52937b0264c837ecadd6e8498bb6d0bed679c540a2e"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_7ac806bd30792cfb.json",
+      "evaluated_sha256": "5177991045441e33353b36d6d466df306e3cce5ab6dc721e872b06e86837acf3",
+      "released_sha256": "bb86ecc5324d664cc425021009c9509a0a98b380f7925c817804c00f882d43fa"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_7ace38ce2814fdb9.json",
+      "evaluated_sha256": "249e23a933d88e30fea4dc6ab5edde530ee2a5e89be6117001ba680356f5c74d",
+      "released_sha256": "63d2bf5ba8e9d7520d545776822a8127400270bb1f22a871048405c1176a0da0"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_7b92cc30892368b3.json",
+      "evaluated_sha256": "3f4c37648293b79d475c556ceb0358f2e2eaa3a927a7f7297d8072d8b5f32c83",
+      "released_sha256": "f057fccb7b3e737e76d8370fc4ef9e5685122d74f2d27dd020fcedce9b1c67b5"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_8167911d95e79fdb.json",
+      "evaluated_sha256": "ac3cc5d10b30927e620026087eca7206c587d8bec685afe3d89d2c3d96f7b814",
+      "released_sha256": "565ebfb5f64966ee0828438589332564fbc81607990d6c19b31370e784d13213"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_8b7fca3c1704e47f.json",
+      "evaluated_sha256": "5a9c3bed93f97d4e81421cd6bc68b1e9ca8b399bbf1165d60f7c40533cc5489e",
+      "released_sha256": "ace23266baf9bf85f513e97674b74c60e6aaa23676d2ece5b5158c8ee2c4a89c"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_8f8de9368e97ca31.json",
+      "evaluated_sha256": "8045d1cf9bddf9891fe1936b6e661c51420ec4910fe0d35ede9a52324bf51920",
+      "released_sha256": "263f6298e4a6185119f1ced09c36c14dafd2f0d70281826c4a4a1a21471232d2"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_92264ed30ac9bc8d.json",
+      "evaluated_sha256": "3eb5618e77ab933fd9ad97d1d980eccf0dc9a270882fd10c828f4ed9bece5207",
+      "released_sha256": "ef5c0ed5307fe0c53b2ca92de9caec35f9e641fd19c18424536f2a25c794be7e"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_93efa6c5f16b2da5.json",
+      "evaluated_sha256": "39b0ff7c2decdc240345e6687c24f6a39dad8f3752971d902036abac6199d2ef",
+      "released_sha256": "0b9c5526b2048d599a347d78ef89777c0a73f004ace7653be563f74b88eebdb3"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_97f495fcbee20c74.json",
+      "evaluated_sha256": "f71435c157085e0b125fd4e33d357a202ec87fcfff9807685423ced6afd359ec",
+      "released_sha256": "5736d5f6aa578f6ea8a9e48e098c918b69f6c97c1c9906393081adc7e7725a03"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_99188a578845347c.json",
+      "evaluated_sha256": "9e19baf7407cd6db8e707b809b405417ff706e1b98f5bba09e2bc857310565a6",
+      "released_sha256": "40bc37985fa9f56aea4448b77c09aee942a5279a363bfbb25ebc42dc2289084e"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_9c83b12ba8dfce68.json",
+      "evaluated_sha256": "2d084aff7449491498091f820b1b98ac03b8db2aa013ec5bd89d438018f5d649",
+      "released_sha256": "15616436a71cab51309125d40431661bb720c6a5cb66248a7c5a525564e8e78d"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_9fc9c41746bca87d.json",
+      "evaluated_sha256": "7e6323ad4498ff7b49754058f819e84549375d4a86e3897ff0414e7c2a5cadff",
+      "released_sha256": "09033bfad3b3caefcb141b39cb78888fd42e08bbab2198e57413a83505dbf950"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_a44c2ac127c942c8.json",
+      "evaluated_sha256": "e1b2e1f0408aa4f4a853a0e479af62d6352715d72d86204e8cab09dd39fa1438",
+      "released_sha256": "183894aff81dace56e3fdf2a26eb644e0695123f6bd16515838d5753c29c0293"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_a601453abb9b2e32.json",
+      "evaluated_sha256": "37a139a9ac521ee6b4ee83c01897db5e2641da1500ed9c5fd0b51bdf06e581c6",
+      "released_sha256": "f4e3d08262b15fdcc88678d192609df0e299e4bdf9ffb6a367a3f828e57f0542"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_a62c178195d21648.json",
+      "evaluated_sha256": "bef52be90723aecd7f2b4690c0a76d9ed7d914c7541ce312e5f898936d867c6b",
+      "released_sha256": "9926c62de7be4b135f127ae50bb9cee4849c87f9ad0b061ea448ae1884993ab8"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_a91f0e5c3e7df086.json",
+      "evaluated_sha256": "b271779d3ff97144a89f6055e39e87e9f2cce46d94bc6f8c8f0568613179bf35",
+      "released_sha256": "84f2f94bf7f474f7ddcae1414521a19a3075639437b22a5763dbaff52a28d5f1"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_ab8afc6b0ad3b9e4.json",
+      "evaluated_sha256": "1d1b168d537b847160ef29f26e02ee417fcb79079de1bf4a0a9025c0e8eeaf74",
+      "released_sha256": "0e3c6dabde88cc99e28f54027abc0f18ce546edd88aa5c065906c364ef8d2212"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_ac7d7a08ca8d5a55.json",
+      "evaluated_sha256": "ef21a503c99fab27b216d7867007cb1ca5814f39f941841db00ddf8076bbb31f",
+      "released_sha256": "8ab8e60f87b951036b8f158d49444e22d2c159e64d00992f84cd6a58996deecc"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_af5b8495ef298d23.json",
+      "evaluated_sha256": "b692dfe30baae91e2fcdc27aa842a0276a246502811d503b6ce4f8aa623ebf7f",
+      "released_sha256": "f52e876ae7bd41d66d94c0388d44a526801c6b7d9a400a1fd495683c36d8447d"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_bfbb1a8f3fc58156.json",
+      "evaluated_sha256": "378d58cab601f9ac47809946c321b0ca9d2e4cab234c06570ec49518b53b7fa8",
+      "released_sha256": "09193143eb6228233ae8b0967835726235d468fab7cbc945c466265d386e39d0"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_c138c15d0886b345.json",
+      "evaluated_sha256": "86f8ae62f9b7a7879ca53ea0ee984afe51c04b943dd1c7cc13786b9e0a6c61a4",
+      "released_sha256": "cd7fe65db27ff04f23667fb02b44253f0076373f8889e347e2761908786e55ae"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_c44ddc0914ba9298.json",
+      "evaluated_sha256": "90ba08fd590b5d9c19a988cd846215f3d5225b2bdf9ebd3747f2e6604906ec2a",
+      "released_sha256": "ad3795807baeb47f4f7c66802ad7648318a4e9e2a64a5cd3baa0a0db25764cde"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_c683ace4cb02ccb3.json",
+      "evaluated_sha256": "d0b5aad60050737c6c7c82301163878109a767e37fddf0f84ddbe44e6a0d9711",
+      "released_sha256": "20efb904b72daf4a6920dec6676aa733ea114b3e65530850b89b12ec74ba95ef"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_c8b46247757abe15.json",
+      "evaluated_sha256": "cd198bd640893fb418e034d0f23f450de2e32844a4ec3ca594d7e6f04d9d2550",
+      "released_sha256": "9fd5ab5e77376bf862cc79c63059b9658bafee2103d6ac2dea643fec864efaf5"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_c9029af5de9fa5a6.json",
+      "evaluated_sha256": "23e424ab947d16fcbfc78f7420fa9f6ae1c768dd986a9c15023c2b0787ddc10c",
+      "released_sha256": "1dfee0650084cbc0bdaae4b2c2692de759d562c1c17ab5e93489889d5af0d609"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_cbfda394bc5fc2d3.json",
+      "evaluated_sha256": "e8a64192030252aee467b672e13de068b6980c7fee432d667d680e93555499bc",
+      "released_sha256": "270c9234fe0a640dbf4d3773afab8204885ea9c9ab31955b2b6ff66df059f915"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_cdfdac3cdf7f809a.json",
+      "evaluated_sha256": "210303be1a53b77c7a54b57322723269b930451df5b32b6cacafde4ed364d211",
+      "released_sha256": "dbf2dfe038d84a8a8942746dfbb69d45e85d89e81dc74829aca0dcf2382ea8e5"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_d830a8410fe8c94a.json",
+      "evaluated_sha256": "1d2677058d763a512cbb6b09e5e4144314fbfe01dca99058836e4967ee3ca6fa",
+      "released_sha256": "d2c622f1ef683162eba51bfae837cc39f9e2bbf75eaaf282da7ad9ff243044ce"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_da6786a395031f3a.json",
+      "evaluated_sha256": "3cdbad4ed52a066269d355c86e3b8c351f7e5ca58527140d489de9fc145755cf",
+      "released_sha256": "9c41451550168503a5202e74656b5ef91e9ed0c80d17ed222b12a8e3d26fa4d7"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_df9fc7fa4ca80f6d.json",
+      "evaluated_sha256": "4cfc5df032060c1ac5e8ae2977f6fe0e012f9ea6041c64c9d9866fe599ea155e",
+      "released_sha256": "ea2416ff431635340997e27cc35860fcb8e18129f75b41c1f0434ded3e600615"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_e4a8342461b8cf79.json",
+      "evaluated_sha256": "3e5350b374aff134d369810981386b7fe3082b2875c93c28be51a110da94ad49",
+      "released_sha256": "5de6e47824fb8191985ae093f992ef01b0e5df184918f90783d4cc6050ebad21"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_ee6628dbc9cd16ff.json",
+      "evaluated_sha256": "73a8f5d7c0ce5786c7b1fe099e132e88f54971600799dd922f0abe04cc235c0a",
+      "released_sha256": "9d8ab9e87c74750ed31830f41575d99d4fa1923402cd9258cf7a1c2d028158d0"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_f69b1747447bc221.json",
+      "evaluated_sha256": "f651c236382850cce6b7114ab6f9bc5126356803f65daac18687fc50fdf02441",
+      "released_sha256": "1a654f9de8478796e1d4cb1c71086336e1efd3b01a7baab19c80c8f0040feb2b"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_f7cd8b8d07f8c933.json",
+      "evaluated_sha256": "9408b45d7a22f91b3231ce66cbebd1ce812b3206ffce0e347da8436467cbe301",
+      "released_sha256": "d782074bb2f50be1e5e8b14223bd5d034f58b710c317e4915fe5a114cb78d142"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_f8d04bdabc36bfe8.json",
+      "evaluated_sha256": "357eb4a0a1995c7c676141bd6c128f3891594ef7287e3a62ca79ba746ee9cb32",
+      "released_sha256": "f8a1ec1a4fdddfa09d22a8d315e939a8f5450470c203afe7d4a2feb8a36c0fab"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_fa340390e701525c.json",
+      "evaluated_sha256": "45d3d2ff41644d679e642609010a42552cd299457d436ddfd90f89b454f49063",
+      "released_sha256": "c5a4ca55345bd6a50457b2ceb1ffab1717463f175ddbe317bef97053b23acab7"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_fc3fad19cc8db954.json",
+      "evaluated_sha256": "c439b16422e93014ac4aaf6e33c00e0a145b19329911b551cbd27ab71ea37d2f",
+      "released_sha256": "fbe50a604d1f1990839dff1aea9f10f5e3d5d6fbd0567201502e6bb62ce8b50e"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_fd22c426938b6320.json",
+      "evaluated_sha256": "7e84117ac7394e10da4f1036af648b4e27d42ac74c7ed4203c8a4e8938749af9",
+      "released_sha256": "62d89ccb18b951fa1c4f7d0e740af00b8f4b85e52a5d2ed5a257601e57f9c24d"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_fd68e3dbacb17a8e.json",
+      "evaluated_sha256": "abb628e8888cb4540e9ebf0ae113c5d54a70f4b873f79d7ebdd040fd7459bb6f",
+      "released_sha256": "8898ed76e57acaab280029ed2ebdae37283ba89626e7bf2af473fb08f1e70a56"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_fded14caf513a043.json",
+      "evaluated_sha256": "8eadde9b4e1e17f90eb2db10407613869de6e93b7b9828e6cc84e20cc5fac431",
+      "released_sha256": "77741ef2af768b94e4e0df02174856dbd381c8296d6bd5c735d873aefba8a0e7"
+    },
+    {
+      "path": "benchmark/data/test/claims/clm_fe259be188154a0c.json",
+      "evaluated_sha256": "8d8f8099a06a3f32c752422b9b1fe9334445b13e8c5cb1c9d1b9598602231686",
+      "released_sha256": "39be8176023bd7c63429e3fc8eb966e6869beaf96f524c762ee4cc3c8a4f406b"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_06400c75399e7f37/00-Question-about-my-documents-mold-and-possible-moisture-in-a-bedroom_2025-10-22_1200_6988b7.eml",
+      "evaluated_sha256": "6ff41f120d86d090fd083959f3d842f036c8fd4054697825a0a973755534a5a3",
+      "released_sha256": "14f60043f397b7cb05f6cbcb6ab09dd63efd6c2a884d027f2c8a4b1f2ac67a4f"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_0c1a91bc008f8747/00-Mehrere-Angaben-sind-unklar-sanierungsbedingte-Kuendigung-mit-erheblicher-Zugaenglichkeits--und-Wohnungssuchhaerte_2025-08-05_1200_ad9a27.txt",
+      "evaluated_sha256": "7e6005ed8436b4efb01310579d03d2221c669e0058e196b096c074228a3f9314",
+      "released_sha256": "080a6f40dc323cd37dd2884853db0b932c791f34ce2b9d72bfe0fd936e2c2471"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_0c5e7c7723a3c694/00-Sichere-Einordnung-erbeten-zwei-widerspruechliche-Kuendigungen-ohne-klare-Ersetzung_2025-08-02_1100_60107f.eml",
+      "evaluated_sha256": "c0ff19171d11500be727305b468c807b7a7c19a04c49f2e2f670a41a43d06011",
+      "released_sha256": "f2e4adac6c3d47eaeb8194b48fc884286866d92a9a992994d3afdd10831b3a7f"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_0c7beda7583b3558/00-Several-details-remain-unclear-unexplained-reclassification-of-ancillary-charges-into-net-rent_2025-11-29_1200_c665d6.eml",
+      "evaluated_sha256": "3fb15cb149354dd180a7419f8347b4b619275c17e0ed24bcf80d82e92af7cb96",
+      "released_sha256": "97123e5463dee3dd44326135ec14db942fdb0758b25df0f6bcce486d3d426333"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_0e538990cc6ba7ef/00-Request-for-a-detailed-review-separately-served-but-substantively-inconsistent-family-home-termination-notices_2025-08-31_1300_8d6665.txt",
+      "evaluated_sha256": "8affd88d35a9428ca24558da294a14bd8758fb409e97b015fe871555337560cf",
+      "released_sha256": "734c1cf3b5f0086d45820a4a147da30197dc7049193be8dcb5b8357f2fb908f5"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_0f4f13b1e3e1328c/00-Request-for-an-initial-view-termination-announced-by-email-with-no-official-form-and-uncertain-additional-service_2026-05-09_1400_d4fba1.eml",
+      "evaluated_sha256": "d75700214fe9a4285fc0d5e10f1005901803e4a575610800a76ff77d9b714ee7",
+      "released_sha256": "dac17e5537944078a5f92823fb599c94fac51e23c02d576d06bececd564ffd8e"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_1093c1917b109a21/00-Several-details-remain-unclear-separately-served-but-substantively-inconsistent-family-home-termination-notices_2025-06-04_1200_c1c82b.eml",
+      "evaluated_sha256": "7eacede9e9d835d1f23811a019ac93a2b3cef2ec6f2fb5e23de7dfc2d6766245",
+      "released_sha256": "0ce24fdbb01efea38c3028ae63dd2033d03f2f7dcdf70bc063acad6aed68af98"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_125b6fe2f3cada64/00-Please-help-me-decide-what-to-do-renovation-related-termination-with-substantial-accessibility-and-housing-search-hardship_2025-07-27_1300_bf8b28.eml",
+      "evaluated_sha256": "82f63e8033da4b76f366bfc021b86e33bf48925b87c54f0d7cb65671a27fdbcc",
+      "released_sha256": "355a1adc7f59de89af6821d16136dbe1e9ac424f019088e0937c36acfc941121"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_14970d755f5b88ed/00-Dringende-vertiefte-Pruefung-wiederkehrender-Schimmel-mit-noch-unklarem-Ausloeser_2025-03-26_1000_2df6f3.txt",
+      "evaluated_sha256": "6fa76f51987b1e2d4eab3da81d2a1d301191ef532d4f7559e93f944e722031bc",
+      "released_sha256": "8e89337a8d3d3a10a2dea1d920bad4dd6eb2ab10c9177b2cf460e4a6ef5ff1a5"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_15dc0a0f31eced5a/00-Bitte-um-erste-Einschaetzung-moegliche-doppelte-Beruecksichtigung-desselben-Referenzzinsfaktors_2025-04-01_1000_9473c3.eml",
+      "evaluated_sha256": "c8a0466cd4380ca4ab6126e8aa5b92ed671d5269d6bd28e215d29ac72fbace60",
+      "released_sha256": "ef9ac82c574c845c30a73b91e42bf6ef0967ec92ac196c78e1a125729bb5a8d2"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_1ba0a82246459c6f/00-Zeitliche-Abfolge-unklar-zwei-widerspruechliche-Kuendigungen-ohne-klare-Ersetzung_2025-04-18_1300_772067.eml",
+      "evaluated_sha256": "b94df3faee1eb156d6375aded0814d7ffd73765a8451762fe11a11fe7f550928",
+      "released_sha256": "633b248333508035521948288de32bf8f256b1805a4b200a5b253b5a3e2e574d"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_1bad44cf27f47443/00-Bitte-um-erste-Einschaetzung-unklare-sanierungsbedingte-Mietzinserhoehung_2025-06-12_1400_52a9d3.txt",
+      "evaluated_sha256": "5586a0ce8fcb63de15726b72056e6c17de1e3ce4f6dfcde933f6f4440bc63b1d",
+      "released_sha256": "b30c05ad4102759e8e99ee3d63fc09de2b1c47f27d36b3103391128afc78979e"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_1bf3e350283511e5/00-Dates-still-need-confirmation-family-home-termination-with-a-possible-service-defect_2025-02-04_1200_78f239.txt",
+      "evaluated_sha256": "8fd0a37974463967eb7cb1842d1d3b3ec7d5b0eae358246b93f7114a405d8da1",
+      "released_sha256": "cdecca9c45c793276806d3e417f51ea78484ad0f5d19717f038651aab89a5866"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_1e3f5e4acec3ef7f/00-Chronology-still-unclear-recurrent-multi-unit-leak-with-conflicting-contractor-notes_2025-02-01_1100_4492c8.txt",
+      "evaluated_sha256": "ec79878c1a5c662a5a8fddec27653d66852daec38513fdb74360c0f711050a6f",
+      "released_sha256": "9595a5ba773e656a53077070070b5f7f29a09f1481aa123f332b33211700a4f1"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_1e7d16e71afda920/00-Mehrere-Angaben-sind-unklar-kleines-vor-der-Pruefung-behobenes-Wasserleck_2025-03-08_1400_011984.txt",
+      "evaluated_sha256": "2602dc4519308e76da768f3c8b2b8bd02ab24630cc0fc3b492847392068eac71",
+      "released_sha256": "6d884c1ea9254b9e7c94ce3b02c0cf6c3c663fadeb14531fc8afff870b2346f7"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_1f1dffaac057e7e4/00-Request-for-an-initial-view-unexplained-reclassification-of-ancillary-charges-into-net-rent_2025-11-29_1400_03086a.eml",
+      "evaluated_sha256": "c55e4cba778cd10abfafe7f10b5b44b0f674658395cc7e556d6b1bfeaf424d54",
+      "released_sha256": "3f7389c12802b1f567d22b69ff46081951be3f919969fa75cc7187205e0aa89d"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_24a7ac8c2e07dd51/00-Zeitliche-Abfolge-unklar-Schimmel-hinter-einem-Moebel-mit-streitigem-Lueftungs--und-Nutzungsverhalten_2025-09-23_1400_367109.eml",
+      "evaluated_sha256": "00de54bb85c062fd8deefb1c8361feb4df8c2bda62364525465204fe8c188ede",
+      "released_sha256": "5687a6fd2de4bda53f817101e9871427604b1a81ec02cc1dffdd261759f24c61"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_28950c69c5992e15/00-Documents-still-missing-unclear-renovation-related-rent-increase_2025-02-23_1000_c8c1b9.eml",
+      "evaluated_sha256": "2cf6084735896b82dfd09a8115caa9da96879eaa74bef7e31da07e0f84790c56",
+      "released_sha256": "4cda3bc12f7e22a413d2aa5dc877ab2422bf82e97413522ebe8bbca9ac2aac57"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_29cfae9067da08bd/00-Frage-zu-meinen-Unterlagen-formell-zweifelhafte-Mietzinserhoehung_2025-04-11_1000_1e311f.txt",
+      "evaluated_sha256": "82c702a67e07bce3c03cdf8c845fd747a0547068ecfd3a3fd587463e94a72218",
+      "released_sha256": "9accaea664167f73656c9820e1214addb9efefbd129db97fc006bec949314b8c"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_2bfdbc92e9178821/00-Unusual-circumstances-renovation-related-termination-with-substantial-accessibility-and-housing-search-hardship_2025-02-23_1300_cd87da.eml",
+      "evaluated_sha256": "6b98c16e51eed31ce8bd45dffd6f851d1570d9f866d6f01cb5366503b539310b",
+      "released_sha256": "04582f2cdc3db097f850d84cfa109eb5382246dcae822766c3a8e3b1b1cedd06"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_3051e263a9581028/00-Datumsangaben-noch-zu-klaeren-Kuendigung-der-Familienwohnung-mit-moeglichem-Zustellmangel_2025-09-28_1400_bd18aa.eml",
+      "evaluated_sha256": "3c5009029b246762ee3d726a2111f680f2192d2bc18fc0ff0a5e4b5a78deb93f",
+      "released_sha256": "44053bea4dd723a036bb57b7af66da097ae282242d4b803b4aec0588d8f4fd19"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_30cac536260351c8/00-Bitte-um-Pruefung-moegliche-doppelte-Beruecksichtigung-desselben-Referenzzinsfaktors_2025-09-29_0900_39c7ae.txt",
+      "evaluated_sha256": "de41caad9b66eca0a26e0d753b15f398d7c52ceb90233d2dfe56a1925c7b85b2",
+      "released_sha256": "a0159f93b0c3459ac10812f99fa91c792a532b338319a6365b705bc39408f8e4"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_324cd9e32649ba74/00-Mehrere-Angaben-sind-unklar-moeglicherweise-falsch-berechnete-Mietzinserhoehung_2025-04-05_1000_24c02e.txt",
+      "evaluated_sha256": "71fb09b07582c41210570e7289c80eaf646675a4b3e2af26e5f63868878e0ba0",
+      "released_sha256": "2b3520a264897ad2d30fdc265119f53970d3d80a43a44dcdf87353467a1b3de1"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_393285577dcb12c4/00-Bitte-um-erste-Einschaetzung-per-E-Mail-erklaerte-Kuendigung-mit-fehlendem-amtlichem-Formular-und-unklarem-zusaetzlichem-Versand_2026-05-05_1400_6e5134.eml",
+      "evaluated_sha256": "8ef92a67d654747fc04006903abe9294e1614e3b7d809baed81a7455b843e8ba",
+      "released_sha256": "e5f692abe8ed2b2689865269ef96bbebf3dfc9aa2a6857b013b24df6b2a77062"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_3ad3b76f5da143ca/00-Bitte-um-erste-Einschaetzung-Schimmel-hinter-einem-Moebel-mit-streitigem-Lueftungs--und-Nutzungsverhalten_2025-06-30_0900_e49f60.txt",
+      "evaluated_sha256": "b1638eb1856f918359cca12867671a43b20b474f9a93bd8cfdc518bca1b3cf52",
+      "released_sha256": "4dd1e5d51a6c2ddac0771ecf797959bc0eac94a4b205e8d27e08a8699078ad51"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_3c803e1aa2da483a/00-Request-for-review-family-home-termination-with-a-possible-service-defect_2025-06-05_1200_47c11c.txt",
+      "evaluated_sha256": "ae5adf9f9a08e1da0c32d53944a2244e78ee385616f2e7aec0cecf3b8dbd16e2",
+      "released_sha256": "a8189cfd2c58f8a3e23f9166b8efd176efd9d8f2a11f244d2bcfd35bd9352510"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_401e7d78a88016c6/00-Datumsangaben-noch-zu-klaeren-moeglicherweise-falsch-berechnete-Mietzinserhoehung_2025-07-22_1000_2975b4.txt",
+      "evaluated_sha256": "b289e48e5b3a3300161acc89dcb08a0ec516994d47d999beef9eddcd9fcc773c",
+      "released_sha256": "9d6353622576c7104ed3832c287344133c133ce8b97d4e8edd277bbf4832a048"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_4335669eb30c238b/00-Frage-zu-meinen-Unterlagen-formell-zweifelhafte-Mietzinserhoehung_2025-09-24_1100_7ebe4b.eml",
+      "evaluated_sha256": "932a4b9c3a63e4711fba0dd78bce7d29e2672686422d615ef670f5631d23452a",
+      "released_sha256": "aa6bfd75ed129b8a28aa73f4096076c5bc795846976ffc2fb96cd0eb96f589f2"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_44bf2425a1373f3f/00-Zeitliche-Abfolge-unklar-moegliche-doppelte-Beruecksichtigung-desselben-Referenzzinsfaktors_2025-08-20_1400_39c3d0.txt",
+      "evaluated_sha256": "b01a4b6333f9248ea6afdabba14271b865d1374cbaa3410f53fcaa111d310378",
+      "released_sha256": "03402a434481659b968d70979b81f0525ef749e61c20f313e490443e1714cb04"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_470f9c19b4ae7713/00-Please-help-me-decide-what-to-do-recurrent-multi-unit-leak-with-conflicting-contractor-notes_2025-07-15_1100_43e780.txt",
+      "evaluated_sha256": "df6c665d474d73d8d8223c7b56aa46ee6ec4c6ca2a3b4c97c6619e439aa5af9f",
+      "released_sha256": "662aa3fcf7caa4a53543d6a797ed60f92215662c425256b962ad1e3d1c39e1c7"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_478488eeea2665d7/00-Unusual-circumstances-separately-served-but-substantively-inconsistent-family-home-termination-notices_2025-04-06_1200_7f725d.txt",
+      "evaluated_sha256": "0756138ea18e71776fc3fdb05b17d7f924283cd73bf41e76f75c008242a38598",
+      "released_sha256": "18ecf6b2bc99e48e80e6ec2626b9da1a00fce1001eb9fa7c78d938309d7ccbb7"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_4a53299cfe619303/00-Bitte-um-erste-Einschaetzung-per-E-Mail-erklaerte-Kuendigung-mit-fehlendem-amtlichem-Formular-und-unklarem-zusaetzlichem-Versand_2026-05-09_1300_01c86a.txt",
+      "evaluated_sha256": "021078979456dd152b2384e9d3ed2a014cc357b122b86336e4d70b2e7c6f6433",
+      "released_sha256": "e3064a5fbc0130efcf90745a4d77c426c5fb631b6daea42396dcb536c628d9c2"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_4f7e346be88ed820/00-Please-help-me-decide-what-to-do-renovation-related-increase-based-on-a-provisional-budget-before-the-works-are-complete_2025-04-24_1400_ee8314.eml",
+      "evaluated_sha256": "c353ef06621dc8275e1ffec316b4b51107ff7288178b9f83fb0904cfb6d74390",
+      "released_sha256": "54efdbbf50d377939a966e443551bde6e7367948c2280308d60d282b29dfd075"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_4fc7750e99cdf8fe/00-Documents-still-missing-minor-water-leak-repaired-before-review_2025-09-07_1300_00e4bc.txt",
+      "evaluated_sha256": "f010c282550b80bf9a9872d1bcca31a022e9ca1626f3c3608232302f4de24fab",
+      "released_sha256": "08928584b9dfa07b25521cc6fe2fdedf2e127d3f79efb87546ffdb2516778c54"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_58a690d3e8748a6d/00-Unusual-circumstances-formally-questionable-rent-increase_2025-06-01_1000_b55899.eml",
+      "evaluated_sha256": "d0f332d5c5afe78a66be7e173e0a292d905d213cde08dccdedf933837ba4aac9",
+      "released_sha256": "8db1d17ef01146d29926284d16373478e8e2263ac25ada67cdd60676fecf199c"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_5a25bfdab3e98a61/00-Question-about-my-documents-renovation-related-termination-with-substantial-accessibility-and-housing-search-hardship_2025-02-28_1400_358b08.txt",
+      "evaluated_sha256": "d7b5f19c95be1de1ca359b1834b1f05b7eb076194e23edc5277f4a48234024e6",
+      "released_sha256": "16ac77bfde7de0981b904400b6f71e3d69ac57c82f7fc87ec4a61c2aa30dcf13"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_5ada7e71f6f329e1/00-Request-for-a-detailed-review-recurrent-multi-unit-leak-with-conflicting-contractor-notes_2025-04-29_1200_114428.txt",
+      "evaluated_sha256": "366b75f3f998166bff40d73b46e48a9c759c92f235cb5b0d66909557ebf14dee",
+      "released_sha256": "55f7196fb7f3325f0bce9baa9c13d223cd3a092369db188c6843fcf1c834c0d2"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_5c6863b143c9c001/00-Unterlagen-fehlen-formell-zweifelhafte-Mietzinserhoehung_2025-08-02_1100_cc0bb3.eml",
+      "evaluated_sha256": "d8f4c066beb97599eaf1826711525c0e1e108d3504773c69e50bfe71e2c4c939",
+      "released_sha256": "c9ad679808e771f261f3fdadd626955611bc089a28f25285fdf304db3406290b"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_5e2271e9b416dd22/00-Question-about-my-documents-renovation-related-increase-based-on-a-provisional-budget-before-the-works-are-complete_2025-03-22_1400_64afb4.txt",
+      "evaluated_sha256": "45320c4cf24e482646feb54d72a371d96fd99fa4954d253ace79418a9ca6c615",
+      "released_sha256": "fbc67ad0f9a55e4fbf6b049c453a877a6652220ddb3d26174f71f287055d05e0"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_5f1fbce88f6e5a92/00-Request-for-a-detailed-review-recurrent-mold-with-uncertainty-about-what-is-causing-it_2025-05-31_1400_83846f.eml",
+      "evaluated_sha256": "86954f249bc61a58d3ddac099fc4f4f836b6ff3838bc6a9ae53e49ae2457aa40",
+      "released_sha256": "e0a4ea47a04d322a3dc348d869a12c5090836982ea4308b17f75af7afc79a071"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_64a401e6678f4871/00-Chronology-still-unclear-formally-questionable-rent-increase_2025-01-22_1300_add9e2.eml",
+      "evaluated_sha256": "dcaa2146d28ffbd334e110122e8548a7af3652d4dd5c94463d35c455495a0183",
+      "released_sha256": "677f0c8c07c384000c70d5c4c7addb2c462825de004bf48cc3e7aff5a6ed7be7"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_672f2604d8f44888/00-Documents-still-missing-mold-behind-furniture-with-disputed-ventilation-and-use-patterns_2025-02-27_1400_4bc4ed.eml",
+      "evaluated_sha256": "7e44fa02ccfb0ffddef27ea05616e7a803c6bb79ac741111a2f7cbb49c82434a",
+      "released_sha256": "82889743a50bc41c1af008604246810c1a88735c5fa1cdc7696d3f4f171ee045"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_6e2d3a5178b4bce5/00-Several-details-remain-unclear-renovation-related-termination-with-substantial-accessibility-and-housing-search-hardship_2025-07-18_1100_3d966f.eml",
+      "evaluated_sha256": "e28c34a4a911facfdf5fc70432ffffcffa93db2a46d5d4d6d8ada56df9802eef",
+      "released_sha256": "6f5cc480f6bba97c0e314138e97f28346b0209119943656667ff23064503eda3"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_6ecae3f11685e3b2/00-Please-help-me-decide-what-to-do-unexplained-reclassification-of-ancillary-charges-into-net-rent_2025-11-28_0900_8821df.txt",
+      "evaluated_sha256": "af9251c83018a9b3994cb87dc592b26a27cc168428bab530faf180052bde9a3e",
+      "released_sha256": "f4b3955bcb0414b854dac4e4a98eeb1f97977293727de84468f57251becc0886"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_7078fe1804ad03cc/00-Unterlagen-fehlen-moegliche-doppelte-Beruecksichtigung-desselben-Referenzzinsfaktors_2025-01-30_1300_93706d.txt",
+      "evaluated_sha256": "5cd3251ee66c70572b83b507af6800a97b33a71bfbdc336211492448a136a1da",
+      "released_sha256": "9ef3e1e1e8aa969eef58894c035fbd7821ecc32859b3000fb6ceef2bd2f71334"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_7108870bd133fed4/00-Bitte-um-Pruefung-wiederholter-Abwasserrueckstau-mit-behaupteter-Gesundheitswirkung-und-noch-unklarem-Ausloeser_2025-01-18_1300_ac113d.txt",
+      "evaluated_sha256": "720584a9af41cc006b5e16945c429cc126b5be122fcf4b7aae03e9e829691b96",
+      "released_sha256": "1aa49f85fa92c65d5e435468984619a69dba0b43ece314f371a147112aa83de0"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_72b3020bfe3de742/00-Frage-zu-meinen-Unterlagen-per-E-Mail-erklaerte-Kuendigung-mit-fehlendem-amtlichem-Formular-und-unklarem-zusaetzlichem-Versand_2026-05-09_1100_d6a4be.txt",
+      "evaluated_sha256": "3201aa81e994754c9b98d5d3dce056745ed4a4a0f758882d5c9fae26bacec90e",
+      "released_sha256": "f98e945fedc101b069b12a8b488600531d05dac1953a7ca664929272150f0205"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_731b214dde882f89/00-Request-for-an-initial-view-recurrent-mold-with-uncertainty-about-what-is-causing-it_2025-05-27_1400_a56708.eml",
+      "evaluated_sha256": "fe859583017101ae831354c09b34375d343f46874872b9926375f63de5252e56",
+      "released_sha256": "fa239807115589d0d1b368c707e8152ca575de0cf420124f867de7ae1f665595"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_76238b1a82b5c877/00-Zeitliche-Abfolge-unklar-moegliche-doppelte-Beruecksichtigung-desselben-Referenzzinsfaktors_2025-10-31_1100_07385d.txt",
+      "evaluated_sha256": "7e559284071d853a6ad9cf9518c5ec859a8c7199a3ddc70f56a7aee2890b3b6d",
+      "released_sha256": "d9c66f1133bf27f0cac93c963b1ba72d73dd82cc743c0af46ad9ad6daf61af3d"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_7ac806bd30792cfb/00-Mehrere-Angaben-sind-unklar-Schimmel-und-moegliche-Feuchtigkeit-im-Schlafzimmer_2025-04-27_1100_e6933d.txt",
+      "evaluated_sha256": "bf4d77ff47ceed457c2a88ef1ed99e2232a699e1b71282b9bce4cd477113a0ac",
+      "released_sha256": "f0a0cbd310edd9e4a9d6cc8ffc91212b1e1a0328db39d09942a4b9b35a2f4c57"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_7ace38ce2814fdb9/00-Unterlagen-fehlen-moeglicherweise-falsch-berechnete-Mietzinserhoehung_2025-08-24_1300_b12d63.eml",
+      "evaluated_sha256": "53879147cc620ea16a590e7f8ede0fb48675cf1b8c7347be3fe9092b5ca95fab",
+      "released_sha256": "c4233505d53890c06e66332dc5d26106508ca8fc14e4d7e9058b39ec246c53d5"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_7b92cc30892368b3/00-Besonderer-Umstand-wiederholter-Abwasserrueckstau-mit-behaupteter-Gesundheitswirkung-und-noch-unklarem-Ausloeser_2025-01-22_1200_92d5e5.eml",
+      "evaluated_sha256": "378b26aa7a4fb69fd839f30d27a45e944a2b8e3954f58de1f21372bbf884d446",
+      "released_sha256": "66a61d3b78cacfe4f083703b004f5855660eb5aad60863458a6d2aa293ab9e0b"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_8167911d95e79fdb/00-Sichere-Einordnung-erbeten-zwei-widerspruechliche-Kuendigungen-ohne-klare-Ersetzung_2025-10-29_1300_93f420.txt",
+      "evaluated_sha256": "8e556653b7764499a603a27015162a2315446a5508ded03b67d437a0efb58bf6",
+      "released_sha256": "7cde2fd97c874c30fe94775616a274c37a73d5833a0f32c36d1e4446a65c3ba4"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_8b7fca3c1704e47f/00-Request-for-a-detailed-review-mold-behind-furniture-with-disputed-ventilation-and-use-patterns_2025-03-06_0900_d46ba7.txt",
+      "evaluated_sha256": "938510e8f96fd3825a60dc4e3610b693a62d07303e68aec1c8d7090c682db72f",
+      "released_sha256": "fa71a8552638b8d8a62745387bf8e3de6e36748d31ec60a0ab1748621ad2e22e"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_8f8de9368e97ca31/00-Zeitliche-Abfolge-unklar-per-E-Mail-erklaerte-Kuendigung-mit-fehlendem-amtlichem-Formular-und-unklarem-zusaetzlichem-Versand_2026-05-06_1400_6ea3df.eml",
+      "evaluated_sha256": "40b0b3bf62b2b9e483d41f174d4ab4d76e017b06c64beb2b26d597bd096f005c",
+      "released_sha256": "0c07d2566da5ca4b20be2050ba3de4514afaae8dd5a9797341e6157ab1747e6d"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_92264ed30ac9bc8d/00-Mehrere-Angaben-sind-unklar-kleines-vor-der-Pruefung-behobenes-Wasserleck_2025-06-02_1000_7ff6f6.eml",
+      "evaluated_sha256": "db5d83ce168433d62ea26dce554f10ab26eb13d7d86a622fb1203e96be3f8a41",
+      "released_sha256": "bc55ef4b74ab8274d74a4aa36294e6e579dbcb7945395f601d4efd9756dbd755"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_93efa6c5f16b2da5/00-Several-details-remain-unclear-renovation-related-increase-based-on-a-provisional-budget-before-the-works-are-complete_2025-08-29_1400_26b657.txt",
+      "evaluated_sha256": "8829dd9c651d5571704e387ea6c0b432906ef2fe852b7f0a778577fb3855a378",
+      "released_sha256": "1759e37602370d736f43f72f5fe512a9584e7e207bb0702e7407b64504acd009"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_97f495fcbee20c74/00-Bitte-um-Pruefung-per-E-Mail-erklaerte-Kuendigung-mit-fehlendem-amtlichem-Formular-und-unklarem-zusaetzlichem-Versand_2026-05-06_1300_887757.txt",
+      "evaluated_sha256": "59baf73ba1b13d39929b33293d9a269aeeb13a9d11bc6a67b61558188f35b4cc",
+      "released_sha256": "19f0bc7140b00d669aa2f1ed1eca020af642ce3608646fef8c619f3271933278"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_99188a578845347c/00-Chronology-still-unclear-mold-and-possible-moisture-in-a-bedroom_2025-09-15_1300_080a3e.txt",
+      "evaluated_sha256": "ad1038c20ebc6f1e33768532c13dd7a8af4da5b480609c7a09574a971644e42f",
+      "released_sha256": "1610bef03ce2c125cba2b73e6d847560f3a881974cb6d93b5016a284157720ed"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_9c83b12ba8dfce68/00-Datumsangaben-noch-zu-klaeren-Schimmel-und-moegliche-Feuchtigkeit-im-Schlafzimmer_2025-03-24_0900_4584a6.txt",
+      "evaluated_sha256": "8c2c52f84963b6cdc8bc6226b09666d4eba29ac850f41dbc406b7438783ac858",
+      "released_sha256": "689ef2ea650aaca6b2b97cd11a57728e86fc26602b8c0dad9084b45af45a46df"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_9fc9c41746bca87d/00-Frage-zu-meinen-Unterlagen-wiederkehrende-wohnungsuebergreifende-Leckage-mit-widerspruechlichen-Fachnotizen_2025-04-21_1000_b48c1e.txt",
+      "evaluated_sha256": "dbd6a9792267f119748ea097d0e8f3285308be8002cabebc96dffe110b72eb53",
+      "released_sha256": "fcd453c658d4918de3439000edf0e44bb2d53bb7dbfb18c29b25f344dd08d055"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_a44c2ac127c942c8/00-Zeitliche-Abfolge-unklar-separat-zugestellte-aber-inhaltlich-widerspruechliche-Kuendigungen-der-Familienwohnung_2025-01-14_1200_681f01.txt",
+      "evaluated_sha256": "593a32ccaf617ba4d240dda34b2660f2bdde6e14ed6598eae1c6c64ac90bc685",
+      "released_sha256": "b84fb268ff2baa0144ae54a272bf8da9fea09beffd3a7b1515f90f172a2404f0"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_a601453abb9b2e32/00-Question-about-my-documents-family-home-termination-with-a-possible-service-defect_2025-03-10_1300_9be477.eml",
+      "evaluated_sha256": "3010fd06ecd706330fc825ec3283b9191d29c13c69015d0568d1076cb6abf9b8",
+      "released_sha256": "41e78c95a3b19e365cc0b1898372f25a3171b0d52d1dfe16dc590b52ecfe1d10"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_a62c178195d21648/00-Request-for-review-recurrent-multi-unit-leak-with-conflicting-contractor-notes_2025-01-08_1100_8b071f.txt",
+      "evaluated_sha256": "cca4fc6214a4b675dcc85f326e58865f2ef4fc84860ad9229ed4822cff964b33",
+      "released_sha256": "30f95db2651be1785b2d8d495c46436e16b7faf083a5db25cf92c9d86842b32d"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_a91f0e5c3e7df086/00-Dates-still-need-confirmation-family-home-termination-with-a-possible-service-defect_2025-02-14_1300_d18686.eml",
+      "evaluated_sha256": "8e38a1e3434b96042d66edabb159b65b86c4256c6911c5e658fa3f2030c4967d",
+      "released_sha256": "a842e18161aeedaef3398a85bed4490ddfa3f7f49fa15d7ad6c4074dbe4fb269"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_ab8afc6b0ad3b9e4/00-Frage-zu-meinen-Unterlagen-sanierungsbedingte-Kuendigung-mit-erheblicher-Zugaenglichkeits--und-Wohnungssuchhaerte_2025-03-26_1000_772d01.eml",
+      "evaluated_sha256": "848978a1df65266848473eb970bd59d7919dbf71c5afd41028b9be3cabf91dd8",
+      "released_sha256": "9afe4447db98a130b4153b419e68a0aba776f010db373ea8e1b2e928815d749c"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_ac7d7a08ca8d5a55/00-Request-for-a-detailed-review-unclear-renovation-related-rent-increase_2025-02-16_1200_340e2a.eml",
+      "evaluated_sha256": "f6b4d492abc2496bcb6b36c38a639beeba7be8cd58ef6638b28a2891ef1a15b6",
+      "released_sha256": "b15f85e18cf34ee5ba816b135cd84c075b812a032a7681a1290506d9d417cc06"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_af5b8495ef298d23/00-Request-for-review-two-conflicting-termination-notices-without-a-clear-replacement_2025-05-26_1300_fa0e28.eml",
+      "evaluated_sha256": "234325984045506334e87a6e4c1ffe26e942482d699872cd29cf5660f3f40700",
+      "released_sha256": "6588a043d23051a6bad21cfc88c214a50c5a6e929d89987981610a94409f878a"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_bfbb1a8f3fc58156/00-Frage-zu-meinen-Unterlagen-Schimmel-und-moegliche-Feuchtigkeit-im-Schlafzimmer_2025-01-29_1200_b1c114.txt",
+      "evaluated_sha256": "37c99e46ef185cdb515e1e154fbe0e051db8594a593a03d2c7cc31f781d7d62a",
+      "released_sha256": "bd5c9d38a52291dcb42153eea209e3a34993a76854294dc8030043c3a1e3aa9d"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_c138c15d0886b345/00-Sichere-Einordnung-erbeten-zwei-widerspruechliche-Kuendigungen-ohne-klare-Ersetzung_2025-03-11_1200_e647e4.eml",
+      "evaluated_sha256": "db310e1d8ba79ba40ba7fbc0de92c6aa5f68313b528a438524b0a024ac3fa7e9",
+      "released_sha256": "81d141365fda0015d63641b23246b04a8f922a175b873e91ad60376563527b7c"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_c44ddc0914ba9298/00-Bitte-um-Pruefung-ungeklaerte-Umgliederung-von-Nebenkosten-in-den-Nettomietzins_2025-11-26_1300_156660.txt",
+      "evaluated_sha256": "92f9cf7a40e34c99770fa8683e5299256fd31dc5474426290f0aeda241252e42",
+      "released_sha256": "078ecd4951b247cffd0fed62c6eb9065852afff2174862b146bc46a3e23760d4"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_c683ace4cb02ccb3/00-Unusual-circumstances-mold-behind-furniture-with-disputed-ventilation-and-use-patterns_2025-03-23_1400_b409f3.eml",
+      "evaluated_sha256": "477656672ce9fe3bbedbd740841fb810995eb02032946f7a7159a360f37d95de",
+      "released_sha256": "b867b1a75d5a8272948e31539ae2b8da2ac2aa276bc6b5ab77b9ce3265b92943"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_c8b46247757abe15/00-Please-help-me-decide-what-to-do-unclear-renovation-related-rent-increase_2025-01-30_1200_c7c20c.eml",
+      "evaluated_sha256": "b214354514dc2e70b91c96eabcbc58aec059475632d491ee423053e8928d4fc0",
+      "released_sha256": "cf34edb7124245910c3a2a36bcb7a3da6fb776a9baebe9fee9493d4144b39b5d"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_c9029af5de9fa5a6/00-Zeitliche-Abfolge-unklar-moeglicherweise-falsch-berechnete-Mietzinserhoehung_2025-10-23_1400_3dadfb.txt",
+      "evaluated_sha256": "bbb4a08955018cecef3a8b64e837eb7e70a5cd07502e35aced2ff31aa7966ba2",
+      "released_sha256": "34a650acbf30d9a0fda0256c45613f1c6656937af9b128773418a71b2a46c035"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_cbfda394bc5fc2d3/00-Request-for-a-detailed-review-renovation-related-increase-based-on-a-provisional-budget-before-the-works-are-complete_2025-03-14_1300_e00ca1.eml",
+      "evaluated_sha256": "7d945db6e2c23ba987af2c68fadc2fe97e781e8cc6d26683551ee4ddcc950094",
+      "released_sha256": "1adbb8873c8a616a19a75fa61f39266764e616ff2d2ac7c267cc41186ff99ab9"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_cdfdac3cdf7f809a/00-Please-help-me-decide-what-to-do-repeated-sewage-backflow-with-an-alleged-health-effect-and-uncertainty-about-what-is-causing-it_2025-10-11_0900_abd753.txt",
+      "evaluated_sha256": "c2eb96222568ac2c4a8fba27614982ed321695d4a79cc1270cdd93bce60051f8",
+      "released_sha256": "f660704f39739ce0091b61cfba8f4f5a44aa65ff09c39ab7019c80e8f2408104"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_d830a8410fe8c94a/00-Mehrere-Angaben-sind-unklar-wiederkehrender-Schimmel-mit-noch-unklarem-Ausloeser_2025-03-28_1000_691ebc.txt",
+      "evaluated_sha256": "2ef2984c718b8ad5f303f02733a9a57e7b881d6f16b6efd15ceed73a60316d58",
+      "released_sha256": "b4c5a7ef7f53ba345e092f125f20c22d43ddf053d7c37c38d8f55518dcc32e00"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_da6786a395031f3a/00-Dates-still-need-confirmation-repeated-sewage-backflow-with-an-alleged-health-effect-and-uncertainty-about-what-is-causing-it_2025-09-30_0900_614b5c.txt",
+      "evaluated_sha256": "55d384d23c8af3021fd389c16d5276c0b09bf48d572c0916f8ba26ea37f274a5",
+      "released_sha256": "0cd4c375c573ea59c0f33e1d21a125f37f00d985a39d3da49d708a17d97ab4fb"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_df9fc7fa4ca80f6d/00-Dates-still-need-confirmation-repeated-sewage-backflow-with-an-alleged-health-effect-and-uncertainty-about-what-is-causing-it_2025-06-22_0900_acb516.txt",
+      "evaluated_sha256": "f6886206c34130bdf2784145f9d274b480953fe06c2c42eb7a5fd5e254116602",
+      "released_sha256": "36e2a4104221810b4800b15c135bc4a461d57d157b2feac93c6096cb1a49720f"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_e4a8342461b8cf79/00-Request-for-review-unclear-renovation-related-rent-increase_2025-09-27_1000_6f7ef8.eml",
+      "evaluated_sha256": "202eedce2663ca2c18e2074efd34262ca2da0a02cf1577513c5ccab505ca6800",
+      "released_sha256": "427edb5ec64033178556efc4edbb9f2142f1930e5b5ef2522ff04bde40b0388c"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_ee6628dbc9cd16ff/00-Dates-still-need-confirmation-unexplained-reclassification-of-ancillary-charges-into-net-rent_2025-11-23_0900_2d4dee.eml",
+      "evaluated_sha256": "54f35fd7310023f71728e2badc1740db9177f772a96b425317bacdb31ee77e25",
+      "released_sha256": "ea7db8e39db2439d19066d4c1dac00f62553c0a7434d4b1ac37732ce5070d083"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_f69b1747447bc221/00-Please-help-me-decide-what-to-do-separately-served-but-substantively-inconsistent-family-home-termination-notices_2025-08-26_1200_418777.eml",
+      "evaluated_sha256": "2e4ba3a2cf367013066b35c51d27f81a5e592c3818daa3c8bb90a8e4c19a54dd",
+      "released_sha256": "6ffd640d84cfe5fa9d47077b6de36b2233530e3c44e6d289c58bdf9790d97bd3"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_f7cd8b8d07f8c933/00-Request-for-review-possibly-miscalculated-rent-increase_2025-08-16_1300_8d20dd.eml",
+      "evaluated_sha256": "78b0e65a4fde0138bd73b332b06e0fbd1c0a45c8ee09b58ebabe4b447876e386",
+      "released_sha256": "c0f0468a327743ccdbe232faebfae8e12c8088fb6b46bcf7952903b702677d4f"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_f8d04bdabc36bfe8/00-Unterlagen-fehlen-sanierungsbedingte-Erhoehung-auf-Grundlage-eines-vorlaeufigen-Budgets-vor-Abschluss-der-Arbeiten_2025-06-15_0900_1180d0.eml",
+      "evaluated_sha256": "b112450d3fcb116739281138800f8a1417f17bb31812fee82a19c9c6b85ff840",
+      "released_sha256": "ece22f8884f6bb94e43797492e3eb717f00142eef81eafca87fef31955ba7954"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_fa340390e701525c/00-Please-help-me-decide-what-to-do-minor-water-leak-repaired-before-review_2025-06-09_0900_cd7ba8.txt",
+      "evaluated_sha256": "4c242fb27b91d0e8a0718a2c062f83dc9ecfe31b779088dbfa768af4b0804140",
+      "released_sha256": "94c2b2cea501f7fe097e8ae3c39397784fe1b479d9677c5b2d93606836a708e2"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_fc3fad19cc8db954/00-Bitte-um-erste-Einschaetzung-wiederkehrender-Schimmel-mit-noch-unklarem-Ausloeser_2025-09-20_1000_f78929.eml",
+      "evaluated_sha256": "e01e4add2268e80144464c929c670b6102ce7339815f05511c59617647746d58",
+      "released_sha256": "cb65f5a26f3b26c7a3500b72cd71e8ee825959df773a076aa220a8efb6fd6383"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_fd22c426938b6320/00-Bitte-um-erste-Einschaetzung-zwei-widerspruechliche-Kuendigungen-ohne-klare-Ersetzung_2025-04-21_1000_32fead.eml",
+      "evaluated_sha256": "34b00de502dcd706aef9cd3e027e76565329b89ee99c687826464e903b64c1a1",
+      "released_sha256": "e3a7d247236f291cec7f3e82bbe41b2fd24cd24cd57a0289411d949d72fbde28"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_fd68e3dbacb17a8e/00-Dringende-vertiefte-Pruefung-separat-zugestellte-aber-inhaltlich-widerspruechliche-Kuendigungen-der-Familienwohnung_2025-08-21_1400_445bd6.eml",
+      "evaluated_sha256": "9c19a21f8502906e59ecb8364e2ae8a49e8a871d29793f344d62844f1e0aed67",
+      "released_sha256": "814bfd894d8508dcb12282a06afcc4386527021cc1c9be1c3d77589d53142323"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_fded14caf513a043/00-Datumsangaben-noch-zu-klaeren-Kuendigung-der-Familienwohnung-mit-moeglichem-Zustellmangel_2025-01-25_0900_b5aad2.eml",
+      "evaluated_sha256": "944daab35e0d5f5fa5b6fa5930e767acbb955dc994745776ef32a3f75523b114",
+      "released_sha256": "ef63872ad2aa6ef7f9a28c7ac57cc101ea90ee73fe844548e49fc1d737087ecf"
+    },
+    {
+      "path": "benchmark/data/test/sources/clm_fe259be188154a0c/00-Datumsangaben-noch-zu-klaeren-kleines-vor-der-Pruefung-behobenes-Wasserleck_2025-01-29_1100_c9c143.txt",
+      "evaluated_sha256": "362b9631f92d999811e22a47e85ebed7e154cd98550841ef0092f73b3addeec0",
+      "released_sha256": "c686d149c152de9473f0153a7bf75be99780d9ec210b61e75651de4180388e10"
+    }
+  ]
+}

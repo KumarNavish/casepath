@@ -7,7 +7,7 @@ Start with the [README](../README.md) for the idea and the shortest local run. T
 | How do I run one claim? | [Setup and first claim](setup.md) |
 | Why does this claim need a document? | [Live claim walkthrough](method-guide.md) |
 | What can the agent review actually do? | [Agent review workflow](AGENT_REVIEW.md) |
-| What is in the dataset? | [150-claim data card](INTAKE_PACKET_150.md) |
+| What is in the datasets? | [Released datasets](../data/README.md) and the [150-claim data card](INTAKE_PACKET_150.md) |
 | What did the studies measure? | [Research evidence](research-evidence.md) and [comparison conditions](benchmark-and-baselines.md) |
 | How do I reproduce the paper? | [Paper and artifact guide](../research/casepath/iclr2027-integrated/README.md) |
 | Which records can change claim state? | [Architecture and authority](architecture-authority.md) |

@@ -1,0 +1,72 @@
+{
+  "bundle_version": "casepath.custom-factorial-prompt-bundle/3.0.0",
+  "supersedes": "casepath.prompt-bundle/0.1.0",
+  "experimental_claim_boundary": "public_benchmark_coprimary_only_after_release_and_hidden_test_lock",
+  "shared_rules": [
+    "Use only the observable claim packet and prior-stage output supplied here.",
+    "Do not infer that an allegation is independently established.",
+    "Represent uncertainty explicitly; abstain when the observable packet does not support a choice.",
+    "Request a document only when it can support an active fact needed by a decision.",
+    "For every reported concept and branch predicate, copy the exact supporting locator object from the supplied source_registry; never invent or alter locator fields.",
+    "Use the supplied closed vocabulary exactly and return only the requested response object."
+  ],
+  "shared_information_requirements": [
+    "branch conditions",
+    "decisions",
+    "documents",
+    "evidence capabilities",
+    "required facts",
+    "terminal outcomes",
+    "uncertainties"
+  ],
+  "factor_slots": {
+    "order": {
+      "process_first": "Complete decisions, required facts, branch conditions, and terminal outcomes before evidence capabilities or documents.",
+      "direct_neutral": "Address every required information kind directly; no reasoning order is imposed."
+    },
+    "representation": {
+      "typed": "Use the typed item-and-dependency intermediate response schema.",
+      "plain_text": "Use the sectioned plain-text intermediate response schema; do not create item IDs or typed links."
+    }
+  },
+  "factorial_intermediate": {
+    "objective": "Analyze the observable claim using every shared information requirement. Do not produce the final CandidateArtifact in this call."
+  },
+  "factorial_finalize": {
+    "objective": "Map the observable packet and prior analysis into the final CandidateArtifact.",
+    "ordering_constraint": "Use the prior analysis as evidence, but apply no new reasoning-order or representation instruction."
+  },
+  "plain_text_format": [
+    "[BRANCH_CONDITIONS]",
+    "[DECISIONS]",
+    "[DOCUMENTS]",
+    "[EVIDENCE_CAPABILITIES]",
+    "[REQUIRED_FACTS]",
+    "[TERMINAL_OUTCOMES]",
+    "[UNCERTAINTIES]"
+  ],
+  "external_method_provenance": {
+    "EXIDE_V3": {
+      "adaptation": "Independent paper-inspired adaptation; not an exact reproduction and no external code, prompts, examples, or data are included.",
+      "method": "Independent adaptation of ExIde-P5 executable grounding and global rule-dependency ideas under the same final CandidateArtifact contract",
+      "paper": "https://aclanthology.org/2026.acl-long.1625/",
+      "public_repository_audited_commit": "1935ba9251613d27010003bdca563d4e47a6c201"
+    }
+  },
+  "exide_v3_intermediate": {
+    "objective": "Translate the observable packet into executable pseudo-code and atomic condition/action rules.",
+    "ordering_constraint": "Do not create CasePath fact, evidence, document, graph, or request structures in this call."
+  },
+  "exide_v3_finalize": {
+    "objective": "Infer dependencies among the rules, then map the packet and rule draft into the final CandidateArtifact.",
+    "ordering_constraint": "Preserve rule-first grounding before constructing the final representation."
+  },
+  "document_first_v3_intermediate": {
+    "objective": "Derive a candidate document checklist and document states directly from the observable claim and source artifacts. Do not construct a process graph in this call.",
+    "ordering_constraint": "List document hypotheses before any process, fact, or decision mapping."
+  },
+  "document_first_v3_finalize": {
+    "objective": "Map the observable packet and document-first draft into the final CandidateArtifact.",
+    "ordering_constraint": "Preserve the document-first starting point while satisfying the identical final response contract."
+  }
+}

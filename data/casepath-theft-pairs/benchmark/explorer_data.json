@@ -1,0 +1,2699 @@
+{
+ "schema": "casepath.branch-benchmark-explorer/1.0.0",
+ "generated_by": "build_explorer_data.py",
+ "note": "Selected reference realisations and therefore all correct/spurious/missed marks are read from the frozen scorer's preserved held-out report, not recomputed by this script.",
+ "alternative_semantics": "Each requirement has one or more acceptable document routes. A valid realization selects exactly one route per requirement; documents beyond the selected realization are spurious.",
+ "arms": [
+  {
+   "key": "b5_process_compiled",
+   "label": "CasePath"
+  },
+  {
+   "key": "b1_direct",
+   "label": "Direct"
+  },
+  {
+   "key": "b3_representation_then_list",
+   "label": "Graph as context"
+  },
+  {
+   "key": "b6_evidence_first",
+   "label": "Evidence-first"
+  }
+ ],
+ "totals": {
+  "b5_process_compiled": {
+   "micro_f1": 0.6666666666666666,
+   "precision": 0.6153846153846154,
+   "recall": 0.7272727272727273,
+   "exact_rate": 0.4444444444444444,
+   "predicted_atoms": 39,
+   "spurious_atoms": 15,
+   "missed_atoms": 9,
+   "family_pair_f1": {
+    "PR_bicycle_claimed": 1.0,
+    "PR_declined": 1.0,
+    "PR_expert_procedure_requested": 0.0,
+    "PR_goods_recovered": 1.0,
+    "PR_nachfrist_set": 1.0,
+    "PR_repair_over_500": 0.5,
+    "PR_scheduled_valuable_1000": 0.6666666666666666,
+    "PR_sim_card_stolen": 0.6666666666666666,
+    "PR_third_party_causer": 0.0
+   }
+  },
+  "b1_direct": {
+   "micro_f1": 0.5882352941176471,
+   "precision": 0.4807692307692308,
+   "recall": 0.7575757575757576,
+   "exact_rate": 0.3333333333333333,
+   "predicted_atoms": 52,
+   "spurious_atoms": 27,
+   "missed_atoms": 8,
+   "family_pair_f1": {
+    "PR_bicycle_claimed": 0.611111111111111,
+    "PR_declined": 0.0,
+    "PR_expert_procedure_requested": 0.48888888888888893,
+    "PR_goods_recovered": 0.7999999999999999,
+    "PR_nachfrist_set": 0.16666666666666666,
+    "PR_repair_over_500": 0.7777777777777777,
+    "PR_scheduled_valuable_1000": 1.0,
+    "PR_sim_card_stolen": 0.7777777777777777,
+    "PR_third_party_causer": 0.8888888888888888
+   }
+  },
+  "b3_representation_then_list": {
+   "micro_f1": 0.5904761904761905,
+   "precision": 0.4305555555555556,
+   "recall": 0.9393939393939394,
+   "exact_rate": 0.14814814814814814,
+   "predicted_atoms": 72,
+   "spurious_atoms": 41,
+   "missed_atoms": 2,
+   "family_pair_f1": {
+    "PR_bicycle_claimed": 0.8222222222222223,
+    "PR_declined": 0.27777777777777773,
+    "PR_expert_procedure_requested": 0.4444444444444444,
+    "PR_goods_recovered": 0.5222222222222223,
+    "PR_nachfrist_set": 0.38888888888888884,
+    "PR_repair_over_500": 0.8888888888888888,
+    "PR_scheduled_valuable_1000": 0.6888888888888888,
+    "PR_sim_card_stolen": 0.611111111111111,
+    "PR_third_party_causer": 0.8000000000000002
+   }
+  },
+  "b6_evidence_first": {
+   "micro_f1": 0.31683168316831684,
+   "precision": 0.23529411764705882,
+   "recall": 0.48484848484848486,
+   "exact_rate": 0.07407407407407407,
+   "predicted_atoms": 68,
+   "spurious_atoms": 52,
+   "missed_atoms": 17,
+   "family_pair_f1": {
+    "PR_bicycle_claimed": 0.20634920634920637,
+    "PR_declined": 0.2222222222222222,
+    "PR_expert_procedure_requested": 0.5555555555555555,
+    "PR_goods_recovered": 0.38888888888888884,
+    "PR_nachfrist_set": 0.22857142857142856,
+    "PR_repair_over_500": 0.0,
+    "PR_scheduled_valuable_1000": 0.5,
+    "PR_sim_card_stolen": 0.38888888888888884,
+    "PR_third_party_causer": 0.3333333333333333
+   }
+  }
+ },
+ "gold_atoms": 33,
+ "vocabulary": [
+  "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+  "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+  "-Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+  "-Payment instruction with payee name and address, IBAN and name of the financial institution",
+  "-Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+  "+Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+  "-Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+  "-Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+  "+Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+  "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+  "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+  "+Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+  "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+  "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+  "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+  "+Payment instruction with payee name and address, IBAN and name of the financial institution",
+  "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+  "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+  "-Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+  "-Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+  "-Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+  "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+  "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+  "+The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+  "-Witness names and addresses (Namen und Adressen von allfaelligen Zeugen)",
+  "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+  "+Insurer's consent to alteration of the damaged items before the loss is determined",
+  "+Police consent to the removal or alteration of the Tatspuren",
+  "+Written substantiation of the claim for indemnity, where the insurer demands it (schriftliche Begruendung des Entschaedigungsanspruchs)",
+  "+Report to the insurer that stolen items have been recovered or news of them received",
+  "+Insurer's declination of the claim for indemnity"
+ ],
+ "pairs": [
+  {
+   "pair_id": "theft-01-02",
+   "concept": "PR_scheduled_valuable_1000",
+   "concept_label": "Scheduled valuable at or above the policy threshold",
+   "context_index": 1,
+   "statement_before": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+   "statement_after": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+   "acceptable": [
+    [
+     0
+    ],
+    [
+     1
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      0,
+      1
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [
+      0
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_052",
+      "overlay_guard_074"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      1
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 7
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      1,
+      2,
+      3,
+      4
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [
+      2,
+      3,
+      4
+     ],
+     "missed": [],
+     "before_count": 8,
+     "after_count": 6
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      5,
+      1,
+      2,
+      3,
+      6
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [
+      2,
+      3,
+      5,
+      6
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 6
+    }
+   }
+  },
+  {
+   "pair_id": "theft-01-03",
+   "concept": "PR_scheduled_valuable_1000",
+   "concept_label": "Scheduled valuable at or above the policy threshold",
+   "context_index": 2,
+   "statement_before": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+   "statement_after": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+   "acceptable": [
+    [
+     0
+    ],
+    [
+     1
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      0,
+      1
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [
+      0
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_052",
+      "overlay_guard_074"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      1
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 7
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      1
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      1,
+      7
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [
+      7
+     ],
+     "missed": [],
+     "before_count": 5,
+     "after_count": 5
+    }
+   }
+  },
+  {
+   "pair_id": "theft-01-04",
+   "concept": "PR_scheduled_valuable_1000",
+   "concept_label": "Scheduled valuable at or above the policy threshold",
+   "context_index": 3,
+   "statement_before": "No stolen item is separately scheduled in the policy with an insured value of CHF 1,000 or more.",
+   "statement_after": "A stolen watch is separately scheduled in the policy with an insured value of CHF 4,000.",
+   "acceptable": [
+    [
+     0
+    ],
+    [
+     1
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      0,
+      1
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [
+      0
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_052",
+      "overlay_guard_074"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      1
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 7
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      1,
+      8
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [
+      8
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 9
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      1,
+      2,
+      3
+     ],
+     "selected_reference": [
+      1
+     ],
+     "correct": [
+      1
+     ],
+     "spurious": [
+      2,
+      3
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 5
+    }
+   }
+  },
+  {
+   "pair_id": "theft-02-02",
+   "concept": "PR_bicycle_claimed",
+   "concept_label": "A bicycle or e-bike among the stolen items",
+   "context_index": 1,
+   "statement_before": "No bicycle or e-bike is among the stolen items.",
+   "statement_after": "A bicycle is among the stolen items.",
+   "acceptable": [
+    [
+     9,
+     10
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      9,
+      10
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9,
+      10
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_015"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      9
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9
+     ],
+     "spurious": [],
+     "missed": [
+      10
+     ],
+     "before_count": 6,
+     "after_count": 7
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      9,
+      10,
+      8
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9,
+      10
+     ],
+     "spurious": [
+      8
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 10
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      9,
+      11,
+      7,
+      4
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9
+     ],
+     "spurious": [
+      4,
+      7,
+      11
+     ],
+     "missed": [
+      10
+     ],
+     "before_count": 8,
+     "after_count": 8
+    }
+   }
+  },
+  {
+   "pair_id": "theft-02-03",
+   "concept": "PR_bicycle_claimed",
+   "concept_label": "A bicycle or e-bike among the stolen items",
+   "context_index": 2,
+   "statement_before": "No bicycle or e-bike is among the stolen items.",
+   "statement_after": "A bicycle is among the stolen items.",
+   "acceptable": [
+    [
+     9,
+     10
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      9,
+      10
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9,
+      10
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_015"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      9,
+      5
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9
+     ],
+     "spurious": [
+      5
+     ],
+     "missed": [
+      10
+     ],
+     "before_count": 6,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      9,
+      10,
+      3,
+      4
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9,
+      10
+     ],
+     "spurious": [
+      3,
+      4
+     ],
+     "missed": [],
+     "before_count": 8,
+     "after_count": 8
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      9,
+      5,
+      2,
+      3,
+      4
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9
+     ],
+     "spurious": [
+      2,
+      3,
+      4,
+      5
+     ],
+     "missed": [
+      10
+     ],
+     "before_count": 7,
+     "after_count": 6
+    }
+   }
+  },
+  {
+   "pair_id": "theft-02-04",
+   "concept": "PR_bicycle_claimed",
+   "concept_label": "A bicycle or e-bike among the stolen items",
+   "context_index": 3,
+   "statement_before": "No bicycle or e-bike is among the stolen items.",
+   "statement_after": "A bicycle is among the stolen items.",
+   "acceptable": [
+    [
+     9,
+     10
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      9,
+      10
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9,
+      10
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_015"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      9
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9
+     ],
+     "spurious": [],
+     "missed": [
+      10
+     ],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      9,
+      10
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [
+      9,
+      10
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 9
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      5
+     ],
+     "selected_reference": [
+      9,
+      10
+     ],
+     "correct": [],
+     "spurious": [
+      5
+     ],
+     "missed": [
+      9,
+      10
+     ],
+     "before_count": 4,
+     "after_count": 5
+    }
+   }
+  },
+  {
+   "pair_id": "theft-03-02",
+   "concept": "PR_sim_card_stolen",
+   "concept_label": "SIM-card theft with misuse",
+   "context_index": 1,
+   "statement_before": "No SIM card was stolen and no loss from SIM-card misuse is claimed.",
+   "statement_after": "A SIM card was stolen and loss from its misuse is part of the claim.",
+   "acceptable": [
+    [
+     12
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      13,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      13
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_084",
+      "overlay_guard_088"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      13,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      13
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      13,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      13
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 9
+    },
+    "b6_evidence_first": {
+     "predicted": [],
+     "selected_reference": [
+      12
+     ],
+     "correct": [],
+     "spurious": [],
+     "missed": [
+      12
+     ],
+     "before_count": 4,
+     "after_count": 4
+    }
+   }
+  },
+  {
+   "pair_id": "theft-03-03",
+   "concept": "PR_sim_card_stolen",
+   "concept_label": "SIM-card theft with misuse",
+   "context_index": 2,
+   "statement_before": "No SIM card was stolen and no loss from SIM-card misuse is claimed.",
+   "statement_after": "A SIM card was stolen and loss from its misuse is part of the claim.",
+   "acceptable": [
+    [
+     12
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      13,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      13
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_084",
+      "overlay_guard_088"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      13,
+      14,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      13,
+      14
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 10
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      14,
+      15,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      14,
+      15
+     ],
+     "missed": [],
+     "before_count": 4,
+     "after_count": 7
+    }
+   }
+  },
+  {
+   "pair_id": "theft-03-04",
+   "concept": "PR_sim_card_stolen",
+   "concept_label": "SIM-card theft with misuse",
+   "context_index": 3,
+   "statement_before": "No SIM card was stolen and no loss from SIM-card misuse is claimed.",
+   "statement_after": "A SIM card was stolen and loss from its misuse is part of the claim.",
+   "acceptable": [
+    [
+     12
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      13,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      13
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 15,
+     "changed_guards": [
+      "overlay_guard_084",
+      "overlay_guard_088"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      12,
+      7
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      7
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 7
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      13,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      13
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 9
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      13,
+      12
+     ],
+     "selected_reference": [
+      12
+     ],
+     "correct": [
+      12
+     ],
+     "spurious": [
+      13
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 8
+    }
+   }
+  },
+  {
+   "pair_id": "theft-04-02",
+   "concept": "PR_third_party_causer",
+   "concept_label": "An identifiable third-party causer",
+   "context_index": 1,
+   "statement_before": "No identifiable third party caused or enlarged the loss apart from the unidentified thief.",
+   "statement_after": "An identified building contractor caused the loss and their identity is known.",
+   "acceptable": [
+    [
+     16,
+     17
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [],
+     "spurious": [],
+     "missed": [
+      16,
+      17
+     ],
+     "before_count": 13,
+     "after_count": 13,
+     "changed_guards": [],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      16,
+      17,
+      11,
+      4
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [
+      16,
+      17
+     ],
+     "spurious": [
+      4,
+      11
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 9
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      5,
+      16,
+      17
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [
+      16,
+      17
+     ],
+     "spurious": [
+      5
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 9
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      16,
+      17
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [
+      16,
+      17
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 8,
+     "after_count": 10
+    }
+   }
+  },
+  {
+   "pair_id": "theft-04-03",
+   "concept": "PR_third_party_causer",
+   "concept_label": "An identifiable third-party causer",
+   "context_index": 2,
+   "statement_before": "No identifiable third party caused or enlarged the loss apart from the unidentified thief.",
+   "statement_after": "An identified building contractor caused the loss and their identity is known.",
+   "acceptable": [
+    [
+     16,
+     17
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [],
+     "spurious": [],
+     "missed": [
+      16,
+      17
+     ],
+     "before_count": 13,
+     "after_count": 13,
+     "changed_guards": [],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      16,
+      17
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [
+      16,
+      17
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 9
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      16,
+      17,
+      7
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [
+      16,
+      17
+     ],
+     "spurious": [
+      7
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      7,
+      2,
+      3
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [],
+     "spurious": [
+      2,
+      3,
+      7
+     ],
+     "missed": [
+      16,
+      17
+     ],
+     "before_count": 7,
+     "after_count": 4
+    }
+   }
+  },
+  {
+   "pair_id": "theft-04-04",
+   "concept": "PR_third_party_causer",
+   "concept_label": "An identifiable third-party causer",
+   "context_index": 3,
+   "statement_before": "No identifiable third party caused or enlarged the loss apart from the unidentified thief.",
+   "statement_after": "An identified building contractor caused the loss and their identity is known.",
+   "acceptable": [
+    [
+     16,
+     17
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [],
+     "spurious": [],
+     "missed": [
+      16,
+      17
+     ],
+     "before_count": 13,
+     "after_count": 13,
+     "changed_guards": [],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      16,
+      17
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [
+      16,
+      17
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      16,
+      17,
+      7
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [
+      16,
+      17
+     ],
+     "spurious": [
+      7
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      2,
+      18,
+      3,
+      19,
+      20
+     ],
+     "selected_reference": [
+      16,
+      17
+     ],
+     "correct": [],
+     "spurious": [
+      2,
+      3,
+      18,
+      19,
+      20
+     ],
+     "missed": [
+      16,
+      17
+     ],
+     "before_count": 6,
+     "after_count": 1
+    }
+   }
+  },
+  {
+   "pair_id": "theft-05-02",
+   "concept": "PR_expert_procedure_requested",
+   "concept_label": "A formal expert procedure",
+   "context_index": 1,
+   "statement_before": "Neither party has requested the formal expert determination procedure.",
+   "statement_after": "The policyholder has requested the formal expert determination procedure in writing.",
+   "acceptable": [
+    [
+     21
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      22
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [],
+     "spurious": [
+      22
+     ],
+     "missed": [
+      21
+     ],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_021",
+      "overlay_guard_022",
+      "overlay_guard_023",
+      "overlay_guard_024"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      15,
+      8,
+      23,
+      21
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [
+      21
+     ],
+     "spurious": [
+      8,
+      15,
+      23
+     ],
+     "missed": [],
+     "before_count": 5,
+     "after_count": 9
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      5,
+      21
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [
+      21
+     ],
+     "spurious": [
+      5
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 9
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      21
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [
+      21
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 8,
+     "after_count": 9
+    }
+   }
+  },
+  {
+   "pair_id": "theft-05-03",
+   "concept": "PR_expert_procedure_requested",
+   "concept_label": "A formal expert procedure",
+   "context_index": 2,
+   "statement_before": "Neither party has requested the formal expert determination procedure.",
+   "statement_after": "The policyholder has requested the formal expert determination procedure in writing.",
+   "acceptable": [
+    [
+     21
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      22
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [],
+     "spurious": [
+      22
+     ],
+     "missed": [
+      21
+     ],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_021",
+      "overlay_guard_022",
+      "overlay_guard_023",
+      "overlay_guard_024"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      21,
+      11,
+      7,
+      4
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [
+      21
+     ],
+     "spurious": [
+      4,
+      7,
+      11
+     ],
+     "missed": [],
+     "before_count": 8,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      14,
+      21,
+      7,
+      4,
+      24
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [
+      21
+     ],
+     "spurious": [
+      4,
+      7,
+      14,
+      24
+     ],
+     "missed": [],
+     "before_count": 8,
+     "after_count": 7
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      2,
+      18,
+      19,
+      20,
+      6
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [],
+     "spurious": [
+      2,
+      6,
+      18,
+      19,
+      20
+     ],
+     "missed": [
+      21
+     ],
+     "before_count": 6,
+     "after_count": 1
+    }
+   }
+  },
+  {
+   "pair_id": "theft-05-04",
+   "concept": "PR_expert_procedure_requested",
+   "concept_label": "A formal expert procedure",
+   "context_index": 3,
+   "statement_before": "Neither party has requested the formal expert determination procedure.",
+   "statement_after": "The policyholder has requested the formal expert determination procedure in writing.",
+   "acceptable": [
+    [
+     21
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      22
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [],
+     "spurious": [
+      22
+     ],
+     "missed": [
+      21
+     ],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_021",
+      "overlay_guard_022",
+      "overlay_guard_023",
+      "overlay_guard_024"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      23,
+      21
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [
+      21
+     ],
+     "spurious": [
+      23
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 9
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      5,
+      8,
+      23,
+      21,
+      2
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [
+      21
+     ],
+     "spurious": [
+      2,
+      5,
+      8,
+      23
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 9
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      23,
+      21
+     ],
+     "selected_reference": [
+      21
+     ],
+     "correct": [
+      21
+     ],
+     "spurious": [
+      23
+     ],
+     "missed": [],
+     "before_count": 4,
+     "after_count": 6
+    }
+   }
+  },
+  {
+   "pair_id": "theft-06-02",
+   "concept": "PR_repair_over_500",
+   "concept_label": "A repair above the consent threshold",
+   "context_index": 1,
+   "statement_before": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+   "statement_after": "A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.",
+   "acceptable": [
+    [
+     25
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      26,
+      25,
+      27
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [
+      26,
+      27
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 16,
+     "changed_guards": [
+      "overlay_guard_003",
+      "overlay_guard_067",
+      "overlay_guard_090"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      25
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 7
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      25
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      7
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [],
+     "spurious": [
+      7
+     ],
+     "missed": [
+      25
+     ],
+     "before_count": 5,
+     "after_count": 4
+    }
+   }
+  },
+  {
+   "pair_id": "theft-06-03",
+   "concept": "PR_repair_over_500",
+   "concept_label": "A repair above the consent threshold",
+   "context_index": 2,
+   "statement_before": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+   "statement_after": "A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.",
+   "acceptable": [
+    [
+     25
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      26,
+      25,
+      27
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [
+      26,
+      27
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 16,
+     "changed_guards": [
+      "overlay_guard_003",
+      "overlay_guard_067",
+      "overlay_guard_090"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      5,
+      25
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [
+      5
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      25
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      5,
+      14,
+      15
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [],
+     "spurious": [
+      5,
+      14,
+      15
+     ],
+     "missed": [
+      25
+     ],
+     "before_count": 4,
+     "after_count": 7
+    }
+   }
+  },
+  {
+   "pair_id": "theft-06-04",
+   "concept": "PR_repair_over_500",
+   "concept_label": "A repair above the consent threshold",
+   "context_index": 3,
+   "statement_before": "No repair costing more than CHF 500 is contemplated for the damaged insured items.",
+   "statement_after": "A repair to a damaged insured item is contemplated and is expected to cost CHF 1,200.",
+   "acceptable": [
+    [
+     25
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      26,
+      25,
+      27
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [
+      26,
+      27
+     ],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 16,
+     "changed_guards": [
+      "overlay_guard_003",
+      "overlay_guard_067",
+      "overlay_guard_090"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      26,
+      25
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [
+      26
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      25,
+      7
+     ],
+     "selected_reference": [
+      25
+     ],
+     "correct": [
+      25
+     ],
+     "spurious": [
+      7
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 7
+    },
+    "b6_evidence_first": {
+     "predicted": [],
+     "selected_reference": [
+      25
+     ],
+     "correct": [],
+     "spurious": [],
+     "missed": [
+      25
+     ],
+     "before_count": 4,
+     "after_count": 4
+    }
+   }
+  },
+  {
+   "pair_id": "theft-07-02",
+   "concept": "PR_nachfrist_set",
+   "concept_label": "A written demand with a forfeiture period (Nachfrist)",
+   "context_index": 1,
+   "statement_before": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+   "statement_after": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.",
+   "acceptable": [
+    [
+     22
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      22
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [
+      22
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_012",
+      "overlay_guard_033",
+      "overlay_guard_039",
+      "overlay_guard_070",
+      "overlay_guard_098"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      28
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [],
+     "spurious": [
+      28
+     ],
+     "missed": [
+      22
+     ],
+     "before_count": 6,
+     "after_count": 7
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      8
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [],
+     "spurious": [
+      8
+     ],
+     "missed": [
+      22
+     ],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      14,
+      22,
+      15,
+      11,
+      28,
+      7
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [
+      22
+     ],
+     "spurious": [
+      7,
+      11,
+      14,
+      15,
+      28
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 10
+    }
+   }
+  },
+  {
+   "pair_id": "theft-07-03",
+   "concept": "PR_nachfrist_set",
+   "concept_label": "A written demand with a forfeiture period (Nachfrist)",
+   "context_index": 2,
+   "statement_before": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+   "statement_after": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.",
+   "acceptable": [
+    [
+     22
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      22
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [
+      22
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_012",
+      "overlay_guard_033",
+      "overlay_guard_039",
+      "overlay_guard_070",
+      "overlay_guard_098"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      22,
+      28,
+      7
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [
+      22
+     ],
+     "spurious": [
+      7,
+      28
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      22,
+      2
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [
+      22
+     ],
+     "spurious": [
+      2
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 7
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      11,
+      18,
+      20
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [],
+     "spurious": [
+      11,
+      18,
+      20
+     ],
+     "missed": [
+      22
+     ],
+     "before_count": 4,
+     "after_count": 3
+    }
+   }
+  },
+  {
+   "pair_id": "theft-07-04",
+   "concept": "PR_nachfrist_set",
+   "concept_label": "A written demand with a forfeiture period (Nachfrist)",
+   "context_index": 3,
+   "statement_before": "The insurer has not sent a written demand setting a document deadline under a forfeiture warning.",
+   "statement_after": "The insurer sent a written demand warning that the claim will be forfeited unless the requested communications are supplied within 10 days.",
+   "acceptable": [
+    [
+     22
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      22
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [
+      22
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_012",
+      "overlay_guard_033",
+      "overlay_guard_039",
+      "overlay_guard_070",
+      "overlay_guard_098"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      14,
+      15,
+      7
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [],
+     "spurious": [
+      7,
+      14,
+      15
+     ],
+     "missed": [
+      22
+     ],
+     "before_count": 5,
+     "after_count": 6
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      22,
+      2,
+      3
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [
+      22
+     ],
+     "spurious": [
+      2,
+      3
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 6
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      14,
+      22,
+      15,
+      28
+     ],
+     "selected_reference": [
+      22
+     ],
+     "correct": [
+      22
+     ],
+     "spurious": [
+      14,
+      15,
+      28
+     ],
+     "missed": [],
+     "before_count": 4,
+     "after_count": 8
+    }
+   }
+  },
+  {
+   "pair_id": "theft-08-02",
+   "concept": "PR_goods_recovered",
+   "concept_label": "Recovery of stolen goods",
+   "context_index": 1,
+   "statement_before": "None of the stolen items has been recovered and no news of them has been received.",
+   "statement_after": "One of the stolen items has been recovered and the policyholder has received news of its recovery.",
+   "acceptable": [
+    [
+     29
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      29
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_040",
+      "overlay_guard_041"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      5,
+      29,
+      2,
+      3
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [
+      2,
+      3,
+      5
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 6
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      29,
+      2
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [
+      2
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 7
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      11
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [],
+     "spurious": [
+      11
+     ],
+     "missed": [
+      29
+     ],
+     "before_count": 4,
+     "after_count": 5
+    }
+   }
+  },
+  {
+   "pair_id": "theft-08-03",
+   "concept": "PR_goods_recovered",
+   "concept_label": "Recovery of stolen goods",
+   "context_index": 2,
+   "statement_before": "None of the stolen items has been recovered and no news of them has been received.",
+   "statement_after": "One of the stolen items has been recovered and the policyholder has received news of its recovery.",
+   "acceptable": [
+    [
+     29
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      29
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_040",
+      "overlay_guard_041"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      29
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      29,
+      7,
+      4
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [
+      4,
+      7
+     ],
+     "missed": [],
+     "before_count": 8,
+     "after_count": 7
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      29,
+      3,
+      4
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [
+      3,
+      4
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 5
+    }
+   }
+  },
+  {
+   "pair_id": "theft-08-04",
+   "concept": "PR_goods_recovered",
+   "concept_label": "Recovery of stolen goods",
+   "context_index": 3,
+   "statement_before": "None of the stolen items has been recovered and no news of them has been received.",
+   "statement_after": "One of the stolen items has been recovered and the policyholder has received news of its recovery.",
+   "acceptable": [
+    [
+     29
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      29
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_040",
+      "overlay_guard_041"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      29
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 7
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      14,
+      15,
+      29,
+      8
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [
+      8,
+      14,
+      15
+     ],
+     "missed": [],
+     "before_count": 5,
+     "after_count": 9
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      29,
+      8
+     ],
+     "selected_reference": [
+      29
+     ],
+     "correct": [
+      29
+     ],
+     "spurious": [
+      8
+     ],
+     "missed": [],
+     "before_count": 6,
+     "after_count": 8
+    }
+   }
+  },
+  {
+   "pair_id": "theft-09-02",
+   "concept": "PR_declined",
+   "concept_label": "Insurer declination",
+   "context_index": 1,
+   "statement_before": "The insurer has not declined the claim for indemnity.",
+   "statement_after": "The insurer has declined the claim for indemnity in writing.",
+   "acceptable": [
+    [
+     30
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      30
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [
+      30
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_043",
+      "overlay_guard_075"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      7,
+      3
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [],
+     "spurious": [
+      3,
+      7
+     ],
+     "missed": [
+      30
+     ],
+     "before_count": 7,
+     "after_count": 5
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      5,
+      30,
+      8,
+      3,
+      6
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [
+      30
+     ],
+     "spurious": [
+      3,
+      5,
+      6,
+      8
+     ],
+     "missed": [],
+     "before_count": 7,
+     "after_count": 8
+    },
+    "b6_evidence_first": {
+     "predicted": [
+      30,
+      8
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [
+      30
+     ],
+     "spurious": [
+      8
+     ],
+     "missed": [],
+     "before_count": 4,
+     "after_count": 6
+    }
+   }
+  },
+  {
+   "pair_id": "theft-09-03",
+   "concept": "PR_declined",
+   "concept_label": "Insurer declination",
+   "context_index": 2,
+   "statement_before": "The insurer has not declined the claim for indemnity.",
+   "statement_after": "The insurer has declined the claim for indemnity in writing.",
+   "acceptable": [
+    [
+     30
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      30
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [
+      30
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_043",
+      "overlay_guard_075"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      3
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [],
+     "spurious": [
+      3
+     ],
+     "missed": [
+      30
+     ],
+     "before_count": 6,
+     "after_count": 5
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      3
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [],
+     "spurious": [
+      3
+     ],
+     "missed": [
+      30
+     ],
+     "before_count": 7,
+     "after_count": 6
+    },
+    "b6_evidence_first": {
+     "predicted": [],
+     "selected_reference": [
+      30
+     ],
+     "correct": [],
+     "spurious": [],
+     "missed": [
+      30
+     ],
+     "before_count": 4,
+     "after_count": 4
+    }
+   }
+  },
+  {
+   "pair_id": "theft-09-04",
+   "concept": "PR_declined",
+   "concept_label": "Insurer declination",
+   "context_index": 3,
+   "statement_before": "The insurer has not declined the claim for indemnity.",
+   "statement_after": "The insurer has declined the claim for indemnity in writing.",
+   "acceptable": [
+    [
+     30
+    ]
+   ],
+   "arms": {
+    "b5_process_compiled": {
+     "predicted": [
+      30
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [
+      30
+     ],
+     "spurious": [],
+     "missed": [],
+     "before_count": 13,
+     "after_count": 14,
+     "changed_guards": [
+      "overlay_guard_043",
+      "overlay_guard_075"
+     ],
+     "all_requests_source_chained": true
+    },
+    "b1_direct": {
+     "predicted": [
+      8
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [],
+     "spurious": [
+      8
+     ],
+     "missed": [
+      30
+     ],
+     "before_count": 5,
+     "after_count": 6
+    },
+    "b3_representation_then_list": {
+     "predicted": [
+      30,
+      3,
+      4
+     ],
+     "selected_reference": [
+      30
+     ],
+     "correct": [
+      30
+     ],
+     "spurious": [
+      3,
+      4
+     ],
+     "missed": [],
+     "before_count": 8,
+     "after_count": 7
+    },
+    "b6_evidence_first": {
+     "predicted": [],
+     "selected_reference": [
+      30
+     ],
+     "correct": [],
+     "spurious": [],
+     "missed": [
+      30
+     ],
+     "before_count": 5,
+     "after_count": 5
+    }
+   }
+  }
+ ]
+}

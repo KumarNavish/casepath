@@ -1,0 +1,797 @@
+[
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-02-01",
+    "scenario": "PR_bicycle_claimed",
+    "context_index": 0,
+    "before_unit_id": "theft-02-01-false",
+    "after_unit_id": "theft-02-01-true",
+    "before_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ]
+  },
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-09-01",
+    "scenario": "PR_declined",
+    "context_index": 0,
+    "before_unit_id": "theft-09-01-false",
+    "after_unit_id": "theft-09-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "-Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+    ]
+  },
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-05-01",
+    "scenario": "PR_expert_procedure_requested",
+    "context_index": 0,
+    "before_unit_id": "theft-05-01-false",
+    "after_unit_id": "theft-05-01-true",
+    "before_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "+Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ]
+  },
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-08-01",
+    "scenario": "PR_goods_recovered",
+    "context_index": 0,
+    "before_unit_id": "theft-08-01-false",
+    "after_unit_id": "theft-08-01-true",
+    "before_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Report to the insurer that stolen items have been recovered or news of them received",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "+Report to the insurer that stolen items have been recovered or news of them received"
+    ]
+  },
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-07-01",
+    "scenario": "PR_nachfrist_set",
+    "context_index": 0,
+    "before_unit_id": "theft-07-01-false",
+    "after_unit_id": "theft-07-01-true",
+    "before_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written substantiation of the claim for indemnity, where the insurer demands it (schriftliche Begruendung des Entschaedigungsanspruchs)"
+    ],
+    "predicted_signed_delta": [
+      "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+      "+Written substantiation of the claim for indemnity, where the insurer demands it (schriftliche Begruendung des Entschaedigungsanspruchs)"
+    ]
+  },
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-06-01",
+    "scenario": "PR_repair_over_500",
+    "context_index": 0,
+    "before_unit_id": "theft-06-01-false",
+    "after_unit_id": "theft-06-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+      "-Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "-Payment instruction with payee name and address, IBAN and name of the financial institution"
+    ]
+  },
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-01-01",
+    "scenario": "PR_scheduled_valuable_1000",
+    "context_index": 0,
+    "before_unit_id": "theft-01-01-false",
+    "after_unit_id": "theft-01-01-true",
+    "before_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ]
+  },
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-03-01",
+    "scenario": "PR_sim_card_stolen",
+    "context_index": 0,
+    "before_unit_id": "theft-03-01-false",
+    "after_unit_id": "theft-03-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+      "-Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+    ]
+  },
+  {
+    "arm": "b1_direct",
+    "pair_id": "theft-04-01",
+    "scenario": "PR_third_party_causer",
+    "context_index": 0,
+    "before_unit_id": "theft-04-01-false",
+    "after_unit_id": "theft-04-01-true",
+    "before_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "predicted_signed_delta": [
+      "+Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ]
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-02-01",
+    "scenario": "PR_bicycle_claimed",
+    "context_index": 0,
+    "before_unit_id": "theft-02-01-false",
+    "after_unit_id": "theft-02-01-true",
+    "before_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "+Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+      "+Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+      "-Payment instruction with payee name and address, IBAN and name of the financial institution"
+    ]
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-09-01",
+    "scenario": "PR_declined",
+    "context_index": 0,
+    "before_unit_id": "theft-09-01-false",
+    "after_unit_id": "theft-09-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "-Payment instruction with payee name and address, IBAN and name of the financial institution"
+    ]
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-05-01",
+    "scenario": "PR_expert_procedure_requested",
+    "context_index": 0,
+    "before_unit_id": "theft-05-01-false",
+    "after_unit_id": "theft-05-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "predicted_signed_delta": [
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "+The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ]
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-08-01",
+    "scenario": "PR_goods_recovered",
+    "context_index": 0,
+    "before_unit_id": "theft-08-01-false",
+    "after_unit_id": "theft-08-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Report to the insurer that stolen items have been recovered or news of them received",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Report to the insurer that stolen items have been recovered or news of them received"
+    ]
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-07-01",
+    "scenario": "PR_nachfrist_set",
+    "context_index": 0,
+    "before_unit_id": "theft-07-01-false",
+    "after_unit_id": "theft-07-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+      "+Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+      "+Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form",
+      "-Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+    ]
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-06-01",
+    "scenario": "PR_repair_over_500",
+    "context_index": 0,
+    "before_unit_id": "theft-06-01-false",
+    "after_unit_id": "theft-06-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ]
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-01-01",
+    "scenario": "PR_scheduled_valuable_1000",
+    "context_index": 0,
+    "before_unit_id": "theft-01-01-false",
+    "after_unit_id": "theft-01-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": []
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-03-01",
+    "scenario": "PR_sim_card_stolen",
+    "context_index": 0,
+    "before_unit_id": "theft-03-01-false",
+    "after_unit_id": "theft-03-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+      "+Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ]
+  },
+  {
+    "arm": "b3_representation_then_list",
+    "pair_id": "theft-04-01",
+    "scenario": "PR_third_party_causer",
+    "context_index": 0,
+    "before_unit_id": "theft-04-01-false",
+    "after_unit_id": "theft-04-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ],
+    "predicted_signed_delta": [
+      "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-02-01",
+    "scenario": "PR_bicycle_claimed",
+    "context_index": 0,
+    "before_unit_id": "theft-02-01-false",
+    "after_unit_id": "theft-02-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Payment instruction with payee name and address, IBAN and name of the financial institution"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-09-01",
+    "scenario": "PR_declined",
+    "context_index": 0,
+    "before_unit_id": "theft-09-01-false",
+    "after_unit_id": "theft-09-01-true",
+    "before_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Payment instruction with payee name and address, IBAN and name of the financial institution"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-05-01",
+    "scenario": "PR_expert_procedure_requested",
+    "context_index": 0,
+    "before_unit_id": "theft-05-01-false",
+    "after_unit_id": "theft-05-01-true",
+    "before_documents": [
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "predicted_signed_delta": [
+      "+Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "+Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "+Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "+Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "+The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-08-01",
+    "scenario": "PR_goods_recovered",
+    "context_index": 0,
+    "before_unit_id": "theft-08-01-false",
+    "after_unit_id": "theft-08-01-true",
+    "before_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Report to the insurer that stolen items have been recovered or news of them received",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Report to the insurer that stolen items have been recovered or news of them received",
+      "+Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-07-01",
+    "scenario": "PR_nachfrist_set",
+    "context_index": 0,
+    "before_unit_id": "theft-07-01-false",
+    "after_unit_id": "theft-07-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written substantiation of the claim for indemnity, where the insurer demands it (schriftliche Begruendung des Entschaedigungsanspruchs)"
+    ],
+    "predicted_signed_delta": [
+      "+Written substantiation of the claim for indemnity, where the insurer demands it (schriftliche Begruendung des Entschaedigungsanspruchs)",
+      "-Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-06-01",
+    "scenario": "PR_repair_over_500",
+    "context_index": 0,
+    "before_unit_id": "theft-06-01-false",
+    "after_unit_id": "theft-06-01-true",
+    "before_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-01-01",
+    "scenario": "PR_scheduled_valuable_1000",
+    "context_index": 0,
+    "before_unit_id": "theft-01-01-false",
+    "after_unit_id": "theft-01-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Receipt for the scheduled valuable (Quittung / Rechnung)",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+      "-Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "-Payment instruction with payee name and address, IBAN and name of the financial institution"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-03-01",
+    "scenario": "PR_sim_card_stolen",
+    "context_index": 0,
+    "before_unit_id": "theft-03-01-false",
+    "after_unit_id": "theft-03-01-true",
+    "before_documents": [
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+      "Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+      "+Completed double-insurance declaration listing, per category, the other insurance company and policy number; the form marks this section as to be completed in every case",
+      "+Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ]
+  },
+  {
+    "arm": "b6_evidence_first",
+    "pair_id": "theft-04-01",
+    "scenario": "PR_third_party_causer",
+    "context_index": 0,
+    "before_unit_id": "theft-04-01-false",
+    "after_unit_id": "theft-04-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers"
+    ],
+    "predicted_signed_delta": [
+      "+Separate itemised list of the stolen or damaged objects, where the form's table is insufficient (the form's own 'Gemaess separater Liste' option)"
+    ]
+  }
+]

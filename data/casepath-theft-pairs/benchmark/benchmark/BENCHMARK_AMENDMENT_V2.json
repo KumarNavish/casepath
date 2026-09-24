@@ -1,0 +1,17 @@
+{
+  "affected_scenarios": [
+    "PR_scheduled_valuable_1000"
+  ],
+  "contract": "casepath.theft-benchmark-amendment/2.0.0",
+  "development_pairs_opened_before_amendment": 9,
+  "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+  "hidden_pairs_opened_before_amendment": 0,
+  "hidden_units_remaining": 54,
+  "new_benchmark_sha256": "7e04d2d6d549cccc1e037f69d37c7faa5e155e9cef1eff70c4e8fca1598a22b6",
+  "new_preflight_sha256": "4351e6309bbcb196a1abe493d790c3ad68ba949fae6f629add55bd77fe89131f",
+  "old_artifacts_preserved": true,
+  "old_benchmark_sha256": "849fb70f7716122a9259dcfa01ed148f6c024054fdb03ae183d7d5fef415aff1",
+  "reason": "The scheduled-valuables reference contract marks a purchase receipt and an expert valuation as alternatives. Version 1 flattened both into a conjunction. Version 2 preserves one-of route semantics.",
+  "reference_contract_sha256": "4684811171059a121f4153b21e87cc35ea64f0987a80ae712f4aeeda7b9ca5cc",
+  "scientific_effect": "Either valid alternative receives full gold credit; predicting both incurs an extra-document penalty."
+}

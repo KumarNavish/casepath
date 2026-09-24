@@ -1,0 +1,190 @@
+{
+  "admission": {
+    "input_free_control_pass": true,
+    "target_diversity_pass": true
+  },
+  "benchmark_contract": "casepath.theft-causal-branch-benchmark/3.0.0",
+  "contract": "casepath.theft-causal-shortcut-preflight/3.0.0",
+  "crossfit_no_input_folds": [
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_scheduled_valuable_1000",
+      "selected_constant": [
+        "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "+Insurer's declination of the claim for indemnity",
+        "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "+Report to the insurer that stolen items have been recovered or news of them received",
+        "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    },
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_bicycle_claimed",
+      "selected_constant": [
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Insurer's declination of the claim for indemnity",
+        "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "+Report to the insurer that stolen items have been recovered or news of them received",
+        "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    },
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_sim_card_stolen",
+      "selected_constant": [
+        "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "+Insurer's declination of the claim for indemnity",
+        "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "+Report to the insurer that stolen items have been recovered or news of them received",
+        "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    },
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_third_party_causer",
+      "selected_constant": [
+        "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+        "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "+Insurer's declination of the claim for indemnity",
+        "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "+Report to the insurer that stolen items have been recovered or news of them received",
+        "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    },
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_expert_procedure_requested",
+      "selected_constant": [
+        "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "+Insurer's declination of the claim for indemnity",
+        "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "+Report to the insurer that stolen items have been recovered or news of them received",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    },
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_repair_over_500",
+      "selected_constant": [
+        "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "+Insurer's declination of the claim for indemnity",
+        "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "+Report to the insurer that stolen items have been recovered or news of them received",
+        "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    },
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_nachfrist_set",
+      "selected_constant": [
+        "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "+Insurer's declination of the claim for indemnity",
+        "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "+Report to the insurer that stolen items have been recovered or news of them received",
+        "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    },
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_goods_recovered",
+      "selected_constant": [
+        "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "+Insurer's declination of the claim for indemnity",
+        "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    },
+    {
+      "held_out_exact_rate": 0.0,
+      "held_out_micro_f1": 0.0,
+      "held_out_scenario": "PR_declined",
+      "selected_constant": [
+        "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+        "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+        "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+        "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+        "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+        "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+        "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+        "+Report to the insurer that stolen items have been recovered or news of them received",
+        "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+        "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+      ],
+      "train_micro_f1": 0.2222222222222222
+    }
+  ],
+  "distinct_acceptable_target_signatures": 9,
+  "max_held_out_no_input_micro_f1": 0.0,
+  "pairs": 36,
+  "scenarios": 9,
+  "signed_document_universe": [
+    "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+    "+Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+    "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+    "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+    "+Insurer's declination of the claim for indemnity",
+    "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+    "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+    "+Receipt for the scheduled valuable (Quittung / Rechnung)",
+    "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+    "+Report to the insurer that stolen items have been recovered or news of them received",
+    "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+    "+Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them"
+  ],
+  "target_signature_entropy_bits": 3.169925001442312,
+  "units": 72
+}
