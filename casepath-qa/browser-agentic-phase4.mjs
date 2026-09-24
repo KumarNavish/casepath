@@ -48,7 +48,8 @@ await queue.locator('#cwDraftOpen').click();
 await queue.locator('#cpDraftPanel').waitFor({timeout:20000});
 await queue.locator('[data-guide-finish]').click();
 if(await queue.locator('#cpGuidedWalk').count())throw Error('Walk did not finish');
-await queue.locator('.cp-claim-toolbar-actions > [data-reviewer-toggle]').click();
+await queue.locator('#cpClaimMenu summary').click();
+await queue.locator('#cpClaimMenu [data-reviewer-toggle]').click();
 await queue.locator('#cpReviewerPanel').waitFor();
 for(const selector of ['.cp-source-rail','.cp-a-review','.cp-a-condition-overview li','.cp-a-path li[data-path-state]','.cp-a-needs li','.cp-a-why li','.cp-a-draft']){
   const item=queue.locator(selector).first();if(!await item.getAttribute('data-provenance'))throw Error(`Reviewer label missing on ${selector}`);
@@ -56,7 +57,8 @@ for(const selector of ['.cp-source-rail','.cp-a-review','.cp-a-condition-overvie
 if(!(await queue.locator('#cpReviewerPanel').innerText()).includes('Study A · paired V5'))throw Error('Study correspondence is missing');
 await queue.evaluate(()=>{document.querySelector('.cp-work-column').scrollTop=0;document.querySelector('#cwDetailPanel').scrollTop=0;window.scrollTo(0,0);});
 await queue.screenshot({path:path.join(out,'reviewer-1440.png')});
-await queue.locator('.cp-claim-toolbar-actions > [data-reviewer-toggle]').click();
+await queue.locator('#cpClaimMenu summary').click();
+await queue.locator('#cpClaimMenu [data-reviewer-toggle]').click();
 await page.goto(base+'/method.html');
 if(!(await page.getByRole('heading',{name:'Try the family-home claim'}).count()))throw Error('About page still uses the invented case');
 await page.screenshot({path:path.join(out,'about-1440.png')});

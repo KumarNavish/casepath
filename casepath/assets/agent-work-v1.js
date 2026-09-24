@@ -58,7 +58,7 @@
     const nav=root.querySelector('.cp-navigation');
     if(nav){
       let button=document.getElementById('awWorkforceButton');
-      if(!button){button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>Review team</span>';button.setAttribute('aria-label','Review team');button.setAttribute('aria-pressed','false');nav.append(button);}
+      if(!button){button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>Saved reviews</span>';button.setAttribute('aria-label','Saved reviews');button.setAttribute('aria-pressed','false');nav.append(button);}
       if(!button.dataset.agentWorkEntry){button.dataset.agentWorkEntry='true';button.addEventListener('click',()=>showWorkforce());}
     }
     const claim=getClaim();

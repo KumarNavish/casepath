@@ -397,7 +397,9 @@
 .cp-reviewed-memory article blockquote{padding-left:12px;border-left:2px solid #8aa58d;}
 .cp-reviewed-memory form,.cp-handler-notes form{display:grid;gap:8px;margin-top:8px;}
 .cp-reviewed-memory textarea,.cp-handler-notes input{width:100%;box-sizing:border-box;}
-.cp-a-memory-banner{font-weight:700;color:#2f603b;margin:0 0 10px;}
+.cp-a-memory-banner{display:grid;gap:3px;padding:9px 11px;margin:0 0 10px;background:#eaf3eb;border-left:3px solid #648a68;color:#2f603b;font-size:11px;}
+.cp-a-memory-banner span{font-size:10px;color:#4e6c53;}
+.cp-a-memory-banner a{color:#275a37;}
 .cp-org-knowledge{border-top:1px solid #d8e4d8;padding-top:10px;}
 .cp-org-knowledge ul{margin:8px 0 0;padding-left:20px;}
 .cp-org-knowledge li{margin:6px 0;display:grid;gap:3px;}
