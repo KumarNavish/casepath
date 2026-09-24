@@ -55,11 +55,11 @@
   }
   function mount() {
     const root=document.getElementById('claimsWorkspace');if(!root||!state.cap)return;
-    const nav=root.querySelector('.cp-navigation');
+    const nav=root.querySelector('.cp-top-links');
     if(nav){
       let button=document.getElementById('awWorkforceButton');
       if(!button){button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>Saved reviews</span>';button.setAttribute('aria-label','Saved reviews');button.setAttribute('aria-pressed','false');nav.append(button);}
-      if(!button.dataset.agentWorkEntry){button.dataset.agentWorkEntry='true';button.addEventListener('click',()=>showWorkforce());}
+      if(!button.dataset.agentWorkEntry){button.dataset.agentWorkEntry='true';button.addEventListener('click',event=>{event.preventDefault();showWorkforce();});}
     }
     const claim=getClaim();
     if(claim!==state.claim){closeStream();clearTimeout(state.revealTimer);state.revealTimer=null;document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.assessment=null;state.assessmentLoading=false;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);state.spotlit=null;state.revealCount=0;}

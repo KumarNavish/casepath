@@ -1357,7 +1357,7 @@
     const filterKey=queryString();
     $('#cwPageStatus').textContent=append?'Loading more claims…':'Refreshing claims…';
     $('#cwTable').setAttribute('aria-busy','true');
-    $('#cwRefresh').disabled=true; $('#cwMore').disabled=true;
+    $('#cwMore').disabled=true;
     $('#cwQueueNotice').hidden=true;
     if(!state.items.length || state.loadedQuery!==filterKey) $('#cwTable').innerHTML=ui.skeleton();
     try {
@@ -1397,7 +1397,7 @@
       }
       state.cursor=null; $('#cwMore').hidden=true; $('#cwPageStatus').textContent='Refresh unavailable';
     } finally {
-      state.loading=false; $('#cwTable').setAttribute('aria-busy','false'); $('#cwRefresh').disabled=false; $('#cwMore').disabled=false;
+      state.loading=false; $('#cwTable').setAttribute('aria-busy','false'); $('#cwMore').disabled=false;
       if(state.queuedLoad){const queued=state.queuedLoad;state.queuedLoad=null;void loadQueue(queued);}
     }
   }
@@ -2781,7 +2781,7 @@
   }
   function presentationClick(button){
     if(button.hasAttribute('data-evidence-choice')){chooseEvidence(button.dataset.evidenceChoice);return true;}
-    if(button.matches('[data-close-detail]')){closeDetail();return true;}
+    if(button.matches('[data-close-detail]')){if(!$('#cwDetail').hidden)closeDetail();return true;}
     if(button.hasAttribute('data-workbench-tab')){showWorkspaceSection(button.dataset.workbenchTab);return true;}
     if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
     if(button.hasAttribute('data-noticed-source')){
@@ -3008,7 +3008,7 @@
     state.focusedEvidenceId=selectedEvidence;
   }
   function handleWorkspaceClick(event) {
-    const button=event.target.closest('button,a');if(!button)return;
+    const button=event.target.closest('button,a');if(!button)return;if(button.matches('a[data-close-detail],a[data-canvas-node],a[data-noticed-source],a[data-what-if],a[data-open-inspector],a[data-close-inspector]'))event.preventDefault();
     if(button.id==='awWorkforceButton'&&!button.dataset.agentWorkEntry){
       if(button.dataset.loading)return;
       button.dataset.loading='true';button.setAttribute('aria-busy','true');
@@ -3080,7 +3080,7 @@
 
   function closeDetail({fromHistory=false,refresh=true} = {}) {
     const returnViaHistory=!fromHistory&&Boolean(history.state?.casepathFromQueue);
-    savePresentation();$(".cp-sidebar").inert=false;
+    savePresentation();
     state.queueFocusReturn=state.returnClaimId;
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     clearTimeout(state.evidencePreviewTimer);state.evidencePreviewTimer=null;
@@ -3131,7 +3131,6 @@
   root.addEventListener('click',handleWorkspaceClick);
   root.addEventListener('pointerup',offerSourceSelection);
   root.addEventListener('keyup',event=>{if(event.key==='Shift'||event.key.startsWith('Arrow'))offerSourceSelection();});
-  $('#cwRefresh').addEventListener('click', () => loadQueue());
   $('#cwMore').addEventListener('click', () => loadQueue({append:true}));
 
   document.addEventListener('keydown',workspaceKeyboard);
