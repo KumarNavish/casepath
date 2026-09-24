@@ -23,8 +23,15 @@ await queue.locator('[data-start-tour]').click();
 await queue.locator('#cpGuidedWalk').waitFor({timeout:30000});
 if(!(await queue.locator('#cpGuidedWalk').innerText()).includes('Step 1 of 5'))throw Error('Walk did not start at sources');
 await queue.locator('[data-guide-next]').click();
-if(await queue.locator('#cwStart').count())await queue.locator('#cwStart').click();
+let flagshipReviewStart=null;
+if(await queue.locator('#cwStart').count()){
+  const review=flagshipReviewStart=performance.now();
+  await queue.locator('#cwStart').click();
+  await queue.locator('.aw-narrative-lines li button').first().waitFor({timeout:30000});
+  timing.flagship_first_line_ms=Math.round(performance.now()-review);
+}
 await queue.locator('.aw-narrative-card[data-status="completed"]').waitFor({timeout:45000});
+if(flagshipReviewStart!==null)timing.flagship_review_complete_ms=Math.round(performance.now()-flagshipReviewStart);
 await queue.locator('[data-guide-next]').click();
 await queue.locator('#cpGuidedWalk').getByText('See what is needed').waitFor();
 for(const [flag,verdict] of [['termination_received','true'],['family_home','true'],['arrears','unresolved'],['retaliation_screen','unresolved'],['extension_relevant','true']]){
@@ -45,6 +52,7 @@ for(const selector of ['.cp-source-rail','.cp-a-review','.cp-a-condition-overvie
   const item=queue.locator(selector).first();if(!await item.getAttribute('data-provenance'))throw Error(`Reviewer label missing on ${selector}`);
 }
 if(!(await queue.locator('#cpReviewerPanel').innerText()).includes('Study A · paired V5'))throw Error('Study correspondence is missing');
+await queue.evaluate(()=>{document.querySelector('#cwDetailPanel').scrollTop=0;window.scrollTo(0,0);});
 await queue.screenshot({path:path.join(out,'reviewer-1440.png')});
 await queue.locator('.cp-claim-toolbar-actions > [data-reviewer-toggle]').click();
 await page.goto(base+'/method.html');
