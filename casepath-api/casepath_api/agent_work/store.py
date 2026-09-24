@@ -89,7 +89,17 @@ class WorkStore:
         with self.connect() as db:
             db.executescript(SCHEMA)
             db.execute("PRAGMA journal_mode=WAL")
+        # Keep one reader open so short tool-call connections do not checkpoint
+        # the WAL after every durable commit. FULL synchronous still protects it.
+        self._keeper = sqlite3.connect(self.path, timeout=10, isolation_level=None, check_same_thread=False)
+        self._keeper.execute("PRAGMA journal_mode").fetchone()
         os.chmod(self.path, 0o600)
+
+    def close(self):
+        with self._lock:
+            if self._keeper is not None:
+                self._keeper.close()
+                self._keeper = None
 
     @contextmanager
     def connect(self):

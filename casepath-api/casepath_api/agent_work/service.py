@@ -154,3 +154,4 @@ class AgentWorkService:
 
     def shutdown(self):
         self._executor.shutdown(wait=True,cancel_futures=False)
+        self.store.close()
