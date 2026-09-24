@@ -438,6 +438,9 @@
     change: null, sourceSelection: null, sourceRequest: 0, sourceUrl: null, sourceController: null, loadedQuery: null,
     focusedEvidenceId: null, whatIf: null, evidenceChoice: null, handlerDrafts: {}, draft: null, draftEdit: null,
     memories:null,knowledge:null,memoryHidden:new Set(),
+    reviewerMode:localStorage.getItem('casepath:reviewer:v1')==='1',
+    guideStep:sessionStorage.getItem('casepath:walk-step')===null?null:Number(sessionStorage.getItem('casepath:walk-step')),
+    guideStatus:'',deepLinkWhatIfHandled:false,
   };
   const EXPECTED_AGENT_IDS = ['canonical_facts','orchestrator_plan','document_source_integrity','process_decision_mapping','evidence_checklist','final_claim_brief_audit'];
   const EXPECTED_GATE_IDS = ['deterministic_process_gate','deterministic_evidence_gate','whole_playbook_gate'];
@@ -459,6 +462,55 @@
   };
   const commandKey = prefix => `${prefix}-${crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`}`;
   const commandSlot = (kind, claimId) => `casepath:workspace-command:${claimId}:${kind}`;
+  const flagshipClaim='clm_f69b1747447bc221';
+  const walk=[
+    ['Read the packet','Open the customer message and compare the two notices.','[data-open-inspector]'],
+    ['Review the claim','Select Review claim and follow the checks as they appear.','#cwStart'],
+    ['See what is needed','Find the receipt-date question and the documents needed now.','.cp-a-needs'],
+    ['Change one condition','Open What if on family-home service. Set it false and read what leaves the request.','[data-what-if="family_home"]'],
+    ['Draft the request','Select Draft request. Read the saved customer draft before copying or exporting it.','#cwDraftOpen'],
+  ];
+  function reviewerPanel(){
+    return `<details class="cp-reviewer-panel" id="cpReviewerPanel" open><summary>Research and product correspondence</summary><p>This workbench shows deterministic product behavior. Its claim assessments do not inherit a study's measured accuracy. Model-assisted output: none in this mode.</p><table><thead><tr><th>Object</th><th>Study A · paired V5</th><th>Study B · native 150</th></tr></thead><tbody><tr><th>Knowledge</th><td>Source propositions, macro graph, local evidence rules and routes</td><td>Deterministic compilation of three public tenancy templates</td></tr><tr><th>Online gate</th><td>Rule-local true, false or unresolved guard</td><td>Inherited applicability, condition and acquisition permission</td></tr><tr><th>Evidence state</th><td>Held document types and mapped routes</td><td>Presence, adequacy, joint adequacy and route selection</td></tr><tr><th>Population</th><td>72 paired units</td><td>150 claims across three tenancy domains</td></tr><tr><th>Endpoint</th><td>Signed request changes</td><td>Complete plan and immediate checklist</td></tr></tbody></table><p><a href="research.html">Study results and limits</a> · <a href="method.html">About this product</a></p></details>`;
+  }
+  function syncReviewerMode(){
+    root.dataset.reviewerMode=String(state.reviewerMode);
+    root.querySelectorAll('[data-reviewer-toggle]').forEach(button=>button.setAttribute('aria-pressed',String(state.reviewerMode)));
+    const panel=$('#cwDetailPanel');if(!panel||$('#cwDetail').hidden)return;
+    panel.querySelector('#cpReviewerPanel')?.remove();
+    if(!state.reviewerMode)return;
+    panel.querySelector('.cp-work-column')?.insertAdjacentHTML('afterbegin',reviewerPanel());
+    const mark=(selector,label)=>panel.querySelectorAll(selector).forEach(element=>element.dataset.provenance=label);
+    mark('.cp-source-rail','Source · customer or attachment');
+    mark('.cp-packet-browser [data-source-artifact]','Source · held file');
+    mark('.cp-a-review,.aw-narrative-lines li,.cp-a-path li,.cp-a-condition-overview li,.cp-a-condition,.cp-a-needs li,.cp-a-next,.cp-a-deadline,.cp-a-why li,.cp-a-conflict,.cp-a-escalation','Deterministic assessment');
+    mark('.cp-a-noticed li','Source-bound extraction');
+    mark('.cp-a-what-if,.cp-a-what-if-diff li','Deterministic sandbox');
+    mark('.cp-a-draft','Draft proposal · deterministic');
+    if(state.draft?.latest?.edited_by_handler)mark('.cp-a-draft','Draft proposal · handler edited');
+    mark('.cp-reviewed-memory article','Reviewed memory');
+    mark('.cp-handler-notes li','Handler assessment');
+    mark('.cp-evidence-conversation li','Deterministic passage verdict');
+  }
+  function renderGuide(){
+    const panel=$('#cwDetailPanel');panel?.querySelector('#cpGuidedWalk')?.remove();
+    if(!panel||state.guideStep===null||state.detail?.state.claim_id!==flagshipClaim)return;
+    const step=Math.max(0,Math.min(walk.length-1,state.guideStep));state.guideStep=step;
+    const [title,description]=walk[step];
+    panel.insertAdjacentHTML('beforeend',`<aside class="cp-guided-walk" id="cpGuidedWalk" aria-label="Guided walk"><small>Step ${step+1} of ${walk.length}</small><h2>${esc(title)}</h2><p>${esc(description)}</p>${state.guideStatus?`<p role="status">${esc(state.guideStatus)}</p>`:''}<div>${step?'<button type="button" class="cw-button" data-guide-back>Back</button>':''}<button type="button" class="cw-button cw-button-primary" ${step===walk.length-1?'data-guide-finish':'data-guide-next'}>${step===walk.length-1?'Finish':'Next'}</button><button type="button" class="cw-text-button" data-guide-exit>Close</button></div></aside>`);
+  }
+  function moveGuide(direction){
+    if(state.guideStep===null)return;
+    if(direction==='finish'&&state.guideStep===walk.length-1){
+      if(!state.draft?.latest){state.guideStatus='Save the request draft, then finish.';renderGuide();return;}
+      state.guideStep=null;sessionStorage.removeItem('casepath:walk-step');renderGuide();return;
+    }
+    if(direction==='next'&&state.guideStep===1&&!state.detail?.state.intake_assessment){state.guideStatus='Select Review claim and wait for its summary.';renderGuide();return;}
+    if(direction==='next'&&state.guideStep===3&&!state.whatIf?.result){state.guideStatus='Set a condition in What if and read the changed request.';renderGuide();return;}
+    state.guideStep=Math.max(0,Math.min(walk.length-1,state.guideStep+(direction==='back'?-1:1)));
+    state.guideStatus='';sessionStorage.setItem('casepath:walk-step',String(state.guideStep));renderGuide();
+    $('#cwDetailPanel')?.querySelector(walk[state.guideStep][2])?.scrollIntoView({block:'center'});
+  }
 
   function storedCommandIdentity(kind, claimId) {
     const raw = sessionStorage.getItem(commandSlot(kind, claimId));
@@ -1579,6 +1631,7 @@
 
   async function openClaim(claimId) {
     state.whatIf=null;
+    state.deepLinkWhatIfHandled=false;
     state.evidenceChoice=null;
     state.handlerDrafts={};
     state.draft=null;state.draftEdit=null;state.memories=null;state.knowledge=null;state.memoryHidden=new Set();
@@ -1787,9 +1840,15 @@
     if (state.mutationBusy) setLoopMutationBusy(true,'',state.mutationBusy);
     restoreSourceSelection();
     restoreWorkbenchPresentation();
+    syncReviewerMode();
+    renderGuide();
     if(sameClaim){$('.cp-work-column').scrollTop=previousScroll;if(focusedId)panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true});}
     else panel.focus({preventScroll:true});
     if (!priority) void loadOpenPriority(value.claim_id, value.state_sha256, activeDetailContext(), state.detailController?.signal);
+    if(!state.deepLinkWhatIfHandled&&assessment?.claim_assessment?.conditions?.family_home&&new URLSearchParams(location.hash.slice(1)).get('what_if')==='family_home'){
+      state.deepLinkWhatIfHandled=true;
+      queueMicrotask(()=>{if(state.detail?.state.claim_id===value.claim_id&&!state.whatIf)openWhatIf('family_home');});
+    }
   }
 
   function chooseEvidence(sourceEntrySha256) {
@@ -2675,9 +2734,7 @@
   function updateQueueHeading(){
     const search=$('#cwSearch').value.trim(),selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
     const names={all:'All claims',urgent:'30+ days since intake',evidence:'Waiting for evidence',ready:'Ready for review',attention:'Action issues',unassigned:'Unassigned claims'};
-    const descriptions={all:'All incoming claims, with the next step in view.',urgent:'Age is measured from the original intake date; it does not establish a legal deadline.',evidence:'The current handling path needs more evidence.',ready:'Ready for a separate claim review, not automatic approval.',attention:'Check these action outcomes before continuing.',unassigned:'Choose a handler to take the next step.'};
     $('#cpQueueTitle').textContent=search?'Search results':names[selected];
-    $('#cpQueueSubtitle').textContent=search?'Matching claims and handlers.':descriptions[selected];
   }
   function displayWorkspaceOverview(rows){
       const summary=ui.queueSummary(rows);state.overviewSummary=summary;
@@ -2943,6 +3000,13 @@
       });
       return;
     }
+    if(button.hasAttribute('data-reviewer-toggle')){button.closest('.cp-actions-menu')?.removeAttribute('open');state.reviewerMode=!state.reviewerMode;localStorage.setItem('casepath:reviewer:v1',state.reviewerMode?'1':'0');syncReviewerMode();return;}
+    if(button.hasAttribute('data-dismiss-intro')){localStorage.setItem('casepath:intro:v1','1');$('#cpFirstRun').hidden=true;return;}
+    if(button.hasAttribute('data-start-tour')){localStorage.setItem('casepath:intro:v1','1');$('#cpFirstRun').hidden=true;state.guideStep=0;state.guideStatus='';sessionStorage.setItem('casepath:walk-step','0');void openClaim(flagshipClaim);return;}
+    if(button.hasAttribute('data-guide-exit')){state.guideStep=null;sessionStorage.removeItem('casepath:walk-step');renderGuide();return;}
+    if(button.hasAttribute('data-guide-next')){moveGuide('next');return;}
+    if(button.hasAttribute('data-guide-back')){moveGuide('back');return;}
+    if(button.hasAttribute('data-guide-finish')){moveGuide('finish');return;}
     if(packetClick(button))return;
     const menu=button.closest('.cp-actions-menu');if(menu)menu.open=false;
     if(presentationClick(button))return;
@@ -3053,6 +3117,8 @@
   window.addEventListener('hashchange', syncClaimFromLocation);
   window.addEventListener('popstate',()=>{restoreQueueFilters();syncClaimFromLocation({refresh:false});void loadQueue();});
   restoreQueueFilters();
+  $('#cpFirstRun').hidden=localStorage.getItem('casepath:intro:v1')==='1';
+  syncReviewerMode();
   void loadQueue();
   syncClaimFromLocation();
 })();

@@ -1,24 +1,22 @@
 # CasePath
 
-CasePath helps a claims handler see what evidence is needed for a claim now, and why. Its workbench keeps the original packet beside the active process step, evidence requirement, and next action. It leaves a document request unspecified when the saved case does not justify one.
+CasePath helps a claims handler read a claim, see its current step, ask for the right information, and draft the request. The original message and files stay beside the path and the reasons for each need.
 
 The local workbench opens all 150 synthetic intake claims. It keeps source files, recorded observations, proposed work, and accepted handling events separate. Its default review is deterministic and makes no model API calls.
 
-![CasePath workbench linking the next action to evidence, a process obligation, and original sources](docs/images/workbench-review.png)
+![CasePath workbench showing original sources, claim path, needs, and next step](docs/images/workbench-review.png)
 
-*A synthetic claim after local review. The explanation connects the current action to its evidence requirement, process step, and source support. An accepted passage can advance the path while the next requirement remains unresolved. This product example is not a benchmark result.*
+*The synthetic family-home claim after review. The two notices give different end dates. The receipt dates remain a question. This product example is not a benchmark result.*
 
 ## See one claim
 
-After starting the app, append `#claim=clm_f69b1747447bc221` to the address printed by the server. This opens a family-home termination claim with two original notices. Read the message and both PDFs in **Sources**, then select **Start agent review**. The saved work stages show what the review checked. **Decision** shows the active handling step and next action; **Evidence** separates the current need from conditional requirements.
+Open the app and select **Walk through this claim** on the first-run card, or open `#claim=clm_f69b1747447bc221`. Read the message and the two PDFs in **Sources**. Select **Review claim** and follow the anchored lines until the summary appears.
 
-Select **Why this?** beside the action to follow the evidence, required fact, obligation, process step, and source support. **Check & register evidence** checks the original sources already held by the claim. In this synthetic packet, the first checked passage advances the active path from recording the notice details to preserving the challenge or extension deadline; a later passage is recorded without resolving that new requirement. The update names the changed step and source passage. Reload to inspect the saved state. No document request, customer message, or settlement is issued by this journey.
+The path then shows **Preserve challenge or extension deadline** as active. **What this claim needs** asks for both receipt dates and shows the two notices as held, not reviewed. Select **What if** beside family-home service and set it false. The sandbox removes the spouse-notice route; leaving the sandbox restores the saved assessment. Select **Draft request** to create a source-bound request labelled **Draft, not sent**. You can edit, copy, or export it. Nothing is sent to the customer.
 
-Select **Data** in the workbench header to read all 150 original messages and their attachment lists before starting a review. The corpus browser uses only observable intake inputs; study labels and predictions are absent.
+Use **Reviewer mode** to see provenance labels on the sources, assessment, handler observations, memories, and draft, along with the studies' correspondence table. [About CasePath](casepath/method.html) links into this claim's What if and gathers the [data](casepath/corpus.html) and [research results](casepath/research.html).
 
-The [interactive method guide](docs/method-guide.md) gives a smaller teaching example: a repair may need an inspection report, or a service note and photo together. Changing the active condition or the available evidence changes the request. This authored example explains the controller; it is separate from measured benchmark cases.
-
-The paper's Study A method is installed as a separate service. It uses the frozen source pack, guard interpreter and document planner. With recorded guard answers, its [replay matches all 72 paper cases and 36 paired changes](research/casepath/branch-benchmark/parity/PRODUCT_METHOD_PARITY_V5.json). The 150-claim workbench shows original sources, the active process, obligations, required facts, accepted evidence and next actions. It names no customer document when the saved review has no document route. The [method guide](casepath/method.html) runs the separate Study B controller on an authored teaching case. Each surface follows the paper's source-to-action chain; their measured results stay separate.
+The paper's Study A method is installed as a separate service. It uses the frozen source pack, guard interpreter and document planner. With recorded guard answers, its [replay matches all 72 paper cases and 36 paired changes](research/casepath/branch-benchmark/parity/PRODUCT_METHOD_PARITY_V5.json). The workbench's assessment and review are separate product behavior. The earlier authored teaching record remains downloadable from [About CasePath](casepath/method.html). The studies' measured results stay separate from the workbench.
 
 ## Run it locally
 
@@ -40,9 +38,9 @@ Open the address printed by the server. The first `prepare` installs pinned Pyth
 
 | Start here | What you will find |
 | --- | --- |
-| [Claims workbench](casepath/README.md) | Claim queue, verified source previews, assessment, process and evidence views, Agent review, correction, export, and replay. |
+| [Claims workbench](casepath/README.md) | Claim-specific queue, verified sources, live review, path and needs, What if, drafts, reviewed memories, and replay. |
 | [150-claim data card](docs/INTAKE_PACKET_150.md) | Original intake inputs, attachment counts, schema, license, integrity checks, and limits. |
-| [Method guide](docs/method-guide.md) | One executable teaching example of obligation-led evidence planning. |
+| [About CasePath](docs/method-guide.md) | A live claim walkthrough, data and research links, and the preserved teaching record. |
 | [Research evidence](docs/research-evidence.md) | Measured results, adverse findings, costs, and exact provenance. |
 | [Paper and reproduction](research/casepath/iclr2027-integrated/README.md) | Manuscript, numerical audit, figures, benchmark outputs, and offline verification. |
 | [Developer documentation](docs/README.md) | Setup, source authority, API contracts, recovery, and contribution rules. |
@@ -61,7 +59,7 @@ python3 research/casepath/verify_release.py
 
 The paper build also needs Tectonic, Matplotlib and SciencePlots. Put `tectonic` on `PATH`, or set `CASEPATH_TECTONIC` to its executable. The verifier reports any missing tool or failed check; it never calls a model.
 
-The local workbench and Agent review demonstrate product mechanics, not legal correctness or general model quality. The current hosted Render services use an older source line; this repository's verified experience is the local one.
+The local workbench and deterministic review demonstrate product mechanics, not legal correctness or general model quality. The current hosted Render services use an older source line; this repository's verified experience is the local one.
 
 ## Go deeper
 

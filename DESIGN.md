@@ -15,7 +15,7 @@ colors:
 
 ## Overview
 
-CasePath helps a claims handler answer why the current action follows from the claim record. The interface is precise, quiet, and editorial: original sources and the active decision receive attention before review machinery or technical receipts.
+CasePath helps a claims handler read a claim, see its path, understand what is needed, and draft the request. The interface is precise, quiet, and editorial: original sources, the current step, and the next question receive attention before technical receipts.
 
 ## Colors
 
@@ -27,9 +27,9 @@ Use the workbench's plain system sans serif. Give the current claim question and
 
 ## Layout
 
-The desktop workbench keeps the original packet at left, the active handling path or reasoning lens in the center, and one next action at right. Opening **Why this?** reveals the chain from action through evidence, fact, obligation, and process to source support while the action remains visible. On narrow screens, put the action first, the path and explanation next, and the source packet in an accessible drawer.
+The desktop workbench keeps the original packet at left, the handling path in the center, and needs with the next action at right. **Why this step** connects the action, need, condition quote, step, and article. At 900 px and below, stack path, needs, and sources; keep the next action in a bottom bar.
 
-Selecting a process node or evidence item explores the saved record. Keep the authoritative current step distinguishable from the selected step. After a saved action changes the path, return the explanation to the new current step. Evidence, the full process, and the work log remain secondary views of the same claim.
+Selecting a step or document explores the saved record. Keep the authoritative current step distinguishable from the selected step. After a saved action changes the path, return the explanation to the new current step. The Timeline holds recorded review lines and handler actions.
 
 ## Elevation & Depth
 
@@ -37,11 +37,11 @@ Use alignment, whitespace, light tonal shifts, and thin rules to separate functi
 
 ## Components
 
-Show one primary action at a time. Name what it will do before it runs, and distinguish source checking from customer communication or claim settlement. The reasoning lens uses an ordered chain with direct controls for linked evidence, process steps, and exact accepted passages.
+Show one primary action at a time. Name what it will do before it runs, and distinguish source checking from customer communication or claim settlement. The reasoning canvas uses an ordered path, grouped needs, and direct controls for linked sources and exact accepted passages.
 
 An opened document is not accepted evidence. Show an accepted passage only when a saved observation links it to the original packet. Unknown, conditional, missing, insufficient, and uncertain states stay explicit. A completed agent review remains a review record; it does not turn the claim into a completed decision. Keep role handoffs, event history, rule details, and receipts inspectable on demand.
 
-Use native buttons, tabs, and disclosures with visible keyboard focus. A saved state change can use a brief reveal, but the meaning must be clear without animation and reduced-motion preferences must be respected.
+Use native buttons and disclosures with visible keyboard focus. The first-run walk follows source, review, needs, What if, and draft. Reviewer mode labels provenance on displayed objects and keeps study measurements separate from product behavior.
 
 ## Do's and Don'ts
 

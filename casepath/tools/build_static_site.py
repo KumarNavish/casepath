@@ -38,7 +38,6 @@ PUBLIC_ASSETS = (
     "assets/research-evidence.css",
     "assets/paired-study-evidence.json",
     "assets/native-study-evidence.json",
-    "assets/method-guide.js",
     "assets/method-guide-data.json",
     "assets/claims-workspace-v1.css",
     "assets/claims-workspace-v1.js",
