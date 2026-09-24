@@ -3008,7 +3008,7 @@
     state.focusedEvidenceId=selectedEvidence;
   }
   function handleWorkspaceClick(event) {
-    const button=event.target.closest('button,a');if(!button)return;if(button.matches('a[data-close-detail],a[data-canvas-node],a[data-noticed-source],a[data-what-if],a[data-open-inspector],a[data-close-inspector],a[data-edit-owner]'))event.preventDefault();
+    const button=event.target.closest('button,a');if(!button)return;if(button.matches('a[data-close-detail],a[data-canvas-node],a[data-noticed-source],a[data-what-if],a[data-open-inspector],a[data-close-inspector],a[data-edit-owner],a[data-draft-copy],a[data-draft-export]'))event.preventDefault();
     if(button.id==='awWorkforceButton'&&!button.dataset.agentWorkEntry){
       if(button.dataset.loading)return;
       button.dataset.loading='true';button.setAttribute('aria-busy','true');
