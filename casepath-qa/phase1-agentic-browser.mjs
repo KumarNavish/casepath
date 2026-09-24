@@ -44,7 +44,7 @@ try {
     await claimPage.locator('.aw-narrative-lines li button').first().waitFor({ timeout: 30000 });
     const firstLineMs = Math.round(performance.now() - start);
     const during = await claimPage.locator('.cp-source-rail').boundingBox();
-    await claimPage.locator('.aw-narrative-card[data-status="completed"]').waitFor({ timeout: 90000 });
+    await claimPage.locator('.cp-a-review-ready[data-status="completed"]').waitFor({ state: 'visible', timeout: 90000 });
     await claimPage.waitForFunction(() => Boolean(document.querySelector('#cpReviewCard')?.dataset.assessment), null, { timeout: 30000 });
     const reviewMs = Math.round(performance.now() - start);
     const after = await claimPage.locator('.cp-source-rail').boundingBox();

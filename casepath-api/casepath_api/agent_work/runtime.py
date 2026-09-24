@@ -107,7 +107,7 @@ class ToolRuntime:
         return self.store.complete_call(self.run_id, self.owner, self.role, call_id, response, self.emitted, self.changed)
 
     def _check_packet(self):
-        now = self.authority.context(self.claim_id)
+        now = self.authority.packet_identity(self.claim_id)
         if now["binding_sha256"] != self.context["binding_sha256"] or now["source_roster_sha256"] != self.context["source_roster_sha256"]:
             raise SourceChanged("the incoming packet changed; existing work is not current")
         return now

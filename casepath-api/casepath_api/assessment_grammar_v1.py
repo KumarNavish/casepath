@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import re
 from datetime import date, timedelta
+from functools import lru_cache
 from typing import Any, Mapping
 
 from .workspace_corpus import PublicCorpus, digest_value
@@ -188,22 +189,28 @@ CONDITION_FLAGS = {
 }
 
 
-def _attachment_text(corpus: PublicCorpus, claim_id: str, attachment: Mapping[str, Any]) -> list[dict[str, Any]]:
-    if attachment["media_type"].split(";")[0].lower() != "application/pdf":
-        return []
+@lru_cache(maxsize=64)
+def _pdf_text_pages(raw: bytes) -> tuple[tuple[int, str], ...]:
     import fitz
 
-    raw, _ = corpus.artifact(claim_id, attachment["artifact_id"])
-    if len(raw) > 16 * 1024 * 1024:
-        return []
     try:
         with fitz.open(stream=raw, filetype="pdf") as document:
             if document.is_encrypted:
-                return []
-            return [{"page": page + 1, "text": document[page].get_text("text")[:24_000]}
-                    for page in range(min(len(document), 30))]
+                return ()
+            return tuple((page + 1, document[page].get_text("text")[:24_000])
+                         for page in range(min(len(document), 30)))
     except (ValueError, RuntimeError):
+        return ()
+
+
+def _attachment_text(corpus: PublicCorpus, claim_id: str, attachment: Mapping[str, Any]) -> list[dict[str, Any]]:
+    if attachment["media_type"].split(";")[0].lower() != "application/pdf":
         return []
+    raw, _ = corpus.artifact(claim_id, attachment["artifact_id"])
+    if len(raw) > 16 * 1024 * 1024:
+        return []
+    pages = _pdf_text_pages(raw) if len(raw) <= 1_000_000 else _pdf_text_pages.__wrapped__(raw)
+    return [{"page": page, "text": text} for page, text in pages]
 
 
 def _held(document_type: str, attachments: list[Mapping[str, Any]]) -> list[dict[str, str]]:

@@ -150,17 +150,17 @@
   function renderClaim(){
     const host=document.getElementById('awClaimWork');if(!host)return;
     const summary=state.summary,hasStart=Boolean(document.getElementById('cwStart'));
-    host.hidden=!summary&&!state.busy&&!pendingRequest();
+    host.hidden=Boolean(state.assessment&&summary?.status==='completed')||!summary&&!state.busy&&!pendingRequest();
     const key=JSON.stringify([summary?.run_id,summary?.last_sequence,summary?.status,state.busy,hasStart,state.events.length,state.messages.get(state.claim),state.assessment?.assessment_sha256]);
     if(state.renderKey===key)return;state.renderKey=key;
     const start=document.getElementById('cwStart');
     if(start){const waiting=['queued','running','interrupted'].includes(summary?.status);start.disabled=state.busy||waiting;start.textContent=waiting?'Review in progress':'Review claim';}
-    if(host.hidden){host.innerHTML='';return;}
+    if(host.hidden){host.innerHTML='';renderTimeline();return;}
     const pending=pendingRequest(),working=['queued','running'].includes(summary?.status),stopping=state.events.some(event=>event.operation==='RUN_CANCEL_REQUESTED')&&working;
     const complete=summary?.status==='completed',cancelled=summary?.status==='cancelled';
     const lines=narrativeLines(state.events);
     const next=document.querySelector('.cp-a-next h2')?.textContent||'';
-    const heading=complete?'Review saved':cancelled?'Review stopped':stopping?'Stopping after the current check':working?'Reviewing this claim':state.busy?'Opening claim context':'Review needs attention';
+    const heading=complete?'Review complete':cancelled?'Review stopped':stopping?'Stopping after the current check':working?'Reviewing this claim':state.busy?'Opening claim context':'Review needs attention';
     const detail=complete?`Next step: ${next}`:cancelled?'Saved work remains in the timeline.':state.messages.get(state.claim)||lines.at(-1)?.line.text||'Reading the incoming claim.';
     host.innerHTML=`<section class="aw-narrative-card" data-status="${h(summary?.status||'opening')}"><header><div><span class="cp-a-kicker">${complete?'Deterministic assessment':'Live review'}</span><h2>${h(heading)}</h2><p>${h(detail)}</p></div>${working?`<button type="button" class="aw-text-button" data-aw-cancel ${state.busy?'disabled':''}>Stop</button>`:''}</header>${!complete?`<ol class="aw-narrative-lines">${lines.slice(-8).map(({event,line})=>`<li>${lineButton(event,line)}</li>`).join('')}${!lines.length?'<li class="aw-narrative-pending" role="status">Opening the saved claim and its sources…</li>':''}</ol>`:''}${complete||cancelled?`<button type="button" class="aw-text-button" data-aw-timeline>Timeline</button>`:''}${summary?.recovery?.can_resume?`<button type="button" class="aw-text-button" data-aw-resume>Resume saved review</button>`:''}${cancelled?`<button type="button" class="aw-text-button" data-aw-start>Review again</button>`:''}${pending&&!state.busy?'<button type="button" class="aw-text-button" data-aw-retry>Check the same request</button>':''}<p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></section>`;
     renderTimeline();

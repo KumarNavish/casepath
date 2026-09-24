@@ -108,6 +108,22 @@ test('canvas shows all steps and separates needed from held documents',()=>{
  assert.match(markup,/Spouse notice copy/);
  assert.doesNotMatch(markup,/All steps|data-workbench-tab/);
 });
+test('assessed claim has one next action and a source-only record control',()=>{
+ const oldAction={title:'Capture issuer, receipt and end date',action_sha256:hash,evidence_item_id:'old-item'};
+ const savedLoop={outcome:'blocked',loop_state:{selected_action:oldAction,checklist:{items:[]}},operational_projection:{readiness_scope:'current',evidence_items:[],pending_evidence_count:0}};
+ const markup=view.workbench(savedLoop,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail});
+ assert.match(markup,/Ask for the receipt date/);
+ assert.match(markup,/Check & record source/);
+ assert.doesNotMatch(markup,/Capture issuer, receipt and end date|supporting evidence is still missing/i);
+});
+test('noticed dates and both sides of a conflict open exact source spans',()=>{
+ const changed={...assessment,noticed:[{text:'Tenant notice: 30. Juni',source_id:'tenant-pdf',source_kind:'pdf_text'}],conflicts:[{fact:'termination end date',message:'The two notices give different end dates.',sources:[{artifact_id:'tenant-pdf',quote:'30. Juni',value:'30. Juni'},{artifact_id:'spouse-pdf',quote:'31. Juli',value:'31. Juli'}]}]};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});
+ assert.match(markup,/class="cp-a-review-ready" data-status="completed"/);
+ assert.match(markup,/data-noticed-source="tenant-pdf" data-noticed-quote="30. Juni"/);
+ assert.match(markup,/data-noticed-source="spouse-pdf" data-noticed-quote="31. Juli"/);
+ assert.doesNotMatch(markup,/Review saved/);
+});
 test('path chips name the transition whose verdict they show',()=>{
  const step={node_id:'later',label:'Build the dated timeline',state:'not_reached',condition_chips:[{condition_flag:'health_effects',label:'no immediate health escalation',verdict:'false',quote:'Mein Sohn hustet mehr'}],authority:null};
  const changed={...assessment,steps:[...assessment.steps.slice(0,-1),step]};
