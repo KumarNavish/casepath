@@ -1667,9 +1667,13 @@ def test_nuisance_source_pair_changes_identity_not_business_projection(
     assert _loop_business_projection(plain_state) == _loop_business_projection(
         punctuated_state
     )
-    assert _queue_business_projection(plain["queue_item"]) == (
-        _queue_business_projection(punctuated["queue_item"])
+    plain_queue = _queue_business_projection(plain["queue_item"])
+    punctuated_queue = _queue_business_projection(punctuated["queue_item"])
+    # Triage keeps the exact customer sentence, so punctuation is source content.
+    assert plain_queue["triage"].pop("noticed_fact") != punctuated_queue["triage"].pop(
+        "noticed_fact"
     )
+    assert plain_queue == punctuated_queue
 
 
 _SOURCE_NEGATIVES = (
