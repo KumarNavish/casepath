@@ -1913,8 +1913,10 @@
         `/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/memories${mode==='keep'?'':`/${mode}`}`,
         {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':identity.key},body:identity.body},
       ),claimId,mode==='keep'?'WORKSPACE_REVIEWED_MEMORY_KEPT':mode==='retire'?'WORKSPACE_REVIEWED_MEMORY_RETIRED':'WORKSPACE_REVIEWED_MEMORY_APPLIED',state.detail.state);
-      const detail=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`),claimId);
-      const loop=await loadClaimLoop(claimId,{allowMissing:true});
+      const [detail,loop]=await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`).then(value=>validateDetailResponse(value,claimId)),
+        loadClaimLoop(claimId,{allowMissing:true}),
+      ]);
       if(!isActiveDetail(context))return;
       if(detail.state.revision<response.state.revision)throw new Error('The memory action is not confirmed in the journal.');
       clearCommandIdentity(kind,claimId);
@@ -1966,9 +1968,11 @@
       if(value?.contract!=='casepath.claim-workspace-command-response/1.0.0'||value.event_type!=='WORKSPACE_DRAFT_RECORDED'
         ||value.state?.claim_id!==claimId||response_sha256!==await sha256(material))throw new Error('The draft receipt could not be verified.');
       await validateState(value.state,claimId);
-      const detail=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`),claimId);
-      const draft=await validateDraftList(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`),claimId);
-      const loop=detail.state.workflow_state==='in_review'?await loadClaimLoop(claimId,{allowMissing:true}):null;
+      const [detail,draft,loop]=await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`).then(result=>validateDetailResponse(result,claimId)),
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`).then(result=>validateDraftList(result,claimId)),
+        loadClaimLoop(claimId,{allowMissing:true}),
+      ]);
       if(!isActiveDetail(context))return false;
       if(detail.state.revision<value.state.revision||!draft.items.some(item=>item.event_sha256===value.event_sha256))throw new Error('The draft is not yet confirmed by its journal.');
       clearCommandIdentity('draft',claimId);
