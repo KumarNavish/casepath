@@ -1728,11 +1728,18 @@
     if(!state.loop||!state.detail||state.mutationBusy)return;
     const option=state.loop.finding_options?.find(row=>row.source_entry_sha256===sourceEntrySha256);
     if(!option)return;
+    clearTimeout(state.evidencePreviewTimer);
     state.evidenceChoice=sourceEntrySha256;
     renderDetail(state.detail);
     $('#cwDetailPanel [data-evidence-choice="'+CSS.escape(sourceEntrySha256)+'"]')?.focus({preventScroll:true});
     const index=state.detail.artifacts.findIndex(row=>row.artifact_id===option.source_id);
-    if(index>=0)void showSourceArtifact(index,false,option.quote);
+    if(index>=0){
+      const context=activeDetailContext();
+      state.evidencePreviewTimer=setTimeout(()=>{
+        state.evidencePreviewTimer=null;
+        if(isActiveDetail(context)&&state.evidenceChoice===sourceEntrySha256&&!state.mutationBusy)void showSourceArtifact(index,false,option.quote);
+      },350);
+    }
   }
 
   function offerSourceSelection() {
@@ -2126,6 +2133,8 @@
 
   async function commitLoopObservation() {
     if (state.mutationBusy || !state.detail || !state.loop) return;
+    clearTimeout(state.evidencePreviewTimer);
+    state.evidencePreviewTimer=null;
     const context = activeDetailContext();
     let loop = state.loop;
     const beforeLoop = loop;
@@ -2728,6 +2737,7 @@
     savePresentation();$(".cp-sidebar").inert=false;
     state.queueFocusReturn=state.returnClaimId;
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
+    clearTimeout(state.evidencePreviewTimer);state.evidencePreviewTimer=null;
     releaseSourcePreview(); state.sourceSelection=null; state.change=null; state.whatIf=null; state.evidenceChoice=null; state.handlerDrafts={};
     state.detailEpoch += 1;
     state.mutationBusy = null;
