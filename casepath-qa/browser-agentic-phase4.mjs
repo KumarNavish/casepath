@@ -32,7 +32,7 @@ if(await queue.locator('#cwStart').count()){
   await queue.locator('.aw-narrative-lines li button').first().waitFor({timeout:30000});
   timing.flagship_first_line_ms=Math.round(performance.now()-review);
 }
-await queue.locator('.aw-narrative-card[data-status="completed"]').waitFor({timeout:45000});
+await queue.locator('.cp-a-review-ready[data-status="completed"]').waitFor({state:'visible',timeout:45000});
 if(flagshipReviewStart!==null)timing.flagship_review_complete_ms=Math.round(performance.now()-flagshipReviewStart);
 await queue.locator('[data-guide-next]').click();
 await queue.locator('#cpGuidedWalk').getByText('See what is needed').waitFor();
@@ -72,7 +72,7 @@ for(const [name,claimId] of Object.entries(claims)){
     const review=performance.now();await page.locator('#cwStart').click();
     await page.locator('.aw-narrative-lines li button').first().waitFor({timeout:30000});
     timing[`${name}_first_line_ms`]=Math.round(performance.now()-review);
-    await page.locator('.aw-narrative-card[data-status="completed"]').waitFor({timeout:45000});
+    await page.locator('.cp-a-review-ready[data-status="completed"]').waitFor({state:'visible',timeout:45000});
     timing[`${name}_review_complete_ms`]=Math.round(performance.now()-review);
   }
   if(name==='mould')for(const [flag,verdict] of [['health_effects','true'],['mold','true'],['heating','unresolved'],['specialist_needed','unresolved'],['deposit_considered','unresolved']]){
