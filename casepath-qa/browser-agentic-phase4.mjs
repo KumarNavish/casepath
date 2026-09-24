@@ -19,8 +19,10 @@ timing.queue_first_paint_ms=Math.round(performance.now()-started);
 await queue.locator('#cpFirstRun').waitFor();
 if(!(await queue.locator('#cpFirstRun').isVisible()))throw Error('First-run card is not visible');
 await queue.screenshot({path:path.join(out,'first-run-1440.png')});
+const flagshipOpen=performance.now();
 await queue.locator('[data-start-tour]').click();
 await queue.locator('#cpGuidedWalk').waitFor({timeout:30000});
+timing.flagship_claim_open_ms=Math.round(performance.now()-flagshipOpen);
 if(!(await queue.locator('#cpGuidedWalk').innerText()).includes('Step 1 of 5'))throw Error('Walk did not start at sources');
 await queue.locator('[data-guide-next]').click();
 let flagshipReviewStart=null;
@@ -52,7 +54,7 @@ for(const selector of ['.cp-source-rail','.cp-a-review','.cp-a-condition-overvie
   const item=queue.locator(selector).first();if(!await item.getAttribute('data-provenance'))throw Error(`Reviewer label missing on ${selector}`);
 }
 if(!(await queue.locator('#cpReviewerPanel').innerText()).includes('Study A · paired V5'))throw Error('Study correspondence is missing');
-await queue.evaluate(()=>{document.querySelector('#cwDetailPanel').scrollTop=0;window.scrollTo(0,0);});
+await queue.evaluate(()=>{document.querySelector('.cp-work-column').scrollTop=0;document.querySelector('#cwDetailPanel').scrollTop=0;window.scrollTo(0,0);});
 await queue.screenshot({path:path.join(out,'reviewer-1440.png')});
 await queue.locator('.cp-claim-toolbar-actions > [data-reviewer-toggle]').click();
 await page.goto(base+'/method.html');
@@ -62,8 +64,10 @@ await page.getByRole('link',{name:/Open the claim's What if/}).click();
 await page.locator('#cpWhatIfPanel').waitFor({timeout:30000});
 for(const [name,claimId] of Object.entries(claims)){
   await page.goto('about:blank');
+  const opened=performance.now();
   await page.goto(`${base}/#claim=${claimId}`);
   await page.locator('#cpReviewCard').waitFor({timeout:30000});
+  timing[`${name}_claim_open_ms`]=Math.round(performance.now()-opened);
   if(await page.locator('#cwStart').count()){
     const review=performance.now();await page.locator('#cwStart').click();
     await page.locator('.aw-narrative-lines li button').first().waitFor({timeout:30000});
@@ -94,6 +98,10 @@ for(const [name,claimId] of Object.entries(claims)){
     if(layout.overflow||width>=901&&layout.sourceLeft>=layout.mainLeft||width<=900&&layout.sourceTop<layout.mainBottom-2)throw Error(`${name} ${width}px source layout: ${JSON.stringify(layout)}`);
   }
   await page.setViewportSize({width:1440,height:900});
+  await page.reload();
+  await page.locator('.cp-a-condition-overview li').first().waitFor({timeout:30000});
+  const restored=await page.locator('.cp-a-condition-overview li').count();
+  if(restored!==outputs[name].conditions.length)throw Error(`${name} review changed after reload`);
 }
 const cached=await queue.evaluate(async()=>{const start=performance.now();const response=await fetch('/api/claim-loops/v1/workspace/claims?limit=100');await response.arrayBuffer();return {status:response.status,elapsed:performance.now()-start};});
 timing.cached_queue_api_ms=Math.round(cached.elapsed);
