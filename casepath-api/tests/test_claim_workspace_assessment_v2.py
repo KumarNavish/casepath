@@ -15,7 +15,7 @@ from casepath_api.workspace_corpus import (
 )
 
 
-GOLDEN_ROSTER_SHA256 = "14791ea423c5270deecfd74619df5025c23dfacda077669b16acecab9879a565"
+GOLDEN_ROSTER_SHA256 = "f78686f197fceaad0be8304d17b3beba183ea4d7ff428f66adcdcb39abac85d2"
 
 
 def _assessment(corpus: PublicCorpus, claim_id: str) -> dict:
@@ -45,6 +45,8 @@ def test_three_demo_claims_have_distinct_grounded_routes() -> None:
     assert routes["payment_deadline_letter"]["request"] is False
     assert flagship["candidate_deadline"]["date"] is None
     assert flagship["candidate_deadline"]["authority"]["article"] == "Art. 273"
+    assert flagship["question_cards"][0]["id"] == "deadline_anchor"
+    assert flagship["question_cards"][2]["document_types"] == ["payment_deadline_letter", "rent_ledger_payment_evidence"]
 
     mould = _assessment(corpus, "clm_7ac806bd30792cfb")
     assert mould["conditions"]["health_effects"]["quote"] == "Mein Sohn hustet mehr"
@@ -58,6 +60,7 @@ def test_three_demo_claims_have_distinct_grounded_routes() -> None:
     assert mould_routes["dated_photos"]["route_state"] == "held_not_reviewed"
     assert mould_routes["heating_service_report"]["request"] is False
     assert mould["language"] == "de-CH"
+    assert {card["id"] for card in mould["question_cards"]} == {"heating", "specialist_needed", "deposit_considered"}
 
     rent = _assessment(corpus, "clm_6f04d0907ecb96bb")
     assert rent["conditions"]["reference_rate"]["quote"] == (
@@ -70,6 +73,7 @@ def test_three_demo_claims_have_distinct_grounded_routes() -> None:
     assert rent_routes["renovation_cost_breakdown"]["request"] is False
     assert rent["candidate_deadline"]["date"] is None
     assert rent["candidate_deadline"]["authority"]["article"] == "Art. 270b"
+    assert next(card for card in rent["question_cards"] if card["id"] == "renovation")["if_no"].endswith("not requested.")
 
 
 def test_grammar_keeps_denials_and_uncertainty_separate() -> None:
@@ -123,6 +127,9 @@ def test_corpus_assessment_golden_roster_and_legacy_replay() -> None:
     assert validate_recorded_intake_assessment(
         old, corpus=corpus, claim_id="clm_f69b1747447bc221"
     ) == old
+    previous_v2 = compile_intake_assessment(corpus, "clm_f69b1747447bc221", legacy_v2=True)
+    assert previous_v2["assessment_sha256"] == "5be638263bc57a47b7584f3d3c8d1e65be71217939b17aeb3be797f954b0eedf"
+    assert validate_recorded_intake_assessment(previous_v2, corpus=corpus, claim_id="clm_f69b1747447bc221") == previous_v2
 
 
 def test_what_if_replans_spouse_route_without_changing_saved_assessment() -> None:

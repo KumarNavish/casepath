@@ -14,7 +14,8 @@ from .workspace_corpus import PublicCorpus, digest_value
 
 
 CONTRACT = "casepath.claim-workspace-assessment/2.0.0"
-COMPILER_ID = "casepath.claim-workspace-assessment-v2/1.0.0"
+LEGACY_COMPILER_ID = "casepath.claim-workspace-assessment-v2/1.0.0"
+COMPILER_ID = "casepath.claim-workspace-assessment-v2/1.1.0"
 
 # Patterns are ordered from the most specific phrasing to broader expressions.
 # They search the customer's account, never boilerplate printed on a form.
@@ -281,7 +282,7 @@ def _candidate_deadline(domain: str, message: str, registry: Mapping[str, Any]) 
 
 def compile_assessment(
     corpus: PublicCorpus, claim_id: str, base: Mapping[str, Any],
-    *, override: tuple[str, str] | None = None,
+    *, override: tuple[str, str] | None = None, legacy: bool = False,
 ) -> dict[str, Any]:
     if digest_value(GRAMMAR) != GRAMMAR_SHA256:
         raise ValueError("assessment grammar identity drifted")
@@ -400,17 +401,56 @@ def compile_assessment(
         observed.extend({"text": f"{row['file_name']}: {row['quote']}", "source_id": row["artifact_id"],
                          "source_kind": "pdf_text", "page": row["page"]} for row in end_dates)
     deadline = _candidate_deadline(domain, body, registry)
+    question_cards = []
+    if deadline and not deadline["anchor_date"]:
+        question_cards.append({"id": "deadline_anchor", "question": deadline["question"],
+                               "if_yes": "If confirmed: calculate the candidate challenge deadline.",
+                               "if_no": "If unknown: the deadline cannot be calculated.",
+                               "document_types": ["proof_of_receipt"], "source_quote": None})
+    missing_page = any("page two is absent" in item["text"].casefold() for item in observed)
+    if missing_page:
+        question_cards.append({"id": "complete_notice", "question": "Can you send the complete second page of each notice?",
+                               "if_yes": "If sent: check the complete notices.",
+                               "if_no": "If unavailable: the notice check remains open.",
+                               "document_types": ["termination_notice", "spouse_notice_copy"], "source_quote": None})
+    prompts = {
+        "family_home": ("Were both spouses served separately?", "served separately"),
+        "arrears": ("Were rent payments overdue?", "payments were overdue"),
+        "retaliation_screen": ("Could the termination relate to an earlier request you made?", "it followed an earlier request"),
+        "heating": ("Is the heating affected?", "heating is affected"),
+        "specialist_needed": ("Is a technical inspection needed?", "inspection is needed"),
+        "deposit_considered": ("Are you considering a rent deposit?", "a rent deposit is being considered"),
+        "renovation": ("Does the form cite renovation costs?", "renovation costs are cited"),
+        "reference_rate": ("Does the form cite the reference rate?", "the reference rate is cited"),
+    }
+    for flag in flags:
+        gated = [row for row in documents if row.get("condition_flag") == flag
+                 and row["route_state"] == "held_behind_question"]
+        if flags[flag]["verdict"] != "unresolved" or not gated:
+            continue
+        question, premise = prompts.get(flag, (f"Does {flag.replace('_', ' ')} apply?", flag.replace('_', ' ')))
+        display = {"payment_deadline_letter": "Payment deadline letter",
+                   "rent_ledger_payment_evidence": "Rent ledger"}
+        names = ", ".join(display.get(row["document_type"], row["label"]) for row in gated)
+        question_cards.append({"id": flag, "question": question,
+                               "if_yes": f"If {premise}: {names} needed.",
+                               "if_no": "If not: nothing more for separate service." if flag == "family_home"
+                               else f"If not: {names} not requested.",
+                               "document_types": [row["document_type"] for row in gated],
+                               "source_quote": flags[flag].get("candidate_quote")})
     if domain == "lease_termination_dispute":
-        next_step = "Ask for the two receipt dates and the complete second page of the scan." if conflicts else "Confirm the notice receipt date and complete copies."
+        next_step = "Ask for the two receipt dates and the complete second page of the scan." if (conflicts if legacy else {"deadline_anchor", "complete_notice"}.issubset({card["id"] for card in question_cards})) else "Confirm the notice receipt date and complete copies."
     elif domain == "rent_increase_dispute":
-        next_step = "Ask when the increase was notified and request the increase form."
+        next_step = "Ask when the increase was notified and request the increase form." if legacy or any(card["id"] == "deadline_anchor" for card in question_cards) else "Check the increase form and its stated reasons."
     else:
         next_step = "Escalate the reported health effects for specialist review." if flags["health_effects"]["verdict"] == "true" else "Ask for dated evidence of the defect and notice to management."
-    material = {"contract": CONTRACT, "compiler_id": COMPILER_ID, "grammar_sha256": GRAMMAR_SHA256,
+    material = {"contract": CONTRACT, "compiler_id": LEGACY_COMPILER_ID if legacy else COMPILER_ID, "grammar_sha256": GRAMMAR_SHA256,
                 "worker": "deterministic", "language": corpus.binding(claim_id)["language"],
                 "conditions": flags, "steps": steps, "documents": documents,
                 "noticed": observed, "attachment_pages": attachment_pages,
                 "conflicts": conflicts, "candidate_deadline": deadline, "next_step": next_step}
+    if not legacy:
+        material["question_cards"] = question_cards
     return {**material, "assessment_sha256": digest_value(material)}
 
 

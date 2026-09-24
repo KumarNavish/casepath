@@ -379,6 +379,12 @@
 .cp-draft-letter li{padding:2px 0 8px;overflow-wrap:anywhere;}
 .cp-draft-letter [contenteditable]:hover{background:#f5f9fb;}
 .cp-draft-letter [contenteditable]:focus{outline:2px solid #87afc3;outline-offset:3px;background:#f7fbfd;}
+.cp-a-questions{margin:17px 0 21px;}
+.cp-a-questions>h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#557181;margin:0 0 9px;}
+.cp-a-question{padding:12px 13px;margin:0 0 8px;border:1px solid #d3e0e6;border-left:3px solid #5785a0;border-radius:4px;background:#fbfdfe;}
+.cp-a-question h3{font-size:12px;line-height:1.45;margin:0 0 7px;color:#263d4c;}
+.cp-a-question p{font-size:11px;line-height:1.5;margin:4px 0;color:#526a78;}
+.cp-a-question button{border:0;background:none;padding:2px 0 5px;color:#32627b;font:inherit;text-align:left;cursor:pointer;}
 .cp-a-draft .cp-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
 .cp-a-draft .cp-actions button{min-height:36px;}
 .cp-a-draft details{margin-top:14px;font-size:10px;color:#657885;}

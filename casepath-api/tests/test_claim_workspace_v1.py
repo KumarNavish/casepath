@@ -259,7 +259,7 @@ def test_v2_golden_start_event_and_state_are_exact(
         timestamp="2026-08-31T12:01:00+00:00",
     )
     assert response["state"]["intake_assessment"]["compiler_id"] == (
-        "casepath.claim-workspace-assessment-v2/1.0.0"
+        "casepath.claim-workspace-assessment-v2/1.1.0"
     )
     assert response["state"]["intake_assessment"]["assessment_sha256"] == (
         compile_intake_assessment(service.corpus, claim_id)["assessment_sha256"]
