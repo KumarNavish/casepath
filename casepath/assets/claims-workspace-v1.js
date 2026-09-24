@@ -1324,7 +1324,7 @@
   }
 
   function renderRows() {
-    const focusedRow=$('#cwTable').contains(document.activeElement) ? document.activeElement.closest('tr[data-claim-id]')?.dataset.claimId : null;
+    const focusedRow=$('#cwTable').contains(document.activeElement) ? document.activeElement.closest('[data-claim-id]')?.dataset.claimId : null;
     $('#cwTotal').textContent=state.total.toLocaleString();
     $('#cwPageStatus').textContent=state.items.length?`Showing ${state.items.length} of ${state.total} claims`:'No claims in this view';
     $('#cwMore').hidden=!state.cursor;
@@ -1335,20 +1335,20 @@
     }
     const markup=ui.queueRows(state.items,state.facets);
     // A verified unchanged response must not replace the focused queue node.
-    if(state.queueMarkup!==markup || !$('#cwTable').querySelector('table')) {
+    if(state.queueMarkup!==markup || !$('#cwTable').querySelector('.cp-claims-list')) {
       $('#cwTable').innerHTML=markup;state.queueMarkup=markup;
-      $('#cwTable').querySelectorAll('tr[data-claim-id]').forEach(row=>{
+      $('#cwTable').querySelectorAll('[data-claim-id]').forEach(row=>{
         row.addEventListener('click',()=>openClaim(row.dataset.claimId));
         row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openClaim(row.dataset.claimId);}});
       });
     }
     const returnId=state.queueFocusReturn || focusedRow;
-    if(returnId && $('#cwDetail').hidden) { $('#cwTable').querySelector(`tr[data-claim-id="${CSS.escape(returnId)}"]`)?.focus({preventScroll:true}); state.queueFocusReturn=null; }
+    if(returnId && $('#cwDetail').hidden) { $('#cwTable').querySelector(`[data-claim-id="${CSS.escape(returnId)}"]`)?.focus({preventScroll:true}); state.queueFocusReturn=null; }
   }
   async function loadQueue({append=false}={}) {
     if(state.loading){state.queuedLoad={append};return;}
     state.loading=true;
-    if($('#cwDetail').hidden && $('#cwTable').contains(document.activeElement)) state.queueFocusReturn=document.activeElement.closest('tr[data-claim-id]')?.dataset.claimId;
+    if($('#cwDetail').hidden && $('#cwTable').contains(document.activeElement)) state.queueFocusReturn=document.activeElement.closest('[data-claim-id]')?.dataset.claimId;
     const filterKey=queryString();
     $('#cwPageStatus').textContent=append?'Loading more claims…':'Refreshing claims…';
     $('#cwTable').setAttribute('aria-busy','true');
@@ -2684,7 +2684,7 @@
     state.sourceSelection=saved?.source&&['evidence','process','artifact'].includes(saved.source.kind)?saved.source:null;
     state.canvasNodeId=typeof saved?.canvasNodeId==='string'?saved.canvasNodeId:null;
     state.focusedEvidenceId=typeof saved?.focusedEvidenceId==='string'?saved.focusedEvidenceId:null;
-    state.inspectorOpen=true;
+    state.inspectorOpen=false;
   }
   function syncReasoning({focus=false}={}){
     if(!state.loop||!state.detail)return;
@@ -2714,15 +2714,15 @@
   }
   function applyInspectorState(){
     const panel=$('#cwDetailPanel'),rail=$('.cp-source-rail');if(!rail)return;
-    panel.dataset.inspectorOpen='true';rail.inert=false;rail.setAttribute('role','complementary');rail.removeAttribute('aria-modal');
+    panel.dataset.inspectorOpen=String(state.inspectorOpen);rail.inert=compactWorkbench.matches&&!state.inspectorOpen;rail.setAttribute('role','complementary');rail.removeAttribute('aria-modal');
   }
   function openInspector({focus=true}={}){
     const rail=$('.cp-source-rail');if(!rail)return;
     if(focus)state.inspectorReturnFocus=document.activeElement;
-    rail.scrollIntoView({block:'start'});
+    state.inspectorOpen=true;applyInspectorState();
     if(focus)$('#cwSourceInspector')?.focus({preventScroll:true});
   }
-  function closeInspector(){state.inspectorReturnFocus?.focus({preventScroll:true});}
+  function closeInspector(){state.inspectorOpen=false;applyInspectorState();state.inspectorReturnFocus?.focus({preventScroll:true});}
   function openTechnical(){const dialog=$('#cpTechnicalDialog');if(!dialog)return;$('#cpTechnicalLoop').innerHTML=ui.technicalLoop(state.loop);dialog.showModal();}
   function openAssignment(){const dialog=$('#cpOwnerDialog');if(!dialog)return;dialog.showModal();$('#cwOwnerInput')?.focus();}
   function setAdjacentClaims(){
@@ -2755,7 +2755,7 @@
       }
       $('#cpOverviewState').textContent=summary.unassessed?`${summary.unassessed} awaiting review`:'Overview up to date';
       $('#cpOverviewState').removeAttribute('data-stale');
-      $('#cpActionIssuesSummary').hidden=summary.attention===0;
+      const issues=$('#cpActionIssuesSummary');if(issues)issues.hidden=summary.attention===0;
   }
   async function loadWorkspaceOverview(){
     if(state.overviewLoading){state.overviewQueued=true;return;}
@@ -2809,7 +2809,7 @@
     if(event.key==='/'&&$('#cwDetail').hidden&&!event.target.matches('input,textarea,select,[contenteditable]')){event.preventDefault();$('#cwSearch').focus();return;}
     if($('#cwDetail').hidden)return;
     if(root.querySelector('dialog[open]'))return;
-    if(event.key==='Escape'){event.preventDefault();if($('#cpClaimMenu')?.open)$('#cpClaimMenu').open=false;else closeDetail();}
+    if(event.key==='Escape'){event.preventDefault();if(state.inspectorOpen)closeInspector();else if($('#cpClaimMenu')?.open)$('#cpClaimMenu').open=false;else closeDetail();}
   }
 
   function packetSelection(){
@@ -3098,7 +3098,7 @@
       if (history.state?.casepathFromQueue) history.back();
       else history.replaceState(null,'',`${location.pathname}${location.search}`);
     }
-    const currentRow = state.returnClaimId ? $('#cwTable').querySelector(`tr[data-claim-id="${CSS.escape(state.returnClaimId)}"]`) : null;
+    const currentRow = state.returnClaimId ? $('#cwTable').querySelector(`[data-claim-id="${CSS.escape(state.returnClaimId)}"]`) : null;
     (currentRow || (state.returnFocus?.isConnected ? state.returnFocus : null))?.focus?.();
     state.returnFocus = null;
     state.returnClaimId = null;

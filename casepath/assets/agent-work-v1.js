@@ -323,16 +323,7 @@
       view.scrollTop=scroll;if(focusedClaim)view.querySelector(`[data-aw-claim="${CSS.escape(focusedClaim)}"]`)?.focus({preventScroll:true});
     }catch(e){view.innerHTML=`<p class="aw-stale">${h(e.message)}</p><button type="button" class="aw-text-button" data-aw-back>Return to claims</button>`;}
   }
-  function updateQueue(runs){
-    const latest=new Map();for(const run of runs)if(!latest.has(run.claim_id))latest.set(run.claim_id,run);
-    document.querySelectorAll('tr[data-claim-id]').forEach(row=>{
-      const run=latest.get(row.dataset.claimId);if(!run)return;
-      const cell=row.querySelector('.cp-state-cell')||row.querySelector('td:nth-child(2)');if(!cell)return;
-      let el=cell.querySelector('.aw-row-work');if(!el){el=document.createElement('small');el.className='aw-row-work';cell.append(el);}
-      const text=`Review · ${label(run.status).toLowerCase()}`;
-      if(el.textContent!==text)el.textContent=text;
-    });
-  }
+  function updateQueue(){}
   function closeStream(){state.stream?.close();state.stream=null;state.streamRun=null;}
   function openStream(claim,runId){
     if(state.streamRun===runId||state.streamFailed===runId||!window.EventSource)return;
