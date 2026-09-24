@@ -1730,6 +1730,7 @@
     if(!option)return;
     clearTimeout(state.evidencePreviewTimer);
     state.evidenceChoice=sourceEntrySha256;
+    prepareEvidenceIntent(state.loop);
     renderDetail(state.detail);
     $('#cwDetailPanel [data-evidence-choice="'+CSS.escape(sourceEntrySha256)+'"]')?.focus({preventScroll:true});
     const index=state.detail.artifacts.findIndex(row=>row.artifact_id===option.source_id);
@@ -1740,6 +1741,20 @@
         if(isActiveDetail(context)&&state.evidenceChoice===sourceEntrySha256&&!state.mutationBusy)void showSourceArtifact(index,false,option.quote);
       },350);
     }
+  }
+
+  function prepareEvidenceIntent(loop) {
+    const action=loop?.loop_state?.selected_action;
+    if(!action||storedCommandIdentity('evidence-intent',loop.claim_id))return;
+    const existing=state.preparedEvidenceIntent;
+    if(existing?.loopId===loop.loop_state.loop_id&&existing.revision===loop.loop_state.revision)return;
+    const body={action_id:action.action_id,expected_revision:loop.loop_state.revision};
+    const key=commandKey('evidence-intent');
+    const promise=request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents`,{
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,idempotency_key:key}),
+    }).then(value=>requireVerifiedResponse(validateEvidenceIntentResponse(value,loop,body,key)));
+    state.preparedEvidenceIntent={loopId:loop.loop_state.loop_id,revision:loop.loop_state.revision,promise};
+    promise.catch(()=>{});
   }
 
   function offerSourceSelection() {
@@ -1982,13 +1997,21 @@
     }
     const intentBody = {action_id:action.action_id, expected_revision:loop.loop_state.revision};
     const choice=loop.finding_options?.find(row=>row.source_entry_sha256===state.evidenceChoice);
+    const prepared=state.preparedEvidenceIntent;
+    let preparedResponse=null;
+    if(!storedCommandIdentity('evidence-intent',loop.claim_id)
+      &&prepared?.loopId===loop.loop_state.loop_id&&prepared.revision===loop.loop_state.revision){
+      try { preparedResponse=await prepared.promise; }
+      catch (_) { /* A failed early lookup is retried with a fresh command key. */ }
+      if(Date.parse(preparedResponse?.intent?.expires_at||'')<=Date.now()+5000)preparedResponse=null;
+    }
     const intentCommand = commandIdentity(
-      'evidence-intent', loop.claim_id, intentBody, null,
+      'evidence-intent', loop.claim_id, intentBody, preparedResponse?.intent.idempotency_key||null,
       {source_entry_sha256:choice?.source_entry_sha256||null},
     );
     if(intentCommand.source_entry_sha256 && choice && intentCommand.source_entry_sha256!==choice.source_entry_sha256)throw new Error('Finish the saved passage before selecting another');
     const intentRequest = {...intentBody, idempotency_key:intentCommand.key};
-    const intentResponse = await requireVerifiedResponse(validateEvidenceIntentResponse(
+    const intentResponse = preparedResponse||await requireVerifiedResponse(validateEvidenceIntentResponse(
       await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents`, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -1998,6 +2021,7 @@
       intentBody,
       intentCommand.key,
     ));
+    state.preparedEvidenceIntent=null;
     const intentKey = intentResponse.intent.idempotency_key;
     if (intentResponse.recovered_durable_acquisition) {
       clearCommandIdentity('evidence-intent', loop.claim_id);
@@ -2738,6 +2762,7 @@
     state.queueFocusReturn=state.returnClaimId;
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     clearTimeout(state.evidencePreviewTimer);state.evidencePreviewTimer=null;
+    state.preparedEvidenceIntent=null;
     releaseSourcePreview(); state.sourceSelection=null; state.change=null; state.whatIf=null; state.evidenceChoice=null; state.handlerDrafts={};
     state.detailEpoch += 1;
     state.mutationBusy = null;
