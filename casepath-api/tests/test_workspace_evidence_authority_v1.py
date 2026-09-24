@@ -6,6 +6,7 @@ from hashlib import sha256
 import json
 import sqlite3
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
@@ -27,7 +28,7 @@ from casepath_api.workspace_claim_loop_v1 import (
     WorkspaceClaimLoopServiceV1,
     WorkspaceEvidenceWithdrawalCorrectionAdapterV1,
 )
-from casepath_api.workspace_corpus import PublicCorpus, default_public_corpus_root
+from casepath_api.workspace_corpus import PublicCorpus, default_public_corpus_root, default_workspace_corpus_root
 from casepath_api.workspace_evidence_authority_v1 import (
     EVIDENCE_REGISTRATION_FIELDS,
     EVIDENCE_REGISTRATION_SCHEMA,
@@ -36,8 +37,91 @@ from casepath_api.workspace_evidence_authority_v1 import (
     ServerInterpretedWorkspaceEvidenceV1,
     WorkspaceEvidenceAuthorityError,
 )
+from casepath_api.workspace_evidence_authority_v1 import _EvidenceSemantics
+from casepath_api.workspace_evidence_independent_authority_v1 import _finding as independent_finding
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+
+
+@pytest.mark.parametrize(
+    ("node_id", "statement", "resolved"),
+    [
+        (
+            "lt_intake",
+            "The termination notice was received; the intended end date remains unresolved.",
+            "lt_e01",
+        ),
+        (
+            "ri_intake",
+            "The rent increase was received; the notification date is unknown.",
+            "ri_e01",
+        ),
+    ],
+)
+def test_unresolved_source_span_cannot_establish_an_intake_fact(
+    node_id: str, statement: str, resolved: str
+) -> None:
+    action = SimpleNamespace(process_node_id=node_id)
+    grant = {"decision_bearing": True}
+    assert _EvidenceSemantics._proposal_finding(
+        action, statement, "unresolved", [resolved], grant
+    ) == "unresolved"
+    assert independent_finding(
+        action=action,
+        text=statement,
+        unresolved="unresolved",
+        resolved=[resolved],
+        grant=grant,
+    ) == "unresolved"
+
+
+def test_flagship_unresolved_end_date_is_not_sufficient_evidence(tmp_path: Path) -> None:
+    workspace, facade = _system(
+        tmp_path, corpus=PublicCorpus(default_workspace_corpus_root())
+    )
+    workspace.seed(timestamp="2026-09-04T12:00:00+00:00")
+    claim_id = "clm_f69b1747447bc221"
+    initial = workspace.store.recover(claim_id)
+    started = workspace.start(
+        claim_id,
+        idempotency_key="unresolved.start.0001",
+        expected_revision=initial["revision"],
+        timestamp="2026-09-04T12:00:01+00:00",
+    )["state"]
+    view = facade.ensure(
+        claim_id,
+        expected_workspace_revision=started["revision"],
+        expected_workspace_state_sha256=started["state_sha256"],
+        idempotency_key="unresolved.ensure.0001",
+    )
+    intent, acquisition = _acquire_only(
+        facade,
+        claim_id,
+        view,
+        idempotency_key="unresolved.acquire.0001",
+        timestamp="2026-09-04T12:00:02+00:00",
+    )
+    registration = _register_acquisition(
+        facade,
+        claim_id,
+        view,
+        intent_response=intent,
+        acquisition_response=acquisition,
+        timestamp="2026-09-04T12:00:03+00:00",
+    )
+    loop = view["loop_state"]
+    facade.advance(
+        claim_id,
+        expected_revision=loop["revision"],
+        expected_state_sha256=loop["state_sha256"],
+        action_sha256=loop["selected_action"]["action_sha256"],
+        stage_receipt_sha256=registration["stage_receipt"]["receipt_sha256"],
+        idempotency_key="unresolved.advance.0001",
+    )
+    observation = facade.view(claim_id)["loop_state"]["observations"][-1]
+    assert "end date remains unresolved" in observation["value"]
+    assert observation["evidence_status"] == "provided_insufficient"
+    assert observation["normalized_value"] is None
 
 
 def _system(
@@ -320,6 +404,9 @@ class _SingleSourceVariantCorpus:
 
     def runtime_identity_token(self) -> str:
         return self._base.runtime_identity_token()
+
+    def observed_runtime_identity_token(self) -> str:
+        return self._base.observed_runtime_identity_token()
 
     def binding(self, claim_id: str) -> dict[str, Any]:
         value = self._binding if claim_id == self.claim_id else self._base.binding(claim_id)
@@ -1580,9 +1667,13 @@ def test_nuisance_source_pair_changes_identity_not_business_projection(
     assert _loop_business_projection(plain_state) == _loop_business_projection(
         punctuated_state
     )
-    assert _queue_business_projection(plain["queue_item"]) == (
-        _queue_business_projection(punctuated["queue_item"])
+    plain_queue = _queue_business_projection(plain["queue_item"])
+    punctuated_queue = _queue_business_projection(punctuated["queue_item"])
+    # Triage keeps the exact customer sentence, so punctuation is source content.
+    assert plain_queue["triage"].pop("noticed_fact") != punctuated_queue["triage"].pop(
+        "noticed_fact"
     )
+    assert plain_queue == punctuated_queue
 
 
 _SOURCE_NEGATIVES = (

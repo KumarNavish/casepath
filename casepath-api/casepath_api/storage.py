@@ -191,6 +191,18 @@ class Storage:
                     UNIQUE(session_id, run_id, sequence),
                     UNIQUE(session_id, run_id, dedupe_key)
                 );
+                CREATE TABLE IF NOT EXISTS workspace_reviewed_memory_index (
+                    memory_sha256 TEXT PRIMARY KEY,
+                    source_claim_id TEXT NOT NULL,
+                    event_sha256 TEXT NOT NULL UNIQUE,
+                    family TEXT NOT NULL,
+                    condition TEXT NOT NULL,
+                    statement_pattern TEXT NOT NULL,
+                    status TEXT NOT NULL,
+                    created_at TEXT NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS workspace_memory_match
+                    ON workspace_reviewed_memory_index(family, condition, statement_pattern);
                 CREATE INDEX IF NOT EXISTS runs_session ON runs(session_id, updated_at);
                 CREATE INDEX IF NOT EXISTS events_session_run ON events(session_id, run_id, ordinal);
                 CREATE INDEX IF NOT EXISTS stream_events_session_run ON run_stream_events(session_id, run_id, sequence);

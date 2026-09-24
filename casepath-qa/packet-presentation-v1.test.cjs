@@ -10,13 +10,13 @@ for(const [media,kind]of cases)test('file treatment for '+media,()=>assert.equal
 test('declared file type governs the preview',()=>assert.equal(view.fileTreatment({media_type:'application/octet-stream',file_name:'attachment.pdf'}).kind,'document'));
 test('the message and real attachment are visible without expanding a section',()=>{
  const html=view.packetLibrary(detail);
- assert.match(html,/Customer message/);assert.match(html,/Receipt.pdf/);assert.match(html,/1 attachment/);
+ assert.match(html,/Customer message/);assert.match(html,/Receipt.pdf/);
  assert.equal((html.match(/data-packet-artifact=/g)||[]).length,1);
- assert.doesNotMatch(html,/<details/);
+ assert.doesNotMatch(html,/<details|<button/);
 });
 test('a message-only claim does not acquire an attachment',()=>{
  const html=view.packetLibrary({...detail,artifacts:[message]});
- assert.match(html,/No attachments/);assert.doesNotMatch(html,/data-packet-artifact=/);
+ assert.match(html,/Customer message/);assert.doesNotMatch(html,/data-packet-artifact=|<button/);
 });
 test('thumbnail URLs bind the original source hash and stay in the claim',()=>{
  assert.equal(view.packetPreviewUrl(pdf),pdf.download_url+'/preview/page?source_sha256='+pdf.sha256+'&page=1&width=180');

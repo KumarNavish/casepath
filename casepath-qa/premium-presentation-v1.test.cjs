@@ -22,9 +22,10 @@ test('a report excerpt quotes the message without adding a finding',()=>{
  const paragraph='The heating has failed again. We supplied the repair invoice, but the replacement part has not arrived.';
  assert.equal(view.reportExcerpt('Dear Sir or Madam\n\n'+paragraph),paragraph);
 });
-test('the new shell exposes real filters and deliberate progressive disclosure',()=>{
+test('the claims list keeps search and filters behind one disclosure',()=>{
  const html=view.shell();for(const id of ['cwSearch','cwSort','cwReadiness','cwFailure','cwState','cwOwner','cwPendingEvidence','cwDetailPanel'])assert.match(html,new RegExp('id="'+id+'"'));
- assert.match(html,/data-queue-view="urgent"/);assert.doesNotMatch(html,/aria-modal="true"/);
+ assert.match(html,/<details class="cp-filter-popover"><summary>Filter<\/summary>/);
+ assert.doesNotMatch(html,/data-queue-view=|aria-modal="true"/);
 });
 test('a source correction is exposed only for the exact server-permitted finding',()=>{
  const detail={state:{intake_assessment:{policy_clause_refs:[]}},artifacts:[]};
@@ -61,11 +62,18 @@ test('a correction preview takes focus without a stale replan above it',()=>{
    principal_blocker:'No evidence outstanding',next_state:{title:'Review'}},
   loop_state:{selected_action:null,observations:[],checklist:{items:[]},
    process:{nodes:[],main_spine:[],current_overlay:{current_node_id:null,completed_node_ids:[],blocked_node_ids:[]}}}};
- const html=view.workbench(loop,{claim_id:'c',binding:{}},{
+ const assessment={language:'en',noticed:[],conflicts:[],next_step:'Review receipt',
+  conditions:{health_effects:{verdict:'unresolved'}},documents:[],candidate_deadline:null,
+  steps:[{node_id:'receipt',state:'active',label:'Review receipt',condition_chips:[]}]};
+ const html=view.workbench(loop,{claim_id:'c',binding:{},intake_assessment:{claim_assessment:assessment}},{
   correctionPreview:{effect:{fact_id:'f'}},
   change:{kind:'evidence',accepted:true,changes:[],remaining:0,afterState:'Ready for review'}
  });
  assert.match(html,/id="cwCorrectionPreview"/);
  assert.doesNotMatch(html,/id="cwReplanDelta"/);
- assert.equal((html.match(/class="cw-button cw-button-primary"/g)||[]).length,1);
+ const preview=html.match(/<section class="cp-correction"[\s\S]*?<\/section>/)?.[0];
+ assert.ok(preview);
+ assert.match(preview,/id="cwCorrectionConfirm"/);
+ assert.equal((preview.match(/class="cw-button cw-button-primary"/g)||[]).length,1);
+ assert.match(html,/id="cwDraftOpen"/);
 });

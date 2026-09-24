@@ -16,13 +16,14 @@ EVIDENCE_CLASSES = (
     "conditional",
     "irrelevant",
     "unknown",
+    "held_not_reviewed",
 )
 _STATUS_CLASS = {
     "missing": "missing",
     "provided_insufficient": "insufficient",
     "conditional": "conditional",
     "not_applicable": "irrelevant",
-    "present_unreviewed": "unknown",
+    "present_unreviewed": "held_not_reviewed",
     "conflicting": "unknown",
     "unknown": "unknown",
 }

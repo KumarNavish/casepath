@@ -1,22 +1,39 @@
-# CasePath product design
+---
+version: alpha
+name: CasePath
+description: Visual language for the synthetic claims workbench
+colors:
+  cp-ink: "#1c2430"
+  cp-muted: "#5b6675"
+  cp-line: "#e3e7ec"
+  cp-accent: "#244e72"
+  cp-amber: "#9a6b1f"
+---
 
-CasePath answers one question: **Why is this the right next step for this claim?** A person should be able to move from the action to the active process step, its obligation, the fact or branch still in question, the evidence state, and the original source.
+## The screen
 
-## The claim workbench
+CasePath reads the customer message and files, shows where the claim stands, and helps the handler ask for what is missing. The **Claims** screen is a list grouped by who it is waiting for. Each row carries a noticed fact and a next step. Search is visible; the other controls open from **Filter**.
 
-The desktop workbench has three places with distinct jobs. The left rail holds the original customer packet. The center shows the active handling path and nearby alternatives. The right side keeps one next action and its trace in view. Evidence, the full process, and recorded work remain available through tabs. At narrow widths, the order is next action, active path, then trace; the original packet opens in a source drawer.
+An open claim reads as one document. The next step comes first, followed by **What I noticed**, **Where it stands**, **Questions**, **What to request**, and an editable draft when one exists. **Why** opens beneath the next step. **Recorded requirements**, **Timeline**, and **Technical details** sit at the end of the document.
 
-The current process step must stay visible even when a person selects another step to inspect. Selection explores the record; it does not change the authoritative path. After a saved action moves the path, the explanation returns to the new current step.
+At desktop widths, a 280 px **Sources** rail stays on the right. Selecting a fact, quote, or file opens its source in that rail. At 900 px and below, **Sources** opens as a sheet and the next action stays in a bottom bar.
 
-An opened document is not accepted evidence. Show a passage as accepted only when the saved observation contains it and its source identity matches the original packet. A source statement that selects a branch does not imply that every detail in the notice is established. Unknown, conditional, missing, and uncertain states must remain explicit.
+## Type and color
 
-## Visual rules
+Use the system sans serif, sentence case, and short handler words. The claim title and next step carry the strongest weight. Source quotes retain the customer's words and language. Links and the primary action use `cp-accent`; unresolved questions and conflicts use `cp-amber`. Text always names the state alongside its color.
 
-- Use white for the work surface, deep blue `#244e72` for the primary action and current path, and one muted warm accent for unresolved attention. Keep supporting backgrounds lightly blue-tinted.
-- Let type, spacing, and alignment establish hierarchy. Use borders to separate functions, not to turn every item into a card.
-- Show one primary action at a time. Keep technical identifiers, rule text, and specialist handoffs behind named disclosures.
-- Use short, sentence-case labels. State what an action will do before it runs; distinguish checking a source from sending a request or deciding a claim.
-- Use native buttons, tabs, and disclosures with visible keyboard focus. Do not make hover or color the only way to read state.
-- Motion may reveal a saved state change, but must stay brief and respect reduced-motion preferences. The interface must remain understandable with no animation.
+Keep the page white. Separate sections with space and the source rail with one thin rule. Source rows are plain text rows. The queue uses list rows with no table headers or chevrons.
 
-The review record is secondary to the claim decision. It shows actual saved work and handoffs on demand; it never turns a completed review into a completed claim.
+## Behaviour
+
+**Review claim** reveals findings in place and highlights the matching source span. The completed view renders from the saved assessment, including linked conflicts and labelled facts. **Stop** cancels a running review. **Where it stands** shows done, now, and next on one line each; **+N later** opens the remaining steps. Conditions sit beneath the steps with their verdict and quote. **what if** explores a condition without changing the saved claim.
+
+**Questions** states what each unresolved condition would change. **What to request** groups documents under **Now**, **Later**, and **Not needed**, with a short reason and article where one applies. A held file reads **held, not reviewed**. The draft is a letter edited in place and labelled **Draft, not sent**; Copy and Export follow Save edits. Reviewed memory shows who reviewed it and requires an explicit Apply.
+
+Use native buttons and disclosures with visible keyboard focus. Motion belongs to the live finding and source highlight; reduced-motion preference disables it. Keep candidate deadlines tied to an anchoring date or a question. A source passage becomes an accepted observation only after it is recorded against the claim.
+
+## Screen references
+
+- [Claims list](docs/images/workbench-queue.png)
+- [Reviewed claim at 1440 px](docs/images/workbench-review.png)
+- [Reviewed claim at 390 px](docs/images/workbench-mobile.png)

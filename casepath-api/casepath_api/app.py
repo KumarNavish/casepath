@@ -406,6 +406,7 @@ app.include_router(
 
 @app.on_event("startup")
 def reconcile_claim_loop_requests() -> None:
+    claim_workspace_corpus.start_inventory_watch()
     claim_loop_service().reconcile_abandoned_requests(
         now=datetime.now(timezone.utc).isoformat(),
         recover_protocol_effects=True,
@@ -420,6 +421,11 @@ def reconcile_claim_loop_requests() -> None:
     # exact product queue; every later mutation invalidates it via SQLite's
     # data-version token and falls back to authoritative replay.
     workspace_loop.queue(limit=1)
+
+
+@app.on_event("shutdown")
+def stop_corpus_inventory_watch() -> None:
+    claim_workspace_corpus.stop_inventory_watch()
 
 
 class KnowledgeMode(str, Enum):

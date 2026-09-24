@@ -3,55 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Explore how active obligations, evidence sufficiency and acquisition permission determine a CasePath document request.">
-  <title>Why this document? — CasePath</title>
+  <meta name="description" content="See CasePath's claim review, sources, research limits, and data.">
+  <title>About CasePath</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="assets/method-guide.css">
-  <script defer src="assets/method-guide.js"></script>
 </head>
 <body>
-  <a class="skip" href="#explorer">Skip to the interactive example</a>
-  <header><a class="brand" href="/" aria-label="CasePath claims workspace"><span class="mark">C</span>CasePath</a><nav aria-label="Main navigation"><a href="corpus.html">Data</a><a href="research.html">Evidence</a><a href="/" class="workspace-link">Workspace <span aria-hidden="true">↗</span></a></nav></header>
+  <a class="skip" href="#try">Skip to a claim</a>
+  <header><a class="brand" href="/" aria-label="CasePath claims workspace"><span class="mark">C</span>CasePath</a><nav aria-label="Main navigation"><a href="corpus.html">Data</a><a href="research.html">Research</a><a href="/" class="workspace-link">Claims <span aria-hidden="true">↗</span></a></nav></header>
   <main>
-    <section class="intro" id="principle">
-      <h1>Every request<br>needs a reason.</h1>
-      <p>A document can be essential on one branch and irrelevant on another. CasePath derives a request from the active obligation and the evidence already available.</p>
-    </section>
-    <section id="explorer" aria-labelledby="explorer-title">
-      <div class="section-heading"><h2 id="explorer-title">Change the case. Follow the consequence.</h2><p>Invented repair example · outputs from the actual deterministic controller</p></div>
-      <div id="load-status" role="status">Loading the example…</div>
-      <noscript><p>Enable JavaScript to change the case. The method explanation below remains available.</p></noscript>
-      <div class="explorer" id="explorer-body" hidden>
-        <form aria-label="Teaching case state">
-          <h3>What is known?</h3>
-          <fieldset><legend>Does this repair qualify?</legend><label><input type="radio" name="branch" value="true" checked> Yes</label><label><input type="radio" name="branch" value="false"> No</label><label><input type="radio" name="branch" value="unknown"> Unresolved</label></fieldset>
-          <fieldset><legend>May new evidence be requested?</legend><label><input type="radio" name="permission" value="true" checked> Permitted</label><label><input type="radio" name="permission" value="false"> Not permitted</label><label><input type="radio" name="permission" value="unknown"> Unresolved</label></fieldset>
-          <label class="select-label" for="held">Evidence already available</label>
-          <select id="held" name="held"><option value="missing">No documents held</option><option value="unreviewed">Report held, not assessed</option><option value="sufficient">Report establishes the cause</option><option value="pair">Note + photo jointly establish cause</option><option value="joint_unknown">Note + photo, joint adequacy unclear</option></select>
-          <button type="reset">Reset example</button>
-          <p class="fixture-note">The policy and assessments here are authored teaching inputs. No model, benchmark label or real claim is used.</p>
-        </form>
-        <div class="trace" aria-live="polite" aria-atomic="true">
-          <ol>
-            <li><span class="step">01</span><div><h3>Source rule</h3><p>For a qualifying repair, establish the cause before authorizing work. Acquire evidence only when permitted.</p></div></li>
-            <li><span class="step">02</span><div><h3>Active process scope</h3><p id="scope-text"></p></div></li>
-            <li><span class="step">03</span><div><h3>Obligation → required fact</h3><p id="obligation-text"></p></div></li>
-            <li><span class="step">04</span><div><h3>Evidence capability → document option</h3><p id="route-text"></p></div></li>
-            <li class="request-step"><span class="step">05</span><div><h3>Request now</h3><p id="request-text"></p><p id="reason-text" class="reason"></p></div></li>
-          </ol>
-          <div class="next-action"><span>Justified next action</span><h3 id="next-action-text"></h3></div>
-        </div>
-      </div>
-      <details class="trace-details"><summary>Inspect the policy and execution trace</summary><p id="policy-text"></p><p><a href="assets/method-guide-data.json" download>Download all 45 states, outputs and source hashes</a></p><pre id="raw-trace" tabindex="0" aria-label="Selected controller output"></pre></details>
-    </section>
-    <section class="reading" aria-labelledby="reading-title">
-      <h2 id="reading-title">Three distinctions that change the plan.</h2>
-      <div class="lesson"><span>01</span><h3>Unresolved is a state.</h3><p>An unresolved branch creates a question. It does not silently become false, and it does not authorize an immediate document request.</p></div>
-      <div class="lesson"><span>02</span><h3>Held does not mean sufficient.</h3><p>A file must establish the required fact. When its adequacy is unknown, the controller calls for review. Multi-document routes also require a joint assessment.</p></div>
-      <div class="lesson"><span>03</span><h3>Alternatives are alternatives.</h3><p>An adequate route satisfies the capability. Otherwise, the controller selects a route per capability, prioritizing fewer requests, then fewer reviews. It does not optimize a global document set.</p></div>
-    </section>
-    <section class="closing"><h2>From an explanation<br>to a working case.</h2><div><p>The workbench keeps original sources, evidence and handling actions together. This guide explains the obligation controller; the workbench’s handling journal has its own admission rules.</p><a href="/" class="button">Explore the claims workspace <span aria-hidden="true">↗</span></a></div></section>
+    <section class="intro"><h1>See the claim.<br>Follow the reason.</h1><p>CasePath reads the customer's message and attached files, shows the current handling step, and prepares a request the handler can review.</p></section>
+    <section id="try"><div class="section-heading"><h2>Try the family-home claim</h2><p>Two termination notices name different end dates. The source files and the next question are on one canvas.</p></div><div class="closing"><div><p>Open the claim, select <strong>Review claim</strong>, then choose <strong>What if</strong> beside family-home service. Set the condition false to see how the path and requested documents change. The change stays in a sandbox until a handler records an assessment.</p><a href="/#claim=clm_f69b1747447bc221&amp;what_if=family_home" class="button">Open the claim's What if <span aria-hidden="true">↗</span></a></div></div></section>
+    <section class="reading"><h2>Inspect the source and the result</h2><div class="lesson"><span>01</span><h3>The original packet</h3><p><a href="corpus.html">Browse the 150 messages and attachment lists</a>. The workbench keeps each claim's original files beside its assessment.</p></div><div class="lesson"><span>02</span><h3>The measured studies</h3><p><a href="research.html">Read the results and limits</a>. The deterministic workbench is a product example; study results have their own cohorts and endpoints.</p></div><div class="lesson"><span>03</span><h3>The preserved teaching record</h3><p>The earlier authored repair example remains <a href="assets/method-guide-data.json" download>downloadable with its 45 states and source hashes</a>.</p></div></section>
+    <section class="reading" id="reviewer-mode"><h2>Reviewer mode</h2><p><label><input type="checkbox" id="reviewerMode"> Show provenance labels on a claim</label></p><p>Labels distinguish original sources, the deterministic assessment, handler observations, reviewed memory, and an unsent draft. They identify where each object came from; they do not certify legal correctness.</p></section>
   </main>
-  <footer><span>CasePath · Method guide</span><span>Teaching execution demonstrates semantics. Comparative quality requires the benchmark.</span></footer>
+  <footer><span>CasePath · About</span><span>Draft requests stay with the handler.</span></footer>
+  <script>const reviewerMode=document.getElementById("reviewerMode");reviewerMode.checked=localStorage.getItem("casepath:reviewer:v1")==="1";reviewerMode.addEventListener("change",()=>localStorage.setItem("casepath:reviewer:v1",reviewerMode.checked?"1":"0"));</script>
 </body>
 </html>

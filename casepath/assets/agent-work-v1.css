@@ -27,7 +27,7 @@
 .aw-message:empty{display:none}.aw-message{font-size:12px;line-height:1.7;color:#725c34;margin:10px 0 0!important}
 .aw-stale{font-size:12px;line-height:1.75;color:#7b5b2e;background:#fcf8ef;padding:12px 14px;border-radius:6px;margin:12px 0!important}
 .aw-row-work{color:#666b77!important;font-size:10px!important;margin-top:5px!important}
-#awWorkforceButton{margin-top:14px;border-top:1px solid var(--aw-line)}
+#awWorkforceButton{margin:0;border:0;background:none;color:#244e72;font-size:13px;padding:0;}
 .aw-timeline{padding-bottom:24px;margin-bottom:22px;border-bottom:1px solid var(--aw-line)}
 .aw-section-heading{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:18px}
 .aw-section-heading h3{font-size:15px;font-weight:580;margin:0;letter-spacing:-.15px}
@@ -222,7 +222,7 @@
 .aw-mini-flow i[data-status="completed"]{background:#82aa8f;}
 .aw-mini-flow i[data-status="working"]{background:var(--aw-accent);}
 .aw-mini-flow i[data-status="blocked"],.aw-mini-flow i[data-status="unconfirmed"]{background:#c59c62;}
-#awWorkforceButton{margin-top:12px;}
+#awWorkforceButton{margin-top:0;line-height:1.5;}
 .aw-row-work{font-weight:500;}
 @media(max-width:1240px){
  .aw-agent-flow{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px 9px;}
@@ -273,13 +273,27 @@
 }
 @media(prefers-reduced-motion:reduce){.aw-agent[data-status="working"] .aw-agent-mark,.aw-live-signal[data-live="true"] .aw-live-mark{animation:none!important;}}
 
-.cp-workspace[data-canvas="true"] .aw-review-console{border:0;box-shadow:none;border-radius:0;padding:0;}
-.cp-workspace[data-canvas="true"] .aw-console-head{margin-bottom:12px;}
-.cp-workspace[data-canvas="true"] .aw-console-state[data-status="completed"] strong{color:#244e72;}
-.cp-workspace[data-canvas="true"] .aw-live-complete{background:#f1f6fa;color:#385a73;}
-.cp-workspace[data-canvas="true"] .aw-live-complete .aw-live-mark{background:#e4eef5;color:#244e72;}
 .aw-role-details{margin-top:17px;padding-top:13px;border-top:1px solid #e0e8ee;}
 .aw-role-details>summary{cursor:pointer;width:max-content;max-width:100%;font-size:11px;font-weight:560;color:#244e72;}
 .aw-role-details .aw-agent-flow{margin-top:13px;}
 
 .aw-agent-flow-loading{min-height:82px;display:grid;place-items:center;color:#656b77;font-size:11px;background:#fafafb;border-radius:8px;}
+
+.aw-work-strip{border:0;padding:0;margin:0;}
+.aw-review-progress{color:#1c2430;}
+.aw-review-progress>p{font-size:13px;color:#5b6675;margin:6px 0!important;}
+.aw-narrative-lines{list-style:none;margin:0;padding:0;}
+.aw-narrative-lines li{font-size:14px;line-height:1.5;padding:4px 0;animation:aw-finding-in 160ms ease-out both;}
+.aw-narrative-lines time{color:#5b6675;font-size:13px;margin-right:10px;}
+.aw-narrative-lines a{color:#244e72;text-decoration:none;}
+.aw-narrative-lines a:hover{text-decoration:underline;}
+@keyframes aw-finding-in{from{opacity:0}to{opacity:1}}
+.cp-source-rail .aw-source-focused{background:#f4f7fa;outline:0;}
+.cp-source-rail .aw-current-passage{display:block;margin-top:5px;background:#fff;color:#244e72;font-size:13px;line-height:1.5;white-space:normal;animation:aw-source-focus 240ms ease-out;}
+.cp-source-rail .cw-message mark{background:#fff;color:#1c2430;outline:2px solid #244e72;scroll-margin:90px;animation:aw-source-focus 240ms ease-out;}
+.cp-source-rail .aw-source-flash{background:#f4f7fa;outline:0;animation:aw-source-focus 240ms ease-out;}
+@keyframes aw-source-focus{from{background-color:#fff}to{background-color:#f4f7fa}}
+.aw-path-settling [data-aw-settled="false"]{opacity:.35;}
+.aw-path-settling [data-aw-settled="false"] .cp-a-condition span,.aw-path-settling .cp-a-condition-overview [data-aw-settled="false"]>span,.aw-path-settling .cp-a-condition-overview [data-aw-settled="false"] q{visibility:hidden;}
+.aw-path-settling [data-aw-settled="true"]{opacity:1;transition:opacity 160ms ease-out;}
+@media(prefers-reduced-motion:reduce){.aw-narrative-lines li,.cp-source-rail .cw-message mark,.aw-source-flash,.aw-current-passage{animation:none}.aw-path-settling [data-aw-settled="true"]{transition:none}}

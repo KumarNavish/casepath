@@ -42,25 +42,37 @@ Open http://127.0.0.1:4173/. Keep the command running and use Ctrl-C to stop it.
 The launcher serves the frontend and API from one loopback origin, unsets model
 and tracing credentials, and forces deterministic reference mode.
 
-## Complete a first claim journey
+## Walk through a claim
 
-1. Use queue search or filters to select a claim.
-2. Open the original message and at least one attachment. Confirm that source
-   content appears separately from interpretation or process guidance.
-3. Assign an owner.
-4. Start the assessment and inspect the current process node.
-5. Open **Agent review** and inspect the six-role reference chain, handoffs, and
-   recorded source grounding.
-6. Open the evidence view and identify a missing item or unresolved condition.
-7. Export current status.
-8. Stop the server and replay the selected claim:
+1. In **Claims**, select **Walk through this claim**, or open
+   `http://127.0.0.1:4173/#claim=clm_f69b1747447bc221`. The list groups claims
+   by who CasePath is waiting for. **Filter** opens the extra queue controls.
+2. Select **Review claim**. Watch findings appear in **What I noticed** and
+   follow a highlighted line to the customer message or PDF in **Sources**.
+   **Stop** cancels a running review.
+3. Read **Where it stands**: done, now, next, then **+8 later**. The conditions
+   and their source quotes sit below the steps. **Why** shows the reason for the
+   next step.
+4. Read **Questions** and **What to request**. The two notices have different
+   end dates; the receipt dates remain open. Documents are grouped under
+   **Now**, **Later**, and **Not needed**.
+5. Focus family-home service, select **what if**, and set it false. Read the changed
+   path and request, then **Exit** to return to the saved claim.
+6. Select **Draft request**. Edit the letter in place, then use **Save edits**,
+   **Copy**, or **Export**. The draft is labelled **Draft, not sent**.
+7. Stop the server and replay the selected claim:
 
 ```bash
 ./bin/casepath replay <claim-id>
 ```
 
-The replay is read-only. Restart `./bin/casepath dev` and confirm that accepted
-state persists.
+The replay is read-only. Restart `./bin/casepath dev` and confirm that the
+findings, path, and draft still appear. **About** contains the Reviewer mode
+switch for provenance labels; **Technical details** holds the recorded checks.
+
+Screen references: [Claims list](images/workbench-queue.png),
+[reviewed claim at 1440 px](images/workbench-review.png), and
+[reviewed claim at 390 px](images/workbench-mobile.png).
 
 ## Local state
 

@@ -16,7 +16,7 @@ from .authority import ClaimAuthority, AuthorityError, SourceChanged
 from . import evidential_channel
 from .contracts import (Role, ROLE_ORDER, ROLE_LABELS, Operation, SourceSpan, GateResult,
                         TOOL_MODELS, ROLE_TOOLS, canonical, digest)
-from .store import WorkStore, WorkStoreError, ConflictError, ReconciliationRequired
+from .store import WorkStore, WorkStoreError, ConflictError, ReconciliationRequired, WorkCancelled
 
 
 
@@ -44,6 +44,14 @@ class ToolRuntime:
         self.parent_event = started[-1]["sequence"] if started else None
         self.emitted: list[dict] = []
         self.changed: list[dict] = []
+        # This executor owns the run's writes. Cancellation may append an event,
+        # but cannot change work products while the role is running.
+        self._object_cache: dict[str, dict] | None = None
+
+    def _objects(self):
+        if self._object_cache is None:
+            self._object_cache = {row["id"]: row for row in self.store.objects(self.run_id)}
+        return self._object_cache
 
     def _event(self, operation, kind, object_id, message, *, status="observed", before=None, after=None, sources=(), links=(), gate=None):
         self.emitted.append(dict(role=self.role.value, operation=operation.value, object_kind=kind, object_id=object_id,
@@ -60,14 +68,16 @@ class ToolRuntime:
         if changed:
             return changed["value"]
         try:
-            return self.store.object(self.run_id, object_id)["value"]
+            return self._objects()[object_id]["value"]
+        except KeyError as exc:
+            raise GateRejected("the referenced work product is unavailable") from exc
         except WorkStoreError as exc:
             if str(exc) == "work object is unavailable":
                 raise GateRejected("the referenced work product is unavailable") from exc
             raise
 
     def _all(self, kind):
-        return self.store.objects(self.run_id, kind)
+        return [row for row in self._objects().values() if row["kind"] == kind]
 
     def _gate(self, object_id, accepted, scope, reason, authority_hash=None):
         gate = GateResult(gate_id=scope, accepted=accepted, scope=scope, reason=reason, authority_sha256=authority_hash)
@@ -104,10 +114,14 @@ class ToolRuntime:
                         "requires_reconciliation": name == "prepare_handling_process"}
         # An unknown exception is not converted to 'no state change'. The pending
         # call remains unfinished and the run requires explicit reconciliation.
-        return self.store.complete_call(self.run_id, self.owner, self.role, call_id, response, self.emitted, self.changed)
+        result = self.store.complete_call(self.run_id, self.owner, self.role, call_id, response, self.emitted, self.changed)
+        if self._object_cache is not None:
+            for row in self.changed:
+                self._object_cache[row["id"]] = {**row, "sha256": digest(row["value"])}
+        return result
 
     def _check_packet(self):
-        now = self.authority.context(self.claim_id)
+        now = self.authority.packet_identity(self.claim_id)
         if now["binding_sha256"] != self.context["binding_sha256"] or now["source_roster_sha256"] != self.context["source_roster_sha256"]:
             raise SourceChanged("the incoming packet changed; existing work is not current")
         return now
@@ -279,9 +293,15 @@ class ToolRuntime:
                 "branches": [{"object_id": b["object_id"], "state": b.get("state")} for b in snapshot["branches"]]}
 
     def _snapshot(self):
-        snapshot = self._get("authority_snapshot")
-        current = self.authority.snapshot(self.claim_id)
-        if current["state_sha256"] != snapshot["state_sha256"]:
+        snapshot = getattr(self, "_accepted_snapshot", None)
+        if snapshot is None:
+            snapshot = self._get("authority_snapshot")
+            self._accepted_snapshot = snapshot
+        current = getattr(self.authority, "snapshot_is_current", None)
+        unchanged = current(self.claim_id, snapshot["state_sha256"]) if current else (
+            self.authority.snapshot(self.claim_id)["state_sha256"] == snapshot["state_sha256"]
+        )
+        if not unchanged:
             raise SourceChanged("the claim changed after the process snapshot")
         return snapshot
 
@@ -633,9 +653,18 @@ class AgentWorkExecutor:
                     self.facts_worker.run(runtime)
                 else:
                     ReferenceWorker().run(runtime)
+                if role in {Role.PROCESS, Role.EVIDENCE, Role.AUDIT}:
+                    saved = self.store.object(run_id, "authority_snapshot")["value"]
+                    if self.authority.snapshot(run["claim_id"])["state_sha256"] != saved["state_sha256"]:
+                        raise SourceChanged("the claim changed during the review")
             readiness = self.store.object(run_id, "readiness")["value"]
             self.store.finish(run_id, owner, "completed", "All six roles completed. Claim readiness remains governed by the existing authority.",
                               after={"readiness": readiness, "completed_roles": [r.value for r in ROLE_ORDER]})
+        except WorkCancelled:
+            try:
+                self.store.finish(run_id, owner, "cancelled", "Review stopped at a safe checkpoint")
+            except ConflictError:
+                pass
         except (WorkBlocked, GateRejected, AuthorityError, WorkStoreError, ValueError) as exc:
             try:
                 if role:

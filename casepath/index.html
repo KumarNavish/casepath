@@ -6,6 +6,7 @@
   <meta name="description" content="A journal-backed claims workspace that shows what is known, what blocks a claim, and the next bounded action without inventing readiness.">
   <meta name="theme-color" content="#ffffff">
   <meta name="casepath-release" content="20.0.0">
+  <meta name="casepath-agent-work-script" content="assets/agent-work-v1.js?sha256=fe3ea23710a2745a4c7fc6adc29b1da19f65b957f4487febef7fa3cc81dc4070">
   <link rel="icon" href="data:,">
   <title>CasePath — Claims workspace</title>
   <script>
@@ -59,19 +60,9 @@
     .local-file-launch-command{margin-top:25px;padding-top:20px;border-top:1px solid #e5e6e7;color:#777d85;font-size:11px;line-height:1.5}
     .local-file-launch-command code{display:block;overflow:auto;margin-top:7px;padding:10px 12px;border-radius:7px;background:#f4f4f2;color:#34383e;font:10px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap}
   </style>
-  <link rel="stylesheet" href="assets/live-v16.css?sha256=c7b2ccc1b84d6eb68034af2f91a8e1ada641b8462d17a831dcb88ba8ba34b3df">
-  <link rel="stylesheet" href="assets/live-v17.css?sha256=6ef90ed94b07f557480103dcbf4dba978aa47daf7352b65301797a8d0c3a271a">
-  <link rel="stylesheet" href="assets/live-v17-continuity.css?sha256=c24fa5322ae9bec1cec9c08116ba45ba085bb563660876f7b54c64ee2597a818">
-  <link rel="stylesheet" href="assets/live-v18.css?sha256=ef5b42ee1539a81d53d4909527e175c0190f79e89a447cdfbacb7364a5b6e012">
-  <link rel="stylesheet" href="assets/live-v19.css?sha256=7da2e0500edc81a9c2aff735bb93d478267cda7dfe186b27ce3a061ea812d499">
-  <link rel="stylesheet" href="assets/live-v20-focus.css?sha256=1031632a3d77054a66503122f0cf733ca3549067d149f88e5eded278382ad963">
-  <link rel="stylesheet" href="assets/insurance-protocol-v1.css?sha256=209f4bfb8feeba78752a6b08f5a71c384280f5a4ac0617be7bb7e5f79d44fcf3">
-  <link rel="stylesheet" href="assets/process-story.css?sha256=028f57c0f811924598ad3dd1c44e0a822f1835c34d8751a5ca88b866d0d2cbf2">
-  <link rel="stylesheet" href="assets/artifact-canvas.css?sha256=c950fd42abbe15c3e49269a6f9f9adaca81e4e07b648232fb3364d16a879c097">
-  <link rel="stylesheet" href="assets/foundation-live.css?sha256=7a506bf437a3c0659ced9c4788ca9707d7f37e050ecc4592e534b18321070400">
-  <link rel="stylesheet" href="assets/claims-workspace-v1.css?sha256=5ae4871a19991d9a27823dbbd2d4b010cec9f562593498428336c6afbde0fe79">
-  <link rel="stylesheet" href="assets/claims-workspace-presentation-v1.css?sha256=ad34afda5c25ca13b15962fd249303b8d31596ce3ec68b467aa8ab8b0a152e17">
-<link rel="stylesheet" href="assets/agent-work-v1.css?sha256=d2c5065dde1a6f7138cb43e7e2544a8555a4a334ce1256f06c54a2174660d957">
+  <link rel="stylesheet" href="assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14">
+  <link rel="stylesheet" href="assets/claims-workspace-presentation-v1.css?sha256=aa4fcceb151a7b2fd519b4049e8f709624cbbbc53d46fecd86837c2e076667e2">
+<link rel="stylesheet" href="assets/agent-work-v1.css?sha256=a58e8f4e98b263bffe5929a0e1ff20dab03544d274649cd66abc0dd5e39d2efe">
   <link rel="stylesheet" href="assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22">
 </head>
 <body>
@@ -294,21 +285,8 @@ Alex Morgan</div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/claims-workspace-presentation-v1.js?sha256=3d1afe52afa46dcc278f0b9bb45b7d05ec2507faaf133a4f4a242162cdf4aae2"></script>
-  <script src="assets/claims-workspace-v1.js?sha256=1deea46dd6e28019970c3c07785c55b116b3b1825dc93de2a7ae106e9d3d617d"></script>
-  <script src="assets/live-v16.js?sha256=30d38ef66e44312fbfd75bb2d3584bd0b59ac1e45c1f1e5c604167863de647d2"></script>
-  <script src="assets/live-v16-stability.js?sha256=9852b45f35c949b0e89caa62814394c99e97ee744ba0763f19e1156f4630162a"></script>
-  <script src="assets/live-v18-insertion-guard.js?sha256=56c93edcbc77709a857ec8753e0fab9d705dc78d32ba51a572290d4beefc5ce9"></script>
-  <script src="assets/live-v17.js?sha256=4d5390e5b9a527d245ec06d913c1baf86a3946a0d1717a9305e7c26714192acb"></script>
-  <script src="assets/live-v18.js?sha256=ecf53e63ed0d04ed40331ed753103ac6c924d825f029ef7372bf5bd6f3929007"></script>
-  <script src="assets/live-v18-handoff.js?sha256=981a73ead14b34f7b33a59739639da775bf767b6b8cb6ce7e28a7cfe4cca5687"></script>
-  <script src="assets/live-v19-active-stage.js?sha256=b0507d378aaed616795707be7f456d6b3b76794abb70faf9ba5e233b8030da69"></script>
-  <script src="assets/live-v20-focus.js?sha256=c45e354fb399a1f7edfc3c1b52d3dc6ebb1fb8b9d92438651757580a01c3cce5"></script>
-  <script src="assets/process-story.js?sha256=8a0fac57fc6802421fc2741ab92c2be164adfdb0c20523eb600280372a33259b"></script>
-  <script src="assets/artifact-canvas.js?sha256=e9cd895fcd3b7a50949b203df5efdec620b47e2db12106dc532c384a32b1967e"></script>
-  <script src="assets/foundation-live.js?sha256=6d66be1472fdeae083eba68f93e8ce11ef538afa0ebc560a11044ece193b9c80"></script>
-  <script src="assets/insurance-protocol-v1.js?sha256=d25e80b28d8f0b4460221d050c804da6170dc8d95d17bbd3aeb520bf7cb02818"></script>
-<script src="assets/agent-work-v1.js?sha256=7ee310a37435051378ef9d34b0986ffe296d0541d7d11ae9a7d0ae75c4d1ec51" defer></script>
+  <script src="assets/claims-workspace-presentation-v1.js?sha256=35d54891bca887fb230c5f10308fe0a17d85742cf63bff4f04e2ff618724fcd9"></script>
+  <script src="assets/claims-workspace-v1.js?sha256=fe14a6da12d9e711b3d0f91a97a2ea014c2e68aa3156adb30258aabd6607fc02"></script>
   <script src="assets/process-evidence-v2.js?sha256=007bc2ad438b32e265da97f33866999ed3745c35107249eafd35191d210aaa8b" defer></script>
 </body>
 </html>
