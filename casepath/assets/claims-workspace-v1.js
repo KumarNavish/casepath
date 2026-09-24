@@ -2694,7 +2694,7 @@
   function syncReasoning({focus=false}={}){
     if(!state.loop||!state.detail)return;
     const trace=$('#cpCanvasTrace');
-    if(trace)trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.whatIf?.result?.scenario);
+    if(trace){const open=trace.open;trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.whatIf?.result?.scenario);$('#cpCanvasTrace').open=open||focus;}
     const selected=$('#cpCanvasTrace')?.dataset.selectedNode;
     root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===selected)));
     root.querySelectorAll('[data-evidence-source]').forEach(button=>button.classList.toggle('cp-source-selected',button.dataset.evidenceSource===state.focusedEvidenceId));

@@ -183,7 +183,7 @@
     const key=JSON.stringify([summary?.run_id,summary?.last_sequence,summary?.status,state.busy,hasStart,state.events.length,state.messages.get(state.claim),state.assessment?.assessment_sha256,state.revealCount]);
     if(state.renderKey===key)return;state.renderKey=key;
     const start=document.getElementById('cwStart');
-    if(start){const waiting=['queued','running','interrupted'].includes(summary?.status);start.disabled=state.busy||waiting;start.textContent=waiting?'Review in progress':'Review claim';}
+    if(start){const waiting=['queued','running','interrupted'].includes(summary?.status);start.disabled=state.busy||waiting&&!summary?.run_id;start.textContent=waiting?'Stop':'Review claim';}
     if(host.hidden){host.innerHTML='';renderTimeline();return;}
     const pending=pendingRequest(),stopping=state.events.some(event=>event.operation==='RUN_CANCEL_REQUESTED')&&working;
     const complete=summary?.status==='completed',cancelled=summary?.status==='cancelled';
@@ -191,7 +191,7 @@
     const next=document.querySelector('.cp-a-next h2')?.textContent||'';
     const heading=complete?'Review complete':cancelled?'Review stopped':stopping?'Stopping after the current check':working?'Reviewing this claim':state.busy?'Opening claim context':'Review needs attention';
     const detail=complete?`Next step: ${next}`:cancelled?'Saved work remains in the timeline.':state.messages.get(state.claim)||lines.at(-1)?.line.text||'Reading the incoming claim.';
-    host.innerHTML=`<section class="aw-narrative-card" data-status="${h(summary?.status||'opening')}"><header><div><span class="cp-a-kicker">${complete?'Deterministic assessment':'Live review'}</span><h2>${h(heading)}</h2><p>${h(detail)}</p></div>${working?`<button type="button" class="aw-text-button" data-aw-cancel ${state.busy?'disabled':''}>Stop</button>`:''}</header>${!complete?`<ol class="aw-narrative-lines">${lines.slice(-8).map(({event,line})=>`<li>${lineButton(event,line)}</li>`).join('')}</ol>`:''}${complete||cancelled?`<button type="button" class="aw-text-button" data-aw-timeline>Timeline</button>`:''}${summary?.recovery?.can_resume?`<button type="button" class="aw-text-button" data-aw-resume>Resume saved review</button>`:''}${cancelled?`<button type="button" class="aw-text-button" data-aw-start>Review again</button>`:''}${pending&&!state.busy?'<button type="button" class="aw-text-button" data-aw-retry>Check the same request</button>':''}<p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></section>`;
+    host.innerHTML=`<section class="aw-narrative-card" data-status="${h(summary?.status||'opening')}"><header><div><span class="cp-a-kicker">${complete?'Deterministic assessment':'Live review'}</span><h2>${h(heading)}</h2><p>${h(detail)}</p></div></header>${!complete?`<ol class="aw-narrative-lines">${lines.slice(-8).map(({event,line})=>`<li>${lineButton(event,line)}</li>`).join('')}</ol>`:''}${complete||cancelled?`<button type="button" class="aw-text-button" data-aw-timeline>Timeline</button>`:''}${summary?.recovery?.can_resume?`<button type="button" class="aw-text-button" data-aw-resume>Resume saved review</button>`:''}${cancelled?`<button type="button" class="aw-text-button" data-aw-start>Review again</button>`:''}${pending&&!state.busy?'<button type="button" class="aw-text-button" data-aw-retry>Check the same request</button>':''}<p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></section>`;
     if(working&&lines.length){const latest=lines.at(-1),spotlightKey=latest.event.sequence+':'+latest.line.text;if(state.spotlit!==spotlightKey){state.spotlit=spotlightKey;spotlight(latest.line,false);}}
     renderTimeline();
   }
@@ -393,7 +393,7 @@
   }
   document.addEventListener('click',event=>{
     const button=event.target.closest('button');if(!button)return;
-    if(button.id==='cwStart'&&state.cap){event.preventDefault();event.stopImmediatePropagation();void startWork();return;}
+    if(button.id==='cwStart'&&state.cap){event.preventDefault();event.stopImmediatePropagation();if(['queued','running'].includes(state.summary?.status))void cancelWork();else void startWork();return;}
     if(button.hasAttribute('data-aw-resume'))void resumeWork();
     if(button.hasAttribute('data-aw-start'))void startWork();
     if(button.hasAttribute('data-aw-retry'))void startWork(true);
