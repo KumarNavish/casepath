@@ -436,7 +436,7 @@
     correctionPreview: null,
     nativeInvestigation: null,
     change: null, sourceSelection: null, sourceRequest: 0, sourceUrl: null, sourceController: null, loadedQuery: null,
-    focusedEvidenceId: null,
+    focusedEvidenceId: null, whatIf: null, evidenceChoice: null, handlerDrafts: {},
   };
   const EXPECTED_AGENT_IDS = ['canonical_facts','orchestrator_plan','document_source_integrity','process_decision_mapping','evidence_checklist','final_claim_brief_audit'];
   const EXPECTED_GATE_IDS = ['deterministic_process_gate','deterministic_evidence_gate','whole_playbook_gate'];
@@ -1523,7 +1523,7 @@
     const pendingAdvance=storedCommandIdentity('advance',id);
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
     return ui.workbench(loop,workspaceState,{
-      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,detail:state.detail,canvasNodeId:state.canvasNodeId,
+      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,pendingHandler:storedCommandIdentity('handler-note',id),handlerDrafts:state.handlerDrafts,detail:state.detail,canvasNodeId:state.canvasNodeId,whatIf:state.whatIf,evidenceChoice:state.evidenceChoice,
       focusedEvidenceId:state.focusedEvidenceId,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
@@ -1533,6 +1533,9 @@
   }
 
   async function openClaim(claimId) {
+    state.whatIf=null;
+    state.evidenceChoice=null;
+    state.handlerDrafts={};
     savePresentation();
     if($("#cwDetail").hidden)state.queueScrollY=window.scrollY;
     // A click may precede the search debounce. Bind filters to the queue entry
@@ -1684,6 +1687,23 @@
     $('#cwEnsureLoop')?.addEventListener('click', ensureClaimLoop);
     bindNativeInvestigationActions();
     $('#cwEvidenceForm')?.addEventListener('submit', event => { event.preventDefault(); commitLoopObservation(); });
+    $('#cwHandlerPassageForm')?.addEventListener('submit', event => {
+      event.preventDefault();
+      void saveHandlerNote({kind:'passage',target:state.evidenceChoice,verdict:event.submitter?.value,note:(state.handlerDrafts[`passage:${state.evidenceChoice}`]||event.currentTarget.elements.note.value).trim()});
+    });
+    $('#cwHandlerConditionForm')?.addEventListener('submit', event => {
+      event.preventDefault();
+      if(state.whatIf?.result)void saveHandlerNote({kind:'condition',target:state.whatIf.flag,verdict:state.whatIf.result.to_verdict,note:(state.handlerDrafts[`condition:${state.whatIf.flag}`]||event.currentTarget.elements.note.value).trim()});
+    });
+    panel.querySelectorAll('#cwHandlerPassageForm textarea,#cwHandlerConditionForm textarea').forEach(field=>field.addEventListener('input',()=>{
+      const key=field.closest('#cwHandlerPassageForm')?`passage:${state.evidenceChoice}`:`condition:${state.whatIf?.flag}`;
+      state.handlerDrafts[key]=field.value;
+    }));
+    panel.querySelectorAll('[data-handler-withdraw]').forEach(button=>button.addEventListener('click',()=>void saveHandlerNote({target_event_sha256:button.dataset.handlerWithdraw},true)));
+    panel.querySelector('[data-handler-retry]')?.addEventListener('click',()=>void saveHandlerNote(null));
+    panel.querySelectorAll('[data-what-if]').forEach(button=>button.addEventListener('click',()=>openWhatIf(button.dataset.whatIf)));
+    panel.querySelectorAll('[data-what-if-value]').forEach(button=>button.addEventListener('click',()=>void setWhatIf(button.dataset.whatIfValue)));
+    panel.querySelector('[data-what-if-close]')?.addEventListener('click',exitWhatIf);
     $('#cwCorrectionReview')?.addEventListener('click', previewWorkspaceCorrection);
     $('#cwCorrectionConfirm')?.addEventListener('click', applyWorkspaceCorrection);
     $('#cwCorrectionCancel')?.addEventListener('click', cancelWorkspaceCorrection);
@@ -1695,6 +1715,112 @@
     if(sameClaim){$('.cp-work-column').scrollTop=previousScroll;if(focusedId)panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true});}
     else panel.focus({preventScroll:true});
     if (!priority) void loadOpenPriority(value.claim_id, value.state_sha256, activeDetailContext(), state.detailController?.signal);
+  }
+
+  function chooseEvidence(sourceEntrySha256) {
+    if(!state.loop||!state.detail||state.mutationBusy)return;
+    const option=state.loop.finding_options?.find(row=>row.source_entry_sha256===sourceEntrySha256);
+    if(!option)return;
+    state.evidenceChoice=sourceEntrySha256;
+    renderDetail(state.detail);
+    $('#cwDetailPanel [data-evidence-choice="'+CSS.escape(sourceEntrySha256)+'"]')?.focus({preventScroll:true});
+    const index=state.detail.artifacts.findIndex(row=>row.artifact_id===option.source_id);
+    if(index>=0)void showSourceArtifact(index,false,option.quote);
+  }
+
+  function offerSourceSelection() {
+    const selection=window.getSelection(),text=selection?.toString().trim();
+    if(!text||!state.loop||!state.detail)return;
+    const node=selection.anchorNode?.nodeType===1?selection.anchorNode:selection.anchorNode?.parentElement;
+    const region=node?.closest?.('.cp-pdf-text,.cw-message');
+    if(!region||!$('#cwSourceContent')?.contains(region))return;
+    const pageLayer=region.closest('.cp-pdf-text-layer');
+    const sourceId=pageLayer?.dataset.artifactId||state.detail.message.message_id;
+    const page=Number(pageLayer?.dataset.page||1);
+    const options=state.loop.finding_options||[];
+    const candidate=options.filter(row=>row.source_id===sourceId&&row.page===page&&row.quote.includes(text)).sort((a,b)=>a.quote.length-b.quote.length)[0];
+    let offer=region.parentElement.querySelector('.cp-selection-offer');
+    if(!offer){offer=document.createElement('div');offer.className='cp-selection-offer';region.after(offer);}
+    offer.replaceChildren();
+    if(candidate){const button=document.createElement('button');button.type='button';button.className='cw-button';button.dataset.evidenceChoice=candidate.source_entry_sha256;button.textContent=`Use this passage: “${candidate.quote}”`;offer.append(button);}
+    else offer.textContent='This selection is outside the current candidate passages.';
+  }
+
+  function openWhatIf(flag) {
+    const saved=state.detail?.state.intake_assessment?.claim_assessment;
+    if(!saved?.conditions || !Object.hasOwn(saved.conditions,flag))return;
+    state.whatIf={flag,savedHash:saved.assessment_sha256,verdict:saved.conditions[flag].verdict,result:null,loading:false,error:null};
+    renderDetail(state.detail);
+    $('#cpWhatIfPanel')?.scrollIntoView({block:'start'});
+    $('#cpWhatIfPanel [data-what-if-value]')?.focus({preventScroll:true});
+  }
+  async function setWhatIf(verdict) {
+    const exploring=state.whatIf,detail=state.detail;
+    if(!exploring||!detail||exploring.loading||!['true','false','unresolved'].includes(verdict))return;
+    const context=activeDetailContext(),previous=exploring.result?.to_verdict;
+    exploring.verdict=verdict;exploring.loading=true;exploring.error=null;renderDetail(detail);
+    const query=new URLSearchParams({condition:exploring.flag,verdict});
+    if(previous)query.set('before_verdict',previous);
+    try {
+      const value=await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(detail.state.claim_id)}/what-if?${query}`);
+      const {scenario_sha256,...material}=value;
+      if(value.contract!=='casepath.what-if-assessment/1.0.0'||value.claim_id!==detail.state.claim_id
+        ||value.saved_assessment_sha256!==exploring.savedHash||value.condition!==exploring.flag
+        ||value.to_verdict!==verdict||value.from_verdict!==(previous||detail.state.intake_assessment.claim_assessment.conditions[exploring.flag].verdict)
+        ||!Array.isArray(value.scenario?.steps)||!Array.isArray(value.scenario?.documents)
+        ||!Array.isArray(value.changes)||scenario_sha256!==await sha256(material))throw new Error('The sandbox result could not be verified.');
+      if(state.whatIf!==exploring||!isActiveDetail(context))return;
+      exploring.result=value;
+    } catch(error) {
+      if(state.whatIf!==exploring||!isActiveDetail(context))return;
+      exploring.error=error.message;
+    } finally {
+      if(state.whatIf===exploring&&isActiveDetail(context)){
+        exploring.loading=false;renderDetail(state.detail);
+        $('#cpWhatIfPanel [data-what-if-value="'+verdict+'"]')?.focus({preventScroll:true});
+      }
+    }
+  }
+  function exitWhatIf() {
+    const flag=state.whatIf?.flag;
+    if(!flag||!state.detail)return;
+    state.whatIf=null;renderDetail(state.detail);
+    $('#cwDetailPanel [data-what-if="'+CSS.escape(flag)+'"]')?.focus({preventScroll:true});
+  }
+
+  async function saveHandlerNote(input,withdraw=false) {
+    if(state.mutationBusy||!state.detail)return;
+    const context=activeDetailContext(),claimId=context.claimId;
+    const pending=storedCommandIdentity('handler-note',claimId);
+    const body=pending&&!pending.invalid?pending.parsedBody:{
+      ...input,expected_workspace_revision:state.detail.state.revision,
+      expected_workspace_state_sha256:state.detail.state.state_sha256,
+    };
+    if(pending?.invalid){$('#cwCommandStatus').textContent='The pending handler note could not be read. Reload the claim before another action.';return;}
+    const isWithdraw=pending?pending.withdraw:withdraw;
+    const route=`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/handler-observations${isWithdraw?`/${body.target_event_sha256}/withdraw`:''}`;
+    const identity=commandIdentity('handler-note',claimId,body,null,{withdraw:isWithdraw});
+    setLoopMutationBusy(true,isWithdraw?'Undoing the handler assessment…':'Recording the handler assessment…',context);
+    try{
+      const value=await request(route,{method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':identity.key},body:identity.body});
+      const {response_sha256,...material}=value;
+      if(value.contract!=='casepath.workspace-handler-observation-response/1.0.0'||value.claim_id!==claimId||response_sha256!==await sha256(material))throw new Error('The handler note receipt could not be verified.');
+      const detail=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`),claimId);
+      if(!isActiveDetail(context))return;
+      if(detail.state.revision<value.workspace_revision||detail.state.revision===value.workspace_revision&&detail.state.state_sha256!==value.workspace_state_sha256)throw new Error('The handler note is not yet visible in the claim journal.');
+      const loop=await loadClaimLoop(claimId,{allowMissing:true});
+      if(!isActiveDetail(context))return;
+      const observation=loop?.handler_observations?.find(row=>row.event_sha256===value.event_sha256||isWithdraw&&row.event_sha256===body.target_event_sha256&&row.withdrawn);
+      if(!observation)throw new Error('The handler note is not yet visible on the canvas.');
+      clearCommandIdentity('handler-note',claimId);
+      if(body.kind)delete state.handlerDrafts[`${body.kind}:${body.target}`];
+      state.detail=detail;state.loop=loop;renderDetail(detail);void loadQueue();
+      $('#cwCommandStatus').textContent=isWithdraw?'Handler assessment undone.':'Handler assessment saved.';
+    }catch(error){
+      if(!isActiveDetail(context))return;
+      if(error.responseReceived&&!error.ambiguousResponse){clearCommandIdentity('handler-note',claimId);$('#cwCommandStatus').textContent=`Handler assessment rejected: ${error.message}`;}
+      else {renderDetail(state.detail);$('#cwCommandStatus').textContent=`Could not confirm the handler assessment: ${error.message}. Retry uses the saved request.`;}
+    }finally{setLoopMutationBusy(false,'',context);}
   }
 
   async function runWorkspaceCommand(action) {
@@ -1837,7 +1963,12 @@
       throw new Error('The current source-acquisition authority is unavailable');
     }
     const intentBody = {action_id:action.action_id, expected_revision:loop.loop_state.revision};
-    const intentCommand = commandIdentity('evidence-intent', loop.claim_id, intentBody);
+    const choice=loop.finding_options?.find(row=>row.source_entry_sha256===state.evidenceChoice);
+    const intentCommand = commandIdentity(
+      'evidence-intent', loop.claim_id, intentBody, null,
+      {source_entry_sha256:choice?.source_entry_sha256||null},
+    );
+    if(intentCommand.source_entry_sha256 && choice && intentCommand.source_entry_sha256!==choice.source_entry_sha256)throw new Error('Finish the saved passage before selecting another');
     const intentRequest = {...intentBody, idempotency_key:intentCommand.key};
     const intentResponse = await requireVerifiedResponse(validateEvidenceIntentResponse(
       await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents`, {
@@ -1855,7 +1986,7 @@
       commandIdentity('evidence-intent', loop.claim_id, intentBody, intentKey);
     }
     const acquisitionResponse = await requireVerifiedResponse(validateEvidenceAcquisitionResponse(
-      await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents/${encodeURIComponent(intentResponse.intent.intent_id)}/acquire`, {method:'POST'}),
+      await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents/${encodeURIComponent(intentResponse.intent.intent_id)}/acquire${intentCommand.source_entry_sha256?'?source_entry_sha256='+encodeURIComponent(intentCommand.source_entry_sha256):''}`, {method:'POST'}),
       loop,
       intentResponse.intent,
     ));
@@ -2001,6 +2132,7 @@
       state.change = ui.advanceChange(beforeLoop,loop,advance.baseline,advance.recovered);
       if(state.change?.sourceItem)state.sourceSelection={kind:'evidence',id:state.change.sourceItem};
       state.canvasNodeId=null;state.focusedEvidenceId=null;
+      state.evidenceChoice=null;
       state.loop = loop;
       await loadQueue();
       if (!isActiveDetail(context)) return;
@@ -2220,7 +2352,7 @@
   function syncReasoning({focus=false}={}){
     if(!state.loop||!state.detail)return;
     const trace=$('#cpCanvasTrace');
-    if(trace)trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.focusedEvidenceId);
+    if(trace)trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.whatIf?.result?.scenario);
     const selected=$('#cpCanvasTrace')?.dataset.selectedNode;
     root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===selected)));
     root.querySelectorAll('[data-evidence-source]').forEach(button=>button.classList.toggle('cp-source-selected',button.dataset.evidenceSource===state.focusedEvidenceId));
@@ -2308,6 +2440,7 @@
     finally{state.overviewLoading=false;if(state.overviewQueued){state.overviewQueued=false;void loadWorkspaceOverview();}}
   }
   function presentationClick(button){
+    if(button.hasAttribute('data-evidence-choice')){chooseEvidence(button.dataset.evidenceChoice);return true;}
     if(button.matches('[data-close-detail]')){closeDetail();return true;}
     if(button.hasAttribute('data-workbench-tab')){showWorkspaceSection(button.dataset.workbenchTab);return true;}
     if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
@@ -2374,6 +2507,23 @@
       const previous=state.previewPageUrl;state.previewPageUrl=blobUrl;blobUrl=null;wrap.replaceChildren(image);if(previous)URL.revokeObjectURL(previous);
       preview.page=page;$('#cpPreviewPageLabel').textContent=preview.descriptor.kind==='image'?`${preview.descriptor.width} × ${preview.descriptor.height}`:`Page ${page} of ${preview.descriptor.page_count}`;
       $('#cpPreviewPageError').hidden=true;
+      if(artifact.media_type==='application/pdf'){
+        const layer=document.createElement('section');layer.className='cp-pdf-text-layer';layer.dataset.artifactId=artifact.artifact_id;layer.dataset.page=String(page);
+        layer.innerHTML='<h4>Selectable page text</h4><p role="status">Reading the PDF text layer…</p>';wrap.append(layer);
+        try{
+          const response=await fetch(`${artifact.download_url}/text/pages/${page}`,{credentials:'same-origin',cache:'no-store',redirect:'error',signal:controller.signal});
+          if(!response.ok)throw new Error(`Text layer unavailable (${response.status})`);
+          const value=await response.json();
+          if(value.contract!=='casepath.workspace-pdf-text-page/1.0.0'||value.claim_id!==claimId||value.artifact_id!==artifact.artifact_id||value.artifact_sha256!==artifact.sha256||value.page!==page||typeof value.text!=='string'||value.text_sha256!==await sha256Bytes(new TextEncoder().encode(value.text)))throw new Error('The text layer does not match this PDF');
+          if(!current())return;
+          const body=document.createElement('div');body.className='cp-pdf-text';body.tabIndex=0;body.setAttribute('role','region');body.setAttribute('aria-label',`PDF page ${page} text`);
+          const quote=state.sourceSelection?.kind==='artifact'&&state.sourceSelection.index===preview.index?state.sourceSelection.quote:null;
+          const found=quote?value.text.indexOf(quote):-1;
+          if(found>=0){body.append(document.createTextNode(value.text.slice(0,found)));const mark=document.createElement('mark');mark.textContent=quote;body.append(mark,document.createTextNode(value.text.slice(found+quote.length)));}
+          else body.textContent=value.text;
+          layer.replaceChildren(Object.assign(document.createElement('h4'),{textContent:'Selectable page text'}),body);
+        }catch(error){if(current())layer.innerHTML=`<h4>Selectable page text</h4><p role="status">${esc(error.name==='AbortError'?'The text layer took too long.':error.message)}</p>`;}
+      }
     }catch(error){if(blobUrl)URL.revokeObjectURL(blobUrl);if(!current())return;const line=$('#cpPreviewPageError');line.hidden=false;wrap.querySelector('.cp-page-placeholder')?.remove();line.textContent=error.name==='AbortError'?'The page took too long to load.':error.message;const retry=document.createElement('button');retry.type='button';retry.className='cw-text-button';retry.dataset.previewRetry='true';retry.textContent='Try page again';line.append(' ',retry);}
     finally{clearTimeout(timer);if(current()){wrap.setAttribute('aria-busy','false');root.querySelectorAll('[data-preview-page]').forEach(b=>b.disabled=b.dataset.previewPage==='previous'?preview.page<=1:preview.page>=preview.descriptor.page_count);}}
   }
@@ -2438,9 +2588,10 @@
     const detail=state.detail, artifact=detail?.artifacts[index];
     if(!artifact || !Number.isSafeInteger(index)) return;
     const acceptedRef=quote&&state.loop?.loop_state.observations.flatMap(row=>row.source_refs||[]).find(ref=>ref.sanitized_excerpt===quote&&ui.sourceArtifactIndex(ref,detail)===index);
+    const candidate=quote&&state.loop?.finding_options?.find(row=>row.source_id===artifact.artifact_id&&row.quote===quote);
     const noticed=quote&&detail.state.intake_assessment?.claim_assessment?.noticed.some(row=>
       row.source_id===artifact.artifact_id&&(row.text===quote||row.text.endsWith(': '+quote)));
-    const acceptedQuote=acceptedRef||noticed?quote:null;
+    const acceptedQuote=acceptedRef||noticed||candidate?quote:null;
     releaseSourcePreview();state.sourceSelection={kind:'artifact',index,quote:acceptedQuote};
     const ticket=state.sourceRequest, claimId=detail.state.claim_id;
     const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
@@ -2488,7 +2639,7 @@
         else content=ui.packetContentMarkup(descriptor);
       } else content='<p class="cw-note">This file type has no inline preview. Open the original file below.</p>';
       const highlighted=content.includes('id="cpExactSourcePassage"');
-      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote&&!highlighted?`<aside class="cp-selected-passage"><span>${acceptedRef?'Accepted passage linked to this source':'Passage noticed in this file'}</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote&&!highlighted?`<aside class="cp-selected-passage"><span>${acceptedRef?'Accepted passage linked to this source':candidate?'Candidate passage':'Passage noticed in this file'}</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
       $('#cpExactSourcePassage')?.scrollIntoView({block:'center'});
       if(renderedPage)await renderPacketPage(1);
     } catch(error) {
@@ -2560,7 +2711,7 @@
     savePresentation();$(".cp-sidebar").inert=false;
     state.queueFocusReturn=state.returnClaimId;
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
-    releaseSourcePreview(); state.sourceSelection=null; state.change=null;
+    releaseSourcePreview(); state.sourceSelection=null; state.change=null; state.whatIf=null; state.evidenceChoice=null; state.handlerDrafts={};
     state.detailEpoch += 1;
     state.mutationBusy = null;
     state.detailController?.abort();
@@ -2604,6 +2755,8 @@
   $('#cwSearch').addEventListener('input', () => { clearTimeout(state.filterTimer); state.filterTimer=setTimeout(()=>{saveQueueFilters();void loadQueue();},180); });
   $('#cwFilters').addEventListener('change', event => { if(event.target.id==='cwSearch') return; clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });
   root.addEventListener('click',handleWorkspaceClick);
+  root.addEventListener('pointerup',offerSourceSelection);
+  root.addEventListener('keyup',event=>{if(event.key==='Shift'||event.key.startsWith('Arrow'))offerSourceSelection();});
   $('#cwRefresh').addEventListener('click', () => loadQueue());
   $('#cwMore').addEventListener('click', () => loadQueue({append:true}));
 

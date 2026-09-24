@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from casepath_api.assessment_grammar_v1 import _candidate_deadline, _verdict
+from casepath_api.assessment_grammar_v1 import _candidate_deadline, _verdict, simulate_condition
 from casepath_api.claim_workspace_intake_v1 import (
     _compile_intake_assessment_v1_1,
     compile_intake_assessment,
@@ -123,3 +123,25 @@ def test_corpus_assessment_golden_roster_and_legacy_replay() -> None:
     assert validate_recorded_intake_assessment(
         old, corpus=corpus, claim_id="clm_f69b1747447bc221"
     ) == old
+
+
+def test_what_if_replans_spouse_route_without_changing_saved_assessment() -> None:
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    claim_id = "clm_f69b1747447bc221"
+    saved = _assessment(corpus, claim_id)
+    saved_hash = saved["assessment_sha256"]
+    domain = "lease_termination_dispute"
+    false = simulate_condition(corpus, claim_id, domain, saved, "family_home", "false")
+    true = simulate_condition(corpus, claim_id, domain, saved, "family_home", "true", "false")
+    unresolved = simulate_condition(corpus, claim_id, domain, saved, "family_home", "unresolved", "true")
+    route = lambda result: next(row for row in result["scenario"]["documents"] if row["document_type"] == "spouse_notice_copy")
+    assert route(false)["route_state"] == "not_needed"
+    assert route(true)["route_state"] == "held_not_reviewed"
+    assert route(unresolved)["route_state"] == "held_behind_question"
+    spouse = lambda result: next(row for row in result["changes"] if row["label"] == "Separate spouse notice")
+    assert spouse(false)["sign"] == "-"
+    assert spouse(true)["sign"] == "+"
+    assert spouse(true)["authority"]["article"] == "Art. 266n"
+    assert spouse(unresolved)["sign"] == "?"
+    assert saved["assessment_sha256"] == saved_hash
+    assert saved["conditions"]["family_home"]["verdict"] == "true"

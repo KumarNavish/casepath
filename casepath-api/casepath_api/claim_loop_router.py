@@ -3,6 +3,7 @@ from __future__ import annotations
 from hashlib import sha256
 import json
 import re
+import unicodedata
 from collections.abc import Callable
 from typing import Annotated, Any, Literal
 from urllib.parse import quote
@@ -87,6 +88,17 @@ class MutateWorkspaceClaimRequest(_Request):
 class EnsureWorkspaceLoopRequest(_Request):
     expected_workspace_revision: StrictInt = Field(ge=1)
     expected_workspace_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class RecordWorkspaceHandlerObservationRequest(EnsureWorkspaceLoopRequest):
+    kind: Literal["passage", "condition"]
+    target: str = Field(min_length=1, max_length=128)
+    verdict: Literal["sufficient", "not_relevant", "true", "false", "unresolved"]
+    note: str = Field(max_length=1000)
+
+
+class WithdrawWorkspaceHandlerObservationRequest(EnsureWorkspaceLoopRequest):
+    target_event_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
 class MintWorkspaceEvidenceIntentRequest(_Request):
@@ -283,6 +295,35 @@ def create_claim_loop_router(
             },
         )
 
+    @router.get("/workspace/claims/{claim_id}/artifacts/{artifact_id}/text/pages/{page_number}")
+    def workspace_pdf_text_page(
+        claim_id: str, artifact_id: str, page_number: int,
+    ) -> dict[str, Any]:
+        try:
+            raw, row = workspace_service().corpus.artifact(claim_id, artifact_id)
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+        if row["media_type"] != "application/pdf" or len(raw) > 16 * 1024 * 1024:
+            raise HTTPException(409, "PDF text is unavailable")
+        import fitz
+
+        try:
+            with fitz.open(stream=raw, filetype="pdf") as document:
+                if document.is_encrypted or page_number < 1 or page_number > min(len(document), 30):
+                    raise HTTPException(404, "PDF page is unavailable")
+                text = unicodedata.normalize("NFC", document[page_number - 1].get_text("text")[:24_000])
+        except (ValueError, RuntimeError) as exc:
+            raise HTTPException(409, "PDF text could not be read") from exc
+        return {
+            "contract": "casepath.workspace-pdf-text-page/1.0.0",
+            "claim_id": claim_id,
+            "artifact_id": artifact_id,
+            "artifact_sha256": row["sha256"],
+            "page": page_number,
+            "text": text,
+            "text_sha256": sha256(text.encode("utf-8")).hexdigest(),
+        }
+
     @router.post("/workspace/claims/{claim_id}/owner")
     def assign_workspace_claim(
         claim_id: str,
@@ -352,6 +393,56 @@ def create_claim_loop_router(
         except (WorkspaceClaimLoopError, ValueError) as exc:
             raise_workspace_loop_http(as_workspace_loop_error(exc))
 
+    @router.get("/workspace/claims/{claim_id}/what-if")
+    def workspace_claim_what_if(
+        claim_id: str,
+        condition: Annotated[str, Query(min_length=1, max_length=64)],
+        verdict: Literal["true", "false", "unresolved"],
+        before_verdict: Literal["true", "false", "unresolved"] | None = None,
+    ) -> dict[str, Any]:
+        try:
+            return workspace_loop_service().what_if(
+                claim_id, condition=condition, verdict=verdict,
+                before_verdict=before_verdict,
+            )
+        except (WorkspaceClaimLoopError, ValueError) as exc:
+            raise_workspace_loop_http(as_workspace_loop_error(exc))
+
+    @router.post("/workspace/claims/{claim_id}/handler-observations")
+    def record_workspace_handler_observation(
+        claim_id: str,
+        body: RecordWorkspaceHandlerObservationRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)],
+    ) -> dict[str, Any]:
+        try:
+            return workspace_loop_service().record_handler_observation(
+                claim_id, kind=body.kind, target=body.target,
+                verdict=body.verdict, note=body.note,
+                expected_workspace_revision=body.expected_workspace_revision,
+                expected_workspace_state_sha256=body.expected_workspace_state_sha256,
+                idempotency_key=idempotency_key,
+            )
+        except (WorkspaceClaimLoopError, ValueError) as exc:
+            raise_workspace_loop_http(as_workspace_loop_error(exc))
+
+    @router.post("/workspace/claims/{claim_id}/handler-observations/{event_sha256}/withdraw")
+    def withdraw_workspace_handler_observation(
+        claim_id: str, event_sha256: str,
+        body: WithdrawWorkspaceHandlerObservationRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)],
+    ) -> dict[str, Any]:
+        if body.target_event_sha256 != event_sha256:
+            raise HTTPException(422, "handler observation target differs")
+        try:
+            return workspace_loop_service().withdraw_handler_observation(
+                claim_id, target_event_sha256=event_sha256,
+                expected_workspace_revision=body.expected_workspace_revision,
+                expected_workspace_state_sha256=body.expected_workspace_state_sha256,
+                idempotency_key=idempotency_key,
+            )
+        except (WorkspaceClaimLoopError, ValueError) as exc:
+            raise_workspace_loop_http(as_workspace_loop_error(exc))
+
     @router.post("/workspace/claims/{claim_id}/loop/evidence/intents")
     def mint_workspace_claim_evidence_intent(
         claim_id: str,
@@ -373,11 +464,13 @@ def create_claim_loop_router(
     def acquire_workspace_claim_evidence(
         claim_id: str,
         acquisition_intent_id: str,
+        source_entry_sha256: str | None = None,
     ) -> dict[str, Any]:
         try:
             return workspace_loop_service().acquire_evidence(
                 claim_id,
                 acquisition_intent_id=acquisition_intent_id,
+                source_entry_sha256=source_entry_sha256,
             )
         except (WorkspaceClaimLoopError, ValueError) as exc:
             raise_workspace_loop_http(as_workspace_loop_error(exc))

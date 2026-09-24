@@ -40,6 +40,8 @@ EVENT_TYPES = {
     "WORKSPACE_OWNER_ASSIGNED",
     "WORKSPACE_PROCESSING_STARTED",
     "WORKSPACE_UNKNOWN_RECONCILED",
+    "WORKSPACE_HANDLER_OBSERVATION_RECORDED",
+    "WORKSPACE_HANDLER_OBSERVATION_WITHDRAWN",
 }
 SORT_MODES = {
     "priority",
@@ -299,6 +301,47 @@ def _reduce(
         material["workflow_state"] = "waiting"
         material["principal_blocker"] = "Unknown effect reconciled; review required"
         material["next_safe_action"] = "Resume deterministic assessment"
+    elif event_type == "WORKSPACE_HANDLER_OBSERVATION_RECORDED":
+        if set(command) != {
+            "kind", "target", "verdict", "note", "quote", "source_id",
+            "action_id", "request_expected_revision",
+        } or state["workflow_state"] != "in_review":
+            raise ClaimWorkspaceError("handler observation command is invalid")
+        kind, target, verdict = command["kind"], command["target"], command["verdict"]
+        note, quote = command["note"], command["quote"]
+        assessment = state.get("intake_assessment") or {}
+        conditions = (assessment.get("claim_assessment") or {}).get("conditions") or {}
+        if (
+            kind not in {"passage", "condition"}
+            or not isinstance(note, str) or len(note) > 1_000
+            or not isinstance(target, str)
+            or (
+                kind == "passage" and (
+                    len(target) != 64 or any(c not in "0123456789abcdef" for c in target)
+                    or verdict not in {"sufficient", "not_relevant"}
+                    or not isinstance(quote, str) or not quote
+                    or not isinstance(command["source_id"], str)
+                    or not isinstance(command["action_id"], str)
+                )
+            )
+            or (
+                kind == "condition" and (
+                    target not in conditions
+                    or verdict not in {"true", "false", "unresolved"}
+                    or quote is not None or command["source_id"] is not None
+                    or command["action_id"] is not None
+                )
+            )
+        ):
+            raise ClaimWorkspaceError("handler observation is outside its source or condition")
+    elif event_type == "WORKSPACE_HANDLER_OBSERVATION_WITHDRAWN":
+        target = command.get("target_event_sha256")
+        if (
+            set(command) != {"target_event_sha256", "request_expected_revision"}
+            or not isinstance(target, str) or len(target) != 64
+            or any(c not in "0123456789abcdef" for c in target)
+        ):
+            raise ClaimWorkspaceError("handler withdrawal target is invalid")
     elif event_type == "WORKSPACE_CLAIM_IMPORTED":
         raise ClaimWorkspaceError("claim import cannot repeat inside one journal")
     return _validated_state(_with_hash(material))
@@ -469,6 +512,44 @@ class ClaimWorkspaceStore:
         loop_id = WORKSPACE_LOOP_PREFIX + claim_id
         with self.journal.connect() as connection:
             return self._replay_rows(self._rows(connection, loop_id=loop_id))
+
+    def handler_observations(
+        self, claim_id: str, *, revision: int, expected_state_sha256: str,
+    ) -> list[dict[str, Any]]:
+        state = self.state_at_revision(claim_id, revision)
+        if state["state_sha256"] != expected_state_sha256:
+            raise ClaimWorkspaceError("workspace snapshot differs while reading handler observations")
+        return self.handler_observations_at_revision(claim_id, revision)
+
+    def handler_observations_at_revision(
+        self, claim_id: str, revision: int,
+    ) -> list[dict[str, Any]]:
+        loop_id = WORKSPACE_LOOP_PREFIX + claim_id
+        with self.journal.connect() as connection:
+            rows = self._rows(connection, loop_id=loop_id)[:revision]
+            state = self._replay_rows(rows)
+        if state["revision"] != revision:
+            raise ClaimWorkspaceError("workspace historical revision is absent")
+        observations: list[dict[str, Any]] = []
+        by_hash: dict[str, dict[str, Any]] = {}
+        for row in rows:
+            event = json.loads(row["event_json"])
+            if event["event_type"] == "WORKSPACE_HANDLER_OBSERVATION_RECORDED":
+                value = {
+                    **event["command"],
+                    "event_sha256": event["event_sha256"],
+                    "created_at": event["created_at"],
+                    "withdrawn": False,
+                    "authority": "handler_established",
+                }
+                observations.append(value)
+                by_hash[event["event_sha256"]] = value
+            elif event["event_type"] == "WORKSPACE_HANDLER_OBSERVATION_WITHDRAWN":
+                target = by_hash.get(event["command"]["target_event_sha256"])
+                if target is None or target["withdrawn"]:
+                    raise ClaimWorkspaceError("handler withdrawal has no active source")
+                target["withdrawn"] = True
+        return observations
 
     def state_at_revision(self, claim_id: str, revision: int) -> dict[str, Any]:
         """Replay one immutable workspace-journal prefix without repair."""

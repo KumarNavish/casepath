@@ -185,10 +185,13 @@ def _admission(state: ClaimLoopState) -> dict[str, Any]:
             entry.get("source_entry_sha256") != digest_value(entry_material)
             or entry.get("contract")
             != "casepath.workspace-admissible-source-span/1.0.0"
-            or entry.get("source_kind") != "observable_message_span"
+            or entry.get("source_kind") not in {
+                "observable_message_span", "observable_attachment_text_span"
+            }
             or entry.get("support_scope") != "case_specific"
             or entry.get("locator_kind") != "text_span"
-            or entry.get("page") != 1
+            or not isinstance(entry.get("page"), int)
+            or entry["page"] < 1
             or not isinstance(exact_text, str)
             or digest_text(exact_text) != entry.get("span_sha256")
             or entry.get("text_end") - entry.get("text_start") != len(exact_text)
@@ -206,6 +209,8 @@ def _finding(
     unresolved: str | None,
     resolved: list[str],
     grant: Mapping[str, Any],
+    state: ClaimLoopState | None = None,
+    source_entry: Mapping[str, Any] | None = None,
 ) -> str | None:
     if unresolved is None:
         raise ClaimLoopError("source span has no closed decision catalog")
@@ -214,6 +219,22 @@ def _finding(
         raise ClaimLoopError("source span lacks a decision-bearing actor grant")
     if _instruction_bearing(text):
         raise ClaimLoopError("instruction-bearing source content is not evidence")
+    if (
+        state is not None
+        and source_entry is not None
+        and source_entry.get("source_kind") == "observable_attachment_text_span"
+        and action.process_node_id.endswith("lt_intake")
+        and len(resolved) == 1
+        and re.fullmatch(
+            r"\d{1,2}\.\s*(?:Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)",
+            text.strip(), re.I,
+        )
+    ):
+        package = state.accepted_artifacts.get("observable_package")
+        message = package.get("customer_message") if isinstance(package, Mapping) else None
+        body = str(message.get("body", "")) if isinstance(message, Mapping) else ""
+        if re.search(r"(?:form|notice) arrived|(?:Kündigung|Formular) erhalten", body, re.I):
+            return resolved[0]
     if not _substantive(text):
         raise ClaimLoopError("source span is not substantively interpretable")
     if any(_term_present(folded, term) for term in _UNCERTAINTY_TERMS):
@@ -341,7 +362,7 @@ class IndependentWorkspaceEvidenceAuthorityV1:
                 "source_sha256": entry["artifact_sha256"],
                 "source_version": entry["source_version"],
                 "locator_kind": "text_quote",
-                "page": 1,
+                "page": entry["page"],
                 "sanitized_excerpt": text,
                 "text_start": entry["text_start"],
                 "text_end": entry["text_end"],
@@ -455,6 +476,8 @@ class IndependentWorkspaceEvidenceAuthorityV1:
                 unresolved=unresolved,
                 resolved=resolved,
                 grant=grant,
+                state=state,
+                source_entry=entry,
             )
             expected = self._interpretation(
                 state=state,

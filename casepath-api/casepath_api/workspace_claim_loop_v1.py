@@ -50,7 +50,8 @@ from .claim_workspace_intake_v1 import (
     IntakeCompilationError,
     validate_recorded_intake_assessment,
 )
-from .claim_workspace_v1 import ClaimWorkspaceError, ClaimWorkspaceService
+from .assessment_grammar_v1 import _attachment_text, simulate_condition
+from .claim_workspace_v1 import ClaimWorkspaceError, ClaimWorkspaceService, utc_now
 from .foundation.common import canonical_json_bytes, digest_text, digest_value, is_sha256
 from .foundation.contracts import FoundationModel
 from .multi_agent import DeterministicStructuredAgent, NemotronMultiAgentOrchestrator
@@ -748,10 +749,13 @@ class WorkspaceStructuredEvidenceInterpreterV1(_StructuredTypedArtifactInterpret
                 not is_sha256(entry_sha256)
                 or entry_sha256 != digest_value(entry_material)
                 or entry_sha256 in seen
-                or entry.get("source_kind") != "observable_message_span"
+                or entry.get("source_kind") not in {
+                    "observable_message_span", "observable_attachment_text_span"
+                }
                 or entry.get("support_scope") != "case_specific"
                 or entry.get("locator_kind") != "text_span"
-                or entry.get("page") != 1
+                or not isinstance(entry.get("page"), int)
+                or entry["page"] < 1
                 or not isinstance(entry.get("exact_text"), str)
                 or not entry.get("exact_text")
                 or digest_text(str(entry["exact_text"]))
@@ -2422,9 +2426,11 @@ class WorkspaceClaimLoopServiceV1:
             if interactive_action is not None and native_proposal_binding is None
             else None
         )
-        # A browser may request acquisition and echo bytes, but it never sees
-        # or selects the server's finding/branch catalog.
-        finding_options: list[dict[str, str]] = []
+        finding_options = (
+            self.interpreter.finding_options(action=interactive_action, state=state)
+            if interactive_action is not None and native_proposal_binding is None
+            else []
+        )
         stage = None
         if (
             include_staged_receipt
@@ -2493,6 +2499,14 @@ class WorkspaceClaimLoopServiceV1:
             )
         except WorkspaceOperationalProjectionError as exc:
             raise WorkspaceClaimLoopError(str(exc)) from exc
+        try:
+            handler_observations = self.workspace.store.handler_observations(
+                state.claim_id,
+                revision=workspace_state["revision"],
+                expected_state_sha256=workspace_state["state_sha256"],
+            )
+        except ClaimWorkspaceError as exc:
+            raise WorkspaceClaimLoopError(str(exc)) from exc
         return {
             "contract": "casepath.workspace-claim-loop-view/2.0.0",
             "claim_id": state.claim_id,
@@ -2504,6 +2518,7 @@ class WorkspaceClaimLoopServiceV1:
             "loop_state": state.model_dump(mode="json"),
             "input_contract": input_contract,
             "finding_options": finding_options,
+            "handler_observations": handler_observations,
             "stage_receipt": (
                 stage.model_dump(mode="json") if stage is not None else None
             ),
@@ -2536,6 +2551,139 @@ class WorkspaceClaimLoopServiceV1:
             bundle=bundle,
         )
         return {**material, "view_sha256": digest_value(material)}
+
+    def what_if(
+        self, claim_id: str, *, condition: str, verdict: str,
+        before_verdict: str | None = None,
+    ) -> dict[str, Any]:
+        workspace_state = self._workspace_state(claim_id)
+        self._bundle(workspace_state)  # Verify the accepted intake before simulating it.
+        intake = workspace_state["intake_assessment"]
+        try:
+            return simulate_condition(
+                self.workspace.corpus, claim_id, intake["claim_type"],
+                intake["claim_assessment"], condition, verdict, before_verdict,
+            )
+        except (KeyError, ValueError) as exc:
+            raise WorkspaceClaimLoopError(str(exc)) from exc
+
+    def record_handler_observation(
+        self, claim_id: str, *, kind: str, target: str, verdict: str,
+        note: str, expected_workspace_revision: int,
+        expected_workspace_state_sha256: str, idempotency_key: str,
+    ) -> dict[str, Any]:
+        try:
+            workspace_state = self.workspace.store.state_at_revision(
+                claim_id, expected_workspace_revision
+            )
+        except ClaimWorkspaceError as exc:
+            raise WorkspaceClaimLoopError(str(exc)) from exc
+        if workspace_state["state_sha256"] != expected_workspace_state_sha256:
+            raise WorkspaceClaimLoopError("workspace state hash differs")
+        if kind == "condition":
+            self.what_if(claim_id, condition=target, verdict=verdict)
+            quote = source_id = action_id = None
+        elif kind == "passage":
+            state, events = self._normal_snapshot(workspace_state)
+            package = state.accepted_artifacts.get("observable_package")
+            policy = package.get("workspace_evidence_admission") if isinstance(package, Mapping) else None
+            entries = policy.get("source_entries") if isinstance(policy, Mapping) else None
+            matches = [row for row in entries or [] if row.get("source_entry_sha256") == target]
+            if len(matches) != 1 or verdict not in {"sufficient", "not_relevant"}:
+                raise WorkspaceClaimLoopError("handler passage is outside the admitted sources")
+            entry = matches[0]
+            quote, source_id = entry["exact_text"], entry["parent_artifact_id"]
+            if verdict == "sufficient":
+                matching_events = [event for event in events
+                    if event.event_type == "OBSERVATION_INGESTED"
+                    and any(
+                        ref.get("source_id") == entry["artifact_id"]
+                        and ref.get("span_sha256") == entry["span_sha256"]
+                        and ref.get("text_start") == entry["text_start"]
+                        and ref.get("text_end") == entry["text_end"]
+                        for ref in event.command.get("observation", {}).get("source_refs", [])
+                    )]
+                if len(matching_events) != 1:
+                    raise WorkspaceClaimLoopError("mark sufficient requires an accepted source observation")
+                action_id = matching_events[0].command["action_id"]
+            else:
+                action_id = "handler-passage"
+        else:
+            raise WorkspaceClaimLoopError("handler observation kind is invalid")
+        if not isinstance(note, str) or len(note) > 1_000:
+            raise WorkspaceClaimLoopError("handler note is invalid")
+        command = {
+            "kind": kind, "target": target, "verdict": verdict,
+            "note": note, "quote": quote, "source_id": source_id,
+            "action_id": action_id,
+            "request_expected_revision": expected_workspace_revision,
+        }
+        try:
+            state, event, replayed = self.workspace.store.append(
+                claim_id=claim_id,
+                event_type="WORKSPACE_HANDLER_OBSERVATION_RECORDED",
+                idempotency_key=idempotency_key,
+                command=command,
+                timestamp=utc_now(),
+                expected_revision=expected_workspace_revision,
+            )
+        except ClaimWorkspaceError as exc:
+            raise WorkspaceClaimLoopError(str(exc)) from exc
+        material = {
+            "contract": "casepath.workspace-handler-observation-response/1.0.0",
+            "claim_id": claim_id,
+            "workspace_revision": state["revision"],
+            "workspace_state_sha256": state["state_sha256"],
+            "event_sha256": event["event_sha256"],
+            "replayed": replayed,
+        }
+        return {**material, "response_sha256": digest_value(material)}
+
+    def withdraw_handler_observation(
+        self, claim_id: str, *, target_event_sha256: str,
+        expected_workspace_revision: int,
+        expected_workspace_state_sha256: str, idempotency_key: str,
+    ) -> dict[str, Any]:
+        try:
+            workspace_state = self.workspace.store.state_at_revision(
+                claim_id, expected_workspace_revision
+            )
+        except ClaimWorkspaceError as exc:
+            raise WorkspaceClaimLoopError(str(exc)) from exc
+        if workspace_state["state_sha256"] != expected_workspace_state_sha256:
+            raise WorkspaceClaimLoopError("workspace state hash differs")
+        try:
+            observations = self.workspace.store.handler_observations_at_revision(
+                claim_id, expected_workspace_revision
+            )
+        except ClaimWorkspaceError as exc:
+            raise WorkspaceClaimLoopError(str(exc)) from exc
+        if not any(row["event_sha256"] == target_event_sha256 and not row["withdrawn"] for row in observations):
+            raise WorkspaceClaimLoopError("handler observation is not active")
+        command = {
+            "target_event_sha256": target_event_sha256,
+            "request_expected_revision": expected_workspace_revision,
+        }
+        try:
+            state, event, replayed = self.workspace.store.append(
+                claim_id=claim_id,
+                event_type="WORKSPACE_HANDLER_OBSERVATION_WITHDRAWN",
+                idempotency_key=idempotency_key,
+                command=command,
+                timestamp=utc_now(),
+                expected_revision=expected_workspace_revision,
+            )
+        except ClaimWorkspaceError as exc:
+            raise WorkspaceClaimLoopError(str(exc)) from exc
+        material = {
+            "contract": "casepath.workspace-handler-observation-response/1.0.0",
+            "claim_id": claim_id,
+            "workspace_revision": state["revision"],
+            "workspace_state_sha256": state["state_sha256"],
+            "event_sha256": event["event_sha256"],
+            "replayed": replayed,
+        }
+        return {**material, "response_sha256": digest_value(material)}
 
     def mint_evidence_intent(
         self,
@@ -2613,6 +2761,7 @@ class WorkspaceClaimLoopServiceV1:
         claim_id: str,
         *,
         acquisition_intent_id: str,
+        source_entry_sha256: str | None = None,
         timestamp: str | None = None,
     ) -> dict[str, Any]:
         workspace_state = self._workspace_state(claim_id)
@@ -2627,6 +2776,8 @@ class WorkspaceClaimLoopServiceV1:
             import base64
 
             receipt, raw = replay
+            if source_entry_sha256 is not None and receipt.source_entry_sha256 != source_entry_sha256:
+                raise WorkspaceClaimLoopError("acquisition already belongs to another passage")
             material = {
                 "contract": "casepath.workspace-source-acquisition-response/1.0.0",
                 "claim_id": claim_id,
@@ -2640,7 +2791,10 @@ class WorkspaceClaimLoopServiceV1:
         if action is None:
             raise WorkspaceClaimLoopError("workspace source acquisition has no action")
         try:
-            source_entry = self.interpreter.source_candidate(action=action, state=state)
+            source_entry = self.interpreter.source_candidate(
+                action=action, state=state,
+                source_entry_sha256=source_entry_sha256,
+            )
             receipt, raw = self.adapter.acquire(
                 state=state,
                 action=action,
@@ -3026,6 +3180,58 @@ def build_workspace_playbook_v1(
                 "source_entry_sha256": digest_value(entry_material),
             }
         )
+    message_projection_artifact_id = source_entries[0]["artifact_id"]
+    pdf_artifacts: list[dict[str, Any]] = []
+    for attachment in claim.get("attachments", []):
+        if attachment.get("media_type") != "application/pdf":
+            continue
+        for page in _attachment_text(corpus, claim_id, attachment):
+            page_text = unicodedata.normalize("NFC", page["text"])
+            page_id = f"{attachment['artifact_id']}.page-{page['page']}.text"
+            page_sha256 = digest_text(page_text)
+            pdf_artifacts.append({
+                "artifact_id": page_id,
+                "filename": f"{attachment['file_name']} · page {page['page']} text",
+                "media_type": "text/plain; charset=utf-8",
+                "sha256": page_sha256,
+                "size_bytes": len(page_text.encode("utf-8")),
+                "capabilities": ["observable_attachment_text_layer"],
+                "extracted_pages": [{"page": page["page"], "text": page_text}],
+                "parent_artifact_id": attachment["artifact_id"],
+                "parent_artifact_sha256": attachment["sha256"],
+                "representation_identity": "pymupdf-pdf-page-text+nfc/1.0.0",
+            })
+            offset = 0
+            for line in page_text.splitlines(keepends=True):
+                exact_text = line.rstrip("\r\n")
+                start = offset
+                offset += len(line)
+                if not exact_text.strip() or len(exact_text.encode("utf-8")) > 4_000:
+                    continue
+                end = start + len(exact_text)
+                entry_material = {
+                    "contract": "casepath.workspace-admissible-source-span/1.0.0",
+                    "source_kind": "observable_attachment_text_span",
+                    "support_scope": "case_specific",
+                    "artifact_id": page_id,
+                    "artifact_sha256": page_sha256,
+                    "parent_artifact_id": attachment["artifact_id"],
+                    "parent_artifact_sha256": attachment["sha256"],
+                    "representation_identity": "pymupdf-pdf-page-text+nfc/1.0.0",
+                    "source_version": "casepath.pdf-text-layer/1.0.0",
+                    "locator_kind": "text_span",
+                    "page": page["page"],
+                    "text_start": start,
+                    "text_end": end,
+                    "byte_start": len(page_text[:start].encode("utf-8")),
+                    "byte_end": len(page_text[:end].encode("utf-8")),
+                    "exact_text": exact_text,
+                    "span_sha256": digest_text(exact_text),
+                }
+                source_entries.append({
+                    **entry_material,
+                    "source_entry_sha256": digest_value(entry_material),
+                })
     source_entries.sort(key=lambda value: value["source_entry_sha256"])
     if not source_entries or len(source_entries) != len(
         {value["source_entry_sha256"] for value in source_entries}
@@ -3320,7 +3526,7 @@ def build_workspace_playbook_v1(
                 ),
             },
             {
-                "artifact_id": source_entries[0]["artifact_id"],
+                "artifact_id": message_projection_artifact_id,
                 "filename": f"{message_id}.message-body-projection.txt",
                 "media_type": "text/plain; charset=utf-8",
                 "sha256": message_projection_sha256,
@@ -3333,6 +3539,7 @@ def build_workspace_playbook_v1(
                     "observable-claim-body+utf8-final-newline/1.0.0"
                 ),
             },
+            *pdf_artifacts,
         ],
         "workspace_binding": {
             "binding_sha256": binding["binding_sha256"],

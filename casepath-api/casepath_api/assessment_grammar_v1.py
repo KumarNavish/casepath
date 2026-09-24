@@ -279,7 +279,10 @@ def _candidate_deadline(domain: str, message: str, registry: Mapping[str, Any]) 
             "authority": _authority(registry, article)}
 
 
-def compile_assessment(corpus: PublicCorpus, claim_id: str, base: Mapping[str, Any]) -> dict[str, Any]:
+def compile_assessment(
+    corpus: PublicCorpus, claim_id: str, base: Mapping[str, Any],
+    *, override: tuple[str, str] | None = None,
+) -> dict[str, Any]:
     if digest_value(GRAMMAR) != GRAMMAR_SHA256:
         raise ValueError("assessment grammar identity drifted")
     claim = corpus.claim(claim_id)
@@ -290,6 +293,12 @@ def compile_assessment(corpus: PublicCorpus, claim_id: str, base: Mapping[str, A
     catalog = template["process_catalog"]
     registry = corpus.source_registry(claim_id)
     flags = {name: _verdict(body, name, message["message_id"]) for name in FAMILY_FLAGS[domain]}
+    if override is not None:
+        flag, verdict = override
+        if flag not in flags or verdict not in {"true", "false", "unresolved"}:
+            raise ValueError("unsupported sandbox condition or verdict")
+        flags[flag] = {"verdict": verdict, "quote": None, "candidate_quote": None,
+                       "source_id": None, "worker": "handler_sandbox"}
     nodes = catalog["nodes"]
     transitions = catalog["transitions"]
     activation = {node["node_id"]: "false" for node in nodes}
@@ -403,3 +412,50 @@ def compile_assessment(corpus: PublicCorpus, claim_id: str, base: Mapping[str, A
                 "noticed": observed, "attachment_pages": attachment_pages,
                 "conflicts": conflicts, "candidate_deadline": deadline, "next_step": next_step}
     return {**material, "assessment_sha256": digest_value(material)}
+
+
+def simulate_condition(
+    corpus: PublicCorpus, claim_id: str, domain: str, saved: Mapping[str, Any],
+    flag: str, verdict: str, before_verdict: str | None = None,
+) -> dict[str, Any]:
+    """Replan from a saved assessment without changing the accepted journal."""
+    if flag not in FAMILY_FLAGS.get(domain, ()) or verdict not in {"true", "false", "unresolved"}:
+        raise ValueError("unsupported sandbox condition or verdict")
+    if before_verdict is not None and before_verdict not in {"true", "false", "unresolved"}:
+        raise ValueError("unsupported prior sandbox verdict")
+    before = saved if before_verdict is None else compile_assessment(
+        corpus, claim_id, {"claim_type": domain}, override=(flag, before_verdict)
+    )
+    after = compile_assessment(corpus, claim_id, {"claim_type": domain}, override=(flag, verdict))
+    before_documents = {row["document_type"]: row for row in before["documents"]}
+    before_steps = {row["node_id"]: row for row in before["steps"]}
+    label = {"family_home": "family-home service", "health_effects": "reported health effects",
+             "reference_rate": "the reference-rate reason"}.get(flag, flag.replace("_", " "))
+    changes = []
+    for row in after["documents"]:
+        old = before_documents[row["document_type"]]
+        previous, current = old["route_state"], row["route_state"]
+        if previous == current:
+            continue
+        sign = "?" if current == "held_behind_question" else "-" if current == "not_needed" else "+"
+        changes.append({"kind": "document", "sign": sign, "label": row["label"],
+                        "from": previous, "to": current,
+                        "reason": f"{label} set to {verdict}",
+                        "authority": row["authority"] or old["authority"]})
+    for row in after["steps"]:
+        old = before_steps[row["node_id"]]
+        if old["activation"] == row["activation"]:
+            continue
+        sign = "?" if row["activation"] == "unresolved" else "+" if row["activation"] == "true" else "-"
+        changes.append({"kind": "step", "sign": sign, "label": row["label"],
+                        "from": old["activation"], "to": row["activation"],
+                        "reason": f"{label} set to {verdict}", "authority": row["authority"]})
+    scenario = {"conditions": after["conditions"], "steps": after["steps"],
+                "documents": after["documents"], "next_step": after["next_step"],
+                "language": after["language"], "candidate_deadline": after["candidate_deadline"],
+                "noticed": after["noticed"], "conflicts": after["conflicts"]}
+    material = {"contract": "casepath.what-if-assessment/1.0.0", "claim_id": claim_id,
+                "saved_assessment_sha256": saved["assessment_sha256"],
+                "condition": flag, "from_verdict": before["conditions"][flag]["verdict"],
+                "to_verdict": verdict, "scenario": scenario, "changes": changes}
+    return {**material, "scenario_sha256": digest_value(material)}
