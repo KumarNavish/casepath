@@ -278,22 +278,22 @@ function noticedFact(item,assessment,detail){
  const role=/spouse|wife|husband/i.test(file)?'Spouse':'Tenant';
  if(item.fact_kind==='named_party_candidate'){
    const names=new Set(assessment.noticed.filter(row=>row.source_id===item.source_id&&row.fact_kind==='named_party_candidate').map(row=>row.text));
-   return {label:names.size===1?role:'Name printed on notice',quote:raw,page:item.page};
+   return {label:names.size===1?role:'Name printed on notice',quote:raw,value:raw};
  }
- if(item.source_kind==='pdf_text')return {label:`${role} notice end date`,quote:raw,page:item.page};
+ if(item.source_kind==='pdf_text')return {label:`${role} notice, page ${item.page||1}`,quote:raw,value:`end date ${raw.replace(/Juni/i,'June').replace(/Juli/i,'July').replace(/\.$/,'')}`};
  if(item.fact_kind==='reported_date'){
    const body=detail?.message?.body||'',before=body.slice(Math.max(0,body.indexOf(raw)-75),body.indexOf(raw)).toLowerCase();
-   return {label:/started around|begann es um|began around|started on/.test(before)?'Started':/became aware/.test(before)?'Became aware':'Date mentioned',quote:raw};
+   return {label:/started around|begann es um|began around|started on/.test(before)?'Started':/became aware/.test(before)?'Became aware':'Date mentioned',quote:raw,value:raw};
  }
  const labels=[[/my form arrived/i,'Tenant notice'],[/my wife.s arrived/i,'Spouse notice'],[/page two is absent/i,'Scan'],[/do not know whether/i,'Unclear'],[/ecke im kinderzimmer/i,"Child's bedroom"],[/verwaltung sagt/i,'Management'],[/sohn hustet/i,'Health'],[/last rent notice/i,'Notice held'],[/new form/i,'Increase form']];
- return {label:labels.find(([pattern])=>pattern.test(raw))?.[1]||'Customer said',quote:raw};
+ return {label:labels.find(([pattern])=>pattern.test(raw))?.[1]||'Customer said',quote:raw,value:raw};
 }
 const firstPerson=value=>{const text=String(value||'Review this claim.');return /^(Ask|Review|Escalate|Check|Request|Confirm|Preserve|Open|Record|Collect|Prepare|Clarify|Establish|Capture|Investigate|Contact)\b/.test(text)?`I'd ${text[0].toLowerCase()}${text.slice(1)}`:text;};
 function workbench(loop,workspace,opts={}){
  const assessment=workspace.intake_assessment?.claim_assessment,canvas=opts.whatIf?.result?.scenario||assessment,detail=opts.detail;
- const noticed=assessment?.noticed.filter((item,index,all)=>all.findIndex(row=>row.source_id===item.source_id&&row.text===item.text)===index).map(item=>{const fact=noticedFact(item,assessment,detail);return `<li><button type="button" data-noticed-source="${h(item.source_id)}" data-noticed-quote="${h(fact.quote)}"><strong>${h(fact.label)}:</strong> <span lang="${assessment.language.startsWith('de')?'de':'en'}">${h(fact.quote)}</span>${fact.page?`<small>, page ${fact.page}</small>`:''}</button></li>`;}).join('')||'';
- const conflicts=assessment?.conflicts.map(conflict=>`<section class="cp-a-conflict"><h3>${h(conflict.message)}</h3>${conflict.sources.map(source=>`<button type="button" data-noticed-source="${h(source.artifact_id)}" data-noticed-quote="${h(source.quote)}" lang="${assessment.language.startsWith('de')?'de':'en'}">${h(source.value)}</button>`).join('')}</section>`).join('')||'';
- const review=`<div id="cpReviewCard" class="cp-a-review" data-assessment="${assessment?h(JSON.stringify(assessment)):''}" aria-live="polite">${assessment?`<section class="cp-a-review-ready" data-status="completed"><div class="cp-a-noticed"><h2>What I noticed</h2>${conflicts}<ul lang="${assessment.language.startsWith('de')?'de':'en'}">${noticed}</ul></div></section>`:''}</div>`;
+ const noticed=assessment?.noticed.filter((item,index,all)=>all.findIndex(row=>row.source_id===item.source_id&&row.text===item.text)===index).map(item=>{const fact=noticedFact(item,assessment,detail);return `<li><span class="cp-fact-label">${h(fact.label)}</span><span aria-hidden="true"> · </span><a href="#" data-noticed-source="${h(item.source_id)}" data-noticed-quote="${h(fact.quote)}" lang="${assessment.language.startsWith('de')&&item.source_kind!=='pdf_text'?'de':'en'}">${h(fact.value)}</a></li>`;}).join('')||'';
+ const conflicts=assessment?.conflicts.map(conflict=>`<p class="cp-a-conflict"><span>${h(conflict.message)}</span> ${conflict.sources.map(source=>`<a href="#" data-noticed-source="${h(source.artifact_id)}" data-noticed-quote="${h(source.quote)}">${h(source.value.replace(/Juni/i,'June').replace(/Juli/i,'July').replace(/\.$/,''))}</a>`).join(' · ')}</p>`).join('')||'';
+ const review=`<section id="cpReviewCard" class="cp-a-review" data-assessment="${assessment?h(JSON.stringify(assessment)):''}" aria-live="polite"><h2>What I noticed</h2>${assessment?`<div class="cp-a-review-ready" data-status="completed"><div class="cp-a-noticed">${conflicts}<ul>${noticed}</ul></div></div>`:''}</section>`;
  const count=detail?.artifacts?.filter(item=>item.role!=='customer_message').length||0;
  const selected=opts.canvasNodeId||canvas?.steps.find(step=>step.state==='active')?.node_id;
  const why=assessment?assessmentTrace(loop,detail,selected,canvas):`<details class="cp-a-why" id="cpCanvasTrace"><summary>Why</summary><p>The message “${h(title(detail?.message?.subject||'Customer message'))}” and ${count} ${count===1?'attachment':'attachments'} need review before the path can be set.</p></details>`;

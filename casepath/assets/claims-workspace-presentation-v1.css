@@ -441,3 +441,16 @@
 .cp-a-why li small{min-width:72px;font-size:13px;color:#5b6675;}
 .cp-a-why li strong{font-size:14px;font-weight:400;color:#1c2430;}
 @media(max-width:900px){.cp-a-next{margin-bottom:32px;position:static;}.cp-a-why[open]{max-width:100%;}}
+/* Source-linked findings */
+.cp-a-review,.cp-a-review:not(:has(#awClaimWork:not([hidden]))){height:auto;overflow:visible;margin:0 0 42px;max-width:72ch;}
+.cp-a-review h2{font-size:18px;line-height:1.5;letter-spacing:0;margin:0 0 12px;color:#1c2430;}
+.cp-a-review-ready,.cp-a-review:not(:has(#awClaimWork:not([hidden]))) .cp-a-review-ready){min-height:0;padding:0;border:0;border-radius:0;background:#fff;}
+.cp-a-noticed{margin:0;}
+.cp-a-noticed ul{padding:0;margin:0;}
+.cp-a-noticed li{padding:3px 0;border:0;font-size:14px;line-height:1.5;}
+.cp-a-noticed li a{color:#1c2430;text-decoration:none;}
+.cp-a-noticed li a:hover{text-decoration:underline;}
+.cp-fact-label{color:#5b6675;}
+.cp-a-conflict{padding:0;margin:0 0 8px;border:0;border-radius:0;background:none;color:#9a6b1f;font-size:14px;line-height:1.5;}
+.cp-a-conflict a{color:#9a6b1f;margin-left:8px;text-decoration:underline;}
+.cp-a-review:has(#awClaimWork:not([hidden])) .cp-a-review-ready{display:none;}

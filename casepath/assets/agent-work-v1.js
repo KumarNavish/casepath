@@ -70,7 +70,7 @@
       section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent review');
       state.renderKey=null;
     }
-    if(section.parentElement!==activity)activity.prepend(section);
+    if(section.parentElement!==activity)activity.querySelector('h2')?.after(section);
     if(!state.assessment&&activity.dataset.assessment){try{state.assessment=JSON.parse(activity.dataset.assessment);state.assessmentLoading=false;}catch(_){}}
     const start=document.getElementById('cwStart');
     if(start&&!start.dataset.agentWorkEntry){start.dataset.agentWorkEntry='true';start.textContent='Review claim';}
@@ -156,7 +156,7 @@
     const anchor=line.quote?` data-aw-quote="${h(line.quote)}"`:'';
     const quoted=state.assessment?.language?.startsWith('de')&&line.text.match(/^(.*?)“([^”]+)”(.*)$/);
     const words=quoted?`${h(quoted[1])}“<span lang="de">${h(quoted[2])}</span>”${h(quoted[3])}`:h(line.text);
-    return `<button type="button" ${target}${anchor}>${words}</button>`;
+    return `<a href="#" ${target}${anchor}>${words}</a>`;
   }
   function syncLivePath(){
     const working=['queued','running'].includes(state.summary?.status);
@@ -186,12 +186,10 @@
     if(start){const waiting=['queued','running','interrupted'].includes(summary?.status);start.disabled=state.busy||waiting&&!summary?.run_id;start.textContent=waiting?'Stop':'Review claim';}
     if(host.hidden){host.innerHTML='';renderTimeline();return;}
     const pending=pendingRequest(),stopping=state.events.some(event=>event.operation==='RUN_CANCEL_REQUESTED')&&working;
-    const complete=summary?.status==='completed',cancelled=summary?.status==='cancelled';
+    const cancelled=summary?.status==='cancelled';
     const lines=narrativeLines(state.events);
-    const next=document.querySelector('.cp-a-next h2')?.textContent||'';
-    const heading=complete?'Review complete':cancelled?'Review stopped':stopping?'Stopping after the current check':working?'Reviewing this claim':state.busy?'Opening claim context':'Review needs attention';
-    const detail=complete?`Next step: ${next}`:cancelled?'Saved work remains in the timeline.':state.messages.get(state.claim)||lines.at(-1)?.line.text||'Reading the incoming claim.';
-    host.innerHTML=`<section class="aw-narrative-card" data-status="${h(summary?.status||'opening')}"><header><div><span class="cp-a-kicker">${complete?'Deterministic assessment':'Live review'}</span><h2>${h(heading)}</h2><p>${h(detail)}</p></div></header>${!complete?`<ol class="aw-narrative-lines">${lines.slice(-8).map(({event,line})=>`<li>${lineButton(event,line)}</li>`).join('')}</ol>`:''}${complete||cancelled?`<button type="button" class="aw-text-button" data-aw-timeline>Timeline</button>`:''}${summary?.recovery?.can_resume?`<button type="button" class="aw-text-button" data-aw-resume>Resume saved review</button>`:''}${cancelled?`<button type="button" class="aw-text-button" data-aw-start>Review again</button>`:''}${pending&&!state.busy?'<button type="button" class="aw-text-button" data-aw-retry>Check the same request</button>':''}<p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></section>`;
+    const detail=cancelled?'Review stopped. Saved findings remain in Timeline.':stopping?'Stopping after the current source check…':state.messages.get(state.claim)||(!lines.length?'Reading the claim…':'');
+    host.innerHTML=`<div class="aw-review-progress" data-status="${h(summary?.status||'opening')}">${detail?`<p role="status">${h(detail)}</p>`:''}<ol class="aw-narrative-lines">${lines.slice(-8).map(({event,line})=>`<li>${lineButton(event,line)}</li>`).join('')}</ol>${summary?.recovery?.can_resume?'<a href="#" data-aw-resume>Resume saved review</a>':''}${pending&&!state.busy?'<a href="#" data-aw-retry>Check the same request</a>':''}<p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></div>`;
     if(working&&lines.length){const latest=lines.at(-1),spotlightKey=latest.event.sequence+':'+latest.line.text;if(state.spotlit!==spotlightKey){state.spotlit=spotlightKey;spotlight(latest.line,false);}}
     renderTimeline();
   }
@@ -392,7 +390,8 @@
     finally{state.fetching=false;if(state.repoll){state.repoll=false;queueMicrotask(()=>void poll());}}
   }
   document.addEventListener('click',event=>{
-    const button=event.target.closest('button');if(!button)return;
+    const button=event.target.closest('button,a[data-aw-source],a[data-aw-source-id],a[data-aw-message],a[data-aw-resume],a[data-aw-retry]');if(!button)return;
+    if(button.tagName==='A')event.preventDefault();
     if(button.id==='cwStart'&&state.cap){event.preventDefault();event.stopImmediatePropagation();if(['queued','running'].includes(state.summary?.status))void cancelWork();else void startWork();return;}
     if(button.hasAttribute('data-aw-resume'))void resumeWork();
     if(button.hasAttribute('data-aw-start'))void startWork();
