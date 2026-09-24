@@ -83,7 +83,6 @@
 .cp-fact-label{color:var(--cp-muted);}
 .cp-a-conflict{color:var(--cp-amber);margin-bottom:8px!important;font-size:14px;}
 .cp-a-conflict a{color:var(--cp-amber);margin-left:8px;}
-.cp-a-review:has(#awClaimWork:not([hidden])) .cp-a-review-ready{display:none;}
 .cp-a-path>ol{display:flex;gap:18px;overflow-x:auto;padding-bottom:12px!important;margin-bottom:12px!important;}
 .cp-a-path>ol>li{flex:0 0 132px;}
 .cp-a-path>ol>li>a{display:grid;gap:8px;align-content:start;color:var(--cp-muted);text-decoration:none;font-size:13px;}
