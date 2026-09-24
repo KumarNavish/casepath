@@ -475,3 +475,13 @@
 .cp-a-condition-row:hover .cp-a-what-if-link,.cp-a-condition-row:focus-within .cp-a-what-if-link{display:inline;}
 .cp-a-condition-row q{display:none;flex-basis:100%;color:#5b6675;font-size:13px;}
 .cp-a-condition-row:focus-within q,.cp-a-condition-row:hover q{display:block;}
+/* Questions and their two possible effects */
+.cp-a-questions{margin:0 0 42px;max-width:72ch;}
+.cp-a-questions>h2{font-size:18px;line-height:1.5;letter-spacing:0;margin:0 0 12px;}
+.cp-a-questions ul{margin:0;padding:0;list-style:none;}
+.cp-a-questions li{padding:7px 0;border:0;background:none;}
+.cp-a-questions li p{font-size:16px;line-height:1.5;margin:0;}
+.cp-a-questions li p a{color:#1c2430;text-decoration:none;}
+.cp-a-questions li p a:hover{text-decoration:underline;}
+.cp-a-questions li small{display:block;font-size:13px;color:#5b6675;line-height:1.5;}
+.cp-candidate-deadline{font-size:13px;color:#9a6b1f;margin:10px 0 0!important;}
