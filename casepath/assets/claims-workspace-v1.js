@@ -1758,7 +1758,11 @@
     const exploring=state.whatIf,detail=state.detail;
     if(!exploring||!detail||exploring.loading||!['true','false','unresolved'].includes(verdict))return;
     const context=activeDetailContext(),previous=exploring.result?.to_verdict;
-    exploring.verdict=verdict;exploring.loading=true;exploring.error=null;renderDetail(detail);
+    exploring.verdict=verdict;exploring.loading=true;exploring.error=null;
+    const panel=$('#cpWhatIfPanel');
+    panel?.querySelectorAll('[data-what-if-value]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.whatIfValue===verdict)));
+    const progress=document.createElement('p');progress.setAttribute('role','status');progress.textContent='Recomputing the path and requests…';
+    panel?.querySelector('.cp-a-what-if-values')?.after(progress);
     const query=new URLSearchParams({condition:exploring.flag,verdict});
     if(previous)query.set('before_verdict',previous);
     try {

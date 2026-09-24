@@ -44,6 +44,14 @@ class ToolRuntime:
         self.parent_event = started[-1]["sequence"] if started else None
         self.emitted: list[dict] = []
         self.changed: list[dict] = []
+        # This executor owns the run's writes. Cancellation may append an event,
+        # but cannot change work products while the role is running.
+        self._object_cache: dict[str, dict] | None = None
+
+    def _objects(self):
+        if self._object_cache is None:
+            self._object_cache = {row["id"]: row for row in self.store.objects(self.run_id)}
+        return self._object_cache
 
     def _event(self, operation, kind, object_id, message, *, status="observed", before=None, after=None, sources=(), links=(), gate=None):
         self.emitted.append(dict(role=self.role.value, operation=operation.value, object_kind=kind, object_id=object_id,
@@ -60,14 +68,16 @@ class ToolRuntime:
         if changed:
             return changed["value"]
         try:
-            return self.store.object(self.run_id, object_id)["value"]
+            return self._objects()[object_id]["value"]
+        except KeyError as exc:
+            raise GateRejected("the referenced work product is unavailable") from exc
         except WorkStoreError as exc:
             if str(exc) == "work object is unavailable":
                 raise GateRejected("the referenced work product is unavailable") from exc
             raise
 
     def _all(self, kind):
-        return self.store.objects(self.run_id, kind)
+        return [row for row in self._objects().values() if row["kind"] == kind]
 
     def _gate(self, object_id, accepted, scope, reason, authority_hash=None):
         gate = GateResult(gate_id=scope, accepted=accepted, scope=scope, reason=reason, authority_sha256=authority_hash)
@@ -104,7 +114,11 @@ class ToolRuntime:
                         "requires_reconciliation": name == "prepare_handling_process"}
         # An unknown exception is not converted to 'no state change'. The pending
         # call remains unfinished and the run requires explicit reconciliation.
-        return self.store.complete_call(self.run_id, self.owner, self.role, call_id, response, self.emitted, self.changed)
+        result = self.store.complete_call(self.run_id, self.owner, self.role, call_id, response, self.emitted, self.changed)
+        if self._object_cache is not None:
+            for row in self.changed:
+                self._object_cache[row["id"]] = {**row, "sha256": digest(row["value"])}
+        return result
 
     def _check_packet(self):
         now = self.authority.packet_identity(self.claim_id)
