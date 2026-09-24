@@ -113,7 +113,8 @@ test('assessed claim has one next action and a source-only record control',()=>{
  const savedLoop={outcome:'blocked',loop_state:{selected_action:oldAction,checklist:{items:[]}},operational_projection:{readiness_scope:'current',evidence_items:[],pending_evidence_count:0}};
  const markup=view.workbench(savedLoop,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail});
  assert.match(markup,/Ask for the receipt date/);
- assert.match(markup,/Check & record source/);
+ assert.match(markup,/Source record/);
+ assert.doesNotMatch(markup,/id="cwLoopCommit"/);
  assert.doesNotMatch(markup,/Capture issuer, receipt and end date|supporting evidence is still missing/i);
 });
 test('noticed dates and both sides of a conflict open exact source spans',()=>{

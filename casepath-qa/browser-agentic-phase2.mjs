@@ -31,7 +31,7 @@ for(const [name,claimId] of Object.entries(claims)){
     await page.locator('#cwStart').click();
     await page.locator('.aw-narrative-lines li button').first().waitFor({timeout:30000});
     timing[`${name}_first_line_ms`]=Math.round(performance.now()-reviewStart);
-    await page.locator('.aw-narrative-card[data-status="completed"]').waitFor({timeout:45000});
+    await page.locator('.cp-a-review-ready[data-status="completed"]').waitFor({state:'visible',timeout:45000});
     await page.locator('.cp-a-path').waitFor({timeout:45000});
     timing[`${name}_review_complete_ms`]=Math.round(performance.now()-reviewStart);
   }
@@ -79,7 +79,10 @@ if(await page.locator('[data-evidence-choice]').count()){
   const started=performance.now();
   await page.locator('#cwLoopCommit').click();
   await page.locator('#cwReplanDelta').waitFor({timeout:45000});
+  timing.evidence_receipt_ms=Math.round(performance.now()-started);
+  await page.locator('#cwReplanDelta[data-accepted="true"]').waitFor({timeout:45000});
   timing.evidence_update_ms=Math.round(performance.now()-started);
+  timing.evidence_requests=await page.evaluate(()=>performance.getEntriesByType('resource').filter(row=>row.name.includes('/loop/evidence')||row.name.includes('/loop/advance')||row.name.includes('/workspace/claims/clm_f69b1747447bc221')).slice(-20).map(row=>({path:new URL(row.name).pathname,duration_ms:Math.round(row.duration)})));
   if(!(await page.locator('#cwReplanDelta').innerText()).includes('30. Juni'))throw Error('Accepted PDF date is absent from the path update');
 }
 const queueAgain=performance.now();

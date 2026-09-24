@@ -1130,6 +1130,7 @@
   async function validateAdvanceResponse(value, loop, expectedBody) {
     const admission = value?.admission;
     const response = value?.claim_loop_response;
+    const receipt = response?.command_receipt;
     if (
       value?.contract !== 'casepath.workspace-claim-loop-advance-response/1.0.0'
       || value.claim_id !== loop.claim_id
@@ -1146,6 +1147,11 @@
       || !response || response.loop_id !== loop.loop_state.loop_id
       || response.contract !== 'casepath.claim-loop-response/1.0.0'
       || !/^[0-9a-f]{64}$/.test(response.state_sha256 || '')
+      || !receipt || receipt.contract !== 'casepath.claim-loop-command-receipt/1.0.0'
+      || receipt.loop_id !== response.loop_id || receipt.revision !== response.revision
+      || receipt.state_sha256 !== response.state_sha256
+      || !/^[0-9a-f]{64}$/.test(receipt.event_sha256 || '')
+      || receipt.receipt_sha256 !== await claimLoopSha256(Object.fromEntries(Object.entries(receipt).filter(([key]) => key !== 'receipt_sha256')))
       || value.response_sha256 !== await claimLoopSha256(Object.fromEntries(Object.entries(value).filter(([key]) => key !== 'response_sha256')))
     ) throw new Error('The verified replan response failed authority validation');
     return value;
@@ -2080,15 +2086,12 @@
     if (pending.key !== body.idempotency_key) throw new Error('The registration key differs from its acquisition intent');
     const response = await requireVerifiedResponse(validateStageResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence`, {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':pending.key},body:pending.body}), loop, body));
     if (!isActiveDetail(context)) return null;
-    const fresh = await loadClaimLoop(loop.claim_id);
-    if (!isActiveDetail(context)) return null;
-    if (fresh.stage_receipt?.receipt_sha256 !== response.stage_receipt.receipt_sha256) throw new Error('The authoritative journal did not confirm the staged receipt');
     clearCommandIdentity('evidence', loop.claim_id);
     clearCommandIdentity('evidence-intent', loop.claim_id);
-    return fresh;
+    return {...loop,stage_receipt:response.stage_receipt};
   }
 
-  async function advanceClaimLoop(context, loop) {
+  async function advanceClaimLoop(context, loop, onReceipt) {
     const body = exactAdvanceBody(loop);
     const existingPending = storedCommandIdentity('advance', loop.claim_id);
     const pending = commandIdentity(
@@ -2101,6 +2104,7 @@
     const baseline = await verifiedAdvanceBaseline(loop, pending, body);
     const response = await requireVerifiedResponse(validateAdvanceResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/advance`, {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':pending.key},body:pending.body}), loop, body));
     if (!isActiveDetail(context)) return null;
+    onReceipt?.(response);
     const fresh = await loadClaimLoop(loop.claim_id);
     if (!isActiveDetail(context)) return null;
     if (fresh.loop_state.state_sha256 !== response.claim_loop_response.state_sha256) {
@@ -2124,13 +2128,21 @@
     const context = activeDetailContext();
     let loop = state.loop;
     const beforeLoop = loop;
+    const selectedQuote=loop.finding_options?.find(row=>row.source_entry_sha256===state.evidenceChoice)?.quote||'';
     setLoopMutationBusy(true, 'Checking the source and updating the claim…', context);
     try {
       if (!storedCommandIdentity('advance', loop.claim_id)) {
         loop = await stageLoopEvidence(context, loop);
         if (!loop || !isActiveDetail(context)) return;
       }
-      const advance = await advanceClaimLoop(context, loop);
+      const advance = await advanceClaimLoop(context, loop, () => {
+        if (!isActiveDetail(context)) return;
+        const main=$('.cp-a-main');
+        if (!main) return;
+        $('#cwReplanDelta')?.remove();
+        main.insertAdjacentHTML('afterbegin',ui.changeMarkup({kind:'receipt',claimId:context.claimId,sourceQuote:selectedQuote,sourceItem:beforeLoop.loop_state.selected_action?.evidence_item_id},state.detail.state.intake_assessment?.claim_assessment));
+        $('#cwCommandStatus').textContent='Checking the saved journal record…';
+      });
       if (!advance || !isActiveDetail(context)) return;
       ({loop} = advance);
       state.change = ui.advanceChange(beforeLoop,loop,advance.baseline,advance.recovered);

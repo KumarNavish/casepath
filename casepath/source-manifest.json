@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1473,
+  "file_count": 1474,
   "files": [
     {
       "executable": false,
@@ -701,8 +701,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/agent_work/runtime.py",
-      "sha256": "62c499fe80cc331218c964b4cb9061b37a35415e18e610935ca01482cbcd7c1e",
-      "size_bytes": 43695
+      "sha256": "359ccf8ac696e4f4702534aa6ca583c2f8c40608fe62d028e736693ecbe20f7e",
+      "size_bytes": 44416
     },
     {
       "executable": false,
@@ -857,8 +857,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/assessment_grammar_v1.py",
-      "sha256": "0b1f802b8eb1c2e21fac90dd3233afcf4510f3dccf627fc0c2606f93a3ef540f",
-      "size_bytes": 24582
+      "sha256": "4076b1fb6f2672d74735a8631e5353150ab69ee3a0a49c4293e66ac7584c9dd4",
+      "size_bytes": 28029
     },
     {
       "executable": false,
@@ -953,8 +953,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/claim_loop_router.py",
-      "sha256": "c848c9515d33227e21026b238b74407b61746a6ed18e2214eba30f1f08eebeae",
-      "size_bytes": 32016
+      "sha256": "e89374ee5578eabdee4e075d8c2c58c920150a6e1ebebf81591acb729e403c39",
+      "size_bytes": 36480
     },
     {
       "executable": false,
@@ -977,8 +977,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/claim_workspace_v1.py",
-      "sha256": "a0473007b90b5e9119cc8d6dc09179fd1074f04c3523f27f488a6b9f5326043e",
-      "size_bytes": 51505
+      "sha256": "e51b815c873b587a79d8492d9fa883a5b30fe39f80680cb9b50f0be992b6c0da",
+      "size_bytes": 55632
     },
     {
       "executable": false,
@@ -7271,8 +7271,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/workspace_claim_loop_v1.py",
-      "sha256": "efdf6d9f027c32c6aa8abbb930f74ad751710ae63332a641b95c31519398791d",
-      "size_bytes": 141038
+      "sha256": "a9446212dbc9061f5d2cbbd9087c58c7ae55bdeb12f04e9171a966f5fbd02dae",
+      "size_bytes": 151053
     },
     {
       "executable": false,
@@ -7283,14 +7283,14 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/workspace_evidence_authority_v1.py",
-      "sha256": "daf324e4bd132521499d177ea5933c5c63b50b3253e928d7d21404f5cdc4a094",
-      "size_bytes": 114340
+      "sha256": "82a5c14ce9ad64bf8f85bb52bb8afb3f010f9360935916359a261f62854e701d",
+      "size_bytes": 120610
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/workspace_evidence_independent_authority_v1.py",
-      "sha256": "585a22e379c8d4a50ce21daaab6e6b5c83ab7aeab2417b5adae5e3a0387fce91",
-      "size_bytes": 22980
+      "sha256": "a0d8190ad8d5c7810865bd6e7b789e3191920ae098bf2a4cf0faa633645fa4ec",
+      "size_bytes": 24072
     },
     {
       "executable": false,
@@ -7619,8 +7619,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_claim_workspace_assessment_v2.py",
-      "sha256": "28f74b2e1f52592f22b4f7213f56d61caf9fba680cdce77618e189f87c453f47",
-      "size_bytes": 5930
+      "sha256": "3484e98394ff482b90b33fbb9bce9d59ee3a73ca2cb7a3a8b30037e5fff93335",
+      "size_bytes": 7279
     },
     {
       "executable": false,
@@ -7997,8 +7997,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_workspace_claim_loop_v1.py",
-      "sha256": "eab381fbb664420ac8d5c0e162b00615123c77df65e96c53b6ad3da8a1fe37da",
-      "size_bytes": 84395
+      "sha256": "c66ced62781ce5cd4635a9c959df3dd6b8c424177e74fc0d3073402b9ec1b9c6",
+      "size_bytes": 93040
     },
     {
       "executable": false,
@@ -8017,6 +8017,12 @@
       "path": "casepath-api/tests/test_workspace_packet_preview.py",
       "sha256": "445a6d3212706b7670d32eed31c8060d72e3d893ef45951a4ca094afba8948aa",
       "size_bytes": 6210
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/browser-agentic-phase2.mjs",
+      "sha256": "e9245239b69193e6cf020eb02a4416d83a5143276e33b60eb183f998cdf66b0a",
+      "size_bytes": 6315
     },
     {
       "executable": false,
@@ -8141,8 +8147,8 @@
     {
       "executable": false,
       "path": "casepath-qa/claims-workspace-presentation-v1.test.cjs",
-      "sha256": "624b4cab9a1ea1d68f4b89b44ef8ec1cf0ea643fd3977f1f44b82c9216f8e76a",
-      "size_bytes": 10952
+      "sha256": "d81bf8fdcda154d8708bb2c15c908f3d2137e23615e0a24d20b3d0466f7ab35b",
+      "size_bytes": 10994
     },
     {
       "executable": false,
@@ -8405,14 +8411,14 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.css",
-      "sha256": "8894e4524e84dcba8dae2c38099be89be811686a2ea0146ae0533c102bb4c2fd",
-      "size_bytes": 53572
+      "sha256": "cea0f6d34aea01fcd001beedb7a97bff91e0ce420f0b3169992621e81866c797",
+      "size_bytes": 58150
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.js",
-      "sha256": "b29237cb22d48812e8f24c6ada4d36bd7ea84fc78a56c4f56a35aa78d4eb60cd",
-      "size_bytes": 55248
+      "sha256": "9ec99968fa91b5cc9a4b180542263479c83f21826bda1d0fcbf7a0cb50a36001",
+      "size_bytes": 61420
     },
     {
       "executable": false,
@@ -8423,8 +8429,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.js",
-      "sha256": "6978fc65722beadef9768b19f41c1940a67f06ea938ba22a352d9c5d200b183f",
-      "size_bytes": 176691
+      "sha256": "2df8069b63050f09c7484129d86b54ef3380faf14e3bfdfe2883604504cd704d",
+      "size_bytes": 190520
     },
     {
       "executable": false,
@@ -8519,7 +8525,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "25e1fc2d89dfd721f6d6a857f0bea5a19ef03b0a721ae38bbb9ad568c06d0c8a",
+      "sha256": "c7c8667117184b7dae8a02d79e759abe7da81a3d7cba214d2fe9f14fc6ec7504",
       "size_bytes": 20835
     },
     {
@@ -8943,8 +8949,12 @@
       "size_bytes": 530
     }
   ],
-  "gate_count": 14,
+  "gate_count": 15,
   "gates": [
+    {
+      "path": "casepath-qa/browser-agentic-phase2.mjs",
+      "sha256": "e9245239b69193e6cf020eb02a4416d83a5143276e33b60eb183f998cdf66b0a"
+    },
     {
       "path": "casepath-qa/browser-claims-workspace-150-v1.mjs",
       "sha256": "91bb534d4a857575ce5ec6848c2c175b7c6c7df79ed369592a0248778efd4136"
