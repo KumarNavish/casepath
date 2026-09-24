@@ -2696,7 +2696,7 @@
     const trace=$('#cpCanvasTrace');
     if(trace){const open=trace.open;trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.whatIf?.result?.scenario);$('#cpCanvasTrace').open=open||focus;}
     const selected=$('#cpCanvasTrace')?.dataset.selectedNode;
-    root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===selected)));
+    root.querySelectorAll('[data-canvas-node]').forEach(link=>{if(link.dataset.canvasNode===selected)link.setAttribute('aria-current','step');else link.removeAttribute('aria-current');});
     root.querySelectorAll('[data-evidence-source]').forEach(button=>button.classList.toggle('cp-source-selected',button.dataset.evidenceSource===state.focusedEvidenceId));
     if(focus){
       const current=$('#cpCanvasTrace');

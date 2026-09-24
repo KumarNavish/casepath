@@ -454,3 +454,24 @@
 .cp-a-conflict{padding:0;margin:0 0 8px;border:0;border-radius:0;background:none;color:#9a6b1f;font-size:14px;line-height:1.5;}
 .cp-a-conflict a{color:#9a6b1f;margin-left:8px;text-decoration:underline;}
 .cp-a-review:has(#awClaimWork:not([hidden])) .cp-a-review-ready{display:none;}
+/* Horizontal path and conditions */
+.cp-a-path{margin:0 0 42px;max-width:72ch;}
+.cp-a-path>h2{font-size:18px;line-height:1.5;letter-spacing:0;margin:0 0 14px;}
+.cp-a-path>ol{display:flex;gap:18px;overflow-x:auto;scrollbar-width:thin;padding:0 0 12px;margin:0 0 12px;}
+.cp-a-path>ol>li,.cp-a-path>ol>li[data-path-state="active"],.cp-a-path>ol>li[data-path-state="held_behind_question"]{flex:0 0 132px;padding:0;border:0;background:none;}
+.cp-a-path>ol>li>a{display:grid;gap:8px;align-content:start;text-decoration:none;color:#5b6675;font-size:13px;line-height:1.5;}
+.cp-a-path>ol>li>a:hover{text-decoration:underline;}
+.cp-a-path>ol>li[data-path-state="active"]>a{color:#244e72;font-size:16px;}
+.cp-a-step-dot{display:block;width:7px;height:7px;background:#5b6675;border-radius:50%;}
+.cp-a-path>ol>li[data-path-state="active"] .cp-a-step-dot{width:11px;height:11px;background:#244e72;}
+.cp-a-path>ol>li[data-path-state="held_behind_question"] .cp-a-step-dot{background:#fff;border:1px solid #9a6b1f;}
+.cp-a-path>ol>li[data-path-state="not_reached"] .cp-a-step-dot{background:#fff;border:1px solid #5b6675;}
+.cp-a-condition-overview{display:flex;flex-wrap:wrap;gap:6px 18px;padding:0;margin:0;border:0;}
+.cp-a-path>ul>li.cp-a-condition-row{display:inline-flex;align-items:baseline;gap:5px;flex-wrap:wrap;padding:0;margin:0;border:0;background:none;font-size:13px;}
+.cp-a-condition{padding:0;margin:0;border:0;background:none;color:#1c2430;font-size:13px;cursor:default;}
+.cp-a-condition em{font-style:normal;color:#5b6675;}
+.cp-a-condition[data-condition-state="unresolved"] em{color:#9a6b1f;}
+.cp-a-what-if-link{display:none;color:#244e72;font-size:13px;padding:0;text-decoration:none;}
+.cp-a-condition-row:hover .cp-a-what-if-link,.cp-a-condition-row:focus-within .cp-a-what-if-link{display:inline;}
+.cp-a-condition-row q{display:none;flex-basis:100%;color:#5b6675;font-size:13px;}
+.cp-a-condition-row:focus-within q,.cp-a-condition-row:hover q{display:block;}
