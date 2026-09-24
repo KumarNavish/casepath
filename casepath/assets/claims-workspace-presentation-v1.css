@@ -372,7 +372,13 @@
 .cp-a-draft h2{font-size:18px;margin:4px 0 0;}
 .cp-a-draft header small{font-size:11px;color:#617887;}
 .cp-a-draft label{display:block;font-size:11px;color:#536a79;margin-bottom:6px;}
-.cp-a-draft textarea{display:block;width:100%;min-height:260px;max-height:520px;resize:vertical;border:1px solid #b8ccd7;border-radius:4px;background:#fff;padding:14px;font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:#263b49;}
+.cp-draft-letter{padding:24px 28px;background:#fff;border:1px solid #d5e0e6;border-radius:5px;color:#253746;font-size:13px;line-height:1.65;box-shadow:0 5px 18px #2237450a;}
+.cp-draft-letter p{margin:0 0 14px;white-space:pre-wrap;}
+.cp-draft-letter h3{font-size:13px;line-height:1.5;margin:22px 0 8px;}
+.cp-draft-letter ul{padding-left:19px;margin:0 0 16px;}
+.cp-draft-letter li{padding:2px 0 8px;overflow-wrap:anywhere;}
+.cp-draft-letter [contenteditable]:hover{background:#f5f9fb;}
+.cp-draft-letter [contenteditable]:focus{outline:2px solid #87afc3;outline-offset:3px;background:#f7fbfd;}
 .cp-a-draft .cp-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
 .cp-a-draft .cp-actions button{min-height:36px;}
 .cp-a-draft details{margin-top:14px;font-size:10px;color:#657885;}

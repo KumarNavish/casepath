@@ -246,7 +246,17 @@ function memoryPanel(items,hidden,knowledge,claimId){
 function draftPanel(draft,edit){
  const saved=draft?.latest;
  if(!saved)return '';
- return `<section class="cp-a-draft" id="cpDraftPanel" aria-labelledby="cpDraftTitle"><header><div><span class="cp-a-kicker">Draft, not sent</span><h2 id="cpDraftTitle">${saved.kind==='specialist_handoff'?'Specialist handoff':'Customer request'}</h2></div><small>${saved.edited_by_handler?'Handler edited':'Generated from this claim'}</small></header><form id="cwDraftForm"><label for="cwDraftBody">Edit draft</label><textarea id="cwDraftBody" name="body" lang="${h(saved.language.startsWith('de')?'de':'en')}" maxlength="30000">${h(edit??saved.body_markdown)}</textarea><div class="cp-actions"><button type="submit" class="cw-button">Save draft</button><button type="button" class="cw-button" data-draft-copy>Copy</button><button type="button" class="cw-button" data-draft-export="markdown">Export Markdown</button><button type="button" class="cw-button" data-draft-export="json">Export JSON</button></div></form><details><summary>Draft provenance</summary><p>Saved from the deterministic assessment. Export hash: <code>${h(saved.body_sha256)}</code></p></details></section>`;
+ const lines=(edit??saved.body_markdown).split('\n').filter(line=>line.trim());
+ const parts=[],list=[];
+ const flush=()=>{if(list.length)parts.push(`<ul>${list.splice(0).join('')}</ul>`);};
+ lines.forEach((line,index)=>{
+   const heading=line.startsWith('## '),bullet=line.startsWith('- '),prefix=heading?'## ':bullet?'- ':'';
+   const tag=heading?'h3':bullet?'li':'p';
+   const element=`<${tag} contenteditable="true" role="textbox" aria-label="Edit request line ${index+1}" data-draft-line data-draft-prefix="${h(prefix)}">${h(line.slice(prefix.length))}</${tag}>`;
+   if(bullet)list.push(element);else{flush();parts.push(element);}
+ });flush();
+ const letter=parts.join('');
+ return `<section class="cp-a-draft" id="cpDraftPanel" aria-labelledby="cpDraftTitle"><header><div><span class="cp-a-kicker">Draft, not sent</span><h2 id="cpDraftTitle">${saved.kind==='specialist_handoff'?'Specialist handoff':'Customer request'}</h2></div><small>${saved.edited_by_handler?'Edited by handler':'From this claim'}</small></header><form id="cwDraftForm"><div id="cwDraftBody" class="cp-draft-letter" lang="${h(saved.language.startsWith('de')?'de':'en')}" aria-label="Editable request">${letter}</div><div class="cp-actions"><button type="submit" class="cw-button cw-button-primary">Save request</button><button type="button" class="cw-button" data-draft-copy>Copy</button><button type="button" class="cw-button" data-draft-export="markdown">Export</button></div></form></section>`;
 }
 function assessmentNeeds(assessment){
  const groups=[['needed_now','Needed now'],['held_behind_question','Held behind a question'],['held_not_reviewed','Held, not reviewed'],['needed_later','Needed at a later step'],['established','Established'],['not_needed','Not needed on this path'],['optional','Optional']];

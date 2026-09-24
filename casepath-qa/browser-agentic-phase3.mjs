@@ -40,7 +40,7 @@ for(const [name,claimId] of Object.entries(claims)){
   await page.locator('#cwDraftOpen').click();
   await page.locator('#cpDraftPanel').waitFor({timeout:20000});
   timing[`${name}_draft_ms`]=Math.round(performance.now()-draftStarted);
-  const draft=await page.locator('#cwDraftBody').inputValue();
+  const draft=await page.locator('#cwDraftBody').innerText();
   if(!draft.trim())throw Error(`${name} draft is empty`);
   if(name==='mould'&&!draft.includes('Mein Sohn hustet mehr'))throw Error('German handoff lost the customer quote');
   outputs[name]=await page.evaluate(()=>({
@@ -50,7 +50,7 @@ for(const [name,claimId] of Object.entries(claims)){
     needs:[...document.querySelectorAll('.cp-a-needs li')].map(row=>row.textContent.trim()),
     deadline:document.querySelector('.cp-a-deadline')?.textContent.trim()||null,
     next_step:document.querySelector('.cp-a-next h2')?.textContent.trim()||null,
-    draft:document.querySelector('#cwDraftBody')?.value||null,
+    draft:document.querySelector('#cwDraftBody')?.innerText||null,
   }));
   for(const width of widths){
     await page.setViewportSize({width,height:900});

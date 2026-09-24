@@ -1795,11 +1795,20 @@
     bindNativeInvestigationActions();
     $('#cwEvidenceForm')?.addEventListener('submit', event => { event.preventDefault(); commitLoopObservation(); });
     $('#cwDraftOpen')?.addEventListener('click',()=>{
-      if(state.draft?.latest){$('#cpDraftPanel')?.scrollIntoView({block:'start'});$('#cwDraftBody')?.focus({preventScroll:true});}
+      if(state.draft?.latest){$('#cpDraftPanel')?.scrollIntoView({block:'start'});$('#cwDraftBody [data-draft-line]')?.focus({preventScroll:true});}
       else void saveDraft();
     });
     $('#cwDraftForm')?.addEventListener('submit',event=>{event.preventDefault();void saveDraft();});
-    $('#cwDraftBody')?.addEventListener('input',event=>{state.draftEdit=event.currentTarget.value;});
+    $('#cwDraftBody')?.addEventListener('input',event=>{
+      const rows=[...event.currentTarget.querySelectorAll('[data-draft-line]')].map(row=>row.dataset.draftPrefix+row.textContent.trim());
+      state.draftEdit=rows.map((line,index)=>index&&(!line.startsWith('- ')||!rows[index-1].startsWith('- '))?'\n'+line:line).join('\n')+'\n';
+    });
+    $('#cwDraftBody')?.addEventListener('keydown',event=>{
+      if(event.key!=='Enter'||event.isComposing)return;
+      const row=event.target.closest('[data-draft-line]');if(!row)return;
+      event.preventDefault();const next=row.cloneNode(false);next.textContent='';row.after(next);next.focus();
+      next.dispatchEvent(new Event('input',{bubbles:true}));
+    });
     panel.querySelector('[data-draft-retry]')?.addEventListener('click',()=>void saveDraft());
     panel.querySelector('[data-draft-copy]')?.addEventListener('click',()=>void exportDraft('copy'));
     panel.querySelectorAll('[data-draft-export]').forEach(button=>button.addEventListener('click',()=>void exportDraft(button.dataset.draftExport)));

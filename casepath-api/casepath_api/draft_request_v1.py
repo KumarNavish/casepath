@@ -190,26 +190,31 @@ def compile_draft_request(
     specialist = assessment["conditions"].get("health_effects", {}).get("verdict") == "true"
     kind = "specialist_handoff" if specialist else "customer_request"
     if german:
-        lines = ["# Entwurf für die Fachperson" if specialist else "# Entwurf der Kundenanfrage", "", "Entwurf, nicht gesendet", "", "## Benötigte Unterlagen"]
+        lines = ["Guten Tag,", "", "für die Prüfung Ihres Anliegens benötigen wir Folgendes:" if not specialist else "für die fachliche Prüfung dieser Meldung benötigen wir Folgendes:", "", "## Bitte senden Sie uns"]
     else:
-        lines = ["# Draft request", "", "Draft, not sent", "", "## Please send"]
+        lines = ["Dear customer," if not specialist else "Dear specialist,", "", "To review your claim, please send the following:", "", "## Please send"]
     for item in requested:
-        detail = f"{item['label']} — {item['step']}" if item["step"] else item["label"]
+        reason = item["step"] or ("Ihr Anliegen prüfen" if german else "review your claim")
+        detail = f"{item['label']}: Damit wir {reason.lower()} können" if german else f"{item['label']}: We need this to {reason[0].lower()+reason[1:]}"
         if item["condition"]:
-            detail += f"; {item['condition']}"
+            detail += f"; Anlass ist {item['condition']}" if german else f"; this follows from {item['condition']}"
         if item["article"]:
-            detail += f"; {item['article']}"
+            detail += f" ({item['article']})"
+        detail += "."
         if item["customer_quote"]:
-            detail += f"; “{item['customer_quote']}”"
+            detail += f" Sie schrieben: „{item['customer_quote']}“" if german else f" You wrote: “{item['customer_quote']}”"
         lines.append(f"- {detail}")
-    lines += ["", "## Schon vorhanden" if german else "## Already held"]
+    lines += ["", "## Bereits vorhanden" if german else "## Already held"]
     for item in held:
-        lines.append(f"- {item['label']}: {'vorhanden, noch nicht geprüft' if german else 'held, not reviewed'}")
+        lines.append(f"- {item['label']}: {'liegt vor und wird noch geprüft' if german else 'we have a copy and will review it'}.")
     lines += ["", "## Offene Fragen" if german else "## Questions"]
     lines += [f"- {question}" for question in questions]
-    lines += ["", "## Nicht angefordert" if german else "## Not requested"]
+    lines += ["", "## Derzeit nicht angefordert" if german else "## Not requested because"]
     for item in not_requested:
-        lines.append(f"- {item['label']}: {item['reason']}")
+        lines.append(f"- {item['label']}: {item['reason']}.")
+    if not not_requested:
+        lines.append("- Keine weiteren Unterlagen werden derzeit ausgeschlossen." if german else "- No other documents are excluded at this stage.")
+    lines += ["", "Freundliche Grüsse" if german else "Kind regards,", "CasePath"]
     body = edited_body if edited_body is not None else "\n".join(lines) + "\n"
     if not isinstance(body, str) or not 1 <= len(body) <= 30_000:
         raise ValueError("draft body is invalid")
