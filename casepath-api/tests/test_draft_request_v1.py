@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from pathlib import Path
 import json
 
@@ -25,6 +26,7 @@ def _draft(claim_id: str) -> dict:
 
 def test_flagship_request_traces_documents_to_quotes_and_articles() -> None:
     draft = _draft("clm_f69b1747447bc221")
+    assert draft["body_markdown"].startswith("Dear Robin Foster,\n")
     requested = {row["document_type"]: row for row in draft["requested"]}
     assert {"proof_of_receipt", "notice_period_evidence", "spouse_notice_copy"} <= requested.keys()
     assert requested["spouse_notice_copy"]["article"] == "Art. 266n"
@@ -39,6 +41,7 @@ def test_german_health_handoff_keeps_customer_quote_and_german_copy() -> None:
     draft = _draft("clm_7ac806bd30792cfb")
     assert draft["kind"] == "specialist_handoff"
     assert draft["language"].startswith("de")
+    assert draft["body_markdown"].startswith("Guten Tag,\n")
     assert "Mein Sohn hustet mehr" in draft["body_markdown"]
     assert "Seit Wochen wird die Ecke im Kinderzimmer schwarz" in draft["body_markdown"]
     assert "Ärztliche Bestätigung" in draft["body_markdown"]
@@ -46,6 +49,24 @@ def test_german_health_handoff_keeps_customer_quote_and_german_copy() -> None:
     assert "meldung an die vermieterschaft" not in draft["body_markdown"]
     assert "Medical confirmation" not in draft["body_markdown"]
     assert "Ist die Heizung betroffen?" in draft["questions"]
+
+
+def test_german_customer_request_uses_known_name_without_guessing_a_title() -> None:
+    claim_id = "clm_f69b1747447bc221"
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    assessment = deepcopy(compile_intake_assessment(corpus, claim_id)["claim_assessment"])
+    assessment["language"] = "de-CH"
+    draft = compile_draft_request(claim_id, assessment)
+    assert draft["body_markdown"].startswith("Guten Tag Robin Foster,\n")
+
+
+def test_ambiguous_tenant_names_keep_neutral_salutation() -> None:
+    claim_id = "clm_f69b1747447bc221"
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    assessment = deepcopy(compile_intake_assessment(corpus, claim_id)["claim_assessment"])
+    source = next(item for item in assessment["noticed"] if item.get("fact_kind") == "named_party_candidate" and item["text"] == "Robin Foster")
+    assessment["noticed"].append({**source, "text": "Another Person"})
+    assert compile_draft_request(claim_id, assessment)["body_markdown"].startswith("Dear customer,\n")
 
 
 def test_rent_request_asks_for_basis_without_renovation_breakdown() -> None:
@@ -107,9 +128,10 @@ def test_draft_and_handler_edit_replay_from_workspace_journal(tmp_path: Path) ->
         )
 
 
-def test_previous_sealed_head_draft_journal_boots_without_rewriting_it(tmp_path: Path) -> None:
-    fixture = json.loads((Path(__file__).parent / "fixtures" / "7440d6a-workspace-draft-journal.json").read_text())
-    assert fixture["source_commit"] == "7440d6a"
+@pytest.mark.parametrize("source_commit", ["7440d6a", "6678cd6"])
+def test_previous_sealed_head_draft_journal_boots_without_rewriting_it(tmp_path: Path, source_commit: str) -> None:
+    fixture = json.loads((Path(__file__).parent / "fixtures" / f"{source_commit}-workspace-draft-journal.json").read_text())
+    assert fixture["source_commit"] == source_commit
     database = tmp_path / "casepath.db"
     workspace = ClaimWorkspaceService(Storage(str(database)), corpus=PublicCorpus(default_workspace_corpus_root()))
     columns = ("session_id", "loop_id", "sequence", "idempotency_key", "command_sha256", "event_sha256", "event_json", "created_at")
@@ -133,3 +155,14 @@ def test_previous_sealed_draft_compiler_replays_exact_bytes(claim_id: str, expec
     corpus = PublicCorpus(default_workspace_corpus_root())
     assessment = compile_intake_assessment(corpus, claim_id, legacy_v2=True)["claim_assessment"]
     assert compile_draft_request(claim_id, assessment, variant="legacy_7440")["draft_sha256"] == expected_sha256
+
+
+@pytest.mark.parametrize("claim_id,expected_sha256", [
+    ("clm_f69b1747447bc221", "2250867d2c82f7ebe3f02c4965242c759fbc5fb4629ed23706cc4530643e04a1"),
+    ("clm_7ac806bd30792cfb", "90a1b68b89475311603b969731ec443e903fbc97ded30ab650bfca32fcddcabb"),
+    ("clm_6f04d0907ecb96bb", "9f0ccfdcab758bd4fb8bc68b107ccef13288c2e9741239b949eb538a2a88a0ae"),
+])
+def test_prior_named_draft_compiler_replays_exact_bytes(claim_id: str, expected_sha256: str) -> None:
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    assessment = compile_intake_assessment(corpus, claim_id)["claim_assessment"]
+    assert compile_draft_request(claim_id, assessment, variant="sealed_1_1")["draft_sha256"] == expected_sha256
