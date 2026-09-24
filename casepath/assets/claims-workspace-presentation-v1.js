@@ -325,11 +325,11 @@ function workbench(loop,workspace,opts={}){
  const review=`<section id="cpReviewCard" class="cp-a-review" data-assessment="${assessment?h(JSON.stringify(assessment)):''}" aria-live="polite"><h2>What I noticed</h2>${assessment?`<div class="cp-a-review-ready" data-status="completed"><div class="cp-a-noticed">${conflicts}<ul>${noticed}</ul></div></div>`:''}</section>`;
  const count=detail?.artifacts?.filter(item=>item.role!=='customer_message').length||0,selected=opts.canvasNodeId||canvas?.steps.find(step=>step.state==='active')?.node_id;
  const why=assessment?assessmentTrace(loop,detail,selected,canvas):`<details class="cp-a-why" id="cpCanvasTrace"><summary>Why</summary><p>The message “${h(title(detail?.message?.subject||'Customer message'))}” and ${count} ${count===1?'attachment':'attachments'} need review before the path can be set.</p></details>`;
- const next=`<section class="cp-a-next" aria-label="Next step"><h2>${h(firstPerson(canvas?.next_step||`Review the message and ${count} ${count===1?'attachment':'attachments'}.`))}</h2><div class="cp-next-actions"><button type="button" class="cw-button cw-button-primary" id="${assessment?'cwDraftOpen':'cwStart'}" ${opts.invalid&&!assessment?'disabled':''}>${assessment?'Draft request':'Review claim'}</button>${why}</div></section>`;
+ const next=`<section class="cp-a-next" aria-label="Next step"><h2>${h(firstPerson(canvas?.next_step||`Review the message and ${count} ${count===1?'attachment':'attachments'}.`))}</h2><div class="cp-next-actions"><button type="button" class="cw-button cw-button-primary" id="${assessment?'cwDraftOpen':'cwStart'}" ${opts.invalid&&!assessment?'disabled':''}>${assessment?'Draft request':'Review claim'}</button>${why}</div>${review}</section>`;
  const path=assessment?assessmentPath(canvas,selected,opts.whatIf,assessment,opts.handlerDrafts):'<section class="cp-a-path"><h2>Where it stands</h2><ol></ol></section>';
  const questions=assessment?assessmentQuestions(canvas):'<section class="cp-a-questions"><h2>Questions</h2><ul></ul></section>';
  const needs=assessment?assessmentNeeds(canvas):'<section class="cp-a-needs"><h2>What to request</h2></section>';
- return `<div class="cp-agentic-grid"><main class="cp-a-main">${next}${review}${path}${questions}${needs}${assessment?draftPanel(opts.draft,opts.draftEdit):''}${footerPanel(loop,workspace,opts,assessment,detail)}</main></div>`;
+ return `<div class="cp-agentic-grid"><main class="cp-a-main">${next}${path}${questions}${needs}${assessment?draftPanel(opts.draft,opts.draftEdit):''}${footerPanel(loop,workspace,opts,assessment,detail)}</main></div>`;
 }
 function detail(detail,loop,opts){
  const s=detail.state,p=loop?.operational_projection||s;

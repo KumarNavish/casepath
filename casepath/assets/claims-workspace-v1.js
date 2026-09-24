@@ -452,7 +452,24 @@
   root.innerHTML = ui.shell();
   document.body.appendChild(root);
 
-  const $ = selector => root.querySelector(selector);
+  const queueRoute = root.querySelector('.cw-shell');
+  const claimRoute = root.querySelector('#cwDetail');
+  const routeAnchor = document.createComment('CasePath route');
+  queueRoute.before(routeAnchor);
+  claimRoute.remove();
+  const $ = selector => root.querySelector(selector)
+    || (queueRoute.matches(selector) ? queueRoute : queueRoute.querySelector(selector))
+    || (claimRoute.matches(selector) ? claimRoute : claimRoute.querySelector(selector));
+  function showClaimRoute() {
+    queueRoute.remove();
+    routeAnchor.after(claimRoute);
+    claimRoute.hidden = false;
+  }
+  function showQueueRoute() {
+    claimRoute.hidden = true;
+    claimRoute.remove();
+    routeAnchor.after(queueRoute);
+  }
   const esc = value => String(value ?? '').replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
   const label = value => String(value ?? 'unknown').replaceAll('_', ' ').replace(/\b\w/g, char => char.toUpperCase());
   const bytes = value => value < 1024 ? `${value} B` : `${(value / 1024).toFixed(1)} KB`;
@@ -1299,7 +1316,7 @@
     history.replaceState(history.state,'',url);
     $('#cwClearFilters').hidden=!hasQueueFilters();
     const selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
-    root.querySelectorAll('[data-queue-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.queueView===selected)));
+    queueRoute.querySelectorAll('[data-queue-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.queueView===selected)));
   }
   function restoreQueueFilters() {
     const query=new URLSearchParams(location.search);
@@ -1645,12 +1662,11 @@
     state.detailController?.abort();
     const controller = new AbortController();
     state.detailController = controller;
-    const detailRoot = $('#cwDetail');
     const panel = $('#cwDetailPanel');
     state.returnFocus = document.activeElement;
     state.returnClaimId = claimId;
-    $('.cw-shell').inert = true;
-    detailRoot.hidden = false;
+    queueRoute.inert = true;
+    showClaimRoute();
     document.body.style.overflow = 'hidden';
     panel.innerHTML = '<div class="cw-empty" role="status"><h2>Opening claim…</h2><p>Loading its saved sources, evidence and process.</p></div>';
     panel.scrollTop=0; panel.focus({preventScroll:true});
@@ -2741,7 +2757,7 @@
   window.addEventListener('beforeunload',savePresentation);
   function displayWorkspaceOverview(rows){
       const summary=ui.queueSummary(rows);state.overviewSummary=summary;
-      root.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
+      queueRoute.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
       root.dataset.uniformAge=String(summary.all>0&&summary.urgent===summary.all);
       for(const key of ['evidence','ready']){
         const button=$(`.cp-triage-line [data-queue-view="${key}"]`);
@@ -3080,8 +3096,8 @@
     state.mutationBusy = null;
     state.detailController?.abort();
     state.detailController = null;
-    $('#cwDetail').hidden = true;
-    $('.cw-shell').inert = false;
+    showQueueRoute();
+    queueRoute.inert = false;
     document.body.style.overflow = '';
     state.detail = null;
     state.detailPriority = null;

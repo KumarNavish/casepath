@@ -8,7 +8,23 @@ from typing import Any, Mapping
 from .workspace_corpus import digest_value
 
 CONTRACT = "casepath.workspace-request-draft/1.0.0"
-COMPILER_ID = "casepath.workspace-request-draft-compiler/1.1.0"
+COMPILER_ID = "casepath.workspace-request-draft-compiler/1.2.0"
+PREVIOUS_COMPILER_ID = "casepath.workspace-request-draft-compiler/1.1.0"
+
+
+def _customer_name(assessment: Mapping[str, Any]) -> str | None:
+    files = {page["artifact_id"]: page["file_name"].casefold() for page in assessment.get("attachment_pages", [])}
+    names = set()
+    for item in assessment["noticed"]:
+        file_name = files.get(item.get("source_id"), "")
+        if (item.get("fact_kind") != "named_party_candidate"
+                or not any(word in file_name for word in ("tenant", "mieter"))
+                or any(word in file_name for word in ("spouse", "wife", "husband", "ehegatt"))):
+            continue
+        name = str(item["text"]).strip()
+        if name and "\n" not in name and len(name) <= 80:
+            names.add(name)
+    return next(iter(names)) if len(names) == 1 else None
 
 
 def _source_quote(assessment: Mapping[str, Any], document: Mapping[str, Any]) -> str | None:
@@ -145,7 +161,7 @@ def compile_draft_request(
     claim_id: str, assessment: Mapping[str, Any], *, edited_body: str | None = None,
     variant: str = "current",
 ) -> dict[str, Any]:
-    if variant not in {"current", "unversioned_current", "legacy_7440"}:
+    if variant not in {"current", "sealed_1_1", "unversioned_current", "legacy_7440"}:
         raise ValueError("draft compiler variant is unsupported")
     legacy = variant == "legacy_7440"
     if not isinstance(assessment, Mapping) or not isinstance(assessment.get("documents"), list):
@@ -210,14 +226,15 @@ def compile_draft_request(
             questions.append(question)
     specialist = assessment["conditions"].get("health_effects", {}).get("verdict") == "true"
     kind = "specialist_handoff" if specialist else "customer_request"
+    customer_name = _customer_name(assessment) if variant == "current" and not specialist else None
     if legacy and german:
         lines = ["# Entwurf für die Fachperson" if specialist else "# Entwurf der Kundenanfrage", "", "Entwurf, nicht gesendet", "", "## Benötigte Unterlagen"]
     elif legacy:
         lines = ["# Draft request", "", "Draft, not sent", "", "## Please send"]
     elif german:
-        lines = ["Guten Tag,", "", "für die Prüfung Ihres Anliegens benötigen wir Folgendes:" if not specialist else "für die fachliche Prüfung dieser Meldung benötigen wir Folgendes:", "", "## Bitte senden Sie uns"]
+        lines = [f"Guten Tag {customer_name}," if customer_name else "Guten Tag,", "", "für die Prüfung Ihres Anliegens benötigen wir Folgendes:" if not specialist else "für die fachliche Prüfung dieser Meldung benötigen wir Folgendes:", "", "## Bitte senden Sie uns"]
     else:
-        lines = ["Dear customer," if not specialist else "Dear specialist,", "", "To review your claim, please send the following:", "", "## Please send"]
+        lines = [f"Dear {customer_name}," if customer_name else "Dear customer," if not specialist else "Dear specialist,", "", "To review your claim, please send the following:", "", "## Please send"]
     for item in requested:
         if legacy:
             detail = f"{item['label']} — {item['step']}" if item["step"] else item["label"]
@@ -273,4 +290,6 @@ def compile_draft_request(
     }
     if variant == "current":
         material["compiler_id"] = COMPILER_ID
+    elif variant == "sealed_1_1":
+        material["compiler_id"] = PREVIOUS_COMPILER_ID
     return {**material, "draft_sha256": digest_value(material)}

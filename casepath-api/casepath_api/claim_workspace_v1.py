@@ -17,7 +17,7 @@ from .claim_workspace_intake_v1 import (
     compile_intake_assessment,
     validate_recorded_intake_assessment,
 )
-from .draft_request_v1 import COMPILER_ID as DRAFT_COMPILER_ID, compile_draft_request
+from .draft_request_v1 import COMPILER_ID as DRAFT_COMPILER_ID, PREVIOUS_COMPILER_ID as PREVIOUS_DRAFT_COMPILER_ID, compile_draft_request
 from .reviewed_memory_v1 import compile_reviewed_memory, matches, statement_pattern
 from .storage import Storage
 from .workspace_corpus import (
@@ -370,6 +370,7 @@ def _reduce(
         try:
             compiler = draft.get("compiler_id")
             variants = ("current",) if compiler == DRAFT_COMPILER_ID else (
+                ("sealed_1_1",) if compiler == PREVIOUS_DRAFT_COMPILER_ID else
                 ("unversioned_current", "legacy_7440") if compiler is None else ()
             )
             expected = [compile_draft_request(

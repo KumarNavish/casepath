@@ -5,7 +5,7 @@
   const ROOT='/api/agent-work/v1', CONTRACT='casepath.agent-work/1.0.0';
   const h=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const icon=(name)=>`<svg class="aw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${({work:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',close:'m6 6 12 12M6 18 18 6',arrow:'M4 12h15m-5-5 5 5-5 5',source:'M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8M8 16h6',check:'m5 12 4 4L19 6',link:'m9 15 6-6M7 17l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0M17 7l1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0',plan:'M4 6h5m6 0h5M9 6a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h5M4 18h5',process:'M5 3v5m0 0h14v8m-14-8v13m11-5h6M3 3h4M3 21h4',evidence:'M5 3h14v18H5zM8 8l2 2 4-4M8 14h8M8 18h6',audit:'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6zM9 12l2 2 4-4',pulse:'M3 12h4l2-5 4 10 2-5h6'})[name]||'M5 12h14'}"/></svg>`;
-  const state={cap:null,claim:null,run:null,events:[],summary:null,assessment:null,assessmentLoading:false,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,timelineOpen:false,repoll:false,stream:null,streamRun:null,streamFailed:null,lastRosterAt:0,spotlit:null,revealCount:0,revealTimer:null,finishedRun:null};
+  const state={cap:null,claim:null,run:null,events:[],summary:null,assessment:null,assessmentLoading:false,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,timelineOpen:false,repoll:false,stream:null,streamRun:null,streamFailed:null,lastRosterAt:0,spotlit:null,revealCount:0,revealTimer:null,finishedRun:null,handoffTimer:null,handoffRun:null};
   const time=t=>t?new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date(t)):'—';
   const label=s=>({not_started:'Not started',working:'Working',completed:'Completed',blocked:'Needs review',unconfirmed:'Outcome unconfirmed',queued:'Queued',running:'Processing',interrupted:'Interrupted',failed:'Needs review'})[s]||s;
   const roleName=r=>state.cap?.roles.find(x=>x.id===r)?.label||'CasePath';
@@ -62,7 +62,7 @@
       if(!button.dataset.agentWorkEntry){button.dataset.agentWorkEntry='true';button.addEventListener('click',event=>{event.preventDefault();showWorkforce();});}
     }
     const claim=getClaim();
-    if(claim!==state.claim){closeStream();clearTimeout(state.revealTimer);state.revealTimer=null;document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.assessment=null;state.assessmentLoading=false;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);state.spotlit=null;state.revealCount=0;state.finishedRun=null;}
+    if(claim!==state.claim){closeStream();clearTimeout(state.revealTimer);clearTimeout(state.handoffTimer);state.revealTimer=null;state.handoffTimer=null;state.handoffRun=null;document.getElementById('cwDetailPanel')?.classList.remove('aw-review-live','aw-review-handoff');document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.assessment=null;state.assessmentLoading=false;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);state.spotlit=null;state.revealCount=0;state.finishedRun=null;}
     if(!claim)return;
     const activity=root.querySelector('#cpReviewCard'),next=root.querySelector('.cp-a-next');if(!activity||!next)return;
     let section=document.getElementById('awClaimWork');
@@ -70,7 +70,7 @@
       section=document.createElement('section');section.id='awClaimWork';section.className='aw-work-strip';section.setAttribute('aria-label','Agent review');
       state.renderKey=null;
     }
-    if(section.parentElement!==next)next.append(section);
+    if(section.parentElement!==next)next.insertBefore(section,activity);
     if(!state.assessment&&activity.dataset.assessment){try{state.assessment=JSON.parse(activity.dataset.assessment);state.assessmentLoading=false;}catch(_){}}
     const start=document.getElementById('cwStart');
     if(start&&!start.dataset.agentWorkEntry){start.dataset.agentWorkEntry='true';start.textContent='Review claim';}
@@ -171,9 +171,23 @@
   }
   function renderClaim(){
     const host=document.getElementById('awClaimWork');if(!host)return;
+    const panel=document.getElementById('cwDetailPanel'),review=document.getElementById('cpReviewCard');
     const summary=state.summary,hasStart=Boolean(document.getElementById('cwStart'));
     if(summary?.run_id&&(summary.status==='completed'||state.events.some(event=>event.operation==='RUN_COMPLETED')))state.finishedRun=summary.run_id;
     const stages=assessmentStages(state.assessment),completed=Boolean(summary?.run_id&&state.finishedRun===summary.run_id),working=!completed&&['queued','running'].includes(summary?.status);
+    const saved=Boolean(review?.dataset.assessment);
+    if(working){
+      clearTimeout(state.handoffTimer);state.handoffTimer=null;state.handoffRun=null;
+      panel?.classList.add('aw-review-live');panel?.classList.remove('aw-review-handoff');
+    }else if(completed&&saved&&panel?.classList.contains('aw-review-live')&&!state.handoffTimer){
+      state.handoffRun=summary.run_id;panel.classList.add('aw-review-handoff');
+      state.handoffTimer=setTimeout(()=>{state.handoffTimer=null;state.handoffRun=null;panel.classList.remove('aw-review-live','aw-review-handoff');state.renderKey=null;renderClaim();},window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:240);
+    }else if(!completed){
+      clearTimeout(state.handoffTimer);state.handoffTimer=null;state.handoffRun=null;
+      panel?.classList.remove('aw-review-live','aw-review-handoff');
+    }
+    const handingOff=state.handoffRun===summary?.run_id;
+    if(completed&&!handingOff)panel?.classList.remove('aw-review-live','aw-review-handoff');
     if(!working&&state.revealTimer){clearTimeout(state.revealTimer);state.revealTimer=null;}
     if(!working){
       document.querySelectorAll('.cp-source-rail .aw-current-passage').forEach(mark=>mark.remove());
@@ -184,8 +198,8 @@
       state.revealTimer=setTimeout(()=>{state.revealTimer=null;state.revealCount++;state.renderKey=null;renderClaim();},160);
     }
     syncLivePath();
-    host.hidden=Boolean(completed&&(state.assessment||document.getElementById('cpReviewCard')?.dataset.assessment))||!summary&&!state.busy&&!pendingRequest();
-    const key=JSON.stringify([summary?.run_id,summary?.last_sequence,completed?'completed':summary?.status,state.busy,hasStart,state.events.length,state.messages.get(state.claim),state.assessment?.assessment_sha256,state.revealCount]);
+    host.hidden=Boolean(completed&&saved&&!handingOff)||!summary&&!state.busy&&!pendingRequest();
+    const key=JSON.stringify([summary?.run_id,summary?.last_sequence,completed?'completed':summary?.status,state.busy,hasStart,state.events.length,state.messages.get(state.claim),state.assessment?.assessment_sha256,state.revealCount,handingOff]);
     if(state.renderKey===key)return;state.renderKey=key;
     const start=document.getElementById('cwStart');
     if(start){const waiting=['queued','running','interrupted'].includes(summary?.status);start.disabled=state.busy||waiting&&!summary?.run_id;start.textContent=waiting?'Stop':'Review claim';}

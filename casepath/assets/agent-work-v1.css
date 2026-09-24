@@ -280,6 +280,8 @@
 .aw-agent-flow-loading{min-height:82px;display:grid;place-items:center;color:#656b77;font-size:11px;background:#fafafb;border-radius:8px;}
 
 .aw-work-strip{border:0;padding:0;margin:0;}
+.aw-review-live #cpReviewCard{display:none;}
+.aw-review-handoff #awClaimWork{opacity:0;transition:opacity 240ms ease-out;}
 .aw-review-progress{color:#1c2430;}
 .aw-review-progress>p{font-size:13px;color:#5b6675;margin:6px 0!important;}
 .aw-narrative-lines{list-style:none;margin:0;padding:0;}
@@ -296,4 +298,4 @@
 .aw-path-settling [data-aw-settled="false"]{opacity:.35;}
 .aw-path-settling [data-aw-settled="false"] .cp-a-condition span,.aw-path-settling .cp-a-condition-overview [data-aw-settled="false"]>span,.aw-path-settling .cp-a-condition-overview [data-aw-settled="false"] q{visibility:hidden;}
 .aw-path-settling [data-aw-settled="true"]{opacity:1;transition:opacity 160ms ease-out;}
-@media(prefers-reduced-motion:reduce){.aw-narrative-lines li,.cp-source-rail .cw-message mark,.aw-source-flash,.aw-current-passage{animation:none}.aw-path-settling [data-aw-settled="true"]{transition:none}}
+@media(prefers-reduced-motion:reduce){.aw-narrative-lines li,.cp-source-rail .cw-message mark,.aw-source-flash,.aw-current-passage{animation:none}.aw-path-settling [data-aw-settled="true"],.aw-review-handoff #awClaimWork{transition:none}}
