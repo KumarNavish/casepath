@@ -1151,6 +1151,7 @@
       || receipt.loop_id !== response.loop_id || receipt.revision !== response.revision
       || receipt.state_sha256 !== response.state_sha256
       || !/^[0-9a-f]{64}$/.test(receipt.event_sha256 || '')
+      || typeof value.journal_event_type !== 'string' || !value.journal_event_type
       || receipt.receipt_sha256 !== await claimLoopSha256(Object.fromEntries(Object.entries(receipt).filter(([key]) => key !== 'receipt_sha256')))
       || value.response_sha256 !== await claimLoopSha256(Object.fromEntries(Object.entries(value).filter(([key]) => key !== 'response_sha256')))
     ) throw new Error('The verified replan response failed authority validation');
@@ -2135,14 +2136,15 @@
         loop = await stageLoopEvidence(context, loop);
         if (!loop || !isActiveDetail(context)) return;
       }
-      const advance = await advanceClaimLoop(context, loop, () => {
+      const showSourceUpdate=(kind,accepted) => {
         if (!isActiveDetail(context)) return;
         const main=$('.cp-a-main');
         if (!main) return;
         $('#cwReplanDelta')?.remove();
-        main.insertAdjacentHTML('afterbegin',ui.changeMarkup({kind:'receipt',claimId:context.claimId,sourceQuote:selectedQuote,sourceItem:beforeLoop.loop_state.selected_action?.evidence_item_id},state.detail.state.intake_assessment?.claim_assessment));
-        $('#cwCommandStatus').textContent='Checking the saved journal record…';
-      });
+        main.insertAdjacentHTML('afterbegin',ui.changeMarkup({kind,accepted,claimId:context.claimId,sourceQuote:selectedQuote,sourceItem:beforeLoop.loop_state.selected_action?.evidence_item_id},state.detail.state.intake_assessment?.claim_assessment));
+        $('#cwCommandStatus').textContent=kind==='receipt'?'Checking the saved journal record…':'Refreshing the claim view…';
+      };
+      const advance = await advanceClaimLoop(context, loop, response => showSourceUpdate(response.journal_event_type==='OBSERVATION_INGESTED'?'head':'receipt',response.journal_event_type==='OBSERVATION_INGESTED'));
       if (!advance || !isActiveDetail(context)) return;
       ({loop} = advance);
       state.change = ui.advanceChange(beforeLoop,loop,advance.baseline,advance.recovered);
@@ -2150,11 +2152,10 @@
       state.canvasNodeId=null;state.focusedEvidenceId=null;
       state.evidenceChoice=null;
       state.loop = loop;
-      await loadQueue();
-      if (!isActiveDetail(context)) return;
       renderDetail(state.detail);
       $('#cwCommandStatus').textContent = '';
       $('#cwReplanDelta')?.scrollIntoView({block:'start'}); $('#cwReplanDelta')?.focus({preventScroll:true});
+      void loadQueue();
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {

@@ -2207,6 +2207,7 @@ def test_workspace_http_stage_replay_and_restart_use_one_journal(
         first_advance.json()["contract"]
         == "casepath.workspace-claim-loop-advance-response/1.0.0"
     )
+    assert first_advance.json()["journal_event_type"] == "OBSERVATION_INGESTED"
     advanced_view = client.get(
         f"/api/claim-loops/v1/workspace/claims/{claim_id}/loop"
     ).json()

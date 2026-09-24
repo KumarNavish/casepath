@@ -2958,6 +2958,19 @@ class WorkspaceClaimLoopServiceV1:
                 )
             except ClaimLoopServiceError as exc:
                 raise WorkspaceClaimLoopError(str(exc)) from exc
+        receipt = response.get("command_receipt")
+        if not isinstance(receipt, dict):
+            raise WorkspaceClaimLoopError("workspace advance has no journal receipt")
+        try:
+            event = self.claim_loop.store.idempotent_event(
+                session_id=WORKSPACE_CLAIM_LOOP_SESSION_ID,
+                loop_id=loop_id,
+                idempotency_key=receipt["idempotency_key"],
+            )
+        except (ClaimLoopStoreError, KeyError) as exc:
+            raise WorkspaceClaimLoopError("workspace advance journal receipt is unavailable") from exc
+        if event is None or event.event_sha256 != receipt["event_sha256"]:
+            raise WorkspaceClaimLoopError("workspace advance journal receipt diverged")
         material = {
             "contract": "casepath.workspace-claim-loop-advance-response/1.0.0",
             "claim_id": claim_id,
@@ -2965,6 +2978,7 @@ class WorkspaceClaimLoopServiceV1:
             "admission": admission,
             "request_context_sha256": request_context_sha256,
             "claim_loop_response": response,
+            "journal_event_type": event.event_type,
         }
         return {**material, "response_sha256": digest_value(material)}
 
