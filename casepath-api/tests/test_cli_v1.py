@@ -17,6 +17,10 @@ import pytest
 import casepath_api.cli as cli_module
 
 from casepath_api.cli import CasePathCLIError, _adapter_module, adapter_check, seed
+from casepath_api.claim_workspace_v1 import (
+    EVENT_CONTRACT as WORKSPACE_EVENT_CONTRACT,
+    EVENT_TYPES as WORKSPACE_EVENT_TYPES,
+)
 from casepath_api.validate_journal import JournalValidationError, validate_journal
 
 
@@ -885,16 +889,18 @@ def test_history_verifier_reconciles_only_canonical_pointer_temps(
 
 
 @pytest.mark.parametrize(
-    "event_type",
-    ["EVIDENCE_PROPOSAL_REJECTED", "NATIVE_PROPOSAL_REVISION_RECORDED"],
+    ("contract", "event_type"),
+    [("casepath.claim-loop-event/1.0.0", event_type) for event_type in
+     ("EVIDENCE_PROPOSAL_REJECTED", "NATIVE_PROPOSAL_REVISION_RECORDED")]
+    + [(WORKSPACE_EVENT_CONTRACT, event_type) for event_type in sorted(WORKSPACE_EVENT_TYPES)],
 )
-def test_history_verifier_accepts_current_claim_loop_event_types(
-    tmp_path: Path, event_type: str,
+def test_history_verifier_accepts_current_journal_event_types(
+    tmp_path: Path, contract: str, event_type: str,
 ) -> None:
     verifier = _history_verifier_module()
     command = {"value": "recorded"}
     material = {
-        "contract": "casepath.claim-loop-event/1.0.0",
+        "contract": contract,
         "session_id": "session-1",
         "loop_id": "loop-1",
         "sequence": 1,
