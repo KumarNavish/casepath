@@ -2936,7 +2936,13 @@ class WorkspaceClaimLoopServiceV1:
             response = existing["response"]
         else:
             if existing is None:
-                state = self._normal_state(workspace_state)
+                try:
+                    state = self.claim_loop.state(
+                        session_id=WORKSPACE_CLAIM_LOOP_SESSION_ID,
+                        loop_id=loop_id,
+                    )
+                except ClaimLoopServiceError as exc:
+                    raise WorkspaceClaimLoopError(str(exc)) from exc
                 if (
                     state.session_id != WORKSPACE_CLAIM_LOOP_SESSION_ID
                     or state.loop_id != loop_id
