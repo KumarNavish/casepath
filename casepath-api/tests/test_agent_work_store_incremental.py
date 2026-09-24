@@ -52,6 +52,24 @@ def test_work_history_validates_only_new_events_and_detects_old_tamper(
         store.snapshot(run["run_id"])
 
 
+def test_cached_work_product_rejects_changed_persisted_bytes(tmp_path) -> None:
+    path = tmp_path / "work.sqlite3"
+    store = WorkStore(path)
+    run, _ = store.create("clm_test", "review-command-product-0001", {"facts_worker": "reference"})
+    owner = "worker-1"
+    assert store.acquire(run["run_id"], owner)
+    store.begin_call(run["run_id"], owner, Role.FACTS.value, "source-1", "open_source", {"source_id": "source-1"})
+    store.complete_call(run["run_id"], owner, Role.FACTS.value, "source-1", {"ok": True}, [],
+                        objects=[{"id": "source-1", "kind": "opened_source", "value": {"text": "Original source"}}])
+    assert store.snapshot(run["run_id"])["objects"][0]["value"]["text"] == "Original source"
+    assert store.snapshot(run["run_id"])["objects"][0]["value"]["text"] == "Original source"
+    with sqlite3.connect(path) as db:
+        db.execute("UPDATE work_objects SET value_json=? WHERE run_id=? AND object_id=?",
+                   ('{"text":"Changed"}', run["run_id"], "source-1"))
+    with pytest.raises(WorkStoreError, match="work object differs"):
+        store.snapshot(run["run_id"])
+
+
 def test_workforce_reads_run_table_and_stream_replays_terminal_events(
     tmp_path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

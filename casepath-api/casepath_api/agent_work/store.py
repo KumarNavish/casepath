@@ -85,6 +85,7 @@ class WorkStore:
         self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
         self._lock = RLock()
         self._validated_event_cache: dict[str, tuple[str, tuple[tuple[int, str, bytes], ...], list[dict]]] = {}
+        self._validated_object_cache: dict[str, tuple[tuple, tuple, bytes]] = {}
         with self.connect() as db:
             db.executescript(SCHEMA)
             db.execute("PRAGMA journal_mode=WAL")
@@ -312,8 +313,21 @@ class WorkStore:
             if len(self._validated_event_cache) > 256:
                 self._validated_event_cache.pop(next(iter(self._validated_event_cache)))
         anchors = {e["sequence"]: e for e in history}
-        objects = []
-        for row in products:
+        product_fingerprints = tuple(
+            (row["object_id"], row["kind"], row["value_sha256"], row["event_sequence"], sha256(row["value_json"].encode()).digest())
+            for row in products
+        )
+        with self._lock:
+            cached_objects = self._validated_object_cache.get(run_id)
+        if (cached_objects is not None
+                and len(cached_objects[0]) <= len(fingerprints)
+                and fingerprints[:len(cached_objects[0])] == cached_objects[0]
+                and len(cached_objects[1]) <= len(product_fingerprints)
+                and product_fingerprints[:len(cached_objects[1])] == cached_objects[1]):
+            objects = json.loads(cached_objects[2])
+        else:
+            objects = []
+        for row in products[len(objects):]:
             value = json.loads(row["value_json"])
             anchor = anchors.get(row["event_sequence"], {})
             if (digest(value) != row["value_sha256"] or anchor.get("operation") != "WORK_PRODUCT_RECORDED"
@@ -321,6 +335,10 @@ class WorkStore:
                     or anchor.get("after") != {"value":value,"value_sha256":row["value_sha256"]}):
                 raise WorkStoreError("work object differs from its immutable event")
             objects.append({"id":row["object_id"],"kind":row["kind"],"value":value,"sha256":row["value_sha256"],"event_sequence":row["event_sequence"]})
+        with self._lock:
+            self._validated_object_cache[run_id] = (fingerprints, product_fingerprints, canonical(objects))
+            if len(self._validated_object_cache) > 256:
+                self._validated_object_cache.pop(next(iter(self._validated_object_cache)))
         terminal = {"completed":"RUN_COMPLETED", "blocked":"RUN_BLOCKED", "failed":"RUN_FAILED", "interrupted":"RUN_INTERRUPTED", "cancelled":"RUN_CANCELLED"}
         if run["status"] in terminal and (not history or history[-1]["operation"] != terminal[run["status"]]):
             raise WorkStoreError("run status differs from its immutable history")
