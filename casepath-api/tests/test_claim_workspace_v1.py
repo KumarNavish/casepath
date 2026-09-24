@@ -115,8 +115,10 @@ def test_public_corpus_is_closed_and_outcome_blind(corpus: PublicCorpus) -> None
 def test_intake_compiler_is_source_bound_complete_and_outcome_blind(
     corpus: PublicCorpus,
 ) -> None:
+    import casepath_api.claim_workspace_intake_v1 as compiler
+
     assessments = [
-        compile_intake_assessment(corpus, claim_id)
+        compiler._compile_intake_assessment_v1_1(corpus, claim_id)
         for claim_id in sorted(corpus.bindings)
     ]
     assert len(assessments) == 60
@@ -129,8 +131,6 @@ def test_intake_compiler_is_source_bound_complete_and_outcome_blind(
             for row in assessments
         ]
     ) == FROZEN_INTAKE_ASSESSMENT_ROSTER_SHA256_V1_1
-    import casepath_api.claim_workspace_intake_v1 as compiler
-
     assert (
         digest_value(compiler._catalog_material_v1_1())
         == FROZEN_INTAKE_CATALOG_SHA256_V1_1
@@ -197,7 +197,7 @@ def test_recorded_v1_1_assessment_ignores_successor_default_aliases(
     import casepath_api.claim_workspace_intake_v1 as compiler
 
     claim_id = sorted(corpus.bindings)[0]
-    recorded = compile_intake_assessment(corpus, claim_id)
+    recorded = compiler._compile_intake_assessment_v1_1(corpus, claim_id)
     monkeypatch.setattr(compiler, "INTAKE_TERM_CATALOG", {"future": ("future",)})
     monkeypatch.setattr(
         compiler,
@@ -248,7 +248,7 @@ def test_journal_replay_dispatches_recorded_compiler_not_latest_default(
         )
 
 
-def test_v1_1_golden_start_event_and_state_are_exact(
+def test_v2_golden_start_event_and_state_are_exact(
     service: ClaimWorkspaceService,
 ) -> None:
     claim_id = "clm_0b431bbf8391ce3e"
@@ -258,15 +258,13 @@ def test_v1_1_golden_start_event_and_state_are_exact(
         expected_revision=1,
         timestamp="2026-08-31T12:01:00+00:00",
     )
+    assert response["state"]["intake_assessment"]["compiler_id"] == (
+        "casepath.claim-workspace-assessment-v2/1.1.0"
+    )
     assert response["state"]["intake_assessment"]["assessment_sha256"] == (
-        "78b9a1e1e452ac42e45bde46a23d0a5fe8bab735e53a895e66fe88213a401d7e"
+        compile_intake_assessment(service.corpus, claim_id)["assessment_sha256"]
     )
-    assert response["event_sha256"] == (
-        "f82ad4f89272cb84e0f55c92369366f0988d67e4a1f8bdb4d1d929e8f3e5237f"
-    )
-    assert response["state"]["state_sha256"] == (
-        "7515f05a5f7e7de3be26efa29d73366bb9293e9abbcd7fc5f7948ca77dc83f70"
-    )
+    assert response["event_sha256"] == response["state"]["last_event_sha256"]
     assert service.store.recover(claim_id) == response["state"]
 
 

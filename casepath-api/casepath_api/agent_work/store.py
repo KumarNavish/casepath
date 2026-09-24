@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from datetime import datetime, timezone
+from hashlib import sha256
 from pathlib import Path
 from threading import RLock
 from typing import Any
@@ -31,6 +32,10 @@ class ReconciliationRequired(WorkStoreError):
     pass
 
 
+class WorkCancelled(WorkStoreError):
+    pass
+
+
 ACTIVE = ("queued", "running", "interrupted")
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS work_runs (
@@ -43,6 +48,9 @@ CREATE TABLE IF NOT EXISTS work_runs (
 CREATE UNIQUE INDEX IF NOT EXISTS one_active_work_run_per_claim
  ON work_runs(claim_id) WHERE status IN ('queued','running','interrupted');
 CREATE TABLE IF NOT EXISTS work_external_permits (
+ run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
+);
+CREATE TABLE IF NOT EXISTS work_cancellation_requests (
  run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
 );
 CREATE TABLE IF NOT EXISTS work_events (
@@ -76,10 +84,22 @@ class WorkStore:
             raise WorkStoreError("work journal path cannot be a symlink")
         self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
         self._lock = RLock()
+        self._validated_event_cache: dict[str, tuple[str, tuple[tuple[int, str, bytes], ...], list[dict]]] = {}
+        self._validated_object_cache: dict[str, tuple[tuple, tuple, bytes]] = {}
         with self.connect() as db:
             db.executescript(SCHEMA)
             db.execute("PRAGMA journal_mode=WAL")
+        # Keep one reader open so short tool-call connections do not checkpoint
+        # the WAL after every durable commit. FULL synchronous still protects it.
+        self._keeper = sqlite3.connect(self.path, timeout=10, isolation_level=None, check_same_thread=False)
+        self._keeper.execute("PRAGMA journal_mode").fetchone()
         os.chmod(self.path, 0o600)
+
+    def close(self):
+        with self._lock:
+            if self._keeper is not None:
+                self._keeper.close()
+                self._keeper = None
 
     @contextmanager
     def connect(self):
@@ -114,6 +134,10 @@ class WorkStore:
     def get_run(self, run_id):
         with self.connect() as db:
             run = self._run(db, run_id)
+        return self._decode_run(run)
+
+    @staticmethod
+    def _decode_run(run):
         run["request"] = json.loads(run.pop("request_json"))
         if digest(run["request"]) != run["request_sha256"]:
             raise WorkStoreError("run request identity is invalid")
@@ -189,7 +213,7 @@ class WorkStore:
         self.events(run_id)  # Reject altered history before claiming work.
         with self.transaction() as db:
             run = self._run(db, run_id)
-            if run["status"] in {"completed", "blocked", "failed"}:
+            if run["status"] in {"completed", "blocked", "failed", "cancelled"}:
                 return False
             if run["status"] == "running" and run["lease_until"] > time.time():
                 raise ConflictError("work is already executing")
@@ -204,6 +228,8 @@ class WorkStore:
     def heartbeat(self, run_id, owner, seconds=180):
         with self.transaction() as db:
             self._require_owner(db, run_id, owner)
+            if db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise WorkCancelled("The review was stopped at a safe checkpoint")
             db.execute("UPDATE work_runs SET lease_until=? WHERE run_id=?", (time.time() + seconds, run_id))
 
     def begin_call(self, run_id, owner, role, call_id, tool, arguments):
@@ -212,6 +238,8 @@ class WorkStore:
             raise WorkStoreError("invalid tool call identity")
         with self.transaction() as db:
             self._require_owner(db, run_id, owner)
+            if db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise WorkCancelled("The review was stopped at a safe checkpoint")
             existing = db.execute("SELECT * FROM work_calls WHERE run_id=? AND role=? AND call_id=?", (run_id, str(role), call_id)).fetchone()
             if existing:
                 if existing["request_sha256"] != request_hash:
@@ -245,9 +273,9 @@ class WorkStore:
             return response
 
     @staticmethod
-    def _validate_events(run, rows):
-        previous, result = "0" * 64, []
-        for index, row in enumerate(rows, 1):
+    def _validate_events(run, rows, *, start=0, previous="0" * 64):
+        result = []
+        for index, row in enumerate(rows, start + 1):
             try:
                 event = WorkEvent.model_validate(json.loads(row["event_json"])).model_dump(mode="json")
             except ValueError as exc:
@@ -272,10 +300,44 @@ class WorkStore:
         run["request"] = json.loads(run.pop("request_json"))
         if digest(run["request"]) != run["request_sha256"]:
             raise WorkStoreError("run request identity is invalid")
-        history = self._validate_events(run, rows)
+        # Fingerprint persisted bytes on every read. Pydantic replay is needed
+        # only for the suffix; an altered prefix forces full validation.
+        fingerprints = tuple(
+            (row["sequence"], row["event_sha256"], sha256(row["event_json"].encode()).digest())
+            for row in rows
+        )
+        with self._lock:
+            cached = self._validated_event_cache.get(run_id)
+        if (cached is not None and cached[0] == run["claim_id"]
+                and len(cached[1]) <= len(fingerprints)
+                and fingerprints[:len(cached[1])] == cached[1]):
+            prefix = cached[2]
+            history = prefix + self._validate_events(
+                run, rows[len(prefix):], start=len(prefix),
+                previous=prefix[-1]["event_sha256"] if prefix else "0" * 64,
+            ) if len(prefix) < len(rows) else prefix
+        else:
+            history = self._validate_events(run, rows)
+        with self._lock:
+            self._validated_event_cache[run_id] = (run["claim_id"], fingerprints, history)
+            if len(self._validated_event_cache) > 256:
+                self._validated_event_cache.pop(next(iter(self._validated_event_cache)))
         anchors = {e["sequence"]: e for e in history}
-        objects = []
-        for row in products:
+        product_fingerprints = tuple(
+            (row["object_id"], row["kind"], row["value_sha256"], row["event_sequence"], sha256(row["value_json"].encode()).digest())
+            for row in products
+        )
+        with self._lock:
+            cached_objects = self._validated_object_cache.get(run_id)
+        if (cached_objects is not None
+                and len(cached_objects[0]) <= len(fingerprints)
+                and fingerprints[:len(cached_objects[0])] == cached_objects[0]
+                and len(cached_objects[1]) <= len(product_fingerprints)
+                and product_fingerprints[:len(cached_objects[1])] == cached_objects[1]):
+            objects = json.loads(cached_objects[2])
+        else:
+            objects = []
+        for row in products[len(objects):]:
             value = json.loads(row["value_json"])
             anchor = anchors.get(row["event_sequence"], {})
             if (digest(value) != row["value_sha256"] or anchor.get("operation") != "WORK_PRODUCT_RECORDED"
@@ -283,7 +345,11 @@ class WorkStore:
                     or anchor.get("after") != {"value":value,"value_sha256":row["value_sha256"]}):
                 raise WorkStoreError("work object differs from its immutable event")
             objects.append({"id":row["object_id"],"kind":row["kind"],"value":value,"sha256":row["value_sha256"],"event_sequence":row["event_sequence"]})
-        terminal = {"completed":"RUN_COMPLETED", "blocked":"RUN_BLOCKED", "failed":"RUN_FAILED", "interrupted":"RUN_INTERRUPTED"}
+        with self._lock:
+            self._validated_object_cache[run_id] = (fingerprints, product_fingerprints, canonical(objects))
+            if len(self._validated_object_cache) > 256:
+                self._validated_object_cache.pop(next(iter(self._validated_object_cache)))
+        terminal = {"completed":"RUN_COMPLETED", "blocked":"RUN_BLOCKED", "failed":"RUN_FAILED", "interrupted":"RUN_INTERRUPTED", "cancelled":"RUN_CANCELLED"}
         if run["status"] in terminal and (not history or history[-1]["operation"] != terminal[run["status"]]):
             raise WorkStoreError("run status differs from its immutable history")
         if run["status"] == "queued" and (len(history)!=1 or history[0]["operation"]!="RUN_QUEUED"):
@@ -304,15 +370,35 @@ class WorkStore:
         return self.snapshot(run_id)["events"][after:after+limit]
 
     def finish(self, run_id, owner, status, message, after=None):
-        operations = {"completed": Operation.RUN_COMPLETED, "blocked": Operation.RUN_BLOCKED, "failed": Operation.RUN_FAILED}
+        operations = {"completed": Operation.RUN_COMPLETED, "blocked": Operation.RUN_BLOCKED, "failed": Operation.RUN_FAILED, "cancelled": Operation.RUN_CANCELLED}
         if status not in operations:
             raise WorkStoreError("invalid terminal work status")
         with self.transaction() as db:
             self._require_owner(db, run_id, owner)
+            if status == "completed" and db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                status, message = "cancelled", "Review stopped after the current source check"
             self._append(db, run_id, operation=operations[status], object_kind="run", object_id=run_id,
-                         status="completed" if status == "completed" else "blocked", message=message,
+                         status="completed" if status in {"completed", "cancelled"} else "blocked", message=message,
                          worker_kind="kernel", after=after)
             db.execute("UPDATE work_runs SET status=?,owner=NULL,lease_until=NULL WHERE run_id=?", (status, run_id))
+
+    def request_cancel(self, run_id):
+        with self.transaction() as db:
+            run = self._run(db, run_id)
+            if run["request_json"] and json.loads(run["request_json"]).get("facts_worker") != "reference":
+                raise ConflictError("Stopping an external inference requires manual reconciliation")
+            if run["status"] == "cancelled":
+                return
+            if run["status"] not in ACTIVE:
+                raise ConflictError("this review has already finished")
+            if not db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                db.execute("INSERT INTO work_cancellation_requests VALUES(?)", (run_id,))
+                self._append(db, run_id, operation=Operation.RUN_CANCEL_REQUESTED, object_kind="run", object_id=run_id,
+                             status="observed", message="Stop requested by the handler", worker_kind="kernel")
+            if run["status"] in {"queued", "interrupted"}:
+                self._append(db, run_id, operation=Operation.RUN_CANCELLED, object_kind="run", object_id=run_id,
+                             status="completed", message="Review stopped before the next source check", worker_kind="kernel")
+                db.execute("UPDATE work_runs SET status='cancelled',owner=NULL,lease_until=NULL WHERE run_id=?", (run_id,))
 
     def mark_expired_interrupted(self):
         """A vanished executor is unconfirmed work, not a scientific/model failure."""
@@ -334,9 +420,9 @@ class WorkStore:
         if not 1 <= limit <= 500:
             raise WorkStoreError("run limit is invalid")
         with self.connect() as db:
-            sql = "SELECT run_id FROM work_runs" + (" WHERE claim_id=?" if claim_id else "") + " ORDER BY created_at DESC,run_id LIMIT ?"
+            sql = "SELECT * FROM work_runs" + (" WHERE claim_id=?" if claim_id else "") + " ORDER BY created_at DESC,run_id LIMIT ?"
             rows = db.execute(sql, (claim_id, limit) if claim_id else (limit,)).fetchall()
-        return [self.get_run(row["run_id"]) for row in rows]
+        return [self._decode_run(dict(row)) for row in rows]
 
 
     def find_request(self, claim_id, idempotency_key):
@@ -359,12 +445,13 @@ class WorkStore:
                            ROW_NUMBER() OVER (PARTITION BY claim_id ORDER BY created_at DESC,run_id DESC) AS position
                     FROM work_runs
                 )
-                SELECT run_id FROM ranked WHERE position=1
-                ORDER BY CASE WHEN status IN ('queued','running','interrupted') THEN 0 ELSE 1 END,
-                         created_at DESC,run_id DESC LIMIT ?
+                SELECT work_runs.* FROM ranked JOIN work_runs USING(run_id)
+                WHERE position=1
+                ORDER BY CASE WHEN ranked.status IN ('queued','running','interrupted') THEN 0 ELSE 1 END,
+                         ranked.created_at DESC,ranked.run_id DESC LIMIT ?
                 """, (limit,)).fetchall()
             db.commit()
-        runs = [self.get_run(row["run_id"]) for row in rows]
+        runs = [self._decode_run(dict(row)) for row in rows]
         return runs, {"kind":"latest_per_claim", "total_runs":totals["runs"],
                       "total_claims":totals["claims"], "returned_claims":len(runs),
                       "has_more":totals["claims"] > len(runs)}

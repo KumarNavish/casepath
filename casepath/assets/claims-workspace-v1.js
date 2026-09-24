@@ -418,7 +418,7 @@
   const ui = window.CasePathPresentation;
   if (!ui) throw new Error('The claim presentation could not be loaded.');
   const state = {
-    workbenchTab:"overview",viewScroll:{},inspectorOpen:false,overviewLoading:false,overviewQueued:false,overviewSummary:null,
+    inspectorOpen:false,overviewLoading:false,overviewQueued:false,overviewSummary:null,
     cursor: null,
     items: [],
     total: 0,
@@ -436,6 +436,11 @@
     correctionPreview: null,
     nativeInvestigation: null,
     change: null, sourceSelection: null, sourceRequest: 0, sourceUrl: null, sourceController: null, loadedQuery: null,
+    focusedEvidenceId: null, whatIf: null, evidenceChoice: null, handlerDrafts: {}, draft: null, draftEdit: null,
+    memories:null,knowledge:null,memoryHidden:new Set(),
+    reviewerMode:localStorage.getItem('casepath:reviewer:v1')==='1',
+    guideStep:sessionStorage.getItem('casepath:walk-step')===null?null:Number(sessionStorage.getItem('casepath:walk-step')),
+    guideStatus:'',deepLinkWhatIfHandled:false,
   };
   const EXPECTED_AGENT_IDS = ['canonical_facts','orchestrator_plan','document_source_integrity','process_decision_mapping','evidence_checklist','final_claim_brief_audit'];
   const EXPECTED_GATE_IDS = ['deterministic_process_gate','deterministic_evidence_gate','whole_playbook_gate'];
@@ -447,7 +452,24 @@
   root.innerHTML = ui.shell();
   document.body.appendChild(root);
 
-  const $ = selector => root.querySelector(selector);
+  const queueRoute = root.querySelector('.cw-shell');
+  const claimRoute = root.querySelector('#cwDetail');
+  const routeAnchor = document.createComment('CasePath route');
+  queueRoute.before(routeAnchor);
+  claimRoute.remove();
+  const $ = selector => root.querySelector(selector)
+    || (queueRoute.matches(selector) ? queueRoute : queueRoute.querySelector(selector))
+    || (claimRoute.matches(selector) ? claimRoute : claimRoute.querySelector(selector));
+  function showClaimRoute() {
+    queueRoute.remove();
+    routeAnchor.after(claimRoute);
+    claimRoute.hidden = false;
+  }
+  function showQueueRoute() {
+    claimRoute.hidden = true;
+    claimRoute.remove();
+    routeAnchor.after(queueRoute);
+  }
   const esc = value => String(value ?? '').replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
   const label = value => String(value ?? 'unknown').replaceAll('_', ' ').replace(/\b\w/g, char => char.toUpperCase());
   const bytes = value => value < 1024 ? `${value} B` : `${(value / 1024).toFixed(1)} KB`;
@@ -457,6 +479,50 @@
   };
   const commandKey = prefix => `${prefix}-${crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`}`;
   const commandSlot = (kind, claimId) => `casepath:workspace-command:${claimId}:${kind}`;
+  const flagshipClaim='clm_f69b1747447bc221';
+  const walk=[
+    ['Read the packet','Open the customer message and compare the two notices.','[data-open-inspector]'],
+    ['Review the claim','Select Review claim and follow the checks as they appear.','#cwStart'],
+    ['See what is needed','Find the receipt-date question and the documents needed now.','.cp-a-needs'],
+    ['Change one condition','Open What if on family-home service. Set it false and read what leaves the request.','[data-what-if="family_home"]'],
+    ['Draft the request','Select Draft request. Read the saved customer draft before copying or exporting it.','#cwDraftOpen'],
+  ];
+  function syncReviewerMode(){
+    root.dataset.reviewerMode=String(state.reviewerMode);
+    root.querySelectorAll('[data-reviewer-toggle]').forEach(button=>button.setAttribute('aria-pressed',String(state.reviewerMode)));
+    const panel=$('#cwDetailPanel');if(!panel||$('#cwDetail').hidden)return;
+    if(!state.reviewerMode)return;
+    const mark=(selector,label)=>panel.querySelectorAll(selector).forEach(element=>element.dataset.provenance=label);
+    mark('.cp-source-rail','Source · customer or attachment');
+    mark('.cp-packet-browser [data-source-artifact]','Source · held file');
+    mark('.cp-a-review,.aw-narrative-lines li,.cp-a-path li,.cp-a-condition-overview li,.cp-a-condition,.cp-a-needs li,.cp-a-next,.cp-a-deadline,.cp-a-why li,.cp-a-conflict,.cp-a-escalation','Deterministic assessment');
+    mark('.cp-a-noticed li','Source-bound extraction');
+    mark('.cp-a-what-if,.cp-a-what-if-diff li','Deterministic sandbox');
+    mark('.cp-a-draft','Draft proposal · deterministic');
+    if(state.draft?.latest?.edited_by_handler)mark('.cp-a-draft','Draft proposal · handler edited');
+    mark('.cp-reviewed-memory article','Reviewed memory');
+    mark('.cp-handler-notes li','Handler assessment');
+    mark('.cp-evidence-conversation li','Deterministic passage verdict');
+  }
+  function renderGuide(){
+    const panel=$('#cwDetailPanel');panel?.querySelector('#cpGuidedWalk')?.remove();
+    if(!panel||state.guideStep===null||state.detail?.state.claim_id!==flagshipClaim)return;
+    const step=Math.max(0,Math.min(walk.length-1,state.guideStep));state.guideStep=step;
+    const [title,description]=walk[step];
+    panel.insertAdjacentHTML('beforeend',`<aside class="cp-guided-walk" id="cpGuidedWalk" aria-label="Guided walk"><small>Step ${step+1} of ${walk.length}</small><h2>${esc(title)}</h2><p>${esc(description)}</p>${state.guideStatus?`<p role="status">${esc(state.guideStatus)}</p>`:''}<div>${step?'<button type="button" class="cw-button" data-guide-back>Back</button>':''}<button type="button" class="cw-button cw-button-primary" ${step===walk.length-1?'data-guide-finish':'data-guide-next'}>${step===walk.length-1?'Finish':'Next'}</button><button type="button" class="cw-text-button" data-guide-exit>Close</button></div></aside>`);
+  }
+  function moveGuide(direction){
+    if(state.guideStep===null)return;
+    if(direction==='finish'&&state.guideStep===walk.length-1){
+      if(!state.draft?.latest){state.guideStatus='Save the request draft, then finish.';renderGuide();return;}
+      state.guideStep=null;sessionStorage.removeItem('casepath:walk-step');renderGuide();return;
+    }
+    if(direction==='next'&&state.guideStep===1&&!state.detail?.state.intake_assessment){state.guideStatus='Select Review claim and wait for its summary.';renderGuide();return;}
+    if(direction==='next'&&state.guideStep===3&&!state.whatIf?.result){state.guideStatus='Set a condition in What if and read the changed request.';renderGuide();return;}
+    state.guideStep=Math.max(0,Math.min(walk.length-1,state.guideStep+(direction==='back'?-1:1)));
+    state.guideStatus='';sessionStorage.setItem('casepath:walk-step',String(state.guideStep));renderGuide();
+    $('#cwDetailPanel')?.querySelector(walk[state.guideStep][2])?.scrollIntoView({block:'center'});
+  }
 
   function storedCommandIdentity(kind, claimId) {
     const raw = sessionStorage.getItem(commandSlot(kind, claimId));
@@ -583,7 +649,7 @@
     const processKeys = ['next_action_node_id','node_id','node_title','overlay_sha256','selected_branch_id'];
     const nextKeys = ['action_id','action_sha256','kind','terminal_mode','title'];
     const evidenceKeys = ['current_path','evidence_class','evidence_item_id','fact_id','fact_state','mandatory_now','obligation_status','provenance_edge_sha256s','raw_status','source_ref_ids','title'];
-    const classes = ['received','missing','insufficient','conditional','irrelevant','unknown'];
+    const classes = ['received','missing','insufficient','conditional','irrelevant','unknown','held_not_reviewed'];
     if (
       !value || typeof value !== 'object' || Array.isArray(value)
       || Object.keys(value).sort().join('|') !== keys.sort().join('|')
@@ -669,7 +735,7 @@
 
   async function validateQueueResponse(value) {
     const keys = ['authority','contract','corpus_identity','facets','generated_at','items','next_cursor','page_count','projection_sha256','request_sha256','state_roster_sha256','total_count'];
-    const rowKeys = ['claim_id','claim_type','deadline_at','failure_or_unknown_effect','language','last_authoritative_update','next_safe_action','operational_projection','owner','pending_evidence_count','principal_blocker','priority_tuple','readiness_state','received_age_days','received_at','revision','row_sha256','state_sha256','subject','urgency','workflow_state'];
+    const rowKeys = ['claim_id','claim_type','deadline_at','failure_or_unknown_effect','language','last_authoritative_update','next_safe_action','operational_projection','owner','pending_evidence_count','principal_blocker','priority_tuple','readiness_state','received_age_days','received_at','revision','row_sha256','state_sha256','subject','triage','urgency','workflow_state'];
     const priorityDimensions = ['safety','deadline','failed_or_unknown_effect','unresolved_critical_obligation','waiting_age_days','customer_burden','closeness_to_readiness'];
     if (
       !value || typeof value !== 'object' || Array.isArray(value)
@@ -696,6 +762,12 @@
         || item.priority_tuple[5].value !== 'unknown'
         || ![0,1,2,3].includes(item.priority_tuple[6].value)
         || !/^[0-9a-f]{64}$/.test(item.row_sha256 || '')
+        || !item.triage || Object.keys(item.triage).sort().join('|') !== 'condition_profile|condition_profile_label|draft_ready|next_step|noticed_fact|noticed_source|uses_reviewed_memory|waiting_on'
+        || !/^[0-9a-f]{64}$/.test(item.triage.condition_profile || '')
+        || !['Customer','Handler','Specialist'].includes(item.triage.waiting_on)
+        || !['assessment','message'].includes(item.triage.noticed_source)
+        || typeof item.triage.noticed_fact !== 'string' || !item.triage.noticed_fact
+        || typeof item.triage.draft_ready !== 'boolean' || typeof item.triage.uses_reviewed_memory !== 'boolean'
         || item.row_sha256 !== await sha256(Object.fromEntries(Object.entries(item).filter(([key]) => key !== 'row_sha256')))
       ) throw new Error('A queue row failed hash verification');
       const expectedReadinessRank = {decision_ready:3, safe_abstention:2, blocked:1, not_assessed:0}[item.readiness_state];
@@ -703,7 +775,7 @@
         expectedReadinessRank === undefined
         || !Number.isSafeInteger(item.received_age_days) || item.received_age_days < 0
         || item.priority_tuple[0].value !== (['failed','typed_failure'].includes(item.workflow_state) ? 0 : 1)
-        || item.priority_tuple[1].value !== (item.deadline_at || 'unknown')
+        || item.priority_tuple[1].value !== (item.deadline_at?.date || 'unknown')
         || item.priority_tuple[2].value !== (item.failure_or_unknown_effect ? 0 : 1)
         || item.priority_tuple[3].value !== (item.readiness_state === 'decision_ready' ? 1 : 0)
         || item.priority_tuple[4].value !== item.received_age_days
@@ -800,7 +872,7 @@
         || !Number.isInteger(contract.intent_ttl_seconds) || contract.intent_ttl_seconds !== 300
         || !Number.isInteger(contract.max_content_bytes) || contract.max_content_bytes !== 100000
         || ![contract.interpreter_source_sha256,contract.source_policy_sha256,contract.catalog_sha256].every(value => /^[0-9a-f]{64}$/.test(value || ''))
-        || contract.interpreter_id !== 'casepath.fixed-source-span-interpreter/1.0.0'
+        || contract.interpreter_id !== 'casepath.fixed-source-span-interpreter/1.0.1'
         || contract.authority_id !== 'casepath.independent-evidence-authority/1.0.0'
       ) throw new Error('The evidence input contract failed authority validation');
     } else if (value.input_contract !== null || value.stage_receipt !== null) {
@@ -1129,6 +1201,7 @@
   async function validateAdvanceResponse(value, loop, expectedBody) {
     const admission = value?.admission;
     const response = value?.claim_loop_response;
+    const receipt = response?.command_receipt;
     if (
       value?.contract !== 'casepath.workspace-claim-loop-advance-response/1.0.0'
       || value.claim_id !== loop.claim_id
@@ -1145,21 +1218,38 @@
       || !response || response.loop_id !== loop.loop_state.loop_id
       || response.contract !== 'casepath.claim-loop-response/1.0.0'
       || !/^[0-9a-f]{64}$/.test(response.state_sha256 || '')
+      || !receipt || receipt.contract !== 'casepath.claim-loop-command-receipt/1.0.0'
+      || receipt.loop_id !== response.loop_id || receipt.revision !== response.revision
+      || receipt.state_sha256 !== response.state_sha256
+      || !/^[0-9a-f]{64}$/.test(receipt.event_sha256 || '')
+      || typeof value.journal_event_type !== 'string' || !value.journal_event_type
+      || receipt.receipt_sha256 !== await claimLoopSha256(Object.fromEntries(Object.entries(receipt).filter(([key]) => key !== 'receipt_sha256')))
       || value.response_sha256 !== await claimLoopSha256(Object.fromEntries(Object.entries(value).filter(([key]) => key !== 'response_sha256')))
     ) throw new Error('The verified replan response failed authority validation');
     return value;
   }
 
   async function request(path, options = {}) {
-    let response;
+    const {signal: callerSignal, ...fetchOptions} = options;
+    const controller = new AbortController();
+    const isWrite = !['GET', 'HEAD'].includes((options.method || 'GET').toUpperCase());
+    let timedOut = false;
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, isWrite ? 90000 : 12000);
+    const abort = () => controller.abort();
+    callerSignal?.addEventListener('abort', abort, {once: true});
+    if (callerSignal?.aborted) abort();
+    let response, body;
     try {
-      response = await fetch(`${api}${path}`, {cache: 'no-store', ...options});
+      response = await fetch(`${api}${path}`, {cache: 'no-store', ...fetchOptions, signal: controller.signal});
+      body = await response.json().catch(() => null);
     } catch (cause) {
-      const error = new Error(cause?.message || 'No response was received');
+      const error = new Error(timedOut ? 'Request timed out. Try again to check the saved state.' : cause?.message || 'No response was received');
       error.transportFailure = true;
       throw error;
+    } finally {
+      clearTimeout(timer);
+      callerSignal?.removeEventListener('abort', abort);
     }
-    const body = await response.json().catch(() => null);
     if (!response.ok) {
       const detail = body?.detail;
       const message = typeof detail === 'string' ? detail : detail?.reason || `Request failed (${response.status})`;
@@ -1187,7 +1277,7 @@
     const fields = [
       ['q','#cwSearch'],['state','#cwState'],['readiness','#cwReadiness'],
       ['claim_type','#cwClaimType'],['owner','#cwOwner'],['urgency','#cwUrgency'],
-      ['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence'],
+      ['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence'],['profile','#cwSimilar'],
     ];
     fields.forEach(([key, selector]) => { const value = $(selector).value.trim(); if (value) query.set(key, value); });
     if (cursor) query.set('cursor', cursor);
@@ -1215,7 +1305,7 @@
     return `<div class="cw-progress" data-progress-percent="${percent}" role="progressbar" aria-label="Evidence readiness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><span style="width:${percent}%"></span></div><small class="cw-progress-copy">${esc(detail)}</small>`;
   }
 
-  const queueFilterFields = [['q','#cwSearch'],['state','#cwState'],['readiness','#cwReadiness'],['claim_type','#cwClaimType'],['owner','#cwOwner'],['urgency','#cwUrgency'],['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence']];
+  const queueFilterFields = [['q','#cwSearch'],['state','#cwState'],['readiness','#cwReadiness'],['claim_type','#cwClaimType'],['owner','#cwOwner'],['urgency','#cwUrgency'],['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence'],['profile','#cwSimilar']];
   function hasQueueFilters() { return queueFilterFields.some(([,id])=>$(id).value.trim()); }
   function saveQueueFilters() {
     const url=new URL(location.href);
@@ -1226,8 +1316,7 @@
     history.replaceState(history.state,'',url);
     $('#cwClearFilters').hidden=!hasQueueFilters();
     const selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
-    root.querySelectorAll('[data-queue-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.queueView===selected)));
-    updateQueueHeading();
+    queueRoute.querySelectorAll('[data-queue-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.queueView===selected)));
   }
   function restoreQueueFilters() {
     const query=new URLSearchParams(location.search);
@@ -1251,7 +1340,7 @@
   }
 
   function renderRows() {
-    const focusedRow=$('#cwTable').contains(document.activeElement) ? document.activeElement.closest('tr[data-claim-id]')?.dataset.claimId : null;
+    const focusedRow=$('#cwTable').contains(document.activeElement) ? document.activeElement.closest('[data-claim-id]')?.dataset.claimId : null;
     $('#cwTotal').textContent=state.total.toLocaleString();
     $('#cwPageStatus').textContent=state.items.length?`Showing ${state.items.length} of ${state.total} claims`:'No claims in this view';
     $('#cwMore').hidden=!state.cursor;
@@ -1260,26 +1349,26 @@
       $('#cwTable').innerHTML=`<div class="cw-empty"><h2>${filtered?'No matching claims':'No claims yet'}</h2><p>${filtered?'Try a different search or clear your filters. Your claims have not changed.':'No claim records are present in this workspace.'}</p><div class="cw-actions"><button type="button" class="cw-button" ${filtered?'data-clear-filters':'data-retry-queue'}>${filtered?'Clear filters':'Refresh workspace'}</button></div>${filtered?'':'<details><summary>Development setup</summary><code>./bin/casepath seed --corpus synthetic-dev-60</code></details>'}</div>`;
       return;
     }
-    const markup=ui.queueRows(state.items);
+    const markup=ui.queueRows(state.items,state.facets);
     // A verified unchanged response must not replace the focused queue node.
-    if(state.queueMarkup!==markup || !$('#cwTable').querySelector('table')) {
+    if(state.queueMarkup!==markup || !$('#cwTable').querySelector('.cp-claims-list')) {
       $('#cwTable').innerHTML=markup;state.queueMarkup=markup;
-      $('#cwTable').querySelectorAll('tr[data-claim-id]').forEach(row=>{
+      $('#cwTable').querySelectorAll('[data-claim-id]').forEach(row=>{
         row.addEventListener('click',()=>openClaim(row.dataset.claimId));
         row.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();openClaim(row.dataset.claimId);}});
       });
     }
     const returnId=state.queueFocusReturn || focusedRow;
-    if(returnId && $('#cwDetail').hidden) { $('#cwTable').querySelector(`tr[data-claim-id="${CSS.escape(returnId)}"]`)?.focus({preventScroll:true}); state.queueFocusReturn=null; }
+    if(returnId && $('#cwDetail').hidden) { $('#cwTable').querySelector(`[data-claim-id="${CSS.escape(returnId)}"]`)?.focus({preventScroll:true}); state.queueFocusReturn=null; }
   }
   async function loadQueue({append=false}={}) {
     if(state.loading){state.queuedLoad={append};return;}
     state.loading=true;
-    if($('#cwDetail').hidden && $('#cwTable').contains(document.activeElement)) state.queueFocusReturn=document.activeElement.closest('tr[data-claim-id]')?.dataset.claimId;
+    if($('#cwDetail').hidden && $('#cwTable').contains(document.activeElement)) state.queueFocusReturn=document.activeElement.closest('[data-claim-id]')?.dataset.claimId;
     const filterKey=queryString();
     $('#cwPageStatus').textContent=append?'Loading more claims…':'Refreshing claims…';
     $('#cwTable').setAttribute('aria-busy','true');
-    $('#cwRefresh').disabled=true; $('#cwMore').disabled=true;
+    $('#cwMore').disabled=true;
     $('#cwQueueNotice').hidden=true;
     if(!state.items.length || state.loadedQuery!==filterKey) $('#cwTable').innerHTML=ui.skeleton();
     try {
@@ -1295,13 +1384,17 @@
       }
       if(filterKey!==queryString()){state.queuedLoad={append:false};return;}
       state.items=append?state.items.concat(windowItems):windowItems;
-      state.total=page.total_count;state.cursor=windowCursor;state.loadedQuery=filterKey;
+      state.total=page.total_count;state.cursor=windowCursor;state.loadedQuery=filterKey;state.facets=page.facets;
       for(const [id,values,first] of [['#cwOwner',['unassigned',...(page.facets?.owners||[])],'All handlers'],['#cwClaimType',page.facets?.claim_types||[],'All types']]) {
         const select=$(id), selected=select.value;
         const choices=[...new Set([...values,...(selected?[selected]:[])])];
         select.replaceChildren(new Option(first,''),...choices.map(v=>new Option(id==='#cwOwner'&&v!=='unassigned'?v:ui.label(v),v)));
         select.value=selected;
       }
+      const similar=$('#cwSimilar'),selectedProfile=similar.value;
+      similar.replaceChildren(new Option('All condition profiles',''),...(page.facets?.condition_profiles||[]).map(row=>new Option(`${row.label} (${row.count})`,row.profile)));
+      if(selectedProfile&&!Array.from(similar.options).some(option=>option.value===selectedProfile)) similar.add(new Option('Selected condition profile',selectedProfile));
+      similar.value=selectedProfile;
       renderRows();hydrateOpenPriority();saveQueueFilters();setAdjacentClaims();
       if(!hasQueueFilters()&&!state.cursor&&state.items.length===state.total)displayWorkspaceOverview(state.items);else void loadWorkspaceOverview();
     } catch(error) {
@@ -1315,7 +1408,7 @@
       }
       state.cursor=null; $('#cwMore').hidden=true; $('#cwPageStatus').textContent='Refresh unavailable';
     } finally {
-      state.loading=false; $('#cwTable').setAttribute('aria-busy','false'); $('#cwRefresh').disabled=false; $('#cwMore').disabled=false;
+      state.loading=false; $('#cwTable').setAttribute('aria-busy','false'); $('#cwMore').disabled=false;
       if(state.queuedLoad){const queued=state.queuedLoad;state.queuedLoad=null;void loadQueue(queued);}
     }
   }
@@ -1341,7 +1434,7 @@
     section.querySelector('[data-priority-status]').hidden = true;
     const urgency=$('#cpClaimUrgency'),deadline=$('#cpClaimDeadline');
     if(urgency)urgency.hidden=priority.urgency!=='high';
-    if(deadline){deadline.hidden=!priority.deadline_at;deadline.textContent=priority.deadline_at?'Due '+ui.date(priority.deadline_at):'';}
+    if(deadline){deadline.hidden=!priority.deadline_at?.date;deadline.textContent=priority.deadline_at?.date?'Candidate '+ui.date(priority.deadline_at.date):'';}
   }
 
   async function loadOpenPriority(claimId, detailStateSha, context, signal) {
@@ -1511,7 +1604,8 @@
     const pendingAdvance=storedCommandIdentity('advance',id);
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
     return ui.workbench(loop,workspaceState,{
-      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,detail:state.detail,canvasNodeId:state.canvasNodeId,
+      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,pendingHandler:storedCommandIdentity('handler-note',id),pendingDraft:storedCommandIdentity('draft',id),handlerDrafts:state.handlerDrafts,draft:state.draft,draftEdit:state.draftEdit,memories:state.memories?.items||[],knowledge:state.knowledge?.items||[],memoryHidden:state.memoryHidden,detail:state.detail,canvasNodeId:state.canvasNodeId,whatIf:state.whatIf,evidenceChoice:state.evidenceChoice,
+      focusedEvidenceId:state.focusedEvidenceId,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
       change:state.change?.claimId===id?state.change:null,
@@ -1519,7 +1613,39 @@
     });
   }
 
+  let agentWorkScript;
+  function loadAgentWork() {
+    if (agentWorkScript) return agentWorkScript;
+    agentWorkScript = new Promise((resolve,reject)=>{
+      const source=document.querySelector('meta[name="casepath-agent-work-script"]')?.content;
+      if(!source){reject(new Error('Review script is unavailable.'));return;}
+      const script=document.createElement('script');
+      let settled=false;
+      const finish=(error)=>{
+        if(settled)return;settled=true;
+        clearTimeout(timer);
+        window.removeEventListener('casepath:agent-work-ready',ready);
+        window.removeEventListener('casepath:agent-work-unavailable',unavailable);
+        if(error){script.remove();agentWorkScript=null;reject(error);}else resolve();
+      };
+      const ready=()=>finish();
+      const unavailable=()=>finish(new Error('Review service is unavailable. Try again.'));
+      const timer=setTimeout(()=>finish(new Error('Review service took too long to respond. Try again.')),22000);
+      window.addEventListener('casepath:agent-work-ready',ready);
+      window.addEventListener('casepath:agent-work-unavailable',unavailable);
+      script.src=source;
+      script.onerror=()=>finish(new Error('Review script did not load. Try again.'));
+      document.body.append(script);
+    });
+    return agentWorkScript;
+  }
+
   async function openClaim(claimId) {
+    state.whatIf=null;
+    state.deepLinkWhatIfHandled=false;
+    state.evidenceChoice=null;
+    state.handlerDrafts={};
+    state.draft=null;state.draftEdit=null;state.memories=null;state.knowledge=null;state.memoryHidden=new Set();
     savePresentation();
     if($("#cwDetail").hidden)state.queueScrollY=window.scrollY;
     // A click may precede the search debounce. Bind filters to the queue entry
@@ -1536,17 +1662,20 @@
     state.detailController?.abort();
     const controller = new AbortController();
     state.detailController = controller;
-    const detailRoot = $('#cwDetail');
     const panel = $('#cwDetailPanel');
     state.returnFocus = document.activeElement;
     state.returnClaimId = claimId;
-    $('.cw-shell').inert = true;
-    detailRoot.hidden = false;
+    queueRoute.inert = true;
+    showClaimRoute();
     document.body.style.overflow = 'hidden';
     panel.innerHTML = '<div class="cw-empty" role="status"><h2>Opening claim…</h2><p>Loading its saved sources, evidence and process.</p></div>';
     panel.scrollTop=0; panel.focus({preventScroll:true});
     try {
-      const detail = await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`, {signal:controller.signal}), claimId);
+      const [response] = await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`, {signal:controller.signal}),
+        loadAgentWork(),
+      ]);
+      const detail = await validateDetailResponse(response, claimId);
       if (epoch !== state.detailEpoch) return;
       const loop = detail.state.workflow_state === 'in_review'
         ? await loadClaimLoop(claimId, {allowMissing:true, signal:controller.signal})
@@ -1564,6 +1693,10 @@
       state.detail = detail;
       state.detailPriority = null;
       renderDetail(detail);
+      if(detail.state.workflow_state==='in_review'){
+        void loadDraftList(claimId,activeDetailContext(),controller.signal);
+        void loadMemoryList(claimId,activeDetailContext(),controller.signal);
+      }
       if (loop?.provisional_source_binding) void loadEvidenceInvestigation(claimId, activeDetailContext(), controller.signal);
       const pendingIntent = storedCommandIdentity('evidence-intent', claimId);
       const pendingEvidence = storedCommandIdentity('evidence', claimId);
@@ -1640,6 +1773,7 @@
         </details>` : '';
     const panel=$('#cwDetailPanel');
     const sameClaim=panel.dataset.openClaimId===value.claim_id;
+    const memoryNotes=sameClaim?new Map([...panel.querySelectorAll('[data-apply-memory]')].map(form=>[form.dataset.applyMemory,form.querySelector('textarea[name="note"]')?.value||''])):new Map();
     const previousScroll=panel.querySelector(".cp-work-column")?.scrollTop||0;
     const focusedId=document.activeElement?.id;
     const openDetails=sameClaim?[...panel.querySelectorAll('details[open][id]')].map(el=>el.id):[];
@@ -1655,6 +1789,10 @@
       priority,priorityMarkup:priority?priorityList(priority):'',
     });
     panel.dataset.openClaimId=value.claim_id;
+    panel.querySelectorAll('[data-apply-memory]').forEach(form=>{
+      const note=memoryNotes.get(form.dataset.applyMemory);
+      if(note!==undefined)form.querySelector('textarea[name="note"]').value=note;
+    });
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     const measuredHeader=panel.querySelector('.cw-detail-head');
     const measureHeader=()=>{
@@ -1671,6 +1809,53 @@
     $('#cwEnsureLoop')?.addEventListener('click', ensureClaimLoop);
     bindNativeInvestigationActions();
     $('#cwEvidenceForm')?.addEventListener('submit', event => { event.preventDefault(); commitLoopObservation(); });
+    $('#cwDraftOpen')?.addEventListener('click',()=>{
+      if(state.draft?.latest){$('#cpDraftPanel')?.scrollIntoView({block:'start'});$('#cwDraftBody [data-draft-line]')?.focus({preventScroll:true});}
+      else void saveDraft();
+    });
+    $('#cwDraftForm')?.addEventListener('submit',event=>{event.preventDefault();void saveDraft();});
+    $('#cwDraftBody')?.addEventListener('input',event=>{
+      const rows=[...event.currentTarget.querySelectorAll('[data-draft-line]')].map(row=>row.dataset.draftPrefix+row.textContent.trim());
+      state.draftEdit=rows.map((line,index)=>index&&(!line.startsWith('- ')||!rows[index-1].startsWith('- '))?'\n'+line:line).join('\n')+'\n';
+    });
+    $('#cwDraftBody')?.addEventListener('keydown',event=>{
+      if(event.key!=='Enter'||event.isComposing)return;
+      const row=event.target.closest('[data-draft-line]');if(!row)return;
+      event.preventDefault();const next=row.cloneNode(false);next.textContent='';row.after(next);next.focus();
+      next.dispatchEvent(new Event('input',{bubbles:true}));
+    });
+    panel.querySelector('[data-draft-retry]')?.addEventListener('click',()=>void saveDraft());
+    panel.querySelector('[data-draft-copy]')?.addEventListener('click',()=>void exportDraft('copy'));
+    panel.querySelectorAll('[data-draft-export]').forEach(button=>button.addEventListener('click',()=>void exportDraft(button.dataset.draftExport)));
+    panel.querySelectorAll('[data-keep-memory]').forEach(form=>form.addEventListener('submit',event=>{
+      event.preventDefault();void mutateReviewedMemory('keep',{source_handler_event_sha256:form.dataset.keepMemory,handler:form.elements.handler.value.trim()});
+    }));
+    panel.querySelectorAll('[data-apply-memory]').forEach(form=>form.addEventListener('submit',event=>{
+      event.preventDefault();void mutateReviewedMemory('apply',{memory_sha256:form.dataset.applyMemory,note:form.elements.note.value.trim()});
+    }));
+    panel.querySelectorAll('[data-retire-memory]').forEach(form=>form.addEventListener('submit',event=>{
+      event.preventDefault();void mutateReviewedMemory('retire',{memory_sha256:form.dataset.retireMemory,reason:form.elements.reason.value.trim()});
+    }));
+    panel.querySelectorAll('[data-ignore-memory]').forEach(button=>button.addEventListener('click',()=>{
+      state.memoryHidden.add(button.dataset.ignoreMemory);renderDetail(state.detail);
+    }));
+    $('#cwHandlerPassageForm')?.addEventListener('submit', event => {
+      event.preventDefault();
+      void saveHandlerNote({kind:'passage',target:state.evidenceChoice,verdict:event.submitter?.value,note:(state.handlerDrafts[`passage:${state.evidenceChoice}`]||event.currentTarget.elements.note.value).trim()});
+    });
+    $('#cwHandlerConditionForm')?.addEventListener('submit', event => {
+      event.preventDefault();
+      if(state.whatIf?.result)void saveHandlerNote({kind:'condition',target:state.whatIf.flag,verdict:state.whatIf.result.to_verdict,note:(state.handlerDrafts[`condition:${state.whatIf.flag}`]||event.currentTarget.elements.note.value).trim()});
+    });
+    panel.querySelectorAll('#cwHandlerPassageForm textarea,#cwHandlerConditionForm textarea').forEach(field=>field.addEventListener('input',()=>{
+      const key=field.closest('#cwHandlerPassageForm')?`passage:${state.evidenceChoice}`:`condition:${state.whatIf?.flag}`;
+      state.handlerDrafts[key]=field.value;
+    }));
+    panel.querySelectorAll('[data-handler-withdraw]').forEach(button=>button.addEventListener('click',()=>void saveHandlerNote({target_event_sha256:button.dataset.handlerWithdraw},true)));
+    panel.querySelector('[data-handler-retry]')?.addEventListener('click',()=>void saveHandlerNote(null));
+    panel.querySelectorAll('[data-what-if]').forEach(button=>button.addEventListener('click',()=>openWhatIf(button.dataset.whatIf)));
+    panel.querySelectorAll('[data-what-if-value]').forEach(button=>button.addEventListener('click',()=>void setWhatIf(button.dataset.whatIfValue)));
+    panel.querySelector('[data-what-if-close]')?.addEventListener('click',exitWhatIf);
     $('#cwCorrectionReview')?.addEventListener('click', previewWorkspaceCorrection);
     $('#cwCorrectionConfirm')?.addEventListener('click', applyWorkspaceCorrection);
     $('#cwCorrectionCancel')?.addEventListener('click', cancelWorkspaceCorrection);
@@ -1679,9 +1864,298 @@
     if (state.mutationBusy) setLoopMutationBusy(true,'',state.mutationBusy);
     restoreSourceSelection();
     restoreWorkbenchPresentation();
+    syncReviewerMode();
+    renderGuide();
     if(sameClaim){$('.cp-work-column').scrollTop=previousScroll;if(focusedId)panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true});}
     else panel.focus({preventScroll:true});
     if (!priority) void loadOpenPriority(value.claim_id, value.state_sha256, activeDetailContext(), state.detailController?.signal);
+    if(!state.deepLinkWhatIfHandled&&assessment?.claim_assessment?.conditions?.family_home&&new URLSearchParams(location.hash.slice(1)).get('what_if')==='family_home'){
+      state.deepLinkWhatIfHandled=true;
+      queueMicrotask(()=>{if(state.detail?.state.claim_id===value.claim_id&&!state.whatIf)openWhatIf('family_home');});
+    }
+  }
+
+  function chooseEvidence(sourceEntrySha256) {
+    if(!state.loop||!state.detail||state.mutationBusy)return;
+    const option=state.loop.finding_options?.find(row=>row.source_entry_sha256===sourceEntrySha256);
+    if(!option)return;
+    clearTimeout(state.evidencePreviewTimer);
+    state.evidenceChoice=sourceEntrySha256;
+    prepareEvidenceIntent(state.loop);
+    renderDetail(state.detail);
+    $('#cwDetailPanel [data-evidence-choice="'+CSS.escape(sourceEntrySha256)+'"]')?.focus({preventScroll:true});
+    const index=state.detail.artifacts.findIndex(row=>row.artifact_id===option.source_id);
+    if(index>=0){
+      const context=activeDetailContext();
+      state.evidencePreviewTimer=setTimeout(()=>{
+        state.evidencePreviewTimer=null;
+        if(isActiveDetail(context)&&state.evidenceChoice===sourceEntrySha256&&!state.mutationBusy)void showSourceArtifact(index,false,option.quote);
+      },350);
+    }
+  }
+
+  function prepareEvidenceIntent(loop) {
+    const action=loop?.loop_state?.selected_action;
+    if(!action||storedCommandIdentity('evidence-intent',loop.claim_id))return;
+    const existing=state.preparedEvidenceIntent;
+    if(existing?.loopId===loop.loop_state.loop_id&&existing.revision===loop.loop_state.revision)return;
+    const body={action_id:action.action_id,expected_revision:loop.loop_state.revision};
+    const key=commandKey('evidence-intent');
+    const promise=request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents`,{
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...body,idempotency_key:key}),
+    }).then(value=>requireVerifiedResponse(validateEvidenceIntentResponse(value,loop,body,key)));
+    state.preparedEvidenceIntent={loopId:loop.loop_state.loop_id,revision:loop.loop_state.revision,promise};
+    promise.catch(()=>{});
+  }
+
+  function offerSourceSelection() {
+    const selection=window.getSelection(),text=selection?.toString().trim();
+    if(!text||!state.loop||!state.detail)return;
+    const node=selection.anchorNode?.nodeType===1?selection.anchorNode:selection.anchorNode?.parentElement;
+    const region=node?.closest?.('.cp-pdf-text,.cw-message');
+    if(!region||!$('#cwSourceContent')?.contains(region))return;
+    const pageLayer=region.closest('.cp-pdf-text-layer');
+    const sourceId=pageLayer?.dataset.artifactId||state.detail.message.message_id;
+    const page=Number(pageLayer?.dataset.page||1);
+    const options=state.loop.finding_options||[];
+    const candidate=options.filter(row=>row.source_id===sourceId&&row.page===page&&row.quote.includes(text)).sort((a,b)=>a.quote.length-b.quote.length)[0];
+    let offer=region.parentElement.querySelector('.cp-selection-offer');
+    if(!offer){offer=document.createElement('div');offer.className='cp-selection-offer';region.after(offer);}
+    offer.replaceChildren();
+    if(candidate){const button=document.createElement('button');button.type='button';button.className='cw-button';button.dataset.evidenceChoice=candidate.source_entry_sha256;button.textContent=`Use this passage: “${candidate.quote}”`;offer.append(button);}
+    else offer.textContent='This selection is outside the current candidate passages.';
+  }
+
+  function openWhatIf(flag) {
+    const saved=state.detail?.state.intake_assessment?.claim_assessment;
+    if(!saved?.conditions || !Object.hasOwn(saved.conditions,flag))return;
+    state.whatIf={flag,savedHash:saved.assessment_sha256,verdict:saved.conditions[flag].verdict,result:null,loading:false,error:null};
+    renderDetail(state.detail);
+    $('#cpWhatIfPanel')?.scrollIntoView({block:'start'});
+    $('#cpWhatIfPanel [data-what-if-value]')?.focus({preventScroll:true});
+  }
+  async function setWhatIf(verdict) {
+    const exploring=state.whatIf,detail=state.detail;
+    if(!exploring||!detail||exploring.loading||!['true','false','unresolved'].includes(verdict))return;
+    const context=activeDetailContext(),previous=exploring.result?.to_verdict;
+    exploring.verdict=verdict;exploring.loading=true;exploring.error=null;
+    const panel=$('#cpWhatIfPanel');
+    panel?.querySelectorAll('[data-what-if-value]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.whatIfValue===verdict)));
+    const progress=document.createElement('p');progress.setAttribute('role','status');progress.textContent='Recomputing the path and requests…';
+    panel?.querySelector('.cp-a-what-if-values')?.after(progress);
+    const query=new URLSearchParams({condition:exploring.flag,verdict});
+    if(previous)query.set('before_verdict',previous);
+    try {
+      const value=await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(detail.state.claim_id)}/what-if?${query}`);
+      const {scenario_sha256,...material}=value;
+      if(value.contract!=='casepath.what-if-assessment/1.0.0'||value.claim_id!==detail.state.claim_id
+        ||value.saved_assessment_sha256!==exploring.savedHash||value.condition!==exploring.flag
+        ||value.to_verdict!==verdict||value.from_verdict!==(previous||detail.state.intake_assessment.claim_assessment.conditions[exploring.flag].verdict)
+        ||!Array.isArray(value.scenario?.steps)||!Array.isArray(value.scenario?.documents)
+        ||!Array.isArray(value.changes)||scenario_sha256!==await sha256(material))throw new Error('The sandbox result could not be verified.');
+      if(state.whatIf!==exploring||!isActiveDetail(context))return;
+      exploring.result=value;
+    } catch(error) {
+      if(state.whatIf!==exploring||!isActiveDetail(context))return;
+      exploring.error=error.message;
+    } finally {
+      if(state.whatIf===exploring&&isActiveDetail(context)){
+        exploring.loading=false;renderDetail(state.detail);
+        $('#cpWhatIfPanel [data-what-if-value="'+verdict+'"]')?.focus({preventScroll:true});
+      }
+    }
+  }
+  function exitWhatIf() {
+    const flag=state.whatIf?.flag;
+    if(!flag||!state.detail)return;
+    state.whatIf=null;renderDetail(state.detail);
+    $('#cwDetailPanel [data-what-if="'+CSS.escape(flag)+'"]')?.focus({preventScroll:true});
+  }
+
+  async function validateDraftList(value,claimId){
+    const {list_sha256,...material}=value||{};
+    if(value?.contract!=='casepath.workspace-draft-list/1.0.0'||value.claim_id!==claimId
+      ||!Array.isArray(value.items)||canonicalJson(value.latest)!==canonicalJson(value.items.at(-1)||null)
+      ||list_sha256!==await sha256(material))throw new Error('The saved draft list could not be verified.');
+    for(const item of value.items){
+      const {draft_sha256,event_sha256,recorded_at,...draft}=item;
+      if(!/^[0-9a-f]{64}$/.test(event_sha256||'')||typeof recorded_at!=='string'
+        ||draft_sha256!==await sha256(draft)||draft.body_sha256!==await sha256Bytes(new TextEncoder().encode(draft.body_markdown)))throw new Error('A saved draft failed hash verification.');
+    }
+    return value;
+  }
+
+  async function validateMemoryList(value,claimId){
+    const {list_sha256,...material}=value||{};
+    if(value?.contract!=='casepath.reviewed-memory-list/1.0.0'||value.claim_id!==claimId
+      ||!Array.isArray(value.items)||value.total_count!==value.items.length
+      ||list_sha256!==await sha256(material))throw new Error('The reviewed memories could not be verified.');
+    for(const item of value.items){
+      if(!/^[0-9a-f]{64}$/.test(item.memory_sha256||'')||!/^[0-9a-f]{64}$/.test(item.event_sha256||'')
+        ||typeof item.source_quote!=='string'||typeof item.handler!=='string'||item.qualified_review_required!==true)throw new Error('A reviewed memory has invalid provenance.');
+    }
+    return value;
+  }
+
+  async function loadMemoryList(claimId,context,signal){
+    try{
+      const family=state.detail?.state.intake_assessment?.claim_type;
+      if(!family)return;
+      const [matching,knowledge]=await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/memories`,{signal}),
+        request(`/api/claim-loops/v1/workspace/memories?family=${encodeURIComponent(family)}`,{signal}),
+      ]);
+      const rows=await Promise.all([validateMemoryList(matching,claimId),validateMemoryList(knowledge,null)]);
+      if(!isActiveDetail(context)||state.detail?.state.intake_assessment?.claim_type!==family)return;
+      state.memories=rows[0];state.knowledge=rows[1];renderDetail(state.detail);
+    }catch(error){if(isActiveDetail(context)&&error.name!=='AbortError')$('#cwCommandStatus').textContent=`Reviewed memories unavailable: ${error.message}`;}
+  }
+
+  async function mutateReviewedMemory(mode,input){
+    if(state.mutationBusy||!state.detail)return;
+    const context=activeDetailContext(),claimId=context.claimId;
+    const kind=`memory-${mode}`,pending=storedCommandIdentity(kind,claimId);
+    if(pending?.invalid){$('#cwCommandStatus').textContent='The saved memory request is invalid. Reload before retrying.';return;}
+    const body=pending?pending.parsedBody:{...input,
+      expected_revision:state.detail.state.revision,
+      expected_state_sha256:state.detail.state.state_sha256,
+    };
+    const identity=commandIdentity(kind,claimId,body);
+    setLoopMutationBusy(true,mode==='keep'?'Keeping this reviewed condition…':mode==='retire'?'Retiring the reviewed memory…':'Recording your assessment of this claim…',context);
+    try{
+      const response=await validateMutationResponse(await request(
+        `/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/memories${mode==='keep'?'':`/${mode}`}`,
+        {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':identity.key},body:identity.body},
+      ),claimId,mode==='keep'?'WORKSPACE_REVIEWED_MEMORY_KEPT':mode==='retire'?'WORKSPACE_REVIEWED_MEMORY_RETIRED':'WORKSPACE_REVIEWED_MEMORY_APPLIED',state.detail.state);
+      const [detail,loop]=await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`).then(value=>validateDetailResponse(value,claimId)),
+        loadClaimLoop(claimId,{allowMissing:true}),
+      ]);
+      if(!isActiveDetail(context))return;
+      if(detail.state.revision<response.state.revision)throw new Error('The memory action is not confirmed in the journal.');
+      clearCommandIdentity(kind,claimId);
+      state.detail=detail;state.loop=loop;renderDetail(detail);
+      await loadMemoryList(claimId,context,state.detailController?.signal);
+      void loadQueue();
+      $('#cwCommandStatus').textContent=mode==='keep'?'Reviewed memory saved for matching claims.':mode==='retire'?'Reviewed memory retired.':'Handler assessment recorded from this memory.';
+    }catch(error){
+      if(isActiveDetail(context)){
+        if(error.responseReceived&&!error.ambiguousResponse)clearCommandIdentity(kind,claimId);
+        $('#cwCommandStatus').textContent=`Memory action ${error.responseReceived&&!error.ambiguousResponse?'rejected':'needs checking'}: ${error.message}`;
+      }
+    }finally{setLoopMutationBusy(false,'',context);}
+  }
+
+  async function loadDraftList(claimId,context,signal){
+    try{
+      const value=await validateDraftList(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`,{signal}),claimId);
+      if(!isActiveDetail(context))return;
+      if(value.workspace_revision!==state.detail.state.revision||value.workspace_state_sha256!==state.detail.state.state_sha256)return;
+      state.draft=value;
+      if(state.draftEdit===null)state.draftEdit=value.latest?.body_markdown||null;
+      renderDetail(state.detail);
+      if(storedCommandIdentity('draft',claimId))void saveDraft();
+    }catch(error){if(isActiveDetail(context))$('#cwCommandStatus').textContent=`Draft unavailable: ${error.message}`;}
+  }
+
+  async function saveDraft(){
+    if(state.mutationBusy||!state.detail)return false;
+    const context=activeDetailContext(),claimId=context.claimId;
+    const pending=storedCommandIdentity('draft',claimId);
+    if(pending?.invalid){$('#cwCommandStatus').textContent='The pending draft request is invalid. Reload the claim before retrying.';return false;}
+    const saved=state.draft?.latest;
+    const edited=saved&&state.draftEdit!==null&&state.draftEdit!==saved.body_markdown?state.draftEdit:null;
+    if(saved&&!edited&&!pending){$('#cwCommandStatus').textContent='The saved draft is current.';return true;}
+    const body=pending?pending.parsedBody:{
+      expected_revision:state.detail.state.revision,
+      expected_state_sha256:state.detail.state.state_sha256,
+      edited_body:edited,
+      replaces_event_sha256:saved?.event_sha256||null,
+    };
+    const identity=commandIdentity('draft',claimId,body);
+    setLoopMutationBusy(true,edited?'Saving the edited draft…':'Writing the request from this claim…',context);
+    try{
+      const value=await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`,{
+        method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':identity.key},body:identity.body,
+      });
+      const {response_sha256,...material}=value||{};
+      if(value?.contract!=='casepath.claim-workspace-command-response/1.0.0'||value.event_type!=='WORKSPACE_DRAFT_RECORDED'
+        ||value.state?.claim_id!==claimId||response_sha256!==await sha256(material))throw new Error('The draft receipt could not be verified.');
+      await validateState(value.state,claimId);
+      const [detail,draft,loop]=await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`).then(result=>validateDetailResponse(result,claimId)),
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`).then(result=>validateDraftList(result,claimId)),
+        loadClaimLoop(claimId,{allowMissing:true}),
+      ]);
+      if(!isActiveDetail(context))return false;
+      if(detail.state.revision<value.state.revision||!draft.items.some(item=>item.event_sha256===value.event_sha256))throw new Error('The draft is not yet confirmed by its journal.');
+      clearCommandIdentity('draft',claimId);
+      state.detail=detail;state.loop=loop;state.draft=draft;state.draftEdit=draft.latest?.body_markdown||null;
+      renderDetail(detail);void loadQueue();
+      $('#cpDraftPanel')?.scrollIntoView({block:'start'});
+      $('#cwCommandStatus').textContent='Draft saved. Nothing has been sent.';
+      return true;
+    }catch(error){
+      if(isActiveDetail(context)){
+        if(error.responseReceived&&!error.ambiguousResponse){clearCommandIdentity('draft',claimId);$('#cwCommandStatus').textContent=`Draft rejected: ${error.message}`;}
+        else {renderDetail(state.detail);$('#cwCommandStatus').textContent=`Draft outcome unclear: ${error.message}. Retry uses the saved request.`;}
+      }
+      return false;
+    }finally{setLoopMutationBusy(false,'',context);}
+  }
+
+  async function exportDraft(format){
+    if(!state.draft?.latest)return;
+    if(state.draftEdit!==state.draft.latest.body_markdown&&!await saveDraft())return;
+    const saved=state.draft.latest,claimId=state.detail.state.claim_id;
+    try{
+      if(format==='copy'){
+        await navigator.clipboard.writeText(saved.body_markdown);
+        $('#cwCommandStatus').textContent='Saved draft copied. Nothing has been sent.';
+        return;
+      }
+      const content=format==='json'?JSON.stringify(saved,null,2)+'\n':saved.body_markdown;
+      const blob=new Blob([content],{type:format==='json'?'application/json':'text/markdown'});
+      const url=URL.createObjectURL(blob),link=document.createElement('a');
+      link.href=url;link.download=`${claimId}-draft.${format==='json'?'json':'md'}`;link.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+      $('#cwCommandStatus').textContent='Saved draft exported. Nothing has been sent.';
+    }catch(error){$('#cwCommandStatus').textContent=`Draft export failed: ${error.message}`;}
+  }
+
+  async function saveHandlerNote(input,withdraw=false) {
+    if(state.mutationBusy||!state.detail)return;
+    const context=activeDetailContext(),claimId=context.claimId;
+    const pending=storedCommandIdentity('handler-note',claimId);
+    const body=pending&&!pending.invalid?pending.parsedBody:{
+      ...input,expected_workspace_revision:state.detail.state.revision,
+      expected_workspace_state_sha256:state.detail.state.state_sha256,
+    };
+    if(pending?.invalid){$('#cwCommandStatus').textContent='The pending handler note could not be read. Reload the claim before another action.';return;}
+    const isWithdraw=pending?pending.withdraw:withdraw;
+    const route=`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/handler-observations${isWithdraw?`/${body.target_event_sha256}/withdraw`:''}`;
+    const identity=commandIdentity('handler-note',claimId,body,null,{withdraw:isWithdraw});
+    setLoopMutationBusy(true,isWithdraw?'Undoing the handler assessment…':'Recording the handler assessment…',context);
+    try{
+      const value=await request(route,{method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':identity.key},body:identity.body});
+      const {response_sha256,...material}=value;
+      if(value.contract!=='casepath.workspace-handler-observation-response/1.0.0'||value.claim_id!==claimId||response_sha256!==await sha256(material))throw new Error('The handler note receipt could not be verified.');
+      const detail=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`),claimId);
+      if(!isActiveDetail(context))return;
+      if(detail.state.revision<value.workspace_revision||detail.state.revision===value.workspace_revision&&detail.state.state_sha256!==value.workspace_state_sha256)throw new Error('The handler note is not yet visible in the claim journal.');
+      const loop=await loadClaimLoop(claimId,{allowMissing:true});
+      if(!isActiveDetail(context))return;
+      const observation=loop?.handler_observations?.find(row=>row.event_sha256===value.event_sha256||isWithdraw&&row.event_sha256===body.target_event_sha256&&row.withdrawn);
+      if(!observation)throw new Error('The handler note is not yet visible on the canvas.');
+      clearCommandIdentity('handler-note',claimId);
+      if(body.kind)delete state.handlerDrafts[`${body.kind}:${body.target}`];
+      state.detail=detail;state.loop=loop;renderDetail(detail);void loadQueue();
+      $('#cwCommandStatus').textContent=isWithdraw?'Handler assessment undone.':'Handler assessment saved.';
+    }catch(error){
+      if(!isActiveDetail(context))return;
+      if(error.responseReceived&&!error.ambiguousResponse){clearCommandIdentity('handler-note',claimId);$('#cwCommandStatus').textContent=`Handler assessment rejected: ${error.message}`;}
+      else {renderDetail(state.detail);$('#cwCommandStatus').textContent=`Could not confirm the handler assessment: ${error.message}. Retry uses the saved request.`;}
+    }finally{setLoopMutationBusy(false,'',context);}
   }
 
   async function runWorkspaceCommand(action) {
@@ -1824,9 +2298,22 @@
       throw new Error('The current source-acquisition authority is unavailable');
     }
     const intentBody = {action_id:action.action_id, expected_revision:loop.loop_state.revision};
-    const intentCommand = commandIdentity('evidence-intent', loop.claim_id, intentBody);
+    const choice=loop.finding_options?.find(row=>row.source_entry_sha256===state.evidenceChoice);
+    const prepared=state.preparedEvidenceIntent;
+    let preparedResponse=null;
+    if(!storedCommandIdentity('evidence-intent',loop.claim_id)
+      &&prepared?.loopId===loop.loop_state.loop_id&&prepared.revision===loop.loop_state.revision){
+      try { preparedResponse=await prepared.promise; }
+      catch (_) { /* A failed early lookup is retried with a fresh command key. */ }
+      if(Date.parse(preparedResponse?.intent?.expires_at||'')<=Date.now()+5000)preparedResponse=null;
+    }
+    const intentCommand = commandIdentity(
+      'evidence-intent', loop.claim_id, intentBody, preparedResponse?.intent.idempotency_key||null,
+      {source_entry_sha256:choice?.source_entry_sha256||null},
+    );
+    if(intentCommand.source_entry_sha256 && choice && intentCommand.source_entry_sha256!==choice.source_entry_sha256)throw new Error('Finish the saved passage before selecting another');
     const intentRequest = {...intentBody, idempotency_key:intentCommand.key};
-    const intentResponse = await requireVerifiedResponse(validateEvidenceIntentResponse(
+    const intentResponse = preparedResponse||await requireVerifiedResponse(validateEvidenceIntentResponse(
       await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents`, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -1836,13 +2323,14 @@
       intentBody,
       intentCommand.key,
     ));
+    state.preparedEvidenceIntent=null;
     const intentKey = intentResponse.intent.idempotency_key;
     if (intentResponse.recovered_durable_acquisition) {
       clearCommandIdentity('evidence-intent', loop.claim_id);
       commandIdentity('evidence-intent', loop.claim_id, intentBody, intentKey);
     }
     const acquisitionResponse = await requireVerifiedResponse(validateEvidenceAcquisitionResponse(
-      await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents/${encodeURIComponent(intentResponse.intent.intent_id)}/acquire`, {method:'POST'}),
+      await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence/intents/${encodeURIComponent(intentResponse.intent.intent_id)}/acquire${intentCommand.source_entry_sha256?'?source_entry_sha256='+encodeURIComponent(intentCommand.source_entry_sha256):''}`, {method:'POST'}),
       loop,
       intentResponse.intent,
     ));
@@ -1932,15 +2420,12 @@
     if (pending.key !== body.idempotency_key) throw new Error('The registration key differs from its acquisition intent');
     const response = await requireVerifiedResponse(validateStageResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/evidence`, {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':pending.key},body:pending.body}), loop, body));
     if (!isActiveDetail(context)) return null;
-    const fresh = await loadClaimLoop(loop.claim_id);
-    if (!isActiveDetail(context)) return null;
-    if (fresh.stage_receipt?.receipt_sha256 !== response.stage_receipt.receipt_sha256) throw new Error('The authoritative journal did not confirm the staged receipt');
     clearCommandIdentity('evidence', loop.claim_id);
     clearCommandIdentity('evidence-intent', loop.claim_id);
-    return fresh;
+    return {...loop,stage_receipt:response.stage_receipt};
   }
 
-  async function advanceClaimLoop(context, loop) {
+  async function advanceClaimLoop(context, loop, onReceipt) {
     const body = exactAdvanceBody(loop);
     const existingPending = storedCommandIdentity('advance', loop.claim_id);
     const pending = commandIdentity(
@@ -1953,6 +2438,7 @@
     const baseline = await verifiedAdvanceBaseline(loop, pending, body);
     const response = await requireVerifiedResponse(validateAdvanceResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(loop.claim_id)}/loop/advance`, {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':pending.key},body:pending.body}), loop, body));
     if (!isActiveDetail(context)) return null;
+    onReceipt?.(response);
     const fresh = await loadClaimLoop(loop.claim_id);
     if (!isActiveDetail(context)) return null;
     if (fresh.loop_state.state_sha256 !== response.claim_loop_response.state_sha256) {
@@ -1973,27 +2459,38 @@
 
   async function commitLoopObservation() {
     if (state.mutationBusy || !state.detail || !state.loop) return;
+    clearTimeout(state.evidencePreviewTimer);
+    state.evidencePreviewTimer=null;
     const context = activeDetailContext();
     let loop = state.loop;
     const beforeLoop = loop;
+    const selectedQuote=loop.finding_options?.find(row=>row.source_entry_sha256===state.evidenceChoice)?.quote||'';
     setLoopMutationBusy(true, 'Checking the source and updating the claim…', context);
     try {
       if (!storedCommandIdentity('advance', loop.claim_id)) {
         loop = await stageLoopEvidence(context, loop);
         if (!loop || !isActiveDetail(context)) return;
       }
-      const advance = await advanceClaimLoop(context, loop);
+      const showSourceUpdate=(kind,accepted) => {
+        if (!isActiveDetail(context)) return;
+        const main=$('.cp-a-main');
+        if (!main) return;
+        $('#cwReplanDelta')?.remove();
+        main.insertAdjacentHTML('afterbegin',ui.changeMarkup({kind,accepted,claimId:context.claimId,sourceQuote:selectedQuote,sourceItem:beforeLoop.loop_state.selected_action?.evidence_item_id},state.detail.state.intake_assessment?.claim_assessment));
+        $('#cwCommandStatus').textContent=kind==='receipt'?'Checking the saved journal record…':'Refreshing the claim view…';
+      };
+      const advance = await advanceClaimLoop(context, loop, response => showSourceUpdate(response.journal_event_type==='OBSERVATION_INGESTED'?'head':'receipt',response.journal_event_type==='OBSERVATION_INGESTED'));
       if (!advance || !isActiveDetail(context)) return;
       ({loop} = advance);
       state.change = ui.advanceChange(beforeLoop,loop,advance.baseline,advance.recovered);
       if(state.change?.sourceItem)state.sourceSelection={kind:'evidence',id:state.change.sourceItem};
-      state.canvasNodeId=null;
+      state.canvasNodeId=null;state.focusedEvidenceId=null;
+      state.evidenceChoice=null;
       state.loop = loop;
-      await loadQueue();
-      if (!isActiveDetail(context)) return;
       renderDetail(state.detail);
       $('#cwCommandStatus').textContent = '';
       $('#cwReplanDelta')?.scrollIntoView({block:'start'}); $('#cwReplanDelta')?.focus({preventScroll:true});
+      void loadQueue();
     } catch (error) {
       if (!isActiveDetail(context)) return;
       if (error.responseReceived && !error.ambiguousResponse) {
@@ -2191,64 +2688,56 @@
     }
   }
 
-  const claimViews=['overview','evidence','process','activity'];
-  const compactWorkbench=matchMedia('(max-width:1100px)');
+  const compactWorkbench=matchMedia('(max-width:900px)');
   function savePresentation(){
     if(!state.detail)return;
-    const value={tab:state.workbenchTab||'overview',source:state.sourceSelection||null,canvasNodeId:state.canvasNodeId||null,scroll:state.viewScroll||{}};
+    const value={source:state.sourceSelection||null,canvasNodeId:state.canvasNodeId||null,focusedEvidenceId:state.focusedEvidenceId||null};
     try{sessionStorage.setItem('casepath:presentation:'+state.detail.state.claim_id,JSON.stringify(value));}catch(_){/* A blocked preference store never blocks claim work. */}
   }
   function recoverPresentation(claimId){
     let saved={};try{saved=JSON.parse(sessionStorage.getItem('casepath:presentation:'+claimId)||'{}');}catch(_){}
-    const requested=new URLSearchParams(location.hash.slice(1)).get('view');
-    state.workbenchTab=claimViews.includes(requested)?requested:claimViews.includes(saved?.tab)?saved.tab:'overview';
-    state.viewScroll=saved?.scroll&&typeof saved.scroll==='object'?saved.scroll:{};
     state.sourceSelection=saved?.source&&['evidence','process','artifact'].includes(saved.source.kind)?saved.source:null;
     state.canvasNodeId=typeof saved?.canvasNodeId==='string'?saved.canvasNodeId:null;
-    state.inspectorOpen=!compactWorkbench.matches;
+    state.focusedEvidenceId=typeof saved?.focusedEvidenceId==='string'?saved.focusedEvidenceId:null;
+    state.inspectorOpen=false;
+  }
+  function syncReasoning({focus=false}={}){
+    if(!state.loop||!state.detail)return;
+    const trace=$('#cpCanvasTrace');
+    if(trace){const open=trace.open;trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.whatIf?.result?.scenario);$('#cpCanvasTrace').open=open||focus;}
+    const selected=$('#cpCanvasTrace')?.dataset.selectedNode;
+    root.querySelectorAll('[data-canvas-node]').forEach(link=>{if(link.dataset.canvasNode===selected)link.setAttribute('aria-current','step');else link.removeAttribute('aria-current');});
+    root.querySelectorAll('[data-evidence-source]').forEach(button=>button.classList.toggle('cp-source-selected',button.dataset.evidenceSource===state.focusedEvidenceId));
+    if(focus){
+      const current=$('#cpCanvasTrace');
+      current?.scrollIntoView({block:'nearest'});
+      current?.focus({preventScroll:true});
+    }
+    savePresentation();
   }
   function selectCanvasNode(nodeId,{focus=false}={}){
     const node=state.loop?.loop_state.process.nodes.find(row=>row.node_id===nodeId);
     if(!node||!state.detail)return;
     state.canvasNodeId=nodeId;
-    const trace=$('#cpCanvasTrace');
-    if(trace){trace.outerHTML=ui.canvasTrace(state.loop,state.detail,nodeId);}
-    root.querySelectorAll('[data-canvas-node]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.canvasNode===nodeId)));
-    if(focus){
-      const trace=$('#cpCanvasTrace');
-      if(matchMedia('(max-width:900px)').matches)trace?.scrollIntoView({block:'start'});
-      trace?.focus({preventScroll:true});
-    }
-    savePresentation();
+    state.focusedEvidenceId=null;
+    syncReasoning({focus});
   }
-  function setWorkbenchTab(name,{focus=false,remember=true}={}){
-    if(!claimViews.includes(name)||!state.detail)return;
-    const col=$('.cp-work-column');
-    if(state.workbenchTab!==name&&col){state.viewScroll ||= {};state.viewScroll[state.workbenchTab]=col.scrollTop;}
-    state.workbenchTab=name;
-    root.querySelectorAll('[role="tab"][data-workbench-tab]').forEach(button=>{const chosen=button.dataset.workbenchTab===name;button.setAttribute('aria-selected',String(chosen));button.tabIndex=chosen?0:-1;});
-    for(const key of claimViews){const panel=$('#cpPanel-'+key);if(panel)panel.hidden=key!==name;}
-    if(col)col.scrollTop=Number.isFinite(state.viewScroll?.[name])?state.viewScroll[name]:0;
-    if(focus)$('#cpTab-'+name)?.focus({preventScroll:true});
-    if(remember){const url=new URL(location.href);url.hash=new URLSearchParams({claim:state.detail.state.claim_id,...(name!=='overview'?{view:name}:{})}).toString();history.replaceState(history.state,'',url);savePresentation();}
+  function showWorkspaceSection(name){
+    const target=$(name==='activity'?'#cpPanel-activity':name==='evidence'?'.cp-a-needs':name==='process'?'.cp-a-path':'.cp-a-next');
+    if(name==='activity'&&target)target.open=true;
+    target?.scrollIntoView({block:'start'});
   }
   function applyInspectorState(){
     const panel=$('#cwDetailPanel'),rail=$('.cp-source-rail');if(!rail)return;
-    panel.dataset.inspectorOpen=String(Boolean(state.inspectorOpen));
-    rail.inert=!state.inspectorOpen;
-    const modal=compactWorkbench.matches&&state.inspectorOpen;
-    $('.cp-work-column').inert=Boolean(modal);$('.cp-sidebar').inert=Boolean(modal);
-    if(modal){rail.setAttribute('role','dialog');rail.setAttribute('aria-modal','true');}else{rail.setAttribute('role','complementary');rail.removeAttribute('aria-modal');}
-    root.querySelectorAll('.cp-source-toggle').forEach(b=>b.setAttribute('aria-expanded',String(Boolean(state.inspectorOpen))));
+    panel.dataset.inspectorOpen=String(state.inspectorOpen);rail.inert=compactWorkbench.matches&&!state.inspectorOpen;rail.setAttribute('role','complementary');rail.removeAttribute('aria-modal');
   }
-  function openInspector({focus=true,toggle=false}={}){
-    if(!state.detail)return;
-    if(toggle&&state.inspectorOpen){closeInspector();return;}
+  function openInspector({focus=true}={}){
+    const rail=$('.cp-source-rail');if(!rail)return;
     if(focus)state.inspectorReturnFocus=document.activeElement;
     state.inspectorOpen=true;applyInspectorState();
     if(focus)$('#cwSourceInspector')?.focus({preventScroll:true});
   }
-  function closeInspector(){state.inspectorOpen=false;applyInspectorState();const target=state.inspectorReturnFocus?.isConnected?state.inspectorReturnFocus:$('.cp-source-toggle');target?.focus({preventScroll:true});}
+  function closeInspector(){state.inspectorOpen=false;applyInspectorState();state.inspectorReturnFocus?.focus({preventScroll:true});}
   function openTechnical(){const dialog=$('#cpTechnicalDialog');if(!dialog)return;$('#cpTechnicalLoop').innerHTML=ui.technicalLoop(state.loop);dialog.showModal();}
   function openAssignment(){const dialog=$('#cpOwnerDialog');if(!dialog)return;dialog.showModal();$('#cwOwnerInput')?.focus();}
   function setAdjacentClaims(){
@@ -2256,26 +2745,19 @@
     root.querySelectorAll('[data-adjacent-claim]').forEach(button=>{const to=index+(button.dataset.adjacentClaim==='previous'?-1:1);button.disabled=index<0||!state.items[to]||Boolean(state.mutationBusy);button.dataset.targetClaim=state.items[to]?.claim_id||'';});
   }
   function restoreWorkbenchPresentation(){
-    setWorkbenchTab(state.workbenchTab||'overview',{remember:false});applyInspectorState();setAdjacentClaims();
-    const col=$('.cp-work-column'),id=state.detail.state.claim_id;
+    applyInspectorState();setAdjacentClaims();
+    syncReasoning();
+    const col=$('.cp-work-column');
     state.actionObserver?.disconnect();
     const action=$('#cwLoopWorkbench .cw-button-primary'),jump=$('[data-return-next]');
     if(action&&jump){state.actionObserver=new IntersectionObserver(entries=>{if(action.isConnected&&col.contains(action))jump.hidden=entries[0]?.isIntersecting!==false;},{root:col,threshold:0.5});state.actionObserver.observe(action);}
 
-    col?.addEventListener('scroll',()=>{if(state.detail?.state.claim_id!==id)return;state.viewScroll ||= {};state.viewScroll[state.workbenchTab||'overview']=col.scrollTop;clearTimeout(state.presentationSaveTimer);state.presentationSaveTimer=setTimeout(savePresentation,120);},{passive:true});
   }
-  compactWorkbench.addEventListener('change',()=>{if(!state.detail)return;state.inspectorOpen=!compactWorkbench.matches;applyInspectorState();});
+  compactWorkbench.addEventListener('change',()=>{if(state.detail)applyInspectorState();});
   window.addEventListener('beforeunload',savePresentation);
-  function updateQueueHeading(){
-    const search=$('#cwSearch').value.trim(),selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
-    const names={all:'All claims',urgent:'30+ days since intake',evidence:'Waiting for evidence',ready:'Ready for review',attention:'Action issues',unassigned:'Unassigned claims'};
-    const descriptions={all:'All incoming claims, with the next step in view.',urgent:'Age is measured from the original intake date; it does not establish a legal deadline.',evidence:'The current handling path needs more evidence.',ready:'Ready for a separate claim review, not automatic approval.',attention:'Check these action outcomes before continuing.',unassigned:'Choose a handler to take the next step.'};
-    $('#cpQueueTitle').textContent=search?'Search results':names[selected];
-    $('#cpQueueSubtitle').textContent=search?'Matching claims and handlers.':descriptions[selected];
-  }
   function displayWorkspaceOverview(rows){
       const summary=ui.queueSummary(rows);state.overviewSummary=summary;
-      root.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
+      queueRoute.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
       root.dataset.uniformAge=String(summary.all>0&&summary.urgent===summary.all);
       for(const key of ['evidence','ready']){
         const button=$(`.cp-triage-line [data-queue-view="${key}"]`);
@@ -2283,7 +2765,7 @@
       }
       $('#cpOverviewState').textContent=summary.unassessed?`${summary.unassessed} awaiting review`:'Overview up to date';
       $('#cpOverviewState').removeAttribute('data-stale');
-      $('#cpActionIssuesSummary').hidden=summary.attention===0;
+      const issues=$('#cpActionIssuesSummary');if(issues)issues.hidden=summary.attention===0;
   }
   async function loadWorkspaceOverview(){
     if(state.overviewLoading){state.overviewQueued=true;return;}
@@ -2303,10 +2785,23 @@
     finally{state.overviewLoading=false;if(state.overviewQueued){state.overviewQueued=false;void loadWorkspaceOverview();}}
   }
   function presentationClick(button){
-    if(button.matches('[data-close-detail]')){closeDetail();return true;}
-    if(button.hasAttribute('data-workbench-tab')){setWorkbenchTab(button.dataset.workbenchTab,{focus:button.getAttribute('role')==='tab'});return true;}
+    if(button.hasAttribute('data-evidence-choice')){chooseEvidence(button.dataset.evidenceChoice);return true;}
+    if(button.matches('[data-close-detail]')){if(!$('#cwDetail').hidden)closeDetail();return true;}
+    if(button.hasAttribute('data-workbench-tab')){showWorkspaceSection(button.dataset.workbenchTab);return true;}
     if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
-    if(button.hasAttribute('data-trace-action')){setWorkbenchTab('overview');selectCanvasNode(state.loop?.loop_state.process.current_overlay.current_node_id,{focus:true});return true;}
+    if(button.hasAttribute('data-footer-open')){const section=$('#'+button.dataset.footerOpen);if(section){section.open=true;section.scrollIntoView({block:'start'});}return true;}
+    if(button.hasAttribute('data-noticed-source')){
+      const index=state.detail?.artifacts?.findIndex(item=>item.artifact_id===button.dataset.noticedSource)??-1;
+      if(index>=0&&state.detail.artifacts[index].role!=='customer_message')void showSourceArtifact(index,true,button.dataset.noticedQuote);
+      else{
+        resetSource();const message=$('#cwSourceContent .cw-message'),text=message?.textContent||'',quote=button.dataset.noticedQuote||'',start=text.indexOf(quote);
+        if(message&&quote&&start>=0){message.replaceChildren(document.createTextNode(text.slice(0,start)),Object.assign(document.createElement('mark'),{textContent:quote}),document.createTextNode(text.slice(start+quote.length)));message.querySelector('mark')?.scrollIntoView({block:'center',behavior:'smooth'});}
+      }
+      return true;
+    }
+    if(button.hasAttribute('data-scroll-next')){const target=$('.cp-a-needs')||$('#cwStart');if(target?.id==='cwStart')target.click();else{target?.scrollIntoView({block:'start'});target?.querySelector?.('button')?.focus({preventScroll:true});}return true;}
+
+
     if(button.hasAttribute('data-canvas-source')){resetSource(false);openInspector({focus:true});const rail=$('.cp-source-rail');if(rail)rail.scrollTop=0;(rail?.querySelector('[data-packet-message]')||$('#cwSourceInspector'))?.focus({preventScroll:true});return true;}
     if(button.hasAttribute('data-open-inspector')){openInspector({toggle:button.matches('.cp-source-toggle')});return true;}
     if(button.hasAttribute('data-close-inspector')){closeInspector();return true;}
@@ -2319,27 +2814,18 @@
     if(button.hasAttribute('data-adjacent-claim')){if(button.dataset.targetClaim&&!button.disabled)void openClaim(button.dataset.targetClaim);return true;}
     return false;
   }
-  function visibleFocusables(container){return [...container.querySelectorAll('button,input,select,textarea,a[href],summary,[tabindex]')].filter(el=>{
-    if(el.tabIndex<0||el.matches(':disabled')||el.closest('[inert]')||!el.getClientRects().length)return false;
-    for(let p=el.parentElement;p&&p!==container;p=p.parentElement){if(p.tagName==='DETAILS'&&!p.open&&!p.querySelector(':scope>summary')?.contains(el))return false;}
-    return getComputedStyle(el).visibility!=='hidden';
-  });}
   function workspaceKeyboard(event){
     if(event.defaultPrevented)return;
     if(event.key==='/'&&$('#cwDetail').hidden&&!event.target.matches('input,textarea,select,[contenteditable]')){event.preventDefault();$('#cwSearch').focus();return;}
     if($('#cwDetail').hidden)return;
     if(root.querySelector('dialog[open]'))return;
-    if(event.key==='Escape'){event.preventDefault();if(compactWorkbench.matches&&state.inspectorOpen)closeInspector();else if($('#cpClaimMenu')?.open)$('#cpClaimMenu').open=false;else closeDetail();return;}
-    if(event.target.matches('[role="tab"]')&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){
-      event.preventDefault();const at=claimViews.indexOf(event.target.dataset.workbenchTab),to=event.key==='Home'?0:event.key==='End'?3:(at+(event.key==='ArrowRight'?1:3))%4;setWorkbenchTab(claimViews[to],{focus:true});return;
-    }
-    if(event.key==='Tab'&&compactWorkbench.matches&&state.inspectorOpen){const rail=$('.cp-source-rail'),controls=visibleFocusables(rail),first=controls[0],last=controls.at(-1);if(!controls.includes(document.activeElement)||event.shiftKey&&document.activeElement===first||!event.shiftKey&&document.activeElement===last){event.preventDefault();(event.shiftKey?last:first)?.focus();}}
+    if(event.key==='Escape'){event.preventDefault();if(state.inspectorOpen)closeInspector();else if($('#cpClaimMenu')?.open)$('#cpClaimMenu').open=false;else closeDetail();}
   }
 
   function packetSelection(){
     const selected=state.sourceSelection?.kind==='artifact'?state.sourceSelection.index:null;
-    root.querySelectorAll('[data-packet-artifact]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.packetArtifact)===selected)));
-    root.querySelectorAll('[data-packet-message]').forEach(b=>b.setAttribute('aria-pressed',String(!state.sourceSelection||selected!==null&&state.detail?.artifacts[selected]?.role==='customer_message')));
+    root.querySelectorAll('[data-packet-artifact]').forEach(b=>b.setAttribute('aria-current',String(Number(b.dataset.packetArtifact)===selected)));
+    root.querySelectorAll('[data-packet-message]').forEach(b=>b.setAttribute('aria-current',String(!state.sourceSelection||selected!==null&&state.detail?.artifacts[selected]?.role==='customer_message')));
   }
   async function packetMetadata(artifact,claimId,signal){
     const response=await fetch(artifact.download_url+'/preview?source_sha256='+artifact.sha256,{credentials:'same-origin',cache:'no-store',redirect:'error',signal});
@@ -2375,6 +2861,23 @@
       const previous=state.previewPageUrl;state.previewPageUrl=blobUrl;blobUrl=null;wrap.replaceChildren(image);if(previous)URL.revokeObjectURL(previous);
       preview.page=page;$('#cpPreviewPageLabel').textContent=preview.descriptor.kind==='image'?`${preview.descriptor.width} × ${preview.descriptor.height}`:`Page ${page} of ${preview.descriptor.page_count}`;
       $('#cpPreviewPageError').hidden=true;
+      if(artifact.media_type==='application/pdf'){
+        const layer=document.createElement('section');layer.className='cp-pdf-text-layer';layer.dataset.artifactId=artifact.artifact_id;layer.dataset.page=String(page);
+        layer.innerHTML='<h4>Selectable page text</h4><p role="status">Reading the PDF text layer…</p>';wrap.append(layer);
+        try{
+          const response=await fetch(`${artifact.download_url}/text/pages/${page}`,{credentials:'same-origin',cache:'no-store',redirect:'error',signal:controller.signal});
+          if(!response.ok)throw new Error(`Text layer unavailable (${response.status})`);
+          const value=await response.json();
+          if(value.contract!=='casepath.workspace-pdf-text-page/1.0.0'||value.claim_id!==claimId||value.artifact_id!==artifact.artifact_id||value.artifact_sha256!==artifact.sha256||value.page!==page||typeof value.text!=='string'||value.text_sha256!==await sha256Bytes(new TextEncoder().encode(value.text)))throw new Error('The text layer does not match this PDF');
+          if(!current())return;
+          const body=document.createElement('div');body.className='cp-pdf-text';body.tabIndex=0;body.setAttribute('role','region');body.setAttribute('aria-label',`PDF page ${page} text`);
+          const quote=state.sourceSelection?.kind==='artifact'&&state.sourceSelection.index===preview.index?state.sourceSelection.quote:null;
+          const found=quote?value.text.indexOf(quote):-1;
+          if(found>=0){body.append(document.createTextNode(value.text.slice(0,found)));const mark=document.createElement('mark');mark.textContent=quote;body.append(mark,document.createTextNode(value.text.slice(found+quote.length)));}
+          else body.textContent=value.text;
+          layer.replaceChildren(Object.assign(document.createElement('h4'),{textContent:'Selectable page text'}),body);
+        }catch(error){if(current())layer.innerHTML=`<h4>Selectable page text</h4><p role="status">${esc(error.name==='AbortError'?'The text layer took too long.':error.message)}</p>`;}
+      }
     }catch(error){if(blobUrl)URL.revokeObjectURL(blobUrl);if(!current())return;const line=$('#cpPreviewPageError');line.hidden=false;wrap.querySelector('.cp-page-placeholder')?.remove();line.textContent=error.name==='AbortError'?'The page took too long to load.':error.message;const retry=document.createElement('button');retry.type='button';retry.className='cw-text-button';retry.dataset.previewRetry='true';retry.textContent='Try page again';line.append(' ',retry);}
     finally{clearTimeout(timer);if(current()){wrap.setAttribute('aria-busy','false');root.querySelectorAll('[data-preview-page]').forEach(b=>b.disabled=b.dataset.previewPage==='previous'?preview.page<=1:preview.page>=preview.descriptor.page_count);}}
   }
@@ -2415,6 +2918,10 @@
   function showEvidenceSource(itemId, focus=true) {
     const item=state.loop?.operational_projection.evidence_items.find(i=>i.evidence_item_id===itemId);
     if(!item || !$('#cwSourceContent')) return;
+    const node=state.loop.loop_state.process.nodes.find(row=>row.evidence_requirement_ids?.includes(itemId));
+    if(node)state.canvasNodeId=node.node_id;
+    state.focusedEvidenceId=itemId;
+    syncReasoning();
     releaseSourcePreview(); state.sourceSelection={kind:'evidence',id:itemId};
     $('#cwSourceHeading').textContent='Evidence & its sources';
     $('#cwSourceContent').innerHTML=ui.evidenceSource(item,state.loop,state.detail);
@@ -2424,6 +2931,8 @@
     const node=state.loop?.loop_state.process.nodes.find(n=>n.node_id===nodeId); if(!node) return;
     const item=state.loop.operational_projection.evidence_items.find(i=>node.evidence_requirement_ids?.includes(i.evidence_item_id));
     if(item){showEvidenceSource(item.evidence_item_id,focus);return;}
+    state.canvasNodeId=nodeId;state.focusedEvidenceId=null;
+    syncReasoning();
     releaseSourcePreview();state.sourceSelection={kind:'process',id:nodeId};
     $('#cwSourceHeading').textContent='Process step';
     $('#cwSourceContent').innerHTML=`<div class="cw-source-selection"><h4>${esc(node.title)}</h4><p>${esc(node.answer)}</p><p><strong>Recorded process rule</strong><br>${esc(node.why)}</p><p class="cw-note">This view explains the saved process; it does not change the active path.</p></div>`;
@@ -2433,7 +2942,10 @@
     const detail=state.detail, artifact=detail?.artifacts[index];
     if(!artifact || !Number.isSafeInteger(index)) return;
     const acceptedRef=quote&&state.loop?.loop_state.observations.flatMap(row=>row.source_refs||[]).find(ref=>ref.sanitized_excerpt===quote&&ui.sourceArtifactIndex(ref,detail)===index);
-    const acceptedQuote=acceptedRef?quote:null;
+    const candidate=quote&&state.loop?.finding_options?.find(row=>row.source_id===artifact.artifact_id&&row.quote===quote);
+    const noticed=quote&&detail.state.intake_assessment?.claim_assessment?.noticed.some(row=>
+      row.source_id===artifact.artifact_id&&(row.text===quote||row.text.endsWith(': '+quote)));
+    const acceptedQuote=acceptedRef||noticed||candidate?quote:null;
     releaseSourcePreview();state.sourceSelection={kind:'artifact',index,quote:acceptedQuote};
     const ticket=state.sourceRequest, claimId=detail.state.claim_id;
     const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
@@ -2481,7 +2993,7 @@
         else content=ui.packetContentMarkup(descriptor);
       } else content='<p class="cw-note">This file type has no inline preview. Open the original file below.</p>';
       const highlighted=content.includes('id="cpExactSourcePassage"');
-      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote&&!highlighted?`<aside class="cp-selected-passage"><span>Accepted passage linked to this source</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
+      $('#cwSourceContent').innerHTML=`<p class="cw-source-label">${esc(ui.fileTreatment(artifact).caption)} · ${esc(ui.fileSize(artifact.size_bytes))}</p>${acceptedQuote&&!highlighted?`<aside class="cp-selected-passage"><span>${acceptedRef?'Accepted passage linked to this source':candidate?'Candidate passage':'Passage noticed in this file'}</span><blockquote>${esc(acceptedQuote)}</blockquote></aside>`:''}${content}${renderedPage?'':`<p><a class="cw-text-button" href="${esc(url.href)}" download="${esc(artifact.file_name)}">Download original</a></p>`}<details class="cw-receipt cp-source-technical"><summary>Technical details</summary><pre>${esc(JSON.stringify({sha256:hash,size_bytes:bytes.byteLength},null,2))}</pre></details>`;
       $('#cpExactSourcePassage')?.scrollIntoView({block:'center'});
       if(renderedPage)await renderPacketPage(1);
     } catch(error) {
@@ -2492,12 +3004,37 @@
   }
   function restoreSourceSelection() {
     const selection=state.sourceSelection;
+    const selectedNode=state.canvasNodeId,selectedEvidence=state.focusedEvidenceId;
     if(selection?.kind==='evidence') showEvidenceSource(selection.id,false);
     else if(selection?.kind==='process') showProcessSource(selection.id,false);
     else if(selection?.kind==='artifact') void showSourceArtifact(selection.index,false,selection.quote);
+    // The source pane and reasoning lens can point at different saved objects.
+    // Restoring the pane must not move a newly replanned action back to its old step.
+    state.canvasNodeId=selectedNode;
+    state.focusedEvidenceId=selectedEvidence;
   }
   function handleWorkspaceClick(event) {
-    const button=event.target.closest('button,a');if(!button)return;
+    const button=event.target.closest('button,a');if(!button)return;if(button.matches('a[data-close-detail],a[data-canvas-node],a[data-noticed-source],a[data-what-if],a[data-open-inspector],a[data-close-inspector],a[data-edit-owner],a[data-draft-copy],a[data-draft-export],a[data-footer-open],a[data-open-technical],a[data-source-reset-open],a[data-source-artifact]'))event.preventDefault();
+    if(button.id==='awWorkforceButton'&&!button.dataset.agentWorkEntry){
+      if(button.dataset.loading)return;
+      button.dataset.loading='true';button.setAttribute('aria-busy','true');
+      const label=button.querySelector('span');if(label)label.textContent='Opening review team…';
+      void loadAgentWork().then(()=>{
+        delete button.dataset.loading;button.removeAttribute('aria-busy');
+        if(label)label.textContent='Review team';button.click();
+      }).catch(error=>{
+        delete button.dataset.loading;button.removeAttribute('aria-busy');
+        button.title=error.message;if(label)label.textContent='Retry review team';
+      });
+      return;
+    }
+    if(button.hasAttribute('data-reviewer-toggle')){button.closest('.cp-actions-menu')?.removeAttribute('open');state.reviewerMode=!state.reviewerMode;localStorage.setItem('casepath:reviewer:v1',state.reviewerMode?'1':'0');syncReviewerMode();return;}
+    if(button.hasAttribute('data-dismiss-intro')){localStorage.setItem('casepath:intro:v1','1');$('#cpFirstRun').hidden=true;return;}
+    if(button.hasAttribute('data-start-tour')){localStorage.setItem('casepath:intro:v1','1');$('#cpFirstRun').hidden=true;state.guideStep=0;state.guideStatus='';sessionStorage.setItem('casepath:walk-step','0');void openClaim(flagshipClaim);return;}
+    if(button.hasAttribute('data-guide-exit')){state.guideStep=null;sessionStorage.removeItem('casepath:walk-step');renderGuide();return;}
+    if(button.hasAttribute('data-guide-next')){moveGuide('next');return;}
+    if(button.hasAttribute('data-guide-back')){moveGuide('back');return;}
+    if(button.hasAttribute('data-guide-finish')){moveGuide('finish');return;}
     if(packetClick(button))return;
     const menu=button.closest('.cp-actions-menu');if(menu)menu.open=false;
     if(presentationClick(button))return;
@@ -2509,11 +3046,11 @@
     if(button.dataset.processNode) showProcessSource(button.dataset.processNode);
     if(button.hasAttribute('data-source-artifact')){const index=Number(button.dataset.sourceArtifact);const quote=button.dataset.sourceQuote||(state.sourceSelection?.kind==='artifact'&&state.sourceSelection.index===index?state.sourceSelection.quote:null);void showSourceArtifact(index,true,quote);}
     if(button.hasAttribute('data-source-reset')) resetSource();
-    if(button.hasAttribute('data-show-investigation')){setWorkbenchTab('activity');const section=$('#cwSavedInvestigation');if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});}}
+    if(button.hasAttribute('data-show-investigation')){showWorkspaceSection('activity');const section=$('#cwSavedInvestigation');if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});}}
     if(button.id==='cwClearFilters') clearQueueFilters();
-    if(button.hasAttribute('data-show-evidence'))setWorkbenchTab('evidence',{focus:true});
+    if(button.hasAttribute('data-show-evidence'))showWorkspaceSection('evidence');
     if(button.hasAttribute('data-dismiss-change')) {state.change=null;$('#cwReplanDelta')?.remove();$('#cwLoopWorkbench')?.setAttribute('tabindex','-1');$('#cwLoopWorkbench')?.focus({preventScroll:true});}
-    if(button.hasAttribute('data-refresh-claim')) void refreshOpen().catch(error=>{if($('#cwCommandStatus')) $('#cwCommandStatus').textContent='Could not refresh this claim. '+error.message;});
+    if(button.hasAttribute('data-refresh-claim')) void refreshOpen().catch(showRefreshFailure);
     if(button.dataset.retryClaim) void openClaim(button.dataset.retryClaim);
     if(button.hasAttribute('data-load-investigation') && state.detail) {
       button.disabled=true;button.textContent='Loading saved investigation…';
@@ -2523,6 +3060,14 @@
       });
     }
   }
+  function showRefreshFailure(error) {
+    const status=$('#cwCommandStatus');if(!status)return;
+    const message=error.transportFailure
+      ? 'Cannot reach the local claim service. This claim remains visible. Start the app, then try again.'
+      : `Could not verify a newer claim record: ${error.message}. This claim remains visible.`;
+    const retry=document.createElement('button');retry.type='button';retry.className='cw-text-button';retry.dataset.refreshClaim='';retry.textContent='Try again';
+    status.replaceChildren(document.createTextNode(message+' '),retry);
+  }
   async function refreshOpen() {
     if(!state.detail || state.mutationBusy) return;
     const context=activeDetailContext(), claimId=state.detail.state.claim_id;
@@ -2531,22 +3076,28 @@
     if(!isActiveDetail(context)) return;
     state.detail=detail;state.loop=loop;
     if(state.change && state.change.afterRevision!==loop?.revision) state.change=null;
-    renderDetail(detail);void loadQueue();
-    $('#cwCommandStatus').textContent='Showing the latest saved claim record.';
+    renderDetail(detail);
+    if(detail.state.workflow_state==='in_review'){
+      void loadDraftList(claimId,context,state.detailController?.signal);
+      void loadMemoryList(claimId,context,state.detailController?.signal);
+    }
+    $('#cwCommandStatus').textContent='';
   }
 
   function closeDetail({fromHistory=false,refresh=true} = {}) {
     const returnViaHistory=!fromHistory&&Boolean(history.state?.casepathFromQueue);
-    savePresentation();$(".cp-sidebar").inert=false;
+    savePresentation();
     state.queueFocusReturn=state.returnClaimId;
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
-    releaseSourcePreview(); state.sourceSelection=null; state.change=null;
+    clearTimeout(state.evidencePreviewTimer);state.evidencePreviewTimer=null;
+    state.preparedEvidenceIntent=null;
+    releaseSourcePreview(); state.sourceSelection=null; state.change=null; state.whatIf=null; state.evidenceChoice=null; state.handlerDrafts={}; state.draft=null; state.draftEdit=null; state.memories=null;state.knowledge=null;state.memoryHidden=new Set();
     state.detailEpoch += 1;
     state.mutationBusy = null;
     state.detailController?.abort();
     state.detailController = null;
-    $('#cwDetail').hidden = true;
-    $('.cw-shell').inert = false;
+    showQueueRoute();
+    queueRoute.inert = false;
     document.body.style.overflow = '';
     state.detail = null;
     state.detailPriority = null;
@@ -2557,7 +3108,7 @@
       if (history.state?.casepathFromQueue) history.back();
       else history.replaceState(null,'',`${location.pathname}${location.search}`);
     }
-    const currentRow = state.returnClaimId ? $('#cwTable').querySelector(`tr[data-claim-id="${CSS.escape(state.returnClaimId)}"]`) : null;
+    const currentRow = state.returnClaimId ? $('#cwTable').querySelector(`[data-claim-id="${CSS.escape(state.returnClaimId)}"]`) : null;
     (currentRow || (state.returnFocus?.isConnected ? state.returnFocus : null))?.focus?.();
     state.returnFocus = null;
     state.returnClaimId = null;
@@ -2573,7 +3124,7 @@
   function syncClaimFromLocation({refresh=true} = {}) {
     const claimId = claimIdFromLocation();
     if (claimId) {
-      if(!$('#cwDetail').hidden&&state.returnClaimId===claimId){const view=new URLSearchParams(location.hash.slice(1)).get('view')||'overview';if(view!==state.workbenchTab)setWorkbenchTab(view,{remember:false});return;}
+      if(!$('#cwDetail').hidden&&state.returnClaimId===claimId)return;
       void openClaim(claimId);
       return;
     }
@@ -2584,7 +3135,9 @@
   $('#cwSearch').addEventListener('input', () => { clearTimeout(state.filterTimer); state.filterTimer=setTimeout(()=>{saveQueueFilters();void loadQueue();},180); });
   $('#cwFilters').addEventListener('change', event => { if(event.target.id==='cwSearch') return; clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });
   root.addEventListener('click',handleWorkspaceClick);
-  $('#cwRefresh').addEventListener('click', () => loadQueue());
+  window.addEventListener('casepath:refresh-claim',()=>{if(state.detail)void refreshOpen().catch(showRefreshFailure);});
+  root.addEventListener('pointerup',offerSourceSelection);
+  root.addEventListener('keyup',event=>{if(event.key==='Shift'||event.key.startsWith('Arrow'))offerSourceSelection();});
   $('#cwMore').addEventListener('click', () => loadQueue({append:true}));
 
   document.addEventListener('keydown',workspaceKeyboard);
@@ -2592,6 +3145,8 @@
   window.addEventListener('hashchange', syncClaimFromLocation);
   window.addEventListener('popstate',()=>{restoreQueueFilters();syncClaimFromLocation({refresh:false});void loadQueue();});
   restoreQueueFilters();
+  $('#cpFirstRun').hidden=localStorage.getItem('casepath:intro:v1')==='1';
+  syncReviewerMode();
   void loadQueue();
   syncClaimFromLocation();
 })();

@@ -29,6 +29,7 @@ class SourceChanged(AuthorityError):
 
 class ClaimAuthority(Protocol):
     def context(self, claim_id: str) -> dict[str, Any]: ...
+    def packet_identity(self, claim_id: str) -> dict[str, str]: ...
     def list_sources(self, claim_id: str) -> list[dict[str, Any]]: ...
     def read_source(self, claim_id: str, source_id: str) -> dict[str, Any]: ...
     def prepare(self, claim_id: str, run_id: str, expected_context: dict[str, Any]) -> dict[str, Any]: ...
@@ -96,11 +97,23 @@ class ExistingCasePathAuthority:
                 "source_roster_sha256": digest(sources), "subject": detail["message"]["subject"],
                 "source_count": len(sources), "mode": "existing_casepath_authority"}
 
-    def list_sources(self, claim_id):
+    def packet_identity(self, claim_id):
+        """Check the original packet without rebuilding the ClaimLoop view."""
         detail = self._detail(claim_id)
+        state = detail["state"]
+        sources = self._source_descriptors(detail)
+        return {"binding_sha256": state["binding"]["binding_sha256"],
+                "source_roster_sha256": digest(sources)}
+
+    @staticmethod
+    def _source_descriptors(detail):
         return [{"source_id": a["artifact_id"], "source_sha256": a["sha256"], "filename": a["file_name"],
                  "media_type": a["media_type"], "size_bytes": a["size_bytes"], "role": a["role"]}
                 for a in detail["artifacts"]]
+
+    def list_sources(self, claim_id):
+        detail = self._detail(claim_id)
+        return self._source_descriptors(detail)
 
     def read_source(self, claim_id, source_id):
         detail = self._detail(claim_id)
@@ -200,3 +213,27 @@ class ExistingCasePathAuthority:
 
     def snapshot(self, claim_id):
         return normalize_loop(self._loop().view(claim_id))
+
+    def snapshot_is_current(self, claim_id, expected_sha256):
+        """Use the journal checkpoint as a freshness hint between full role checks."""
+        from casepath_api.workspace_claim_loop_v1 import WORKSPACE_CLAIM_LOOP_SESSION_ID
+
+        store = self._loop().claim_loop.store
+        connection = store.connect()
+        try:
+            rows = connection.execute(
+                "SELECT loop_id,last_event_sha256 FROM claim_loop_checkpoints "
+                "WHERE session_id=? AND state_sha256=? LIMIT 2",
+                (WORKSPACE_CLAIM_LOOP_SESSION_ID, expected_sha256),
+            ).fetchall()
+            if len(rows) == 1:
+                latest = connection.execute(
+                    "SELECT event_sha256 FROM claim_loop_events "
+                    "WHERE session_id=? AND loop_id=? ORDER BY sequence DESC LIMIT 1",
+                    (WORKSPACE_CLAIM_LOOP_SESSION_ID, rows[0]["loop_id"]),
+                ).fetchone()
+                if latest and latest["event_sha256"] == rows[0]["last_event_sha256"]:
+                    return True
+        finally:
+            connection.close()
+        return self.snapshot(claim_id)["state_sha256"] == expected_sha256

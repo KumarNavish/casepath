@@ -5,7 +5,7 @@ Start with the [README](../README.md) for the idea and the shortest local run. T
 | Question | Read |
 | --- | --- |
 | How do I run one claim? | [Setup and first claim](setup.md) |
-| Why does a document request follow from a process step? | [Interactive method guide](method-guide.md) |
+| Why does this claim need a document? | [Live claim walkthrough](method-guide.md) |
 | What can the agent review actually do? | [Agent review workflow](AGENT_REVIEW.md) |
 | What is in the datasets? | [Released datasets](../data/README.md) and the [150-claim data card](INTAKE_PACKET_150.md) |
 | What did the studies measure? | [Research evidence](research-evidence.md) and [comparison conditions](benchmark-and-baselines.md) |

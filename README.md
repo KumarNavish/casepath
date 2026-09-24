@@ -1,5 +1,43 @@
 # CasePath
 
+CasePath reads the customer's message and files, shows where the claim stands, and helps the handler ask for what is missing.
+
+![Family-home claim with linked findings, the current path, and sources](docs/images/workbench-review.png)
+
+*The two notices give different end dates; the receipt dates remain a question. This walkthrough uses a synthetic claim.*
+
+## See one claim
+
+The **Claims** list groups work by who CasePath is waiting for. Each row says what it noticed and what to do next. Select **Walk through this claim** above the list, or open `#claim=clm_f69b1747447bc221`.
+
+Select **Review claim**. Findings appear in **What I noticed** as the review runs. The two end dates link to their exact PDF spans, and **Sources** stays beside the claim on desktop. **Where it stands** shows the done step, the current step, and the next step. Expand **+8 later** for the rest of this path. The conditions and their source quotes sit below the steps.
+
+**Questions** asks for the two receipt dates and explains what each unresolved condition would change. **What to request** separates what is needed now, later, and on no active path. Focus family-home service, select **what if**, and set it false to see the spouse-notice request leave the sandbox path. Exit to return to the saved assessment.
+
+Select **Draft request** to open an editable letter with the questions, reasons, and articles. It is labelled **Draft, not sent**; **Copy** and **Export** are beside **Save edits**. [About CasePath](casepath/method.html) has the **Reviewer mode** switch, the [data](casepath/corpus.html), and the [research results](casepath/research.html).
+
+![Claims list with the first-run walk and waiting groups](docs/images/workbench-queue.png)
+
+The paper's Study A method is installed as a separate service. It uses the frozen source pack, guard interpreter and document planner. With recorded guard answers, its [replay matches all 72 paper cases and 36 paired changes](research/casepath/branch-benchmark/parity/PRODUCT_METHOD_PARITY_V5.json). The workbench's assessment and review are separate product behavior. The earlier authored teaching record remains downloadable from [About CasePath](casepath/method.html). The studies' measured results stay separate from the workbench.
+
+## Run it locally
+
+Download or clone the repository, enter its root, then run:
+
+```sh
+./bin/casepath prepare
+./bin/casepath dev
+```
+
+Open the address printed by the server. The first `prepare` installs pinned Python 3.13.9 dependencies, so it needs internet access. Local use after preparation needs no provider account, API key, database service, or paid infrastructure. You also need Git, `uv`, `lsof`, and `lockf` on macOS or `flock` on Linux. Stop the server with Ctrl-C. Saved claim and review state stays in `.runtime/casepath-data-v1`; use a fresh clone for disposable tests. [Setup](docs/setup.md) covers replay, export, safe reset, and platform details.
+
+```sh
+./bin/casepath test
+./bin/casepath replay <claim-id>
+```
+
+## Paper and method
+
 **A process-first architecture for deciding which evidence an agent should
 request in a rule-governed workflow, and why.** Language models judge what is
 true of a case; executable process control derives what the case requires, and
@@ -12,18 +50,6 @@ two datasets, both benchmarks, every recorded run, and scripts that recompute
 the paper's numbers offline.
 
 ![Direct prediction can mix branches; CasePath follows the active branch from obligation to fact, evidence and document.](docs/images/process-first.png)
-
-## Start here
-
-| I want to | Go to |
-|---|---|
-| Read the paper | [`paper/CasePath.pdf`](paper/CasePath.pdf) |
-| Understand the method | [How CasePath works](#how-casepath-works), then the [interactive method guide](docs/method-guide.md) |
-| Run the claims workbench | [The software](#the-software) |
-| Use the datasets | [`data/`](data/README.md): 36 theft case pairs and 150 tenancy claims |
-| See the benchmarks and results | [Benchmarks and results](#benchmarks-and-results) |
-| Reproduce the paper's numbers | [Reproduce the results](#reproduce-the-results) |
-| Cite the work | [Citation](#citation) |
 
 ## Why CasePath
 
@@ -60,31 +86,7 @@ Each request keeps its chain from source passage through obligation, fact,
 capability and route to document. Study A runs a simpler form (each rule checks
 only its own condition, and every route is requested); Study B runs it in full.
 
-## The software
-
-CasePath is released with the paper as claims-handling software. It is a local,
-single-user workbench: a browser interface over a FastAPI service with a
-hash-chained SQLite journal. A claims handler opens any of the 150 synthetic tenancy claims,
-reads the original message and attachments beside the active process step,
-evidence requirements and next action, and can record, correct, export and
-replay the handling state. Nothing is sent to a customer or settled. The
-default mode makes no model calls and needs no API key.
-
-![The workbench on a fictional claim: original notices beside the current process step and a human-review action.](docs/images/workbench-review.png)
-
-```sh
-./bin/casepath prepare     # once; installs pinned Python 3.13.9 dependencies with uv (needs internet)
-./bin/casepath dev         # serves the workbench at the printed local address
-./bin/casepath test        # full isolated test suite
-./bin/casepath replay <claim-id>
-```
-
-You need macOS or Linux, Git, `uv`, `lsof`, and `lockf` (macOS) or `flock`
-(Linux). To open a recorded example, append `#claim=clm_f69b1747447bc221` to
-the printed address and select **Start agent review**. [Setup](docs/setup.md)
-covers replay, export, reset and platform details;
-[architecture and authority](docs/architecture-authority.md) explains how claim
-state is stored and changed.
+## Method and workbench
 
 **How the software relates to the paper.** The method, the benchmarks and the
 product are kept apart, and only the first two carry the paper's measurements.
@@ -95,14 +97,7 @@ product are kept apart, and only the first two carry the paper's measurements.
 | Study B controller | Full process scope and the evidence planner of Study B. The application shows them on an authored teaching example with 45 states. | [`obligation_control/`](casepath-api/casepath_api/obligation_control/) (`obligation_control_v1.py`, `evidence_demand_v1.py`); [method page](casepath/method.html) |
 | Workbench review | Product behaviour: source grounding, journaled state, correction and replay over the 150 claims. It inherits none of the measured results. | [`casepath/`](casepath/README.md), [`docs/AGENT_REVIEW.md`](docs/AGENT_REVIEW.md) |
 
-A copy downloaded from the anonymous review mirror will not start the
-workbench: the mirror rewrites a few strings in files that the launcher checks
-against its source manifest. The two dataset verifiers and the Study A
-reproduction script below are not affected.
 
-The workbench runs on loopback for one user, without authentication. It
-demonstrates handling mechanics, not legal correctness or fitness for real
-claims.
 
 ## Datasets
 

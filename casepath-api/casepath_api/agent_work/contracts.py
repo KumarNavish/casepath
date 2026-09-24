@@ -33,6 +33,8 @@ class Operation(StrEnum):
     RUN_INTERRUPTED = "RUN_INTERRUPTED"
     RUN_BLOCKED = "RUN_BLOCKED"
     RUN_FAILED = "RUN_FAILED"
+    RUN_CANCEL_REQUESTED = "RUN_CANCEL_REQUESTED"
+    RUN_CANCELLED = "RUN_CANCELLED"
     AGENT_STARTED = "AGENT_STARTED"
     AGENT_COMPLETED = "AGENT_COMPLETED"
     AGENT_BLOCKED = "AGENT_BLOCKED"
@@ -150,7 +152,8 @@ class WorkEvent(StrictModel):
             raise ValueError("selected source span is absent")
         operation, after = self.operation, self.after or {}
         if operation not in {Operation.RUN_QUEUED, Operation.RUN_STARTED, Operation.RUN_COMPLETED,
-                             Operation.RUN_BLOCKED, Operation.RUN_FAILED, Operation.RUN_INTERRUPTED} and self.role is None:
+                             Operation.RUN_BLOCKED, Operation.RUN_FAILED, Operation.RUN_INTERRUPTED,
+                             Operation.RUN_CANCEL_REQUESTED, Operation.RUN_CANCELLED} and self.role is None:
             raise ValueError("semantic work requires one of the six roles")
         if operation in {Operation.AGENT_STARTED, Operation.AGENT_COMPLETED, Operation.AGENT_BLOCKED}:
             if self.object_id != self.role.value:

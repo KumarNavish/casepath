@@ -17,6 +17,8 @@ from .claim_workspace_intake_v1 import (
     compile_intake_assessment,
     validate_recorded_intake_assessment,
 )
+from .draft_request_v1 import COMPILER_ID as DRAFT_COMPILER_ID, PREVIOUS_COMPILER_ID as PREVIOUS_DRAFT_COMPILER_ID, compile_draft_request
+from .reviewed_memory_v1 import compile_reviewed_memory, matches, statement_pattern
 from .storage import Storage
 from .workspace_corpus import (
     PublicCorpus,
@@ -40,6 +42,12 @@ EVENT_TYPES = {
     "WORKSPACE_OWNER_ASSIGNED",
     "WORKSPACE_PROCESSING_STARTED",
     "WORKSPACE_UNKNOWN_RECONCILED",
+    "WORKSPACE_HANDLER_OBSERVATION_RECORDED",
+    "WORKSPACE_HANDLER_OBSERVATION_WITHDRAWN",
+    "WORKSPACE_DRAFT_RECORDED",
+    "WORKSPACE_REVIEWED_MEMORY_KEPT",
+    "WORKSPACE_REVIEWED_MEMORY_APPLIED",
+    "WORKSPACE_REVIEWED_MEMORY_RETIRED",
 }
 SORT_MODES = {
     "priority",
@@ -61,6 +69,12 @@ def utc_now() -> str:
 
 def _copy(value: Any) -> Any:
     return json.loads(json.dumps(value))
+
+
+def _memory_assessment(state: Mapping[str, Any]) -> dict[str, Any]:
+    intake = state.get("intake_assessment") or {}
+    assessment = intake.get("claim_assessment") or {}
+    return {"claim_type": intake.get("claim_type"), **assessment}
 
 
 def _parse_time(value: str) -> datetime:
@@ -140,7 +154,9 @@ def _validated_state(value: Mapping[str, Any]) -> dict[str, Any]:
                 )
             )
         )
-        or state.get("deadline_at") is not None
+        or state.get("deadline_at") != (
+            state.get("intake_assessment", {}) or {}
+        ).get("claim_assessment", {}).get("candidate_deadline")
         or (
             state.get("pending_evidence_count") is not None
             and (
@@ -279,6 +295,7 @@ def _reduce(
                 "readiness_state": "blocked",
                 "claim_type": assessment["claim_type"],
                 "intake_assessment": assessment,
+                "deadline_at": assessment.get("claim_assessment", {}).get("candidate_deadline"),
                 "principal_blocker": (
                     f"{node['label']} is not yet established from admitted evidence"
                 ),
@@ -296,6 +313,107 @@ def _reduce(
         material["workflow_state"] = "waiting"
         material["principal_blocker"] = "Unknown effect reconciled; review required"
         material["next_safe_action"] = "Resume deterministic assessment"
+    elif event_type == "WORKSPACE_HANDLER_OBSERVATION_RECORDED":
+        if set(command) != {
+            "kind", "target", "verdict", "note", "quote", "source_id",
+            "action_id", "request_expected_revision",
+        } or state["workflow_state"] != "in_review":
+            raise ClaimWorkspaceError("handler observation command is invalid")
+        kind, target, verdict = command["kind"], command["target"], command["verdict"]
+        note, quote = command["note"], command["quote"]
+        assessment = state.get("intake_assessment") or {}
+        conditions = (assessment.get("claim_assessment") or {}).get("conditions") or {}
+        if (
+            kind not in {"passage", "condition"}
+            or not isinstance(note, str) or len(note) > 1_000
+            or not isinstance(target, str)
+            or (
+                kind == "passage" and (
+                    len(target) != 64 or any(c not in "0123456789abcdef" for c in target)
+                    or verdict not in {"sufficient", "not_relevant"}
+                    or not isinstance(quote, str) or not quote
+                    or not isinstance(command["source_id"], str)
+                    or not isinstance(command["action_id"], str)
+                )
+            )
+            or (
+                kind == "condition" and (
+                    target not in conditions
+                    or verdict not in {"true", "false", "unresolved"}
+                    or quote is not None or command["source_id"] is not None
+                    or command["action_id"] is not None
+                )
+            )
+        ):
+            raise ClaimWorkspaceError("handler observation is outside its source or condition")
+    elif event_type == "WORKSPACE_HANDLER_OBSERVATION_WITHDRAWN":
+        target = command.get("target_event_sha256")
+        if (
+            set(command) != {"target_event_sha256", "request_expected_revision"}
+            or not isinstance(target, str) or len(target) != 64
+            or any(c not in "0123456789abcdef" for c in target)
+        ):
+            raise ClaimWorkspaceError("handler withdrawal target is invalid")
+    elif event_type == "WORKSPACE_DRAFT_RECORDED":
+        if set(command) != {"draft", "replaces_event_sha256", "request_expected_revision"} or state["workflow_state"] != "in_review":
+            raise ClaimWorkspaceError("draft command is invalid")
+        prior = command["replaces_event_sha256"]
+        if prior is not None and (
+            not isinstance(prior, str) or len(prior) != 64
+            or any(char not in "0123456789abcdef" for char in prior)
+        ):
+            raise ClaimWorkspaceError("draft revision source is invalid")
+        draft = command["draft"]
+        assessment = (state.get("intake_assessment") or {}).get("claim_assessment")
+        if not isinstance(draft, dict) or not isinstance(assessment, dict):
+            raise ClaimWorkspaceError("draft has no accepted assessment")
+        try:
+            compiler = draft.get("compiler_id")
+            variants = ("current",) if compiler == DRAFT_COMPILER_ID else (
+                ("sealed_1_1",) if compiler == PREVIOUS_DRAFT_COMPILER_ID else
+                ("unversioned_current", "legacy_7440") if compiler is None else ()
+            )
+            expected = [compile_draft_request(
+                state["claim_id"], assessment,
+                edited_body=draft["body_markdown"] if draft.get("edited_by_handler") else None,
+                variant=variant,
+            ) for variant in variants]
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ClaimWorkspaceError("draft is invalid") from exc
+        if draft not in expected:
+            raise ClaimWorkspaceError("draft differs from its accepted assessment")
+    elif event_type == "WORKSPACE_REVIEWED_MEMORY_KEPT":
+        if set(command) != {"memory", "source_handler_event_sha256", "request_expected_revision"} or state["workflow_state"] != "in_review":
+            raise ClaimWorkspaceError("reviewed memory command is invalid")
+        memory = command["memory"]
+        assessment = _memory_assessment(state)
+        quote = (assessment.get("conditions") or {}).get(memory.get("condition"), {}).get("quote") if isinstance(memory, dict) else None
+        if (not isinstance(memory, dict) or memory.get("source_claim_id") != state["claim_id"]
+                or memory.get("family") != assessment.get("claim_type")
+                or memory.get("source_handler_event_sha256") != command["source_handler_event_sha256"]
+                or not isinstance(quote, str) or not quote
+                or memory.get("statement_pattern") != statement_pattern(quote)
+                or memory.get("status") != "unverified"
+                or memory.get("memory_sha256") != digest_value({k: v for k, v in memory.items() if k != "memory_sha256"})):
+            raise ClaimWorkspaceError("reviewed memory differs from the accepted condition")
+    elif event_type == "WORKSPACE_REVIEWED_MEMORY_APPLIED":
+        if set(command) != {"memory", "note", "request_expected_revision"} or state["workflow_state"] != "in_review":
+            raise ClaimWorkspaceError("reviewed memory application is invalid")
+        assessment = _memory_assessment(state)
+        memory = command["memory"]
+        if (not isinstance(memory, dict) or not matches(memory, state["claim_id"], assessment)
+                or memory.get("memory_sha256") != digest_value({k: v for k, v in memory.items() if k != "memory_sha256"})
+                or not isinstance(command["note"], str) or not command["note"].strip()
+                or len(command["note"]) > 1000):
+            raise ClaimWorkspaceError("reviewed memory is outside this claim")
+    elif event_type == "WORKSPACE_REVIEWED_MEMORY_RETIRED":
+        if (set(command) != {"memory_sha256", "reason", "request_expected_revision"}
+                or not isinstance(command["memory_sha256"], str)
+                or len(command["memory_sha256"]) != 64
+                or any(char not in "0123456789abcdef" for char in command["memory_sha256"])
+                or not isinstance(command["reason"], str)
+                or not command["reason"].strip() or len(command["reason"]) > 1000):
+            raise ClaimWorkspaceError("reviewed memory retirement is invalid")
     elif event_type == "WORKSPACE_CLAIM_IMPORTED":
         raise ClaimWorkspaceError("claim import cannot repeat inside one journal")
     return _validated_state(_with_hash(material))
@@ -467,6 +585,159 @@ class ClaimWorkspaceStore:
         with self.journal.connect() as connection:
             return self._replay_rows(self._rows(connection, loop_id=loop_id))
 
+    def handler_observations(
+        self, claim_id: str, *, revision: int, expected_state_sha256: str,
+    ) -> list[dict[str, Any]]:
+        state = self.state_at_revision(claim_id, revision)
+        if state["state_sha256"] != expected_state_sha256:
+            raise ClaimWorkspaceError("workspace snapshot differs while reading handler observations")
+        return self.handler_observations_at_revision(claim_id, revision)
+
+    def handler_observations_at_revision(
+        self, claim_id: str, revision: int,
+    ) -> list[dict[str, Any]]:
+        loop_id = WORKSPACE_LOOP_PREFIX + claim_id
+        with self.journal.connect() as connection:
+            rows = self._rows(connection, loop_id=loop_id)[:revision]
+            state = self._replay_rows(rows)
+        if state["revision"] != revision:
+            raise ClaimWorkspaceError("workspace historical revision is absent")
+        observations: list[dict[str, Any]] = []
+        by_hash: dict[str, dict[str, Any]] = {}
+        for row in rows:
+            event = json.loads(row["event_json"])
+            if event["event_type"] == "WORKSPACE_HANDLER_OBSERVATION_RECORDED":
+                value = {
+                    **event["command"],
+                    "event_sha256": event["event_sha256"],
+                    "created_at": event["created_at"],
+                    "withdrawn": False,
+                    "authority": "handler_established",
+                }
+                observations.append(value)
+                by_hash[event["event_sha256"]] = value
+            elif event["event_type"] == "WORKSPACE_REVIEWED_MEMORY_APPLIED":
+                memory = event["command"]["memory"]
+                value = {
+                    "kind": "condition", "target": memory["condition"],
+                    "verdict": memory["verdict"], "note": event["command"]["note"],
+                    "quote": memory["source_quote"], "source_id": None,
+                    "action_id": None, "memory_sha256": memory["memory_sha256"],
+                    "source_handler_event_sha256": memory["source_handler_event_sha256"],
+                    "event_sha256": event["event_sha256"], "created_at": event["created_at"],
+                    "withdrawn": False, "authority": "handler_established",
+                }
+                observations.append(value)
+                by_hash[event["event_sha256"]] = value
+            elif event["event_type"] == "WORKSPACE_HANDLER_OBSERVATION_WITHDRAWN":
+                target = by_hash.get(event["command"]["target_event_sha256"])
+                if target is None or target["withdrawn"]:
+                    raise ClaimWorkspaceError("handler withdrawal has no active source")
+                target["withdrawn"] = True
+        return observations
+
+    def drafts_at_revision(self, claim_id: str, revision: int) -> list[dict[str, Any]]:
+        loop_id = WORKSPACE_LOOP_PREFIX + claim_id
+        with self.journal.connect() as connection:
+            rows = self._rows(connection, loop_id=loop_id)[:revision]
+            state = self._replay_rows(rows)
+        if state["revision"] != revision:
+            raise ClaimWorkspaceError("workspace historical revision is absent")
+        drafts: list[dict[str, Any]] = []
+        previous: str | None = None
+        for row in rows:
+            event = json.loads(row["event_json"])
+            if event["event_type"] != "WORKSPACE_DRAFT_RECORDED":
+                continue
+            if event["command"]["replaces_event_sha256"] != previous:
+                raise ClaimWorkspaceError("draft revision chain is invalid")
+            previous = event["event_sha256"]
+            drafts.append({
+                **event["command"]["draft"],
+                "event_sha256": previous,
+                "recorded_at": event["created_at"],
+            })
+        return drafts
+
+    def reviewed_memories(self) -> list[dict[str, Any]]:
+        """Reconcile the search index from validated source journals."""
+        with self.journal.connect() as connection:
+            rows = connection.execute(
+                """SELECT loop_id,sequence,event_json FROM claim_loop_events
+                WHERE session_id=? AND event_json LIKE ? ORDER BY loop_id,sequence""",
+                (WORKSPACE_SESSION_ID, '%WORKSPACE_REVIEWED_MEMORY_%'),
+            ).fetchall()
+        memories = []
+        for row in rows:
+            event = json.loads(row["event_json"])
+            if event.get("event_type") != "WORKSPACE_REVIEWED_MEMORY_KEPT":
+                continue
+            claim_id = row["loop_id"][len(WORKSPACE_LOOP_PREFIX):]
+            state = self.state_at_revision(claim_id, row["sequence"])
+            observations = self.handler_observations_at_revision(claim_id, row["sequence"] - 1)
+            source = next((item for item in observations if item["event_sha256"] == event["command"]["source_handler_event_sha256"]), None)
+            if source is None or source["withdrawn"]:
+                raise ClaimWorkspaceError("reviewed memory has no active handler source")
+            assessment = _memory_assessment(state)
+            try:
+                expected = compile_reviewed_memory(claim_id, assessment, source, event["command"]["memory"]["handler"])
+            except (KeyError, TypeError, ValueError) as exc:
+                raise ClaimWorkspaceError("reviewed memory source is invalid") from exc
+            if expected != event["command"]["memory"]:
+                raise ClaimWorkspaceError("reviewed memory differs from its source journal")
+            current = self.handler_observations_at_revision(claim_id, self.recover(claim_id)["revision"])
+            source_now = next((item for item in current if item["event_sha256"] == source["event_sha256"]), None)
+            memories.append({**expected, "status": "quarantined" if source_now is None or source_now["withdrawn"] else "unverified",
+                             "event_sha256": event["event_sha256"], "created_at": event["created_at"],
+                             "idempotency_key": event["idempotency_key"]})
+        retired: dict[str, str] = {}
+        last_used: dict[str, str] = {}
+        by_hash = {item["memory_sha256"]: item for item in memories}
+        for row in rows:
+            event = json.loads(row["event_json"])
+            kind = event.get("event_type")
+            if kind not in {"WORKSPACE_REVIEWED_MEMORY_RETIRED", "WORKSPACE_REVIEWED_MEMORY_APPLIED"}:
+                continue
+            claim_id = row["loop_id"][len(WORKSPACE_LOOP_PREFIX):]
+            self.state_at_revision(claim_id, row["sequence"])
+            memory_hash = (event["command"]["memory_sha256"] if kind == "WORKSPACE_REVIEWED_MEMORY_RETIRED"
+                           else event["command"]["memory"]["memory_sha256"])
+            source = by_hash.get(memory_hash)
+            if source is None or kind == "WORKSPACE_REVIEWED_MEMORY_RETIRED" and source["source_claim_id"] != claim_id:
+                raise ClaimWorkspaceError("reviewed memory lifecycle has no source")
+            if kind == "WORKSPACE_REVIEWED_MEMORY_RETIRED":
+                if memory_hash in retired:
+                    raise ClaimWorkspaceError("reviewed memory was retired twice")
+                retired[memory_hash] = event["idempotency_key"]
+            else:
+                last_used[memory_hash] = max(event["created_at"], last_used.get(memory_hash, ""))
+        for memory in memories:
+            if memory["memory_sha256"] in retired:
+                memory["status"] = "retired"
+                memory["retirement_idempotency_key"] = retired[memory["memory_sha256"]]
+            memory["last_used_at"] = last_used.get(memory["memory_sha256"])
+        if self.storage is not None:
+            with self.storage.connect() as connection:
+                indexed = {row["memory_sha256"]: dict(row) for row in connection.execute("SELECT * FROM workspace_reviewed_memory_index")}
+                expected_rows = {
+                    memory["memory_sha256"]: {
+                        "memory_sha256": memory["memory_sha256"], "source_claim_id": memory["source_claim_id"],
+                        "event_sha256": memory["event_sha256"], "family": memory["family"],
+                        "condition": memory["condition"], "statement_pattern": memory["statement_pattern"],
+                        "status": memory["status"],
+                        "created_at": memory["created_at"],
+                    } for memory in memories
+                }
+                if indexed != expected_rows:
+                    connection.execute("DELETE FROM workspace_reviewed_memory_index")
+                    connection.executemany(
+                        """INSERT INTO workspace_reviewed_memory_index
+                        (memory_sha256,source_claim_id,event_sha256,family,condition,statement_pattern,status,created_at)
+                        VALUES (:memory_sha256,:source_claim_id,:event_sha256,:family,:condition,:statement_pattern,:status,:created_at)""",
+                        expected_rows.values(),
+                    )
+        return memories
+
     def state_at_revision(self, claim_id: str, revision: int) -> dict[str, Any]:
         """Replay one immutable workspace-journal prefix without repair."""
 
@@ -521,7 +792,10 @@ class ClaimWorkspaceStore:
         # Corpus bytes were fully hashed at admission.  This closed-inventory
         # token is checked before and after the SQLite snapshot, so cached
         # semantic states never conceal source replacement or path drift.
-        corpus_token = self.corpus.runtime_identity_token()
+        corpus_identity = getattr(
+            self.corpus, "observed_runtime_identity_token", self.corpus.runtime_identity_token
+        )
+        corpus_token = corpus_identity()
         with self.journal.connect() as connection:
             connection.execute("BEGIN")
             grouped: dict[str, list[sqlite3.Row]] = defaultdict(list)
@@ -543,7 +817,7 @@ class ClaimWorkspaceStore:
                 )
             if roster_bytes is not None:
                 connection.commit()
-                if self.corpus.runtime_identity_token() != corpus_token:  # pragma: no cover
+                if corpus_identity() != corpus_token:  # pragma: no cover
                     raise ClaimWorkspaceError(
                         "public corpus changed during workspace replay"
                     )
@@ -566,7 +840,7 @@ class ClaimWorkspaceStore:
                         self._replay_cache[loop_id] = (fingerprints, state_bytes)
                 values.append(json.loads(state_bytes))
             connection.commit()
-        if self.corpus.runtime_identity_token() != corpus_token:  # pragma: no cover
+        if corpus_identity() != corpus_token:  # pragma: no cover
             raise ClaimWorkspaceError("public corpus changed during workspace replay")
         with self._replay_cache_lock:
             self._state_roster_cache = (
@@ -689,6 +963,7 @@ def _row(
     state: Mapping[str, Any],
     *,
     now: str,
+    triage: Mapping[str, Any] | None = None,
     operational_projection: Mapping[str, Any] | None = None,
     validate_projection_hash: bool = True,
 ) -> dict[str, Any]:
@@ -752,7 +1027,7 @@ def _row(
             if workflow_state in {"failed", "typed_failure"}
             else 1,
         },
-        {"dimension": "deadline", "value": state["deadline_at"] or "unknown"},
+        {"dimension": "deadline", "value": (state["deadline_at"] or {}).get("date") or "unknown"},
         {"dimension": "failed_or_unknown_effect", "value": failure_rank},
         {"dimension": "unresolved_critical_obligation", "value": unresolved_rank},
         {"dimension": "waiting_age_days", "value": age_days},
@@ -779,9 +1054,10 @@ def _row(
         "revision": state["revision"],
         "state_sha256": state["state_sha256"],
         "priority_tuple": priority_tuple,
+        "triage": dict(triage or {}),
         "_sort": {
             "safety": priority_tuple[0]["value"],
-            "deadline": state["deadline_at"] or "9999-12-31T23:59:59+00:00",
+            "deadline": (state["deadline_at"] or {}).get("date") or "9999-12-31T23:59:59+00:00",
             "failure": failure_rank,
             "unresolved": unresolved_rank,
             "waiting": -age_days,
@@ -848,6 +1124,8 @@ class ClaimWorkspaceService:
         self.storage = storage
         self.corpus = corpus or PublicCorpus(default_public_corpus_root())
         self.store = ClaimWorkspaceStore(storage, self.corpus)
+        self.store.reviewed_memories()
+        self._triage_message_snippets: dict[str, str] = {}
 
     @classmethod
     def open_read_only(
@@ -861,6 +1139,7 @@ class ClaimWorkspaceService:
         value.storage = None
         value.corpus = corpus or PublicCorpus(default_public_corpus_root())
         value.store = ClaimWorkspaceStore.open_read_only(database_path, value.corpus)
+        value._triage_message_snippets = {}
         return value
 
     def seed(self, *, timestamp: str | None = None) -> dict[str, Any]:
@@ -905,6 +1184,85 @@ class ClaimWorkspaceService:
     def states(self) -> list[dict[str, Any]]:
         return self.store.all_states()
 
+    def _triage_snapshot(self, states: Sequence[Mapping[str, Any]]) -> dict[str, dict[str, Any]]:
+        with self.store.journal.connect() as connection:
+            draft_rows = connection.execute(
+                """SELECT loop_id,event_json FROM claim_loop_events
+                WHERE session_id=? AND event_json LIKE ?""",
+                (WORKSPACE_SESSION_ID, '%WORKSPACE_DRAFT_RECORDED%'),
+            ).fetchall()
+            has_index = connection.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='workspace_reviewed_memory_index'"
+            ).fetchone()
+            memory_rows = (connection.execute(
+                """SELECT source_claim_id,family,condition,statement_pattern
+                FROM workspace_reviewed_memory_index WHERE status='unverified'"""
+            ).fetchall() if has_index else [])
+        drafted = {
+            row["loop_id"][len(WORKSPACE_LOOP_PREFIX):] for row in draft_rows
+            if json.loads(row["event_json"]).get("event_type") == "WORKSPACE_DRAFT_RECORDED"
+        }
+        memory_keys = {
+            (row["source_claim_id"], row["family"], row["condition"], row["statement_pattern"])
+            for row in memory_rows
+        }
+        result = {}
+        for state in states:
+            claim_id = state["claim_id"]
+            assessment = _memory_assessment(state)
+            accepted = bool(assessment.get("assessment_sha256"))
+            conditions = assessment.get("conditions") or {}
+            if accepted:
+                noticed = next((str(item["text"]) for item in assessment.get("noticed", []) if item.get("text")), "")
+                profile = {flag: row["verdict"] for flag, row in sorted(conditions.items())}
+                family = str(assessment["claim_type"])
+                true_flags = [flag.replace("_", " ") for flag, verdict in profile.items() if verdict == "true"]
+                profile_label = family.replace("_", " ").title() + (" · " + ", ".join(true_flags[:2]) if true_flags else " · questions open")
+                if conditions.get("health_effects", {}).get("verdict") == "true":
+                    waiting_on = "Specialist"
+                elif (assessment.get("candidate_deadline") or {}).get("question") or any(
+                    item.get("route_state") == "needed_now" for item in assessment.get("documents", [])
+                ):
+                    waiting_on = "Customer"
+                else:
+                    waiting_on = "Handler"
+                memory_match = any(
+                    source_claim != claim_id and memory_family == family
+                    and flag in conditions and isinstance(conditions[flag].get("quote"), str)
+                    and statement_pattern(conditions[flag]["quote"]) == pattern
+                    for source_claim, memory_family, flag, pattern in memory_keys
+                    if conditions.get(flag, {}).get("quote")
+                )
+                next_step = assessment.get("next_step") or "Review the open questions"
+            else:
+                noticed = self._triage_message_snippets.get(claim_id)
+                if noticed is None:
+                    body = str(self.corpus.claim(claim_id)["customer_message"]["body"])
+                    paragraph = next((part.strip() for part in body.split("\n\n")[1:] if part.strip()), body.strip())
+                    prefix, separator, rest = paragraph.partition(":")
+                    if separator and len(prefix) < 65:
+                        paragraph = rest.strip()
+                    noticed = paragraph.split("\n\n", 1)[0][:220].strip()
+                    self._triage_message_snippets[claim_id] = noticed
+                profile = {}
+                family = "unreviewed"
+                profile_label = "First review pending"
+                waiting_on = "Handler"
+                memory_match = False
+                next_step = "Review claim"
+            profile_id = digest_value({"family": family, "conditions": profile})
+            result[claim_id] = {
+                "noticed_fact": noticed[:220],
+                "noticed_source": "assessment" if accepted else "message",
+                "waiting_on": waiting_on,
+                "next_step": next_step,
+                "condition_profile": profile_id,
+                "condition_profile_label": profile_label,
+                "draft_ready": claim_id in drafted,
+                "uses_reviewed_memory": memory_match,
+            }
+        return result
+
     def queue(
         self,
         *,
@@ -917,6 +1275,7 @@ class ClaimWorkspaceService:
         urgency: str | None = None,
         failure: bool | None = None,
         pending_evidence: str | None = None,
+        profile: str | None = None,
         sort: str = "priority",
         cursor: str | None = None,
         limit: int = 25,
@@ -950,6 +1309,7 @@ class ClaimWorkspaceService:
             "urgency": urgency,
             "failure": failure,
             "pending_evidence": pending_evidence,
+            "profile": profile,
             "sort": sort,
             "now": now,
             "limit": limit,
@@ -970,6 +1330,7 @@ class ClaimWorkspaceService:
             raise ClaimWorkspaceError(
                 "operational projection roster differs from the workspace"
             )
+        triage = self._triage_snapshot(states)
         state_roster_sha256 = digest_value(
             [
                 {
@@ -983,6 +1344,7 @@ class ClaimWorkspaceService:
                         if operational_projections is not None
                         else None
                     ),
+                    "triage_sha256": digest_value(triage[item["claim_id"]]),
                 }
                 for item in states
             ]
@@ -991,6 +1353,7 @@ class ClaimWorkspaceService:
             _row(
                 item,
                 now=now,
+                triage=triage[item["claim_id"]],
                 operational_projection=(
                     operational_projections[item["claim_id"]]
                     if operational_projections is not None
@@ -1008,6 +1371,14 @@ class ClaimWorkspaceService:
             "readiness_states": sorted({row["readiness_state"] for row in rows}),
             "claim_types": sorted({row["claim_type"] for row in rows}),
             "urgencies": sorted({row["urgency"] for row in rows}),
+            "waiting_on": {key: sum(row["triage"]["waiting_on"] == key for row in rows)
+                           for key in ("Customer", "Handler", "Specialist")},
+            "condition_profiles": [
+                {"profile": key, "label": next(row["triage"]["condition_profile_label"] for row in rows
+                                                if row["triage"]["condition_profile"] == key),
+                 "count": sum(row["triage"]["condition_profile"] == key for row in rows)}
+                for key in sorted({row["triage"]["condition_profile"] for row in rows})
+            ],
         }
         if query:
             needle = query.casefold()
@@ -1050,6 +1421,10 @@ class ClaimWorkspaceService:
                 for row in rows
                 if predicates[pending_evidence](row["pending_evidence_count"])
             ]
+        if profile is not None:
+            if len(profile) != 64 or any(char not in "0123456789abcdef" for char in profile):
+                raise ClaimWorkspaceError("condition-profile filter is invalid")
+            rows = [row for row in rows if row["triage"]["condition_profile"] == profile]
         rows.sort(key=lambda row: _sort_key(row, sort))
         start = 0
         if cursor_value is not None:
@@ -1196,6 +1571,161 @@ class ClaimWorkspaceService:
             timestamp=timestamp or utc_now(),
             expected_revision=expected_revision,
         )
+        return self._mutation_response(state, event, replayed)
+
+    def drafts(self, claim_id: str) -> dict[str, Any]:
+        state = self.store.recover(claim_id)
+        items = self.store.drafts_at_revision(claim_id, state["revision"])
+        material = {
+            "contract": "casepath.workspace-draft-list/1.0.0",
+            "claim_id": claim_id,
+            "workspace_revision": state["revision"],
+            "workspace_state_sha256": state["state_sha256"],
+            "items": items,
+            "latest": items[-1] if items else None,
+        }
+        return {**material, "list_sha256": digest_value(material)}
+
+    def record_draft(
+        self, claim_id: str, *, expected_revision: int,
+        expected_state_sha256: str, idempotency_key: str,
+        edited_body: str | None = None,
+        replaces_event_sha256: str | None = None,
+        timestamp: str | None = None,
+    ) -> dict[str, Any]:
+        historical = self.store.state_at_revision(claim_id, expected_revision)
+        if historical["state_sha256"] != expected_state_sha256:
+            raise ClaimWorkspaceError("draft workspace prefix differs")
+        assessment = (historical.get("intake_assessment") or {}).get("claim_assessment")
+        if not isinstance(assessment, dict) or historical["workflow_state"] != "in_review":
+            raise ClaimWorkspaceError("claim must be reviewed before drafting")
+        prior = self.store.drafts_at_revision(claim_id, expected_revision)
+        latest = prior[-1]["event_sha256"] if prior else None
+        if replaces_event_sha256 != latest:
+            raise ClaimWorkspaceError("draft revision is stale")
+        if edited_body is not None and latest is None:
+            raise ClaimWorkspaceError("a draft must be recorded before editing")
+        try:
+            draft = compile_draft_request(claim_id, assessment, edited_body=edited_body)
+        except ValueError as exc:
+            raise ClaimWorkspaceError(str(exc)) from exc
+        state, event, replayed = self.store.append(
+            claim_id=claim_id,
+            event_type="WORKSPACE_DRAFT_RECORDED",
+            idempotency_key=idempotency_key,
+            command={
+                "draft": draft,
+                "replaces_event_sha256": replaces_event_sha256,
+                "request_expected_revision": expected_revision,
+            },
+            timestamp=timestamp or utc_now(),
+            expected_revision=expected_revision,
+        )
+        return self._mutation_response(state, event, replayed)
+
+    def keep_reviewed_memory(
+        self, claim_id: str, *, source_handler_event_sha256: str,
+        handler: str, expected_revision: int, expected_state_sha256: str,
+        idempotency_key: str, timestamp: str | None = None,
+    ) -> dict[str, Any]:
+        historical = self.store.state_at_revision(claim_id, expected_revision)
+        if historical["state_sha256"] != expected_state_sha256:
+            raise ClaimWorkspaceError("memory workspace prefix differs")
+        source = next((item for item in self.store.handler_observations_at_revision(claim_id, expected_revision)
+                       if item["event_sha256"] == source_handler_event_sha256), None)
+        if source is None or source["withdrawn"]:
+            raise ClaimWorkspaceError("handler assessment is not active")
+        existing = next((item for item in self.store.reviewed_memories()
+                         if item["source_handler_event_sha256"] == source_handler_event_sha256), None)
+        if existing is not None and existing["idempotency_key"] != idempotency_key:
+            raise ClaimWorkspaceError("this handler assessment is already a reviewed memory")
+        assessment = _memory_assessment(historical)
+        try:
+            memory = compile_reviewed_memory(claim_id, assessment, source, handler)
+        except ValueError as exc:
+            raise ClaimWorkspaceError(str(exc)) from exc
+        state, event, replayed = self.store.append(
+            claim_id=claim_id,
+            event_type="WORKSPACE_REVIEWED_MEMORY_KEPT",
+            idempotency_key=idempotency_key,
+            command={"memory": memory, "source_handler_event_sha256": source_handler_event_sha256,
+                     "request_expected_revision": expected_revision},
+            timestamp=timestamp or utc_now(), expected_revision=expected_revision,
+        )
+        self.store.reviewed_memories()
+        return self._mutation_response(state, event, replayed)
+
+    def reviewed_memories(self, claim_id: str | None = None, *, family: str | None = None) -> dict[str, Any]:
+        state = self.store.recover(claim_id) if claim_id else None
+        assessment = _memory_assessment(state) if state else None
+        all_memories = self.store.reviewed_memories()
+        counts: dict[tuple[str, str, str], int] = defaultdict(int)
+        for item in all_memories:
+            counts[(item["family"], item["condition"], item["statement_pattern"])] += 1
+        items = [
+            {**item, "support_count": counts[(item["family"], item["condition"], item["statement_pattern"])],
+             "qualified_review_required": True}
+            for item in all_memories
+            if (family is None or item["family"] == family)
+            and (claim_id is None or assessment and matches(item, claim_id, assessment))
+        ]
+        material = {"contract": "casepath.reviewed-memory-list/1.0.0", "claim_id": claim_id,
+                    "family": family or (assessment.get("claim_type") if assessment else None),
+                    "items": items, "total_count": len(items)}
+        return {**material, "list_sha256": digest_value(material)}
+
+    def apply_reviewed_memory(
+        self, claim_id: str, *, memory_sha256: str, note: str,
+        expected_revision: int, expected_state_sha256: str,
+        idempotency_key: str, timestamp: str | None = None,
+    ) -> dict[str, Any]:
+        historical = self.store.state_at_revision(claim_id, expected_revision)
+        if historical["state_sha256"] != expected_state_sha256:
+            raise ClaimWorkspaceError("memory application workspace prefix differs")
+        assessment = _memory_assessment(historical)
+        if not isinstance(assessment, dict):
+            raise ClaimWorkspaceError("claim needs an accepted assessment")
+        memory = next((item for item in self.store.reviewed_memories()
+                       if item["memory_sha256"] == memory_sha256), None)
+        if memory is None or not matches(memory, claim_id, assessment):
+            raise ClaimWorkspaceError("reviewed memory does not match this claim")
+        if not isinstance(note, str) or not note.strip() or len(note) > 1000:
+            raise ClaimWorkspaceError("application needs a handler note")
+        source = {key: item for key, item in memory.items() if key not in {"event_sha256", "created_at", "idempotency_key", "last_used_at", "retirement_idempotency_key"}}
+        state, event, replayed = self.store.append(
+            claim_id=claim_id, event_type="WORKSPACE_REVIEWED_MEMORY_APPLIED",
+            idempotency_key=idempotency_key,
+            command={"memory": source, "note": note.strip(),
+                     "request_expected_revision": expected_revision},
+            timestamp=timestamp or utc_now(), expected_revision=expected_revision,
+        )
+        self.store.reviewed_memories()
+        return self._mutation_response(state, event, replayed)
+
+    def retire_reviewed_memory(
+        self, claim_id: str, *, memory_sha256: str, reason: str,
+        expected_revision: int, expected_state_sha256: str,
+        idempotency_key: str, timestamp: str | None = None,
+    ) -> dict[str, Any]:
+        historical = self.store.state_at_revision(claim_id, expected_revision)
+        if historical["state_sha256"] != expected_state_sha256:
+            raise ClaimWorkspaceError("memory retirement workspace prefix differs")
+        memory = next((item for item in self.store.reviewed_memories()
+                       if item["memory_sha256"] == memory_sha256 and item["source_claim_id"] == claim_id), None)
+        if memory is None:
+            raise ClaimWorkspaceError("reviewed memory is outside this claim")
+        if memory["status"] == "retired" and memory["retirement_idempotency_key"] != idempotency_key:
+            raise ClaimWorkspaceError("reviewed memory is already retired")
+        if not isinstance(reason, str) or not reason.strip() or len(reason) > 1000:
+            raise ClaimWorkspaceError("retirement needs a reason")
+        state, event, replayed = self.store.append(
+            claim_id=claim_id, event_type="WORKSPACE_REVIEWED_MEMORY_RETIRED",
+            idempotency_key=idempotency_key,
+            command={"memory_sha256": memory_sha256, "reason": reason.strip(),
+                     "request_expected_revision": expected_revision},
+            timestamp=timestamp or utc_now(), expected_revision=expected_revision,
+        )
+        self.store.reviewed_memories()
         return self._mutation_response(state, event, replayed)
 
     def reconcile(

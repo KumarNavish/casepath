@@ -64,9 +64,9 @@ def test_curated_static_build_has_exact_runtime_inventory(
     files, directories = static_site.inventory(output)
     assert files == static_site.PUBLIC_INVENTORY
     assert directories == static_site.PUBLIC_DIRECTORIES
-    assert len(files) == 48
+    assert len(files) == 23
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
-    assert {"method.html", "assets/method-guide.js", "assets/method-guide.css",
+    assert {"method.html", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files
     assert {"research.html", "assets/research-evidence.css", "assets/paired-study-evidence.json", "assets/native-study-evidence.json"} <= files
     assert {"assets/agent-work-v1.js", "assets/agent-work-v1.css"} <= files
@@ -126,14 +126,20 @@ def test_curated_asset_allowlist_is_the_recursive_runtime_closure() -> None:
         discovered.update(nested)
 
     assert discovered == set(static_site.PUBLIC_ASSETS)
-    assert "assets/live-v16-viewer-fix.css" in discovered
-    assert "assets/live-v18-law-normalize.js" in discovered
-    assert "assets/foundation-live.css" in discovered
-    assert "assets/foundation-live.js" in discovered
-    assert "assets/insurance-protocol-v1.css" in discovered
-    assert "assets/insurance-protocol-v1.js" in discovered
+    assert "assets/claims-workspace-presentation-v1.css" in discovered
+    assert "assets/claims-workspace-presentation-v1.js" in discovered
+    assert "assets/agent-work-v1.css" in discovered
+    assert "assets/agent-work-v1.js" in discovered
     assert "assets/claims-workspace-v1.css" in discovered
     assert "assets/claims-workspace-v1.js" in discovered
+
+
+def test_queue_script_payload_stays_below_300_kb() -> None:
+    index = (static_site.SOURCE_ROOT / "index.html").read_text(encoding="utf-8")
+    scripts = re.findall(r'<script src="(assets/[^"?]+\.js)\?sha256=', index)
+    assert "assets/agent-work-v1.js" not in scripts
+    assert index.count('name="casepath-agent-work-script"') == 1
+    assert sum((static_site.SOURCE_ROOT / script).stat().st_size for script in scripts) < 300_000
 
 
 def test_insurance_product_asset_urls_are_content_bound() -> None:

@@ -1503,9 +1503,8 @@ class ClaimLoopStore:
             loop_id=loop_id,
         )
 
-    @classmethod
     def _checkpoint_prefix_state(
-        cls,
+        self,
         row: sqlite3.Row,
         rows: list[sqlite3.Row],
         *,
@@ -1520,7 +1519,7 @@ class ClaimLoopStore:
             or revision > len(rows)
         ):
             raise ClaimLoopStoreError("claim loop checkpoint is not a journal prefix")
-        prefix = cls._replay_rows_uncached(
+        prefix = self._replay_rows(
             rows[:revision], session_id=session_id, loop_id=loop_id
         )
         if (
@@ -4025,7 +4024,14 @@ class ClaimLoopStore:
         )
         for row in rows:
             try:
-                event = load_claim_loop_event_v1(json.loads(row["event_json"]))
+                recorded = json.loads(row["event_json"])
+                if not isinstance(recorded, dict):
+                    raise ClaimLoopStoreError("read-only journal event is invalid")
+                if recorded.get("event_type") not in {
+                    "OBSERVATION_INGESTED", "EVIDENCE_PROPOSAL_REJECTED"
+                }:
+                    continue
+                event = load_claim_loop_event_v1(recorded)
                 if (
                     event.session_id == "casepath-workspace-claim-loop-v1"
                     and event.event_type

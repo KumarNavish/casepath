@@ -69,6 +69,10 @@ INTERPRETATION_SCHEMA_SHA256 = digest_value(
 )
 INTENT_TTL_SECONDS = 300
 MAX_SOURCE_BYTES = 100_000
+# Read-only replay of authority receipts written before the uncertainty grammar fix.
+# New admissions still bind only the current independent authority source.
+_PREVIOUS_AUTHORITY_SOURCE_SHA256 = "5d570fbdb808d19a01f64d611a8789f4fe492b9d6c66d166fb05df65ebfccc1a"
+_PHASE1_AUTHORITY_SOURCE_SHA256 = "585a22e379c8d4a50ce21daaab6e6b5c83ab7aeab2417b5adae5e3a0387fce91"
 
 
 class WorkspaceEvidenceAuthorityError(ValueError):
@@ -424,10 +428,13 @@ def _admission(state: ClaimLoopState) -> dict[str, Any]:
             not is_sha256(entry_sha256)
             or entry_sha256 != digest_value(entry_material)
             or entry_sha256 in seen
-            or entry.get("source_kind") != "observable_message_span"
+            or entry.get("source_kind") not in {
+                "observable_message_span", "observable_attachment_text_span"
+            }
             or entry.get("support_scope") != "case_specific"
             or entry.get("locator_kind") != "text_span"
-            or entry.get("page") != 1
+            or not isinstance(entry.get("page"), int)
+            or entry["page"] < 1
             or not isinstance(entry.get("byte_start"), int)
             or not isinstance(entry.get("byte_end"), int)
             or int(entry["byte_start"]) < 0
@@ -915,7 +922,7 @@ class LoopbackSourceByteAcquisitionAdapterV1:
             or value.get("authority_id")
             != "casepath.independent-evidence-authority/1.0.0"
             or value.get("authority_source_sha256")
-            != self._authority_source_sha256
+            not in {self._authority_source_sha256, _PREVIOUS_AUTHORITY_SOURCE_SHA256, _PHASE1_AUTHORITY_SOURCE_SHA256}
             or value.get("authoritative_semantic_effect") is not False
         ):
             raise WorkspaceEvidenceAuthorityError("authority rejection receipt is invalid")
@@ -1910,7 +1917,7 @@ class LoopbackSourceByteAcquisitionAdapterV1:
             or admission.get("authority_id")
             != "casepath.independent-evidence-authority/1.0.0"
             or admission.get("authority_source_sha256")
-            != self._authority_source_sha256
+            not in {self._authority_source_sha256, _PREVIOUS_AUTHORITY_SOURCE_SHA256, _PHASE1_AUTHORITY_SOURCE_SHA256}
             or admission.get("decision") != "admitted"
             or admission.get("authoritative_state_effect")
             != "delegated_to_claim_loop_journal"
@@ -2048,8 +2055,8 @@ def _single_edge_intake_is_decisive(process_node_id: str, text: str) -> bool:
 
 
 class _EvidenceSemantics:
-    implementation_id = "casepath.fixed-source-span-interpreter/1.0.0"
-    grammar_id = "casepath.workspace-source-span-grammar/1.0.0"
+    implementation_id = "casepath.fixed-source-span-interpreter/1.0.1"
+    grammar_id = "casepath.workspace-source-span-grammar/1.0.1"
 
     def __init__(self, adapter: LoopbackSourceByteAcquisitionAdapterV1) -> None:
         self.adapter = adapter
@@ -2096,7 +2103,8 @@ class _EvidenceSemantics:
         return {**material, "input_contract_sha256": digest_value(material)}
 
     def source_candidate(
-        self, *, action: EvidenceAction, state: ClaimLoopState
+        self, *, action: EvidenceAction, state: ClaimLoopState,
+        source_entry_sha256: str | None = None,
     ) -> dict[str, Any]:
         entries = [dict(value) for value in _admission(state)["source_entries"]]
         entries.sort(key=lambda value: (int(value["text_start"]), str(value["source_entry_sha256"])))
@@ -2117,6 +2125,14 @@ class _EvidenceSemantics:
         ]
         if not available:
             raise ClaimLoopError("no fresh admitted source span remains for this action")
+        if source_entry_sha256 is not None:
+            selected = [value for value in available if value["source_entry_sha256"] == source_entry_sha256]
+            if len(selected) != 1:
+                raise ClaimLoopError("selected passage is not available for this action")
+            return selected[0]
+        available = [value for value in available if value["source_kind"] == "observable_message_span"]
+        if not available:
+            raise ClaimLoopError("no fresh message passage remains for automatic acquisition")
         if action.process_node_id.endswith("_intake"):
             positive = [value for value in available if any(term in value["exact_text"].casefold() for term in _HEALTH_POSITIVE_TERMS)]
             if action.process_node_id.endswith("dh_intake") and positive:
@@ -2202,6 +2218,9 @@ class _EvidenceSemantics:
         unresolved: str | None,
         resolved: list[str],
         grant: Mapping[str, Any],
+        *,
+        state: ClaimLoopState | None = None,
+        source_entry: Mapping[str, Any] | None = None,
     ) -> str | None:
         if unresolved is None:
             raise ClaimLoopError("source span has no closed decision catalog")
@@ -2210,14 +2229,30 @@ class _EvidenceSemantics:
             raise ClaimLoopError("source span lacks a decision-bearing actor grant")
         if _instruction_bearing(text):
             raise ClaimLoopError("instruction-bearing source content is not evidence")
+        if (
+            state is not None
+            and source_entry is not None
+            and source_entry.get("source_kind") == "observable_attachment_text_span"
+            and action.process_node_id.endswith("lt_intake")
+            and len(resolved) == 1
+            and re.fullmatch(
+                r"\d{1,2}\.\s*(?:Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)",
+                text.strip(), re.I,
+            )
+        ):
+            package = state.accepted_artifacts.get("observable_package")
+            message = package.get("customer_message") if isinstance(package, Mapping) else None
+            body = str(message.get("body", "")) if isinstance(message, Mapping) else ""
+            if re.search(r"(?:form|notice) arrived|(?:Kündigung|Formular) erhalten", body, re.I):
+                return resolved[0]
         if not _substantive(text):
             raise ClaimLoopError("source span is not substantively interpretable")
+        if any(_term_present(folded, term) for term in _UNCERTAINTY_TERMS):
+            return unresolved
         if len(resolved) == 1 and _single_edge_intake_is_decisive(
             action.process_node_id, text
         ):
             return resolved[0]
-        if any(_term_present(folded, term) for term in _UNCERTAINTY_TERMS):
-            return unresolved
         if action.process_node_id.endswith("dh_intake") and set(resolved) == {
             "dh_e01",
             "dh_e02",
@@ -2263,7 +2298,7 @@ class _EvidenceSemantics:
                 "source_sha256": entry["artifact_sha256"],
                 "source_version": entry["source_version"],
                 "locator_kind": "text_quote",
-                "page": 1,
+                "page": entry["page"],
                 "sanitized_excerpt": text,
                 "text_start": entry["text_start"],
                 "text_end": entry["text_end"],
@@ -2342,7 +2377,10 @@ class _EvidenceSemantics:
         ):
             raise ClaimLoopError("server evidence registration binding is absent")
         catalog, unresolved, resolved, grant = self._catalog(action=action, state=state)
-        finding = self._proposal_finding(action, text, unresolved, resolved, grant)
+        finding = self._proposal_finding(
+            action, text, unresolved, resolved, grant,
+            state=state, source_entry=entry,
+        )
         interpretation = self._interpretation(
             action=action,
             state=state,
@@ -2384,6 +2422,7 @@ class _EvidenceSemantics:
                         "positive": list(_HEALTH_POSITIVE_TERMS),
                         "negative": list(_HEALTH_NEGATIVE_TERMS),
                         "uncertainty": list(_UNCERTAINTY_TERMS),
+                        "uncertainty_precedes_single_edge": True,
                         "lease_termination_intake": list(
                             _LEASE_TERMINATION_INTAKE_TERMS
                         ),
@@ -2443,8 +2482,86 @@ class ServerInterpretedWorkspaceEvidenceV1:
     def input_contract(self, *, action: EvidenceAction, state: ClaimLoopState) -> dict[str, Any]:
         return self.semantics.input_contract(action=action, state=state)
 
-    def source_candidate(self, *, action: EvidenceAction, state: ClaimLoopState) -> dict[str, Any]:
-        return self.semantics.source_candidate(action=action, state=state)
+    def source_candidate(
+        self, *, action: EvidenceAction, state: ClaimLoopState,
+        source_entry_sha256: str | None = None,
+    ) -> dict[str, Any]:
+        return self.semantics.source_candidate(
+            action=action, state=state, source_entry_sha256=source_entry_sha256
+        )
+
+    def finding_options(self, *, action: EvidenceAction, state: ClaimLoopState) -> list[dict[str, Any]]:
+        entries = _admission(state)["source_entries"]
+        catalog, unresolved, resolved, grant = self.semantics._catalog(action=action, state=state)
+        del catalog
+        options = []
+        for entry in entries:
+            quote = entry["exact_text"]
+            if entry["source_kind"] == "observable_attachment_text_span":
+                if re.search(r"\b\d{1,2}\.\s*(?:Juni|Juli|June|July)\b", quote, re.I):
+                    reason, rank = "States an end date on a notice", 0
+                elif re.search(r"(?:Habitat|SA|GmbH|AG)\b", quote):
+                    reason, rank = "Names a party on the notice", 1
+                else:
+                    reason, rank = "Other statement in this document", 3
+            else:
+                if re.search(r"\b(arrived|received|zugestellt|erhalten)\b", quote, re.I):
+                    reason = "Says when a notice arrived"
+                elif re.search(r"\b(page two|second page|scan|Seite zwei)\b", quote, re.I):
+                    reason = "Mentions a missing notice page"
+                elif re.search(r"\b(extension|challenge|Frist|Erstreckung)\b", quote, re.I):
+                    reason = "States what the customer wants to request"
+                else:
+                    reason = "Customer statement for this step"
+                rank = 2
+            try:
+                finding = self.semantics._proposal_finding(
+                    action, quote, unresolved, resolved, grant,
+                    state=state, source_entry=entry,
+                )
+                verdict = "sufficient" if finding != unresolved else "insufficient"
+                detail = (
+                    "Supports the next step" if verdict == "sufficient"
+                    else "This passage leaves the question open"
+                )
+            except ClaimLoopError as exc:
+                verdict = "refused"
+                detail = {
+                    "source span is not substantively interpretable": "This line does not state the fact this step needs",
+                    "source span does not contain a decisive grammar token": "This passage does not answer the current question",
+                    "source span is outside the intake decision grammar": "This passage needs a separate review",
+                    "health source span is ambiguous, negated, or contradictory": "This passage gives conflicting information about health effects",
+                    "instruction-bearing source content is not evidence": "This passage gives instructions rather than claim facts",
+                    "source span lacks a decision-bearing actor grant": "This source cannot establish the current step",
+                    "source span has no closed decision catalog": "This step cannot be decided from this passage",
+                }.get(str(exc), "This passage cannot establish the current step")
+            options.append({
+                "source_entry_sha256": entry["source_entry_sha256"],
+                "source_kind": entry["source_kind"],
+                "source_id": entry["parent_artifact_id"],
+                "page": entry["page"],
+                "text_start": entry["text_start"],
+                "text_end": entry["text_end"],
+                "quote": quote,
+                "reason": reason,
+                "verdict": verdict,
+                "verdict_reason": detail,
+                "rank": rank,
+            })
+        options.sort(key=lambda row: (row["rank"], row["source_id"], row["page"], row["text_start"]))
+        counts: dict[int, int] = {}
+        selected = []
+        for row in options:
+            limit = {0: 2, 1: 3, 2: 7, 3: 0}[row["rank"]]
+            if counts.get(row["rank"], 0) >= limit:
+                continue
+            selected.append(row)
+            counts[row["rank"]] = counts.get(row["rank"], 0) + 1
+        selected_ids = {row["source_entry_sha256"] for row in selected}
+        return [
+            {key: value for key, value in row.items() if key != "rank"}
+            for row in selected + [row for row in options if row["source_entry_sha256"] not in selected_ids]
+        ]
 
     def record_registration_envelope_rejection(
         self,

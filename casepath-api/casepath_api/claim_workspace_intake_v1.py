@@ -4,6 +4,7 @@ from types import MappingProxyType
 from typing import Any, Mapping
 
 from .workspace_corpus import PublicCorpus, digest_value
+from .assessment_grammar_v1 import CONTRACT as ASSESSMENT_CONTRACT_V2, COMPILER_ID as COMPILER_ID_V2, LEGACY_COMPILER_ID as LEGACY_COMPILER_ID_V2, compile_assessment
 
 
 _INTAKE_ASSESSMENT_CONTRACT_V1_1 = "casepath.deterministic-intake-assessment/1.1.0"
@@ -261,8 +262,16 @@ def _compile_intake_assessment_v1_1(
 def compile_intake_assessment(
     corpus: PublicCorpus,
     claim_id: str,
+    *, legacy_v2: bool = False,
 ) -> dict[str, Any]:
-    return _compile_intake_assessment_v1_1(corpus, claim_id)
+    base = _compile_intake_assessment_v1_1(corpus, claim_id)
+    material = {key: item for key, item in base.items() if key != "assessment_sha256"}
+    material.update({
+        "contract": ASSESSMENT_CONTRACT_V2,
+        "compiler_id": LEGACY_COMPILER_ID_V2 if legacy_v2 else COMPILER_ID_V2,
+        "claim_assessment": compile_assessment(corpus, claim_id, base, legacy=legacy_v2),
+    })
+    return {**material, "assessment_sha256": digest_value(material)}
 
 
 def validate_intake_assessment(
@@ -289,6 +298,14 @@ def validate_recorded_intake_assessment(
     """Replay a persisted assessment with its exact versioned compiler."""
 
     compiler_id = value.get("compiler_id") if isinstance(value, Mapping) else None
+    if compiler_id == COMPILER_ID_V2:
+        return validate_intake_assessment(
+            value, expected=compile_intake_assessment(corpus, claim_id)
+        )
+    if compiler_id == LEGACY_COMPILER_ID_V2:
+        return validate_intake_assessment(
+            value, expected=compile_intake_assessment(corpus, claim_id, legacy_v2=True)
+        )
     if compiler_id != _INTAKE_COMPILER_ID_V1_1:
         raise IntakeCompilationError("recorded intake compiler is unsupported")
     return validate_intake_assessment(

@@ -9,6 +9,7 @@ import re
 import shutil
 import stat
 import tempfile
+import threading
 from types import MappingProxyType
 from typing import Any, Mapping
 
@@ -424,6 +425,9 @@ class PublicCorpus:
 
     def __init__(self, root: Path):
         self.root = root.resolve()
+        self._inventory_watch_stop: threading.Event | None = None
+        self._inventory_watch_thread: threading.Thread | None = None
+        self._inventory_watch_error: str | None = None
         if root.is_symlink() or not root.is_dir():
             raise WorkspaceCorpusError("public corpus root is not a regular directory")
         raw = _read_regular(self.root, "manifest.json")
@@ -625,6 +629,51 @@ class PublicCorpus:
         if current != self._admitted_runtime_inventory_token:
             raise WorkspaceCorpusError("public corpus inventory drifted after admission")
         return current
+
+    def start_inventory_watch(self) -> None:
+        """Verify at boot, then keep the read path free of corpus tree walks."""
+
+        self.runtime_identity_token()
+        if self._inventory_watch_thread is not None:
+            return
+        from watchfiles import watch
+
+        stop = threading.Event()
+
+        def verify_changes() -> None:
+            try:
+                for _ in watch(self.root, stop_event=stop, debounce=100):
+                    try:
+                        self.runtime_identity_token()
+                    except WorkspaceCorpusError as exc:
+                        self._inventory_watch_error = str(exc)
+            except Exception:
+                self._inventory_watch_error = "public corpus watcher stopped"
+
+        self._inventory_watch_stop = stop
+        self._inventory_watch_thread = threading.Thread(
+            target=verify_changes, name="casepath-corpus-watch", daemon=True
+        )
+        self._inventory_watch_thread.start()
+
+    def stop_inventory_watch(self) -> None:
+        if self._inventory_watch_stop is not None:
+            self._inventory_watch_stop.set()
+        if self._inventory_watch_thread is not None:
+            self._inventory_watch_thread.join(timeout=2)
+        self._inventory_watch_thread = None
+        self._inventory_watch_stop = None
+
+    def observed_runtime_identity_token(self) -> str:
+        """Use the boot and file-change checks when the watcher is running."""
+
+        if self._inventory_watch_thread is None:
+            return self.runtime_identity_token()
+        if self._inventory_watch_error is not None:
+            raise WorkspaceCorpusError(self._inventory_watch_error)
+        if not self._inventory_watch_thread.is_alive():
+            raise WorkspaceCorpusError("public corpus watcher stopped")
+        return self._admitted_runtime_inventory_token
 
     @property
     def admitted_runtime_identity_token(self) -> str:

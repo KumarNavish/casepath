@@ -50,6 +50,7 @@ from casepath_api.workspace_corpus import (
     PublicCorpus,
     WorkspaceCorpusError,
     default_public_corpus_root,
+    default_workspace_corpus_root,
 )
 from casepath_api.workspace_evidence_authority_v1 import (
     EVIDENCE_REGISTRATION_FIELDS,
@@ -151,6 +152,182 @@ def _ensure(
         expected_workspace_state_sha256=str(started["state_sha256"]),
         idempotency_key="workspace.ensure.test." + claim_id,
     )
+
+
+def test_what_if_is_read_only_across_workspace_and_loop_journals(tmp_path: Path) -> None:
+    _, workspace, normal, facade = _system(
+        tmp_path, corpus=PublicCorpus(default_workspace_corpus_root())
+    )
+    claim_id = "clm_f69b1747447bc221"
+    workspace.seed(timestamp="2026-08-31T12:00:00+00:00")
+    initial = workspace.store.recover(claim_id)
+    started = workspace.start(
+        claim_id,
+        idempotency_key="workspace.start.what-if.0001",
+        expected_revision=initial["revision"],
+        timestamp="2026-08-31T12:00:01+00:00",
+    )["state"]
+    _ensure(facade, claim_id, started)
+    before_workspace = workspace.store.recover(claim_id)
+    before_loop = normal.store.journal_version_token()
+    result = facade.what_if(claim_id, condition="family_home", verdict="false")
+    assert result["scenario"]["conditions"]["family_home"]["verdict"] == "false"
+    assert workspace.store.recover(claim_id) == before_workspace
+    assert normal.store.journal_version_token() == before_loop
+
+
+def test_handler_condition_note_is_recorded_withdrawn_and_replayed(tmp_path: Path) -> None:
+    _, workspace, _, facade = _system(
+        tmp_path, corpus=PublicCorpus(default_workspace_corpus_root())
+    )
+    claim_id = "clm_f69b1747447bc221"
+    workspace.seed(timestamp="2026-08-31T12:00:00+00:00")
+    initial = workspace.store.recover(claim_id)
+    started = workspace.start(
+        claim_id, idempotency_key="workspace.start.handler-note.0001",
+        expected_revision=initial["revision"], timestamp="2026-08-31T12:00:01+00:00",
+    )["state"]
+    _ensure(facade, claim_id, started)
+    before = facade.view(claim_id)
+    saved_assessment = started["intake_assessment"]["claim_assessment"]
+    body = dict(
+        kind="condition", target="family_home", verdict="false",
+        note="Check service to both spouses before relying on this change.",
+        expected_workspace_revision=started["revision"],
+        expected_workspace_state_sha256=started["state_sha256"],
+        idempotency_key="workspace.handler.condition.0001",
+    )
+    recorded = facade.record_handler_observation(claim_id, **body)
+    assert recorded["replayed"] is False
+    assert facade.record_handler_observation(claim_id, **body)["replayed"] is True
+    shown = facade.view(claim_id)
+    assert shown["handler_observations"][0]["authority"] == "handler_established"
+    assert shown["handler_observations"][0]["note"] == body["note"]
+    assert shown["loop_state"] == before["loop_state"]
+    assert workspace.store.recover(claim_id)["intake_assessment"]["claim_assessment"] == saved_assessment
+    withdraw = dict(
+        target_event_sha256=recorded["event_sha256"],
+        expected_workspace_revision=recorded["workspace_revision"],
+        expected_workspace_state_sha256=recorded["workspace_state_sha256"],
+        idempotency_key="workspace.handler.withdraw.0001",
+    )
+    first = facade.withdraw_handler_observation(claim_id, **withdraw)
+    assert first["replayed"] is False
+    assert facade.withdraw_handler_observation(claim_id, **withdraw)["replayed"] is True
+    assert facade.view(claim_id)["handler_observations"][0]["withdrawn"] is True
+    current = workspace.store.recover(claim_id)
+    passage = before["finding_options"][0]
+    refused = facade.record_handler_observation(
+        claim_id, kind="passage", target=passage["source_entry_sha256"],
+        verdict="not_relevant", note="This copy does not answer the service question.",
+        expected_workspace_revision=current["revision"],
+        expected_workspace_state_sha256=current["state_sha256"],
+        idempotency_key="workspace.handler.not-relevant.0001",
+    )
+    assert refused["replayed"] is False
+    assert facade.view(claim_id)["loop_state"] == before["loop_state"]
+    current = workspace.store.recover(claim_id)
+    confirmed = facade.record_handler_observation(
+        claim_id, kind="passage", target=passage["source_entry_sha256"],
+        verdict="sufficient", note="I verified this date against the full notice.",
+        expected_workspace_revision=current["revision"],
+        expected_workspace_state_sha256=current["state_sha256"],
+        idempotency_key="workspace.handler.sufficient.0001",
+    )
+    assert confirmed["replayed"] is False
+    assert facade.view(claim_id)["loop_state"] == before["loop_state"]
+    vacuous = next(row for row in before["finding_options"] if "end date remains unresolved" in row["quote"])
+    current = workspace.store.recover(claim_id)
+    with pytest.raises(WorkspaceClaimLoopError, match="cannot establish"):
+        facade.record_handler_observation(
+            claim_id, kind="passage", target=vacuous["source_entry_sha256"],
+            verdict="sufficient", note="This is not a date.",
+            expected_workspace_revision=current["revision"],
+            expected_workspace_state_sha256=current["state_sha256"],
+            idempotency_key="workspace.handler.vacuous.0001",
+        )
+
+
+def test_selected_pdf_end_date_advances_without_accepting_unresolved_message(tmp_path: Path) -> None:
+    _, workspace, _, facade = _system(
+        tmp_path, corpus=PublicCorpus(default_workspace_corpus_root())
+    )
+    claim_id = "clm_f69b1747447bc221"
+    workspace.seed(timestamp="2026-08-31T12:00:00+00:00")
+    initial = workspace.store.recover(claim_id)
+    started = workspace.start(
+        claim_id,
+        idempotency_key="workspace.start.pdf-date.0001",
+        expected_revision=initial["revision"],
+        timestamp="2026-08-31T12:00:01+00:00",
+    )["state"]
+    view = _ensure(facade, claim_id, started)
+    options = view["finding_options"]
+    assert len(options) > 12  # The cards are short; source selection reaches all admitted lines.
+    assert any(row["reason"] == "Other statement in this document" for row in options)
+    pdf = next(row for row in options if row["quote"] == "30. Juni")
+    assert pdf["source_kind"] == "observable_attachment_text_span"
+    assert pdf["verdict"] == "sufficient"
+    assert all(
+        row["verdict"] != "sufficient"
+        for row in options
+        if "end date remains unresolved" in row["quote"]
+    )
+    loop = view["loop_state"]
+    action = loop["selected_action"]
+    intent = facade.mint_evidence_intent(
+        claim_id,
+        action_id=action["action_id"],
+        expected_revision=loop["revision"],
+        idempotency_key="workspace.pdf-date.0001",
+        timestamp="2026-08-31T12:00:02+00:00",
+    )["intent"]
+    acquired = facade.acquire_evidence(
+        claim_id,
+        acquisition_intent_id=intent["intent_id"],
+        source_entry_sha256=pdf["source_entry_sha256"],
+        timestamp="2026-08-31T12:00:02+00:00",
+    )
+    assert base64.b64decode(acquired["content_b64"]).decode("utf-8") == "30. Juni"
+    with pytest.raises(WorkspaceClaimLoopError, match="another passage"):
+        facade.acquire_evidence(
+            claim_id,
+            acquisition_intent_id=intent["intent_id"],
+            source_entry_sha256=next(
+                row["source_entry_sha256"] for row in options if row["quote"] == "31. Juli"
+            ),
+        )
+    stage = facade.register_evidence(
+        claim_id,
+        schema=EVIDENCE_REGISTRATION_SCHEMA,
+        action_id=action["action_id"],
+        expected_revision=loop["revision"],
+        idempotency_key="workspace.pdf-date.0001",
+        acquisition_intent_id=intent["intent_id"],
+        acquisition_receipt_id=acquired["acquisition_receipt"]["acquisition_receipt_id"],
+        content_b64=acquired["content_b64"],
+        timestamp="2026-08-31T12:00:03+00:00",
+    )["stage_receipt"]
+    facade.advance(
+        claim_id,
+        expected_revision=loop["revision"],
+        expected_state_sha256=loop["state_sha256"],
+        action_sha256=action["action_sha256"],
+        stage_receipt_sha256=stage["receipt_sha256"],
+        idempotency_key="workspace.advance.pdf-date.0001",
+    )
+    after = facade.view(claim_id)
+    assert after["loop_state"]["observations"][0]["value"] == "30. Juni"
+    assert after["loop_state"]["observations"][0]["source_refs"][0]["page"] == 1
+    noted = facade.record_handler_observation(
+        claim_id, kind="passage", target=pdf["source_entry_sha256"],
+        verdict="sufficient", note="The first notice gives this end date.",
+        expected_workspace_revision=started["revision"],
+        expected_workspace_state_sha256=started["state_sha256"],
+        idempotency_key="workspace.handler.pdf-date.0001",
+    )
+    assert noted["replayed"] is False
+    assert facade.view(claim_id)["handler_observations"][0]["quote"] == "30. Juni"
 
 
 def _register_server_evidence(
@@ -337,6 +514,7 @@ def test_operational_queue_and_workbench_share_the_live_claim_journal(
         "conditional",
         "irrelevant",
         "unknown",
+        "held_not_reviewed",
     }
     assert sum(projection["evidence_class_counts"].values()) == len(
         initial["loop_state"]["checklist"]["items"]
@@ -457,6 +635,46 @@ def test_operational_queue_cache_never_hides_historical_journal_tamper(
 
     with pytest.raises(WorkspaceClaimLoopError, match="claim loop event"):
         facade.queue(now="2026-08-31T12:00:04+00:00", limit=100)
+
+
+def test_queue_write_reuses_unchanged_claim_loop_replays(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    _, workspace, normal, facade = _system(tmp_path, corpus=corpus)
+    workspace.seed(timestamp="2026-08-31T12:00:00+00:00")
+    claim_ids = sorted(corpus.bindings)
+    for index, claim_id in enumerate(claim_ids[:2]):
+        initial = workspace.store.recover(claim_id)
+        started = workspace.start(
+            claim_id,
+            idempotency_key=f"queue-cache-start-{index}",
+            expected_revision=initial["revision"],
+            timestamp="2026-08-31T12:00:01+00:00",
+        )["state"]
+        facade.ensure(
+            claim_id,
+            expected_workspace_revision=started["revision"],
+            expected_workspace_state_sha256=started["state_sha256"],
+            idempotency_key=f"queue-cache-ensure-{index}",
+        )
+    assert facade.queue(now="2026-08-31T12:00:02+00:00", limit=25)["total_count"] == 150
+
+    third = claim_ids[2]
+    initial = workspace.store.recover(third)
+    workspace.start(
+        third,
+        idempotency_key="queue-cache-start-third",
+        expected_revision=initial["revision"],
+        timestamp="2026-08-31T12:00:03+00:00",
+    )
+
+    def unexpected_replay(*args, **kwargs):
+        raise AssertionError("an unchanged claim loop was replayed")
+
+    monkeypatch.setattr(normal.store, "state_at_revision", unexpected_replay)
+    monkeypatch.setattr(normal.store, "_replay_rows_uncached", unexpected_replay)
+    assert facade.queue(now="2026-08-31T12:00:04+00:00", limit=25)["total_count"] == 150
 
 
 @pytest.mark.parametrize(
@@ -745,7 +963,8 @@ def test_workspace_claim_loop_replans_real_claim_and_replays_exactly(
     assert tuple(input_contract["registration_body_fields"]) == (
         EVIDENCE_REGISTRATION_FIELDS
     )
-    assert view["finding_options"] == []
+    assert view["finding_options"]
+    assert all(option["reason"] and option["verdict_reason"] for option in view["finding_options"])
 
     action = loop["selected_action"]
     registration_key = "workspace.register.test.0001"
@@ -1988,6 +2207,7 @@ def test_workspace_http_stage_replay_and_restart_use_one_journal(
         first_advance.json()["contract"]
         == "casepath.workspace-claim-loop-advance-response/1.0.0"
     )
+    assert first_advance.json()["journal_event_type"] == "OBSERVATION_INGESTED"
     advanced_view = client.get(
         f"/api/claim-loops/v1/workspace/claims/{claim_id}/loop"
     ).json()

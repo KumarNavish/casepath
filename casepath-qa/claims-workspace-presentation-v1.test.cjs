@@ -77,62 +77,102 @@ test('source text has no duplicated focus attributes',()=>{
   assert.doesNotMatch(source,/tabindex="0" tabindex="0"/);
  }
 });
-test('decision trace keeps an opened source separate from accepted evidence',()=>{
- const decision={
-  loop_state:{
-   process:{nodes:[{node_id:'intake',title:'Capture notice details',evidence_requirement_ids:['item']}],current_overlay:{current_node_id:'intake'},selected_path:['intake']},
-   selected_action:{process_node_id:'gap',evidence_item_id:'item'},
-   obligations:[{obligation_id:'item',status:'active'}],
-   facts:[{fact_id:'fact',label:'Notice details',state:'unknown',source_refs:[{excerpt:'Hello'}]}],
-   checklist:{items:[{item_id:'item',legal_basis_ids:[],bounded_tool_id:'source-byte-check',acceptable_alternatives:[]}]},observations:[],
-  },
-  operational_projection:{evidence_items:[{...item('missing',true),fact_id:'fact'}]},
- };
- const before=view.canvasTrace(decision,detail,'intake');
- assert.match(before,/No source passage recorded yet/);
- assert.match(before,/Required fact.*?Notice details/s);
- assert.match(before,/Evidence capability.*?Checked observation from an original source/s);
- assert.match(before,/Document requirement.*?No customer document specified/s);
- assert.doesNotMatch(before,/Hello|Open original source|Request inspection report/);
- decision.loop_state.observations.push({evidence_item_id:'item',source_refs:[{source_id:'message-one',source_sha256:rawHash,sanitized_excerpt:'Exact accepted passage'}]});
- decision.loop_state.facts[0].state='known';
- decision.loop_state.facts[0].normalized_value='unresolved';
- const after=view.canvasTrace(decision,detail,'intake');
- assert.match(after,/Exact accepted passage/);
- assert.match(after,/Recorded source passages/);
- assert.match(after,/Unresolved condition recorded/);
- assert.doesNotMatch(after,/>Established</);
- assert.match(after,/data-source-artifact="0"/);
- decision.loop_state.process.nodes[0].branches=[{branch_id:'next',target:'deadline'}];
- decision.loop_state.process.nodes.push({node_id:'deadline',title:'Preserve the deadline'});
- decision.loop_state.facts[0].normalized_value='next';
- const branched=view.canvasTrace(decision,detail,'intake');
- assert.match(branched,/Branch condition/);
- assert.match(branched,/Path selected/);
- assert.match(branched,/Preserve the deadline/);
- assert.doesNotMatch(branched,/>Established</);
- decision.operational_projection.evidence_items[0].evidence_class='received';
- decision.operational_projection.evidence_items[0].mandatory_now=false;
- assert.match(view.evidenceSource(decision.operational_projection.evidence_items[0],decision,detail),/does not establish every detail in the notice/);
+const assessment={language:'en',next_step:'Ask for the receipt date.',noticed:[],conflicts:[],candidate_deadline:null,conditions:{termination_received:{verdict:'true',quote:'My form arrived on Monday'}},steps:[
+ {node_id:'done',label:'Capture notice details',state:'done',condition_chips:[],authority:null},
+ {node_id:'now',label:'Preserve the deadline',state:'active',condition_chips:[{condition_flag:'termination_received',label:'termination received',verdict:'true',quote:'My form arrived on Monday'}],authority:{article:'Art. 273'}},
+ {node_id:'later',label:'Check service',state:'not_reached',condition_chips:[],authority:null},
+],documents:[
+ {document_type:'proof_of_receipt',label:'Proof of receipt',route_state:'needed_now',required_at_node_ids:['now'],held_files:[],authority:{article:'Art. 273'}},
+ {document_type:'spouse_notice_copy',label:'Separate spouse notice',route_state:'held_not_reviewed',required_at_node_ids:['later'],held_files:[{file_name:'Spouse notice.pdf'}],authority:{article:'Art. 266n'}},
+]};
+const assessedDetail={...detail,state:{...detail.state,intake_assessment:{claim_assessment:assessment}}};
+test('why chain uses distinct need, step, quote and article',()=>{
+ const markup=view.canvasTrace(null,assessedDetail,'now');
+ assert.match(markup,/Proof of receipt/);
+ assert.match(markup,/Preserve the deadline/);
+ assert.match(markup,/My form arrived on Monday/);
+ assert.match(markup,/Art. 273/);
+ const values=[...markup.matchAll(/<strong(?: [^>]*)?>([^<]*)<\/strong>/g)].map(match=>match[1]);
+ assert(values.every((value,index)=>index===0||value!==values[index-1]));
 });
-test('current path opens only evidence needed at the active step',()=>{
- const decision={loop_state:{process:{nodes:[
-  {node_id:'done',title:'Receive notice',evidence_requirement_ids:['earlier']},
-  {node_id:'now',title:'Check the deadline',answer:'The deadline is unresolved.',evidence_requirement_ids:['required','supported']},
-  {node_id:'later',title:'Decide next step',evidence_requirement_ids:['later']},
- ],main_spine:['done','now','later'],current_overlay:{current_node_id:'now',completed_node_ids:['done']}}},operational_projection:{evidence_items:[
-  {evidence_item_id:'earlier',title:'Earlier source',mandatory_now:false},
-  {evidence_item_id:'required',title:'Deadline source',mandatory_now:true},
-  {evidence_item_id:'supported',title:'Accepted source',mandatory_now:false},
-  {evidence_item_id:'later',title:'Future source',mandatory_now:false},
- ]}};
- const markup=view.canvasPath(decision);
- assert.match(markup,/Current step · 2 of 3/);
- assert.match(markup,/data-evidence-source="required"/);
- assert.doesNotMatch(markup,/data-evidence-source="earlier"|data-evidence-source="supported"|data-evidence-source="later"/);
+test('canvas shows all steps and separates needed from held documents',()=>{
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail});
+ assert.match(markup,/Capture notice details/);
+ assert.match(markup,/Preserve the deadline/);
+ assert.match(markup,/Check service/);
+ assert.match(markup,/data-path-state="active"/);
+ assert.match(markup,/data-condition-state="true"/);
+ assert.match(markup,/data-need-state="now"/);
+ assert.match(markup,/data-route-state="held_not_reviewed"/);
+ assert.match(markup,/Spouse notice copy/);
+ assert.doesNotMatch(markup,/All steps|data-workbench-tab/);
+});
+test('assessed claim has one next action and a source-only record control',()=>{
+ const oldAction={title:'Capture issuer, receipt and end date',action_sha256:hash,evidence_item_id:'old-item'};
+ const savedLoop={outcome:'blocked',loop_state:{selected_action:oldAction,checklist:{items:[]}},operational_projection:{readiness_scope:'current',evidence_items:[],pending_evidence_count:0}};
+ const markup=view.workbench(savedLoop,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail});
+ assert.match(markup,/Ask for the receipt date/);
+ assert.match(markup,/Source record/);
+ assert.doesNotMatch(markup,/id="cwLoopCommit"/);
+ assert.doesNotMatch(markup,/Capture issuer, receipt and end date|supporting evidence is still missing/i);
+});
+test('noticed dates and both sides of a conflict open exact source spans',()=>{
+ const changed={...assessment,noticed:[{text:'Tenant notice: 30. Juni',source_id:'tenant-pdf',source_kind:'pdf_text'}],conflicts:[{fact:'termination end date',message:'The two notices give different end dates.',sources:[{artifact_id:'tenant-pdf',quote:'30. Juni',value:'30. Juni'},{artifact_id:'spouse-pdf',quote:'31. Juli',value:'31. Juli'}]}]};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});
+ assert.match(markup,/class="cp-a-review-ready" data-status="completed"/);
+ assert.match(markup,/data-noticed-source="tenant-pdf" data-noticed-quote="30. Juni"/);
+ assert.match(markup,/data-noticed-source="spouse-pdf" data-noticed-quote="31. Juli"/);
+ assert.doesNotMatch(markup,/Review saved/);
+});
+test('noticed facts name the party, start date and PDF page without losing source spans',()=>{
+ const changed={...assessment,noticed:[
+  {text:'Robin Foster',source_id:'tenant-pdf',source_kind:'pdf_text',page:1,fact_kind:'named_party_candidate'},
+  {text:'Casey Foster',source_id:'spouse-pdf',source_kind:'pdf_text',page:1,fact_kind:'named_party_candidate'},
+  {text:'19 August 2025',source_id:'message-one',source_kind:'customer_message',fact_kind:'reported_date'},
+  {text:'Tenant_termination_notice.pdf: 30. Juni',source_id:'tenant-pdf',source_kind:'pdf_text',page:1},
+ ],attachment_pages:[{artifact_id:'tenant-pdf',file_name:'Tenant_termination_notice.pdf'},{artifact_id:'spouse-pdf',file_name:'Spouse_termination_notice.pdf'}]};
+ const source={...assessedDetail,message:{...assessedDetail.message,body:'As far as I remember, it started around 19 August 2025.'}};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:source});
+ for(const [name,value] of [['Tenant','Robin Foster'],['Spouse','Casey Foster'],['Started','19 August 2025'],['Tenant notice, page 1','end date 30 June']])assert.match(markup,new RegExp(name+'<\\/span>.*>'+value.replaceAll(' ','\\s*')));
+ assert.match(markup,/data-noticed-source="tenant-pdf" data-noticed-quote="30. Juni"/);
+});
+test('path chips name the transition whose verdict they show',()=>{
+ const step={node_id:'later',label:'Build the dated timeline',state:'not_reached',condition_chips:[{condition_flag:'health_effects',label:'no immediate health escalation',verdict:'false',quote:'Mein Sohn hustet mehr'}],authority:null};
+ const changed={...assessment,conditions:{...assessment.conditions,health_effects:{verdict:'false',quote:'Mein Sohn hustet mehr'}},steps:[...assessment.steps.slice(0,-1),step]};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});
+ assert.match(markup,/Health effects <em>false<\/em>/);
+});
+test('candidate deadlines display the paragraph from the cited authority',()=>{
+ const changed={...assessment,candidate_deadline:{date:null,question:'When did the notice arrive?',authority:{article:'Art. 273',authority_id:'or-art-273-para1-20260101-de'}}};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});
+ assert.match(markup,/Candidate deadline · Art\. 273 Abs\. 1/);
+ assert.match(markup,/When did the notice arrive/);
 });
 test('resize callbacks do not measure a replaced claim header',()=>{
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');
  assert.match(source,/measuredHeader\?\.isConnected && panel\.contains\(measuredHeader\)/);
  assert.doesNotMatch(source,/panel\.querySelector\('\.cw-detail-head'\)\.getBoundingClientRect/);
+});
+
+test('minimal claim presentation guards',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const css=fs.readFileSync(path.join(__dirname,'../casepath/assets/claims-workspace-presentation-v1.css'),'utf8');
+ const agentCss=fs.readFileSync(path.join(__dirname,'../casepath/assets/agent-work-v1.css'),'utf8');
+ assert.doesNotMatch(css,/text-transform\s*:\s*uppercase|\.cp-card\b/);
+ assert.doesNotMatch(agentCss,/\.cp-a-[^{}]*\{[^}]*text-transform\s*:\s*uppercase/);
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail});
+ const top=markup.split('<footer class="cp-a-footer"')[0];
+ const regions=[...top.matchAll(/<(?:section)\b[^>]*class="(cp-a-(?:next|review|path|questions|needs|draft))"/g)].length+1;
+ assert(regions<=9,`claim has ${regions} regions`);
+ assert.equal([...top.matchAll(/<button\b/g)].length,1);
+ assert.doesNotMatch(view.packetLibrary(assessedDetail),/<button\b/);
+ const visibleText=top.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ');
+ assert.doesNotMatch(visibleText,/deterministic|assessment|journal|projection|authority|saved claim record|workspace/i);
+ assert.doesNotMatch(markup,/class="[^"]*cp-card|class="[^"]*bordered-panel/);
+});
+test('queue groups claims as list items without table headers or chevrons',()=>{
+ const markup=view.queueRows([{claim_id:'one',subject:'Test claim',received_at:'2026-09-24',language:'en',owner:null,triage:{waiting_on:'Customer',noticed_fact:'The notice is incomplete.',next_step:'Ask for the missing page.'}}]);
+ assert.match(markup,/<h2 class="cp-triage-group">Waiting on customer/);
+ assert.match(markup,/<ul><li tabindex="0" data-claim-id="one"/);
+ assert.doesNotMatch(markup,/<table|<th|cp-row-chevron/);
 });
