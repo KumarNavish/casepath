@@ -1,20 +1,22 @@
 # CasePath
 
-CasePath helps a claims handler read a claim, see its current step, ask for the right information, and draft the request. The original message and files stay beside the path and the reasons for each need.
+CasePath reads the customer's message and files, shows where the claim stands, and helps the handler ask for what is missing.
 
-The local workbench opens all 150 synthetic intake claims. It keeps source files, recorded observations, proposed work, and accepted handling events separate. Its default review is deterministic and makes no model API calls.
+![Family-home claim with linked findings, the current path, and sources](docs/images/workbench-review.png)
 
-![CasePath workbench showing original sources, claim path, needs, and next step](docs/images/workbench-review.png)
-
-*The synthetic family-home claim after review. The two notices give different end dates. The receipt dates remain a question. This product example is not a benchmark result.*
+*The two notices give different end dates; the receipt dates remain a question. This walkthrough uses a synthetic claim.*
 
 ## See one claim
 
-Open the app and select **Walk through this claim** on the first-run card, or open `#claim=clm_f69b1747447bc221`. Read the message and the two PDFs in **Sources**. Select **Review claim** and follow the anchored lines until the summary appears.
+The **Claims** list groups work by who CasePath is waiting for. Each row says what it noticed and what to do next. Select **Walk through this claim** above the list, or open `#claim=clm_f69b1747447bc221`.
 
-The path then shows **Preserve challenge or extension deadline** as active. **What this claim needs** asks for both receipt dates and shows the two notices as held, not reviewed. Select **What if** beside family-home service and set it false. The sandbox removes the spouse-notice route; leaving the sandbox restores the saved assessment. Select **Draft request** to create a source-bound request labelled **Draft, not sent**. You can edit, copy, or export it. Nothing is sent to the customer.
+Select **Review claim**. Findings appear in **What I noticed** as the review runs. The two end dates link to their exact PDF spans, and **Sources** stays beside the claim on desktop. **Where it stands** shows the done step, the current step, and the next step. Expand **+8 later** for the rest of this path. The conditions and their source quotes sit below the steps.
 
-Use **Reviewer mode** to see provenance labels on the sources, assessment, handler observations, memories, and draft, along with the studies' correspondence table. [About CasePath](casepath/method.html) links into this claim's What if and gathers the [data](casepath/corpus.html) and [research results](casepath/research.html).
+**Questions** asks for the two receipt dates and explains what each unresolved condition would change. **What to request** separates what is needed now, later, and on no active path. Focus family-home service, select **what if**, and set it false to see the spouse-notice request leave the sandbox path. Exit to return to the saved assessment.
+
+Select **Draft request** to open an editable letter with the questions, reasons, and articles. It is labelled **Draft, not sent**; **Copy** and **Export** are beside **Save edits**. [About CasePath](casepath/method.html) has the **Reviewer mode** switch, the [data](casepath/corpus.html), and the [research results](casepath/research.html).
+
+![Claims list with the first-run walk and waiting groups](docs/images/workbench-queue.png)
 
 The paper's Study A method is installed as a separate service. It uses the frozen source pack, guard interpreter and document planner. With recorded guard answers, its [replay matches all 72 paper cases and 36 paired changes](research/casepath/branch-benchmark/parity/PRODUCT_METHOD_PARITY_V5.json). The workbench's assessment and review are separate product behavior. The earlier authored teaching record remains downloadable from [About CasePath](casepath/method.html). The studies' measured results stay separate from the workbench.
 
