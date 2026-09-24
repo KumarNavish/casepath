@@ -1503,9 +1503,8 @@ class ClaimLoopStore:
             loop_id=loop_id,
         )
 
-    @classmethod
     def _checkpoint_prefix_state(
-        cls,
+        self,
         row: sqlite3.Row,
         rows: list[sqlite3.Row],
         *,
@@ -1520,7 +1519,7 @@ class ClaimLoopStore:
             or revision > len(rows)
         ):
             raise ClaimLoopStoreError("claim loop checkpoint is not a journal prefix")
-        prefix = cls._replay_rows_uncached(
+        prefix = self._replay_rows(
             rows[:revision], session_id=session_id, loop_id=loop_id
         )
         if (
