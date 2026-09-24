@@ -56,9 +56,11 @@ for(const [name,claimId] of Object.entries(claims)){
     const layout=await page.evaluate(()=>{
       const rail=document.querySelector('.cp-source-rail')?.getBoundingClientRect();
       const main=document.querySelector('.cp-a-main')?.getBoundingClientRect();
-      return {overflow:document.documentElement.scrollWidth>innerWidth+1,railLeft:rail?.left,railTop:rail?.top,mainLeft:main?.left,mainBottom:main?.bottom};
+      const sidebar=document.querySelector('.cp-sidebar')?.getBoundingClientRect();
+      const navRight=Math.max(...[...document.querySelectorAll('.cp-navigation button')].map(button=>button.getBoundingClientRect().right));
+      return {overflow:document.documentElement.scrollWidth>innerWidth+1,railLeft:rail?.left,railTop:rail?.top,mainLeft:main?.left,mainBottom:main?.bottom,sidebarRight:sidebar?.right,navRight};
     });
-    if(layout.overflow||width>=901&&layout.railLeft>=layout.mainLeft||width<=900&&layout.railTop<layout.mainBottom-2)throw Error(`${name} ${width}px layout moved the source rail: ${JSON.stringify(layout)}`);
+    if(layout.overflow||width>=901&&layout.railLeft>=layout.mainLeft||width<=900&&layout.railTop<layout.mainBottom-2||width>600&&width<=1100&&layout.navRight>layout.sidebarRight+1)throw Error(`${name} ${width}px layout moved the source rail or sidebar: ${JSON.stringify(layout)}`);
   }
   await page.setViewportSize({width:1440,height:900});
 }
