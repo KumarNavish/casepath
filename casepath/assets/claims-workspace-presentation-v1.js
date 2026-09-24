@@ -217,7 +217,24 @@ function authorityLabel(authority){return authority?.article?authority.article+(
 function assessmentPath(assessment,selected,whatIf,saved,drafts){
  const labels={termination_received:'Termination received',family_home:'Family-home service',arrears:'Arrears reason',retaliation_screen:'Good-faith concern',extension_relevant:'Extension request',health_effects:'Health effects',mold:'Mould',heating:'Heating',specialist_needed:'Technical inspection',deposit_considered:'Rent deposit',claim_received:'Increase received',reference_rate:'Reference-rate reason',renovation:'Renovation reason'};
  const conditions=Object.entries(assessment.conditions||{}).map(([flag,row])=>`<li class="cp-a-condition-row" data-condition-flag="${h(flag)}" data-condition-verdict="${h(row.verdict)}"><span class="cp-a-condition" data-condition-flag="${h(flag)}" data-condition-state="${h(row.verdict)}" tabindex="0" title="${h(row.quote||row.candidate_quote||'No matching statement found')}">${h(labels[flag]||flag.replaceAll('_',' '))} <em>${h(row.verdict)}</em></span><a href="#" class="cp-a-what-if-link" data-what-if="${h(flag)}" aria-label="What if ${h(labels[flag]||flag)} changes?">what if</a>${row.quote||row.candidate_quote?`<q ${assessment.language.startsWith('de')?'lang="de"':''}>${h(row.quote||row.candidate_quote)}</q>`:''}</li>`).join('');
- return `<section class="cp-a-path" aria-labelledby="cpCanvasTitle"><h2 id="cpCanvasTitle">Where it stands</h2><ol>${assessment.steps.map(step=>`<li data-path-state="${h(step.state)}"><a href="#" data-canvas-node="${h(step.node_id)}" ${step.node_id===selected?'aria-current="step"':''}><span class="cp-a-step-dot" aria-hidden="true"></span><span>${h(step.label)}</span></a></li>`).join('')}</ol><ul class="cp-a-condition-overview" aria-label="Conditions">${conditions}</ul>${whatIf?whatIfPanel(whatIf,saved,drafts):''}</section>`;
+ const short={
+  'Capture issuer, receipt and end date':'Record notice dates',
+  'Preserve challenge or extension deadline':'Preserve challenge deadline',
+  'Classify termination type':'Classify termination',
+  'Check arrears cure preconditions':'Check arrears notice',
+  'Check separate family-home service':'Check spouse service',
+  'Screen stated reason and good-faith concerns':'Check reason and good faith',
+  'Prepare challenge, extension or settlement':'Prepare challenge or extension',
+  'Escalate immediate health or safety risk':'Escalate health or safety risk'
+ };
+ const steps=assessment.steps||[],active=steps.findIndex(step=>step.state==='active'),current=active<0?steps.findIndex(step=>step.state!=='done'):active;
+ const next=current<0?-1:steps.findIndex((step,index)=>index>current&&step.state!=='done');
+ const visible=new Set(steps.flatMap((step,index)=>step.state==='done'?[index]:[]));
+ if(current>=0)visible.add(current);
+ if(next>=0)visible.add(next);
+ const row=(step,index)=>{const status=step.state==='done'?'Done':index===current?'Now':index===next?'Next':step.state==='held_behind_question'?'Question':'Later';return `<li data-path-state="${h(step.state)}"><a href="#" data-canvas-node="${h(step.node_id)}" ${step.node_id===selected?'aria-current="step"':''} aria-label="${h(status+': '+step.label)}" title="${h(step.label)}"><span class="cp-a-step-dot" aria-hidden="true"></span><span class="cp-a-step-status" aria-hidden="true">${status}</span><span class="cp-a-step-label">${h(short[step.label]||step.label)}</span></a></li>`;};
+ const shown=steps.map((step,index)=>visible.has(index)?row(step,index):'').join(''),later=steps.map((step,index)=>visible.has(index)?'':row(step,index)).join('');
+ return `<section class="cp-a-path" aria-labelledby="cpCanvasTitle"><h2 id="cpCanvasTitle">Where it stands</h2><ol>${shown}</ol>${later?`<details class="cp-a-later"><summary>+${steps.length-visible.size} later</summary><ol>${later}</ol></details>`:''}<ul class="cp-a-condition-overview" aria-label="Conditions">${conditions}</ul>${whatIf?whatIfPanel(whatIf,saved,drafts):''}</section>`;
 }
 function whatIfPanel(whatIf,saved,drafts){
  if(!whatIf)return '';
