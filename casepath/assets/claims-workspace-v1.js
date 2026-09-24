@@ -2779,7 +2779,15 @@
     if(button.matches('[data-close-detail]')){closeDetail();return true;}
     if(button.hasAttribute('data-workbench-tab')){showWorkspaceSection(button.dataset.workbenchTab);return true;}
     if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
-    if(button.hasAttribute('data-noticed-source')){const index=state.detail?.artifacts?.findIndex(item=>item.artifact_id===button.dataset.noticedSource)??-1;if(index>=0)void showSourceArtifact(index,true,button.dataset.noticedQuote);else resetSource();return true;}
+    if(button.hasAttribute('data-noticed-source')){
+      const index=state.detail?.artifacts?.findIndex(item=>item.artifact_id===button.dataset.noticedSource)??-1;
+      if(index>=0&&state.detail.artifacts[index].role!=='customer_message')void showSourceArtifact(index,true,button.dataset.noticedQuote);
+      else{
+        resetSource();const message=$('#cwSourceContent .cw-message'),text=message?.textContent||'',quote=button.dataset.noticedQuote||'',start=text.indexOf(quote);
+        if(message&&quote&&start>=0){message.replaceChildren(document.createTextNode(text.slice(0,start)),Object.assign(document.createElement('mark'),{textContent:quote}),document.createTextNode(text.slice(start+quote.length)));message.querySelector('mark')?.scrollIntoView({block:'center',behavior:'smooth'});}
+      }
+      return true;
+    }
     if(button.hasAttribute('data-scroll-next')){const target=$('.cp-a-needs')||$('#cwStart');if(target?.id==='cwStart')target.click();else{target?.scrollIntoView({block:'start'});target?.querySelector?.('button')?.focus({preventScroll:true});}return true;}
 
 

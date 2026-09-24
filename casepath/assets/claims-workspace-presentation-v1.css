@@ -261,6 +261,8 @@
 .cp-a-noticed ul,.cp-a-needs ul{list-style:none;margin:0;padding:0;}
 .cp-a-noticed li{padding:8px 0;border-bottom:1px solid #e9ebee;}
 .cp-a-noticed li button{border:0;padding:0;background:none;text-align:left;color:#3f4854;font-size:13px;line-height:1.6;cursor:pointer;}
+.cp-a-noticed li strong{font-weight:650;color:#283f4d;}
+.cp-a-noticed li small{font-size:11px;color:#627b8a;}
 .cp-a-noticed li button:hover{text-decoration:underline;}
 .cp-a-conflict,.cp-a-deadline,.cp-a-escalation{padding:16px 18px;margin-top:15px;border:1px solid #e6ded1;background:#fcf9f3;border-radius:7px;}
 .cp-a-conflict p{font-size:13px;margin:3px 0;color:#684a30;}

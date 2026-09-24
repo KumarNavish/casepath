@@ -274,11 +274,24 @@ function assessmentTrace(loop,detail,selected,override){
  const distinct=chain.filter(([,value],index)=>value&&value!==chain[index-1]?.[1]);
  return `<section class="cp-a-why" id="cpCanvasTrace" data-selected-node="${h(step.node_id)}" tabindex="-1"><span class="cp-a-kicker">Why this step</span><h2>${h(step.label)}</h2><ol>${distinct.map(([name,value])=>`<li data-reason-part="${h(name.toLowerCase().replaceAll(' ','-'))}"><small>${h(name)}</small><strong${assessment.language.startsWith('de')&&chip?.quote&&value.includes(chip.quote)?' lang="de"':''}>${h(value)}</strong></li>`).join('')}</ol></section>`;
 }
+function noticedFact(item,assessment,detail){
+ const raw=item.source_kind==='pdf_text'&&item.text.includes(': ')?item.text.split(': ').at(-1):item.text;
+ const file=assessment.attachment_pages?.find(page=>page.artifact_id===item.source_id)?.file_name||'';
+ const role=/spouse|wife|husband/i.test(file)?'Spouse':'Tenant';
+ if(item.fact_kind==='named_party_candidate')return {label:role,quote:raw,page:item.page};
+ if(item.source_kind==='pdf_text')return {label:`${role} notice end date`,quote:raw,page:item.page};
+ if(item.fact_kind==='reported_date'){
+   const body=detail?.message?.body||'',before=body.slice(Math.max(0,body.indexOf(raw)-75),body.indexOf(raw)).toLowerCase();
+   return {label:/started around|begann es um|began around|started on/.test(before)?'Started':/became aware/.test(before)?'Became aware':'Date mentioned',quote:raw};
+ }
+ const labels=[[/my form arrived/i,'Tenant notice'],[/my wife.s arrived/i,'Spouse notice'],[/page two is absent/i,'Scan'],[/do not know whether/i,'Unclear'],[/ecke im kinderzimmer/i,"Child's bedroom"],[/verwaltung sagt/i,'Management'],[/sohn hustet/i,'Health'],[/last rent notice/i,'Notice held'],[/new form/i,'Increase form']];
+ return {label:labels.find(([pattern])=>pattern.test(raw))?.[1]||'Customer said',quote:raw};
+}
 function workbench(loop,workspace,opts={}){
  const assessment=workspace.intake_assessment?.claim_assessment;
  const canvas=opts.whatIf?.result?.scenario||assessment;
  const detail=opts.detail;
- const noticed=assessment?.noticed.map(item=>`<li><button type="button" data-noticed-source="${h(item.source_id)}" data-noticed-quote="${h(item.source_kind==='pdf_text'&&item.text.includes(': ')?item.text.split(': ').at(-1):item.text)}">${h(item.text)}</button></li>`).join('')||'';
+ const noticed=assessment?.noticed.map(item=>{const fact=noticedFact(item,assessment,detail);return `<li><button type="button" data-noticed-source="${h(item.source_id)}" data-noticed-quote="${h(fact.quote)}"><strong>${h(fact.label)}:</strong> <span lang="${assessment.language.startsWith('de')?'de':'en'}">${h(fact.quote)}</span>${fact.page?`<small>, page ${fact.page}</small>`:''}</button></li>`;}).join('')||'';
  const conflicts=assessment?.conflicts.map(conflict=>`<section class="cp-a-conflict"><h3>${h(conflict.message)}</h3>${conflict.sources.map(source=>`<button type="button" data-noticed-source="${h(source.artifact_id)}" data-noticed-quote="${h(source.quote)}" lang="${assessment.language.startsWith('de')?'de':'en'}">${h(source.value)}</button>`).join('')}</section>`).join('')||'';
  const review=`<div id="cpReviewCard" class="cp-a-review" data-assessment="${assessment?h(JSON.stringify(assessment)):''}" aria-live="polite">${assessment?`<section class="cp-a-review-ready" data-status="completed"><span class="cp-a-kicker">Deterministic assessment</span><div class="cp-a-noticed"><h2>What I noticed</h2>${conflicts}<ul lang="${assessment.language.startsWith('de')?'de':'en'}">${noticed}</ul></div></section>`:`<section class="cp-a-intro"><span class="cp-a-kicker">Incoming claim</span><h2>${h(title(detail?.message?.subject||'Customer message'))}</h2><blockquote>${h(reportExcerpt(detail?.message?.body||''))}</blockquote><button class="cw-button cw-button-primary" id="cwStart" type="button" ${opts.invalid?'disabled':''}>Review claim ${icon('arrow')}</button></section>`}</div>`;
  if(!assessment){const count=detail?.artifacts?.filter(item=>item.role!=='customer_message').length||0,provisional=loop?.operational_projection?.readiness_scope==='provisional_plan';return `<div class="cp-agentic-grid"><main class="cp-a-main">${provisional?'<div id="cpReviewCard" class="cp-a-review"><span class="cp-a-kicker">Saved investigation</span></div>':review}</main><aside class="cp-a-side">${provisional?`${actionFocus(loop,workspace,opts)}${provisionalFollowupMarkup(loop.operational_projection)}`:`<h2>Next step</h2><p>Review “${h(title(detail?.message?.subject||'Customer message'))}” and ${count} ${count===1?'attachment':'attachments'}.</p>`}</aside><div class="cp-a-mobile-action"><span>Next step</span><strong>${provisional?'Review saved investigation':'Review claim'}</strong><button type="button" data-scroll-next>Open</button></div></div>`;}

@@ -125,6 +125,18 @@ test('noticed dates and both sides of a conflict open exact source spans',()=>{
  assert.match(markup,/data-noticed-source="spouse-pdf" data-noticed-quote="31. Juli"/);
  assert.doesNotMatch(markup,/Review saved/);
 });
+test('noticed facts name the party, start date and PDF page without losing source spans',()=>{
+ const changed={...assessment,noticed:[
+  {text:'Robin Foster',source_id:'tenant-pdf',source_kind:'pdf_text',page:1,fact_kind:'named_party_candidate'},
+  {text:'Casey Foster',source_id:'spouse-pdf',source_kind:'pdf_text',page:1,fact_kind:'named_party_candidate'},
+  {text:'19 August 2025',source_id:'message-one',source_kind:'customer_message',fact_kind:'reported_date'},
+  {text:'Tenant_termination_notice.pdf: 30. Juni',source_id:'tenant-pdf',source_kind:'pdf_text',page:1},
+ ],attachment_pages:[{artifact_id:'tenant-pdf',file_name:'Tenant_termination_notice.pdf'},{artifact_id:'spouse-pdf',file_name:'Spouse_termination_notice.pdf'}]};
+ const source={...assessedDetail,message:{...assessedDetail.message,body:'As far as I remember, it started around 19 August 2025.'}};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:source});
+ for(const text of ['Tenant:</strong> <span lang="en">Robin Foster','Spouse:</strong> <span lang="en">Casey Foster','Started:</strong> <span lang="en">19 August 2025','Tenant notice end date:</strong> <span lang="en">30. Juni</span><small>, page 1'])assert.match(markup,new RegExp(text));
+ assert.match(markup,/data-noticed-source="tenant-pdf" data-noticed-quote="30. Juni"/);
+});
 test('path chips name the transition whose verdict they show',()=>{
  const step={node_id:'later',label:'Build the dated timeline',state:'not_reached',condition_chips:[{condition_flag:'health_effects',label:'no immediate health escalation',verdict:'false',quote:'Mein Sohn hustet mehr'}],authority:null};
  const changed={...assessment,steps:[...assessment.steps.slice(0,-1),step]};
