@@ -13,8 +13,9 @@ The first-run card opens a five-step walk through the family-home claim.
 Reviewer mode labels the provenance of displayed objects. [About
 CasePath](method.html) links to the live What if control, data, and research.
 
-Historical release metadata names hosted services, but those services run an
-older source line. See
+The earlier Render frontend and API are suspended. This repository's `main`
+branch is the runnable release; the [anonymous review snapshot](https://anonymous.4open.science/r/casepath-9673/)
+shows the source with identity substitutions. See
 [`docs/architecture-authority.md`](../docs/architecture-authority.md) before
 changing source, state, or evidence behavior.
 
