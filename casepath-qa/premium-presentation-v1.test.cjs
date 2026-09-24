@@ -61,7 +61,10 @@ test('a correction preview takes focus without a stale replan above it',()=>{
    principal_blocker:'No evidence outstanding',next_state:{title:'Review'}},
   loop_state:{selected_action:null,observations:[],checklist:{items:[]},
    process:{nodes:[],main_spine:[],current_overlay:{current_node_id:null,completed_node_ids:[],blocked_node_ids:[]}}}};
- const html=view.workbench(loop,{claim_id:'c',binding:{}},{
+ const assessment={language:'en',noticed:[],conflicts:[],next_step:'Review receipt',
+  conditions:{health_effects:{verdict:'unresolved'}},documents:[],candidate_deadline:null,
+  steps:[{node_id:'receipt',state:'active',label:'Review receipt',condition_chips:[]}]};
+ const html=view.workbench(loop,{claim_id:'c',binding:{},intake_assessment:{claim_assessment:assessment}},{
   correctionPreview:{effect:{fact_id:'f'}},
   change:{kind:'evidence',accepted:true,changes:[],remaining:0,afterState:'Ready for review'}
  });

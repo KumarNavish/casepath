@@ -14,7 +14,12 @@ def _source_quote(assessment: Mapping[str, Any], document: Mapping[str, Any]) ->
     flag = document.get("condition_flag")
     conditions = assessment["conditions"]
     if flag and conditions.get(flag, {}).get("quote"):
-        return str(conditions[flag]["quote"])
+        quote = str(conditions[flag]["quote"])
+        if flag == "mold" and len(quote.split()) < 3:
+            for item in assessment["noticed"]:
+                if any(word in item["text"].casefold() for word in ("schwarz", "schimmel", "mould", "mold")):
+                    return str(item["text"])
+        return quote
     kind = str(document["document_type"])
     if kind == "proof_of_receipt":
         for entry in ("termination_received", "claim_received"):

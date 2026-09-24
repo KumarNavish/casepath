@@ -29,7 +29,7 @@ for(const [name,claimId] of Object.entries(claims)){
     await page.locator('#cwStart').click();
     await page.locator('.aw-narrative-lines li button').first().waitFor({timeout:30000});
     timing[`${name}_first_line_ms`]=Math.round(performance.now()-started);
-    await page.locator('.aw-narrative-card[data-status="completed"]').waitFor({timeout:45000});
+    await page.locator('.cp-a-review-ready[data-status="completed"]').waitFor({state:'visible',timeout:45000});
     timing[`${name}_review_complete_ms`]=Math.round(performance.now()-started);
   }
   await page.locator('.cp-a-path').waitFor({timeout:30000});
@@ -51,6 +51,7 @@ for(const [name,claimId] of Object.entries(claims)){
   }));
   for(const width of widths){
     await page.setViewportSize({width,height:900});
+    await page.evaluate(()=>{scrollTo(0,0);const column=document.querySelector('.cp-work-column');if(column)column.scrollTop=0;});
     await page.screenshot({path:path.join(out,`${name}-${width}.png`)});
     const layout=await page.evaluate(()=>{
       const rail=document.querySelector('.cp-source-rail')?.getBoundingClientRect();
@@ -85,7 +86,7 @@ await page.goto(`${base}/#claim=clm_478488eeea2665d7`);
 await page.locator('#cpReviewCard').waitFor({timeout:30000});
 if(await page.locator('#cwStart').count()){
   await page.locator('#cwStart').click();
-  await page.locator('.aw-narrative-card[data-status="completed"]').waitFor({timeout:45000});
+  await page.locator('.cp-a-review-ready[data-status="completed"]').waitFor({state:'visible',timeout:45000});
 }
 const memoryStarted=performance.now();
 await page.locator('.cp-reviewed-memory [data-apply-memory]').waitFor({timeout:20000});

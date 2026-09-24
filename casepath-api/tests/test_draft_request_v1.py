@@ -37,6 +37,7 @@ def test_german_health_handoff_keeps_customer_quote_and_german_copy() -> None:
     assert draft["kind"] == "specialist_handoff"
     assert draft["language"].startswith("de")
     assert "Mein Sohn hustet mehr" in draft["body_markdown"]
+    assert "Seit Wochen wird die Ecke im Kinderzimmer schwarz" in draft["body_markdown"]
     assert "ärztliche Bestätigung" in draft["body_markdown"]
     assert "Medical confirmation" not in draft["body_markdown"]
     assert "Ist die Heizung betroffen?" in draft["questions"]
