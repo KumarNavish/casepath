@@ -70,6 +70,7 @@ for(const verdict of ['false','true']){
   if(verdict==='true'&&!(await page.locator('#cpWhatIfPanel').innerText()).includes('Art. 266n'))throw Error('Family-home diff omits Art. 266n');
 }
 await page.locator('[data-what-if-close]').click();
+if(await page.locator('.cp-a-source-record').count())await page.locator('.cp-a-source-record > summary').click();
 if(await page.locator('[data-evidence-choice]').count()){
   const date=page.locator('[data-evidence-choice]').filter({hasText:'30. Juni'}).first();
   const verdictStart=performance.now();

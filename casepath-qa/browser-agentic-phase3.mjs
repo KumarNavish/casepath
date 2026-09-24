@@ -42,7 +42,16 @@ for(const [name,claimId] of Object.entries(claims)){
   timing[`${name}_draft_ms`]=Math.round(performance.now()-draftStarted);
   const draft=await page.locator('#cwDraftBody').innerText();
   if(!draft.trim())throw Error(`${name} draft is empty`);
+  if(await page.locator('#cwDraftBody textarea').count())throw Error('Draft still uses a raw textarea');
   if(name==='mould'&&!draft.includes('Mein Sohn hustet mehr'))throw Error('German handoff lost the customer quote');
+  if(name==='flagship'){
+    await page.locator('#cwDraftBody p').first().fill('Dear Robin Foster,');
+    await page.locator('#cwDraftForm button[type="submit"]').click();
+    await page.getByText('Draft saved. Nothing has been sent.').waitFor({timeout:20000});
+    await page.reload();
+    await page.locator('#cwDraftBody p').first().waitFor();
+    if(await page.locator('#cwDraftBody p').first().innerText()!=='Dear Robin Foster,')throw Error('Inline draft edit did not survive reload');
+  }
   outputs[name]=await page.evaluate(()=>({
     noticed:[...document.querySelectorAll('.cp-a-noticed li')].map(row=>row.textContent.trim()),
     conditions:[...document.querySelectorAll('.cp-a-condition')].map(row=>row.textContent.trim()),
@@ -96,6 +105,8 @@ if(await page.locator('#cwStart').count()){
 const memoryStarted=performance.now();
 await page.locator('.cp-reviewed-memory [data-apply-memory]').waitFor({timeout:20000});
 timing.memory_match_ms=Math.round(performance.now()-memoryStarted);
+await page.locator('.cp-reviewed-memory').scrollIntoViewIfNeeded();
+if(!(await page.locator('.cp-a-memory-banner').innerText()).includes('Navish'))throw Error('Matching memory has no handler provenance');
 await page.screenshot({path:path.join(out,'reviewed-memory-1440.png')});
 await page.locator('[data-apply-memory] textarea').fill('I verified this claim against the separate spouse notice.');
 await page.locator('[data-apply-memory] button[type="submit"]').click();

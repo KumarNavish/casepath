@@ -31,6 +31,9 @@ if(await queue.locator('#cwStart').count()){
   await queue.locator('#cwStart').click();
   await queue.locator('.aw-narrative-lines li button').first().waitFor({timeout:30000});
   timing.flagship_first_line_ms=Math.round(performance.now()-review);
+  await queue.locator('#cwSourceContent .cw-message mark').waitFor({timeout:3000});
+  if(!(await queue.locator('#cwSourceContent .cw-message mark').innerText()).trim())throw Error('Live finding did not focus its exact message span');
+  await queue.screenshot({path:path.join(out,'flagship-live-1440.png')});
 }
 await queue.locator('.cp-a-review-ready[data-status="completed"]').waitFor({state:'visible',timeout:45000});
 if(flagshipReviewStart!==null)timing.flagship_review_complete_ms=Math.round(performance.now()-flagshipReviewStart);

@@ -387,6 +387,9 @@
 .cp-a-question h3{font-size:12px;line-height:1.45;margin:0 0 7px;color:#263d4c;}
 .cp-a-question p{font-size:11px;line-height:1.5;margin:4px 0;color:#526a78;}
 .cp-a-question button{border:0;background:none;padding:2px 0 5px;color:#32627b;font:inherit;text-align:left;cursor:pointer;}
+.cp-a-source-record{margin:20px 0 28px;border-top:1px solid #d8e3e8;padding-top:14px;}
+.cp-a-source-record>summary{cursor:pointer;color:#315f78;font-size:12px;font-weight:620;}
+.cp-a-source-record>.cp-decision{margin-top:14px;}
 .cp-a-draft .cp-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
 .cp-a-draft .cp-actions button{min-height:36px;}
 .cp-a-draft details{margin-top:14px;font-size:10px;color:#657885;}
@@ -397,6 +400,9 @@
 .cp-reviewed-memory article blockquote{padding-left:12px;border-left:2px solid #8aa58d;}
 .cp-reviewed-memory form,.cp-handler-notes form{display:grid;gap:8px;margin-top:8px;}
 .cp-reviewed-memory textarea,.cp-handler-notes input{width:100%;box-sizing:border-box;}
+.cp-reviewed-memory .cp-actions{display:flex;gap:8px;}
+.cp-reviewed-memory .cp-actions button{padding:7px 12px;border:1px solid #abc4b1;border-radius:4px;background:#fff;color:#315d3a;font:inherit;cursor:pointer;}
+.cp-reviewed-memory .cp-actions button[type="submit"]{background:#eaf3eb;font-weight:650;}
 .cp-a-memory-banner{display:grid;gap:3px;padding:9px 11px;margin:0 0 10px;background:#eaf3eb;border-left:3px solid #648a68;color:#2f603b;font-size:11px;}
 .cp-a-memory-banner span{font-size:10px;color:#4e6c53;}
 .cp-a-memory-banner a{color:#275a37;}
