@@ -273,11 +273,6 @@
 }
 @media(prefers-reduced-motion:reduce){.aw-agent[data-status="working"] .aw-agent-mark,.aw-live-signal[data-live="true"] .aw-live-mark{animation:none!important;}}
 
-.cp-workspace[data-canvas="true"] .aw-review-console{border:0;box-shadow:none;border-radius:0;padding:0;}
-.cp-workspace[data-canvas="true"] .aw-console-head{margin-bottom:12px;}
-.cp-workspace[data-canvas="true"] .aw-console-state[data-status="completed"] strong{color:#244e72;}
-.cp-workspace[data-canvas="true"] .aw-live-complete{background:#f1f6fa;color:#385a73;}
-.cp-workspace[data-canvas="true"] .aw-live-complete .aw-live-mark{background:#e4eef5;color:#244e72;}
 .aw-role-details{margin-top:17px;padding-top:13px;border-top:1px solid #e0e8ee;}
 .aw-role-details>summary{cursor:pointer;width:max-content;max-width:100%;font-size:11px;font-weight:560;color:#244e72;}
 .aw-role-details .aw-agent-flow{margin-top:13px;}

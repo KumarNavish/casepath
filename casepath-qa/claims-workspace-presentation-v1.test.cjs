@@ -169,3 +169,9 @@ test('minimal claim presentation guards',()=>{
  assert.doesNotMatch(visibleText,/deterministic|assessment|journal|projection|authority|saved claim record|workspace/i);
  assert.doesNotMatch(markup,/class="[^"]*cp-card|class="[^"]*bordered-panel/);
 });
+test('queue groups claims as list items without table headers or chevrons',()=>{
+ const markup=view.queueRows([{claim_id:'one',subject:'Test claim',received_at:'2026-09-24',language:'en',owner:null,triage:{waiting_on:'Customer',noticed_fact:'The notice is incomplete.',next_step:'Ask for the missing page.'}}]);
+ assert.match(markup,/<h2 class="cp-triage-group">Waiting on customer/);
+ assert.match(markup,/<ul><li tabindex="0" data-claim-id="one"/);
+ assert.doesNotMatch(markup,/<table|<th|cp-row-chevron/);
+});

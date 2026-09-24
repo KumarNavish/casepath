@@ -339,7 +339,7 @@
       state.events.push(event);
       if(state.summary){state.summary.last_sequence=event.sequence;state.summary.last_message=event.message;}
       renderClaim();
-      if(event.operation==='AUTHORITY_CONFIRMED'&&!state.assessment&&!state.assessmentLoading){state.assessmentLoading=true;document.querySelector('[data-refresh-claim]')?.click();}
+      if(event.operation==='AUTHORITY_CONFIRMED'&&!state.assessment&&!state.assessmentLoading){state.assessmentLoading=true;window.dispatchEvent(new Event('casepath:refresh-claim'));}
       if(['AGENT_STARTED','AGENT_COMPLETED','AGENT_BLOCKED','RUN_COMPLETED','RUN_BLOCKED','RUN_FAILED'].includes(event.operation))void poll();
     });
     stream.addEventListener('done',()=>{closeStream();void poll();});
@@ -373,10 +373,10 @@
         if(!batch.events.length)break;
       }
       renderClaim();
-      if(state.events.some(event=>event.operation==='AUTHORITY_CONFIRMED')&&!state.assessment&&!state.assessmentLoading){state.assessmentLoading=true;document.querySelector('[data-refresh-claim]')?.click();}
+      if(state.events.some(event=>event.operation==='AUTHORITY_CONFIRMED')&&!state.assessment&&!state.assessmentLoading){state.assessmentLoading=true;window.dispatchEvent(new Event('casepath:refresh-claim'));}
       if(['queued','running'].includes(run.summary.status))openStream(claim,latest.run_id);
       else closeStream();
-      if(run.summary.status==='completed'&&run.summary.currentness==='current'&&state.forceRefresh!==run.summary.run_id){state.forceRefresh=run.summary.run_id;document.querySelector('[data-refresh-claim]')?.click();}
+      if(run.summary.status==='completed'&&run.summary.currentness==='current'&&state.forceRefresh!==run.summary.run_id){state.forceRefresh=run.summary.run_id;window.dispatchEvent(new Event('casepath:refresh-claim'));}
     }catch(e){refreshInspectionContext(true);report(e.name==='AbortError'?'Work status is temporarily unavailable. Saved work has not been replaced.':e.message);}
     finally{state.fetching=false;if(state.repoll){state.repoll=false;queueMicrotask(()=>void poll());}}
   }

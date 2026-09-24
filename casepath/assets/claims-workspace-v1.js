@@ -1300,7 +1300,6 @@
     $('#cwClearFilters').hidden=!hasQueueFilters();
     const selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
     root.querySelectorAll('[data-queue-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.queueView===selected)));
-    updateQueueHeading();
   }
   function restoreQueueFilters() {
     const query=new URLSearchParams(location.search);
@@ -2740,11 +2739,6 @@
   }
   compactWorkbench.addEventListener('change',()=>{if(state.detail)applyInspectorState();});
   window.addEventListener('beforeunload',savePresentation);
-  function updateQueueHeading(){
-    const search=$('#cwSearch').value.trim(),selected=$('#cwFailure').value==='true'?'attention':$('#cwUrgency').value==='high'?'urgent':$('#cwReadiness').value==='decision_ready'?'ready':$('#cwPendingEvidence').value==='some'?'evidence':$('#cwOwner').value==='unassigned'?'unassigned':'all';
-    const names={all:'All claims',urgent:'30+ days since intake',evidence:'Waiting for evidence',ready:'Ready for review',attention:'Action issues',unassigned:'Unassigned claims'};
-    $('#cpQueueTitle').textContent=search?'Search results':names[selected];
-  }
   function displayWorkspaceOverview(rows){
       const summary=ui.queueSummary(rows);state.overviewSummary=summary;
       root.querySelectorAll('[data-overview-count]').forEach(el=>{el.textContent=String(summary[el.dataset.overviewCount]);});
@@ -3125,6 +3119,7 @@
   $('#cwSearch').addEventListener('input', () => { clearTimeout(state.filterTimer); state.filterTimer=setTimeout(()=>{saveQueueFilters();void loadQueue();},180); });
   $('#cwFilters').addEventListener('change', event => { if(event.target.id==='cwSearch') return; clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });
   root.addEventListener('click',handleWorkspaceClick);
+  window.addEventListener('casepath:refresh-claim',()=>{if(state.detail)void refreshOpen().catch(showRefreshFailure);});
   root.addEventListener('pointerup',offerSourceSelection);
   root.addEventListener('keyup',event=>{if(event.key==='Shift'||event.key.startsWith('Arrow'))offerSourceSelection();});
   $('#cwMore').addEventListener('click', () => loadQueue({append:true}));
