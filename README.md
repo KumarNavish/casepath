@@ -37,31 +37,28 @@ requirements from different branches, and gives no reason anyone can check.
 
 ## How CasePath works
 
-CasePath splits the work. The paper's Algorithm 1 gives the full procedure.
+The model judges the case; code derives every question and request. This is
+Algorithm 1 of the paper:
 
-1. **Represent the rules.** Where rules are not yet formal, agents read the
-   source texts once into a process of nested branches. Each branch has a
-   condition and holds *obligations*; an obligation needs a *required fact*; an
-   *evidence capability* can establish that fact; and each allowed set of
-   documents that supplies the capability is a *route*. Every element quotes its
-   source.
+1. **Read the rules once** into nested branches and obligations, each with a
+   condition. Agents do this when the rules are prose; code does it when they
+   are already formal. An obligation needs a *required fact*, an *evidence
+   capability* can establish the fact, and each allowed set of documents that
+   supplies it is a *route*.
 2. **Judge the case.** A language model marks each condition true, false or
    unresolved, quoting the case, and judges the documents on file. This is the
    only step that reads the case.
-3. **Activate obligations in code.** An obligation is active only if its own
-   condition holds and so does the condition of every branch that encloses it
-   (*full process scope*, a three-valued conjunction). A false condition drops
-   the obligation's documents; while a condition is unresolved, code holds the
-   documents back and asks about it.
-4. **Plan the evidence in code.** For each required fact, code picks the route
-   that the documents on file come closest to satisfying and requests only what
-   is missing.
-5. **Act with a reason.** Code returns the next step (ask, review evidence or
-   request documents), and each request carries its chain: source passage,
-   obligation, required fact, evidence capability, route, document.
+3. **Decide in code.** For each obligation, code looks at its own condition and
+   those of all branches enclosing it (*full process scope*):
+   - if any is false, the obligation is dropped (its documents are irrelevant);
+   - if any is unresolved, code asks what would decide it and requests nothing
+     for it yet (its documents are premature);
+   - otherwise, for each fact it needs, code takes the route the file most
+     nearly satisfies and requests that route's missing or inadequate documents.
 
-Study A runs this procedure in its simplest setting (each rule checks only its
-own condition, and every route is requested); Study B runs it in full.
+Each request keeps its chain from source passage through obligation, fact,
+capability and route to document. Study A runs a simpler form (each rule checks
+only its own condition, and every route is requested); Study B runs it in full.
 
 ## The software
 
@@ -98,6 +95,11 @@ product are kept apart, and only the first two carry the paper's measurements.
 | Study A method | The condition interpreter and planner of Study A, installed in the application as a separate service. Replaying the recorded condition decisions through it reproduces the documents, verdicts and next actions of all 72 cases and 36 paired changes. | [`casepath-api/casepath_api/`](casepath-api/casepath_api/) (`case_interpreter_v4.py`, `evidence_overlay_v3.py`, `casepath_process_service_v3.py`); [parity record](research/casepath/branch-benchmark/parity/PRODUCT_METHOD_PARITY_V5.json) |
 | Study B controller | Full process scope and the evidence planner of Study B. The application shows them on an authored teaching example with 45 states. | [`obligation_control/`](casepath-api/casepath_api/obligation_control/) (`obligation_control_v1.py`, `evidence_demand_v1.py`); [method page](casepath/method.html) |
 | Workbench review | Product behaviour: source grounding, journaled state, correction and replay over the 150 claims. It inherits none of the measured results. | [`casepath/`](casepath/README.md), [`docs/AGENT_REVIEW.md`](docs/AGENT_REVIEW.md) |
+
+A copy downloaded from the anonymous review mirror will not start the
+workbench: the mirror rewrites a few strings in files that the launcher checks
+against its source manifest. The two dataset verifiers and the Study A
+reproduction script below are not affected.
 
 The workbench runs on loopback for one user, without authentication. It
 demonstrates handling mechanics, not legal correctness or fitness for real

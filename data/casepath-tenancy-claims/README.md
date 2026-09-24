@@ -41,7 +41,7 @@ case, and no system output was used to write it. It records:
 ## Where things are
 
 ```
-benchmark/                         the benchmark package exactly as evaluated
+benchmark/                         the benchmark package as evaluated, except one recipient line
   data/dev/{claims,sources,source-registry,gold}   60 development claims and references
   data/test/{claims,sources,source-registry}       90 held-out claims
   rules/                           process templates and the 19 legal passages
@@ -49,7 +49,7 @@ benchmark/                         the benchmark package exactly as evaluated
   scorers/ runners/ schema/ ...    evaluator, schemas and baselines
 heldout-references/                references of the 90 held-out claims
 heldout-state-stress-references/   references of the 24 held-out variants
-release-records/                   release grant and index for the held-out references
+release-records/                   release grant, reference index and pseudonymization record
 verify.py                          checks the evaluated files and references against recorded hashes
 ```
 
@@ -89,9 +89,10 @@ verify.py                          checks the evaluated files and references aga
 
 ## Held-out references and verification
 
-The benchmark package in `benchmark/` is unchanged from the version the paper
-evaluated, so its own `README.md` and `LEADERBOARD.md` still describe the
-original protocol, in which the held-out references were sealed. After the
+Apart from one recipient line, the benchmark package in `benchmark/` is
+unchanged from the version the paper evaluated, so its own `README.md` and
+`LEADERBOARD.md` still describe the original protocol, in which the held-out
+references were sealed. After the
 evaluation, all 90 held-out references were released under CC BY 4.0
 (`release-records/TARGET_RELEASE_GRANT.json`). Each file in
 `heldout-references/` is byte-identical to the container whose SHA-256 was
@@ -110,14 +111,29 @@ that keeps it out of training and tuning. Some development references carry a
 legacy `metadata.split` label from the source corpus ("hidden" or "pilot"); the
 release split is the one in `benchmark/cohort.json`.
 
+Every evaluated message named the intake mailbox of a real legal-expenses
+insurer as its recipient, and this release replaces that name and address with
+the fictional `Example Rechtsberatung <fallaufnahme@example.test>`. The
+replacement has the same byte length, so all offsets, spans and file sizes still
+hold, and `release-records/PSEUDONYMIZATION.json` binds each of the 300 changed
+files (150 messages and the 150 claim files that embed them) to the hash of its
+evaluated original. The recipient line is in the raw message header, which the Study B pipelines
+did not read: they received the message body and attachment texts. After review,
+anyone given the original string can run
+`python3 verify.py --restore-recipient STRING`, which rebuilds those files in
+memory and checks each against the manifest. The benchmark package's own
+integrity checks (`reproduce/independent_release_verifier.py`,
+`reproduce/verify_release.py`) compare against the evaluated hashes, so they
+flag these 300 files; use the top-level `verify.py` instead. Scores are
+unaffected: the scorer does not read the raw message files.
+
 ## What it does not cover
 
 The claims, messages, parties, images, process templates and references are
-synthetic. Three kinds of real material appear: the 19 legal passages, quoted
+synthetic. Two kinds of real material appear: the 19 legal passages, quoted
 from the Swiss Code of Obligations (SR 220, Fedlex, version in force on 1
-January 2026); the official Canton of Zurich forms (amtliche Formulare) on
-which 34 of the 47 PDF attachments are filled in; and the intake address of a
-real legal-expenses insurer, used in every message as a fictional recipient. No
+January 2026), and the official Canton of Zurich forms (amtliche Formulare) on
+which 34 of the 47 PDF attachments are filled in. No
 real claim, person or correspondence is included. All claims are set in one
 canton. The mapping from law to process is for research and is
 not legal advice. The reference captures each case at intake; change over time
