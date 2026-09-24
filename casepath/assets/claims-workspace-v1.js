@@ -470,16 +470,11 @@
     ['Change one condition','Open What if on family-home service. Set it false and read what leaves the request.','[data-what-if="family_home"]'],
     ['Draft the request','Select Draft request. Read the saved customer draft before copying or exporting it.','#cwDraftOpen'],
   ];
-  function reviewerPanel(){
-    return `<details class="cp-reviewer-panel" id="cpReviewerPanel" open><summary>Research and product correspondence</summary><p>This workbench shows deterministic product behavior. Its claim assessments do not inherit a study's measured accuracy. Claim conditions and routes use the deterministic compiler.</p><table><thead><tr><th>Object</th><th>Study A · paired V5</th><th>Study B · native 150</th></tr></thead><tbody><tr><th>Knowledge</th><td>Source propositions, macro graph, local evidence rules and routes</td><td>Deterministic compilation of three public tenancy templates</td></tr><tr><th>Online gate</th><td>Rule-local true, false or unresolved guard</td><td>Inherited applicability, condition and acquisition permission</td></tr><tr><th>Evidence state</th><td>Held document types and mapped routes</td><td>Presence, adequacy, joint adequacy and route selection</td></tr><tr><th>Population</th><td>72 paired units</td><td>150 claims across three tenancy domains</td></tr><tr><th>Endpoint</th><td>Signed request changes</td><td>Complete plan and immediate checklist</td></tr></tbody></table><p><a href="research.html">Study results and limits</a> · <a href="method.html">About this product</a></p></details>`;
-  }
   function syncReviewerMode(){
     root.dataset.reviewerMode=String(state.reviewerMode);
     root.querySelectorAll('[data-reviewer-toggle]').forEach(button=>button.setAttribute('aria-pressed',String(state.reviewerMode)));
     const panel=$('#cwDetailPanel');if(!panel||$('#cwDetail').hidden)return;
-    panel.querySelector('#cpReviewerPanel')?.remove();
     if(!state.reviewerMode)return;
-    panel.querySelector('.cp-work-column')?.insertAdjacentHTML('afterbegin',reviewerPanel());
     const mark=(selector,label)=>panel.querySelectorAll(selector).forEach(element=>element.dataset.provenance=label);
     mark('.cp-source-rail','Source · customer or attachment');
     mark('.cp-packet-browser [data-source-artifact]','Source · held file');
@@ -2784,6 +2779,7 @@
     if(button.matches('[data-close-detail]')){if(!$('#cwDetail').hidden)closeDetail();return true;}
     if(button.hasAttribute('data-workbench-tab')){showWorkspaceSection(button.dataset.workbenchTab);return true;}
     if(button.hasAttribute('data-canvas-node')){selectCanvasNode(button.dataset.canvasNode,{focus:true});return true;}
+    if(button.hasAttribute('data-footer-open')){const section=$('#'+button.dataset.footerOpen);if(section){section.open=true;section.scrollIntoView({block:'start'});}return true;}
     if(button.hasAttribute('data-noticed-source')){
       const index=state.detail?.artifacts?.findIndex(item=>item.artifact_id===button.dataset.noticedSource)??-1;
       if(index>=0&&state.detail.artifacts[index].role!=='customer_message')void showSourceArtifact(index,true,button.dataset.noticedQuote);
@@ -3008,7 +3004,7 @@
     state.focusedEvidenceId=selectedEvidence;
   }
   function handleWorkspaceClick(event) {
-    const button=event.target.closest('button,a');if(!button)return;if(button.matches('a[data-close-detail],a[data-canvas-node],a[data-noticed-source],a[data-what-if],a[data-open-inspector],a[data-close-inspector],a[data-edit-owner],a[data-draft-copy],a[data-draft-export]'))event.preventDefault();
+    const button=event.target.closest('button,a');if(!button)return;if(button.matches('a[data-close-detail],a[data-canvas-node],a[data-noticed-source],a[data-what-if],a[data-open-inspector],a[data-close-inspector],a[data-edit-owner],a[data-draft-copy],a[data-draft-export],a[data-footer-open],a[data-open-technical]'))event.preventDefault();
     if(button.id==='awWorkforceButton'&&!button.dataset.agentWorkEntry){
       if(button.dataset.loading)return;
       button.dataset.loading='true';button.setAttribute('aria-busy','true');

@@ -511,3 +511,14 @@
 .cp-draft-actions{display:flex;gap:18px;margin-top:18px;}
 .cp-draft-actions button,.cp-draft-actions a{padding:0;border:0;background:none;color:#244e72;font-size:13px;text-decoration:none;cursor:pointer;}
 .cp-draft-actions button:hover,.cp-draft-actions a:hover{text-decoration:underline;}
+/* Quiet access to the existing records */
+.cp-a-footer{max-width:72ch;margin:42px 0 0;color:#5b6675;font-size:13px;line-height:1.5;}
+.cp-a-footer nav{white-space:nowrap;overflow-x:auto;scrollbar-width:thin;}
+.cp-a-footer nav a{color:#244e72;text-decoration:none;}
+.cp-a-footer nav a:hover{text-decoration:underline;}
+.cp-footer-sections>details:not([open]){display:none;}
+.cp-footer-sections>details[open]{display:block;margin-top:20px;}
+.cp-footer-sections>details>summary{font-size:16px;color:#1c2430;}
+.cp-footer-sections .cp-a-source-record,.cp-footer-sections .cp-reviewed-memory,.cp-footer-sections .cp-handler-notes{border:0;border-radius:0;background:#fff;padding:0;}
+.cp-a-what-if{border:0;border-radius:0;background:#fff;padding:14px 0;margin:12px 0 0;}
+.cp-a-what-if .cp-a-what-if-diff{border:0;}
