@@ -1763,6 +1763,7 @@
         </details>` : '';
     const panel=$('#cwDetailPanel');
     const sameClaim=panel.dataset.openClaimId===value.claim_id;
+    const memoryNotes=sameClaim?new Map([...panel.querySelectorAll('[data-apply-memory]')].map(form=>[form.dataset.applyMemory,form.querySelector('textarea[name="note"]')?.value||''])):new Map();
     const previousScroll=panel.querySelector(".cp-work-column")?.scrollTop||0;
     const focusedId=document.activeElement?.id;
     const openDetails=sameClaim?[...panel.querySelectorAll('details[open][id]')].map(el=>el.id):[];
@@ -1778,6 +1779,10 @@
       priority,priorityMarkup:priority?priorityList(priority):'',
     });
     panel.dataset.openClaimId=value.claim_id;
+    panel.querySelectorAll('[data-apply-memory]').forEach(form=>{
+      const note=memoryNotes.get(form.dataset.applyMemory);
+      if(note!==undefined)form.querySelector('textarea[name="note"]').value=note;
+    });
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     const measuredHeader=panel.querySelector('.cw-detail-head');
     const measureHeader=()=>{
