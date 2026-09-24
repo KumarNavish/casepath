@@ -23,7 +23,7 @@ await queue.locator('[data-start-tour]').click();
 await queue.locator('#cpGuidedWalk').waitFor({timeout:30000});
 if(!(await queue.locator('#cpGuidedWalk').innerText()).includes('Step 1 of 5'))throw Error('Walk did not start at sources');
 await queue.locator('[data-guide-next]').click();
-await queue.locator('#cwStart').click();
+if(await queue.locator('#cwStart').count())await queue.locator('#cwStart').click();
 await queue.locator('.aw-narrative-card[data-status="completed"]').waitFor({timeout:45000});
 await queue.locator('[data-guide-next]').click();
 await queue.locator('#cpGuidedWalk').getByText('See what is needed').waitFor();
@@ -39,19 +39,21 @@ await queue.locator('#cwDraftOpen').click();
 await queue.locator('#cpDraftPanel').waitFor({timeout:20000});
 await queue.locator('[data-guide-finish]').click();
 if(await queue.locator('#cpGuidedWalk').count())throw Error('Walk did not finish');
-await queue.locator('.cp-claim-toolbar [data-reviewer-toggle]').click();
+await queue.locator('.cp-claim-toolbar-actions > [data-reviewer-toggle]').click();
 await queue.locator('#cpReviewerPanel').waitFor();
 for(const selector of ['.cp-source-rail','.cp-a-review','.cp-a-condition-overview li','.cp-a-path li[data-path-state]','.cp-a-needs li','.cp-a-why li','.cp-a-draft']){
   const item=queue.locator(selector).first();if(!await item.getAttribute('data-provenance'))throw Error(`Reviewer label missing on ${selector}`);
 }
 if(!(await queue.locator('#cpReviewerPanel').innerText()).includes('Study A · paired V5'))throw Error('Study correspondence is missing');
 await queue.screenshot({path:path.join(out,'reviewer-1440.png')});
-await queue.locator('.cp-claim-toolbar [data-reviewer-toggle]').click();
+await queue.locator('.cp-claim-toolbar-actions > [data-reviewer-toggle]').click();
 await page.goto(base+'/method.html');
 if(!(await page.getByRole('heading',{name:'Try the family-home claim'}).count()))throw Error('About page still uses the invented case');
+await page.screenshot({path:path.join(out,'about-1440.png')});
 await page.getByRole('link',{name:/Open the claim's What if/}).click();
 await page.locator('#cpWhatIfPanel').waitFor({timeout:30000});
 for(const [name,claimId] of Object.entries(claims)){
+  await page.goto('about:blank');
   await page.goto(`${base}/#claim=${claimId}`);
   await page.locator('#cpReviewCard').waitFor({timeout:30000});
   if(await page.locator('#cwStart').count()){
@@ -73,6 +75,7 @@ for(const [name,claimId] of Object.entries(claims)){
     next_step:document.querySelector('.cp-a-next h2')?.textContent.trim()||null,
   }));
   if(name==='mould'&&!await page.locator('.cp-claim-title h1[lang="de"]').count())throw Error('German subject has no language mark');
+  await page.evaluate(()=>{document.querySelector('#cwDetailPanel').scrollTop=0;window.scrollTo(0,0);});
   for(const width of [1440,1024,390,320]){
     await page.setViewportSize({width,height:900});
     await page.screenshot({path:path.join(out,`${name}-${width}.png`)});
