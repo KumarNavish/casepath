@@ -436,7 +436,7 @@
     correctionPreview: null,
     nativeInvestigation: null,
     change: null, sourceSelection: null, sourceRequest: 0, sourceUrl: null, sourceController: null, loadedQuery: null,
-    focusedEvidenceId: null, whatIf: null, evidenceChoice: null, handlerDrafts: {},
+    focusedEvidenceId: null, whatIf: null, evidenceChoice: null, handlerDrafts: {}, draft: null, draftEdit: null,
   };
   const EXPECTED_AGENT_IDS = ['canonical_facts','orchestrator_plan','document_source_integrity','process_decision_mapping','evidence_checklist','final_claim_brief_audit'];
   const EXPECTED_GATE_IDS = ['deterministic_process_gate','deterministic_evidence_gate','whole_playbook_gate'];
@@ -1530,7 +1530,7 @@
     const pendingAdvance=storedCommandIdentity('advance',id);
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
     return ui.workbench(loop,workspaceState,{
-      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,pendingHandler:storedCommandIdentity('handler-note',id),handlerDrafts:state.handlerDrafts,detail:state.detail,canvasNodeId:state.canvasNodeId,whatIf:state.whatIf,evidenceChoice:state.evidenceChoice,
+      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,pendingHandler:storedCommandIdentity('handler-note',id),pendingDraft:storedCommandIdentity('draft',id),handlerDrafts:state.handlerDrafts,draft:state.draft,draftEdit:state.draftEdit,detail:state.detail,canvasNodeId:state.canvasNodeId,whatIf:state.whatIf,evidenceChoice:state.evidenceChoice,
       focusedEvidenceId:state.focusedEvidenceId,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
@@ -1543,6 +1543,7 @@
     state.whatIf=null;
     state.evidenceChoice=null;
     state.handlerDrafts={};
+    state.draft=null;state.draftEdit=null;
     savePresentation();
     if($("#cwDetail").hidden)state.queueScrollY=window.scrollY;
     // A click may precede the search debounce. Bind filters to the queue entry
@@ -1587,6 +1588,7 @@
       state.detail = detail;
       state.detailPriority = null;
       renderDetail(detail);
+      if(detail.state.workflow_state==='in_review')void loadDraftList(claimId,activeDetailContext(),controller.signal);
       if (loop?.provisional_source_binding) void loadEvidenceInvestigation(claimId, activeDetailContext(), controller.signal);
       const pendingIntent = storedCommandIdentity('evidence-intent', claimId);
       const pendingEvidence = storedCommandIdentity('evidence', claimId);
@@ -1694,6 +1696,15 @@
     $('#cwEnsureLoop')?.addEventListener('click', ensureClaimLoop);
     bindNativeInvestigationActions();
     $('#cwEvidenceForm')?.addEventListener('submit', event => { event.preventDefault(); commitLoopObservation(); });
+    $('#cwDraftOpen')?.addEventListener('click',()=>{
+      if(state.draft?.latest){$('#cpDraftPanel')?.scrollIntoView({block:'start'});$('#cwDraftBody')?.focus({preventScroll:true});}
+      else void saveDraft();
+    });
+    $('#cwDraftForm')?.addEventListener('submit',event=>{event.preventDefault();void saveDraft();});
+    $('#cwDraftBody')?.addEventListener('input',event=>{state.draftEdit=event.currentTarget.value;});
+    panel.querySelector('[data-draft-retry]')?.addEventListener('click',()=>void saveDraft());
+    panel.querySelector('[data-draft-copy]')?.addEventListener('click',()=>void exportDraft('copy'));
+    panel.querySelectorAll('[data-draft-export]').forEach(button=>button.addEventListener('click',()=>void exportDraft(button.dataset.draftExport)));
     $('#cwHandlerPassageForm')?.addEventListener('submit', event => {
       event.preventDefault();
       void saveHandlerNote({kind:'passage',target:state.evidenceChoice,verdict:event.submitter?.value,note:(state.handlerDrafts[`passage:${state.evidenceChoice}`]||event.currentTarget.elements.note.value).trim()});
@@ -1819,6 +1830,94 @@
     if(!flag||!state.detail)return;
     state.whatIf=null;renderDetail(state.detail);
     $('#cwDetailPanel [data-what-if="'+CSS.escape(flag)+'"]')?.focus({preventScroll:true});
+  }
+
+  async function validateDraftList(value,claimId){
+    const {list_sha256,...material}=value||{};
+    if(value?.contract!=='casepath.workspace-draft-list/1.0.0'||value.claim_id!==claimId
+      ||!Array.isArray(value.items)||canonicalJson(value.latest)!==canonicalJson(value.items.at(-1)||null)
+      ||list_sha256!==await sha256(material))throw new Error('The saved draft list could not be verified.');
+    for(const item of value.items){
+      const {draft_sha256,event_sha256,recorded_at,...draft}=item;
+      if(!/^[0-9a-f]{64}$/.test(event_sha256||'')||typeof recorded_at!=='string'
+        ||draft_sha256!==await sha256(draft)||draft.body_sha256!==await sha256Bytes(new TextEncoder().encode(draft.body_markdown)))throw new Error('A saved draft failed hash verification.');
+    }
+    return value;
+  }
+
+  async function loadDraftList(claimId,context,signal){
+    try{
+      const value=await validateDraftList(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`,{signal}),claimId);
+      if(!isActiveDetail(context))return;
+      if(value.workspace_revision!==state.detail.state.revision||value.workspace_state_sha256!==state.detail.state.state_sha256)return;
+      state.draft=value;
+      if(state.draftEdit===null)state.draftEdit=value.latest?.body_markdown||null;
+      renderDetail(state.detail);
+      if(storedCommandIdentity('draft',claimId))void saveDraft();
+    }catch(error){if(isActiveDetail(context))$('#cwCommandStatus').textContent=`Draft unavailable: ${error.message}`;}
+  }
+
+  async function saveDraft(){
+    if(state.mutationBusy||!state.detail)return false;
+    const context=activeDetailContext(),claimId=context.claimId;
+    const pending=storedCommandIdentity('draft',claimId);
+    if(pending?.invalid){$('#cwCommandStatus').textContent='The pending draft request is invalid. Reload the claim before retrying.';return false;}
+    const saved=state.draft?.latest;
+    const edited=saved&&state.draftEdit!==null&&state.draftEdit!==saved.body_markdown?state.draftEdit:null;
+    if(saved&&!edited&&!pending){$('#cwCommandStatus').textContent='The saved draft is current.';return true;}
+    const body=pending?pending.parsedBody:{
+      expected_revision:state.detail.state.revision,
+      expected_state_sha256:state.detail.state.state_sha256,
+      edited_body:edited,
+      replaces_event_sha256:saved?.event_sha256||null,
+    };
+    const identity=commandIdentity('draft',claimId,body);
+    setLoopMutationBusy(true,edited?'Saving the edited draft…':'Writing the request from this claim…',context);
+    try{
+      const value=await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`,{
+        method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':identity.key},body:identity.body,
+      });
+      const {response_sha256,...material}=value||{};
+      if(value?.contract!=='casepath.claim-workspace-command-response/1.0.0'||value.event_type!=='WORKSPACE_DRAFT_RECORDED'
+        ||value.state?.claim_id!==claimId||response_sha256!==await sha256(material))throw new Error('The draft receipt could not be verified.');
+      await validateState(value.state,claimId);
+      const detail=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`),claimId);
+      const draft=await validateDraftList(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`),claimId);
+      const loop=detail.state.workflow_state==='in_review'?await loadClaimLoop(claimId,{allowMissing:true}):null;
+      if(!isActiveDetail(context))return false;
+      if(detail.state.revision<value.state.revision||!draft.items.some(item=>item.event_sha256===value.event_sha256))throw new Error('The draft is not yet confirmed by its journal.');
+      clearCommandIdentity('draft',claimId);
+      state.detail=detail;state.loop=loop;state.draft=draft;state.draftEdit=draft.latest?.body_markdown||null;
+      renderDetail(detail);void loadQueue();
+      $('#cpDraftPanel')?.scrollIntoView({block:'start'});
+      $('#cwCommandStatus').textContent='Draft saved. Nothing has been sent.';
+      return true;
+    }catch(error){
+      if(isActiveDetail(context)){
+        if(error.responseReceived&&!error.ambiguousResponse){clearCommandIdentity('draft',claimId);$('#cwCommandStatus').textContent=`Draft rejected: ${error.message}`;}
+        else {renderDetail(state.detail);$('#cwCommandStatus').textContent=`Draft outcome unclear: ${error.message}. Retry uses the saved request.`;}
+      }
+      return false;
+    }finally{setLoopMutationBusy(false,'',context);}
+  }
+
+  async function exportDraft(format){
+    if(!state.draft?.latest)return;
+    if(state.draftEdit!==state.draft.latest.body_markdown&&!await saveDraft())return;
+    const saved=state.draft.latest,claimId=state.detail.state.claim_id;
+    try{
+      if(format==='copy'){
+        await navigator.clipboard.writeText(saved.body_markdown);
+        $('#cwCommandStatus').textContent='Saved draft copied. Nothing has been sent.';
+        return;
+      }
+      const content=format==='json'?JSON.stringify(saved,null,2)+'\n':saved.body_markdown;
+      const blob=new Blob([content],{type:format==='json'?'application/json':'text/markdown'});
+      const url=URL.createObjectURL(blob),link=document.createElement('a');
+      link.href=url;link.download=`${claimId}-draft.${format==='json'?'json':'md'}`;link.click();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+      $('#cwCommandStatus').textContent='Saved draft exported. Nothing has been sent.';
+    }catch(error){$('#cwCommandStatus').textContent=`Draft export failed: ${error.message}`;}
   }
 
   async function saveHandlerNote(input,withdraw=false) {
@@ -2753,6 +2852,7 @@
     state.detail=detail;state.loop=loop;
     if(state.change && state.change.afterRevision!==loop?.revision) state.change=null;
     renderDetail(detail);void loadQueue();
+    if(detail.state.workflow_state==='in_review')void loadDraftList(claimId,context,state.detailController?.signal);
     $('#cwCommandStatus').textContent='Showing the latest saved claim record.';
   }
 
@@ -2763,7 +2863,7 @@
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     clearTimeout(state.evidencePreviewTimer);state.evidencePreviewTimer=null;
     state.preparedEvidenceIntent=null;
-    releaseSourcePreview(); state.sourceSelection=null; state.change=null; state.whatIf=null; state.evidenceChoice=null; state.handlerDrafts={};
+    releaseSourcePreview(); state.sourceSelection=null; state.change=null; state.whatIf=null; state.evidenceChoice=null; state.handlerDrafts={}; state.draft=null; state.draftEdit=null;
     state.detailEpoch += 1;
     state.mutationBusy = null;
     state.detailController?.abort();

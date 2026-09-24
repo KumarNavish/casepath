@@ -360,6 +360,17 @@
 .cp-handler-notes p,.cp-handler-notes blockquote,.cp-handler-retry p{font-size:12px;line-height:1.5;margin:6px 0;overflow-wrap:anywhere;}
 .cp-handler-notes small{color:#657b88;font-size:10px;}
 .cp-handler-notes button,.cp-handler-retry button{display:block;margin-top:8px;border:1px solid #b4cbd8;border-radius:4px;background:white;padding:6px 10px;color:#315f79;cursor:pointer;}
+.cp-draft-launch{margin:12px 0 16px;width:100%;background:#eff6fa;border-color:#a7c4d3;color:#24546d;}
+.cp-a-draft{padding:22px;margin:0 0 22px;border:1px solid #b9d0dc;border-radius:7px;background:#f7fafc;}
+.cp-a-draft header{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:16px;}
+.cp-a-draft h2{font-size:18px;margin:4px 0 0;}
+.cp-a-draft header small{font-size:11px;color:#617887;}
+.cp-a-draft label{display:block;font-size:11px;color:#536a79;margin-bottom:6px;}
+.cp-a-draft textarea{display:block;width:100%;min-height:260px;max-height:520px;resize:vertical;border:1px solid #b8ccd7;border-radius:4px;background:#fff;padding:14px;font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:#263b49;}
+.cp-a-draft .cp-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;}
+.cp-a-draft .cp-actions button{min-height:36px;}
+.cp-a-draft details{margin-top:14px;font-size:10px;color:#657885;}
+.cp-a-draft details code{overflow-wrap:anywhere;}
 #cwHandlerPassageForm,#cwHandlerConditionForm{margin-top:12px;}
 #cwHandlerPassageForm label,#cwHandlerConditionForm label{display:block;font-size:11px;color:#506575;}
 #cwHandlerPassageForm textarea,#cwHandlerConditionForm textarea{display:block;width:100%;min-height:62px;resize:vertical;margin:5px 0 8px;padding:8px;border:1px solid #b8ccd7;border-radius:4px;background:white;font:inherit;color:#263a47;}

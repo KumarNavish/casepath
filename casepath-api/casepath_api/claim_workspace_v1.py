@@ -17,6 +17,7 @@ from .claim_workspace_intake_v1 import (
     compile_intake_assessment,
     validate_recorded_intake_assessment,
 )
+from .draft_request_v1 import compile_draft_request
 from .storage import Storage
 from .workspace_corpus import (
     PublicCorpus,
@@ -42,6 +43,7 @@ EVENT_TYPES = {
     "WORKSPACE_UNKNOWN_RECONCILED",
     "WORKSPACE_HANDLER_OBSERVATION_RECORDED",
     "WORKSPACE_HANDLER_OBSERVATION_WITHDRAWN",
+    "WORKSPACE_DRAFT_RECORDED",
 }
 SORT_MODES = {
     "priority",
@@ -342,6 +344,28 @@ def _reduce(
             or any(c not in "0123456789abcdef" for c in target)
         ):
             raise ClaimWorkspaceError("handler withdrawal target is invalid")
+    elif event_type == "WORKSPACE_DRAFT_RECORDED":
+        if set(command) != {"draft", "replaces_event_sha256", "request_expected_revision"} or state["workflow_state"] != "in_review":
+            raise ClaimWorkspaceError("draft command is invalid")
+        prior = command["replaces_event_sha256"]
+        if prior is not None and (
+            not isinstance(prior, str) or len(prior) != 64
+            or any(char not in "0123456789abcdef" for char in prior)
+        ):
+            raise ClaimWorkspaceError("draft revision source is invalid")
+        draft = command["draft"]
+        assessment = (state.get("intake_assessment") or {}).get("claim_assessment")
+        if not isinstance(draft, dict) or not isinstance(assessment, dict):
+            raise ClaimWorkspaceError("draft has no accepted assessment")
+        try:
+            expected = compile_draft_request(
+                state["claim_id"], assessment,
+                edited_body=draft["body_markdown"] if draft.get("edited_by_handler") else None,
+            )
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ClaimWorkspaceError("draft is invalid") from exc
+        if draft != expected:
+            raise ClaimWorkspaceError("draft differs from its accepted assessment")
     elif event_type == "WORKSPACE_CLAIM_IMPORTED":
         raise ClaimWorkspaceError("claim import cannot repeat inside one journal")
     return _validated_state(_with_hash(material))
@@ -550,6 +574,29 @@ class ClaimWorkspaceStore:
                     raise ClaimWorkspaceError("handler withdrawal has no active source")
                 target["withdrawn"] = True
         return observations
+
+    def drafts_at_revision(self, claim_id: str, revision: int) -> list[dict[str, Any]]:
+        loop_id = WORKSPACE_LOOP_PREFIX + claim_id
+        with self.journal.connect() as connection:
+            rows = self._rows(connection, loop_id=loop_id)[:revision]
+            state = self._replay_rows(rows)
+        if state["revision"] != revision:
+            raise ClaimWorkspaceError("workspace historical revision is absent")
+        drafts: list[dict[str, Any]] = []
+        previous: str | None = None
+        for row in rows:
+            event = json.loads(row["event_json"])
+            if event["event_type"] != "WORKSPACE_DRAFT_RECORDED":
+                continue
+            if event["command"]["replaces_event_sha256"] != previous:
+                raise ClaimWorkspaceError("draft revision chain is invalid")
+            previous = event["event_sha256"]
+            drafts.append({
+                **event["command"]["draft"],
+                "event_sha256": previous,
+                "recorded_at": event["created_at"],
+            })
+        return drafts
 
     def state_at_revision(self, claim_id: str, revision: int) -> dict[str, Any]:
         """Replay one immutable workspace-journal prefix without repair."""
@@ -1278,6 +1325,56 @@ class ClaimWorkspaceService:
             command={
                 "expected_binding_sha256": binding["binding_sha256"],
                 "intake_assessment": assessment,
+                "request_expected_revision": expected_revision,
+            },
+            timestamp=timestamp or utc_now(),
+            expected_revision=expected_revision,
+        )
+        return self._mutation_response(state, event, replayed)
+
+    def drafts(self, claim_id: str) -> dict[str, Any]:
+        state = self.store.recover(claim_id)
+        items = self.store.drafts_at_revision(claim_id, state["revision"])
+        material = {
+            "contract": "casepath.workspace-draft-list/1.0.0",
+            "claim_id": claim_id,
+            "workspace_revision": state["revision"],
+            "workspace_state_sha256": state["state_sha256"],
+            "items": items,
+            "latest": items[-1] if items else None,
+        }
+        return {**material, "list_sha256": digest_value(material)}
+
+    def record_draft(
+        self, claim_id: str, *, expected_revision: int,
+        expected_state_sha256: str, idempotency_key: str,
+        edited_body: str | None = None,
+        replaces_event_sha256: str | None = None,
+        timestamp: str | None = None,
+    ) -> dict[str, Any]:
+        historical = self.store.state_at_revision(claim_id, expected_revision)
+        if historical["state_sha256"] != expected_state_sha256:
+            raise ClaimWorkspaceError("draft workspace prefix differs")
+        assessment = (historical.get("intake_assessment") or {}).get("claim_assessment")
+        if not isinstance(assessment, dict) or historical["workflow_state"] != "in_review":
+            raise ClaimWorkspaceError("claim must be reviewed before drafting")
+        prior = self.store.drafts_at_revision(claim_id, expected_revision)
+        latest = prior[-1]["event_sha256"] if prior else None
+        if replaces_event_sha256 != latest:
+            raise ClaimWorkspaceError("draft revision is stale")
+        if edited_body is not None and latest is None:
+            raise ClaimWorkspaceError("a draft must be recorded before editing")
+        try:
+            draft = compile_draft_request(claim_id, assessment, edited_body=edited_body)
+        except ValueError as exc:
+            raise ClaimWorkspaceError(str(exc)) from exc
+        state, event, replayed = self.store.append(
+            claim_id=claim_id,
+            event_type="WORKSPACE_DRAFT_RECORDED",
+            idempotency_key=idempotency_key,
+            command={
+                "draft": draft,
+                "replaces_event_sha256": replaces_event_sha256,
                 "request_expected_revision": expected_revision,
             },
             timestamp=timestamp or utc_now(),

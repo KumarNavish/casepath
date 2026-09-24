@@ -101,6 +101,13 @@ class WithdrawWorkspaceHandlerObservationRequest(EnsureWorkspaceLoopRequest):
     target_event_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
+class RecordWorkspaceDraftRequest(_Request):
+    expected_revision: StrictInt = Field(ge=1)
+    expected_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    edited_body: str | None = Field(default=None, max_length=30_000)
+    replaces_event_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+
+
 class MintWorkspaceEvidenceIntentRequest(_Request):
     action_id: str = Field(pattern=r"^action\.[0-9a-f]{64}$")
     expected_revision: StrictInt = Field(ge=1)
@@ -274,6 +281,31 @@ def create_claim_loop_router(
             )
             return detail_service.detail(claim_id)
         except (ClaimWorkspaceError, WorkspaceClaimLoopError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.get("/workspace/claims/{claim_id}/drafts")
+    def workspace_claim_drafts(claim_id: str) -> dict[str, Any]:
+        try:
+            return workspace_service().drafts(claim_id)
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.post("/workspace/claims/{claim_id}/drafts")
+    def record_workspace_claim_draft(
+        claim_id: str,
+        body: RecordWorkspaceDraftRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)],
+    ) -> dict[str, Any]:
+        try:
+            return workspace_service().record_draft(
+                claim_id,
+                expected_revision=body.expected_revision,
+                expected_state_sha256=body.expected_state_sha256,
+                idempotency_key=idempotency_key,
+                edited_body=body.edited_body,
+                replaces_event_sha256=body.replaces_event_sha256,
+            )
+        except (ClaimWorkspaceError, ValueError) as exc:
             raise_workspace_http(ClaimWorkspaceError(str(exc)))
 
     @router.get("/workspace/claims/{claim_id}/artifacts/{artifact_id}")
