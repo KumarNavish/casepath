@@ -62,10 +62,9 @@ only its own condition, and every route is requested); Study B runs it in full.
 
 ## The software
 
-CasePath is also being built into claims-handling software, and that work is
-under active development. The released version is a local, single-user
-workbench: a browser interface over a FastAPI service with a hash-chained
-SQLite journal. A claims handler opens any of the 150 synthetic tenancy claims,
+CasePath is released with the paper as claims-handling software. It is a local,
+single-user workbench: a browser interface over a FastAPI service with a
+hash-chained SQLite journal. A claims handler opens any of the 150 synthetic tenancy claims,
 reads the original message and attachments beside the active process step,
 evidence requirements and next action, and can record, correct, export and
 replay the handling state. Nothing is sent to a customer or settled. The
@@ -103,7 +102,7 @@ reproduction script below are not affected.
 
 The workbench runs on loopback for one user, without authentication. It
 demonstrates handling mechanics, not legal correctness or fitness for real
-claims. A claim-specific assessment view is in development.
+claims.
 
 ## Datasets
 

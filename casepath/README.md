@@ -1,8 +1,7 @@
 # CasePath software
 
-CasePath is also being built into agentic software for claims handlers, and
-that work is under active development. This page describes the released
-version: what it is, how it operates, and how it relates to the method and the
+CasePath is released with the paper as agentic software for claims handlers.
+This page describes it: what it is, how it operates, and how it relates to the method and the
 benchmarks of the paper. The [repository README](../README.md) is the entry
 point for the whole release.
 
@@ -75,8 +74,5 @@ claim state is stored and changed.
 
 The workbench runs on macOS and Linux, on loopback for one user, without
 authentication. It demonstrates handling mechanics, not legal
-correctness or fitness for real claims. A claim-specific assessment view, in
-which each process condition is marked true, false or unresolved from quoted
-customer text and unresolved conditions become questions, is in development.
-Historical release metadata names hosted services that run an older source
+correctness or fitness for real claims. Historical release metadata names hosted services that run an older source
 line; the local workbench is the verified one.
