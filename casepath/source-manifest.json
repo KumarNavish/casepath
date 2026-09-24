@@ -102,13 +102,13 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1503,
+  "file_count": 1506,
   "files": [
     {
       "executable": false,
       "path": ".gitattributes",
-      "sha256": "269d46a2bcbc85e4e0a7079b2b45a29f2404918b88919b8f78dd11dfb18fde66",
-      "size_bytes": 161
+      "sha256": "a55f69cdabd61d69497e48a22a20b82d1aaa0b9e661a2bf52b4c4f11a9cd5cc3",
+      "size_bytes": 181
     },
     {
       "executable": false,
@@ -137,20 +137,20 @@
     {
       "executable": false,
       "path": "LICENSE",
-      "sha256": "cdceaa2265e193f74163df1891e9694f1c836dccd13c072a4f7a7d6acea23406",
-      "size_bytes": 1086
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "size_bytes": 11358
     },
     {
       "executable": false,
       "path": "README.md",
-      "sha256": "adaff520e37c679861739843b34351493c7739c5151aa272f85fa4ad442f06a6",
-      "size_bytes": 6207
+      "sha256": "6f19426d46f37f1c967a8bfe0989c87ac77e834b72dfad5fb20451eec1d21aac",
+      "size_bytes": 12594
     },
     {
       "executable": false,
       "path": "THIRD_PARTY_NOTICES.md",
-      "sha256": "c23f7fe4798f478004c1d20940c0d8cbf5f919bf21e6969acfe1e5a734711b85",
-      "size_bytes": 915
+      "sha256": "830c2b4ad7d78af7a6f873aec94b91ec22a29d3196490f7358f345d653796b9a",
+      "size_bytes": 1468
     },
     {
       "executable": true,
@@ -8309,8 +8309,8 @@
     {
       "executable": false,
       "path": "casepath/README.md",
-      "sha256": "6482d85ca0d2fdfb95ce5216adec880123e8568f1501aa62a5122ca86c7ff3ba",
-      "size_bytes": 767
+      "sha256": "88b4aa5450ca5704e28143b3d80c1b5819148d295b9633941a6671ea21e450b5",
+      "size_bytes": 4589
     },
     {
       "executable": false,
@@ -8999,8 +8999,8 @@
     {
       "executable": false,
       "path": "docs/README.md",
-      "sha256": "5c0fec3b4ca5d5e8a2b38b352ddb620a927027e0f1c93e243eb14378978985c3",
-      "size_bytes": 1571
+      "sha256": "5025418c298b16f69bf548048c9bb40d800eeacd04616fbdd037608359e896fc",
+      "size_bytes": 1619
     },
     {
       "executable": false,
@@ -9040,6 +9040,18 @@
     },
     {
       "executable": false,
+      "path": "docs/images/dataset-map-tenancy-claims.png",
+      "sha256": "5ee914bf1b8070823dc08c4d00569c4ae88ae2214a3a47a7a6bc877df39f46e2",
+      "size_bytes": 144951
+    },
+    {
+      "executable": false,
+      "path": "docs/images/dataset-map-theft-pairs.png",
+      "sha256": "5f938809c41fa457e6d3b44090e3c0fb0d02cad728732989e3a0ed8f2ab2737b",
+      "size_bytes": 147740
+    },
+    {
+      "executable": false,
       "path": "docs/images/handoff-desktop.png",
       "sha256": "70f19679432cd23ca3aff473ea15806a417595502c4950cacf8a84a78c21395a",
       "size_bytes": 219791
@@ -9049,6 +9061,12 @@
       "path": "docs/images/handoff-mobile.png",
       "sha256": "b33acda612e0935a90fc852292dbf47e4f69d5a501a0915923dfbe4be11b8abf",
       "size_bytes": 67924
+    },
+    {
+      "executable": false,
+      "path": "docs/images/process-first.png",
+      "sha256": "9eff80f0f14e88cdfc53229c746ae448c7f1331359f8a5a85112c8a7ce995039",
+      "size_bytes": 1145168
     },
     {
       "executable": false,
