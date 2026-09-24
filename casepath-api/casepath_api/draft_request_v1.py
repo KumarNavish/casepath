@@ -8,6 +8,7 @@ from typing import Any, Mapping
 from .workspace_corpus import digest_value
 
 CONTRACT = "casepath.workspace-request-draft/1.0.0"
+COMPILER_ID = "casepath.workspace-request-draft-compiler/1.1.0"
 
 
 def _source_quote(assessment: Mapping[str, Any], document: Mapping[str, Any]) -> str | None:
@@ -83,6 +84,13 @@ _GERMAN_DOCUMENTS = {
     "reference_rate_basis": "Grundlage des Referenzzinssatzes",
     "renovation_cost_breakdown": "Aufstellung der Umbaukosten",
 }
+_LEGACY_GERMAN_DOCUMENTS = {**_GERMAN_DOCUMENTS,
+    "stated_reason": "angegebener Kündigungsgrund",
+    "prior_rights_correspondence": "frühere Korrespondenz zu Mieterrechten",
+    "dated_photos": "datierte Fotos", "medical_confirmation": "ärztliche Bestätigung",
+    "technical_inspection": "technische Untersuchung", "written_repair_deadline": "schriftliche Reparaturfrist",
+    "prior_rent_adjustment": "frühere Mietzinsanpassung", "stated_calculation": "angegebene Berechnung",
+}
 
 _GERMAN_STEPS = {
     "lt_intake": "Aussteller, Zugang und Endtermin erfassen",
@@ -115,6 +123,11 @@ _GERMAN_STEPS = {
     "ri_resolution": "Anfechtung oder Einigung vorbereiten",
     "ri_close": "Ergebnis festhalten",
 }
+_LEGACY_GERMAN_STEPS = {**_GERMAN_STEPS,
+    "dh_safety": "unmittelbare Gesundheits- oder Sicherheitsgefahr abklären",
+    "dh_scope": "Mangel zeitlich einordnen",
+    "dh_notice": "Meldung an die Vermieterschaft belegen",
+}
 
 _OPEN_QUESTIONS = {
     "arrears": ("Were any rent payments overdue?", "Waren Mietzinszahlungen ausstehend?"),
@@ -130,11 +143,17 @@ _OPEN_QUESTIONS = {
 
 def compile_draft_request(
     claim_id: str, assessment: Mapping[str, Any], *, edited_body: str | None = None,
+    variant: str = "current",
 ) -> dict[str, Any]:
+    if variant not in {"current", "unversioned_current", "legacy_7440"}:
+        raise ValueError("draft compiler variant is unsupported")
+    legacy = variant == "legacy_7440"
     if not isinstance(assessment, Mapping) or not isinstance(assessment.get("documents"), list):
         raise ValueError("accepted claim assessment is required")
     language = str(assessment["language"])
     german = language.startswith("de")
+    german_documents = _LEGACY_GERMAN_DOCUMENTS if legacy else _GERMAN_DOCUMENTS
+    german_steps = _LEGACY_GERMAN_STEPS if legacy else _GERMAN_STEPS
     steps = {step["node_id"]: step for step in assessment["steps"]}
     missing_page = any("page two is absent" in item["text"].casefold() for item in assessment["noticed"])
     requested, held, not_requested = [], [], []
@@ -144,9 +163,9 @@ def compile_draft_request(
         step = next((steps[node] for node in document["required_at_node_ids"] if node in steps), None)
         item = {
             "document_type": document["document_type"],
-            "label": _GERMAN_DOCUMENTS.get(document["document_type"], document["label"]) if german else document["label"],
+            "label": german_documents.get(document["document_type"], document["label"]) if german else document["label"],
             "route_state": route,
-            "step": (_GERMAN_STEPS.get(step["node_id"], step["label"]) if german else step["label"]) if step else None,
+            "step": (german_steps.get(step["node_id"], step["label"]) if german else step["label"]) if step else None,
             "condition": _condition_label(flag, language) if flag else None,
             "condition_quote": assessment["conditions"].get(flag, {}).get("quote") if flag else None,
             "article": _article(document),
@@ -166,7 +185,8 @@ def compile_draft_request(
                 else f"{condition} is inactive on this path"
             )
             if german:
-                condition = condition[0].upper() + condition[1:] if condition else condition
+                if not legacy:
+                    condition = condition[0].upper() + condition[1:] if condition else condition
                 reason = (
                     f"{condition} ist noch ungeklärt" if route == "held_behind_question"
                     else f"{condition} ist auf diesem Pfad nicht aktiv"
@@ -190,32 +210,49 @@ def compile_draft_request(
             questions.append(question)
     specialist = assessment["conditions"].get("health_effects", {}).get("verdict") == "true"
     kind = "specialist_handoff" if specialist else "customer_request"
-    if german:
+    if legacy and german:
+        lines = ["# Entwurf für die Fachperson" if specialist else "# Entwurf der Kundenanfrage", "", "Entwurf, nicht gesendet", "", "## Benötigte Unterlagen"]
+    elif legacy:
+        lines = ["# Draft request", "", "Draft, not sent", "", "## Please send"]
+    elif german:
         lines = ["Guten Tag,", "", "für die Prüfung Ihres Anliegens benötigen wir Folgendes:" if not specialist else "für die fachliche Prüfung dieser Meldung benötigen wir Folgendes:", "", "## Bitte senden Sie uns"]
     else:
         lines = ["Dear customer," if not specialist else "Dear specialist,", "", "To review your claim, please send the following:", "", "## Please send"]
     for item in requested:
-        reason = item["step"] or ("Ihr Anliegen prüfen" if german else "review your claim")
-        detail = f"{item['label']}: Damit wir {reason} können" if german else f"{item['label']}: We need this to {reason[0].lower()+reason[1:]}"
-        if item["condition"]:
-            detail += f"; Anlass: {item['condition']}" if german else f"; this follows from {item['condition']}"
-        if item["article"]:
-            detail += f" ({item['article']})"
-        detail += "."
-        if item["customer_quote"]:
-            detail += f" Sie schrieben: „{item['customer_quote']}“" if german else f" You wrote: “{item['customer_quote']}”"
+        if legacy:
+            detail = f"{item['label']} — {item['step']}" if item["step"] else item["label"]
+            if item["condition"]:
+                detail += f"; {item['condition']}"
+            if item["article"]:
+                detail += f"; {item['article']}"
+            if item["customer_quote"]:
+                detail += f"; “{item['customer_quote']}”"
+        else:
+            reason = item["step"] or ("Ihr Anliegen prüfen" if german else "review your claim")
+            detail = f"{item['label']}: Damit wir {reason} können" if german else f"{item['label']}: We need this to {reason[0].lower()+reason[1:]}"
+            if item["condition"]:
+                detail += f"; Anlass: {item['condition']}" if german else f"; this follows from {item['condition']}"
+            if item["article"]:
+                detail += f" ({item['article']})"
+            detail += "."
+            if item["customer_quote"]:
+                detail += f" Sie schrieben: „{item['customer_quote']}“" if german else f" You wrote: “{item['customer_quote']}”"
         lines.append(f"- {detail}")
-    lines += ["", "## Bereits vorhanden" if german else "## Already held"]
+    lines += ["", "## Schon vorhanden" if german and legacy else "## Bereits vorhanden" if german else "## Already held"]
     for item in held:
-        lines.append(f"- {item['label']}: {'liegt vor und wird noch geprüft' if german else 'we have a copy and will review it'}.")
+        if legacy:
+            lines.append(f"- {item['label']}: {'vorhanden, noch nicht geprüft' if german else 'held, not reviewed'}")
+        else:
+            lines.append(f"- {item['label']}: {'liegt vor und wird noch geprüft' if german else 'we have a copy and will review it'}.")
     lines += ["", "## Offene Fragen" if german else "## Questions"]
     lines += [f"- {question}" for question in questions]
-    lines += ["", "## Derzeit nicht angefordert" if german else "## Not requested because"]
+    lines += ["", "## Nicht angefordert" if german and legacy else "## Derzeit nicht angefordert" if german else "## Not requested" if legacy else "## Not requested because"]
     for item in not_requested:
-        lines.append(f"- {item['label']}: {item['reason']}.")
-    if not not_requested:
+        lines.append(f"- {item['label']}: {item['reason']}{'' if legacy else '.'}")
+    if not legacy and not not_requested:
         lines.append("- Keine weiteren Unterlagen werden derzeit ausgeschlossen." if german else "- No other documents are excluded at this stage.")
-    lines += ["", "Freundliche Grüsse" if german else "Kind regards,", "CasePath"]
+    if not legacy:
+        lines += ["", "Freundliche Grüsse" if german else "Kind regards,", "CasePath"]
     body = edited_body if edited_body is not None else "\n".join(lines) + "\n"
     if not isinstance(body, str) or not 1 <= len(body) <= 30_000:
         raise ValueError("draft body is invalid")
@@ -234,4 +271,6 @@ def compile_draft_request(
         "edited_by_handler": edited_body is not None,
         "status": "draft_not_sent",
     }
+    if variant == "current":
+        material["compiler_id"] = COMPILER_ID
     return {**material, "draft_sha256": digest_value(material)}

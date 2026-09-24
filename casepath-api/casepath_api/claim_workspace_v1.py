@@ -17,7 +17,7 @@ from .claim_workspace_intake_v1 import (
     compile_intake_assessment,
     validate_recorded_intake_assessment,
 )
-from .draft_request_v1 import compile_draft_request
+from .draft_request_v1 import COMPILER_ID as DRAFT_COMPILER_ID, compile_draft_request
 from .reviewed_memory_v1 import compile_reviewed_memory, matches, statement_pattern
 from .storage import Storage
 from .workspace_corpus import (
@@ -368,13 +368,18 @@ def _reduce(
         if not isinstance(draft, dict) or not isinstance(assessment, dict):
             raise ClaimWorkspaceError("draft has no accepted assessment")
         try:
-            expected = compile_draft_request(
+            compiler = draft.get("compiler_id")
+            variants = ("current",) if compiler == DRAFT_COMPILER_ID else (
+                ("unversioned_current", "legacy_7440") if compiler is None else ()
+            )
+            expected = [compile_draft_request(
                 state["claim_id"], assessment,
                 edited_body=draft["body_markdown"] if draft.get("edited_by_handler") else None,
-            )
+                variant=variant,
+            ) for variant in variants]
         except (KeyError, TypeError, ValueError) as exc:
             raise ClaimWorkspaceError("draft is invalid") from exc
-        if draft != expected:
+        if draft not in expected:
             raise ClaimWorkspaceError("draft differs from its accepted assessment")
     elif event_type == "WORKSPACE_REVIEWED_MEMORY_KEPT":
         if set(command) != {"memory", "source_handler_event_sha256", "request_expected_revision"} or state["workflow_state"] != "in_review":

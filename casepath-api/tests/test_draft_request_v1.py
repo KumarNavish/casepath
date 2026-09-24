@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 
 import pytest
 
 from casepath_api.claim_workspace_intake_v1 import compile_intake_assessment
 from casepath_api.claim_workspace_v1 import ClaimWorkspaceError, ClaimWorkspaceService
-from casepath_api.draft_request_v1 import compile_draft_request
+from casepath_api.draft_request_v1 import COMPILER_ID, compile_draft_request
 from casepath_api.storage import Storage
+from casepath_api.validate_journal import validate_journal
 from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root
 
 
@@ -16,6 +18,7 @@ def _draft(claim_id: str) -> dict:
     assessment = compile_intake_assessment(corpus, claim_id)["claim_assessment"]
     draft = compile_draft_request(claim_id, assessment)
     assert draft == compile_draft_request(claim_id, assessment)
+    assert draft["compiler_id"] == COMPILER_ID
     assert draft["status"] == "draft_not_sent"
     return draft
 
@@ -102,3 +105,31 @@ def test_draft_and_handler_edit_replay_from_workspace_journal(tmp_path: Path) ->
             idempotency_key="workspace.draft.bad-edit.0001",
             edited_body="wrong branch", replaces_event_sha256=first["event_sha256"],
         )
+
+
+def test_previous_sealed_head_draft_journal_boots_without_rewriting_it(tmp_path: Path) -> None:
+    fixture = json.loads((Path(__file__).parent / "fixtures" / "7440d6a-workspace-draft-journal.json").read_text())
+    assert fixture["source_commit"] == "7440d6a"
+    database = tmp_path / "casepath.db"
+    workspace = ClaimWorkspaceService(Storage(str(database)), corpus=PublicCorpus(default_workspace_corpus_root()))
+    columns = ("session_id", "loop_id", "sequence", "idempotency_key", "command_sha256", "event_sha256", "event_json", "created_at")
+    with workspace.storage.connect() as connection:
+        connection.executemany(
+            f"INSERT INTO claim_loop_events ({','.join(columns)}) VALUES ({','.join('?' for _ in columns)})",
+            [tuple(event[column] for column in columns) for event in fixture["events"]],
+        )
+    recorded = json.loads(fixture["events"][-1]["event_json"])["command"]["draft"]
+    assert workspace.drafts(fixture["claim_id"])["latest"]["body_markdown"] == recorded["body_markdown"]
+    assert workspace.store.recover(fixture["claim_id"])["revision"] == 3
+    assert validate_journal(database)["event_count"] == 3
+
+
+@pytest.mark.parametrize("claim_id,expected_sha256", [
+    ("clm_f69b1747447bc221", "fb46fd3d9abbdf663df9f38d7233a0af8f88fd888b94b582620e3d339a751f20"),
+    ("clm_7ac806bd30792cfb", "e9abf8fd05e675bc40e7ce90cfa171aefaa38ad335afee07b47ba0d456f463a4"),
+    ("clm_6f04d0907ecb96bb", "32a73ee2d4633957f90dce7905bca79d09b3fc3379120736fe880a8a8977583a"),
+])
+def test_previous_sealed_draft_compiler_replays_exact_bytes(claim_id: str, expected_sha256: str) -> None:
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    assessment = compile_intake_assessment(corpus, claim_id, legacy_v2=True)["claim_assessment"]
+    assert compile_draft_request(claim_id, assessment, variant="legacy_7440")["draft_sha256"] == expected_sha256

@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1480,
+  "file_count": 1481,
   "files": [
     {
       "executable": false,
@@ -977,8 +977,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/claim_workspace_v1.py",
-      "sha256": "1b0a2940a92be9f11df0df3289952a74cda8a42bd584e12d92f9b9d35619cff1",
-      "size_bytes": 81859
+      "sha256": "842df09ac3beaa679dd23d3a0fd3ca388201c3ebcabd7738435cc31ddf8cc362",
+      "size_bytes": 82177
     },
     {
       "executable": false,
@@ -6641,8 +6641,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/draft_request_v1.py",
-      "sha256": "67914dcf94b6504375d0afb0f323610c0cac715d77e85f68c78568006edcb60a",
-      "size_bytes": 13495
+      "sha256": "d173cb2939b25d0946113fa250848cd93e6abad8d8417ebea1671fe93bde3d21",
+      "size_bytes": 15804
     },
     {
       "executable": false,
@@ -7384,6 +7384,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/fixtures/7440d6a-workspace-draft-journal.json",
+      "sha256": "eacd58795d1514798dd5669bee21c8796e34dd69257e60c4a6b56dcbb2dcf0a0",
+      "size_bytes": 32450
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/fixtures/native-inquiry-mara-r1/SELECTED_RECORDED_TRACE.json",
       "sha256": "2e6cadcf660822454a9f84827d611a6164883b7a55174f2a3bf9e95750edf35e",
       "size_bytes": 9638
@@ -7673,8 +7679,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_draft_request_v1.py",
-      "sha256": "c80eea90fa4e6f80faff03a92edf9d82781fd2597110d1e3ae5254aaa4d11cac",
-      "size_bytes": 5489
+      "sha256": "9bed56cd15301b913896ee28d4b91e2b4ef0dbc6ce53bd5993bf5ed2a522e379",
+      "size_bytes": 7513
     },
     {
       "executable": false,
