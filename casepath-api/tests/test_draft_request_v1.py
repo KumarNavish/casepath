@@ -77,6 +77,7 @@ def test_draft_and_handler_edit_replay_from_workspace_journal(tmp_path: Path) ->
     saved = workspace.drafts(claim_id)
     assert saved["latest"]["event_sha256"] == first["event_sha256"]
     assert saved["latest"]["body_sha256"]
+    assert workspace._triage_snapshot([workspace.store.recover(claim_id)])[claim_id]["draft_ready"] is True
     assert workspace.store.recover(claim_id)["workflow_state"] == "in_review"
     revised_body = saved["latest"]["body_markdown"] + "Please call before sending.\n"
     revision = workspace.record_draft(

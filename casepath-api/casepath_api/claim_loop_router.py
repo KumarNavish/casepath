@@ -108,6 +108,27 @@ class RecordWorkspaceDraftRequest(_Request):
     replaces_event_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
 
 
+class KeepReviewedMemoryRequest(_Request):
+    source_handler_event_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    handler: str = Field(min_length=1, max_length=80)
+    expected_revision: StrictInt = Field(ge=1)
+    expected_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class ApplyReviewedMemoryRequest(_Request):
+    memory_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    note: str = Field(min_length=1, max_length=1000)
+    expected_revision: StrictInt = Field(ge=1)
+    expected_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class RetireReviewedMemoryRequest(_Request):
+    memory_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    reason: str = Field(min_length=1, max_length=1000)
+    expected_revision: StrictInt = Field(ge=1)
+    expected_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
 class MintWorkspaceEvidenceIntentRequest(_Request):
     action_id: str = Field(pattern=r"^action\.[0-9a-f]{64}$")
     expected_revision: StrictInt = Field(ge=1)
@@ -245,6 +266,7 @@ def create_claim_loop_router(
         urgency: str | None = Query(default=None, max_length=40),
         failure: bool | None = Query(default=None),
         pending_evidence: str | None = Query(default=None, max_length=20),
+        profile: str | None = Query(default=None, pattern=r"^[0-9a-f]{64}$"),
         sort: str = Query(default="priority", max_length=40),
         cursor: str | None = Query(default=None, max_length=4096),
         limit: int = Query(default=25, ge=1, le=100),
@@ -264,6 +286,7 @@ def create_claim_loop_router(
                 urgency=urgency,
                 failure=failure,
                 pending_evidence=pending_evidence,
+                profile=profile,
                 sort=sort,
                 cursor=cursor,
                 limit=limit,
@@ -304,6 +327,65 @@ def create_claim_loop_router(
                 idempotency_key=idempotency_key,
                 edited_body=body.edited_body,
                 replaces_event_sha256=body.replaces_event_sha256,
+            )
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.get("/workspace/memories")
+    def organisation_memories(family: str | None = None) -> dict[str, Any]:
+        try:
+            return workspace_service().reviewed_memories(family=family)
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.get("/workspace/claims/{claim_id}/memories")
+    def matching_claim_memories(claim_id: str) -> dict[str, Any]:
+        try:
+            return workspace_service().reviewed_memories(claim_id)
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.post("/workspace/claims/{claim_id}/memories")
+    def keep_claim_memory(
+        claim_id: str, body: KeepReviewedMemoryRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)],
+    ) -> dict[str, Any]:
+        try:
+            return workspace_service().keep_reviewed_memory(
+                claim_id, source_handler_event_sha256=body.source_handler_event_sha256,
+                handler=body.handler, expected_revision=body.expected_revision,
+                expected_state_sha256=body.expected_state_sha256,
+                idempotency_key=idempotency_key,
+            )
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.post("/workspace/claims/{claim_id}/memories/apply")
+    def apply_claim_memory(
+        claim_id: str, body: ApplyReviewedMemoryRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)],
+    ) -> dict[str, Any]:
+        try:
+            return workspace_service().apply_reviewed_memory(
+                claim_id, memory_sha256=body.memory_sha256, note=body.note,
+                expected_revision=body.expected_revision,
+                expected_state_sha256=body.expected_state_sha256,
+                idempotency_key=idempotency_key,
+            )
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.post("/workspace/claims/{claim_id}/memories/retire")
+    def retire_claim_memory(
+        claim_id: str, body: RetireReviewedMemoryRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)],
+    ) -> dict[str, Any]:
+        try:
+            return workspace_service().retire_reviewed_memory(
+                claim_id, memory_sha256=body.memory_sha256, reason=body.reason,
+                expected_revision=body.expected_revision,
+                expected_state_sha256=body.expected_state_sha256,
+                idempotency_key=idempotency_key,
             )
         except (ClaimWorkspaceError, ValueError) as exc:
             raise_workspace_http(ClaimWorkspaceError(str(exc)))

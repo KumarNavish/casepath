@@ -437,6 +437,7 @@
     nativeInvestigation: null,
     change: null, sourceSelection: null, sourceRequest: 0, sourceUrl: null, sourceController: null, loadedQuery: null,
     focusedEvidenceId: null, whatIf: null, evidenceChoice: null, handlerDrafts: {}, draft: null, draftEdit: null,
+    memories:null,knowledge:null,memoryHidden:new Set(),
   };
   const EXPECTED_AGENT_IDS = ['canonical_facts','orchestrator_plan','document_source_integrity','process_decision_mapping','evidence_checklist','final_claim_brief_audit'];
   const EXPECTED_GATE_IDS = ['deterministic_process_gate','deterministic_evidence_gate','whole_playbook_gate'];
@@ -670,7 +671,7 @@
 
   async function validateQueueResponse(value) {
     const keys = ['authority','contract','corpus_identity','facets','generated_at','items','next_cursor','page_count','projection_sha256','request_sha256','state_roster_sha256','total_count'];
-    const rowKeys = ['claim_id','claim_type','deadline_at','failure_or_unknown_effect','language','last_authoritative_update','next_safe_action','operational_projection','owner','pending_evidence_count','principal_blocker','priority_tuple','readiness_state','received_age_days','received_at','revision','row_sha256','state_sha256','subject','urgency','workflow_state'];
+    const rowKeys = ['claim_id','claim_type','deadline_at','failure_or_unknown_effect','language','last_authoritative_update','next_safe_action','operational_projection','owner','pending_evidence_count','principal_blocker','priority_tuple','readiness_state','received_age_days','received_at','revision','row_sha256','state_sha256','subject','triage','urgency','workflow_state'];
     const priorityDimensions = ['safety','deadline','failed_or_unknown_effect','unresolved_critical_obligation','waiting_age_days','customer_burden','closeness_to_readiness'];
     if (
       !value || typeof value !== 'object' || Array.isArray(value)
@@ -697,6 +698,12 @@
         || item.priority_tuple[5].value !== 'unknown'
         || ![0,1,2,3].includes(item.priority_tuple[6].value)
         || !/^[0-9a-f]{64}$/.test(item.row_sha256 || '')
+        || !item.triage || Object.keys(item.triage).sort().join('|') !== 'condition_profile|condition_profile_label|draft_ready|next_step|noticed_fact|noticed_source|uses_reviewed_memory|waiting_on'
+        || !/^[0-9a-f]{64}$/.test(item.triage.condition_profile || '')
+        || !['Customer','Handler','Specialist'].includes(item.triage.waiting_on)
+        || !['assessment','message'].includes(item.triage.noticed_source)
+        || typeof item.triage.noticed_fact !== 'string' || !item.triage.noticed_fact
+        || typeof item.triage.draft_ready !== 'boolean' || typeof item.triage.uses_reviewed_memory !== 'boolean'
         || item.row_sha256 !== await sha256(Object.fromEntries(Object.entries(item).filter(([key]) => key !== 'row_sha256')))
       ) throw new Error('A queue row failed hash verification');
       const expectedReadinessRank = {decision_ready:3, safe_abstention:2, blocked:1, not_assessed:0}[item.readiness_state];
@@ -1206,7 +1213,7 @@
     const fields = [
       ['q','#cwSearch'],['state','#cwState'],['readiness','#cwReadiness'],
       ['claim_type','#cwClaimType'],['owner','#cwOwner'],['urgency','#cwUrgency'],
-      ['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence'],
+      ['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence'],['profile','#cwSimilar'],
     ];
     fields.forEach(([key, selector]) => { const value = $(selector).value.trim(); if (value) query.set(key, value); });
     if (cursor) query.set('cursor', cursor);
@@ -1234,7 +1241,7 @@
     return `<div class="cw-progress" data-progress-percent="${percent}" role="progressbar" aria-label="Evidence readiness" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${percent}"><span style="width:${percent}%"></span></div><small class="cw-progress-copy">${esc(detail)}</small>`;
   }
 
-  const queueFilterFields = [['q','#cwSearch'],['state','#cwState'],['readiness','#cwReadiness'],['claim_type','#cwClaimType'],['owner','#cwOwner'],['urgency','#cwUrgency'],['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence']];
+  const queueFilterFields = [['q','#cwSearch'],['state','#cwState'],['readiness','#cwReadiness'],['claim_type','#cwClaimType'],['owner','#cwOwner'],['urgency','#cwUrgency'],['failure','#cwFailure'],['pending_evidence','#cwPendingEvidence'],['profile','#cwSimilar']];
   function hasQueueFilters() { return queueFilterFields.some(([,id])=>$(id).value.trim()); }
   function saveQueueFilters() {
     const url=new URL(location.href);
@@ -1279,7 +1286,7 @@
       $('#cwTable').innerHTML=`<div class="cw-empty"><h2>${filtered?'No matching claims':'No claims yet'}</h2><p>${filtered?'Try a different search or clear your filters. Your claims have not changed.':'No claim records are present in this workspace.'}</p><div class="cw-actions"><button type="button" class="cw-button" ${filtered?'data-clear-filters':'data-retry-queue'}>${filtered?'Clear filters':'Refresh workspace'}</button></div>${filtered?'':'<details><summary>Development setup</summary><code>./bin/casepath seed --corpus synthetic-dev-60</code></details>'}</div>`;
       return;
     }
-    const markup=ui.queueRows(state.items);
+    const markup=ui.queueRows(state.items,state.facets);
     // A verified unchanged response must not replace the focused queue node.
     if(state.queueMarkup!==markup || !$('#cwTable').querySelector('table')) {
       $('#cwTable').innerHTML=markup;state.queueMarkup=markup;
@@ -1314,13 +1321,17 @@
       }
       if(filterKey!==queryString()){state.queuedLoad={append:false};return;}
       state.items=append?state.items.concat(windowItems):windowItems;
-      state.total=page.total_count;state.cursor=windowCursor;state.loadedQuery=filterKey;
+      state.total=page.total_count;state.cursor=windowCursor;state.loadedQuery=filterKey;state.facets=page.facets;
       for(const [id,values,first] of [['#cwOwner',['unassigned',...(page.facets?.owners||[])],'All handlers'],['#cwClaimType',page.facets?.claim_types||[],'All types']]) {
         const select=$(id), selected=select.value;
         const choices=[...new Set([...values,...(selected?[selected]:[])])];
         select.replaceChildren(new Option(first,''),...choices.map(v=>new Option(id==='#cwOwner'&&v!=='unassigned'?v:ui.label(v),v)));
         select.value=selected;
       }
+      const similar=$('#cwSimilar'),selectedProfile=similar.value;
+      similar.replaceChildren(new Option('All condition profiles',''),...(page.facets?.condition_profiles||[]).map(row=>new Option(`${row.label} (${row.count})`,row.profile)));
+      if(selectedProfile&&!Array.from(similar.options).some(option=>option.value===selectedProfile)) similar.add(new Option('Selected condition profile',selectedProfile));
+      similar.value=selectedProfile;
       renderRows();hydrateOpenPriority();saveQueueFilters();setAdjacentClaims();
       if(!hasQueueFilters()&&!state.cursor&&state.items.length===state.total)displayWorkspaceOverview(state.items);else void loadWorkspaceOverview();
     } catch(error) {
@@ -1530,7 +1541,7 @@
     const pendingAdvance=storedCommandIdentity('advance',id);
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
     return ui.workbench(loop,workspaceState,{
-      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,pendingHandler:storedCommandIdentity('handler-note',id),pendingDraft:storedCommandIdentity('draft',id),handlerDrafts:state.handlerDrafts,draft:state.draft,draftEdit:state.draftEdit,detail:state.detail,canvasNodeId:state.canvasNodeId,whatIf:state.whatIf,evidenceChoice:state.evidenceChoice,
+      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,pendingHandler:storedCommandIdentity('handler-note',id),pendingDraft:storedCommandIdentity('draft',id),handlerDrafts:state.handlerDrafts,draft:state.draft,draftEdit:state.draftEdit,memories:state.memories?.items||[],knowledge:state.knowledge?.items||[],memoryHidden:state.memoryHidden,detail:state.detail,canvasNodeId:state.canvasNodeId,whatIf:state.whatIf,evidenceChoice:state.evidenceChoice,
       focusedEvidenceId:state.focusedEvidenceId,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
@@ -1543,7 +1554,7 @@
     state.whatIf=null;
     state.evidenceChoice=null;
     state.handlerDrafts={};
-    state.draft=null;state.draftEdit=null;
+    state.draft=null;state.draftEdit=null;state.memories=null;state.knowledge=null;state.memoryHidden=new Set();
     savePresentation();
     if($("#cwDetail").hidden)state.queueScrollY=window.scrollY;
     // A click may precede the search debounce. Bind filters to the queue entry
@@ -1588,7 +1599,10 @@
       state.detail = detail;
       state.detailPriority = null;
       renderDetail(detail);
-      if(detail.state.workflow_state==='in_review')void loadDraftList(claimId,activeDetailContext(),controller.signal);
+      if(detail.state.workflow_state==='in_review'){
+        void loadDraftList(claimId,activeDetailContext(),controller.signal);
+        void loadMemoryList(claimId,activeDetailContext(),controller.signal);
+      }
       if (loop?.provisional_source_binding) void loadEvidenceInvestigation(claimId, activeDetailContext(), controller.signal);
       const pendingIntent = storedCommandIdentity('evidence-intent', claimId);
       const pendingEvidence = storedCommandIdentity('evidence', claimId);
@@ -1705,6 +1719,18 @@
     panel.querySelector('[data-draft-retry]')?.addEventListener('click',()=>void saveDraft());
     panel.querySelector('[data-draft-copy]')?.addEventListener('click',()=>void exportDraft('copy'));
     panel.querySelectorAll('[data-draft-export]').forEach(button=>button.addEventListener('click',()=>void exportDraft(button.dataset.draftExport)));
+    panel.querySelectorAll('[data-keep-memory]').forEach(form=>form.addEventListener('submit',event=>{
+      event.preventDefault();void mutateReviewedMemory('keep',{source_handler_event_sha256:form.dataset.keepMemory,handler:form.elements.handler.value.trim()});
+    }));
+    panel.querySelectorAll('[data-apply-memory]').forEach(form=>form.addEventListener('submit',event=>{
+      event.preventDefault();void mutateReviewedMemory('apply',{memory_sha256:form.dataset.applyMemory,note:form.elements.note.value.trim()});
+    }));
+    panel.querySelectorAll('[data-retire-memory]').forEach(form=>form.addEventListener('submit',event=>{
+      event.preventDefault();void mutateReviewedMemory('retire',{memory_sha256:form.dataset.retireMemory,reason:form.elements.reason.value.trim()});
+    }));
+    panel.querySelectorAll('[data-ignore-memory]').forEach(button=>button.addEventListener('click',()=>{
+      state.memoryHidden.add(button.dataset.ignoreMemory);renderDetail(state.detail);
+    }));
     $('#cwHandlerPassageForm')?.addEventListener('submit', event => {
       event.preventDefault();
       void saveHandlerNote({kind:'passage',target:state.evidenceChoice,verdict:event.submitter?.value,note:(state.handlerDrafts[`passage:${state.evidenceChoice}`]||event.currentTarget.elements.note.value).trim()});
@@ -1843,6 +1869,65 @@
         ||draft_sha256!==await sha256(draft)||draft.body_sha256!==await sha256Bytes(new TextEncoder().encode(draft.body_markdown)))throw new Error('A saved draft failed hash verification.');
     }
     return value;
+  }
+
+  async function validateMemoryList(value,claimId){
+    const {list_sha256,...material}=value||{};
+    if(value?.contract!=='casepath.reviewed-memory-list/1.0.0'||value.claim_id!==claimId
+      ||!Array.isArray(value.items)||value.total_count!==value.items.length
+      ||list_sha256!==await sha256(material))throw new Error('The reviewed memories could not be verified.');
+    for(const item of value.items){
+      if(!/^[0-9a-f]{64}$/.test(item.memory_sha256||'')||!/^[0-9a-f]{64}$/.test(item.event_sha256||'')
+        ||typeof item.source_quote!=='string'||typeof item.handler!=='string'||item.qualified_review_required!==true)throw new Error('A reviewed memory has invalid provenance.');
+    }
+    return value;
+  }
+
+  async function loadMemoryList(claimId,context,signal){
+    try{
+      const family=state.detail?.state.intake_assessment?.claim_type;
+      if(!family)return;
+      const [matching,knowledge]=await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/memories`,{signal}),
+        request(`/api/claim-loops/v1/workspace/memories?family=${encodeURIComponent(family)}`,{signal}),
+      ]);
+      const rows=await Promise.all([validateMemoryList(matching,claimId),validateMemoryList(knowledge,null)]);
+      if(!isActiveDetail(context)||state.detail?.state.intake_assessment?.claim_type!==family)return;
+      state.memories=rows[0];state.knowledge=rows[1];renderDetail(state.detail);
+    }catch(error){if(isActiveDetail(context)&&error.name!=='AbortError')$('#cwCommandStatus').textContent=`Reviewed memories unavailable: ${error.message}`;}
+  }
+
+  async function mutateReviewedMemory(mode,input){
+    if(state.mutationBusy||!state.detail)return;
+    const context=activeDetailContext(),claimId=context.claimId;
+    const kind=`memory-${mode}`,pending=storedCommandIdentity(kind,claimId);
+    if(pending?.invalid){$('#cwCommandStatus').textContent='The saved memory request is invalid. Reload before retrying.';return;}
+    const body=pending?pending.parsedBody:{...input,
+      expected_revision:state.detail.state.revision,
+      expected_state_sha256:state.detail.state.state_sha256,
+    };
+    const identity=commandIdentity(kind,claimId,body);
+    setLoopMutationBusy(true,mode==='keep'?'Keeping this reviewed condition…':mode==='retire'?'Retiring the reviewed memory…':'Recording your assessment of this claim…',context);
+    try{
+      const response=await validateMutationResponse(await request(
+        `/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/memories${mode==='keep'?'':`/${mode}`}`,
+        {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':identity.key},body:identity.body},
+      ),claimId,mode==='keep'?'WORKSPACE_REVIEWED_MEMORY_KEPT':mode==='retire'?'WORKSPACE_REVIEWED_MEMORY_RETIRED':'WORKSPACE_REVIEWED_MEMORY_APPLIED',state.detail.state);
+      const detail=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`),claimId);
+      const loop=await loadClaimLoop(claimId,{allowMissing:true});
+      if(!isActiveDetail(context))return;
+      if(detail.state.revision<response.state.revision)throw new Error('The memory action is not confirmed in the journal.');
+      clearCommandIdentity(kind,claimId);
+      state.detail=detail;state.loop=loop;renderDetail(detail);
+      await loadMemoryList(claimId,context,state.detailController?.signal);
+      void loadQueue();
+      $('#cwCommandStatus').textContent=mode==='keep'?'Reviewed memory saved for matching claims.':mode==='retire'?'Reviewed memory retired.':'Handler assessment recorded from this memory.';
+    }catch(error){
+      if(isActiveDetail(context)){
+        if(error.responseReceived&&!error.ambiguousResponse)clearCommandIdentity(kind,claimId);
+        $('#cwCommandStatus').textContent=`Memory action ${error.responseReceived&&!error.ambiguousResponse?'rejected':'needs checking'}: ${error.message}`;
+      }
+    }finally{setLoopMutationBusy(false,'',context);}
   }
 
   async function loadDraftList(claimId,context,signal){
@@ -2852,7 +2937,10 @@
     state.detail=detail;state.loop=loop;
     if(state.change && state.change.afterRevision!==loop?.revision) state.change=null;
     renderDetail(detail);void loadQueue();
-    if(detail.state.workflow_state==='in_review')void loadDraftList(claimId,context,state.detailController?.signal);
+    if(detail.state.workflow_state==='in_review'){
+      void loadDraftList(claimId,context,state.detailController?.signal);
+      void loadMemoryList(claimId,context,state.detailController?.signal);
+    }
     $('#cwCommandStatus').textContent='Showing the latest saved claim record.';
   }
 
@@ -2863,7 +2951,7 @@
     state.headerObserver?.disconnect(); state.actionObserver?.disconnect();
     clearTimeout(state.evidencePreviewTimer);state.evidencePreviewTimer=null;
     state.preparedEvidenceIntent=null;
-    releaseSourcePreview(); state.sourceSelection=null; state.change=null; state.whatIf=null; state.evidenceChoice=null; state.handlerDrafts={}; state.draft=null; state.draftEdit=null;
+    releaseSourcePreview(); state.sourceSelection=null; state.change=null; state.whatIf=null; state.evidenceChoice=null; state.handlerDrafts={}; state.draft=null; state.draftEdit=null; state.memories=null;state.knowledge=null;state.memoryHidden=new Set();
     state.detailEpoch += 1;
     state.mutationBusy = null;
     state.detailController?.abort();
