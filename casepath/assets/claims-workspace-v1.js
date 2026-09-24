@@ -3060,7 +3060,7 @@
     if(!isActiveDetail(context)) return;
     state.detail=detail;state.loop=loop;
     if(state.change && state.change.afterRevision!==loop?.revision) state.change=null;
-    renderDetail(detail);void loadQueue();
+    renderDetail(detail);
     if(detail.state.workflow_state==='in_review'){
       void loadDraftList(claimId,context,state.detailController?.signal);
       void loadMemoryList(claimId,context,state.detailController?.signal);
