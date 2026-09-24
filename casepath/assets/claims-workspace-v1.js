@@ -1550,6 +1550,33 @@
     });
   }
 
+  let agentWorkScript;
+  function loadAgentWork() {
+    if (agentWorkScript) return agentWorkScript;
+    agentWorkScript = new Promise((resolve,reject)=>{
+      const source=document.querySelector('meta[name="casepath-agent-work-script"]')?.content;
+      if(!source){reject(new Error('Review script is unavailable.'));return;}
+      const script=document.createElement('script');
+      let settled=false;
+      const finish=(error)=>{
+        if(settled)return;settled=true;
+        clearTimeout(timer);
+        window.removeEventListener('casepath:agent-work-ready',ready);
+        window.removeEventListener('casepath:agent-work-unavailable',unavailable);
+        if(error){script.remove();agentWorkScript=null;reject(error);}else resolve();
+      };
+      const ready=()=>finish();
+      const unavailable=()=>finish(new Error('Review service is unavailable. Try again.'));
+      const timer=setTimeout(()=>finish(new Error('Review service took too long to respond. Try again.')),22000);
+      window.addEventListener('casepath:agent-work-ready',ready);
+      window.addEventListener('casepath:agent-work-unavailable',unavailable);
+      script.src=source;
+      script.onerror=()=>finish(new Error('Review script did not load. Try again.'));
+      document.body.append(script);
+    });
+    return agentWorkScript;
+  }
+
   async function openClaim(claimId) {
     state.whatIf=null;
     state.evidenceChoice=null;
@@ -1581,7 +1608,11 @@
     panel.innerHTML = '<div class="cw-empty" role="status"><h2>Opening claim…</h2><p>Loading its saved sources, evidence and process.</p></div>';
     panel.scrollTop=0; panel.focus({preventScroll:true});
     try {
-      const detail = await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`, {signal:controller.signal}), claimId);
+      const [response] = await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`, {signal:controller.signal}),
+        loadAgentWork(),
+      ]);
+      const detail = await validateDetailResponse(response, claimId);
       if (epoch !== state.detailEpoch) return;
       const loop = detail.state.workflow_state === 'in_review'
         ? await loadClaimLoop(claimId, {allowMissing:true, signal:controller.signal})

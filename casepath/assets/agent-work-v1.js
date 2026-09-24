@@ -378,11 +378,12 @@
   },true);
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.workforce){closeWorkforce();e.preventDefault();e.stopImmediatePropagation();}},true);
   async function boot(){
-    try{state.cap=await request('/capabilities');}catch(_){return;}
+    try{state.cap=await request('/capabilities');}catch(_){window.dispatchEvent(new Event('casepath:agent-work-unavailable'));return;}
     const observer=new MutationObserver(()=>{if(state.visible){state.visible=false;requestAnimationFrame(()=>{state.visible=true;mount();});}});
     observer.observe(document.body,{childList:true,subtree:true});
     mount();void poll();state.timer=setInterval(()=>{if(!state.stream)void poll();},1500);
     document.addEventListener('visibilitychange',()=>{if(!document.hidden)void poll();});
+    window.dispatchEvent(new Event('casepath:agent-work-ready'));
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot,{once:true});else void boot();
 })();
