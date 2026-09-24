@@ -5,7 +5,7 @@
   const ROOT='/api/agent-work/v1', CONTRACT='casepath.agent-work/1.0.0';
   const h=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const icon=(name)=>`<svg class="aw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${({work:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',close:'m6 6 12 12M6 18 18 6',arrow:'M4 12h15m-5-5 5 5-5 5',source:'M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8M8 16h6',check:'m5 12 4 4L19 6',link:'m9 15 6-6M7 17l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0M17 7l1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0',plan:'M4 6h5m6 0h5M9 6a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h5M4 18h5',process:'M5 3v5m0 0h14v8m-14-8v13m11-5h6M3 3h4M3 21h4',evidence:'M5 3h14v18H5zM8 8l2 2 4-4M8 14h8M8 18h6',audit:'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6zM9 12l2 2 4-4',pulse:'M3 12h4l2-5 4 10 2-5h6'})[name]||'M5 12h14'}"/></svg>`;
-  const state={cap:null,claim:null,run:null,events:[],summary:null,assessment:null,assessmentLoading:false,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,timelineOpen:false,repoll:false,stream:null,streamRun:null,streamFailed:null,lastRosterAt:0,spotlit:null};
+  const state={cap:null,claim:null,run:null,events:[],summary:null,assessment:null,assessmentLoading:false,busy:false,visible:true,timer:null,fetching:false,workforce:false,forceRefresh:null,renderKey:null,workforceKey:null,messages:new Map(),timelineExpanded:false,timelineOpen:false,repoll:false,stream:null,streamRun:null,streamFailed:null,lastRosterAt:0,spotlit:null,revealCount:0,revealTimer:null};
   const time=t=>t?new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date(t)):'—';
   const label=s=>({not_started:'Not started',working:'Working',completed:'Completed',blocked:'Needs review',unconfirmed:'Outcome unconfirmed',queued:'Queued',running:'Processing',interrupted:'Interrupted',failed:'Needs review'})[s]||s;
   const roleName=r=>state.cap?.roles.find(x=>x.id===r)?.label||'CasePath';
@@ -62,7 +62,7 @@
       if(!button.dataset.agentWorkEntry){button.dataset.agentWorkEntry='true';button.addEventListener('click',()=>showWorkforce());}
     }
     const claim=getClaim();
-    if(claim!==state.claim){closeStream();document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.assessment=null;state.assessmentLoading=false;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);state.spotlit=null;}
+    if(claim!==state.claim){closeStream();clearTimeout(state.revealTimer);state.revealTimer=null;document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.assessment=null;state.assessmentLoading=false;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);state.spotlit=null;state.revealCount=0;}
     if(!claim)return;
     const activity=root.querySelector('#cpReviewCard');if(!activity)return;
     let section=document.getElementById('awClaimWork');
@@ -116,42 +116,38 @@
     }
     if(event.operation==='SOURCE_SPAN_SELECTED'&&span?.extraction==='message_body'&&span.quote){
       const quote=span.quote.includes(':')?span.quote.split(':').slice(1).join(':').trim():span.quote.trim();
-      return {text:`Customer: “${quote.slice(0,150)}${quote.length>150?'…':''}”`,quote,message:true};
+      const shown=quote.replace(/[;.!?]+$/,'');
+      return {text:`Customer: “${shown.slice(0,150)}${shown.length>150?'…':''}”`,quote,message:true};
     }
     return null;
   }
+  function assessmentStages(assessment){
+    if(!assessment)return [];
+    const stages=[],opened=new Set(state.events.filter(event=>event.operation==='SOURCE_OPENED').map(event=>event.object_id));
+    const labels={health_effects:'Health effects',mold:'Mould',family_home:'Separate service',extension_relevant:'Extension',reference_rate:'Reference-rate reason',specialist_needed:'Technical inspection',arrears:'Arrears',retaliation_screen:'Good-faith concern',heating:'Heating',deposit_considered:'Rent deposit',renovation:'Renovation',termination_received:'Termination received',claim_received:'Increase received'};
+    for(const item of assessment.noticed||[]){
+      if(item.source_kind!=='pdf_text'||!item.text.includes(': ')||!opened.has(item.source_id))continue;
+      const quote=item.text.split(': ').at(-1),file=assessment.attachment_pages?.find(page=>page.artifact_id===item.source_id)?.file_name||'';
+      const name=/spouse|wife|husband/i.test(file)?'Spouse notice':'Tenant notice';
+      stages.push({text:`${name}, page ${item.page||1}: end date ${quote.replace(/^(\d{1,2})\.\s*Juni$/i,'$1 June').replace(/^(\d{1,2})\.\s*Juli$/i,'$1 July')}`,sourceId:item.source_id,quote});
+    }
+    for(const conflict of assessment.conflicts||[]){
+      if(!conflict.sources.every(source=>opened.has(source.artifact_id)))continue;
+      stages.push({text:`The notices give different end dates: ${conflict.sources.map(source=>source.quote).join(' and ')}`,sourceId:conflict.sources[0].artifact_id,quote:conflict.sources[0].quote});
+    }
+    const order=['termination_received','claim_received','health_effects','mold','family_home','reference_rate','extension_relevant','arrears','retaliation_screen','heating','specialist_needed','deposit_considered','renovation'];
+    for(const [flag,value] of Object.entries(assessment.conditions||{}).sort(([left],[right])=>order.indexOf(left)-order.indexOf(right))){
+      const quote=value.quote||value.candidate_quote;
+      stages.push({flag,...(quote?{text:`${labels[flag]||flag.replaceAll('_',' ')}: ${value.verdict} — “${quote}”`,quote,message:true}:{})});
+    }
+    return stages;
+  }
   function narrativeLines(events){
-    const assessment=state.assessment;
-    const lines=[],seen=new Set(),opened=new Set();
+    const lines=[],seen=new Set();
     const add=(event,line)=>{if(line&&!seen.has(line.text)){seen.add(line.text);lines.push({event,line});}};
-    const labels={health_effects:'Health effects',mold:'Mould',family_home:'Separate service',extension_relevant:'Extension',reference_rate:'Reference-rate reason',specialist_needed:'Technical inspection',arrears:'Arrears',retaliation_screen:'Good-faith concern',heating:'Heating',deposit_considered:'Rent deposit',renovation:'Renovation'};
     for(const event of events){
       if(event.operation==='RUN_QUEUED'||event.operation==='SOURCE_SPAN_SELECTED')add(event,narrativeEvent(event));
-      if(event.operation==='SOURCE_OPENED'){
-        opened.add(event.object_id);
-        for(const item of assessment?.noticed||[]){
-          if(item.source_id!==event.object_id||item.source_kind!=='pdf_text'||!item.text.includes(': '))continue;
-          const quote=item.text.split(': ').at(-1),file=event.after?.filename||'';
-          const name=/spouse|wife|husband/i.test(file)?'Spouse notice':/tenant|termination/i.test(file)?'Tenant notice':'Attached notice';
-          add(event,{text:`${name}, page ${item.page||1}: end date ${quote.replace(/Juni/i,'June').replace(/Juli/i,'July')}`,sourceId:item.source_id,quote,page:item.page||1});
-        }
-      }
-      if(event.operation==='AUTHORITY_CONFIRMED'&&assessment){
-        for(const conflict of assessment.conflicts||[]){
-          if(!conflict.sources.every(source=>opened.has(source.artifact_id)))continue;
-          const values=conflict.sources.map(source=>source.quote);
-          add(event,{text:`The notices give different end dates: ${values.join(' and ')}`,sourceId:conflict.sources[0].artifact_id,quote:conflict.sources[0].quote,page:conflict.sources[0].page||1});
-        }
-      }
-      if(event.operation==='BRANCH_PROPOSED'&&assessment){
-        const node=String(event.object_id||'').split('.')[0].replace(/^branch:/,'');
-        for(const chip of assessment.steps.find(step=>step.node_id===node)?.condition_chips||[]){
-          const flag=chip.condition_flag,value=assessment.conditions[flag];
-          if(!flag||!value||!labels[flag])continue;
-          const quote=value.quote||value.candidate_quote;
-          add(event,{text:`${labels[flag]}: ${value.verdict}${quote?` — “${quote}”`:''}`,sourceId:value.source_id,quote:quote||null,flag});
-        }
-      }
+      if(event.operation==='AUTHORITY_CONFIRMED')for(const stage of assessmentStages(state.assessment).slice(0,state.revealCount))if(stage.text)add(event,stage);
     }
     return lines;
   }
@@ -168,11 +164,7 @@
     path.classList.toggle('aw-path-settling',working);
     if(!working){path.querySelectorAll('[data-aw-settled]').forEach(node=>delete node.dataset.awSettled);return;}
     const nodes=new Set(state.events.filter(event=>event.operation==='PROCESS_NODE_PROPOSED').map(event=>String(event.object_id||'').replace(/^node:/,'')));
-    const flags=new Set();
-    for(const event of state.events.filter(row=>row.operation==='BRANCH_PROPOSED')){
-      const node=String(event.object_id||'').split('.')[0].replace(/^branch:/,'');
-      for(const chip of state.assessment?.steps.find(step=>step.node_id===node)?.condition_chips||[])if(chip.condition_flag)flags.add(chip.condition_flag);
-    }
+    const flags=new Set(assessmentStages(state.assessment).slice(0,state.revealCount).map(stage=>stage.flag).filter(Boolean));
     path.querySelectorAll('ol>li[data-path-state]').forEach(row=>row.dataset.awSettled=String(nodes.has(row.querySelector('[data-canvas-node]')?.dataset.canvasNode)));
     path.querySelectorAll('[data-condition-flag]').forEach(row=>row.dataset.awSettled=String(flags.has(row.dataset.conditionFlag)));
     path.querySelectorAll('.cp-a-condition[data-condition-flag]').forEach(row=>row.dataset.awSettled=String(flags.has(row.dataset.conditionFlag)));
@@ -180,28 +172,34 @@
   function renderClaim(){
     const host=document.getElementById('awClaimWork');if(!host)return;
     const summary=state.summary,hasStart=Boolean(document.getElementById('cwStart'));
+    const stages=assessmentStages(state.assessment),working=['queued','running'].includes(summary?.status);
+    if(!working&&state.revealTimer){clearTimeout(state.revealTimer);state.revealTimer=null;}
+    if(summary?.status==='completed')state.revealCount=stages.length;
+    if(working&&state.assessment&&state.events.some(event=>event.operation==='AUTHORITY_CONFIRMED')&&state.revealCount<stages.length&&!state.revealTimer){
+      state.revealTimer=setTimeout(()=>{state.revealTimer=null;state.revealCount++;state.renderKey=null;renderClaim();},160);
+    }
     syncLivePath();
     host.hidden=Boolean(state.assessment&&summary?.status==='completed')||!summary&&!state.busy&&!pendingRequest();
-    const key=JSON.stringify([summary?.run_id,summary?.last_sequence,summary?.status,state.busy,hasStart,state.events.length,state.messages.get(state.claim),state.assessment?.assessment_sha256]);
+    const key=JSON.stringify([summary?.run_id,summary?.last_sequence,summary?.status,state.busy,hasStart,state.events.length,state.messages.get(state.claim),state.assessment?.assessment_sha256,state.revealCount]);
     if(state.renderKey===key)return;state.renderKey=key;
     const start=document.getElementById('cwStart');
     if(start){const waiting=['queued','running','interrupted'].includes(summary?.status);start.disabled=state.busy||waiting;start.textContent=waiting?'Review in progress':'Review claim';}
     if(host.hidden){host.innerHTML='';renderTimeline();return;}
-    const pending=pendingRequest(),working=['queued','running'].includes(summary?.status),stopping=state.events.some(event=>event.operation==='RUN_CANCEL_REQUESTED')&&working;
+    const pending=pendingRequest(),stopping=state.events.some(event=>event.operation==='RUN_CANCEL_REQUESTED')&&working;
     const complete=summary?.status==='completed',cancelled=summary?.status==='cancelled';
     const lines=narrativeLines(state.events);
     const next=document.querySelector('.cp-a-next h2')?.textContent||'';
     const heading=complete?'Review complete':cancelled?'Review stopped':stopping?'Stopping after the current check':working?'Reviewing this claim':state.busy?'Opening claim context':'Review needs attention';
     const detail=complete?`Next step: ${next}`:cancelled?'Saved work remains in the timeline.':state.messages.get(state.claim)||lines.at(-1)?.line.text||'Reading the incoming claim.';
     host.innerHTML=`<section class="aw-narrative-card" data-status="${h(summary?.status||'opening')}"><header><div><span class="cp-a-kicker">${complete?'Deterministic assessment':'Live review'}</span><h2>${h(heading)}</h2><p>${h(detail)}</p></div>${working?`<button type="button" class="aw-text-button" data-aw-cancel ${state.busy?'disabled':''}>Stop</button>`:''}</header>${!complete?`<ol class="aw-narrative-lines">${lines.slice(-8).map(({event,line})=>`<li>${lineButton(event,line)}</li>`).join('')}</ol>`:''}${complete||cancelled?`<button type="button" class="aw-text-button" data-aw-timeline>Timeline</button>`:''}${summary?.recovery?.can_resume?`<button type="button" class="aw-text-button" data-aw-resume>Resume saved review</button>`:''}${cancelled?`<button type="button" class="aw-text-button" data-aw-start>Review again</button>`:''}${pending&&!state.busy?'<button type="button" class="aw-text-button" data-aw-retry>Check the same request</button>':''}<p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></section>`;
-    if(working&&lines.length){const latest=lines.at(-1);if(state.spotlit!==latest.event.sequence){state.spotlit=latest.event.sequence;spotlight(latest.line,false);}}
+    if(working&&lines.length){const latest=lines.at(-1),spotlightKey=latest.event.sequence+':'+latest.line.text;if(state.spotlit!==spotlightKey){state.spotlit=spotlightKey;spotlight(latest.line,false);}}
     renderTimeline();
   }
   function renderTimeline(){
     const panel=document.getElementById('cpPanel-activity');if(!panel||!state.run)return;
     let host=document.getElementById('awTimeline');if(!host){host=document.createElement('div');host.id='awTimeline';panel.append(host);}
     const lines=narrativeLines(state.events);
-    const key=state.summary?.run_id+':'+state.events.length+':'+(state.assessment?.assessment_sha256||'');if(host.dataset.version===key)return;host.dataset.version=key;
+    const key=state.summary?.run_id+':'+state.events.length+':'+(state.assessment?.assessment_sha256||'')+':'+state.revealCount;if(host.dataset.version===key)return;host.dataset.version=key;
     host.innerHTML=`<ol class="aw-narrative-lines">${lines.map(({event,line})=>`<li><time datetime="${h(event.timestamp)}">${h(time(event.timestamp))}</time>${lineButton(event,line)}</li>`).join('')}</ol>${!lines.length?'<p>Source reads will appear here as they are saved.</p>':''}`;
   }
   function renderProcess(){}
@@ -224,7 +222,7 @@
       report('Submitting the work request…');
       const result=await request(`/claims/${encodeURIComponent(claim)}/runs`,{method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Agent-Work':'1'},body:JSON.stringify(body)});
       sessionStorage.removeItem('casepath.agent-work.pending.'+claim);state.messages.delete(claim);
-      if(state.claim===claim){state.run=result;state.summary=result.summary;state.events=[];state.renderKey=null;renderClaim();openStream(claim,result.summary.run_id);}
+      if(state.claim===claim){clearTimeout(state.revealTimer);state.revealTimer=null;state.revealCount=0;state.spotlit=null;state.run=result;state.summary=result.summary;state.events=[];state.renderKey=null;renderClaim();openStream(claim,result.summary.run_id);}
     }catch(error){if(state.claim===claim)report(error.name==='AbortError'?'No completion response was received. The same request can be checked; do not create a new one.':error.message);}
     finally{state.busy=false;state.renderKey=null;renderClaim();void poll();}
   }
@@ -376,7 +374,7 @@
       if(state.streamFailed!==latest.run_id)state.streamFailed=null;
       const run=await request(`/claims/${encodeURIComponent(claim)}/runs/${encodeURIComponent(latest.run_id)}`);
       if(claim!==state.claim)return;
-      if(state.summary?.run_id!==latest.run_id)state.events=[];
+      if(state.summary?.run_id!==latest.run_id){state.events=[];state.revealCount=0;state.spotlit=null;}
       state.run=run;state.summary=run.summary;refreshInspectionContext();
       let after=state.events.at(-1)?.sequence||0;
       for(let i=0;i<10&&after<run.summary.last_sequence;i++){
