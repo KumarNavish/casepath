@@ -21,6 +21,9 @@ await queue.locator('#cwTable tr[data-claim-id]').first().waitFor({timeout:30000
 timing.queue_first_paint_ms=Math.round(performance.now()-queueStarted);
 if(!(await queue.locator('.cp-triage-group').count()))throw Error('Queue has no waiting-on groups');
 if(!(await queue.locator('#cwSimilar').count()))throw Error('Condition-profile facet is missing');
+await queue.locator('#awWorkforceButton').click();
+await queue.locator('#awWorkforce [data-aw-back]').waitFor({state:'visible',timeout:20000});
+await queue.locator('#awWorkforce [data-aw-back]').click();
 for(const [name,claimId] of Object.entries(claims)){
   await page.goto(`${base}/#claim=${claimId}`);
   await page.locator('#cpReviewCard').waitFor({timeout:30000});

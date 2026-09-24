@@ -2930,6 +2930,19 @@
   }
   function handleWorkspaceClick(event) {
     const button=event.target.closest('button,a');if(!button)return;
+    if(button.id==='awWorkforceButton'&&!button.dataset.agentWorkEntry){
+      if(button.dataset.loading)return;
+      button.dataset.loading='true';button.setAttribute('aria-busy','true');
+      const label=button.querySelector('span');if(label)label.textContent='Opening review team…';
+      void loadAgentWork().then(()=>{
+        delete button.dataset.loading;button.removeAttribute('aria-busy');
+        if(label)label.textContent='Review team';button.click();
+      }).catch(error=>{
+        delete button.dataset.loading;button.removeAttribute('aria-busy');
+        button.title=error.message;if(label)label.textContent='Retry review team';
+      });
+      return;
+    }
     if(packetClick(button))return;
     const menu=button.closest('.cp-actions-menu');if(menu)menu.open=false;
     if(presentationClick(button))return;

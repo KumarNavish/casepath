@@ -56,8 +56,10 @@
   function mount() {
     const root=document.getElementById('claimsWorkspace');if(!root||!state.cap)return;
     const nav=root.querySelector('.cp-navigation');
-    if(nav&&!document.getElementById('awWorkforceButton')){
-      const button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>Review team</span>';button.setAttribute('aria-label','Review team');button.setAttribute('aria-pressed','false');button.addEventListener('click',()=>showWorkforce());nav.append(button);
+    if(nav){
+      let button=document.getElementById('awWorkforceButton');
+      if(!button){button=document.createElement('button');button.id='awWorkforceButton';button.type='button';button.innerHTML=icon('work')+'<span>Review team</span>';button.setAttribute('aria-label','Review team');button.setAttribute('aria-pressed','false');nav.append(button);}
+      if(!button.dataset.agentWorkEntry){button.dataset.agentWorkEntry='true';button.addEventListener('click',()=>showWorkforce());}
     }
     const claim=getClaim();
     if(claim!==state.claim){closeStream();document.getElementById('awInspector')?.close();state.inspection=null;state.claim=claim;state.run=null;state.events=[];state.summary=null;state.assessment=null;state.assessmentLoading=false;state.renderKey=null;state.timelineExpanded=false;state.timelineOpen=false;state.repoll=Boolean(claim);}
