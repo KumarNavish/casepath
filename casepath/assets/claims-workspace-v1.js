@@ -3070,7 +3070,7 @@
       void loadDraftList(claimId,context,state.detailController?.signal);
       void loadMemoryList(claimId,context,state.detailController?.signal);
     }
-    $('#cwCommandStatus').textContent='Showing the latest saved claim record.';
+    $('#cwCommandStatus').textContent='';
   }
 
   function closeDetail({fromHistory=false,refresh=true} = {}) {
