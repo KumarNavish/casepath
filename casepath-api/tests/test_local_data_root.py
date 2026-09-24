@@ -255,6 +255,7 @@ def test_registry_is_frozen_without_open_handles_through_publication(
             [
                 sys.executable,
                 "-I",
+                "-B",
                 "-c",
                 "import pathlib,sys;pathlib.Path(sys.argv[1]).write_text('late')",
                 str(artifact),
