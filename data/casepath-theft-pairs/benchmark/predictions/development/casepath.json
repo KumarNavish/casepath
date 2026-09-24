@@ -1,0 +1,485 @@
+[
+  {
+    "pair_id": "theft-02-01",
+    "scenario": "PR_bicycle_claimed",
+    "context_index": 0,
+    "before_unit_id": "theft-02-01-false",
+    "after_unit_id": "theft-02-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "changed_guard_ids": [
+      "overlay_guard_015"
+    ],
+    "changed_guard_count": 1,
+    "chain_attributed_predicted": [
+      "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "chain_attributable_gold_atoms": [
+      "+Bicycle purchase voucher (Kaufbeleg des Fahrrads / Originalkaufbeleg)",
+      "+Detailed cost estimate for the bicycle with an image of the damaged or stolen bicycle or part (Detaillierter Kostenvoranschlag mit Foto)"
+    ],
+    "all_requests_source_chained": true
+  },
+  {
+    "pair_id": "theft-09-01",
+    "scenario": "PR_declined",
+    "context_index": 0,
+    "before_unit_id": "theft-09-01-false",
+    "after_unit_id": "theft-09-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's declination of the claim for indemnity",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Insurer's declination of the claim for indemnity"
+    ],
+    "changed_guard_ids": [
+      "overlay_guard_043",
+      "overlay_guard_051",
+      "overlay_guard_075"
+    ],
+    "changed_guard_count": 3,
+    "chain_attributed_predicted": [
+      "+Insurer's declination of the claim for indemnity"
+    ],
+    "chain_attributable_gold_atoms": [
+      "+Insurer's declination of the claim for indemnity"
+    ],
+    "all_requests_source_chained": true
+  },
+  {
+    "pair_id": "theft-05-01",
+    "scenario": "PR_expert_procedure_requested",
+    "context_index": 0,
+    "before_unit_id": "theft-05-01-false",
+    "after_unit_id": "theft-05-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "changed_guard_ids": [
+      "overlay_guard_021",
+      "overlay_guard_022",
+      "overlay_guard_023",
+      "overlay_guard_024"
+    ],
+    "changed_guard_count": 4,
+    "chain_attributed_predicted": [
+      "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "chain_attributable_gold_atoms": [
+      "+Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins"
+    ],
+    "all_requests_source_chained": true
+  },
+  {
+    "pair_id": "theft-08-01",
+    "scenario": "PR_goods_recovered",
+    "context_index": 0,
+    "before_unit_id": "theft-08-01-false",
+    "after_unit_id": "theft-08-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Report to the insurer that stolen items have been recovered or news of them received",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "changed_guard_ids": [
+      "overlay_guard_040",
+      "overlay_guard_041"
+    ],
+    "changed_guard_count": 2,
+    "chain_attributed_predicted": [
+      "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "chain_attributable_gold_atoms": [
+      "+Report to the insurer that stolen items have been recovered or news of them received"
+    ],
+    "all_requests_source_chained": true
+  },
+  {
+    "pair_id": "theft-07-01",
+    "scenario": "PR_nachfrist_set",
+    "context_index": 0,
+    "before_unit_id": "theft-07-01-false",
+    "after_unit_id": "theft-07-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "changed_guard_ids": [
+      "overlay_guard_012",
+      "overlay_guard_033",
+      "overlay_guard_039",
+      "overlay_guard_070",
+      "overlay_guard_098"
+    ],
+    "changed_guard_count": 5,
+    "chain_attributed_predicted": [
+      "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "chain_attributable_gold_atoms": [
+      "+Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)"
+    ],
+    "all_requests_source_chained": true
+  },
+  {
+    "pair_id": "theft-06-01",
+    "scenario": "PR_repair_over_500",
+    "context_index": 0,
+    "before_unit_id": "theft-06-01-false",
+    "after_unit_id": "theft-06-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Insurer's prior consent to a repair whose expected cost exceeds the consent threshold",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "changed_guard_ids": [
+      "overlay_guard_067",
+      "overlay_guard_090"
+    ],
+    "changed_guard_count": 2,
+    "chain_attributed_predicted": [
+      "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "chain_attributable_gold_atoms": [
+      "+Insurer's prior consent to a repair whose expected cost exceeds the consent threshold"
+    ],
+    "all_requests_source_chained": true
+  },
+  {
+    "pair_id": "theft-01-01",
+    "scenario": "PR_scheduled_valuable_1000",
+    "context_index": 0,
+    "before_unit_id": "theft-01-01-false",
+    "after_unit_id": "theft-01-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Receipt for the scheduled valuable (Quittung / Rechnung)",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+      "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "changed_guard_ids": [
+      "overlay_guard_016",
+      "overlay_guard_074"
+    ],
+    "changed_guard_count": 2,
+    "chain_attributed_predicted": [
+      "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+      "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "chain_attributable_gold_atoms": [
+      "+Expert's valuation of the scheduled valuable (Wertgutachten eines Sachverstaendigen / Schaetzung)",
+      "+Receipt for the scheduled valuable (Quittung / Rechnung)"
+    ],
+    "all_requests_source_chained": true
+  },
+  {
+    "pair_id": "theft-03-01",
+    "scenario": "PR_sim_card_stolen",
+    "context_index": 0,
+    "before_unit_id": "theft-03-01-false",
+    "after_unit_id": "theft-03-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [
+      "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+      "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "changed_guard_ids": [
+      "overlay_guard_084",
+      "overlay_guard_088"
+    ],
+    "changed_guard_count": 2,
+    "chain_attributed_predicted": [
+      "+Bank statement showing the misuse, together with a police report or an equivalent document, where card data were misused after the theft",
+      "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "chain_attributable_gold_atoms": [
+      "+Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours"
+    ],
+    "all_requests_source_chained": true
+  },
+  {
+    "pair_id": "theft-04-01",
+    "scenario": "PR_third_party_causer",
+    "context_index": 0,
+    "before_unit_id": "theft-04-01-false",
+    "after_unit_id": "theft-04-01-true",
+    "before_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "after_documents": [
+      "Completed and signed claim notification form (Schadenanzeige Hausrat / Gebaeude), submitted in full to the address on its last page or through the insurer's online channel",
+      "Completed claim-form section identifying the person who caused the loss and his liability insurer (name, address, insurance company, Policen-Nr. / Schaden-Nr.)",
+      "Insurer's instruction (Weisung / Anordnung) on the measures to be taken, and evidence that it was followed",
+      "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+      "Original purchase vouchers for the affected items (Originalbelege / Originalkaufbelege), including vouchers for the effective costs claimed under the insured cost heads",
+      "Payment instruction with payee name and address, IBAN and name of the financial institution",
+      "Police report on the theft (Polizeirapport / Polizeibeleg), which the insurer may call for, evidencing the person who laid the report, the date of the report, the police station and the officer",
+      "Signed valued inventory of the items present before and after the event and of the items affected (unterzeichnetes Verzeichnis mit Wertangaben), produced within any reasonable period the insurer sets",
+      "The experts' findings (Feststellungen der Sachverstaendigen), with the umpire's decision on points left in dispute",
+      "The insurance policy (Police), with the schedule of insured perils, locations, sums insured, deductible and additional covers",
+      "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+      "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+      "Written claim notification in any form permitting proof by text (letter, e-mail, the insurer's online loss form), where the insurer has not required its own form"
+    ],
+    "predicted_signed_delta": [],
+    "changed_guard_ids": [],
+    "changed_guard_count": 0,
+    "chain_attributed_predicted": [],
+    "chain_attributable_gold_atoms": [],
+    "all_requests_source_chained": true
+  }
+]

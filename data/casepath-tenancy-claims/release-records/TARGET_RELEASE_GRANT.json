@@ -1,0 +1,1234 @@
+{
+  "additional_evaluation": false,
+  "allowed_operations": [
+    "inspect_exact_containers_for_licensing_and_anonymity",
+    "export_exact_original_containers",
+    "retain_reproduction_metadata"
+  ],
+  "decision_sha256": "b8ea4050231c2faa48c79164151ff7798543d195592b98edf78a3900ff52779b",
+  "evaluation_result_sha256": "f65edd4fbfd9bda2d3b3cf7c3c55fb359b7c2b5a5173fad9dce1fcc71715f69b",
+  "evaluation_terminal_sha256": "a64591b42510c9027c65e463dea7366a0e42bec98b29c3f01a96379327c6df75",
+  "historical_producer_non_access_attested": false,
+  "inference": false,
+  "issued_at": "2026-09-21T15:11:12.484427+00:00",
+  "license": "CC-BY-4.0",
+  "license_manifest_sha256": "638630886a1d291dfe9009839eb0519130e56700bb4d454277ce2e45c6044f4c",
+  "numerical_report_sha256": {
+    "finite_descriptive": "d7c1b22059fe53fd23cfa90a9ddd93efc77a9074a3731b2f1d995b968efb35c8",
+    "hidden_test": "5f814400e42620812f689c635d54f45b6a9b9e3d0e1221b775a32854e61a90ff",
+    "public_dev": "3e57a126ab2861b5426e62ffbdef0e4b469e37142063b72701401e20a9abc158"
+  },
+  "phase_authentication_sha256": {
+    "hidden_test": "1c9290f699cf5cc14de3e53c5c85b2ba2607153dac47bf0d85d65688512e1de5",
+    "public_dev": "c6466bbd36672759ad1a09a6843c154db20de6b55dc8e80e74d7410769f88f07"
+  },
+  "plan_id": "8b0a01cf5f31df1bbdfb3b95959530cfc932e0deff701cea27ccf3dabfa4849d",
+  "prediction_authentication_sha256": "9f632ce4c88eb7c7a9d9d71d51ae39aa2e58ad6539e232979f5c41b1c4b55346",
+  "producer_target_access": false,
+  "schema": "casepath.post-evaluation-target-release-grant/1",
+  "scoring_task_id": "analysis-d712fcdf-87e0-4892-874c-48d39f919ad5",
+  "source_decision_message": "40160b5a-b802-400d-9ad9-3c166098e4c1",
+  "target_index_sha256": "e19fcffb164c82a85886dd58a7fb5c0ba627a18b7e296d8cc0cc0bd5a26bd556",
+  "target_scope": [
+    {
+      "case_id": "clm_e262801f9368bc12",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "a3d15d7211047c2b4372b836bb6e0f74bdf860d67b4f90153d681fba9c7ec895",
+      "relative_path": "data/dev/gold/clm_e262801f9368bc12.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_731b214dde882f89",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "cb2f29d17c506e346cec208937ecaab604f61b153a972d8f51b004d62745c5cc",
+      "relative_path": "contracts/clm_731b214dde882f89.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_7ac806bd30792cfb",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "079e6680c66047347c327a6197ecefa4713f348dd0901cc9d767450c128dc5ab",
+      "relative_path": "contracts/clm_7ac806bd30792cfb.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_5156de89a4189cd1",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "c6aa31803b10cc1e38d34533827e8eb62a23597d063a30d0ab21ce43f5791879",
+      "relative_path": "data/dev/gold/clm_5156de89a4189cd1.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_92264ed30ac9bc8d",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "391998130c502bbf8f667bec7bb931f300470c6ae3b4966fd47d99c0f1733cd0",
+      "relative_path": "contracts/clm_92264ed30ac9bc8d.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_c50db5a1837bf4e3",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "09a34c4bae248d4dcabbcbf95820309afe1be945801aac7f9f3c12819546d4eb",
+      "relative_path": "data/dev/gold/clm_c50db5a1837bf4e3.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_cdfdac3cdf7f809a",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "e46cd667f70e3bc83479eba76c5ab744c5153cd9dc1a3605346fc26477036ee9",
+      "relative_path": "contracts/clm_cdfdac3cdf7f809a.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_5ada7e71f6f329e1",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "52cb70565534db6331649237f07015aef540846686a646783a808feeb7f4fa76",
+      "relative_path": "contracts/clm_5ada7e71f6f329e1.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_c683ace4cb02ccb3",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "794a9ee651dc2cbe395a47059430fb1ae402629f4d6b8bd7e87792580be98a29",
+      "relative_path": "contracts/clm_c683ace4cb02ccb3.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_f58dd10e77d46554",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "a54c9f2377e015d16dc80bf41daef807c733b8e3d59e8ddaf731b8a9f7c77cd1",
+      "relative_path": "data/dev/gold/clm_f58dd10e77d46554.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_7eb9780fa5d65658",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "caa00f6cb807884e9aeb275684386dd79b9f64d52b35e86065a7522e8933456c",
+      "relative_path": "data/dev/gold/clm_7eb9780fa5d65658.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_5f1fbce88f6e5a92",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "8222ead7c51121b2dee960adc046180ff5ad7acbe125a5136917e943a64463a5",
+      "relative_path": "contracts/clm_5f1fbce88f6e5a92.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_9c83b12ba8dfce68",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "43d44148f1c414acb0ac85e871503bda8efef46f64d0ab4d1ca34c01ee7adc4e",
+      "relative_path": "contracts/clm_9c83b12ba8dfce68.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_ee29ac770b1bf7b9",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "efc0abbf4e6e8eee8200671dde0182464672d68b0288f69ba5de317b0306af84",
+      "relative_path": "data/dev/gold/clm_ee29ac770b1bf7b9.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_fe259be188154a0c",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "ed38cd3af444fe3fb0899625c445b002c85f4fb6570c505cc2586bee5ec75135",
+      "relative_path": "contracts/clm_fe259be188154a0c.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_521c20913f4e0f9b",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "eb00dee7a2d3b1bbc592d918ef6562e3547580089c6ead1422c855b69bd80e63",
+      "relative_path": "data/dev/gold/clm_521c20913f4e0f9b.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_da6786a395031f3a",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "dbccb9669dd21bb899de5abdae8a096383e301806059ad89aba0a5ef47af9755",
+      "relative_path": "contracts/clm_da6786a395031f3a.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_a62c178195d21648",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "ee632829462ea3df639e6e7e180dd80075176722f8c1c8e09dc01d01cb753841",
+      "relative_path": "contracts/clm_a62c178195d21648.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_24a7ac8c2e07dd51",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "f7095ed55e56b5355d297870d4cb7731d51e01f4629e16c74e4498aa33e2f1e2",
+      "relative_path": "contracts/clm_24a7ac8c2e07dd51.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_314f2d309fea25e6",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "a5dc12cadc4b5b8d44ba443971a2a1be89536edd1922a5a9541820e34a99dedc",
+      "relative_path": "data/dev/gold/clm_314f2d309fea25e6.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_53e9ef7917c4ae36",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "f203b240315acc1cdb2a3e8bcf0b3d4da81c7c5e39cf430c3327225bde06e64c",
+      "relative_path": "data/dev/gold/clm_53e9ef7917c4ae36.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_fc3fad19cc8db954",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "5f24c5593f1c38ccf211f5b441c4eea3d36513dbeaf7c770e031cc07f8a8f5a4",
+      "relative_path": "contracts/clm_fc3fad19cc8db954.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_99188a578845347c",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "71629d7caf267ac4e9c7d4786192db75f6f105a67283b361c683ee8462a3fd35",
+      "relative_path": "contracts/clm_99188a578845347c.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_c10b97ecdfea47f5",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "b65aeb50644d3b5fd5d4053855ba19984c85fe612847926efc4fede23427ff26",
+      "relative_path": "data/dev/gold/clm_c10b97ecdfea47f5.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_fa340390e701525c",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "171cf2a24c494dd57ac1f2e5ab2e9671262dbe9756c08ec38f747bac55231ae3",
+      "relative_path": "contracts/clm_fa340390e701525c.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_2e6d8907d83dae8f",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "844d440676d6318296859c8c53260e8dc60157f44c671aa98a7083ebcae796f8",
+      "relative_path": "data/dev/gold/clm_2e6d8907d83dae8f.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_7108870bd133fed4",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "83a596ba5a3368a5dc32066c2b8511699f8a3677c321d07979393814643d8806",
+      "relative_path": "contracts/clm_7108870bd133fed4.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_470f9c19b4ae7713",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "9fd7f1465c1454fcbeb67667f959b2a67124f788c6daa88aecd33e4eaed605a2",
+      "relative_path": "contracts/clm_470f9c19b4ae7713.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_3ad3b76f5da143ca",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "553e617270b4bc9aed0cdf91cac6da024e32cbf3523a2b65e46a44103812f7b2",
+      "relative_path": "contracts/clm_3ad3b76f5da143ca.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_95d08975bc575592",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "dc86a8f8bcfb4f4f46c3405597d2af03a58039c19b235d943dc496c3d1a3e080",
+      "relative_path": "data/dev/gold/clm_95d08975bc575592.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_434b9dace61705ce",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "398c9d8b0ab0bb7fd30fc965bf785cd9da4c4b5c8f95a7d0b68f404c2259c69a",
+      "relative_path": "data/dev/gold/clm_434b9dace61705ce.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_14970d755f5b88ed",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "6836bfdd08a9c4555f4dad9471a2ac03ff09e1a31af7df25b1dd088cec75f243",
+      "relative_path": "contracts/clm_14970d755f5b88ed.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_06400c75399e7f37",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "7e4d4707baf6ccb2b11ab97a6511e67d97c3b8272a9c90661bcdcd3eb1ae4ace",
+      "relative_path": "contracts/clm_06400c75399e7f37.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_505e3fc9e90f61fa",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "46e8ee1a200abd98ca82940056ffd4cf9d3f31e9a8e7e8c9338ddbab91f92529",
+      "relative_path": "data/dev/gold/clm_505e3fc9e90f61fa.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_1e7d16e71afda920",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "80f81af81d6f4deb66679ce9c9d942a40278bb03bdba64d8ee4e47b49dedadec",
+      "relative_path": "contracts/clm_1e7d16e71afda920.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_53b7982ac9bc1a95",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "f45c3e7ff3eaff995396239e004bef65607a65bf75d4705db3425260a8ece2d2",
+      "relative_path": "data/dev/gold/clm_53b7982ac9bc1a95.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_7b92cc30892368b3",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "2d00f22769f3e27cd5dc143b03d2dd22b1960fe28aaa77d4a4fcab2481eb432d",
+      "relative_path": "contracts/clm_7b92cc30892368b3.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_9fc9c41746bca87d",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "2ebcf0588282b7f1f6bcf05da10f5c05834fa75c73cae61550ee1f749b61e03a",
+      "relative_path": "contracts/clm_9fc9c41746bca87d.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_8b7fca3c1704e47f",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "53b7262444cda5412408b534e927600b0b3b2f287a3764502def08a51aa8e467",
+      "relative_path": "contracts/clm_8b7fca3c1704e47f.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_4a07dbbbd859a3ce",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "56db0669acf8f6a0b9769dae365cb5b6b58c90e9cbf33cbdee7d3be02ac2b6bb",
+      "relative_path": "data/dev/gold/clm_4a07dbbbd859a3ce.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_37909940906c3d22",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "d52eab6c90bf47dc18baf3cd80ce74884fdf5870af7d300d2739ce633b513d95",
+      "relative_path": "data/dev/gold/clm_37909940906c3d22.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_d830a8410fe8c94a",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "4dd7bd50d184c180c4422115f80cdb1c0adb45b8fca7d2fe712d29c5ba89e1ca",
+      "relative_path": "contracts/clm_d830a8410fe8c94a.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_bfbb1a8f3fc58156",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "0a0264abd98d4f07e426258b221da62cd5d43c6f6d288c77c42149282ffe462b",
+      "relative_path": "contracts/clm_bfbb1a8f3fc58156.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_16ac3b7054d73cc0",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "8f3fb7f566081cb24a769d5876874db657b40122ca84f7e12ef4a04a2a5b2b72",
+      "relative_path": "data/dev/gold/clm_16ac3b7054d73cc0.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_4fc7750e99cdf8fe",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "da032a145931b7b1f45b42330a179bb8487c0161611724094a472ed3b90bad2c",
+      "relative_path": "contracts/clm_4fc7750e99cdf8fe.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_0b431bbf8391ce3e",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "2e791f2c86a10706d98c97b2e077c302af8d2a631ff5fb2bbef52606dc5179b4",
+      "relative_path": "data/dev/gold/clm_0b431bbf8391ce3e.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_df9fc7fa4ca80f6d",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "ffeadd3813395dcfd2be4a3fbaf23d43c96936db2f611717b270b8dc2614cf41",
+      "relative_path": "contracts/clm_df9fc7fa4ca80f6d.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_1e3f5e4acec3ef7f",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "fdd23702b0603f68501f9bc4bad2871483266768ebdbf56f1a713f9c350a068f",
+      "relative_path": "contracts/clm_1e3f5e4acec3ef7f.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_672f2604d8f44888",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "1a8cd57eced1c6b1a242463544bbd2b5d1dc600983ede2337a9224bff617a06d",
+      "relative_path": "contracts/clm_672f2604d8f44888.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_bbe4806aa3607ee3",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "9ffa2bbae892632f04674972a620bedf0913e0627ae2f050fc897ef3060966f8",
+      "relative_path": "data/dev/gold/clm_bbe4806aa3607ee3.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_e331d769683c8207",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "8fc4f1066fbd4b4372a068264defc45b830e7f20b3d9b6a26970bea8e02844e4",
+      "relative_path": "data/dev/gold/clm_e331d769683c8207.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_e3e0212c8bdc4fb5",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "6f8fdc8e46e7c590b149a315044e9a94c3944216c71aab7bdb3cb4157010470f",
+      "relative_path": "data/dev/gold/clm_e3e0212c8bdc4fb5.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_0c5e7c7723a3c694",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "f1bef3d116f7d5fdd620964b8a0acd9c13b5ce1775469c8ec0eadcf9caf428b0",
+      "relative_path": "contracts/clm_0c5e7c7723a3c694.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_478488eeea2665d7",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "6ae282d95776e02b69c9ab0efbe2768f0812ea81cec2cd8d9347c2bf87540cc9",
+      "relative_path": "contracts/clm_478488eeea2665d7.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_3c803e1aa2da483a",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "0363caacdb0cef7aaa3822a1cf5fbb1a37374deea48adc74d30695bc5260be0a",
+      "relative_path": "contracts/clm_3c803e1aa2da483a.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_f14f53b1f55c294f",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "18c4028d368cf7c93ae0710b5b14e0ed390b756a326a32780e07b281037fe70d",
+      "relative_path": "data/dev/gold/clm_f14f53b1f55c294f.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_6e2d3a5178b4bce5",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "2f948cd30bccdad8076cf4969451f48e7ffe1773b870712bf6e5bee5c53e95fc",
+      "relative_path": "contracts/clm_6e2d3a5178b4bce5.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_4a53299cfe619303",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "4d133361e863b168fee298895617c31a517e7b64731f19c8b10f19785ecd078b",
+      "relative_path": "contracts/clm_4a53299cfe619303.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_2a9c260c26afaa34",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "d895b496bde08d95a389dc963f5a43dc96446bb38b1dd9fcd9aa6e6e9418575a",
+      "relative_path": "data/dev/gold/clm_2a9c260c26afaa34.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_ec246327ccda00a0",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "6ac38e79525ce1494190d7d3d4d7a7d9cc1ebb255465d4ed5aaedb8ea65fd0e7",
+      "relative_path": "data/dev/gold/clm_ec246327ccda00a0.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_8167911d95e79fdb",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "96bc9e2d0f70694d07faed7ac1e69d76efbee4e28c695e7ed531e3d73dc62f08",
+      "relative_path": "contracts/clm_8167911d95e79fdb.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_f69b1747447bc221",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "f163c0a37724ea43bf78b1f22d4eb326515e33519d3c5d1ac727b5590f341b19",
+      "relative_path": "contracts/clm_f69b1747447bc221.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_a601453abb9b2e32",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "913ac829078bf3d4527527414401ba7cd9fabfe33d508d385a628604452756ca",
+      "relative_path": "contracts/clm_a601453abb9b2e32.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_79beea0ce763d9b8",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "c51a6fa5021f959ac091914f0b15fcbe1ebf52a38006c16a836f4de1bfada777",
+      "relative_path": "data/dev/gold/clm_79beea0ce763d9b8.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_2bfdbc92e9178821",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "33c05fb917ff1522f008b2740903529763eae0e32f190d1fd0f61ff8317129d3",
+      "relative_path": "contracts/clm_2bfdbc92e9178821.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_0f4f13b1e3e1328c",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "13a4d5576bbd2bfad844c355f517d51446ec01f43c34b0dd1a4c39c79f017f6c",
+      "relative_path": "contracts/clm_0f4f13b1e3e1328c.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_a31f0d7e70441f32",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "c67b817bab5643ce38166dae89446b0cfac9d94e5d891c4ea022c57f7ad434a4",
+      "relative_path": "data/dev/gold/clm_a31f0d7e70441f32.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_1afd6bbf29e6539a",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "5c72cc2d077c2b862b89ff2987704182aff0c7c40d6d7cfc83d7a1d05484f45f",
+      "relative_path": "data/dev/gold/clm_1afd6bbf29e6539a.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_c138c15d0886b345",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "8b485d5cb4cc71a127e2e92a22a330063fc10e85c22f73d4b1c02e9a1491ebb3",
+      "relative_path": "contracts/clm_c138c15d0886b345.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_0e538990cc6ba7ef",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "a96e44453803c83c4dfbe9978abf47e724fcefe1c3c7b17c4d73b52398664da9",
+      "relative_path": "contracts/clm_0e538990cc6ba7ef.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_3051e263a9581028",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "f308d8a1fe4e031ba30691ed5268c22edebb8ea18fd24acc58b50775fb9f2679",
+      "relative_path": "contracts/clm_3051e263a9581028.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_e790e7cc236593e3",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "01b487ab9f15be961e05bd2748c1bd00ed4c5f2d03c54ed9861347e6bde1ae55",
+      "relative_path": "data/dev/gold/clm_e790e7cc236593e3.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_125b6fe2f3cada64",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "3cd5c894ac9dfff4578dc2e8c15ce40c0daf8784939e3aa2b46b6b1e23d5ee14",
+      "relative_path": "contracts/clm_125b6fe2f3cada64.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_72b3020bfe3de742",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "51cd3707ac256df55468492b262554ed378295910410f34ca13dc97ba63402fc",
+      "relative_path": "contracts/clm_72b3020bfe3de742.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_7255037b122de8a3",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "95532ff1ada848d24e8eeaad56c85c64d6665bb4d92d60e1e9230934ae9cfa42",
+      "relative_path": "data/dev/gold/clm_7255037b122de8a3.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_0e11979130681bd0",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "fea5510018e3870b0f80139d55c012c7e8efecc34446c82f280ac43880b8f2f0",
+      "relative_path": "data/dev/gold/clm_0e11979130681bd0.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_af5b8495ef298d23",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "9d39fce31092ba30c5271943f543b0eddfade1912e3a94945fb6fce5d1f16126",
+      "relative_path": "contracts/clm_af5b8495ef298d23.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_1093c1917b109a21",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "3b8d707f8d093bd24c20ec333fe457641ede1e92f007d6cf55974fff6d473093",
+      "relative_path": "contracts/clm_1093c1917b109a21.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_a91f0e5c3e7df086",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "23fc933d1b6dd95cc3a4bdce6bae559edea285f773eca1baad02ea05b26c7699",
+      "relative_path": "contracts/clm_a91f0e5c3e7df086.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_b14c5e2b8f9620a8",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "25880bac664e706d553ee068b8a415359a0dc9447bf32c800a729e6c35fee16b",
+      "relative_path": "data/dev/gold/clm_b14c5e2b8f9620a8.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_ab8afc6b0ad3b9e4",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "799e66b16eeb739694eeb8909f53181bb6ed8db6b7576643560e86553faad1ef",
+      "relative_path": "contracts/clm_ab8afc6b0ad3b9e4.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_393285577dcb12c4",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "3dcf3d37c66f73cbfb2b6f5b3332db14518060d32648d186ef77384eb18b1561",
+      "relative_path": "contracts/clm_393285577dcb12c4.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_aeab1f696a63e3f4",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "f859638492e4d12ac77ef9e7b47099b69bb79f26141e50b46635ecc98ecc0d5f",
+      "relative_path": "data/dev/gold/clm_aeab1f696a63e3f4.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_136438c6463a5721",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "03a88e3623d8c6c3c2b66e9534fabc4f0e6fe26a2addd3e1267733f71f4729ca",
+      "relative_path": "data/dev/gold/clm_136438c6463a5721.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_fd22c426938b6320",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "63e34cec215ed15549b21737327535c59bad9f01d2cda4fb9097bb507dc75556",
+      "relative_path": "contracts/clm_fd22c426938b6320.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_a44c2ac127c942c8",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "c1a35e9b91bbe83eb2fc855938b109b63396353294e26d159673411473f45dbe",
+      "relative_path": "contracts/clm_a44c2ac127c942c8.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_fded14caf513a043",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "bf0d578bb82faa701d55567ab1fb4544d34dbcfed1b0449f53523bd1b91c918c",
+      "relative_path": "contracts/clm_fded14caf513a043.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_e9ab4f62e362fee3",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "4a2dc0ed3e22bac671fb601a5447d4b944508641c89c3f88f819f403fe5cb792",
+      "relative_path": "data/dev/gold/clm_e9ab4f62e362fee3.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_5a25bfdab3e98a61",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "41f2d3692085e9273a66ffa595d3d2532a59e41532463bee5d84eafdc2e536b2",
+      "relative_path": "contracts/clm_5a25bfdab3e98a61.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_97f495fcbee20c74",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "c84c84d9ba41405e8db6634e229c35f4e3765a3902a4f7671b1dbddc632c6c89",
+      "relative_path": "contracts/clm_97f495fcbee20c74.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_280ce47169bdff61",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "5e5e4f46da2be6e43ccaebee77d7367e3b08ff7d79a1f100c6d37e4c1427ae57",
+      "relative_path": "data/dev/gold/clm_280ce47169bdff61.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_526d6c802e28b1da",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "d969b27cbc509e5449e6920c5fc60d9c4dad2abab69695d5094bb575b9974129",
+      "relative_path": "data/dev/gold/clm_526d6c802e28b1da.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_1ba0a82246459c6f",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "3597f317a4a313d4acbac8974a1f3672e4219b4670cb0f300f23f362ba406b09",
+      "relative_path": "contracts/clm_1ba0a82246459c6f.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_fd68e3dbacb17a8e",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "ac71edc3da2989c5ad3e4bd4ac75374ac1040e330600c1901cfc461384b98045",
+      "relative_path": "contracts/clm_fd68e3dbacb17a8e.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_1bf3e350283511e5",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "29ff3cbbbadebfbc094e85fe2573613c5320ceddcbc2782f244b228c730058cf",
+      "relative_path": "contracts/clm_1bf3e350283511e5.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_c9a03c7ad06533fb",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "dbec4de92d85c39659f38018e80dbd436769662d684c152684f55df825114b62",
+      "relative_path": "data/dev/gold/clm_c9a03c7ad06533fb.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_0c1a91bc008f8747",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "fcaa16aaf512493b90fb49200a408ecfb3b84d7fcb59906201b7138b8ac7a933",
+      "relative_path": "contracts/clm_0c1a91bc008f8747.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_8f8de9368e97ca31",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "307b66a530f0d556e6cb6f4f96a0d70e41fb7ef947fd1ccd0ea65b1937f9192e",
+      "relative_path": "contracts/clm_8f8de9368e97ca31.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_7db24a8ce46c8c50",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "5e3748bfb96fe13684a37cc630e63fe475c3d82cc100298aaac0f10508c8bcbe",
+      "relative_path": "data/dev/gold/clm_7db24a8ce46c8c50.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_aba6faab059a697e",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "adab2ffc7837d1b6701d2361a274f8202357b450668e1a17f50fd60532053175",
+      "relative_path": "data/dev/gold/clm_aba6faab059a697e.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_4335669eb30c238b",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "52813424cd1a6836c961931683cba407ac130e62d457fb0a3f0f19b7122a6abe",
+      "relative_path": "contracts/clm_4335669eb30c238b.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_1f1dffaac057e7e4",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "986694e29fecb63a48489b11f468c05f66a4fd9c175f3668bfabc012756eefa9",
+      "relative_path": "contracts/clm_1f1dffaac057e7e4.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_2c55cdd816b1d0e8",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "305956d2d1f59c888b6508918a2438571029733aecda8a81046024789f005a66",
+      "relative_path": "data/dev/gold/clm_2c55cdd816b1d0e8.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_c7ffe208c9390ad5",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "27bc19d1e20d26e9668e7ad3654edcbff94a519e74e530737f67d06936ee469b",
+      "relative_path": "data/dev/gold/clm_c7ffe208c9390ad5.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_324cd9e32649ba74",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "148f3aac07c784c234cc5ca0d265c401c6fb0153b0f114a70a5366fc9fcf66b5",
+      "relative_path": "contracts/clm_324cd9e32649ba74.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_30cac536260351c8",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "76e8c3180fef620405774bde6d6d4c17bbe3d33305d7ff7667772c3198167f2c",
+      "relative_path": "contracts/clm_30cac536260351c8.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_9a179a4481767d43",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "135802a6b17764a4c27362fb9612931cdbd64be9154d90b9b1439d52a26b80cf",
+      "relative_path": "data/dev/gold/clm_9a179a4481767d43.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_c8b46247757abe15",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "120b4c860c6176ec499dac223484ded508823dbc6df144927920a0796a3e6146",
+      "relative_path": "contracts/clm_c8b46247757abe15.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_bd74de2a73d9e05a",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "430edc48cc04e52fd986d173284f43421ea8677821879829577a94510a887697",
+      "relative_path": "data/dev/gold/clm_bd74de2a73d9e05a.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_4f7e346be88ed820",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "50ff1291abed04ca48b8270a8d8974a521e4e2e42e15a19537e30b5cecf4d3bb",
+      "relative_path": "contracts/clm_4f7e346be88ed820.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_64a401e6678f4871",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "4bb46b8c00f86ef9d20be594fc65b402a7d94edf3f76ea764a91b4b854ec81dc",
+      "relative_path": "contracts/clm_64a401e6678f4871.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_0c7beda7583b3558",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "cc26e57c9c58151c2266e266987311dfcf89b4f231af8c878468102143c3276e",
+      "relative_path": "contracts/clm_0c7beda7583b3558.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_543f08f2415b2a33",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "6203847d17b827b5a31e4198f8acbb68d74deaf7dcff328e3cbf27ed5af7a249",
+      "relative_path": "data/dev/gold/clm_543f08f2415b2a33.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_cf91859f633a8189",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "ee21d737c96c1a13ed805b14b00e04b3faf873a76acaa29ab41d1d0909e6d859",
+      "relative_path": "data/dev/gold/clm_cf91859f633a8189.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_7ace38ce2814fdb9",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "4fcab073fe222f065f5968b212d4223398f347ce5119ffc20c41b8ef7904aa5d",
+      "relative_path": "contracts/clm_7ace38ce2814fdb9.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_76238b1a82b5c877",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "e87d50f3f39d4ca064a10e7db5175eeab88b6033fd9e7437102d96f5530052cc",
+      "relative_path": "contracts/clm_76238b1a82b5c877.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_6f04d0907ecb96bb",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "8772ef3d97812bb6a75f6946214ab8b4a0f6cfd1d5a8bcc106efef92c7c0fc1f",
+      "relative_path": "data/dev/gold/clm_6f04d0907ecb96bb.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_e4a8342461b8cf79",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "67feda54ce750d4708e962b56760d100152d7c07d8e2c14eba62573e61303465",
+      "relative_path": "contracts/clm_e4a8342461b8cf79.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_99cc6719f9923d03",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "2376f0f92e667ff0d99a1f5510ab3e81b5780161972209aa0059fbdfd6df65e9",
+      "relative_path": "data/dev/gold/clm_99cc6719f9923d03.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_f8d04bdabc36bfe8",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "02cfc338c2a12ebca862e0934e0c822e2bcf23e33ea49d8e699ff8960bcfbe32",
+      "relative_path": "contracts/clm_f8d04bdabc36bfe8.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_58a690d3e8748a6d",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "fb72b7927b548183da8dfb8ba72f1eeaeeef1e1b8cd2f68cbacf1cea803b87b5",
+      "relative_path": "contracts/clm_58a690d3e8748a6d.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_ee6628dbc9cd16ff",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "12f208a91c29be0d32e976d17f6409f3527b95c8e3277ff5de93edacf87abb31",
+      "relative_path": "contracts/clm_ee6628dbc9cd16ff.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_7dbd7c7d1c4ddf90",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "c68441f8c74367895dd578c495ac8a8ce9c9cb29777d1fff661709e6649842e4",
+      "relative_path": "data/dev/gold/clm_7dbd7c7d1c4ddf90.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_ee0cd23eb1730f9d",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "8bad17744374c6c7a0ab84ca2cbb68fdae85ceec3190169bd43732b3038fd144",
+      "relative_path": "data/dev/gold/clm_ee0cd23eb1730f9d.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_c9029af5de9fa5a6",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "d790f073313a4acf3d3fdd1037cc75f1ee9b579bfe205117ea58bdf89c04c183",
+      "relative_path": "contracts/clm_c9029af5de9fa5a6.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_15dc0a0f31eced5a",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "539963feb13470265575f7dfbd87e56844e79c4c3ba1187f84f55e27cce2388c",
+      "relative_path": "contracts/clm_15dc0a0f31eced5a.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_fc970e956872f431",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "1e465a3e73788c017283c223d5782c61f9916ff5232f16c05ecfebf194084fe2",
+      "relative_path": "data/dev/gold/clm_fc970e956872f431.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_ac7d7a08ca8d5a55",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "81e875df797a3ae99c79f2f6f80343d6bbc7f207ac7faa2ef3f3ee1d1fed16a3",
+      "relative_path": "contracts/clm_ac7d7a08ca8d5a55.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_0c373e693a363f9e",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "155008b2941c54f2226343f769215e0d724410d779172f7fd7eb543e458b5883",
+      "relative_path": "data/dev/gold/clm_0c373e693a363f9e.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_5e2271e9b416dd22",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "4b2f5cb09c4f9e71d30b16a52f5b6c931f248c88e659144e9c36f33f72fb50fc",
+      "relative_path": "contracts/clm_5e2271e9b416dd22.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_29cfae9067da08bd",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "3668599e5b29e0d98c3d20eeb01b0110c5717847e3e5f5dd3a9103bbcf2e4a14",
+      "relative_path": "contracts/clm_29cfae9067da08bd.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_6ecae3f11685e3b2",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "a0daa7adc614545d889d84674b309a60c2568deaab945d1b74848b59a7b864b1",
+      "relative_path": "contracts/clm_6ecae3f11685e3b2.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_fe914f68772c8f3b",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "12c89df60a68bfb12613af4fd5e5fdaf0fbfe43f89b16697267e5fd19b92bcd5",
+      "relative_path": "data/dev/gold/clm_fe914f68772c8f3b.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_366b82c3e3dd7442",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "161c00f5de641baa459bc2f1da14a5c68e4b381b06b8ee01245c0ea74178afec",
+      "relative_path": "data/dev/gold/clm_366b82c3e3dd7442.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_f7cd8b8d07f8c933",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "03a0e3f9c539ee6c15777b5b5c3138c676140bf846cd42aa495b371f3c9c7269",
+      "relative_path": "contracts/clm_f7cd8b8d07f8c933.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_7078fe1804ad03cc",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "ae857eecb9fc37d6b2ac46c80bd1faf6b290675241d3f15fa5b2a36ee79664ed",
+      "relative_path": "contracts/clm_7078fe1804ad03cc.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_de7ddb30509c2358",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "a154a8b905d6debbf35d7456b379d47832033f20ae38d8d0e630cab0b1ddb31c",
+      "relative_path": "data/dev/gold/clm_de7ddb30509c2358.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_1bad44cf27f47443",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "9e68d255eb227be00644e6a9623ead07a1a5c864fd627cfa27965a6d27e63ded",
+      "relative_path": "contracts/clm_1bad44cf27f47443.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_329b8e1bf37554bf",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "dbbdb87c18d08289473d84723e7760ee33504826c7f20ba4f63ecb86f0e2161f",
+      "relative_path": "data/dev/gold/clm_329b8e1bf37554bf.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_cbfda394bc5fc2d3",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "fd32c6f7c0cc1768d26ef0576dc803017c69727cf3b590935b38dce9e50ee397",
+      "relative_path": "contracts/clm_cbfda394bc5fc2d3.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_5c6863b143c9c001",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "6b12d8e75433f41766b3b7e8a6e1c6eff6c3593d91bc47330732c8282fd99b92",
+      "relative_path": "contracts/clm_5c6863b143c9c001.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_c44ddc0914ba9298",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "2bac06f319214606a9c763188543b274066278b42c3c8e1c5a15c322f2acc613",
+      "relative_path": "contracts/clm_c44ddc0914ba9298.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_bdb9322222de3810",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "297f56b47964c6f48f65315c4bfe67f6aa84759c8e1a5f619a4d31cea9bb2d7f",
+      "relative_path": "data/dev/gold/clm_bdb9322222de3810.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_3f3c313482ea5657",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "f22d13586d5360887152c2d8223cdfbe83731ff93f1210e4541eca61990271cb",
+      "relative_path": "data/dev/gold/clm_3f3c313482ea5657.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_401e7d78a88016c6",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "57a8dc3c5c412c89665109f24039f77b6eb36f1d855b5d6eae3394d54150e947",
+      "relative_path": "contracts/clm_401e7d78a88016c6.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_44bf2425a1373f3f",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "cf0970cb0d773b44c22580da0016e001a90504e6f438fef8a7a14113126821be",
+      "relative_path": "contracts/clm_44bf2425a1373f3f.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_ff0434f401f4c442",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "705522097ea3fd5259d7d2f565fe1d8ad1e40669602f9f9d251ae9b6a9642a19",
+      "relative_path": "data/dev/gold/clm_ff0434f401f4c442.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_28950c69c5992e15",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "2c6b32c42d386e56d1b8d5feb46d03247ba76956a7f6430e16b40a0c943791c2",
+      "relative_path": "contracts/clm_28950c69c5992e15.json",
+      "split": "hidden_test"
+    },
+    {
+      "case_id": "clm_fd8e5004c663cecb",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "bb8b7f14939b95fd76e4daf6f5b7d13d97fbf1761245d65ca3e9dfaeaa227ef9",
+      "relative_path": "data/dev/gold/clm_fd8e5004c663cecb.json",
+      "split": "public_dev"
+    },
+    {
+      "case_id": "clm_93efa6c5f16b2da5",
+      "commitment_kind": "raw_file_sha256",
+      "contract_pointer": "/acceptance_contract",
+      "raw_sha256": "b0ce417ad5b8edbc2e788326e90e7560b426ecd14ea56855a06c87e737c17867",
+      "relative_path": "contracts/clm_93efa6c5f16b2da5.json",
+      "split": "hidden_test"
+    }
+  ]
+}

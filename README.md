@@ -1,69 +1,218 @@
 # CasePath
 
-CasePath helps a claims handler see what evidence is needed for a claim now, and why. Its workbench keeps the original packet beside the active process step, evidence requirement, and next action. It leaves a document request unspecified when the saved case does not justify one.
+**A process-first architecture for deciding which evidence an agent should
+request in a rule-governed workflow, and why.** Language models judge what is
+true of a case; executable process control derives what the case requires, and
+every request keeps its chain from source passage to document.
 
-The local workbench opens all 150 synthetic intake claims. It keeps source files, recorded observations, proposed work, and accepted handling events separate. Its default review is deterministic and makes no model API calls.
+This repository is the complete release for the paper *CasePath: An Agentic,
+Process-First Architecture for Determining Evidence Requirements* (under review
+at ICLR 2027). It holds the method, the claims-handling software built on it,
+two datasets, both benchmarks, every recorded run, and scripts that recompute
+the paper's numbers offline.
 
-![CasePath workbench showing original claim sources, the active process step, an unresolved evidence requirement, and the next review action](docs/images/workbench-review.png)
+![Direct prediction can mix branches; CasePath follows the active branch from obligation to fact, evidence and document.](docs/images/process-first.png)
 
-*A fictional claim after local review. Two original notices remain visible beside the current path and a human-review action. The saved state does not specify a document to request; this product example is not a benchmark result.*
+## Start here
 
-## See one claim
+| I want to | Go to |
+|---|---|
+| Read the paper | [`paper/CasePath.pdf`](paper/CasePath.pdf) |
+| Understand the method | [How CasePath works](#how-casepath-works), then the [interactive method guide](docs/method-guide.md) |
+| Run the claims workbench | [The software](#the-software) |
+| Use the datasets | [`data/`](data/README.md): 36 theft case pairs and 150 tenancy claims |
+| See the benchmarks and results | [Benchmarks and results](#benchmarks-and-results) |
+| Reproduce the paper's numbers | [Reproduce the results](#reproduce-the-results) |
+| Cite the work | [Citation](#citation) |
 
-After starting the app, append `#claim=clm_f69b1747447bc221` to the address printed by the server. This opens a family-home termination claim with two original notices. Read the message and both PDFs in **Sources**, then select **Start agent review**. **Decision** shows the current process step, evidence to check, and next action; **Evidence** shows what is present, missing, or unresolved. Select a requirement to inspect its reason and any accepted source passage. Nothing is sent to a customer or settled by this review.
+## Why CasePath
 
-Select **Data** in the workbench header to read all 150 original messages and their attachment lists before starting a review. The corpus browser uses only observable intake inputs; study labels and predictions are absent.
+In regulated work such as insurance claims, whether a document is needed
+depends on the state of the process. Suppose a watch is stolen in a burglary.
+Proof of its value is required if the watch was separately insured above the
+policy threshold, irrelevant if it was not, and premature if nobody knows yet.
+An agent that asks a model for the request directly makes one output judge the
+case and choose the action. That output records neither decision, can mix
+requirements from different branches, and gives no reason anyone can check.
 
-The [interactive method guide](docs/method-guide.md) gives a smaller teaching example: a repair may need an inspection report, or a service note and photo together. Changing the active condition or the available evidence changes the request. This authored example explains the controller; it is separate from measured benchmark cases.
+## How CasePath works
 
-The paper's Study A method is installed as a separate service. It uses the frozen source pack, guard interpreter and document planner. With recorded guard answers, its [replay matches all 72 paper cases and 36 paired changes](research/casepath/branch-benchmark/parity/PRODUCT_METHOD_PARITY_V5.json). The 150-claim workbench shows original sources, the active process, obligations, required facts, accepted evidence and next actions. It names no customer document when the saved review has no document route. The [method guide](casepath/method.html) runs the separate Study B controller on an authored teaching case. Each surface follows the paper's source-to-action chain; their measured results stay separate.
+CasePath splits the work. The paper's Algorithm 1 gives the full procedure.
 
-## Run it locally
+1. **Represent the rules.** Where rules are not yet formal, agents read the
+   source texts once into a process of nested branches. Each branch has a
+   condition and holds *obligations*; an obligation needs a *required fact*; an
+   *evidence capability* can establish that fact; and each allowed set of
+   documents that supplies the capability is a *route*. Every element quotes its
+   source.
+2. **Judge the case.** A language model marks each condition true, false or
+   unresolved, quoting the case, and judges the documents on file. This is the
+   only step that reads the case.
+3. **Activate obligations in code.** An obligation is active only if its own
+   condition holds and so does the condition of every branch that encloses it
+   (*full process scope*, a three-valued conjunction). A false condition drops
+   the obligation's documents; while a condition is unresolved, code holds the
+   documents back and asks about it.
+4. **Plan the evidence in code.** For each required fact, code picks the route
+   that the documents on file come closest to satisfying and requests only what
+   is missing.
+5. **Act with a reason.** Code returns the next step (ask, review evidence or
+   request documents), and each request carries its chain: source passage,
+   obligation, required fact, evidence capability, route, document.
 
-Download or clone the repository, enter its root, then run:
+Study A runs this procedure in its simplest setting (each rule checks only its
+own condition, and every route is requested); Study B runs it in full.
+
+## The software
+
+CasePath is also being built into claims-handling software, and that work is
+under active development. The released version is a local, single-user
+workbench: a browser interface over a FastAPI service with a hash-chained
+SQLite journal. A claims handler opens any of the 150 synthetic tenancy claims,
+reads the original message and attachments beside the active process step,
+evidence requirements and next action, and can record, correct, export and
+replay the handling state. Nothing is sent to a customer or settled. The
+default mode makes no model calls and needs no API key.
+
+![The workbench on a fictional claim: original notices beside the current process step and a human-review action.](docs/images/workbench-review.png)
 
 ```sh
-./bin/casepath prepare
-./bin/casepath dev
-```
-
-Open the address printed by the server. The first `prepare` installs pinned Python 3.13.9 dependencies, so it needs internet access. Local use after preparation needs no provider account, API key, database service, or paid infrastructure. You also need Git, `uv`, `lsof`, and `lockf` on macOS or `flock` on Linux. Stop the server with Ctrl-C. Saved claim and review state stays in `.runtime/casepath-data-v1`; use a fresh clone for disposable tests. [Setup](docs/setup.md) covers replay, export, safe reset, and platform details.
-
-```sh
-./bin/casepath test
+./bin/casepath prepare     # once; installs pinned Python 3.13.9 dependencies with uv (needs internet)
+./bin/casepath dev         # serves the workbench at the printed local address
+./bin/casepath test        # full isolated test suite
 ./bin/casepath replay <claim-id>
 ```
 
-## What the release contains
+You need macOS or Linux, Git, `uv`, `lsof`, and `lockf` (macOS) or `flock`
+(Linux). To open a recorded example, append `#claim=clm_f69b1747447bc221` to
+the printed address and select **Start agent review**. [Setup](docs/setup.md)
+covers replay, export, reset and platform details;
+[architecture and authority](docs/architecture-authority.md) explains how claim
+state is stored and changed.
 
-| Start here | What you will find |
-| --- | --- |
-| [Claims workbench](casepath/README.md) | Claim queue, verified source previews, assessment, process and evidence views, Agent review, correction, export, and replay. |
-| [150-claim data card](docs/INTAKE_PACKET_150.md) | Original intake inputs, attachment counts, schema, license, integrity checks, and limits. |
-| [Method guide](docs/method-guide.md) | One executable teaching example of obligation-led evidence planning. |
-| [Research evidence](docs/research-evidence.md) | Measured results, adverse findings, costs, and exact provenance. |
-| [Paper and reproduction](research/casepath/iclr2027-integrated/README.md) | Manuscript, numerical audit, figures, benchmark outputs, and offline verification. |
-| [Developer documentation](docs/README.md) | Setup, source authority, API contracts, recovery, and contribution rules. |
+**How the software relates to the paper.** The method, the benchmarks and the
+product are kept apart, and only the first two carry the paper's measurements.
 
-## What was measured
+| Part | What it is | Where |
+|---|---|---|
+| Study A method | The condition interpreter and planner of Study A, installed in the application as a separate service. Replaying the recorded condition decisions through it reproduces the documents, verdicts and next actions of all 72 cases and 36 paired changes. | [`casepath-api/casepath_api/`](casepath-api/casepath_api/) (`case_interpreter_v4.py`, `evidence_overlay_v3.py`, `casepath_process_service_v3.py`); [parity record](research/casepath/branch-benchmark/parity/PRODUCT_METHOD_PARITY_V5.json) |
+| Study B controller | Full process scope and the evidence planner of Study B. The application shows them on an authored teaching example with 45 states. | [`obligation_control/`](casepath-api/casepath_api/obligation_control/) (`obligation_control_v1.py`, `evidence_demand_v1.py`); [method page](casepath/method.html) |
+| Workbench review | Product behaviour: source grounding, journaled state, correction and replay over the 150 claims. It inherits none of the measured results. | [`casepath/`](casepath/README.md), [`docs/AGENT_REVIEW.md`](docs/AGENT_REVIEW.md) |
 
-The paired branch study changes one case fact at a time. On 27 held-out pairs, CasePath made 15 unjustified signed document changes, versus 27 for Direct, 41 for Graph as context, and 52 for Evidence-first. It recovered 24 of 33 required changes; Direct recovered 25 and Graph as context 31. This is a selectivity result with a recall trade-off. The registered broad-superiority gate failed, and the historical arms used unequal computation.
+The workbench runs on loopback for one user, without authentication. It
+demonstrates handling mechanics, not legal correctness or fitness for real
+claims. A claim-specific assessment view is in development.
 
-The complete 150-claim study preserved its original native graph-interface failure. A separate retrospective current-case comparison found that inherited process scope reduced requests while retaining the same valid requests in the completed development subset. It does not turn the failed registered comparison into a success or establish counterfactual branch correctness. [Read the study definitions and exact results](docs/benchmark-and-baselines.md) before comparing numbers across studies.
+## Datasets
 
-Reproduce the released checks offline, without new inference:
+Both datasets are synthetic, released under CC BY 4.0 with datasheets,
+licences and a `verify.py` that checks the evaluated files against recorded
+hashes. See [`data/README.md`](data/README.md).
+
+| Dataset | Study | What it holds |
+|---|---|---|
+| [`data/casepath-theft-pairs/`](data/casepath-theft-pairs/README.md) | A | 36 pairs of household-theft claims that differ in one branch-deciding sentence, each with the document changes it requires under 197 cited passages of Swiss law, four insurers' policy terms, a claim form and industry model conditions. |
+| [`data/casepath-tenancy-claims/`](data/casepath-tenancy-claims/README.md) | B | 150 tenancy claims as a claims inbox receives them (message, channel, attachments), each with a reference process graph, obligations, document states, next action and sources, plus 48 one-update variants. |
+
+![Study A dataset map](docs/images/dataset-map-theft-pairs.png)
+
+![Study B dataset map](docs/images/dataset-map-tenancy-claims.png)
+
+The quoted policy terms, claim form and model conditions in Study A belong to
+their issuers and are excluded from the data licence; see
+[`SOURCES.md`](data/casepath-theft-pairs/SOURCES.md).
+
+## Benchmarks and results
+
+**Study A: one changed fact.** Two cases of a pair differ in one fact that
+decides a branch. A method writes a checklist of documents for each case, and
+the benchmark scores the *signed change* between the two checklists against the
+documents the sources justify. Four methods share the model, sources, document
+catalogue and cases: CasePath, *Direct* (the model writes the checklists from
+the case and the sources), *Graph context* (the same, with CasePath's graph and
+rules in the prompt) and *Evidence-first* (the model first lists the evidence it
+needs and retrieves passages). The 27 held-out pairs were read once, after the
+method, data, analysis and success criteria were frozen.
+
+| Method | Correct | Wrong | Missed | Exact pairs | F1 [95% interval] |
+|---|---:|---:|---:|---:|---|
+| CasePath | 24 | **15** | 9 | **12/27** | **0.667** [0.435, 0.880] |
+| Direct | 25 | 27 | 8 | 9/27 | 0.588 [0.404, 0.759] |
+| Graph context | **31** | 41 | **2** | 4/27 | 0.590 [0.471, 0.716] |
+| Evidence-first | 16 | 52 | 17 | 2/27 | 0.317 [0.239, 0.400] |
+
+CasePath makes about half as many wrong changes as Direct and a third as many
+as Graph context, and it withdraws nothing. It does not recover more of the
+required changes, and three of the eight predeclared criteria (all on
+accuracy) are not met. Browse every held-out pair and each method's changes in
+[`explore.html`](research/casepath/branch-benchmark/explore.html); the
+benchmark's [README](research/casepath/branch-benchmark/README.md) defines the
+task and scoring.
+
+**Study B: the enclosing process.** With the model's judgments held fixed,
+CasePath is compared with *Local scope*, the same system with the conditions
+inherited from enclosing branches removed. On the 108 claims planned both ways,
+full process scope cuts requests from 1,445 to 652 and keeps all 635 valid
+ones.
+
+| Method | Claims with output | Justified-request precision | Coverage |
+|---|---:|---:|---:|
+| CasePath (full process scope) | 110 of 150 | **0.721** | **0.641** |
+| Local scope | 108 of 150 | 0.323 | 0.630 |
+
+Coverage does not rise, because it depends on reading the rules and the case.
+The benchmark's own evaluator scored no pipeline output, because it could not
+read the pipelines' condition names, so these numbers come from the released
+document-request scorer; the held-out claims were seen during product
+development and are not a fresh hidden test. The paper's Appendix C gives both
+analyses in full, and [`docs/benchmark-and-baselines.md`](docs/benchmark-and-baselines.md)
+defines every condition compared.
+
+## Reproduce the results
+
+Everything below runs offline, without model calls or provider accounts.
 
 ```sh
-python3 research/casepath/verify_release.py
+python3 research/casepath/branch-benchmark/reproduce.py   # every Study A number, in seconds
+python3 data/casepath-theft-pairs/verify.py               # Study A dataset against recorded hashes
+python3 data/casepath-tenancy-claims/verify.py            # Study B dataset and released references
+python3 research/casepath/verify_release.py               # release-wide checks, including the Study B analyses
 ```
 
-The paper build also needs Tectonic, Matplotlib and SciencePlots. Put `tectonic` on `PATH`, or set `CASEPATH_TECTONIC` to its executable. The verifier reports any missing tool or failed check; it never calls a model.
+The frozen evidence behind every reported number, including all recorded runs
+and failures, is in
+[`casepath_iclr2027_reproducibility.zip`](research/casepath/iclr2027-integrated/dist/casepath_iclr2027_reproducibility.zip).
+New model outputs would need provider access and are not deterministic.
 
-The local workbench and Agent review demonstrate product mechanics, not legal correctness or general model quality. The current hosted Render services use an older source line; this repository's verified experience is the local one.
+## Repository map
 
-## Go deeper
+| Path | Contents |
+|---|---|
+| [`paper/`](paper/) | The paper as submitted |
+| [`data/`](data/README.md) | The two released datasets |
+| [`casepath/`](casepath/README.md), [`casepath-api/`](casepath-api/) | The workbench interface and its service, including the Study A method service and the Study B controller |
+| [`research/casepath/branch-benchmark/`](research/casepath/branch-benchmark/README.md) | Study A benchmark, predictions, scorer and explorer |
+| [`research/casepath/iclr2027-integrated/`](research/casepath/iclr2027-integrated/README.md) | Study B analyses, figure and table builders, and the reproducibility archive |
+| [`docs/`](docs/README.md) | Setup, method guide, architecture, API contracts and troubleshooting |
+| [`examples/`](examples/) | The teaching example behind the method guide and a source adapter |
 
-- [How claim state is authorized](docs/architecture-authority.md)
-- [Agent review and its verified external-worker boundary](docs/AGENT_REVIEW.md)
-- [Contribution and source-sealing rules](CONTRIBUTING.md)
-- [License](LICENSE) and [third-party notices](THIRD_PARTY_NOTICES.md)
+`HANDOFF.md`, `AGENTS.md`, `CASEPATH_MASTER_KNOWLEDGE_TRANSFER.md` and
+`release/` are maintainer records of earlier work and are not needed to use the
+release.
+
+## Citation
+
+```bibtex
+@misc{casepath2027,
+  title  = {{CasePath}: An Agentic, Process-First Architecture for Determining Evidence Requirements},
+  author = {Anonymous},
+  year   = {2026},
+  note   = {Under review at ICLR 2027}
+}
+```
+
+## Licence
+
+Code is under the Apache License 2.0 ([`LICENSE`](LICENSE)). The datasets carry
+their own licence files (CC BY 4.0, with the exception above), and
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) lists third-party material.

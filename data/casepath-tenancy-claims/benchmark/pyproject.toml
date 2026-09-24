@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "casepath-bench"
+version = "3.0.0"
+description = "Reproducible CasePath-Bench-v3 evaluation package"
+requires-python = ">=3.13"
+dependencies = ["pydantic==2.11.7", "pypdf==6.10.0", "PyYAML==6.0.2"]
+
+[project.optional-dependencies]
+dev = ["pytest==8.4.1"]
+
+[tool.setuptools]
+packages = ["adapters", "baselines", "contracts", "manifests", "runners", "scorers", "validation"]
+
+[tool.setuptools.package-data]
+baselines = ["prompts/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

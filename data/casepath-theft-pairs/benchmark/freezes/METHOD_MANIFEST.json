@@ -1,0 +1,565 @@
+{
+  "contract": "casepath.theft-method-freeze/5.0.0",
+  "development": {
+    "pair_ids": [
+      "theft-02-01",
+      "theft-09-01",
+      "theft-05-01",
+      "theft-08-01",
+      "theft-07-01",
+      "theft-06-01",
+      "theft-01-01",
+      "theft-03-01",
+      "theft-04-01"
+    ],
+    "pairs": 9,
+    "unit_ids": [
+      "theft-02-01-false",
+      "theft-02-01-true",
+      "theft-09-01-false",
+      "theft-09-01-true",
+      "theft-05-01-false",
+      "theft-05-01-true",
+      "theft-08-01-false",
+      "theft-08-01-true",
+      "theft-07-01-false",
+      "theft-07-01-true",
+      "theft-06-01-false",
+      "theft-06-01-true",
+      "theft-01-01-false",
+      "theft-01-01-true",
+      "theft-03-01-false",
+      "theft-03-01-true",
+      "theft-04-01-false",
+      "theft-04-01-true"
+    ],
+    "units": 18
+  },
+  "execution_state": {
+    "b5_development_executed_at_freeze": false,
+    "hidden_executed_at_freeze": false,
+    "legal_expenses_executed_at_freeze": false,
+    "matched_baselines_development_executed_at_freeze": true
+  },
+  "files": {
+    "analysis": {
+      "bytes": 17834,
+      "path": "research/casepath/theft_confirmatory_analysis_v5.py",
+      "sha256": "3e4316521b8bf64d0857bae8066ecb00c53a5e922a6252b2b46a25abe371139f"
+    },
+    "b5_development_runner": {
+      "bytes": 10866,
+      "path": "research/casepath/runners/theft_b5_dev_v5.py",
+      "sha256": "a57f90de4265fc66e379b4794fe02c6d41a03b7daa8d11e7cfb92ad5a6288b0b"
+    },
+    "baseline_development_runner": {
+      "bytes": 9967,
+      "path": "research/casepath/runners/theft_baselines_dev_v4.py",
+      "sha256": "956f9434c7d7984bfac7d52061dad019be8f2b4dc9051bbffcee43eeb804ab1f"
+    },
+    "baseline_raw_pairs": {
+      "bytes": 77057,
+      "path": "research/casepath/theft_causal/v10-baselines-development/PAIR_RESULTS.json",
+      "sha256": "b0bf481ce4609ec6286cfd2c5c11401e45138eac9a8edcf3e64ee580160a5f97"
+    },
+    "baseline_raw_summary": {
+      "bytes": 1691,
+      "path": "research/casepath/theft_causal/v10-baselines-development/SUMMARY.json",
+      "sha256": "99e16d47e285606ccaaff075015c6220be7103fdbc43c09d74b34998b9604551"
+    },
+    "baseline_rebind": {
+      "bytes": 917,
+      "path": "research/casepath/theft_causal/v10-baselines-development/BASELINE_REBIND_V5.json",
+      "sha256": "9f36df8e8f1a2fd09aacf4e49279f5609ca6861cedd4bb6df68f2ab940020c8f"
+    },
+    "benchmark": {
+      "bytes": 141478,
+      "path": "research/casepath/theft_causal/BENCHMARK_V3.json",
+      "sha256": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc"
+    },
+    "benchmark_amendment": {
+      "bytes": 1406,
+      "path": "research/casepath/theft_causal/BENCHMARK_AMENDMENT_V3.json",
+      "sha256": "bedc131ec0ff193fcedb84727b15679ecaf5ac356896e29c21215fa390e4216b"
+    },
+    "benchmark_amendment_v2": {
+      "bytes": 1103,
+      "path": "research/casepath/theft_causal/BENCHMARK_AMENDMENT_V2.json",
+      "sha256": "664b8696c96a5c31d9f17c9f33a25d50af9244c6455d8ef4fdee80c9e444ab1b"
+    },
+    "benchmark_parent": {
+      "bytes": 139374,
+      "path": "research/casepath/theft_causal/BENCHMARK_V2.json",
+      "sha256": "7e04d2d6d549cccc1e037f69d37c7faa5e155e9cef1eff70c4e8fca1598a22b6"
+    },
+    "catalogue": {
+      "bytes": 8427,
+      "path": "research/casepath/theft_causal/FULL_CATALOGUE.json",
+      "sha256": "7dbd0c23d6452f85b47854d39122bdf44fc1ae196e152888ee24828e21344572"
+    },
+    "development_freeze": {
+      "bytes": 1390,
+      "path": "research/casepath/theft_causal/v10-dev-freeze-v5.json",
+      "sha256": "1eaf1f5a9291e923f7542434b7637473871b0813bb1a1caa455682f696ef078c"
+    },
+    "development_freeze_parent": {
+      "bytes": 996,
+      "path": "research/casepath/theft_causal/v3-dev-eval/DEV_FREEZE.json",
+      "sha256": "1cd8ed2999c2cca43c0c48791a8112c212c0363219aa75700d0d1d984f76b6ce"
+    },
+    "macro_graph": {
+      "bytes": 36048,
+      "path": "research/casepath/theft_causal/v3-source/INDUCED_GRAPH.json",
+      "sha256": "d7e83160dfbdb6b195adb634d021a50ff1131b5e760a02b8f8c2180a0729173d"
+    },
+    "map_summary": {
+      "bytes": 5298,
+      "path": "research/casepath/theft_causal/v9-rich-map-final/SUMMARY.json",
+      "sha256": "77432357e4b2b8d6fd964281503ff065f2f9acbc3628880d68052db8e05c55ef"
+    },
+    "prepared_map": {
+      "bytes": 406933,
+      "path": "research/casepath/theft_causal/v9-rich-map-final/PREPARED_ACTIVE_V5.json",
+      "sha256": "95f9208d47e5c0193c4c3056226a2bcaa3a37b023098d97e5d0307d52fd5db28"
+    },
+    "prepared_map_parent": {
+      "bytes": 406772,
+      "path": "research/casepath/theft_causal/v9-rich-map-final/PREPARED_RICH.json",
+      "sha256": "a012379cc4f047db3dc8702f2fcc299455f580e1326a1800781693f6b4b68b1a"
+    },
+    "propositions": {
+      "bytes": 159458,
+      "path": "research/casepath/theft_causal/v3-source/PROPOSITIONS.json",
+      "sha256": "bd89ac3100dc1ba44a901efedf18092d0a1566f55100e3bf48f9226270b4c553"
+    },
+    "refinement": {
+      "bytes": 241923,
+      "path": "research/casepath/theft_causal/v8-refinement-final/REFINEMENT_FINAL.json",
+      "sha256": "c0010b155b6cb0b90ee660b4d07553c522c5522cda4324f599107c146b623571"
+    },
+    "refinement_repair_ledger": {
+      "bytes": 2399,
+      "path": "research/casepath/theft_causal/v8-refinement-final/REPAIR_LEDGER.json",
+      "sha256": "c4513dcc8656f6207dc05802d5407bd4fd24dc7fe2a721a2307cdc0269df8d6f"
+    },
+    "requirements_lock": {
+      "bytes": 1312,
+      "path": "casepath-api/requirements.lock",
+      "sha256": "e55bd23b4ac8a23c4cd7ba5d53304a7d214c04a0e65d2f2089c8835634c4e4a7"
+    },
+    "shortcut_preflight": {
+      "bytes": 13977,
+      "path": "research/casepath/theft_causal/SHORTCUT_PREFLIGHT_V3.json",
+      "sha256": "a4fba156de466ee4fc13e4a84fe14f423be6ce9f4eb9292c9426cf1f0fc11a2e"
+    },
+    "source_amendment": {
+      "bytes": 951,
+      "path": "research/casepath/theft_causal/SOURCE_AMENDMENT_V2.json",
+      "sha256": "d800897ef4e1e49bbb32003f3bcd658a89a8bd35f92d3639241cbb0f3df06865"
+    },
+    "source_snapshot": {
+      "bytes": 176520,
+      "path": "research/casepath/theft_causal/SOURCE_SNAPSHOT_V2.json",
+      "sha256": "9d34231a655d16ef55348bc3018e90a3276ed8022859d8b3064177b0b4afb2d1"
+    },
+    "statistical_protocol": {
+      "bytes": 9205,
+      "path": "research/casepath/THEFT_STATISTICAL_PROTOCOL_V5.md",
+      "sha256": "420b4f577b2a2f6c722008a51299ca82e88ee2c0a62d6dd559e763cf97484697"
+    },
+    "target_route_audit": {
+      "bytes": 34059,
+      "path": "research/casepath/theft_causal/v9-rich-map-final/TARGET_ROUTE_AUDIT_ACTIVE_V5.json",
+      "sha256": "ddb368ae5bd5bcef6cbbda4fd54602ccc9a34094f52b626dd84b6e9138300bbf"
+    }
+  },
+  "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+  "hidden": {
+    "opened_at_freeze": false,
+    "pair_ids": [
+      "theft-01-02",
+      "theft-01-03",
+      "theft-01-04",
+      "theft-02-02",
+      "theft-02-03",
+      "theft-02-04",
+      "theft-03-02",
+      "theft-03-03",
+      "theft-03-04",
+      "theft-04-02",
+      "theft-04-03",
+      "theft-04-04",
+      "theft-05-02",
+      "theft-05-03",
+      "theft-05-04",
+      "theft-06-02",
+      "theft-06-03",
+      "theft-06-04",
+      "theft-07-02",
+      "theft-07-03",
+      "theft-07-04",
+      "theft-08-02",
+      "theft-08-03",
+      "theft-08-04",
+      "theft-09-02",
+      "theft-09-03",
+      "theft-09-04"
+    ],
+    "pairs": 27,
+    "unit_ids": [
+      "theft-01-02-false",
+      "theft-01-02-true",
+      "theft-01-03-false",
+      "theft-01-03-true",
+      "theft-01-04-false",
+      "theft-01-04-true",
+      "theft-02-02-false",
+      "theft-02-02-true",
+      "theft-02-03-false",
+      "theft-02-03-true",
+      "theft-02-04-false",
+      "theft-02-04-true",
+      "theft-03-02-false",
+      "theft-03-02-true",
+      "theft-03-03-false",
+      "theft-03-03-true",
+      "theft-03-04-false",
+      "theft-03-04-true",
+      "theft-04-02-false",
+      "theft-04-02-true",
+      "theft-04-03-false",
+      "theft-04-03-true",
+      "theft-04-04-false",
+      "theft-04-04-true",
+      "theft-05-02-false",
+      "theft-05-02-true",
+      "theft-05-03-false",
+      "theft-05-03-true",
+      "theft-05-04-false",
+      "theft-05-04-true",
+      "theft-06-02-false",
+      "theft-06-02-true",
+      "theft-06-03-false",
+      "theft-06-03-true",
+      "theft-06-04-false",
+      "theft-06-04-true",
+      "theft-07-02-false",
+      "theft-07-02-true",
+      "theft-07-03-false",
+      "theft-07-03-true",
+      "theft-07-04-false",
+      "theft-07-04-true",
+      "theft-08-02-false",
+      "theft-08-02-true",
+      "theft-08-03-false",
+      "theft-08-03-true",
+      "theft-08-04-false",
+      "theft-08-04-true",
+      "theft-09-02-false",
+      "theft-09-02-true",
+      "theft-09-03-false",
+      "theft-09-03-true",
+      "theft-09-04-false",
+      "theft-09-04-true"
+    ],
+    "units": 54
+  },
+  "mapper": {
+    "case_units_executed": 0,
+    "catalogue_documents": 33,
+    "catalogue_sha256": "7dbd0c23d6452f85b47854d39122bdf44fc1ae196e152888ee24828e21344572",
+    "completion_tokens": 25448,
+    "contract": "casepath.theft-rich-map-final/2.0.0",
+    "entries": 213,
+    "entries_sha256": "44850a9f8d7d3f08e28af31896bf89df4489e926e42348f3ce93a14695c09ee1",
+    "mapped_requirement_capabilities": 51,
+    "mapped_resolver_capabilities": 32,
+    "mapped_sha256": "2ea17320fc7b416bd37e31bba57821086a8a318a0264d77f22a008288704df9d",
+    "model": "openai/gpt-5.6-terra",
+    "prepared_sha256": "a012379cc4f047db3dc8702f2fcc299455f580e1326a1800781693f6b4b68b1a",
+    "prompt_tokens": 151815,
+    "propositions_sha256": "bd89ac3100dc1ba44a901efedf18092d0a1566f55100e3bf48f9226270b4c553",
+    "provider_calls": 36,
+    "refinement_sha256": "c0010b155b6cb0b90ee660b4d07553c522c5522cda4324f599107c146b623571",
+    "remaining_unopened_units": 54,
+    "reported_cost_usd": 0.43111,
+    "requirement_capabilities": 126,
+    "resolver_capabilities": 87,
+    "unmapped_requirement_capabilities": [
+      "overlay_rule_001.f01.c01",
+      "overlay_rule_002.f02.c01",
+      "overlay_rule_004.f01.c01",
+      "overlay_rule_005.f01.c01",
+      "overlay_rule_005.f02.c01",
+      "overlay_rule_006.f01.c01",
+      "overlay_rule_006.f02.c01",
+      "overlay_rule_006.f03.c01",
+      "overlay_rule_011.f01.c01",
+      "overlay_rule_018.f01.c01",
+      "overlay_rule_019.f02.c01",
+      "overlay_rule_020.f02.c01",
+      "overlay_rule_021.f01.c01",
+      "overlay_rule_023.f01.c01",
+      "overlay_rule_024.f01.c01",
+      "overlay_rule_025.f02.c01",
+      "overlay_rule_026.f01.c01",
+      "overlay_rule_026.f01.c02",
+      "overlay_rule_026.f02.c01",
+      "overlay_rule_029.f01.c01",
+      "overlay_rule_030.f01.c01",
+      "overlay_rule_031.f01.c01",
+      "overlay_rule_032.f01.c01",
+      "overlay_rule_033.f01.c01",
+      "overlay_rule_033.f01.c02",
+      "overlay_rule_034.f01.c01",
+      "overlay_rule_035.f01.c01",
+      "overlay_rule_036.f01.c01",
+      "overlay_rule_036.f01.c02",
+      "overlay_rule_037.f01.c01",
+      "overlay_rule_038.f01.c01",
+      "overlay_rule_039.f01.c01",
+      "overlay_rule_041.f01.c01",
+      "overlay_rule_043.f01.c01",
+      "overlay_rule_044.f01.c01",
+      "overlay_rule_045.f01.c01",
+      "overlay_rule_048.f01.c01",
+      "overlay_rule_049.f01.c01",
+      "overlay_rule_050.f01.c01",
+      "overlay_rule_051.f01.c01",
+      "overlay_rule_052.f01.c01",
+      "overlay_rule_053.f01.c01",
+      "overlay_rule_054.f01.c01",
+      "overlay_rule_055.f01.c01",
+      "overlay_rule_056.f01.c01",
+      "overlay_rule_056.f02.c01",
+      "overlay_rule_057.f01.c01",
+      "overlay_rule_058.f01.c01",
+      "overlay_rule_059.f01.c01",
+      "overlay_rule_061.f01.c01",
+      "overlay_rule_063.f01.c01",
+      "overlay_rule_064.f01.c01",
+      "overlay_rule_065.f01.c01",
+      "overlay_rule_066.f01.c01",
+      "overlay_rule_067.f01.c01",
+      "overlay_rule_068.f01.c01",
+      "overlay_rule_069.f01.c01",
+      "overlay_rule_070.f01.c01",
+      "overlay_rule_071.f01.c01",
+      "overlay_rule_073.f01.c01",
+      "overlay_rule_075.f01.c01",
+      "overlay_rule_076.f01.c01",
+      "overlay_rule_077.f01.c01",
+      "overlay_rule_078.f01.c01",
+      "overlay_rule_079.f01.c01",
+      "overlay_rule_082.f01.c01",
+      "overlay_rule_083.f01.c01",
+      "overlay_rule_085.f01.c01",
+      "overlay_rule_086.f01.c01",
+      "overlay_rule_087.f01.c01",
+      "overlay_rule_089.f01.c01",
+      "overlay_rule_092.f01.c01",
+      "overlay_rule_093.f01.c01",
+      "overlay_rule_096.f01.c01",
+      "overlay_rule_097.f01.c01"
+    ],
+    "unmapped_resolver_capabilities": [
+      "resolver.overlay_rule_012",
+      "resolver.overlay_rule_021",
+      "resolver.overlay_rule_022",
+      "resolver.overlay_rule_024",
+      "resolver.overlay_rule_029",
+      "resolver.overlay_rule_030",
+      "resolver.overlay_rule_031",
+      "resolver.overlay_rule_032",
+      "resolver.overlay_rule_033",
+      "resolver.overlay_rule_034",
+      "resolver.overlay_rule_035",
+      "resolver.overlay_rule_036",
+      "resolver.overlay_rule_037",
+      "resolver.overlay_rule_038",
+      "resolver.overlay_rule_039",
+      "resolver.overlay_rule_041",
+      "resolver.overlay_rule_042",
+      "resolver.overlay_rule_044",
+      "resolver.overlay_rule_045",
+      "resolver.overlay_rule_049",
+      "resolver.overlay_rule_050",
+      "resolver.overlay_rule_051",
+      "resolver.overlay_rule_052",
+      "resolver.overlay_rule_053",
+      "resolver.overlay_rule_054",
+      "resolver.overlay_rule_056",
+      "resolver.overlay_rule_058",
+      "resolver.overlay_rule_059",
+      "resolver.overlay_rule_061",
+      "resolver.overlay_rule_063",
+      "resolver.overlay_rule_064",
+      "resolver.overlay_rule_065",
+      "resolver.overlay_rule_066",
+      "resolver.overlay_rule_067",
+      "resolver.overlay_rule_072",
+      "resolver.overlay_rule_073",
+      "resolver.overlay_rule_074",
+      "resolver.overlay_rule_075",
+      "resolver.overlay_rule_076",
+      "resolver.overlay_rule_077",
+      "resolver.overlay_rule_078",
+      "resolver.overlay_rule_079",
+      "resolver.overlay_rule_082",
+      "resolver.overlay_rule_083",
+      "resolver.overlay_rule_084",
+      "resolver.overlay_rule_085",
+      "resolver.overlay_rule_086",
+      "resolver.overlay_rule_087",
+      "resolver.overlay_rule_088",
+      "resolver.overlay_rule_090",
+      "resolver.overlay_rule_091",
+      "resolver.overlay_rule_092",
+      "resolver.overlay_rule_093",
+      "resolver.overlay_rule_096",
+      "resolver.overlay_rule_097"
+    ]
+  },
+  "method": {
+    "guard_major_case_interpretation": "casepath.case-interpreter/4.0.0",
+    "process_evidence_planning": "casepath.evidence-overlay/3.0.0",
+    "product_surface": "casepath.process-service/2.0.0",
+    "proposition_complete_evidence_refinement": "casepath.evidence-refinement/2.0.0",
+    "source_rich_closed_catalogue_mapping": "casepath.evidence-document-mapper/2.0.0",
+    "source_to_macro_process": "casepath.process-induction/3.0.0"
+  },
+  "model": "openai/gpt-5.6-terra",
+  "modules": {
+    "atomic_interpreter": {
+      "bytes": 6237,
+      "path": "casepath-api/casepath_api/case_interpreter_v4.py",
+      "sha256": "a31b305b2369181c44b2e84000ee914dfb85af764a9bd90403417aca15a5700a"
+    },
+    "document_mapper": {
+      "bytes": 4737,
+      "path": "casepath-api/casepath_api/evidence_document_mapper_v2.py",
+      "sha256": "430d65ac3fc6b7792e73b46f14af39ac2d4486aed18d1b913b5ba86d8746034b"
+    },
+    "evidence_refinement": {
+      "bytes": 29547,
+      "path": "casepath-api/casepath_api/evidence_refinement_v2.py",
+      "sha256": "c4506b91499735f6bc96bd43a52e404da2aa128596d2be19b522b6ef782ade5b"
+    },
+    "overlay_active_path": {
+      "bytes": 12508,
+      "path": "casepath-api/casepath_api/evidence_overlay_v3.py",
+      "sha256": "832e3568b6d5e688fa3ff24e30a672d45900a9a50a04fbeb0a6f139790346112"
+    },
+    "overlay_core": {
+      "bytes": 11635,
+      "path": "casepath-api/casepath_api/evidence_overlay_v1.py",
+      "sha256": "8999ff6a17da8c76b5d8d5cb5b685b5663582a5d684252c81c7b9b674e4a9fe4"
+    },
+    "overlay_parent": {
+      "bytes": 854,
+      "path": "casepath-api/casepath_api/evidence_overlay_v2.py",
+      "sha256": "a5464330865c7cf8a6b0427655e802f03cc8aebb21a5e335c81bb6154be33880"
+    },
+    "process_induction": {
+      "bytes": 4305,
+      "path": "casepath-api/casepath_api/process_induction_v3.py",
+      "sha256": "62d0eddbfd0e51d6583583e149f6bdc0bde67e600d89f66eac2368a21f1c4275"
+    },
+    "product_router": {
+      "bytes": 2364,
+      "path": "casepath-api/casepath_api/casepath_process_router_v2.py",
+      "sha256": "a785fd9cf7d930c07b8e4f9d92a989ab82f91c9d91f3b7e00f89146ddd7a9944"
+    },
+    "product_runtime": {
+      "bytes": 4029,
+      "path": "casepath-api/casepath_api/paper_method_runtime_v2.py",
+      "sha256": "fb3cccf4e136a68fc0be9875cc881dd76205cc2cf2cd7f1835e297e5bf7b0fb8"
+    },
+    "product_service": {
+      "bytes": 8977,
+      "path": "casepath-api/casepath_api/casepath_process_service_v2.py",
+      "sha256": "8348bcee5118bad4f6adf99a59aaaa504d6d52c45461f5a7355dbbfcad87a728"
+    },
+    "refinement_repairs": {
+      "bytes": 5418,
+      "path": "casepath-api/casepath_api/refinement_repairs_v1.py",
+      "sha256": "2e0cd6b6f2dd652cbfefedd2e43c652bd03a466d65bab826917a42c8c6d12c7c"
+    }
+  },
+  "provider_only": [
+    "openai"
+  ],
+  "temperature": 0.0,
+  "tests": {
+    "analysis": {
+      "bytes": 2855,
+      "path": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py",
+      "sha256": "cd510afc33b09e2977330ff27d1ac47fd59ae737d8e846b313b0f9a810a21be6"
+    },
+    "atomic_interpreter": {
+      "bytes": 3346,
+      "path": "casepath-api/tests/test_case_interpreter_v4.py",
+      "sha256": "85a6fa41746fa41ce0f2c98dc270b1d0b43a6313a219e1eed2ae90cdc33eb650"
+    },
+    "benchmark": {
+      "bytes": 1992,
+      "path": "casepath-api/tests/test_theft_benchmark_v3.py",
+      "sha256": "932ff33049c63637290b99b3a3cd8ce45dbc66e0f193127b9f4ab1eb00ca6388"
+    },
+    "benchmark_parent": {
+      "bytes": 1440,
+      "path": "casepath-api/tests/test_theft_benchmark_v2.py",
+      "sha256": "8cff806d729a6e31882200c0d747a953ad7351af5d3d9c65f1067b67ecaed67a"
+    },
+    "document_mapper": {
+      "bytes": 2519,
+      "path": "casepath-api/tests/test_evidence_document_mapper_v2.py",
+      "sha256": "36a60feda257cec5eb2ea6fcf7e61b587d5b57beb00c57c14d5da3f8e30e37c4"
+    },
+    "evidence_refinement": {
+      "bytes": 5687,
+      "path": "casepath-api/tests/test_evidence_refinement_v2.py",
+      "sha256": "f24d88b770143b962cb65ad64c60a1c72e6fd0bb65016c4f8ab8c2700be8aa45"
+    },
+    "evidence_refinement_batched": {
+      "bytes": 5175,
+      "path": "casepath-api/tests/test_evidence_refinement_v2_batched.py",
+      "sha256": "49fa96d2ca1f7f5bb4a288d880d1edb69ea997116072c5da071d38f86e443dda"
+    },
+    "overlay": {
+      "bytes": 3507,
+      "path": "casepath-api/tests/test_evidence_overlay_v1.py",
+      "sha256": "3c61eab3ac1c42ea3495d5375dfcd764a8f376622c2bdc3f52f4ff2c7c494019"
+    },
+    "overlay_active_path": {
+      "bytes": 3349,
+      "path": "casepath-api/tests/test_evidence_overlay_v3.py",
+      "sha256": "1c9aa5937de63abceb41aa2f90e566ddaa07c7b9619d188b590a810c99d05f9d"
+    },
+    "process_induction": {
+      "bytes": 2750,
+      "path": "casepath-api/tests/test_process_induction_v3.py",
+      "sha256": "7b97fb040fc7719efdaa39bc1325fdbd4830a18e5798769dc504980416700244"
+    },
+    "product_router": {
+      "bytes": 2273,
+      "path": "casepath-api/tests/test_casepath_process_router_v2.py",
+      "sha256": "bb43050994a4a03b72311988ba883df24b3026db671b12ba10cdfff8cf6b711e"
+    },
+    "product_runtime": {
+      "bytes": 3786,
+      "path": "casepath-api/tests/test_paper_method_runtime_v2.py",
+      "sha256": "795dc68a16d6841b401ae31ff47a19474a2741d6e6ba4960a1dbfecfd717b526"
+    },
+    "product_service": {
+      "bytes": 4874,
+      "path": "casepath-api/tests/test_casepath_process_service_v2.py",
+      "sha256": "089c5e7587c333805fb5983de641f454592a60848788f84412897bb518ef39a9"
+    },
+    "refinement_repairs": {
+      "bytes": 3817,
+      "path": "casepath-api/tests/test_refinement_repairs_v1.py",
+      "sha256": "d238fdf049d281c0171f2d5d5885fafb0d6e89b6641a8084e6e4ff2d4fac8eda"
+    }
+  }
+}

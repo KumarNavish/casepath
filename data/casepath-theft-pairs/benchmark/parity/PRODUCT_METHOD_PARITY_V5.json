@@ -1,0 +1,139 @@
+{
+  "all_pair_deltas_match": true,
+  "all_product_requests_have_exact_source_spans": true,
+  "all_unit_documents_match": true,
+  "all_unit_guard_states_match": true,
+  "all_unit_next_actions_match": true,
+  "benchmark_pairs": 36,
+  "benchmark_units": 72,
+  "contract": "casepath.product-method-parity/5.0.0",
+  "duplicate_text_semantic_invariant": true,
+  "files": {
+    "casepath-api/casepath_api/app.py": {
+      "bytes": 33321,
+      "path": "casepath-api/casepath_api/app.py",
+      "sha256": "d09cc12f2c8ddc47d69d213ee6dfb8b42609ccaad674b01c60f6d0f98293effe"
+    },
+    "casepath-api/casepath_api/arena_v1/__init__.py": {
+      "bytes": 92,
+      "path": "casepath-api/casepath_api/arena_v1/__init__.py",
+      "sha256": "d88bb449841affa3b48b9e21d0bef6c807feb2ae5e6312e7b61c8f08863f872a"
+    },
+    "casepath-api/casepath_api/arena_v1/transport.py": {
+      "bytes": 3448,
+      "path": "casepath-api/casepath_api/arena_v1/transport.py",
+      "sha256": "60e0e1d944c5f561ce97387211e2201de055c78591dc96e986cf71e029d4e2dd"
+    },
+    "casepath-api/casepath_api/case_interpreter_v2.py": {
+      "bytes": 6802,
+      "path": "casepath-api/casepath_api/case_interpreter_v2.py",
+      "sha256": "f88ecf1b62f2181327698a44e1ab1c3377895aaced1793c85981e9ba5f06e6c8"
+    },
+    "casepath-api/casepath_api/case_interpreter_v3.py": {
+      "bytes": 4585,
+      "path": "casepath-api/casepath_api/case_interpreter_v3.py",
+      "sha256": "8c1a32d3bc9d63c74bc9daa0c7e6a6c0e10e9b0e831e459ea31308f32ad7012d"
+    },
+    "casepath-api/casepath_api/casepath_process_router_v3.py": {
+      "bytes": 2364,
+      "path": "casepath-api/casepath_api/casepath_process_router_v3.py",
+      "sha256": "835e61ea3b7bad5d347a0dd6785d2d76b5546b913db72d253226bc194373b9fd"
+    },
+    "casepath-api/casepath_api/casepath_process_service_v3.py": {
+      "bytes": 9567,
+      "path": "casepath-api/casepath_api/casepath_process_service_v3.py",
+      "sha256": "82f29703977b001fc759deb52dd9eeb3426a52f5ceeec612650d3bf25ed37a4b"
+    },
+    "casepath-api/casepath_api/corpora/paper_method/PACK_RECEIPT.json": {
+      "bytes": 1779,
+      "path": "casepath-api/casepath_api/corpora/paper_method/PACK_RECEIPT.json",
+      "sha256": "2767d83d2ec11f1acc5baa5af962ab4ae23405a8f9603ef8814ae76f132014a8"
+    },
+    "casepath-api/casepath_api/corpora/paper_method/current/BENCHMARK.json": {
+      "bytes": 141478,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/BENCHMARK.json",
+      "sha256": "f6175b579453d0f825e6b925085f7789c9c85b169ee1a15fe5e26e5fd79527dc"
+    },
+    "casepath-api/casepath_api/corpora/paper_method/current/HIDDEN_RESULT.json": {
+      "bytes": 44796,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/HIDDEN_RESULT.json",
+      "sha256": "b0609c213e985db423119d6ee498948bea303ae906759abeaa22f863463d1f47"
+    },
+    "casepath-api/casepath_api/corpora/paper_method/current/METHOD_MANIFEST.json": {
+      "bytes": 20217,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/METHOD_MANIFEST.json",
+      "sha256": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15"
+    },
+    "casepath-api/casepath_api/corpora/paper_method/current/PACK_MANIFEST.json": {
+      "bytes": 1353,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/PACK_MANIFEST.json",
+      "sha256": "4b13cf3b36f60c4722bf61776a3f3f0e6d3f0bce6ffe274b718d26ea342df564"
+    },
+    "casepath-api/casepath_api/corpora/paper_method/current/PREPARED.json": {
+      "bytes": 406933,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/PREPARED.json",
+      "sha256": "95f9208d47e5c0193c4c3056226a2bcaa3a37b023098d97e5d0307d52fd5db28"
+    },
+    "casepath-api/casepath_api/corpora/paper_method/current/PROPOSITIONS.json": {
+      "bytes": 159458,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/PROPOSITIONS.json",
+      "sha256": "bd89ac3100dc1ba44a901efedf18092d0a1566f55100e3bf48f9226270b4c553"
+    },
+    "casepath-api/casepath_api/corpora/paper_method/current/SOURCE_SNAPSHOT.json": {
+      "bytes": 176520,
+      "path": "casepath-api/casepath_api/corpora/paper_method/current/SOURCE_SNAPSHOT.json",
+      "sha256": "9d34231a655d16ef55348bc3018e90a3276ed8022859d8b3064177b0b4afb2d1"
+    },
+    "casepath-api/casepath_api/obligation_compiler_v1.py": {
+      "bytes": 10688,
+      "path": "casepath-api/casepath_api/obligation_compiler_v1.py",
+      "sha256": "07d2f7808f6e67c02836b435eb68d8127e7a45fd3d65ed41a62ff6ada6beae8c"
+    },
+    "casepath-api/casepath_api/obligation_compiler_v2.py": {
+      "bytes": 8674,
+      "path": "casepath-api/casepath_api/obligation_compiler_v2.py",
+      "sha256": "274646d37e96838f3d7f420df93d54e8ec08e27e68d8c100944739ce7a120a4a"
+    },
+    "casepath-api/casepath_api/paper_method_runtime_v3.py": {
+      "bytes": 4029,
+      "path": "casepath-api/casepath_api/paper_method_runtime_v3.py",
+      "sha256": "2114f2e3fc08babffe7361bc941f6d70a14302fb17522232011bb9be69c0fa65"
+    },
+    "casepath-api/tests/test_casepath_process_service_v3.py": {
+      "bytes": 4952,
+      "path": "casepath-api/tests/test_casepath_process_service_v3.py",
+      "sha256": "1f34ff946c8e7493e937a311c5dd5e4774476776939d03b442d554c1ac9fcb8b"
+    },
+    "casepath-api/tests/test_paper_method_runtime_v3.py": {
+      "bytes": 4370,
+      "path": "casepath-api/tests/test_paper_method_runtime_v3.py",
+      "sha256": "6f3f6a870970de8ae7b86b5bf7f04436f687f65f978a3839c11a6362ea1fc291"
+    },
+    "research/casepath/PRODUCT_METHOD_PARITY_V5.core.json": {
+      "bytes": 1470,
+      "path": "research/casepath/PRODUCT_METHOD_PARITY_V5.core.json",
+      "sha256": "f17d59b1e7a4e390b9ab3a24d402d4b35a99b05c7b4c36896f2bdba277432494"
+    },
+    "research/casepath/PRODUCT_METHOD_TESTS_V5.log": {
+      "bytes": 115,
+      "path": "research/casepath/PRODUCT_METHOD_TESTS_V5.log",
+      "sha256": "e3058c031174bb4c3c40ae290328cb848a95e07002935b124edb3c66fa4d05e1"
+    },
+    "research/casepath/build_paper_method_pack_v5.py": {
+      "bytes": 7133,
+      "path": "research/casepath/build_paper_method_pack_v5.py",
+      "sha256": "cb6a1c76e6aa89781d549988a25c58c1d49514d9cebda6ca8bbe99298f09c21a"
+    },
+    "research/casepath/verify_product_method_parity_v5.py": {
+      "bytes": 7582,
+      "path": "research/casepath/verify_product_method_parity_v5.py",
+      "sha256": "728df0f4ea1de35e938b61d9a146ddc23eccae269cf3e81be9033a6c9d54c945"
+    }
+  },
+  "focused_tests_passed": true,
+  "goal_contract_sha256": "a9cd441ef939e36d7ed2c546b76aa41554813aba11ba1a379f23479ded4cc37b",
+  "http_mount_status_contract": "casepath.paper-method-status/3.0.0",
+  "method_freeze_sha256": "3d464c8e5748f185a8799a66ae54dcb79dfb51be9012448d4855f0a4709fee15",
+  "pack_manifest_sha256": "4b13cf3b36f60c4722bf61776a3f3f0e6d3f0bce6ffe274b718d26ea342df564",
+  "passed": true
+}

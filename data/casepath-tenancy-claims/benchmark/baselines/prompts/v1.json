@@ -1,0 +1,52 @@
+{
+  "bundle_version": "casepath.prompt-bundle/0.1.0",
+  "external_method_provenance": {
+    "B9": {
+      "adaptation": "Independent paper-inspired adaptation; not an exact reproduction and no external code, prompts, examples, or data are included.",
+      "method": "Independent adaptation of ExIde-P5 executable grounding and global rule-dependency ideas under the CasePath output contract",
+      "paper": "https://aclanthology.org/2026.acl-long.1625/",
+      "public_repository_audited_commit": "1935ba9251613d27010003bdca563d4e47a6c201"
+    }
+  },
+  "shared_rules": [
+    "Use only the observable claim packet and prior stage output supplied here.",
+    "Do not infer that an allegation is independently established.",
+    "Represent uncertainty with active_when, confidence, document state, or abstention.",
+    "Request a document only when it can support an explicit active fact needed by a decision.",
+    "Return only the JSON object requested by the response schema."
+  ],
+  "stages": {
+    "direct_draft": {
+      "objective": "Draft an end-to-end process and evidence plan directly from the observable packet.",
+      "ordering_constraint": "No intermediate representation is required."
+    },
+    "direct_finalize": {
+      "objective": "Produce the final typed candidate artifact from the direct draft.",
+      "ordering_constraint": "Preserve only claims and requests justified by the observable packet."
+    },
+    "document_draft": {
+      "objective": "Choose and classify potentially useful documents before constructing the process graph.",
+      "ordering_constraint": "List document choices first; do not draft decisions, facts, or process edges in this stage."
+    },
+    "document_first_finalize": {
+      "objective": "Starting from the document-first draft, produce the final typed candidate artifact.",
+      "ordering_constraint": "Keep the document-first ordering, then connect retained requests to decisions and facts."
+    },
+    "process_draft": {
+      "objective": "Construct active process decisions, branches, terminal outcomes, and the facts each decision requires.",
+      "ordering_constraint": "Do not select or request documents in this stage."
+    },
+    "evidence_from_process": {
+      "objective": "Produce the final typed candidate artifact by deriving evidence capabilities and minimum document requests from the process draft.",
+      "ordering_constraint": "For each request, preserve an active decision to required fact to evidence capability to document chain."
+    },
+    "exide_rule_draft": {
+      "objective": "Apply the paper-inspired ExIde-P5 idea: translate the observable packet into executable pseudo-code, then extract atomic condition/action rules.",
+      "ordering_constraint": "Return only pseudo-code and condition/action rules. Do not create CasePath fact, evidence-capability, document, decision-graph, or request structures in this stage."
+    },
+    "exide_finalize": {
+      "objective": "Infer sequential, conditional, parallel, or unrelated dependencies among the executable rules, then map the observable packet and rule draft to the final typed candidate artifact.",
+      "ordering_constraint": "Use only the packet and rule draft. Preserve the generic executable-rule grounding before constructing the final CasePath representation."
+    }
+  }
+}
