@@ -68,18 +68,18 @@ def _condition_label(flag: str, language: str) -> str:
 _GERMAN_DOCUMENTS = {
     "lease_contract": "Mietvertrag", "termination_notice": "Kündigungsschreiben",
     "proof_of_receipt": "Zustellnachweis", "notice_period_evidence": "Nachweis der Kündigungsfrist",
-    "stated_reason": "angegebener Kündigungsgrund", "spouse_notice_copy": "Kopie der Kündigung an den Ehepartner",
+    "stated_reason": "Angegebener Kündigungsgrund", "spouse_notice_copy": "Kopie der Kündigung an den Ehepartner",
     "payment_deadline_letter": "Zahlungsfristansetzung", "rent_ledger_payment_evidence": "Mietzinsabrechnung",
-    "prior_rights_correspondence": "frühere Korrespondenz zu Mieterrechten",
+    "prior_rights_correspondence": "Frühere Korrespondenz zu Mieterrechten",
     "housing_search_log": "Dokumentation der Wohnungssuche", "landlord_correspondence": "Korrespondenz mit der Vermieterschaft",
     "defect_notification": "Mängelanzeige", "proof_of_notification": "Nachweis der Mängelmeldung",
-    "dated_photos": "datierte Fotos", "landlord_response_history": "Antworten der Verwaltung",
+    "dated_photos": "Datierte Fotos", "landlord_response_history": "Antworten der Verwaltung",
     "humidity_temperature_log": "Feuchtigkeits- und Temperaturprotokoll",
-    "heating_service_report": "Heizungsservicebericht", "medical_confirmation": "ärztliche Bestätigung",
-    "technical_inspection": "technische Untersuchung", "written_repair_deadline": "schriftliche Reparaturfrist",
+    "heating_service_report": "Heizungsservicebericht", "medical_confirmation": "Ärztliche Bestätigung",
+    "technical_inspection": "Technische Untersuchung", "written_repair_deadline": "Schriftliche Reparaturfrist",
     "caretaker_correspondence": "Korrespondenz mit dem Hauswart",
     "rent_increase_notice": "Mietzinserhöhungsanzeige", "current_rent_evidence": "Nachweis des aktuellen Mietzinses",
-    "prior_rent_adjustment": "frühere Mietzinsanpassung", "stated_calculation": "angegebene Berechnung",
+    "prior_rent_adjustment": "Frühere Mietzinsanpassung", "stated_calculation": "Angegebene Berechnung",
     "reference_rate_basis": "Grundlage des Referenzzinssatzes",
     "renovation_cost_breakdown": "Aufstellung der Umbaukosten",
 }
@@ -96,8 +96,8 @@ _GERMAN_STEPS = {
     "lt_resolution": "Anfechtung, Erstreckung oder Einigung vorbereiten",
     "lt_close": "Ergebnis der Kündigung festhalten",
     "dh_intake": "Mangel und betroffene Räume erfassen",
-    "dh_safety": "unmittelbare Gesundheits- oder Sicherheitsgefahr abklären",
-    "dh_scope": "Mangel zeitlich einordnen", "dh_notice": "Meldung an die Vermieterschaft belegen",
+    "dh_safety": "eine unmittelbare Gesundheits- oder Sicherheitsgefahr abklären",
+    "dh_scope": "den Mangel zeitlich einordnen", "dh_notice": "die Meldung an die Vermieterschaft belegen",
     "dh_cause": "Ursache bis zur Klärung offenhalten",
     "dh_evidence": "objektive Belege zum Mangel sammeln",
     "dh_response": "Antwort und Zugang der Vermieterschaft prüfen",
@@ -166,6 +166,7 @@ def compile_draft_request(
                 else f"{condition} is inactive on this path"
             )
             if german:
+                condition = condition[0].upper() + condition[1:] if condition else condition
                 reason = (
                     f"{condition} ist noch ungeklärt" if route == "held_behind_question"
                     else f"{condition} ist auf diesem Pfad nicht aktiv"
@@ -195,9 +196,9 @@ def compile_draft_request(
         lines = ["Dear customer," if not specialist else "Dear specialist,", "", "To review your claim, please send the following:", "", "## Please send"]
     for item in requested:
         reason = item["step"] or ("Ihr Anliegen prüfen" if german else "review your claim")
-        detail = f"{item['label']}: Damit wir {reason.lower()} können" if german else f"{item['label']}: We need this to {reason[0].lower()+reason[1:]}"
+        detail = f"{item['label']}: Damit wir {reason} können" if german else f"{item['label']}: We need this to {reason[0].lower()+reason[1:]}"
         if item["condition"]:
-            detail += f"; Anlass ist {item['condition']}" if german else f"; this follows from {item['condition']}"
+            detail += f"; Anlass: {item['condition']}" if german else f"; this follows from {item['condition']}"
         if item["article"]:
             detail += f" ({item['article']})"
         detail += "."
