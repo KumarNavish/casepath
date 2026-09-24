@@ -280,7 +280,7 @@ function noticedFact(item,assessment,detail){
    const names=new Set(assessment.noticed.filter(row=>row.source_id===item.source_id&&row.fact_kind==='named_party_candidate').map(row=>row.text));
    return {label:names.size===1?role:'Name printed on notice',quote:raw,value:raw};
  }
- if(item.source_kind==='pdf_text')return {label:`${role} notice, page ${item.page||1}`,quote:raw,value:`end date ${raw.replace(/Juni/i,'June').replace(/Juli/i,'July').replace(/\.$/,'')}`};
+ if(item.source_kind==='pdf_text')return {label:`${role} notice, page ${item.page||1}`,quote:raw,value:`end date ${raw.replace(/\.?\s*Juni/i,' June').replace(/\.?\s*Juli/i,' July').replace(/\.$/,'').trim()}`};
  if(item.fact_kind==='reported_date'){
    const body=detail?.message?.body||'',before=body.slice(Math.max(0,body.indexOf(raw)-75),body.indexOf(raw)).toLowerCase();
    return {label:/started around|begann es um|began around|started on/.test(before)?'Started':/became aware/.test(before)?'Became aware':'Date mentioned',quote:raw,value:raw};

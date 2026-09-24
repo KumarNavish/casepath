@@ -249,12 +249,12 @@
     const target=line.message||!line.sourceId?rail.querySelector('[data-packet-message]'):rail.querySelector(`[data-artifact-id="${CSS.escape(line.sourceId)}"]`);
     if(!target)return;
     rail.querySelectorAll('.aw-source-focused').forEach(button=>button.classList.remove('aw-source-focused'));
-    target.classList.add('aw-source-focused');target.scrollIntoView({block:'center',behavior:'smooth'});
+    target.classList.add('aw-source-focused');target.scrollIntoView({block:'center',behavior:'instant'});
     if(target.hasAttribute('data-packet-message')){
-      target.click();
+      if(open)target.click();
       const message=document.querySelector('#cwSourceContent .cw-message'),text=message?.textContent||'',quote=line.quote||'';
       const start=quote?text.indexOf(quote):-1;
-      if(start>=0){message.replaceChildren(document.createTextNode(text.slice(0,start)),Object.assign(document.createElement('mark'),{textContent:quote}),document.createTextNode(text.slice(start+quote.length)));message.querySelector('mark')?.scrollIntoView({block:'center',behavior:'smooth'});}
+      if(start>=0){message.replaceChildren(document.createTextNode(text.slice(0,start)),Object.assign(document.createElement('mark'),{textContent:quote}),document.createTextNode(text.slice(start+quote.length)));if(open)message.querySelector('mark')?.scrollIntoView({block:'center',behavior:'instant'});}
       return;
     }
     target.classList.remove('aw-source-flash');void target.offsetWidth;target.classList.add('aw-source-flash');

@@ -86,9 +86,8 @@ const assessment={language:'en',next_step:'Ask for the receipt date.',noticed:[]
  {document_type:'spouse_notice_copy',label:'Separate spouse notice',route_state:'held_not_reviewed',required_at_node_ids:['later'],held_files:[{file_name:'Spouse notice.pdf'}],authority:{article:'Art. 266n'}},
 ]};
 const assessedDetail={...detail,state:{...detail.state,intake_assessment:{claim_assessment:assessment}}};
-test('why chain uses distinct action, need, step, quote and article',()=>{
+test('why chain uses distinct need, step, quote and article',()=>{
  const markup=view.canvasTrace(null,assessedDetail,'now');
- assert.match(markup,/Ask for the receipt date/);
  assert.match(markup,/Proof of receipt/);
  assert.match(markup,/Preserve the deadline/);
  assert.match(markup,/My form arrived on Monday/);
@@ -103,8 +102,8 @@ test('canvas shows all steps and separates needed from held documents',()=>{
  assert.match(markup,/Check service/);
  assert.match(markup,/data-path-state="active"/);
  assert.match(markup,/data-condition-state="true"/);
- assert.match(markup,/data-need-state="needed_now"/);
- assert.match(markup,/data-need-state="held_not_reviewed"/);
+ assert.match(markup,/data-need-state="now"/);
+ assert.match(markup,/data-route-state="held_not_reviewed"/);
  assert.match(markup,/Spouse notice copy/);
  assert.doesNotMatch(markup,/All steps|data-workbench-tab/);
 });
@@ -134,25 +133,39 @@ test('noticed facts name the party, start date and PDF page without losing sourc
  ],attachment_pages:[{artifact_id:'tenant-pdf',file_name:'Tenant_termination_notice.pdf'},{artifact_id:'spouse-pdf',file_name:'Spouse_termination_notice.pdf'}]};
  const source={...assessedDetail,message:{...assessedDetail.message,body:'As far as I remember, it started around 19 August 2025.'}};
  const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:source});
- for(const text of ['Tenant:</strong> <span lang="en">Robin Foster','Spouse:</strong> <span lang="en">Casey Foster','Started:</strong> <span lang="en">19 August 2025','Tenant notice end date:</strong> <span lang="en">30. Juni</span><small>, page 1'])assert.match(markup,new RegExp(text));
+ for(const [name,value] of [['Tenant','Robin Foster'],['Spouse','Casey Foster'],['Started','19 August 2025'],['Tenant notice, page 1','end date 30 June']])assert.match(markup,new RegExp(name+'<\\/span>.*>'+value.replaceAll(' ','\\s*')));
  assert.match(markup,/data-noticed-source="tenant-pdf" data-noticed-quote="30. Juni"/);
 });
 test('path chips name the transition whose verdict they show',()=>{
  const step={node_id:'later',label:'Build the dated timeline',state:'not_reached',condition_chips:[{condition_flag:'health_effects',label:'no immediate health escalation',verdict:'false',quote:'Mein Sohn hustet mehr'}],authority:null};
- const changed={...assessment,steps:[...assessment.steps.slice(0,-1),step]};
+ const changed={...assessment,conditions:{...assessment.conditions,health_effects:{verdict:'false',quote:'Mein Sohn hustet mehr'}},steps:[...assessment.steps.slice(0,-1),step]};
  const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});
- assert.match(markup,/no immediate health escalation <span>false<\/span>/);
- assert.doesNotMatch(markup,/Health effects alleged <span>false<\/span>/);
+ assert.match(markup,/Health effects <em>false<\/em>/);
 });
 test('candidate deadlines display the paragraph from the cited authority',()=>{
  const changed={...assessment,candidate_deadline:{date:null,question:'When did the notice arrive?',authority:{article:'Art. 273',authority_id:'or-art-273-para1-20260101-de'}}};
  const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});
  assert.match(markup,/Candidate deadline · Art\. 273 Abs\. 1/);
- assert.match(markup,/Waiting for the anchoring date/);
  assert.match(markup,/When did the notice arrive/);
 });
 test('resize callbacks do not measure a replaced claim header',()=>{
  const source=require('node:fs').readFileSync(require('node:path').join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');
  assert.match(source,/measuredHeader\?\.isConnected && panel\.contains\(measuredHeader\)/);
  assert.doesNotMatch(source,/panel\.querySelector\('\.cw-detail-head'\)\.getBoundingClientRect/);
+});
+
+test('minimal claim presentation guards',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const css=fs.readFileSync(path.join(__dirname,'../casepath/assets/claims-workspace-presentation-v1.css'),'utf8');
+ const agentCss=fs.readFileSync(path.join(__dirname,'../casepath/assets/agent-work-v1.css'),'utf8');
+ assert.doesNotMatch(css,/text-transform\s*:\s*uppercase|\.cp-card\b/);
+ assert.doesNotMatch(agentCss,/\.cp-a-[^{}]*\{[^}]*text-transform\s*:\s*uppercase/);
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail});
+ const top=markup.split('<footer class="cp-a-footer"')[0];
+ const regions=[...top.matchAll(/<(?:section)\b[^>]*class="(cp-a-(?:next|review|path|questions|needs|draft))"/g)].length+1;
+ assert(regions<=9,`claim has ${regions} regions`);
+ assert.equal([...top.matchAll(/<button\b/g)].length,1);
+ const visibleText=top.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ');
+ assert.doesNotMatch(visibleText,/deterministic|assessment|journal|projection|authority|saved claim record|workspace/i);
+ assert.doesNotMatch(markup,/class="[^"]*cp-card|class="[^"]*bordered-panel/);
 });

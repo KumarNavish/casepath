@@ -27,7 +27,7 @@
 .aw-message:empty{display:none}.aw-message{font-size:12px;line-height:1.7;color:#725c34;margin:10px 0 0!important}
 .aw-stale{font-size:12px;line-height:1.75;color:#7b5b2e;background:#fcf8ef;padding:12px 14px;border-radius:6px;margin:12px 0!important}
 .aw-row-work{color:#666b77!important;font-size:10px!important;margin-top:5px!important}
-#awWorkforceButton{margin-top:14px;border-top:1px solid var(--aw-line)}
+#awWorkforceButton{margin:0;border:0;background:none;color:#244e72;font-size:13px;padding:0;}
 .aw-timeline{padding-bottom:24px;margin-bottom:22px;border-bottom:1px solid var(--aw-line)}
 .aw-section-heading{display:flex;align-items:start;justify-content:space-between;gap:16px;margin-bottom:18px}
 .aw-section-heading h3{font-size:15px;font-weight:580;margin:0;letter-spacing:-.15px}
@@ -295,9 +295,9 @@
 @keyframes aw-finding-in{from{opacity:0}to{opacity:1}}
 .aw-source-focused{outline:2px solid #244e72;outline-offset:2px;}
 .cp-source-rail .cw-message mark{background:#fff;color:#1c2430;outline:2px solid #244e72;scroll-margin:90px;animation:aw-source-focus 240ms ease-out;}
-.aw-source-flash .cp-packet-thumbnail{outline:2px solid #244e72;animation:aw-source-focus 240ms ease-out;}
+.aw-source-flash{outline:2px solid #244e72;animation:aw-source-focus 240ms ease-out;}
 @keyframes aw-source-focus{from{outline-color:transparent}to{outline-color:#244e72}}
 .aw-path-settling [data-aw-settled="false"]{opacity:.35;}
 .aw-path-settling [data-aw-settled="false"] .cp-a-condition span,.aw-path-settling .cp-a-condition-overview [data-aw-settled="false"]>span,.aw-path-settling .cp-a-condition-overview [data-aw-settled="false"] q{visibility:hidden;}
 .aw-path-settling [data-aw-settled="true"]{opacity:1;transition:opacity 160ms ease-out;}
-@media(prefers-reduced-motion:reduce){.aw-narrative-lines li,.cp-source-rail .cw-message mark,.aw-source-flash .cp-packet-thumbnail{animation:none}.aw-path-settling [data-aw-settled="true"]{transition:none}}
+@media(prefers-reduced-motion:reduce){.aw-narrative-lines li,.cp-source-rail .cw-message mark,.aw-source-flash{animation:none}.aw-path-settling [data-aw-settled="true"]{transition:none}}
