@@ -48,10 +48,10 @@ Experience CasePath as a first-time claims handler:
 
 1. Find a claim in the queue.
 2. Open the original message or an attachment and inspect its exact source.
-3. Assign an owner and start assessment.
-4. Understand the current process step and missing evidence.
-5. Record or reconcile the next evidence action.
-6. Export the current state and replay the claim journal.
+3. Review the claim and follow each finding to its source.
+4. Read the current step, conditions, questions, and document routes.
+5. Try a condition in What if, then return to the saved assessment.
+6. Edit the draft request and replay the claim journal.
 
 Make the next action obvious and every decision traceable to admitted source
 evidence. Verify loading, empty, error, retry, and recovery states; keyboard
@@ -62,7 +62,7 @@ operation; and desktop and mobile layouts when the change touches them.
 | Concern | Entry points |
 | --- | --- |
 | Workspace UI | `casepath/assets/claims-workspace-v1.js`, `claims-workspace-v1.css` |
-| Page and compatibility layers | `casepath/index.html`, `casepath/assets/insurance-protocol-v1.*`, `foundation-live.*` |
+| Page and presentation | `casepath/index.html`, `casepath/assets/claims-workspace-presentation-v1.js` |
 | API mounting | `casepath-api/casepath_api/app.py`, `claim_loop_router.py` |
 | Workspace state | `claim_workspace_v1.py`, `workspace_claim_loop_v1.py`, `workspace_operational_projection_v1.py` |
 | Evidence investigation | `native_live_workspace_v1.py`, `native_workspace_inquiry_v1.py`, `native_claim_loop_bridge_v1.py` |
@@ -91,8 +91,9 @@ call. This establishes the integration path only; keep unknown evidence sufficie
 deadlines, decisions, and readiness unknown until supported by admitted evidence
 and a supported processing cycle. See [AGENT_REVIEW.md](AGENT_REVIEW.md).
 
-The named Render frontend and API host an older release from another source
-line. Do not deploy this repository or use those services to judge local work.
+The earlier Render frontend and API are suspended. Use a fresh clone of `main`
+to judge the product; the [anonymous snapshot](https://anonymous.4open.science/r/casepath-9673/)
+is for source inspection. Do not deploy this repository as part of a Pro task.
 No recurring Pro task or research restart is required.
 
 ## Finish the session

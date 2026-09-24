@@ -51,12 +51,14 @@ reference containers remain in the separate reproduction archive, outside the
 operational workspace. The Study A product parity record is recorded-output
 replay, not fresh model inference.
 
-The standalone repository is `KumarNavish/casepath`, branch `main`. The main
-checkout combines the publication and native controller with the teaching guide
-and public evidence surface. Historical research changes outside the integrated
-publication remain uncommitted and must not be swept into a release commit.
-Existing hosted Render services belong to an older source line; this handoff
-does not claim a new hosted deployment or an OpenReview submission.
+The standalone repository is [KumarNavish/casepath](https://github.com/KumarNavish/casepath),
+branch `main`. It contains the product, both released datasets, paper, native
+controller, teaching guide, and public evidence surface. The
+[anonymous review snapshot](https://anonymous.4open.science/r/casepath-9673/)
+is pinned to a reviewed `main` commit with auto-update off. It substitutes
+identity strings and is for inspection; clone `main` to run the sealed product.
+The earlier Render frontend and API are suspended. No new hosted product or
+OpenReview submission is claimed.
 
 ## Ownership and continuation
 
