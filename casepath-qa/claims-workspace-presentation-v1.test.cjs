@@ -165,6 +165,7 @@ test('minimal claim presentation guards',()=>{
  const regions=[...top.matchAll(/<(?:section)\b[^>]*class="(cp-a-(?:next|review|path|questions|needs|draft))"/g)].length+1;
  assert(regions<=9,`claim has ${regions} regions`);
  assert.equal([...top.matchAll(/<button\b/g)].length,1);
+ assert.doesNotMatch(view.packetLibrary(assessedDetail),/<button\b/);
  const visibleText=top.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ');
  assert.doesNotMatch(visibleText,/deterministic|assessment|journal|projection|authority|saved claim record|workspace/i);
  assert.doesNotMatch(markup,/class="[^"]*cp-card|class="[^"]*bordered-panel/);

@@ -142,8 +142,8 @@
 .cp-source-top h2{font-size:14px;font-weight:600;}
 .cp-source-top a{font-size:13px;display:none;}
 .cp-packet-browser{padding:0 16px;}
-.cp-packet-library button{display:block;width:100%;padding:9px 0;border:0;background:none;text-align:left;color:var(--cp-ink);}
-.cp-packet-library button:hover strong{text-decoration:underline;}
+.cp-packet-library a{display:block;width:100%;padding:9px 0;text-align:left;text-decoration:none;color:var(--cp-ink);}
+.cp-packet-library a:hover strong{text-decoration:underline;}
 .cp-packet-library strong{display:block;font-size:13px;font-weight:500;overflow-wrap:anywhere;}
 .cp-packet-library small{display:block;font-size:13px;color:var(--cp-muted);}
 .cp-source-inspector{display:none;padding:14px 16px 35px;outline:0;}

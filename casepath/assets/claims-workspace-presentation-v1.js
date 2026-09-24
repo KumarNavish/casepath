@@ -162,12 +162,12 @@ function packetPreviewUrl(artifact,page=1,width=180) {
 }
 function packetAttachment(artifact,index,{compact=false}={}) {
  const treatment=fileTreatment(artifact);
- return `<button type="button" class="cp-packet-attachment" data-source-artifact="${index}" data-packet-artifact="${index}" data-artifact-id="${h(artifact.artifact_id||'')}" aria-pressed="false"><strong>${h(fileTitle(artifact))}</strong><small>${h(treatment.label)} · ${h(fileSize(artifact.size_bytes))}</small></button>`;
+ return `<a href="#" class="cp-packet-attachment" data-source-artifact="${index}" data-packet-artifact="${index}" data-artifact-id="${h(artifact.artifact_id||'')}" aria-current="false"><strong>${h(fileTitle(artifact))}</strong><small>${h(treatment.label)} · ${h(fileSize(artifact.size_bytes))}</small></a>`;
 }
 function packetLibrary(detail,{compact=false}={}) {
  const entries=detail.artifacts.map((artifact,index)=>({artifact,index})),attachments=entries.filter(e=>e.artifact.role!=='customer_message');
  const message=entries.find(e=>e.artifact.role==='customer_message');
- return `<section class="cp-packet-library" aria-label="Claim sources">${message?`<button class="cp-packet-message" type="button" data-source-reset-open data-packet-message aria-pressed="true"><strong>Customer message</strong><small>Message · ${h(fileSize(message.artifact.size_bytes))}</small></button>`:''}${attachments.map(e=>packetAttachment(e.artifact,e.index,{compact})).join('')}</section>`;
+ return `<section class="cp-packet-library" aria-label="Claim sources">${message?`<a href="#" class="cp-packet-message" data-source-reset-open data-packet-message aria-current="true"><strong>Customer message</strong><small>Message · ${h(fileSize(message.artifact.size_bytes))}</small></a>`:''}${attachments.map(e=>packetAttachment(e.artifact,e.index,{compact})).join('')}</section>`;
 }
 function packetContentMarkup(preview) {
  if(preview.kind==='word'&&Array.isArray(preview.content?.paragraphs))return `<div class="cp-office-preview" tabindex="0" role="region" aria-label="Word document content"><p class="cp-preview-disclaimer">Document text · original layout is available in the downloaded file</p>${preview.content.paragraphs.map(p=>`<p>${h(p)}</p>`).join('')}${preview.truncated?'<p class="cp-preview-disclaimer">This preview is shortened. Open the original for the complete document.</p>':''}</div>`;

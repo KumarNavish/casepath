@@ -174,6 +174,7 @@
     const summary=state.summary,hasStart=Boolean(document.getElementById('cwStart'));
     const stages=assessmentStages(state.assessment),working=['queued','running'].includes(summary?.status);
     if(!working&&state.revealTimer){clearTimeout(state.revealTimer);state.revealTimer=null;}
+    if(!working)document.querySelectorAll('.cp-source-rail .aw-current-passage').forEach(mark=>mark.remove());
     if(summary?.status==='completed')state.revealCount=stages.length;
     if(working&&state.assessment&&state.events.some(event=>event.operation==='AUTHORITY_CONFIRMED')&&state.revealCount<stages.length&&!state.revealTimer){
       state.revealTimer=setTimeout(()=>{state.revealTimer=null;state.revealCount++;state.renderKey=null;renderClaim();},160);
@@ -248,8 +249,10 @@
     const rail=document.querySelector('.cp-source-rail');if(!rail)return;
     const target=line.message||!line.sourceId?rail.querySelector('[data-packet-message]'):rail.querySelector(`[data-artifact-id="${CSS.escape(line.sourceId)}"]`);
     if(!target)return;
+    rail.querySelectorAll('.aw-current-passage').forEach(mark=>mark.remove());
     rail.querySelectorAll('.aw-source-focused').forEach(button=>button.classList.remove('aw-source-focused'));
     target.classList.add('aw-source-focused');target.scrollIntoView({block:'center',behavior:'instant'});
+    if(line.quote){const mark=document.createElement('mark');mark.className='aw-current-passage';mark.textContent='“'+line.quote+'”';target.append(mark);}
     if(target.hasAttribute('data-packet-message')){
       if(open)target.click();
       const message=document.querySelector('#cwSourceContent .cw-message'),text=message?.textContent||'',quote=line.quote||'';

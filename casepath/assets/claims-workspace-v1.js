@@ -2808,8 +2808,8 @@
 
   function packetSelection(){
     const selected=state.sourceSelection?.kind==='artifact'?state.sourceSelection.index:null;
-    root.querySelectorAll('[data-packet-artifact]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.packetArtifact)===selected)));
-    root.querySelectorAll('[data-packet-message]').forEach(b=>b.setAttribute('aria-pressed',String(!state.sourceSelection||selected!==null&&state.detail?.artifacts[selected]?.role==='customer_message')));
+    root.querySelectorAll('[data-packet-artifact]').forEach(b=>b.setAttribute('aria-current',String(Number(b.dataset.packetArtifact)===selected)));
+    root.querySelectorAll('[data-packet-message]').forEach(b=>b.setAttribute('aria-current',String(!state.sourceSelection||selected!==null&&state.detail?.artifacts[selected]?.role==='customer_message')));
   }
   async function packetMetadata(artifact,claimId,signal){
     const response=await fetch(artifact.download_url+'/preview?source_sha256='+artifact.sha256,{credentials:'same-origin',cache:'no-store',redirect:'error',signal});
@@ -2998,7 +2998,7 @@
     state.focusedEvidenceId=selectedEvidence;
   }
   function handleWorkspaceClick(event) {
-    const button=event.target.closest('button,a');if(!button)return;if(button.matches('a[data-close-detail],a[data-canvas-node],a[data-noticed-source],a[data-what-if],a[data-open-inspector],a[data-close-inspector],a[data-edit-owner],a[data-draft-copy],a[data-draft-export],a[data-footer-open],a[data-open-technical]'))event.preventDefault();
+    const button=event.target.closest('button,a');if(!button)return;if(button.matches('a[data-close-detail],a[data-canvas-node],a[data-noticed-source],a[data-what-if],a[data-open-inspector],a[data-close-inspector],a[data-edit-owner],a[data-draft-copy],a[data-draft-export],a[data-footer-open],a[data-open-technical],a[data-source-reset-open],a[data-source-artifact]'))event.preventDefault();
     if(button.id==='awWorkforceButton'&&!button.dataset.agentWorkEntry){
       if(button.dataset.loading)return;
       button.dataset.loading='true';button.setAttribute('aria-busy','true');

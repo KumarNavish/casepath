@@ -289,10 +289,11 @@
 .aw-narrative-lines a:hover{text-decoration:underline;}
 @keyframes aw-finding-in{from{opacity:0}to{opacity:1}}
 .aw-source-focused{outline:2px solid #244e72;outline-offset:2px;}
+.cp-source-rail .aw-current-passage{display:block;margin-top:5px;background:#fff;color:#244e72;font-size:13px;line-height:1.5;white-space:normal;animation:aw-source-focus 240ms ease-out;}
 .cp-source-rail .cw-message mark{background:#fff;color:#1c2430;outline:2px solid #244e72;scroll-margin:90px;animation:aw-source-focus 240ms ease-out;}
 .aw-source-flash{outline:2px solid #244e72;animation:aw-source-focus 240ms ease-out;}
 @keyframes aw-source-focus{from{outline-color:transparent}to{outline-color:#244e72}}
 .aw-path-settling [data-aw-settled="false"]{opacity:.35;}
 .aw-path-settling [data-aw-settled="false"] .cp-a-condition span,.aw-path-settling .cp-a-condition-overview [data-aw-settled="false"]>span,.aw-path-settling .cp-a-condition-overview [data-aw-settled="false"] q{visibility:hidden;}
 .aw-path-settling [data-aw-settled="true"]{opacity:1;transition:opacity 160ms ease-out;}
-@media(prefers-reduced-motion:reduce){.aw-narrative-lines li,.cp-source-rail .cw-message mark,.aw-source-flash{animation:none}.aw-path-settling [data-aw-settled="true"]{transition:none}}
+@media(prefers-reduced-motion:reduce){.aw-narrative-lines li,.cp-source-rail .cw-message mark,.aw-source-flash,.aw-current-passage{animation:none}.aw-path-settling [data-aw-settled="true"]{transition:none}}
