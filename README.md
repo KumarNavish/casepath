@@ -31,7 +31,7 @@ Download or clone the repository, enter its root, then run:
 
 Open the address printed by the server. The first `prepare` installs pinned Python 3.13.9 dependencies, so it needs internet access. Local use after preparation needs no provider account, API key, database service, or paid infrastructure. You also need Git, `uv`, `lsof`, and `lockf` on macOS or `flock` on Linux. Stop the server with Ctrl-C. Saved claim and review state stays in `.runtime/casepath-data-v1`; use a fresh clone for disposable tests. [Setup](docs/setup.md) covers replay, export, safe reset, and platform details.
 
-The [main repository](https://github.com/KumarNavish/casepath) is the runnable release. The [anonymous review snapshot](https://anonymous.4open.science/r/casepath-9673/) shows its source and paper with identity substitutions; the earlier Render frontend and API are suspended.
+The [main repository](https://github.com/KumarNavish/casepath) is the runnable release. The [anonymous review snapshot](https://anonymous.4open.science/r/casepath-9673/) shows its source and paper with identity substitutions; the earlier Render frontend is suspended, and its API service has been removed.
 
 ```sh
 ./bin/casepath test

@@ -59,7 +59,7 @@ controller, teaching guide, and public evidence surface. The
 [anonymous review snapshot](https://anonymous.4open.science/r/casepath-9673/)
 is pinned to a reviewed `main` commit with auto-update off. It substitutes
 identity strings and is for inspection; clone `main` to run the sealed product.
-The earlier Render frontend and API are suspended. No new hosted product is claimed.
+The earlier Render frontend is suspended, and its API service has been removed. No new hosted product is claimed.
 
 ## Ownership and continuation
 
