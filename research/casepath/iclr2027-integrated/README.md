@@ -1,4 +1,9 @@
-# CasePath: process-first evidence planning
+# CasePath analytical build and frozen evidence
+
+The current paper submitted to ICLR 2027 is in [`paper/`](../../../paper/README.md).
+This directory preserves the earlier analytical build and its reproduction
+archive. The source, tables and figures here remain available for the offline
+release verifier; its `dist/` PDF and source ZIP are historical manuscript files.
 
 The manuscript develops one dependency: a document is required because it can
 establish a fact needed by an active obligation. The submitted title and abstract
