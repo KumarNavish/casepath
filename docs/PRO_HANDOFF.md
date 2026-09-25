@@ -91,7 +91,7 @@ call. This establishes the integration path only; keep unknown evidence sufficie
 deadlines, decisions, and readiness unknown until supported by admitted evidence
 and a supported processing cycle. See [AGENT_REVIEW.md](AGENT_REVIEW.md).
 
-The earlier Render frontend and API are suspended. Use a fresh clone of `main`
+The earlier Render frontend is suspended, and its API service has been removed. Use a fresh clone of `main`
 to judge the product; the [anonymous snapshot](https://anonymous.4open.science/r/casepath-9673/)
 is for source inspection. Do not deploy this repository as part of a Pro task.
 No recurring Pro task or research restart is required.
