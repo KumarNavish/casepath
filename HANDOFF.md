@@ -1,9 +1,10 @@
 # CasePath publication and product handoff
 
-The current manuscript is in `research/casepath/iclr2027-integrated/`. Its title
-and abstract preserve the submitted foundation. The original Overleaf project
-is unchanged; the integrated submission project is
-https://www.overleaf.com/project/6ab0eea72f79f49c515c7853.
+The current submitted paper, source and supplement are in `paper/`. The saved
+submission is https://openreview.net/forum?id=MlcFeIsnd2 (57404); the current
+editorial project is https://www.overleaf.com/project/6aac718dca785b22bced2b83.
+`research/casepath/iclr2027-integrated/` preserves the earlier analytical build
+and the unchanged reproducibility snapshot.
 
 ## Scientific result
 
@@ -33,9 +34,10 @@ final study. There are no outstanding liabilities or new repair inference calls.
 
 ## Build and inspect
 
-- Final paper, source ZIP and anonymous reproduction ZIP: `research/casepath/iclr2027-integrated/dist/`.
+- Submitted PDF, exact source ZIP and supplement ZIP: `paper/`.
+- Frozen reproduction archive and historical analytical build: `research/casepath/iclr2027-integrated/dist/`.
 - Publication checks: `python3 research/casepath/verify_release.py`.
-- Exact file hashes: `dist/PACKAGE_VERIFICATION.json` under that manuscript directory.
+- Exact submitted file hashes: `paper/README.md`; historical build hashes: `dist/PACKAGE_VERIFICATION.json` under the research manuscript directory.
 - Numerical and citation provenance: the manuscript's `evidence/` directory.
 - Author submission actions: the manuscript's `SUBMISSION_CHECKLIST.md`.
 - Local product: `./bin/casepath prepare`, then `./bin/casepath dev`.
@@ -57,8 +59,7 @@ controller, teaching guide, and public evidence surface. The
 [anonymous review snapshot](https://anonymous.4open.science/r/casepath-9673/)
 is pinned to a reviewed `main` commit with auto-update off. It substitutes
 identity strings and is for inspection; clone `main` to run the sealed product.
-The earlier Render frontend and API are suspended. No new hosted product or
-OpenReview submission is claimed.
+The earlier Render frontend and API are suspended. No new hosted product is claimed.
 
 ## Ownership and continuation
 

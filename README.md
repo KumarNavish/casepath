@@ -51,6 +51,9 @@ at ICLR 2027). It holds the method, the claims-handling software built on it,
 two datasets, both benchmarks, every recorded run, and scripts that recompute
 the paper's numbers offline.
 
+Read the [submitted paper and its exact source and supplement](paper/README.md),
+or open [submission 57404](https://openreview.net/forum?id=MlcFeIsnd2).
+
 ![Direct prediction can mix branches; CasePath follows the active branch from obligation to fact, evidence and document.](docs/images/process-first.png)
 
 ## Why CasePath
