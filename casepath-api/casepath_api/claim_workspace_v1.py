@@ -17,8 +17,12 @@ from .claim_workspace_intake_v1 import (
     compile_intake_assessment,
     validate_recorded_intake_assessment,
 )
-from .draft_request_v1 import COMPILER_ID as DRAFT_COMPILER_ID, PREVIOUS_COMPILER_ID as PREVIOUS_DRAFT_COMPILER_ID, compile_draft_request
+from .draft_request_v1 import COMPILER_ID as DRAFT_COMPILER_ID, PREVIOUS_COMPILER_ID as PREVIOUS_DRAFT_COMPILER_ID, CAUSAL_COMPILER_ID, CAUSAL_1_1_COMPILER_ID, PREVIOUS_CAUSAL_COMPILER_ID, compile_draft_request
 from .reviewed_memory_v1 import compile_reviewed_memory, matches, statement_pattern
+from .causal_workspace_v1 import (
+    PROCESS_EDIT, FRAGMENT_SAVED, effective_assessment,
+    validate_process_event, validate_fragment_event,
+)
 from .storage import Storage
 from .workspace_corpus import (
     PublicCorpus,
@@ -38,6 +42,7 @@ QUEUE_CONTRACT_V2 = "casepath.claim-queue-projection/2.0.0"
 SEED_RECEIPT_CONTRACT = "casepath.claim-workspace-seed/1.0.0"
 REBUILD_RECEIPT_CONTRACT = "casepath.claim-queue-rebuild/1.0.0"
 EVENT_TYPES = {
+    PROCESS_EDIT, FRAGMENT_SAVED,
     "WORKSPACE_CLAIM_IMPORTED",
     "WORKSPACE_OWNER_ASSIGNED",
     "WORKSPACE_PROCESSING_STARTED",
@@ -114,6 +119,12 @@ def _validated_state(value: Mapping[str, Any]) -> dict[str, Any]:
         "last_authoritative_update",
         "state_sha256",
     }
+    if "causal_process" in state:
+        required.add("causal_process")
+        from .causal_process_v1 import validate_graph
+        validate_graph(state["causal_process"])
+        if state["causal_process"]["claim_id"] != state["claim_id"]:
+            raise ClaimWorkspaceError("working process belongs to another claim")
     if (
         set(state) != required
         or state.get("contract") != STATE_CONTRACT
@@ -260,7 +271,25 @@ def _reduce(
             "last_authoritative_update": timestamp,
         }
     )
-    if event_type == "WORKSPACE_OWNER_ASSIGNED":
+    if event_type == PROCESS_EDIT:
+        try:
+            preview = validate_process_event(corpus, state, command)
+        except (ValueError, KeyError, TypeError) as exc:
+            raise ClaimWorkspaceError(str(exc)) from exc
+        material["causal_process"] = preview["graph"]
+        assessment = preview["effective_assessment"]
+        material["next_safe_action"] = assessment["next_step"]
+        material["principal_blocker"] = assessment["next_step"]
+        material["pending_evidence_count"] = sum(
+            doc["route_state"] == "needed_now" for doc in assessment["documents"]
+        )
+        material["readiness_state"] = "blocked"
+    elif event_type == FRAGMENT_SAVED:
+        try:
+            validate_fragment_event(corpus, state, command)
+        except (ValueError, KeyError, TypeError) as exc:
+            raise ClaimWorkspaceError(str(exc)) from exc
+    elif event_type == "WORKSPACE_OWNER_ASSIGNED":
         if set(command) != {"owner", "request_expected_revision"}:
             raise ClaimWorkspaceError("owner command is invalid")
         owner = command.get("owner")
@@ -268,11 +297,16 @@ def _reduce(
             raise ClaimWorkspaceError("owner is invalid")
         material["owner"] = owner.strip()
     elif event_type == "WORKSPACE_PROCESSING_STARTED":
-        if set(command) != {
+        required = {
             "expected_binding_sha256",
             "intake_assessment",
             "request_expected_revision",
-        } or command.get(
+        }
+        if "process_model" in command:
+            required.add("process_model")
+            if command["process_model"] != "casepath.causal-process/1.0.0":
+                raise ClaimWorkspaceError("processing model is unsupported")
+        if set(command) != required or command.get(
             "expected_binding_sha256"
         ) != state["binding"]["binding_sha256"]:
             raise ClaimWorkspaceError("processing command is stale")
@@ -302,6 +336,13 @@ def _reduce(
                 "next_safe_action": node["label"],
             }
         )
+        if "process_model" in command:
+            from .causal_workspace_v1 import working_graph
+            material["causal_process"] = working_graph(corpus, material)
+            working = effective_assessment(material)
+            material["next_safe_action"] = working["next_step"]
+            material["principal_blocker"] = working["next_step"]
+            material["pending_evidence_count"] = sum(doc["route_state"] == "needed_now" for doc in working["documents"])
     elif event_type == "WORKSPACE_UNKNOWN_RECONCILED":
         if set(command) != {"prior_state_sha256", "request_expected_revision"} or command.get(
             "prior_state_sha256"
@@ -364,12 +405,12 @@ def _reduce(
         ):
             raise ClaimWorkspaceError("draft revision source is invalid")
         draft = command["draft"]
-        assessment = (state.get("intake_assessment") or {}).get("claim_assessment")
+        assessment = effective_assessment(state)
         if not isinstance(draft, dict) or not isinstance(assessment, dict):
             raise ClaimWorkspaceError("draft has no accepted assessment")
         try:
             compiler = draft.get("compiler_id")
-            variants = ("current",) if compiler == DRAFT_COMPILER_ID else (
+            variants = ("current",) if compiler == CAUSAL_COMPILER_ID else ("causal_1_1",) if compiler == CAUSAL_1_1_COMPILER_ID else ("causal_1_0",) if compiler == PREVIOUS_CAUSAL_COMPILER_ID else ("sealed_1_2",) if compiler == DRAFT_COMPILER_ID else (
                 ("sealed_1_1",) if compiler == PREVIOUS_DRAFT_COMPILER_ID else
                 ("unversioned_current", "legacy_7440") if compiler is None else ()
             )
@@ -1209,7 +1250,7 @@ class ClaimWorkspaceService:
         result = {}
         for state in states:
             claim_id = state["claim_id"]
-            assessment = _memory_assessment(state)
+            assessment = {"claim_type": state["claim_type"], **(effective_assessment(state) or {})}
             accepted = bool(assessment.get("assessment_sha256"))
             conditions = assessment.get("conditions") or {}
             if accepted:
@@ -1548,7 +1589,10 @@ class ClaimWorkspaceService:
         idempotency_key: str,
         expected_revision: int | None,
         timestamp: str | None = None,
+        process_model: str | None = None,
     ) -> dict[str, Any]:
+        if process_model not in {None, "casepath.causal-process/1.0.0"}:
+            raise ClaimWorkspaceError("processing model is unsupported")
         replay = self.store.replay_processing_start(
             claim_id=claim_id,
             idempotency_key=idempotency_key,
@@ -1567,6 +1611,7 @@ class ClaimWorkspaceService:
                 "expected_binding_sha256": binding["binding_sha256"],
                 "intake_assessment": assessment,
                 "request_expected_revision": expected_revision,
+                **({"process_model": process_model} if process_model else {}),
             },
             timestamp=timestamp or utc_now(),
             expected_revision=expected_revision,
@@ -1576,13 +1621,16 @@ class ClaimWorkspaceService:
     def drafts(self, claim_id: str) -> dict[str, Any]:
         state = self.store.recover(claim_id)
         items = self.store.drafts_at_revision(claim_id, state["revision"])
+        assessment = effective_assessment(state)
+        current_hash = assessment.get("assessment_sha256") if assessment else None
+        current_items = [item for item in items if item.get("source_assessment_sha256") == current_hash]
         material = {
             "contract": "casepath.workspace-draft-list/1.0.0",
             "claim_id": claim_id,
             "workspace_revision": state["revision"],
             "workspace_state_sha256": state["state_sha256"],
             "items": items,
-            "latest": items[-1] if items else None,
+            "latest": current_items[-1] if current_items else None,
         }
         return {**material, "list_sha256": digest_value(material)}
 
@@ -1596,7 +1644,7 @@ class ClaimWorkspaceService:
         historical = self.store.state_at_revision(claim_id, expected_revision)
         if historical["state_sha256"] != expected_state_sha256:
             raise ClaimWorkspaceError("draft workspace prefix differs")
-        assessment = (historical.get("intake_assessment") or {}).get("claim_assessment")
+        assessment = effective_assessment(historical)
         if not isinstance(assessment, dict) or historical["workflow_state"] != "in_review":
             raise ClaimWorkspaceError("claim must be reviewed before drafting")
         prior = self.store.drafts_at_revision(claim_id, expected_revision)

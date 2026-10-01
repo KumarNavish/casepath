@@ -14,7 +14,7 @@ colors:
 
 CasePath reads the customer message and files, shows where the claim stands, and helps the handler ask for what is missing. The **Claims** screen is a list grouped by who it is waiting for. Each row carries a noticed fact and a next step. Search is visible; the other controls open from **Filter**.
 
-An open claim reads as one document. The next step comes first, followed by **What I noticed**, **Where it stands**, **Questions**, **What to request**, and an editable draft when one exists. **Why** opens beneath the next step. **Recorded requirements**, **Timeline**, and **Technical details** sit at the end of the document.
+An open claim reads as one document. The next step comes first, followed by **What I noticed**, **The path behind this claim**, **Questions**, **What to request**, and an editable draft when one exists. **Why** opens beneath the next step. **Source review record**, **Timeline**, and **Technical details** sit at the end of the document.
 
 At desktop widths, a 280 px **Sources** rail stays on the right. Selecting a fact, quote, or file opens its source in that rail. At 900 px and below, **Sources** opens as a sheet and the next action stays in a bottom bar.
 
@@ -26,7 +26,9 @@ Keep the page white. Separate sections with space and the source rail with one t
 
 ## Behaviour
 
-**Review claim** reveals findings in place and highlights the matching source span. The completed view renders from the saved assessment, including linked conflicts and labelled facts. **Stop** cancels a running review. **Where it stands** shows done, now, and next on one line each; **+N later** opens the remaining steps. Conditions sit beneath the steps with their verdict and quote. **what if** explores a condition without changing the saved claim.
+**Review claim** reveals findings in place and highlights the matching source span. The completed review renders from saved evidence. **The path behind this claim** is an executable step-and-dependency view with an adjacent inspector. Selecting a step reveals its condition, current execution state, document origins, connections and granular validation. Readiness, completion, structural validation and source sufficiency remain distinct.
+
+Edits, validations and source reviews always show a server-calculated impact before saving. Show semantic changes even when runtime state stays the same. Preserve entered fields after a failed preview. Keep detailed history and reusable versions in disclosures. A fragment distinguishes the version applied to this claim from the newest available version; upgrades are explicit. Never imply a completed process authorizes a claim outcome.
 
 **Questions** states what each unresolved condition would change. **What to request** groups documents under **Now**, **Later**, and **Not needed**, with a short reason and article where one applies. A held file reads **held, not reviewed**. The draft is a letter edited in place and labelled **Draft, not sent**; Copy and Export follow Save edits. Reviewed memory shows who reviewed it and requires an explicit Apply.
 

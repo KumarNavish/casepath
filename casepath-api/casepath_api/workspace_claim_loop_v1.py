@@ -1337,6 +1337,8 @@ class WorkspaceClaimLoopServiceV1:
             for key, value in projection.items()
             if key != "projection_sha256"
         }
+        if material.get("readiness_scope") == "working_process":
+            return {**material, "projection_sha256": digest_value(material)}
         native_plan = (
             loop_state is not None
             and self._native_proposal_binding(loop_state) is not None
@@ -2679,6 +2681,17 @@ class WorkspaceClaimLoopServiceV1:
         }
         return {**material, "response_sha256": digest_value(material)}
 
+    @staticmethod
+    def _check_working_process_action(workspace_state, action):
+        if workspace_state.get("causal_process") is None or action is None:
+            return
+        from .causal_process_v1 import evaluate
+        graph = evaluate(workspace_state["causal_process"])
+        node_id = action.process_node_id.removeprefix("workspace_evidence_gap.")
+        node = next((row for row in graph["nodes"] if row["node_id"] == node_id), None)
+        if node is None or node["activation"] == "false":
+            raise WorkspaceClaimLoopError("the source-plan action is no longer on this working process; review its current document requirements")
+
     def mint_evidence_intent(
         self,
         claim_id: str,
@@ -2709,6 +2722,7 @@ class WorkspaceClaimLoopServiceV1:
             return {**material, "response_sha256": digest_value(material)}
         state = self._normal_state(workspace_state)
         action = state.selected_action
+        self._check_working_process_action(workspace_state, action)
         if (
             state.revision != expected_revision
             or action is None
@@ -2782,6 +2796,7 @@ class WorkspaceClaimLoopServiceV1:
             return {**material, "response_sha256": digest_value(material)}
         state = self._normal_state(workspace_state)
         action = state.selected_action
+        self._check_working_process_action(workspace_state, action)
         if action is None:
             raise WorkspaceClaimLoopError("workspace source acquisition has no action")
         try:
@@ -2848,6 +2863,7 @@ class WorkspaceClaimLoopServiceV1:
             return {**material, "response_sha256": digest_value(material)}
         state = self._normal_state(workspace_state)
         action = state.selected_action
+        self._check_working_process_action(workspace_state, action)
         if action is None or action.action_id != action_id:
             raise WorkspaceClaimLoopError("workspace evidence registration is stale")
         try:
@@ -2953,6 +2969,7 @@ class WorkspaceClaimLoopServiceV1:
                     or state.selected_action.action_sha256 != action_sha256
                 ):
                     raise WorkspaceClaimLoopError("workspace advance proposal is stale")
+                self._check_working_process_action(workspace_state, state.selected_action)
             try:
                 response = self.claim_loop.advance(
                     session_id=WORKSPACE_CLAIM_LOOP_SESSION_ID,

@@ -10,6 +10,9 @@ from .workspace_corpus import digest_value
 CONTRACT = "casepath.workspace-request-draft/1.0.0"
 COMPILER_ID = "casepath.workspace-request-draft-compiler/1.2.0"
 PREVIOUS_COMPILER_ID = "casepath.workspace-request-draft-compiler/1.1.0"
+CAUSAL_COMPILER_ID = "casepath.workspace-causal-request-draft-compiler/1.2.0"
+CAUSAL_1_1_COMPILER_ID = "casepath.workspace-causal-request-draft-compiler/1.1.0"
+PREVIOUS_CAUSAL_COMPILER_ID = "casepath.workspace-causal-request-draft-compiler/1.0.0"
 
 
 def _customer_name(assessment: Mapping[str, Any]) -> str | None:
@@ -157,17 +160,51 @@ _OPEN_QUESTIONS = {
 }
 
 
+_GERMAN_CAUSAL_QUESTIONS = {
+    "On which dates did each notice arrive?": "An welchen Tagen haben Sie die einzelnen Kündigungsschreiben erhalten?",
+    "On what date was the increase notified?": "An welchem Tag haben Sie die Mietzinserhöhungsanzeige erhalten?",
+    "Can you send the complete second page of each notice?": "Können Sie die vollständige zweite Seite jedes Kündigungsschreibens senden?",
+    "Does termination received apply?": "Haben Sie die Kündigung erhalten?",
+    "Does claim received apply?": "Haben Sie die Mietzinserhöhungsanzeige erhalten?",
+    "Does health effects apply?": "Werden gesundheitliche Beschwerden geltend gemacht?",
+    "Does mold apply?": "Liegt ein Schimmelbefall vor?",
+    "Does extension relevant apply?": "Wird eine Erstreckung des Mietverhältnisses beantragt?",
+}
+
+
+def _process_question(card: Mapping[str, Any], german: bool, *, localized: bool = False) -> str:
+    if localized and german and card["question"] in _GERMAN_CAUSAL_QUESTIONS:
+        return _GERMAN_CAUSAL_QUESTIONS[card["question"]]
+    pair = _OPEN_QUESTIONS.get(card.get("id"))
+    return pair[1 if german else 0] if pair else str(card["question"])
+
+
+def _process_exclusion_reason(assessment, document, german, *, localized=False):
+    if document["route_state"] == "held_behind_question":
+        questions = [_process_question(card, german, localized=localized) for card in assessment.get("question_cards", [])
+                     if document["document_type"] in card.get("document_types", [])
+                     and assessment["conditions"].get(card.get("id"), {}).get("verdict", "unresolved") == "unresolved"]
+        if questions:
+            prefix = "Zuerst müssen wir Folgendes klären: " if german else "We first need to clarify: "
+            return prefix + " ".join(dict.fromkeys(questions))
+        return "Eine Voraussetzung im Ablauf ist noch ungeklärt" if german else str(document["reason"]).rstrip(".")
+    return "Kein aktiver Prozessschritt benötigt diese Unterlage" if german else str(document["reason"]).rstrip(".")
+
+
 def compile_draft_request(
     claim_id: str, assessment: Mapping[str, Any], *, edited_body: str | None = None,
     variant: str = "current",
 ) -> dict[str, Any]:
-    if variant not in {"current", "sealed_1_1", "unversioned_current", "legacy_7440"}:
+    if variant not in {"current", "causal_1_1", "causal_1_0", "sealed_1_2", "sealed_1_1", "unversioned_current", "legacy_7440"}:
         raise ValueError("draft compiler variant is unsupported")
     legacy = variant == "legacy_7440"
     if not isinstance(assessment, Mapping) or not isinstance(assessment.get("documents"), list):
         raise ValueError("accepted claim assessment is required")
     language = str(assessment["language"])
     german = language.startswith("de")
+    causal = variant in {"current", "causal_1_1", "causal_1_0"} and bool(assessment.get("process_graph_sha256"))
+    omit_empty = causal and variant in {"current", "causal_1_1"}
+    localized_questions = causal and variant == "current"
     german_documents = _LEGACY_GERMAN_DOCUMENTS if legacy else _GERMAN_DOCUMENTS
     german_steps = _LEGACY_GERMAN_STEPS if legacy else _GERMAN_STEPS
     steps = {step["node_id"]: step for step in assessment["steps"]}
@@ -207,14 +244,18 @@ def compile_draft_request(
                     f"{condition} ist noch ungeklärt" if route == "held_behind_question"
                     else f"{condition} ist auf diesem Pfad nicht aktiv"
                 )
+            if causal:
+                reason = _process_exclusion_reason(assessment, document, german, localized=localized_questions)
             not_requested.append({**item, "reason": reason})
     questions = []
     deadline = assessment.get("candidate_deadline")
     if deadline and deadline.get("question"):
-        questions.append(str(deadline["question"]))
+        question = str(deadline["question"])
+        questions.append(_process_question({"question": question}, german, localized=True) if localized_questions else question)
     if missing_page:
-        questions.append("Can you send the complete second page of each notice?")
-    for flag, condition in assessment["conditions"].items():
+        question = "Can you send the complete second page of each notice?"
+        questions.append(_process_question({"question": question}, german, localized=True) if localized_questions else question)
+    for flag, condition in (() if causal else assessment["conditions"].items()):
         if condition["verdict"] != "unresolved" or flag not in {
             row.get("condition_flag") for row in assessment["documents"]
         }:
@@ -224,9 +265,14 @@ def compile_draft_request(
         question = pair[1 if german else 0] if pair else (f"Ist {label} betroffen?" if german else f"Does {label} apply?")
         if question not in questions:
             questions.append(question)
+    if causal:
+        for card in assessment.get("question_cards", []):
+            question = _process_question(card, german, localized=localized_questions)
+            if question not in questions:
+                questions.append(question)
     specialist = assessment["conditions"].get("health_effects", {}).get("verdict") == "true"
     kind = "specialist_handoff" if specialist else "customer_request"
-    customer_name = _customer_name(assessment) if variant == "current" and not specialist else None
+    customer_name = _customer_name(assessment) if variant in {"current", "causal_1_1", "causal_1_0", "sealed_1_2"} and not specialist else None
     if legacy and german:
         lines = ["# Entwurf für die Fachperson" if specialist else "# Entwurf der Kundenanfrage", "", "Entwurf, nicht gesendet", "", "## Benötigte Unterlagen"]
     elif legacy:
@@ -235,6 +281,12 @@ def compile_draft_request(
         lines = [f"Guten Tag {customer_name}," if customer_name else "Guten Tag,", "", "für die Prüfung Ihres Anliegens benötigen wir Folgendes:" if not specialist else "für die fachliche Prüfung dieser Meldung benötigen wir Folgendes:", "", "## Bitte senden Sie uns"]
     else:
         lines = [f"Dear {customer_name}," if customer_name else "Dear customer," if not specialist else "Dear specialist,", "", "To review your claim, please send the following:", "", "## Please send"]
+    if omit_empty and not requested:
+        lines = lines[:-2]
+        lines[2] = (("Für die weitere Prüfung bitten wir Sie, die folgenden Fragen zu klären:" if german else
+                     "To continue the review, please clarify the questions below:") if questions else
+                    ("Nachfolgend finden Sie den aktuellen Stand der Unterlagenprüfung:" if german else
+                     "The current document review is set out below:"))
     for item in requested:
         if legacy:
             detail = f"{item['label']} — {item['step']}" if item["step"] else item["label"]
@@ -255,17 +307,20 @@ def compile_draft_request(
             if item["customer_quote"]:
                 detail += f" Sie schrieben: „{item['customer_quote']}“" if german else f" You wrote: “{item['customer_quote']}”"
         lines.append(f"- {detail}")
-    lines += ["", "## Schon vorhanden" if german and legacy else "## Bereits vorhanden" if german else "## Already held"]
+    if held or not omit_empty:
+        lines += ["", "## Schon vorhanden" if german and legacy else "## Bereits vorhanden" if german else "## Already held"]
     for item in held:
         if legacy:
             lines.append(f"- {item['label']}: {'vorhanden, noch nicht geprüft' if german else 'held, not reviewed'}")
         else:
             lines.append(f"- {item['label']}: {'liegt vor und wird noch geprüft' if german else 'we have a copy and will review it'}.")
-    lines += ["", "## Offene Fragen" if german else "## Questions"]
+    if questions or not omit_empty:
+        lines += ["", "## Offene Fragen" if german else "## Questions"]
     lines += [f"- {question}" for question in questions]
     lines += ["", "## Nicht angefordert" if german and legacy else "## Derzeit nicht angefordert" if german else "## Not requested" if legacy else "## Not requested because"]
     for item in not_requested:
-        lines.append(f"- {item['label']}: {item['reason']}{'' if legacy else '.'}")
+        punctuation = "" if legacy or causal and item["reason"].endswith((".", "?", "!")) else "."
+        lines.append(f"- {item['label']}: {item['reason']}{punctuation}")
     if not legacy and not not_requested:
         lines.append("- Keine weiteren Unterlagen werden derzeit ausgeschlossen." if german else "- No other documents are excluded at this stage.")
     if not legacy:
@@ -289,6 +344,12 @@ def compile_draft_request(
         "status": "draft_not_sent",
     }
     if variant == "current":
+        material["compiler_id"] = CAUSAL_COMPILER_ID if causal else COMPILER_ID
+    elif variant == "causal_1_1":
+        material["compiler_id"] = CAUSAL_1_1_COMPILER_ID
+    elif variant == "causal_1_0":
+        material["compiler_id"] = PREVIOUS_CAUSAL_COMPILER_ID
+    elif variant == "sealed_1_2":
         material["compiler_id"] = COMPILER_ID
     elif variant == "sealed_1_1":
         material["compiler_id"] = PREVIOUS_COMPILER_ID

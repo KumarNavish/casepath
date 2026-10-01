@@ -64,12 +64,13 @@ def test_curated_static_build_has_exact_runtime_inventory(
     files, directories = static_site.inventory(output)
     assert files == static_site.PUBLIC_INVENTORY
     assert directories == static_site.PUBLIC_DIRECTORIES
-    assert len(files) == 23
+    assert len(files) == 25
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
     assert {"method.html", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files
     assert {"research.html", "assets/research-evidence.css", "assets/paired-study-evidence.json", "assets/native-study-evidence.json"} <= files
     assert {"assets/agent-work-v1.js", "assets/agent-work-v1.css"} <= files
+    assert {"assets/causal-process-v1.js", "assets/causal-process-v1.css"} <= files
     assert {"assets/claims-workspace-presentation-v1.js", "assets/claims-workspace-presentation-v1.css"} <= files
     assert json.loads((output / "deployment.json").read_text(encoding="utf-8")) == (
         payload
@@ -138,7 +139,11 @@ def test_queue_script_payload_stays_below_300_kb() -> None:
     index = (static_site.SOURCE_ROOT / "index.html").read_text(encoding="utf-8")
     scripts = re.findall(r'<script src="(assets/[^"?]+\.js)\?sha256=', index)
     assert "assets/agent-work-v1.js" not in scripts
+    assert "assets/causal-process-v1.js" not in scripts
     assert index.count('name="casepath-agent-work-script"') == 1
+    assert index.count('name="casepath-causal-process-script"') == 1
+    process_hash = hashlib.sha256((static_site.SOURCE_ROOT / "assets/causal-process-v1.js").read_bytes()).hexdigest()
+    assert f'name="casepath-causal-process-script" content="assets/causal-process-v1.js?sha256={process_hash}"' in index
     assert sum((static_site.SOURCE_ROOT / script).stat().st_size for script in scripts) < 300_000
 
 

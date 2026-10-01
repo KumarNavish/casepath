@@ -484,7 +484,7 @@
     ['Read the packet','Open the customer message and compare the two notices.','[data-open-inspector]'],
     ['Review the claim','Select Review claim and follow the checks as they appear.','#cwStart'],
     ['See what is needed','Find the receipt-date question and the documents needed now.','.cp-a-needs'],
-    ['Change one condition','Open What if on family-home service. Set it false and read what leaves the request.','[data-what-if="family_home"]'],
+    ['Correct one assumption','Open Claim conditions in the living process. Change Family home, give a reason, and preview the affected steps and documents. Apply only if the correction is right.','.cp-process-conditions'],
     ['Draft the request','Select Draft request. Read the saved customer draft before copying or exporting it.','#cwDraftOpen'],
   ];
   function syncReviewerMode(){
@@ -498,6 +498,7 @@
     mark('.cp-a-review,.aw-narrative-lines li,.cp-a-path li,.cp-a-condition-overview li,.cp-a-condition,.cp-a-needs li,.cp-a-next,.cp-a-deadline,.cp-a-why li,.cp-a-conflict,.cp-a-escalation','Deterministic assessment');
     mark('.cp-a-noticed li','Source-bound extraction');
     mark('.cp-a-what-if,.cp-a-what-if-diff li','Deterministic sandbox');
+    mark('.cp-causal','Executable working process · human corrections recorded');
     mark('.cp-a-draft','Draft proposal · deterministic');
     if(state.draft?.latest?.edited_by_handler)mark('.cp-a-draft','Draft proposal · handler edited');
     mark('.cp-reviewed-memory article','Reviewed memory');
@@ -518,7 +519,7 @@
       state.guideStep=null;sessionStorage.removeItem('casepath:walk-step');renderGuide();return;
     }
     if(direction==='next'&&state.guideStep===1&&!state.detail?.state.intake_assessment){state.guideStatus='Select Review claim and wait for its summary.';renderGuide();return;}
-    if(direction==='next'&&state.guideStep===3&&!state.whatIf?.result){state.guideStatus='Set a condition in What if and read the changed request.';renderGuide();return;}
+    if(direction==='next'&&state.guideStep===3&&!window.CasePathCausal?.session(flagshipClaim)?.preview&&!state.causal?.history?.length){state.guideStatus='Preview one process correction and read what changes before continuing.';renderGuide();return;}
     state.guideStep=Math.max(0,Math.min(walk.length-1,state.guideStep+(direction==='back'?-1:1)));
     state.guideStatus='';sessionStorage.setItem('casepath:walk-step',String(state.guideStep));renderGuide();
     $('#cwDetailPanel')?.querySelector(walk[state.guideStep][2])?.scrollIntoView({block:'center'});
@@ -661,7 +662,7 @@
       || !value.next_state || Object.keys(value.next_state).sort().join('|') !== nextKeys.sort().join('|')
       || !['start_processing','evidence_action','processing','decision_ready','safe_abstention','typed_failure'].includes(value.next_state.kind)
       || !['not_assessed','blocked','decision_ready','safe_abstention'].includes(value.readiness_state)
-      || !['claim_process','provisional_plan'].includes(value.readiness_scope)
+      || !['claim_process','provisional_plan','working_process'].includes(value.readiness_scope)
       || (value.provisional_next_action !== null && (
         !inquiryRecord(value.provisional_next_action)
         || Object.keys(value.provisional_next_action).sort().join('|') !== 'audience|enabled|requested_contents'
@@ -680,7 +681,7 @@
       || classes.some(name => !Number.isInteger(value.evidence_class_counts[name]) || value.evidence_class_counts[name] < 0)
       || classes.reduce((total, name) => total + value.evidence_class_counts[name], 0) !== value.evidence_items.length
     ) throw new Error('The operational claim projection failed validation');
-    if (loopState) {
+    if (loopState && value.readiness_scope !== 'working_process') {
       const expectedScope = inquiryRecord(loopState.accepted_artifacts?.observable_package?.native_proposal_receipt)
         ? 'provisional_plan'
         : 'claim_process';
@@ -693,7 +694,8 @@
       || value.workspace_prefix.last_event_sha256 !== workspaceState.last_event_sha256
     )) throw new Error('The operational projection differs from the workspace journal');
     if (value.claim_loop_prefix === null) {
-      if (loopState || value.evidence_items.length || value.current_process && value.current_process.overlay_sha256 !== null) throw new Error('A pre-loop projection contains longitudinal authority');
+      if (value.readiness_scope !== 'working_process' && (loopState || value.evidence_items.length || value.current_process && value.current_process.overlay_sha256 !== null)) throw new Error('A pre-loop projection contains longitudinal authority');
+      if(value.readiness_scope==='working_process' && (value.readiness_state!=='blocked'||value.next_state.action_id!==null))throw new Error('A working process cannot certify a claim decision or execute an old action');
     } else {
       const loopPrefix = value.claim_loop_prefix;
       if (
@@ -1478,6 +1480,7 @@
       if (mount) {
         mount.innerHTML = evidenceInvestigationMarkup(state.nativeInvestigation, state.loop);
         bindNativeInvestigationActions();
+
       }
     } catch (error) {
       if (error.name === 'AbortError' || !isActiveDetail(context)) return;
@@ -1603,14 +1606,39 @@
     const pendingStage=storedCommandIdentity('evidence',id);
     const pendingAdvance=storedCommandIdentity('advance',id);
     const pendingCorrection=storedCommandIdentity('correction-preview',id);
+    const process=state.causal?.claim_id===id?state.causal:null;
+    const causalMarkup=workspaceState.intake_assessment?(window.CasePathCausal?.render(process)||`<section class="cp-process-loading" role="${process?.error?'alert':'status'}"><h2>${process?.error?'Process editor unavailable':'Loading the working process…'}</h2><p>${esc(process?.error||'Reading the saved steps, conditions and document dependencies.')}</p>${process?.error?'<button type="button" class="cw-button" data-causal-load-retry>Try again</button>':''}</section>`):null;
     return ui.workbench(loop,workspaceState,{
-      ...options,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,pendingHandler:storedCommandIdentity('handler-note',id),pendingDraft:storedCommandIdentity('draft',id),handlerDrafts:state.handlerDrafts,draft:state.draft,draftEdit:state.draftEdit,memories:state.memories?.items||[],knowledge:state.knowledge?.items||[],memoryHidden:state.memoryHidden,detail:state.detail,canvasNodeId:state.canvasNodeId,whatIf:state.whatIf,evidenceChoice:state.evidenceChoice,
+      ...options,causal:process,causalMarkup,pendingIntent,pendingStage,pendingAdvance,pendingCorrection,pendingHandler:storedCommandIdentity('handler-note',id),pendingDraft:storedCommandIdentity('draft',id),handlerDrafts:state.handlerDrafts,draft:state.draft,draftEdit:state.draftEdit,memories:state.memories?.items||[],knowledge:state.knowledge?.items||[],memoryHidden:state.memoryHidden,detail:state.detail,canvasNodeId:state.canvasNodeId,whatIf:state.whatIf,evidenceChoice:state.evidenceChoice,
       focusedEvidenceId:state.focusedEvidenceId,
       pendingInvalid:options.invalid || Boolean(pendingIntent?.invalid || pendingStage?.invalid || pendingAdvance?.invalid || pendingCorrection?.invalid),
       correctionPreview:state.correctionPreview?.claimId===id?state.correctionPreview.value:null,
       change:state.change?.claimId===id?state.change:null,
       provisionalMarkup:loop?proposalRevisionMarkup(loop.latest_proposal_revision):'',
     });
+  }
+
+  let causalScript;
+  function loadCausalEditor() {
+    if(window.CasePathCausal?.render&&window.CasePathCausal?.bind&&window.CasePathCausal?.session)return Promise.resolve();
+    if(causalScript)return causalScript;
+    const source=document.querySelector('meta[name="casepath-causal-process-script"]')?.content;
+    if(!/^assets\/causal-process-v1\.js\?sha256=[a-f0-9]{64}$/.test(source||''))return Promise.reject(new Error('Process editor script is unavailable. Reload the page to try again.'));
+    causalScript=new Promise((resolve,reject)=>{
+      const script=document.createElement('script');
+      let settled=false;
+      const finish=error=>{
+        if(settled)return;settled=true;clearTimeout(timer);
+        script.onload=null;script.onerror=null;
+        if(error){script.remove();causalScript=null;reject(error);}else resolve();
+      };
+      const timer=setTimeout(()=>finish(new Error('The process editor took too long to load. Try again.')),22000);
+      script.onload=()=>finish(window.CasePathCausal?.render&&window.CasePathCausal?.bind&&window.CasePathCausal?.session?null:new Error('The process editor could not start. Try again.'));
+      script.onerror=()=>finish(new Error('The process editor did not load. Try again.'));
+      script.src=source;
+      document.body.append(script);
+    });
+    return causalScript;
   }
 
   let agentWorkScript;
@@ -1641,6 +1669,7 @@
   }
 
   async function openClaim(claimId) {
+    state.causal=null;state.causalLoading=null;
     state.whatIf=null;
     state.deepLinkWhatIfHandled=false;
     state.evidenceChoice=null;
@@ -1779,7 +1808,7 @@
     const openDetails=sameClaim?[...panel.querySelectorAll('details[open][id]')].map(el=>el.id):[];
     const commandStatus=invalidPendingCommand?'A recovery record could not be verified. Actions are locked; reload the saved claim before continuing.':loopCommandPending?'An action outcome is still being checked. Use the recovery action above; do not create a second request.':pendingAssignBody?'The assignment outcome is unknown. Recovery uses the same saved request.':pendingStartUnresolved?'The assessment outcome is unknown. Recovery uses the same saved request.':'';
     panel.innerHTML=ui.detail(detail,state.loop,{
-      commandStatus,
+      commandStatus,causal:state.causal?.claim_id===value.claim_id?state.causal:null,
       workbench:loopWorkbenchMarkup(state.loop,value,{invalid:invalidPendingCommand,pendingStart:pendingStartUnresolved}),
       technicalMarkup:assessmentMarkup,
       ownerValue:pendingAssignBody?.owner||value.owner||'',
@@ -1808,6 +1837,21 @@
     $('#cwReconcile')?.addEventListener('click', () => runWorkspaceCommand(reconcileClaim));
     $('#cwEnsureLoop')?.addEventListener('click', ensureClaimLoop);
     bindNativeInvestigationActions();
+    if(value.intake_assessment){
+      const context=activeDetailContext();
+      window.CasePathCausal?.bind(panel,state.causal,{
+        request,verify:verifyCausalResponse,
+        reload:()=>reloadCausalProcess(context),
+        changed:async process=>{
+          if(!isActiveDetail(context))return;
+          state.causal=process;state.whatIf=null;state.draft=null;state.draftEdit=null;
+          await reloadCausalProcess(context,process);
+          void loadQueue();
+        },
+      });
+      panel.querySelector('[data-causal-load-retry]')?.addEventListener('click',()=>{state.causal=null;void loadCausalProcess(context);renderDetail(state.detail);});
+      if(!state.causalLoading&&(!state.causal||state.causal.claim_id!==value.claim_id||!state.causal.error&&state.causal.workspace_revision!==value.revision))void loadCausalProcess(context);
+    }
     $('#cwEvidenceForm')?.addEventListener('submit', event => { event.preventDefault(); commitLoopObservation(); });
     $('#cwDraftOpen')?.addEventListener('click',()=>{
       if(state.draft?.latest){$('#cpDraftPanel')?.scrollIntoView({block:'start'});$('#cwDraftBody [data-draft-line]')?.focus({preventScroll:true});}
@@ -1853,6 +1897,12 @@
     }));
     panel.querySelectorAll('[data-handler-withdraw]').forEach(button=>button.addEventListener('click',()=>void saveHandlerNote({target_event_sha256:button.dataset.handlerWithdraw},true)));
     panel.querySelector('[data-handler-retry]')?.addEventListener('click',()=>void saveHandlerNote(null));
+    panel.querySelectorAll('[data-document-node]').forEach(button=>button.addEventListener('click',()=>{
+      if(!state.causal?.graph||!window.CasePathCausal)return;
+      const view=window.CasePathCausal.session(value.claim_id);view.selected=button.dataset.documentNode;view.expanded=true;view.mode=null;view.preview=null;
+      renderDetail(state.detail);$('#cpCausalProcess')?.scrollIntoView({block:'start'});
+      panel.querySelector('[data-causal-node="'+CSS.escape(button.dataset.documentNode)+'"]')?.focus({preventScroll:true});
+    }));
     panel.querySelectorAll('[data-what-if]').forEach(button=>button.addEventListener('click',()=>openWhatIf(button.dataset.whatIf)));
     panel.querySelectorAll('[data-what-if-value]').forEach(button=>button.addEventListener('click',()=>void setWhatIf(button.dataset.whatIfValue)));
     panel.querySelector('[data-what-if-close]')?.addEventListener('click',exitWhatIf);
@@ -1873,6 +1923,37 @@
       state.deepLinkWhatIfHandled=true;
       queueMicrotask(()=>{if(state.detail?.state.claim_id===value.claim_id&&!state.whatIf)openWhatIf('family_home');});
     }
+  }
+
+  async function verifyCausalResponse(value,hashField,contract){
+    if(!value||value.contract!==contract||value.claim_id!==state.detail?.state.claim_id||value[hashField]!==await sha256(Object.fromEntries(Object.entries(value).filter(([key])=>key!==hashField))))throw new Error('The saved process could not be verified. Reload the claim.');
+    return value;
+  }
+  async function loadCausalProcess(context){
+    if(!isActiveDetail(context)||!state.detail.state.intake_assessment)return;
+    const revision=state.detail.state.revision;
+    state.causalLoading=context;
+    try{
+      const [value]=await Promise.all([
+        request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(context.claimId)}/process`,{signal:state.detailController?.signal}),
+        loadCausalEditor(),
+      ]);
+      if(!isActiveDetail(context)||state.detail.state.revision!==revision)return;
+      await verifyCausalResponse(value,'view_sha256','casepath.causal-process-view/1.0.0');
+      if(value.workspace_revision!==revision||value.workspace_state_sha256!==state.detail.state.state_sha256)throw new Error('The claim changed while the process was loading. Reload it to continue.');
+      state.causal={...value,actor:state.detail.state.owner||'',sources:state.detail.artifacts};
+    }catch(error){if(error.name!=='AbortError'&&isActiveDetail(context))state.causal={claim_id:context.claimId,error:error.message};}
+    finally{if(isActiveDetail(context)){state.causalLoading=null;renderDetail(state.detail);}}
+  }
+  async function reloadCausalProcess(context,process=null){
+    if(!isActiveDetail(context))return;
+    const fresh=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(context.claimId)}`),context.claimId);
+    if(!isActiveDetail(context))return;
+    state.detail=fresh;state.detailPriority=null;state.causal=process?{...process,actor:fresh.state.owner||'',sources:fresh.artifacts}:null;
+    if(state.loop)state.loop=await loadClaimLoop(context.claimId,{allowMissing:true,signal:state.detailController?.signal});
+    if(!isActiveDetail(context))return;
+    await loadDraftList(context.claimId,context,state.detailController?.signal);
+    await loadCausalProcess(context);
   }
 
   function chooseEvidence(sourceEntrySha256) {
@@ -1975,7 +2056,7 @@
   async function validateDraftList(value,claimId){
     const {list_sha256,...material}=value||{};
     if(value?.contract!=='casepath.workspace-draft-list/1.0.0'||value.claim_id!==claimId
-      ||!Array.isArray(value.items)||canonicalJson(value.latest)!==canonicalJson(value.items.at(-1)||null)
+      ||!Array.isArray(value.items)||(value.latest!==null&&canonicalJson(value.latest)!==canonicalJson(value.items.at(-1)||null))
       ||list_sha256!==await sha256(material))throw new Error('The saved draft list could not be verified.');
     for(const item of value.items){
       const {draft_sha256,event_sha256,recorded_at,...draft}=item;
@@ -2070,7 +2151,7 @@
       expected_revision:state.detail.state.revision,
       expected_state_sha256:state.detail.state.state_sha256,
       edited_body:edited,
-      replaces_event_sha256:saved?.event_sha256||null,
+      replaces_event_sha256:state.draft?.items?.at(-1)?.event_sha256||null,
     };
     const identity=commandIdentity('draft',claimId,body);
     setLoopMutationBusy(true,edited?'Saving the edited draft…':'Writing the request from this claim…',context);
@@ -2704,7 +2785,7 @@
   function syncReasoning({focus=false}={}){
     if(!state.loop||!state.detail)return;
     const trace=$('#cpCanvasTrace');
-    if(trace){const open=trace.open;trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.whatIf?.result?.scenario);$('#cpCanvasTrace').open=open||focus;}
+    if(trace){const open=trace.open;trace.outerHTML=ui.canvasTrace(state.loop,state.detail,state.canvasNodeId,state.causal?.effective_assessment||state.whatIf?.result?.scenario);$('#cpCanvasTrace').open=open||focus;}
     const selected=$('#cpCanvasTrace')?.dataset.selectedNode;
     root.querySelectorAll('[data-canvas-node]').forEach(link=>{if(link.dataset.canvasNode===selected)link.setAttribute('aria-current','step');else link.removeAttribute('aria-current');});
     root.querySelectorAll('[data-evidence-source]').forEach(button=>button.classList.toggle('cp-source-selected',button.dataset.evidenceSource===state.focusedEvidenceId));

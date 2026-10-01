@@ -167,6 +167,44 @@ class ApplyWorkspaceCorrectionRequest(_Request):
     )
 
 
+class PreviewProcessEditRequest(_Request):
+    operation: dict[str, Any]
+    actor: str = Field(min_length=1, max_length=80)
+    reason: str = Field(min_length=1, max_length=1000)
+    expected_revision: StrictInt = Field(ge=1)
+    expected_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class ApplyProcessEditRequest(PreviewProcessEditRequest):
+    preview_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class SaveProcessFragmentRequest(_Request):
+    name: str = Field(min_length=1, max_length=100)
+    node_ids: list[str] = Field(min_length=1, max_length=100)
+    actor: str = Field(min_length=1, max_length=80)
+    reason: str = Field(min_length=1, max_length=1000)
+    expected_revision: StrictInt = Field(ge=1)
+    expected_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    fragment_id: str | None = Field(default=None, max_length=100)
+
+
+class PreviewProcessDocumentRequest(_Request):
+    document_type: str = Field(min_length=1, max_length=120)
+    artifact_id: str = Field(min_length=1, max_length=200)
+    quote: str = Field(default="", max_length=4000)
+    note: str = Field(min_length=1, max_length=1000)
+    review: Literal["received", "sufficient", "insufficient"]
+    actor: str = Field(min_length=1, max_length=80)
+    reason: str = Field(min_length=1, max_length=1000)
+    expected_revision: StrictInt = Field(ge=1)
+    expected_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class ApplyProcessDocumentRequest(PreviewProcessDocumentRequest):
+    preview_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
 def _bounded_header(value: str | None, *, name: str) -> str:
     if value is None or _OPAQUE_ID.fullmatch(value) is None:
         raise HTTPException(400, f"{name} must be an opaque 8-128 character identifier")
@@ -256,6 +294,61 @@ def create_claim_loop_router(
 
     # Static workspace paths are declared before /{loop_id}; the plural
     # ClaimLoop control plane remains the only product mutation surface.
+
+    def process_service():
+        from .causal_workspace_v1 import CausalWorkspaceService
+        return CausalWorkspaceService(workspace_service())
+
+    @router.get("/workspace/claims/{claim_id}/process")
+    def get_working_process(claim_id: str) -> dict[str, Any]:
+        try:
+            return process_service().view(claim_id)
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.post("/workspace/claims/{claim_id}/process/preview")
+    def preview_working_process(claim_id: str, body: PreviewProcessEditRequest) -> dict[str, Any]:
+        try:
+            return process_service().preview(claim_id, **body.model_dump())
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.post("/workspace/claims/{claim_id}/process/apply")
+    def apply_working_process(claim_id: str, body: ApplyProcessEditRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)]) -> dict[str, Any]:
+        try:
+            return process_service().apply(claim_id, **body.model_dump(), idempotency_key=idempotency_key)
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.post("/workspace/claims/{claim_id}/process/fragments")
+    def save_process_fragment(claim_id: str, body: SaveProcessFragmentRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)]) -> dict[str, Any]:
+        try:
+            return process_service().save_fragment(claim_id, **body.model_dump(), idempotency_key=idempotency_key)
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    def document_operation(body):
+        value = body.model_dump()
+        operation = {"type": "document.review", **{key: value.pop(key) for key in
+                     ("document_type", "artifact_id", "quote", "note", "review")}}
+        return {"operation": operation, **value}
+
+    @router.post("/workspace/claims/{claim_id}/process/documents/preview")
+    def preview_process_document(claim_id: str, body: PreviewProcessDocumentRequest) -> dict[str, Any]:
+        try:
+            return process_service().preview(claim_id, **document_operation(body))
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
+
+    @router.post("/workspace/claims/{claim_id}/process/documents/apply")
+    def apply_process_document(claim_id: str, body: ApplyProcessDocumentRequest,
+        idempotency_key: Annotated[str, Depends(_idempotency_key)]) -> dict[str, Any]:
+        try:
+            return process_service().apply(claim_id, **document_operation(body), idempotency_key=idempotency_key)
+        except (ClaimWorkspaceError, ValueError) as exc:
+            raise_workspace_http(ClaimWorkspaceError(str(exc)))
     @router.get("/workspace/claims")
     def workspace_claims(
         q: str | None = Query(default=None, max_length=160),
@@ -465,6 +558,7 @@ def create_claim_loop_router(
                 claim_id,
                 idempotency_key=idempotency_key,
                 expected_revision=body.expected_revision,
+                process_model="casepath.causal-process/1.0.0",
             )
         except (ClaimWorkspaceError, ValueError) as exc:
             raise_workspace_http(ClaimWorkspaceError(str(exc)))

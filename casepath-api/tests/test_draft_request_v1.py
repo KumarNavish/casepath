@@ -8,10 +8,28 @@ import pytest
 
 from casepath_api.claim_workspace_intake_v1 import compile_intake_assessment
 from casepath_api.claim_workspace_v1 import ClaimWorkspaceError, ClaimWorkspaceService
-from casepath_api.draft_request_v1 import COMPILER_ID, compile_draft_request
+from casepath_api.draft_request_v1 import COMPILER_ID, CAUSAL_COMPILER_ID, compile_draft_request
 from casepath_api.storage import Storage
 from casepath_api.validate_journal import validate_journal
 from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root
+
+
+def _german_causal_questions() -> dict:
+    return {
+        "language": "de-CH", "assessment_sha256": "b" * 64, "process_graph_sha256": "a" * 64,
+        "noticed": [], "steps": [{"node_id": "lt_deadline", "label": "Preserve deadline"}],
+        "conditions": {"termination_received": {"verdict": "unresolved", "quote": None}},
+        "candidate_deadline": {"question": "On which dates did each notice arrive?"},
+        "question_cards": [
+            {"id": "deadline_anchor", "question": "On which dates did each notice arrive?", "document_types": ["proof_of_receipt"]},
+            {"id": "termination_received", "question": "Does termination received apply?", "document_types": ["proof_of_receipt"]},
+            {"id": "complete_notice", "question": "Can you send the complete second page of each notice?", "document_types": ["proof_of_receipt"]},
+            {"id": "process:custom", "question": "What establishes whether 'Keep My Custom Label' applies?", "document_types": []},
+        ],
+        "documents": [{"document_type": "proof_of_receipt", "label": "Proof of receipt", "route_state": "held_behind_question",
+                       "required_at_node_ids": ["lt_deadline"], "condition_flag": None, "authority": None,
+                       "reason": "The process condition is unresolved."}],
+    }
 
 
 def _draft(claim_id: str) -> dict:
@@ -166,3 +184,125 @@ def test_prior_named_draft_compiler_replays_exact_bytes(claim_id: str, expected_
     corpus = PublicCorpus(default_workspace_corpus_root())
     assessment = compile_intake_assessment(corpus, claim_id)["claim_assessment"]
     assert compile_draft_request(claim_id, assessment, variant="sealed_1_1")["draft_sha256"] == expected_sha256
+
+
+def test_corrected_family_route_draft_explains_actual_upstream_questions() -> None:
+    from casepath_api.causal_process_v1 import build_graph, apply_edit, evaluate
+    claim_id = "clm_f69b1747447bc221"
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    intake = compile_intake_assessment(corpus, claim_id)
+    graph = build_graph(corpus, claim_id, {**intake["claim_assessment"], "claim_type": intake["claim_type"]})
+    assessment = evaluate(apply_edit(graph, {"type": "conditions.set", "flag": "family_home", "verdict": "false", "actor": "Handler", "reason": "The family-home branch does not apply."}))
+    assert assessment["conditions"]["extension_relevant"]["verdict"] == "true"
+    draft = compile_draft_request(claim_id, assessment)
+    excluded = {row["document_type"]: row for row in draft["not_requested"]}
+    for document_type in ("stated_reason", "housing_search_log", "landlord_correspondence"):
+        assert excluded[document_type]["reason"] == "We first need to clarify: Were any rent payments overdue?"
+    assert "None" not in draft["body_markdown"]
+    assert "extension relevant is still a question" not in draft["body_markdown"]
+    assert "?." not in draft["body_markdown"]
+    assert "Were any rent payments overdue?" in draft["questions"]
+    assert draft["compiler_id"] == CAUSAL_COMPILER_ID
+    german = compile_draft_request(claim_id, {**assessment, "language": "de-CH"})
+    german_reasons = {row["document_type"]: row["reason"] for row in german["not_requested"]}
+    assert german_reasons["housing_search_log"] == "Zuerst müssen wir Folgendes klären: Waren Mietzinszahlungen ausstehend?"
+    assert "None" not in german["body_markdown"]
+    # A previously saved graph draft remains reproducible under its own compiler.
+    old = compile_draft_request(claim_id, assessment, variant="sealed_1_2")
+    assert old["compiler_id"] == COMPILER_ID
+    assert "None is still a question" in old["body_markdown"]
+
+
+def test_current_legacy_assessment_keeps_exact_previous_compiler_output() -> None:
+    claim_id = "clm_f69b1747447bc221"
+    assessment = compile_intake_assessment(PublicCorpus(default_workspace_corpus_root()), claim_id)["claim_assessment"]
+    assert compile_draft_request(claim_id, assessment) == compile_draft_request(claim_id, assessment, variant="sealed_1_2")
+
+
+@pytest.mark.parametrize("variant", ["sealed_1_2", "causal_1_0", "causal_1_1"])
+def test_saved_prior_graph_draft_replays_before_corrected_draft(tmp_path: Path, variant: str) -> None:
+    from casepath_api.causal_workspace_v1 import CausalWorkspaceService, effective_assessment
+    from test_causal_workspace_v1 import _start, _edit
+    claim_id = "clm_f69b1747447bc221"
+    storage = Storage(str(tmp_path / "claims.db"))
+    workspace = ClaimWorkspaceService(storage, corpus=PublicCorpus(default_workspace_corpus_root()))
+    workspace.seed(timestamp="2026-10-01T08:00:00+00:00")
+    _start(workspace, claim_id)
+    _edit(CausalWorkspaceService(workspace), {"type": "conditions.set", "flag": "family_home", "verdict": "false"})
+    state = workspace.store.recover(claim_id)
+    old = compile_draft_request(claim_id, effective_assessment(state), variant=variant)
+    saved, event, _ = workspace.store.append(claim_id=claim_id, event_type="WORKSPACE_DRAFT_RECORDED",
+        idempotency_key="draft.previous.graph.0001", expected_revision=state["revision"],
+        command={"draft": old, "replaces_event_sha256": None, "request_expected_revision": state["revision"]},
+        timestamp="2026-10-01T09:00:00+00:00")
+    restarted = ClaimWorkspaceService(storage, corpus=workspace.corpus)
+    assert restarted.drafts(claim_id)["latest"]["draft_sha256"] == old["draft_sha256"]
+    restarted.record_draft(claim_id, expected_revision=saved["revision"], expected_state_sha256=saved["state_sha256"],
+        replaces_event_sha256=event["event_sha256"], idempotency_key="draft.corrected.graph.0001")
+    assert restarted.drafts(claim_id)["latest"]["compiler_id"] == CAUSAL_COMPILER_ID
+    assert "None is still a question" not in restarted.drafts(claim_id)["latest"]["body_markdown"]
+
+
+@pytest.mark.parametrize("language", ["en", "de-CH"])
+def test_graph_draft_omits_empty_document_sections_when_prerequisites_block(language: str) -> None:
+    from casepath_api.causal_process_v1 import build_graph, apply_edit, evaluate, seal_graph
+    claim_id = "clm_f69b1747447bc221"
+    corpus = PublicCorpus(default_workspace_corpus_root())
+    intake = compile_intake_assessment(corpus, claim_id)
+    graph = build_graph(corpus, claim_id, {**intake["claim_assessment"], "claim_type": intake["claim_type"], "language": language})
+    for document in graph["document_catalog"]:
+        document["held_files"] = []
+    graph = seal_graph(graph)
+    graph = apply_edit(graph, {"type": "node.add", "node": {"node_id": "check_permission", "label": "Check permission", "entry": True}})
+    graph = apply_edit(graph, {"type": "edge.add", "edge": {"edge_id": "permission.before.deadline", "source_node_id": "check_permission", "target_node_id": "lt_deadline", "relation": "requires"}})
+    assessment = evaluate(graph)
+    draft = compile_draft_request(claim_id, assessment)
+    assert draft["requested"] == draft["held"] == []
+    for heading in ("## Please send", "## Already held", "## Bitte senden Sie uns", "## Bereits vorhanden"):
+        assert heading not in draft["body_markdown"]
+    assert ("## Offene Fragen" if language.startswith("de") else "## Questions") in draft["body_markdown"]
+    old = compile_draft_request(claim_id, assessment, variant="causal_1_0")
+    assert ("## Bitte senden Sie uns" if language.startswith("de") else "## Please send") in old["body_markdown"]
+
+
+def test_german_causal_draft_localizes_known_questions_and_deferred_reasons_only():
+    assessment = _german_causal_questions()
+    draft = compile_draft_request("test-claim", assessment)
+    assert draft["compiler_id"] == "casepath.workspace-causal-request-draft-compiler/1.2.0"
+    expected = ["An welchen Tagen haben Sie die einzelnen Kündigungsschreiben erhalten?",
+                "Haben Sie die Kündigung erhalten?",
+                "Können Sie die vollständige zweite Seite jedes Kündigungsschreibens senden?"]
+    assert draft["questions"] == expected + ["What establishes whether 'Keep My Custom Label' applies?"]
+    assert draft["not_requested"][0]["reason"] == "Zuerst müssen wir Folgendes klären: " + " ".join(expected)
+    assert draft["body_markdown"].count(expected[0]) == 2  # one question plus its document explanation
+    for card in assessment["question_cards"][:3]:
+        assert card["question"] not in draft["body_markdown"]
+    assert "?." not in draft["body_markdown"]
+
+
+@pytest.mark.parametrize("question,translated", [
+    ("On what date was the increase notified?", "An welchem Tag haben Sie die Mietzinserhöhungsanzeige erhalten?"),
+    ("Does claim received apply?", "Haben Sie die Mietzinserhöhungsanzeige erhalten?"),
+    ("Does health effects apply?", "Werden gesundheitliche Beschwerden geltend gemacht?"),
+    ("Does mold apply?", "Liegt ein Schimmelbefall vor?"),
+    ("Does extension relevant apply?", "Wird eine Erstreckung des Mietverhältnisses beantragt?"),
+])
+def test_german_causal_draft_localizes_remaining_builtin_questions(question, translated):
+    assessment = _german_causal_questions()
+    assessment["candidate_deadline"] = None
+    assessment["question_cards"] = [{"id": "builtin", "question": question, "document_types": ["proof_of_receipt"]}]
+    draft = compile_draft_request("test-claim", assessment)
+    assert draft["questions"] == [translated]
+    assert draft["not_requested"][0]["reason"] == "Zuerst müssen wir Folgendes klären: " + translated
+
+
+@pytest.mark.parametrize("variant,expected_sha256", [
+    ("causal_1_0", "cd7b91522e8602e7861cfd487579079cf74e765b6ca29a7138bc3072f86a2f67"),
+    ("causal_1_1", "c20ab586b879788fd55375bfa6aac03f8f21ebdda59fb6fd9e03b38c7b7fc434"),
+    ("sealed_1_2", "8921696fa544508c25e353450b8fa23fa10615498368c6982588749e62b4755d"),
+    ("sealed_1_1", "819ebd6d9d0e49d84539d9ea239d3615f3897df9043c05de66cc485227b7cc29"),
+    ("unversioned_current", "46100279b92c6199b1233d525a8567d502d540f8c17f4280ee1ca1af31f41e9b"),
+    ("legacy_7440", "1d67ec21c2101f29ee35f3cfbf6550a75c3eb22c3667f7e5273361343e8e4855"),
+])
+def test_localized_causal_compiler_preserves_every_previous_variant_identity(variant, expected_sha256):
+    assert compile_draft_request("test-claim", _german_causal_questions(), variant=variant)["draft_sha256"] == expected_sha256

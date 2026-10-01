@@ -133,6 +133,54 @@ def _received_has_authority(
     )
 
 
+def _working_process_projection(workspace_state, original):
+    """Project the reviewed working plan without inheriting evidence sufficiency."""
+    if workspace_state.get("causal_process") is None:
+        return original
+    from .causal_workspace_v1 import effective_assessment
+    assessment = effective_assessment(workspace_state)
+    material = {key: value for key, value in original.items() if key != "projection_sha256"}
+    step = next((value for value in assessment["steps"] if value["state"] == "active"), None)
+    items = []
+    counts = {name: 0 for name in EVIDENCE_CLASSES}
+    for doc in assessment["documents"]:
+        route = doc["route_state"]
+        classification, raw = {
+            "not_needed": ("irrelevant", "not_applicable"),
+            "held_behind_question": ("conditional", "conditional"),
+            "needed_later": ("conditional", "conditional"),
+            "optional": ("conditional", "conditional"),
+            "held_not_reviewed": ("held_not_reviewed", "present_unreviewed"),
+            "needed_now": ("missing", "missing"),
+            "established": ("received", "provided_sufficient"),
+        }.get(route, ("unknown", "unknown"))
+        if doc.get("review_state") == "insufficient" and route not in {"not_needed", "held_behind_question"}:
+            classification, raw = "insufficient", "provided_insufficient"
+        counts[classification] += 1
+        items.append({"evidence_item_id": "process_document." + doc["document_type"],
+            "title": doc["label"], "fact_id": "process_requirement." + doc["document_type"],
+            "fact_state": "unknown", "raw_status": raw, "evidence_class": classification,
+            "obligation_status": "active" if route == "needed_now" else "conditional",
+            "mandatory_now": route == "needed_now", "current_path": route in {"needed_now", "held_not_reviewed"},
+            "source_ref_ids": [], "provenance_edge_sha256s": []})
+    controlling = next((item for item in items if item["mandatory_now"]), None)
+    material.update({
+        "current_process": {"node_id": step["node_id"], "node_title": step["label"],
+            "next_action_node_id": step["node_id"], "selected_branch_id": None,
+            "overlay_sha256": workspace_state["causal_process"]["graph_sha256"]} if step else None,
+        "controlling_decision": {"obligation_id": controlling["evidence_item_id"],
+            **{key: controlling[key] for key in ("fact_id", "fact_state", "obligation_status", "evidence_item_id", "evidence_class", "title")}} if controlling else None,
+        "evidence_items": items, "evidence_class_counts": counts,
+        "workflow_state": "in_review", "readiness_state": "blocked",
+        "principal_blocker": assessment["next_step"], "pending_evidence_count": sum(item["mandatory_now"] for item in items),
+        "next_state": {"kind": "processing", "title": assessment["next_step"],
+            "action_id": None, "action_sha256": None, "terminal_mode": None},
+        "last_authoritative_update": workspace_state["last_authoritative_update"],
+        "readiness_scope": "working_process", "provisional_next_action": None,
+    })
+    return {**material, "projection_sha256": digest_value(material)}
+
+
 def derive_workspace_operational_projection_v1(
     *,
     workspace_state: Mapping[str, Any],
@@ -149,7 +197,7 @@ def derive_workspace_operational_projection_v1(
             raise WorkspaceOperationalProjectionError(
                 "loop events exist without a loop state"
             )
-        return _no_loop_projection(workspace_state)
+        return _working_process_projection(workspace_state, _no_loop_projection(workspace_state))
     state = ClaimLoopState.model_validate(loop_state.model_dump(mode="json"))
     if loop_journal_prefix is not None:
         if loop_events or set(loop_journal_prefix) != {
@@ -469,7 +517,7 @@ def derive_workspace_operational_projection_v1(
         "failure_or_unknown_effect": failure_or_unknown,
         "last_authoritative_update": last_update,
     }
-    return {**material, "projection_sha256": digest_value(material)}
+    return _working_process_projection(workspace_state, {**material, "projection_sha256": digest_value(material)})
 
 
 __all__ = [

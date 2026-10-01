@@ -84,6 +84,40 @@ class ExistingCasePathAuthority:
             raise AuthorityError("claim detail identity mismatch")
         return detail
 
+    def _normalized(self, claim_id, view):
+        state = self._detail(claim_id)["state"]
+        if state.get("causal_process") is None:
+            return normalize_loop(view)
+        from ..causal_workspace_v1 import effective_assessment
+        assessment = effective_assessment(state)
+        graph = state["causal_process"]
+        projection = view["operational_projection"]
+        documents = {row["document_type"]: row for row in assessment["documents"]}
+        nodes = [{**node, "title": node["label"],
+                  "evidence_requirement_ids": ["process_document." + key for key in node["document_types"]],
+                  "branches": [{**edge, "branch_id": edge["edge_id"], "target": edge["target_node_id"]}
+                               for edge in assessment["edges"] if edge["source_node_id"] == node["node_id"]]}
+                 for node in assessment["nodes"]]
+        branches = [{**branch, "object_id": f"{node['node_id']}.branch.{index}", "from_node_id": node["node_id"]}
+                    for node in nodes for index, branch in enumerate(node["branches"])]
+        checklist = [{"item_id": "process_document." + key, "node_ids": row["required_at_node_ids"],
+                      "why": row.get("reason", "Required by the reviewed working process"),
+                      "legal_basis_ids": [row["authority"]["authority_id"]] if (row.get("authority") or {}).get("authority_id") else []}
+                     for key, row in documents.items() if row["required_at_node_ids"]]
+        linked_requirements = {row["item_id"] for row in checklist}
+        # A handler's source-bound document review governs this working plan.
+        # The agent's independent evidence audit must not claim source support
+        # until its own channel gate has linked the original source spans.
+        evidence = [{**item, "evidence_class": "unknown" if item["evidence_class"] in {"held_not_reviewed", "received"} else item["evidence_class"]}
+                    for item in projection["evidence_items"] if item["evidence_item_id"] in linked_requirements]
+        base = normalize_loop(view)
+        base.update({"state_sha256": digest({"workspace": state["state_sha256"], "source_loop": base["state_sha256"]}),
+                     "revision": state["revision"], "workspace_state_sha256": state["state_sha256"],
+                     "process": {"nodes": nodes, "edges": graph["edges"], "current_overlay": projection["current_process"],
+                                 "graph_sha256": graph["graph_sha256"], "assessment_sha256": assessment["assessment_sha256"]},
+                     "branches": branches, "evidence": evidence, "checklist": checklist})
+        return base
+
     def context(self, claim_id):
         detail = self._detail(claim_id)
         state = detail["state"]
@@ -187,7 +221,7 @@ class ExistingCasePathAuthority:
             if (before["state_sha256"] != expected_context["state_sha256"]
                     or before.get("claim_loop_state_sha256") != expected_context.get("claim_loop_state_sha256")):
                 raise SourceChanged("claim state changed before process mapping; refresh the work request")
-            result = normalize_loop(existing)
+            result = self._normalized(claim_id, existing)
             return {**result, "setup_changed": False, "before_context": before}
         if before["state_sha256"] != expected_context["state_sha256"]:
             raise SourceChanged("claim state changed before setup; request a fresh review")
@@ -195,7 +229,7 @@ class ExistingCasePathAuthority:
         state = detail["state"]
         started = False
         if state["workflow_state"] == "received":
-            reply = self._workspace().start(claim_id, idempotency_key=run_id + ".start", expected_revision=state["revision"])
+            reply = self._workspace().start(claim_id, idempotency_key=run_id + ".start", expected_revision=state["revision"], process_model="casepath.causal-process/1.0.0")
             state = reply["state"]
             started = True
             check = self._detail(claim_id)["state"]
@@ -209,10 +243,10 @@ class ExistingCasePathAuthority:
         confirmed = self._loop().view(claim_id)
         if response["loop_state"]["state_sha256"] != confirmed["loop_state"]["state_sha256"]:
             raise SourceChanged("the evidence loop was not confirmed exactly")
-        return {**normalize_loop(confirmed), "setup_changed": True, "start_changed": started, "before_context": before}
+        return {**self._normalized(claim_id, confirmed), "setup_changed": True, "start_changed": started, "before_context": before}
 
     def snapshot(self, claim_id):
-        return normalize_loop(self._loop().view(claim_id))
+        return self._normalized(claim_id, self._loop().view(claim_id))
 
     def snapshot_is_current(self, claim_id, expected_sha256):
         """Use the journal checkpoint as a freshness hint between full role checks."""

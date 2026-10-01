@@ -41,6 +41,8 @@ PUBLIC_ASSETS = (
     "assets/method-guide-data.json",
     "assets/claims-workspace-v1.css",
     "assets/claims-workspace-v1.js",
+    "assets/causal-process-v1.js",
+    "assets/causal-process-v1.css",
     "assets/claims-workspace-presentation-v1.js",
     "assets/claims-workspace-presentation-v1.css",
     "assets/agent-work-v1.js",
@@ -54,6 +56,8 @@ PUBLIC_DIRECTORIES = frozenset({"assets"})
 CONTENT_BOUND_ASSETS = (
     "assets/claims-workspace-v1.css",
     "assets/claims-workspace-v1.js",
+    "assets/causal-process-v1.js",
+    "assets/causal-process-v1.css",
     "assets/claims-workspace-presentation-v1.js",
     "assets/claims-workspace-presentation-v1.css",
     "assets/process-evidence-v2.css",

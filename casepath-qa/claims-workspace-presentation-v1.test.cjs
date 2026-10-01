@@ -95,6 +95,25 @@ test('why chain uses distinct need, step, quote and article',()=>{
  const values=[...markup.matchAll(/<strong(?: [^>]*)?>([^<]*)<\/strong>/g)].map(match=>match[1]);
  assert(values.every((value,index)=>index===0||value!==values[index-1]));
 });
+test('graph next-action why follows its focus and actual dependencies, not a legacy selection',()=>{
+ const graph={...assessment,process_graph_sha256:hash,focus_node_id:'permission',next_step:'Verify handling authority',
+   nodes:[{node_id:'permission',label:'Verify handling authority',meaning:'Confirm who may handle this claim.',condition:{const:'true'},blocked_by:[]},
+          {node_id:'now',label:'Preserve the deadline',blocked_by:['permission']}],
+   steps:[...assessment.steps,{node_id:'permission',label:'Verify handling authority',state:'active',condition_chips:[]}],
+   edges:[{source_node_id:'permission',target_node_id:'now',relation:'requires',condition_verdict:'true'}]};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail,canvasNodeId:assessment.steps[0].node_id,causal:{effective_assessment:graph,evaluation:graph}});
+ const why=markup.match(/<details class="cp-a-why"[\s\S]*?<\/details>/)[0];
+ assert.match(why,/data-selected-node="permission"/);
+ assert.match(view.canvasTrace(null,assessedDetail,assessment.steps[0].node_id,graph),/data-selected-node="permission"/);
+ assert.match(why,/Verify handling authority/);
+ assert.match(why,/Confirm who may handle this claim\./);
+ assert.match(why,/Always applies/);
+ assert.match(why,/Required before<\/small><strong>Preserve the deadline/);
+ assert.doesNotMatch(why,/Capture notice details|Proof of receipt|My form arrived on Monday|termination received|Art\. 273/);
+ graph.inconsistent_completed_node_ids=['now'];graph.next_step='Review the completed step: Preserve the deadline.';
+ const review=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail,causal:{effective_assessment:graph,evaluation:graph}}).match(/<details class="cp-a-why"[\s\S]*?<\/details>/)[0];
+ assert.match(review,/data-selected-node="now"/);assert.match(review,/Waiting for<\/small><strong>Verify handling authority/);
+});
 test('canvas shows all steps and separates needed from held documents',()=>{
  const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail});
  assert.match(markup,/Capture notice details/);
