@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1503,
+  "file_count": 1512,
   "files": [
     {
       "executable": false,
@@ -143,8 +143,8 @@
     {
       "executable": false,
       "path": "README.md",
-      "sha256": "24af4a35636d0ef83038eb4f4e718a7e93f9da65c155d97c8816c236efdf3985",
-      "size_bytes": 14256
+      "sha256": "ea06942fb72c9fdfaa1c3bb51892b9f00bcbac56dd1522a4a5491dd1e84538b4",
+      "size_bytes": 14470
     },
     {
       "executable": false,
@@ -8230,9 +8230,15 @@
     },
     {
       "executable": false,
+      "path": "casepath-qa/claim-sections-v1.test.cjs",
+      "sha256": "c25ff0d688d9f2686b28ea0e2285568025d4a4f626a63deae315d7c71a1d5287",
+      "size_bytes": 5174
+    },
+    {
+      "executable": false,
       "path": "casepath-qa/claims-workspace-presentation-v1.test.cjs",
-      "sha256": "3d963916fdedb6eaaacb2e87be4a4a8a83611ae5b43d2b058a437b429d925a0b",
-      "size_bytes": 15868
+      "sha256": "f1c9852e8c67bfe162f467ccb8b1e5a8d6cf9681f406cc091ec5311e3dd482bb",
+      "size_bytes": 16373
     },
     {
       "executable": false,
@@ -8495,26 +8501,26 @@
     {
       "executable": false,
       "path": "casepath/assets/causal-process-v1.css",
-      "sha256": "12cfb68f9483de99a55d16cf71c2c7b72148550e6ecf02ac9af06e302f7fa7ee",
-      "size_bytes": 10700
+      "sha256": "22cd99bfcc7bea96b95b4a28a8a125b4c37d0597def7aa91aa24ba45b57359cf",
+      "size_bytes": 11767
     },
     {
       "executable": false,
       "path": "casepath/assets/causal-process-v1.js",
-      "sha256": "1ac1e505ce24f9d60b651c0b36052e7c321b04cbc92c44ac60fbc18f8a31e6a7",
-      "size_bytes": 37243
+      "sha256": "d847d7fcd030c0e9930b2941ce89bbe1d7a567c689dfd01e775e600d3ec56724",
+      "size_bytes": 39535
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.css",
-      "sha256": "faf8771b4f3e5f83629373c41aaf7fda226f394e749ca25504e321fbec2679b5",
-      "size_bytes": 15745
+      "sha256": "259e306bc3c719c38f1917ad8431fa44405766284b765ee12b79d17215694be1",
+      "size_bytes": 17238
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.js",
-      "sha256": "e681b33824a0bf132d08395d3a9f3495e12f249432a98d37fb2690fbc76ffb6e",
-      "size_bytes": 71485
+      "sha256": "7842c92cddbbfb42181680665d562eda8e237d13078d4bb0961adb1aa1591775",
+      "size_bytes": 72979
     },
     {
       "executable": false,
@@ -8525,8 +8531,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.js",
-      "sha256": "986a3a0166ac26d72c7a099b9c2c8d205495fb063fe1facb36d33d04c02e8b85",
-      "size_bytes": 222414
+      "sha256": "3edc85897c71aad2d1aaeb1bf561373600955c5ebf341d53a42a0339fb63fd60",
+      "size_bytes": 226183
     },
     {
       "executable": false,
@@ -8615,8 +8621,8 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "975c3fee699dd579963fda38d40c18757efa5621e879490d77d1b7a327437b83",
-      "size_bytes": 21149
+      "sha256": "bef0ded9b85bb654355884b42e3a861dfc8e5215b98cc9b19f71fa0aff548378",
+      "size_bytes": 21407
     },
     {
       "executable": false,
@@ -9034,15 +9040,27 @@
     },
     {
       "executable": false,
+      "path": "docs/product/AGENT_NATIVE_TOP_THREE.md",
+      "sha256": "401a8c06be626ff2ff1d44078de0c384067abd28f3926bc7beac7e32fa9c0577",
+      "size_bytes": 16964
+    },
+    {
+      "executable": false,
       "path": "docs/product/CAUSAL_PROCESS.md",
-      "sha256": "0b9abb32e96405a9f729be2d15b8c505a498c9def09450fc28219a4f7505c0b5",
-      "size_bytes": 15889
+      "sha256": "47d78b66833758636b093fdf33647a04a58ac50263dd15fcfaf410c58cce5276",
+      "size_bytes": 15922
+    },
+    {
+      "executable": false,
+      "path": "docs/product/FOCUSED_UI_ACCEPTANCE.md",
+      "sha256": "09659d502db2c3b44ff19a095ed9eddf6895ccd838e210c99485c63d8d54179a",
+      "size_bytes": 6886
     },
     {
       "executable": false,
       "path": "docs/product/TRANSFORMATION_CHECKPOINTS.md",
-      "sha256": "d48dcccf1f4628039d35a1c05be7113dac2ea7c9759b3d95cf099b4d82b69524",
-      "size_bytes": 4858
+      "sha256": "5c8d2754513b2d445d08fb3a3deccd6a6f3e6ef9c69e0943bf674ba58f7be1d8",
+      "size_bytes": 6882
     },
     {
       "executable": false,
@@ -9061,6 +9079,42 @@
       "path": "docs/product/references/replit-plan.png",
       "sha256": "4027767465f607335f720facf5774ec337b4c279c57c998d20a5c13bbcb8db68",
       "size_bytes": 213783
+    },
+    {
+      "executable": false,
+      "path": "docs/product/screenshots/focused-documents-desktop.png",
+      "sha256": "3b7336400bdb623a49f46469dc9bd1ec803ea97760ea71cbdc47f18a5f3c45cb",
+      "size_bytes": 79618
+    },
+    {
+      "executable": false,
+      "path": "docs/product/screenshots/focused-overview-desktop.png",
+      "sha256": "06f2bd05e2140eb7576e7de6afe6cbbed836156b29bc9b8342930433af7bfc5a",
+      "size_bytes": 94130
+    },
+    {
+      "executable": false,
+      "path": "docs/product/screenshots/focused-overview-mobile.png",
+      "sha256": "2110c2d9dda73f19de96bb5f52e48563ac7088a873a7e5fc33d019b1de749610",
+      "size_bytes": 80217
+    },
+    {
+      "executable": false,
+      "path": "docs/product/screenshots/focused-process-desktop.png",
+      "sha256": "65011e9268125943a8c5046e06ad43ef782d2efc95f9dc79e2ea0b52e7d288bf",
+      "size_bytes": 88338
+    },
+    {
+      "executable": false,
+      "path": "docs/product/screenshots/focused-process-mobile.png",
+      "sha256": "f75aacc6feea5c8c98c6d947c5a0907eccf3201ed975b0b2f418e2024deb6d0b",
+      "size_bytes": 70889
+    },
+    {
+      "executable": false,
+      "path": "docs/product/screenshots/workbench-clutter-before.png",
+      "sha256": "b5948c6e3371d4246a4a915afb0ee8ab9876a177ea18bab3f4a556a0ce70a6e5",
+      "size_bytes": 113814
     },
     {
       "executable": false,

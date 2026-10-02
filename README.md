@@ -2,21 +2,21 @@
 
 CasePath reads the customer's message and files, shows where the claim stands, and helps the handler ask for what is missing.
 
-![Editable causal claim process with granular review and source context](docs/product/screenshots/workbench-desktop.png)
+![Focused claim overview with one next action and sources on demand](docs/product/screenshots/focused-overview-desktop.png)
 
-*A synthetic claim after process reuse and individual validation. Documents and the next action follow its saved process.*
+*A synthetic claim in Overview. Process edits, documents and source details have their own focused views.*
 
 ## See one claim
 
 The **Claims** list groups work by who CasePath is waiting for. Each row says what it noticed and what to do next. Select **Walk through this claim** above the list, or open `#claim=clm_f69b1747447bc221`.
 
-Select **Review claim**. Findings appear in **What I noticed** as the saved review runs. Source facts link to their exact passages. **The path behind this claim** shows the working process, its dependencies, which steps are ready or blocked, and what has been individually validated.
+Select **Review claim**. Overview shows actual review progress, then the next action and key source findings. **Review step** opens the relevant part of the working process. The **Process** view shows connected steps, readiness and individual validation; **Show all steps** opens the whole path. Sources open beside the current work when selected.
 
 Select a step to see the documents it requires and the conditions that activate it. **Edit step** changes its meaning, conditions or document links. **Claim conditions** lets you correct an assumption. Every consequential edit opens an impact preview showing changed steps, documents, connections and the next action, alongside unchanged requirements. Apply the correction to save it in this claim's history. A document's **Review source** action binds a human sufficiency review to an exact original source passage.
 
-Select **Draft request** for an editable letter derived from the current working process. It is labelled **Draft, not sent**; **Copy** and **Export** are beside **Save edits**. A process correction retires the previous draft from the current view while preserving its history. Validate individual steps and their internal connections, then **Save for reuse** to create an immutable process fragment. Similar claims can preview and explicitly apply that version; a later version does not change earlier claims.
+In **Documents**, select **Draft request** for an editable letter derived from the current working process. It is labelled **Draft, not sent**; **Copy** and **Export** are beside **Save edits**. A process correction retires the previous draft from the current view while preserving its history. Validate individual steps and their internal connections, then **Save for reuse** to create an immutable process fragment. Similar claims can preview and explicitly apply that version; a later version does not change earlier claims.
 
-The [causal process guide](docs/product/CAUSAL_PROCESS.md) explains execution, validation and version boundaries. The [UX benchmark study](docs/product/AGENTIC_UX_BENCHMARKS.md) records the five interaction models behind the transformation. [About CasePath](casepath/method.html) retains **Reviewer mode**, [data](casepath/corpus.html), and [research results](casepath/research.html).
+The [causal process guide](docs/product/CAUSAL_PROCESS.md) explains execution, validation and version boundaries. The [three-product study](docs/product/AGENT_NATIVE_TOP_THREE.md) and [focused UI acceptance](docs/product/FOCUSED_UI_ACCEPTANCE.md) document this redesign. The [earlier UX study](docs/product/AGENTIC_UX_BENCHMARKS.md) records the five models behind the causal workbench. [About CasePath](casepath/method.html) retains **Reviewer mode**, [data](casepath/corpus.html), and [research results](casepath/research.html).
 
 ![Claims list with the first-run walk and waiting groups](docs/images/workbench-queue.png)
 

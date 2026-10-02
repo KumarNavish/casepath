@@ -7,7 +7,8 @@
   <meta name="theme-color" content="#ffffff">
   <meta name="casepath-release" content="20.0.0">
   <meta name="casepath-agent-work-script" content="assets/agent-work-v1.js?sha256=1d3ebacab24b2942917f887d373ddb1749e6a1558bef66b24bf87dc78365b38a">
-  <meta name="casepath-causal-process-script" content="assets/causal-process-v1.js?sha256=1ac1e505ce24f9d60b651c0b36052e7c321b04cbc92c44ac60fbc18f8a31e6a7">
+  <meta name="casepath-causal-process-script" content="assets/causal-process-v1.js?sha256=d847d7fcd030c0e9930b2941ce89bbe1d7a567c689dfd01e775e600d3ec56724">
+  <meta name="casepath-paper-method-script" content="assets/process-evidence-v2.js?sha256=007bc2ad438b32e265da97f33866999ed3745c35107249eafd35191d210aaa8b">
   <link rel="icon" href="data:,">
   <title>CasePath — Claims workspace</title>
   <script>
@@ -25,6 +26,11 @@
         const legacyJourney = ['legacy-v20', 'insurance-v1'].includes(bootParams.get('journey'));
         const workspaceMode = !foundationMode && !legacyJourney;
         if (workspaceMode) document.documentElement.dataset.claimsWorkspace = 'true';
+        else {
+          const paperScript=document.createElement('script');
+          paperScript.src=document.querySelector('meta[name="casepath-paper-method-script"]').content;
+          document.head.append(paperScript);
+        }
         const wakeBase = location.origin;
         const sessionKey = foundationMode ? 'casepath:foundation-session' : 'casepath:demo-session';
         let sessionId = bootParams.get('foundation_session') || sessionStorage.getItem(sessionKey);
@@ -62,8 +68,8 @@
     .local-file-launch-command code{display:block;overflow:auto;margin-top:7px;padding:10px 12px;border-radius:7px;background:#f4f4f2;color:#34383e;font:10px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap}
   </style>
   <link rel="stylesheet" href="assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14">
-  <link rel="stylesheet" href="assets/causal-process-v1.css?sha256=12cfb68f9483de99a55d16cf71c2c7b72148550e6ecf02ac9af06e302f7fa7ee">
-  <link rel="stylesheet" href="assets/claims-workspace-presentation-v1.css?sha256=faf8771b4f3e5f83629373c41aaf7fda226f394e749ca25504e321fbec2679b5">
+  <link rel="stylesheet" href="assets/causal-process-v1.css?sha256=22cd99bfcc7bea96b95b4a28a8a125b4c37d0597def7aa91aa24ba45b57359cf">
+  <link rel="stylesheet" href="assets/claims-workspace-presentation-v1.css?sha256=259e306bc3c719c38f1917ad8431fa44405766284b765ee12b79d17215694be1">
 <link rel="stylesheet" href="assets/agent-work-v1.css?sha256=41d313c6ae514e338015d89ecc6e432d2566d295c7dba0441cda2fcb5225542c">
   <link rel="stylesheet" href="assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22">
 </head>
@@ -287,8 +293,7 @@ Alex Morgan</div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/claims-workspace-presentation-v1.js?sha256=e681b33824a0bf132d08395d3a9f3495e12f249432a98d37fb2690fbc76ffb6e"></script>
-  <script src="assets/claims-workspace-v1.js?sha256=986a3a0166ac26d72c7a099b9c2c8d205495fb063fe1facb36d33d04c02e8b85"></script>
-  <script src="assets/process-evidence-v2.js?sha256=007bc2ad438b32e265da97f33866999ed3745c35107249eafd35191d210aaa8b" defer></script>
+  <script src="assets/claims-workspace-presentation-v1.js?sha256=7842c92cddbbfb42181680665d562eda8e237d13078d4bb0961adb1aa1591775"></script>
+  <script src="assets/claims-workspace-v1.js?sha256=3edc85897c71aad2d1aaeb1bf561373600955c5ebf341d53a42a0339fb63fd60"></script>
 </body>
 </html>

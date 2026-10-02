@@ -6,7 +6,7 @@ The initial graph comes from the current product policy catalog and the claim's 
 
 ## Use the process in a claim
 
-1. Review the claim, then select a step in **The path behind this claim**. The inspector shows its condition, document requirements, connections, validation, and provenance.
+1. Review the claim, then choose **Review step** or open **Process**. Select a step in **Working process**. The inspector shows its condition, document requirements, connections, validation, and provenance.
 2. Edit the step, change a connection, or correct a claim condition. Enter the reviewing handler and the reason. **Preview changes** calculates the resulting steps, documents, questions, and next action without saving.
 3. Inspect both the changes and the unchanged requirements. **Apply to this claim** saves the exact reviewed preview. A stale preview requires a reload. The process history retains the handler, reason, and consequences.
 4. Use **Review source** beside a document. Select an original claim artifact, quote the passage being reviewed, and record whether it was received, is sufficient for this requirement, or remains insufficient.

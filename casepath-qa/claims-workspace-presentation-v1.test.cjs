@@ -195,3 +195,10 @@ test('queue groups claims as list items without table headers or chevrons',()=>{
  assert.match(markup,/<ul><li tabindex="0" data-claim-id="one"/);
  assert.doesNotMatch(markup,/<table|<th|cp-row-chevron/);
 });
+
+test('an unavailable process exposes recovery and withholds a potentially stale draft',()=>{
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail,causal:{error:'Offline'},causalMarkup:'<section>Process unavailable</section>',draft:{latest:{}}});
+ assert.match(markup,/id="cpReviewStep"\s*>Open process/);
+ assert.match(markup,/Open Process to retry before preparing a request/);
+ assert.doesNotMatch(markup,/id="cwDraftOpen"|id="cpDraftPanel"/);
+});

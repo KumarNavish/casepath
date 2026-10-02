@@ -33,3 +33,15 @@ The handler's job is to decide what needs doing and why, then correct an inaccur
 ## Efficiency and evidence boundaries
 
 Propagation, validation, checksums, extraction of known fields and tests use deterministic code. The core task requires architecture and interacting-cause debugging; Jev would not replace that reasoning. No paid inference or new product model dependency is introduced. Model quality, legal correctness, real-claim suitability, enterprise access controls and customer willingness to pay require separate evidence. Local fixture success cannot establish those claims.
+
+## Focused redesign — 2 October 2026
+
+Operation: `casepath-focused-agentic-ui-20261002`, starting at `8d60c40939401105d1c50f2de75a1bf8c52107ae`. The user's feedback is that the new surface is cluttered. They clarified that the new three-product study should use awards and public GitHub evidence. UI Skills selected `pbakaus/distill`.
+
+Bounded deliverable: a handler sees one current action, inspects its supporting source on demand, opens the relevant process step, reviews an edit's consequences, and returns to graph-derived documents without losing work. Overview, Process, and Documents remain mounted but only one is visible. Acceptance requires real browser transitions, preserved edit/preview/save, source return, keyboard and narrow-screen use, and focused frontend regression.
+
+The continuity manifest was rechecked; source fetched with remote main unchanged. This is the only active product writer in the live chat inventory. Root owns presentation JS/CSS, documentation, integration and browser acceptance; the navigation worker owns workspace JS and the index loader; the process worker owns causal JS/CSS; the benchmark worker owns `AGENT_NATIVE_TOP_THREE.md`. No backend, research, corpus, manuscript, deployment or external provider work is in scope.
+
+Studies completed before implementation: eight candidates, three selected references, primary award/repository evidence and concrete interaction states. The source-led diagnosis is competing next-action, fact, graph and source regions, with the editor appearing before it is needed. The existing executable graph remains the source of truth. This iteration changes its presentation and navigation, not its causal semantics.
+
+The focused redesign is implemented and browser-verified. Its evidence, comparison measurements, focused test results and remaining limits are recorded in [FOCUSED_UI_ACCEPTANCE.md](FOCUSED_UI_ACCEPTANCE.md). The three-product research is separate from the prior five-product study; neither is presented as a global UX ranking.
