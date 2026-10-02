@@ -202,3 +202,36 @@ test('an unavailable process exposes recovery and withholds a potentially stale 
  assert.match(markup,/Open Process to retry before preparing a request/);
  assert.doesNotMatch(markup,/id="cwDraftOpen"|id="cpDraftPanel"/);
 });
+
+test('paired conflicts retain exact original spans and escaped values',()=>{
+ const changed={...assessment,conflicts:[{message:'The dates differ.',sources:[{artifact_id:'tenant-pdf',quote:'30. Juni',value:'30. Juni'},{artifact_id:'spouse-pdf',quote:'31. Juli <script>',value:'31. Juli <script>'}]}],attachment_pages:[{artifact_id:'tenant-pdf',file_name:'Tenant_notice.pdf'},{artifact_id:'spouse-pdf',file_name:'Spouse_notice.pdf'}]};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});
+ assert.match(markup,/aria-label="Conflicting source values"/);
+ assert.match(markup,/Tenant notice.pdf/);
+ assert.match(markup,/data-noticed-source="tenant-pdf" data-noticed-quote="30. Juni"/);
+ assert.match(markup,/31 July &lt;script&gt;/);
+ assert.doesNotMatch(markup,/<script>|Notice invalid|Deadline expired/);
+});
+test('document visuals distinguish received from established without changing requirement links',()=>{
+ const changed={...assessment,process_graph_sha256:hash,documents:[...assessment.documents,{document_type:'lease_contract',label:'Lease',route_state:'established',required_at_node_ids:['now'],held_files:[]}]};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail,causal:{effective_assessment:changed,evaluation:changed}});
+ const received=markup.match(/<li data-route-state="held_not_reviewed">[\s\S]*?<\/li>/)[0];
+ assert.match(received,/Received · review needed/);
+ assert.doesNotMatch(received,/Established|cp-icon[^>]*>[^<]*check/);
+ assert.match(received,/data-document-node="later"/);
+ assert.match(markup,/<span class="cp-doc-state">Established<\/span>/);
+});
+
+test('document timing never hides an insufficient source review',()=>{
+ const changed={...assessment,documents:[{...assessment.documents[0],route_state:'needed_now',review_state:'insufficient'}]};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});
+ assert.match(markup,/data-route-state="needed_now"/);assert.match(markup,/Received · insufficient/);
+});
+
+test('repeated source spans are not presented as unequal values',()=>{
+ const first={artifact_id:'tenant-pdf',quote:'30. Juni',value:'30. Juni'},second={artifact_id:'spouse-pdf',quote:'31. Juli',value:'31. Juli'};
+ const render=sources=>view.workbench(null,{intake_assessment:{claim_assessment:{...assessment,conflicts:[{message:'Dates differ.',sources}]}}},{detail:assessedDetail});
+ const pair=render([first,first,second]);assert.equal((pair.match(/class="cp-source-fork"/g)||[]).length,1);
+ const repeated=render([first,{...first,artifact_id:'third-pdf'}]);assert.doesNotMatch(repeated,/class="cp-source-fork"/);
+ const many=render([first,second,{artifact_id:'third-pdf',quote:'1 August',value:'1 August'}]);assert.match(many,/data-paired="false"/);assert.doesNotMatch(many,/class="cp-source-fork"/);
+});

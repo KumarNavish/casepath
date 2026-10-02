@@ -2,6 +2,31 @@
    No provider code, claim truth, artificial timing or invented work lives here. */
 (function () {
   'use strict';
+  function createMotion(){
+    const reduced=window.matchMedia('(prefers-reduced-motion: reduce)'),active=new Map(),seen=new Set();
+    let keyboard=false;
+    const cancel=()=>{for(const animation of active.values())animation.cancel();active.clear();};
+    reduced.addEventListener('change',()=>{if(reduced.matches)cancel();});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)cancel();});
+    document.addEventListener('keydown',()=>{keyboard=true;cancel();},true);
+    document.addEventListener('pointerdown',()=>{keyboard=false;},true);
+    return {enter(element,key,direction='up'){
+      if(!element||typeof key!=='string'||seen.has(key))return;
+      seen.add(key);if(seen.size>512)seen.delete(seen.values().next().value);
+      const visible=!keyboard&&!reduced.matches&&!document.hidden&&element.isConnected&&!element.closest('[hidden],[inert]')&&element.animate;
+      const style=visible&&active.has(element)?window.getComputedStyle(element):null;
+      const transform=direction==='left'?'translateX(-10px)':direction==='right'?'translateX(10px)':'translateY(6px)';
+      const from=style?{opacity:style.opacity,transform:style.transform}:{opacity:0,transform};
+      for(const [node,animation] of active)if(node===element||!node.isConnected){animation.cancel();active.delete(node);}
+      if(!visible)return;
+      const drawer=key.startsWith('source:');
+      const animation=element.animate([from,{opacity:1,transform:'none'}],{duration:drawer?220:180,easing:drawer?'cubic-bezier(.32,.72,0,1)':'cubic-bezier(.23,1,.32,1)'});
+      active.set(element,animation);
+      const finished=()=>{if(active.get(element)===animation)active.delete(element);};
+      animation.finished.then(finished,finished);
+    }};
+  }
+  window.CasePathMotion=createMotion();
   const ROOT='/api/agent-work/v1', CONTRACT='casepath.agent-work/1.0.0';
   const h=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const icon=(name)=>`<svg class="aw-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${({work:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',close:'m6 6 12 12M6 18 18 6',arrow:'M4 12h15m-5-5 5 5-5 5',source:'M14 3H5v18h14V8l-5-5Zm0 0v5h5M8 12h8M8 16h6',check:'m5 12 4 4L19 6',link:'m9 15 6-6M7 17l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0M17 7l1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0',plan:'M4 6h5m6 0h5M9 6a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3h5M4 18h5',process:'M5 3v5m0 0h14v8m-14-8v13m11-5h6M3 3h4M3 21h4',evidence:'M5 3h14v18H5zM8 8l2 2 4-4M8 14h8M8 18h6',audit:'M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6zM9 12l2 2 4-4',pulse:'M3 12h4l2-5 4 10 2-5h6'})[name]||'M5 12h14'}"/></svg>`;
@@ -193,10 +218,7 @@
       document.querySelectorAll('.cp-source-rail .aw-current-passage').forEach(mark=>mark.remove());
       if(completed)document.querySelectorAll('.cp-source-rail .aw-source-focused,.cp-source-rail .aw-source-flash').forEach(row=>row.classList.remove('aw-source-focused','aw-source-flash'));
     }
-    if(completed)state.revealCount=stages.length;
-    if(working&&state.assessment&&state.events.some(event=>event.operation==='AUTHORITY_CONFIRMED')&&state.revealCount<stages.length&&!state.revealTimer){
-      state.revealTimer=setTimeout(()=>{state.revealTimer=null;state.revealCount++;state.renderKey=null;renderClaim();},160);
-    }
+    if(completed||state.events.some(event=>event.operation==='AUTHORITY_CONFIRMED'))state.revealCount=stages.length;
     syncLivePath();
     host.hidden=Boolean(completed&&saved&&!handingOff)||!summary&&!state.busy&&!pendingRequest();
     const key=JSON.stringify([summary?.run_id,summary?.last_sequence,completed?'completed':summary?.status,state.busy,hasStart,state.events.length,state.messages.get(state.claim),state.assessment?.assessment_sha256,state.revealCount,handingOff]);
@@ -208,7 +230,10 @@
     const cancelled=summary?.status==='cancelled';
     const lines=narrativeLines(state.events);
     const detail=cancelled?'Review stopped. Saved findings remain in Timeline.':stopping?'Stopping after the current source check…':state.messages.get(state.claim)||(!lines.length?'Reading the claim…':'');
-    host.innerHTML=`<div class="aw-review-progress" data-status="${h(summary?.status||'opening')}">${detail?`<p role="status">${h(detail)}</p>`:''}<ol class="aw-narrative-lines">${lines.slice(-8).map(({event,line})=>`<li>${lineButton(event,line)}</li>`).join('')}</ol>${summary?.recovery?.can_resume?'<a href="#" data-aw-resume>Resume saved review</a>':''}${pending&&!state.busy?'<a href="#" data-aw-retry>Check the same request</a>':''}<p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></div>`;
+    const sequence=state.events.at(-1)?.sequence||0,previous=state.motionRun===summary?.run_id?state.motionSequence:sequence;
+    state.motionRun=summary?.run_id;state.motionSequence=sequence;
+    host.innerHTML=`<div class="aw-review-progress" data-status="${h(summary?.status||'opening')}">${detail?`<p role="status">${h(detail)}</p>`:''}<ol class="aw-narrative-lines">${lines.slice(-8).map(({event,line})=>`<li data-aw-sequence="${event.sequence}">${lineButton(event,line)}</li>`).join('')}</ol>${summary?.recovery?.can_resume?'<a href="#" data-aw-resume>Resume saved review</a>':''}${pending&&!state.busy?'<a href="#" data-aw-retry>Check the same request</a>':''}<p class="aw-message" id="awRequestStatus" role="status" aria-live="polite"></p></div>`;
+    if(working)host.querySelectorAll('[data-aw-sequence]').forEach(row=>{if(Number(row.dataset.awSequence)>previous)window.CasePathMotion.enter(row,`work:${summary.run_id}:${row.dataset.awSequence}`);});
     if(working&&lines.length){const latest=lines.at(-1),spotlightKey=latest.event.sequence+':'+latest.line.text;if(state.spotlit!==spotlightKey){state.spotlit=spotlightKey;spotlight(latest.line,false);}}
     renderTimeline();
   }

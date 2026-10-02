@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1512,
+  "file_count": 1513,
   "files": [
     {
       "executable": false,
@@ -8201,8 +8201,8 @@
     {
       "executable": false,
       "path": "casepath-qa/causal-process-v1.test.cjs",
-      "sha256": "41ee5dcaad43abb84bb7a4ab2f5e100ff64f4027f28574c50c4ea082fcc4d356",
-      "size_bytes": 5895
+      "sha256": "48ba288b87d6ff8180e2e25eb80aa0d9de9db983ea2a4041d282146abdb53d14",
+      "size_bytes": 13294
     },
     {
       "executable": false,
@@ -8231,14 +8231,14 @@
     {
       "executable": false,
       "path": "casepath-qa/claim-sections-v1.test.cjs",
-      "sha256": "c25ff0d688d9f2686b28ea0e2285568025d4a4f626a63deae315d7c71a1d5287",
-      "size_bytes": 5174
+      "sha256": "844053ca44c12cfa5b22463ffdb529ff4eecd4576d2ca14886ce7d9d3357777a",
+      "size_bytes": 8157
     },
     {
       "executable": false,
       "path": "casepath-qa/claims-workspace-presentation-v1.test.cjs",
-      "sha256": "f1c9852e8c67bfe162f467ccb8b1e5a8d6cf9681f406cc091ec5311e3dd482bb",
-      "size_bytes": 16373
+      "sha256": "6f7cf700b4bdf7b0adaef4db89793ab6df4c7ac36ba2b3120ca1cf8f21610c7a",
+      "size_bytes": 19281
     },
     {
       "executable": false,
@@ -8453,14 +8453,14 @@
     {
       "executable": false,
       "path": "casepath/assets/agent-work-v1.css",
-      "sha256": "41d313c6ae514e338015d89ecc6e432d2566d295c7dba0441cda2fcb5225542c",
-      "size_bytes": 28296
+      "sha256": "8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+      "size_bytes": 28141
     },
     {
       "executable": false,
       "path": "casepath/assets/agent-work-v1.js",
-      "sha256": "1d3ebacab24b2942917f887d373ddb1749e6a1558bef66b24bf87dc78365b38a",
-      "size_bytes": 45004
+      "sha256": "726c6c6e6cdd2e69eee55cf1ea97f0d60001b49212ffd4bf23d7cd8aafe66e44",
+      "size_bytes": 47008
     },
     {
       "executable": false,
@@ -8501,26 +8501,26 @@
     {
       "executable": false,
       "path": "casepath/assets/causal-process-v1.css",
-      "sha256": "22cd99bfcc7bea96b95b4a28a8a125b4c37d0597def7aa91aa24ba45b57359cf",
-      "size_bytes": 11767
+      "sha256": "46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+      "size_bytes": 15740
     },
     {
       "executable": false,
       "path": "casepath/assets/causal-process-v1.js",
-      "sha256": "d847d7fcd030c0e9930b2941ce89bbe1d7a567c689dfd01e775e600d3ec56724",
-      "size_bytes": 39535
+      "sha256": "16ee0e1406f2dc5f42309bfbd16914a7fca8ff98c2f8511402cd6a29390a4ee2",
+      "size_bytes": 46391
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.css",
-      "sha256": "259e306bc3c719c38f1917ad8431fa44405766284b765ee12b79d17215694be1",
-      "size_bytes": 17238
+      "sha256": "54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+      "size_bytes": 20081
     },
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.js",
-      "sha256": "7842c92cddbbfb42181680665d562eda8e237d13078d4bb0961adb1aa1591775",
-      "size_bytes": 72979
+      "sha256": "176018ead9117be86301bd27bdb682cc3258d20468e780a6172a65ecbdf90aaf",
+      "size_bytes": 72900
     },
     {
       "executable": false,
@@ -8531,8 +8531,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.js",
-      "sha256": "3edc85897c71aad2d1aaeb1bf561373600955c5ebf341d53a42a0339fb63fd60",
-      "size_bytes": 226183
+      "sha256": "d7042775a2b5c3ee4d9036879302727347420960068c392080f970737f6affe6",
+      "size_bytes": 226435
     },
     {
       "executable": false,
@@ -8621,7 +8621,7 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "bef0ded9b85bb654355884b42e3a861dfc8e5215b98cc9b19f71fa0aff548378",
+      "sha256": "24a135a9d5c7f61f5852e9077fb3e8ae7b2982061e185dfcecbe511f25415356",
       "size_bytes": 21407
     },
     {
@@ -9059,8 +9059,14 @@
     {
       "executable": false,
       "path": "docs/product/TRANSFORMATION_CHECKPOINTS.md",
-      "sha256": "5c8d2754513b2d445d08fb3a3deccd6a6f3e6ef9c69e0943bf674ba58f7be1d8",
-      "size_bytes": 6882
+      "sha256": "12cc2df99c8666c269ef0c35f071892b3794969baa1c66ab5ad3d90a4778db83",
+      "size_bytes": 8455
+    },
+    {
+      "executable": false,
+      "path": "docs/product/VISUAL_MOTION_ACCEPTANCE.md",
+      "sha256": "39f88ccb85c4b413f5c31d8c1955fe13873d2aaa1d17fcc81704e83cb13d1ea3",
+      "size_bytes": 5229
     },
     {
       "executable": false,

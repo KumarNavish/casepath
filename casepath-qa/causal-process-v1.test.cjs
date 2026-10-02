@@ -35,7 +35,11 @@ test('condition descriptions preserve compound logic',()=>{
 
 test('semantic changes remain explicit even when execution state is unchanged',()=>{
  const html=ui.impactMarkup({node_changes:[{node_id:'b',label:'Service',before:{execution_state:'ready',condition:{const:'true'},validation:{status:'validated'}},after:{execution_state:'ready',condition:{flag:'family_home'},validation:{status:'revised'}}}],edge_changes:[{edge_id:'link',label:'Connection',before:{activation:'true',relation:'enables'},after:{activation:'true',relation:'requires'}}]});
- assert.match(html,/Applies when.*Always → Family home/);assert.match(html,/Validation.*Validated → Revised/);assert.match(html,/Relationship.*Enables → Requires/);
+ const change=id=>html.match(new RegExp(`<tr data-impact-id="${id}"[^>]*>[\\s\\S]*?</tr>`))?.[0]||'';
+ const side=(row,key)=>row.match(new RegExp(`<td data-impact-side="${key}">[\\s\\S]*?</td>`))?.[0]||'';
+ assert.match(side(change('b'),'before'),/Always/);assert.match(side(change('b'),'after'),/Family home/);
+ assert.match(side(change('b'),'before'),/Validated/);assert.match(side(change('b'),'after'),/Revised/);
+ assert.match(side(change('link'),'before'),/Enables/);assert.match(side(change('link'),'after'),/Requires/);
 });
 test('library distinguishes current claim version from newest definition',()=>{
  const v=view('versions');v.graph.fragment_instances=[{fragment_id:'fragment',version:1,fragment_sha256:'old'}];v.fragments=[{fragment_id:'fragment',version:1,fragment_sha256:'old',name:'Service review',source_claim_id:'other'},{fragment_id:'fragment',version:2,fragment_sha256:'new',name:'Service review',source_claim_id:'other',latest:true}];
@@ -54,4 +58,78 @@ test('current context includes connected steps rather than unrelated list neighb
  const v=view('connected-context');v.graph.nodes.push(node('c',{label:'Unrelated outcome'}),node('d',{label:'Independent prerequisite'}));v.evaluation.nodes=v.graph.nodes.map(n=>({...n,execution_state:'ready'}));
  v.graph.edges=[{edge_id:'prerequisite',source_node_id:'d',target_node_id:'a',relation:'requires',condition:{const:'true'},validation:{status:'unvalidated'}}];ui.session(v.claim_id).selected='d';
  const html=ui.render(v);assert.match(html,/data-causal-node="a"/);assert.match(html,/data-causal-node="d"/);assert.doesNotMatch(html,/data-causal-node="c"/);
+});
+
+test('selected step relationships use evaluated activation and explicit direction',()=>{
+ const v=view('evaluated-relationships');v.graph.nodes.push(node('c',{label:'Prepare response'}),node('d',{label:'Review conflict'}));
+ v.graph.edges=[
+  {edge_id:'needs',source_node_id:'b',target_node_id:'a',relation:'requires',condition:{const:'true'}},
+  {edge_id:'next',source_node_id:'a',target_node_id:'c',relation:'enables',condition:{const:'true'}},
+  {edge_id:'stop',source_node_id:'d',target_node_id:'a',relation:'blocks',condition:{const:'true'}}
+ ];
+ v.evaluation.edges=v.graph.edges.map((e,i)=>({...e,activation:['true','false','unresolved'][i]}));
+ v.evaluation.nodes.push({...v.graph.nodes[2],execution_state:'inactive'},{...v.graph.nodes[3],execution_state:'unresolved'});
+ const html=ui.render(v),row=id=>html.match(new RegExp(`<li[^>]*data-relationship-id="${id}"[^>]*>[\\s\\S]*?</li>`))?.[0]||'';
+ assert.match(row('needs'),/Required before/);assert.match(row('needs'),/Active connection/);assert.ok(row('needs').indexOf('Check separate service')<row('needs').indexOf('Review notice'));
+ assert.match(row('next'),/Enables/);assert.match(row('next'),/Inactive connection/);
+ assert.match(row('stop'),/Blocks/);assert.match(row('stop'),/Needs clarification/);
+ assert.doesNotMatch(html,/Source supports|Evidence proves/);
+});
+
+test('connected documents show their evaluated requirement and review state',()=>{
+ const v=view('relationship-documents');v.graph.nodes[0].document_types=['notice','optional_note'];
+ v.evaluation.documents=[{document_type:'notice',label:'Notice',required_at_node_ids:['a'],route_state:'held_not_reviewed',requirement_class:'mandatory'},{document_type:'optional_note',label:'Background note',required_at_node_ids:['a'],route_state:'optional',requirement_class:'optional'}];
+ const html=ui.render(v);
+ assert.match(html,/data-context-document="notice"[\s\S]*?On file · needs review/);
+ assert.match(html,/data-context-document="optional_note"[\s\S]*?Optional/);
+ assert.match(html,/data-causal-document-open="notice"/);
+});
+
+test('impact compares actual requirement changes separately from definition changes',()=>{
+ const html=ui.impactMarkup({
+  changed_requirement_document_types:['notice'],unchanged_requirement_document_types:['lease'],
+  document_changes:[{document_type:'notice',label:'Notice',before:{route_state:'not_needed',request:false},after:{route_state:'needed_now',request:true}},{document_type:'lease',label:'Tenancy agreement',before:{label:'Lease',route_state:'needed_now'},after:{label:'Tenancy agreement',route_state:'needed_now'}}],
+  document_definition_changes:[{document_type:'lease',fields:['label'],before:{label:'Lease'},after:{label:'Tenancy agreement'}}],
+  next_action_changed:true,next_action:{before:'Review notice',after:'Request notice'}
+ });
+ assert.match(html,/Current/);assert.match(html,/Proposed/);
+ assert.match(html,/1 document requirement changes/);
+ const row=id=>html.match(new RegExp(`<tr[^>]*data-impact-id="${id}"[^>]*>[\\s\\S]*?</tr>`))?.[0]||'';
+ assert.match(row('notice'),/data-requirement-changed="true"/);assert.match(row('notice'),/Not required/);assert.match(row('notice'),/Needed now/);
+ assert.match(row('lease'),/data-requirement-changed="false"/);assert.match(row('lease'),/Requirement unchanged/);assert.match(row('lease'),/Lease/);assert.match(row('lease'),/Tenancy agreement/);
+ assert.match(html,/<details[^>]*><summary>What stays unchanged/);assert.match(html,/Review notice/);assert.match(html,/Request notice/);
+});
+
+test('a missing edge evaluation is labelled unknown rather than active',()=>{
+ const v=view('missing-edge-evaluation');v.graph.edges=[{edge_id:'missing',source_node_id:'b',target_node_id:'a',relation:'requires',condition:{const:'true'}}];
+ const html=ui.render(v),row=html.match(/<li[^>]*data-relationship-id="missing"[^>]*>[\s\S]*?<\/li>/)?.[0]||'';
+ assert.match(row,/Not evaluated/);assert.doesNotMatch(row,/Active connection/);
+});
+
+
+test('large previews disclose connection details and keep one action pair before changes',()=>{
+ const v=view('compact-preview');ui.session(v.claim_id).preview={reason:'Review dependencies',impact:{node_changes:[{node_id:'a',label:'Review notice',before:{label:'Old name',meaning:'Old meaning',condition:{const:'true'},document_types:[]},after:{label:'New name',meaning:'New meaning',condition:{flag:'family_home'},document_types:['notice']}}],edge_changes:[{edge_id:'link',label:'Connection',before:{relation:'enables'},after:{relation:'requires'}}]}};
+ const html=ui.render(v);
+ assert.equal((html.match(/data-causal-apply/g)||[]).length,1);assert.ok(html.indexOf('data-causal-apply')<html.indexOf('cp-impact-list'));
+ assert.match(html,/<details class="cp-impact-connections"><summary>Connections/);assert.match(html,/<summary>2 more changes to Review notice/);
+ assert.match(html,/Old name/);assert.match(html,/New name/);assert.match(html,/Old meaning/);assert.match(html,/New meaning/);assert.match(html,/Family home/);assert.match(html,/Requires/);
+});
+
+
+test('document review insufficiency remains visible beside requirement timing',()=>{
+ const v=view('insufficient-review');v.evaluation.documents=[{document_type:'notice',label:'Notice',required_at_node_ids:['a'],route_state:'needed_later',review_state:'insufficient'},{document_type:'lease',label:'Lease',required_at_node_ids:['a'],route_state:'held_not_reviewed',review_state:'review_needed'}];
+ const html=ui.render(v);
+ assert.match(html,/Needed later · Received · insufficient/);assert.match(html,/On file · Review needed/);
+ const impact=ui.impactMarkup({changed_requirement_document_types:['notice'],document_changes:[{document_type:'notice',label:'Notice',before:{route_state:'established',review_state:'sufficient'},after:{route_state:'needed_later',review_state:'insufficient'}}]});
+ assert.match(impact,/Established/);assert.match(impact,/Needed later · Received · insufficient/);
+});
+
+test('a document dependency recalculation does not invent a new source review',()=>{
+ const html=ui.impactMarkup({document_changes:[{document_type:'notice',before:{route_state:'held_behind_question',condition_flags:['family_home','arrears']},after:{route_state:'held_behind_question',condition_flags:['arrears']}}],changed_requirement_document_types:[]});
+ assert.match(html,/Relevant conditions/);assert.match(html,/Family home, Arrears/);assert.doesNotMatch(html,/Review record updated/);
+});
+test('the selected step shows its actual blocking prerequisite before other relationships',()=>{
+ const v=view('blocking-priority');v.graph.nodes.push(node('c',{label:'Downstream'}));
+ v.graph.edges=[{edge_id:'next',source_node_id:'b',target_node_id:'c',relation:'enables'},{edge_id:'required',source_node_id:'a',target_node_id:'b',relation:'requires'}];v.evaluation.edges=v.graph.edges.map(e=>({...e,activation:'true'}));ui.session(v.claim_id).selected='b';
+ const html=ui.render(v);assert.ok(html.indexOf('data-relationship-id="required"')<html.indexOf('data-relationship-id="next"'));assert.match(html,/Required before/);
 });

@@ -418,7 +418,7 @@
   const ui = window.CasePathPresentation;
   if (!ui) throw new Error('The claim presentation could not be loaded.');
   const state = {
-    inspectorOpen:false,claimSection:'overview',sectionScroll:{},overviewLoading:false,overviewQueued:false,overviewSummary:null,
+    inspectorOpen:false,claimSection:'overview',sectionScroll:{},motion:0,overviewLoading:false,overviewQueued:false,overviewSummary:null,
     cursor: null,
     items: [],
     total: 0,
@@ -2830,6 +2830,7 @@
     panel?.querySelectorAll('[data-claim-section]').forEach(tab=>{const active=tab.dataset.claimSection===name;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;});
     panel?.querySelectorAll('[data-claim-pane]').forEach(pane=>{pane.hidden=pane.dataset.claimPane!==name;pane.inert=pane.hidden;});
     if(changed&&column)column.scrollTop=state.sectionScroll[name]||0;
+    if(changed)window.CasePathMotion?.enter($('#cpPane-'+name),'pane:'+ ++state.motion);
     savePresentation();
   }
   function revealClaimTarget(target){
@@ -2849,8 +2850,10 @@
   }
   function openInspector({focus=true}={}){
     const rail=$('.cp-source-rail');if(!rail)return;
+    const opening=!state.inspectorOpen;
     if(focus)state.inspectorReturnFocus=document.activeElement;
     state.inspectorOpen=true;applyInspectorState();
+    if(opening)window.CasePathMotion?.enter(rail,'source:'+ ++state.motion,compactWorkbench.matches?'up':'left');
     if(focus)$('#cwSourceInspector')?.focus({preventScroll:true});
   }
   function closeInspector(){state.inspectorOpen=false;applyInspectorState();const target=state.inspectorReturnFocus?.closest('[data-claim-pane][hidden]')?$('[data-claim-section][aria-selected="true"]'):state.inspectorReturnFocus;target?.focus({preventScroll:true});}

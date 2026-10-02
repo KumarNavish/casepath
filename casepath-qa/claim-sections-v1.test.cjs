@@ -14,7 +14,8 @@ function fixture(){
  const column={scrollTop:150},rail={setAttribute(){},removeAttribute(){}},toggle={setAttribute(k,v){this[k]=v}};
  const panel={dataset:{},querySelector:s=>s==='.cp-work-column'?column:null,querySelectorAll:s=>s==='[data-claim-section]'?tabs:s==='[data-claim-pane]'?panes:s==='[data-open-inspector]'?[toggle]:[]};
  Object.defineProperty(panel,'innerHTML',{set(){throw Error('Navigation must keep mounted forms');}});
- const context={state:{detail:{state:{claim_id:'claim-a'}},claimSection:'overview',sectionScroll:{},inspectorOpen:false},
+ const motions=[];
+ const context={state:{detail:{state:{claim_id:'claim-a'}},claimSection:'overview',sectionScroll:{},inspectorOpen:false,motion:0},window:{CasePathMotion:{enter(...args){motions.push(args);}}},
   sessionStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},
   $:s=>({'#cwDetailPanel':panel,'#cwDetail':{hidden:false},'.cp-source-rail':rail}[s]),root:{querySelector(){return null}},closeDetail(){throw Error('Unexpected close');}};
  vm.createContext(context);
@@ -22,11 +23,11 @@ function fixture(){
   const start=source.indexOf('  function '+from+'('),end=source.indexOf('  function '+to+'(');
   assert.ok(start>=0&&end>start);vm.runInContext(source.slice(start,end),context);
  }
- return {context,tabs,panes,column,rail,toggle};
+ return {context,tabs,panes,column,rail,toggle,motions};
 }
 
 test('switching sections preserves mounted edits and remembers each scroll position',()=>{
- const {context:c,tabs,panes,column}=fixture(),fields=panes.map(p=>p.fields[0]);
+ const {context:c,tabs,panes,column,motions}=fixture(),fields=panes.map(p=>p.fields[0]);
  c.selectClaimSection('documents');
  assert.deepEqual(panes.map(p=>p.hidden),[true,true,false]);
  assert.deepEqual(panes.map(p=>p.inert),[true,true,false]);
@@ -35,6 +36,7 @@ test('switching sections preserves mounted edits and remembers each scroll posit
  assert.equal(column.scrollTop,0);column.scrollTop=90;
  c.selectClaimSection('overview');assert.equal(column.scrollTop,150);
  c.selectClaimSection('documents');assert.equal(column.scrollTop,90);
+ assert.equal(motions.length,3);c.selectClaimSection('documents');assert.equal(motions.length,3);
  panes.forEach((pane,index)=>{assert.equal(pane.fields[0],fields[index]);assert.equal(pane.fields[0].value,'Unsaved handler explanation');});
 });
 
@@ -65,4 +67,38 @@ test('the queue omits the legacy paper-method loader while both legacy modes ret
   vm.runInNewContext(bootstrap,{location:{protocol:'http:',origin:'http://localhost',search},document,window:{},URLSearchParams,sessionStorage:{getItem(){return 'ui-sessionvalid'},setItem(){}},fetch(){return Promise.resolve({ok:true,json(){return {}}})}});
   assert.equal(inserted.length,expected,search||'default queue');
  }
+});
+
+function motionFixture(){
+ const agent=fs.readFileSync(path.join(__dirname,'../casepath/assets/agent-work-v1.js'),'utf8');
+ const listeners={},media={matches:false,addEventListener(name,callback){this[name]=callback;}},animations=[];
+ const document={hidden:false,addEventListener(name,callback){listeners[name]=callback;}};
+ let reads=0;
+ const window={matchMedia:()=>media,getComputedStyle(){reads++;return {opacity:'.4',transform:'matrix(1, 0, 0, 1, 0, 2)'};}};
+ const c={window,document};vm.createContext(c);
+ vm.runInContext(agent.slice(agent.indexOf('  function createMotion('),agent.indexOf('  const ROOT=')),c);
+ const element=()=>({isConnected:true,hidden:false,closest(){return this.hidden?this:null;},animate(frames,options){let resolve;const job={frames,options,cancelled:0,cancel(){this.cancelled++;},finished:new Promise(done=>resolve=done),finish:()=>resolve()};animations.push(job);return job;}});
+ return {motion:window.CasePathMotion,element,animations,listeners,media,document,reads:()=>reads};
+}
+
+test('motion deduplicates saved events and interrupted entrances continue from their current position',async()=>{
+ const f=motionFixture(),node=f.element();
+ f.motion.enter(node,'work:run:7');f.motion.enter(f.element(),'work:run:7');assert.equal(f.animations.length,1);
+ f.motion.enter(node,'pane:2','left');assert.equal(f.animations[0].cancelled,1);assert.equal(f.reads(),1);
+ assert.equal(f.animations[1].frames[0].opacity,'.4');assert.equal(f.animations[1].frames[0].transform,'matrix(1, 0, 0, 1, 0, 2)');
+ f.animations[0].finish();await Promise.resolve();
+ f.motion.enter(node,'pane:3');assert.equal(f.animations[1].cancelled,1);
+ f.animations[2].finish();await Promise.resolve();
+ f.motion.enter(node,'source:4','left');assert.equal(f.reads(),2);assert.equal(f.animations[3].frames[0].transform,'translateX(-10px)');assert.equal(f.animations[3].options.duration,220);
+});
+
+test('motion stops for reduced motion and keyboard use and never replays hidden arrivals',()=>{
+ const f=motionFixture(),node=f.element();
+ f.motion.enter(node,'pane:1');f.media.matches=true;f.media.change();assert.equal(f.animations[0].cancelled,1);
+ f.motion.enter(node,'pane:2');assert.equal(f.animations.length,1);
+ f.media.matches=false;f.media.change();f.motion.enter(node,'pane:2');assert.equal(f.animations.length,1);
+ f.listeners.keydown();f.motion.enter(node,'pane:3');assert.equal(f.animations.length,1);
+ f.listeners.pointerdown();f.motion.enter(node,'pane:4');assert.equal(f.animations.length,2);
+ node.hidden=true;f.motion.enter(node,'work:run:8');node.hidden=false;f.motion.enter(node,'work:run:8');assert.equal(f.animations.length,2);
+ f.motion.enter(node,'pane:5');f.document.hidden=true;f.listeners.visibilitychange();assert.equal(f.animations[2].cancelled,1);
 });
