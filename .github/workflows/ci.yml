@@ -38,20 +38,28 @@ jobs:
         run: |
           sudo useradd --create-home --uid 20001 --shell /bin/bash casepath-ci
           sudo install -m 755 "$(command -v uv)" /usr/local/bin/uv
-          sudo chown -R casepath-ci:casepath-ci "$GITHUB_WORKSPACE"
+          sudo cp -a "$GITHUB_WORKSPACE" /home/casepath-ci/repository
+          sudo chown -R casepath-ci:casepath-ci /home/casepath-ci/repository
       # The launcher validates the sealed source and supplies Python 3.13.9,
       # locked dependencies, temporary data, and a closed credential environment.
       - name: Prepare the exact source capsule
-        run: sudo -u casepath-ci /usr/bin/env -i HOME=/home/casepath-ci PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin ./bin/casepath prepare
+        run: >-
+          sudo -u casepath-ci /usr/bin/env -i HOME=/home/casepath-ci
+          PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+          /bin/bash --noprofile --norc -c
+          'cd /home/casepath-ci/repository && exec ./bin/casepath prepare'
       - name: Verify the migration regressions in the isolated account
         run: >-
           sudo -u casepath-ci /usr/bin/env -i HOME=/home/casepath-ci
           PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
           PYTHONPATH=casepath-api PYTHONDONTWRITEBYTECODE=1
+          /bin/bash --noprofile --norc -c
+          'cd /home/casepath-ci/repository && exec
           .runtime/casepath-dev-v2/venv/bin/python -m pytest -q
-          casepath-api/tests/test_local_data_root.py
+          casepath-api/tests/test_local_data_root.py'
       - name: Run isolated deterministic product regressions
-        run: sudo -u casepath-ci /usr/bin/env -i HOME=/home/casepath-ci PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin ./bin/casepath test
-      - name: Restore checkout metadata access for runner cleanup
-        if: always()
-        run: sudo chown -R "$(id -u):$(id -g)" "$GITHUB_WORKSPACE/.git"
+        run: >-
+          sudo -u casepath-ci /usr/bin/env -i HOME=/home/casepath-ci
+          PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+          /bin/bash --noprofile --norc -c
+          'cd /home/casepath-ci/repository && exec ./bin/casepath test'
