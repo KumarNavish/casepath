@@ -40,6 +40,11 @@ jobs:
           sudo install -m 755 "$(command -v uv)" /usr/local/bin/uv
           sudo cp -a "$GITHUB_WORKSPACE" /home/casepath-ci/repository
           sudo chown -R casepath-ci:casepath-ci /home/casepath-ci/repository
+          # Runner checkout ACLs must not be inherited by sealed product files.
+          # Restrict this normalization to the disposable test account's home.
+          sudo setfacl --remove-all --recursive /home/casepath-ci
+          sudo setfacl --remove-default --recursive /home/casepath-ci
+          sudo chmod 0700 /home/casepath-ci
       # The launcher validates the sealed source and supplies Python 3.13.9,
       # locked dependencies, temporary data, and a closed credential environment.
       - name: Prepare the exact source capsule
