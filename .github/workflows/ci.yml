@@ -1,0 +1,38 @@
+name: CasePath CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: casepath-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    name: CasePath regression
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: '0.12.23'
+          enable-cache: false
+      # The launcher validates the sealed source and supplies Python 3.13.9,
+      # locked dependencies, temporary data, and a closed credential environment.
+      - name: Prepare the exact source capsule
+        run: ./bin/casepath prepare
+      - name: Run isolated deterministic product regressions
+        run: ./bin/casepath test
