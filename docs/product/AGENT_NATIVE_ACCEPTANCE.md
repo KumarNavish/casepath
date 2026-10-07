@@ -430,3 +430,24 @@ The earlier 475–618 ms pass is historical; final performance disposition follo
 in the release receipt. Host contention is observed, not a proved complete
 explanation of the slower run. No unrelated processes or system protections
 were changed to improve a timing result.
+
+The complete sealing run after lazy loading passed: **1,714 passed, 10 skipped,
+10 warnings in 1,982.74 seconds**. Its log is retained as
+`full-suite-pre-boot-history-repair.log`. Feature commit
+`269354267b176e74992781e99824c556db7d21cf` then passed official preparation,
+but official replay exposed a missing registration in the independent
+standard-library boot-history verifier: it rejected all 20 valid delegate
+events before replay. The semantic validator already accepted all 340 events.
+The failed official replay is retained as
+`replay-pre-boot-history-repair.log`; no journal or boot receipt was removed.
+
+The narrow repair registers only the three authorized delegate event types
+and their exact local workspace namespace. A genuine persisted-receipt
+regression reproduced the failure before the change; the focused gate then
+passed **37 tests**. Negative cases cover unknown contracts and types, altered
+commands and rehashed foreign namespaces. Current-source read-only boot
+verification passes with database, WAL, shared-memory and all boot receipt
+bytes unchanged; see
+[the preservation proof](../../../casepath-agent-native-v2-evidence/boot-history-delegate-readonly.json).
+The final sealing suite, official launcher replay and final commit alignment
+follow this source freeze and are recorded in the release receipt.

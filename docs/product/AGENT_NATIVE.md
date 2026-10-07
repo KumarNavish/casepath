@@ -193,6 +193,12 @@ parent import and lifecycle prefix, then uses the same delegate reducer to
 check chain integrity, schema and decision scope. Foreign prefixes, missing
 parents and rehashed authority or approval-scope tampering are rejected.
 The read-only validator and claim replay preserve database and journal bytes.
+The independent standard-library boot-history verifier also registers these
+three delegate event types and requires their local workspace session and
+nonempty `delegate.{claim_id}` namespace. Semantic validation of the imported
+parent, authority scope and delegate reducer runs before that structural boot
+check. Unknown event types, altered command hashes and rehashed foreign
+namespaces remain invalid.
 
 ### Loading the claim presentation
 

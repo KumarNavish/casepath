@@ -6,7 +6,7 @@ import sqlite3
 
 import pytest
 
-from casepath_api.agent_desk_v1 import AgentDeskServiceV1
+from casepath_api.agent_desk_v1 import AgentDeskServiceV1, DelegateJournal, EVENT_CONTRACT
 from casepath_api.agent_work.authority import ExistingCasePathAuthority
 from casepath_api.agent_work.service import AgentWorkService
 from casepath_api.agent_work.store import WorkStore
@@ -15,6 +15,7 @@ from casepath_api.claim_workspace_v1 import WORKSPACE_SESSION_ID
 from casepath_api.validate_journal import JournalValidationError, validate_journal
 from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root, digest_value
 from test_workspace_claim_loop_v1 import _system
+from test_cli_v1 import _history_verifier_module
 
 CLAIM = "clm_f69b1747447bc221"
 
@@ -71,6 +72,72 @@ def test_global_validator_and_cli_replay_accept_scoped_delegate_receipts_without
     assert replay["journal_verified"] is True
     assert replay["model_calls"] == replay["provider_calls"] == replay["credential_reads"] == replay["cost_usd"] == 0
     assert database.read_bytes() == before and workspace.store.recover(CLAIM) == state
+
+
+def test_boot_history_validator_accepts_real_delegate_receipts_without_writes(delegated_workspace):
+    database, workspace = delegated_workspace
+    journal = DelegateJournal(workspace)
+    state = workspace.store.recover(CLAIM)
+    agent = journal.state(CLAIM)
+    journal.append(CLAIM, "AGENT_MANDATE_RESUMED", {
+        "actor": "Test handler", "reason": "Continue after inspecting the recorded approvals.",
+        "expected_revision": state["revision"], "expected_state_sha256": state["state_sha256"],
+        "expected_agent_revision": agent["revision"], "expected_agent_state_sha256": agent["state_sha256"],
+    }, "delegate.validator.resume")
+    verifier = _history_verifier_module()
+    with sqlite3.connect(database) as db:
+        db.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+    before = database.read_bytes()
+    with sqlite3.connect(f"file:{database}?mode=ro", uri=True) as db:
+        db.execute("PRAGMA query_only=ON")
+        roster = verifier.validate_event_journal(db)
+        types = {json.loads(row[0])["event_type"] for row in db.execute(
+            "SELECT event_json FROM claim_loop_events WHERE loop_id=?", ("delegate." + CLAIM,))}
+    assert types == {"AGENT_MANDATE_PAUSED", "AGENT_MANDATE_RESUMED", "AGENT_HANDLER_DECISION_RECORDED"}
+    assert len(roster) == validate_journal(database)["event_count"] == 7
+    assert database.read_bytes() == before and workspace.store.recover(CLAIM) == state
+
+
+@pytest.mark.parametrize("fault", ["contract", "event_type", "command", "session", "prefix", "empty_claim"])
+def test_boot_history_validator_rejects_delegate_unknown_type_tamper_and_foreign_namespace(
+    delegated_workspace, fault,
+):
+    database, _ = delegated_workspace
+    verifier = _history_verifier_module()
+    with sqlite3.connect(database) as db:
+        for row in db.execute("SELECT name FROM sqlite_master WHERE type='trigger' AND tbl_name='claim_loop_events'").fetchall():
+            db.execute('DROP TRIGGER "' + row[0] + '"')
+        rows = db.execute("SELECT sequence,event_json FROM claim_loop_events WHERE loop_id=? ORDER BY sequence",
+            ("delegate." + CLAIM,)).fetchall()
+        previous = None
+        for sequence, raw in rows:
+            event = json.loads(raw)
+            event["previous_event_sha256"] = previous
+            if fault == "session":
+                event["session_id"] = "foreign-session"
+            elif fault == "prefix":
+                event["loop_id"] = "foreign." + CLAIM
+            elif fault == "empty_claim":
+                event["loop_id"] = "delegate."
+            elif sequence == 1:
+                if fault == "contract":
+                    event["contract"] = EVENT_CONTRACT.replace("1.0.0", "9.0.0")
+                elif fault == "event_type":
+                    event["event_type"] = "WORKSPACE_CLAIM_READY"
+                else:
+                    event["command"]["reason"] = "Caller-altered reason without the recorded command hash."
+            # Rehash the full chain and match its raw columns. This isolates the
+            # contract/namespace checks; command tampering retains its old hash.
+            event["event_sha256"] = digest_value({k: v for k, v in event.items()
+                if k not in {"event_sha256", "resulting_state_sha256"}})
+            db.execute("UPDATE claim_loop_events SET session_id=?,loop_id=?,event_sha256=?,event_json=? WHERE loop_id=? AND sequence=?",
+                (event["session_id"], event["loop_id"], event["event_sha256"], verifier.canonical(event).decode(),
+                 "delegate." + CLAIM, sequence))
+            previous = event["event_sha256"]
+    with sqlite3.connect(f"file:{database}?mode=ro", uri=True) as db:
+        db.execute("PRAGMA query_only=ON")
+        with pytest.raises(verifier.HistoryError, match="event chain is invalid"):
+            verifier.validate_event_journal(db)
 
 
 @pytest.mark.parametrize("fault", ["chain", "unsupported_event", "extra_authority", "parent", "draft_scope"])

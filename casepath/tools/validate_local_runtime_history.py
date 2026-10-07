@@ -123,6 +123,7 @@ EVENT_KEYS = {
     "event_sha256",
     "resulting_state_sha256",
 }
+DELEGATE_EVENT_CONTRACT = "casepath.agent-delegate-event/1.0.0"
 EVENT_TYPES = {
     "casepath.claim-loop-event/1.0.0": {
         "LOOP_CREATED",
@@ -163,6 +164,11 @@ EVENT_TYPES = {
         "WORKSPACE_REVIEWED_MEMORY_KEPT",
         "WORKSPACE_REVIEWED_MEMORY_APPLIED",
         "WORKSPACE_REVIEWED_MEMORY_RETIRED",
+    },
+    DELEGATE_EVENT_CONTRACT: {
+        "AGENT_MANDATE_PAUSED",
+        "AGENT_MANDATE_RESUMED",
+        "AGENT_HANDLER_DECISION_RECORDED",
     },
 }
 LEGACY_ATTESTATION_KEYS = {
@@ -2122,6 +2128,14 @@ def validate_event_journal(connection: sqlite3.Connection) -> list[dict[str, obj
             or not idempotency_key
             or contract not in EVENT_TYPES
             or event["event_type"] not in EVENT_TYPES[contract]
+            or (
+                contract == DELEGATE_EVENT_CONTRACT
+                and (
+                    session_id != "casepath-workspace-local"
+                    or not loop_id.startswith("delegate.")
+                    or not loop_id[len("delegate.") :]
+                )
+            )
             or event["session_id"] != session_id
             or event["loop_id"] != loop_id
             or event["sequence"] != sequence
