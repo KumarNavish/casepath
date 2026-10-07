@@ -11,7 +11,11 @@ CasePath. Claim outcomes remain outside this delegate's authority.
 The 150-row desk groups claims into Needs you, Agent working, Waiting on
 someone else, Quiet, and Closed. Rows show the accountable handler separately
 from the CasePath delegate, the bounded ask, why it matters, source coverage,
-the latest actual activity, and the local draft state. Each row's signed
+the latest actual activity, and the local draft state. The stop reason,
+recorded work, full coverage note and unsent draft status are visible with
+the row's peek closed. The peek retains dated activity and exact source
+passages. A finished review is distinct from findings awaiting the handler;
+the desk does not invent a role count when its projection omits one. Each row's signed
 `review_started` flag records validated persisted run presence, independently
 of source coverage or completion. Quiet includes unstarted claims; their
 review remains unknown. Nonpaused interrupted or unconfirmed runs belong in
@@ -207,5 +211,11 @@ loads the existing presentation module from its content-bound metadata URL.
 Concurrent openings share one pending load; failed, incomplete and timed-out
 loads release it for retry. Existing claim request epochs prevent a late load
 from reopening a claim after navigation. The eager script budget remains
-300,000 bytes (297,633 bytes in this candidate). Self-hosted fonts and both
+300,000 bytes (298,823 bytes in this candidate). Self-hosted fonts and both
 licence notices belong to the exact public asset inventory and closure checks.
+
+The desk labels the responsible handler explicitly. Unassigned claims keep
+their persisted waiting state and say that a handler is needed. The decision
+shows the recorded proposed answer and its unsaved status beside the agent
+reading, before the longer alternatives. Historical draft activity is labelled
+as earlier work when the current revision has no prepared draft.

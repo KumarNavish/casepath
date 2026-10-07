@@ -475,3 +475,26 @@ test('recorded knowledge use identifies pinned fragment versions and matching le
   assert.match(html, /Applied in this claim · revision 8/); assert.match(html, /Same statement, reviewed here/);
   assert.doesNotMatch(html, /2 reviewed lesson applications/);
 });
+
+test('the recorded proposed answer is visible with its reading before alternatives and remains unsaved',()=>{
+ const input=model('proposed-answer-first-view');
+ ui.session(input.claim.claim_id).answers['condition:family_home']='false';
+ const html=ui.render(input),proposal=html.match(/<p class="av-proposal">([\s\S]*?)<\/p>/)?.[1]||'';
+ assert.match(proposal,/<span class="av-proposed-answer">Agent proposal: <strong>Yes, it applies<\/strong> · not saved<\/span>/);
+ assert.match(proposal,/<span>Agent reading:<\/span> The message reports a shared family home\./);
+ assert.ok(html.indexOf('av-proposed-answer')<html.indexOf('av-counter-reading'));
+ assert.ok(html.indexOf('av-proposed-answer')<html.indexOf('av-answer-list'));
+ assert.deepEqual([...html.matchAll(/name="answer_id" value="([^"]+)"/g)].map(match=>match[1]),['true','false','unresolved']);
+ assert.match(html,/name="answer_id" value="false" checked required/);
+});
+
+test('proposal captions use only the matched recorded answer label and escape source text',()=>{
+ const input=model('proposal-record-only');
+ input.agent.questions=[question({answers:[{answer_id:'true',label:'Yes <candidate>'}],proposal:{answer_id:'true',reason:''}})];
+ let html=ui.render(input);assert.match(html,/av-proposed-answer">Agent proposal: <strong>Yes &lt;candidate&gt;<\/strong> · not saved/);
+ assert.doesNotMatch(html,/<candidate>|<span>Agent reading:<\/span>/);
+ for(const proposal of [{answer_id:'absent',reason:'A source reading remains recorded.'},null]){
+  input.agent.questions=[question({proposal})];html=ui.render(input);assert.doesNotMatch(html,/av-proposed-answer/);
+ }
+ input.agent.questions=[question({answers:[{answer_id:'true'}]})];assert.doesNotMatch(ui.render(input),/av-proposed-answer/);
+});

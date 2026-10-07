@@ -254,3 +254,10 @@ html[data-agent-native=true] #claimsWorkspace .aw-workforce h1{font:300 32px/1.4
 /* Keep inherited controls and source emphasis within the shared motion contract. */
 html[data-agent-native=true] #claimsWorkspace *,html[data-agent-native=true] #claimsWorkspace *::before,html[data-agent-native=true] #claimsWorkspace *::after{transition-property:transform,opacity}
 @keyframes aw-source-focus{from{opacity:.5}to{opacity:1}}
+
+/* The first scan exposes why work stopped and what the delegate already did. */
+#claimsWorkspace .ad-ask{margin-bottom:4px;color:var(--cp-ink);font-weight:500}
+#claimsWorkspace .ad-reason{max-width:92ch;margin:0 0 6px;color:#484b45;font-size:13px;line-height:1.65}
+#claimsWorkspace .ad-work-summary{max-width:104ch;margin:6px 0 12px;color:var(--cp-muted);font-size:12px;line-height:1.7}
+
+#claimsWorkspace .av-proposed-answer{display:block;margin:0 0 6px;color:var(--cp-accent)}

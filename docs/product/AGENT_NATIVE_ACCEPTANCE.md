@@ -451,3 +451,32 @@ bytes unchanged; see
 [the preservation proof](../../../casepath-agent-native-v2-evidence/boot-history-delegate-readonly.json).
 The final sealing suite, official launcher replay and final commit alignment
 follow this source freeze and are recorded in the release receipt.
+
+That repair passed the complete suite: **1,721 passed, 10 skipped, 10 warnings
+in 1,845.08 seconds**, followed by commit `30ae838`, preparation, official replay
+and matching frontend/API readback. The unbooted precommit preparation capsule
+contained the previous Git identity in generated `deployment.json`. It was
+preserved intact under another name in the same cache directory before normal
+postcommit preparation; no permission, boot receipt or journal bytes changed.
+The preservation receipt and earlier failed preparation logs remain outside
+the source tree.
+
+A subsequent fresh landing screenshot exposed a first-second design gap:
+the stop reason and completed work were hidden behind a closed peek. Earlier
+cold-read screenshots had that peek open. Desk rows now show the reason,
+recorded work, exact coverage note and unsent draft state before any click.
+The source disclosure remains available for dated activity and exact passages.
+Four new frontend regressions failed before the change, then the focused gate
+passed **61 tests**. The fresh unopened desk cold read, four-size browser
+checks and final sealing results follow in the external evidence receipts.
+The previous complete suite is retained as
+`full-suite-pre-first-second-desk.log`; it is not presented as execution of
+the subsequent visible-row repair.
+
+The screenshot-only first-second review also identified ambiguous desk owner
+labelling and a mobile proposal below the first viewport. The final clarity
+pass labels the handler, identifies unassigned responsibility, and exposes
+the recorded unsaved proposal beside its reason. Independent source review
+found a historical-draft wording edge after a new revision; that activity is
+now qualified as earlier work when the current draft is absent. Fresh
+regressions and browser evidence are recorded with the final release receipt.

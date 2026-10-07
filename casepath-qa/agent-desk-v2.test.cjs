@@ -43,3 +43,68 @@ test('desk evidence keeps exact passages and rejects a different saved claim pre
  assert.deepEqual(desk.peekEvidence({...packet,questions:[]},row).sources,[]);
  assert.ok(desk.peekEvidence({...packet,questions:[]},row).html.includes('No exact source passage'));
 });
+
+test('closed desk peeks leave the saved reason, real work, coverage and unsent draft visible',()=>{
+ const reviewed={...claim,review_started:true,run_status:'completed',coverage:{note:'3 of 3 original bound sources read.'},latest_activity:{type:'RUN_COMPLETED',label:'All six roles completed. Claim readiness remains governed by the existing authority.'}};
+ const original=JSON.stringify(reviewed),html=desk.row(reviewed),visible=html.split('<details class="ad-peek">')[0];
+ assert.match(visible,/<p class="ad-reason">Two sources disagree\.<\/p>/);
+ assert.match(visible,/<p class="ad-work-summary">/);
+ for(const text of ['Six review roles finished; findings need handler review.','3 of 3 original bound sources read.','Draft, not sent.'])assert.ok(visible.includes(text),text);
+ assert.match(html,/<details class="ad-peek"><summary>What was checked<\/summary>/);
+ assert.match(html,/data-desk-evidence="clm_1"/);assert.equal(JSON.stringify(reviewed),original);
+});
+
+test('a later prepared draft retains the signed completed review without inventing role counts',()=>{
+ const visible=desk.row({...claim,review_started:true,run_status:'completed',latest_activity:{type:'DRAFT_PREPARED',label:'Prepared the missing-evidence request for handler review; not sent'}}).split('<details class="ad-peek">')[0];
+ assert.match(visible,/Review finished; findings need handler review\./);
+ assert.match(visible,/Draft, not sent\./);assert.doesNotMatch(visible,/Six|6 roles/);
+ const done=desk.row({...claim,agent_state:'done',run_status:'completed',latest_activity:null}).split('<details class="ad-peek">')[0];
+ assert.match(done,/Review finished\./);assert.doesNotMatch(done,/findings need handler review/);
+});
+
+test('unstarted and incomplete reviews never acquire completed work or a draft from absent fields',()=>{
+ const unstarted={...claim,review_started:false,run_status:null,latest_activity:null,draft_status:'not_prepared',coverage:{note:'0 of 3 original bound sources read. Remaining sources have not been read by this review.'}};
+ let visible=desk.row(unstarted).split('<details class="ad-peek">')[0];
+ assert.match(visible,/No agent review has started\./);assert.match(visible,/0 of 3 original bound sources read/);
+ assert.doesNotMatch(visible,/review roles finished|Review finished|Draft, not sent/);
+ visible=desk.row({...unstarted,review_started:true,run_status:'running',draft_status:undefined,coverage:null}).split('<details class="ad-peek">')[0];
+ assert.match(visible,/No agent activity is recorded\./);assert.match(visible,/Source coverage is unknown\./);
+ assert.doesNotMatch(visible,/review roles finished|Review finished|Draft, not sent/);
+});
+
+test('visible work preserves coverage qualifications and escapes persisted reason and activity',()=>{
+ const html=desk.row({...claim,why:'A <different> dated notice still needs a receipt.',coverage:{note:'1 of 3 original bound sources read. 1 has limited text coverage. Remaining sources have not been read.'},latest_activity:{type:'AGENT_COMPLETED',label:'Facts <candidate> checked.'}});
+ const visible=html.split('<details class="ad-peek">')[0];
+ assert.match(visible,/A &lt;different&gt; dated notice still needs a receipt\./);
+ assert.match(visible,/Facts &lt;candidate&gt; checked\./);assert.match(visible,/limited text coverage/);assert.match(visible,/Remaining sources have not been read/);
+ assert.doesNotMatch(visible,/<different>|<candidate>|review roles finished|Review finished/);
+ const opened=desk.row({...claim,latest_activity:{type:'SOURCE_OPENED',label:'Opened the exact original source filename.eml'}});
+ assert.match(opened.split('<details class="ad-peek">')[0],/Source opened\./);
+ assert.ok(opened.includes('Opened the exact original source filename.eml'));
+});
+
+test('desk names the accountable handler and only explicit unassignment changes its displayed wait',()=>{
+ const assigned={...claim,owner:'Navish Kumar',accountable:'Navish Kumar',decider:'Navish Kumar'};
+ const html=desk.row(assigned);
+ assert.match(html,/<span>Handler: Navish Kumar<\/span>/);assert.match(html,/<span class="ad-state">Waiting for you<\/span>/);
+ const unassigned=desk.row({...assigned,owner:null,accountable:null,decider:'Unassigned handler'});
+ assert.match(unassigned,/data-state="waiting_for_you"/);assert.match(unassigned,/<span class="ad-state">Handler needed<\/span>/);
+ assert.match(unassigned,/<span>Handler: Unassigned<\/span>/);assert.doesNotMatch(unassigned,/>Waiting for you</);
+ const named=desk.row({...assigned,owner:'Unassigned Family <handler>',accountable:'Unassigned Family <handler>',decider:'Unassigned Family <handler>'});
+ assert.match(named,/Handler: Unassigned Family &lt;handler&gt;/);assert.match(named,/>Waiting for you</);assert.doesNotMatch(named,/>Handler needed</);
+ const recovery=desk.row({...assigned,owner:null,accountable:null,recovery_required:true});assert.match(recovery,/>Recovery needed</);
+});
+
+test('queued and running reviews distinguish earlier draft work from a current unsent draft',()=>{
+ for(const run_status of ['queued','running']){
+  const saved={...claim,agent_state:'working',review_started:true,run_status,draft_status:'not_prepared',latest_activity:{type:'DRAFT_PREPARED',label:'Prepared the missing-evidence request for handler review; not sent'}};
+  const html=desk.row(saved),visible=html.split('<details class="ad-peek">')[0];
+  assert.match(visible,/Earlier draft preparation is recorded; no current draft\./);
+  assert.doesNotMatch(visible,/Prepared the missing-evidence request|Draft, not sent\.|Review finished/);
+  assert.ok(html.includes(saved.latest_activity.label));
+  const current=desk.row({...saved,draft_status:'draft_not_sent'}).split('<details class="ad-peek">')[0];
+  assert.match(current,/Draft, not sent\./);assert.doesNotMatch(current,/Earlier draft preparation/);
+  const unknown=desk.row({...saved,draft_status:undefined}).split('<details class="ad-peek">')[0];
+  assert.match(unknown,/current draft status is unknown/);assert.doesNotMatch(unknown,/no current draft\.|Draft, not sent\./);
+ }
+});

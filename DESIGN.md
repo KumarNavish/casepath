@@ -15,7 +15,7 @@ colors:
 
 ## The job
 
-The desk answers who acts next. Five counts precede the claims: Needs you, Agent working, Waiting on others, Quiet and Closed. Quiet and closed groups start collapsed. Every visible ask comes from a verified server projection. A row names the decision, accountable handler and saved agent state, with an explicit Open claim link. Quiet / unreviewed counts identify claims not yet reviewed; an activity completion is explicitly an agent review. “What was checked” opens source coverage and the latest persisted activity in place. A claim without a review says so.
+The desk answers who acts next. Five counts precede the claims: Needs you, Agent working, Waiting on others, Quiet and Closed. Quiet and closed groups start collapsed. Every visible ask comes from a verified server projection. A row names the decision, its stop reason, accountable handler and saved agent state, with an explicit Open claim link. The recorded work, source coverage and unsent draft state are visible on first load. Quiet / unreviewed counts identify claims not yet reviewed; an activity completion is explicitly an agent review. “What was checked” opens the supporting detail and source passages in place. A claim without a review says so.
 
 The first-minute claim has the display title “Family-home termination notices”. Its original subject, message and source bytes remain available in Sources. Display labels do not change the corpus.
 
