@@ -36,6 +36,10 @@ class WorkCancelled(WorkStoreError):
     pass
 
 
+class WorkPaused(WorkStoreError):
+    pass
+
+
 ACTIVE = ("queued", "running", "interrupted")
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS work_runs (
@@ -51,6 +55,9 @@ CREATE TABLE IF NOT EXISTS work_external_permits (
  run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
 );
 CREATE TABLE IF NOT EXISTS work_cancellation_requests (
+ run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
+);
+CREATE TABLE IF NOT EXISTS work_pause_requests (
  run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
 );
 CREATE TABLE IF NOT EXISTS work_events (
@@ -215,6 +222,8 @@ class WorkStore:
             run = self._run(db, run_id)
             if run["status"] in {"completed", "blocked", "failed", "cancelled"}:
                 return False
+            if db.execute("SELECT 1 FROM work_pause_requests WHERE run_id=?", (run_id,)).fetchone():
+                return False
             if run["status"] == "running" and run["lease_until"] > time.time():
                 raise ConflictError("work is already executing")
             pending = db.execute("SELECT 1 FROM work_calls WHERE run_id=? AND status='started' LIMIT 1", (run_id,)).fetchone()
@@ -230,6 +239,8 @@ class WorkStore:
             self._require_owner(db, run_id, owner)
             if db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
                 raise WorkCancelled("The review was stopped at a safe checkpoint")
+            if db.execute("SELECT 1 FROM work_pause_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise WorkPaused("The review was paused at a safe checkpoint")
             db.execute("UPDATE work_runs SET lease_until=? WHERE run_id=?", (time.time() + seconds, run_id))
 
     def begin_call(self, run_id, owner, role, call_id, tool, arguments):
@@ -240,6 +251,8 @@ class WorkStore:
             self._require_owner(db, run_id, owner)
             if db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
                 raise WorkCancelled("The review was stopped at a safe checkpoint")
+            if db.execute("SELECT 1 FROM work_pause_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise WorkPaused("The review was paused at a safe checkpoint")
             existing = db.execute("SELECT * FROM work_calls WHERE run_id=? AND role=? AND call_id=?", (run_id, str(role), call_id)).fetchone()
             if existing:
                 if existing["request_sha256"] != request_hash:
@@ -370,19 +383,44 @@ class WorkStore:
         return self.snapshot(run_id)["events"][after:after+limit]
 
     def finish(self, run_id, owner, status, message, after=None):
-        operations = {"completed": Operation.RUN_COMPLETED, "blocked": Operation.RUN_BLOCKED, "failed": Operation.RUN_FAILED, "cancelled": Operation.RUN_CANCELLED}
+        operations = {"completed": Operation.RUN_COMPLETED, "blocked": Operation.RUN_BLOCKED, "failed": Operation.RUN_FAILED,
+                      "cancelled": Operation.RUN_CANCELLED, "interrupted": Operation.RUN_INTERRUPTED}
         if status not in operations:
             raise WorkStoreError("invalid terminal work status")
         with self.transaction() as db:
             self._require_owner(db, run_id, owner)
             if status == "completed" and db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
                 status, message = "cancelled", "Review stopped after the current source check"
+            elif status == "completed" and db.execute("SELECT 1 FROM work_pause_requests WHERE run_id=?", (run_id,)).fetchone():
+                status, message = "interrupted", "Review paused after its final safe checkpoint; saved work can resume"
             self._append(db, run_id, operation=operations[status], object_kind="run", object_id=run_id,
-                         status="completed" if status in {"completed", "cancelled"} else "blocked", message=message,
+                         status="unknown" if status == "interrupted" else "completed" if status in {"completed", "cancelled"} else "blocked", message=message,
                          worker_kind="kernel", after=after)
             db.execute("UPDATE work_runs SET status=?,owner=NULL,lease_until=NULL WHERE run_id=?", (status, run_id))
 
-    def request_cancel(self, run_id):
+    def request_pause(self, run_id):
+        with self.transaction() as db:
+            run = self._run(db, run_id)
+            if json.loads(run["request_json"]).get("facts_worker") != "reference":
+                raise ConflictError("Only the local reference review can pause safely")
+            if run["status"] not in ACTIVE:
+                raise ConflictError("this review has already finished")
+            if db.execute("SELECT 1 FROM work_pause_requests WHERE run_id=?", (run_id,)).fetchone():
+                return
+            db.execute("INSERT INTO work_pause_requests VALUES(?)", (run_id,))
+            self._append(db, run_id, operation=Operation.RUN_PAUSE_REQUESTED, object_kind="run", object_id=run_id,
+                         status="observed", message="Pause requested by the handler", worker_kind="kernel")
+            if run["status"] in {"queued", "interrupted"}:
+                self._append(db, run_id, operation=Operation.RUN_INTERRUPTED, object_kind="run", object_id=run_id,
+                             status="unknown", message="Review paused before its next source check", worker_kind="kernel")
+                db.execute("UPDATE work_runs SET status='interrupted',owner=NULL,lease_until=NULL WHERE run_id=?", (run_id,))
+
+    def clear_pause(self, run_id):
+        with self.transaction() as db:
+            self._run(db, run_id)
+            db.execute("DELETE FROM work_pause_requests WHERE run_id=?", (run_id,))
+
+    def request_cancel(self, run_id, *, message="Stop requested by the handler", after=None):
         with self.transaction() as db:
             run = self._run(db, run_id)
             if run["request_json"] and json.loads(run["request_json"]).get("facts_worker") != "reference":
@@ -394,7 +432,7 @@ class WorkStore:
             if not db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
                 db.execute("INSERT INTO work_cancellation_requests VALUES(?)", (run_id,))
                 self._append(db, run_id, operation=Operation.RUN_CANCEL_REQUESTED, object_kind="run", object_id=run_id,
-                             status="observed", message="Stop requested by the handler", worker_kind="kernel")
+                             status="observed", message=message, worker_kind="kernel", after=after)
             if run["status"] in {"queued", "interrupted"}:
                 self._append(db, run_id, operation=Operation.RUN_CANCELLED, object_kind="run", object_id=run_id,
                              status="completed", message="Review stopped before the next source check", worker_kind="kernel")

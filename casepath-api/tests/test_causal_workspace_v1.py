@@ -94,6 +94,56 @@ def test_node_removal_reconsiders_dependents_but_preserves_other_requirements(sy
     assert result["impact"]["removed_node_ids"] == ["lt_family"]
 
 
+def test_scoped_undo_preserves_source_reviews_handler_notes_owner_and_draft_history(system):
+    storage, workspace, service = system
+    initial = service.view(CLAIM)
+    changed = _edit(service, {"type": "conditions.set", "flag": "family_home", "verdict": "false"})
+    target = changed["process"]["undo"]
+    source = next(row for row in workspace.detail(CLAIM)["artifacts"]
+                  if "tenant" in row["file_name"].lower() and row["media_type"] == "application/pdf")
+    _edit(service, {"type": "document.review", "document_type": "termination_notice",
+                    "artifact_id": source["artifact_id"], "quote": "30. Juni", "review": "sufficient",
+                    "note": "Checked this original notice after the branch correction."})
+    state = workspace.store.recover(CLAIM)
+    workspace.assign(CLAIM, owner="Mira Keller", expected_revision=state["revision"], idempotency_key="undo.owner.0001")
+    state = workspace.store.recover(CLAIM)
+    workspace.store.append(claim_id=CLAIM, event_type="WORKSPACE_HANDLER_OBSERVATION_RECORDED",
+        idempotency_key="undo.handler.note.0001", expected_revision=state["revision"], timestamp="2026-10-07T08:00:00+00:00",
+        command={"kind": "condition", "target": "family_home", "verdict": "unresolved", "note": "Keep the original receipt question open.",
+                 "quote": None, "source_id": None, "action_id": None, "request_expected_revision": state["revision"]})
+    state = workspace.store.recover(CLAIM)
+    workspace.record_draft(CLAIM, expected_revision=state["revision"], expected_state_sha256=state["state_sha256"], idempotency_key="undo.draft.0001")
+    before = workspace.store.recover(CLAIM)
+    notes = workspace.store.handler_observations(CLAIM, revision=before["revision"], expected_state_sha256=before["state_sha256"])
+    drafts = workspace.drafts(CLAIM)["items"]
+    assert service.view(CLAIM)["undo"] == target
+    body = _body(service, {"type": "process.undo", "target_revision": target["target_revision"]})
+    preview = service.preview(CLAIM, **body)
+    assert workspace.store.recover(CLAIM) == before
+    request = {**body, "preview_sha256": preview["preview_sha256"], "idempotency_key": "undo.branch.0001"}
+    applied = service.apply(CLAIM, **request)
+    after = workspace.store.recover(CLAIM)
+    assert after["owner"] == "Mira Keller"
+    assert after["intake_assessment"] == before["intake_assessment"]
+    assert workspace.store.handler_observations(CLAIM, revision=after["revision"], expected_state_sha256=after["state_sha256"]) == notes
+    assert workspace.drafts(CLAIM)["items"] == drafts
+    assert workspace.drafts(CLAIM)["latest"] is None
+    assert _doc(applied["process"], "spouse_notice_copy")["route_state"] == _doc(initial, "spouse_notice_copy")["route_state"]
+    assert _doc(applied["process"], "termination_notice")["route_state"] == "established"
+    assert applied["process"]["graph"]["conditions"]["family_home"]["verdict"] == "true"
+    assert applied["process"]["history"][-1]["operation"]["type"] == "process.undo"
+    replayed = service.apply(CLAIM, **request)
+    assert replayed["replayed"] is True
+    assert replayed["event_sha256"] == applied["event_sha256"]
+    assert replayed["process"] == applied["process"]
+    restarted = CausalWorkspaceService(ClaimWorkspaceService(storage, corpus=workspace.corpus))
+    assert restarted.view(CLAIM) == service.view(CLAIM)
+    with pytest.raises(ValueError, match="last process edit"):
+        service.preview(CLAIM, **_body(service, body["operation"]))
+    queue = workspace._triage_snapshot([after])[CLAIM]
+    assert queue["next_step"] == applied["process"]["effective_assessment"]["next_step"]
+
+
 def test_prerequisite_validation_and_revised_history_are_granular(system):
     _, _, service = system
     _edit(service, {"type": "node.add", "node": {"node_id": "review_permission", "label": "Confirm permission", "kind": "prerequisite", "entry": True}})

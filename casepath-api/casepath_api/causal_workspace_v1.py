@@ -278,6 +278,7 @@ class CausalWorkspaceService:
         return {k: v for k, v in found.items() if k not in {"saved_at", "event_sha256", "latest"}}
 
     def view(self, claim_id, *, state=None, include_fragments=True):
+        from .causal_process_v1 import undo_target
         state = state or self.store.recover(claim_id)
         graph = working_graph(self.corpus, state)
         evaluation = evaluate(graph)
@@ -293,6 +294,7 @@ class CausalWorkspaceService:
             "graph": graph, "evaluation": evaluation, "effective_assessment": effective_assessment(state),
             "process_adopted": adopted, "evaluation_mode": "working" if adopted else "proposal",
             "history": history, "fragments": self.fragments(graph["family"]) if include_fragments else [],
+            "undo": undo_target(graph),
             "authority": "claim_loop_events", "process_status": evaluation["process_status"], "claim_decision_authorized": False}
         return {**material, "view_sha256": digest_value(material)}
 

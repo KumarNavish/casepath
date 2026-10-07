@@ -16,7 +16,11 @@ import build_static_site as static_site  # noqa: E402
 
 
 ASSET_REFERENCE = re.compile(
-    r"[\"'](?P<path>assets/[A-Za-z0-9._/-]+\.(?:css|js|json))(?:\?[^\"']*)?[\"']"
+    r"[\"'](?P<path>assets/[A-Za-z0-9._/-]+\.(?:css|js|json|ttf|txt))(?:\?[^\"']*)?[\"']"
+)
+CSS_FONT_REFERENCE = re.compile(
+    r"url\(\s*[\"']?(?P<path>[A-Za-z0-9._/-]+\.(?:ttf|otf|woff2?))"
+    r"(?:\?[^\"')\s]*)?[\"']?\s*\)"
 )
 
 
@@ -62,9 +66,28 @@ def test_curated_static_build_has_exact_runtime_inventory(
     assert payload["source_commit"] == "unknown"
     assert payload["alignment_eligible"] is False
     files, directories = static_site.inventory(output)
-    assert files == static_site.PUBLIC_INVENTORY
-    assert directories == static_site.PUBLIC_DIRECTORIES
-    assert len(files) == 25
+    expected_files = {
+        "_headers", "index.html", "corpus.html", "method.html", "research.html",
+        "release.json", "deployment.json",
+        "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json",
+        "assets/method-guide.css", "assets/method-guide-data.json",
+        "assets/research-evidence.css", "assets/paired-study-evidence.json",
+        "assets/native-study-evidence.json",
+        "assets/claims-workspace-v1.css", "assets/claims-workspace-v1.js",
+        "assets/claims-workspace-presentation-v1.js",
+        "assets/claims-workspace-presentation-v1.css",
+        "assets/agent-work-v1.js", "assets/agent-work-v1.css",
+        "assets/causal-process-v1.js", "assets/causal-process-v1.css",
+        "assets/process-evidence-v2.css", "assets/process-evidence-v2.js",
+        "assets/agent-claim-v2.js", "assets/agent-desk-v2.js",
+        "assets/agent-native-v2.css",
+        "assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
+        "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+        "assets/fonts/Open_Sans-OFL.txt",
+    }
+    assert files == static_site.PUBLIC_INVENTORY == expected_files
+    assert directories == static_site.PUBLIC_DIRECTORIES == {"assets", "assets/fonts"}
+    assert len(files) == 32
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
     assert {"method.html", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files
@@ -116,13 +139,21 @@ def test_curated_asset_allowlist_is_the_recursive_runtime_closure() -> None:
         if relative_path in scanned:
             continue
         scanned.add(relative_path)
-        if not relative_path.endswith(".js"):
+        if not relative_path.endswith((".js", ".css")):
             continue
         source = static_site.SOURCE_ROOT / relative_path
+        source_text = source.read_text(encoding="utf-8")
         nested = {
             match.group("path")
-            for match in ASSET_REFERENCE.finditer(source.read_text(encoding="utf-8"))
+            for match in ASSET_REFERENCE.finditer(source_text)
         }
+        if relative_path.endswith(".css"):
+            nested.update(
+                (source.parent / match.group("path")).resolve().relative_to(
+                    static_site.SOURCE_ROOT.resolve()
+                ).as_posix()
+                for match in CSS_FONT_REFERENCE.finditer(source_text)
+            )
         pending.extend(sorted(nested - discovered))
         discovered.update(nested)
 
@@ -133,6 +164,25 @@ def test_curated_asset_allowlist_is_the_recursive_runtime_closure() -> None:
     assert "assets/agent-work-v1.js" in discovered
     assert "assets/claims-workspace-v1.css" in discovered
     assert "assets/claims-workspace-v1.js" in discovered
+    assert {
+        "assets/agent-claim-v2.js", "assets/agent-desk-v2.js",
+        "assets/agent-native-v2.css",
+        "assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
+        "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+        "assets/fonts/Open_Sans-OFL.txt",
+    } <= discovered
+
+    index = (static_site.SOURCE_ROOT / "index.html").read_text(encoding="utf-8")
+    for license_path in (
+        "assets/fonts/Merriweather-OFL.txt", "assets/fonts/Open_Sans-OFL.txt",
+    ):
+        assert f'<link rel="license" href="{license_path}">' in index
+    font_styles = (static_site.SOURCE_ROOT / "assets/agent-native-v2.css").read_text(
+        encoding="utf-8"
+    )
+    assert {match.group("path") for match in CSS_FONT_REFERENCE.finditer(font_styles)} == {
+        "fonts/Merriweather-Light.ttf", "fonts/OpenSans-VariableFont_wdth-wght.ttf",
+    }
 
 
 def test_queue_script_payload_stays_below_300_kb() -> None:
@@ -140,10 +190,16 @@ def test_queue_script_payload_stays_below_300_kb() -> None:
     scripts = re.findall(r'<script src="(assets/[^"?]+\.js)\?sha256=', index)
     assert "assets/agent-work-v1.js" not in scripts
     assert "assets/causal-process-v1.js" not in scripts
+    assert "assets/claims-workspace-presentation-v1.js" not in scripts
     assert index.count('name="casepath-agent-work-script"') == 1
     assert index.count('name="casepath-causal-process-script"') == 1
+    assert index.count('name="casepath-workspace-presentation-script"') == 1
     process_hash = hashlib.sha256((static_site.SOURCE_ROOT / "assets/causal-process-v1.js").read_bytes()).hexdigest()
     assert f'name="casepath-causal-process-script" content="assets/causal-process-v1.js?sha256={process_hash}"' in index
+    presentation_hash = hashlib.sha256(
+        (static_site.SOURCE_ROOT / "assets/claims-workspace-presentation-v1.js").read_bytes()
+    ).hexdigest()
+    assert f'name="casepath-workspace-presentation-script" content="assets/claims-workspace-presentation-v1.js?sha256={presentation_hash}"' in index
     assert sum((static_site.SOURCE_ROOT / script).stat().st_size for script in scripts) < 300_000
 
 

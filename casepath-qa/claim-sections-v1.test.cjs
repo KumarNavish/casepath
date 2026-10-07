@@ -102,3 +102,92 @@ test('motion stops for reduced motion and keyboard use and never replays hidden 
  node.hidden=true;f.motion.enter(node,'work:run:8');node.hidden=false;f.motion.enter(node,'work:run:8');assert.equal(f.animations.length,2);
  f.motion.enter(node,'pane:5');f.document.hidden=true;f.listeners.visibilitychange();assert.equal(f.animations[2].cancelled,1);
 });
+
+test('full review exposes each recorded source event through the existing detail handler',()=>{
+ const agent=fs.readFileSync(path.join(__dirname,'../casepath/assets/agent-work-v1.js'),'utf8');
+ const events=[
+  {sequence:7,operation:'SOURCE_SPAN_SELECTED',timestamp:'2026-10-07T12:00:00Z',sources:[{extraction:'message_body',quote:'Receipt: 30. Juni <unconfirmed>'}]},
+  {sequence:11,operation:'SOURCE_SPAN_SELECTED',timestamp:'2026-10-07T12:00:01Z',sources:[{extraction:'message_body',quote:'A separate original source remains unread.'}]},
+ ];
+ const original=JSON.stringify(events),host={dataset:{}},listeners={},inspected=[];
+ const c={state:{run:{},summary:{run_id:'saved-run'},events,assessment:null,revealCount:0},
+  document:{getElementById:id=>id==='cpPanel-activity'?{}:id==='awTimeline'?host:null,addEventListener(type,handler){listeners[type]=handler;}},
+  time:value=>value,inspect:event=>inspected.push(event),request(){throw Error('Inspection must not create a request');}};
+ vm.createContext(c);
+ vm.runInContext(agent.slice(agent.indexOf('  const h='),agent.indexOf('  const icon=')),c);
+ vm.runInContext(agent.slice(agent.indexOf('  function narrativeEvent('),agent.indexOf('  function syncLivePath(')),c);
+ vm.runInContext(agent.slice(agent.indexOf('  function renderTimeline('),agent.indexOf('  function renderProcess(')),c);
+ vm.runInContext(agent.slice(agent.indexOf("  document.addEventListener('click',"),agent.indexOf("  document.addEventListener('keydown',e=>")),c);
+ c.renderTimeline();
+ const buttons=[...host.innerHTML.matchAll(/<button type="button" class="aw-text-button" data-aw-event="(\d+)">Inspect work detail<\/button>/g)];
+ assert.deepEqual(buttons.map(match=>Number(match[1])),events.map(event=>event.sequence));
+ assert.match(host.innerHTML,/data-aw-quote="30\. Juni &lt;unconfirmed&gt;"/);
+ assert.match(host.innerHTML,/<\/a><button type="button"/);
+ for(const [,sequence] of buttons){
+  const button={tagName:'BUTTON',dataset:{awEvent:sequence},hasAttribute:name=>name==='data-aw-event'};
+  listeners.click({target:{closest:()=>button},preventDefault(){throw Error('A native detail button needs no link override');}});
+ }
+ assert.equal(inspected[0],events[0]);assert.equal(inspected[1],events[1]);
+ assert.equal(JSON.stringify(events),original);
+ c.state.events=[];c.renderTimeline();
+ assert.doesNotMatch(host.innerHTML,/data-aw-event/);
+ assert.match(host.innerHTML,/Source reads will appear here as they are saved\./);
+});
+
+test('queued work cannot borrow a customer quote before its persisted source read',()=>{
+ const agent=fs.readFileSync(path.join(__dirname,'../casepath/assets/agent-work-v1.js'),'utf8');
+ const queued={sequence:1,operation:'RUN_QUEUED',message:'Review queued',sources:[]};
+ const read={sequence:8,operation:'SOURCE_SPAN_SELECTED',timestamp:'2026-10-07T12:00:00Z',sources:[{extraction:'message_body',quote:'The persisted receipt date is still unconfirmed.'}]};
+ const host={dataset:{}},inspected=[],listeners={};let domReads=0;
+ const c={state:{run:{},summary:{run_id:'saved-run'},events:[queued],assessment:null,revealCount:0},
+  document:{querySelector(){domReads++;return {textContent:'Customer message\n\nA DOM-only quote was never read by this run.'};},getElementById:id=>id==='cpPanel-activity'?{}:id==='awTimeline'?host:null,addEventListener(type,handler){listeners[type]=handler;}},
+  time:value=>value,inspect:event=>inspected.push(event)};
+ vm.createContext(c);
+ vm.runInContext(agent.slice(agent.indexOf('  const h='),agent.indexOf('  const icon=')),c);
+ vm.runInContext(agent.slice(agent.indexOf('  function narrativeEvent('),agent.indexOf('  function syncLivePath(')),c);
+ vm.runInContext(agent.slice(agent.indexOf('  function renderTimeline('),agent.indexOf('  function renderProcess(')),c);
+ vm.runInContext(agent.slice(agent.indexOf("  document.addEventListener('click',"),agent.indexOf("  document.addEventListener('keydown',e=>")),c);
+ c.renderTimeline();
+ assert.doesNotMatch(host.innerHTML,/DOM-only quote|Customer:|data-aw-quote|data-aw-event/);
+ assert.match(host.innerHTML,/Source reads will appear here as they are saved\./);
+ c.state.events=[queued,read];c.renderTimeline();
+ assert.match(host.innerHTML,/The persisted receipt date is still unconfirmed/);
+ assert.doesNotMatch(host.innerHTML,/DOM-only quote|data-aw-event="1"/);
+ const buttons=[...host.innerHTML.matchAll(/data-aw-event="(\d+)"/g)];assert.deepEqual(buttons.map(match=>Number(match[1])),[read.sequence]);
+ const button={tagName:'BUTTON',dataset:{awEvent:String(read.sequence)},hasAttribute:()=>false};
+ listeners.click({target:{closest:()=>button}});
+ assert.equal(inspected[0],read);assert.equal(inspected[0].sources[0],read.sources[0]);assert.equal(domReads,0);
+});
+
+test('connected source work has a named target and still opens the complete recorded source',()=>{
+ const agent=fs.readFileSync(path.join(__dirname,'../casepath/assets/agent-work-v1.js'),'utf8');
+ const text='Original customer message with unconfirmed dates. '.repeat(100)+'<not established>';
+ const opened={id:'source:message',kind:'opened_source',value:{extraction:'message_body',filename:'original.eml',text,complete:true}};
+ const span={id:'span:receipt',kind:'span',value:{quote:'My form arrived on Monday',start:7,end:32}};
+ const event={sequence:7,operation:'SOURCE_SPAN_SELECTED',object_id:span.id,role:'canonical_facts',status:'observed',sources:[span.value],links:[opened.id]};
+ const summary={run_id:'run-one',claim_id:'claim-one',subject:'A longer original claim subject',currentness:'current'};
+ const run={summary,objects:[opened,span]},original=JSON.stringify(run),host={textContent:''};
+ const dialog={open:false,querySelector:()=>host,showModal(){this.open=true;}};
+ const c={state:{run,summary,events:[event]},window:{CasePathPresentation:{title:value=>value}},
+  document:{getElementById:id=>id==='awInspector'?dialog:null,querySelector:()=>({textContent:'Family-home termination notices'})},
+  getClaim:()=>summary.claim_id,roleName:()=> 'Facts',time:()=> '12:00',icon:()=> '<svg></svg>'};
+ vm.createContext(c);
+ vm.runInContext(agent.slice(agent.indexOf('  const h='),agent.indexOf('  const icon=')),c);
+ vm.runInContext(agent.slice(agent.indexOf('  function objectTitle('),agent.indexOf('  async function request(')),c);
+ vm.runInContext(agent.slice(agent.indexOf('  function detailDialog('),agent.indexOf('  async function showWorkforce(')),c);
+ c.inspect(event);
+ const related=dialog.innerHTML.match(/<button type="button" class="aw-related"[\s\S]*?<\/button>/)[0];
+ assert.match(related,/data-aw-object="source:message"/);
+ assert.match(related,/Customer message · Family-home termination notices/);
+ assert.doesNotMatch(related,/Original customer message|not established/);
+ c.inspect(null,opened.id);
+ assert.match(dialog.innerHTML,/<h2>Customer message · Family-home termination notices<\/h2>/);
+ assert.match(dialog.innerHTML,/Read scope/);
+ assert.ok(dialog.innerHTML.includes(text.replaceAll('<','&lt;').replaceAll('>','&gt;')),'The complete original text remains inspectable');
+ assert.equal(JSON.stringify(run),original);
+ c.state.inspection.run.summary={...summary,claim_id:'another-claim',subject:'The saved claim title <unconfirmed>'};
+ assert.equal(c.objectTitle(opened),'Customer message · The saved claim title <unconfirmed>');
+ c.inspect(null,opened.id);
+ assert.match(dialog.innerHTML,/<h2>Customer message · The saved claim title &lt;unconfirmed&gt;<\/h2>/);
+ assert.equal(c.objectTitle({kind:'opened_source',value:{extraction:'pdf_text',filename:'Separate_notice.pdf',text:'Full PDF extraction'}}),'Separate notice.pdf');
+});

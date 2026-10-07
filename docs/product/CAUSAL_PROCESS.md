@@ -15,6 +15,15 @@ The initial graph comes from the current product policy catalog and the claim's 
 
 Adding a step after another creates an `enables` connection. Choosing an independent starting step sets its explicit `entry` flag. Removing a node also removes its incident relationships. Remaining nodes never become starting steps merely because their predecessor disappeared. An empty graph can be rebuilt by adding an entry node.
 
+The process view exposes the last graph edit eligible for **Undo**. Its normal
+preview shows the consequences before a handler records the compensating edit.
+Undo restores only that edit's process fields, keeps later source reviews,
+handler notes, assignments and draft history, and marks affected structures as
+revised for review. Historical drafts remain saved and a fresh draft must be
+derived from the restored process. A stale target is rejected. Undo cannot cross
+a saved fragment import, whose legacy history has no reversible snapshot, or
+remove a newly added document with a later source review.
+
 ## Nodes, conditions, and dependencies
 
 A node has an identity, label, meaning, kind, condition, document references, completion record, validation, and provenance. The supported kinds are state, action, decision, prerequisite, and outcome. Kind describes the node; conditions and relationships determine execution.

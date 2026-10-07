@@ -16,7 +16,7 @@ from .authority import ClaimAuthority, AuthorityError, SourceChanged
 from . import evidential_channel
 from .contracts import (Role, ROLE_ORDER, ROLE_LABELS, Operation, SourceSpan, GateResult,
                         TOOL_MODELS, ROLE_TOOLS, canonical, digest)
-from .store import WorkStore, WorkStoreError, ConflictError, ReconciliationRequired, WorkCancelled
+from .store import WorkStore, WorkStoreError, ConflictError, ReconciliationRequired, WorkCancelled, WorkPaused
 
 
 
@@ -660,6 +660,11 @@ class AgentWorkExecutor:
             readiness = self.store.object(run_id, "readiness")["value"]
             self.store.finish(run_id, owner, "completed", "All six roles completed. Claim readiness remains governed by the existing authority.",
                               after={"readiness": readiness, "completed_roles": [r.value for r in ROLE_ORDER]})
+        except WorkPaused:
+            try:
+                self.store.finish(run_id, owner, "interrupted", "Review paused at a safe checkpoint; saved work can resume")
+            except ConflictError:
+                pass
         except WorkCancelled:
             try:
                 self.store.finish(run_id, owner, "cancelled", "Review stopped at a safe checkpoint")

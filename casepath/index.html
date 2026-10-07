@@ -6,10 +6,15 @@
   <meta name="description" content="A journal-backed claims workspace that shows what is known, what blocks a claim, and the next bounded action without inventing readiness.">
   <meta name="theme-color" content="#ffffff">
   <meta name="casepath-release" content="20.0.0">
-  <meta name="casepath-agent-work-script" content="assets/agent-work-v1.js?sha256=726c6c6e6cdd2e69eee55cf1ea97f0d60001b49212ffd4bf23d7cd8aafe66e44">
-  <meta name="casepath-causal-process-script" content="assets/causal-process-v1.js?sha256=16ee0e1406f2dc5f42309bfbd16914a7fca8ff98c2f8511402cd6a29390a4ee2">
+  <meta name="casepath-workspace-presentation-script" content="assets/claims-workspace-presentation-v1.js?sha256=157d7054c9e6688ea6c3c73e5579f511c4329b1fe1b846e64324770fc4bbe9ed">
+  <meta name="casepath-agent-work-script" content="assets/agent-work-v1.js?sha256=654a5fbb04eba81ad23e1730461df92c4ac9c4c9d01d2a73d2dc1d4bad1cf1cd">
+  <meta name="casepath-causal-process-script" content="assets/causal-process-v1.js?sha256=355a920eb614438100ae74cfc516eae59cd53aa1953281a880a39c9140ee71a8">
   <meta name="casepath-paper-method-script" content="assets/process-evidence-v2.js?sha256=007bc2ad438b32e265da97f33866999ed3745c35107249eafd35191d210aaa8b">
   <link rel="icon" href="data:,">
+  <link rel="license" href="assets/fonts/Merriweather-OFL.txt">
+  <link rel="license" href="assets/fonts/Open_Sans-OFL.txt">
+  <link rel="preload" href="assets/fonts/Merriweather-Light.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="assets/fonts/OpenSans-VariableFont_wdth-wght.ttf" as="font" type="font/ttf" crossorigin>
   <title>CasePath — Claims workspace</title>
   <script>
     if (location.protocol === 'file:') document.documentElement.dataset.casepathFileEntry = 'true';
@@ -72,6 +77,7 @@
   <link rel="stylesheet" href="assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557">
 <link rel="stylesheet" href="assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9">
   <link rel="stylesheet" href="assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22">
+  <link rel="stylesheet" href="assets/agent-native-v2.css?sha256=b4b8ad2a5408e27b2a807d2a0f6fc64a7817c33be9c20d2dfe7781095e012574">
 </head>
 <body>
   <section id="localFileLaunch" aria-labelledby="localFileLaunchTitle">
@@ -81,7 +87,7 @@
       <h1 id="localFileLaunchTitle">Open CasePath through its local web address.</h1>
       <p>This file was opened directly. CasePath needs a small local web server so its design, source previews, and API connection can load correctly.</p>
       <a href="http://127.0.0.1:4173/">Open local product</a>
-      <div class="local-file-launch-command">From the <strong>casepath-canonical</strong> repository folder, run this once in Terminal and keep the window open:<code>./bin/casepath dev</code></div>
+      <div class="local-file-launch-command">From the <strong>casepath</strong> repository folder, run this once in Terminal and keep the window open:<code>./bin/casepath dev</code></div>
     </div>
   </section>
   <a class="skip-link" href="#casepathWork">Skip to CasePath</a>
@@ -293,7 +299,8 @@ Alex Morgan</div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/claims-workspace-presentation-v1.js?sha256=176018ead9117be86301bd27bdb682cc3258d20468e780a6172a65ecbdf90aaf"></script>
-  <script src="assets/claims-workspace-v1.js?sha256=d7042775a2b5c3ee4d9036879302727347420960068c392080f970737f6affe6"></script>
+  <script src="assets/claims-workspace-v1.js?sha256=71f096951ca98023fdaaadd3ac6ec2cc82c976fc4073df3d5e548fda14c44a5c"></script>
+  <script src="assets/agent-claim-v2.js?sha256=96d924ad8a30bddbe5ed031d41ff8227388280606f0e8e8f3fa2454f42e862d5"></script>
+  <script src="assets/agent-desk-v2.js?sha256=610322ea5cb48eb0954c76135ce864e20a140e07b253e1f1d8f7cbfa1638c8e0"></script>
 </body>
 </html>

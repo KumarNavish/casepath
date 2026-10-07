@@ -577,6 +577,110 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
             "inconsistent_completed_node_ids": inconsistent_ids}
 
 
+def _undo_entry(graph: Mapping[str, Any]) -> dict[str, Any] | None:
+    compensated = set()
+    for entry in reversed(graph["history"]):
+        operation = entry.get("operation", {})
+        kind = operation.get("type", entry.get("type"))
+        if kind == "process.undo":
+            compensated.add(operation["target_revision"])
+        elif kind == "document.review":
+            continue
+        elif kind == "fragment.apply":
+            # Legacy imports have no before snapshot; never cross that boundary.
+            return None
+        elif entry.get("revision") not in compensated:
+            return entry if "before" in entry and "after" in entry else None
+    return None
+
+
+def undo_target(graph: Mapping[str, Any]) -> dict[str, Any] | None:
+    """Expose the exact graph edit eligible for a compensating preview."""
+    entry = _undo_entry(graph)
+    if entry is None:
+        return None
+    operation = entry["operation"]
+    item = entry["after"] or entry["before"] or {}
+    return {"target_revision": entry["revision"], "operation_type": operation["type"],
+            "label": item.get("label") or operation.get("flag") or "Process change"}
+
+
+def _undo_edit(graph, operation):
+    target = _undo_entry(graph)
+    if (type(operation["target_revision"]) is not int or target is None
+            or operation["target_revision"] != target["revision"]):
+        raise ValueError("only the last process edit can be undone")
+    result = deepcopy(graph)
+    prior, saved = target["before"], target["after"]
+    original = target["operation"]
+    kind = original["type"]
+    actor = operation.get("actor", "Handler")
+    def semantic(item):
+        return {key: value for key, value in (item or {}).items()
+                if key not in {"validation", "provenance", "held_files"}}
+    def restore(field, key, identity, before, after):
+        rows = result[field]
+        current = next((row for row in rows if row[key] == identity), None)
+        if field == "document_catalog" and after is not None:
+            after = seal_graph({**graph, "nodes": [], "edges": [],
+                                "document_catalog": [after]})["document_catalog"][0]
+        if semantic(current) != semantic(after):
+            raise ValueError("the edited fields changed; reload before undoing")
+        if before is None:
+            if current and current.get("held_files"):
+                raise ValueError("undo would remove later source reviews; keep the document")
+            rows[:] = [row for row in rows if row[key] != identity]
+        else:
+            value = deepcopy(before)
+            if current and "held_files" in current:
+                value["held_files"] = deepcopy(current["held_files"])
+            if current is None:
+                rows.append(value)
+            else:
+                rows[rows.index(current)] = value
+    if kind.startswith(("node.", "edge.")):
+        entity = kind.split(".")[0]
+        key = entity + "_id"
+        identity = (saved or prior)[key]
+        restore(entity + "s", key, identity, prior, saved)
+        relationships = target.get("relationship_changes", {})
+        for edge in relationships.get("added", []):
+            restore("edges", "edge_id", edge["edge_id"], None, edge)
+        for edge in relationships.get("removed", []):
+            restore("edges", "edge_id", edge["edge_id"], edge, None)
+    elif kind == "conditions.set":
+        flag = original["flag"]
+        if result["conditions"].get(flag) != saved:
+            raise ValueError("the edited condition changed; reload before undoing")
+        result["conditions"][flag] = deepcopy(prior)
+    elif kind == "document.set":
+        restore("document_catalog", "document_type", (saved or prior)["document_type"], prior, saved)
+    else:
+        raise ValueError("this process edit has no scoped undo")
+    # Re-evaluate the restored scope without reusing an earlier validation.
+    change = impact(graph, result)
+    affected_nodes = set(change["affected_node_ids"])
+    affected_edges = set(change["changed_edge_ids"])
+    if kind.startswith("node."):
+        affected_nodes.add((saved or prior)["node_id"])
+    if kind.startswith("edge."):
+        affected_edges.add((saved or prior)["edge_id"])
+    if kind == "document.set":
+        affected_nodes.update(node["node_id"] for node in result["nodes"]
+                              if (saved or prior)["document_type"] in node["document_types"])
+    for rows, key, affected in ((result["nodes"], "node_id", affected_nodes),
+                                (result["edges"], "edge_id", affected_edges)):
+        for item in rows:
+            if item[key] in affected:
+                item["validation"] = {"status": "revised", "previous_status": item["validation"]["status"], "actor": actor}
+                item["provenance"] = {**item["provenance"], "modified_by": actor}
+    result["revision"] += 1
+    result["history"].append({"revision": result["revision"], "operation": deepcopy(operation),
+                               "compensates_revision": target["revision"],
+                               "previous_graph_sha256": graph["graph_sha256"]})
+    return seal_graph(result)
+
+
 def apply_edit(graph: Mapping[str, Any], operation: Mapping[str, Any]) -> dict[str, Any]:
     """Apply one atomic edit; the caller journals the returned immutable value."""
     graph = seal_graph(graph)
@@ -590,7 +694,7 @@ def apply_edit(graph: Mapping[str, Any], operation: Mapping[str, Any]) -> dict[s
         "node.validate": {"node_id", "status"}, "node.complete": {"node_id", "completed"},
         "edge.add": {"edge"}, "edge.update": {"edge_id", "changes"}, "edge.remove": {"edge_id"},
         "edge.validate": {"edge_id", "status"}, "conditions.set": {"flag", "verdict"},
-        "document.set": {"document"},
+        "document.set": {"document"}, "process.undo": {"target_revision"},
     }
     supplied = set(operation) - metadata
     optional = {"after_node_id"} if kind == "node.add" else set()
@@ -599,6 +703,8 @@ def apply_edit(graph: Mapping[str, Any], operation: Mapping[str, Any]) -> dict[s
     for key in ("actor", "reason", "at"):
         if key in operation:
             _text(operation[key], key)
+    if kind == "process.undo":
+        return _undo_edit(graph, operation)
     actor = operation.get("actor", "Handler")
     result, before, after = deepcopy(graph), None, None
     relationship_changes = {"added": [], "removed": []}

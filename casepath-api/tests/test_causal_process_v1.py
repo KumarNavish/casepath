@@ -340,3 +340,98 @@ def test_document_definition_change_requires_a_new_source_review():
 def test_checked_review_receipt_is_structurally_strict(patch):
     with pytest.raises(ValueError):
         refresh_document(graph(), "shared", {**receipt(), **patch}, "Reviewer", "Reviewed source")
+
+
+def test_undo_restores_only_the_last_process_edit_and_keeps_later_source_reviews():
+    from casepath_api.causal_process_v1 import undo_target
+    initial = graph()
+    changed = apply_edit(initial, {"type": "conditions.set", "flag": "branch", "verdict": "false"})
+    reviewed = refresh_document(changed, "shared", receipt(), "Reviewer", "Checked the shared source")
+    target = undo_target(reviewed)
+    assert target["target_revision"] == changed["revision"]
+    undone = apply_edit(reviewed, {"type": "process.undo", "target_revision": target["target_revision"],
+                                  "actor": "Reviewer", "reason": "Restore the prior branch"})
+    assert undone["conditions"]["branch"]["verdict"] == "true"
+    assert undone["document_catalog"] == reviewed["document_catalog"]
+    assert undone["assessment_context"] == initial["assessment_context"]
+    assert undone["history"][:-1] == reviewed["history"]
+    assert undone["revision"] == reviewed["revision"] + 1
+    assert by_id(undone["nodes"], "node_id")["left"]["validation"]["status"] == "revised"
+    assert by_id(undone["nodes"], "node_id")["independent"] == by_id(initial["nodes"], "node_id")["independent"]
+    assert undo_target(undone) is None
+    with pytest.raises(ValueError, match="last process edit"):
+        apply_edit(undone, {"type": "process.undo", "target_revision": target["target_revision"]})
+
+
+@pytest.mark.parametrize("operation", [
+    {"type": "node.add", "after_node_id": "root", "node": {"node_id": "added", "label": "Added"}},
+    {"type": "node.update", "node_id": "left", "changes": {"label": "Updated", "meaning": "New work"}},
+    {"type": "node.remove", "node_id": "left"},
+    {"type": "node.validate", "node_id": "left", "status": "rejected"},
+    {"type": "node.complete", "node_id": "root", "completed": False},
+    {"type": "edge.add", "edge": {"edge_id": "extra", "source_node_id": "root", "target_node_id": "down", "relation": "requires"}},
+    {"type": "edge.update", "edge_id": "left_path", "changes": {"relation": "requires"}},
+    {"type": "edge.remove", "edge_id": "left_path"},
+    {"type": "edge.validate", "edge_id": "left_path", "status": "rejected"},
+    {"type": "document.set", "document": {"document_type": "shared", "reason": "Revised content"}},
+    {"type": "document.set", "document": {"document_type": "new_doc", "label": "New document"}},
+])
+def test_undo_compensates_each_supported_graph_edit(operation):
+    original = graph()
+    changed = apply_edit(original, operation)
+    undone = apply_edit(changed, {"type": "process.undo", "target_revision": changed["revision"]})
+    def semantics(value):
+        return {field: sorted(({key: item for key, item in row.items() if key not in {"validation", "provenance"}}
+                               for row in value[field]), key=lambda row: str(row))
+                for field in ("nodes", "edges", "document_catalog")}
+    assert semantics(undone) == semantics(original)
+    assert undone["history"][-1]["operation"]["type"] == "process.undo"
+    assert len(undone["history"]) == 2
+
+
+def test_undo_rejects_a_stale_target_and_preserves_review_of_a_new_document():
+    first = apply_edit(graph(), {"type": "conditions.set", "flag": "branch", "verdict": "false"})
+    latest = apply_edit(first, {"type": "node.update", "node_id": "right", "changes": {"label": "Latest"}})
+    with pytest.raises(ValueError, match="last process edit"):
+        apply_edit(latest, {"type": "process.undo", "target_revision": first["revision"]})
+    created = apply_edit(graph(), {"type": "document.set", "document": {"document_type": "new", "label": "New"}})
+    reviewed = refresh_document(created, "new", receipt(), "Reviewer", "Keep this source review")
+    with pytest.raises(ValueError, match="source reviews"):
+        apply_edit(reviewed, {"type": "process.undo", "target_revision": created["revision"]})
+    assert reviewed["document_catalog"][-1]["held_files"]
+
+
+def test_consecutive_undo_keeps_the_compensating_history_and_import_boundary():
+    from casepath_api.causal_process_v1 import undo_target
+    first = apply_edit(graph(), {"type": "conditions.set", "flag": "branch", "verdict": "false"})
+    second = apply_edit(first, {"type": "node.update", "node_id": "left", "changes": {"label": "New label"}})
+    undone = apply_edit(second, {"type": "process.undo", "target_revision": second["revision"]})
+    assert undo_target(undone)["target_revision"] == first["revision"]
+    restored = apply_edit(undone, {"type": "process.undo", "target_revision": first["revision"]})
+    assert restored["conditions"] == graph()["conditions"]
+    assert len(restored["history"]) == 4
+    imported = deepcopy(first)
+    imported["history"].append({"type": "fragment.apply", "fragment_sha256": "a" * 64})
+    assert undo_target(seal_graph(imported)) is None
+
+
+def test_undo_document_definition_preserves_the_latest_checked_source_receipt():
+    changed = apply_edit(graph(), {"type": "document.set", "document": {
+        "document_type": "shared", "reason": "A changed requirement"}})
+    reviewed = refresh_document(changed, "shared", receipt(), "Reviewer", "Reviewed the changed requirement")
+    undone = apply_edit(reviewed, {"type": "process.undo", "target_revision": changed["revision"]})
+    documents = by_id(undone["document_catalog"], "document_type")
+    assert documents["shared"]["held_files"] == by_id(reviewed["document_catalog"], "document_type")["shared"]["held_files"]
+    assert documents["shared"]["reason"] == by_id(graph()["document_catalog"], "document_type")["shared"]["reason"]
+    # The retained review established the changed definition, not the restored one.
+    assert by_id(evaluate(undone)["documents"], "document_type")["shared"]["route_state"] == "held_not_reviewed"
+
+
+def test_undo_rejects_changed_target_fields_without_mutating_the_graph():
+    changed = apply_edit(graph(), {"type": "node.update", "node_id": "left", "changes": {"label": "Reviewed label"}})
+    changed["nodes"][1]["label"] = "A different label"
+    changed = seal_graph(changed)
+    before = deepcopy(changed)
+    with pytest.raises(ValueError, match="edited fields changed"):
+        apply_edit(changed, {"type": "process.undo", "target_revision": 1})
+    assert changed == before

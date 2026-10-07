@@ -245,6 +245,7 @@ def create_claim_loop_router(
     workspace_service_getter: Callable[[], ClaimWorkspaceService] | None = None,
     workspace_loop_service_getter: Callable[[], WorkspaceClaimLoopServiceV1]
     | None = None,
+    accepted_process_hook: Callable[[str, dict[str, Any]], Any] | None = None,
 ) -> APIRouter:
     """Create routes for the existing app; no second FastAPI app is introduced."""
 
@@ -317,7 +318,10 @@ def create_claim_loop_router(
     def apply_working_process(claim_id: str, body: ApplyProcessEditRequest,
         idempotency_key: Annotated[str, Depends(_idempotency_key)]) -> dict[str, Any]:
         try:
-            return process_service().apply(claim_id, **body.model_dump(), idempotency_key=idempotency_key)
+            result = process_service().apply(claim_id, **body.model_dump(), idempotency_key=idempotency_key)
+            if accepted_process_hook is not None:
+                accepted_process_hook(claim_id, result)
+            return result
         except (ClaimWorkspaceError, ValueError) as exc:
             raise_workspace_http(ClaimWorkspaceError(str(exc)))
 
@@ -346,7 +350,10 @@ def create_claim_loop_router(
     def apply_process_document(claim_id: str, body: ApplyProcessDocumentRequest,
         idempotency_key: Annotated[str, Depends(_idempotency_key)]) -> dict[str, Any]:
         try:
-            return process_service().apply(claim_id, **document_operation(body), idempotency_key=idempotency_key)
+            result = process_service().apply(claim_id, **document_operation(body), idempotency_key=idempotency_key)
+            if accepted_process_hook is not None:
+                accepted_process_hook(claim_id, result)
+            return result
         except (ClaimWorkspaceError, ValueError) as exc:
             raise_workspace_http(ClaimWorkspaceError(str(exc)))
     @router.get("/workspace/claims")

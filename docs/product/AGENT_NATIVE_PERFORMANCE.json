@@ -1,0 +1,85 @@
+{
+  "after_seconds": {
+    "agent": 0.8397052919026464,
+    "full_reference_review": 9.839052625000477,
+    "process_cold": 0.712028875015676,
+    "process_hot": 0.21064566681161523,
+    "worker_snapshot": 0.1664364158641547
+  },
+  "before_seconds": {
+    "agent": 5.403,
+    "full_reference_review": 90.664,
+    "process_cold": 3.359,
+    "process_hot": 3.57,
+    "worker_snapshot": 1.396
+  },
+  "change": {
+    "application": "Workspace service reused only for the same actual Storage and PublicCorpus objects.",
+    "authority": "Original reducer, full authority snapshots, tool gates, role completion and provider restrictions unchanged.",
+    "store": "Bounded verified raw-row/corpus-prefix reuse, including all intermediate states already validated by the cold reducer."
+  },
+  "contract": "casepath.agent-native-performance-evidence/1.0.0",
+  "diagnostic": {
+    "composite_snapshot_source_checkpoint_matches": 0,
+    "method": "cProfile on copied state, before fix; profiler overhead included only in diagnostic timings.",
+    "process_profile_seconds": 14.499,
+    "process_replay_rows_cumulative_seconds": 13.073,
+    "snapshot_profile_seconds": 4.344,
+    "snapshot_replay_rows_cumulative_seconds": 4.073
+  },
+  "measured_on": "2026-10-07",
+  "reference_receipts": {
+    "copied.runtime.after.cache.v1": {
+      "completed_roles": 6,
+      "context": {
+        "binding_sha256": "770f57ec0de6073f1d1009abf8a768c4abe4fbf45148cce8e4826373cbcb9c09",
+        "claim_id": "clm_f69b1747447bc221",
+        "claim_loop_state_sha256": "1e8430719297eaafb947492becebcc52a0c8610f804f36ddd924aea93db61206",
+        "mode": "existing_casepath_authority",
+        "revision": 34,
+        "source_count": 3,
+        "source_roster_sha256": "50c36ce8055e072815105ebc508626c4df27ed8cae833c731ced2ad5241b8bf8",
+        "state_sha256": "061090796305884ea774191e6e915f043f80620473ef20937f8d27a6e7f81dcd",
+        "subject": "Please help me decide what to do: separately served but substantively inconsistent family-home termination notices",
+        "workflow_state": "in_review"
+      },
+      "last_event_sha256": "d1fb71ea00fde041e05dc72c8d95ef3b6a61437c230f8e767c2d1ff4513fa929",
+      "pending_calls": 0,
+      "provider_requests": 0,
+      "run_id": "work.e36e8211b7324df8bdbaf445b7d363e5",
+      "status": "completed"
+    },
+    "copied.runtime.before.cache.v1": {
+      "completed_roles": 6,
+      "context": {
+        "binding_sha256": "770f57ec0de6073f1d1009abf8a768c4abe4fbf45148cce8e4826373cbcb9c09",
+        "claim_id": "clm_f69b1747447bc221",
+        "claim_loop_state_sha256": "1e8430719297eaafb947492becebcc52a0c8610f804f36ddd924aea93db61206",
+        "mode": "existing_casepath_authority",
+        "revision": 34,
+        "source_count": 3,
+        "source_roster_sha256": "50c36ce8055e072815105ebc508626c4df27ed8cae833c731ced2ad5241b8bf8",
+        "state_sha256": "061090796305884ea774191e6e915f043f80620473ef20937f8d27a6e7f81dcd",
+        "subject": "Please help me decide what to do: separately served but substantively inconsistent family-home termination notices",
+        "workflow_state": "in_review"
+      },
+      "last_event_sha256": "a2a51e9f4fc876469f4ffe905a54a2968f90afa431fc5c4890eecf502fafa7e3",
+      "pending_calls": 0,
+      "provider_requests": 0,
+      "run_id": "work.311574dc0fb6467f9a4aba247192cd61",
+      "status": "completed"
+    }
+  },
+  "scope": {
+    "browser_acceptance": "These copied-runtime measurements do not establish browser paint or deployed performance.",
+    "claim_id": "clm_f69b1747447bc221",
+    "history_edits": 15,
+    "kind": "isolated_copy_of_public_synthetic_runtime",
+    "live_runtime_mutations": false,
+    "provider_inference": false,
+    "setup_excluded": "Corpus admission, SQLite backup/evidence copy and service construction precede operation timings.",
+    "total_claims": 150,
+    "workspace_revision": 34
+  },
+  "workspace_state_sha256": "061090796305884ea774191e6e915f043f80620473ef20937f8d27a6e7f81dcd"
+}

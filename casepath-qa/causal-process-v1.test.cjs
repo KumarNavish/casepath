@@ -133,3 +133,10 @@ test('the selected step shows its actual blocking prerequisite before other rela
  v.graph.edges=[{edge_id:'next',source_node_id:'b',target_node_id:'c',relation:'enables'},{edge_id:'required',source_node_id:'a',target_node_id:'b',relation:'requires'}];v.evaluation.edges=v.graph.edges.map(e=>({...e,activation:'true'}));ui.session(v.claim_id).selected='b';
  const html=ui.render(v);assert.ok(html.indexOf('data-relationship-id="required"')<html.indexOf('data-relationship-id="next"'));assert.match(html,/Required before/);
 });
+
+test('unchanged impact includes named relationships and distinguishes requirement from document state',()=>{
+ const html=ui.impactMarkup({unchanged_node_ids:['a'],unchanged_edge_ids:['e1'],unchanged_requirement_document_types:['notice'],unchanged_document_types:['lease']},{nodes:[node('a'),node('b')],edges:[{edge_id:'e1',source_node_id:'a',target_node_id:'b'}],document_catalog:[{document_type:'notice',label:'Notice'},{document_type:'lease',label:'Lease'}]});
+ assert.match(html,/<strong>Connections<\/strong> · Review notice → Check separate service/);
+ assert.match(html,/<strong>Document requirements<\/strong> · Notice/);
+ assert.match(html,/<strong>Document states<\/strong> · Lease/);
+});

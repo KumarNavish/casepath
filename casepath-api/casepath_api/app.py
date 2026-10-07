@@ -190,8 +190,14 @@ def claim_loop_service() -> ClaimLoopService:
     )
 
 
+@lru_cache(maxsize=4)
+def _shared_claim_workspace_service(storage_value, corpus_value) -> ClaimWorkspaceService:
+    return ClaimWorkspaceService(storage_value, corpus=corpus_value)
+
+
 def claim_workspace_service() -> ClaimWorkspaceService:
-    return ClaimWorkspaceService(storage, corpus=claim_workspace_corpus)
+    # Preserve actual authority identity when tests or hosts replace storage.
+    return _shared_claim_workspace_service(storage, claim_workspace_corpus)
 
 
 @lru_cache(maxsize=1)
@@ -382,8 +388,15 @@ app.include_router(create_process_router_v3(
 ))
 # Provider-neutral work events; original claim services remain authoritative.
 from .agent_work.install import install_agent_work
-install_agent_work(app, claim_workspace_service, workspace_claim_loop_service,
+agent_work_service = install_agent_work(app, claim_workspace_service, workspace_claim_loop_service,
                    storage.path.parent / "agent-work-v1.sqlite3")
+from .agent_desk_v1 import AgentDeskServiceV1, create_agent_desk_router
+
+@lru_cache(maxsize=1)
+def agent_desk_service():
+    return AgentDeskServiceV1(claim_workspace_service(), agent_work_service())
+
+app.include_router(create_agent_desk_router(agent_desk_service))
 
 app.include_router(
     create_claim_loop_router(
@@ -391,6 +404,7 @@ app.include_router(
         service_getter=claim_loop_service,
         workspace_service_getter=claim_workspace_service,
         workspace_loop_service_getter=workspace_claim_loop_service,
+        accepted_process_hook=lambda claim_id, result: agent_desk_service().process_accepted(claim_id, result),
     )
 )
 app.include_router(
@@ -421,6 +435,7 @@ def reconcile_claim_loop_requests() -> None:
     # exact product queue; every later mutation invalidates it via SQLite's
     # data-version token and falls back to authoritative replay.
     workspace_loop.queue(limit=1)
+    agent_desk_service().desk()
 
 
 @app.on_event("shutdown")

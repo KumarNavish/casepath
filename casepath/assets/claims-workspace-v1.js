@@ -1,6 +1,10 @@
 (() => {
   'use strict';
 
+  function draftEditForProjection(edit, previous, next) {
+    return edit !== null && edit !== previous?.body_markdown ? edit : next?.body_markdown || null;
+  }
+
   const SAFE_REJECTION_COPY = 'Evidence was safely rejected; no observation was added. CasePath kept the bounded action open.';
   const ADMITTED_ADVANCE_COPY = Object.freeze({
     next_action: 'Observation committed once. CasePath verified the next bounded action.',
@@ -392,6 +396,7 @@
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
+      draftEditForProjection,
       claimLoopAdvanceStatus,
       claimLoopStateHashMaterials,
       SAFE_REJECTION_COPY,
@@ -413,12 +418,12 @@
   ) return;
 
   document.documentElement.dataset.claimsWorkspace = 'true';
+  document.documentElement.dataset.agentNative = 'true';
 
   const api = location.origin;
-  const ui = window.CasePathPresentation;
-  if (!ui) throw new Error('The claim presentation could not be loaded.');
+  let ui = window.CasePathPresentation;
   const state = {
-    inspectorOpen:false,claimSection:'overview',sectionScroll:{},motion:0,overviewLoading:false,overviewQueued:false,overviewSummary:null,
+    pendingFragmentClaimId:null,inspectorOpen:false,claimSection:'overview',sectionScroll:{},motion:0,overviewLoading:false,overviewQueued:false,overviewSummary:null,
     cursor: null,
     items: [],
     total: 0,
@@ -449,7 +454,9 @@
 
   const root = document.createElement('div');
   root.id = 'claimsWorkspace';
-  root.innerHTML = ui.shell();
+  // The native desk needs only stable route and compatibility controls.
+  // Claim rendering stays in the content-bound module loaded by openClaim.
+  root.innerHTML = ui?.shell?.() || `<header class="cp-topbar"><a href="/" class="cp-wordmark" data-close-detail>CasePath</a><nav class="cp-top-links" aria-label="Main navigation"><a href="/" data-close-detail>Desk</a><a href="#" id="awWorkforceButton">Review team</a><a href="method.html">About</a></nav></header><div class="cw-shell cp-queue-shell"><main id="cwQueue" hidden><form id="cwFilters"><input id="cwSearch" type="search">${['cwSort','cwState','cwReadiness','cwClaimType','cwOwner','cwUrgency','cwFailure','cwPendingEvidence','cwSimilar'].map(id=>`<select id="${id}"><option value=""></option></select>`).join('')}<button id="cwClearFilters" type="button" hidden>Clear</button></form><div id="cpFirstRun" hidden></div><div id="cwTable"></div><span id="cwTotal"></span><span id="cwPageStatus"></span><button id="cwMore" type="button" hidden>Show more claims</button></main></div><section id="cwDetail" class="cw-detail" hidden role="region" aria-label="Claim workbench"><article id="cwDetailPanel" class="cw-detail-panel" tabindex="-1"></article></section>`;
   document.body.appendChild(root);
 
   const queueRoute = root.querySelector('.cw-shell');
@@ -1326,7 +1333,7 @@
     const query=new URLSearchParams(location.search);
     for(const [key,id] of [...queueFilterFields,['sort','#cwSort']]) {
       const value=query.get(key)||(key==='sort'?'priority':''); const input=$(id);
-      if(input.tagName==='SELECT' && value && !Array.from(input.options).some(o=>o.value===value)) input.add(new Option(ui.label(value),value));
+      if(input.tagName==='SELECT' && value && !Array.from(input.options).some(o=>o.value===value)) input.add(new Option(label(value),value));
       input.value=value;
     }
     saveQueueFilters();
@@ -1366,6 +1373,7 @@
     if(returnId && $('#cwDetail').hidden) { $('#cwTable').querySelector(`[data-claim-id="${CSS.escape(returnId)}"]`)?.focus({preventScroll:true}); state.queueFocusReturn=null; }
   }
   async function loadQueue({append=false}={}) {
+    if(document.documentElement.dataset.agentNative==='true'){window.dispatchEvent(new Event('casepath:desk-refresh'));return;}
     if(state.loading){state.queuedLoad={append};return;}
     state.loading=true;
     if($('#cwDetail').hidden && $('#cwTable').contains(document.activeElement)) state.queueFocusReturn=document.activeElement.closest('[data-claim-id]')?.dataset.claimId;
@@ -1620,6 +1628,30 @@
     });
   }
 
+  let presentationScript;
+  function loadWorkspacePresentation() {
+    const ready=()=>window.CasePathPresentation?.shell&&window.CasePathPresentation?.detail&&window.CasePathPresentation?.workbench;
+    if(ready()){ui=window.CasePathPresentation;return Promise.resolve();}
+    if(presentationScript)return presentationScript;
+    const source=document.querySelector('meta[name="casepath-workspace-presentation-script"]')?.content;
+    if(!/^assets\/claims-workspace-presentation-v1\.js\?sha256=[a-f0-9]{64}$/.test(source||''))return Promise.reject(new Error('Claim presentation script is unavailable. Reload the page to try again.'));
+    presentationScript=new Promise((resolve,reject)=>{
+      const script=document.createElement('script');
+      let settled=false;
+      const finish=error=>{
+        if(settled)return;settled=true;clearTimeout(timer);
+        script.onload=null;script.onerror=null;
+        if(error){script.remove();presentationScript=null;reject(error);}else{ui=window.CasePathPresentation;resolve();}
+      };
+      const timer=setTimeout(()=>finish(new Error('The claim presentation took too long to load. Try again.')),22000);
+      script.onload=()=>finish(ready()?null:new Error('The claim presentation could not start. Try again.'));
+      script.onerror=()=>finish(new Error('The claim presentation did not load. Try again.'));
+      script.src=source;
+      document.body.append(script);
+    });
+    return presentationScript;
+  }
+
   let causalScript;
   function loadCausalEditor() {
     if(window.CasePathCausal?.render&&window.CasePathCausal?.bind&&window.CasePathCausal?.session)return Promise.resolve();
@@ -1704,7 +1736,7 @@
     try {
       const [response] = await Promise.all([
         request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`, {signal:controller.signal}),
-        loadAgentWork(),
+        loadWorkspacePresentation(),
       ]);
       const detail = await validateDetailResponse(response, claimId);
       if (epoch !== state.detailEpoch) return;
@@ -1806,19 +1838,29 @@
     const sameClaim=panel.dataset.openClaimId===value.claim_id;
     const memoryNotes=sameClaim?new Map([...panel.querySelectorAll('[data-apply-memory]')].map(form=>[form.dataset.applyMemory,form.querySelector('textarea[name="note"]')?.value||''])):new Map();
     const previousScroll=panel.querySelector(".cp-work-column")?.scrollTop||0;
-    const focusedId=document.activeElement?.id;
+    const focusedElement=document.activeElement;
+    const focusedId=focusedElement?.id;
+    const agentFocus=sameClaim&&focusedId&&focusedElement.closest?.('#agentClaimMount')?{
+      id:focusedId,
+      selection:typeof focusedElement.selectionStart==='number'?{start:focusedElement.selectionStart,end:focusedElement.selectionEnd}:null,
+    }:null;
+    const openDialogs=sameClaim?[...panel.querySelectorAll('dialog[open][id]')].filter(dialog=>dialog.id!=='cpOwnerDialog').map(dialog=>dialog.id):[];
+    const ownerDialog=panel.querySelector('#cpOwnerDialog');
+    const ownerEdit=sameClaim&&ownerDialog?.open?panel.querySelector('#cwOwnerInput')?.value:null;
     const openDetails=sameClaim?[...panel.querySelectorAll('details[open][id]')].map(el=>el.id):[];
     const commandStatus=invalidPendingCommand?'A recovery record could not be verified. Actions are locked; reload the saved claim before continuing.':loopCommandPending?'An action outcome is still being checked. Use the recovery action above; do not create a second request.':pendingAssignBody?'The assignment outcome is unknown. Recovery uses the same saved request.':pendingStartUnresolved?'The assessment outcome is unknown. Recovery uses the same saved request.':'';
     panel.innerHTML=ui.detail(detail,state.loop,{
       commandStatus,causal:state.causal?.claim_id===value.claim_id?state.causal:null,
       workbench:loopWorkbenchMarkup(state.loop,value,{invalid:invalidPendingCommand,pendingStart:pendingStartUnresolved}),
       technicalMarkup:assessmentMarkup,
-      ownerValue:pendingAssignBody?.owner||value.owner||'',
+      ownerValue:pendingAssignBody?.owner||(ownerEdit??value.owner??''),
       ownerReadonly:Boolean(pendingAssignBody||invalidPendingCommand||loopCommandPending),
       ownerDisabled:invalidPendingCommand||loopCommandPending,
       pendingAssign:Boolean(pendingAssignBody),
       priority,priorityMarkup:priority?priorityList(priority):'',
     });
+    if(value.claim_id==='clm_f69b1747447bc221')panel.querySelector('.cp-claim-title h1').textContent='Family-home termination notices';
+    panel.querySelector('.cp-a-main')?.insertAdjacentHTML('afterbegin','<div id="agentClaimMount" aria-busy="true"><div class="av-loading" role="status">Reading the agent’s saved work…</div></div>');
     panel.dataset.openClaimId=value.claim_id;
     panel.querySelectorAll('[data-apply-memory]').forEach(form=>{
       const note=memoryNotes.get(form.dataset.applyMemory);
@@ -1830,11 +1872,11 @@
       if(measuredHeader?.isConnected && panel.contains(measuredHeader)) panel.style.setProperty('--cw-head-height',`${measuredHeader.getBoundingClientRect().height}px`);
     };
     measureHeader(); state.headerObserver=new ResizeObserver(measureHeader); state.headerObserver.observe(measuredHeader);
-    for(const id of openDetails){const disclosure=panel.querySelector('#'+CSS.escape(id));if(disclosure) disclosure.open=true;}
     if(state.nativeInvestigation) $('#cwEvidenceInvestigationMount').innerHTML=evidenceInvestigationMarkup(state.nativeInvestigation,state.loop);
 
 
     $('#cwOwnerForm').addEventListener('submit', event => { event.preventDefault(); void runWorkspaceCommand(assignOwner); });
+    $('#cpOwnerDialog')?.addEventListener('close',()=>{const trigger=panel.querySelector('#agentClaimMount [data-edit-owner]')||panel.querySelector('[data-edit-owner]');trigger?.focus({preventScroll:true});});
     $('#cwStart')?.addEventListener('click', startReview);
     $('#cwReconcile')?.addEventListener('click', () => runWorkspaceCommand(reconcileClaim));
     $('#cwEnsureLoop')?.addEventListener('click', ensureClaimLoop);
@@ -1927,8 +1969,16 @@
     restoreWorkbenchPresentation();
     syncReviewerMode();
     renderGuide();
+    if(ownerEdit!==null)panel.querySelector('#cpOwnerDialog')?.showModal();
+    for(const id of openDialogs){
+      if(id==='cpTechnicalDialog')openTechnical();
+      else panel.querySelector('#'+CSS.escape(id))?.showModal();
+    }
+    for(const id of openDetails){const disclosure=panel.querySelector('#'+CSS.escape(id));if(disclosure) disclosure.open=true;}
     if(sameClaim){$('.cp-work-column').scrollTop=previousScroll;if(focusedId)panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true});}
     else panel.focus({preventScroll:true});
+    revealFragmentLibrary();
+    window.dispatchEvent(new CustomEvent('casepath:claim-rendered',{detail:{claim:detail,process:state.causal,agentFocus}}));
     if (!priority) void loadOpenPriority(value.claim_id, value.state_sha256, activeDetailContext(), state.detailController?.signal);
     if(!state.deepLinkWhatIfHandled&&assessment?.claim_assessment?.conditions?.family_home&&new URLSearchParams(location.hash.slice(1)).get('what_if')==='family_home'){
       state.deepLinkWhatIfHandled=true;
@@ -1960,7 +2010,7 @@
     if(!isActiveDetail(context))return;
     const fresh=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(context.claimId)}`),context.claimId);
     if(!isActiveDetail(context))return;
-    state.detail=fresh;state.detailPriority=null;state.causal=process?{...process,actor:fresh.state.owner||'',sources:fresh.artifacts}:null;
+    state.detail=fresh;state.detailPriority=null;state.causal=process?.workspace_revision===fresh.state.revision&&process.workspace_state_sha256===fresh.state.state_sha256?{...process,actor:fresh.state.owner||'',sources:fresh.artifacts}:null;
     if(state.loop)state.loop=await loadClaimLoop(context.claimId,{allowMissing:true,signal:state.detailController?.signal});
     if(!isActiveDetail(context))return;
     await loadDraftList(context.claimId,context,state.detailController?.signal);
@@ -2144,8 +2194,8 @@
       const value=await validateDraftList(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}/drafts`,{signal}),claimId);
       if(!isActiveDetail(context))return;
       if(value.workspace_revision!==state.detail.state.revision||value.workspace_state_sha256!==state.detail.state.state_sha256)return;
+      state.draftEdit=draftEditForProjection(state.draftEdit,state.draft?.latest,value.latest);
       state.draft=value;
-      if(state.draftEdit===null)state.draftEdit=value.latest?.body_markdown||null;
       renderDetail(state.detail);
       if(storedCommandIdentity('draft',claimId))void saveDraft();
     }catch(error){if(isActiveDetail(context))$('#cwCommandStatus').textContent=`Draft unavailable: ${error.message}`;}
@@ -2271,6 +2321,7 @@
       const pending = commandIdentity('assign', detail.state.claim_id, body);
       const response = await validateMutationResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(detail.state.claim_id)}/owner`, {method:'POST',headers:{'Content-Type':'application/json','X-CasePath-Idempotency-Key':pending.key},body:pending.body}), detail.state.claim_id, 'WORKSPACE_OWNER_ASSIGNED', detail.state);
       if (!isActiveDetail(context)) return;
+      $('#cpOwnerDialog')?.close();
       await reflectAcceptedMutation(response, 'Handler assignment saved.', 'assign', context);
     } catch (error) {
       if (!isActiveDetail(context)) return;
@@ -2827,6 +2878,7 @@
     const panel=$('#cwDetailPanel'),column=panel?.querySelector('.cp-work-column'),changed=name!==state.claimSection;
     if(changed&&column)state.sectionScroll[state.claimSection]=column.scrollTop;
     state.claimSection=name;
+    const agentMount=panel?.querySelector("#agentClaimMount");if(agentMount)agentMount.dataset.pane=name;
     panel?.querySelectorAll('[data-claim-section]').forEach(tab=>{const active=tab.dataset.claimSection===name;tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1;});
     panel?.querySelectorAll('[data-claim-pane]').forEach(pane=>{pane.hidden=pane.dataset.claimPane!==name;pane.inert=pane.hidden;});
     if(changed&&column)column.scrollTop=state.sectionScroll[name]||0;
@@ -2851,13 +2903,32 @@
   function openInspector({focus=true}={}){
     const rail=$('.cp-source-rail');if(!rail)return;
     const opening=!state.inspectorOpen;
-    if(focus)state.inspectorReturnFocus=document.activeElement;
+    if(focus&&opening)state.inspectorReturnFocus=document.activeElement;
     state.inspectorOpen=true;applyInspectorState();
     if(opening)window.CasePathMotion?.enter(rail,'source:'+ ++state.motion,compactWorkbench.matches?'up':'left');
     if(focus)$('#cwSourceInspector')?.focus({preventScroll:true});
   }
-  function closeInspector(){state.inspectorOpen=false;applyInspectorState();const target=state.inspectorReturnFocus?.closest('[data-claim-pane][hidden]')?$('[data-claim-section][aria-selected="true"]'):state.inspectorReturnFocus;target?.focus({preventScroll:true});}
+  function closeInspector(){
+    state.inspectorOpen=false;applyInspectorState();
+    let target=state.inspectorReturnFocus;
+    if(!target?.isConnected||!target.getClientRects().length||target.closest('[data-claim-pane][hidden]')){
+      target=null;const span=state.inspectorReturnSpan;
+      if(span?.claim_id===state.detail?.state.claim_id){
+        const sources=window.CasePathAgentClaim?.session(span.claim_id).sources||[];
+        const index=sources.findIndex(item=>(item.artifact_id||item.source_id)===span.artifact_id&&(item.quote||item.exact_text||item.locator?.exact_text)===span.quote);
+        if(index>=0)target=$('#agentClaimMount [data-av-source="'+index+'"]');
+      }
+      if(!target?.getClientRects().length)target=$('[data-claim-section][aria-selected="true"]');
+    }
+    target?.focus({preventScroll:true});
+  }
   function openTechnical(){const dialog=$('#cpTechnicalDialog');if(!dialog)return;$('#cpTechnicalLoop').innerHTML=ui.technicalLoop(state.loop);dialog.showModal();}
+  function revealFragmentLibrary(){
+    if(!state.pendingFragmentClaimId)return;
+    if(state.pendingFragmentClaimId!==state.detail?.state.claim_id||state.claimSection!=='process'){state.pendingFragmentClaimId=null;return;}
+    const target=$('.cp-process-library');if(!target)return;
+    state.pendingFragmentClaimId=null;target.open=true;target.scrollIntoView({block:'start'});const summary=target.querySelector('summary');if(summary){summary.id='cpProcessLibrarySummary';summary.focus({preventScroll:true});}
+  }
   function openAssignment(){const dialog=$('#cpOwnerDialog');if(!dialog)return;dialog.showModal();$('#cwOwnerInput')?.focus();}
   function setAdjacentClaims(){
     const index=state.items.findIndex(i=>i.claim_id===state.detail?.state.claim_id);
@@ -2936,7 +3007,7 @@
   }
   function workspaceKeyboard(event){
     if(event.defaultPrevented)return;
-    if(event.key==='/'&&$('#cwDetail').hidden&&!event.target.matches('input,textarea,select,[contenteditable]')){event.preventDefault();$('#cwSearch').focus();return;}
+    if(event.key==='/'&&$('#cwDetail').hidden&&!event.target.matches('input,textarea,select,[contenteditable]')){event.preventDefault();(document.getElementById('adSearch')||$('#cwSearch')).focus();return;}
     if($('#cwDetail').hidden)return;
     if(root.querySelector('dialog[open]'))return;
     const tab=event.target.closest('[data-claim-section]');
@@ -3064,14 +3135,14 @@
     $('#cwSourceContent').innerHTML=`<div class="cw-source-selection"><h4>${esc(node.title)}</h4><p>${esc(node.answer)}</p><p><strong>Recorded process rule</strong><br>${esc(node.why)}</p><p class="cw-note">This view explains the saved process; it does not change the active path.</p></div>`;
     focusSource(focus);
   }
-  async function showSourceArtifact(index, focus=true, quote=null) {
+  async function showSourceArtifact(index, focus=true, quote=null, agentSpan=false) {
     const detail=state.detail, artifact=detail?.artifacts[index];
     if(!artifact || !Number.isSafeInteger(index)) return;
     const acceptedRef=quote&&state.loop?.loop_state.observations.flatMap(row=>row.source_refs||[]).find(ref=>ref.sanitized_excerpt===quote&&ui.sourceArtifactIndex(ref,detail)===index);
     const candidate=quote&&state.loop?.finding_options?.find(row=>row.source_id===artifact.artifact_id&&row.quote===quote);
     const noticed=quote&&detail.state.intake_assessment?.claim_assessment?.noticed.some(row=>
       row.source_id===artifact.artifact_id&&(row.text===quote||row.text.endsWith(': '+quote)));
-    const acceptedQuote=acceptedRef||noticed||candidate?quote:null;
+    const acceptedQuote=acceptedRef||noticed||candidate||agentSpan?quote:null;
     releaseSourcePreview();state.sourceSelection={kind:'artifact',index,quote:acceptedQuote};
     const ticket=state.sourceRequest, claimId=detail.state.claim_id;
     const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
@@ -3200,6 +3271,7 @@
     const detail=await validateDetailResponse(await request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`,{signal:state.detailController?.signal}),claimId);
     const loop=detail.state.workflow_state==='in_review'?await loadClaimLoop(claimId,{allowMissing:true,signal:state.detailController?.signal}):null;
     if(!isActiveDetail(context)) return;
+    if(state.causal?.workspace_revision!==detail.state.revision||state.causal?.workspace_state_sha256!==detail.state.state_sha256)state.causal=null;
     state.detail=detail;state.loop=loop;
     if(state.change && state.change.afterRevision!==loop?.revision) state.change=null;
     renderDetail(detail);
@@ -3235,7 +3307,7 @@
       else history.replaceState(null,'',`${location.pathname}${location.search}`);
     }
     const currentRow = state.returnClaimId ? $('#cwTable').querySelector(`[data-claim-id="${CSS.escape(state.returnClaimId)}"]`) : null;
-    (currentRow || (state.returnFocus?.isConnected ? state.returnFocus : null))?.focus?.();
+    ((state.returnFocus?.isConnected ? state.returnFocus : null)||document.querySelector('[data-desk-claim="'+CSS.escape(state.returnClaimId||'')+'"]')||currentRow)?.focus?.();
     state.returnFocus = null;
     state.returnClaimId = null;
     window.scrollTo({top:state.queueScrollY||0,behavior:"instant"});
@@ -3257,6 +3329,13 @@
     if (!$('#cwDetail').hidden) closeDetail({fromHistory:true,refresh});
   }
 
+  window.CasePathWorkspace = Object.freeze({
+    openClaim, closeDetail, refresh:refreshOpen, request, verify:verifyCausalResponse, queueRoot:()=>queueRoute,
+    snapshot:()=>({claim:state.detail,process:state.causal}),
+    openPane:name=>{if(name==='sources')openInspector();else if(name==='activity'){selectClaimSection('overview');void loadAgentWork().then(()=>{$('#cpPanel-activity')?.setAttribute('open','');$('#cpPanel-activity')?.scrollIntoView({block:'start'});});}else if(name==='what-if'){const flag=Object.keys(state.detail?.state.intake_assessment?.claim_assessment?.conditions||{}).find(k=>k==='family_home')||Object.keys(state.detail?.state.intake_assessment?.claim_assessment?.conditions||{})[0];if(flag)openWhatIf(flag);}else if(name==='lessons'){selectClaimSection('overview');$('#cpFooterRecord')?.setAttribute('open','');$('.cp-reviewed-memory')?.scrollIntoView({block:'start'});}else if(name==='fragments'){state.pendingFragmentClaimId=state.detail?.state.claim_id;selectClaimSection('process');revealFragmentLibrary();}else selectClaimSection(name==='draft'?'documents':name);},
+    openSource:span=>{const id=span.artifact_id||span.source_id;if(!state.inspectorOpen)state.inspectorReturnSpan={claim_id:state.detail?.state.claim_id,artifact_id:id,quote:span.quote||span.text||span.exact_text||span.locator?.exact_text||null};const index=state.detail?.artifacts.findIndex(item=>item.artifact_id===id||item.sha256===span.source_sha256);if(index>=0)void showSourceArtifact(index,true,span.quote||span.text||span.exact_text||span.locator?.exact_text||null,true);else resetSource(true);},
+    assign:openAssignment,
+  });
   $('#cwFilters').addEventListener('submit', event => { event.preventDefault(); clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });
   $('#cwSearch').addEventListener('input', () => { clearTimeout(state.filterTimer); state.filterTimer=setTimeout(()=>{saveQueueFilters();void loadQueue();},180); });
   $('#cwFilters').addEventListener('change', event => { if(event.target.id==='cwSearch') return; clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });

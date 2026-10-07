@@ -39,6 +39,9 @@ PUBLIC_ASSETS = (
     "assets/paired-study-evidence.json",
     "assets/native-study-evidence.json",
     "assets/method-guide-data.json",
+    "assets/agent-claim-v2.js",
+    "assets/agent-desk-v2.js",
+    "assets/agent-native-v2.css",
     "assets/claims-workspace-v1.css",
     "assets/claims-workspace-v1.js",
     "assets/causal-process-v1.js",
@@ -50,10 +53,15 @@ PUBLIC_ASSETS = (
     "assets/process-evidence-v2.css",
     "assets/process-evidence-v2.js",
 )
+PUBLIC_ASSETS += ("assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
+                  "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf", "assets/fonts/Open_Sans-OFL.txt")
 GENERATED_FILES = ("deployment.json",)
 PUBLIC_INVENTORY = frozenset((*PUBLIC_ROOT_FILES, *PUBLIC_ASSETS, *GENERATED_FILES))
-PUBLIC_DIRECTORIES = frozenset({"assets"})
+PUBLIC_DIRECTORIES = frozenset({"assets", "assets/fonts"})
 CONTENT_BOUND_ASSETS = (
+    "assets/agent-claim-v2.js",
+    "assets/agent-desk-v2.js",
+    "assets/agent-native-v2.css",
     "assets/claims-workspace-v1.css",
     "assets/claims-workspace-v1.js",
     "assets/causal-process-v1.js",

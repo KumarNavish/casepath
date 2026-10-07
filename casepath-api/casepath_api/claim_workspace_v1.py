@@ -473,6 +473,7 @@ class ClaimWorkspaceStore:
         self.corpus = corpus
         self._replay_cache_lock = RLock()
         self._replay_cache: dict[str, tuple[tuple[bytes, ...], bytes]] = {}
+        self._verified_prefix_cache: dict[tuple[str, int], tuple[tuple[bytes, ...], str, bytes]] = {}
         self._state_roster_cache: tuple[tuple[bytes, ...], str, bytes] | None = None
 
     @classmethod
@@ -510,6 +511,7 @@ class ClaimWorkspaceStore:
         value.corpus = corpus
         value._replay_cache_lock = RLock()
         value._replay_cache = {}
+        value._verified_prefix_cache = {}
         value._state_roster_cache = None
         return value
 
@@ -562,6 +564,42 @@ class ClaimWorkspaceStore:
         }
 
     def _replay_rows(self, rows: Iterable[sqlite3.Row]) -> dict[str, Any]:
+        rows = tuple(rows)
+        if not rows:
+            return self._replay_uncached_rows(rows)
+        def corpus_token():
+            try:
+                return self.corpus.observed_runtime_identity_token()
+            except WorkspaceCorpusError as exc:
+                # Keep the workspace reducer's existing typed binding failure.
+                raise ClaimWorkspaceError("workspace import binding is invalid") from exc
+        token = corpus_token()
+        fingerprints = tuple(self._row_fingerprint(row) for row in rows)
+        key = (rows[0]["loop_id"], len(rows))
+        # The lock also coalesces concurrent identical-prefix validation.
+        # Every read checks every stored column before any cache reuse.
+        with self._replay_cache_lock:
+            cached = self._verified_prefix_cache.get(key)
+            if cached is not None and cached[:2] == (fingerprints, token):
+                state = json.loads(cached[2])
+            else:
+                prefixes = []
+                state = self._replay_uncached_rows(rows, verified_prefixes=prefixes)
+                if corpus_token() != token:
+                    raise ClaimWorkspaceError("workspace import binding is invalid: corpus changed during replay")
+                # The cold reducer already validates every intermediate state.
+                # Retain those exact prefixes so history reads do not re-reduce
+                # each earlier edit after the full prefix has been checked.
+                for index, encoded in enumerate(prefixes, 1):
+                    self._verified_prefix_cache[(key[0], index)] = (fingerprints[:index], token, encoded)
+                    if len(self._verified_prefix_cache) > 512:
+                        self._verified_prefix_cache.pop(next(iter(self._verified_prefix_cache)))
+                state = json.loads(prefixes[-1])
+            if corpus_token() != token:
+                raise ClaimWorkspaceError("workspace import binding is invalid: corpus changed during replay")
+            return state
+
+    def _replay_uncached_rows(self, rows: Iterable[sqlite3.Row], *, verified_prefixes=None) -> dict[str, Any]:
         state: dict[str, Any] | None = None
         previous: str | None = None
         expected_sequence = 1
@@ -616,6 +654,11 @@ class ClaimWorkspaceStore:
             if state["state_sha256"] != event["resulting_state_sha256"]:
                 raise ClaimWorkspaceError("workspace journal state hash differs")
             previous = event["event_sha256"]
+            if verified_prefixes is not None:
+                # Retain the reducer's JSON field order as well as values: exact
+                # mutation retries promise byte-identical transport receipts.
+                verified_prefixes.append(json.dumps(state, ensure_ascii=False, allow_nan=False,
+                    separators=(",", ":")).encode("utf-8"))
             expected_sequence += 1
         if state is None:
             raise ClaimWorkspaceError("workspace claim does not exist")

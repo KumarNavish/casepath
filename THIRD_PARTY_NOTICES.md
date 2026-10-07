@@ -23,3 +23,11 @@ with every reference, is released separately in `data/casepath-tenancy-claims/`.
 Python and JavaScript dependencies retain their upstream licenses. See
 `casepath-api/requirements.lock`, `casepath-api/requirements.txt`, and
 `casepath-qa/package-lock.json` for the exact resolved packages.
+
+## Self-hosted interface typefaces
+
+Merriweather Light (The Merriweather Project Authors) and Open Sans Variable (The Open Sans
+Project Authors) are bundled under the SIL Open Font License 1.1. Their
+unchanged licence texts are in `casepath/assets/fonts/Merriweather-OFL.txt`
+and `Open_Sans-OFL.txt`. The files were copied from an existing local open
+font collection. Fonts load from the same origin; the page uses no font service.

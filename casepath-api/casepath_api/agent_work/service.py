@@ -18,6 +18,8 @@ class AgentWorkService:
         self.external_configuration_status=external_configuration_status or ("ready" if facts_worker else "disabled")
         self._executor=ThreadPoolExecutor(max_workers=1,thread_name_prefix='casepath-work')
         self._lock=RLock(); self._jobs={}
+        self.reference_completion=None
+        self.reference_finished=None
         # Cost reservations survive process restart. A new request cannot reset
         # the explicitly small model integration proof's run budget.
         with self.store.connect() as db:
@@ -60,7 +62,16 @@ class AgentWorkService:
         job=self._jobs.get(run_id)
         if job is not None and not job.done():return
         runner=AgentWorkExecutor(self.store,self.authority,self.facts_worker)
-        self._jobs[run_id]=self._executor.submit(runner.execute,run_id)
+        def execute():
+            result=runner.execute(run_id)
+            if (result['status']=='completed' and result['request']['facts_worker']=='reference'
+                    and self.reference_completion is not None):
+                self.reference_completion(result['claim_id'],run_id)
+            if (result['status'] in {'completed','cancelled','blocked','failed','interrupted'}
+                    and result['request']['facts_worker']=='reference' and self.reference_finished is not None):
+                self.reference_finished(result['claim_id'],run_id)
+            return result
+        self._jobs[run_id]=self._executor.submit(execute)
 
     def resume(self,claim_id,run_id):
         with self._lock:
@@ -71,7 +82,14 @@ class AgentWorkService:
             if self.store.pending_calls(run_id):raise ConflictError('an unfinished effect or provider request needs reconciliation; it will not be resent')
             if run['request']['facts_worker']=='external_facts' and any(e['operation']=='PROVIDER_REQUEST_STARTED' for e in self.store.events(run_id)):
                 raise ConflictError('external inference is not automatically retried')
+            self.store.clear_pause(run_id)
             self._submit(run_id)
+        return self.run(claim_id,run_id)
+
+    def pause(self,claim_id,run_id):
+        with self._lock:
+            self._scoped(claim_id,run_id)
+            self.store.request_pause(run_id)
         return self.run(claim_id,run_id)
 
     def cancel(self,claim_id,run_id):
@@ -82,6 +100,31 @@ class AgentWorkService:
             if job is not None:
                 job.cancel()
         return self.run(claim_id,run_id)
+
+    def supersede_reference(self,claim_id,run_id,accepted_process_event_sha256):
+        """Keep an obsolete local executor alive until its safe cancellation checkpoint."""
+        with self._lock:
+            self._scoped(claim_id,run_id)
+            snapshot=self.store.snapshot(run_id)  # Validate history before adding a stop receipt.
+            if snapshot['run']['request']['facts_worker']!='reference':
+                raise ConflictError('external work requires manual reconciliation')
+            terminal={'completed','cancelled','blocked','failed'}
+            if snapshot['run']['status'] in terminal:
+                return snapshot
+            try:
+                self.store.request_cancel(run_id,
+                    message='A newer accepted process edit superseded this reference review; stop at its next safe checkpoint',
+                    after={'accepted_process_event_sha256':accepted_process_event_sha256})
+            except ConflictError:
+                # Finish commits without the service lock. Only a validated
+                # terminal receipt reconciles that race; preserve other errors.
+                snapshot=self.store.snapshot(run_id)
+                if snapshot['run']['status'] in terminal and not snapshot['pending_calls']:
+                    return snapshot
+                raise
+        # Do not cancel the Future: queued work must still reach the terminal
+        # callback, and the immutable store controls cancellation and leases.
+        return self.store.snapshot(run_id)
 
     def _scoped(self,claim_id,run_id):
         value=self.store.get_run(run_id)

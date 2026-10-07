@@ -125,3 +125,23 @@ def test_stop_is_journaled_and_survives_reload(tmp_path) -> None:
     assert [event["operation"] for event in reopened.events(running["run_id"])[-2:]] == [
         "RUN_CANCEL_REQUESTED", "RUN_CANCELLED"
     ]
+
+
+def test_pause_at_final_checkpoint_retains_safe_interrupted_state(tmp_path) -> None:
+    store = WorkStore(tmp_path / "work.sqlite3")
+    run, _ = store.create("clm_final", "pause-final-checkpoint-0001", {"facts_worker": "reference"})
+    run_id = run["run_id"]
+    assert store.acquire(run_id, "worker")
+    store.request_pause(run_id)
+    store.finish(run_id, "worker", "completed", "All roles have returned")
+    snapshot = store.snapshot(run_id)
+    assert snapshot["run"]["status"] == "interrupted"
+    assert snapshot["run"]["owner"] is None
+    assert snapshot["run"]["lease_until"] is None
+    assert snapshot["events"][-1]["operation"] == "RUN_INTERRUPTED"
+    assert snapshot["events"][-1]["status"] == "unknown"
+    assert store.acquire(run_id, "resumer") is False
+    store.clear_pause(run_id)
+    assert store.acquire(run_id, "resumer")
+    store.finish(run_id, "resumer", "completed", "Saved work resumed")
+    assert store.snapshot(run_id)["run"]["status"] == "completed"

@@ -203,6 +203,76 @@ test('an unavailable process exposes recovery and withholds a potentially stale 
  assert.doesNotMatch(markup,/id="cwDraftOpen"|id="cpDraftPanel"/);
 });
 
+test('the causal workbench preserves the What-if sandbox beside the working graph',()=>{
+ const working={...assessment,conditions:{termination_received:{verdict:'false',quote:'An independent working-process edit'}},next_step:'Review the working graph.'};
+ const scenario={...assessment,conditions:{termination_received:{verdict:'unresolved'}}};
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail,
+  causal:{effective_assessment:working,evaluation:working},causalMarkup:'<section id="working-graph">Current causal graph</section>',
+  whatIf:{flag:'termination_received',verdict:'unresolved',result:{scenario,changes:[{sign:'−',label:'Receipt proof',reason:'Receipt is not yet confirmed.'}]}},
+  handlerDrafts:{'condition:termination_received':'Please check the original receipt.'}});
+ const process=markup.match(/<section id="cpPane-process"[\s\S]*?(?=<section id="cpPane-documents")/)[0];
+ assert.match(process,/id="working-graph"/);
+ assert.equal((process.match(/id="cpWhatIfPanel"/g)||[]).length,1);
+ assert.match(process,/Accepted intake reading: Applies · “My form arrived on Monday”/);
+ assert.doesNotMatch(process,/Where it stands|Saved:|Study A|research\.html|An independent working-process edit/);
+ assert.match(process,/This preview leaves the working process unchanged\./);
+ for(const value of ['true','false','unresolved'])assert.match(process,new RegExp('data-what-if-value="'+value+'"'));
+ assert.match(process,/data-what-if-close/);
+ assert.match(process,/id="cwHandlerConditionForm"/);
+ assert.match(process,/Please check the original receipt\./);
+ assert.match(process,/<button type="submit" >Record as handler assessment<\/button>/);
+ assert.match(process,/Receipt is not yet confirmed\./);
+ assert.match(markup,/Review the working graph\./);
+ assert.doesNotMatch(markup,/data-condition-state="unresolved"/);
+});
+
+test('draft actions precede the editable letter without changing saved line semantics',()=>{
+ const saved='Dear customer,\n## Please send\n- Original notice';
+ const edited='Dear <reviewed customer>,\n## Please send\n- Original notice\nHandler wording still being edited.';
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail,
+  draft:{latest:{language:'en',body_markdown:saved}},draftEdit:edited});
+ const draft=markup.match(/<section class="cp-a-draft"[\s\S]*?<\/section>/)[0];
+ assert.ok(draft.indexOf('class="cp-draft-actions"')<draft.indexOf('id="cwDraftBody"'));
+ assert.match(draft,/role="group" aria-label="Draft actions"/);
+ assert.match(draft,/id="cwDraftForm"/);
+ assert.equal((draft.match(/data-draft-copy/g)||[]).length,1);
+ assert.equal((draft.match(/data-draft-export="markdown"/g)||[]).length,1);
+ assert.match(draft,/<button type="submit">Save edits<\/button>/);
+ assert.match(draft,/Saving edits keeps it as an unsent draft\./);
+ assert.match(draft,/Dear &lt;reviewed customer&gt;,/);
+ assert.match(draft,/data-draft-prefix="## ">Please send/);
+ assert.match(draft,/data-draft-prefix="- ">Original notice/);
+ assert.match(draft,/Handler wording still being edited\./);
+ assert.equal(saved,'Dear customer,\n## Please send\n- Original notice');
+});
+
+test('What-if names actual requirement and applicability transitions while retaining typed values',()=>{
+ const saved={...assessment,conditions:{...assessment.conditions,family_home:{verdict:'true',quote:'A separate spouse notice was reported.'}}};
+ const result={from_verdict:'false',to_verdict:'unresolved',scenario:saved,changes:[
+  {kind:'document',sign:'?',label:'Separate spouse notice',from:'held_not_reviewed',to:'held_behind_question',reason:'family-home service set to unresolved',authority:{article:'Art. 266n'}},
+  {kind:'document',sign:'+',label:'Receipt proof',from:'needed_later',to:'needed_now',reason:'family-home service set to unresolved'},
+  {kind:'step',sign:'?',label:'Check separate service <unconfirmed>',from:'true',to:'unresolved',reason:'family-home service set to unresolved'},
+  {kind:'document',sign:'?',label:'Unrecognized requirement state',from:'new_state',to:'optional'},
+ ]};
+ const original=JSON.stringify(result);
+ const markup=view.workbench(null,{intake_assessment:{claim_assessment:saved}},{detail:assessedDetail,
+  causal:{effective_assessment:assessment},causalMarkup:'<section>Working graph</section>',
+  whatIf:{flag:'family_home',verdict:'unresolved',result}});
+ const panel=markup.match(/<section class="cp-a-what-if"[\s\S]*?<\/section>/)[0];
+ assert.match(panel,/data-what-if-value="true"[^>]*>Applies<\/button>/);
+ assert.match(panel,/data-what-if-value="false"[^>]*>Does not apply<\/button>/);
+ assert.match(panel,/data-what-if-value="unresolved" aria-pressed="true">Unresolved<\/button>/);
+ assert.match(panel,/Condition comparison: Does not apply → Unresolved/);
+ assert.match(panel,/Document requirement: Received, not reviewed → Requirement unresolved · Art\. 266n/);
+ assert.match(panel,/Document requirement: Needed later → Needed now/);
+ assert.match(panel,/Process step applicability: Applies → Unresolved/);
+ assert.match(panel,/Document requirement: Unknown requirement state → Optional/);
+ assert.match(panel,/Check separate service &lt;unconfirmed&gt;/);
+ assert.doesNotMatch(panel,/<strong>\?|family-home service set to unresolved|<unconfirmed>/);
+ assert.match(panel,/id="cwHandlerConditionForm"/);
+ assert.equal(JSON.stringify(result),original);
+});
+
 test('paired conflicts retain exact original spans and escaped values',()=>{
  const changed={...assessment,conflicts:[{message:'The dates differ.',sources:[{artifact_id:'tenant-pdf',quote:'30. Juni',value:'30. Juni'},{artifact_id:'spouse-pdf',quote:'31. Juli <script>',value:'31. Juli <script>'}]}],attachment_pages:[{artifact_id:'tenant-pdf',file_name:'Tenant_notice.pdf'},{artifact_id:'spouse-pdf',file_name:'Spouse_notice.pdf'}]};
  const markup=view.workbench(null,{intake_assessment:{claim_assessment:changed}},{detail:assessedDetail});

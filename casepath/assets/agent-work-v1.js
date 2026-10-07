@@ -59,6 +59,15 @@
 
   function objectTitle(o){
     const value=o?.value||{};
+    if(o?.kind==='opened_source'){
+      if(value.extraction==='message_body'){
+        const claim=state.inspection?.run?.summary||state.summary;
+        const currentTitle=claim?.claim_id===getClaim()?document.querySelector('.cp-claim-title h1')?.textContent:null;
+        const title=currentTitle||(claim?.subject?window.CasePathPresentation?.title?.(claim.subject)||claim.subject:'');
+        return 'Customer message'+(title?' · '+title:'');
+      }
+      return window.CasePathPresentation?.fileTitle?.({file_name:value.filename})||String(value.filename||'Original source').replaceAll('_',' ');
+    }
     if(o?.kind==='role_completion')return roleName(value.role)+' · completed work';
     if(o?.kind==='branch')return value.condition||value.label||'Conditional handling path';
     return value.title||value.text||value.filename||value.name||({source_integrity:'Source integrity check',execution_plan:'Execution plan',authority_snapshot:'Verified handling state',readiness:'Current readiness',next_action:'Next action'})[o?.id]||({span:'Source passage',source_link:'Process–evidence link',plan:'Execution plan'})[o?.kind]||'Recorded work';
@@ -132,13 +141,6 @@
   }
   function narrativeEvent(event){
     const span=event.sources?.[0];
-    if(event.operation==='RUN_QUEUED'){
-      const body=document.querySelector('#cwSourceContent .cw-message')?.textContent||'';
-      const paragraph=body.split(/\n\s*\n/).find((part,index)=>index>0&&part.trim().length>20)||body;
-      const clause=paragraph.split(/[;\n]/).map(part=>part.trim()).find(part=>part.length>20)||'';
-      const quote=(clause.includes(':')?clause.split(':').slice(1).join(':').trim():clause).slice(0,150);
-      return quote?{text:`Customer: “${quote}”`,quote,message:true}:null;
-    }
     if(event.operation==='SOURCE_SPAN_SELECTED'&&span?.extraction==='message_body'&&span.quote){
       const quote=span.quote.includes(':')?span.quote.split(':').slice(1).join(':').trim():span.quote.trim();
       const shown=quote.replace(/[;.!?]+$/,'');
@@ -242,7 +244,7 @@
     let host=document.getElementById('awTimeline');if(!host){host=document.createElement('div');host.id='awTimeline';panel.append(host);}
     const lines=narrativeLines(state.events);
     const key=state.summary?.run_id+':'+state.events.length+':'+(state.assessment?.assessment_sha256||'')+':'+state.revealCount;if(host.dataset.version===key)return;host.dataset.version=key;
-    host.innerHTML=`<ol class="aw-narrative-lines">${lines.map(({event,line})=>`<li><time datetime="${h(event.timestamp)}">${h(time(event.timestamp))}</time>${lineButton(event,line)}</li>`).join('')}</ol>${!lines.length?'<p>Source reads will appear here as they are saved.</p>':''}`;
+    host.innerHTML=`<ol class="aw-narrative-lines">${lines.map(({event,line})=>`<li><time datetime="${h(event.timestamp)}">${h(time(event.timestamp))}</time>${lineButton(event,line)}<button type="button" class="aw-text-button" data-aw-event="${h(event.sequence)}">Inspect work detail</button></li>`).join('')}</ol>${!lines.length?'<p>Source reads will appear here as they are saved.</p>':''}`;
   }
   function renderProcess(){}
   function openTimeline(){const panel=document.getElementById('cpPanel-activity');if(!panel)return;panel.open=true;panel.scrollIntoView({block:'start'});panel.querySelector('summary')?.focus({preventScroll:true});}
