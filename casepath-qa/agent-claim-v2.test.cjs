@@ -498,3 +498,35 @@ test('proposal captions use only the matched recorded answer label and escape so
  }
  input.agent.questions=[question({answers:[{answer_id:'true'}]})];assert.doesNotMatch(ui.render(input),/av-proposed-answer/);
 });
+
+test('an unassigned handler keeps every typed reuse field when saved work refreshes', () => {
+  const input=model('reuse-input-refresh',{owner:{accountable:null,delegate:'CasePath agent'}});
+  input.claim.owner=null;
+  input.process={graph:{nodes:[{node_id:'intake',label:'Capture dates',validation:{status:'validated'}}]}};
+  const root=rootFor(input.claim.claim_id);ui.render(input);ui.bind({root});
+  const form={elements:{name:{value:'Separate "notice" dates'},actor:{value:'Reviewing Handler'},reason:{value:'Keep the two sources separate.'}},querySelectorAll(){return [{value:'intake'}];}};
+  root.listeners.get('input')({target:{matches(){return false;},closest(selector){return selector==='[data-av-lesson]'?form:null;}}});
+  input.agent={...input.agent,agent_revision:3,activity:[{type:'SOURCE_OPENED',label:'Another recorded read.'}]};
+  const html=ui.render(input),lesson=html.slice(html.indexOf('data-av-lesson>'));
+  assert.match(lesson,/name="name"[^>]*value="Separate &quot;notice&quot; dates"/);
+  assert.match(lesson,/name="actor"[^>]*value="Reviewing Handler"/);
+  assert.match(lesson,/name="node_ids" value="intake" checked/);
+  assert.match(lesson,/>Keep the two sources separate\.<\/textarea>/);
+  assert.equal(ui.session(input.claim.claim_id).pending,null);
+  ui.session(input.claim.claim_id).lastOverride={reason:'Earlier correction reason.'};
+  form.elements.reason.value='';
+  root.listeners.get('input')({target:{matches(){return false;},closest(selector){return selector==='[data-av-lesson]'?form:null;}}});
+  const cleared=ui.render(input).split('data-av-lesson>')[1];
+  assert.match(cleared,/name="reason"[^>]*><\/textarea>/);
+  assert.doesNotMatch(cleared,/Earlier correction reason/);
+});
+
+test('simultaneous error and invalid recovery keep distinct reload targets', () => {
+  const input=model('recovery-focus-identities');ui.render(input);
+  const s=ui.session(input.claim.claim_id);s.error='The saved recovery record is invalid.';s.pending={invalid:true};
+  const html=ui.render(input),ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
+  assert.equal((html.match(/\sdata-av-reload(?=[\s>])/g)||[]).length,2);
+  assert.equal(ids.length,new Set(ids).size);
+  assert.match(html,/Recovery repeats|recovery record could not be read/);
+  assert.equal(s.pending.invalid,true);
+});

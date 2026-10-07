@@ -261,3 +261,19 @@ html[data-agent-native=true] #claimsWorkspace *,html[data-agent-native=true] #cl
 #claimsWorkspace .ad-work-summary{max-width:104ch;margin:6px 0 12px;color:var(--cp-muted);font-size:12px;line-height:1.7}
 
 #claimsWorkspace .av-proposed-answer{display:block;margin:0 0 6px;color:var(--cp-accent)}
+
+/* Keep the complete focus ring inside the viewport after a late layout change. */
+#claimsWorkspace #agentClaimMount :focus{scroll-margin-block:8px}
+
+/* Reuse fields and actions keep room for the complete keyboard focus outline. */
+#claimsWorkspace .av-lesson-form{display:grid;gap:18px;max-width:640px;margin-top:18px}
+#claimsWorkspace .av-lesson-form h4,#claimsWorkspace .av-lesson-form label{margin:0}
+#claimsWorkspace .av-lesson-form fieldset{min-width:0;margin:0;padding:0;border:0}
+#claimsWorkspace .av-lesson-form legend{padding:0;margin-bottom:8px;font-size:12px;color:var(--cp-muted)}
+#claimsWorkspace .av-lesson-form fieldset label{display:flex;align-items:start;gap:10px;min-height:32px;padding:4px 0;cursor:pointer}
+#claimsWorkspace .av-lesson-form input[type=checkbox]{flex:none;width:18px;height:18px;min-height:0;padding:0;margin:1px 0 0;accent-color:var(--cp-accent)}
+#claimsWorkspace .av-lesson-form input:not([type=checkbox]):not([type=hidden]){width:100%;min-width:0;padding:10px;border:1px solid var(--cp-control-line);border-radius:2px;background:#fff}
+#claimsWorkspace .av-lesson-form textarea{min-height:80px}
+#claimsWorkspace .av-lesson-form>button{justify-self:start}
+#claimsWorkspace .av-learning-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px}
+#claimsWorkspace .av-learning-actions button{padding:8px 16px;border:1px solid var(--cp-line);border-radius:2px;background:#fff;font-size:12px}

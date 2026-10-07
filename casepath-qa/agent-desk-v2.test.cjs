@@ -108,3 +108,14 @@ test('queued and running reviews distinguish earlier draft work from a current u
   assert.match(unknown,/current draft status is unknown/);assert.doesNotMatch(unknown,/no current draft\.|Draft, not sent\./);
  }
 });
+
+test('source focus follows the exact passage after reordering and never a reused index',()=>{
+ const source={artifact_id:'notice',sha256:'original',quote:'The notice was received.',page:2,start:40,end:64};
+ const other={...source,start:140,end:164};
+ assert.equal(desk.sourceIndex(source,[other,{...source}]),1);
+ assert.equal(desk.sourceIndex(source,[other]),-1);
+ assert.equal(desk.sourceIndex(source,[{...source,sha256:'replacement'}]),-1);
+ const extracted={...source,source_sha256:'source-one',text_sha256:'same-extracted-text'};
+ assert.equal(desk.sourceIndex(extracted,[{...extracted,source_sha256:'source-two'}]),-1);
+ assert.equal(desk.sourceIndex(source,[{artifact_id:'notice',sha256:'original',locator:{char_end:64,page:2,exact_text:source.quote,char_start:40}}]),0);
+});

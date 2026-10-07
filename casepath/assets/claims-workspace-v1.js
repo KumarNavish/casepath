@@ -1842,6 +1842,7 @@
     const focusedId=focusedElement?.id;
     const agentFocus=sameClaim&&focusedId&&focusedElement.closest?.('#agentClaimMount')?{
       id:focusedId,
+      source:focusedElement.hasAttribute('data-av-source')?window.CasePathAgentClaim.session(value.claim_id).sources[Number(focusedElement.dataset.avSource)]:null,
       selection:typeof focusedElement.selectionStart==='number'?{start:focusedElement.selectionStart,end:focusedElement.selectionEnd}:null,
     }:null;
     const openDialogs=sameClaim?[...panel.querySelectorAll('dialog[open][id]')].filter(dialog=>dialog.id!=='cpOwnerDialog').map(dialog=>dialog.id):[];

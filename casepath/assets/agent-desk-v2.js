@@ -9,6 +9,7 @@
   const stateNames = {working:'Working',waiting_for_you:'Waiting for you',waiting_for_others:'Waiting for others',paused:'Paused',done:'Done',failed:'Failed',not_started:'Not started',waiting:'Waiting',quiet:'Quiet',unknown:'Not yet checked'};
   const groupNames = {needs_you:'Needs you',working:'Agent working',waiting:'Waiting on others',quiet:'Quiet / unreviewed',closed:'Closed'};
   const stamp = value => value && Number.isFinite(new Date(value).valueOf()) ? new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short'}).format(new Date(value)) : '';
+  function sourceIndex(source,sources){const key=item=>JSON.stringify([item.artifact_id,item.source_sha256??item.sha256,item.source_text_sha256??item.text_sha256,item.quote||item.exact_text||item.locator?.exact_text,item.page??item.locator?.page,item.start??item.locator?.start??item.locator?.char_start,item.end??item.locator?.end??item.locator?.char_end]);return sources.findIndex(item=>key(item)===key(source));}
   function row(claim) {
     const activity = claim.latest_activity;
     const handler=claim.accountable||claim.owner||(claim.owner===null||claim.accountable===null?null:claim.decider);
@@ -132,14 +133,13 @@
       if(agent.claim_id!==id || agent.workspace_revision!==state.revision || agent.workspace_state_sha256!==state.state_sha256){void refreshClaim();return;}
       if(mount.dataset.agentSha===agent.projection_sha256 || mount.dataset.agentSha && window.CasePathAgentClaim.session(id).busy)return;
       const active=mount.contains(document.activeElement)?document.activeElement:null;
-      const source=active?.hasAttribute('data-av-source')?window.CasePathAgentClaim.session(id).sources[Number(active.dataset.avSource)]:null;
-      const disclosure=active?.tagName==='SUMMARY'?active.parentElement.dataset.avDisclosure:null;
-      let focus=active?.id?'#'+CSS.escape(active.id):active?.hasAttribute('data-av-control')?'[data-av-control="'+CSS.escape(active.dataset.avControl)+'"]':active?.hasAttribute('data-edit-owner')?'[data-edit-owner]':disclosure?'[data-av-disclosure="'+CSS.escape(disclosure)+'"]>summary':active?.name?'[name="'+CSS.escape(active.name)+'"]'+(active.type==='radio'?'[value="'+CSS.escape(active.value)+'"]':''):active?.matches('.av-decision button[type=submit]')?'.av-decision button[type=submit]':null;
-      let selection=active?.tagName==='TEXTAREA'?{start:active.selectionStart,end:active.selectionEnd}:null;
+      let source=active?.hasAttribute('data-av-source')?window.CasePathAgentClaim.session(id).sources[Number(active.dataset.avSource)]:null;
+      let focus=active?.id?'#'+CSS.escape(active.id):null;
+      let selection=typeof active?.selectionStart==='number'?{start:active.selectionStart,end:active.selectionEnd}:null;
       // A core refresh replaces this mount before announcing the new claim.
       // Restore only its scoped input, while focus is still lost to that removal.
       if(!active && document.activeElement===document.body && snapshot.agentFocus?.id){
-        focus='#'+CSS.escape(snapshot.agentFocus.id);selection=snapshot.agentFocus.selection;
+        focus='#'+CSS.escape(snapshot.agentFocus.id);selection=snapshot.agentFocus.selection;source=snapshot.agentFocus.source;
       }
       const current=workspace.snapshot();
       mount.innerHTML=window.CasePathAgentClaim.render({claim:current.claim.state,agent,process:current.process,sources:current.claim.artifacts});
@@ -147,8 +147,10 @@
       mount.setAttribute('aria-busy','false');
       window.CasePathAgentClaim.bind({root:mount,api:{request:workspace.request,verify},refresh:async()=>{agentCache.clear();await refreshClaim();if(!workspace.snapshot().claim)void load();},onOpenSource:workspace.openSource,onOpenPane:name=>workspace.openPane(name==='trace'?'activity':name),onNotice:text=>{const status=document.querySelector('#cwCommandStatus');if(status)status.textContent=text;}});
       mount.dataset.pane=document.querySelector('[data-claim-section][aria-selected=true]')?.dataset.claimSection||'overview';
-      if(focus){const target=mount.querySelector(focus);target?.focus({preventScroll:true});if(selection&&target?.setSelectionRange)target.setSelectionRange(selection.start,selection.end);}
-      if(source){const index=window.CasePathAgentClaim.session(id).sources.findIndex(item=>item.artifact_id===source.artifact_id&&(item.quote||item.exact_text||item.locator?.exact_text)===(source.quote||source.exact_text||source.locator?.exact_text));if(index>=0)mount.querySelector('[data-av-source="'+index+'"]')?.focus({preventScroll:true});}
+      if(source){const index=sourceIndex(source,window.CasePathAgentClaim.session(id).sources);focus=index<0?null:'[data-av-source="'+index+'"]';selection=null;}
+      if(focus){const target=mount.querySelector(focus);target?.focus({preventScroll:true});if(selection&&target?.setSelectionRange)target.setSelectionRange(selection.start,selection.end);
+        if(target?.matches(':focus-visible'))requestAnimationFrame(()=>{if(document.activeElement===target)target.scrollIntoView({block:'nearest',inline:'nearest'});});
+      }
     }
     async function claimRendered(event) {
       const epoch=++claimEpoch,snapshot=event.detail,id=snapshot.claim?.state.claim_id;
@@ -165,7 +167,7 @@
         if(agent.state==='working')setTimeout(()=>{if(epoch===claimEpoch && workspace.snapshot().claim?.state.claim_id===id)void claimRendered({detail:workspace.snapshot()});},1400);
       }catch(error){
         const mount=document.getElementById('agentClaimMount');
-        if(workspace.snapshot().claim?.state.claim_id===id && mount){mount.innerHTML=`<p class="av-notice" role="alert">${escape(error.message)} <button type="button" data-agent-retry>Read saved work again</button></p>`;mount.querySelector('button').onclick=()=>claimRendered({detail:workspace.snapshot()});mount.setAttribute('aria-busy','false');}
+        if(workspace.snapshot().claim?.state.claim_id===id && mount){mount.innerHTML=`<p class="av-notice" role="alert">${escape(error.message)} <button id="av-retry" type="button" data-agent-retry>Read saved work again</button></p>`;mount.querySelector('button').onclick=()=>claimRendered({detail:workspace.snapshot()});mount.setAttribute('aria-busy','false');}
       }
     }
     window.addEventListener('casepath:claim-rendered',claimRendered);
@@ -181,5 +183,5 @@
     });
     const current=workspace.snapshot(); if(current.claim) void claimRendered({detail:current});
   }
-  return Object.freeze({escape,row,groups,shell,peekEvidence,start});
+  return Object.freeze({escape,row,groups,shell,peekEvidence,sourceIndex,start});
 });

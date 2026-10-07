@@ -480,3 +480,40 @@ the recorded unsaved proposal beside its reason. Independent source review
 found a historical-draft wording edge after a new revision; that activity is
 now qualified as earlier work when the current draft is absent. Fresh
 regressions and browser evidence are recorded with the final release receipt.
+
+Post-commit keyboard retakes found a focus gap during delayed startup reads:
+the id-less answer radios and preview button lost focus when the core claim
+panel was replaced. This is distinct from an agent-only refresh, which already
+restored them by selector. Stable question-scoped IDs reuse the existing core
+focus restoration path. The failing native-browser captures remain in the
+external evidence alongside the corrected delayed-read checks. The prior full
+suite passed 1,721 tests with 10 skips and 10 warnings in 1,899.52 seconds; its
+log is retained as full-suite-pre-focus-identity.log. Final sealing of this
+subsequent focus repair is recorded separately.
+
+The delayed-read tablet check also exposed a partly clipped Preview button.
+Restoration now brings the active keyboard control into view on the next frame,
+only if it still has focus. The failing geometry receipt is preserved as
+focus-identity-before-visibility.json.
+
+A follow-up editable-form audit found the same missing identity in the
+unassigned reviewing-handler and reusable-fragment fields. Those controls now
+retain IDs and text-input selections. A failing input-event/render regression
+also exposed a dropped reuse reviewer value; it is restored from the saved
+form draft. The interrupted sealing attempt remains external as
+full-suite-pre-editable-focus-interrupted.log, including its teardown error.
+It is not a complete-suite result. The expanded native checks cover these
+fields with unsaved text and selection; no approval or journal edit is needed.
+
+The final control audit extended the same identity contract to action buttons,
+preview regions, notices and disclosures. Simultaneous error and invalid
+recovery Reload controls have a uniqueness regression. Preview-only browser
+checks exercise decision and reuse approval focus without applying either.
+
+Source-focus regressions cover reordering, a removed span, changed source bytes
+and equivalent explicit/embedded locators. Nested impact details use separate
+preview/saved scopes and immutable entity IDs. Their state preservation does
+not alter process evaluation or approval. The complete frontend suite has
+171 checks after these focused additions.
+
+The final keyboard visual pass also exposed overlapping reuse-field and approval-button outlines. The reuse form now separates fields and actions, keeps each step checkbox beside its label, and leaves room for the complete focus outline. The failing captures and interrupted seal are retained outside source.

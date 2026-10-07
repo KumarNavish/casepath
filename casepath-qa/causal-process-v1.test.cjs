@@ -140,3 +140,15 @@ test('unchanged impact includes named relationships and distinguishes requiremen
  assert.match(html,/<strong>Document requirements<\/strong> · Notice/);
  assert.match(html,/<strong>Document states<\/strong> · Lease/);
 });
+
+test('preview and saved impact disclosures preserve independent entity scopes',()=>{
+ const impact={node_changes:[{node_id:'a',before:{label:'Old',meaning:'Before',kind:'review',completed:false},after:{label:'New',meaning:'After',kind:'request',completed:true}}],edge_changes:[{edge_id:'e',before:{relation:'enables'},after:{relation:'requires'}}],unchanged_node_ids:['b']};
+ const open=new Set(['preview:Step:a','preview:connections','preview:unchanged','saved:unchanged']);
+ const preview=ui.impactMarkup(impact,{}, {scope:'preview',open});
+ const saved=ui.impactMarkup(impact,{}, {scope:'saved',open});
+ for(const key of ['Step:a','connections','unchanged'])assert.ok(preview.includes(`data-av-disclosure="preview:${key}" open`));
+ assert.ok(saved.includes('data-av-disclosure="saved:unchanged" open'));
+ assert.ok(!saved.includes('data-av-disclosure="saved:Step:a" open'));
+ const ids=[...`${preview}${saved}`.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size);
+ assert.ok(!ui.impactMarkup(impact).includes('data-av-disclosure'));
+});

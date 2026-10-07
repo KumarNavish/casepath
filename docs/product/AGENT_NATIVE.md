@@ -211,7 +211,7 @@ loads the existing presentation module from its content-bound metadata URL.
 Concurrent openings share one pending load; failed, incomplete and timed-out
 loads release it for retry. Existing claim request epochs prevent a late load
 from reopening a claim after navigation. The eager script budget remains
-300,000 bytes (298,823 bytes in this candidate). Self-hosted fonts and both
+300,000 bytes (299,594 bytes in this candidate). Self-hosted fonts and both
 licence notices belong to the exact public asset inventory and closure checks.
 
 The desk labels the responsible handler explicitly. Unassigned claims keep
@@ -219,3 +219,26 @@ their persisted waiting state and say that a handler is needed. The decision
 shows the recorded proposed answer and its unsaved status beside the agent
 reading, before the longer alternatives. Historical draft activity is labelled
 as earlier work when the current revision has no prepared draft.
+
+Native decision answers and Preview consequences carry stable, question-scoped
+IDs. The existing focus restoration path therefore retains keyboard focus
+when delayed process, draft or memory reads replace the claim panel.
+
+After restoring keyboard focus, the refreshed control scrolls only as far as
+needed to remain visible. This also covers late status lines changing the
+claim layout; it does not move focus to a different control.
+The scroll margin leaves room for the complete focus ring at viewport edges.
+
+Reviewing-handler and reusable-fragment fields also retain stable control IDs.
+Refreshes preserve text-input selections as well as textarea selections, and
+the unassigned reuse form restores its typed reviewing handler.
+An intentionally cleared reuse reason stays blank after refresh.
+
+Action buttons derive deterministic IDs from their label and action attributes;
+the duplicate invalid-recovery Reload has a distinct scope. Preview regions,
+notices and disclosures also retain explicit identities across outer refreshes.
+Changed or disabled commands do not inherit focus from a different action.
+
+Exact-source focus uses the captured artifact, original-byte and text hashes, quote and available
+page/character locator; it never falls back to a reused source-array index.
+Preview and saved-impact disclosures retain separate entity-scoped open states.
