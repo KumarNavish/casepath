@@ -1,4 +1,4 @@
-"""Demo startup boundaries; no Keychain access, HTTP request or child is real."""
+"""Demo startup boundaries; no Keychain access, HTTP request or server is real."""
 from contextlib import ExitStack
 from datetime import datetime, timedelta, timezone
 import importlib.util
@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 from types import SimpleNamespace
 
 import pytest
@@ -58,6 +59,25 @@ def test_preflight_reuses_exact_capsule_and_read_only_history_closure(prepared, 
     assert str(prepared.capsule / "casepath/tools/validate_local_runtime_history.py") in history
     assert all("OPENROUTER_API_KEY" not in kw["env"] for _, kw in prepared.calls)
     assert len([c for c in commands if c[-1] == "verify"]) == 2
+
+
+def test_release_verifier_loads_real_dependencies_in_isolated_pinned_python(prepared):
+    demo.preflight(prepared.repo)
+    verifiers = [(argv, options) for argv, options in prepared.calls if argv[-1] == "verify"]
+    assert len(verifiers) == 2
+    for argv, options in verifiers:
+        # Exercise the actual release module and its yaml/PIL/pypdf imports.
+        # --help stops before artifact verification or any output generation.
+        completed = subprocess.run(
+            [sys.executable, *argv[1:-2], str(SCRIPT.with_name("casepath_release.py")), "--help"],
+            cwd=prepared.repo, env=options["env"], capture_output=True, timeout=30, check=False,
+        )
+        assert completed.returncode == 0, completed.stderr.decode()
+        assert b"prepare-artifacts" in completed.stdout
+        assert argv[1:-2] == ["-I", "-B", "-P"]
+    history = next(argv for argv, _ in prepared.calls
+                   if any("validate_local_runtime_history.py" in part for part in argv))
+    assert history[1:5] == ["-I", "-S", "-B", "-P"]
 
 
 def test_dirty_checkout_stops_before_verifiers_and_credentials(prepared, monkeypatch):

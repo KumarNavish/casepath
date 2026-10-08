@@ -139,8 +139,10 @@ def preflight(repository):
         raise DemoError("The normal boot receipt is missing required identity.") from exc
     isolated = [str(python), "-I", "-S", "-B", "-P"]
     # Verify both trees before loading any product module from the capsule.
+    # The release verifier needs the pinned site-packages; only the runtime
+    # history verifier below is stdlib-only and can disable site initialization.
     for root in (repository, capsule):
-        run_checked([*isolated, str(root / "casepath/tools/casepath_release.py"), "verify"],
+        run_checked([str(python), "-I", "-B", "-P", str(root / "casepath/tools/casepath_release.py"), "verify"],
                     cwd=repository, env=env)
     run_checked([str(python), "-I", "-B", "-P", "-c",
                  'import runpy,sys; sys.path.insert(0,sys.argv.pop(1)); '
