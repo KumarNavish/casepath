@@ -373,3 +373,24 @@ test('mobile graph selection reveals the selected inspector and Back returns to 
  mobile=false;node.focus();const beforeDesktop=scrolls.length;f.listeners.get('click')({target:node});assert.equal(doc.activeElement,node);assert.equal(scrolls.length,beforeDesktop);
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
+
+test('a focused claim title allows saved revisions to render during polling',async t=>{
+ const f=dom(),heading=f.host.querySelector('h1');
+ heading.hasAttribute=()=>false;heading.matches=()=>false;f.host.contains=element=>element===heading;
+ let saved=state();const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ assert.equal(f.container.ownerDocument.activeElement,heading);
+ saved=state({revision:4,state_sha256:hash('f'),phase:'interpreting',phase_summary:'Reading the original agreement.'});
+ await controller.refresh();
+ assert.match(f.host.innerHTML,/revision 4/);assert.match(f.host.innerHTML,/Reading the original agreement/);assert.doesNotMatch(f.status.textContent,/Updates paused/);
+});
+
+test('a failed render is retried from saved state even if the next poll has the same revision',async t=>{
+ const f=dom();let saved=state();const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ let html=f.host.innerHTML,fail=true;Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{if(fail){fail=false;throw new Error('Transient render failure');}html=value;}});
+ saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();
+ assert.match(f.status.textContent,/Updates paused/);assert.match(html,/revision 3/);
+ await controller.refresh();assert.match(html,/revision 4/);assert.match(f.status.textContent,/Connection restored/);
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});

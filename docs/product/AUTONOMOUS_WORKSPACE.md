@@ -71,7 +71,7 @@ For the existing prepared checkout, launch the configured model from the
 repository root after sealing and a matching normal boot:
 
 ```bash
-.runtime/casepath-dev-v2/venv/bin/python casepath/tools/run_agent_demo.py --autonomous --model openai/gpt-4.1-nano --catalogue .runtime/casepath-openrouter-demo/catalogue.json --endpoints .runtime/casepath-openrouter-demo/endpoints-nano.json
+.runtime/casepath-dev-v2/venv/bin/python casepath/tools/run_agent_demo.py --autonomous --model qwen/qwen3-235b-a22b-2507 --catalogue .runtime/casepath-openrouter-demo/catalogue.json --endpoints .runtime/casepath-openrouter-demo/endpoints-qwen-235b.json
 ```
 
 These are local catalogue and endpoint snapshots, not credentials. They must
