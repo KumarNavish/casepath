@@ -487,16 +487,67 @@ test('recorded knowledge use identifies pinned fragment versions and matching le
   assert.doesNotMatch(html, /2 reviewed lesson applications/);
 });
 
-test('the recorded proposed answer is visible with its reading before alternatives and remains unsaved',()=>{
+test('the proposed answer and exact passage precede its inspectable reading and unsaved alternatives',()=>{
  const input=model('proposed-answer-first-view');
  ui.session(input.claim.claim_id).answers['condition:family_home']='false';
- const html=ui.render(input),proposal=html.match(/<p class="av-proposal">([\s\S]*?)<\/p>/)?.[1]||'';
+ const html=ui.render(input),proposal=html.match(/<p class="av-proposal">([\s\S]*?)<\/p>/)?.[1]||'',reading=html.match(/<details class="av-counter"[\s\S]*?<\/details>/)?.[0]||'';
  assert.match(proposal,/<span class="av-proposed-answer">Agent proposal: <strong>Yes, it applies<\/strong> · not saved<\/span>/);
- assert.match(proposal,/<span>Agent reading:<\/span> The message reports a shared family home\./);
+ assert.match(reading,/<span>Agent reading:<\/span> The message reports a shared family home\./);
+ assert.ok(html.indexOf('<blockquote>We live here as a family.</blockquote>')<html.indexOf('class="av-counter"'));
  assert.ok(html.indexOf('av-proposed-answer')<html.indexOf('av-counter-reading'));
  assert.ok(html.indexOf('av-proposed-answer')<html.indexOf('av-answer-list'));
  assert.deepEqual([...html.matchAll(/name="answer_id" value="([^"]+)"/g)].map(match=>match[1]),['true','false','unresolved']);
  assert.match(html,/name="answer_id" value="false" checked required/);
+});
+
+test('condition display guidance preserves sealed inputs and submits the original empty reason only on preview',async()=>{
+ const input=model('condition-display-only'),root=rootFor(input.claim.claim_id),requests=[];
+ const q=input.agent.questions[0];
+ q.question_sha256='sealed-question';q.why=q.proposal.reason;
+ q.answers.forEach((answer,index)=>{answer.description=['Keep the dependent route applicable.','Remove requirements that depend only on this condition.','Keep the question open until a source establishes it.'][index];});
+ const original=structuredClone(input),body=ui.decisionBody(q,'true','M. Keller','',input.agent);
+ const html=ui.render(input);
+ assert.match(html,/Record that this condition applies to this claim\./);
+ assert.match(html,/Record that this condition does not apply to this claim\./);
+ assert.match(html,/Leave the condition open for more evidence\./);
+ assert.doesNotMatch(html,/Remove requirements that depend only/);
+ assert.deepEqual(input,original);
+ ui.bind({root,api:{verify:verifier,request:async(path,options)=>{requests.push({path,options});return {...previewFor(input),answer_id:'true',reason:q.proposal.reason};}}});
+ assert.deepEqual(requests,[]);
+ root.listeners.get('submit')({target:formFor('true',''),preventDefault(){}});await settle();
+ assert.equal(requests.length,1);assert.match(requests[0].path,/\/decisions\/preview$/);
+ assert.equal(requests[0].options.body,JSON.stringify(body));assert.equal(JSON.parse(requests[0].options.body).reason,'');
+ assert.deepEqual(input,original);assert.equal(ui.session(input.claim.claim_id).preview.question,q);
+});
+
+test('Go to decision only navigates on explicit activation and keeps anchored completed work and pending inputs intact',()=>{
+ const prior=global.CasePathWorkMotion;global.CasePathWorkMotion=require('../casepath/assets/agent-work-motion-v3.js');
+ try{
+  const id='go-to-decision',input=model(id,{state:'working'}),root=rootFor(id),focus=[];
+  input.agent.live_work={scope:'recorded_review_work_not_claim_authority',claim_id:id,run_id:'run',status:'running',currentness:'current',last_sequence:0,active_stage:null,headline:'Review recorded. Your decision comes next.',reader:{kind:'reference'},stages:[],milestones:[]};
+  let html=ui.render(input);assert.doesNotMatch(html,/data-av-go-decision/);
+  const heading={focus:options=>focus.push(['heading',options]),scrollIntoView:options=>focus.push(['heading-scroll',options])};
+  const confirmation={focus:options=>focus.push(['preview',options]),scrollIntoView:options=>focus.push(['preview-scroll',options])};
+  let previewVisible=false;
+  root.querySelector=selector=>selector==='[data-av-claim]'?root.marker:selector==='#av-confirm'?previewVisible?confirmation:null:selector==='[data-av-decision] .av-question-title'?heading:null;
+  ui.bind({root,api:{request:()=>assert.fail('Navigation must not request work')},refresh:()=>assert.fail('Navigation must not refresh')});
+  input.agent.state='waiting_for_you';input.agent.live_work.status='completed';html=ui.render(input);
+  assert.match(html,/<button type="button"[^>]*data-av-go-decision[^>]*>Go to decision<\/button>/);
+  assert.match(html,/class="av-question-title"[^>]*tabindex="-1"/);
+  const s=ui.session(id);s.workStage='process';s.answers['condition:family_home']='false';s.reasons['condition:family_home']='An earlier household.';
+  s.preview=previewFor(input);s.pending={kind:'decision',key:'original-key',body:{preview_sha256:'original-preview'}};
+  const before=structuredClone({input,answers:s.answers,reasons:s.reasons,preview:s.preview,pending:s.pending,placement:s.workPlacement,open:[...s.open],stage:s.workStage});
+  assert.deepEqual(focus,[]);
+  root.listeners.get('click')({target:button('avGoDecision')});
+  previewVisible=true;root.listeners.get('click')({target:button('avGoDecision')});
+  assert.deepEqual(focus,[['heading',{preventScroll:true}],['heading-scroll',{block:'start'}],['preview',{preventScroll:true}],['preview-scroll',{block:'start'}]]);
+  assert.deepEqual({input,answers:s.answers,reasons:s.reasons,preview:s.preview,pending:s.pending,placement:s.workPlacement,open:[...s.open],stage:s.workStage},before);
+  assert.equal(root.innerHTML,'');assert.ok(s.open.has('live-work'));assert.ok(s.workPlacement.anchored);
+  input.agent.questions=[];root.listeners.get('click')({target:button('avGoDecision')});assert.equal(focus.length,4,'A stale action cannot focus an absent decision');
+  s.preview=null;s.pending=null;assert.doesNotMatch(ui.render(input),/data-av-go-decision/);
+  const cold=model('cold-completed-decision',{live_work:{...input.agent.live_work,claim_id:'cold-completed-decision'}});
+  assert.doesNotMatch(ui.render(cold),/data-av-go-decision/);
+ }finally{global.CasePathWorkMotion=prior;}
 });
 
 test('proposal captions use only the matched recorded answer label and escape source text',()=>{

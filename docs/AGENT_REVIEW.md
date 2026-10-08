@@ -27,6 +27,17 @@ A start request must also explicitly select `facts_worker: "external_facts"`. Co
 
 The current OpenRouter adapter is deliberately bounded to at most 6 provider requests, 20 tool calls, 800 output tokens per request, a 24 KB request body, a 45-second request timeout, and a USD 0.02 total reservation. Unknown provider outcomes are not automatically resent.
 
+For this bounded Facts worker, the local source reader prepares the complete
+original packet through the existing checked tools before inference. These real
+reads are recorded as kernel work and count toward the same tool budget. The
+model receives a clearly labelled source packet, selects exact spans, proposes
+verbatim reported assertions, and asks the existing completion gate to finish.
+There are no fabricated assistant tool calls or hidden reasoning transcripts.
+Changed, oversized or failed source preparation stops the run. Extraction limits
+remain attached to the sources and completion record; opening a source does not
+certify that all of it was readable. Neither extra provider requests nor an
+automatic model fallback are permitted.
+
 ## Accepted end-to-end behavior
 
 On 15 September 2026 the actual installed application, not a fixture authority, passed a fresh reference acceptance covering:

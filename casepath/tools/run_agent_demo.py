@@ -177,6 +177,38 @@ def catalogue_snapshot(path, model):
     return raw
 
 
+def endpoint_snapshot(path, model):
+    """Check actual routing capabilities, not only catalogue-level tool support."""
+    raw = regular(path, 2_000_000)
+    try:
+        packet = json.loads(raw)
+        age = (datetime.now(timezone.utc) - datetime.fromisoformat(packet["at"])).total_seconds()
+        data = packet["response"]["data"]
+        if not 0 <= age <= 86400 or packet["status"] != 200 or data["id"] != model["id"]:
+            raise ValueError
+        required = {"tools", "tool_choice", "max_tokens"}
+        if "reasoning" in model["supported_parameters"]:
+            required.add("reasoning")
+        ceiling = {key: Decimal(str(model["pricing"][key])) for key in ("prompt", "completion")}
+        if any(not value.is_finite() or value < 0 for value in ceiling.values()):
+            raise ValueError
+        for endpoint in data["endpoints"]:
+            if (type(endpoint.get("status")) is not int or endpoint["status"] != 0
+                    or endpoint.get("supports_tool_choice", {}).get("required") is not True
+                    or not required.issubset(endpoint.get("supported_parameters", []))):
+                continue
+            prices = endpoint["pricing"]
+            applicable = [prices, *(tier for tier in prices.get("overrides", [])
+                                   if tier["min_prompt_tokens"] <= 24000)]
+            if all(all(Decimal(str(tier.get(key, prices[key]))).is_finite()
+                       and 0 <= Decimal(str(tier.get(key, prices[key]))) <= ceiling[key]
+                       for key in ceiling) for tier in applicable):
+                return raw
+    except (KeyError, TypeError, ValueError, InvalidOperation):
+        pass
+    raise DemoError("Use a recent endpoint snapshot with required tool calls and request parameters within the catalogue price ceiling.")
+
+
 def keychain_credential():
     if sys.platform != "darwin":
         raise DemoError("This demo credential loader requires macOS Keychain.")
@@ -288,7 +320,7 @@ def private_directory(path):
         raise DemoError("The demo directory must be private to the current account.")
 
 
-def serve(repository, catalogue, model):
+def serve(repository, catalogue, model, endpoints=None):
     runtime = repository / ".runtime/casepath-dev-v2"
     for directory in (repository / ".runtime", runtime):
         if directory.is_symlink() or not directory.is_dir():
@@ -299,6 +331,8 @@ def serve(repository, catalogue, model):
         listener = reserve_origin(stack)
         info = preflight(repository)
         catalogue_raw = catalogue_snapshot(catalogue, model)
+        selected = next(row for row in json.loads(catalogue_raw)["catalogue"]["data"] if row["id"] == model)
+        endpoint_raw = endpoint_snapshot(endpoints or catalogue.with_name("endpoints.json"), selected)
         demo_root = repository / ".runtime/casepath-openrouter-demo"
         private_directory(demo_root)
         launch_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:12]
@@ -308,6 +342,10 @@ def serve(repository, catalogue, model):
         fd = os.open(snapshot, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o444)
         with os.fdopen(fd, "wb") as stream:
             stream.write(catalogue_raw)
+        endpoint_copy = launch / "endpoints.json"
+        fd = os.open(endpoint_copy, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o444)
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(endpoint_raw)
         env = child_environment(info, snapshot, model, keychain_credential())
         command = [str(info["python"]), "-I", "-B", "-P", "-m", "uvicorn", "casepath_api.app:app",
                    "--app-dir", str(info["capsule"] / "casepath-api"), "--fd", str(listener.fileno()),
@@ -320,7 +358,8 @@ def serve(repository, catalogue, model):
                    "source_commit": info["head"], "source_manifest_sha256": info["manifest_sha256"],
                    "execution_root": str(info["capsule"]), "normal_boot_id": info["normal_boot_id"],
                    "normal_boot_file_sha256": info["normal_boot_file_sha256"],
-                   "catalogue_file_sha256": sha(catalogue_raw), "url": "http://127.0.0.1:4173/",
+                   "catalogue_file_sha256": sha(catalogue_raw), "endpoint_file_sha256": sha(endpoint_raw),
+                   "url": "http://127.0.0.1:4173/",
                    "profile": "manual_openrouter_facts_role", "model": model, "policy": POLICY,
                    "credential_source": "macOS Keychain", "credential_names": ["OPENROUTER_API_KEY"],
                    "process": {"pid": child.pid, "argv": command, "workers": 1},
@@ -380,11 +419,12 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", required=True, help="Exact concrete model ID from the local catalogue")
     parser.add_argument("--catalogue", type=Path, help="Locally acquired catalogue snapshot; no download occurs here")
+    parser.add_argument("--endpoints", type=Path, help="Recent model endpoint snapshot; defaults to endpoints.json beside the catalogue")
     args = parser.parse_args(argv)
     repository = Path(__file__).resolve().parents[2]
     catalogue = args.catalogue or repository / ".runtime/casepath-openrouter-demo/catalogue.json"
     try:
-        serve(repository, catalogue.absolute(), args.model)
+        serve(repository, catalogue.absolute(), args.model, args.endpoints.absolute() if args.endpoints else None)
     except DemoError as exc:
         print(f"CasePath demo: {exc}", file=sys.stderr)
         return 2

@@ -167,7 +167,8 @@ def test_symlink_and_external_hardlink_files_are_refused(tmp_path):
 
 
 def catalogue(tmp_path, *, age=0, model="vendor/model"):
-    value = {"data": [{"id": model}]}
+    value = {"data": [{"id": model, "pricing": {"prompt": "0.0000001", "completion": "0.0000004"},
+                       "supported_parameters": ["tools", "tool_choice", "max_tokens"]}]}
     packet = {"catalogue": value, "catalogue_sha256": demo.sha(demo.canonical(value)),
               "fetched_at": (datetime.now(timezone.utc) - timedelta(seconds=age)).isoformat()}
     path = tmp_path / "catalogue.json"
@@ -190,6 +191,46 @@ def test_catalogue_identity_tampering_rejected(tmp_path):
     path.write_text(json.dumps(packet))
     with pytest.raises(demo.DemoError):
         demo.catalogue_snapshot(path, "vendor/model")
+
+
+def endpoint_inputs(tmp_path):
+    model = {"id": "vendor/model", "pricing": {"prompt": "0.0000001", "completion": "0.0000004"},
+             "supported_parameters": ["tools", "tool_choice", "max_tokens"]}
+    endpoint = {"status": 0, "tag": "vendor", "pricing": model["pricing"].copy(),
+                "supported_parameters": model["supported_parameters"].copy(),
+                "supports_tool_choice": {"required": True}}
+    packet = {"at": datetime.now(timezone.utc).isoformat(), "status": 200,
+              "response": {"data": {"id": model["id"], "endpoints": [endpoint]}}}
+    path = tmp_path / "endpoints.json"
+    path.write_text(json.dumps(packet))
+    return model, packet, path
+
+
+def test_endpoint_snapshot_checks_actual_request_capabilities(tmp_path):
+    model, packet, path = endpoint_inputs(tmp_path)
+    raw = path.read_bytes()
+    assert demo.endpoint_snapshot(path, model) == raw
+    # A stale snapshot cannot establish present routing even with a valid model.
+    packet["at"] = (datetime.now(timezone.utc) - timedelta(days=2)).isoformat()
+    path.write_text(json.dumps(packet))
+    with pytest.raises(demo.DemoError):
+        demo.endpoint_snapshot(path, model)
+
+
+@pytest.mark.parametrize("failure", ["model", "required", "max_tokens", "price", "reasoning", "status", "malformed"])
+def test_endpoint_snapshot_rejects_unroutable_request(tmp_path, failure):
+    model, packet, path = endpoint_inputs(tmp_path)
+    endpoint = packet["response"]["data"]["endpoints"][0]
+    if failure == "model": packet["response"]["data"]["id"] = "vendor/other"
+    if failure == "required": endpoint["supports_tool_choice"]["required"] = False
+    if failure == "max_tokens": endpoint["supported_parameters"].remove("max_tokens")
+    if failure == "price": endpoint["pricing"]["prompt"] = "0.0000002"
+    if failure == "reasoning": model["supported_parameters"].append("reasoning")
+    if failure == "status": endpoint["status"] = 1
+    if failure == "malformed": endpoint["pricing"]["prompt"] = "NaN"
+    path.write_text(json.dumps(packet))
+    with pytest.raises(demo.DemoError):
+        demo.endpoint_snapshot(path, model)
 
 
 def test_keychain_error_output_never_escapes(monkeypatch):
@@ -280,6 +321,7 @@ def test_serve_passes_shared_leases_and_socket_without_persisting_secret(prepare
     info = demo.preflight(prepared.repo)
     monkeypatch.setattr(demo, "preflight", lambda *a: info)
     path = catalogue(tmp_path)
+    _, _, endpoints = endpoint_inputs(tmp_path)
     secret = "sk-or-test-secret-never-persist"
     monkeypatch.setattr(demo, "keychain_credential", lambda: secret)
     monkeypatch.setattr(demo, "reserve_origin", lambda stack: SimpleNamespace(fileno=lambda: 99))
@@ -305,3 +347,18 @@ def test_serve_passes_shared_leases_and_socket_without_persisting_secret(prepare
         if output.is_file(): assert secret not in output.read_text()
     assert json.loads(prepared.path.read_text()) == prepared.boot
     assert not (prepared.runtime / "boots").exists()
+    launch = next((prepared.repo / ".runtime/casepath-openrouter-demo").iterdir())
+    assert (launch / "endpoints.json").read_bytes() == endpoints.read_bytes()
+    assert json.loads((launch / "ready.json").read_text())["endpoint_file_sha256"] == demo.sha(endpoints.read_bytes())
+
+
+def test_incompatible_endpoint_stops_before_credential_or_child(prepared, tmp_path, monkeypatch):
+    path = catalogue(tmp_path)
+    _, packet, endpoints = endpoint_inputs(tmp_path)
+    packet["response"]["data"]["endpoints"][0]["supports_tool_choice"]["required"] = False
+    endpoints.write_text(json.dumps(packet))
+    monkeypatch.setattr(demo, "reserve_origin", lambda stack: SimpleNamespace(fileno=lambda: 99))
+    monkeypatch.setattr(demo, "keychain_credential", lambda: pytest.fail("credential read"))
+    monkeypatch.setattr(demo.subprocess, "Popen", lambda *a, **kw: pytest.fail("server start"))
+    with pytest.raises(demo.DemoError, match="endpoint snapshot"):
+        demo.serve(prepared.repo, path, "vendor/model")

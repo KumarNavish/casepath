@@ -310,8 +310,10 @@ The [separate local demo profile](../setup-demo.md) exposes an explicit model
 review for a claim with an accountable handler and current context. The selected
 model runs only the Facts role through the existing bounded source tools; the
 other five roles use deterministic verification and the same process authority.
-The inspected catalogue selection is `anthropic/claude-haiku-5.5`. No fallback
-model or automatic paid start is enabled. The normal launcher remains
+The model is explicitly selected from a recent catalogue and checked against its
+recent endpoint roster, including required tool-call support and request
+parameters within the price ceiling. No fallback model or automatic paid start
+is enabled. The normal launcher remains
 provider-free.
 
 The demo's durable allowance is three explicit external runs, at most 18
@@ -380,3 +382,18 @@ The service reconstructs only a unique persisted `propose_process_node` call mad
 Reconciliation leaves the run at an interrupted checkpoint. Resume is a separate existing control action and resumes the same run. No automatic provider retry, local process adoption or claim outcome follows from reconciliation. The invariant and router suites cover refusal cases and the request-to-work interruption gap; browser receipts record the actual interrupted local run and unchanged claim authority before resumption.
 
 Signed browser projections retain the original JSON number representation when checking their digest. Tiny and zero model costs remain exact; the browser does not round them or regenerate their journal hashes. A response with missing numeric provenance or a number it cannot safely represent fails verification.
+
+### Bounded source preparation and direct handoff
+
+The local reader opens the complete original packet through the same source
+tools before the external Facts worker selects exact quotations. Those source
+reads are real persisted kernel events, count toward the same tool budget, and
+stop on changed or failed sources before inference. The model sees a labelled
+source packet and still passes the existing span, assertion and completion
+gates. No request or cost limit is increased.
+
+Condition-choice guidance is presentation only; signed questions and persisted
+reasons stay unchanged. Exact source passages accompany the proposal, while
+the original rationale remains inspectable. The desk has an explicit View
+source and review action. An anchored completed review offers Go to decision
+without closing its work record or moving focus on refresh.

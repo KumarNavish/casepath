@@ -34,6 +34,15 @@ must be private to the current account (mode 0700). The packet contains
 under `catalogue_sha256`. Choose an exact concrete tool-capable model ID from
 that snapshot. The launcher does not fetch or refresh the catalogue.
 
+Also acquire the model's endpoint roster from OpenRouter's
+`/api/v1/models/{author}/{slug}/endpoints` route. Save a local packet with `at`
+(the UTC retrieval time), `status` (200), and `response` (the complete JSON
+response). It must be no more than 24 hours old. The launcher checks the exact
+model, required tool-call support, the actual request parameters, and the
+catalogue price ceiling before reading the credential. A catalogue entry saying
+“tools” alone does not establish endpoint compatibility. The launcher does not
+fetch this file or change account routing preferences.
+
 Store the authorized credential in macOS Keychain under service
 `CasePath OpenRouter demo`, with the account equal to the current macOS login
 name. Use Keychain Access or a trusted credential setup flow. Do not put the
@@ -45,8 +54,9 @@ Start the demo from the repository root with the selected catalogue-bound model:
 
 ```sh
 .runtime/casepath-dev-v2/venv/bin/python -I -B -P casepath/tools/run_agent_demo.py \
-  --model 'anthropic/claude-haiku-5.5' \
-  --catalogue .runtime/casepath-openrouter-demo/catalogue.json
+  --model 'openai/gpt-4.1-nano' \
+  --catalogue .runtime/casepath-openrouter-demo/catalogue-nano.json \
+  --endpoints .runtime/casepath-openrouter-demo/endpoints-nano.json
 ```
 
 Open `http://127.0.0.1:4173/` after the demo ready message. The frontend and API
@@ -60,6 +70,15 @@ rerun stays within the same disclosure. Running the launcher alone makes no prov
 The legacy `/readyz` model budget describes the deterministic main pipeline;
 the live facts allowance is the separate agent-work capabilities budget.
 
+CasePath's source reader first opens the original packet through the same
+checked, recorded tools. The model receives those source texts and selects exact
+passages; it proposes reported assertions and requests completion through the
+existing gates. Source preparation is labelled as local work and counts toward
+the tool budget. This avoids paying the model to reopen files or discover that
+an attachment was skipped. Failed preparation or an oversized request stops
+before inference. The model cannot convert a quoted statement into a confirmed
+claim fact.
+
 The review opens while current work is observed and stays in place through its
 completion. Closing it or making a fresh visit lets completed history sit below
 the next handler decision. Stage selectors name Sources, Findings, Process and
@@ -71,7 +90,8 @@ single vertical scroll region.
 ## Receipts and shutdown
 
 Each launch writes a new private directory under
-`.runtime/casepath-openrouter-demo/`, containing the pinned public catalogue and
+`.runtime/casepath-openrouter-demo/`, containing the pinned public catalogue,
+endpoint snapshot and
 separate `ready.json` and `stopped.json` profile receipts. They record source,
 capsule, normal-boot identity, selected model, policy and observed usage. They
 never contain the credential or raw environment. A missing shutdown observation
@@ -106,3 +126,12 @@ precede this launcher. The planned external evidence receipts
 later provider and release outcomes; their existence or success is not claimed
 at this checkpoint. See the [acceptance record](product/AGENT_NATIVE_ACCEPTANCE.md)
 for retained failures and the remaining gates.
+
+At **8 October 2026, 16:08 UTC**, commit `382dd6c` passed 1,845 backend/static
+tests (ten skipped) and the normal frontend/API identity check. Two explicit
+provider attempts remain recorded: Haiku's endpoints rejected the required
+tool-call mode with HTTP 404; nano reached six requests before completing its
+source reads. The latter reported USD 0.000721. The first attempt's USD 0.0028
+reservation remains because no usage was reported. Neither run completed or
+changed the claim. The endpoint guard and bounded source preparation are the
+subsequent correction; their final runtime acceptance is recorded separately.

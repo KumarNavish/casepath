@@ -122,18 +122,20 @@ def test_call_cap_and_run_cap_survive_separate_run_requests(tmp_path):
 def test_unknown_provider_timeout_is_never_retried_or_unreserved(tmp_path):
     store = WorkStore(tmp_path / "work.sqlite3")
     store.configure_external_budget(POLICY)
-    run_id = run(store, "explicit-run-1")
+    runtime = source_runtime(store, PacketAuthority())
+    run_id = runtime.run_id
     requests = []
     def transport(request):
         requests.append(request)
         raise httpx.ReadTimeout("No confirmed response")
     worker = OpenRouterFactsWorker(config(), "sk-or-synthetic-test", httpx.Client(transport=httpx.MockTransport(transport)))
-    from casepath_api.agent_work.runtime import ToolRuntime, WorkBlocked
-    runtime = ToolRuntime(store, object(), run_id, "owner", Role.FACTS, "external")
+    from casepath_api.agent_work.runtime import WorkBlocked
     with pytest.raises(WorkBlocked, match="unconfirmed"):
         worker.run(runtime)
+    before = store.snapshot(run_id)
     with pytest.raises(WorkBlocked, match="prior provider"):
         worker.run(runtime)
+    assert store.snapshot(run_id) == before
     assert len(requests) == 1 and len(store.pending_calls(run_id)) == 1
     assert store.external_budget()["unknown_calls"] == 1
     assert "sk-or-synthetic-test" not in json.dumps(store.events(run_id))
@@ -225,6 +227,193 @@ class SourceAuthority:
         return self.source
 
 
+class PacketAuthority(SourceAuthority):
+    """Three distinct sources, including an explicitly limited extraction."""
+    def __init__(self):
+        super().__init__()
+        from hashlib import sha256
+        self.sources = [self.source]
+        for source_id, text, complete in [
+            ("attachment-a", "Die Rechnung beträgt 120 Franken.", True),
+            ("attachment-b", "Eingang am 12. September bestätigt.", False),
+        ]:
+            self.sources.append({**self.source, "source_id": source_id, "role": "attachment",
+                "filename": source_id + ".txt", "media_type": "text/plain", "text": text,
+                "source_sha256": sha256(text.encode()).hexdigest(), "text_sha256": sha256(text.encode()).hexdigest(),
+                "extraction": "utf8_text", "complete": complete})
+        self.reads = []
+
+    def list_sources(self, claim_id):
+        return [{key: value for key, value in source.items() if key != "text"} for source in self.sources]
+
+    def read_source(self, claim_id, source_id):
+        assert claim_id == "source-claim"
+        self.reads.append(source_id)
+        return next(source for source in self.sources if source["source_id"] == source_id)
+
+
+def source_runtime(store, authority, cfg=None):
+    from casepath_api.agent_work.runtime import ToolRuntime
+    cfg = cfg or config()
+    request = {"facts_worker": "external_facts", "context": authority.context("source-claim"),
+               "worker_config": cfg.public(), "worker_config_sha256": digest(cfg.public())}
+    current, _ = store.create("source-claim", "explicit-source-review", request, external_limit=3)
+    assert store.acquire(current["run_id"], "owner")
+    return ToolRuntime(store, authority, current["run_id"], "owner", Role.FACTS, "external")
+
+
+def tool_response(number, functions, cost=0.00001):
+    return httpx.Response(200, json={"id": f"generation-{number}", "model": "test/reader-v1",
+        "choices": [{"finish_reason": "tool_calls", "message": {"tool_calls": [
+            {"id": f"call-{number}-{i}", "type": "function", "function": {"name": name, "arguments": json.dumps(args)}}
+            for i, (name, args) in enumerate(functions)]}}],
+        "usage": {"prompt_tokens": 100, "completion_tokens": 20, "total_tokens": 120, "cost": cost}})
+
+
+def test_host_preparation_avoids_observed_six_request_navigation_failure(tmp_path):
+    """The observed policy wastes six requests unless full preparation is supplied."""
+    authority = PacketAuthority()
+    store = WorkStore(tmp_path / "work.sqlite3")
+    store.configure_external_budget(POLICY)
+    cfg = config()
+    runtime = source_runtime(store, authority, cfg)
+    seen = []
+    def transport(outbound):
+        payload = json.loads(outbound.content)
+        seen.append(payload)
+        packet = next((json.loads(message["content"]) for message in payload["messages"]
+                       if message["role"] == "user" and message["content"].startswith("{")), None)
+        prepared = packet is not None and packet.get("preparation") == "deterministic_host_reader"
+        number = len(seen)
+        span = next((json.loads(message["content"])["result"] for message in reversed(payload["messages"])
+                     if message["role"] == "tool" and json.loads(message["content"]).get("tool") == "select_source_span"), None)
+        select = ("select_source_span", {"source_id": "message", "start": 0, "end": len(authority.text), "quote": authority.text})
+        propose = ("propose_assertion", {"assertion_id": "notice", "span_id": span["span_id"] if span else "missing", "text": authority.text})
+        if prepared:
+            # A user message contains real host results; no invented model history.
+            assert packet["claim_id"] == "source-claim"
+            assert [row["tool"] for row in packet["results"]] == ["list_sources", "read_customer_message", "open_source", "open_source"]
+            opened = [row["result"] for row in packet["results"][1:]]
+            assert opened == authority.sources
+            assert authority.reads == ["message", "attachment-a", "attachment-b"]
+            assert number != 1 or [message["role"] for message in payload["messages"]] == ["system", "user"]
+            offered = {tool["function"]["name"] for tool in payload["tools"]}
+            assert not offered & {"list_sources", "read_customer_message", "open_source"}
+            assert offered == {"select_source_span", "propose_assertion", "revise_assertion", "flag_conflict", "finish_work"}
+            functions = {1: [select], 2: [propose], 3: [("finish_work", {})]}[number]
+        else:
+            # Exact inefficient navigation shape observed in the real blocked run.
+            functions = {1: [("list_sources", {}), ("read_customer_message", {})],
+                2: [("open_source", {"source_id": "message"})], 3: [select], 4: [propose],
+                5: [("finish_work", {})], 6: [("open_source", {"source_id": "attachment-a"}), ("open_source", {"source_id": "attachment-b"})]}[number]
+        assert len(outbound.content) <= 24000
+        assert payload["max_tokens"] == 800 and payload["tool_choice"] == "required"
+        return tool_response(number, functions)
+    with httpx.Client(transport=httpx.MockTransport(transport)) as client:
+        OpenRouterFactsWorker(cfg, "sk-or-synthetic-test", client).run(runtime)
+    snapshot = store.snapshot(runtime.run_id)
+    assert len(seen) == 3 and snapshot["pending_calls"] == []
+    assert cfg.max_requests == 6 and cfg.max_tool_calls == 20 and cfg.total_cost_limit == Decimal(".02")
+    opened_events = [event for event in snapshot["events"] if event["operation"] == "SOURCE_OPENED"]
+    assert len(opened_events) == 3 and all(event["worker_kind"] == "kernel" for event in opened_events)
+    semantic_events = [event for event in snapshot["events"] if event["operation"] in {"SOURCE_SPAN_SELECTED", "ASSERTION_PROPOSED", "AGENT_COMPLETED"}]
+    assert len(semantic_events) == 3 and all(event["worker_kind"] == "external" for event in semantic_events)
+    assertion = next(row["value"] for row in snapshot["objects"] if row["kind"] == "assertion")
+    assert assertion["text"] == authority.text and assertion["source"]["quote"] == authority.text
+    completion = next(row["value"] for row in snapshot["objects"] if row["kind"] == "role_completion")
+    assert completion["limited_source_extractions"] == ["attachment-b"]
+    assert Decimal(store.external_budget()["actual_cost_usd"]) == Decimal(".00003")
+    assert store.external_budget()["provider_calls_used"] == 3
+    with store.connect() as db:
+        tools = db.execute("SELECT tool_name FROM work_calls WHERE run_id=? AND tool_name!='provider_request'", (runtime.run_id,)).fetchall()
+    assert len(tools) == 7  # Four real host calls plus three real model calls.
+    store.close()
+
+
+@pytest.mark.parametrize("damage", ["source-changed", "bad-text-hash", "oversized", "tool-budget"])
+def test_host_preparation_failure_blocks_before_any_http(tmp_path, damage):
+    from casepath_api.agent_work.runtime import WorkBlocked
+    authority = PacketAuthority()
+    cfg = config(max_tool_calls=6) if damage == "tool-budget" else config()
+    store = WorkStore(tmp_path / "work.sqlite3")
+    store.configure_external_budget(POLICY)
+    runtime = source_runtime(store, authority, cfg)
+    if damage == "source-changed": authority.identity = {**authority.identity, "binding_sha256": "e" * 64}
+    if damage == "bad-text-hash": authority.sources[-1]["text_sha256"] = "e" * 64
+    if damage == "oversized":
+        from hashlib import sha256
+        text = "Ü" * 13000
+        authority.sources[-1].update(text=text, text_sha256=sha256(text.encode()).hexdigest())
+    with httpx.Client(transport=httpx.MockTransport(lambda _: pytest.fail("failed preparation reached HTTP"))) as client:
+        with pytest.raises(WorkBlocked):
+            OpenRouterFactsWorker(cfg, "sk-or-synthetic-test", client).run(runtime)
+    assert store.external_budget()["provider_calls_used"] == 0
+    assert not any(event["operation"] == "PROVIDER_REQUEST_STARTED" for event in store.events(runtime.run_id))
+    assert store.pending_calls(runtime.run_id) == [] and runtime.worker_kind == "external"
+    assert not any(row["kind"] == "role_completion" for row in store.objects(runtime.run_id))
+    store.close()
+
+
+@pytest.mark.parametrize("checkpoint", ["before-list", "list_sources", "read_customer_message", "attachment-a", "attachment-b", "provider-response"])
+def test_host_preparation_and_semantic_work_obey_stop_checkpoints(tmp_path, monkeypatch, checkpoint):
+    from casepath_api.agent_work.store import WorkCancelled
+    authority = PacketAuthority()
+    store = WorkStore(tmp_path / "work.sqlite3")
+    store.configure_external_budget(POLICY)
+    runtime = source_runtime(store, authority)
+    calls, requests = [], []
+    original = runtime.call
+    def call(name, arguments, call_id):
+        result = original(name, arguments, call_id)
+        calls.append(name if name != "open_source" else arguments["source_id"])
+        if calls[-1] == checkpoint: store.request_cancel(runtime.run_id)
+        return result
+    monkeypatch.setattr(runtime, "call", call)
+    if checkpoint == "before-list": store.request_cancel(runtime.run_id)
+    def transport(outbound):
+        requests.append(outbound)
+        assert checkpoint == "provider-response"
+        store.request_cancel(runtime.run_id)
+        return tool_response(1, [("select_source_span", {"source_id": "message", "start": 0, "end": len(authority.text), "quote": authority.text})])
+    with httpx.Client(transport=httpx.MockTransport(transport)) as client:
+        with pytest.raises(WorkCancelled):
+            OpenRouterFactsWorker(config(), "sk-or-synthetic-test", client).run(runtime)
+    expected = ["list_sources", "read_customer_message", "attachment-a", "attachment-b"]
+    count = 0 if checkpoint == "before-list" else 4 if checkpoint == "provider-response" else expected.index(checkpoint) + 1
+    assert calls == expected[:count] and len(requests) == (1 if checkpoint == "provider-response" else 0)
+    assert runtime.worker_kind == "external" and store.pending_calls(runtime.run_id) == []
+    assert not any(row["kind"] in {"assertion", "span", "role_completion"} for row in store.objects(runtime.run_id))
+    store.close()
+
+
+@pytest.mark.parametrize("tool_limit,expected_requests", [(7, 3), (20, 6)])
+def test_prepared_sources_do_not_bypass_exact_quote_gate_or_any_budget(tmp_path, tool_limit, expected_requests):
+    from casepath_api.agent_work.runtime import WorkBlocked
+    authority = PacketAuthority()
+    store = WorkStore(tmp_path / "work.sqlite3")
+    store.configure_external_budget(POLICY)
+    cfg = config(max_tool_calls=tool_limit)
+    runtime = source_runtime(store, authority, cfg)
+    seen = []
+    def transport(outbound):
+        payload = json.loads(outbound.content)
+        seen.append(payload)
+        if len(seen) > 1:
+            rejected = json.loads(payload["messages"][-1]["content"])
+            assert rejected["ok"] is False and "exact source substring" in rejected["error"]
+        return tool_response(len(seen), [("select_source_span", {"source_id": "message", "start": 0, "end": 8, "quote": "Invented"})])
+    with httpx.Client(transport=httpx.MockTransport(transport)) as client:
+        with pytest.raises(WorkBlocked, match="tool budget|request limit"):
+            OpenRouterFactsWorker(cfg, "sk-or-synthetic-test", client).run(runtime)
+    assert len(seen) == expected_requests
+    assert authority.reads == ["message", "attachment-a", "attachment-b"]
+    assert not any(row["kind"] in {"span", "assertion", "role_completion"} for row in store.objects(runtime.run_id))
+    assert len([event for event in store.events(runtime.run_id) if event["operation"] == "GATE_REJECTED"]) == expected_requests
+    assert Decimal(store.external_budget()["actual_cost_usd"]) == Decimal(".00001") * expected_requests
+    assert store.external_budget()["unknown_calls"] == 0 and store.pending_calls(runtime.run_id) == []
+    store.close()
+
+
 def test_mocked_model_uses_real_source_gates_and_never_records_private_reasoning(tmp_path):
     from casepath_api.agent_work.runtime import ToolRuntime
     authority = SourceAuthority()
@@ -248,8 +437,6 @@ def test_mocked_model_uses_real_source_gates_and_never_records_private_reasoning
         assert "cache_control" not in json.dumps(payload) and "plugins" not in payload
         assert private not in json.dumps(payload)
         if len(seen) == 1:
-            functions = [("list_sources", {}), ("read_customer_message", {})]
-        elif len(seen) == 2:
             functions = [("select_source_span", {"source_id": "message", "start": 0, "end": len(authority.text), "quote": authority.text})]
         else:
             selected = json.loads(payload["messages"][-1]["content"])["result"]
@@ -261,7 +448,7 @@ def test_mocked_model_uses_real_source_gates_and_never_records_private_reasoning
     client = httpx.Client(transport=httpx.MockTransport(transport))
     OpenRouterFactsWorker(cfg, "sk-or-synthetic-test", client).run(ToolRuntime(store, authority, run_id, "owner", Role.FACTS, "external"))
     snapshot = store.snapshot(run_id)
-    assert len(seen) == 3 and snapshot["pending_calls"] == []
+    assert len(seen) == 2 and snapshot["pending_calls"] == []
     assertion = next(o["value"] for o in snapshot["objects"] if o["kind"] == "assertion")
     assert assertion["text"] == authority.text and assertion["status"] == "reported"
     assert assertion["source"]["scope"] == "source_statement_not_established_fact"
@@ -270,25 +457,27 @@ def test_mocked_model_uses_real_source_gates_and_never_records_private_reasoning
     client.close(); store.close()
 
 
-@pytest.mark.parametrize("kind", ["different-model", "no-tools", "oversized", "duplicate-json", "unavailable-tool"])
+@pytest.mark.parametrize("kind", ["different-model", "no-tools", "oversized", "duplicate-json", "unavailable-tool", "host-only-tool"])
 def test_invalid_provider_envelopes_never_produce_work_or_retry(tmp_path, kind):
     from casepath_api.agent_work.runtime import ToolRuntime, WorkBlocked
     store = WorkStore(tmp_path / "work.sqlite3")
     store.configure_external_budget(POLICY)
-    run_id = run(store, "explicit-invalid-response")
+    runtime = source_runtime(store, PacketAuthority())
+    run_id = runtime.run_id
     calls = []
     def transport(request):
         calls.append(request)
         if kind == "oversized": return httpx.Response(200, content=b"x" * 128001)
         arguments = '{"a":1,"a":2}' if kind == "duplicate-json" else '{}'
         tools = [] if kind == "no-tools" else [{"id": "call", "type": "function", "function": {
-            "name": "execute_shell" if kind == "unavailable-tool" else "list_sources", "arguments": arguments}}]
+            "name": "execute_shell" if kind == "unavailable-tool" else "list_sources" if kind == "host-only-tool" else "finish_work", "arguments": arguments}}]
         return httpx.Response(200, json={"model": "other/model" if kind == "different-model" else "test/reader", "choices": [{"message": {"tool_calls": tools}}]})
     client = httpx.Client(transport=httpx.MockTransport(transport))
     worker = OpenRouterFactsWorker(config(), "sk-or-synthetic-test", client)
     with pytest.raises(WorkBlocked):
-        worker.run(ToolRuntime(store, object(), run_id, "owner", Role.FACTS, "external"))
-    assert len(calls) == 1 and store.snapshot(run_id)["objects"] == []
+        worker.run(runtime)
+    assert len(calls) == 1
+    assert {row["kind"] for row in store.snapshot(run_id)["objects"]} == {"opened_source"}
     assert store.external_budget()["unknown_calls"] == 1
     assert len(store.pending_calls(run_id)) == 1
     client.close(); store.close()
@@ -298,9 +487,12 @@ def test_context_bound_stops_request_before_send(tmp_path):
     from casepath_api.agent_work.runtime import ToolRuntime, WorkBlocked
     store = WorkStore(tmp_path / "work.sqlite3")
     cfg = config(context_length=8192, max_request_bytes=24000)
-    run_id = run(store, "explicit-context-bound")
-    runtime = ToolRuntime(store, object(), run_id, "owner", Role.FACTS, "external")
-    runtime.claim_id = "x" * 10000
+    from hashlib import sha256
+    authority = SourceAuthority()
+    text = "x" * 9000
+    authority.source.update(text=text, text_sha256=sha256(text.encode()).hexdigest())
+    runtime = source_runtime(store, authority, cfg)
+    run_id = runtime.run_id
     client = httpx.Client(transport=httpx.MockTransport(lambda _: pytest.fail("context overflow sent a request")))
     with pytest.raises(WorkBlocked, match="context"):
         OpenRouterFactsWorker(cfg, "sk-or-synthetic-test", client).run(runtime)

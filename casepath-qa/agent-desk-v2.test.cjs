@@ -50,7 +50,7 @@ test('closed desk peeks leave the saved reason, real work, coverage and unsent d
  assert.match(visible,/<p class="ad-reason">Two sources disagree\.<\/p>/);
  assert.match(visible,/<p class="ad-work-summary">/);
  for(const text of ['Six review roles finished; findings need handler review.','3 of 3 original bound sources read.','Draft, not sent.'])assert.ok(visible.includes(text),text);
- assert.match(html,/<details class="ad-peek"><summary>What was checked<\/summary>/);
+ assert.match(html,/<details class="ad-peek"><summary>View source and review<\/summary>/);
  assert.match(html,/data-desk-evidence="clm_1"/);assert.equal(JSON.stringify(reviewed),original);
 });
 
