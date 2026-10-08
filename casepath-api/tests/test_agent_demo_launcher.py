@@ -39,7 +39,7 @@ def prepared(tmp_path, monkeypatch):
     path.write_text(json.dumps(boot))
     calls = []
     def checked(argv, **kw):
-        calls.append((argv, kw))
+        calls.append((argv, {**kw, "env": dict(kw["env"])}))
         if argv[1:3] == ["rev-parse", "HEAD"]:
             return head.encode()
         return b""
@@ -59,6 +59,35 @@ def test_preflight_reuses_exact_capsule_and_read_only_history_closure(prepared, 
     assert str(prepared.capsule / "casepath/tools/validate_local_runtime_history.py") in history
     assert all("OPENROUTER_API_KEY" not in kw["env"] for _, kw in prepared.calls)
     assert len([c for c in commands if c[-1] == "verify"]) == 2
+
+
+@pytest.mark.parametrize("inherited", [None, "b" * 40, "unknown"])
+def test_preflight_binds_every_verifier_to_validated_git_head(prepared, monkeypatch, inherited):
+    if inherited is None:
+        monkeypatch.delenv("CASEPATH_SOURCE_COMMIT", raising=False)
+    else:
+        monkeypatch.setenv("CASEPATH_SOURCE_COMMIT", inherited)
+    info = demo.preflight(prepared.repo)
+    assert info["env"]["CASEPATH_SOURCE_COMMIT"] == prepared.head
+    assert all("CASEPATH_SOURCE_COMMIT" not in options["env"]
+               for _, options in prepared.calls[:2])
+    assert len(prepared.calls[2:]) == 4  # Both trees, journal, and history.
+    assert all(options["env"]["CASEPATH_SOURCE_COMMIT"] == prepared.head
+               for _, options in prepared.calls[2:])
+
+
+def test_invalid_git_head_cannot_fall_back_to_inherited_commit(prepared, monkeypatch):
+    monkeypatch.setenv("CASEPATH_SOURCE_COMMIT", prepared.head)
+    checked = demo.run_checked
+    def invalid_head(argv, **options):
+        result = checked(argv, **options)
+        return b"unknown" if argv[1:3] == ["rev-parse", "HEAD"] else result
+    monkeypatch.setattr(demo, "run_checked", invalid_head)
+    with pytest.raises(demo.DemoError, match="no exact source commit"):
+        demo.preflight(prepared.repo)
+    assert len(prepared.calls) == 2
+    assert all("CASEPATH_SOURCE_COMMIT" not in options["env"]
+               for _, options in prepared.calls)
 
 
 def test_release_verifier_loads_real_dependencies_in_isolated_pinned_python(prepared):

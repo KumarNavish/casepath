@@ -117,6 +117,7 @@ def preflight(repository):
     head = run_checked(["/usr/bin/git", "rev-parse", "HEAD"], cwd=repository, env=env).decode().strip()
     if not re.fullmatch(r"[0-9a-f]{40}", head):
         raise DemoError("The checkout has no exact source commit.")
+    env["CASEPATH_SOURCE_COMMIT"] = head
     manifest_sha = sha(regular(repository / "casepath/source-manifest.json"))
     capsule = runtime / "source-capsules" / manifest_sha
     boot_raw = regular(runtime / "runtime-boot-receipt.json", 64_000_000)
