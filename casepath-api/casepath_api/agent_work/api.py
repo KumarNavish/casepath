@@ -62,7 +62,7 @@ def create_agent_work_router(service_getter):
                         cursor=event['sequence']
                         yield f"id: {cursor}\nevent: work\ndata: {json.dumps(event,ensure_ascii=False)}\n\n"
                     run=await asyncio.to_thread(service.store.get_run,run_id)
-                    if run['status'] in {'completed','blocked','failed','cancelled'} and not packet['events']:
+                    if run['status'] in {'completed','blocked','failed','cancelled','interrupted'} and not packet['events']:
                         yield 'event: done\ndata: {}\n\n'
                         return
                 except (WorkStoreError,ValueError):

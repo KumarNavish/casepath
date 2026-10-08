@@ -7,23 +7,24 @@ const vm=require('node:vm');
 const source=fs.readFileSync(path.join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');
 
 // Execute the production navigation functions without starting the claim API.
-function fixture(){
+function fixture({mobile=false}={}){
  const names=['overview','process','documents'],storage=new Map();
  const tabs=names.map(name=>({dataset:{claimSection:name},attrs:{},setAttribute(k,v){this.attrs[k]=v},focus(){this.focused=true},closest(){return this}}));
  const panes=names.map(name=>({dataset:{claimPane:name},fields:[{value:'Unsaved handler explanation'}]}));
  const column={scrollTop:150},rail={setAttribute(){},removeAttribute(){}},toggle={setAttribute(k,v){this[k]=v}};
- const panel={dataset:{},querySelector:s=>s==='.cp-work-column'?column:null,querySelectorAll:s=>s==='[data-claim-section]'?tabs:s==='[data-claim-pane]'?panes:s==='[data-open-inspector]'?[toggle]:[]};
+ const panel={dataset:{},scrollTop:150,querySelector:s=>s==='.cp-work-column'?column:null,querySelectorAll:s=>s==='[data-claim-section]'?tabs:s==='[data-claim-pane]'?panes:s==='[data-open-inspector]'?[toggle]:[]};
  Object.defineProperty(panel,'innerHTML',{set(){throw Error('Navigation must keep mounted forms');}});
- const motions=[];
+ const motions=[],listeners={};
  const context={state:{detail:{state:{claim_id:'claim-a'}},claimSection:'overview',sectionScroll:{},inspectorOpen:false,motion:0},window:{CasePathMotion:{enter(...args){motions.push(args);}}},
+  mobileWorkbench:{matches:mobile},
   sessionStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},
-  $:s=>({'#cwDetailPanel':panel,'#cwDetail':{hidden:false},'.cp-source-rail':rail}[s]),root:{querySelector(){return null}},closeDetail(){throw Error('Unexpected close');}};
+  $:s=>({'#cwDetailPanel':panel,'#cwDetail':{hidden:false},'.cp-source-rail':rail}[s]),root:{querySelector(){return null},addEventListener(type,handler){listeners[type]=handler;}},closeDetail(){throw Error('Unexpected close');}};
  vm.createContext(context);
- for(const [from,to] of [['savePresentation','syncReasoning'],['selectClaimSection','showWorkspaceSection'],['applyInspectorState','openInspector'],['workspaceKeyboard','packetSelection']]){
+ for(const [from,to] of [['claimScrollRegion','savePresentation'],['savePresentation','syncReasoning'],['selectClaimSection','showWorkspaceSection'],['applyInspectorState','openInspector'],['workspaceKeyboard','packetSelection']]){
   const start=source.indexOf('  function '+from+'('),end=source.indexOf('  function '+to+'(');
   assert.ok(start>=0&&end>start);vm.runInContext(source.slice(start,end),context);
  }
- return {context,tabs,panes,column,rail,toggle,motions};
+ return {context,tabs,panes,panel,column,rail,toggle,motions,listeners};
 }
 
 test('switching sections preserves mounted edits and remembers each scroll position',()=>{
@@ -37,6 +38,21 @@ test('switching sections preserves mounted edits and remembers each scroll posit
  c.selectClaimSection('overview');assert.equal(column.scrollTop,150);
  c.selectClaimSection('documents');assert.equal(column.scrollTop,90);
  assert.equal(motions.length,3);c.selectClaimSection('documents');assert.equal(motions.length,3);
+ panes.forEach((pane,index)=>{assert.equal(pane.fields[0],fields[index]);assert.equal(pane.fields[0].value,'Unsaved handler explanation');});
+});
+
+test('mobile sections restore the page scroll owner and ignore nested source scrolling',()=>{
+ const {context:c,panel,column,rail,panes,listeners}=fixture({mobile:true}),fields=panes.map(p=>p.fields[0]);
+ panel.scrollTop=212;listeners.scroll({target:panel});
+ assert.equal(c.state.sectionScroll.overview,212);
+ column.scrollTop=48;listeners.scroll({target:column});
+ rail.scrollTop=67;listeners.scroll({target:rail});
+ assert.equal(c.state.sectionScroll.overview,212);
+ c.selectClaimSection('documents');assert.equal(panel.scrollTop,0);
+ panel.scrollTop=91;listeners.scroll({target:panel});
+ c.selectClaimSection('overview');assert.equal(panel.scrollTop,212);
+ c.selectClaimSection('documents');assert.equal(panel.scrollTop,91);
+ assert.equal(column.scrollTop,48,'Mobile navigation must not restore the desktop column');
  panes.forEach((pane,index)=>{assert.equal(pane.fields[0],fields[index]);assert.equal(pane.fields[0].value,'Unsaved handler explanation');});
 });
 
@@ -57,6 +73,112 @@ test('section choice is claim-scoped and restoring a source never opens its pane
  assert.equal(c.state.claimSection,'documents');assert.equal(c.state.sourceSelection.index,1);assert.equal(c.state.inspectorOpen,false);
  c.applyInspectorState();assert.ok(rail.hidden&&rail.inert);assert.equal(toggle['aria-expanded'],'false');
  c.state.inspectorOpen=true;c.applyInspectorState();assert.equal(rail.hidden,false);assert.equal(rail.inert,false);assert.equal(toggle['aria-expanded'],'true');
+});
+
+function contextualPaneFixture({deferred=false}={}){
+ const f=fixture(),c=f.context,selected={selected:'a',expanded:true,mode:null,preview:{},error:'Earlier view error'};
+ const process={claim_id:'claim-a',workspace_revision:4,workspace_state_sha256:'saved-state',graph:{nodes:[{node_id:'a'},{node_id:'b'}],edges:[{edge_id:'e',source_node_id:'a',target_node_id:'b'}]},evaluation:{documents:[{document_type:'notice',required_at_node_ids:['b']}]}};
+ c.state.detail={state:{claim_id:'claim-a',revision:4,state_sha256:'saved-state',intake_assessment:{}},artifacts:[]};c.state.detailEpoch=1;c.state.causal=deferred?null:process;
+ const panel=c.$('#cwDetailPanel'),originalQuery=panel.querySelector,focuses=[],clicks=[],requests=[],renders=[];let nodes;
+ const target=(kind)=>({kind,parentElement:null,closest(){return null;},scrollIntoView(){this.scrolled=true;},focus(){focuses.push(this);}});
+ function mount(){
+  const docRow=target('requirement:notice'),node=target('node:'+selected.selected),field=target(selected.mode||'field'),form={querySelector:()=>field};
+  const control=(kind,mode)=>({...target(kind),click(){clicks.push(kind);selected.mode=mode;mount();}});
+  nodes={docRow,node,field,form,docControl:control('review:notice','document:notice'),edgeControl:control('edge:e','edge:e')};
+  panel.querySelector=selector=>{
+   if(selector==='#cpPane-documents [data-document-type="notice"]')return nodes.docRow;
+   if(selector===`[data-causal-node="${selected.selected}"]`)return nodes.node;
+   if(selector==='.cp-process-inspector [data-causal-document-open="notice"]')return selected.selected==='b'?nodes.docControl:null;
+   if(selector==='.cp-process-inspector [data-causal-edge="e"]')return nodes.edgeControl;
+   if(selector==='[data-causal-document="notice"]')return selected.mode==='document:notice'?nodes.form:null;
+   if(selector==='[data-causal-form="edge-edit"]')return selected.mode==='edge:e'?nodes.form:null;
+   return originalQuery.call(panel,selector);
+  };
+ }
+ mount();c.window.CasePathCausal={session:()=>selected};c.CSS={escape:value=>value};
+ c.activeDetailContext=()=>({epoch:c.state.detailEpoch,claimId:c.state.detail.state.claim_id});
+ c.isActiveDetail=context=>context.epoch===c.state.detailEpoch&&context.claimId===c.state.detail.state.claim_id&&!c.$('#cwDetail').hidden;
+ c.syncReasoning=()=>{};c.setAdjacentClaims=()=>{};
+ vm.runInContext(source.slice(source.indexOf('  function restoreWorkbenchPresentation('),source.indexOf("  compactWorkbench.addEventListener('change'")),c);
+ c.renderDetail=detail=>{renders.push(detail);mount();c.restoreWorkbenchPresentation();};c.verifyCausalResponse=async value=>value;
+ let releaseRead,releaseEditor;
+ const read=deferred?new Promise(resolve=>releaseRead=resolve):Promise.resolve(process),editor=deferred?new Promise(resolve=>releaseEditor=resolve):Promise.resolve();
+ c.request=(url,options)=>{requests.push({url,options});return read;};c.loadCausalEditor=()=>editor;
+ c.openInspector=()=>{c.state.inspectorOpen=true;};
+ vm.runInContext(source.slice(source.indexOf('  let causalRead;'),source.indexOf('  async function reloadCausalProcess(')),c);
+ return {...f,c,selected,process,focuses,clicks,requests,renders,nodes:()=>nodes,ready(){releaseRead?.(process);releaseEditor?.();}};
+}
+
+test('contextual process navigation selects a real node and uses its existing exact source review',async()=>{
+ const f=contextualPaneFixture(),c=f.c;
+ assert.equal(await c.openPane('process',{node_id:'b',document_type:'notice'}),true);
+ assert.equal(f.selected.selected,'b');assert.equal(f.selected.expanded,false);assert.equal(f.selected.preview,null);
+ assert.deepEqual(f.clicks,['review:notice']);assert.equal(f.selected.mode,'document:notice');
+ assert.equal(f.focuses.at(-1),f.nodes().field);assert.ok(f.focuses.at(-1).scrolled);assert.equal(f.requests.length,0);
+ const invalid=contextualPaneFixture();assert.equal(await invalid.c.openPane('process',{node_id:'missing',document_type:'notice'}),false);
+ assert.equal(invalid.clicks.length,0);assert.equal(invalid.focuses.length,0);
+ const unrelated=contextualPaneFixture();assert.equal(await unrelated.c.openPane('process',{node_id:'a',document_type:'notice'}),false);
+ assert.equal(unrelated.clicks.length,0);assert.equal(unrelated.selected.mode,null);
+ const busy=contextualPaneFixture(),savedPreview=busy.selected.preview;busy.selected.busy=true;
+ assert.equal(await busy.c.openPane('process',{node_id:'b',document_type:'notice'}),false);
+ assert.equal(busy.selected.selected,'a');assert.equal(busy.selected.preview,savedPreview);assert.equal(busy.clicks.length,0);
+});
+
+test('contextual edge and Documents targets focus their actual controls without changing saved work',async()=>{
+ const f=contextualPaneFixture(),before=JSON.stringify(f.process);
+ assert.equal(await f.c.openPane('process',{edge_id:'e'}),true);assert.equal(f.selected.selected,'b');
+ assert.deepEqual(f.clicks,['edge:e']);assert.equal(f.selected.mode,'edge:e');assert.equal(f.focuses.at(-1),f.nodes().field);
+ assert.equal(await f.c.openPane('documents',{document_type:'notice'}),true);assert.equal(f.c.state.claimSection,'documents');
+ assert.equal(f.focuses.at(-1),f.nodes().docRow);assert.ok(f.nodes().docRow.scrolled);
+ assert.equal(await f.c.openPane('documents',{document_type:'not-present'}),false);
+ assert.equal(await f.c.openPane('process',{edge_id:'not-present'}),false);
+ assert.equal(JSON.stringify(f.process),before);assert.equal(f.requests.length,0);
+});
+
+test('context navigation shares the real process/editor load and waits for both before focusing',async()=>{
+ const f=contextualPaneFixture({deferred:true}),c=f.c;
+ const existing=c.loadCausalProcess(c.activeDetailContext()),opening=c.openPane('process',{node_id:'b',document_type:'notice'});
+ assert.equal(c.state.claimSection,'process');assert.equal(f.requests.length,1);assert.equal(f.focuses.length,0);
+ assert.equal(f.requests[0].options.method,undefined);f.ready();await existing;assert.equal(await opening,true);
+ assert.equal(f.requests.length,1);assert.equal(f.selected.mode,'document:notice');assert.equal(f.focuses.at(-1),f.nodes().field);
+});
+
+test('late contextual navigation cannot steal focus after another pane, tab or claim is chosen',async()=>{
+ for(const later of ['pane','tab','claim']){
+  const f=contextualPaneFixture({deferred:true}),c=f.c,opening=c.openPane('process',{node_id:'b',document_type:'notice'});
+  if(later==='pane')await c.openPane('sources');
+  else if(later==='tab')c.selectClaimSection('documents');
+  else{c.state.detailEpoch++;c.state.detail={state:{claim_id:'claim-b',revision:1,state_sha256:'other',intake_assessment:{}}};}
+  f.ready();assert.equal(await opening,false);assert.equal(f.focuses.length,0);assert.equal(f.clicks.length,0);
+  if(later==='pane')assert.equal(c.state.inspectorOpen,true);
+  if(later==='tab')assert.equal(c.state.claimSection,'documents');
+ }
+});
+
+test('a refresh during process hash verification cannot publish a stale loading error',async()=>{
+ const f=contextualPaneFixture({deferred:true}),c=f.c;let finishVerification;
+ c.verifyCausalResponse=()=>new Promise(resolve=>finishVerification=resolve);
+ const reading=c.loadCausalProcess(c.activeDetailContext());f.ready();await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(typeof finishVerification,'function');
+ c.state.detail.state.revision=5;c.state.detail.state.state_sha256='new-state';
+ finishVerification(f.process);await reading;
+ assert.equal(c.state.causal,null);assert.equal(c.state.causalLoading,null);
+ assert.equal(f.renders.length,1,'The current claim can render and request its fresh process');
+});
+
+test('an older process load cannot clear a newer revision load',async()=>{
+ for(const sharedContext of [false,true]){
+  const f=contextualPaneFixture(),c=f.c,reads=[];c.state.causal=null;
+  c.request=()=>new Promise(resolve=>reads.push(resolve));
+  const context=c.activeDetailContext(),first=c.loadCausalProcess(context);
+  c.state.detail.state.revision=5;c.state.detail.state.state_sha256='new-state';
+  const nextContext=sharedContext?context:c.activeDetailContext(),second=c.loadCausalProcess(nextContext),newRead=c.state.causalLoading;
+  assert.equal(newRead.context,nextContext);assert.equal(newRead.revision,5);
+  assert.equal(reads.length,2);reads[0](f.process);await first;
+  assert.equal(c.state.causalLoading,newRead);assert.equal(c.state.causal,null);assert.equal(f.renders.length,0);
+  reads[1]({...f.process,workspace_revision:5,workspace_state_sha256:'new-state'});await second;
+  assert.equal(c.state.causal.workspace_revision,5);assert.equal(c.state.causalLoading,null);assert.equal(f.renders.length,1);
+ }
 });
 
 test('the queue omits the legacy paper-method loader while both legacy modes retain it',()=>{

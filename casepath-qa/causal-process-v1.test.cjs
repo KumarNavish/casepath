@@ -76,6 +76,61 @@ test('selected step relationships use evaluated activation and explicit directio
  assert.doesNotMatch(html,/Source supports|Evidence proves/);
 });
 
+test('a local graph renders one selected step between incoming prerequisites and outgoing branches',()=>{
+ const v=view('single-connected-graph');
+ v.graph.nodes=[node('a',{label:'Current review'}),node('before',{label:'Check source'}),node('yes',{label:'Request service copy'}),node('no',{label:'Continue notice review'}),node('unrelated',{label:'Unrelated archive'})];
+ v.graph.edges=[
+  {edge_id:'prerequisite',source_node_id:'before',target_node_id:'a',relation:'requires',condition:{const:'true'}},
+  {edge_id:'confirmed',source_node_id:'a',target_node_id:'yes',relation:'branches_to',condition:{flag:'family_home'}},
+  {edge_id:'alternative',source_node_id:'a',target_node_id:'no',relation:'branches_to',condition:{not:{flag:'family_home'}}},
+  {edge_id:'not-local',source_node_id:'no',target_node_id:'unrelated',relation:'enables',condition:{const:'true'}}
+ ];
+ v.evaluation.nodes=v.graph.nodes.map(n=>({...n,execution_state:n.node_id==='no'?'inactive':'ready'}));
+ v.evaluation.edges=v.graph.edges.map((e,i)=>({...e,activation:['true','true','false','false'][i]}));
+ const original=JSON.stringify(v),html=ui.contextMarkup(v,'a',{scope:'overview'});
+ assert.equal((html.match(/data-causal-node="a"/g)||[]).length,1);
+ assert.equal((html.match(/<strong>Current review<\/strong>/g)||[]).length,1);
+ assert.ok(html.indexOf('data-causal-node="before"')<html.indexOf('data-causal-node="a"'));
+ assert.ok(html.indexOf('data-causal-node="a"')<html.indexOf('data-causal-node="yes"'));
+ assert.ok(html.indexOf('data-causal-node="a"')<html.indexOf('data-causal-node="no"'));
+ assert.match(html,/class="cp-context-neighbors cp-context-incoming" aria-label="Incoming connections"/);
+ assert.match(html,/class="cp-context-neighbors cp-context-outgoing" aria-label="Outgoing connections"/);
+ assert.match(html,/data-relationship-id="alternative" data-activation="false"[\s\S]*?Not \(Family home\)[\s\S]*?Inactive connection/);
+ assert.match(html,/data-relationship-id="confirmed" data-activation="true"[\s\S]*?Family home[\s\S]*?Active connection/);
+ assert.doesNotMatch(html,/Unrelated archive|not-local/);
+ assert.equal(JSON.stringify(v),original);
+});
+
+test('parallel relationships share their actual neighbor and preserve every connection state',()=>{
+ const v=view('parallel-connections');v.graph.nodes.push(node('c',{label:'Later review'}));
+ v.graph.edges=[
+  {edge_id:'flow',source_node_id:'b',target_node_id:'a',relation:'enables',condition:{const:'true'}},
+  {edge_id:'dependency',source_node_id:'b',target_node_id:'a',relation:'requires',condition:{flag:'family_home'}},
+  {edge_id:'unknown',source_node_id:'a',target_node_id:'c',relation:'blocks',condition:{const:'true'}}
+ ];
+ // The helper presents the supplied projection; it does not reevaluate or hide a relationship.
+ v.evaluation.edges=[{edge_id:'flow',activation:'true'},{edge_id:'dependency',activation:'unresolved'}];
+ const html=ui.contextMarkup(v,'a'),incoming=html.slice(html.indexOf('class="cp-context-neighbors cp-context-incoming"'),html.indexOf('<div class="cp-context-selected">'));
+ assert.equal((incoming.match(/data-causal-node="b"/g)||[]).length,1);
+ for(const edge of ['flow','dependency','unknown'])assert.equal((html.match(new RegExp('data-causal-edge="'+edge+'"','g'))||[]).length,1);
+ assert.match(html,/data-relationship-id="dependency" data-activation="unresolved"[\s\S]*?Needs clarification/);
+ assert.match(html,/data-relationship-id="unknown" data-activation="unknown"[\s\S]*?Not evaluated/);
+});
+
+test('reusable context markup escapes source text and keeps element identities scoped',()=>{
+ const v=view('context-escaping');v.graph.nodes[0].label='<img src=x onerror=alert(1)>';
+ v.graph.nodes[1].label='Review "source" & condition';
+ v.graph.edges=[{edge_id:'unsafe"edge',source_node_id:'b',target_node_id:'a',relation:'requires',condition:{flag:'<svg onload=alert(1)>'}}];
+ const first=ui.contextMarkup(v,'a',{scope:'overview"<'}),second=ui.contextMarkup(v,'a',{scope:'process'});
+ assert.doesNotMatch(first,/<img|<svg|scope="overview"</);
+ assert.match(first,/&lt;img/);assert.match(first,/&lt;svg/);assert.match(first,/Review &quot;source&quot; &amp; condition/);
+ assert.match(first,/data-causal-edge="unsafe&quot;edge"/);
+ const ids=[...`${first}${second}`.matchAll(/\sid="([^"]+)"/g)].map(match=>match[1]);
+ assert.equal(ids.length,new Set(ids).size);
+ assert.match(ui.contextMarkup(view('isolated-context'),'a'),/No recorded connections for this step/);
+ assert.equal(ui.contextMarkup(null,'a'),'');assert.equal(ui.contextMarkup(v,'missing'),'');
+});
+
 test('connected documents show their evaluated requirement and review state',()=>{
  const v=view('relationship-documents');v.graph.nodes[0].document_types=['notice','optional_note'];
  v.evaluation.documents=[{document_type:'notice',label:'Notice',required_at_node_ids:['a'],route_state:'held_not_reviewed',requirement_class:'mandatory'},{document_type:'optional_note',label:'Background note',required_at_node_ids:['a'],route_state:'optional',requirement_class:'optional'}];
@@ -151,4 +206,12 @@ test('preview and saved impact disclosures preserve independent entity scopes',(
  assert.ok(!saved.includes('data-av-disclosure="saved:Step:a" open'));
  const ids=[...`${preview}${saved}`.matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]);assert.equal(ids.length,new Set(ids).size);
  assert.ok(!ui.impactMarkup(impact).includes('data-av-disclosure'));
+});
+
+
+test('an unresolved branch stays possible until its signed evaluation activates it',()=>{
+ const v=view('possible-branch');v.graph.edges=[{edge_id:'branch',source_node_id:'b',target_node_id:'a',relation:'branches_to',condition:{flag:'family_home'}}];
+ v.evaluation.edges=[{edge_id:'branch',activation:'unresolved'}];
+ const pending=ui.contextMarkup(v,'a');assert.match(pending,/>Possible branch</);assert.match(pending,/Needs clarification/);assert.doesNotMatch(pending,/>Branches to</);
+ v.evaluation.edges[0].activation='true';const active=ui.contextMarkup(v,'a');assert.match(active,/>Branches to</);assert.match(active,/Active connection/);assert.doesNotMatch(active,/Possible branch/);
 });

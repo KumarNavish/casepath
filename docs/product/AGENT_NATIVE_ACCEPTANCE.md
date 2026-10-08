@@ -1,12 +1,225 @@
 # Agent-native acceptance record
 
+## Fractional-cost verification gate
+
+A subsequent offline preflight reproduced a cross-language signature mismatch using real work-store provider receipts: Python serialized a cost of 0.00001 as `1e-05` and zero as `0.0`, while JavaScript reserialization changed those numeric bytes. A normal 0.001-cost receipt verified. This would reject valid live work in the browser despite an intact journal. No paid call was needed to expose it.
+
+The interrupted `v5-full-suite-committable.log` records **1,324 passed, 10 skipped and 9 warnings** before deliberate interruption for the repair; it is not a full-suite pass. The repair preserves original numeric tokens at response parsing and uses them when verifying signed projections. It does not change journal events, receipts, cost amounts or authority semantics. The final frontend suite passes 259 tests in `v5-numeric-final-frontend.log`, including tiny costs, zero-cost floats, nested packets, unchanged cached response identity and rejected mutation or cloning. Real backend run and claim-agent packets were also checked against the unchanged Python hash bytes. The final full-suite outcome is retained separately outside source.
+
+## Final decision-copy clarification
+
+A screenshot-only reviewer understood the next action but found identical saved and proposed answers ambiguous. Pending condition questions now label the saved or intake reading **unconfirmed**; the backend already excludes conditions confirmed through a handler correction. This preserves the distinction between saved data and human review without changing question identities, hashes, proposals or journal semantics. The initial `v5-full-suite-final-seal.log` was deliberately interrupted before this copy edit and is not a successful suite result; final sealing uses a separate log.
+
+## 8 October stable mobile controls
+
+The final mobile retake, `v5-mobile-stable-controls-reference-work-journeys.json`, records a real reference run at 390×844 paused at role 3, reloaded, resumed with the same run ID and completed all six roles. The completed disclosure retains its node and keyboard focus. The saved decision converges automatically at revision 165 across claim, process, draft, agent and desk; native undo restores the preceding process at revision 167. Both stages use zero provider requests, and reduced motion produces no work animations. The earlier detached-button failure remains in `v5-mobile-final-reference-work-journeys.json`.
+
+Both rendering paths now keep unchanged Controls attached while work progresses. Connected-tree regressions check identity, focus and zero detachments, while changed controls and claim boundaries still replace normally. The full frontend suite passes **254 tests** in `v5-stable-controls-frontend.log`. A separate mobile spacing adjustment gives the primary action a 44 px target and reduces surrounding gaps; desktop/tablet geometry and keyboard exact-source/process/document checks are recorded in `v5-final-keyboard-native-links.json`, with the corrected 390 px retake in `v5-final-mobile-native-links.json`. The first mobile geometry failure remains in `v5-final-keyboard-links.log`. The pointer retake was interrupted by a transient intercepted click and is retained in `v5-freeze-native-links.log`; direct inspection then activated the visible source successfully. Final full-suite, committed-runtime and actual-provider outcomes remain in external receipts rather than this source checkpoint.
+
+## 8 October terminal refresh verification
+
+At **8 October 2026, 12:21 UTC**, the coordinated frontend suite passes **251/251** (`v5-terminal-disclosure-frontend.log`). Native summary activation now survives replacement before the queued toggle event, and detached targets and obsolete bindings cannot overwrite it. The existing focus repair remains in place. Completed claims retain a quiet five-second verified read so late draft receipts reach the open workspace.
+
+The real failure is retained in `v5-terminal-refresh-gap.json`: mounted and workspace revision 156 versus saved and agent revision 157. `v5-terminal-refresh-retake.json` then records native undo and automatic convergence at revision 159 across claim, process, draft, agent and desk, with no manual refresh and zero provider calls. Earlier explicit-refresh agreement checks remain narrower evidence.
+
+Current reference work journeys pass at 1440 and 1280 in `v5-retake-reference-work-journeys.json`, and at 768 in `v5-narrow-reference-work-journeys.json`. They include a real interrupted run, reload, same-run completion, focused disclosure close and restored process. Normal motion was observed at desktop widths; the 768 run produced no work animations under reduced motion. The retained narrow failure prompted the disclosure repair; the final 390 retake is still running at this checkpoint. The screenshot-only read is in `v5-screenshot-only-read.md`; it identifies the agent's completed work and the confirmation request, while noting ambiguity in the already-saved answer. No new award score is claimed.
+
+## 8 October final refinement checkpoint
+
+At **8 October 2026, 11:59 UTC**, the source includes stable pending-question priority, completed-review selection of an explicitly linked required document and process step, and a native disclosure-focus repair. The question bytes and preview hashes remain unchanged. Completed detail selection preserves event identities and actual recency; it does not add source-to-step evidence.
+
+The new priority regression failed before repair, then the focused gate passed **8 tests**. Live projection checks passed **30 tests** and work-motion checks passed **8**. A real 1440 px local run then completed six roles and recorded 23 visible event-driven animations, but closing completed history lost summary focus. That failed browser receipt remains in `v5-reference-work-journeys.json`. The handler now restores genuinely lost summary focus without taking it from another control; **246 frontend tests pass** in `v5-focus-repair-frontend.log`.
+
+`v5-keyboard-motion.json` records all four sizes passing native review-stage and exact-source keyboard navigation, source return and focus retention through read refresh, and zero positive-duration decision-preview animations under reduced motion. This is narrower than complete WCAG conformance or live provider acceptance. `v5-live-native-links.json` and `v5-live-layout.json` retain all-width source, process and document link checks. These reference-mode checks made no paid calls.
+
+The independent screenshot critique in `v5-cold-review.md` rated the pre-refinement visible experience 3/5 overall and identified action selection, mobile causal context and incidental recorded details. These scores remain adverse evidence; subsequent source fixes do not retrospectively change them. Final browser retakes, full-suite sealing, committed identity and bounded live-provider evidence remain pending at this checkpoint. The final execution receipts are saved outside the sealed source tree so their later results can be reported without rewriting a tested source manifest.
+
+## 8 October mobile review and packaging checkpoint
+
+Source-edit checkpoint: **8 October 2026, 11:38 UTC**. This section updates the
+current implementation and scoped checks; the earlier checkpoints remain
+historical evidence.
+
+At 540 px and below, the claim panel now owns one vertical scroll region. On a
+fresh visit, completed review appears below the decision. A current run observed
+working opens above it and retains that position through completion until
+explicitly closed or a fresh visit begins. This is per-run presentation state,
+not a journal mutation. Condition questions compare the saved condition or
+intake reading with the unsaved selected answer using existing verified state;
+backend question and preview contracts are unchanged. Stage buttons show their
+labels, with the selected count/status below and complete accessible names.
+Completed stages say Review recorded. The optional paid start/rerun lives inside
+the existing Controls disclosure, with its cost ceiling and expandable model
+details.
+
+| Evidence | Result and limit |
+| --- | --- |
+| `v4-full-suite-functional-seal.log` | **1 failed, 1,830 passed, 10 skipped**. The recursive static asset closure omitted `agent-work-motion-v3.js`. This failed full run is retained. |
+| `v5-static-build-tests.log` | **11 passed** after adding that module to `PUBLIC_ASSETS` and `CONTENT_BOUND_ASSETS` and updating the strict expected inventory to 33 files. This is focused repair evidence, not a full-suite pass. |
+| `v5-integrated-frontend-tests.log` / `v5-integrated-frontend-final-tests.log` | The intermediate failures are retained; after two harness updates, the integrated frontend retest records **244 passed, 0 failed**. |
+| `v5-mobile-initial-check.json` | Built, unsealed reference UI at 390×844 and source claim r135: no overflow, decision action bottom 823.17 px within the 844 px viewport, four 44 px stage buttons, and unchanged decision document position (320.88 px) when history opens. No journal mutation or provider call. |
+
+The mobile receipt covers that one reference-mode viewport. It does not verify
+the configured paid-control layout, a browser journey driven by a real model,
+or a complete four-size visual acceptance of this source. Paid inference
+remains **zero** at this checkpoint. Final source/asset sealing, the full suite
+against the changed source, a new release commit, normal boot, actual bounded
+provider acceptance and external exemplar comparison remain pending. Later
+outcomes belong in the planned external `v4-live-provider-acceptance.json` and
+`v4-final-release-receipt.json`; this checkpoint does not claim those receipts
+exist or pass. No award-quality score or completed-product claim is added.
+
+## 8 October joined knowledge proof and live-review candidate
+
+Source-edit checkpoint: **8 October 2026, 10:27 UTC**.
+
+The saved native sequence now connects a handler correction, separate knowledge
+approval, cross-claim reuse and the resulting checklist/draft change. The exact
+receipts are summarized in
+[`v4-joined-knowledge-proof.md`](../../../casepath-agent-native-v2-evidence/v4-joined-knowledge-proof.md).
+This is evidence of those saved operations; the current live-review candidate
+still has release and real-provider gates below.
+
+| Stage | Saved result and scope |
+| --- | --- |
+| Correct and validate | `v3-learning-chain-correction.json`: source `clm_f69b1747447bc221` adds `lease_contract` to `lt_deadline`; accepted correction r128, validation r129. The lease moves from needed later to needed now. Missing receipt dates and conflicting notice dates remain unresolved. |
+| Separately approve knowledge | `v3-learning-chain-approved.json`: scope preview binds r130, following an automatic draft event; explicit save creates **Early lease evidence for deadline review**, version 1, hash `9a619ae6b4f890b534c5e2fe938a6e54227b9948081883dd0f93b72db0fe57f6`. It contains one validated step and three document definitions, excludes its two boundary relationships, and carries no held files. |
+| Retain knowledge after source restoration | `v3-learning-chain-source-final-restored.json`: source r135 restores the original deadline requirements and lease needed-later state while retaining the approved fragment. This receipt contains a learning projection, not a final source-run/currentness proof. |
+| Reuse in another claim | `v3-learning-chain-reuse.json`: target `clm_0e538990cc6ba7ef` starts at r2 and reaches r4, with claim, process, draft, agent and desk agreeing on state hash `8e4d2d65ea89bc58c8a59855bf26a1fa78319d35bcfb35d4425a490ce544b849`. The fragment-use event adds the lease requirement at `lt_deadline`; the newly prepared draft requests it and remains `draft_not_sent`. The target reference run completed all six roles with zero provider calls. |
+
+Approval and reuse previews passed at 1440×900, 1280×800, 768×1024 and 390×844.
+These are four-size inspections around **one** actual save/reuse sequence. The
+earlier `v3-learning-chain-save.json` remains a failed initial harness result:
+it expected r129 after an automatic draft had advanced the source to r130. The
+later receipt records matching preview/read identities and states that the
+initial script attempted no save. The target had no prepared draft at r2; the
+r4 result proves new draft preparation, not removal from prior draft wording.
+The reviewer was Navish Kumar; this does not imply an assigned accountable
+owner on the target. Its source conflict, missing receipt dates and claim
+outcome remained unresolved. Automatic learning remains false, and
+reviewed-memory save/reuse remains unverified.
+
+The live Facts integration is implemented with a separate explicit local demo
+profile. It pins `anthropic/claude-haiku-5.5` from the inspected catalogue, keeps
+the other five roles deterministic and preserves the existing process engine.
+The allowance is three explicit external runs, at most 18 provider requests,
+USD 0.02 per run and USD 0.10 aggregate. Durable reservations, one provider
+request in flight, exact start retries, owner/current-context/pause guards and
+unknown-outcome non-retry are covered by mocked-transport tests. The normal
+launcher and desk arrival remain provider-free.
+
+The live rail presents recorded Sources, Findings, Process and Documents with
+concise cited summaries and actual event identities. It distinguishes model
+source reading from deterministic checks and labels process mapping as saved
+handling rules. Only recorded source-span and requirement links become visible
+connections; no general source-to-legal-rule provenance or hidden
+chain-of-thought is invented. A stop waits for an already-sent request's outcome;
+clearing a safe terminal external pause makes no new provider request.
+
+Scoped implementation evidence is retained separately:
+
+- `v3-openrouter-implementation.md` and `v3-openrouter-focused-final.log`: 59
+  backend tests passed using isolated stores and mocked transports. Initial
+  failing invariants remain in their original logs.
+- `v3-openrouter-model-preflight.json`: local catalogue and reservation check,
+  with zero provider requests. Its USD 0.0168 six-request upper bound is a
+  reservation calculation, not an observed charge.
+- `v4-live-projection-detail-tests.log`: 18 focused tests passed with five
+  dependency deprecation warnings. Earlier 17-test projection evidence remains
+  separate.
+- `v4-live-stop-resume-tests.log`: nine focused tests passed. Earlier stop-only
+  tests remain separate; overlapping logs are not summed into a suite total.
+- `v4-live-integrated-ui-tests.log` retains an asset-identity mismatch from an
+  unsealed intermediate build. `v4-live-ui-final-gate.log` then records **95
+  focused frontend tests passed**, with no failures; this closes that focused
+  gate, not the full release gate.
+- `v4-live-native-links.json`: native exact-source, process-node and document
+  navigation passed at all four sizes on source revision 135, with no overflow,
+  journal mutation or provider call.
+
+Actual provider execution and observed cost, the browser journey driven by that
+provider, final asset/source sealing, the full suite against that sealed state,
+a new release commit and the external exemplar comparison are **pending at this
+source-edit checkpoint**. The paid run follows sealing, commit and verified
+normal boot, as required by the demo launcher. The planned later external
+evidence files are `v4-live-provider-acceptance.json` and
+`v4-final-release-receipt.json`; neither is claimed to exist or pass here.
+Prior reference journeys and screenshots do not close those gates.
+No new design score, award readiness, Awwwards selection or full WCAG conformance
+is claimed. Earlier acceptance history remains evidence of its own source and
+state.
+
+## 8 October connected-handoff revision
+
+This revision connects the bounded question to a verified process neighborhood,
+attaches document requirements to their generating step, and compares saved
+knowledge with a separately approved reusable fragment. The current/proposed
+basis is explicit; reviewed evidence and missing evidence have distinct actions.
+Controls, mandate and counter-reading are native disclosures. Both claim modules
+load lazily from local hash-bound URLs.
+
+The evidence is in the same external evidence directory. Prior receipts below
+remain labeled as evidence of their own source and state. Final sealing,
+commit, prepared identity and the full-suite result must be established for the
+current candidate by their own release receipts; none can be inferred from an
+unsealed screenshot or a prior-source pass.
+
+- `v3-apply-journeys.json`: all four first-minute passes at lifecycle revisions
+  76/84/92/100 and causal/draft agreement at 78/86/94/102. Native undo restored
+  the family-home route and original lease requirement after each flow.
+- `v3-live-work-journeys.json`: four real starts, checkpoint stops, reloads and
+  explicit same-run resumptions. Each completed all six roles with zero provider
+  requests; native undo restored the working process at 110/114/118/122.
+- `v3-recovery-preview.json` and `v3-recovery-applied.json`: the interrupted
+  390px run is preserved, not silently restarted. Four-size native review is
+  recorded. Reconciliation kept revision 102 and its exact hash; separate Resume
+  completed the same run. The real interruption, timeout and subsequent recovery
+  remain in the receipts.
+- `v3-recovery-network/final-recovery-retakes.json`: four offline save attempts
+  and one online recovery used identical request bytes and idempotency key.
+  Exactly one accepted lifecycle event was found by read-only journal inspection.
+  The prior no-question preflight and missing-proposal preview failure are
+  retained separately. The preview now explicitly keeps both the original agent
+  proposal and the handler's answer.
+- `v3-context-navigation.json` and `v3-controls-focus.json`: four-size exact-node
+  and document navigation, no-save consequence preview, knowledge navigation,
+  and native focus/disclosure preservation across genuine refresh replacement.
+- `v3-refined-knowledge-preview.json` and the matching screenshots: a real scoped
+  proposal at all four sizes, with no approval during this read-only check. Its
+  name, rationale, reviewer, included steps, excluded connections and creation of
+  a new Version 1 are explicit. Existing fragment approval/reuse receipts remain
+  valid evidence of those earlier saved operations.
+- `v3-motion-contract.json` and `v3-latest-core-screens.json`: all four exact
+  viewport sizes pass the latest normal/reduced-motion and core-layout checks.
+  Preview animations use transform/opacity only; reduced motion removes active
+  animations and positive-duration transitions.
+- `v3-backend-recovery-acceptance.md`: 83 distinct relevant backend regressions,
+  including exact replay, races, stale authority, provider refusal, paused/blocked
+  recovery, and read-only validation of all four delegate event types. The report
+  distinguishes the earlier broad run from final-source focused retests.
+
+Knowledge creation does not perform general semantic conflict detection. The UI
+states that conflicts with other claims have not been checked and that reuse
+requires a separate preview and approval. Deterministic reference execution
+validates orchestration, provenance and authority mechanics; it does not establish
+model reasoning quality or legal correctness. The original sources and static
+policy remain distinct from handler validation and edited process semantics.
+
+The public exemplar comparison remains pending; the separate live-provider
+authorization and implementation do not complete that comparison. Local
+screenshots and tests do not establish an Awwwards selection or
+full WCAG 2.2 AA conformance. Fresh screenshot-only critiques are retained under
+`v3-knowledge-cold-read.md` and `v3-refined-knowledge-cold-read.md`, including their
+remaining observations, rather than converted into unsupported perfect scores.
+
+## Earlier 7 October acceptance history
+
 7 October 2026. This is a pre-sealing record of saved local evidence, not a
 release acceptance or a claim of full WCAG 2.2 AA conformance. Later repairs
 count as passed only where a saved retest demonstrates the repaired behavior.
 Updated against the saved learning, recovery, focus, currentness, four-size
 capability, native decision, final polish and read-only replay receipts and the
-151-test frontend log. The integration owner must finalize this record after
-the remaining public comparison and sealing checks.
+151-test frontend log. The 8 October sections above supersede this snapshot where their newer receipts cover the same behavior.
 
 Evidence lives outside the source tree in
 [`../casepath-agent-native-v2-evidence`](../../../casepath-agent-native-v2-evidence/),
@@ -303,7 +516,13 @@ execution.
   validation now recognizes and replays the delegate namespace;
   official seal-gated replay remains pending.
 
-## Final local quality review
+## Historical 7 October local quality review
+
+The ratings in this section describe the earlier f32 candidate. They do not
+rate the 8 October connected-handoff revision. Its fresh screenshot-only cold
+read (`v3-final-cold-read.md`) rated the desk, header and decision 4/5 for
+clarity and craft. Subsequent clarity changes require their own readback; the
+requested primary-surface 5/5 gate is not established by the historical table.
 
 The [surface rubric](../../../casepath-agent-native-v2-evidence/quality-rubric-final.md)
 scores all eleven surfaces against the ten requested criteria and links exact

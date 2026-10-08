@@ -1240,6 +1240,47 @@
     return value;
   }
 
+  // JSON numbers lose their spelling (1e-05, 0.0) on conversion to Number.
+  // Keep wire tokens privately; existing Python receipt hashes remain authority.
+  const responseNumbers = new WeakMap(), responseObjects = new WeakMap();
+  function responseVerificationError(message) {
+    const error = new Error(message);
+    error.responseVerificationFailure = true;
+    return error;
+  }
+  function parseResponseJSON(text) {
+    return JSON.parse(text, function(key, value, context) {
+      if (typeof value === 'number') {
+        if (typeof context?.source !== 'string') throw responseVerificationError('This browser cannot preserve signed response numbers. Use a current browser to read saved work.');
+        if (!Number.isFinite(value) || Number.isInteger(value) && !Number.isSafeInteger(value)) throw responseVerificationError('A saved response number cannot be represented safely in this browser.');
+        if (!responseNumbers.has(this)) responseNumbers.set(this, new Map());
+        responseNumbers.get(this).set(key, context.source);
+      }
+      if (value !== null && typeof value === 'object') {
+        responseObjects.set(value, new Map(Reflect.ownKeys(value).map(name => [name, value[name]])));
+      }
+      return value;
+    });
+  }
+  function canonicalResponse(value, excludedField) {
+    function encode(item, parent, key, root = false) {
+      if (item === null || typeof item !== 'object') {
+        if (typeof item !== 'number') return JSON.stringify(item);
+        const token = responseNumbers.get(parent)?.get(key);
+        if (typeof token !== 'string') throw responseVerificationError('The saved response has no original numeric identity. Read it again.');
+        return token;
+      }
+      const original = responseObjects.get(item), keys = Reflect.ownKeys(item);
+      if (!original || keys.length !== original.size || keys.some(name => !original.has(name) || !Object.is(Object.getOwnPropertyDescriptor(item, name)?.value, original.get(name)))) {
+        throw responseVerificationError('The saved response changed after it was read. Read it again.');
+      }
+      if (Array.isArray(item)) return '[' + item.map((child, index) => encode(child, item, String(index))).join(',') + ']';
+      return '{' + Object.keys(item).filter(name => !root || name !== excludedField).sort().map(name => JSON.stringify(name) + ':' + encode(item[name], item, name)).join(',') + '}';
+    }
+    if (value === null || typeof value !== 'object') throw responseVerificationError('The saved response has no original object identity. Read it again.');
+    return encode(value, null, null, true);
+  }
+
   async function request(path, options = {}) {
     const {signal: callerSignal, ...fetchOptions} = options;
     const controller = new AbortController();
@@ -1249,10 +1290,15 @@
     const abort = () => controller.abort();
     callerSignal?.addEventListener('abort', abort, {once: true});
     if (callerSignal?.aborted) abort();
-    let response, body;
+    let response, body, verificationError;
     try {
       response = await fetch(`${api}${path}`, {cache: 'no-store', ...fetchOptions, signal: controller.signal});
-      body = await response.json().catch(() => null);
+      const text = await response.text().catch(() => null);
+      body = null;
+      if (text !== null) {
+        try { body = parseResponseJSON(text); }
+        catch (error) { if (error.responseVerificationFailure) verificationError = error; }
+      }
     } catch (cause) {
       const error = new Error(timedOut ? 'Request timed out. Try again to check the saved state.' : cause?.message || 'No response was received');
       error.transportFailure = true;
@@ -1270,6 +1316,11 @@
       error.code = typeof detail === 'object' && detail ? detail.code : null;
       error.ambiguousResponse = response.status >= 500 || (response.status === 409 && error.code === 'request_in_progress');
       throw error;
+    }
+    if (verificationError) {
+      verificationError.responseReceived = true;
+      verificationError.ambiguousResponse = true;
+      throw verificationError;
     }
     return body;
   }
@@ -1653,6 +1704,54 @@
   }
 
   let causalScript;
+  let agentClaimScript;
+  function loadAgentClaim() {
+    const ready=()=>window.CasePathAgentClaim?.render&&window.CasePathAgentClaim?.bind&&window.CasePathAgentClaim?.session;
+    if(ready())return Promise.resolve();
+    if(agentClaimScript)return agentClaimScript;
+    const source=document.querySelector('meta[name="casepath-agent-claim-script"]')?.content;
+    if(!/^assets\/agent-claim-v2\.js\?sha256=[a-f0-9]{64}$/.test(source||''))return Promise.reject(new Error('Claim controls script is unavailable. Reload the page to try again.'));
+    agentClaimScript=new Promise((resolve,reject)=>{
+      const script=document.createElement('script');
+      let settled=false;
+      const finish=error=>{
+        if(settled)return;settled=true;clearTimeout(timer);
+        script.onload=null;script.onerror=null;
+        if(error){script.remove();agentClaimScript=null;reject(error);}else resolve();
+      };
+      const timer=setTimeout(()=>finish(new Error('The claim controls took too long to load. Try again.')),22000);
+      script.onload=()=>finish(ready()?null:new Error('The claim controls could not start. Try again.'));
+      script.onerror=()=>finish(new Error('The claim controls did not load. Try again.'));
+      script.src=source;
+      document.body.append(script);
+    });
+    return agentClaimScript;
+  }
+
+  let workMotionScript;
+  function loadWorkMotion() {
+    const ready=()=>['markup','observe','dispose'].every(name=>typeof window.CasePathWorkMotion?.[name]==='function');
+    if(ready())return Promise.resolve();
+    if(workMotionScript)return workMotionScript;
+    const source=document.querySelector('meta[name="casepath-work-motion-script"]')?.content;
+    if(!/^assets\/agent-work-motion-v3\.js\?sha256=[a-f0-9]{64}$/.test(source||''))return Promise.reject(new Error('Live review script is unavailable. Reload the page to try again.'));
+    workMotionScript=new Promise((resolve,reject)=>{
+      const script=document.createElement('script');
+      let settled=false;
+      const finish=error=>{
+        if(settled)return;settled=true;clearTimeout(timer);
+        script.onload=null;script.onerror=null;
+        if(error){script.remove();workMotionScript=null;reject(error);}else resolve();
+      };
+      const timer=setTimeout(()=>finish(new Error('The live review took too long to load. Try again.')),22000);
+      script.onload=()=>finish(ready()?null:new Error('The live review could not start. Try again.'));
+      script.onerror=()=>finish(new Error('The live review did not load. Try again.'));
+      script.src=source;
+      document.body.append(script);
+    });
+    return workMotionScript;
+  }
+
   function loadCausalEditor() {
     if(window.CasePathCausal?.render&&window.CasePathCausal?.bind&&window.CasePathCausal?.session)return Promise.resolve();
     if(causalScript)return causalScript;
@@ -1703,6 +1802,7 @@
   }
 
   async function openClaim(claimId) {
+    window.CasePathAgentClaim?.releaseReviewPosition?.(claimId);
     state.causal=null;state.causalLoading=null;
     state.whatIf=null;
     state.deepLinkWhatIfHandled=false;
@@ -1737,6 +1837,8 @@
       const [response] = await Promise.all([
         request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(claimId)}`, {signal:controller.signal}),
         loadWorkspacePresentation(),
+        loadAgentClaim(),
+        loadWorkMotion(),
       ]);
       const detail = await validateDetailResponse(response, claimId);
       if (epoch !== state.detailEpoch) return;
@@ -1837,7 +1939,7 @@
     const panel=$('#cwDetailPanel');
     const sameClaim=panel.dataset.openClaimId===value.claim_id;
     const memoryNotes=sameClaim?new Map([...panel.querySelectorAll('[data-apply-memory]')].map(form=>[form.dataset.applyMemory,form.querySelector('textarea[name="note"]')?.value||''])):new Map();
-    const previousScroll=panel.querySelector(".cp-work-column")?.scrollTop||0;
+    const previousScroll=claimScrollRegion(panel)?.scrollTop||0;
     const focusedElement=document.activeElement;
     const focusedId=focusedElement?.id;
     const agentFocus=sameClaim&&focusedId&&focusedElement.closest?.('#agentClaimMount')?{
@@ -1850,7 +1952,7 @@
     const ownerEdit=sameClaim&&ownerDialog?.open?panel.querySelector('#cwOwnerInput')?.value:null;
     const openDetails=sameClaim?[...panel.querySelectorAll('details[open][id]')].map(el=>el.id):[];
     const commandStatus=invalidPendingCommand?'A recovery record could not be verified. Actions are locked; reload the saved claim before continuing.':loopCommandPending?'An action outcome is still being checked. Use the recovery action above; do not create a second request.':pendingAssignBody?'The assignment outcome is unknown. Recovery uses the same saved request.':pendingStartUnresolved?'The assessment outcome is unknown. Recovery uses the same saved request.':'';
-    panel.innerHTML=ui.detail(detail,state.loop,{
+    const detailMarkup=ui.detail(detail,state.loop,{
       commandStatus,causal:state.causal?.claim_id===value.claim_id?state.causal:null,
       workbench:loopWorkbenchMarkup(state.loop,value,{invalid:invalidPendingCommand,pendingStart:pendingStartUnresolved}),
       technicalMarkup:assessmentMarkup,
@@ -1860,6 +1962,19 @@
       pendingAssign:Boolean(pendingAssignBody),
       priority,priorityMarkup:priority?priorityList(priority):'',
     });
+    const header=sameClaim?panel.querySelector('.cw-detail-head'):null;
+    if(header){
+      const next=document.createElement('template');next.innerHTML=detailMarkup;
+      const nextHeader=next.content.querySelector('.cw-detail-head');
+      const title=header.querySelector('.cp-claim-title'),nextTitle=nextHeader?.querySelector('.cp-claim-title');
+      if(title&&nextTitle){
+        // A background read can finish between pointerdown and click. Keep
+        // the tabs connected so that activation still reaches the workspace.
+        title.replaceWith(nextTitle);nextHeader.remove();
+        for(const child of [...panel.childNodes])if(child!==header)child.remove();
+        panel.append(next.content);
+      }else panel.innerHTML=detailMarkup;
+    }else panel.innerHTML=detailMarkup;
     if(value.claim_id==='clm_f69b1747447bc221')panel.querySelector('.cp-claim-title h1').textContent='Family-home termination notices';
     panel.querySelector('.cp-a-main')?.insertAdjacentHTML('afterbegin','<div id="agentClaimMount" aria-busy="true"><div class="av-loading" role="status">Reading the agent’s saved work…</div></div>');
     panel.dataset.openClaimId=value.claim_id;
@@ -1943,12 +2058,8 @@
     }));
     panel.querySelectorAll('[data-handler-withdraw]').forEach(button=>button.addEventListener('click',()=>void saveHandlerNote({target_event_sha256:button.dataset.handlerWithdraw},true)));
     panel.querySelector('[data-handler-retry]')?.addEventListener('click',()=>void saveHandlerNote(null));
-    panel.querySelectorAll('[data-document-node]').forEach(button=>button.addEventListener('click',()=>{
-      if(!state.causal?.graph||!window.CasePathCausal)return;
-      const view=window.CasePathCausal.session(value.claim_id);view.selected=button.dataset.documentNode;view.expanded=false;view.mode=null;view.preview=null;
-      selectClaimSection('process');renderDetail(state.detail);$('#cpCausalProcess')?.scrollIntoView({block:'start'});
-      panel.querySelector('[data-causal-node="'+CSS.escape(button.dataset.documentNode)+'"]')?.focus({preventScroll:true});
-    }));
+    panel.querySelectorAll('[data-document-node]').forEach(button=>button.addEventListener('click',()=>void openPane('process',{node_id:button.dataset.documentNode})));
+    panel.querySelectorAll('[data-document-review]').forEach(button=>button.addEventListener('click',()=>void openPane('process',{node_id:button.dataset.documentReviewNode,document_type:button.dataset.documentReview})));
     $('#cpReviewStep')?.addEventListener('click',()=>{
       const evaluation=state.causal?.evaluation;
       const nodeId=evaluation?.inconsistent_completed_node_ids?.[0]||evaluation?.focus_node_id||evaluation?.nodes?.find(node=>node.execution_state==='ready')?.node_id;
@@ -1976,7 +2087,7 @@
       else panel.querySelector('#'+CSS.escape(id))?.showModal();
     }
     for(const id of openDetails){const disclosure=panel.querySelector('#'+CSS.escape(id));if(disclosure) disclosure.open=true;}
-    if(sameClaim){$('.cp-work-column').scrollTop=previousScroll;if(focusedId)panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true});}
+    if(sameClaim){const region=claimScrollRegion(panel);if(region)region.scrollTop=previousScroll;if(focusedId)panel.querySelector('#'+CSS.escape(focusedId))?.focus({preventScroll:true});}
     else panel.focus({preventScroll:true});
     revealFragmentLibrary();
     window.dispatchEvent(new CustomEvent('casepath:claim-rendered',{detail:{claim:detail,process:state.causal,agentFocus}}));
@@ -1991,10 +2102,19 @@
     if(!value||value.contract!==contract||value.claim_id!==state.detail?.state.claim_id||value[hashField]!==await sha256(Object.fromEntries(Object.entries(value).filter(([key])=>key!==hashField))))throw new Error('The saved process could not be verified. Reload the claim.');
     return value;
   }
-  async function loadCausalProcess(context){
+  let causalRead;
+  function loadCausalProcess(context){
+    if(!isActiveDetail(context)||!state.detail.state.intake_assessment)return Promise.resolve();
+    const revision=state.detail.state.revision;
+    if(causalRead?.context.epoch===context.epoch&&causalRead.context.claimId===context.claimId&&causalRead.revision===revision)return causalRead.promise;
+    const read={context,revision};causalRead=read;
+    read.promise=readCausalProcess(context,read).finally(()=>{if(causalRead===read)causalRead=null;});
+    return read.promise;
+  }
+  async function readCausalProcess(context,read){
     if(!isActiveDetail(context)||!state.detail.state.intake_assessment)return;
     const revision=state.detail.state.revision;
-    state.causalLoading=context;
+    state.causalLoading=read;
     try{
       const [value]=await Promise.all([
         request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(context.claimId)}/process`,{signal:state.detailController?.signal}),
@@ -2002,10 +2122,11 @@
       ]);
       if(!isActiveDetail(context)||state.detail.state.revision!==revision)return;
       await verifyCausalResponse(value,'view_sha256','casepath.causal-process-view/1.0.0');
+      if(!isActiveDetail(context)||state.detail.state.revision!==revision)return;
       if(value.workspace_revision!==revision||value.workspace_state_sha256!==state.detail.state.state_sha256)throw new Error('The claim changed while the process was loading. Reload it to continue.');
       state.causal={...value,actor:state.detail.state.owner||'',sources:state.detail.artifacts};
-    }catch(error){if(error.name!=='AbortError'&&isActiveDetail(context))state.causal={claim_id:context.claimId,error:error.message};}
-    finally{if(isActiveDetail(context)){state.causalLoading=null;renderDetail(state.detail);}}
+    }catch(error){if(error.name!=='AbortError'&&isActiveDetail(context)&&state.detail.state.revision===revision)state.causal={claim_id:context.claimId,error:error.message};}
+    finally{if(isActiveDetail(context)&&state.causalLoading===read){state.causalLoading=null;renderDetail(state.detail);}}
   }
   async function reloadCausalProcess(context,process=null){
     if(!isActiveDetail(context))return;
@@ -2839,6 +2960,16 @@
   }
 
   const compactWorkbench=matchMedia('(max-width:900px)');
+  const mobileWorkbench=matchMedia('(max-width:540px)');
+  function claimScrollRegion(panel=$('#cwDetailPanel')) {
+    return mobileWorkbench.matches ? panel : panel?.querySelector('.cp-work-column');
+  }
+  // The mobile page has one scroll region, including the complete case heading.
+  // Keep pane restoration and action visibility on that same region.
+  root.addEventListener('scroll',event=>{
+    const region=claimScrollRegion();
+    if(state.detail&&event.target===region)state.sectionScroll[state.claimSection]=region.scrollTop;
+  },true);
   function savePresentation(){
     if(!state.detail)return;
     const value={source:state.sourceSelection||null,canvasNodeId:state.canvasNodeId||null,focusedEvidenceId:state.focusedEvidenceId||null,claimSection:state.claimSection};
@@ -2874,9 +3005,10 @@
     state.focusedEvidenceId=null;
     syncReasoning({focus});
   }
-  function selectClaimSection(name){
+  function selectClaimSection(name,{restoring=false}={}){
     if(!['overview','process','documents'].includes(name))return;
-    const panel=$('#cwDetailPanel'),column=panel?.querySelector('.cp-work-column'),changed=name!==state.claimSection;
+    if(!restoring)state.paneNavigationEpoch=(state.paneNavigationEpoch||0)+1;
+    const panel=$('#cwDetailPanel'),column=claimScrollRegion(panel),changed=name!==state.claimSection;
     if(changed&&column)state.sectionScroll[state.claimSection]=column.scrollTop;
     state.claimSection=name;
     const agentMount=panel?.querySelector("#agentClaimMount");if(agentMount)agentMount.dataset.pane=name;
@@ -2889,6 +3021,44 @@
   function revealClaimTarget(target){
     const pane=target?.closest('[data-claim-pane]');if(pane)selectClaimSection(pane.dataset.claimPane);
     for(let parent=target?.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;
+  }
+  async function openPane(name,detail={}){
+    state.paneNavigationEpoch=(state.paneNavigationEpoch||0)+1;
+    if(name==='sources'){openInspector();return true;}
+    if(name==='activity'){selectClaimSection('overview');void loadAgentWork().then(()=>{$('#cpPanel-activity')?.setAttribute('open','');$('#cpPanel-activity')?.scrollIntoView({block:'start'});});return true;}
+    if(name==='what-if'){const flag=Object.keys(state.detail?.state.intake_assessment?.claim_assessment?.conditions||{}).find(k=>k==='family_home')||Object.keys(state.detail?.state.intake_assessment?.claim_assessment?.conditions||{})[0];if(flag)openWhatIf(flag);return Boolean(flag);}
+    if(name==='lessons'){selectClaimSection('overview');$('#cpFooterRecord')?.setAttribute('open','');$('.cp-reviewed-memory')?.scrollIntoView({block:'start'});return true;}
+    if(name==='fragments'){state.pendingFragmentClaimId=state.detail?.state.claim_id;selectClaimSection('process');revealFragmentLibrary();return true;}
+    name=name==='draft'?'documents':name;selectClaimSection(name);
+    if(!['process','documents'].includes(name)||!detail?.node_id&&!detail?.document_type&&!detail?.edge_id)return true;
+    const context=activeDetailContext(),navigation=state.paneNavigationEpoch;
+    if(!context)return false;
+    const current=()=>isActiveDetail(context)&&navigation===state.paneNavigationEpoch&&state.claimSection===name;
+    if(state.detail.state.intake_assessment&&(!state.causal?.graph||state.causal.workspace_revision!==state.detail.state.revision||state.causal.workspace_state_sha256!==state.detail.state.state_sha256))await loadCausalProcess(context);
+    if(!current())return false;
+    const panel=$('#cwDetailPanel');
+    const focus=target=>{if(!target)return false;revealClaimTarget(target);target.scrollIntoView({block:'nearest'});target.focus({preventScroll:true});return true;};
+    if(name==='documents')return focus(panel?.querySelector('#cpPane-documents [data-document-type="'+CSS.escape(detail.document_type||'')+'"]'));
+    const process=state.causal;
+    if(!process?.graph||!window.CasePathCausal||process.claim_id!==context.claimId||process.workspace_revision!==state.detail.state.revision||process.workspace_state_sha256!==state.detail.state.state_sha256)return false;
+    const edge=detail.edge_id&&process.graph.edges.find(row=>row.edge_id===detail.edge_id);
+    if(detail.edge_id&&!edge)return false;
+    const doc=detail.document_type&&process.evaluation.documents.find(row=>row.document_type===detail.document_type);
+    const nodeId=detail.node_id||edge?.target_node_id||doc?.required_at_node_ids?.[0];
+    if(!process.graph.nodes.some(row=>row.node_id===nodeId))return false;
+    const view=window.CasePathCausal.session(context.claimId);if(view.busy)return false;
+    view.selected=nodeId;view.expanded=false;view.mode=null;view.preview=null;view.error='';
+    renderDetail(state.detail);
+    if(!current())return false;
+    if(detail.document_type||detail.edge_id){
+      const attr=detail.document_type?'data-causal-document-open':'data-causal-edge',id=detail.document_type||detail.edge_id;
+      const control=panel?.querySelector('.cp-process-inspector ['+attr+'="'+CSS.escape(id)+'"]');
+      if(!control)return false;
+      revealClaimTarget(control);control.click();
+      const form=panel.querySelector(detail.document_type?'[data-causal-document="'+CSS.escape(detail.document_type)+'"]':'[data-causal-form="edge-edit"]');
+      return focus(form?.querySelector('input:not([type="hidden"]),select,textarea'));
+    }
+    return focus(panel?.querySelector('[data-causal-node="'+CSS.escape(nodeId)+'"]'));
   }
   function showWorkspaceSection(name){
     selectClaimSection(name==='evidence'?'documents':name==='process'?'process':'overview');
@@ -2936,15 +3106,24 @@
     root.querySelectorAll('[data-adjacent-claim]').forEach(button=>{const to=index+(button.dataset.adjacentClaim==='previous'?-1:1);button.disabled=index<0||!state.items[to]||Boolean(state.mutationBusy);button.dataset.targetClaim=state.items[to]?.claim_id||'';});
   }
   function restoreWorkbenchPresentation(){
-    selectClaimSection(state.claimSection);applyInspectorState();setAdjacentClaims();
+    selectClaimSection(state.claimSection,{restoring:true});applyInspectorState();setAdjacentClaims();
     syncReasoning();
-    const col=$('.cp-work-column');
+    observeWorkbenchAction();
+  }
+  function observeWorkbenchAction(){
+    const col=claimScrollRegion();
     state.actionObserver?.disconnect();
     const action=$('#cwLoopWorkbench .cw-button-primary'),jump=$('[data-return-next]');
-    if(action&&jump){state.actionObserver=new IntersectionObserver(entries=>{if(action.isConnected&&col.contains(action))jump.hidden=entries[0]?.isIntersecting!==false;},{root:col,threshold:0.5});state.actionObserver.observe(action);}
+    if(action&&jump&&col){state.actionObserver=new IntersectionObserver(entries=>{if(action.isConnected&&col.contains(action))jump.hidden=entries[0]?.isIntersecting!==false;},{root:col,threshold:0.5});state.actionObserver.observe(action);}
 
   }
   compactWorkbench.addEventListener('change',()=>{if(state.detail)applyInspectorState();});
+  mobileWorkbench.addEventListener('change',()=>{
+    if(!state.detail)return;
+    const region=claimScrollRegion();
+    if(region)region.scrollTop=state.sectionScroll[state.claimSection]||0;
+    observeWorkbenchAction();
+  });
   window.addEventListener('beforeunload',savePresentation);
   function displayWorkspaceOverview(rows){
       const summary=ui.queueSummary(rows);state.overviewSummary=summary;
@@ -3331,9 +3510,9 @@
   }
 
   window.CasePathWorkspace = Object.freeze({
-    openClaim, closeDetail, refresh:refreshOpen, request, verify:verifyCausalResponse, queueRoot:()=>queueRoute,
+    openClaim, closeDetail, refresh:refreshOpen, request, canonicalResponse, verify:verifyCausalResponse, queueRoot:()=>queueRoute,
     snapshot:()=>({claim:state.detail,process:state.causal}),
-    openPane:name=>{if(name==='sources')openInspector();else if(name==='activity'){selectClaimSection('overview');void loadAgentWork().then(()=>{$('#cpPanel-activity')?.setAttribute('open','');$('#cpPanel-activity')?.scrollIntoView({block:'start'});});}else if(name==='what-if'){const flag=Object.keys(state.detail?.state.intake_assessment?.claim_assessment?.conditions||{}).find(k=>k==='family_home')||Object.keys(state.detail?.state.intake_assessment?.claim_assessment?.conditions||{})[0];if(flag)openWhatIf(flag);}else if(name==='lessons'){selectClaimSection('overview');$('#cpFooterRecord')?.setAttribute('open','');$('.cp-reviewed-memory')?.scrollIntoView({block:'start'});}else if(name==='fragments'){state.pendingFragmentClaimId=state.detail?.state.claim_id;selectClaimSection('process');revealFragmentLibrary();}else selectClaimSection(name==='draft'?'documents':name);},
+    openPane,
     openSource:span=>{const id=span.artifact_id||span.source_id;if(!state.inspectorOpen)state.inspectorReturnSpan={claim_id:state.detail?.state.claim_id,artifact_id:id,quote:span.quote||span.text||span.exact_text||span.locator?.exact_text||null};const index=state.detail?.artifacts.findIndex(item=>item.artifact_id===id||item.sha256===span.source_sha256);if(index>=0)void showSourceArtifact(index,true,span.quote||span.text||span.exact_text||span.locator?.exact_text||null,true);else resetSource(true);},
     assign:openAssignment,
   });

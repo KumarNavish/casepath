@@ -46,6 +46,7 @@ class Operation(StrEnum):
     ASSERTION_REVISED = "ASSERTION_REVISED"
     CONTRADICTION_FOUND = "CONTRADICTION_FOUND"
     WORK_PRODUCT_RECORDED = "WORK_PRODUCT_RECORDED"
+    LOCAL_PROPOSAL_RECONCILED = "LOCAL_PROPOSAL_RECONCILED"
     PLAN_PROPOSED = "PLAN_PROPOSED"
     PROCESS_INSPECTED = "PROCESS_INSPECTED"
     PROCESS_NODE_PROPOSED = "PROCESS_NODE_PROPOSED"
@@ -185,6 +186,21 @@ class WorkEvent(StrictModel):
         if operation == Operation.WORK_PRODUCT_RECORDED:
             if set(after)!={"value","value_sha256"} or not isinstance(after["value"],dict) or digest(after["value"])!=after["value_sha256"]:
                 raise ValueError("persisted work product has invalid content identity")
+        if operation == Operation.LOCAL_PROPOSAL_RECONCILED:
+            command = after.get("command", {})
+            command_fields = {"call_id", "object_id", "expected_last_event_sha256", "expected_work_state_sha256", "actor", "reason"}
+            if (self.role != Role.PROCESS or self.worker_kind != "kernel" or self.status != "accepted"
+                    or set(after) != {"command", "request_sha256", "node_sha256", "claim_state_changed", "provider_requests"}
+                    or set(command) != command_fields or command.get("call_id") != self.object_id
+                    or not isinstance(command.get("actor"), str) or not command["actor"].strip()
+                    or not isinstance(command.get("reason"), str) or not command["reason"].strip()
+                    or after.get("claim_state_changed") is not False or type(after.get("provider_requests")) is not int
+                    or after["provider_requests"] != 0
+                    or after.get("request_sha256") != digest({"tool": "propose_process_node", "arguments": {"object_id": command.get("object_id")}})):
+                raise ValueError("local reconciliation receipt differs from its checked proposal")
+            for value in (command["expected_last_event_sha256"], command["expected_work_state_sha256"], after["node_sha256"]):
+                if not isinstance(value, str) or len(value) != 64 or set(value) - set("0123456789abcdef"):
+                    raise ValueError("local reconciliation lacks a checked content identity")
         if operation == Operation.CONTRADICTION_FOUND and after.get("status")!="potential_conflict_requires_review":
             raise ValueError("conflict flags cannot certify an unsupported contradiction")
         return self

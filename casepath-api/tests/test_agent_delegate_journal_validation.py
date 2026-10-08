@@ -84,6 +84,14 @@ def test_boot_history_validator_accepts_real_delegate_receipts_without_writes(de
         "expected_revision": state["revision"], "expected_state_sha256": state["state_sha256"],
         "expected_agent_revision": agent["revision"], "expected_agent_state_sha256": agent["state_sha256"],
     }, "delegate.validator.resume")
+    agent = journal.state(CLAIM)
+    journal.append(CLAIM, "AGENT_RECOVERY_REQUESTED", {
+        "actor": "Test handler", "reason": "Inspect the exact local checkpoint before reconstructing its proposal.",
+        "expected_revision": state["revision"], "expected_state_sha256": state["state_sha256"],
+        "expected_agent_revision": agent["revision"], "expected_agent_state_sha256": agent["state_sha256"],
+        "reconciliation": {"run_id": "work." + "a" * 32, "call_id": "reference.process_decision_mapping.4",
+            "object_id": "lt_deadline", "expected_last_event_sha256": "b" * 64, "expected_work_state_sha256": "c" * 64},
+    }, "delegate.validator.reconciliation")
     verifier = _history_verifier_module()
     with sqlite3.connect(database) as db:
         db.execute("PRAGMA wal_checkpoint(TRUNCATE)")
@@ -93,8 +101,8 @@ def test_boot_history_validator_accepts_real_delegate_receipts_without_writes(de
         roster = verifier.validate_event_journal(db)
         types = {json.loads(row[0])["event_type"] for row in db.execute(
             "SELECT event_json FROM claim_loop_events WHERE loop_id=?", ("delegate." + CLAIM,))}
-    assert types == {"AGENT_MANDATE_PAUSED", "AGENT_MANDATE_RESUMED", "AGENT_HANDLER_DECISION_RECORDED"}
-    assert len(roster) == validate_journal(database)["event_count"] == 7
+    assert types == {"AGENT_MANDATE_PAUSED", "AGENT_MANDATE_RESUMED", "AGENT_HANDLER_DECISION_RECORDED", "AGENT_RECOVERY_REQUESTED"}
+    assert len(roster) == validate_journal(database)["event_count"] == 8
     assert database.read_bytes() == before and workspace.store.recover(CLAIM) == state
 
 

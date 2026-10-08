@@ -7,9 +7,34 @@
   'use strict';
   const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const stateNames = {working:'Working',waiting_for_you:'Waiting for you',waiting_for_others:'Waiting for others',paused:'Paused',done:'Done',failed:'Failed',not_started:'Not started',waiting:'Waiting',quiet:'Quiet',unknown:'Not yet checked'};
-  const groupNames = {needs_you:'Needs you',working:'Agent working',waiting:'Waiting on others',quiet:'Quiet / unreviewed',closed:'Closed'};
+  const groupNames = {needs_you:'Needs you',working:'Agent working',waiting:'Waiting on others',quiet:'Unreviewed / quiet',closed:'Closed'};
   const stamp = value => value && Number.isFinite(new Date(value).valueOf()) ? new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short'}).format(new Date(value)) : '';
   function sourceIndex(source,sources){const key=item=>JSON.stringify([item.artifact_id,item.source_sha256??item.sha256,item.source_text_sha256??item.text_sha256,item.quote||item.exact_text||item.locator?.exact_text,item.page??item.locator?.page,item.start??item.locator?.start??item.locator?.char_start,item.end??item.locator?.end??item.locator?.char_end]);return sources.findIndex(item=>key(item)===key(source));}
+  // Stream messages only invalidate the sealed projection. Their contents never
+  // establish UI facts, claim readiness, or a completed review.
+  function liveStream({EventSource, onInvalidate, onStatus, schedule=setTimeout, cancel=clearTimeout}) {
+    let source=null, identity=null, timer=null, generation=0;
+    function close() {generation++;source?.close();source=null;identity=null;if(timer!==null)cancel(timer);timer=null;}
+    function update(agent) {
+      const run=agent?.run;
+      if (!agent?.claim_id || !run?.run_id || !['queued','running'].includes(run.status)) {close();onStatus?.('');return;}
+      const next=agent.claim_id+':'+run.run_id;
+      if(identity===next)return;
+      close();identity=next;const current=generation;let active=true;
+      if(!EventSource){onStatus?.('Reading saved work periodically.');return;}
+      const invalidate=()=>{if(current!==generation || timer!==null)return;timer=schedule(()=>{timer=null;if(current===generation)onInvalidate();},90);};
+      try {
+        const after=Number.isSafeInteger(run.last_sequence)&&run.last_sequence>=0?run.last_sequence:0;
+        source=new EventSource(`/api/agent-work/v1/claims/${encodeURIComponent(agent.claim_id)}/runs/${encodeURIComponent(run.run_id)}/stream?after=${after}`);
+        const retire=()=>{active=false;source?.close();source=null;invalidate();};
+        source.addEventListener('open',()=>{if(active && current===generation)onStatus?.('');});
+        source.addEventListener('work',()=>{if(active)invalidate();});
+        source.addEventListener('done',()=>{if(active && current===generation)retire();});
+        source.addEventListener('error',()=>{if(active && current===generation){onStatus?.('Live updates interrupted. Reading saved work periodically.');retire();}});
+      } catch {onStatus?.('Live updates unavailable. Reading saved work periodically.');}
+    }
+    return {update,close};
+  }
   function row(claim) {
     const activity = claim.latest_activity;
     const handler=claim.accountable||claim.owner||(claim.owner===null||claim.accountable===null?null:claim.decider);
@@ -41,7 +66,7 @@
     }).join('');
   }
   function shell(data) {
-    return `<header class="ad-heading"><div><p class="ad-eyebrow">Claims desk</p><h1>Your next decisions</h1></div><p class="ad-workspace-note">${escape(data.total)} synthetic claims<br>Local review · drafts stay here</p></header><nav class="ad-counts" aria-label="Who acts next">${data.groups.map(g => `<a href="#ad-${escape(g.id)}" data-desk-group-link="${escape(g.id)}">${countMarkup(g)}</a>`).join('')}</nav><div class="ad-tools"><label for="adSearch">Find a claim<input id="adSearch" type="search" placeholder="Claim, reference or handler" autocomplete="off"></label><button type="button" data-desk-refresh>Refresh saved work</button></div><p id="adStatus" class="ad-status" role="status" aria-live="polite"></p><div id="adGroups">${groups(data)}</div>`;
+    return `<header class="ad-heading"><div><p class="ad-eyebrow">Claims desk</p><h1>Your next decisions</h1></div><p class="ad-workspace-note">${escape(data.total)} synthetic claims<br>Local review · drafts stay here</p></header><nav class="ad-counts" aria-label="Who acts next">${data.groups.map(g => `<a href="#ad-${escape(g.id)}" data-desk-group-link="${escape(g.id)}">${countMarkup(g)}</a>`).join('')}</nav><div class="ad-tools"><label for="adSearch">Find a claim<input id="adSearch" type="search" placeholder="Claim, reference or handler" autocomplete="off"></label><button type="button" data-desk-refresh aria-label="Refresh saved work">Refresh</button></div><p id="adStatus" class="ad-status" role="status" aria-live="polite"></p><div id="adGroups">${groups(data)}</div>`;
   }
   function start() {
     const workspace = window.CasePathWorkspace;
@@ -52,9 +77,12 @@
     desk.id = 'agentDesk'; desk.className = 'ad-desk'; desk.tabIndex = -1;
     original.before(desk); original.hidden = true;
     desk.innerHTML = '<div class="ad-loading" role="status"><p class="ad-eyebrow">Claims desk</p><h1>Reading saved work…</h1><div class="ad-skeleton"></div><div class="ad-skeleton"></div><div class="ad-skeleton"></div></div>';
-    let data = null, search = '', loading = false, poll = null, claimEpoch = 0;
+    let data = null, search = '', loading = false, poll = null, claimPoll=null, claimEpoch = 0;
     const agentReads = new Map(), agentCache = new Map(), peekSources = new Map();
     let claimRefresh = null;
+    let streamNotice='';
+    function showStreamStatus(text) {streamNotice=text;const status=document.querySelector('#agentClaimMount .av-stream-status');if(status){status.textContent=text;status.hidden=!text;}}
+    const stream=liveStream({EventSource:window.EventSource,onInvalidate:()=>{if(workspace.snapshot().claim)void claimRendered({detail:workspace.snapshot()});},onStatus:showStreamStatus});
     function refreshClaim() {
       if(!claimRefresh)claimRefresh=Promise.resolve(workspace.refresh()).finally(()=>{claimRefresh=null;});
       return claimRefresh;
@@ -62,8 +90,8 @@
     const openedGroups = new Set(), openedPeeks = new Set();
     async function verify(value, field, contract) {
       if (!value || value.contract !== contract || typeof value[field] !== 'string') throw new Error('The saved projection could not be verified. Refresh the desk.');
-      const canonical = value => value === null || typeof value !== 'object' ? JSON.stringify(value) : Array.isArray(value) ? '['+value.map(canonical).join(',')+']' : '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+canonical(value[k])).join(',')+'}';
-      const bytes = new TextEncoder().encode(canonical(Object.fromEntries(Object.entries(value).filter(([k])=>k!==field))));
+      if (typeof workspace.canonicalResponse !== 'function') throw new Error('The original saved response cannot be verified. Reload the workspace.');
+      const bytes = new TextEncoder().encode(workspace.canonicalResponse(value, field));
       const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256',bytes))].map(v=>v.toString(16).padStart(2,'0')).join('');
       if (hash !== value[field]) throw new Error('The saved projection identity differs. Refresh the desk.');
       return value;
@@ -142,11 +170,13 @@
         focus='#'+CSS.escape(snapshot.agentFocus.id);selection=snapshot.agentFocus.selection;source=snapshot.agentFocus.source;
       }
       const current=workspace.snapshot();
-      mount.innerHTML=window.CasePathAgentClaim.render({claim:current.claim.state,agent,process:current.process,sources:current.claim.artifacts});
+      window.CasePathAgentClaim.renderInto(mount,window.CasePathAgentClaim.render({claim:current.claim.state,agent,process:current.process,sources:current.claim.artifacts}));
       mount.dataset.agentSha=agent.projection_sha256;
       mount.setAttribute('aria-busy','false');
-      window.CasePathAgentClaim.bind({root:mount,api:{request:workspace.request,verify},refresh:async()=>{agentCache.clear();await refreshClaim();if(!workspace.snapshot().claim)void load();},onOpenSource:workspace.openSource,onOpenPane:name=>workspace.openPane(name==='trace'?'activity':name),onNotice:text=>{const status=document.querySelector('#cwCommandStatus');if(status)status.textContent=text;}});
+      window.CasePathAgentClaim.bind({root:mount,api:{request:workspace.request,verify},refresh:async()=>{agentCache.clear();await refreshClaim();if(!workspace.snapshot().claim)void load();},onOpenSource:workspace.openSource,onOpenPane:(name,detail)=>workspace.openPane(name==='trace'?'activity':name,detail),onNotice:text=>{const status=document.querySelector('#cwCommandStatus');if(status)status.textContent=text;}});
       mount.dataset.pane=document.querySelector('[data-claim-section][aria-selected=true]')?.dataset.claimSection||'overview';
+      window.CasePathWorkMotion?.observe(mount,agent.live_work);
+      showStreamStatus(streamNotice);
       if(source){const index=sourceIndex(source,window.CasePathAgentClaim.session(id).sources);focus=index<0?null:'[data-av-source="'+index+'"]';selection=null;}
       if(focus){const target=mount.querySelector(focus);target?.focus({preventScroll:true});if(selection&&target?.setSelectionRange)target.setSelectionRange(selection.start,selection.end);
         if(target?.matches(':focus-visible'))requestAnimationFrame(()=>{if(document.activeElement===target)target.scrollIntoView({block:'nearest',inline:'nearest'});});
@@ -154,7 +184,8 @@
     }
     async function claimRendered(event) {
       const epoch=++claimEpoch,snapshot=event.detail,id=snapshot.claim?.state.claim_id;
-      if(!id || !document.getElementById('agentClaimMount'))return;
+      clearTimeout(claimPoll);
+      if(!id || !document.getElementById('agentClaimMount')){stream.close();return;}
       clearTimeout(poll);
       const key=id+':'+snapshot.claim.state.revision;
       if(agentCache.has(key))paintClaim(snapshot,agentCache.get(key));
@@ -162,16 +193,24 @@
         if(!agentReads.has(key))agentReads.set(key,workspace.request(`/api/claim-loops/v1/workspace/claims/${encodeURIComponent(id)}/agent`).finally(()=>agentReads.delete(key)));
         const agent=await agentReads.get(key);
         await verify(agent,'projection_sha256','casepath.agent-desk-claim/1.0.0');
-        if(workspace.snapshot().claim?.state.claim_id!==id)return;
+        if(epoch!==claimEpoch || workspace.snapshot().claim?.state.claim_id!==id)return;
         agentCache.set(key,agent);paintClaim(snapshot,agent);
-        if(agent.state==='working')setTimeout(()=>{if(epoch===claimEpoch && workspace.snapshot().claim?.state.claim_id===id)void claimRendered({detail:workspace.snapshot()});},1400);
+        stream.update(agent);
+        // A completed run can still be followed by its saved draft callback.
+        const delay=agent.state==='working' || ['queued','running'].includes(agent.run?.status)?1400:5000;
+        claimPoll=setTimeout(()=>{if(epoch===claimEpoch && workspace.snapshot().claim?.state.claim_id===id)void claimRendered({detail:workspace.snapshot()});},delay);
       }catch(error){
+        if(epoch!==claimEpoch)return;
         const mount=document.getElementById('agentClaimMount');
-        if(workspace.snapshot().claim?.state.claim_id===id && mount){mount.innerHTML=`<p class="av-notice" role="alert">${escape(error.message)} <button id="av-retry" type="button" data-agent-retry>Read saved work again</button></p>`;mount.querySelector('button').onclick=()=>claimRendered({detail:workspace.snapshot()});mount.setAttribute('aria-busy','false');}
+        if(workspace.snapshot().claim?.state.claim_id===id && mount){
+          if(mount.dataset.agentSha){showStreamStatus('Live updates interrupted. The last verified work is shown.');claimPoll=setTimeout(()=>{if(epoch===claimEpoch)void claimRendered({detail:workspace.snapshot()});},2500);}
+          else {mount.innerHTML=`<p class="av-notice" role="alert">${escape(error.message)} <button id="av-retry" type="button" data-agent-retry>Read saved work again</button></p>`;mount.querySelector('button').onclick=()=>claimRendered({detail:workspace.snapshot()});mount.setAttribute('aria-busy','false');}
+        }
       }
     }
     window.addEventListener('casepath:claim-rendered',claimRendered);
-    window.addEventListener('hashchange',()=>{if(!location.hash)void load();});
+    window.addEventListener('hashchange',()=>{claimEpoch++;stream.close();clearTimeout(claimPoll);if(!location.hash)void load();});
+    window.addEventListener('pagehide',()=>{claimEpoch++;stream.close();clearTimeout(claimPoll);window.CasePathWorkMotion?.dispose();});
     window.addEventListener('casepath:desk-refresh',()=>{if(!workspace.snapshot().claim)void load();});
     document.addEventListener('click',event=>{const tab=event.target.closest('[data-claim-section]');if(tab){const mount=document.getElementById('agentClaimMount');if(mount)mount.dataset.pane=tab.dataset.claimSection;}});
     void load().then(async()=>{
@@ -183,5 +222,5 @@
     });
     const current=workspace.snapshot(); if(current.claim) void claimRendered({detail:current});
   }
-  return Object.freeze({escape,row,groups,shell,peekEvidence,sourceIndex,start});
+  return Object.freeze({escape,row,groups,shell,peekEvidence,sourceIndex,liveStream,start});
 });

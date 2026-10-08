@@ -16,13 +16,24 @@ function formFor(answer = 'true', reason = '') {
   return {dataset:{avDecision:'condition:family_home'}, elements:{answer_id:{value:answer}, actor:{value:'M. Keller'}, reason:{value:reason}}, matches(){return true;}, hasAttribute(attr){return attr === 'data-av-decision';}};
 }
 const settle = async () => {await new Promise(resolve => setImmediate(resolve));};
+
+test('external stop describes an in-flight request and only a sealed clear-pause flag offers mandate resume', () => {
+  const run={run_id:'work.external',facts_worker:'external_facts',status:'running',pending_calls:[],provider_requests:1};
+  assert.match(ui.render(model('external-stop-label',{state:'working',run})),/data-av-control="pause">Stop after current request/);
+  assert.match(ui.render(model('external-stopping-label',{state:'working',pause_requested:true,run})),/Stopping after current request/);
+  const safe=model('external-mandate-label',{state:'paused',pause_requested:true,can_clear_external_pause:true,run:{...run,status:'completed'}});
+  assert.match(ui.render(safe),/data-av-control="resume">Resume delegate/);
+  safe.agent.can_clear_external_pause=false;
+  assert.doesNotMatch(ui.render(safe),/data-av-control="resume"/);
+  assert.match(ui.render(safe),/Inspect recorded work/);
+});
 const verifier = async (value, field, contract) => {assert.equal(value.contract, contract); assert.ok(value[field], `missing ${field}`);};
 function previewFor(input) {return {contract:'casepath.agent-decision-preview/1.0.0', response_sha256:'preview-envelope', preview_sha256:'preview-identity', causal:{contract:'casepath.causal-process-preview/1.0.0', preview_sha256:'causal-engine-identity', claim_id:input.claim.claim_id, workspace_revision:7, workspace_state_sha256:'state-seven'}, claim_id:input.claim.claim_id, workspace_revision:7, workspace_state_sha256:'state-seven', question:input.agent.questions[0], answer_id:'false', reason:'The household moved out.', graph:{nodes:[], document_catalog:[]}, impact:{changed_document_types:['spouse_notice'], unchanged_document_types:['lease']}};}
 
 test('accountability, mandate and native bounded decision are visible before interaction', () => {
   const html = ui.render(model('native'));
   assert.match(html, /Accountable handler <strong>M\. Keller<\/strong>/);
-  assert.match(html, /CasePath agent<\/h2><span class="av-delegate">Delegate/);
+  assert.match(html, /CasePath agent<\/h2><span class="av-delegate">Delegated agent/);
   assert.match(html, /Waiting for you/); assert.match(html, /Works unattended/); assert.match(html, /Waits for your approval/);
   assert.match(html, /<fieldset class="av-answer-list"><legend>Choose your answer/);
   assert.match(html, /type="radio" name="answer_id" value="true" checked required/);
@@ -30,7 +41,7 @@ test('accountability, mandate and native bounded decision are visible before int
   assert.match(html, /<small class="av-proposal-label">Agent proposal · not saved<\/small>/);
   assert.match(html, /<span>Agent reading:<\/span> The message reports a shared family home\./);
   assert.match(html, /<span>Counter-reading:<\/span> The message may describe an earlier household\./);
-  assert.match(html, /Preview first\. Apply saves your answer and starts the next review\. Drafts stay not sent\./);
+  assert.match(html, /Preview is read-only\. Nothing is saved yet\./);
   assert.doesNotMatch(html, /confidence|spinner|typing|<h1/);
 });
 
@@ -49,11 +60,11 @@ test('the first view distinguishes completed earlier work, current coverage and 
   const input=model('work-summary',{run:{completed_roles:6,role_count:6,currentness:'historical'},questions:[question({kind:'draft_approval',draft:{body_markdown:'Please provide the receipt.'}})]});
   input.agent.coverage={scope:'original_bound_intake',read_sources:1,total_sources:1};
   const html=ui.render(input),header=html.slice(0,html.indexOf('</header>'));
-  assert.match(header,/Earlier review · 6 of 6 review roles finished · 1 of 1 original sources read/);
+  assert.match(header,/Earlier review · 6\/6 roles finished · 1\/1 original sources read/);
   assert.match(header,/Draft awaits review · not sent/);assert.doesNotMatch(header,/Current review/);
   input.agent={...input.agent,state:'working',run:{completed_roles:0,role_count:6,currentness:'current'},questions:[]};
   const current=ui.render(input).slice(0,ui.render(input).indexOf('</header>'));
-  assert.match(current,/Current review · 0 of 6 review roles finished/);assert.doesNotMatch(current,/Draft awaits review|Earlier review/);
+  assert.match(current,/Current review · 0\/6 roles finished/);assert.doesNotMatch(current,/Draft awaits review|Earlier review/);
 });
 
 test('control labels distinguish an active stop from pausing the delegate awaiting the handler', () => {
@@ -175,7 +186,7 @@ test('an answer previews first, then applies the same reviewed identity and refr
   await settle();
   assert.equal(requests.length, 1); assert.match(requests[0].path, /\/decisions\/preview$/);
   assert.match(root.innerHTML, /Apply decision/); assert.match(root.innerHTML, /What stays unchanged/);
-  assert.match(root.innerHTML, /Preview first\. Apply saves your answer and starts the next review\. Drafts stay not sent\./);
+  assert.match(root.innerHTML, /Apply saves your answer and resumes review\. Drafts stay unsent\./);
   assert.match(root.innerHTML, /<span>Your answer:<\/span> <strong>No, it does not apply<\/strong>/);
   assert.match(root.innerHTML, /<span>Your reason<\/span> The household moved out\./);
   assert.match(root.innerHTML, /<span>Agent reading:<\/span> The message reports a shared family home\./);
@@ -345,8 +356,8 @@ test('reusable knowledge cannot include unvalidated steps or claim automatic lea
   const input = model('learning'); input.process = {graph:{nodes:[{node_id:'checked', label:'Checked step', validation:{status:'validated'}}, {node_id:'unchecked', label:'Unchecked step', validation:{status:'unvalidated'}}]}};
   const html = ui.render(input);
   assert.match(html, /name="node_ids" value="checked"/); assert.doesNotMatch(html, /name="node_ids" value="unchecked"/);
-  assert.match(html, /Preview scope and conflicts/); assert.match(html, /needs its own review before reuse/);
-  assert.doesNotMatch(html, /automatically learned|Approve reusable fragment/);
+  assert.match(html, /Preview reuse scope/); assert.match(html, /needs its own review before reuse/);
+  assert.doesNotMatch(html, /automatically learned|Approve new fragment/);
 });
 
 test('a newer saved claim invalidates a preview and keeps the handler answer for a fresh preview', () => {
@@ -529,4 +540,264 @@ test('simultaneous error and invalid recovery keep distinct reload targets', () 
   assert.equal(ids.length,new Set(ids).size);
   assert.match(html,/Recovery repeats|recovery record could not be read/);
   assert.equal(s.pending.invalid,true);
+});
+
+
+test('a decision connects the saved condition dependency to its own document requirements', () => {
+  const input=model('causal-context');
+  input.process={process_adopted:true,graph:{nodes:[{node_id:'service',label:'Check separate service',document_types:['spouse'],provenance:{source:'static_policy'}}],edges:[]},evaluation:{nodes:[{node_id:'service',condition_flags:['family_home']}],documents:[{document_type:'spouse',label:'Separate notice',required_at_node_ids:['service'],route_state:'held_not_reviewed'},{document_type:'unrelated',label:'Unrelated file',required_at_node_ids:['other'],route_state:'needed_now'}]}};
+  const html=ui.render(input),context=html.slice(html.indexOf('<aside class="av-consequence"'),html.indexOf('</aside>'));
+  assert.equal(ui.contextNode(input.process,input.agent.questions[0]).node_id,'service');
+  assert.match(context,/Saved process/);assert.match(context,/Your proposed answer has not been applied here/);assert.match(context,/Check separate service/);assert.match(context,/Separate notice/);assert.match(context,/Received · review needed/);
+  assert.doesNotMatch(context,/Unrelated file/);assert.match(context,/Policy-derived step · source evidence is reviewed separately/);
+  assert.match(context,/data-av-review-document="spouse" data-av-node-id="service"/);
+  assert.ok(html.indexOf('av-question-condition:family_home')<html.indexOf('id="avQuestionSelect"') || !html.includes('id="avQuestionSelect"'));
+});
+
+test('a proposed graph cannot label its checklist as the saved request or family knowledge as applied', () => {
+  const input=model('proposed-context',{learning:{fragments:[{name:'Service review',version:2}],memories:[],uses:[]}});
+  input.process={process_adopted:false,graph:{nodes:[{node_id:'service',label:'Review <source>',document_types:['notice']}],edges:[]},evaluation:{focus_node_id:'service',nodes:[],documents:[{document_type:'notice',label:'Proposed notice',route_state:'needed_now'}]}};
+  const html=ui.render(input),context=html.slice(html.indexOf('<aside class="av-consequence"'),html.indexOf('</aside>'));
+  assert.match(context,/Proposed process/);assert.match(context,/Proposed requirements · the current request has not changed/);
+  assert.match(context,/1 saved process version available · 0 recorded uses here/);assert.doesNotMatch(context,/Saved process|<source>/);assert.match(context,/Review &lt;source&gt;/);
+});
+
+test('context review opens the exact node and document without issuing a mutation', () => {
+  const id='document-context-navigation',input=model(id),root=rootFor(id),opened=[];ui.render(input);
+  ui.bind({root,onOpenPane:(pane,detail)=>opened.push({pane,detail}),api:{request(){throw new Error('Navigation must not mutate');}}});
+  const target=button('avReviewDocument','spouse');target.dataset.avNodeId='service';root.listeners.get('click')({target});
+  assert.deepEqual(opened,[{pane:'process',detail:{node_id:'service',document_type:'spouse'}}]);assert.equal(ui.session(id).pending,null);
+});
+
+
+test('an inconsistent completion keeps the corrected step instead of falling back to the active step', () => {
+  const p={graph:{nodes:[{node_id:'active',label:'Current work'},{node_id:'incorrect',label:'Completion needs review'}],edges:[]},evaluation:{focus_node_id:'active',nodes:[]}};
+  assert.equal(ui.contextNode(p,{question_id:'completion:incorrect'}).node_id,'incorrect');
+});
+
+
+test('a prior insufficient source cannot hide a conditional or closed document route', () => {
+  const input=model('insufficient-route');input.process={process_adopted:true,graph:{nodes:[{node_id:'service',label:'Service',document_types:['a','b']}],edges:[]},evaluation:{focus_node_id:'service',nodes:[],documents:[{document_type:'a',label:'Closed requirement',route_state:'not_needed',review_state:'insufficient'},{document_type:'b',label:'Conditional requirement',route_state:'held_behind_question',review_state:'insufficient'}]}};
+  const html=ui.render(input);assert.match(html,/Not needed on this route · Received · insufficient/);assert.match(html,/Depends on an answer · Received · insufficient/);
+});
+
+
+test('an edited policy step exposes its current review status rather than implying unchanged policy support', () => {
+  const input=model('edited-policy');input.process={graph:{nodes:[{node_id:'step',label:'Edited step',document_types:[],provenance:{source:'static_policy',modified_by:'M. Keller'},validation:{status:'revised'}}]},evaluation:{focus_node_id:'step',nodes:[],documents:[]}};
+  let html=ui.render(input);assert.match(html,/Saved handler edit · step validation needed/);assert.doesNotMatch(html,/Policy-derived step · source evidence is reviewed separately/);
+  input.process.graph.nodes[0].validation.status='validated';html=ui.render(input);assert.match(html,/Handler-validated step · source evidence remains separate/);assert.doesNotMatch(html,/Saved handler edit · step validation needed/);
+});
+
+
+test('only an intentional context change animates and reduced motion disables it', () => {
+  const prior=global.matchMedia;
+  try {
+    for (const reduce of [false,true]) {
+      global.matchMedia=()=>({matches:reduce});const id='context-motion-'+reduce,input=model(id,{questions:[question(),question({question_id:'condition:other'})]}),root=rootFor(id),animations=[];
+      const query=root.querySelector.bind(root);root.querySelector=selector=>selector==='.av-consequence'?{animate:(frames,timing)=>animations.push({frames,timing})}:query(selector);
+      ui.render(input);ui.bind({root});assert.equal(animations.length,0);
+      root.listeners.get('change')({type:'change',target:{value:'condition:other',matches:()=>true}});
+      ui.render(input);root.listeners.get('change')({type:'change',target:{value:'condition:other',matches:()=>true}});
+      assert.equal(animations.length,reduce?0:1);
+      if(!reduce){assert.ok(animations[0].timing.duration<250);assert.deepEqual(Object.keys(animations[0].frames[0]).sort(),['opacity','transform']);}
+    }
+  } finally {if(prior)global.matchMedia=prior;else delete global.matchMedia;}
+});
+
+
+test('knowledge approval exposes the exact proposal and does not claim cross-claim conflict checks', () => {
+  const input = model('learning-scope-honesty'); ui.render(input);
+  const s = ui.session(input.claim.claim_id);
+  s.lessonPreview = {workspace_revision:7, workspace_state_sha256:'state-seven',name:'Separate <notice> capture', actor:'M. Keller',reason:'Keep both reported dates unresolved.',scope:{family:'lease_termination_dispute',node_ids:[],boundary_relationships:[],documents:[]},conflicts:[]};
+  const html=ui.render(input);
+  assert.match(html, /Separate &lt;notice&gt; capture/);
+  assert.match(html, /Keep both reported dates unresolved\./);
+  assert.match(html, /Reviewing handler: <strong>M\. Keller<\/strong>/);
+  assert.match(html, /Conflicts with other claims have not been checked/);
+  assert.doesNotMatch(html, /No scope conflict|No conflicts/);
+  assert.match(html, /Approval creates a new fragment at version 1/);
+  assert.match(html, /Saved fragments stay unchanged/);
+  assert.match(html, /Applying it to another claim requires a separate preview and approval/);
+  assert.match(html, /Cancel reuse/);
+  s.lessonPreview.conflicts=['Node identity differs'];
+  assert.match(ui.render(input), /Node identity differs/);
+});
+
+const interruptedProjection = () => ({state:'unknown',recovery_required:true,run:{run_id:'work.local',status:'unconfirmed',facts_worker:'reference',provider_requests:0,pending_calls:[{call_id:'reference.process.4'}],recovery:{can_resume:false,reason:'pending_operation',reconciliation:{kind:'process_node',run_id:'work.local',call_id:'reference.process.4',object_id:'process:step',title:'Check separate service',expected_last_event_sha256:'work-event',expected_work_state_sha256:'work-state'}}}});
+
+test('only a signed local proposal recovery exposes an explicit review before reconciliation', () => {
+ const input=model('reconciliation-review',interruptedProjection()),root=rootFor(input.claim.claim_id);
+ let html=ui.render(input);assert.match(html,/data-av-reconcile-review/);assert.doesNotMatch(html,/data-av-reconcile-form/);
+ ui.bind({root});root.listeners.get('click')({target:button('avReconcileReview')});
+ assert.match(root.innerHTML,/Check separate service/);assert.match(root.innerHTML,/The working process stays unchanged/);assert.match(root.innerHTML,/data-av-reconcile-form/);
+ input.agent.workspace_revision=8;ui.render(input);assert.equal(ui.session(input.claim.claim_id).reconciliationReview,null);
+ assert.match(ui.session(input.claim.claim_id).error,/saved work changed/);
+ for(const change of [{facts_worker:'external_facts'},{provider_requests:1},{recovery:{can_resume:false,reason:'pending_operation'}},{run_id:'different'}]){
+  input.agent={...input.agent,...interruptedProjection(),run:{...interruptedProjection().run,...change}};
+  assert.doesNotMatch(ui.render(input),/data-av-reconcile-review/);
+ }
+});
+
+test('reconciliation uses exact reviewed guards, preserves ambiguous request identity, and never resumes automatically',async()=>{
+ const input=model('reconciliation-save',interruptedProjection()),root=rootFor(input.claim.claim_id),requests=[];
+ ui.render(input);
+ ui.bind({root,api:{verify:verifier,request:async(path,options)=>{requests.push({path,options});if(requests.length===1)throw new Error('Connection interrupted');return {contract:'casepath.agent-reconciliation-result/1.0.0',projection_sha256:'reconciled',reconciliation:{reconciled:true,event_sha256:'work-receipt',claim_state_changed:false},agent:{...input.agent,projection_sha256:'agent-current',run:{...input.agent.run,pending_calls:[],recovery:{can_resume:true,reason:'safe_checkpoint'}}}};}}});
+ root.listeners.get('click')({target:button('avReconcileReview')});
+ const form={matches(){return true;},hasAttribute(a){return a==='data-av-reconcile-form';},elements:{reason:{value:'I reviewed the saved local proposal.'}}};
+ root.listeners.get('submit')({target:form,preventDefault(){}});await settle();
+ assert.equal(requests.length,1);assert.match(requests[0].path,/\/api\/claim-loops\/v1\/workspace\/claims\/reconciliation-save\/agent\/reconcile$/);
+ assert.equal(requests[0].options.headers['X-CasePath-Agent-Work'],'1');const body=JSON.parse(requests[0].options.body);assert.equal(body.run_id,'work.local');assert.equal(body.object_id,'process:step');assert.equal(body.expected_last_event_sha256,'work-event');assert.equal(body.expected_work_state_sha256,'work-state');assert.equal(body.expected_revision,7);assert.equal(body.expected_agent_revision,2);
+ assert.ok(ui.session(input.claim.claim_id).pending);root.listeners.get('click')({target:button('avRecover')});await settle();
+ assert.equal(requests.length,2);assert.deepEqual(requests[1],requests[0]);assert.equal(ui.session(input.claim.claim_id).pending,null);assert.match(root.innerHTML,/Resume agent/);assert.match(root.innerHTML,/Local proposal reconciled/);assert.doesNotMatch(root.innerHTML,/data-av-reconcile-form/);
+});
+
+
+test('a superseded recovery request never claims that the pending proposal was reconciled',async()=>{
+ const input=model('reconciliation-superseded',interruptedProjection()),root=rootFor(input.claim.claim_id);ui.render(input);
+ ui.bind({root,api:{verify:verifier,request:async()=>({contract:'casepath.agent-reconciliation-result/1.0.0',projection_sha256:'saved-request',reconciliation:{reconciled:false,reason:'superseded_recovery_request'},agent:{...input.agent,projection_sha256:'current-work'}})}});
+ root.listeners.get('click')({target:button('avReconcileReview')});
+ root.listeners.get('submit')({target:{matches(){return true;},hasAttribute(a){return a==='data-av-reconcile-form';},elements:{reason:{value:'Checked the saved process.'}}},preventDefault(){}});await settle();
+ assert.match(root.innerHTML,/recovery request was superseded/);assert.doesNotMatch(root.innerHTML,/Local proposal reconciled/);assert.equal(ui.session(input.claim.claim_id).pending,null);
+});
+
+
+test('an override preview keeps the original proposed answer beside the handlers chosen answer',()=>{
+ const input=model('preview-proposal-identity');ui.render(input);ui.session(input.claim.claim_id).preview=previewFor(input);
+ const html=ui.render(input);
+ assert.match(html,/Your answer:<\/span> <strong>No, it does not apply<\/strong>/);
+ assert.match(html,/Agent proposal: <strong>Yes, it applies<\/strong> · not saved/);
+ assert.match(html,/The message reports a shared family home/);
+});
+
+const liveReview = (extra = {}) => ({available:true,can_start:true,model:'small/source-reader',run_cost_limit_usd:0.03,total_cost_limit_usd:0.09,
+  context_sha256:'a'.repeat(64),budget:{can_start:true,remaining_cost_usd:0.09},...extra});
+const liveReceipt = (input, body, extra = {}) => ({contract:'casepath.agent-work/1.0.0',response_sha256:'sealed-work-response',
+  summary:{claim_id:input.claim.claim_id,run_id:'work.'+'b'.repeat(32),facts_worker:'external_facts',
+    requested_context_sha256:body.expected_context_sha256,idempotency_key:body.idempotency_key,...extra}});
+
+test('live source review starts only after its explicit click and binds the displayed sealed context', async()=>{
+  const input=model('live-explicit',{live_review:liveReview()}),root=rootFor(input.claim.claim_id),calls=[],checks=[],refreshes=[];
+  const html=ui.render(input);assert.match(html,/Review sources live/);assert.match(html,/up to \$0\.03 per review/);
+  ui.bind({root,api:{verify:async(value,field,contract)=>{checks.push({field,contract});await verifier(value,field,contract);},request:async(path,options)=>{calls.push({path,options});return liveReceipt(input,JSON.parse(options.body));}},refresh:async receipt=>refreshes.push(receipt)});
+  await settle();ui.render(input);assert.equal(calls.length,0,'Rendering and binding cannot spend model credits');
+  const current={...input,agent:{...input.agent,live_review:liveReview({context_sha256:'c'.repeat(64)})}};
+  ui.render(current);root.listeners.get('click')({target:button('avLiveStart')});await settle();
+  assert.equal(calls.length,1);assert.equal(calls[0].path,'/api/agent-work/v1/claims/live-explicit/runs');
+  assert.equal(calls[0].options.method,'POST');assert.equal(calls[0].options.headers['X-CasePath-Agent-Work'],'1');
+  const body=JSON.parse(calls[0].options.body);assert.deepEqual(Object.keys(body).sort(),['expected_context_sha256','facts_worker','idempotency_key']);
+  assert.equal(body.expected_context_sha256,'c'.repeat(64));assert.equal(body.facts_worker,'external_facts');
+  assert.equal(body.idempotency_key,calls[0].options.headers['X-CasePath-Idempotency-Key']);
+  assert.match(body.idempotency_key,/^agent-claim:/);assert.deepEqual(checks,[{field:'response_sha256',contract:'casepath.agent-work/1.0.0'}]);
+  assert.equal(refreshes.length,1);assert.equal(ui.session(input.claim.claim_id).pending,null);
+  assert.match(root.innerHTML,/Live review requested/);assert.equal(ui.session(input.claim.claim_id).open.has('live-work'),true);
+});
+
+test('disabled budgets and missing or malformed context guards cannot start even through a stale button', async()=>{
+  const denied=[{available:false},{can_start:false,reason:'external_cost_limit'},{context_sha256:null},{context_sha256:'not-bound'},
+    {context_sha256:'https://external.invalid/context'},{can_start:false,reason:'accountable_handler_required'}];
+  for(const [index,extra] of denied.entries()){
+    const id='live-disabled-'+index,input=model(id,{live_review:liveReview(extra)}),root=rootFor(id),calls=[];
+    assert.doesNotMatch(ui.render(input),/data-av-live-start/);
+    ui.bind({root,api:{request:async(...args)=>calls.push(args),verify:verifier}});
+    root.listeners.get('click')({target:button('avLiveStart')});await settle();
+    assert.equal(calls.length,0);assert.equal(ui.session(id).pending,null);
+  }
+});
+
+test('live response verification and claim, worker, context, request and run bindings are mandatory', async()=>{
+  const mismatches=[{claim_id:'another-claim'},{facts_worker:'reference'},{requested_context_sha256:'c'.repeat(64)},
+    {idempotency_key:'another-request'},{run_id:null},'unverified'];
+  for(const [index,extra] of mismatches.entries()){
+    const id='live-receipt-'+index,input=model(id,{live_review:liveReview()}),root=rootFor(id),calls=[],refreshes=[];
+    ui.render(input);ui.bind({root,api:{verify:async(value,field,contract)=>{if(extra==='unverified')throw new Error('Work response seal differs');await verifier(value,field,contract);},request:async(path,options)=>{calls.push({path,options});return liveReceipt(input,JSON.parse(options.body),typeof extra==='object'?extra:{});}},refresh:async()=>refreshes.push(true)});
+    root.listeners.get('click')({target:button('avLiveStart')});await settle();
+    assert.equal(calls.length,1);assert.equal(refreshes.length,0);assert.ok(ui.session(id).pending,'Unconfirmed receipt must preserve its exact request');
+    assert.match(root.innerHTML,extra==='unverified'?/Work response seal differs/:/live review receipt does not match/);
+    assert.doesNotMatch(root.innerHTML,/Live review requested/);
+    root.listeners.get('click')({target:button('avLiveStart')});await settle();assert.equal(calls.length,1,'An unconfirmed request cannot become a second paid request');
+  }
+});
+
+test('an unknown live start survives reload and recovers the identical body and idempotency key', async()=>{
+  const previous=global.sessionStorage,records=new Map(),calls=[];
+  global.sessionStorage={getItem:key=>records.get(key)||null,setItem:(key,value)=>records.set(key,value),removeItem:key=>records.delete(key)};
+  try{
+    const id='live-persisted-recovery',input=model(id,{live_review:liveReview()}),root=rootFor(id),key='casepath:agent-claim-pending:'+id;
+    ui.render(input);const api={verify:verifier,request:async(path,options)=>{calls.push({path,options});if(calls.length===1)throw new Error('Connection closed before receipt');return liveReceipt(input,JSON.parse(options.body));}};
+    ui.bind({root,api});root.listeners.get('click')({target:button('avLiveStart')});await settle();
+    const persisted=JSON.parse(records.get(key));assert.equal(persisted.kind,'live');assert.equal(persisted.key,JSON.parse(calls[0].options.body).idempotency_key);
+    assert.deepEqual(persisted.body,JSON.parse(calls[0].options.body));assert.match(root.innerHTML,/Recover saved request/);
+    // The server may now deny NEW work; recovery still checks only the prior
+    // request. A fresh module reads the exact saved command, as after reload.
+    const freshPath=require.resolve('../casepath/assets/agent-claim-v2.js'),cached=require.cache[freshPath];delete require.cache[freshPath];
+    const fresh=require(freshPath);require.cache[freshPath]=cached;
+    const next={...input,agent:{...input.agent,live_review:liveReview({can_start:false,context_sha256:'c'.repeat(64),reason:'external_cost_limit'})}},newRoot=rootFor(id);
+    fresh.render(next);fresh.bind({root:newRoot,api});await settle();assert.equal(calls.length,1,'Reload cannot automatically retry a paid request');
+    newRoot.listeners.get('click')({target:button('avRecover')});await settle();
+    assert.equal(calls.length,2);assert.deepEqual(calls[1],calls[0]);assert.equal(records.has(key),false);assert.equal(fresh.session(id).pending,null);
+    assert.match(newRoot.innerHTML,/Live review requested/);
+  }finally{global.sessionStorage=previous;}
+});
+
+test('a definitive live HTTP rejection clears pending while an ambiguous response preserves it', async()=>{
+  const previous=global.sessionStorage,records=new Map();
+  global.sessionStorage={getItem:key=>records.get(key)||null,setItem:(key,value)=>records.set(key,value),removeItem:key=>records.delete(key)};
+  try{
+    for(const ambiguous of [false,true]){
+      const id='live-http-'+ambiguous,input=model(id,{live_review:liveReview()}),root=rootFor(id),key='casepath:agent-claim-pending:'+id;
+      ui.render(input);ui.bind({root,api:{verify:verifier,request:async()=>{throw Object.assign(new Error('The bounded request was rejected'),{responseReceived:true,ambiguousResponse:ambiguous,status:409});}}});
+      root.listeners.get('click')({target:button('avLiveStart')});await settle();
+      assert.equal(Boolean(ui.session(id).pending),ambiguous);assert.equal(records.has(key),ambiguous);
+      assert.doesNotMatch(root.innerHTML,/Live review requested/);assert.match(root.innerHTML,/bounded request was rejected/);
+    }
+  }finally{global.sessionStorage=previous;}
+});
+
+test('live stages retain selection through updates and navigate exact sources, nodes and documents without calls',()=>{
+  const previous=global.CasePathWorkMotion;global.CasePathWorkMotion=require('../casepath/assets/agent-work-motion-v3.js');
+  try{
+    const id='live-stage-navigation',source={artifact_id:'notice-pdf',source_id:'notice-pdf',claim_id:id,file_name:'Exact notice.pdf',quote:'30. Juni',start:4,end:12,source_sha256:'d'.repeat(64),text_sha256:'e'.repeat(64),extraction:'pdf_text'};
+    const milestone=(sequence,stage,extra)=>({sequence,stage,summary:'Recorded '+stage,sources:[],nodes:[],documents:[],connections:[],...extra});
+    const work={claim_id:id,run_id:'work.'+'b'.repeat(32),scope:'recorded_review_work_not_claim_authority',status:'running',currentness:'current',last_sequence:4,active_stage:'sources',headline:'Reading exact source statements',reader:{kind:'model',model:'small/source-reader'},
+      stages:['sources','findings','process','documents'].map((stage,index)=>({id:stage,label:stage,state:'recorded',count:1,unit:'recorded',milestone_sequence:index+1})),
+      milestones:[milestone(1,'sources',{sources:[source]}),milestone(2,'findings',{sources:[source]}),milestone(3,'process',{nodes:[{node_id:'notice-date',label:'Check the notice date'}]}),
+        milestone(4,'documents',{nodes:[{node_id:'notice-date',label:'Check the notice date'}],documents:[{requirement_id:'process_document.notice',document_type:'notice',label:'Notice copy',state:'conditional',needed_now:false}],connections:[{from:'node:notice-date',to:'obligation:process_document.notice',relation:'required_by_process'}]})]};
+    const input=model(id,{state:'working',live_work:work}),root=rootFor(id),opened=[],sources=[],calls=[];
+    ui.render(input);ui.bind({root,api:{request(...args){calls.push(args);}},onOpenSource:span=>sources.push(span),onOpenPane:(pane,detail)=>opened.push({pane,detail})});
+    const sourceIndex=ui.session(id).sources.findIndex(item=>item.source_sha256===source.source_sha256);
+    root.listeners.get('click')({target:button('avSource',String(sourceIndex))});assert.deepEqual(sources,[source]);
+    root.listeners.get('click')({target:button('avWorkStage','documents')});assert.equal(ui.session(id).workStage,'documents');
+    assert.match(root.innerHTML,/data-av-work-stage="documents" aria-pressed="true"/);assert.match(root.innerHTML,/data-av-document="notice"/);
+    root.listeners.get('click')({target:button('avNode','notice-date')});const doc=button('avPane','documents');doc.dataset.avDocument='notice';root.listeners.get('click')({target:doc});
+    assert.deepEqual(opened,[{pane:'process',detail:{node_id:'notice-date'}},{pane:'documents',detail:{document_type:'notice'}}]);
+    input.agent.live_work={...work,active_stage:'process',last_sequence:5};const updated=ui.render(input);
+    assert.match(updated,/data-av-work-stage="documents" aria-pressed="true"/);assert.equal(ui.session(id).workStage,'documents');
+    root.listeners.get('click')({target:button('avWorkStage','invented')});assert.equal(ui.session(id).workStage,'documents');
+    root.listeners.get('click')({target:button('avWorkFollow')});assert.equal(ui.session(id).workStage,null);assert.match(root.innerHTML,/data-av-work-stage="process" aria-pressed="true"/);
+    assert.equal(calls.length,0);assert.equal(ui.session(id).pending,null);
+  }finally{global.CasePathWorkMotion?.dispose();global.CasePathWorkMotion=previous;}
+});
+
+test('Resume delegate verifies safe external completion then only clears its mandate before a separate live start',async()=>{
+  const id='live-clear-mandate',run={run_id:'work.live',facts_worker:'external_facts',status:'cancelled',pending_calls:[],provider_requests:1,provider_cost_usd:0.001,recovery:{can_resume:false}};
+  const input=model(id,{state:'paused',pause_requested:true,can_clear_external_pause:true,run,live_review:liveReview({can_start:false,context_sha256:null,reason:'paused_by_handler'})}),root=rootFor(id),calls=[];
+  assert.match(ui.render(input),/data-av-control="resume">Resume delegate/);
+  const latest={...input.agent,projection_sha256:'fresh-projection',agent_revision:3,agent_state_sha256:'fresh-control'};
+  const resumed={...latest,state:'waiting_for_you',pause_requested:false,can_clear_external_pause:false,live_review:liveReview()};
+  ui.bind({root,api:{verify:verifier,request:async(path,options)=>{calls.push({path,options});return options.method==='GET'?latest:{contract:'casepath.agent-control-result/1.0.0',projection_sha256:'mandate-cleared',agent:resumed,continuation:null};}}});
+  root.listeners.get('click')({target:button('avControl','resume')});await settle();
+  assert.equal(calls.length,2);assert.equal(calls[0].options.method,'GET');assert.match(calls[1].path,/\/agent\/control$/);
+  assert.equal(JSON.parse(calls[1].options.body).action,'resume');assert.equal(JSON.parse(calls[1].options.body).expected_agent_revision,3);
+  assert.equal(ui.session(id).input.agent.pause_requested,false);assert.equal(ui.session(id).input.agent.run.run_id,run.run_id);
+  assert.match(root.innerHTML,/data-av-live-start/);assert.doesNotMatch(root.innerHTML,/Resume delegate/);
+  assert.ok(calls.every(call=>!call.path.endsWith('/runs')),'Mandate resume must never create a model run');
+});
+
+test('stale Resume delegate cannot clear a newly uncertain external outcome',async()=>{
+  const id='live-clear-became-unknown',run={run_id:'work.live',facts_worker:'external_facts',status:'cancelled',pending_calls:[],provider_requests:1,provider_cost_usd:0.001,recovery:{can_resume:false}};
+  const input=model(id,{state:'paused',pause_requested:true,can_clear_external_pause:true,run}),root=rootFor(id),calls=[];
+  ui.render(input);ui.bind({root,api:{verify:verifier,request:async(path,options)=>{calls.push({path,options});return {...input.agent,projection_sha256:'fresh-unknown',can_clear_external_pause:false,recovery_ask:'The provider outcome still needs inspection.',run:{...run,pending_calls:[{call_id:'provider.request.1'}],provider_cost_usd:null}};}}});
+  root.listeners.get('click')({target:button('avControl','resume')});await settle();
+  assert.equal(calls.length,1);assert.equal(calls[0].options.method,'GET');assert.match(root.innerHTML,/provider outcome still needs inspection/);
+  assert.equal(ui.session(id).input.agent.pause_requested,true);assert.equal(ui.session(id).pending,null);
 });

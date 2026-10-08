@@ -29,12 +29,17 @@ def summarize(store, run, snapshot=None):
     usage_known=len(provider)==len(started_requests) and all(((e.get('after') or {}).get('usage') or {}).get('cost') is not None for e in provider)
     # An absent or timed-out provider response is not a zero-cost call.
     total_cost=sum((e['after']['usage']['cost'] for e in provider),0) if usage_known else None
+    config=run['request'].get('worker_config') or {}
     result={'run_id':run['run_id'],'claim_id':run['claim_id'],'subject':run['request']['context'].get('subject','Claim'),
+        'idempotency_key':run['idempotency_key'],'requested_context_sha256':run['request'].get('requested_context_sha256'),
         'status':'unconfirmed' if run['status']=='running' and (run.get('lease_until') or 0)<=time.time() else run['status'],
         'created_at':run['created_at'],'last_event_at':events[-1]['timestamp'] if events else run['created_at'],
         'last_sequence':events[-1]['sequence'] if events else 0,'last_event_sha256':events[-1]['event_sha256'] if events else None,
         'roles':role_states,'completed_roles':sum(r['status']=='completed' for r in role_states),'role_count':6,
         'current_role':active,'last_message':events[-1]['message'] if events else None,
-        'facts_worker':run['request']['facts_worker'],'provider_requests':len(started_requests),'provider_cost_usd':total_cost,
+        'facts_worker':run['request']['facts_worker'],
+        'provider_model':config.get('model'), 'provider_cost_limit_usd':config.get('cost_limit_usd'),
+        'provider_cost_status':'known' if usage_known else 'unknown',
+        'provider_requests':len(started_requests),'provider_cost_usd':total_cost,
         'pending_calls':frozen['pending_calls']}
     return result

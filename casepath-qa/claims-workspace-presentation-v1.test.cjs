@@ -285,10 +285,11 @@ test('paired conflicts retain exact original spans and escaped values',()=>{
 test('document visuals distinguish received from established without changing requirement links',()=>{
  const changed={...assessment,process_graph_sha256:hash,documents:[...assessment.documents,{document_type:'lease_contract',label:'Lease',route_state:'established',required_at_node_ids:['now'],held_files:[]}]};
  const markup=view.workbench(null,{intake_assessment:{claim_assessment:assessment}},{detail:assessedDetail,causal:{effective_assessment:changed,evaluation:changed}});
- const received=markup.match(/<li data-route-state="held_not_reviewed">[\s\S]*?<\/li>/)[0];
+ const received=markup.match(/<li data-route-state="held_not_reviewed" data-document-type="spouse_notice_copy" id="cpRequirement-spouse_notice_copy" tabindex="-1">[\s\S]*?<\/li>/)[0];
  assert.match(received,/Received · review needed/);
  assert.doesNotMatch(received,/Established|cp-icon[^>]*>[^<]*check/);
  assert.match(received,/data-document-node="later"/);
+ assert.match(received,/data-document-review="spouse_notice_copy" data-document-review-node="later"/);
  assert.match(markup,/<span class="cp-doc-state">Established<\/span>/);
 });
 

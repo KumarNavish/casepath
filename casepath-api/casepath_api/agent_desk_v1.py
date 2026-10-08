@@ -18,6 +18,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt
 
 from .agent_work.authority import AuthorityError
 from .agent_work.projection import summarize
+from .agent_work.live_projection import live_work
 from .agent_work.store import ConflictError, WorkStoreError
 from .causal_workspace_v1 import PROCESS_EDIT, CausalWorkspaceService, effective_assessment, fragment_snapshot, preview_material, working_graph
 from .causal_process_v1 import evaluate
@@ -98,7 +99,7 @@ class DelegateJournal:
                     or event["contract"] != EVENT_CONTRACT or event["session_id"] != WORKSPACE_SESSION_ID
                     or event["loop_id"] != "delegate." + claim_id or event["sequence"] != sequence
                     or event["previous_event_sha256"] != state["last_event_sha256"]
-                    or event["event_type"] not in {"AGENT_MANDATE_PAUSED", "AGENT_MANDATE_RESUMED", "AGENT_HANDLER_DECISION_RECORDED"}
+                    or event["event_type"] not in {"AGENT_MANDATE_PAUSED", "AGENT_MANDATE_RESUMED", "AGENT_HANDLER_DECISION_RECORDED", "AGENT_RECOVERY_REQUESTED"}
                     or command["expected_agent_revision"] != state["revision"]
                     or command["expected_agent_state_sha256"] != state["state_sha256"]
                     or not command["actor"].strip() or not command["reason"].strip() or timestamp.tzinfo is None
@@ -110,6 +111,9 @@ class DelegateJournal:
                 if parent["state_sha256"] != command["expected_state_sha256"]:
                     raise ValueError("delegate event has no validated claim parent")
                 required = {"actor", "reason", "expected_revision", "expected_state_sha256", "expected_agent_revision", "expected_agent_state_sha256"}
+                if event["event_type"] == "AGENT_RECOVERY_REQUESTED":
+                    required.add("reconciliation")
+                    ReconciliationIdentity.model_validate(command["reconciliation"])
                 if event["event_type"] == "AGENT_HANDLER_DECISION_RECORDED":
                     required.add("decision")
                     decision = command["decision"]
@@ -140,9 +144,9 @@ class DelegateJournal:
                     raise ValueError("delegate command is invalid")
                 material_state = {k: deepcopy(v) for k, v in state.items() if k != "state_sha256"}
                 material_state.update(revision=sequence, last_event_sha256=event["event_sha256"])
-                if event["event_type"] != "AGENT_HANDLER_DECISION_RECORDED":
+                if event["event_type"] in {"AGENT_MANDATE_PAUSED", "AGENT_MANDATE_RESUMED"}:
                     material_state["paused"] = event["event_type"] == "AGENT_MANDATE_PAUSED"
-                else:
+                elif event["event_type"] == "AGENT_HANDLER_DECISION_RECORDED":
                     material_state["decisions"].append({**command["decision"], "actor": command["actor"],
                         "reason": command["reason"], "timestamp": event["created_at"], "event_sha256": event["event_sha256"]})
                 state = _sealed(material_state, "state_sha256")
@@ -186,7 +190,7 @@ class DelegateJournal:
             if event_type == "AGENT_HANDLER_DECISION_RECORDED":
                 next_material["decisions"].append({**command["decision"], "actor": command["actor"], "reason": command["reason"],
                     "timestamp": event["created_at"], "event_sha256": event["event_sha256"]})
-            else:
+            elif event_type in {"AGENT_MANDATE_PAUSED", "AGENT_MANDATE_RESUMED"}:
                 next_material["paused"] = event_type == "AGENT_MANDATE_PAUSED"
             next_state = _sealed(next_material, "state_sha256")
             event["resulting_state_sha256"] = next_state["state_sha256"]
@@ -212,6 +216,7 @@ class AgentDeskServiceV1:
         self._desk_cache = None
         self._desk_row_cache = {}
         self.work.reference_completion = self._prepare_draft
+        self.work.external_completion = self._prepare_draft
         self.work.reference_finished = self._reference_finished
         with self.work.store.transaction() as db:
             db.execute("CREATE TABLE IF NOT EXISTS work_desk_requests(idempotency_key TEXT PRIMARY KEY,request_sha256 TEXT NOT NULL,plan_json TEXT NOT NULL)")
@@ -546,6 +551,46 @@ class AgentDeskServiceV1:
             self._continue(claim_id, key="desk.continue." + latest["event_sha256"],
                            accepted_process_event_sha256=latest["event_sha256"])
 
+    def _live_review(self, state, summary, *, paused=False, requested=True):
+        # Desk rows do not expose this control. Avoid reading 150 authority
+        # contexts or model configuration on every queue projection.
+        if not requested or self.work.facts_worker is None:
+            return {"available": False}
+        capability = self.work.capabilities()
+        config, budget = capability.get("external"), capability.get("external_budget")
+        available = capability.get("external_configuration_status") == "ready" and "external_facts" in capability.get("facts_workers", []) and bool(config)
+        if not available:
+            return {"available": False}
+        reason = None
+        if not state.get("owner"):
+            reason = "accountable_handler_required"
+        elif paused:
+            reason = "paused_by_handler"
+        elif summary and (summary.get("pending_calls") or summary["status"] in {"queued", "running", "interrupted", "unconfirmed"}):
+            reason = "inspect_existing_work"
+        elif not budget or not budget.get("can_start"):
+            reason = (budget or {}).get("reason") or "local_budget_not_configured"
+        context = None
+        if reason is None:
+            context = self.work.context(state["claim_id"])
+            current = context["context"]
+            if current.get("state_sha256") != state["state_sha256"] or current.get("revision") != state["revision"]:
+                context, reason = None, "claim_changed"
+        return {"available": True, "model": config["model"], "run_cost_limit_usd": config["cost_limit_usd"],
+                "total_cost_limit_usd": (budget or {}).get("total_cost_limit_usd"), "budget": deepcopy(budget),
+                "context_sha256": context["context_sha256"] if context else None,
+                "can_start": reason is None, "reason": reason, "automatic_retry": False}
+
+    def _external_pause_clearable(self, summary):
+        from math import isfinite
+        if not summary or summary.get("facts_worker") != "external_facts":
+            return False
+        cost, requests = summary.get("provider_cost_usd"), summary.get("provider_requests")
+        job = self.work._jobs.get(summary["run_id"])
+        return (summary["status"] in {"completed", "cancelled", "blocked", "failed"}
+                and summary.get("pending_calls") == [] and type(cost) in {int, float} and isfinite(cost) and cost >= 0
+                and type(requests) is int and requests >= 0 and (job is None or job.done()))
+
     def claim(self, claim_id, *, state=None, learning=True, cite=True, control=None, packet=None, packet_supplied=False):
         state = state or self.workspace.store.recover(claim_id)
         control = control or self.delegate.state(claim_id)
@@ -565,6 +610,9 @@ class AgentDeskServiceV1:
                 conflicts.append({**question, "review": reviewed.get(question["question_id"]),
                                   "truth_status": "unresolved", "sources": question["sources"]})
         questions = [q for q in questions if q["question_id"] not in reviewed]
+        question_priority = {"source_conflict": 0, "inconsistent_completion": 1, "draft_approval": 3}
+        questions.sort(key=lambda q: (2 if q["proposal"]["answer_id"] in {"true", "false"} else 4)
+                       if q["kind"] == "condition" else question_priority.get(q["kind"], 5))
         if control["paused"]:
             agent_state = "paused" if not summary or summary["status"] != "running" else "working"
         elif summary and summary["status"] in {"queued", "running"}:
@@ -577,11 +625,15 @@ class AgentDeskServiceV1:
             agent_state = "done"
         else:
             agent_state = "unknown"
-        recovery_required = bool(not control["paused"] and summary and summary["status"] in {"interrupted", "unconfirmed"})
+        local_reconciliation = (summary or {}).get("recovery", {}).get("reconciliation")
+        recovery_required = bool(local_reconciliation or
+            (not control["paused"] and summary and summary["status"] in {"interrupted", "unconfirmed"}))
         recovery_ask = None
         if recovery_required:
             recovery = summary.get("recovery") or {}
-            if recovery.get("can_resume") is True and summary.get("facts_worker") == "reference":
+            if local_reconciliation:
+                recovery_ask = "Review the interrupted local step before reconstructing its saved proposal."
+            elif recovery.get("can_resume") is True and summary.get("facts_worker") == "reference":
                 recovery_ask = "Review the saved checkpoint before resuming the interrupted review."
             elif recovery.get("reason") in {"pending_operation", "provider_attempt_recorded"}:
                 recovery_ask = "Inspect the unfinished operation and reconcile its outcome before retrying."
@@ -591,9 +643,12 @@ class AgentDeskServiceV1:
             "workspace_state_sha256": state["state_sha256"], "agent_revision": control["revision"], "agent_state_sha256": control["state_sha256"],
             "owner": {"accountable": state["owner"], "delegate": "CasePath agent"}, "mandate": deepcopy(MANDATE),
             "state": agent_state, "pause_requested": control["paused"], "questions": questions, "decisions": decisions,
+            "can_clear_external_pause": control["paused"] and self._external_pause_clearable(summary),
             "recovery_required": recovery_required, "recovery_ask": recovery_ask,
             "conflicts": conflicts,
             "coverage": self._coverage(state, packet), "activity": self._activity(claim_id, packet), "run": summary,
+            "live_work": live_work(claim_id, packet, paused=control["paused"]),
+            "live_review": self._live_review(state, summary, paused=control["paused"], requested=cite),
             "process_status": assessment.get("process_status") if assessment else None,
             "learning": {"fragments": self.process.fragments(working_graph(self.workspace.corpus, state)["family"]) if learning and assessment else [],
                          "memories": self.workspace.reviewed_memories(claim_id)["items"] if learning and assessment else [],
@@ -886,16 +941,63 @@ class AgentDeskServiceV1:
         command = {"actor": actor, "reason": reason, "expected_revision": expected_revision, "expected_state_sha256": expected_state_sha256,
                    "expected_agent_revision": expected_agent_revision, "expected_agent_state_sha256": expected_agent_state_sha256}
         with self._lock:
-            _, event, replayed = self.delegate.append(claim_id, "AGENT_MANDATE_PAUSED" if action == "pause" else "AGENT_MANDATE_RESUMED", command, idempotency_key)
             runs = self.work.store.list_runs(claim_id, 1)
+            external = bool(runs and runs[0]["request"]["facts_worker"] == "external_facts")
+            if action == "resume" and external:
+                with self.delegate.journal.connect() as db:
+                    prior = db.execute("SELECT 1 FROM claim_loop_events WHERE session_id=? AND loop_id=? AND idempotency_key=?",
+                        (WORKSPACE_SESSION_ID, "delegate." + claim_id, idempotency_key)).fetchone()
+                if prior is None and not self._external_pause_clearable(self.work.run(claim_id, runs[0]["run_id"])["summary"]):
+                    raise ValueError("Inspect the external review outcome before clearing its pause; no request was retried")
+            _, event, replayed = self.delegate.append(claim_id, "AGENT_MANDATE_PAUSED" if action == "pause" else "AGENT_MANDATE_RESUMED", command, idempotency_key)
             continuation = None
             superseded = replayed and self.delegate.state(claim_id)["last_event_sha256"] != event["event_sha256"]
             if not superseded and action == "pause" and runs and runs[0]["status"] in {"queued", "running", "interrupted"}:
-                self.work.pause(claim_id, runs[0]["run_id"])
-            elif not superseded and action == "resume":
+                stop = self.work.cancel if runs[0]["request"]["facts_worker"] == "external_facts" else self.work.pause
+                stop(claim_id, runs[0]["run_id"])
+            elif not superseded and action == "resume" and not external:
                 continuation = self._continue(claim_id)
             return _sealed({"contract": "casepath.agent-control-result/1.0.0", "event_sha256": event["event_sha256"],
                 "replayed": replayed, "agent": self.claim(claim_id), "continuation": continuation})
+
+    def reconcile(self, claim_id, *, actor, reason, expected_revision, expected_state_sha256,
+                  expected_agent_revision, expected_agent_state_sha256, run_id, call_id, object_id,
+                  expected_last_event_sha256, expected_work_state_sha256, idempotency_key):
+        identity = ReconciliationIdentity(run_id=run_id, call_id=call_id, object_id=object_id,
+            expected_last_event_sha256=expected_last_event_sha256,
+            expected_work_state_sha256=expected_work_state_sha256).model_dump()
+        command = {"actor": actor, "reason": reason, "expected_revision": expected_revision,
+            "expected_state_sha256": expected_state_sha256, "expected_agent_revision": expected_agent_revision,
+            "expected_agent_state_sha256": expected_agent_state_sha256, "reconciliation": identity}
+        work_args = {k: v for k, v in identity.items() if k != "run_id"}
+        work_args.update(actor=actor, reason=reason)
+        with self._lock:
+            with self.delegate.journal.connect() as db:
+                prior = next((row for row in self.delegate.rows(db, claim_id) if row["idempotency_key"] == idempotency_key), None)
+            if prior is None:
+                current = self.workspace.store.recover(claim_id)
+                control = self.delegate.state(claim_id)
+                if current["revision"] != expected_revision or current["state_sha256"] != expected_state_sha256:
+                    raise ValueError("claim revision is stale; reload before reconciliation")
+                if control["revision"] != expected_agent_revision or control["state_sha256"] != expected_agent_state_sha256:
+                    raise ValueError("agent revision is stale; reload before reconciliation")
+                latest = self.work.store.list_runs(claim_id, 1)
+                if not latest or latest[0]["run_id"] != run_id:
+                    raise ValueError("the reviewed work run is no longer current")
+                self.work.reconcile_process_node(claim_id, run_id, **work_args, check_only=True)
+            _, event, replayed = self.delegate.append(claim_id, "AGENT_RECOVERY_REQUESTED", command, idempotency_key)
+            def verify_parent():
+                current = self.workspace.store.recover(claim_id)
+                if current["revision"] != expected_revision or current["state_sha256"] != expected_state_sha256:
+                    raise ValueError("claim revision changed before reconciliation")
+                if self.delegate.state(claim_id)["last_event_sha256"] != event["event_sha256"]:
+                    raise ValueError("the handler recovery request was superseded")
+            if replayed and self.delegate.state(claim_id)["last_event_sha256"] != event["event_sha256"]:
+                receipt = {"reconciled": False, "reason": "superseded_recovery_request"}
+            else:
+                receipt = self.work.reconcile_process_node(claim_id, run_id, **work_args, verify_parent=verify_parent)
+            return _sealed({"contract": "casepath.agent-reconciliation-result/1.0.0", "event_sha256": event["event_sha256"],
+                "replayed": replayed, "reconciliation": receipt, "agent": self.claim(claim_id)})
 
     def _decision(self, claim_id, question_id, answer_id, actor, reason, expected_revision, expected_state_sha256):
         state = self.workspace.store.state_at_revision(claim_id, expected_revision)
@@ -1041,6 +1143,19 @@ class Control(_Parent):
     expected_agent_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
+class ReconciliationIdentity(_Request):
+    run_id: str = Field(pattern=r"^work\.[a-f0-9]{32}$")
+    call_id: str = Field(min_length=1, max_length=160)
+    object_id: str = Field(min_length=1, max_length=240)
+    expected_last_event_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    expected_work_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class Reconcile(_Parent, ReconciliationIdentity):
+    expected_agent_revision: StrictInt = Field(ge=0)
+    expected_agent_state_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
 class Decision(_Parent):
     question_id: str = Field(min_length=1, max_length=200)
     answer_id: str = Field(min_length=1, max_length=80)
@@ -1088,6 +1203,15 @@ def create_agent_desk_router(service_getter):
     @router.post("/claims/{claim_id}/agent/control")
     def control(claim_id: str, body: Control, key: Annotated[str, Depends(_idempotency_key)]):
         return invoke(lambda s: s.control(claim_id, **body.model_dump(), idempotency_key=key))
+    @router.post("/claims/{claim_id}/agent/reconcile")
+    def reconcile(claim_id: str, body: Reconcile, request: Request, key: Annotated[str, Depends(_idempotency_key)]):
+        from urllib.parse import urlsplit
+        origin = request.headers.get("origin")
+        if request.headers.get("X-CasePath-Agent-Work") != "1":
+            raise HTTPException(403, "Explicit same-origin work request required")
+        if origin and (urlsplit(origin).netloc != request.url.netloc or urlsplit(origin).scheme != request.url.scheme):
+            raise HTTPException(403, "Cross-origin work requests are not accepted")
+        return invoke(lambda s: s.reconcile(claim_id, **body.model_dump(), idempotency_key=key))
     @router.post("/claims/{claim_id}/agent/decisions/preview")
     def preview(claim_id: str, body: Decision):
         return invoke(lambda s: s.preview_decision(claim_id, **body.model_dump()))

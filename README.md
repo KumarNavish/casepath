@@ -1,22 +1,26 @@
 # CasePath
 
-CasePath reads the customer's message and files, shows where the claim stands, and helps the handler ask for what is missing.
+CasePath turns source evidence into a working process, derives each step's document checklist, and preserves reviewed corrections for reuse.
 
-![Focused claim overview with one next action and sources on demand](docs/product/screenshots/focused-overview-desktop.png)
+![Agent-native claim overview with accountable ownership, a decision and its saved process](docs/product/screenshots/agent-native-overview-desktop.png)
 
-*A synthetic claim in Overview. Process edits, documents and source details have their own focused views.*
+*A synthetic claim in Overview: an unsaved proposal beside the saved process and its documents. Recorded review details open on demand.*
 
 ## See one claim
 
-The **Claims** list groups work by who CasePath is waiting for. Each row says what it noticed and what to do next. Select **Walk through this claim** above the list, or open `#claim=clm_f69b1747447bc221`.
+The **Desk** groups work by who acts next. Each row shows the handler's next decision, its reason, accountable owner and recorded review coverage. Open a claim, or use `#claim=clm_f69b1747447bc221` for the synthetic family-home example.
 
-Select **Review claim**. Overview shows actual review progress, then the next action and key source findings. **Review step** opens the relevant part of the working process. The **Process** view shows connected steps, readiness and individual validation; **Show all steps** opens the whole path. Sources open beside the current work when selected.
+**Overview** separates the accountable handler from the delegated agent. A decision shows the proposal, cited passages, counter-reading and saved process. **Preview consequences** is read-only; **Apply decision** saves the chosen answer and recalculates the dependent requirements. A different answer requires a reason. Sources open beside the current work when selected.
+
+**Source-grounded review** exposes recorded source passages, findings, process nodes and document requirements. New visible milestones move briefly as verified work arrives; opening existing history stays still. The normal local runtime uses a reference reader. The optional [bounded live demo](docs/setup-demo.md) enables an explicitly started model source reader with a persistent spending limit; the other five checks and process authority remain local.
+
+The **Process** view shows connected steps, readiness and individual validation; **Show all steps** opens the whole path. A source statement remains an observation until its meaning is reviewed. Model output cannot validate a process step or approve a claim outcome.
 
 Select a step to see the documents it requires and the conditions that activate it. **Edit step** changes its meaning, conditions or document links. **Claim conditions** lets you correct an assumption. Every consequential edit opens an impact preview showing changed steps, documents, connections and the next action, alongside unchanged requirements. Apply the correction to save it in this claim's history. A document's **Review source** action binds a human sufficiency review to an exact original source passage.
 
 In **Documents**, select **Draft request** for an editable letter derived from the current working process. It is labelled **Draft, not sent**; **Copy** and **Export** are beside **Save edits**. A process correction retires the previous draft from the current view while preserving its history. Validate individual steps and their internal connections, then **Save for reuse** to create an immutable process fragment. Similar claims can preview and explicitly apply that version; a later version does not change earlier claims.
 
-The [causal process guide](docs/product/CAUSAL_PROCESS.md) explains execution, validation and version boundaries. The [three-product study](docs/product/AGENT_NATIVE_TOP_THREE.md) and [focused UI acceptance](docs/product/FOCUSED_UI_ACCEPTANCE.md) document this redesign. The [earlier UX study](docs/product/AGENTIC_UX_BENCHMARKS.md) records the five models behind the causal workbench. [About CasePath](casepath/method.html) retains **Reviewer mode**, [data](casepath/corpus.html), and [research results](casepath/research.html).
+The [agent-native guide](docs/product/AGENT_NATIVE.md) and [acceptance record](docs/product/AGENT_NATIVE_ACCEPTANCE.md) describe the current interface and its verification limits. The [causal process guide](docs/product/CAUSAL_PROCESS.md) explains execution, validation and version boundaries. The [three-product study](docs/product/AGENT_NATIVE_TOP_THREE.md) and [earlier UX study](docs/product/AGENTIC_UX_BENCHMARKS.md) retain the prior design research. [About CasePath](casepath/method.html) retains **Reviewer mode**, [data](casepath/corpus.html), and [research results](casepath/research.html).
 
 ![Claims list with the first-run walk and waiting groups](docs/images/workbench-queue.png)
 

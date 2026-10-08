@@ -81,13 +81,14 @@ def test_curated_static_build_has_exact_runtime_inventory(
         "assets/process-evidence-v2.css", "assets/process-evidence-v2.js",
         "assets/agent-claim-v2.js", "assets/agent-desk-v2.js",
         "assets/agent-native-v2.css",
+        "assets/agent-work-motion-v3.js",
         "assets/fonts/Merriweather-Light.ttf", "assets/fonts/Merriweather-OFL.txt",
         "assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
         "assets/fonts/Open_Sans-OFL.txt",
     }
     assert files == static_site.PUBLIC_INVENTORY == expected_files
     assert directories == static_site.PUBLIC_DIRECTORIES == {"assets", "assets/fonts"}
-    assert len(files) == 32
+    assert len(files) == 33
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
     assert {"method.html", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files
@@ -189,6 +190,7 @@ def test_queue_script_payload_stays_below_300_kb() -> None:
     index = (static_site.SOURCE_ROOT / "index.html").read_text(encoding="utf-8")
     scripts = re.findall(r'<script src="(assets/[^"?]+\.js)\?sha256=', index)
     assert "assets/agent-work-v1.js" not in scripts
+    assert "assets/agent-work-motion-v3.js" not in scripts
     assert "assets/causal-process-v1.js" not in scripts
     assert "assets/claims-workspace-presentation-v1.js" not in scripts
     assert index.count('name="casepath-agent-work-script"') == 1

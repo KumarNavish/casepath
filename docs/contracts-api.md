@@ -81,13 +81,58 @@ read projections; it does not expose arbitrary model tools.
 | POST | `/claims/{claim_id}/runs` | start a reference or explicitly external-Facts review |
 | GET | `/claims/{claim_id}/runs/{run_id}` | inspect one run |
 | GET | `/claims/{claim_id}/runs/{run_id}/events` | paged persisted work events |
+| GET | `/claims/{claim_id}/runs/{run_id}/stream` | stream persisted events from a sequence cursor |
 | POST | `/claims/{claim_id}/runs/{run_id}/resume` | resume the same recoverable run |
+| POST | `/claims/{claim_id}/runs/{run_id}/cancel` | request a safe stop without clearing unresolved calls |
 
 Agent-work mutations require the same-origin `X-CasePath-Agent-Work: 1` guard.
 The normal launcher remains provider-free. External Facts additionally requires
 explicit server configuration and `facts_worker: "external_facts"`; invalid
 configuration is rejected rather than silently falling back. See
 [AGENT_REVIEW.md](AGENT_REVIEW.md).
+
+Start accepts `idempotency_key`, `expected_context_sha256`, and `facts_worker`
+in its body. An exact retry returns the same admitted run; changing the context
+or worker under that key is rejected. Start and run inspection return
+`{contract, summary, objects, response_sha256}`. The SHA-256 covers the full
+packet except its seal. The summary exposes `claim_id`, `facts_worker`, the
+immutable `idempotency_key` and `requested_context_sha256`, selected
+`provider_model`, and the run's cost bound and status. A client verifies the
+seal and exact request identity before presenting the start as accepted.
+
+`/stream` emits `work` events with persisted sequence IDs, accepts `after` and
+`Last-Event-ID`, and emits `done` after draining a terminal or interrupted run.
+Reconnection reads saved events; it does not start or retry provider work.
+
+The optional [local demo profile](setup-demo.md) requires both
+`CASEPATH_AGENT_WORK_EXTERNAL_FACTS=1` and `CASEPATH_AGENT_WORK_DEMO=1`, an exact
+`CASEPATH_AGENT_WORK_MODEL`, a fresh hash-bound `CASEPATH_AGENT_WORK_CATALOGUE`,
+and a server-only credential. Its explicit policy is supplied by
+`CASEPATH_AGENT_WORK_MAX_EXTERNAL_RUNS=3`,
+`CASEPATH_AGENT_WORK_MAX_PROVIDER_CALLS=18`,
+`CASEPATH_AGENT_WORK_TOTAL_COST_USD=0.10`, and
+`CASEPATH_AGENT_WORK_RUN_COST_USD=0.02`. The persisted policy cannot be reset by
+relaunching. The current inspected selection is `anthropic/claude-haiku-5.5`;
+selection and applicable prices must validate against that launch's catalogue.
+
+Capabilities add `external_configuration_status`, `external`, and
+`external_budget`. The budget includes `scope: "persistent_local_demo"`,
+`max_runs`, `max_provider_calls`, `total_cost_limit_usd`, `run_cost_limit_usd`,
+`runs_used`, `provider_calls_used`, `actual_cost_usd`, `reserved_cost_usd`,
+`remaining_cost_usd`, `unknown_calls`, `in_flight`, `can_start`, `reason`, and
+`automatic_retry: false`. The normal profile has no external worker or demo
+budget. A configured external start requires an accountable handler, unchanged
+workspace authority, an unpaused delegate and no unresolved prior claim work.
+Admission reserves the run allowance; provider intent, reservation and the
+single in-flight provider slot are persisted atomically before transmission.
+Unknown outcomes keep their reservation and cannot be automatically retried.
+These fields report a bounded allowance, not a claim of observed provider cost.
+
+Only Facts uses the external model. It accesses the existing typed source tools
+and emits checked source quotations. The remaining roles and process authority
+are deterministic. Provider prose and hidden reasoning are discarded. A
+successful external completion may prepare an unsent draft through the same
+guarded workspace path; it does not schedule another paid review.
 
 ## Agent-native desk API
 
@@ -98,7 +143,7 @@ GETs are read-only projections. Work starts only through an explicit mutation.
 | --- | --- | --- | --- |
 | GET | `/desk` | 150 claims grouped by saved delegate state | `casepath.agent-desk/1.0.0`, `projection_sha256` |
 | POST | `/desk/start` | Start the fixed bounded reference-review batch | `casepath.agent-desk-start/1.0.0`, `projection_sha256` |
-| GET | `/claims/{claim_id}/agent` | Mandate, questions, citations, coverage, activity and knowledge receipts | `casepath.agent-desk-claim/1.0.0`, `projection_sha256` |
+| GET | `/claims/{claim_id}/agent` | Mandate, questions, citations, coverage, recorded work, live-review eligibility and knowledge receipts | `casepath.agent-desk-claim/1.0.0`, `projection_sha256` |
 | POST | `/claims/{claim_id}/agent/control` | Persist pause or resume | `casepath.agent-control-result/1.0.0`, `projection_sha256` |
 | POST | `/claims/{claim_id}/agent/decisions/preview` | Preview a bounded handler answer | `casepath.agent-decision-preview/1.0.0`, `preview_sha256` and `response_sha256` |
 | POST | `/claims/{claim_id}/agent/decisions/apply` | Accept that exact preview | `casepath.agent-decision-result/1.0.0`, `response_sha256` |
@@ -137,12 +182,32 @@ Missing evidence alone never creates external waiting or closure.
 The claim agent response includes `workspace_revision`,
 `workspace_state_sha256`, `agent_revision`, `agent_state_sha256`, `owner`,
 `mandate`, `state`, `pause_requested`, `questions`, `decisions`, `conflicts`,
-`coverage`, `activity`, `run`, `process_status`, and `learning`. State is derived
+`coverage`, `activity`, `run`, `process_status`, `learning`, `live_work`,
+`live_review`, and `can_clear_external_pause`. State is derived
 from persisted work and decisions; unknown and historical work is not
 represented as completed current work. `coverage` reports the original intake
 roster, read/unread/limited sources, and `arrived_since`. An activity entry has
 its actual event sequence, timestamp, type, role, label, and source references.
 Knowledge matches are separate from actual accepted uses.
+
+The additive `live_work` projection derives Sources, Findings, Process and
+Documents from verified persisted events, preserving claim/run identity,
+sequence, event hash, timestamp and source/node/document references. Its scope
+is `recorded_review_work_not_claim_authority`. It reports real reader identity
+and request/cost observations, and distinguishes current from historical work.
+Connections require actual recorded links; mapping a step from saved handling
+rules does not establish a source-derived legal conclusion. Its concise work
+summaries are not model chain-of-thought.
+
+`live_review` is `{available: false}` when the explicit capability is absent.
+When available it includes `model`, `run_cost_limit_usd`,
+`total_cost_limit_usd`, `budget`, `context_sha256`, `can_start`, `reason`, and
+`automatic_retry: false`. Eligibility checks owner, pause, pending or active
+work, budget and the exact context revision/hash. The server repeats admission
+checks on start. `can_clear_external_pause` is a separate boolean: it requires
+a paused delegate, terminal external run, known finite usage, no pending calls
+and no active local job. All these fields are covered by the claim projection
+seal. Reading them starts no work.
 
 Desk/claim agent run summaries retain `authority_snapshot_currentness` and
 identify `currentness_scope`. Exact matches use `authority_state`. A narrowly
@@ -166,9 +231,15 @@ causal operation uses the existing validation status `rejected`.
 
 Controls accept `action: "pause" | "resume"`, `actor`, a required `reason`,
 `expected_revision`, `expected_state_sha256`, `expected_agent_revision`, and
-`expected_agent_state_sha256`. A pause takes effect at a safe checkpoint;
-`pause_requested` can be true while the current operation is still running.
-Resume reuses completed calls in the same safely interrupted run. The result
+`expected_agent_state_sha256`. A reference pause takes effect at a safe
+checkpoint; `pause_requested` can be true while the current operation is still
+running. Reference resume reuses completed calls in the same safely interrupted
+run. For external Facts, pause records a stop request: a request already sent
+may return its receipt, then work stops before another request. Queued or
+interrupted external cancellation retains pending effects. A later resume may
+only clear that saved pause when `can_clear_external_pause` is true; it neither
+resumes external work nor sends a provider request. Unknown outcomes require
+inspection. The result
 contains its accepted event hash, `replayed`, current `agent`, and real
 `continuation` if any.
 An exact historical draft/conflict retry still returns the accepted decision
@@ -200,6 +271,17 @@ and states `approval_required: true`, `automatic_learning: false`. Apply adds
 the preview hash and idempotency header. Target-claim adoption continues to use
 the existing causal `fragment.apply` preview/apply operation.
 
+The joined native receipt sequence saves the validated `lt_deadline` correction
+from source `clm_f69b1747447bc221` at revision 130 as fragment
+`9a619ae6b4f890b534c5e2fe938a6e54227b9948081883dd0f93b72db0fe57f6`.
+The source's revision-135 restoration retains that saved knowledge. Target
+`clm_0e538990cc6ba7ef` revision 4 records the accepted fragment use, the added
+`lease_contract` requirement at `lt_deadline`, and its newly prepared
+`draft_not_sent` request. This is one explicit same-family reuse, not automatic
+learning or generic memory-reuse acceptance. See the
+[joined evidence](../../casepath-agent-native-v2-evidence/v4-joined-knowledge-proof.md)
+for exact state, event and fragment seals and the retained initial failure.
+
 All mutation schemas forbid extra fields. New commands reject stale revision
 or hash bindings. Exact idempotency retries recover the original accepted
 event before stale-state checks; changing input under a key is rejected.
@@ -212,8 +294,10 @@ Delegate controls/approvals are hash-chained under `delegate.{claim_id}` in
 `claim_loop_events`, with a verified workspace parent. Process decisions and
 fragments remain in the existing causal journal. Cached desk reads fingerprint
 the relevant persisted authority/work bytes and corpus identity before reuse;
-changed input is replayed and tampered prefixes fail closed. These routes never
-authorize claim outcomes, sending, provider inference, or automatic learning.
+changed input is replayed and tampered prefixes fail closed. These desk,
+decision and learning routes never authorize claim outcomes, sending, provider
+inference, or automatic learning. Paid inference has the separate explicit
+agent-work start and server admission contract above.
 See [Agent-native desk](product/AGENT_NATIVE.md) for behavior and validation.
 
 Row cache reuse additionally binds exact per-claim workspace/delegate/source
@@ -268,3 +352,10 @@ The public package validates these primary data contracts before startup:
 The API returns projections of source and journal authority. A successful HTTP
 response from a compatibility route does not by itself establish a real-world
 claim decision, legal approval, model acceptance, or hosted release identity.
+
+
+### Local proposal reconciliation
+
+The agent control plane additionally exposes `POST /api/claim-loops/v1/workspace/claims/{claim_id}/agent/reconcile`. It uses `X-CasePath-Idempotency-Key` and `X-CasePath-Agent-Work: 1`. The body supplies `actor`, `reason` (up to 1,000 characters), `expected_revision`, `expected_state_sha256`, `expected_agent_revision`, `expected_agent_state_sha256`, `run_id`, `call_id`, `object_id`, `expected_last_event_sha256`, and `expected_work_state_sha256`. Use only the exact candidate from `agent.run.recovery.reconciliation`; the server revalidates eligibility and all prefixes.
+
+The sealed `casepath.agent-reconciliation-result/1.0.0` response contains the delegate event identity, replay status, a work reconciliation receipt and the current agent projection. A successful work receipt has `reconciled: true`, its event hash and `claim_state_changed: false`. A superseded request has `reconciled: false` and `reason: superseded_recovery_request`; it does not establish a recovered proposal. The operation never resumes work automatically. See [agent-native behavior](product/AGENT_NATIVE.md) for its narrow deterministic-only scope.

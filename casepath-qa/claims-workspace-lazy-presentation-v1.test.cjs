@@ -4,6 +4,8 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const {createHash,webcrypto}=require('node:crypto');
 const source=fs.readFileSync(path.join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');
 const asset='assets/claims-workspace-presentation-v1.js?sha256='+'a'.repeat(64);
+const agentAsset='assets/agent-claim-v2.js?sha256='+'c'.repeat(64);
+const motionAsset='assets/agent-work-motion-v3.js?sha256='+'d'.repeat(64);
 const canonical=value=>value===null||typeof value!=='object'?JSON.stringify(value):Array.isArray(value)?'['+value.map(canonical).join(',')+']':'{'+Object.keys(value).sort().map(key=>JSON.stringify(key)+':'+canonical(value[key])).join(',')+'}';
 const sha=value=>createHash('sha256').update(canonical(value)).digest('hex');
 function detail(id){
@@ -13,7 +15,7 @@ function detail(id){
  return {...value,detail_sha256:sha(value)};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
-function fixture({hash='',meta=asset}={}){
+function fixture({hash='',meta=asset,agentMeta=agentAsset,agentReady=true,motionMeta=motionAsset,motionReady=true}={}){
  const nodes=[],scripts=[],events=[],requests=[],timers=new Map(),listeners={};let nextTimer=0;
  const location=new URL('http://localhost/'+hash);
  class Node{
@@ -33,21 +35,25 @@ function fixture({hash='',meta=asset}={}){
  const body=new Node('body');
  const document={body,activeElement:body,documentElement:{dataset:{}},
   createElement:tag=>new Node(tag),createComment:()=>new Node('comment'),
-  querySelector:s=>s==='meta[name="casepath-workspace-presentation-script"]'?(meta===null?null:{content:meta}):nodes.find(node=>node.matches(s))||null,
+  querySelector:s=>s==='meta[name="casepath-workspace-presentation-script"]'?(meta===null?null:{content:meta}):s==='meta[name="casepath-agent-claim-script"]'?(agentMeta===null?null:{content:agentMeta}):s==='meta[name="casepath-work-motion-script"]'?(motionMeta===null?null:{content:motionMeta}):nodes.find(node=>node.matches(s))||null,
   addEventListener(type,fn){listeners[type]=fn;}};
  const window={scrollY:0,rendered:[],addEventListener(type,fn){listeners[type]=fn;},dispatchEvent(event){events.push(event.type);},scrollTo(){}};
+ const installAgent=()=>{window.CasePathAgentClaim={render(){},bind(){},session(){}};};
+ const installMotion=()=>{window.CasePathWorkMotion={markup(){},observe(){},dispose(){}};};
+ if(agentReady)installAgent();
+ if(motionReady)installMotion();
  const history={state:null,pushState(state,_,url){this.state=state;location.href=new URL(url,location).href;},replaceState(state,_,url){this.state=state;location.href=new URL(url,location).href;},back(){}};
  const storage=new Map(),store={getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value),removeItem:key=>storage.delete(key)};
  const c={window,document,location,history,localStorage:store,sessionStorage:store,URL,URLSearchParams,Event,AbortController,TextEncoder,Uint8Array,crypto:webcrypto,
   CSS:{escape:value=>value},Option:function(text,value){this.text=text;this.value=value;},matchMedia:()=>({matches:false,addEventListener(){}}),
   setTimeout(fn){const id=++nextTimer;timers.set(id,fn);return id;},clearTimeout:id=>timers.delete(id),
-  fetch:async(url,opts)=>{requests.push({url,opts});const id=decodeURIComponent(url.split('/claims/')[1]);return {ok:true,json:async()=>detail(id)};}};
+  fetch:async(url,opts)=>{requests.push({url,opts});const id=decodeURIComponent(url.split('/claims/')[1]);return new Response(JSON.stringify(detail(id)));}};
  vm.createContext(c);
  // Keep the production boot, request verification and navigation intact. Detail
  // markup is covered separately; record arrival here without emulating its DOM.
  vm.runInContext(source.replace('  function renderDetail(detail) {','  function renderDetail(detail) { window.rendered.push(detail); window.onRender?.(detail); return;'),c);
  const install=()=>{window.CasePathPresentation={shell(){throw Error('Lazy arrival must not replace the desk scaffold');},detail(){},workbench(){}};};
- return {c,window,document,nodes,scripts,events,requests,timers,listeners,install};
+ return {c,window,document,nodes,scripts,events,requests,timers,listeners,install,installAgent,installMotion};
 }
 
 test('native desk boot needs no presentation global or asset, including restored queue filters',()=>{
@@ -127,4 +133,104 @@ test('timeout and invalid module arrival release the failed load for a real retr
   const retry=f.window.CasePathWorkspace.openClaim('claim-a');assert.equal(f.scripts.length,2);
   f.install();f.scripts[1].onload();await retry;assert.equal(f.window.rendered.length,1);
  }
+});
+
+test('a fresh desk has no claim module and claim entry waits for both local modules',async()=>{
+ for(const first of ['presentation','agent']){
+  const f=fixture({agentReady:false});
+  assert.equal(f.window.CasePathAgentClaim,undefined);assert.equal(f.scripts.length,0);
+  const opening=f.window.CasePathWorkspace.openClaim('claim-lazy');
+  assert.deepEqual(f.scripts.map(script=>script.src),[asset,agentAsset]);
+  assert.match(f.document.querySelector('#cwDetailPanel').innerHTML,/Opening claim/);
+  const presentation=f.scripts[0],agent=f.scripts[1];
+  if(first==='presentation'){f.install();presentation.onload();}else{f.installAgent();agent.onload();}
+  await settle();assert.equal(f.window.rendered.length,0,'One ready module cannot render a claim');
+  if(first==='presentation'){f.installAgent();agent.onload();}else{f.install();presentation.onload();}
+  await opening;assert.equal(f.window.rendered[0].state.claim_id,'claim-lazy');
+  f.window.CasePathWorkspace.closeDetail({fromHistory:true,refresh:false});
+  await f.window.CasePathWorkspace.openClaim('claim-next');assert.equal(f.scripts.length,2);
+ }
+ const index=fs.readFileSync(path.join(__dirname,'../casepath/index.html'),'utf8');
+ const match=index.match(/<meta name="casepath-agent-claim-script" content="([^\"]+)">/);
+ const digest=createHash('sha256').update(fs.readFileSync(path.join(__dirname,'../casepath/assets/agent-claim-v2.js'))).digest('hex');
+ assert.equal(match?.[1],`assets/agent-claim-v2.js?sha256=${digest}`);
+ assert.doesNotMatch(index,/<script[^>]+src="assets\/agent-claim-v2\.js/);
+});
+
+test('concurrent claim entries share both lazy loads and cannot paint an abandoned claim',async()=>{
+ const f=fixture({agentReady:false});
+ const first=f.window.CasePathWorkspace.openClaim('claim-a'),second=f.window.CasePathWorkspace.openClaim('claim-b');
+ assert.equal(f.scripts.length,2);f.install();f.scripts[0].onload();f.installAgent();f.scripts[1].onload();
+ await Promise.all([first,second]);assert.deepEqual(f.window.rendered.map(d=>d.state.claim_id),['claim-b']);
+ assert.equal(f.requests[0].opts.signal.aborted,true);
+ const abandoned=fixture({agentReady:false}),opening=abandoned.window.CasePathWorkspace.openClaim('claim-a');
+ abandoned.window.CasePathWorkspace.closeDetail({fromHistory:true,refresh:false});
+ abandoned.install();abandoned.scripts[0].onload();abandoned.installAgent();abandoned.scripts[1].onload();
+ await opening;assert.equal(abandoned.window.rendered.length,0);assert.equal(abandoned.document.querySelector('#cwDetail').hidden,true);
+});
+
+test('invalid claim-module metadata never requests claim controls or renders a claim',async()=>{
+ for(const agentMeta of [null,'assets/agent-claim-v2.js','https://external.invalid/agent-claim-v2.js?sha256='+'c'.repeat(64)]){
+  const f=fixture({agentReady:false,agentMeta}),opening=f.window.CasePathWorkspace.openClaim('claim-a');
+  assert.deepEqual(f.scripts.map(script=>script.src),[asset]);f.install();f.scripts[0].onload();await opening;
+  assert.equal(f.window.rendered.length,0);assert.match(f.document.querySelector('#cwDetailPanel').innerHTML,/Claim controls script is unavailable/);
+ }
+});
+
+test('claim-module error, timeout and incomplete arrival all permit the existing retry',async()=>{
+ for(const failure of ['error','timeout','incomplete']){
+  const f=fixture({agentReady:false}),opening=f.window.CasePathWorkspace.openClaim('claim-a');
+  f.install();f.scripts[0].onload();const agent=f.scripts[1];
+  await settle();
+  if(failure==='error')agent.onerror();
+  else if(failure==='timeout'){assert.equal(f.timers.size,1);[...f.timers.values()][0]();}
+  else{f.window.CasePathAgentClaim={render(){}};agent.onload();}
+  await opening;assert.equal(agent.removed,true);assert.equal(f.window.rendered.length,0);
+  assert.match(f.document.querySelector('#cwDetailPanel').innerHTML,/data-retry-claim="claim-a"/);
+  const retry=f.window.CasePathWorkspace.openClaim('claim-a');assert.equal(f.scripts.length,3);assert.equal(f.scripts[2].src,agentAsset);
+  f.installAgent();f.scripts[2].onload();await retry;assert.equal(f.window.rendered[0].state.claim_id,'claim-a');
+ }
+});
+
+test('live review stays lazy and claim rendering waits for all three complete modules',async()=>{
+ const f=fixture({agentReady:false,motionReady:false});
+ assert.equal(f.scripts.length,0);assert.equal(f.window.CasePathWorkMotion,undefined);
+ const first=f.window.CasePathWorkspace.openClaim('claim-a'),second=f.window.CasePathWorkspace.openClaim('claim-b');
+ assert.deepEqual(f.scripts.map(script=>script.src),[asset,agentAsset,motionAsset]);
+ f.install();f.scripts[0].onload();f.installAgent();f.scripts[1].onload();await settle();
+ assert.equal(f.window.rendered.length,0,'Claim presentation and controls cannot omit live review');
+ f.installMotion();f.scripts[2].onload();await Promise.all([first,second]);
+ assert.deepEqual(f.window.rendered.map(d=>d.state.claim_id),['claim-b']);assert.equal(f.requests[0].opts.signal.aborted,true);
+ await f.window.CasePathWorkspace.openClaim('claim-c');assert.equal(f.scripts.length,3);
+ const index=fs.readFileSync(path.join(__dirname,'../casepath/index.html'),'utf8');
+ const bound=index.match(/<meta name="casepath-work-motion-script" content="([^"]+)">/);
+ const digest=createHash('sha256').update(fs.readFileSync(path.join(__dirname,'../casepath/assets/agent-work-motion-v3.js'))).digest('hex');
+ assert.equal(bound?.[1],`assets/agent-work-motion-v3.js?sha256=${digest}`);
+ assert.doesNotMatch(index,/<script[^>]+src="assets\/agent-work-motion-v3\.js/);
+});
+
+test('live-review failed, incomplete and timed-out loads preserve the real claim retry',async()=>{
+ for(const failure of ['error','incomplete','timeout']){
+  const f=fixture({motionReady:false}),opening=f.window.CasePathWorkspace.openClaim('claim-a');
+  f.install();f.scripts[0].onload();const motion=f.scripts[1];await settle();
+  if(failure==='error')motion.onerror();
+  else if(failure==='timeout'){assert.equal(f.timers.size,1);[...f.timers.values()][0]();}
+  else{f.window.CasePathWorkMotion={markup(){},observe(){}};motion.onload();}
+  await opening;assert.equal(motion.removed,true);assert.equal(f.window.rendered.length,0);
+  assert.match(f.document.querySelector('#cwDetailPanel').innerHTML,/data-retry-claim="claim-a"/);
+  const retry=f.window.CasePathWorkspace.openClaim('claim-a');assert.equal(f.scripts[2].src,motionAsset);
+  f.installMotion();f.scripts[2].onload();await retry;assert.equal(f.window.rendered[0].state.claim_id,'claim-a');
+ }
+});
+
+test('unbound live-review metadata fails closed, and leaving during load cannot reopen the claim',async()=>{
+ for(const motionMeta of [null,'assets/agent-work-motion-v3.js','https://external.invalid/agent-work-motion-v3.js?sha256='+'d'.repeat(64)]){
+  const f=fixture({motionReady:false,motionMeta}),opening=f.window.CasePathWorkspace.openClaim('claim-a');
+  assert.deepEqual(f.scripts.map(script=>script.src),[asset]);f.install();f.scripts[0].onload();await opening;
+  assert.equal(f.window.rendered.length,0);assert.match(f.document.querySelector('#cwDetailPanel').innerHTML,/Live review script is unavailable/);
+ }
+ const f=fixture({motionReady:false}),opening=f.window.CasePathWorkspace.openClaim('claim-a');
+ f.window.CasePathWorkspace.closeDetail({fromHistory:true,refresh:false});
+ f.install();f.scripts[0].onload();f.installMotion();f.scripts[1].onload();await opening;
+ assert.equal(f.window.rendered.length,0);assert.equal(f.document.querySelector('#cwDetail').hidden,true);
 });

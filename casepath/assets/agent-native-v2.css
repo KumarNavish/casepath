@@ -277,3 +277,254 @@ html[data-agent-native=true] #claimsWorkspace *,html[data-agent-native=true] #cl
 #claimsWorkspace .av-lesson-form>button{justify-self:start}
 #claimsWorkspace .av-learning-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px}
 #claimsWorkspace .av-learning-actions button{padding:8px 16px;border:1px solid var(--cp-line);border-radius:2px;background:#fff;font-size:12px}
+
+/* A decision and its causal context form one working surface. */
+#claimsWorkspace .av-handoff-layout{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr);gap:48px;margin-top:22px;border-top:1px solid var(--cp-line)}
+#claimsWorkspace .av-handoff-decision{min-width:0}
+#claimsWorkspace .av-handoff-decision .av-decision{border-top:0;border-bottom:0;padding:26px 0 20px}
+#claimsWorkspace .av-handoff-decision .av-decision form{display:flex;flex-direction:column;gap:0}
+#claimsWorkspace .av-handoff-decision .av-question-title{font-size:30px;line-height:1.4;margin:12px 0 18px}
+#claimsWorkspace .av-handoff-decision .av-proposal{margin:0 0 14px}
+#claimsWorkspace .av-handoff-decision .av-counter-reading{margin:0 0 16px}
+#claimsWorkspace .av-handoff-decision .av-answer-list{margin:18px 0 20px;width:100%;gap:0}
+#claimsWorkspace .av-handoff-decision .av-answer{padding:11px 0}
+#claimsWorkspace .av-handoff-decision .av-answer strong{font-weight:600}
+#claimsWorkspace .av-handoff-decision .av-answer>span>span{display:block;font-size:12px;color:var(--cp-muted)}
+#claimsWorkspace .av-handoff-decision .av-decision-actions{align-items:flex-start;gap:10px;margin:0}
+#claimsWorkspace .av-handoff-decision .av-decision-actions>span{flex-basis:100%;max-width:60ch;font-size:11px}
+#claimsWorkspace .av-handoff-decision .av-decision-picker{border-top:1px solid var(--cp-line);border-bottom:0;padding:20px 0;max-width:none}
+#claimsWorkspace .av-consequence{min-width:0;border-left:1px solid var(--cp-line);padding:26px 0 20px 30px}
+#claimsWorkspace .av-consequence .av-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+#claimsWorkspace .av-consequence h3{font:300 21px/1.5 var(--av-serif);margin:0}
+#claimsWorkspace .av-consequence .av-section-head .av-button,#claimsWorkspace .av-node-checklist .av-button,#claimsWorkspace .av-knowledge-bridge .av-button{border:0;background:none;padding:0;color:var(--cp-accent);text-decoration:underline;text-underline-offset:4px;min-height:32px;text-align:left;white-space:nowrap}
+#claimsWorkspace .av-context-basis{font-size:11px;color:var(--cp-muted);margin:8px 0 20px;max-width:46ch}
+#claimsWorkspace .av-consequence .cp-local-context{margin:0}
+#claimsWorkspace .av-consequence .cp-local-context>h4{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#claimsWorkspace .av-context-node{display:block;width:100%;background:none;border:0;border-left:2px solid var(--cp-accent);padding:12px 16px;text-align:left;font-weight:600}
+#claimsWorkspace .av-node-checklist{margin:20px 0 0;padding-top:18px;border-top:1px solid var(--cp-line)}
+#claimsWorkspace .av-node-checklist h4{font-size:12px;font-weight:600;margin:0 0 10px}
+#claimsWorkspace .av-node-checklist>p{font-size:12px;color:var(--cp-muted)}
+#claimsWorkspace .av-node-checklist ul{padding:0;margin:0;list-style:none}
+#claimsWorkspace .av-node-checklist li{display:flex;gap:16px;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--cp-line);font-size:12px}
+#claimsWorkspace .av-node-checklist li strong{font-weight:500}
+#claimsWorkspace .av-node-checklist small{display:block;color:var(--cp-muted);font-size:11px;margin-top:3px}
+#claimsWorkspace .av-node-checklist li[data-state=held_behind_question] small{color:var(--cp-amber)}
+#claimsWorkspace .av-node-checklist li[data-state=established] small{color:var(--av-success)}
+#claimsWorkspace .av-knowledge-bridge{margin-top:24px;padding-top:16px;border-top:1px solid var(--cp-line)}
+#claimsWorkspace .av-context-caption{font-size:12px;font-weight:600}
+#claimsWorkspace .av-knowledge-bridge p{font-size:12px;color:var(--cp-muted);margin:6px 0}
+/* One selected step, with its real incoming and outgoing connections. */
+#claimsWorkspace .cp-context-graph{display:grid;gap:0;max-width:100%;padding:6px 0}
+#claimsWorkspace .cp-context-neighbors{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px}
+#claimsWorkspace .cp-context-neighbor{min-width:0;display:flex;flex-direction:column;align-items:stretch}
+#claimsWorkspace .cp-context-links{list-style:none;margin:0;padding:0;display:grid;gap:0}
+#claimsWorkspace .cp-context-links li{display:block;position:relative;padding:6px 0}
+#claimsWorkspace .cp-context-links .cp-relation-link{display:grid;width:100%;justify-items:center;border:0;background:none;padding:4px 8px;color:var(--cp-muted);font-size:11px;min-height:42px}
+#claimsWorkspace .cp-context-links .cp-relation-arrow{font-size:20px;line-height:1.1;color:var(--cp-accent);border:0;margin:0}
+#claimsWorkspace .cp-context-links .cp-relation-link>span:first-child{font-size:11px;font-weight:500;color:var(--cp-ink)}
+#claimsWorkspace .cp-context-links .cp-relation-link small{font-size:10px;line-height:1.6}
+#claimsWorkspace .cp-context-links [data-activation=unresolved] .cp-relation-arrow,#claimsWorkspace .cp-context-links [data-activation=unresolved] .cp-relation-link small{color:var(--cp-amber)}
+#claimsWorkspace .cp-context-links [data-activation=false] .cp-relation-arrow{color:var(--cp-muted)}
+#claimsWorkspace .cp-context-graph .cp-relation-node{width:100%;min-width:0;border:0;border-left:1px solid var(--cp-line);border-bottom:1px solid var(--cp-line);border-radius:0;background:#fff;padding:10px 14px;text-align:left;box-shadow:none;font-size:12px;line-height:1.6;color:var(--cp-ink)}
+#claimsWorkspace .cp-context-graph .cp-relation-node small{display:block;font-size:11px;color:var(--cp-muted);margin-top:3px}
+#claimsWorkspace .cp-context-selected{border-left:2px solid var(--cp-accent);background:#faf7f8}
+#claimsWorkspace .cp-context-selected .cp-relation-node{border:0;background:none;padding:14px;font-weight:600}
+#claimsWorkspace .cp-context-selected .cp-relation-node small{font-weight:400;color:var(--cp-accent)}
+#claimsWorkspace .cp-context-graph :is(button):hover{color:var(--cp-accent)}
+#claimsWorkspace .cp-process-node[aria-pressed=true]{border-left:2px solid var(--cp-accent)!important;background:#faf7f8!important}
+@media(max-width:999px){
+ #claimsWorkspace .av-handoff-layout{grid-template-columns:minmax(0,1fr);gap:0;margin-top:16px}
+ #claimsWorkspace .av-consequence{border-left:0;border-top:1px solid var(--cp-line);padding:24px 0}
+ #claimsWorkspace .av-consequence .cp-context-neighbors{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+ #claimsWorkspace .av-claim-header{grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;margin-bottom:8px}
+ #claimsWorkspace .av-claim-header>div:first-child{display:contents}
+ #claimsWorkspace .av-claim-header .av-agent-line{grid-column:1/-1;grid-row:1;flex-wrap:wrap;margin:0}
+ #claimsWorkspace .av-owner-line{grid-column:1;grid-row:2;align-self:center;margin:0}
+ #claimsWorkspace .av-control{grid-column:2;grid-row:2}
+ #claimsWorkspace .av-control button,#claimsWorkspace .av-owner-line button{padding:3px 8px;min-height:30px}
+ #claimsWorkspace .av-review-summary{grid-column:1/-1;grid-row:3;margin:0;font-size:11px}
+ #claimsWorkspace .av-draft-status{grid-column:1/-1;grid-row:4;margin:0;font-size:11px}
+ #claimsWorkspace .av-recovery-ask{grid-column:1/-1;grid-row:5}
+ #claimsWorkspace .av-mandate{margin:8px 0 0}
+}
+@media(max-width:540px){
+ #claimsWorkspace .av-claim{padding-top:12px}
+ #claimsWorkspace .av-handoff-decision .av-decision{padding-top:18px}
+ #claimsWorkspace .av-handoff-decision .av-question-title{font-size:25px;margin:8px 0 14px}
+ #claimsWorkspace .av-handoff-decision .av-question-kicker{font-size:11px}
+ #claimsWorkspace .av-handoff-decision .av-answer-list{margin:10px 0 16px}
+ #claimsWorkspace .av-handoff-decision .av-decision-actions button{flex:none}
+ #claimsWorkspace .av-handoff-decision .av-answer>span>span{font-size:11px}
+ #claimsWorkspace .cp-context-neighbors{grid-template-columns:1fr}
+ html[data-agent-native=true] #claimsWorkspace .cp-claim-tabs{margin-top:8px}
+ html[data-agent-native=true] #claimsWorkspace .cp-claim-header{padding-top:12px}
+ html[data-agent-native=true] #claimsWorkspace .cp-claim-title h1{font-size:24px;line-height:1.4}
+ #claimsWorkspace .ad-counts{grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:12px 0}
+ #claimsWorkspace .ad-counts strong{font-size:24px}
+ #claimsWorkspace .ad-counts span,#claimsWorkspace .ad-counts small{font-size:10px;line-height:1.5}
+ #claimsWorkspace .ad-heading h1{font-size:28px}
+ #claimsWorkspace .ad-workspace-note{margin-top:8px}
+ #claimsWorkspace .ad-tools{margin-top:16px}
+ #claimsWorkspace .ad-status:empty{margin-bottom:16px}
+}
+
+#claimsWorkspace .cp-context-graph .cp-relation-arrow{width:auto;text-align:center}
+#claimsWorkspace .cp-context-graph .cp-relation-arrow::before{content:none}
+#claimsWorkspace .cp-context-kicker{display:block;color:var(--cp-muted);font-size:10px;font-weight:400}
+#claimsWorkspace .cp-context-graph .cp-relation-node:hover{background:#faf7f8}
+
+#claimsWorkspace .av-supervision{position:relative;font-size:12px;align-self:start;min-width:75px;grid-column:2;grid-row:1}
+#claimsWorkspace .av-supervision>summary{cursor:pointer;text-decoration:underline;text-underline-offset:4px;color:var(--cp-muted);text-align:right;min-height:28px}
+#claimsWorkspace .av-supervision[open]{min-width:230px}
+#claimsWorkspace .av-supervision .av-control{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+#claimsWorkspace .av-supervision .av-mandate{margin-top:8px}
+#claimsWorkspace .av-claim-header{padding-bottom:14px;border-bottom:1px solid var(--cp-line);margin-bottom:0}
+#claimsWorkspace .av-handoff-layout{margin-top:0;border-top:0}
+#claimsWorkspace .av-counter{font-size:12px;color:var(--cp-muted);margin:0 0 10px}
+#claimsWorkspace .av-counter>summary{cursor:pointer;text-decoration:underline;text-underline-offset:4px;min-height:28px}
+#claimsWorkspace .av-handoff-decision .av-counter-reading{margin:8px 0}
+#claimsWorkspace .av-handoff-decision .av-answer:not(:has(input:checked))>span>span{display:none}
+#claimsWorkspace .av-handoff-decision .av-source-gap{margin:4px 0 8px}
+#claimsWorkspace .av-handoff-decision .av-answer-list{margin-top:10px;margin-bottom:16px}
+#claimsWorkspace .av-handoff-decision .av-answer{padding:9px 0}
+#claimsWorkspace .cp-document-review{font-size:12px!important;color:var(--cp-accent)!important;background:none!important;border:0!important;padding:5px 0!important;text-decoration:underline;text-underline-offset:4px;justify-self:start}
+@media(max-width:999px){
+ #claimsWorkspace .av-claim-header{grid-template-columns:minmax(0,1fr) 64px;column-gap:12px;row-gap:4px;padding-bottom:12px}
+ #claimsWorkspace .av-claim-header .av-agent-line{grid-column:1/-1;grid-row:1;gap:8px;font-size:12px}
+ #claimsWorkspace .av-claim-title{font-size:13px}
+ #claimsWorkspace .av-owner-line{grid-column:1;grid-row:2}
+ #claimsWorkspace .av-supervision{grid-column:2;grid-row:2;min-width:0}
+ #claimsWorkspace .av-supervision[open]{grid-column:1/-1;grid-row:6}
+ #claimsWorkspace .av-supervision[open]>summary{text-align:left}
+ #claimsWorkspace .av-supervision .av-control{display:flex}
+ #claimsWorkspace .av-draft-status{grid-row:4}
+ #claimsWorkspace .av-review-summary{grid-row:3}
+ #claimsWorkspace .av-handoff-layout{margin-top:0}
+}
+@media(max-width:540px){
+ #claimsWorkspace .av-handoff-decision .av-question-title{font-size:25px}
+ #claimsWorkspace .av-handoff-decision .av-proposal{margin-bottom:8px}
+ #claimsWorkspace .av-handoff-decision .av-answer{padding:8px 0}
+ #claimsWorkspace .av-handoff-decision .av-answer-list{margin:8px 0 14px}
+ #claimsWorkspace .av-question-kicker{margin-top:0}
+ #claimsWorkspace .av-supervision>summary{font-size:11px}
+ #claimsWorkspace .av-consequence .cp-relationship-help{font-size:11px}
+}
+
+#claimsWorkspace .cp-context-selected .av-node-checklist{margin:0 14px 14px;padding-top:10px}
+#claimsWorkspace .cp-context-selected .av-node-checklist li:last-child{border-bottom:0}
+#claimsWorkspace .av-consequence .cp-context-incoming .cp-relation-link{padding:2px 8px;gap:0}
+#claimsWorkspace .av-consequence .cp-context-outgoing .cp-relation-link{padding:2px 8px;gap:0}
+@media(max-width:540px){#claimsWorkspace .av-handoff-decision .av-counter{margin-bottom:0}#claimsWorkspace .av-handoff-decision .av-decision{padding-top:14px}#claimsWorkspace .av-handoff-decision .av-question-title{margin-bottom:10px}#claimsWorkspace .av-handoff-decision .av-answer-list{margin-bottom:10px}}
+
+#claimsWorkspace .av-question-title{scroll-margin-top:24px}
+html[data-agent-native=true] #claimsWorkspace .av-node-checklist .av-button{border:0;background:none;padding:0;color:var(--cp-accent);min-height:32px}
+@media(min-width:1000px){#claimsWorkspace .av-handoff-decision .av-decision{padding-top:20px}#claimsWorkspace .av-handoff-decision .av-question-title{margin:10px 0 14px}}
+
+@media(max-width:540px){#claimsWorkspace .ad-counts span,#claimsWorkspace .ad-counts small{font-size:11px}}
+
+@media(max-width:540px){#claimsWorkspace .av-consequence .cp-context-neighbors{grid-template-columns:1fr}}
+
+#claimsWorkspace .av-context-basis>span{display:block;margin-top:4px}
+#claimsWorkspace .av-node-checklist .av-button{white-space:normal;min-width:76px;max-width:90px;line-height:1.5}
+
+/* A knowledge approval keeps the proposed meaning and its reuse boundary together. */
+#claimsWorkspace .av-lesson-preview{max-width:76ch}
+#claimsWorkspace .av-lesson-preview .av-lesson-title{font:300 25px/1.35 var(--av-serif);margin:8px 0 14px;color:var(--cp-ink)}
+#claimsWorkspace .av-lesson-preview .av-lesson-rationale{font-size:14px;line-height:1.7;color:var(--cp-ink)}
+#claimsWorkspace .av-lesson-reviewer{margin:14px 0 22px}
+#claimsWorkspace .av-lesson-scope{display:grid;grid-template-columns:180px 1fr;gap:0;margin:20px 0 24px;font-size:12px;line-height:1.65}
+#claimsWorkspace .av-lesson-scope dt,#claimsWorkspace .av-lesson-scope dd{padding:12px 0;border-top:1px solid var(--cp-line);margin:0}
+#claimsWorkspace .av-lesson-scope dt{color:var(--cp-muted);padding-right:18px}
+#claimsWorkspace .av-lesson-scope dd{color:var(--cp-ink)}
+@media(max-width:600px){#claimsWorkspace .av-lesson-scope{grid-template-columns:1fr}#claimsWorkspace .av-lesson-scope dt{padding-bottom:3px}#claimsWorkspace .av-lesson-scope dd{border-top:0;padding-top:0}}
+#claimsWorkspace .av-knowledge-layout{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(0,1.4fr);gap:48px;align-items:start;margin-top:24px}
+#claimsWorkspace .av-knowledge-library{min-width:0;padding-top:22px}
+#claimsWorkspace .av-knowledge-library>h4{font:300 22px/1.35 var(--av-serif);margin:0 0 18px;color:var(--cp-ink)}
+#claimsWorkspace .av-knowledge-library .av-fragments{margin-bottom:24px}
+#claimsWorkspace .av-knowledge-editor{min-width:0;border-left:1px solid var(--cp-line);padding-left:32px}
+#claimsWorkspace .av-knowledge-editor .av-lesson-form{margin-top:22px}
+#claimsWorkspace .av-knowledge-editor .av-lesson-preview{border-top:0;margin-top:0;max-width:none}
+#claimsWorkspace .av-knowledge-effect{color:var(--cp-ink);margin-top:18px}
+#claimsWorkspace .av-knowledge-editor .av-learning-actions button{min-height:44px}
+@media(max-width:900px){#claimsWorkspace .av-knowledge-layout{grid-template-columns:1fr;gap:24px}#claimsWorkspace .av-knowledge-editor{border-left:0;padding-left:0;border-top:1px solid var(--cp-line)}#claimsWorkspace .av-knowledge-library{padding-top:0}}
+
+/* Every arrival is a journal milestone; there is no decorative progress loop. */
+#claimsWorkspace .av-live-launch{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 0 20px;font-size:12px}
+#claimsWorkspace .av-live-launch p{margin:4px 0;color:var(--cp-ink)}
+#claimsWorkspace .av-live-launch p span,#claimsWorkspace .av-live-launch small{color:var(--cp-muted);font-size:11px}
+#claimsWorkspace .av-live-launch .av-live-limit{max-width:34ch;color:var(--cp-muted);font-size:11px}
+#claimsWorkspace .av-live-details{margin:0 0 20px;border-top:1px solid var(--cp-line);border-bottom:1px solid var(--cp-line)}
+#claimsWorkspace .av-live-details>summary{display:flex;justify-content:space-between;gap:20px;padding:12px 0;cursor:pointer;font-size:12px;list-style:none}
+#claimsWorkspace .av-live-details>summary span{color:var(--cp-muted);font-size:11px}
+#claimsWorkspace .av-live-details>summary::after{content:'+';color:var(--cp-accent);margin-left:auto}
+#claimsWorkspace .av-live-details[open]>summary::after{content:'−'}
+#claimsWorkspace .av-live-mount{margin:0 0 26px}
+#claimsWorkspace .av-live-details .av-live-mount{margin:8px 0 20px}
+#claimsWorkspace .av-live-heading{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin-bottom:18px}
+#claimsWorkspace .av-live-intent{font:300 20px/1.45 var(--av-serif);margin:0;max-width:55ch}
+#claimsWorkspace .av-live-reader{font-size:11px;color:var(--cp-muted);max-width:34ch;text-align:right;overflow-wrap:anywhere}
+#claimsWorkspace .av-work-stages{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;list-style:none;padding:0;margin:0 0 18px}
+#claimsWorkspace .av-work-stages>li{position:relative;min-width:0;border-top:1px solid var(--cp-line)}
+html[data-agent-native=true] #claimsWorkspace .av-work-stages button{display:grid;grid-template-columns:1fr auto;gap:4px 12px;width:100%;border:0;background:none;text-align:left;padding:12px 0;color:var(--cp-muted)}
+#claimsWorkspace .av-work-stage-label{font-size:13px;font-weight:600;color:var(--cp-ink)}
+#claimsWorkspace .av-work-stage-status{grid-column:1;font-size:11px}
+#claimsWorkspace .av-work-stage-count{grid-column:2;grid-row:2;font-size:11px;text-align:right}
+#claimsWorkspace .av-work-stages [aria-pressed=true] .av-work-stage-label{color:var(--cp-accent)}
+#claimsWorkspace .av-work-arrival{position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--cp-line);transform-origin:left;pointer-events:none}
+#claimsWorkspace .av-work-stages [data-av-work-state=working] .av-work-arrival{background:var(--cp-accent)}
+#claimsWorkspace .av-work-stages [data-av-work-state=complete] .av-work-arrival,#claimsWorkspace .av-work-stages [data-av-work-state=recorded] .av-work-arrival{background:var(--av-success)}
+#claimsWorkspace .av-work-stages [data-av-work-state=paused] .av-work-arrival,#claimsWorkspace .av-work-stages [data-av-work-state=needs_review] .av-work-arrival{background:var(--cp-amber)}
+#claimsWorkspace .av-live-finding{min-height:54px;padding-left:18px;border-left:2px solid var(--cp-line);max-width:88ch;font-size:12px}
+#claimsWorkspace .av-live-summary{color:var(--cp-ink);margin:0 0 8px;line-height:1.75}
+#claimsWorkspace .av-live-source blockquote{margin:4px 0 14px;font:300 17px/1.6 var(--av-serif);overflow-wrap:anywhere}
+html[data-agent-native=true] #claimsWorkspace .av-live-source .av-button,html[data-agent-native=true] #claimsWorkspace .av-live-linked-work .av-button{padding:0;border:0;background:none;color:var(--cp-accent);text-decoration:underline;text-underline-offset:4px;text-align:left}
+#claimsWorkspace .av-live-linked-work{display:flex;gap:8px 16px;flex-wrap:wrap;align-items:baseline}
+#claimsWorkspace .av-live-relation{color:var(--cp-muted);font-size:11px}
+#claimsWorkspace .av-live-mount>[data-av-work-follow]{margin:14px 0 0;font-size:11px}
+#claimsWorkspace .av-stream-status{font-size:11px;color:var(--cp-amber);margin:12px 0}
+#claimsWorkspace #agentClaimMount:not([data-pane=overview]) .av-live-launch,#claimsWorkspace #agentClaimMount:not([data-pane=overview]) .av-live-details,#claimsWorkspace #agentClaimMount:not([data-pane=overview]) .av-live-mount{display:none}
+@media(max-width:900px){#claimsWorkspace .av-work-stage-count{grid-column:1;grid-row:3;text-align:left}#claimsWorkspace .av-live-heading{display:block}#claimsWorkspace .av-live-reader{display:block;max-width:none;text-align:left;margin-top:6px}}
+@media(max-width:540px){#claimsWorkspace .av-live-launch{display:block;padding-bottom:16px}#claimsWorkspace .av-live-launch>.av-button{margin-top:10px;min-height:44px}#claimsWorkspace .av-work-stages{gap:12px}#claimsWorkspace .av-work-stage-label{font-size:12px}#claimsWorkspace .av-work-stage-status,#claimsWorkspace .av-work-stage-count{font-size:10px}#claimsWorkspace .av-live-intent{font-size:19px}#claimsWorkspace .av-live-details>summary{gap:8px;font-size:11px;min-height:44px}#claimsWorkspace .av-live-details>summary span{font-size:10px}#claimsWorkspace .av-live-finding{padding-left:12px}#claimsWorkspace .av-live-source blockquote{font-size:16px}}
+@media(max-width:540px){#claimsWorkspace .av-live-details{margin-bottom:8px}#claimsWorkspace .av-handoff-decision .av-decision{padding-top:8px}#claimsWorkspace .av-question-kicker{margin-bottom:6px}#claimsWorkspace .av-answer small.av-proposal-label{display:inline-block;margin:0 0 0 8px}#claimsWorkspace .av-answer strong{margin-right:0}}
+@media(min-width:1000px) and (max-height:850px){html[data-agent-native=true] #claimsWorkspace .cp-claim-header{padding-top:24px}html[data-agent-native=true] #claimsWorkspace .cp-claim-tabs{margin-top:18px}#claimsWorkspace .av-live-details{margin-bottom:10px}#claimsWorkspace .av-handoff-decision .av-decision{padding-top:12px}#claimsWorkspace .av-handoff-decision .av-answer-list{gap:0}#claimsWorkspace .av-answer small.av-proposal-label{display:inline-block;margin:0 0 0 8px}#claimsWorkspace .av-answer strong{margin-right:0}#claimsWorkspace .av-handoff-decision .av-proposal{margin-bottom:8px}#claimsWorkspace .av-handoff-decision .av-counter{margin-bottom:0}#claimsWorkspace .av-handoff-decision .av-source-gap{margin:0 0 4px}#claimsWorkspace .av-handoff-decision .av-question-title{margin:6px 0 10px}}
+
+
+/* Review categories are navigation; the selected detail carries its totals. */
+html[data-agent-native=true] #claimsWorkspace .av-work-stages button{display:flex;align-items:center;min-height:44px;padding:8px 0;gap:0}
+#claimsWorkspace .av-work-stages{gap:16px;margin-bottom:12px}
+#claimsWorkspace .av-live-launch{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:10px 0 14px}
+#claimsWorkspace .av-live-launch>div{grid-column:1;grid-row:1;min-width:0}
+#claimsWorkspace .av-live-launch>div>p{margin:0;font-size:12px;overflow-wrap:anywhere}
+#claimsWorkspace .av-live-config{font-size:11px;margin-top:2px;color:var(--cp-muted)}
+#claimsWorkspace .av-live-config>summary{cursor:pointer;min-height:28px;text-decoration:underline;text-underline-offset:3px}
+#claimsWorkspace .av-live-config>p{margin:6px 0;overflow-wrap:anywhere}
+#claimsWorkspace .av-live-launch>.av-button,#claimsWorkspace .av-live-launch>.av-live-limit{grid-column:2;grid-row:1;margin:0}
+#claimsWorkspace .av-live-launch>.av-button{min-height:44px}
+#claimsWorkspace .av-work-selection{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0 0 14px;font-size:12px;color:var(--cp-muted)}
+#claimsWorkspace .av-work-selection strong{color:var(--cp-ink);font-weight:600}
+#claimsWorkspace .av-work-selection .av-work-stage-status,#claimsWorkspace .av-work-selection .av-work-stage-count{grid-area:auto;font-size:12px;text-align:left}
+#claimsWorkspace .av-live-work>.av-live-reader{display:block;max-width:76ch;margin:16px 0 0;text-align:left;line-height:1.6}
+#claimsWorkspace .av-answer-comparison{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:0 0 12px;color:var(--cp-muted)}
+#claimsWorkspace .av-answer-comparison strong{font-weight:600;color:var(--cp-ink)}
+#claimsWorkspace .av-answer-comparison>span:last-child{color:var(--cp-accent)}
+@media(max-width:540px){
+ html[data-agent-native=true] #claimsWorkspace .cw-detail-panel{display:block;overflow-y:auto;overscroll-behavior-y:contain;scroll-padding-block:16px}
+ html[data-agent-native=true] #claimsWorkspace .cp-workspace{display:block;overflow:visible}
+ html[data-agent-native=true] #claimsWorkspace .cp-work-column{height:auto;overflow:visible}
+ #claimsWorkspace .av-claim-header{margin-bottom:0}
+ #claimsWorkspace .av-handoff-layout{margin-top:0}
+ #claimsWorkspace .av-handoff-decision .av-answer-list{margin:0 0 4px}
+ #claimsWorkspace .av-handoff-decision .av-decision-actions button{min-height:44px}
+ #claimsWorkspace .av-handoff-decision .av-citations{margin:4px 0}
+ #claimsWorkspace .av-handoff-decision .av-answer-list legend{margin-bottom:6px}
+ #claimsWorkspace .av-work-stages{gap:10px}
+ #claimsWorkspace .av-live-launch{display:grid;gap:4px 12px;padding:6px 0 10px}
+ #claimsWorkspace .av-live-launch>.av-button{margin-top:0}
+ #claimsWorkspace .av-work-stage-label{font-size:12px}
+ #claimsWorkspace .av-live-heading{margin-bottom:12px}
+ #claimsWorkspace .av-live-linked-work[data-recorded-relation]{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 10px;align-items:baseline}
+ #claimsWorkspace .av-live-linked-work[data-recorded-relation]>:first-child{grid-column:1/-1}
+ #claimsWorkspace .av-live-linked-work[data-recorded-relation]>.av-live-relation{grid-column:1;grid-row:2}
+ #claimsWorkspace .av-live-linked-work[data-recorded-relation]>:last-child{grid-column:2;grid-row:2}
+}

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation
 from hashlib import sha256
 from pathlib import Path
 from threading import RLock
@@ -51,6 +52,9 @@ CREATE TABLE IF NOT EXISTS work_runs (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS one_active_work_run_per_claim
  ON work_runs(claim_id) WHERE status IN ('queued','running','interrupted');
+CREATE TABLE IF NOT EXISTS work_external_budget (
+ singleton INTEGER PRIMARY KEY CHECK(singleton=1), policy_json TEXT NOT NULL, policy_sha256 TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS work_external_permits (
  run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
 );
@@ -150,6 +154,133 @@ class WorkStore:
             raise WorkStoreError("run request identity is invalid")
         return run
 
+    @staticmethod
+    def _money(value):
+        try:
+            if isinstance(value, bool):
+                raise ValueError
+            amount = Decimal(str(value))
+            if not amount.is_finite() or amount < 0:
+                raise ValueError
+            return amount
+        except (InvalidOperation, TypeError, ValueError) as exc:
+            raise WorkStoreError("provider budget contains an invalid amount") from exc
+
+    def configure_external_budget(self, policy):
+        """Bind a persistent demo allowance; process restart cannot refill it."""
+        fields = {"max_runs", "max_provider_calls", "total_cost_limit_usd", "run_cost_limit_usd"}
+        if set(policy) != fields or type(policy["max_runs"]) is not int or not 1 <= policy["max_runs"] <= 3:
+            raise WorkStoreError("invalid explicit provider budget")
+        if type(policy["max_provider_calls"]) is not int or not 1 <= policy["max_provider_calls"] <= 18:
+            raise WorkStoreError("invalid explicit provider call budget")
+        total, per_run = (self._money(policy[k]) for k in ("total_cost_limit_usd", "run_cost_limit_usd"))
+        if not 0 < per_run <= Decimal("0.02") or not per_run <= total <= Decimal("0.10"):
+            raise WorkStoreError("invalid explicit provider cost budget")
+        policy = {**policy, "total_cost_limit_usd": str(total), "run_cost_limit_usd": str(per_run)}
+        with self.transaction() as db:
+            prior = db.execute("SELECT * FROM work_external_budget WHERE singleton=1").fetchone()
+            if prior:
+                if prior["policy_sha256"] != digest(policy) or prior["policy_json"] != canonical(policy).decode():
+                    raise ConflictError("the persisted demo budget differs; it cannot be reset by configuration")
+            else:
+                db.execute("INSERT INTO work_external_budget VALUES(1,?,?)", (canonical(policy).decode(), digest(policy)))
+
+    def _external_usage(self, db):
+        """Derive spend from validated journals within the admission transaction."""
+        rows = db.execute("SELECT * FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits)").fetchall()
+        runs, calls = {}, []
+        for row in rows:
+            run = self._decode_run(dict(row))
+            run_id = run["run_id"]
+            events = self._validate_events(run, db.execute("SELECT * FROM work_events WHERE run_id=? ORDER BY sequence", (run_id,)).fetchall())
+            responses = {e["object_id"]: e for e in events if e["operation"] == Operation.PROVIDER_RESPONSE_RECEIVED}
+            run_calls = []
+            for event in events:
+                if event["operation"] != Operation.PROVIDER_REQUEST_STARTED:
+                    continue
+                response = responses.get(event["object_id"], {})
+                usage = (response.get("after") or {}).get("usage") or {}
+                cost = self._money(usage["cost"]) if usage.get("cost") is not None else None
+                reserved = self._money(event["after"]["maximum_cost_usd"])
+                record = {"run_id": run_id, "cost": cost, "reserved": reserved}
+                calls.append(record); run_calls.append(record)
+            runs[run_id] = {"run": run, "calls": run_calls}
+        pending = db.execute("SELECT 1 FROM work_calls WHERE tool_name='provider_request' AND status='started' LIMIT 1").fetchone() is not None
+        return runs, calls, pending
+
+    def _external_budget(self, db, usage=None):
+        row = db.execute("SELECT * FROM work_external_budget WHERE singleton=1").fetchone()
+        if row is None:
+            return None
+        policy = json.loads(row["policy_json"])
+        if digest(policy) != row["policy_sha256"]:
+            raise WorkStoreError("persisted demo budget identity differs")
+        runs, calls, pending = usage or self._external_usage(db)
+        actual = sum((c["cost"] for c in calls if c["cost"] is not None), Decimal(0))
+        reserved = sum((c["reserved"] for c in calls if c["cost"] is None), Decimal(0))
+        for record in runs.values():
+            if record["run"]["status"] in ACTIVE:
+                config = record["run"]["request"].get("worker_config") or {}
+                limit = self._money(config.get("cost_limit_usd", policy["run_cost_limit_usd"]))
+                committed = sum((c["cost"] if c["cost"] is not None else c["reserved"] for c in record["calls"]), Decimal(0))
+                reserved += max(Decimal(0), limit - committed)
+        available = max(Decimal(0), self._money(policy["total_cost_limit_usd"]) - actual - reserved)
+        exceeded = any(c["cost"] is not None and c["cost"] > c["reserved"] for c in calls)
+        reason = ("provider_cost_bound_exceeded" if exceeded else "provider_outcome_pending" if pending else
+                  "run_limit_reached" if len(runs) >= policy["max_runs"] else
+                  "call_limit_reached" if len(calls) >= policy["max_provider_calls"] else
+                  "cost_limit_reached" if available < self._money(policy["run_cost_limit_usd"]) else None)
+        return {"scope": "persistent_local_demo", **policy, "runs_used": len(runs), "provider_calls_used": len(calls),
+                "actual_cost_usd": str(actual), "reserved_cost_usd": str(reserved), "remaining_cost_usd": str(available),
+                "unknown_calls": sum(c["cost"] is None for c in calls), "in_flight": pending,
+                "can_start": reason is None, "reason": reason, "automatic_retry": False}
+
+    def external_budget(self):
+        with self.connect() as db:
+            db.execute("BEGIN")
+            return self._external_budget(db)
+
+    def begin_provider_call(self, run_id, owner, call_id, request_sha256, *, model, maximum_cost_usd, parent_event=None):
+        """Reserve one physical call and journal its intent atomically before send."""
+        with self.transaction() as db:
+            run = self._decode_run(self._require_owner(db, run_id, owner))
+            if run["request"].get("facts_worker") != "external_facts":
+                raise ConflictError("provider call requires an explicit external run")
+            cfg = run["request"].get("worker_config") or {}
+            if digest(cfg) != run["request"].get("worker_config_sha256") or cfg.get("model") != model:
+                raise ConflictError("provider configuration differs from the admitted run")
+            expected = (self._money(cfg["prompt_price"]) * cfg["max_request_bytes"] +
+                        self._money(cfg["completion_price"]) * cfg["max_output_tokens"] + self._money(cfg["request_price"]))
+            maximum = self._money(maximum_cost_usd)
+            if maximum != expected:
+                raise ConflictError("provider reservation differs from the frozen prices")
+            if db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise WorkCancelled("The review was stopped at a safe checkpoint")
+            if db.execute("SELECT 1 FROM work_pause_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise WorkPaused("The review was paused at a safe checkpoint")
+            if db.execute("SELECT 1 FROM work_calls WHERE run_id=? AND role=? AND call_id=?", (run_id, Role.FACTS.value, call_id)).fetchone():
+                raise ReconciliationRequired("provider attempt already exists; it cannot be resent")
+            usage = self._external_usage(db)
+            runs, calls, pending = usage
+            if pending:
+                raise ConflictError("another provider outcome is pending; no concurrent inference")
+            run_calls = runs[run_id]["calls"]
+            committed = sum((c["cost"] if c["cost"] is not None else c["reserved"] for c in run_calls), Decimal(0))
+            if len(run_calls) >= cfg["max_requests"] or committed + maximum > self._money(cfg["cost_limit_usd"]):
+                raise ConflictError("the per-run provider budget is exhausted")
+            budget = self._external_budget(db, usage)
+            if budget and (len(calls) >= budget["max_provider_calls"] or
+                           budget["reason"] == "provider_cost_bound_exceeded"):
+                raise ConflictError("the aggregate provider call or cost budget is exhausted")
+            request_hash = digest({"tool": "provider_request", "arguments": {"sha256": request_sha256}})
+            db.execute("INSERT INTO work_calls VALUES(?,?,?,?,?,'started',NULL,?)",
+                       (run_id, Role.FACTS.value, call_id, request_hash, "provider_request", utcnow()))
+            self._append(db, run_id, role=Role.FACTS, operation=Operation.PROVIDER_REQUEST_STARTED,
+                         object_kind="provider_request", object_id=call_id, status="started", worker_kind="external",
+                         message="Started a bounded provider request attempt", parent_event=parent_event, after={"model": model,
+                         "request_number": len(run_calls) + 1, "request_sha256": request_sha256,
+                         "maximum_cost_usd": str(maximum)})
+
     def create(self, claim_id: str, idempotency_key: str, request: dict, *, external_limit: int | None = None, max_active: int | None = None) -> tuple[dict, bool]:
         if not isinstance(idempotency_key, str) or not 8 <= len(idempotency_key) <= 128:
             raise WorkStoreError("a bounded idempotency key is required")
@@ -173,8 +304,17 @@ class WorkStore:
                 if active:
                     raise ConflictError("this claim already has unfinished work")
                 if request.get("facts_worker") == "external_facts":
+                    if db.execute("SELECT 1 FROM work_calls c JOIN work_runs r ON r.run_id=c.run_id WHERE r.claim_id=? AND c.status='started' LIMIT 1", (claim_id,)).fetchone():
+                        raise ConflictError("an unfinished claim operation requires reconciliation before external review")
                     if type(external_limit) is not int or not 1 <= external_limit <= 3:
                         raise WorkStoreError("external work requires an explicit bounded permit")
+                    budget = self._external_budget(db)
+                    if budget:
+                        if not budget["can_start"]:
+                            raise ConflictError("external demo budget unavailable: " + budget["reason"])
+                        if self._money((request.get("worker_config") or {}).get("cost_limit_usd")) != self._money(budget["run_cost_limit_usd"]):
+                            raise ConflictError("external run cost differs from the persisted demo budget")
+                        external_limit = min(external_limit, budget["max_runs"])
                     used = db.execute("SELECT COUNT(*) FROM work_external_permits").fetchone()[0]
                     if used >= external_limit:
                         raise ConflictError("external-role proof budget is exhausted")
@@ -266,24 +406,71 @@ class WorkStore:
     def complete_call(self, run_id, owner, role, call_id, result, events, objects=()):
         with self.transaction() as db:
             self._require_owner(db, run_id, owner)
-            row = db.execute("SELECT status FROM work_calls WHERE run_id=? AND role=? AND call_id=?", (run_id, str(role), call_id)).fetchone()
-            if row is None or row["status"] != "started":
-                raise ConflictError("tool completion has no pending call")
-            written = [self._append(db, run_id, **event) for event in events]
-            sequence = written[-1]["sequence"] if written else 0
-            for obj in objects:
-                anchor = self._append(db, run_id, role=str(role), operation=Operation.WORK_PRODUCT_RECORDED,
-                                      object_kind=obj["kind"], object_id=obj["id"], status="observed",
-                                      message="Persisted checked work product", worker_kind="kernel",
-                                      after={"value":obj["value"], "value_sha256":digest(obj["value"])})
-                sequence=anchor["sequence"]
-                value = canonical(obj["value"]).decode()
-                db.execute("INSERT INTO work_objects VALUES(?,?,?,?,?,?) ON CONFLICT(run_id,object_id) DO UPDATE SET kind=excluded.kind,value_json=excluded.value_json,value_sha256=excluded.value_sha256,event_sequence=excluded.event_sequence",
-                           (run_id, obj["id"], obj["kind"], value, digest(obj["value"]), sequence))
-            response = {**result, "event_sequences": [e["sequence"] for e in written]}
-            db.execute("UPDATE work_calls SET status='completed',result_json=? WHERE run_id=? AND role=? AND call_id=?",
-                       (canonical(response).decode(), run_id, str(role), call_id))
-            return response
+            return self._complete_call(db, run_id, role, call_id, result, events, objects)
+
+    def _complete_call(self, db, run_id, role, call_id, result, events, objects):
+        row = db.execute("SELECT status FROM work_calls WHERE run_id=? AND role=? AND call_id=?", (run_id, str(role), call_id)).fetchone()
+        if row is None or row["status"] != "started":
+            raise ConflictError("tool completion has no pending call")
+        written = [self._append(db, run_id, **event) for event in events]
+        for obj in objects:
+            anchor = self._append(db, run_id, role=str(role), operation=Operation.WORK_PRODUCT_RECORDED,
+                                  object_kind=obj["kind"], object_id=obj["id"], status="observed",
+                                  message="Persisted checked work product", worker_kind="kernel",
+                                  after={"value":obj["value"], "value_sha256":digest(obj["value"])})
+            value = canonical(obj["value"]).decode()
+            db.execute("INSERT INTO work_objects VALUES(?,?,?,?,?,?) ON CONFLICT(run_id,object_id) DO UPDATE SET kind=excluded.kind,value_json=excluded.value_json,value_sha256=excluded.value_sha256,event_sequence=excluded.event_sequence",
+                       (run_id, obj["id"], obj["kind"], value, digest(obj["value"]), anchor["sequence"]))
+        response = {**result, "event_sequences": [e["sequence"] for e in written]}
+        db.execute("UPDATE work_calls SET status='completed',result_json=? WHERE run_id=? AND role=? AND call_id=?",
+                   (canonical(response).decode(), run_id, str(role), call_id))
+        return response
+
+    def reconcile_process_node(self, run_id, command, result, events, objects, verify_authority):
+        """Commit a reconstructed local buffer; never clear or resend an unknown call."""
+        self.snapshot(run_id)  # Reject a corrupt request, event chain or product first.
+        with self.transaction() as db:
+            run = self._decode_run(self._run(db, run_id))
+            rows = db.execute("SELECT * FROM work_events WHERE run_id=? ORDER BY sequence", (run_id,)).fetchall()
+            history = self._validate_events(run, rows)
+            prior = self.reconciliation_receipt(history, command)
+            if prior:
+                return {"event_sha256": prior["event_sha256"], "replayed": True, "reconciled": True, "claim_state_changed": False}
+            if run["request"].get("facts_worker") != "reference" or any(e["operation"].startswith("PROVIDER_") for e in history):
+                raise ConflictError("provider work cannot use local proposal reconciliation")
+            if (run["status"] not in {"running", "interrupted", "blocked"}
+                    or (run.get("lease_until") or 0) > time.time()):
+                raise ConflictError("the executor has not reached an inactive recovery state")
+            if db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
+                raise ConflictError("a cancelled review cannot be reconstructed")
+            if history[-1]["event_sha256"] != command["expected_last_event_sha256"]:
+                raise ConflictError("saved work changed; inspect the latest checkpoint")
+            pending = db.execute("SELECT * FROM work_calls WHERE run_id=? AND status='started'", (run_id,)).fetchall()
+            request_sha = digest({"tool": "propose_process_node", "arguments": {"object_id": command["object_id"]}})
+            if (len(pending) != 1 or pending[0]["role"] != Role.PROCESS.value
+                    or pending[0]["call_id"] != command["call_id"] or pending[0]["tool_name"] != "propose_process_node"
+                    or pending[0]["request_sha256"] != request_sha):
+                raise ConflictError("the unfinished operation is not the reviewed local node proposal")
+            verify_authority()
+            self._complete_call(db, run_id, Role.PROCESS, command["call_id"], result, events, objects)
+            receipt = self._append(db, run_id, role=Role.PROCESS, operation=Operation.LOCAL_PROPOSAL_RECONCILED,
+                object_kind="local_proposal", object_id=command["call_id"], status="accepted", worker_kind="kernel",
+                message="Handler reviewed the unchanged saved node; reconstructed its local proposal without repeating an effect",
+                after={"command": command, "request_sha256": request_sha, "node_sha256": digest(objects[0]["value"]),
+                       "claim_state_changed": False, "provider_requests": 0})
+            self._append(db, run_id, operation=Operation.RUN_INTERRUPTED, object_kind="run", object_id=run_id,
+                status="unknown", message="Local proposal reconciled; remaining review awaits explicit resume", worker_kind="kernel")
+            db.execute("UPDATE work_runs SET status='interrupted',owner=NULL,lease_until=NULL WHERE run_id=?", (run_id,))
+            return {"event_sha256": receipt["event_sha256"], "replayed": False, "reconciled": True, "claim_state_changed": False}
+
+    @staticmethod
+    def reconciliation_receipt(history, command):
+        for event in history:
+            if event["operation"] == "LOCAL_PROPOSAL_RECONCILED" and event["object_id"] == command["call_id"]:
+                if (event.get("after") or {}).get("command") != command:
+                    raise ConflictError("the reconciliation identity binds a different reviewed command")
+                return event
+        return None
 
     @staticmethod
     def _validate_events(run, rows, *, start=0, previous="0" * 64):
@@ -308,7 +495,7 @@ class WorkStore:
             run = self._run(db, run_id)
             rows = db.execute("SELECT * FROM work_events WHERE run_id=? ORDER BY sequence", (run_id,)).fetchall()
             products = db.execute("SELECT * FROM work_objects WHERE run_id=? ORDER BY event_sequence,object_id", (run_id,)).fetchall()
-            pending = db.execute("SELECT role,call_id,tool_name,started_at FROM work_calls WHERE run_id=? AND status='started' ORDER BY started_at", (run_id,)).fetchall()
+            pending = db.execute("SELECT role,call_id,tool_name,request_sha256,started_at FROM work_calls WHERE run_id=? AND status='started' ORDER BY started_at", (run_id,)).fetchall()
             db.commit()
         run["request"] = json.loads(run.pop("request_json"))
         if digest(run["request"]) != run["request_sha256"]:
@@ -423,8 +610,11 @@ class WorkStore:
     def request_cancel(self, run_id, *, message="Stop requested by the handler", after=None):
         with self.transaction() as db:
             run = self._run(db, run_id)
-            if run["request_json"] and json.loads(run["request_json"]).get("facts_worker") != "reference":
-                raise ConflictError("Stopping an external inference requires manual reconciliation")
+            external = json.loads(run["request_json"]).get("facts_worker") == "external_facts"
+            # Stopping further work never clears or retries an in-flight provider
+            # request. Its response can still be receipted before the checkpoint.
+            if external and run["status"] in {"completed", "blocked", "failed", "cancelled"}:
+                return
             if run["status"] == "cancelled":
                 return
             if run["status"] not in ACTIVE:
@@ -432,10 +622,11 @@ class WorkStore:
             if not db.execute("SELECT 1 FROM work_cancellation_requests WHERE run_id=?", (run_id,)).fetchone():
                 db.execute("INSERT INTO work_cancellation_requests VALUES(?)", (run_id,))
                 self._append(db, run_id, operation=Operation.RUN_CANCEL_REQUESTED, object_kind="run", object_id=run_id,
-                             status="observed", message=message, worker_kind="kernel", after=after)
+                             status="observed", message="Stop requested after the current provider request" if external else message, worker_kind="kernel", after=after)
             if run["status"] in {"queued", "interrupted"}:
+                pending = db.execute("SELECT 1 FROM work_calls WHERE run_id=? AND status='started' LIMIT 1", (run_id,)).fetchone()
                 self._append(db, run_id, operation=Operation.RUN_CANCELLED, object_kind="run", object_id=run_id,
-                             status="completed", message="Review stopped before the next source check", worker_kind="kernel")
+                             status="completed", message="Further work stopped; the prior operation still needs reconciliation" if pending else "Review stopped before the next source check", worker_kind="kernel")
                 db.execute("UPDATE work_runs SET status='cancelled',owner=NULL,lease_until=NULL WHERE run_id=?", (run_id,))
 
     def mark_expired_interrupted(self):
