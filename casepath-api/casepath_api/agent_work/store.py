@@ -55,6 +55,23 @@ CREATE UNIQUE INDEX IF NOT EXISTS one_active_work_run_per_claim
 CREATE TABLE IF NOT EXISTS work_external_budget (
  singleton INTEGER PRIMARY KEY CHECK(singleton=1), policy_json TEXT NOT NULL, policy_sha256 TEXT NOT NULL
 );
+CREATE TRIGGER IF NOT EXISTS work_external_budget_no_update BEFORE UPDATE ON work_external_budget
+ BEGIN SELECT RAISE(ABORT,'external budget policy is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS work_external_budget_no_delete BEFORE DELETE ON work_external_budget
+ BEGIN SELECT RAISE(ABORT,'external budget policy is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS work_external_budget_no_replace BEFORE INSERT ON work_external_budget
+ WHEN EXISTS(SELECT 1 FROM work_external_budget)
+ BEGIN SELECT RAISE(ABORT,'external budget policy is immutable'); END;
+CREATE TABLE IF NOT EXISTS work_external_run_grant (
+ singleton INTEGER PRIMARY KEY CHECK(singleton=1), receipt_json TEXT NOT NULL, receipt_sha256 TEXT NOT NULL
+);
+CREATE TRIGGER IF NOT EXISTS work_external_run_grant_no_update BEFORE UPDATE ON work_external_run_grant
+ BEGIN SELECT RAISE(ABORT,'external run grant is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS work_external_run_grant_no_delete BEFORE DELETE ON work_external_run_grant
+ BEGIN SELECT RAISE(ABORT,'external run grant is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS work_external_run_grant_no_replace BEFORE INSERT ON work_external_run_grant
+ WHEN EXISTS(SELECT 1 FROM work_external_run_grant)
+ BEGIN SELECT RAISE(ABORT,'external run grant is immutable'); END;
 CREATE TABLE IF NOT EXISTS work_external_permits (
  run_id TEXT PRIMARY KEY REFERENCES work_runs(run_id)
 );
@@ -185,6 +202,78 @@ class WorkStore:
             else:
                 db.execute("INSERT INTO work_external_budget VALUES(1,?,?)", (canonical(policy).decode(), digest(policy)))
 
+    @staticmethod
+    def _validate_grant_command(expected_budget_sha256, actor, reason, idempotency_key):
+        if (not isinstance(expected_budget_sha256, str) or len(expected_budget_sha256) != 64
+                or any(c not in "0123456789abcdef" for c in expected_budget_sha256)):
+            raise WorkStoreError("a valid expected budget snapshot hash is required")
+        for name, value, minimum, maximum in (("actor", actor, 1, 180), ("reason", reason, 1, 2000),
+                                               ("idempotency key", idempotency_key, 8, 128)):
+            if (not isinstance(value, str) or not minimum <= len(value) <= maximum
+                    or value != value.strip() or not value.isprintable()):
+                raise WorkStoreError("invalid external run grant " + name)
+
+    def _external_run_grant(self, db, policy):
+        row = db.execute("SELECT * FROM work_external_run_grant WHERE singleton=1").fetchone()
+        if row is None:
+            return None
+        try:
+            receipt = json.loads(row["receipt_json"])
+            material = {k: v for k, v in receipt.items() if k != "grant_sha256"}
+            prior = receipt["prior_budget"]
+            self._validate_grant_command(receipt["prior_budget_sha256"], receipt["actor"],
+                                         receipt["reason"], receipt["idempotency_key"])
+            if (set(material) != {"contract", "additional_runs", "base_policy_sha256", "prior_budget_sha256",
+                                  "prior_budget", "actor", "reason", "idempotency_key", "granted_at"}
+                    or receipt["contract"] != "casepath.external-run-grant/1.0.0"
+                    or type(receipt["additional_runs"]) is not int or receipt["additional_runs"] != 1
+                    or policy is None or policy["max_runs"] != 3
+                    or receipt["base_policy_sha256"] != digest(policy)
+                    or receipt["grant_sha256"] != row["receipt_sha256"] or digest(material) != row["receipt_sha256"]
+                    or canonical(receipt).decode() != row["receipt_json"]
+                    or digest(prior) != receipt["prior_budget_sha256"]
+                    or any(prior[k] != v for k, v in policy.items())
+                    or prior["base_policy_sha256"] != digest(policy)
+                    or type(prior["runs_used"]) is not int or prior["runs_used"] != 3
+                    or type(prior["effective_max_runs"]) is not int or prior["effective_max_runs"] != 3
+                    or prior["run_grant"] is not None or prior["in_flight"] is not False
+                    or prior["automatic_retry"] is not False or prior["can_start"] is not False
+                    or datetime.fromisoformat(receipt["granted_at"]).utcoffset() != timezone.utc.utcoffset(None)):
+                raise ValueError
+        except (ValueError, TypeError, KeyError, AttributeError) as exc:
+            raise WorkStoreError("persisted external run grant identity is invalid") from exc
+        return receipt
+
+    def grant_one_external_run(self, expected_budget_sha256, actor, reason, idempotency_key):
+        """Record explicit approval for one fourth run; never send or reset work."""
+        self._validate_grant_command(expected_budget_sha256, actor, reason, idempotency_key)
+        with self.transaction() as db:
+            budget = self._external_budget(db)
+            if budget is None:
+                raise WorkStoreError("an existing external budget policy is required")
+            prior = budget["run_grant"]
+            if prior:
+                if (prior["prior_budget_sha256"], prior["actor"], prior["reason"], prior["idempotency_key"]) != (
+                        expected_budget_sha256, actor, reason, idempotency_key):
+                    raise ConflictError("the single external run grant already binds a different approval")
+                return prior
+            if digest(budget) != expected_budget_sha256:
+                raise ConflictError("the external budget snapshot changed; inspect it before approval")
+            active = db.execute("SELECT 1 FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits) "
+                                "AND status IN ('queued','running','interrupted') LIMIT 1").fetchone()
+            if budget["in_flight"] or active:
+                raise ConflictError("active or pending provider work must finish before a grant")
+            if budget["max_runs"] != 3 or budget["runs_used"] != 3:
+                raise ConflictError("the original three-run budget must be exhausted before a grant")
+            receipt = {"contract": "casepath.external-run-grant/1.0.0", "additional_runs": 1,
+                       "base_policy_sha256": budget["base_policy_sha256"],
+                       "prior_budget_sha256": expected_budget_sha256, "prior_budget": budget,
+                       "actor": actor, "reason": reason, "idempotency_key": idempotency_key, "granted_at": utcnow()}
+            receipt["grant_sha256"] = digest(receipt)
+            db.execute("INSERT INTO work_external_run_grant VALUES(1,?,?)",
+                       (canonical(receipt).decode(), receipt["grant_sha256"]))
+            return receipt
+
     def _external_usage(self, db):
         """Derive spend from validated journals within the admission transaction."""
         rows = db.execute("SELECT * FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits)").fetchall()
@@ -204,18 +293,27 @@ class WorkStore:
                 reserved = self._money(event["after"]["maximum_cost_usd"])
                 record = {"run_id": run_id, "cost": cost, "reserved": reserved}
                 calls.append(record); run_calls.append(record)
-            runs[run_id] = {"run": run, "calls": run_calls}
+            runs[run_id] = {"run": run, "calls": run_calls,
+                            "grant_sha256": (events[0].get("after") or {}).get("external_run_grant_sha256") if events else None}
         pending = db.execute("SELECT 1 FROM work_calls WHERE tool_name='provider_request' AND status='started' LIMIT 1").fetchone() is not None
         return runs, calls, pending
 
     def _external_budget(self, db, usage=None):
         row = db.execute("SELECT * FROM work_external_budget WHERE singleton=1").fetchone()
         if row is None:
+            self._external_run_grant(db, None)  # An orphaned allowance cannot become a permit.
             return None
         policy = json.loads(row["policy_json"])
         if digest(policy) != row["policy_sha256"]:
             raise WorkStoreError("persisted demo budget identity differs")
+        grant = self._external_run_grant(db, policy)
+        effective_max_runs = policy["max_runs"] + (grant["additional_runs"] if grant else 0)
         runs, calls, pending = usage or self._external_usage(db)
+        granted_runs = [r for r in runs.values() if r["grant_sha256"] is not None]
+        if (len(runs) > effective_max_runs or len(granted_runs) > 1
+                or len(runs) > policy["max_runs"] and not granted_runs
+                or any(not grant or r["grant_sha256"] != grant["grant_sha256"] for r in granted_runs)):
+            raise WorkStoreError("external run grant does not bind the admitted allowance")
         actual = sum((c["cost"] for c in calls if c["cost"] is not None), Decimal(0))
         reserved = sum((c["reserved"] for c in calls if c["cost"] is None), Decimal(0))
         for record in runs.values():
@@ -227,10 +325,11 @@ class WorkStore:
         available = max(Decimal(0), self._money(policy["total_cost_limit_usd"]) - actual - reserved)
         exceeded = any(c["cost"] is not None and c["cost"] > c["reserved"] for c in calls)
         reason = ("provider_cost_bound_exceeded" if exceeded else "provider_outcome_pending" if pending else
-                  "run_limit_reached" if len(runs) >= policy["max_runs"] else
+                  "run_limit_reached" if len(runs) >= effective_max_runs else
                   "call_limit_reached" if len(calls) >= policy["max_provider_calls"] else
                   "cost_limit_reached" if available < self._money(policy["run_cost_limit_usd"]) else None)
         return {"scope": "persistent_local_demo", **policy, "runs_used": len(runs), "provider_calls_used": len(calls),
+                "base_policy_sha256": row["policy_sha256"], "effective_max_runs": effective_max_runs, "run_grant": grant,
                 "actual_cost_usd": str(actual), "reserved_cost_usd": str(reserved), "remaining_cost_usd": str(available),
                 "unknown_calls": sum(c["cost"] is None for c in calls), "in_flight": pending,
                 "can_start": reason is None, "reason": reason, "automatic_retry": False}
@@ -294,6 +393,7 @@ class WorkStore:
                     raise ConflictError("this idempotency key already binds different work")
                 run_id, created = existing["run_id"], False
             else:
+                run_grant_sha256 = None
                 if max_active is not None:
                     if type(max_active) is not int or not 1 <= max_active <= 1000:
                         raise WorkStoreError("invalid active-work queue limit")
@@ -314,7 +414,9 @@ class WorkStore:
                             raise ConflictError("external demo budget unavailable: " + budget["reason"])
                         if self._money((request.get("worker_config") or {}).get("cost_limit_usd")) != self._money(budget["run_cost_limit_usd"]):
                             raise ConflictError("external run cost differs from the persisted demo budget")
-                        external_limit = min(external_limit, budget["max_runs"])
+                        external_limit = min(external_limit, budget["max_runs"]) + (1 if budget["run_grant"] else 0)
+                        if budget["runs_used"] >= budget["max_runs"] and budget["run_grant"]:
+                            run_grant_sha256 = budget["run_grant"]["grant_sha256"]
                     used = db.execute("SELECT COUNT(*) FROM work_external_permits").fetchone()[0]
                     if used >= external_limit:
                         raise ConflictError("external-role proof budget is exhausted")
@@ -325,7 +427,8 @@ class WorkStore:
                     db.execute("INSERT INTO work_external_permits VALUES(?)", (run_id,))
                 self._append(db, run_id, operation=Operation.RUN_QUEUED, object_kind="run", object_id=run_id,
                              status="queued", message="Six-role review queued", worker_kind="kernel",
-                             after={"roles": [r.value for r in ROLE_ORDER], "facts_worker": request.get("facts_worker", "reference")})
+                             after={"roles": [r.value for r in ROLE_ORDER], "facts_worker": request.get("facts_worker", "reference"),
+                                    **({"external_run_grant_sha256": run_grant_sha256} if run_grant_sha256 else {})})
         return self.get_run(run_id), created
 
     def _append(self, db, run_id, **event):

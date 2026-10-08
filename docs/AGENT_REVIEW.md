@@ -30,8 +30,16 @@ The current OpenRouter adapter is deliberately bounded to at most 6 provider req
 For this bounded Facts worker, the local source reader prepares the complete
 original packet through the existing checked tools before inference. These real
 reads are recorded as kernel work and count toward the same tool budget. The
-model receives a clearly labelled source packet, selects exact spans, proposes
-verbatim reported assertions, and asks the existing completion gate to finish.
+model receives a clearly labelled source packet and selects relevant exact
+spans. Every returned selection passes the existing exact-substring gate. The
+host then copies accepted quotations through `propose_assertion` as reported
+statements and calls the existing completion gate. These mechanical steps are
+labelled kernel work and consume the same tool budget; they need no additional
+model request. Rejected selections remain recorded and counted. A completed
+Facts role establishes at least one checked reported assertion and the recorded
+source coverage; it does not certify complete extraction or repair a rejected
+quotation. Completion is blocked if no span is accepted, a source changes, a
+stop is requested, or publication or completion fails its gate.
 There are no fabricated assistant tool calls or hidden reasoning transcripts.
 Changed, oversized or failed source preparation stops the run. Extraction limits
 remain attached to the sources and completion record; opening a source does not

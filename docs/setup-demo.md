@@ -72,12 +72,14 @@ the live facts allowance is the separate agent-work capabilities budget.
 
 CasePath's source reader first opens the original packet through the same
 checked, recorded tools. The model receives those source texts and selects exact
-passages; it proposes reported assertions and requests completion through the
-existing gates. Source preparation is labelled as local work and counts toward
-the tool budget. This avoids paying the model to reopen files or discover that
-an attachment was skipped. Failed preparation or an oversized request stops
-before inference. The model cannot convert a quoted statement into a confirmed
-claim fact.
+passages. Every selection is checked; rejected selections stay in the record.
+The host copies accepted quotations into reported assertions and finishes through
+the existing checked tools, with no further model request for those mechanical
+steps. Source reads, publication and completion are labelled as kernel work and
+count toward the shared tool budget. Failed preparation or an oversized request
+stops before inference. Completion records bounded checked statements and source
+coverage; it does not establish that every possible fact was extracted. The
+model cannot convert a quoted statement into a confirmed claim fact.
 
 The review opens while current work is observed and stays in place through its
 completion. Closing it or making a fresh visit lets completed history sit below
@@ -88,6 +90,41 @@ private model reasoning. On screens at or below 540 px, the claim panel owns a
 single vertical scroll region.
 
 ## Receipts and shutdown
+
+### One explicitly approved extra review
+
+The original three-run policy is immutable. If all three runs have been used,
+an operator may prepare a separate one-run amendment for explicit human
+approval. Do not run the following operation until that approval is given.
+It enables exactly one fourth review while preserving the 18-request limit,
+USD 0.02 per-review limit, USD 0.10 aggregate limit, all earlier usage and every
+unknown-cost reservation. No fifth review or second distinct amendment is
+available.
+
+Read the complete current `external_budget` from the local capabilities
+projection and retain its canonical SHA-256 before asking for approval. Stop
+the owned server. The operation requires the same clean commit, normal-boot
+verification and runtime/data leases as serving, then writes only the sealed
+allowance receipt in the existing work store:
+
+```sh
+.runtime/casepath-dev-v2/venv/bin/python -I -B -P casepath/tools/run_agent_demo.py \
+  --grant-one-extra-run \
+  --expected-budget-sha256 '<approved prior budget SHA-256>' \
+  --actor '<approving operator>' \
+  --reason '<recorded approval reason>' \
+  --idempotency-key '<unique approval key>'
+```
+
+It reads no credential, starts no server and makes no provider request. A stale
+budget, active work, pending provider outcome or altered receipt prevents the
+grant. Exact retries recover the same receipt; they do not add another run.
+If the command's outcome is unknown, inspect the saved receipt before retrying.
+After a confirmed grant, launch the ordinary demo command and start the review
+through its existing native control. The launch receipts retain the effective
+run cap and grant hash separately from the base policy.
+
+### Launch records
 
 Each launch writes a new private directory under
 `.runtime/casepath-openrouter-demo/`, containing the pinned public catalogue,
@@ -135,3 +172,14 @@ source reads. The latter reported USD 0.000721. The first attempt's USD 0.0028
 reservation remains because no usage was reported. Neither run completed or
 changed the claim. The endpoint guard and bounded source preparation are the
 subsequent correction; their final runtime acceptance is recorded separately.
+
+At **8 October 2026, 17:10 UTC**, commit `c399bfc` passed 1,868 backend/static
+tests (ten skipped), prepared and booted with matching frontend/API identity.
+The third explicit live attempt accepted one exact 220-character passage and
+rejected another selection, then stopped before its second provider request
+because the conversation exceeded 24 KB. It reported USD 0.000742; the claim
+remained at revision 167. The aggregate reported cost is USD 0.001463, with the
+earlier USD 0.0028 unknown-cost reservation retained. The base three-run
+allowance is exhausted. The subsequent host publication path and optional
+explicit amendment are implemented for verification; no amendment or successful
+new live run is claimed by this checkpoint.

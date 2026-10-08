@@ -254,6 +254,28 @@ def local_json(path):
         return json.loads(raw)
 
 
+def verified_run_grant(grant):
+    """Validate the fixed additive allowance without accepting a new base policy."""
+    try:
+        fields = {"contract", "additional_runs", "base_policy_sha256", "prior_budget_sha256",
+                  "prior_budget", "actor", "reason", "idempotency_key", "granted_at", "grant_sha256"}
+        prior = grant["prior_budget"]
+        base_sha = sha(canonical(POLICY))
+        if (set(grant) != fields or grant["contract"] != "casepath.external-run-grant/1.0.0"
+                or type(grant["additional_runs"]) is not int or grant["additional_runs"] != 1
+                or grant["base_policy_sha256"] != base_sha
+                or prior["base_policy_sha256"] != base_sha
+                or any(prior[k] != POLICY[k] for k in POLICY)
+                or prior["effective_max_runs"] != 3 or prior["runs_used"] != 3
+                or prior["run_grant"] is not None
+                or grant["prior_budget_sha256"] != sha(canonical(prior))
+                or grant["grant_sha256"] != sha(canonical({k:v for k,v in grant.items() if k != "grant_sha256"}))):
+            raise ValueError
+        return grant["grant_sha256"]
+    except (KeyError, TypeError, ValueError):
+        raise DemoError("The extra review allowance has no valid preserved approval receipt.") from None
+
+
 def readiness(info, model, request=local_json):
     health = request("/healthz")
     deploy = request("/deployment.json")
@@ -287,10 +309,18 @@ def readiness(info, model, request=local_json):
             amount = Decimal(budget[key])
             if not amount.is_finite() or amount < 0:
                 raise DemoError("The demo usage projection has invalid cost fields.")
+        effective = budget.get("effective_max_runs", POLICY["max_runs"])
+        grant = budget.get("run_grant")
+        if (type(effective) is not int or effective not in (3, 4)
+                or (grant is None) != (effective == 3)
+                or budget.get("base_policy_sha256", sha(canonical(POLICY))) != sha(canonical(POLICY))):
+            raise DemoError("The effective review allowance differs from its preserved base policy.")
+        grant_sha = verified_run_grant(grant) if grant is not None else None
         # Only fixed public fields leave this function; no environment or raw
         # provider message is copied into a receipt.
         selected = {k: budget[k] for k in (*POLICY, "runs_used", "provider_calls_used", "actual_cost_usd",
                     "reserved_cost_usd", "remaining_cost_usd", "unknown_calls", "can_start", "reason")}
+        selected.update(effective_max_runs=effective, run_grant_sha256=grant_sha)
         return {"source_commit": info["head"], "model": model, "budget": selected,
                 "credential_configured": True, "automatic_provider_start": False}
     except (KeyError, TypeError, ValueError, InvalidOperation) as exc:
@@ -318,6 +348,47 @@ def private_directory(path):
     info = path.stat()
     if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) & 0o077:
         raise DemoError("The demo directory must be private to the current account.")
+
+
+def grant_extra_run(repository, *, expected_budget_sha256, actor, reason, idempotency_key):
+    """Explicit offline operation. Never reads credentials or starts a server."""
+    if not re.fullmatch(r"[0-9a-f]{64}", expected_budget_sha256):
+        raise DemoError("Provide the exact saved budget hash for the approved extra review.")
+    runtime = repository / ".runtime/casepath-dev-v2"
+    if any(path.is_symlink() or not path.is_dir() for path in (repository / ".runtime", runtime)):
+        raise DemoError("Prepare and boot the normal local runtime first.")
+    request = {"expected_budget_sha256": expected_budget_sha256, "actor": actor,
+               "reason": reason, "idempotency_key": idempotency_key}
+    with ExitStack() as stack:
+        acquire_lease(runtime / "environment.lock", stack)
+        acquire_lease(repository / ".runtime/casepath-data-v1.lock", stack)
+        reserve_origin(stack)
+        info = preflight(repository)
+        database = info["data"] / "agent-work-v1.sqlite3"
+        try:
+            fd = os.open(database, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+            stack.callback(os.close, fd)
+            file_info = os.fstat(fd)
+            if not stat.S_ISREG(file_info.st_mode) or file_info.st_nlink != 1:
+                raise OSError
+        except OSError:
+            raise DemoError("The existing work database is unavailable; no allowance was created.") from None
+        command = [str(info["python"]), "-I", "-B", "-P", "-c",
+                   'import json,sys; sys.path.insert(0,sys.argv[1]); '
+                   'from casepath_api.agent_work.store import WorkStore; '
+                   'result=WorkStore(sys.argv[2]).grant_one_external_run(**json.loads(sys.argv[3])); '
+                   'print(json.dumps(result,sort_keys=True,separators=(",",":")))',
+                   str(info["capsule"] / "casepath-api"), str(database), canonical(request).decode()]
+        try:
+            grant = json.loads(run_checked(command, cwd=repository, env=info["env"]))
+            verified_run_grant(grant)
+            if any(grant[k] != request[k] for k in ("actor", "reason", "idempotency_key")) or grant["prior_budget_sha256"] != expected_budget_sha256:
+                raise ValueError
+        except (DemoError, KeyError, TypeError, ValueError):
+            raise DemoError("The allowance result could not be confirmed. Inspect its saved receipt before retrying; no provider request was started.") from None
+        return {"contract": "casepath.explicit-agent-demo-allowance/1.0.0", "source_commit": info["head"],
+                "source_manifest_sha256": info["manifest_sha256"], "grant": grant,
+                "provider_requests_started": 0}
 
 
 def serve(repository, catalogue, model, endpoints=None):
@@ -417,14 +488,30 @@ def serve(repository, catalogue, model, endpoints=None):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", required=True, help="Exact concrete model ID from the local catalogue")
+    parser.add_argument("--model", help="Exact concrete model ID from the local catalogue")
     parser.add_argument("--catalogue", type=Path, help="Locally acquired catalogue snapshot; no download occurs here")
     parser.add_argument("--endpoints", type=Path, help="Recent model endpoint snapshot; defaults to endpoints.json beside the catalogue")
+    parser.add_argument("--grant-one-extra-run", action="store_true", help="Record one explicitly approved extra review; no server or provider request starts")
+    parser.add_argument("--expected-budget-sha256")
+    parser.add_argument("--actor")
+    parser.add_argument("--reason")
+    parser.add_argument("--idempotency-key")
     args = parser.parse_args(argv)
+    grant_args = (args.expected_budget_sha256, args.actor, args.reason, args.idempotency_key)
+    if args.grant_one_extra_run:
+        if not all(grant_args) or any((args.model, args.catalogue, args.endpoints)):
+            parser.error("An extra review requires its budget hash, actor, reason and idempotency key, without serving options.")
+    elif not args.model or any(grant_args):
+        parser.error("Choose a model to serve, or the separate explicit allowance operation.")
     repository = Path(__file__).resolve().parents[2]
     catalogue = args.catalogue or repository / ".runtime/casepath-openrouter-demo/catalogue.json"
     try:
-        serve(repository, catalogue.absolute(), args.model, args.endpoints.absolute() if args.endpoints else None)
+        if args.grant_one_extra_run:
+            result = grant_extra_run(repository, expected_budget_sha256=args.expected_budget_sha256,
+                                     actor=args.actor, reason=args.reason, idempotency_key=args.idempotency_key)
+            print(canonical(result).decode())
+        else:
+            serve(repository, catalogue.absolute(), args.model, args.endpoints.absolute() if args.endpoints else None)
     except DemoError as exc:
         print(f"CasePath demo: {exc}", file=sys.stderr)
         return 2

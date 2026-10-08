@@ -326,6 +326,14 @@ and claim projections expose eligibility and the remaining allowance without
 exposing credentials. The run receipt binds the requested context and
 idempotency key.
 
+After the base three-run allowance is exhausted, a separate local command can
+record one explicitly approved fourth review. Its sealed receipt binds the
+operator, reason, exact prior budget and idempotency key. It preserves the
+original policy, all runs and unresolved reservations, and the 18-request and
+dollar limits. It cannot grant a fifth run or apply automatically on restart.
+The command starts no server or provider work; the handler still starts the
+review through Controls. See the [allowance procedure](../setup-demo.md).
+
 The live work rail derives Sources, Findings, Process and Documents from
 persisted events. It shows concise, cited work summaries and actual model or
 reference identity, with motion tied to current work. Historical events are not
@@ -389,8 +397,13 @@ The local reader opens the complete original packet through the same source
 tools before the external Facts worker selects exact quotations. Those source
 reads are real persisted kernel events, count toward the same tool budget, and
 stop on changed or failed sources before inference. The model sees a labelled
-source packet and still passes the existing span, assertion and completion
-gates. No request or cost limit is increased.
+source packet and selects spans through the existing exact-source gate. Every
+selection is checked, including rejected attempts. The host records accepted
+quotations verbatim as reported assertions and uses the same completion gate;
+both operations remain checked kernel tool calls. Once a valid selection batch
+exists, no additional model request is needed for copying or completion.
+Rejected selections and extraction limits remain inspectable. No per-run
+request, tool or cost limit is increased.
 
 Condition-choice guidance is presentation only; signed questions and persisted
 reasons stay unchanged. Exact source passages accompany the proposal, while

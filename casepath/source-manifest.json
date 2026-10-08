@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1549,
+  "file_count": 1550,
   "files": [
     {
       "executable": false,
@@ -701,8 +701,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/agent_work/openrouter.py",
-      "sha256": "af2d6123d4bd3b41dbdc88fd50db4f2f14249804d6dc97a236b5726888fa1d8b",
-      "size_bytes": 22899
+      "sha256": "35fa321399c5024b378d683cb8489f782f407e7b27162c988d29a9fe25dd518d",
+      "size_bytes": 24742
     },
     {
       "executable": false,
@@ -725,8 +725,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/agent_work/store.py",
-      "sha256": "f3edf156f83a16aa63ebe1cad80918ced703710d61231a63215424ef0ae528aa",
-      "size_bytes": 42952
+      "sha256": "f3dcb733bbe04cfd5fd22f4344012cb90a5c334cb9c78a00b6431bd25f6d742f",
+      "size_bytes": 50711
     },
     {
       "executable": false,
@@ -7583,8 +7583,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_agent_demo_launcher.py",
-      "sha256": "f812dcacaa5b3b415fc416f4f4629e556d1dc854a1a2068749cce0ea93867278",
-      "size_bytes": 18222
+      "sha256": "ad33985c7ba7dddcfdbc24e30fbfc1be50d277eb53a580d83a7cc896a81579a3",
+      "size_bytes": 22826
     },
     {
       "executable": false,
@@ -7618,9 +7618,15 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_agent_work_budget_grant.py",
+      "sha256": "2a0509ca92855830aceb0029bcd260ee6f75fc24b025dd79dce1599a52b0c235",
+      "size_bytes": 12838
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_agent_work_openrouter_demo.py",
-      "sha256": "95d3dd6c87f9f94b03e1f10dc8e9fd84fed72fe7f053155c91d199d8de835b2b",
-      "size_bytes": 36248
+      "sha256": "5505ff4e0529af87f9fee0ba2c0340cc50002c4d54b7c7152fb70b0579a8df3e",
+      "size_bytes": 44252
     },
     {
       "executable": false,
@@ -9029,8 +9035,8 @@
     {
       "executable": false,
       "path": "casepath/tools/run_agent_demo.py",
-      "sha256": "d0ce7d0a16823791bf1e06d51d443023461c089b9a41366685cd18ad25adcb8f",
-      "size_bytes": 23315
+      "sha256": "a9b422d39888373edc240be8886cc2b47dc370893c35e5d5c1a967ebbd19b60f",
+      "size_bytes": 29028
     },
     {
       "executable": false,
@@ -9071,8 +9077,8 @@
     {
       "executable": false,
       "path": "docs/AGENT_REVIEW.md",
-      "sha256": "2462e14f0c4c38d27f8aec219264cd60ede7f7c5bc91a0fb8508bedd654b2677",
-      "size_bytes": 4141
+      "sha256": "b40700fbafe42caa0a4fd1e43e0f0f93f697cb5fa7842c2900156723a19823ca",
+      "size_bytes": 4745
     },
     {
       "executable": false,
@@ -9227,8 +9233,8 @@
     {
       "executable": false,
       "path": "docs/product/AGENT_NATIVE.md",
-      "sha256": "f83667510718e6ebff6863e73087e854ea5c72ce7beefa90d0d457afaf9c8e99",
-      "size_bytes": 28901
+      "sha256": "ac5c9ab9e2f8b1866c836ac270c6721e916e961b66a8a21ca3a8ed2f369ef877",
+      "size_bytes": 29815
     },
     {
       "executable": false,
@@ -9365,8 +9371,8 @@
     {
       "executable": false,
       "path": "docs/setup-demo.md",
-      "sha256": "3399386fa55347f74e6e0af8c37117f8bfbbdeb270e473313183ca60e3111809",
-      "size_bytes": 8168
+      "sha256": "2a2176f473904f0f04efea07a7a4b872a6da2058519b8230a8ccbe79c0b5904b",
+      "size_bytes": 10842
     },
     {
       "executable": false,

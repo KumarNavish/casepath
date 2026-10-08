@@ -307,6 +307,84 @@ def test_only_public_readiness_fields_are_saved_and_receipt_is_append_only(prepa
         demo.write_receipt(path, output)
 
 
+def allowance_fixture():
+    base = ready_packet('a' * 40)['/api/agent-work/v1/capabilities']['external_budget']
+    base.update(base_policy_sha256=demo.sha(demo.canonical(demo.POLICY)), effective_max_runs=3,
+                run_grant=None, runs_used=3, can_start=False, reason='run_limit_reached')
+    grant = {'contract':'casepath.external-run-grant/1.0.0', 'additional_runs':1,
+             'base_policy_sha256':base['base_policy_sha256'],
+             'prior_budget_sha256':demo.sha(demo.canonical(base)), 'prior_budget':base,
+             'actor':'Authorized operator', 'reason':'One explicitly approved review after the bounded correction.',
+             'idempotency_key':'allowance-fixture', 'granted_at':'2026-10-08T17:00:00+00:00'}
+    return {**grant, 'grant_sha256':demo.sha(demo.canonical(grant))}
+
+
+def test_readiness_retains_only_verified_extra_run_identity(prepared):
+    info = demo.preflight(prepared.repo)
+    packet = ready_packet(info['head'])
+    budget = packet['/api/agent-work/v1/capabilities']['external_budget']
+    grant = allowance_fixture()
+    budget.update(effective_max_runs=4, run_grant=grant, base_policy_sha256=grant['base_policy_sha256'])
+    result = demo.readiness(info, 'vendor/model', request=packet.__getitem__)
+    assert result['budget']['effective_max_runs'] == 4
+    assert result['budget']['run_grant_sha256'] == grant['grant_sha256']
+    assert 'reason' not in result['budget'].get('run_grant', {})
+
+
+@pytest.mark.parametrize('change', ['missing', 'tampered', 'too_many', 'wrong_base'])
+def test_readiness_refuses_unproven_extra_allowance(prepared, change):
+    info = demo.preflight(prepared.repo)
+    packet = ready_packet(info['head'])
+    budget = packet['/api/agent-work/v1/capabilities']['external_budget']
+    grant = allowance_fixture()
+    budget.update(effective_max_runs=4, run_grant=grant, base_policy_sha256=grant['base_policy_sha256'])
+    if change == 'missing': budget['run_grant'] = None
+    if change == 'tampered': grant['actor'] = 'Different operator'
+    if change == 'too_many': budget['effective_max_runs'] = 5
+    if change == 'wrong_base': budget['base_policy_sha256'] = 'f' * 64
+    with pytest.raises(demo.DemoError):
+        demo.readiness(info, 'vendor/model', request=packet.__getitem__)
+
+
+def test_extra_allowance_is_explicit_and_uses_no_credential_or_server(prepared, monkeypatch):
+    info = demo.preflight(prepared.repo)
+    database = info['data'] / 'agent-work-v1.sqlite3'
+    database.parent.mkdir(parents=True)
+    database.write_bytes(b'fixture only; child is mocked')
+    monkeypatch.setattr(demo, 'preflight', lambda repository: info)
+    locks = []
+    monkeypatch.setattr(demo, 'acquire_lease', lambda path, stack: locks.append(path) or 7)
+    monkeypatch.setattr(demo, 'reserve_origin', lambda stack: None)
+    monkeypatch.setattr(demo, 'keychain_credential', lambda: pytest.fail('credential access'))
+    monkeypatch.setattr(demo.subprocess, 'Popen', lambda *a, **k: pytest.fail('server startup'))
+    grant = allowance_fixture(); calls = []
+    def child(argv, **options):
+        calls.append((argv, options))
+        return demo.canonical(grant)
+    monkeypatch.setattr(demo, 'run_checked', child)
+    result = demo.grant_extra_run(prepared.repo, expected_budget_sha256=grant['prior_budget_sha256'],
+                                 actor=grant['actor'], reason=grant['reason'], idempotency_key=grant['idempotency_key'])
+    assert result['grant'] == grant and result['source_commit'] == info['head']
+    assert result['provider_requests_started'] == 0
+    assert locks == [prepared.runtime/'environment.lock', prepared.repo/'.runtime/casepath-data-v1.lock']
+    argv, options = calls[0]
+    assert argv[:4] == [str(info['python']), '-I', '-B', '-P']
+    assert str(database) in argv and str(info['capsule']/'casepath-api') in argv
+    assert 'OPENROUTER_API_KEY' not in options['env']
+    assert json.loads(argv[-1])['expected_budget_sha256'] == grant['prior_budget_sha256']
+
+
+def test_allowance_cli_never_implicitly_starts_a_review(monkeypatch):
+    calls=[]
+    monkeypatch.setattr(demo, 'grant_extra_run', lambda repository, **kwargs: calls.append(kwargs) or {'grant':'fixture'})
+    monkeypatch.setattr(demo, 'serve', lambda *a, **k: pytest.fail('server startup'))
+    assert demo.main(['--grant-one-extra-run', '--expected-budget-sha256', 'a'*64,
+                      '--actor','Authorized operator','--reason','One approved review',
+                      '--idempotency-key','grant-fixture']) == 0
+    assert len(calls) == 1
+    with pytest.raises(SystemExit): demo.main(['--grant-one-extra-run'])
+
+
 def test_port_busy_fails_before_keychain_or_product_verification(prepared, monkeypatch):
     def occupied(_stack):
         raise demo.DemoError("Port 4173 is occupied")
