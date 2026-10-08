@@ -9,7 +9,7 @@ test('saved comparison is absent without the exact persisted condition and never
  const value=input('v5-missing');value.process={process_adopted:false,graph:{nodes:[],conditions:{family_home:{verdict:'true'}}}};
  assert.equal(comparison(ui.render(value)),'');
  value.claim.intake_assessment={claim_assessment:{conditions:{family_home:{verdict:'unresolved'}}}};
- assert.match(comparison(ui.render(value)),/Intake reading · unconfirmed: <strong>Keep it unresolved/);
+ assert.match(comparison(ui.render(value)),/Intake reading: <strong>Keep it unresolved/);
  value.claim.causal_process={conditions:{other:{verdict:'false'}}};
  assert.equal(comparison(ui.render(value)),'','An adopted graph cannot fall back to an old intake verdict');
  value.claim.causal_process.conditions.family_home={verdict:'invalid'};assert.equal(comparison(ui.render(value)),'');
@@ -20,7 +20,7 @@ test('stored condition, intake reading and chosen answer are distinct without ch
  const value=input('v5-comparison');value.claim.causal_process={conditions:{family_home:{verdict:'unresolved'}}};
  value.claim.intake_assessment={claim_assessment:{conditions:{family_home:{verdict:'true'}}}};
  const before=structuredClone(value),html=ui.render(value);
- assert.match(comparison(html),/Saved reading · unconfirmed: <strong>Keep it unresolved/);
+ assert.match(comparison(html),/Current process reading: <strong>Keep it unresolved/);
  assert.match(comparison(html),/Proposed answer: <strong>Yes, it applies<\/strong> · not saved/);
  ui.session(value.claim.claim_id).answers['condition:family_home']='false';
  assert.match(comparison(ui.render(value)),/Your answer: <strong>No, it does not apply<\/strong> · not saved/);
@@ -33,9 +33,24 @@ test('choosing an answer updates comparison immediately without rerender, focus 
  ui.bind({root,api:{request:async()=>{calls.push('request');}}});
  const form={dataset:{avDecision:'condition:family_home'},elements:{answer_id:{value:'false'},reason:{value:'Household changed'},actor:{value:'Handler'}},querySelector(selector){return selector==='.av-answer-comparison'?current:null;}};
  listeners.get('change')({type:'change',target:{matches:()=>false,closest:selector=>selector==='[data-av-decision]'?form:null}});
- assert.match(current.outerHTML,/Saved reading · unconfirmed: <strong>Yes, it applies/);
+ assert.match(current.outerHTML,/Current process reading: <strong>Yes, it applies/);
  assert.match(current.outerHTML,/Your answer: <strong>No, it does not apply/);
  assert.deepEqual(calls,[]);assert.equal(value.agent.questions[0].proposal.answer_id,'true');
+});
+test('a matching proposal asks for confirmation without depicting a change or erasing the saved reading',()=>{
+ const value=input('v11-matching-confirmation');value.claim.causal_process={conditions:{family_home:{verdict:'true'}}};
+ const before=structuredClone(value),html=ui.render(value),same=comparison(html);
+ assert.match(same,/Current process reading: <strong>Yes, it applies/);
+ assert.match(same,/Awaiting your confirmation/);
+ assert.doesNotMatch(same,/→|Proposed answer|Your answer/);
+ assert.match(html,/Agent proposal · not saved/);
+ ui.session(value.claim.claim_id).answers['condition:family_home']='false';
+ const different=comparison(ui.render(value));
+ assert.match(different,/Current process reading: <strong>Yes, it applies/);
+ assert.match(different,/Your answer: <strong>No, it does not apply<\/strong> · not saved/);
+ ui.session(value.claim.claim_id).answers['condition:family_home']='true';
+ assert.match(comparison(ui.render(value)),/Awaiting your confirmation/);
+ assert.deepEqual(value,before);
 });
 test('completed history follows the decision while paid-start and active or interrupted work stay reachable',()=>{
  const prior=global.CasePathWorkMotion;global.CasePathWorkMotion=motion;

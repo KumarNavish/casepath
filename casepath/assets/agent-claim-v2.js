@@ -83,7 +83,10 @@
     const savedVerdict=savedCondition?.verdict;
     const savedAnswer=['true','false','unresolved'].includes(savedVerdict)&&question.answers?.find(item=>item.answer_id===savedVerdict);
     const selectedAnswer=question.answers?.find(item=>item.answer_id===answer);
-    return savedAnswer&&selectedAnswer?`<p class="av-answer-comparison"><span>${s.input.claim?.causal_process!=null?'Saved reading · unconfirmed':'Intake reading · unconfirmed'}: <strong>${h(savedAnswer.label)}</strong></span><span class="av-answer-arrow" aria-hidden="true">→</span><span>${Object.prototype.hasOwnProperty.call(s.answers,question.question_id)?'Your answer':'Proposed answer'}: <strong>${h(selectedAnswer.label)}</strong> · not saved</span></p>`:'';
+    if(!savedAnswer||!selectedAnswer)return '';
+    const current=`<span>${s.input.claim?.causal_process!=null?'Current process reading':'Intake reading'}: <strong>${h(savedAnswer.label)}</strong></span>`;
+    const choice=savedVerdict===answer?'<span>Awaiting your confirmation.</span>':`<span class="av-answer-arrow" aria-hidden="true">→</span><span>${Object.prototype.hasOwnProperty.call(s.answers,question.question_id)?'Your answer':'Proposed answer'}: <strong>${h(selectedAnswer.label)}</strong> · not saved</span>`;
+    return `<p class="av-answer-comparison">${current}${choice}</p>`;
   }
   const sourceBasis = question => question.kind === 'draft_approval' ? 'The saved process determines this request. Review its scope and wording.' : ['step_validation', 'relationship_validation', 'inconsistent_completion'].includes(question.kind) ? 'This question comes from the saved process. Source evidence remains separate.' : 'No exact source passage supports this question yet.';
   function questionMarkup(question, s, owner) {

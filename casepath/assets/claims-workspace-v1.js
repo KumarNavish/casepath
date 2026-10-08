@@ -3315,7 +3315,7 @@
     $('#cwSourceContent').innerHTML=`<div class="cw-source-selection"><h4>${esc(node.title)}</h4><p>${esc(node.answer)}</p><p><strong>Recorded process rule</strong><br>${esc(node.why)}</p><p class="cw-note">This view explains the saved process; it does not change the active path.</p></div>`;
     focusSource(focus);
   }
-  async function showSourceArtifact(index, focus=true, quote=null, agentSpan=false) {
+  async function showSourceArtifact(index, focus=true, quote=null, agentSpan=null) {
     const detail=state.detail, artifact=detail?.artifacts[index];
     if(!artifact || !Number.isSafeInteger(index)) return;
     const acceptedRef=quote&&state.loop?.loop_state.observations.flatMap(row=>row.source_refs||[]).find(ref=>ref.sanitized_excerpt===quote&&ui.sourceArtifactIndex(ref,detail)===index);
@@ -3323,9 +3323,9 @@
     const noticed=quote&&detail.state.intake_assessment?.claim_assessment?.noticed.some(row=>
       row.source_id===artifact.artifact_id&&(row.text===quote||row.text.endsWith(': '+quote)));
     const acceptedQuote=acceptedRef||noticed||candidate||agentSpan?quote:null;
-    releaseSourcePreview();state.sourceSelection={kind:'artifact',index,quote:acceptedQuote};
+    releaseSourcePreview();state.sourceSelection={kind:'artifact',index,quote:acceptedQuote,...(agentSpan?{agentSpan:{...agentSpan}}:{})};
     const ticket=state.sourceRequest, claimId=detail.state.claim_id;
-    const current=()=>state.sourceRequest===ticket && state.detail?.state.claim_id===claimId;
+    const current=()=>state.sourceRequest===ticket && state.detail===detail && state.detail.state.claim_id===claimId;
     $('#cwSourceHeading').textContent=ui.fileTitle(artifact);
     $('#cwSourceContent').innerHTML='<p class="cw-source-loading" role="status">Loading and verifying the original file…</p>';
     focusSource(focus);
@@ -3342,6 +3342,23 @@
       if(bytes.byteLength!==artifact.size_bytes || hash!==artifact.sha256) throw new Error('The file does not match the saved source record. Preview was blocked.');
       if(!current()) return;
       const media=artifact.media_type.split(';')[0].trim().toLowerCase();
+      let verifiedMessageBody=null;
+      if(agentSpan?.extraction==='message_body') {
+        const readable=detail.message?.body,characters=typeof readable==='string'?Array.from(readable):[];
+        if(media!=='message/rfc822'||artifact.role!=='customer_message'||agentSpan.claim_id!==claimId
+          ||agentSpan.artifact_id!==artifact.artifact_id||agentSpan.source_id!==artifact.artifact_id
+          ||agentSpan.sha256!==artifact.sha256||agentSpan.source_sha256!==artifact.sha256
+          ||typeof readable!=='string'||agentSpan.quote!==acceptedQuote
+          ||!Number.isSafeInteger(agentSpan.start)||!Number.isSafeInteger(agentSpan.end)
+          ||agentSpan.start<0||agentSpan.end<=agentSpan.start||agentSpan.end>characters.length
+          ||characters.slice(agentSpan.start,agentSpan.end).join('')!==acceptedQuote
+          ||await sha256Bytes(new TextEncoder().encode(readable))!==agentSpan.text_sha256) {
+          throw new Error('The cited passage does not match the verified message text. Read the saved source again.');
+        }
+        if(!current())return;
+        // Source offsets use Python/Unicode codepoints, not UTF-16 indices.
+        verifiedMessageBody={before:characters.slice(0,agentSpan.start).join(''),quote:acceptedQuote,after:characters.slice(agentSpan.end).join('')};
+      }
       let content='',renderedPage=false;
       if(media.startsWith('text/')||media==='application/json'||media==='message/rfc822') {
         let text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);
@@ -3363,6 +3380,7 @@
           if(!current())return;
           if(verifiedBody)content=`<p class="cp-source-caption">Readable text from the verified email. The original file remains available below.</p>${ui.textSourceMarkup(verifiedBody,'text/plain',acceptedQuote)}<details class="cp-source-technical"><summary>Original email formatting</summary>${ui.textSourceMarkup(text,media)}</details>`;
         }
+        if(verifiedMessageBody!==null)content=`<p class="cp-source-caption">Readable text from the verified email. The original file remains available below.</p><div class="cw-message" tabindex="0" role="region" aria-label="Source text">${esc(verifiedMessageBody.before)}<mark class="cp-source-exact" id="cpExactSourcePassage">${esc(verifiedMessageBody.quote)}</mark>${esc(verifiedMessageBody.after)}</div><details class="cp-source-technical"><summary>Original email formatting</summary>${ui.textSourceMarkup(text,media)}</details>`;
       } else if(['image/png','image/jpeg','image/gif','image/webp','image/tiff','image/bmp','application/pdf','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].includes(media)) {
         const descriptor=await packetMetadata(artifact,claimId,controller.signal);
         if(!current())return;
@@ -3384,7 +3402,7 @@
     const selectedNode=state.canvasNodeId,selectedEvidence=state.focusedEvidenceId;
     if(selection?.kind==='evidence') showEvidenceSource(selection.id,false);
     else if(selection?.kind==='process') showProcessSource(selection.id,false);
-    else if(selection?.kind==='artifact') void showSourceArtifact(selection.index,false,selection.quote);
+    else if(selection?.kind==='artifact') void showSourceArtifact(selection.index,false,selection.quote,selection.agentSpan);
     // The source pane and reasoning lens can point at different saved objects.
     // Restoring the pane must not move a newly replanned action back to its old step.
     state.canvasNodeId=selectedNode;
@@ -3421,7 +3439,7 @@
     if(button.dataset.queueView) selectQueueView(button.dataset.queueView);
     if(button.dataset.evidenceSource) showEvidenceSource(button.dataset.evidenceSource);
     if(button.dataset.processNode) showProcessSource(button.dataset.processNode);
-    if(button.hasAttribute('data-source-artifact')){const index=Number(button.dataset.sourceArtifact);const quote=button.dataset.sourceQuote||(state.sourceSelection?.kind==='artifact'&&state.sourceSelection.index===index?state.sourceSelection.quote:null);void showSourceArtifact(index,true,quote);}
+    if(button.hasAttribute('data-source-artifact')){const index=Number(button.dataset.sourceArtifact),selection=state.sourceSelection?.kind==='artifact'&&state.sourceSelection.index===index?state.sourceSelection:null;const quote=button.dataset.sourceQuote||selection?.quote||null;void showSourceArtifact(index,true,quote,selection?.quote===quote?selection?.agentSpan:null);}
     if(button.hasAttribute('data-source-reset')) resetSource();
     if(button.hasAttribute('data-show-investigation')){showWorkspaceSection('activity');const section=$('#cwSavedInvestigation');if(section){section.open=true;section.scrollIntoView({block:'start'});section.querySelector('summary')?.focus({preventScroll:true});}}
     if(button.id==='cwClearFilters') clearQueueFilters();
@@ -3513,7 +3531,7 @@
     openClaim, closeDetail, refresh:refreshOpen, request, canonicalResponse, verify:verifyCausalResponse, queueRoot:()=>queueRoute,
     snapshot:()=>({claim:state.detail,process:state.causal}),
     openPane,
-    openSource:span=>{const id=span.artifact_id||span.source_id;if(!state.inspectorOpen)state.inspectorReturnSpan={claim_id:state.detail?.state.claim_id,artifact_id:id,quote:span.quote||span.text||span.exact_text||span.locator?.exact_text||null};const index=state.detail?.artifacts.findIndex(item=>item.artifact_id===id||item.sha256===span.source_sha256);if(index>=0)void showSourceArtifact(index,true,span.quote||span.text||span.exact_text||span.locator?.exact_text||null,true);else resetSource(true);},
+    openSource:span=>{const id=span.artifact_id||span.source_id;if(!state.inspectorOpen)state.inspectorReturnSpan={claim_id:state.detail?.state.claim_id,artifact_id:id,quote:span.quote||span.text||span.exact_text||span.locator?.exact_text||null};const index=state.detail?.artifacts.findIndex(item=>item.artifact_id===id||item.sha256===span.source_sha256);if(index>=0)void showSourceArtifact(index,true,span.quote||span.text||span.exact_text||span.locator?.exact_text||null,span);else resetSource(true);},
     assign:openAssignment,
   });
   $('#cwFilters').addEventListener('submit', event => { event.preventDefault(); clearTimeout(state.filterTimer); saveQueueFilters(); void loadQueue(); });

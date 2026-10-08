@@ -35,6 +35,13 @@ original artifact ID, source and extracted-text hashes, quoted text, and exact
 text offsets. Extracted text does not establish that every image or page was
 read. Deadlines remain unknown when required receipt evidence is absent.
 
+An agent citation into an encoded customer email opens the readable message
+with the exact passage highlighted. This requires the verified original file,
+matching claim and artifact identities, the complete decoded-body hash, and
+the exact code-point offsets and quote. A mismatch cannot produce a verified
+highlight. Original MIME formatting and the unchanged download remain
+available. This is a source preview, not evidence admission.
+
 An automatic draft can advance the workspace after a review finishes without
 changing its reviewed sources or process. Only the desk may report that review
 as current within `reviewed_sources_and_process`, while retaining
@@ -65,13 +72,13 @@ sources establish them. Conditions use ordinary handler language. Choosing a
 different answer requires a reason. Preview shows the proposed graph and
 explicitly changed and unchanged requirements before acceptance.
 
-Condition questions also show the saved verdict beside the unsaved selected
-answer. Before process adoption, the saved side is labelled Intake reading;
-after adoption it is Saved condition. This reads the existing verified claim
-state and does not add a backend question field or change preview hashes. The
-saved and proposed values may match when the handler is being asked to confirm
-the current reading. Missing values and other question kinds omit this
-comparison; a recorded condition does not imply handler-confirmed truth.
+Condition questions name the current process reading, or the intake reading
+before process adoption. A matching selected answer says Awaiting your
+confirmation. A different answer shows the current and selected values side by
+side, marked not saved. This reads the existing verified claim state without
+changing the question, preview hash or saved answer. Missing values and other
+question kinds omit the comparison. A persisted reading does not itself
+establish a handler decision.
 
 Condition, step, relationship, and inconsistent-completion decisions use the
 existing causal preview/apply pipeline. The bounded Dispute answer retains
