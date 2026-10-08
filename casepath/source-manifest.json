@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1551,
+  "file_count": 1587,
   "files": [
     {
       "executable": false,
@@ -143,8 +143,8 @@
     {
       "executable": false,
       "path": "README.md",
-      "sha256": "79c57d55f445a3099790e5c2e1fe56489539715fcdba6777bdf1031022b88b81",
-      "size_bytes": 15395
+      "sha256": "a12c3431e443d17e852fc4a69edf81215a0b2a54663b01b926b4e3be5f3c6359",
+      "size_bytes": 16708
     },
     {
       "executable": false,
@@ -725,14 +725,14 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/agent_work/store.py",
-      "sha256": "f3dcb733bbe04cfd5fd22f4344012cb90a5c334cb9c78a00b6431bd25f6d742f",
-      "size_bytes": 50711
+      "sha256": "16186a71a9c763fe4b79b7006a25181232560ee5f6420e80c413003b8963abb5",
+      "size_bytes": 77759
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/app.py",
-      "sha256": "f99ea4444880d8b753dfa23d26f9a51190f8fafbbd73bb688b61f82a91cee842",
-      "size_bytes": 34189
+      "sha256": "deaac611f16a2ec48069c7f6722afd3465b58ddc07b1d054366935744358c8a0",
+      "size_bytes": 34354
     },
     {
       "executable": false,
@@ -877,6 +877,42 @@
       "path": "casepath-api/casepath_api/authority_corpus_v1.py",
       "sha256": "030bcff86f8e62a5fc81ea5eb1bc753dc543421b690134a90b6d6e4f9789fd36",
       "size_bytes": 5983
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/autonomous_api_v1.py",
+      "sha256": "1d2a186cf450f6d84d0e32985dd427de44e7e54b68a947cab9c6b436c85dfa5f",
+      "size_bytes": 8543
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/autonomous_controller_v1.py",
+      "sha256": "37dad281372e8f3301ec4087a3fa79114c71aa4c7345007f2ebc233e45c0907b",
+      "size_bytes": 23665
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/autonomous_knowledge_v1.py",
+      "sha256": "b48f396bb35001725bc52884e1f67c80578fd05f9dabdaa04a63d0256f3445b6",
+      "size_bytes": 17684
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/autonomous_model_v1.py",
+      "sha256": "e19fffeaec88da45bad37d5752111942e91fb697e1125af18789d46abc2f677b",
+      "size_bytes": 18124
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/autonomous_policy_v1.py",
+      "sha256": "b873a271388abc243750b849f061467aac21cda84301dc4b9989f6ff757cea1b",
+      "size_bytes": 22079
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/casepath_api/autonomous_store_v1.py",
+      "sha256": "09052e1c3fba8fae6c0a9c9496fa8f6cf5647866d6c5dce724c950641729f648",
+      "size_bytes": 39336
     },
     {
       "executable": false,
@@ -7289,8 +7325,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/validate_journal.py",
-      "sha256": "9d397024dc3c7ea83f983eb1a4f1fbbb8842ccc385b3dd9754c3937b262f7de0",
-      "size_bytes": 8096
+      "sha256": "19114aa6bc781de8ffd8a957aef95ebd3a79927e9076ed4107b160c957c88baa",
+      "size_bytes": 9028
     },
     {
       "executable": false,
@@ -7583,8 +7619,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_agent_demo_launcher.py",
-      "sha256": "ad33985c7ba7dddcfdbc24e30fbfc1be50d277eb53a580d83a7cc896a81579a3",
-      "size_bytes": 22826
+      "sha256": "3ccea6c810642ba9b46651b68b944953a340863c6d3cbc6d52edb62eef405b9f",
+      "size_bytes": 40270
     },
     {
       "executable": false,
@@ -7663,6 +7699,60 @@
       "path": "casepath-api/tests/test_artifact_gate_v1.py",
       "sha256": "fd72bfa311f030a8b4adcab7ebe464b07b0d9c3c90a28eed5ddeef88b959d5e9",
       "size_bytes": 4670
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_adversarial_v1.py",
+      "sha256": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b",
+      "size_bytes": 10840
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_api_v1.py",
+      "sha256": "5fa5b4eff2d1e5571c2d86b48dd54c380fd9fb26417b8310fa177737d51c6b62",
+      "size_bytes": 3367
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_budget_v1.py",
+      "sha256": "2efbd93eda71035351e27ac90a711ffd370ceae26910a422f8795ea01481a9aa",
+      "size_bytes": 12289
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_controller_v1.py",
+      "sha256": "acbf5aefe113c55cc0441cd08bf89756b351bcec5051da364308928c986b1408",
+      "size_bytes": 5221
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_journal_validation_v1.py",
+      "sha256": "56cafb5eb67f2bd3c7a1e28a9734d6c2043829a9ab1dbac04c33d221e9c8bd30",
+      "size_bytes": 8631
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_knowledge_refinement_v1.py",
+      "sha256": "e17f180ea853e1fdf6dc9499d96638fac344af571b9239c9eb2852b6d6597066",
+      "size_bytes": 10902
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_model_v1.py",
+      "sha256": "6184e3e440c0e00b96b5cc0f7adf48606041ce2b3b5e26f6d4b3f344026f30f6",
+      "size_bytes": 17838
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_policy_v1.py",
+      "sha256": "b8efb223e62eef9223c44ee9d25067129ee147efb0796de78c08226ba4e79b40",
+      "size_bytes": 4670
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_store_v1.py",
+      "sha256": "ae8e6a527f76fd97a4f73917d04e6b428c0aae62935a6c1bfaf79e230dc44ce3",
+      "size_bytes": 12801
     },
     {
       "executable": false,
@@ -8147,8 +8237,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_workspace_evidence_authority_v1.py",
-      "sha256": "c1df717878ac0f9c0285643747286d32d2efacda495f58b30138815514ed2ea2",
-      "size_bytes": 71697
+      "sha256": "f2f45a1f6cca217c2a003d08b6cadab5bd14eec31025f6d0abca2ffc8fd2dd9c",
+      "size_bytes": 75032
     },
     {
       "executable": false,
@@ -8203,6 +8293,12 @@
       "path": "casepath-qa/agent-work-motion-v3.test.cjs",
       "sha256": "a7aac199c95070092564f01db2cf1b3a8f05d62dbff2bbf68c45e7e8943d79e9",
       "size_bytes": 7928
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "sha256": "d8c7f3a66e3b11a88a4a927e23aaf07fc54cda45ea1ff8f79b1f13fde3819df7",
+      "size_bytes": 42379
     },
     {
       "executable": false,
@@ -8345,8 +8441,8 @@
     {
       "executable": false,
       "path": "casepath-qa/claim-navigation-refresh-v4.test.cjs",
-      "sha256": "3d349146de20e6e06446fed88805a43503547d8ad4344c162bb60a66830a4da5",
-      "size_bytes": 12040
+      "sha256": "ab27082e0f83128b70eafadc17b2bfd40171edc26b60fd59d4f220a5f30d1a8f",
+      "size_bytes": 13973
     },
     {
       "executable": false,
@@ -8371,6 +8467,12 @@
       "path": "casepath-qa/claims-workspace-presentation-v1.test.cjs",
       "sha256": "06cbfd3d0eb40c50f9532acf91fa05a633a556a5563cf85efd3eade8b1328d67",
       "size_bytes": 24917
+    },
+    {
+      "executable": false,
+      "path": "casepath-qa/claims-workspace-source-library-v1.test.cjs",
+      "sha256": "2087251b0be7e89f64bd9a2ddf3d4901b1ae26a149496dc8a2ba01990c14a61f",
+      "size_bytes": 5571
     },
     {
       "executable": false,
@@ -8578,6 +8680,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-qa/sites-autonomous-entry.test.cjs",
+      "sha256": "178cd414f54d75a6a5406e905f78ddc87376ae7627a9d5b3eda8a7e09a830c05",
+      "size_bytes": 1874
+    },
+    {
+      "executable": false,
       "path": "casepath/README.md",
       "sha256": "7aceb3342e07b012e796b263de3b070671921bf2cbcb3d64e139c36cea61a048",
       "size_bytes": 2392
@@ -8609,8 +8717,8 @@
     {
       "executable": false,
       "path": "casepath/assets/agent-native-v2.css",
-      "sha256": "8f4b2fb0d160155feb3665f32ef8ff6e47f7919e1ee7333fac6776e6b37a2a5f",
-      "size_bytes": 64857
+      "sha256": "ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+      "size_bytes": 67377
     },
     {
       "executable": false,
@@ -8635,6 +8743,30 @@
       "path": "casepath/assets/app.js",
       "sha256": "7766a9b66c5f8dbde6c9c7ce15ebeca9ca5d6042b0537583e71b05d51fa4d6b3",
       "size_bytes": 29946
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/autonomous-demo-packets.json",
+      "sha256": "0570e94ab2d32005c858359ea345a9dafd8c941733193da0d3575525cb81ce8a",
+      "size_bytes": 13800
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/autonomous-entry-v1.js",
+      "sha256": "fe557d63bd1d5c927d79c726300ea0ec386c25ec5a545ee427c84c71323e3c51",
+      "size_bytes": 1112
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "sha256": "d48a044f6cae30ac77cfff1801de9c6327bcf6729367c24c80b5ff1a6e4d0a50",
+      "size_bytes": 24933
+    },
+    {
+      "executable": false,
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "sha256": "a45d4de013a04d593e372e8a17d31a8facb4187b39dce3a27a8a235ac2abf2da",
+      "size_bytes": 71712
     },
     {
       "executable": false,
@@ -8687,8 +8819,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-presentation-v1.js",
-      "sha256": "60992b9737ce7d764784e4c2d03c7d0319bd7122ebe89672a60836626e576851",
-      "size_bytes": 74721
+      "sha256": "2dd6679ff4fa3c2866adc4c43190f156323c3408e4b7bdbf318c430317e17ac5",
+      "size_bytes": 74919
     },
     {
       "executable": false,
@@ -8699,8 +8831,8 @@
     {
       "executable": false,
       "path": "casepath/assets/claims-workspace-v1.js",
-      "sha256": "fa5b278f8b025ad68078af6ca021309d6ef464b4d6160a65009de4993ecfb45e",
-      "size_bytes": 247239
+      "sha256": "e91a20ec9eaea05b20e60d832443187ab10693445d1de9f4464654f482eb0e23",
+      "size_bytes": 247671
     },
     {
       "executable": false,
@@ -8813,8 +8945,8 @@
     {
       "executable": false,
       "path": "casepath/index.html",
-      "sha256": "12691122c05cacb20aa236fe2ede08783960b20bb7f21b32eab44d3c325a20ea",
-      "size_bytes": 22344
+      "sha256": "1118ceeb4c35c526d2b75ddb1f39d2783ee3b0377a16f9ec32ea787a4fab2ac2",
+      "size_bytes": 23547
     },
     {
       "executable": false,
@@ -9017,14 +9149,14 @@
     {
       "executable": false,
       "path": "casepath/tools/build_sites_site.py",
-      "sha256": "99d1b6f2c03187be53aac7e17e75e7a63f714a4441ad8b3c9aee062e8b55a288",
+      "sha256": "1c49ed95bb1ecc73066ac653ace141800840f5fd9286be5b32031612bbd947ea",
       "size_bytes": 2786
     },
     {
       "executable": false,
       "path": "casepath/tools/build_static_site.py",
-      "sha256": "23384afaca4c9b1686dfe56a8ef24570a5eb76c8e9acd195dde8f4cde0094dc7",
-      "size_bytes": 9361
+      "sha256": "e1983069e9a3bbf303300cbfd8284e0c166d41e0670c2e9beb921010cfb9c64d",
+      "size_bytes": 9687
     },
     {
       "executable": false,
@@ -9041,26 +9173,26 @@
     {
       "executable": false,
       "path": "casepath/tools/run_agent_demo.py",
-      "sha256": "a9b422d39888373edc240be8886cc2b47dc370893c35e5d5c1a967ebbd19b60f",
-      "size_bytes": 29028
+      "sha256": "d95ae365d1af36eee3960418c5e19213b11a1770d743bca67a1ad81ee6563485",
+      "size_bytes": 42031
     },
     {
       "executable": false,
       "path": "casepath/tools/sites_worker.mjs",
-      "sha256": "5e78defe6a51126721c4d283c48c4b76f76e524c9fcaf24b02fb6a77169a899e",
+      "sha256": "8c169700b22b52395e70c6a31f2b3e5c77d71b1bc9af76fe7db82cbf78276043",
       "size_bytes": 2314
     },
     {
       "executable": false,
       "path": "casepath/tools/test_build_deployment_identity.py",
-      "sha256": "01d6ba6c8d7d0d39c727e88af5592d2f2c939fa225596e243a477d9d194812fa",
-      "size_bytes": 13532
+      "sha256": "edc41cf92c2ee6fce5158c8a10988386127f5e5dbe927d6b40432184ea83870d",
+      "size_bytes": 13695
     },
     {
       "executable": false,
       "path": "casepath/tools/test_casepath_release.py",
-      "sha256": "5c1a371fba81c0cb123385b8be509dbf361b2a41949bf1ae3762ff12a2d46d13",
-      "size_bytes": 315935
+      "sha256": "0e98b482357de6b24363cb58e53e677f916d8c5a50a4f6fcc781c4c588010863",
+      "size_bytes": 316104
     },
     {
       "executable": false,
@@ -9077,8 +9209,8 @@
     {
       "executable": false,
       "path": "casepath/tools/validate_local_runtime_history.py",
-      "sha256": "c812f4c8bdf71024c51479c0d3a97c417d64d797fb69cf33b0a0da61ec182220",
-      "size_bytes": 92032
+      "sha256": "5d5945c5c989c9f1aad916c83eeb8db2d6e29c1354593acec13f673c0dd9d918",
+      "size_bytes": 94216
     },
     {
       "executable": false,
@@ -9262,6 +9394,12 @@
     },
     {
       "executable": false,
+      "path": "docs/product/AUTONOMOUS_WORKSPACE.md",
+      "sha256": "ea62efe246f2a0fd5239a5ab7c10d8c0c3bc8127457a0369543221896d98512d",
+      "size_bytes": 8354
+    },
+    {
+      "executable": false,
       "path": "docs/product/CAUSAL_PROCESS.md",
       "sha256": "68d524961c82376a6f1fb958f2ba97fef4e55fc7cf6efb706f5be967e6385f1c",
       "size_bytes": 16528
@@ -9283,6 +9421,84 @@
       "path": "docs/product/VISUAL_MOTION_ACCEPTANCE.md",
       "sha256": "39f88ccb85c4b413f5c31d8c1955fe13873d2aaa1d17fcc81704e83cb13d1ea3",
       "size_bytes": 5229
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/01-lease-baseline/intake.json",
+      "sha256": "4fd4b15193576aaa44c64c257e1ac19525075480c6e09f0d747bf7e27e32c448",
+      "size_bytes": 3244
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/01-lease-baseline/message.txt",
+      "sha256": "689303fd61b921aaab8474c112ec8e2b5fc756ce9031651d7e52a5dea367d7d1",
+      "size_bytes": 839
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/01-lease-baseline/tenancy-agreement.txt",
+      "sha256": "660b6416689abfe36f039e7003d1b2cd201d499aa951294eb3ec54f088a903b1",
+      "size_bytes": 1582
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/02-delivery-refinement/delivery-record.txt",
+      "sha256": "94ecb0cfe809817ff2e5458e5597ed5661ce45b093bf509f3442c98d5ed08ac6",
+      "size_bytes": 1400
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/02-delivery-refinement/intake.json",
+      "sha256": "6a712b641030a7d873fe53438b7a3082eba2bbedbe5a239e71d04a059a2aecd1",
+      "size_bytes": 5354
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/02-delivery-refinement/message.txt",
+      "sha256": "73615ebb479f59d3c5bd8d4dcd16292a28cffae508298c5ef3e1989052921ab0",
+      "size_bytes": 1046
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/02-delivery-refinement/tenancy-agreement.txt",
+      "sha256": "091b33508dc7fab52a26da835963bdc28590b48d1e7a00b4e7b424eaf711b158",
+      "size_bytes": 1509
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/03-delivery-reuse/delivery-record.txt",
+      "sha256": "209091db7cbc765bc5a41cac95b906bef35d0c1669289a46ca59a69215d19b00",
+      "size_bytes": 1378
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/03-delivery-reuse/intake.json",
+      "sha256": "cd684c1833e7172945eed87f4375474627c6447e6c2a7b9641baf444edc9fb82",
+      "size_bytes": 5214
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/03-delivery-reuse/message.txt",
+      "sha256": "6e328c4167220c20ce994355425b8d375908939349ae64113e3f064949e3dee1",
+      "size_bytes": 973
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/03-delivery-reuse/tenancy-agreement.txt",
+      "sha256": "5e5caf3326e396228d423d2a789c1a69f2798e3104369b45ec44792dc7fc0e2c",
+      "size_bytes": 1483
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/README.md",
+      "sha256": "e4f47a8c79c20b91a581b366cc0d4feaa69f6f0d48555c4ab61619cfa1bddd3d",
+      "size_bytes": 6754
+    },
+    {
+      "executable": false,
+      "path": "docs/product/autonomous-demo/manifest.json",
+      "sha256": "1964d3056ab6476ef8bdec647b5bd68b1bc029dbe568a94bc8def7433346a6c4",
+      "size_bytes": 2387
     },
     {
       "executable": false,

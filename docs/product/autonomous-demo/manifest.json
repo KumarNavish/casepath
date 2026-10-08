@@ -1,0 +1,61 @@
+{
+  "contract": "casepath.public-autonomous-demo-packets/1.0.0",
+  "fictional": true,
+  "intake_asset": {
+    "packet_count": 3,
+    "path": "../../../casepath/assets/autonomous-demo-packets.json",
+    "sha256": "0570e94ab2d32005c858359ea345a9dafd8c941733193da0d3575525cb81ce8a"
+  },
+  "live_acceptance": "not_established_by_this_packet_bundle",
+  "packets": [
+    {
+      "directory": "01-lease-baseline",
+      "intake_sha256": "4fd4b15193576aaa44c64c257e1ac19525075480c6e09f0d747bf7e27e32c448",
+      "message_sha256": "689303fd61b921aaab8474c112ec8e2b5fc756ce9031651d7e52a5dea367d7d1",
+      "supporting_files": [
+        {
+          "bytes": 1582,
+          "path": "01-lease-baseline/tenancy-agreement.txt",
+          "sha256": "660b6416689abfe36f039e7003d1b2cd201d499aa951294eb3ec54f088a903b1"
+        }
+      ],
+      "title": "Fictional intake · Maya’s tenancy termination"
+    },
+    {
+      "directory": "02-delivery-refinement",
+      "intake_sha256": "6a712b641030a7d873fe53438b7a3082eba2bbedbe5a239e71d04a059a2aecd1",
+      "message_sha256": "73615ebb479f59d3c5bd8d4dcd16292a28cffae508298c5ef3e1989052921ab0",
+      "supporting_files": [
+        {
+          "bytes": 1509,
+          "path": "02-delivery-refinement/tenancy-agreement.txt",
+          "sha256": "091b33508dc7fab52a26da835963bdc28590b48d1e7a00b4e7b424eaf711b158"
+        },
+        {
+          "bytes": 1400,
+          "path": "02-delivery-refinement/delivery-record.txt",
+          "sha256": "94ecb0cfe809817ff2e5458e5597ed5661ce45b093bf509f3442c98d5ed08ac6"
+        }
+      ],
+      "title": "Fictional intake · Robin and Sami’s family-home termination"
+    },
+    {
+      "directory": "03-delivery-reuse",
+      "intake_sha256": "cd684c1833e7172945eed87f4375474627c6447e6c2a7b9641baf444edc9fb82",
+      "message_sha256": "6e328c4167220c20ce994355425b8d375908939349ae64113e3f064949e3dee1",
+      "supporting_files": [
+        {
+          "bytes": 1483,
+          "path": "03-delivery-reuse/tenancy-agreement.txt",
+          "sha256": "5e5caf3326e396228d423d2a789c1a69f2798e3104369b45ec44792dc7fc0e2c"
+        },
+        {
+          "bytes": 1378,
+          "path": "03-delivery-reuse/delivery-record.txt",
+          "sha256": "209091db7cbc765bc5a41cac95b906bef35d0c1669289a46ca59a69215d19b00"
+        }
+      ],
+      "title": "Fictional intake · Nila and Teo’s family-home termination"
+    }
+  ]
+}

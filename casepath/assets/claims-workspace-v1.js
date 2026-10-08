@@ -410,6 +410,7 @@
   }
 
   if (location.protocol === 'file:') return;
+  if (document.documentElement.dataset.autonomousWorkspace === 'true') return;
 
   const params = new URLSearchParams(location.search);
   if (
@@ -3173,7 +3174,7 @@
     if(button.hasAttribute('data-scroll-next')){const target=$('.cp-a-needs')||$('#cwStart');revealClaimTarget(target);if(target?.id==='cwStart')target.click();else{target?.scrollIntoView({block:'start'});target?.querySelector?.('button')?.focus({preventScroll:true});}return true;}
 
 
-    if(button.hasAttribute('data-canvas-source')){resetSource(false);openInspector({focus:true});const rail=$('.cp-source-rail');if(rail)rail.scrollTop=0;(rail?.querySelector('[data-packet-message]')||$('#cwSourceInspector'))?.focus({preventScroll:true});return true;}
+    if(button.hasAttribute('data-canvas-source')){resetSource(false);openSourceLibrary();return true;}
     if(button.hasAttribute('data-open-inspector')){openInspector({toggle:button.matches('.cp-source-toggle')});return true;}
     if(button.hasAttribute('data-close-inspector')){closeInspector();return true;}
     if(button.hasAttribute('data-return-next')){const action=$('#cwLoopWorkbench .cw-button-primary');if(action){revealClaimTarget(action);action.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'});action.focus({preventScroll:true});}return true;}
@@ -3258,11 +3259,17 @@
     }catch(error){if(blobUrl)URL.revokeObjectURL(blobUrl);if(!current())return;const line=$('#cpPreviewPageError');line.hidden=false;wrap.querySelector('.cp-page-placeholder')?.remove();line.textContent=error.name==='AbortError'?'The page took too long to load.':error.message;const retry=document.createElement('button');retry.type='button';retry.className='cw-text-button';retry.dataset.previewRetry='true';retry.textContent='Try page again';line.append(' ',retry);}
     finally{clearTimeout(timer);if(current()){wrap.setAttribute('aria-busy','false');root.querySelectorAll('[data-preview-page]').forEach(b=>b.disabled=b.dataset.previewPage==='previous'?preview.page<=1:preview.page>=preview.descriptor.page_count);}}
   }
+  function openSourceLibrary(){
+    const library=$('#cwSourceLibrary');if(!library)return;
+    library.open=true;openInspector({focus:true});
+    const rail=$('.cp-source-rail');if(rail)rail.scrollTop=0;
+    (library.querySelector('[aria-current="true"]')||library.querySelector('[data-packet-message],[data-packet-artifact]')||library.querySelector('summary'))?.focus({preventScroll:true});
+  }
   function packetClick(button){
     if(button.hasAttribute('data-preview-retry')){if(state.packetPreview)void renderPacketPage(state.packetPreview.requestedPage||1);return true;}
     if(button.hasAttribute('data-preview-page')){const p=state.packetPreview;if(p)void renderPacketPage(p.page+(button.dataset.previewPage==='next'?1:-1));return true;}
     if(button.hasAttribute('data-preview-zoom')){const wrap=$('#cpPreviewPageWrap');if(wrap){const zoom=wrap.dataset.zoom!=='true';wrap.dataset.zoom=String(zoom);button.setAttribute('aria-pressed',String(zoom));button.textContent=zoom?'Fit':'Zoom';}return true;}
-    if(button.hasAttribute('data-packet-library')){const rail=$('.cp-source-rail');if(rail){rail.scrollTop=0;rail.querySelector('[data-packet-message]')?.focus({preventScroll:true});}return true;}
+    if(button.hasAttribute('data-packet-library')){openSourceLibrary();return true;}
     return false;
   }
   root.addEventListener('error',event=>{const image=event.target;if(image?.matches?.('.cp-packet-thumbnail img')){image.hidden=true;image.parentElement.dataset.previewUnavailable='true';}},true);
@@ -3276,11 +3283,12 @@
   }
   function focusSource(focus=true) {
     const inspector=$('#cwSourceInspector');if(!inspector)return;
-    if(focus)openInspector({focus:true});
+    if(focus){const library=$('#cwSourceLibrary');if(library)library.open=false;openInspector({focus:true});}
     packetSelection();
     const rail=$('.cp-source-rail');
     if(focus)rail.scrollTop=Math.max(0,inspector.offsetTop-62);else rail.scrollTop=0;
-    root.querySelectorAll('[data-source-reset]').forEach(b=>b.hidden=!state.sourceSelection);
+    const messageSelected=state.sourceSelection?.kind==='artifact'&&state.detail?.artifacts[state.sourceSelection.index]?.role==='customer_message';
+    root.querySelectorAll('[data-source-reset]').forEach(b=>b.hidden=!state.sourceSelection||messageSelected);
     root.querySelectorAll('[data-evidence-source]').forEach(b=>b.classList.toggle('cp-source-selected',state.sourceSelection?.kind==='evidence'&&b.dataset.evidenceSource===state.sourceSelection.id));
     if(focus)savePresentation();
   }

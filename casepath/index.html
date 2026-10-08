@@ -3,21 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="A journal-backed claims workspace that shows what is known, what blocks a claim, and the next bounded action without inventing readiness.">
+  <meta name="description" content="Source-grounded claim investigation, executable process graphs, derived document requirements and versioned procedural knowledge.">
   <meta name="theme-color" content="#ffffff">
   <meta name="casepath-release" content="20.0.0">
-  <meta name="casepath-workspace-presentation-script" content="assets/claims-workspace-presentation-v1.js?sha256=60992b9737ce7d764784e4c2d03c7d0319bd7122ebe89672a60836626e576851">
+  <meta name="casepath-workspace-presentation-script" content="assets/claims-workspace-presentation-v1.js?sha256=2dd6679ff4fa3c2866adc4c43190f156323c3408e4b7bdbf318c430317e17ac5">
   <meta name="casepath-agent-claim-script" content="assets/agent-claim-v2.js?sha256=7a02395f13e1fe5289083cc9176b09989ac1df4c6ccba74f5a3caf390bde4f67">
   <meta name="casepath-work-motion-script" content="assets/agent-work-motion-v3.js?sha256=a2f664ce95fab5bad2f41badc999a43ca7f0ffd1b77cfb87cfec5eb94e4488c2">
   <meta name="casepath-agent-work-script" content="assets/agent-work-v1.js?sha256=654a5fbb04eba81ad23e1730461df92c4ac9c4c9d01d2a73d2dc1d4bad1cf1cd">
   <meta name="casepath-causal-process-script" content="assets/causal-process-v1.js?sha256=7eceb15ab624c544f987fc373dc959709947631fc53fcd53609e3e08909569ff">
   <meta name="casepath-paper-method-script" content="assets/process-evidence-v2.js?sha256=007bc2ad438b32e265da97f33866999ed3745c35107249eafd35191d210aaa8b">
+  <meta name="casepath-review-workspace-script" content="assets/claims-workspace-v1.js?sha256=e91a20ec9eaea05b20e60d832443187ab10693445d1de9f4464654f482eb0e23">
+  <meta name="casepath-review-desk-script" content="assets/agent-desk-v2.js?sha256=3db6bccb56c066bb22a61d8ebe902c804c056387a79d7dec76be050e85154621">
+  <meta name="casepath-autonomous-demo-packets" content="assets/autonomous-demo-packets.json?sha256=0570e94ab2d32005c858359ea345a9dafd8c941733193da0d3575525cb81ce8a">
+  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=a45d4de013a04d593e372e8a17d31a8facb4187b39dce3a27a8a235ac2abf2da">
   <link rel="icon" href="data:,">
   <link rel="license" href="assets/fonts/Merriweather-OFL.txt">
   <link rel="license" href="assets/fonts/Open_Sans-OFL.txt">
   <link rel="preload" href="assets/fonts/Merriweather-Light.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="assets/fonts/OpenSans-VariableFont_wdth-wght.ttf" as="font" type="font/ttf" crossorigin>
-  <title>CasePath — Claims workspace</title>
+  <title>CasePath — Autonomous claims</title>
   <script>
     if (location.protocol === 'file:') document.documentElement.dataset.casepathFileEntry = 'true';
     // Begin the read-only demo hydration while the static claim shell renders.
@@ -32,8 +36,9 @@
         const foundationMode = bootParams.get('foundation') === 'live-v1';
         const legacyJourney = ['legacy-v20', 'insurance-v1'].includes(bootParams.get('journey'));
         const workspaceMode = !foundationMode && !legacyJourney;
-        if (workspaceMode) document.documentElement.dataset.claimsWorkspace = 'true';
-        else {
+        if (workspaceMode && bootParams.get('journey') !== 'review') document.documentElement.dataset.autonomousWorkspace = 'true';
+        if (workspaceMode && bootParams.get('journey') === 'review') document.documentElement.dataset.claimsWorkspace = 'true';
+        if (!workspaceMode) {
           const paperScript=document.createElement('script');
           paperScript.src=document.querySelector('meta[name="casepath-paper-method-script"]').content;
           document.head.append(paperScript);
@@ -60,6 +65,10 @@
   </script>
   <style>
     #localFileLaunch{display:none}
+    #autonomousWorkspace{display:none}
+    html[data-autonomous-workspace="true"] body{margin:0}
+    html[data-autonomous-workspace="true"] body>:not(#autonomousWorkspace){display:none!important}
+    html[data-autonomous-workspace="true"] #autonomousWorkspace{display:block}
     html[data-casepath-file-entry="true"]{background:#f6f6f4;color:#202226;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
     html[data-casepath-file-entry="true"] body{min-height:100vh;margin:0;background:radial-gradient(circle at 50% 24%,#fff 0,#f8f8f6 48%,#f2f2ef 100%)}
     html[data-casepath-file-entry="true"] body>:not(#localFileLaunch){display:none!important}
@@ -79,9 +88,11 @@
   <link rel="stylesheet" href="assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557">
 <link rel="stylesheet" href="assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9">
   <link rel="stylesheet" href="assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22">
-  <link rel="stylesheet" href="assets/agent-native-v2.css?sha256=8f4b2fb0d160155feb3665f32ef8ff6e47f7919e1ee7333fac6776e6b37a2a5f">
+  <link rel="stylesheet" href="assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb">
+  <link rel="stylesheet" href="assets/autonomous-workspace-v1.css?sha256=d48a044f6cae30ac77cfff1801de9c6327bcf6729367c24c80b5ff1a6e4d0a50">
 </head>
 <body>
+  <div id="autonomousWorkspace"><p role="status">Opening your claim workspace…</p></div>
   <section id="localFileLaunch" aria-labelledby="localFileLaunchTitle">
     <div class="local-file-launch-card">
       <div class="local-file-launch-brand"><span class="local-file-launch-mark" aria-hidden="true">CP</span><span>CasePath</span></div>
@@ -301,7 +312,6 @@ Alex Morgan</div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/claims-workspace-v1.js?sha256=fa5b278f8b025ad68078af6ca021309d6ef464b4d6160a65009de4993ecfb45e"></script>
-  <script src="assets/agent-desk-v2.js?sha256=3db6bccb56c066bb22a61d8ebe902c804c056387a79d7dec76be050e85154621"></script>
+  <script src="assets/autonomous-entry-v1.js?sha256=fe557d63bd1d5c927d79c726300ea0ec386c25ec5a545ee427c84c71323e3c51"></script>
 </body>
 </html>

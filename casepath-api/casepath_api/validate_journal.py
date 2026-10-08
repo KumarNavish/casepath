@@ -9,6 +9,9 @@ import sqlite3
 import stat
 import sys
 from types import SimpleNamespace
+from urllib.parse import quote
+
+from .autonomous_store_v1 import AutonomousStore, SESSION_ID as AUTONOMOUS_SESSION_ID
 
 from .claim_loop_store import ClaimLoopStore, ClaimLoopStoreError
 from .claim_workspace_v1 import (
@@ -56,7 +59,7 @@ def validate_journal(database: Path) -> dict[str, object]:
     loop_rows: list[dict[str, object]] = []
     event_count = 0
     with sqlite3.connect(
-        f"file:{database.as_posix()}?mode=ro", uri=True
+        f"file:{quote(str(database), safe='/')}?mode=ro", uri=True
     ) as connection:
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA query_only=ON")
@@ -83,6 +86,7 @@ def validate_journal(database: Path) -> dict[str, object]:
             }
             return {**receipt, "receipt_sha256": digest_value(receipt)}
         workspace_stores: dict[str, ClaimWorkspaceStore] = {}
+        autonomous_store = None
         def workspace_verifier(rows: list[sqlite3.Row]) -> ClaimWorkspaceStore:
             # Recorded imports select an immutable bundle; the workspace
             # reducer still verifies its identity, binding and entire prefix.
@@ -117,12 +121,24 @@ def validate_journal(database: Path) -> dict[str, object]:
             is_workspace_session = session_id == WORKSPACE_SESSION_ID
             is_workspace_loop = loop_id.startswith(WORKSPACE_LOOP_PREFIX)
             is_delegate_loop = loop_id.startswith("delegate.")
+            is_autonomous_session = session_id == AUTONOMOUS_SESSION_ID
+            is_autonomous_loop = loop_id.startswith("autonomous.")
+            if is_autonomous_session != is_autonomous_loop or (is_autonomous_loop and not loop_id[len("autonomous."):]):
+                raise JournalValidationError(
+                    "autonomous journal identity is outside its exact namespace"
+                )
             if is_workspace_session != (is_workspace_loop or is_delegate_loop):
                 raise JournalValidationError(
                     "workspace journal identity is outside its exact namespace"
                 )
             try:
-                if is_delegate_loop:
+                if is_autonomous_session:
+                    if autonomous_store is None:
+                        autonomous_store = AutonomousStore.open_read_only(database)
+                    state, _, _ = autonomous_store._replay(rows)
+                    last_event_sha256 = state["last_event_sha256"]
+                    state_sha256 = state["state_sha256"]
+                elif is_delegate_loop:
                     from .agent_desk_v1 import DelegateJournal
                     claim_id = loop_id[len("delegate."):]
                     parent_rows = ClaimLoopStore._event_rows(

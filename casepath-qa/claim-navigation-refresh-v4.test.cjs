@@ -2,6 +2,7 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const source=fs.readFileSync(path.join(__dirname,'../casepath/assets/claims-workspace-v1.js'),'utf8');
+const presentation=require('../casepath/assets/claims-workspace-presentation-v1.js');
 
 // A small connected tree exercises the real render/read/navigation functions.
 // No timers, provider, browser, API server or external DOM dependency is needed.
@@ -14,7 +15,9 @@ function fixture({mobile=false}={}){
   get isConnected(){return this===document.body||Boolean(this.parentNode?.isConnected);}
   get id(){return this.attrs.id||'';}
   get className(){return this.attrs.class||'';}
-  setAttribute(name,value){this.attrs[name]=String(value);if(name.startsWith('data-'))this.dataset[dataName(name)]=String(value);if(name==='value')this.value=String(value);if(name==='open')this.open=true;}
+  get open(){return this.hasAttribute('open');}
+  set open(value){if(value)this.attrs.open='';else delete this.attrs.open;}
+  setAttribute(name,value){this.attrs[name]=String(value);if(name.startsWith('data-'))this.dataset[dataName(name)]=String(value);if(name==='value')this.value=String(value);}
   hasAttribute(name){return Object.hasOwn(this.attrs,name);}
   getAttribute(name){return this.attrs[name]??null;}
   removeAttribute(name){delete this.attrs[name];}
@@ -52,13 +55,13 @@ function fixture({mobile=false}={}){
  const panel=new Node();panel.setAttribute('id','cwDetailPanel');document.body.append(panel);
  const storage=new Map(),events=[],reads=[];
  const assessment={domain_scores:[],policy_template:{title:'Saved policy'},current_node:{label:'Deadline'},outgoing_branches:[],policy_clause_refs:[],claim_assessment:{conditions:{}}};
- const detail={state:{claim_id:'claim-a',revision:4,state_sha256:'state-a',workflow_state:'in_review',owner:'Original handler',intake_assessment:assessment},artifacts:[]};
+ const detail={state:{claim_id:'claim-a',revision:4,state_sha256:'state-a',workflow_state:'in_review',owner:'Original handler',intake_assessment:assessment,binding:{language:'en'}},artifacts:[],message:{body:'Original customer message.'}};
  const c={document,root:document.body,mobileWorkbench:{matches:mobile},URLSearchParams,CSS:{escape:value=>value},location:{hash:'#claim=claim-a'},
   state:{detail,items:[{claim_id:'claim-a',state_sha256:'state-a'}],detailEpoch:1,claimSection:'process',sectionScroll:{},motion:0},
   window:{dispatchEvent:event=>events.push(event),CasePathMotion:{enter(){}},CasePathAgentClaim:{session:()=>({sources:[]})}},
   sessionStorage:{getItem:key=>storage.get(key)??null,setItem:(key,value)=>storage.set(key,value)},
   $:selector=>selector==='#cwDetailPanel'?panel:document.body.querySelector(selector),
-  ui:{detail:(_detail,_loop,opts)=>`<header class="cw-detail-head"><div class="cp-claim-title" data-owner="${_detail.state.owner}"><h1>${_detail.state.owner}</h1></div><nav class="cp-claim-tabs">${['overview','process','documents'].map(name=>`<button id="cpTab-${name}" data-claim-section="${name}"></button>`).join('')}</nav></header><div class="cp-work-column"><main class="cp-a-main">${['overview','process','documents'].map(name=>`<section id="cpPane-${name}" data-claim-pane="${name}"></section>`).join('')}</main><form data-apply-memory="memory-a"><textarea name="note"></textarea></form></div><dialog id="cpOwnerDialog"><form id="cwOwnerForm"><input id="cwOwnerInput" value="${opts.ownerValue}"></form></dialog>`},
+  ui:{detail:(_detail,_loop,opts)=>`<header class="cw-detail-head"><div class="cp-claim-title" data-owner="${_detail.state.owner}"><h1>${_detail.state.owner}</h1></div><nav class="cp-claim-tabs">${['overview','process','documents'].map(name=>`<button id="cpTab-${name}" data-claim-section="${name}"></button>`).join('')}</nav></header>${presentation.sourceRecord(_detail)}<div class="cp-work-column"><main class="cp-a-main">${['overview','process','documents'].map(name=>`<section id="cpPane-${name}" data-claim-pane="${name}"></section>`).join('')}</main><form data-apply-memory="memory-a"><textarea name="note"></textarea></form></div><dialog id="cpOwnerDialog"><form id="cwOwnerForm"><input id="cwOwnerInput" value="${opts.ownerValue}"></form></dialog>`},
   storedCommandIdentity:()=>null,clearCommandIdentity(){},esc:String,label:String,loopWorkbenchMarkup:()=>'',priorityList:()=>'',
   activeDetailContext:()=>({claimId:c.state.detail.state.claim_id,epoch:c.state.detailEpoch}),
   isActiveDetail:context=>context.claimId===c.state.detail.state.claim_id&&context.epoch===c.state.detailEpoch,
@@ -126,8 +129,29 @@ test('mobile graph arrival and refresh preserve page position and the focused un
 
 test('opening another claim replaces its header and restores that claim section separately',()=>{
  const f=fixture(),{c,panel}=f;c.renderDetail(f.detail);const oldTab=panel.querySelector('#cpTab-process');
- c.state.detail={state:{claim_id:'claim-b',revision:1,state_sha256:'state-b'},artifacts:[]};c.state.items.push({claim_id:'claim-b',state_sha256:'state-b'});
+ c.state.detail={state:{claim_id:'claim-b',revision:1,state_sha256:'state-b',binding:{language:'en'}},artifacts:[],message:{body:'Another original customer message.'}};c.state.items.push({claim_id:'claim-b',state_sha256:'state-b'});
  c.recoverPresentation('claim-b');c.renderDetail(c.state.detail);
  assert.equal(oldTab.isConnected,false);assert.notEqual(panel.querySelector('#cpTab-process'),oldTab);
  assert.equal(c.state.claimSection,'overview');assert.equal(panel.querySelector('#cpPane-overview').hidden,false);
+});
+
+for(const mobile of [false,true])test(`source library preserves same-claim disclosure state and starts closed on another claim (${mobile?'mobile':'desktop'})`,async()=>{
+ const f=fixture({mobile}),{c,panel}=f;c.renderDetail(f.detail);
+ const library=panel.querySelector('#cwSourceLibrary');assert.ok(library,'The real source rail supplies the library disclosure');
+ assert.equal(library.open,false);
+ library.open=true;
+ assert.equal(library.hasAttribute('open'),true,'The DOM fixture reflects the native open property used by renderDetail');
+ await f.arrive();
+ const refreshed=panel.querySelector('#cwSourceLibrary');
+ assert.notEqual(refreshed,library);assert.equal(library.isConnected,false);
+ assert.equal(refreshed.open,true,'A passive graph arrival preserves an explicitly expanded library');
+ refreshed.open=false;
+ assert.equal(refreshed.hasAttribute('open'),false);
+ c.renderDetail({...f.detail,state:{...f.detail.state,owner:'New saved handler'}});
+ assert.equal(panel.querySelector('#cwSourceLibrary').open,false,'A later same-claim refresh preserves a closed library');
+ panel.querySelector('#cwSourceLibrary').open=true;
+ c.state.detail={state:{claim_id:'claim-b',revision:1,state_sha256:'state-b',binding:{language:'en'}},artifacts:[],message:{body:'Another original customer message.'}};
+ c.state.items.push({claim_id:'claim-b',state_sha256:'state-b'});
+ c.recoverPresentation('claim-b');c.renderDetail(c.state.detail);
+ assert.equal(panel.querySelector('#cwSourceLibrary').open,false,'The previous claim does not expand the new claim source library');
 });

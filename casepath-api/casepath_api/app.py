@@ -398,6 +398,9 @@ def agent_desk_service():
 
 app.include_router(create_agent_desk_router(agent_desk_service))
 
+from .autonomous_api_v1 import install_autonomous
+autonomous_service = install_autonomous(app, lambda: storage, lambda: claim_workspace_corpus, agent_work_service)
+
 app.include_router(
     create_claim_loop_router(
         lambda: storage,

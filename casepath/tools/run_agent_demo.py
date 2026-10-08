@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Serve an explicitly enabled, bounded facts-role demo from a verified capsule.
+"""Serve a bounded facts-role or autonomous demo from a verified capsule.
 
 Requires a clean committed checkout and a successful normal local boot of that
-same commit. No provider request starts at launch. The normal launcher and its
-zero-credential boot history remain unchanged.
+same commit. The explicit --autonomous profile resumes saved autonomous work
+under the original lifetime budget. The default facts-role profile requires
+manual review admission. Normal zero-credential boot history is preserved.
 """
 from __future__ import annotations
 
@@ -155,9 +156,139 @@ def preflight(repository):
                  "--verify-only", str(runtime), str(data), str(repository)], cwd=repository, env=env)
     if sha(regular(runtime / "runtime-boot-receipt.json", 64_000_000)) != sha(boot_raw):
         raise DemoError("The normal boot identity changed during verification.")
-    return {"repository": repository, "runtime": runtime, "data": data, "capsule": capsule,
+    info = {"repository": repository, "runtime": runtime, "data": data, "capsule": capsule,
             "python": python, "head": head, "manifest_sha256": manifest_sha,
             "normal_boot_file_sha256": sha(boot_raw), "normal_boot_id": boot["boot_id"], "env": env}
+    verify_preserved_provider_budget(info)
+    return info
+
+
+def prior_demo_budgets(root):
+    """Read sealed observations; None retains a launch with unobserved usage."""
+    if not root.exists() and not root.is_symlink():
+        return []
+    if root.is_symlink() or not root.is_dir():
+        raise DemoError("The prior demo receipt directory is unsafe.")
+    observations = []
+    for launch in sorted(root.iterdir()):
+        if launch.is_symlink():
+            raise DemoError("The prior demo history contains an unsafe path.")
+        if not launch.is_dir():
+            continue  # Operator-supplied catalogue and endpoint snapshots.
+        for name, field in (("ready.json", "readiness"), ("stopped.json", "last_observed_readiness")):
+            path = launch / name
+            if not path.exists() and not path.is_symlink():
+                continue
+            try:
+                raw = regular(path)
+                receipt = json.loads(raw)
+                material = {key: value for key, value in receipt.items() if key != "receipt_sha256"}
+                if (receipt["receipt_sha256"] != sha(canonical(material))
+                        or raw != canonical(receipt) + b"\n"
+                        or receipt["contract"] != "casepath.explicit-agent-demo-boot/1.0.0"
+                        or receipt["launch_id"] != launch.name or receipt["policy"] != POLICY):
+                    raise ValueError
+                observed = receipt[field]
+                if observed is None and name == "stopped.json":
+                    observations.append(None)  # The child may have resumed work before readiness.
+                    continue
+                budget = observed["budget"]
+                if any(budget[k] != v for k, v in POLICY.items()):
+                    raise ValueError
+                for key in ("runs_used", "provider_calls_used", "autonomous_workflows_used", "autonomous_provider_calls_used"):
+                    if key in budget and (type(budget[key]) is not int or budget[key] < 0):
+                        raise ValueError
+                for key in ("runs_used", "provider_calls_used", "actual_cost_usd"):
+                    if key not in budget:
+                        raise ValueError
+                cost = Decimal(budget["actual_cost_usd"])
+                if not cost.is_finite() or cost < 0:
+                    raise ValueError
+                for key in ("run_grant_sha256", "autonomous_policy_sha256"):
+                    if budget.get(key) is not None and re.fullmatch(r"[0-9a-f]{64}", budget[key]) is None:
+                        raise ValueError
+                if budget.get("effective_max_runs", 3) not in (3, 4):
+                    raise ValueError
+                observations.append(budget)
+            except (AttributeError, KeyError, TypeError, ValueError, InvalidOperation):
+                raise DemoError("A prior demo receipt cannot establish its saved provider budget.") from None
+    return observations
+
+
+def read_only_provider_budget(info):
+    """Replay an existing ledger in memory; never initialize its on-disk schema."""
+    database = info["data"] / "agent-work-v1.sqlite3"
+    try:
+        descriptor = os.open(database, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        with os.fdopen(descriptor, "rb") as stream:
+            metadata = os.fstat(stream.fileno())
+            if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+                raise OSError
+        # Opening a WAL database even in mode=ro may create sidecars. Copy the
+        # DB and its WAL under the shared data lease before SQLite opens either.
+        # Legacy schema additions are applied only to the in-memory snapshot.
+        command = [str(info["python"]), "-I", "-B", "-P", "-c", '''
+import json, os, shutil, sqlite3, stat, sys, tempfile
+from pathlib import Path
+sys.path.insert(0, sys.argv[1])
+from casepath_api.agent_work.store import WorkStore, SCHEMA
+database = Path(sys.argv[2])
+with tempfile.TemporaryDirectory(prefix="casepath-budget-check-") as temporary:
+    copied = Path(temporary) / "work.sqlite3"
+    for suffix in ("", "-wal"):
+        original = Path(str(database) + suffix)
+        if suffix and not original.exists() and not original.is_symlink():
+            continue
+        descriptor = os.open(original, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        with os.fdopen(descriptor, "rb") as source:
+            metadata = os.fstat(source.fileno())
+            if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+                raise ValueError("unsafe work ledger file")
+            with Path(str(copied) + suffix).open("xb") as target:
+                shutil.copyfileobj(source, target)
+    with sqlite3.connect(copied) as source, sqlite3.connect(":memory:") as snapshot:
+        if source.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
+            raise ValueError("invalid work ledger")
+        source.backup(snapshot)
+        snapshot.executescript(SCHEMA)
+        snapshot.row_factory = sqlite3.Row
+        store = object.__new__(WorkStore)
+        print(json.dumps(store._external_budget(snapshot), sort_keys=True, separators=(",", ":")))
+''', str(info["capsule"] / "casepath-api"), str(database)]
+        result = json.loads(run_checked(command, cwd=info["repository"], env=info["env"]))
+        if not isinstance(result, dict):
+            raise ValueError
+        return result
+    except (OSError, ValueError, DemoError):
+        raise DemoError("The previously used provider ledger is missing or invalid; its allowance cannot be recreated.") from None
+
+
+def verify_preserved_provider_budget(info):
+    observations = prior_demo_budgets(info["repository"] / ".runtime/casepath-openrouter-demo")
+    if not observations:
+        return
+    current = read_only_provider_budget(info)
+    try:
+        if any(current[k] != v for k, v in POLICY.items()):
+            raise ValueError
+        grant_sha = verified_run_grant(current["run_grant"]) if current.get("run_grant") else None
+        policy_sha = verified_autonomous_policy(current["autonomous_policy"]) if current.get("autonomous_policy") else None
+        for prior in observations:
+            if prior is None:
+                continue  # Existence and complete replay are still required above.
+            for key in ("runs_used", "provider_calls_used", "autonomous_workflows_used", "autonomous_provider_calls_used"):
+                if key in prior and (type(current.get(key)) is not int or current[key] < prior[key]):
+                    raise ValueError
+            if Decimal(current["actual_cost_usd"]) < Decimal(prior["actual_cost_usd"]):
+                raise ValueError
+            if (current["effective_max_runs"] < prior.get("effective_max_runs", 3)
+                    or prior.get("run_grant_sha256") is not None and prior["run_grant_sha256"] != grant_sha
+                    or prior.get("autonomous_policy_sha256") is not None and prior["autonomous_policy_sha256"] != policy_sha):
+                raise ValueError
+        # Reservations and unknown counts may decrease when retained requests
+        # settle. Their current validity is checked by WorkStore's full replay.
+    except (KeyError, TypeError, ValueError, InvalidOperation):
+        raise DemoError("The provider ledger rolled back behind a saved demo budget; no new allowance was opened.") from None
 
 
 def catalogue_snapshot(path, model):
@@ -177,7 +308,7 @@ def catalogue_snapshot(path, model):
     return raw
 
 
-def endpoint_snapshot(path, model):
+def endpoint_snapshot(path, model, *, autonomous=False):
     """Check actual routing capabilities, not only catalogue-level tool support."""
     raw = regular(path, 2_000_000)
     try:
@@ -186,27 +317,37 @@ def endpoint_snapshot(path, model):
         data = packet["response"]["data"]
         if not 0 <= age <= 86400 or packet["status"] != 200 or data["id"] != model["id"]:
             raise ValueError
-        required = {"tools", "tool_choice", "max_tokens"}
+        required = {"response_format", "structured_outputs", "max_tokens"} if autonomous else {"tools", "tool_choice", "max_tokens"}
+        if autonomous and not required.issubset(model["supported_parameters"]):
+            raise ValueError
         if "reasoning" in model["supported_parameters"]:
             required.add("reasoning")
         ceiling = {key: Decimal(str(model["pricing"][key])) for key in ("prompt", "completion")}
+        if autonomous:
+            ceiling["request"] = Decimal(str(model["pricing"].get("request", "0")))
+            for tier in model["pricing"].get("overrides", []):
+                if tier["min_prompt_tokens"] <= 64000:
+                    for key in ceiling:
+                        ceiling[key] = max(ceiling[key], Decimal(str(tier.get(key, ceiling[key]))))
         if any(not value.is_finite() or value < 0 for value in ceiling.values()):
             raise ValueError
         for endpoint in data["endpoints"]:
             if (type(endpoint.get("status")) is not int or endpoint["status"] != 0
-                    or endpoint.get("supports_tool_choice", {}).get("required") is not True
+                    or (not autonomous and endpoint.get("supports_tool_choice", {}).get("required") is not True)
                     or not required.issubset(endpoint.get("supported_parameters", []))):
                 continue
             prices = endpoint["pricing"]
+            if not {"prompt", "completion"}.issubset(prices):
+                continue
             applicable = [prices, *(tier for tier in prices.get("overrides", [])
-                                   if tier["min_prompt_tokens"] <= 24000)]
-            if all(all(Decimal(str(tier.get(key, prices[key]))).is_finite()
-                       and 0 <= Decimal(str(tier.get(key, prices[key]))) <= ceiling[key]
+                                   if tier["min_prompt_tokens"] <= (64000 if autonomous else 24000))]
+            if all(all(Decimal(str(tier.get(key, prices.get(key, "0")))).is_finite()
+                       and 0 <= Decimal(str(tier.get(key, prices.get(key, "0")))) <= ceiling[key]
                        for key in ceiling) for tier in applicable):
                 return raw
     except (KeyError, TypeError, ValueError, InvalidOperation):
         pass
-    raise DemoError("Use a recent endpoint snapshot with required tool calls and request parameters within the catalogue price ceiling.")
+    raise DemoError("Use a recent endpoint snapshot with the profile's required request parameters within the catalogue price ceiling.")
 
 
 def keychain_credential():
@@ -225,7 +366,7 @@ def keychain_credential():
     return key
 
 
-def child_environment(info, catalogue, model, credential):
+def child_environment(info, catalogue, model, credential, *, autonomous=False):
     # Do not inherit arbitrary provider/tracing/Python settings or an old
     # zero-credential receipt pointer. Only this child receives the credential.
     return {**info["env"], "CASEPATH_MODEL_MODE": "deterministic_reference",
@@ -237,7 +378,7 @@ def child_environment(info, catalogue, model, credential):
             "CASEPATH_AGENT_WORK_MODEL": model, "CASEPATH_AGENT_WORK_CATALOGUE": str(catalogue),
             "CASEPATH_AGENT_WORK_MAX_EXTERNAL_RUNS": "3", "CASEPATH_AGENT_WORK_MAX_PROVIDER_CALLS": "18",
             "CASEPATH_AGENT_WORK_TOTAL_COST_USD": "0.10", "CASEPATH_AGENT_WORK_RUN_COST_USD": "0.02",
-            "OPENROUTER_API_KEY": credential}
+            "OPENROUTER_API_KEY": credential, **({"CASEPATH_AUTONOMOUS_ENABLED": "1"} if autonomous else {})}
 
 
 class NoRedirect(HTTPRedirectHandler):
@@ -276,7 +417,31 @@ def verified_run_grant(grant):
         raise DemoError("The extra review allowance has no valid preserved approval receipt.") from None
 
 
-def readiness(info, model, request=local_json):
+def verified_autonomous_policy(policy):
+    """The mode activation changes workflow admission, never lifetime caps."""
+    try:
+        fields = {"contract", "base_policy_sha256", "prior_budget_sha256", "prior_budget", "actor", "reason",
+                  "idempotency_key", "activated_at", "max_calls_per_workflow", "workflow_cost_limit_usd", "policy_sha256"}
+        prior = policy["prior_budget"]
+        base_sha = sha(canonical(POLICY))
+        if (set(policy) != fields or policy["contract"] != "casepath.autonomous-budget-policy/1.0.0"
+                or policy["base_policy_sha256"] != base_sha or prior["base_policy_sha256"] != base_sha
+                or any(prior[k] != v for k, v in POLICY.items()) or "autonomous_policy" in prior
+                or prior["in_flight"] is not False
+                or policy["prior_budget_sha256"] != sha(canonical(prior))
+                or type(policy["max_calls_per_workflow"]) is not int or policy["max_calls_per_workflow"] != 2
+                or policy["workflow_cost_limit_usd"] != POLICY["run_cost_limit_usd"]
+                or datetime.fromisoformat(policy["activated_at"]).utcoffset() != timezone.utc.utcoffset(None)
+                or any(not isinstance(policy[k], str) or not policy[k].strip() or not policy[k].isprintable()
+                       for k in ("actor", "reason", "idempotency_key"))
+                or policy["policy_sha256"] != sha(canonical({k: v for k, v in policy.items() if k != "policy_sha256"}))):
+            raise ValueError
+        return policy["policy_sha256"]
+    except (KeyError, TypeError, ValueError):
+        raise DemoError("The autonomous profile has no valid preserved budget activation.") from None
+
+
+def readiness(info, model, request=local_json, *, autonomous=False):
     health = request("/healthz")
     deploy = request("/deployment.json")
     api = request("/deployment-health")
@@ -284,6 +449,17 @@ def readiness(info, model, request=local_json):
     caps = request("/api/agent-work/v1/capabilities")
     try:
         budget = caps["external_budget"]
+        auto = request("/api/claim-loops/v1/autonomous/status") if autonomous else None
+        if autonomous:
+            # This later projection may include work resumed since the earlier
+            # capability read. Compare immutable identities, not moving counts.
+            if (auto["enabled"] is not True or auto["provider_ready"] is not True
+                    or auto["policy_id"] != "casepath.autonomous-local/1.0.0"
+                    or auto["automatic_inference_retry"] is not False
+                    or any(auto["limits"][k] != budget[k] for k in POLICY)
+                    or auto["limits"]["base_policy_sha256"] != budget["base_policy_sha256"]):
+                raise DemoError("The autonomous service is unavailable or differs from the shared budget.")
+            budget = auto["limits"]
         if (any(value.get("source_commit") != info["head"] for value in (health, deploy, api))
                 or health.get("source_commit_aligned") is not True
                 or health.get("source_commit_conflict") is not False
@@ -321,8 +497,23 @@ def readiness(info, model, request=local_json):
         selected = {k: budget[k] for k in (*POLICY, "runs_used", "provider_calls_used", "actual_cost_usd",
                     "reserved_cost_usd", "remaining_cost_usd", "unknown_calls", "can_start", "reason")}
         selected.update(effective_max_runs=effective, run_grant_sha256=grant_sha)
-        return {"source_commit": info["head"], "model": model, "budget": selected,
-                "credential_configured": True, "automatic_provider_start": False}
+        result = {"source_commit": info["head"], "model": model, "budget": selected,
+                  "credential_configured": True, "automatic_provider_start": autonomous}
+        if autonomous:
+            config = auto["model"]
+            policy_sha = verified_autonomous_policy(budget["autonomous_policy"])
+            if (config["model"] != model or config["catalogue_entry_sha256"] != info["autonomous_catalogue_entry_sha256"]
+                    or config["protocol"] != "strict_json_schema" or config["adapter_version"] != "casepath.autonomous-model/1.0.0"
+                    or any(type(config[k]) is not int or config[k] != v for k, v in
+                           (("max_request_bytes", 64000), ("max_output_tokens", 3500), ("max_calls_per_workflow", 2)))
+                    or any(type(budget[k]) is not int or budget[k] < 0 for k in
+                           ("autonomous_workflows_used", "autonomous_provider_calls_used"))
+                    or type(budget["autonomous_can_start"]) is not bool or budget["autonomous_reason"] not in reasons - {"run_limit_reached"}):
+                raise DemoError("The autonomous model or usage bounds differ from the explicit profile.")
+            selected.update({k: budget[k] for k in ("autonomous_workflows_used", "autonomous_provider_calls_used", "autonomous_can_start", "autonomous_reason")})
+            selected["autonomous_policy_sha256"] = policy_sha
+            result["autonomous_model_sha256"] = sha(canonical(config))
+        return result
     except (KeyError, TypeError, ValueError, InvalidOperation) as exc:
         raise DemoError("The demo readiness projection is incomplete.") from exc
 
@@ -391,7 +582,7 @@ def grant_extra_run(repository, *, expected_budget_sha256, actor, reason, idempo
                 "provider_requests_started": 0}
 
 
-def serve(repository, catalogue, model, endpoints=None):
+def serve(repository, catalogue, model, endpoints=None, *, autonomous=False):
     runtime = repository / ".runtime/casepath-dev-v2"
     for directory in (repository / ".runtime", runtime):
         if directory.is_symlink() or not directory.is_dir():
@@ -403,7 +594,9 @@ def serve(repository, catalogue, model, endpoints=None):
         info = preflight(repository)
         catalogue_raw = catalogue_snapshot(catalogue, model)
         selected = next(row for row in json.loads(catalogue_raw)["catalogue"]["data"] if row["id"] == model)
-        endpoint_raw = endpoint_snapshot(endpoints or catalogue.with_name("endpoints.json"), selected)
+        endpoint_raw = endpoint_snapshot(endpoints or catalogue.with_name("endpoints.json"), selected, autonomous=autonomous)
+        if autonomous:
+            info["autonomous_catalogue_entry_sha256"] = sha(canonical(selected))
         demo_root = repository / ".runtime/casepath-openrouter-demo"
         private_directory(demo_root)
         launch_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid.uuid4().hex[:12]
@@ -417,7 +610,7 @@ def serve(repository, catalogue, model, endpoints=None):
         fd = os.open(endpoint_copy, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o444)
         with os.fdopen(fd, "wb") as stream:
             stream.write(endpoint_raw)
-        env = child_environment(info, snapshot, model, keychain_credential())
+        env = child_environment(info, snapshot, model, keychain_credential(), autonomous=autonomous)
         command = [str(info["python"]), "-I", "-B", "-P", "-m", "uvicorn", "casepath_api.app:app",
                    "--app-dir", str(info["capsule"] / "casepath-api"), "--fd", str(listener.fileno()),
                    "--host", "127.0.0.1", "--port", "4173", "--no-access-log", "--log-level", "warning"]
@@ -431,10 +624,13 @@ def serve(repository, catalogue, model, endpoints=None):
                    "normal_boot_file_sha256": info["normal_boot_file_sha256"],
                    "catalogue_file_sha256": sha(catalogue_raw), "endpoint_file_sha256": sha(endpoint_raw),
                    "url": "http://127.0.0.1:4173/",
-                   "profile": "manual_openrouter_facts_role", "model": model, "policy": POLICY,
+                   "profile": "bounded_autonomous_claims" if autonomous else "manual_openrouter_facts_role", "model": model, "policy": POLICY,
                    "credential_source": "macOS Keychain", "credential_names": ["OPENROUTER_API_KEY"],
                    "process": {"pid": child.pid, "argv": command, "workers": 1},
                    "normal_boot_history_modified": False, "provider_requests_started_by_launcher": 0}
+        if autonomous:
+            receipt.update(automatic_saved_work_resume=True,
+                           provider_start_scope="the server may resume saved workflows under the persistent budget")
         def stop_signal(_signal, _frame):
             raise KeyboardInterrupt
         prior_signals = {sig: signal.signal(sig, stop_signal) for sig in (signal.SIGINT, signal.SIGTERM)}
@@ -442,9 +638,9 @@ def serve(repository, catalogue, model, endpoints=None):
             observed = None
             for _ in range(240):
                 if child.poll() is not None:
-                    raise DemoError("The demo server exited before readiness; no provider run was started by the launcher.")
+                    raise DemoError("The demo server exited before readiness; inspect saved provider intents before restarting.")
                 try:
-                    observed = readiness(info, model)
+                    observed = readiness(info, model, autonomous=True) if autonomous else readiness(info, model)
                     break
                 except DemoError:
                     raise
@@ -460,7 +656,8 @@ def serve(repository, catalogue, model, endpoints=None):
                         cwd=repository, env=info["env"])
             write_receipt(launch / "ready.json", {**receipt, "ready_at_utc": datetime.now(timezone.utc).isoformat(),
                           "readiness": observed})
-            print(f"CasePath manual facts demo: http://127.0.0.1:4173/\nReceipt: {launch / 'ready.json'}", flush=True)
+            label = "autonomous claims" if autonomous else "manual facts"
+            print(f"CasePath {label} demo: http://127.0.0.1:4173/\nReceipt: {launch / 'ready.json'}", flush=True)
             child.wait()
             if child.returncode:
                 raise DemoError("The demo server stopped with an error; inspect saved work before retrying a run.")
@@ -470,7 +667,7 @@ def serve(repository, catalogue, model, endpoints=None):
             final = None
             if child.poll() is None:
                 try:
-                    final = readiness(info, model)
+                    final = readiness(info, model, autonomous=True) if autonomous else readiness(info, model)
                 except Exception:
                     pass
                 child.terminate()
@@ -491,6 +688,7 @@ def main(argv=None):
     parser.add_argument("--model", help="Exact concrete model ID from the local catalogue")
     parser.add_argument("--catalogue", type=Path, help="Locally acquired catalogue snapshot; no download occurs here")
     parser.add_argument("--endpoints", type=Path, help="Recent model endpoint snapshot; defaults to endpoints.json beside the catalogue")
+    parser.add_argument("--autonomous", action="store_true", help="Enable durable autonomous intake and resume under the original 18-call/$0.10 lifetime budget")
     parser.add_argument("--grant-one-extra-run", action="store_true", help="Record one explicitly approved extra review; no server or provider request starts")
     parser.add_argument("--expected-budget-sha256")
     parser.add_argument("--actor")
@@ -499,7 +697,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     grant_args = (args.expected_budget_sha256, args.actor, args.reason, args.idempotency_key)
     if args.grant_one_extra_run:
-        if not all(grant_args) or any((args.model, args.catalogue, args.endpoints)):
+        if not all(grant_args) or any((args.model, args.catalogue, args.endpoints, args.autonomous)):
             parser.error("An extra review requires its budget hash, actor, reason and idempotency key, without serving options.")
     elif not args.model or any(grant_args):
         parser.error("Choose a model to serve, or the separate explicit allowance operation.")
@@ -511,7 +709,8 @@ def main(argv=None):
                                      actor=args.actor, reason=args.reason, idempotency_key=args.idempotency_key)
             print(canonical(result).decode())
         else:
-            serve(repository, catalogue.absolute(), args.model, args.endpoints.absolute() if args.endpoints else None)
+            serve(repository, catalogue.absolute(), args.model, args.endpoints.absolute() if args.endpoints else None,
+                  **({"autonomous": True} if args.autonomous else {}))
     except DemoError as exc:
         print(f"CasePath demo: {exc}", file=sys.stderr)
         return 2

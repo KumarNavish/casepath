@@ -168,7 +168,7 @@ function packetContentMarkup(preview) {
  return '';
 }
 
-function sourceRecord(detail){return `<div class="cw-source-rail cp-source-rail" role="complementary" aria-label="Sources"><div class="cp-source-top"><h2>Sources</h2><a href="#" data-close-inspector>Close</a></div><div id="cwSourceRecord" class="cp-packet-browser">${packetLibrary(detail)}</div>
+function sourceRecord(detail){return `<div class="cw-source-rail cp-source-rail" role="complementary" aria-label="Sources"><div class="cp-source-top"><h2>Sources</h2><a href="#" data-close-inspector>Close</a></div><details id="cwSourceLibrary" class="cp-source-library"><summary id="cwSourceLibrarySummary">${detail.artifacts.length} original ${detail.artifacts.length===1?'source':'sources'}</summary><div id="cwSourceRecord" class="cp-packet-browser">${packetLibrary(detail)}</div></details>
 <section class="cp-source-inspector" id="cwSourceInspector" tabindex="-1"><div class="cp-source-heading"><h3 id="cwSourceHeading">Customer message</h3><button type="button" class="cw-text-button" data-source-reset hidden>Back to message</button></div><div id="cwSourceContent"><p class="cp-source-caption">As received from the customer</p><div class="cw-message cp-document" tabindex="0" role="region" aria-label="Original customer message text" lang="${h(detail.state.binding.language)}">${h(detail.message.body)}</div></div></section></div>`;}
 
 function sourceArtifactIndex(ref,detail){

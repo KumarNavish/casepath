@@ -1,12 +1,24 @@
 # CasePath
 
-CasePath turns source evidence into a working process, derives each step's document checklist, and preserves reviewed corrections for reuse.
+CasePath turns source evidence into an executable process, derives each step's facts and document requirements, and builds versioned knowledge for subsequent claims.
+
+## Autonomous workspace
+
+The default entry accepts a claim message and original supporting files. With the bounded inference profile enabled, CasePath acquires those files, interprets them against the admitted rules, independently verifies the findings, and executes available local assessments. Its process graph and document checklist read the same persisted state. Cited explanations open the exact source passages.
+
+Verified cases can qualify reusable evidence-reading recipes. Each version retains its provenance and regression results; subsequent claims reuse the procedure and still verify their own sources. Missing evidence or unavailable external capabilities produce an explicit deferral. The demo does not send correspondence, file proceedings or invent a settlement.
+
+See the [autonomous workspace guide](docs/product/AUTONOMOUS_WORKSPACE.md) and [fictional demonstration packets](docs/product/autonomous-demo/README.md). Normal `./bin/casepath dev` saves new packets and acquires their sources without provider calls; autonomous interpretation requires the explicitly enabled, budgeted profile described in the guide.
+
+## Review workspace
+
+The earlier review workflow remains available at `/?journey=review`. It preserves its human review and approval semantics.
 
 ![Agent-native claim overview with accountable ownership, a decision and its saved process](docs/product/screenshots/agent-native-overview-desktop.png)
 
 *A synthetic claim in Overview: an unsaved proposal beside the saved process and its documents. Recorded review details open on demand.*
 
-## See one claim
+### See one reviewed claim
 
 The **Desk** groups work by who acts next. Each row shows the handler's next decision, its reason, accountable owner and recorded review coverage. Open a claim, or use `#claim=clm_f69b1747447bc221` for the synthetic family-home example.
 

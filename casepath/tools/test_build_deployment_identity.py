@@ -67,6 +67,8 @@ def test_curated_static_build_has_exact_runtime_inventory(
     assert payload["alignment_eligible"] is False
     files, directories = static_site.inventory(output)
     expected_files = {
+        "assets/autonomous-demo-packets.json",
+        "assets/autonomous-workspace-v1.js", "assets/autonomous-workspace-v1.css", "assets/autonomous-entry-v1.js",
         "_headers", "index.html", "corpus.html", "method.html", "research.html",
         "release.json", "deployment.json",
         "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json",
@@ -88,7 +90,7 @@ def test_curated_static_build_has_exact_runtime_inventory(
     }
     assert files == static_site.PUBLIC_INVENTORY == expected_files
     assert directories == static_site.PUBLIC_DIRECTORIES == {"assets", "assets/fonts"}
-    assert len(files) == 33
+    assert len(files) == 37
     assert {"corpus.html", "assets/corpus.css", "assets/corpus.js", "assets/corpus-index.json"} <= files
     assert {"method.html", "assets/method-guide.css",
             "assets/method-guide-data.json"} <= files

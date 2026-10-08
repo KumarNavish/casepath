@@ -104,6 +104,22 @@ CREATE TABLE IF NOT EXISTS work_objects (
 );
 """
 
+# This ledger shares the original budget, but never rewrites historical permits.
+for _table, _keys in (("work_autonomous_policy", "singleton INTEGER PRIMARY KEY CHECK(singleton=1)"),
+                     ("work_autonomous_workflows", "workflow_id TEXT PRIMARY KEY"),
+                     ("work_autonomous_calls", "workflow_id TEXT NOT NULL, stage TEXT NOT NULL, PRIMARY KEY(workflow_id,stage)"),
+                     ("work_autonomous_outcomes", "workflow_id TEXT NOT NULL, stage TEXT NOT NULL, PRIMARY KEY(workflow_id,stage)"),
+                     ("work_autonomous_terminals", "workflow_id TEXT PRIMARY KEY")):
+    # Table constraints must follow the record columns.
+    _columns, _separator, _constraint = _keys.partition(", PRIMARY KEY")
+    SCHEMA += f"CREATE TABLE IF NOT EXISTS {_table} ({_columns}, record_json TEXT NOT NULL, record_sha256 TEXT NOT NULL{', PRIMARY KEY' + _constraint if _separator else ''});\n"
+    for _action in ("UPDATE", "DELETE"):
+        SCHEMA += f"CREATE TRIGGER IF NOT EXISTS {_table}_no_{_action.lower()} BEFORE {_action} ON {_table} BEGIN SELECT RAISE(ABORT,'autonomous records are immutable'); END;\n"
+    _match = "singleton=NEW.singleton" if _table.endswith("policy") else "workflow_id=NEW.workflow_id"
+    if _table.endswith(("calls", "outcomes")):
+        _match += " AND stage=NEW.stage"
+    SCHEMA += f"CREATE TRIGGER IF NOT EXISTS {_table}_no_replace BEFORE INSERT ON {_table} WHEN EXISTS(SELECT 1 FROM {_table} WHERE {_match}) BEGIN SELECT RAISE(ABORT,'autonomous records are immutable'); END;\n"
+
 
 class WorkStore:
     def __init__(self, path: Path):
@@ -302,11 +318,13 @@ class WorkStore:
         row = db.execute("SELECT * FROM work_external_budget WHERE singleton=1").fetchone()
         if row is None:
             self._external_run_grant(db, None)  # An orphaned allowance cannot become a permit.
+            self._autonomous_policy(db, None)
             return None
         policy = json.loads(row["policy_json"])
         if digest(policy) != row["policy_sha256"]:
             raise WorkStoreError("persisted demo budget identity differs")
         grant = self._external_run_grant(db, policy)
+        autonomous_policy = self._autonomous_policy(db, policy)
         effective_max_runs = policy["max_runs"] + (grant["additional_runs"] if grant else 0)
         runs, calls, pending = usage or self._external_usage(db)
         granted_runs = [r for r in runs.values() if r["grant_sha256"] is not None]
@@ -314,8 +332,11 @@ class WorkStore:
                 or len(runs) > policy["max_runs"] and not granted_runs
                 or any(not grant or r["grant_sha256"] != grant["grant_sha256"] for r in granted_runs)):
             raise WorkStoreError("external run grant does not bind the admitted allowance")
+        autonomous = self._autonomous_usage(db, autonomous_policy)
+        calls = [*calls, *autonomous["calls"]]
+        pending = pending or autonomous["pending"]
         actual = sum((c["cost"] for c in calls if c["cost"] is not None), Decimal(0))
-        reserved = sum((c["reserved"] for c in calls if c["cost"] is None), Decimal(0))
+        reserved = sum((c["reserved"] for c in calls if c["cost"] is None), Decimal(0)) + autonomous["unspent_reserved"]
         for record in runs.values():
             if record["run"]["status"] in ACTIVE:
                 config = record["run"]["request"].get("worker_config") or {}
@@ -328,11 +349,342 @@ class WorkStore:
                   "run_limit_reached" if len(runs) >= effective_max_runs else
                   "call_limit_reached" if len(calls) >= policy["max_provider_calls"] else
                   "cost_limit_reached" if available < self._money(policy["run_cost_limit_usd"]) else None)
-        return {"scope": "persistent_local_demo", **policy, "runs_used": len(runs), "provider_calls_used": len(calls),
+        result = {"scope": "persistent_local_demo", **policy, "runs_used": len(runs), "provider_calls_used": len(calls),
                 "base_policy_sha256": row["policy_sha256"], "effective_max_runs": effective_max_runs, "run_grant": grant,
                 "actual_cost_usd": str(actual), "reserved_cost_usd": str(reserved), "remaining_cost_usd": str(available),
                 "unknown_calls": sum(c["cost"] is None for c in calls), "in_flight": pending,
                 "can_start": reason is None, "reason": reason, "automatic_retry": False}
+        if autonomous_policy:
+            auto_reason = ("provider_cost_bound_exceeded" if exceeded else "provider_outcome_pending" if pending else
+                           "call_limit_reached" if len(calls) + 2 > policy["max_provider_calls"] else
+                           "cost_limit_reached" if available < self._money(autonomous_policy["workflow_cost_limit_usd"]) else None)
+            result.update(autonomous_policy=autonomous_policy, autonomous_workflows_used=len(autonomous["workflows"]),
+                          autonomous_provider_calls_used=len(autonomous["calls"]),
+                          autonomous_can_start=auto_reason is None, autonomous_reason=auto_reason)
+        return result
+
+    @staticmethod
+    def _autonomous_decode(row, field):
+        if row is None:
+            return None
+        try:
+            value = json.loads(row["record_json"])
+            material = {k: v for k, v in value.items() if k != field}
+            if (value[field] != row["record_sha256"] or digest(material) != value[field]
+                    or canonical(value).decode() != row["record_json"]):
+                raise ValueError
+            return value
+        except (ValueError, KeyError, TypeError, AttributeError) as exc:
+            raise WorkStoreError("autonomous record identity is invalid") from exc
+
+    @staticmethod
+    def _autonomous_insert(db, table, keys, material, field):
+        record = {**material, field: digest(material)}
+        names = [*keys, "record_json", "record_sha256"]
+        db.execute(f"INSERT INTO {table} ({','.join(names)}) VALUES({','.join('?' for _ in names)})",
+                   (*keys.values(), canonical(record).decode(), record[field]))
+        return record
+
+    @staticmethod
+    def _autonomous_hash(value):
+        return isinstance(value, str) and len(value) == 64 and all(c in "0123456789abcdef" for c in value)
+
+    @staticmethod
+    def _autonomous_time(value):
+        return isinstance(value, str) and datetime.fromisoformat(value).utcoffset() == timezone.utc.utcoffset(None)
+
+    def _autonomous_inputs(self, identity, config):
+        """The same bounds apply at admission and after a process reload."""
+        try:
+            if not isinstance(identity, dict) or len(canonical(identity)) > 8000 or not isinstance(config, dict):
+                raise ValueError
+            for key in ("workflow_id", "claim_id"):
+                value = identity.get(key)
+                if not isinstance(value, str) or not 1 <= len(value) <= 180 or value != value.strip() or not value.isprintable():
+                    raise ValueError
+            if (type(config["max_request_bytes"]) is not int or not 1 <= config["max_request_bytes"] <= 64000
+                    or type(config["max_output_tokens"]) is not int or not 1 <= config["max_output_tokens"] <= 3500
+                    or config["max_calls_per_workflow"] != 2 or type(config["max_calls_per_workflow"]) is not int
+                    or type(config["context_length"]) is not int or config["context_length"] < 8192
+                    or config["protocol"] != "strict_json_schema" or config["adapter_version"] != "casepath.autonomous-model/1.0.0"
+                    or not self._autonomous_hash(config["catalogue_entry_sha256"])
+                    or not isinstance(config["model"], str) or not 3 <= len(config["model"]) <= 181
+                    or config["model"].startswith("openrouter/")
+                    or type(config["reasoning_supported"]) is not bool or type(config["free"]) is not bool
+                    or type(config["timeout_seconds"]) not in (int, float) or not 1 <= config["timeout_seconds"] <= 60):
+                raise ValueError
+            prices = [self._money(config[k]) for k in ("prompt_price", "completion_price", "request_price")]
+            if config["free"] != all(p == 0 for p in prices):
+                raise ValueError
+            canonical(config)
+        except (KeyError, TypeError, ValueError, AttributeError) as exc:
+            raise WorkStoreError("autonomous identity or frozen provider bounds are invalid") from exc
+
+    def _autonomous_policy(self, db, base):
+        value = self._autonomous_decode(db.execute("SELECT * FROM work_autonomous_policy WHERE singleton=1").fetchone(), "policy_sha256")
+        if value is None:
+            if any(db.execute(f"SELECT 1 FROM {table} LIMIT 1").fetchone() for table in
+                   ("work_autonomous_workflows", "work_autonomous_calls", "work_autonomous_outcomes", "work_autonomous_terminals")):
+                raise WorkStoreError("autonomous work has no sealed policy")
+            return None
+        try:
+            prior = value["prior_budget"]
+            self._validate_grant_command(value["prior_budget_sha256"], value["actor"], value["reason"], value["idempotency_key"])
+            if (set(value) != {"contract", "base_policy_sha256", "prior_budget_sha256", "prior_budget", "actor", "reason",
+                               "idempotency_key", "activated_at", "max_calls_per_workflow", "workflow_cost_limit_usd", "policy_sha256"}
+                    or value["contract"] != "casepath.autonomous-budget-policy/1.0.0" or base is None
+                    or value["base_policy_sha256"] != digest(base)
+                    or prior["base_policy_sha256"] != digest(base) or digest(prior) != value["prior_budget_sha256"]
+                    or any(prior[k] != v for k, v in base.items()) or "autonomous_policy" in prior
+                    or type(value["max_calls_per_workflow"]) is not int or value["max_calls_per_workflow"] != 2
+                    or value["workflow_cost_limit_usd"] != base["run_cost_limit_usd"]
+                    or self._money(value["workflow_cost_limit_usd"]) > Decimal("0.02")
+                    or prior["in_flight"] is not False
+                    or datetime.fromisoformat(value["activated_at"]).utcoffset() != timezone.utc.utcoffset(None)):
+                raise ValueError
+        except (KeyError, TypeError, ValueError, AttributeError) as exc:
+            raise WorkStoreError("autonomous policy does not preserve the original budget") from exc
+        return value
+
+    def activate_autonomous_policy(self, expected_budget_sha256, actor, reason, idempotency_key):
+        """One durable mode activation; no inference, per-run grant or budget reset."""
+        self._validate_grant_command(expected_budget_sha256, actor, reason, idempotency_key)
+        with self.transaction() as db:
+            budget = self._external_budget(db)
+            if budget is None:
+                raise WorkStoreError("the existing external budget is required")
+            prior = budget.get("autonomous_policy")
+            if prior:
+                if (prior["prior_budget_sha256"], prior["actor"], prior["reason"], prior["idempotency_key"]) != (
+                        expected_budget_sha256, actor, reason, idempotency_key):
+                    raise ConflictError("autonomous policy already binds a different activation")
+                return prior
+            if digest(budget) != expected_budget_sha256:
+                raise ConflictError("the expected external budget changed")
+            active = db.execute("SELECT 1 FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits) "
+                                "AND status IN ('queued','running','interrupted') LIMIT 1").fetchone()
+            if budget["in_flight"] or active:
+                raise ConflictError("active provider work must settle before policy activation")
+            return self._autonomous_insert(db, "work_autonomous_policy", {"singleton": 1}, {
+                "contract": "casepath.autonomous-budget-policy/1.0.0", "base_policy_sha256": budget["base_policy_sha256"],
+                "prior_budget_sha256": expected_budget_sha256, "prior_budget": budget, "actor": actor, "reason": reason,
+                "idempotency_key": idempotency_key, "activated_at": utcnow(), "max_calls_per_workflow": 2,
+                "workflow_cost_limit_usd": budget["run_cost_limit_usd"]}, "policy_sha256")
+
+    def _autonomous_usage(self, db, policy):
+        workflows, calls, pending, unused = {}, [], False, Decimal(0)
+        if policy is None:
+            return {"workflows": workflows, "calls": calls, "pending": pending, "unspent_reserved": unused}
+        try:
+            for row in db.execute("SELECT * FROM work_autonomous_workflows ORDER BY workflow_id"):
+                work = self._autonomous_decode(row, "workflow_sha256")
+                self._autonomous_inputs(work["identity"], work["config"])
+                if (work["workflow_id"] != row["workflow_id"] or work["identity"]["workflow_id"] != row["workflow_id"]
+                        or work["identity_sha256"] != digest(work["identity"]) or work["config_sha256"] != digest(work["config"])
+                        or work["policy_sha256"] != policy["policy_sha256"] or work["contract"] != "casepath.autonomous-workflow/1.0.0"
+                        or not self._autonomous_time(work["created_at"])):
+                    raise ValueError
+                workflows[row["workflow_id"]] = {"record": work, "calls": {}, "terminal": None}
+            for row in db.execute("SELECT * FROM work_autonomous_calls ORDER BY workflow_id,stage"):
+                intent = self._autonomous_decode(row, "intent_sha256")
+                work = workflows[row["workflow_id"]]
+                cfg = work["record"]["config"]
+                maximum = self._money(cfg["prompt_price"]) * intent["request_bytes"] + self._money(cfg["completion_price"]) * cfg["max_output_tokens"] + self._money(cfg["request_price"])
+                if (row["stage"] not in {"interpret", "verify"} or intent["stage"] != row["stage"]
+                        or intent["workflow_id"] != row["workflow_id"] or intent["workflow_sha256"] != work["record"]["workflow_sha256"]
+                        or intent["maximum_cost_usd"] != str(maximum) or type(intent["request_bytes"]) is not int
+                        or not 0 < intent["request_bytes"] <= cfg["max_request_bytes"]
+                        or intent["request_bytes"] + cfg["max_output_tokens"] > cfg["context_length"]
+                        or any(not self._autonomous_hash(intent[k]) for k in ("request_sha256", "context_sha256", "schema_sha256"))
+                        or (intent["proposal_sha256"] is not None if row["stage"] == "interpret" else not self._autonomous_hash(intent["proposal_sha256"]))
+                        or not self._autonomous_time(intent["started_at"])
+                        or intent["contract"] != "casepath.autonomous-provider-intent/1.0.0"):
+                    raise ValueError
+                work["calls"][row["stage"]] = {"intent": intent, "outcome": None, "cost": None, "reserved": maximum}
+            for row in db.execute("SELECT * FROM work_autonomous_outcomes ORDER BY workflow_id,stage"):
+                outcome = self._autonomous_decode(row, "receipt_sha256")
+                call = workflows[row["workflow_id"]]["calls"][row["stage"]]
+                intent = call["intent"]
+                if (outcome["workflow_id"] != row["workflow_id"] or outcome["stage"] != row["stage"]
+                        or outcome["intent_sha256"] != intent["intent_sha256"]
+                        or outcome["policy_sha256"] != policy["policy_sha256"]
+                        or outcome["model"] != workflows[row["workflow_id"]]["record"]["config"]["model"]
+                        or outcome["maximum_cost_usd"] != intent["maximum_cost_usd"]
+                        or any(outcome[k] != intent[k] for k in ("request_sha256", "context_sha256", "schema_sha256"))
+                        or outcome["result_sha256"] != (digest(outcome["result"]) if outcome["result"] is not None else None)
+                        or outcome["status"] not in {"completed", "rejected", "unknown"}
+                        or (outcome["status"] == "completed") != isinstance(outcome["result"], dict)
+                        or (outcome["status"] != "completed" and outcome["result"] is not None)
+                        or not isinstance(outcome["metadata"], dict) or not self._autonomous_time(outcome["recorded_at"])
+                        or outcome["contract"] != "casepath.autonomous-provider-result/1.0.0"):
+                    raise ValueError
+                call["outcome"] = outcome
+                call["cost"] = self._money(outcome["cost_usd"]) if outcome["cost_usd"] is not None else None
+            for row in db.execute("SELECT * FROM work_autonomous_terminals ORDER BY workflow_id"):
+                terminal = self._autonomous_decode(row, "terminal_sha256")
+                work = workflows[row["workflow_id"]]
+                last = work["calls"].get("verify", work["calls"].get("interpret", {})).get("outcome")
+                abandoned = terminal["status"] == "abandoned"
+                if (terminal["workflow_id"] != row["workflow_id"] or terminal["workflow_sha256"] != work["record"]["workflow_sha256"]
+                        or terminal["contract"] != "casepath.autonomous-workflow-terminal/1.0.0" or not last
+                        or terminal["receipt_sha256"] != last["receipt_sha256"]
+                        or (not abandoned and (terminal["status"] != last["status"] or last["stage"] == "interpret" and last["status"] == "completed"))
+                        or (abandoned and (last["stage"] != "interpret" or last["status"] != "completed"
+                                           or terminal["reason"] not in {"superseded_or_paused", "execution_deferred"}))
+                        or not self._autonomous_time(terminal["recorded_at"])):
+                    raise ValueError
+                work["terminal"] = terminal
+            for work in workflows.values():
+                own = list(work["calls"].values())
+                if not own or len(own) > policy["max_calls_per_workflow"]:
+                    raise ValueError
+                if "verify" in work["calls"]:
+                    prior = work["calls"].get("interpret", {}).get("outcome")
+                    verify = work["calls"]["verify"]["intent"]
+                    if not prior or prior["status"] != "completed" or verify["proposal_sha256"] != prior["result_sha256"] or verify["context_sha256"] != prior["context_sha256"]:
+                        raise ValueError
+                last = work["calls"].get("verify", work["calls"].get("interpret", {})).get("outcome")
+                terminal_expected = last is not None and (last["stage"] == "verify" or last["status"] != "completed"
+                                                          or (work["terminal"] or {}).get("status") == "abandoned")
+                if terminal_expected != (work["terminal"] is not None):
+                    raise ValueError
+                committed = sum((c["cost"] if c["cost"] is not None else c["reserved"] for c in own), Decimal(0))
+                if work["terminal"] is None:
+                    unused += max(Decimal(0), self._money(policy["workflow_cost_limit_usd"]) - committed)
+                pending = pending or any(c["outcome"] is None or c["outcome"]["status"] == "unknown" for c in own)
+                calls.extend(own)
+        except (KeyError, TypeError, ValueError, AttributeError) as exc:
+            raise WorkStoreError("autonomous provider ledger is invalid") from exc
+        return {"workflows": workflows, "calls": calls, "pending": pending, "unspent_reserved": unused}
+
+    def begin_autonomous_call(self, stage, identity, config, *, request_sha256, request_bytes, context_sha256, schema_sha256, proposal_sha256=None, allow_send=True):
+        """Reserve before send, or return the exact persisted outcome without send."""
+        self._autonomous_inputs(identity, config)
+        if stage not in {"interpret", "verify"} or type(allow_send) is not bool:
+            raise WorkStoreError("invalid autonomous call identity")
+        for value in (request_sha256, context_sha256, schema_sha256, *([proposal_sha256] if stage == "verify" else [])):
+            if not self._autonomous_hash(value):
+                raise WorkStoreError("invalid autonomous input hash")
+        if (type(request_bytes) is not int or not 0 < request_bytes <= config["max_request_bytes"]
+                or request_bytes + config["max_output_tokens"] > config["context_length"]
+                or (stage == "interpret" and proposal_sha256 is not None)):
+            raise WorkStoreError("autonomous provider bounds are invalid")
+        maximum = self._money(config["prompt_price"]) * request_bytes + self._money(config["completion_price"]) * config["max_output_tokens"] + self._money(config["request_price"])
+        workflow_id = identity["workflow_id"]
+        command = {"stage": stage, "workflow_id": workflow_id, "request_sha256": request_sha256, "request_bytes": request_bytes,
+                   "context_sha256": context_sha256, "schema_sha256": schema_sha256, "proposal_sha256": proposal_sha256}
+        with self.transaction() as db:
+            budget = self._external_budget(db)
+            policy = (budget or {}).get("autonomous_policy")
+            if policy is None:
+                raise WorkStoreError("an explicitly activated autonomous budget policy is required")
+            usage = self._autonomous_usage(db, policy)
+            work = usage["workflows"].get(workflow_id)
+            if work:
+                if work["record"]["identity"] != identity or work["record"]["config"] != config:
+                    raise ConflictError("workflow identity or frozen model configuration changed")
+                prior = work["calls"].get(stage)
+                if prior:
+                    if any(prior["intent"][k] != v for k, v in command.items()):
+                        raise ConflictError("this autonomous stage already binds different input")
+                    if prior["outcome"] is None:
+                        raise ReconciliationRequired("the provider intent has no confirmed outcome; it cannot be resent")
+                    return {"result": prior["outcome"]["result"], "receipt": prior["outcome"]}
+                if work["terminal"]:
+                    raise ConflictError("the autonomous workflow already ended")
+            elif stage != "interpret":
+                raise ConflictError("verification requires a persisted interpretation")
+            if not allow_send:
+                raise ConflictError("the autonomous provider profile is not explicitly enabled; no request was reserved")
+            if budget["in_flight"]:
+                raise ConflictError("another provider outcome is pending; no concurrent inference")
+            if budget["reason"] == "provider_cost_bound_exceeded" or budget["provider_calls_used"] >= budget["max_provider_calls"]:
+                raise ConflictError("the shared provider budget is exhausted")
+            if work is None:
+                if not budget["autonomous_can_start"]:
+                    raise ConflictError("autonomous budget unavailable: " + budget["autonomous_reason"])
+                record = self._autonomous_insert(db, "work_autonomous_workflows", {"workflow_id": workflow_id}, {
+                    "contract": "casepath.autonomous-workflow/1.0.0", "workflow_id": workflow_id, "identity": identity,
+                    "identity_sha256": digest(identity), "config": config, "config_sha256": digest(config),
+                    "policy_sha256": policy["policy_sha256"], "created_at": utcnow()}, "workflow_sha256")
+                work = {"record": record, "calls": {}}
+            if stage == "verify":
+                prior = work["calls"].get("interpret", {}).get("outcome")
+                if not prior or prior["status"] != "completed" or prior["result_sha256"] != proposal_sha256 or prior["context_sha256"] != context_sha256:
+                    raise ConflictError("verification must bind the exact saved interpretation and original context")
+            committed = sum((c["cost"] if c["cost"] is not None else c["reserved"] for c in work["calls"].values()), Decimal(0))
+            if committed + maximum > self._money(policy["workflow_cost_limit_usd"]):
+                raise ConflictError("the autonomous workflow cost ceiling is exhausted")
+            intent = self._autonomous_insert(db, "work_autonomous_calls", {"workflow_id": workflow_id, "stage": stage}, {
+                "contract": "casepath.autonomous-provider-intent/1.0.0", **command,
+                "workflow_sha256": work["record"]["workflow_sha256"], "maximum_cost_usd": str(maximum), "started_at": utcnow()}, "intent_sha256")
+            return {"intent": intent, "policy_sha256": policy["policy_sha256"]}
+
+    def complete_autonomous_call(self, workflow_id, stage, *, intent_sha256, status, result, cost_usd, metadata):
+        """Persist the typed outcome before any controller can apply it."""
+        if (status not in {"completed", "rejected", "unknown"} or (status == "completed") != isinstance(result, dict)
+                or (status != "completed" and result is not None) or not isinstance(metadata, dict)):
+            raise WorkStoreError("invalid autonomous provider outcome")
+        if len(canonical({"result": result, "metadata": metadata})) > 128000:
+            raise WorkStoreError("autonomous result exceeds its persistence bound")
+        cost = str(self._money(cost_usd)) if cost_usd is not None else None
+        with self.transaction() as db:
+            budget = self._external_budget(db)
+            policy = (budget or {}).get("autonomous_policy")
+            if policy is None:
+                raise WorkStoreError("autonomous policy is unavailable")
+            usage = self._autonomous_usage(db, policy)
+            try:
+                work = usage["workflows"][workflow_id]
+                call = work["calls"][stage]
+            except KeyError as exc:
+                raise WorkStoreError("autonomous provider intent is absent") from exc
+            intent = call["intent"]
+            if intent["intent_sha256"] != intent_sha256:
+                raise ConflictError("autonomous outcome binds a different intent")
+            material = {"contract": "casepath.autonomous-provider-result/1.0.0", "workflow_id": workflow_id, "stage": stage,
+                "intent_sha256": intent_sha256, "policy_sha256": policy["policy_sha256"], "model": work["record"]["config"]["model"],
+                **{k: intent[k] for k in ("request_sha256", "context_sha256", "schema_sha256")},
+                "status": status, "result": result, "result_sha256": digest(result) if result is not None else None,
+                "cost_usd": cost, "maximum_cost_usd": intent["maximum_cost_usd"], "metadata": metadata}
+            if call["outcome"]:
+                if any(call["outcome"][k] != v for k, v in material.items()):
+                    raise ConflictError("autonomous provider outcome cannot be replaced")
+                return {"result": call["outcome"]["result"], "receipt": call["outcome"]}
+            receipt = self._autonomous_insert(db, "work_autonomous_outcomes", {"workflow_id": workflow_id, "stage": stage},
+                {**material, "recorded_at": utcnow()}, "receipt_sha256")
+            if stage == "verify" or status != "completed":
+                self._autonomous_insert(db, "work_autonomous_terminals", {"workflow_id": workflow_id}, {
+                    "contract": "casepath.autonomous-workflow-terminal/1.0.0", "workflow_id": workflow_id,
+                    "workflow_sha256": work["record"]["workflow_sha256"], "receipt_sha256": receipt["receipt_sha256"],
+                    "status": status, "recorded_at": utcnow()}, "terminal_sha256")
+            return {"result": result, "receipt": receipt}
+
+    def close_autonomous_workflow(self, workflow_id, reason):
+        """Release only unsent work; retain every physical call and its cost."""
+        if reason not in {"superseded_or_paused", "execution_deferred"}:
+            raise WorkStoreError("invalid autonomous close reason")
+        with self.transaction() as db:
+            budget = self._external_budget(db)
+            policy = (budget or {}).get("autonomous_policy")
+            if policy is None:
+                return None
+            work = self._autonomous_usage(db, policy)["workflows"].get(workflow_id)
+            if work is None:
+                return None
+            if work["terminal"]:
+                return work["terminal"]
+            # An uncertain physical attempt is never treated as unused work.
+            # Its original reservation and no-resend requirement remain intact.
+            if "verify" in work["calls"]:
+                return None
+            prior = work["calls"].get("interpret", {}).get("outcome")
+            if not prior or prior["status"] != "completed":
+                return None
+            return self._autonomous_insert(db, "work_autonomous_terminals", {"workflow_id": workflow_id}, {
+                "contract": "casepath.autonomous-workflow-terminal/1.0.0", "workflow_id": workflow_id,
+                "workflow_sha256": work["record"]["workflow_sha256"], "receipt_sha256": prior["receipt_sha256"],
+                "status": "abandoned", "reason": reason, "recorded_at": utcnow()}, "terminal_sha256")
 
     def external_budget(self):
         with self.connect() as db:
@@ -368,7 +720,7 @@ class WorkStore:
             if len(run_calls) >= cfg["max_requests"] or committed + maximum > self._money(cfg["cost_limit_usd"]):
                 raise ConflictError("the per-run provider budget is exhausted")
             budget = self._external_budget(db, usage)
-            if budget and (len(calls) >= budget["max_provider_calls"] or
+            if budget and (budget["provider_calls_used"] >= budget["max_provider_calls"] or budget["in_flight"] or
                            budget["reason"] == "provider_cost_bound_exceeded"):
                 raise ConflictError("the aggregate provider call or cost budget is exhausted")
             request_hash = digest({"tool": "provider_request", "arguments": {"sha256": request_sha256}})

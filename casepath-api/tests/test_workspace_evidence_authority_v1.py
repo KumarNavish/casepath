@@ -1328,7 +1328,10 @@ def test_all_generic_surfaces_reject_workspace_session_with_zero_mutation(
             (
                 str(route.path).startswith("/api/claim-loops/v1")
                 and not str(route.path).startswith(
-                    "/api/claim-loops/v1/workspace"
+                    (
+                        "/api/claim-loops/v1/workspace",
+                        "/api/claim-loops/v1/autonomous",
+                    )
                 )
             )
             or str(route.path)
@@ -1356,6 +1359,61 @@ def test_all_generic_surfaces_reject_workspace_session_with_zero_mutation(
     assert [response.status_code for response in responses] == [409] * len(responses)
     assert _database_dump(storage) == mutation_before
     assert _file_tree_snapshot(facade.adapter.root) == authority_before
+
+
+def test_autonomous_surface_cannot_redirect_into_workspace_namespace(tmp_path: Path) -> None:
+    from casepath_api.autonomous_api_v1 import create_autonomous_router
+    from casepath_api.autonomous_store_v1 import AutonomousStore, SESSION_ID
+
+    workspace, facade = _system(tmp_path)
+    claim_id, view = _started_loop(workspace, facade)
+    storage = facade.claim_loop.storage
+    store = AutonomousStore(storage)
+    submitted = []
+    service = SimpleNamespace(store=store, submit=submitted.append)
+    app = FastAPI()
+    app.include_router(create_autonomous_router(lambda: service))
+    client = TestClient(app)
+    prefix = "/api/claim-loops/v1/autonomous"
+    headers = {
+        "X-CasePath-Agent-Work": "1",
+        "X-CasePath-Session": WORKSPACE_CLAIM_LOOP_SESSION_ID,
+    }
+    command = {
+        "idempotency_key": "autonomous.foreign-workspace.0001",
+        "expected_revision": view["loop_state"]["revision"],
+        "expected_state_sha256": view["loop_state"]["state_sha256"],
+    }
+    file = {"file_name": "evidence.txt", "media_type": "text/plain", "content_base64": "ZXZpZGVuY2U="}
+    before = _database_dump(storage)
+    evidence_before = _file_tree_snapshot(facade.adapter.root)
+    sources_before = _file_tree_snapshot(store.source_root)
+    for path in (f"/claims/{claim_id}", f"/claims/{claim_id}/events",
+                 f"/sources/{claim_id}/artifact.legacy", f"/sources/{claim_id}/artifact.legacy/text"):
+        assert client.get(prefix + path, headers=headers).status_code == 409
+    for suffix, body in (("pause", command), ("resume", command), ("sources", {**command, "files": [file]})):
+        assert client.post(f"{prefix}/claims/{claim_id}/{suffix}", json=body, headers=headers).status_code == 409
+    packet = {"title": "New incoming case", "message": "A fictional new claim.", "files": [],
+              "idempotency_key": "autonomous.intake.namespace.0001"}
+    assert client.post(prefix + "/claims", json={**packet, "session_id": WORKSPACE_CLAIM_LOOP_SESSION_ID},
+                       headers=headers).status_code == 422
+    assert _database_dump(storage) == before
+    assert _file_tree_snapshot(facade.adapter.root) == evidence_before
+    assert _file_tree_snapshot(store.source_root) == sources_before
+    assert submitted == []
+
+    with sqlite3.connect(storage.path) as connection:
+        legacy_before = connection.execute("SELECT * FROM claim_loop_events ORDER BY session_id,loop_id,sequence").fetchall()
+    result = client.post(prefix + "/claims", json=packet, headers=headers)
+    assert result.status_code == 202
+    incoming_id = result.json()["claim_id"]
+    assert incoming_id != claim_id and submitted == [incoming_id]
+    with sqlite3.connect(storage.path) as connection:
+        assert connection.execute("SELECT * FROM claim_loop_events WHERE session_id != ? ORDER BY session_id,loop_id,sequence",
+                                  (SESSION_ID,)).fetchall() == legacy_before
+        assert connection.execute("SELECT session_id,loop_id FROM claim_loop_events WHERE session_id=?",
+                                  (SESSION_ID,)).fetchall() == [(SESSION_ID, "autonomous." + incoming_id)]
+    assert _file_tree_snapshot(facade.adapter.root) == evidence_before
 
 
 def _run_admitted_source_variant(root: Path, source_text: str) -> dict[str, Any]:

@@ -124,6 +124,16 @@ EVENT_KEYS = {
     "resulting_state_sha256",
 }
 DELEGATE_EVENT_CONTRACT = "casepath.agent-delegate-event/1.0.0"
+AUTONOMOUS_EVENT_CONTRACT = "casepath.autonomous-event/1.0.0"
+AUTONOMOUS_SESSION_ID = "casepath-autonomous-local-v1"
+AUTONOMOUS_EVENT_KEYS = (EVENT_KEYS - {"loop_id", "event_type", "command"}) | {
+    "claim_id", "kind", "payload", "expected_revision", "expected_state_sha256",
+}
+AUTONOMOUS_EVENT_TYPES = {
+    "intake", "work.started", "work.phase", "work.context", "work.resumed", "sources.arrived", "sources.acquired",
+    "process.prepared", "interpretation.accepted", "action.completed", "outcome.recorded",
+    "knowledge.used", "knowledge.published", "work.deferred",
+}
 EVENT_TYPES = {
     "casepath.claim-loop-event/1.0.0": {
         "LOOP_CREATED",
@@ -2093,23 +2103,41 @@ def validate_event_journal(connection: sqlite3.Connection) -> list[dict[str, obj
     rows: list[dict[str, object]] = []
     previous_by_loop: dict[tuple[str, str], str] = {}
     sequence_by_loop: dict[tuple[str, str], int] = {}
+    state_by_loop: dict[tuple[str, str], str] = {}
     idempotency_keys: set[tuple[str, str, str]] = set()
     event_hashes: set[tuple[str, str, str]] = set()
     query = """SELECT session_id,loop_id,sequence,idempotency_key,
         command_sha256,event_sha256,event_json,created_at
         FROM claim_loop_events ORDER BY session_id,loop_id,sequence"""
     for row in connection.execute(query):
-        event = require_keys(
-            parse_json(row[6].encode("utf-8"), "durable journal event"),
-            EVENT_KEYS,
-            "durable journal event",
-        )
+        event = parse_json(row[6].encode("utf-8"), "durable journal event")
+        autonomous = isinstance(event, dict) and event.get("contract") == AUTONOMOUS_EVENT_CONTRACT
+        event = require_keys(event, AUTONOMOUS_EVENT_KEYS if autonomous else EVENT_KEYS, "durable journal event")
         session_id, loop_id, sequence, idempotency_key = row[:4]
         loop_key = (session_id, loop_id)
         expected_sequence = sequence_by_loop.get(loop_key, 0) + 1
         expected_previous = previous_by_loop.get(loop_key)
         contract = event["contract"]
-        command = event["command"]
+        if autonomous:
+            command = {key: event[key] for key in ("kind", "payload", "expected_revision", "expected_state_sha256")}
+            bound_loop_id = "autonomous." + event["claim_id"] if isinstance(event["claim_id"], str) else None
+            valid_type = isinstance(event["kind"], str) and event["kind"] in AUTONOMOUS_EVENT_TYPES
+            if (session_id != AUTONOMOUS_SESSION_ID or loop_id != bound_loop_id
+                    or not isinstance(event["claim_id"], str)
+                    or re.fullmatch(r"[A-Za-z0-9_.:-]{1,180}", event["claim_id"]) is None
+                    or not isinstance(event["payload"], dict)
+                    or type(sequence) is not int
+                    or type(event["sequence"]) is not int
+                    or type(event["expected_revision"]) is not int or event["expected_revision"] != sequence - 1
+                    or event["expected_state_sha256"] != state_by_loop.get(loop_key)
+                    or (sequence == 1) != (event["kind"] == "intake")):
+                raise HistoryError("durable journal event chain is invalid")
+        else:
+            command = event["command"]
+            bound_loop_id = event["loop_id"]
+            valid_type = contract in EVENT_TYPES and event["event_type"] in EVENT_TYPES[contract]
+            if session_id == AUTONOMOUS_SESSION_ID or isinstance(loop_id, str) and loop_id.startswith("autonomous."):
+                raise HistoryError("durable journal event chain is invalid")
         event_material = {
             key: value
             for key, value in event.items()
@@ -2127,8 +2155,7 @@ def validate_event_journal(connection: sqlite3.Connection) -> list[dict[str, obj
             or sequence != expected_sequence
             or not isinstance(idempotency_key, str)
             or not idempotency_key
-            or contract not in EVENT_TYPES
-            or event["event_type"] not in EVENT_TYPES[contract]
+            or not valid_type
             or (
                 contract == DELEGATE_EVENT_CONTRACT
                 and (
@@ -2138,7 +2165,7 @@ def validate_event_journal(connection: sqlite3.Connection) -> list[dict[str, obj
                 )
             )
             or event["session_id"] != session_id
-            or event["loop_id"] != loop_id
+            or bound_loop_id != loop_id
             or event["sequence"] != sequence
             or event["idempotency_key"] != idempotency_key
             or event["previous_event_sha256"] != expected_previous
@@ -2163,6 +2190,7 @@ def validate_event_journal(connection: sqlite3.Connection) -> list[dict[str, obj
         event_hashes.add(event_key)
         sequence_by_loop[loop_key] = sequence
         previous_by_loop[loop_key] = row[5]
+        state_by_loop[loop_key] = event["resulting_state_sha256"]
         rows.append(
             {
                 "session_id": session_id,

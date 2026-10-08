@@ -31,6 +31,10 @@ PUBLIC_ROOT_FILES = (
     "release.json",
 )
 PUBLIC_ASSETS = (
+    "assets/autonomous-demo-packets.json",
+    "assets/autonomous-workspace-v1.js",
+    "assets/autonomous-workspace-v1.css",
+    "assets/autonomous-entry-v1.js",
     "assets/corpus.css",
     "assets/corpus.js",
     "assets/corpus-index.json",
@@ -60,6 +64,10 @@ GENERATED_FILES = ("deployment.json",)
 PUBLIC_INVENTORY = frozenset((*PUBLIC_ROOT_FILES, *PUBLIC_ASSETS, *GENERATED_FILES))
 PUBLIC_DIRECTORIES = frozenset({"assets", "assets/fonts"})
 CONTENT_BOUND_ASSETS = (
+    "assets/autonomous-demo-packets.json",
+    "assets/autonomous-workspace-v1.js",
+    "assets/autonomous-workspace-v1.css",
+    "assets/autonomous-entry-v1.js",
     "assets/agent-claim-v2.js",
     "assets/agent-desk-v2.js",
     "assets/agent-native-v2.css",

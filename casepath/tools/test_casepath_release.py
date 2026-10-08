@@ -303,7 +303,11 @@ def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, 
     monkeypatch.setattr(sites, "OUTPUT_ROOT", tmp_path / "dist")
     sites.build()
     assert (tmp_path / "dist/server/index.js").read_text() == worker
-    assert sites.API_CONFIGURATION in (tmp_path / "dist/client/index.html").read_text()
+    index_html = (tmp_path / "dist/client/index.html").read_text()
+    assert index_html.count(sites.API_CONFIGURATION) == 1
+    assert index_html.index(sites.API_CONFIGURATION) < index_html.index(
+        '<script src="assets/autonomous-entry-v1.js'
+    )
     assert static.inventory(tmp_path / "dist/client")[0] == static.PUBLIC_INVENTORY
     assert not (tmp_path / ".openai").exists()
     assert "https://casepath-agentic-api.onrender.com" in worker

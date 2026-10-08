@@ -46,7 +46,7 @@ async function serveStatic(request, env, url) {
     });
   }
 
-  const marker = '<script src="assets/claims-workspace-v1.js';
+  const marker = '<script src="assets/autonomous-entry-v1.js';
   const html = await response.text();
   if (!html.includes(marker)) {
     return new Response("CasePath entry point is invalid", { status: 500 });

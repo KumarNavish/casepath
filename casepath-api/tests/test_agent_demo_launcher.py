@@ -143,6 +143,175 @@ def test_history_failure_is_not_silenced(prepared, monkeypatch):
         demo.preflight(prepared.repo)
 
 
+def saved_budget_receipt(repo, budget, *, name='ready.json', launch_id='prior-launch'):
+    public = {k: budget[k] for k in (*demo.POLICY, 'runs_used', 'provider_calls_used', 'actual_cost_usd',
+                                    'reserved_cost_usd', 'unknown_calls', 'effective_max_runs')}
+    public['run_grant_sha256'] = (budget.get('run_grant') or {}).get('grant_sha256')
+    if budget.get('autonomous_policy'):
+        public['autonomous_policy_sha256'] = budget['autonomous_policy']['policy_sha256']
+        public.update({k: budget[k] for k in ('autonomous_workflows_used', 'autonomous_provider_calls_used')})
+    launch = repo / '.runtime/casepath-openrouter-demo' / launch_id
+    launch.mkdir(parents=True, exist_ok=True)
+    field = 'readiness' if name == 'ready.json' else 'last_observed_readiness'
+    demo.write_receipt(launch / name, {'contract': 'casepath.explicit-agent-demo-boot/1.0.0',
+        'launch_id': launch_id, 'policy': demo.POLICY, field: {'budget': public}})
+    return launch / name
+
+
+@pytest.fixture
+def ledger_fixture(tmp_path, monkeypatch):
+    from casepath_api.agent_work.store import WorkStore
+    repo = tmp_path / 'ledger-repo'
+    data = repo / '.runtime/casepath-data-v1'
+    store = WorkStore(data / 'agent-work-v1.sqlite3')
+    store.configure_external_budget(demo.POLICY)
+    info = {'repository': repo, 'data': data, 'capsule': SCRIPT.parents[2],
+            'python': Path(sys.executable), 'env': demo.clean_environment(repo / '.runtime/casepath-dev-v2')}
+    yield info, store
+    store.close()
+
+
+def test_known_demo_history_refuses_missing_ledger_without_creating_it(prepared, monkeypatch):
+    from casepath_api.agent_work.store import WorkStore
+    temporary = prepared.repo / 'isolated-work.sqlite3'
+    store = WorkStore(temporary)
+    store.configure_external_budget(demo.POLICY)
+    saved_budget_receipt(prepared.repo, store.external_budget())
+    store.close()
+    monkeypatch.setattr(demo, 'keychain_credential', lambda: pytest.fail('credential read'))
+    monkeypatch.setattr(demo, 'reserve_origin', lambda stack: SimpleNamespace(fileno=lambda: 99))
+    with pytest.raises(demo.DemoError, match='ledger is missing or invalid'):
+        demo.preflight(prepared.repo)
+    with pytest.raises(demo.DemoError, match='ledger is missing or invalid'):
+        demo.serve(prepared.repo, prepared.repo / 'not-read-catalogue.json', 'vendor/model')
+    assert not (prepared.repo / '.runtime/casepath-data-v1/agent-work-v1.sqlite3').exists()
+
+
+def test_incomplete_prior_launch_does_not_prove_zero_provider_activity(prepared):
+    launch = prepared.repo / '.runtime/casepath-openrouter-demo/incomplete-launch'
+    launch.mkdir(parents=True)
+    demo.write_receipt(launch / 'stopped.json', {'contract': 'casepath.explicit-agent-demo-boot/1.0.0',
+        'launch_id': launch.name, 'policy': demo.POLICY, 'last_observed_readiness': None})
+    with pytest.raises(demo.DemoError, match='ledger is missing or invalid'):
+        demo.preflight(prepared.repo)
+    assert not (prepared.repo / '.runtime/casepath-data-v1/agent-work-v1.sqlite3').exists()
+
+
+@pytest.mark.parametrize('changed', ['provider_calls_used', 'actual_cost_usd', 'runs_used'])
+def test_prior_ready_or_stopped_usage_cannot_roll_back(ledger_fixture, changed):
+    info, store = ledger_fixture
+    prior = store.external_budget()
+    prior[changed] = '0.0001' if changed == 'actual_cost_usd' else 1
+    saved_budget_receipt(info['repository'], prior, name='stopped.json')
+    with pytest.raises(demo.DemoError, match='rolled back'):
+        demo.verify_preserved_provider_budget(info)
+
+
+@pytest.mark.parametrize('authority', ['grant', 'activation'])
+def test_prior_grant_and_autonomous_activation_cannot_disappear(ledger_fixture, authority):
+    info, store = ledger_fixture
+    prior = store.external_budget()
+    if authority == 'grant':
+        prior['run_grant'] = {'grant_sha256': 'a' * 64}
+    else:
+        prior.update(autonomous_policy={'policy_sha256': 'b' * 64}, autonomous_workflows_used=0, autonomous_provider_calls_used=0)
+    saved_budget_receipt(info['repository'], prior)
+    with pytest.raises(demo.DemoError, match='rolled back'):
+        demo.verify_preserved_provider_budget(info)
+
+
+def test_read_only_budget_accepts_growth_and_unknown_settlement(ledger_fixture):
+    from casepath_api.agent_work.contracts import Operation, Role
+    from test_autonomous_budget_v1 import legacy_call, legacy_run
+    info, store = ledger_fixture
+    saved_budget_receipt(info['repository'], store.external_budget())
+    run = legacy_run(store, 1)
+    store.begin_provider_call(run, 'legacy-owner', 'provider.request.0', 'b' * 64,
+                              model='test/legacy', maximum_cost_usd='0.0028000')
+    prior = store.external_budget()
+    saved_budget_receipt(info['repository'], prior, name='stopped.json')
+    store.complete_call(run, 'legacy-owner', Role.FACTS, 'provider.request.0', {'ok': True}, [
+        {'role': Role.FACTS, 'operation': Operation.PROVIDER_RESPONSE_RECEIVED,
+         'object_kind': 'provider_response', 'object_id': 'provider.request.0', 'status': 'completed',
+         'worker_kind': 'external', 'message': 'Fixture settlement', 'after': {'usage': {'cost': 0.0001}}}])
+    legacy_call(store, run, 1, 0.0001)
+    store.finish(run, 'legacy-owner', 'completed', 'Fixture completed')
+    expected = store.external_budget()
+    assert expected['unknown_calls'] < prior['unknown_calls']
+    assert float(expected['reserved_cost_usd']) < float(prior['reserved_cost_usd'])
+    store.close()
+    before = {p.name: p.read_bytes() for p in info['data'].iterdir()}
+    demo.verify_preserved_provider_budget(info)
+    assert demo.read_only_provider_budget(info) == expected
+    assert {p.name: p.read_bytes() for p in info['data'].iterdir()} == before
+
+
+def test_legacy_ledger_additive_schema_is_only_created_in_memory(ledger_fixture):
+    import sqlite3
+    info, store = ledger_fixture
+    expected = store.external_budget()
+    saved_budget_receipt(info['repository'], expected)
+    store.close()
+    database = info['data'] / 'agent-work-v1.sqlite3'
+    with sqlite3.connect(database) as connection:
+        names = [r[0] for r in connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name LIKE 'work_autonomous_%'")]
+        for name in names:
+            connection.execute('DROP TABLE ' + name)
+    before = database.read_bytes()
+    assert demo.read_only_provider_budget(info) == expected
+    demo.verify_preserved_provider_budget(info)
+    assert database.read_bytes() == before
+    with sqlite3.connect(database) as connection:
+        assert connection.execute("SELECT count(*) FROM sqlite_master WHERE name LIKE 'work_autonomous_%'").fetchone()[0] == 0
+
+
+def test_read_only_snapshot_includes_uncheckpointed_provider_wal(ledger_fixture):
+    from test_autonomous_budget_v1 import legacy_call, legacy_run
+    info, store = ledger_fixture
+    run = legacy_run(store, 1)
+    legacy_call(store, run, 0, 0.0001)
+    expected = store.external_budget()
+    saved_budget_receipt(info['repository'], expected)
+    wal = info['data'] / 'agent-work-v1.sqlite3-wal'
+    assert wal.stat().st_size > 0
+    before = {p.name: p.read_bytes() for p in info['data'].iterdir()}
+    assert demo.read_only_provider_budget(info) == expected
+    demo.verify_preserved_provider_budget(info)
+    assert {p.name: p.read_bytes() for p in info['data'].iterdir()} == before
+
+
+def test_read_only_budget_retains_autonomous_activation_and_typed_call(ledger_fixture):
+    import httpx
+    from casepath_api.agent_work.contracts import digest
+    from casepath_api.autonomous_model_v1 import AutonomousModelV1
+    from test_autonomous_model_v1 import SCHEMA, IDENTITY, entry, worker, response
+    info, store = ledger_fixture
+    store.activate_autonomous_policy(digest(store.external_budget()), 'Fixture operator', 'Bounded fixture policy', 'fixture-activation')
+    saved_budget_receipt(info['repository'], store.external_budget())
+    calls = []
+    with httpx.Client(transport=httpx.MockTransport(lambda request: calls.append(request) or response())) as client:
+        model = AutonomousModelV1(store, worker=worker(entry()), catalogue_entry=entry(),
+                                   schemas={'interpret': SCHEMA, 'verify': SCHEMA}, client=client)
+        result = model.interpret({}, IDENTITY)
+        model.verify({}, result['result'], IDENTITY)
+    expected = store.external_budget()
+    assert len(calls) == expected['autonomous_provider_calls_used'] == 2
+    saved_budget_receipt(info['repository'], expected, name='stopped.json')
+    assert demo.read_only_provider_budget(info) == expected
+    demo.verify_preserved_provider_budget(info)
+
+
+def test_tampered_prior_demo_receipt_is_not_silently_ignored(ledger_fixture):
+    info, store = ledger_fixture
+    path = saved_budget_receipt(info['repository'], store.external_budget())
+    value = json.loads(path.read_bytes())
+    value['readiness']['budget']['provider_calls_used'] = 1
+    path.chmod(0o600)
+    path.write_bytes(demo.canonical(value) + b'\n')
+    with pytest.raises(demo.DemoError, match='prior demo receipt'):
+        demo.verify_preserved_provider_budget(info)
+
+
 def test_shared_kernel_lease_blocks_second_process_entry(tmp_path):
     path = tmp_path / "environment.lock"
     with ExitStack() as first, ExitStack() as second:
@@ -440,3 +609,138 @@ def test_incompatible_endpoint_stops_before_credential_or_child(prepared, tmp_pa
     monkeypatch.setattr(demo.subprocess, "Popen", lambda *a, **kw: pytest.fail("server start"))
     with pytest.raises(demo.DemoError, match="endpoint snapshot"):
         demo.serve(prepared.repo, path, "vendor/model")
+
+
+def autonomous_packet(head):
+    packet = ready_packet(head)
+    budget = packet['/api/agent-work/v1/capabilities']['external_budget']
+    budget.update(base_policy_sha256=demo.sha(demo.canonical(demo.POLICY)), effective_max_runs=3,
+                  run_grant=None, in_flight=False)
+    prior = dict(budget)
+    policy = {'contract': 'casepath.autonomous-budget-policy/1.0.0',
+              'base_policy_sha256': prior['base_policy_sha256'], 'prior_budget_sha256': demo.sha(demo.canonical(prior)),
+              'prior_budget': prior, 'actor': 'CasePath local autonomous policy', 'reason': 'Bounded authorized autonomous demo',
+              'idempotency_key': 'autonomous-fixture', 'activated_at': '2026-10-08T17:00:00+00:00',
+              'max_calls_per_workflow': 2, 'workflow_cost_limit_usd': '0.02'}
+    policy['policy_sha256'] = demo.sha(demo.canonical(policy))
+    budget.update(autonomous_policy=policy, autonomous_workflows_used=0, autonomous_provider_calls_used=0,
+                  autonomous_can_start=True, autonomous_reason=None)
+    model = {'model': 'vendor/model', 'catalogue_entry_sha256': 'c' * 64, 'max_request_bytes': 64000,
+             'max_output_tokens': 3500, 'max_calls_per_workflow': 2, 'protocol': 'strict_json_schema',
+             'adapter_version': 'casepath.autonomous-model/1.0.0', 'prompt_price': '0.0000001',
+             'completion_price': '0.0000004', 'request_price': '0', 'timeout_seconds': 60}
+    packet['/api/claim-loops/v1/autonomous/status'] = {'enabled': True, 'provider_ready': True,
+        'policy_id': 'casepath.autonomous-local/1.0.0', 'model': model, 'limits': budget,
+        'automatic_inference_retry': False}
+    return packet
+
+
+def test_autonomous_profile_is_explicit_and_keeps_original_budget_environment(prepared):
+    info = demo.preflight(prepared.repo)
+    default = demo.child_environment(info, Path('/local/catalogue.json'), 'vendor/model', 'sk-or-fixture')
+    enabled = demo.child_environment(info, Path('/local/catalogue.json'), 'vendor/model', 'sk-or-fixture', autonomous=True)
+    assert 'CASEPATH_AUTONOMOUS_ENABLED' not in default
+    assert enabled == {**default, 'CASEPATH_AUTONOMOUS_ENABLED': '1'}
+
+
+def test_autonomous_readiness_verifies_activation_and_retains_public_identity(prepared):
+    info = {**demo.preflight(prepared.repo), 'autonomous_catalogue_entry_sha256': 'c' * 64}
+    packet = autonomous_packet(info['head'])
+    result = demo.readiness(info, 'vendor/model', request=packet.__getitem__, autonomous=True)
+    assert result['automatic_provider_start'] is True
+    assert result['budget']['autonomous_policy_sha256'] == packet['/api/claim-loops/v1/autonomous/status']['limits']['autonomous_policy']['policy_sha256']
+    assert result['autonomous_model_sha256'] == demo.sha(demo.canonical(packet['/api/claim-loops/v1/autonomous/status']['model']))
+    assert result['budget']['max_provider_calls'] == 18 and result['budget']['total_cost_limit_usd'] == '0.10'
+
+
+@pytest.mark.parametrize('change', ['disabled', 'provider', 'missing_policy', 'tamper', 'resealed_cap', 'retry', 'model', 'catalogue', 'tokens'])
+def test_autonomous_readiness_refuses_unverified_profile(prepared, change):
+    info = {**demo.preflight(prepared.repo), 'autonomous_catalogue_entry_sha256': 'c' * 64}
+    packet = autonomous_packet(info['head'])
+    status = packet['/api/claim-loops/v1/autonomous/status']
+    policy = status['limits']['autonomous_policy']
+    if change == 'disabled': status['enabled'] = False
+    if change == 'provider': status['provider_ready'] = False
+    if change == 'missing_policy': del status['limits']['autonomous_policy']
+    if change == 'tamper': policy['reason'] = 'Changed reason'
+    if change == 'resealed_cap':
+        policy['max_calls_per_workflow'] = 20
+        policy['policy_sha256'] = demo.sha(demo.canonical({k: v for k, v in policy.items() if k != 'policy_sha256'}))
+    if change == 'retry': status['automatic_inference_retry'] = True
+    if change == 'model': status['model']['model'] = 'other/model'
+    if change == 'catalogue': status['model']['catalogue_entry_sha256'] = 'd' * 64
+    if change == 'tokens': status['model']['max_output_tokens'] = 9999
+    with pytest.raises(demo.DemoError):
+        demo.readiness(info, 'vendor/model', request=packet.__getitem__, autonomous=True)
+
+
+def test_autonomous_endpoint_requires_strict_output_parameters(tmp_path):
+    model, packet, path = endpoint_inputs(tmp_path)
+    with pytest.raises(demo.DemoError):
+        demo.endpoint_snapshot(path, model, autonomous=True)
+    parameters = ['max_tokens', 'response_format', 'structured_outputs']
+    model['supported_parameters'] += parameters
+    endpoint = packet['response']['data']['endpoints'][0]
+    endpoint['supported_parameters'] = parameters
+    endpoint['supports_tool_choice']['required'] = False
+    path.write_text(json.dumps(packet))
+    assert demo.endpoint_snapshot(path, model, autonomous=True) == path.read_bytes()
+    endpoint['supported_parameters'].remove('structured_outputs')
+    path.write_text(json.dumps(packet))
+    with pytest.raises(demo.DemoError):
+        demo.endpoint_snapshot(path, model, autonomous=True)
+
+
+def test_autonomous_cli_never_uses_manual_allowance_operation(monkeypatch):
+    calls = []
+    monkeypatch.setattr(demo, 'serve', lambda *args, **kwargs: calls.append((args, kwargs)))
+    monkeypatch.setattr(demo, 'grant_extra_run', lambda *a, **k: pytest.fail('manual grant'))
+    assert demo.main(['--autonomous', '--model', 'openai/gpt-4.1-nano']) == 0
+    assert calls[0][1] == {'autonomous': True}
+    with pytest.raises(SystemExit):
+        demo.main(['--autonomous', '--grant-one-extra-run', '--expected-budget-sha256', 'a'*64,
+                   '--actor', 'Controller', '--reason', 'Bounded demo', '--idempotency-key', 'test-grant'])
+
+
+def test_autonomous_serve_keeps_preflight_leases_and_records_resume_scope(prepared, tmp_path, monkeypatch):
+    info = demo.preflight(prepared.repo)
+    monkeypatch.setattr(demo, 'preflight', lambda *a: info)
+    path = catalogue(tmp_path)
+    packet = json.loads(path.read_text())
+    packet['catalogue']['data'][0]['supported_parameters'] += ['response_format', 'structured_outputs']
+    packet['catalogue_sha256'] = demo.sha(demo.canonical(packet['catalogue']))
+    path.write_text(json.dumps(packet))
+    _, endpoints_packet, endpoints = endpoint_inputs(tmp_path)
+    endpoints_packet['response']['data']['endpoints'][0]['supported_parameters'] += ['response_format', 'structured_outputs']
+    endpoints.write_text(json.dumps(endpoints_packet))
+    monkeypatch.setattr(demo, 'reserve_origin', lambda stack: SimpleNamespace(fileno=lambda: 99))
+    monkeypatch.setattr(demo, 'keychain_credential', lambda: 'sk-or-isolated-fixture')
+    readiness_calls = []
+    def ready(*args, **kwargs):
+        readiness_calls.append(kwargs)
+        assert args[0]['autonomous_catalogue_entry_sha256'] == demo.sha(demo.canonical(packet['catalogue']['data'][0]))
+        return {'source_commit': info['head'], 'automatic_provider_start': True}
+    monkeypatch.setattr(demo, 'readiness', ready)
+    child_calls = []
+    class Child:
+        pid = 322
+        returncode = None
+        def poll(self): return self.returncode
+        def wait(self, **kw): self.returncode = 0
+    def child(argv, **kw):
+        child_calls.append((argv, {**kw, 'env': dict(kw['env'])}))
+        return Child()
+    monkeypatch.setattr(demo.subprocess, 'Popen', child)
+    demo.serve(prepared.repo, path, 'vendor/model', autonomous=True)
+    assert readiness_calls == [{'autonomous': True}]
+    _, options = child_calls[0]
+    assert options['env']['CASEPATH_AUTONOMOUS_ENABLED'] == '1'
+    assert options['env']['CASEPATH_AGENT_WORK_MAX_EXTERNAL_RUNS'] == '3'
+    assert options['env']['CASEPATH_AGENT_WORK_MAX_PROVIDER_CALLS'] == '18'
+    assert len(options['pass_fds']) == 3
+    launch = next((prepared.repo / '.runtime/casepath-openrouter-demo').iterdir())
+    receipt = json.loads((launch / 'ready.json').read_text())
+    assert receipt['profile'] == 'bounded_autonomous_claims' and receipt['automatic_saved_work_resume'] is True
+    assert 'may resume saved workflows' in receipt['provider_start_scope']
+    assert 'sk-or-' not in json.dumps(receipt)
+    assert json.loads(prepared.path.read_text()) == prepared.boot

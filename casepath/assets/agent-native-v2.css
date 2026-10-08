@@ -528,3 +528,35 @@ html[data-agent-native=true] #claimsWorkspace .av-work-stages button{display:fle
  #claimsWorkspace .av-live-linked-work[data-recorded-relation]>.av-live-relation{grid-column:1;grid-row:2}
  #claimsWorkspace .av-live-linked-work[data-recorded-relation]>:last-child{grid-column:2;grid-row:2}
 }
+
+/* A source panel narrows the desktop work column independently of viewport width. */
+@media(min-width:1000px){
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-claim-header{grid-template-columns:minmax(0,1fr) 75px;column-gap:16px;row-gap:6px}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-claim-header>div:first-child{display:contents}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-agent-line{grid-column:1/-1;grid-row:1;flex-wrap:wrap;margin:0}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-owner-line{grid-column:1;grid-row:2;margin:0}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-review-summary{grid-column:1/-1;grid-row:3;margin:0}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-draft-status{grid-column:1/-1;grid-row:4;margin:0}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-recovery-ask{grid-column:1/-1;grid-row:5}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-supervision{grid-column:2;grid-row:2;min-width:0}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-supervision[open]{grid-column:1/-1;grid-row:6}
+ #claimsWorkspace #cwDetailPanel[data-inspector-open=true] .av-supervision[open]>summary{text-align:left}
+}
+
+/* Preserve readable group labels and a complete first claim on narrow desks. */
+@media(max-width:540px){
+ #claimsWorkspace .ad-counts{grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;padding:18px 0;align-items:start}
+ #claimsWorkspace .ad-counts>a{grid-column:span 2}
+ #claimsWorkspace .ad-counts>a:nth-child(n+4){grid-column:span 3}
+ #claimsWorkspace .ad-counts strong{font-size:28px}
+ #claimsWorkspace .ad-counts span{font-size:12px;line-height:1.5}
+ #claimsWorkspace .ad-counts small{font-size:11px;line-height:1.5}
+}
+/* Keep quiet text links easy to select without introducing button chrome. */
+#claimsWorkspace .cp-wordmark,#claimsWorkspace .cp-top-links>a,#claimsWorkspace .cp-source-top>[data-close-inspector]{display:inline-flex;align-items:center;min-height:32px}
+#claimsWorkspace .cp-source-top>[data-close-inspector]{padding-inline:4px}
+
+/* Keep source navigation separate from the document currently being read. */
+#claimsWorkspace .cp-source-library{margin:0;padding:0 16px 8px;border-bottom:1px solid var(--cp-line)}
+#claimsWorkspace .cp-source-library>summary{min-height:32px;padding:6px 0;font-size:13px;line-height:20px;color:var(--cp-muted);cursor:pointer}
+#claimsWorkspace .cp-source-library .cp-packet-browser{padding:0}
