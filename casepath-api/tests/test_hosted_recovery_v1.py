@@ -2,6 +2,7 @@
 from copy import deepcopy
 from pathlib import Path
 import sqlite3
+from tempfile import TemporaryDirectory
 from threading import Event, RLock
 from types import SimpleNamespace
 import unittest
@@ -85,11 +86,12 @@ class HostedRecoveryTests(unittest.TestCase):
                'CASEPATH_AUTONOMOUS_ENABLED': '0'}
         headers = {'X-CasePath-Proxy-Token': 't'*48, 'X-CasePath-Site-Origin': env['CASEPATH_SITE_ORIGIN'],
                    'Origin': env['CASEPATH_SITE_ORIGIN'], 'X-CasePath-Agent-Work': '1'}
-        with patch.object(hosted_app, 'HostedAutonomousController', side_effect=construct), \
+        with TemporaryDirectory(prefix='casepath-hosted-recovery-') as runtime_directory, \
+             patch.object(hosted_app, 'HostedAutonomousController', side_effect=construct), \
              patch.object(hosted_app, 'HostedAutonomousStore', return_value=self.store), \
              patch.object(AutonomousController, 'run', run):
             app = hosted_app.create_hosted_app(database=SimpleNamespace(connect=self.connect),
-                                               environment=env, runtime_directory='/private/tmp')
+                                               environment=env, runtime_directory=runtime_directory)
             with TestClient(app) as client:
                 self.drain(live[0])
                 self.store.put('late-claim')  # Another process commits after resume().
