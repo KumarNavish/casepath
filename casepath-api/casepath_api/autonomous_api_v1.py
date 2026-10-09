@@ -90,8 +90,10 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             # an unprocessed original. Only an absent stream can use this view.
             if str(error) != 'claim does not exist':
                 raise
-            corpus = original(claim_id)
+            corpus = originals()
             if corpus is None:
+                raise
+            if not corpus.contains(claim_id):
                 if claim_id.startswith('clm_'):
                     raise HTTPException(404, 'Unknown original claim.') from error
                 raise

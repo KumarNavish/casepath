@@ -1,6 +1,8 @@
 """Remote-primary semantics use MockHrana only; zero real network calls."""
 from datetime import datetime, timezone
 import json
+from pathlib import Path
+import tempfile
 
 import httpx
 import pytest
@@ -207,7 +209,9 @@ def test_hosted_composition_binds_validated_source_without_model_or_provider(tmp
         server.close()
 
 
-def test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt(exhausted, proposal, tmp_path, monkeypatch, capsys):
+@pytest.mark.parametrize('failure', [None, 'acquire', 'apply', 'release'],
+                         ids=['success', 'acquire-error', 'apply-error', 'release-error'])
+def test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt(exhausted, proposal, tmp_path, monkeypatch, capsys, failure):
     from casepath_api import hosted_sql_v1
     tool = load_tool()
     monkeypatch.setattr(tool,'clean_source_commit',lambda:'8'*40)
@@ -222,6 +226,31 @@ def test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt(exhausted, 
     # any apply command. No environment credential is read by this test.
     monkeypatch.setenv('CASEPATH_TURSO_URL','libsql://fixture.turso.io')
     monkeypatch.setenv('TURSO_AUTH_TOKEN','fixture-token-'*4)
+    real_temp_root = tmp_path/'private-tmp'
+    real_temp_root.mkdir()
+    temp_alias = tmp_path/'tmp-alias'
+    temp_alias.symlink_to(real_temp_root, target_is_directory=True)
+    monkeypatch.setattr(tempfile,'tempdir',str(temp_alias))
+    handles, closed, released = [], [], []
+    class ObservedWorkStore(WorkStore):
+        def __init__(self,path,**kwargs):
+            path = Path(path)
+            assert path == path.resolve() and path.parent.parent == real_temp_root.resolve()
+            assert path.parent.is_dir() and list(path.parent.iterdir()) == []
+            super().__init__(path,**kwargs)
+            assert not path.exists()
+            handles.append(path)
+        def close(self):
+            assert self.path.parent.is_dir() and list(self.path.parent.iterdir()) == []
+            super().close()
+            closed.append(self.path)
+    monkeypatch.setattr(tool,'WorkStore',ObservedWorkStore)
+    original_release = HostedWorkflowLease.release
+    def observe_release(self,token):
+        assert token is not None and _CURRENT_OWNER.get() is None
+        released.append(token)
+        return original_release(self,token)
+    monkeypatch.setattr(HostedWorkflowLease,'release',observe_release)
     server = MockHrana(exhausted.path)
     lease = HostedWorkflowLease(server.connection)
     lease.initialize()
@@ -240,11 +269,12 @@ def test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt(exhausted, 
         del missing[index:index+2]
         with pytest.raises(ValueError,match='authenticated approval'):
             tool.main(missing)
-        assert constructed == [] and exhausted.external_budget() == before
+        assert constructed == handles == [] and exhausted.external_budget() == before
         monkeypatch.setattr(tool,'clean_source_commit',lambda:'9'*40)
         with pytest.raises(ValueError,match='source commit changed'):
             tool.main(args)
-        assert constructed == [] and exhausted.external_budget() == before
+        assert constructed == handles == [] and exhausted.external_budget() == before
+        assert list(real_temp_root.iterdir()) == []
         monkeypatch.setattr(tool,'clean_source_commit',lambda:'8'*40)
         owner = lease.acquire()
         assert owner is not None
@@ -252,6 +282,8 @@ def test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt(exhausted, 
             with pytest.raises(ValueError,match='lease is busy'):
                 tool.main(args)
             assert exhausted.external_budget() == before
+            assert closed == handles and len(handles) == 1 and released == []
+            assert list(real_temp_root.iterdir()) == []
         finally:
             lease.release(owner)
         assert tool.main(args) == 0
@@ -263,6 +295,33 @@ def test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt(exhausted, 
         assert json.loads(capsys.readouterr().out) == receipt
         assert exhausted.external_budget() == after
         assert len(constructed) == 3
+        if failure is not None:
+            error_type = HostedOwnershipLost if failure == 'acquire' else RuntimeError
+            def fail_operation(*args,**kwargs):
+                raise error_type('Synthetic '+failure+' failure')
+            with monkeypatch.context() as fault:
+                if failure == 'acquire':
+                    fault.setattr(HostedWorkflowLease,'acquire',fail_operation)
+                elif failure == 'apply':
+                    fault.setattr(ObservedWorkStore,'apply_original_nine_grant',fail_operation)
+                else:
+                    def fail_release(self,token):
+                        observe_release(self,token)
+                        fail_operation()
+                    fault.setattr(HostedWorkflowLease,'release',fail_release)
+                with pytest.raises(error_type,match='Synthetic '+failure+' failure'):
+                    tool.main(args)
+            output = capsys.readouterr().out
+            if failure == 'release':
+                assert json.loads(output) == receipt
+            else:
+                assert output == ''
+            assert exhausted.external_budget() == after
+        assert len(constructed) == len(handles) == 3 + (failure is not None)
+        assert closed == handles and len(set(handles)) == len(handles)
+        assert all(not path.parent.exists() for path in handles)
+        assert list(real_temp_root.iterdir()) == [] and _CURRENT_OWNER.get() is None
+        assert len(released) == (4 if failure in {'apply','release'} else 3)
         with server.connection() as db:
             assert db.execute('SELECT COUNT(*) FROM work_original_nine_grant').fetchone()[0] == 1
     finally:
