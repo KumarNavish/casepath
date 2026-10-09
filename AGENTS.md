@@ -4,6 +4,13 @@ This repository is the standalone CasePath source. Use `main` as the default
 branch and begin with `README.md`, `docs/PRO_HANDOFF.md`, and the nearest
 decision-relevant document under `docs/`.
 
+For the active Mac/Cloud workstream, read `docs/HYBRID_DEVELOPMENT.md` before
+choosing a branch or execution host. Continue its verified integration branch.
+The Mac coordination chat owns integration, local apps and visual inspection;
+the published `casepath` Codex Cloud environment handles isolated repository
+implementation and tests. Coordinate source scopes and return exact commits
+and validation evidence. Preserve the documented cloud migration-audit limit.
+
 The application lives in `casepath/`, `casepath-api/`, and `casepath-qa/`.
 Product design references live in `design/northstar/`; examples live in
 `examples/`. `CASEPATH_MASTER_KNOWLEDGE_TRANSFER.md` is a historical record,

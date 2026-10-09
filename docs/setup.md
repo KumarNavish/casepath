@@ -93,6 +93,8 @@ existing `.runtime/casepath-data-v1` to fix a launch error; preserve it and use
 
 ## Next steps
 
+- Follow [Mac and Codex Cloud development](HYBRID_DEVELOPMENT.md) for task routing,
+  source handoffs, parallel work, and platform-specific validation.
 - Run `./bin/casepath adapter-check examples/local_source_adapter.py` to verify
   the provider-neutral source registration boundary.
 - Read [Agent review workflow](AGENT_REVIEW.md) for the six-role and external-Facts boundaries.
