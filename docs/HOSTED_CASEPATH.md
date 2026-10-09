@@ -68,8 +68,9 @@ original. Supply `--source-root`, `--snapshot`, an external `--receipt`, and
 
 A remote database lease fences each workflow through knowledge publication.
 Deployment overlap cannot acquire two committed owners. Every owned write
-transaction checks its generation. The controller recovers durable pending work
-from real HTTP requests; there is no periodic synthetic traffic.
+transaction checks its generation. The controller discovers accepted pending work at startup and explicit work
+commands. A bounded internal timer retries parked work independently of browser
+reads. GETs never dispatch work, and idle services generate no recovery traffic.
 
 The original spending ledger remains authoritative. Migration must preserve its
 base allowance, one-time grant, actual costs, unknown reservations, and provider
