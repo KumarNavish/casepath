@@ -111,6 +111,8 @@ const response=(data,code=200)=>({ok:code<400,status:code,json:async()=>data});
 function fakeApi(overrides={}) {
  const calls=[];
  const fetch=async(path,init)=>{calls.push({path,init});if(overrides.handle){const result=await overrides.handle(path,init,calls);if(result)return result;}
+  if(path.includes('/snapshot?'))return response({detail:'Snapshot capability unavailable'},404);
+  if(path.endsWith('/preview'))return response({detail:'Preview capability unavailable'},404);
   if(path.endsWith('/status'))return response({enabled:true,provider_ready:true,limits:{}});
   if(path.endsWith('/claims')&&init.method!=='POST')return response({claims:[]});
   if(path.includes('/events?'))return response(events(state()));
@@ -357,7 +359,7 @@ test('internal Work, Knowledge and claim navigation adds only changed fragments 
  navClick(f,'knowledge');await settle();assert.equal(routing.hash,'#autonomous/knowledge');assert.equal(routing.pushes,1);
  navClick(f,'knowledge');await settle();assert.equal(routing.pushes,1);
  await controller.openClaim('claim-a');assert.equal(routing.pushes,2);assert.match(f.host.innerHTML,/data-au-graph/);
- routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.back();await settle();assert.match(f.host.innerHTML,/>Work in context\.</);
+ routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.back();await settle();assert.match(f.host.innerHTML,/>Every case has a source\.</);
  routing.forward();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.forward();await settle();assert.match(f.host.innerHTML,/data-au-graph/);assert.equal(routing.pushes,2);
  navClick(f,'intake');await settle();assert.equal(routing.hash,'#autonomous/new');assert.equal(routing.pushes,3);assert.equal(globalThis.location.search,'?journey=autonomous');
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
@@ -438,7 +440,7 @@ test('an initial event/state revision mismatch keeps the claim private until a m
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
-test('permanent initial revision mismatch stops after bounded reads and offers explicit retry',{timeout:1000},async t=>{
+test('initial revision mismatch bounds immediate reads and retains automatic recovery plus explicit retry',{timeout:1000},async t=>{
  const f=dom(),api=fakeApi({handle:async path=>path.includes('/claim-a/events?')?response(events(state({revision:4,state_sha256:hash('f')}))):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
  const reads=api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length;
@@ -773,7 +775,7 @@ test('paused interpretation describes an unaccepted result instead of active rea
 
 test('an exhausted authoritative call allowance is visible before intake while packet saving remains available',async t=>{
  const savedStatus={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}},before=JSON.stringify(savedStatus),f=dom();
- const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/>Work in context\.</);await newClaim(f);
+ const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/>Every case has a source\.</);await newClaim(f);
  const message=f.host.querySelector('[data-au-service]').textContent;assert.match(message,/allowance does not permit more autonomous work/i);assert.match(message,/still save a new claim.*named deferral/i);assert.doesNotMatch(message,/Local evidence acquisition and document preparation are available/);
  assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.doesNotMatch(f.submit.textContent,/retry|saving/i);assert.equal(f.message.textContent,'');assert.equal(JSON.stringify(savedStatus),before);
  assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
