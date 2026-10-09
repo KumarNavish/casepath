@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS work_calls (
  result_json TEXT, started_at TEXT NOT NULL,
  PRIMARY KEY(run_id,role,call_id)
 );
+CREATE INDEX IF NOT EXISTS work_calls_tool_status ON work_calls(tool_name,status);
 CREATE TABLE IF NOT EXISTS work_objects (
  run_id TEXT NOT NULL REFERENCES work_runs(run_id), object_id TEXT NOT NULL,
  kind TEXT NOT NULL, value_json TEXT NOT NULL, value_sha256 TEXT NOT NULL,
