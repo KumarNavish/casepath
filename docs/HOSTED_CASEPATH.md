@@ -90,6 +90,10 @@ python casepath/tools/build_static_site.py --require-known-commit
 python casepath/tools/build_sites_site.py
 ```
 
+Set `CASEPATH_SOURCE_COMMIT` to the canonical release commit and
+`CASEPATH_FRONTEND_ORIGIN` to the selected Site's exact HTTPS origin for the
+hosted build. The service override leaves the historical release contract intact.
+
 `dist/client` contains curated assets; `dist/server/index.js` is the Sites worker.
 The root `.openai/hosting.json` contains the stable project identity only. Publish
 through the Sites workflow and connector using the exact pushed commit.

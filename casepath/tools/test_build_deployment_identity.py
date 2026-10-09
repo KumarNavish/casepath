@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 import sys
+import pytest
 from pathlib import Path
 
 
@@ -53,6 +54,21 @@ def test_explicit_source_commit_supports_non_render_delivery() -> None:
     assert payload["source_commit"] == commit.lower()
     assert payload["source_commit_source"] == "CASEPATH_SOURCE_COMMIT"
     assert payload["alignment_eligible"] is True
+
+
+def test_frontend_origin_identifies_selected_host_without_rewriting_release() -> None:
+    original = identity.RELEASE_PATH.read_bytes()
+    payload = identity.build_payload({"CASEPATH_FRONTEND_ORIGIN": "https://casepath-autonomous.example/"})
+    assert payload["service"] == "https://casepath-autonomous.example"
+    assert identity.RELEASE_PATH.read_bytes() == original
+    assert payload["release_contract_sha256"] == hashlib.sha256(original).hexdigest()
+
+
+@pytest.mark.parametrize("origin", ["http://insecure.example", "https://user:secret@example.com",
+    "https://example.com/path", "https://example.com/?secret=value"])
+def test_frontend_service_rejects_non_origin_configuration(origin) -> None:
+    with pytest.raises(ValueError, match="HTTPS origin"):
+        identity.build_payload({"CASEPATH_FRONTEND_ORIGIN": origin})
 
 
 def test_curated_static_build_has_exact_runtime_inventory(

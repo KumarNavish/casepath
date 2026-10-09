@@ -12,6 +12,7 @@ import sys
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit
 
 
 REPOSITORY = Path(__file__).resolve().parents[2]
@@ -40,6 +41,11 @@ def build_payload(environment: Mapping[str, str]) -> dict[str, Any]:
     release = json.loads(RELEASE_PATH.read_text(encoding="utf-8"))
     source_commit, source = normalized_commit(environment)
     frontend = release["components"]["frontend"]
+    service = environment.get("CASEPATH_FRONTEND_ORIGIN", release["services"]["frontend"])
+    parsed = urlsplit(service)
+    if (parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password
+            or parsed.path not in ("", "/") or parsed.query or parsed.fragment):
+        raise ValueError("Frontend service must be an HTTPS origin.")
     return {
         "alignment_eligible": source_commit != "unknown",
         "component": "frontend",
@@ -48,7 +54,7 @@ def build_payload(environment: Mapping[str, str]) -> dict[str, Any]:
         "contract": "casepath.deployment-identity/1.0.0",
         "release_contract_sha256": sha256_file(RELEASE_PATH),
         "release_id": release["release_id"],
-        "service": release["services"]["frontend"],
+        "service": service.rstrip("/"),
         "source_commit": source_commit,
         "source_commit_source": source,
         "unknown_semantics": "unknown never satisfies cross-service release alignment",
