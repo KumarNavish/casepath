@@ -253,7 +253,7 @@
     const executionState = evaluation.execution_state || evaluation.state;
     const stepStatus = executionState === 'ready' ? `Process ready${capability?.authorized === false ? ' · execution unavailable' : ''}` : statusLabel(executionState);
     const execution = capability ? `<section class="au-capability" data-authorized="${capability.authorized === true}"><strong>${capability.authorized === true ? ['ready','completed'].includes(executionState) ? 'Available capability' : 'Available after prerequisites' : 'Execution limit'}</strong><p>${h(capability.reason || words(capability.id))}</p></section>` : '';
-    return `<div class="au-inspector" data-au-selected-step="${h(selected)}"><button type="button" class="au-link au-back-process" data-au-back-process="${h(selected)}">← Back to process</button><header class="au-step-heading"><p class="au-eyebrow">Selected step</p><h3 tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h3><p class="au-step-status">${h(stepStatus)}</p>${required.length ? `<p>Waiting for ${h(required.map(id => name(list(state.graph?.nodes).find(n => n.node_id === id)) || words(id)).join(', '))}.</p>` : ''}</header>${execution}<div class="au-step-evidence"><section class="au-step-facts"><h4>Facts this step requires</h4>${facts.map(fact => `<article class="au-fact" data-au-fact="${h(fact.fact_id)}"><strong>${h(name(fact) || words(fact.flag))}</strong><span>${h(statusLabel(fact.verdict || fact.status))}</span>${fact.summary || fact.reason ? `<p>${h(fact.summary || fact.reason)}</p>` : ''}${sourceButtons(state,fact)}${['unresolved','unknown','insufficient'].includes(fact.verdict || fact.status) ? button('Add evidence','data-au-add-files') : ''}</article>`).join('') || '<p class="au-empty">No fact dependencies recorded for this step.</p>'}</section><section class="au-step-documents"><h4>Required documents</h4>${obligationMarkup(state,selected,obligations)}${obligations.length ? '<details class="au-document-rules"><summary>Document rules and acquisition</summary>' : ''}${obligations.map(item => `<p class="au-meta">${list(item.rule_refs).length ? `Rule ${h(list(item.rule_refs).map(ref => typeof ref === 'string' ? ref : ref.rule_id || ref.title || ref.authority_id).join(' · '))} · ` : ''}${item.capability_id ? `Acquisition: ${h(words(item.capability_id))}` : 'No acquisition capability recorded'}</p>`).join('')}${obligations.length ? '</details>' : ''}</section><section class="au-step-actions"><h4>Recorded actions</h4>${actionMarkup(state,actions)}</section></div>${routeMarkup(state,selected)}<details class="au-rule-trace" data-au-disclosure="rules:${h(selected)}"><summary>Admitted rules</summary>${node.authority?.title ? `<strong>${h(node.authority.title)}</strong>` : ''}${node.authority?.quote ? `<blockquote>${h(node.authority.quote)}</blockquote>` : ''}${node.meaning && node.meaning !== node.authority?.quote ? `<p>${h(node.meaning)}</p>` : ''}${list(node.provenance?.rule_refs).map(ref => `<p>${h(typeof ref === 'string' ? ref : ref.title || ref.rule_id || ref.authority_id)}</p>`).join('')}${node.authority?.source_id ? `<p class="au-meta">${h(node.authority.source_id)}</p>` : ''}</details></div>`;
+    return `<div class="au-inspector" data-au-selected-step="${h(selected)}"><button type="button" class="au-link au-back-process" data-au-back-process="${h(selected)}">← Back to process</button><header class="au-step-heading"><p class="au-eyebrow">Selected step</p><h3 tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h3><p class="au-step-status">${h(stepStatus)}</p>${required.length ? `<p>Waiting for ${h(required.map(id => name(list(state.graph?.nodes).find(n => n.node_id === id)) || words(id)).join(', '))}.</p>` : ''}</header>${execution}<div class="au-step-evidence"><section class="au-step-facts"><h4>Facts this step requires</h4>${facts.map(fact => `<article class="au-fact" data-au-fact="${h(fact.fact_id)}"><strong>${h(name(fact) || words(fact.flag))}</strong><span>${h(statusLabel(fact.verdict || fact.status))}</span>${fact.summary || fact.reason ? `<p>${h(fact.summary || fact.reason)}</p>` : ''}${sourceButtons(state,fact)}${['unresolved','unknown','insufficient'].includes(fact.verdict || fact.status) ? button('Add evidence','data-au-add-files') : ''}</article>`).join('') || '<p class="au-empty">No fact dependencies recorded for this step.</p>'}</section><section class="au-step-documents"><h4>Required documents</h4>${obligationMarkup(state,selected,obligations)}${obligations.length ? `<details class="au-document-rules" data-au-disclosure="document-rules:${h(selected)}"><summary>Document rules and acquisition</summary>` : ''}${obligations.map(item => `<p class="au-meta">${list(item.rule_refs).length ? `Rule ${h(list(item.rule_refs).map(ref => typeof ref === 'string' ? ref : ref.rule_id || ref.title || ref.authority_id).join(' · '))} · ` : ''}${item.capability_id ? `Acquisition: ${h(words(item.capability_id))}` : 'No acquisition capability recorded'}</p>`).join('')}${obligations.length ? '</details>' : ''}</section><section class="au-step-actions"><h4>Recorded actions</h4>${actionMarkup(state,actions)}</section></div>${routeMarkup(state,selected)}<details class="au-rule-trace" data-au-disclosure="rules:${h(selected)}"><summary>Admitted rules</summary>${node.authority?.title ? `<strong>${h(node.authority.title)}</strong>` : ''}${node.authority?.quote ? `<blockquote>${h(node.authority.quote)}</blockquote>` : ''}${node.meaning && node.meaning !== node.authority?.quote ? `<p>${h(node.meaning)}</p>` : ''}${list(node.provenance?.rule_refs).map(ref => `<p>${h(typeof ref === 'string' ? ref : ref.title || ref.rule_id || ref.authority_id)}</p>`).join('')}${node.authority?.source_id ? `<p class="au-meta">${h(node.authority.source_id)}</p>` : ''}</details></div>`;
   }
   function eventLabel(event) {
     if (event.kind === 'knowledge.published') return event.payload?.knowledge?.qualification?.status === 'qualified' ? 'Qualified knowledge version published' : 'Knowledge candidate withheld';
@@ -594,7 +594,9 @@
     function rememberClaim(state) {
       const summary = {claim_id:state.claim_id,title:state.title,status:state.status,phase:state.phase,phase_summary:state.phase_summary,revision:state.revision,state_sha256:state.state_sha256,updated_at:state.updated_at,outcome:state.outcome};
       const index = claims.findIndex(row => row.claim_id === state.claim_id);
-      if (index >= 0) claims[index] = summary; else claims.unshift(summary);
+      if (index >= 0) {
+        if (!Number.isSafeInteger(claims[index].revision) || claims[index].revision <= summary.revision) claims[index] = summary;
+      } else claims.unshift(summary);
       railClaims();
     }
     function refreshCollection() {
@@ -610,14 +612,28 @@
       const read = ++claimsRead;
       const data = await request('/claims');
       if (disposed || token !== epoch || read !== claimsRead) return;
-      claims = list(data.claims); claimsLoaded = true; railClaims(); refreshCollection();
+      const remembered = new Map(claims.map(row => [row.claim_id,row]));
+      claims = list(data.claims).map(row => {
+        const known = remembered.get(row.claim_id);
+        if (!known || !Number.isSafeInteger(known.revision)) return row;
+        const verified = current?.claim_id === row.claim_id && current.revision === row.revision && known.revision === current.revision && known.state_sha256 === current.state_sha256;
+        return !Number.isSafeInteger(row.revision) || known.revision > row.revision || verified ? known : row;
+      });
+      if (current && !claims.some(row => row.claim_id === current.claim_id) && remembered.has(current.claim_id)) claims.unshift(remembered.get(current.claim_id));
+      claimsLoaded = true; railClaims(); refreshCollection();
     }
     async function serviceStatus(token) {
       const data = await request('/status');
       if (disposed || token !== epoch) return;
       status = data;
       const service = host.querySelector('[data-au-service]');
-      if (service) service.textContent = !status.enabled ? 'Autonomous work is disabled.' : !status.provider_ready ? 'Inference is unavailable. New packets are saved with a named deferral.' : 'Local evidence acquisition and document preparation are available. External dispatch is not configured.';
+      const allowanceMessage = status.limits?.autonomous_can_start === false ? new Map([
+        ['call_limit_reached','The recorded call allowance does not permit more autonomous work.'],
+        ['cost_limit_reached','The recorded cost allowance does not permit more autonomous work.'],
+        ['provider_outcome_pending','A provider outcome is pending, so new autonomous work cannot start yet.'],
+        ['provider_cost_bound_exceeded','A recorded provider cost exceeded its bound, so new autonomous work cannot start.']
+      ]).get(status.limits.autonomous_reason) || 'Autonomous inference is unavailable for new work.' : '';
+      if (service) service.textContent = !status.enabled ? 'Autonomous work is disabled.' : !status.provider_ready ? 'Inference is unavailable. New packets are saved with a named deferral.' : allowanceMessage ? `${allowanceMessage} You can still save a new claim; autonomous work will have a named deferral.` : 'Local evidence acquisition and document preparation are available. External dispatch is not configured.';
       if (view === 'intake' && !status.enabled && !pendingIntake) { const submit = host.querySelector('button[type="submit"]'); if (submit) submit.disabled = true; }
     }
     async function showWork(writeHistory = true) {
