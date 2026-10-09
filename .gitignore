@@ -20,3 +20,7 @@ reports/
 release/package/*
 !release/package/MANIFEST.json
 !release/package/SHA256SUMS
+
+# Hosted Python package build output
+casepath-api/build/
+casepath-api/*.egg-info/
