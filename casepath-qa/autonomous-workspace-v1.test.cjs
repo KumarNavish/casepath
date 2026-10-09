@@ -559,7 +559,7 @@ function nativeFixture() {
   for(const field of Object.values(fields)){field.closest=selector=>selector==='form'?node:null;field.matches=selector=>/input|textarea/.test(selector);}
   return node;
  }
- Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{
+ Object.defineProperty(f.host,'innerHTML',{configurable:true,get:()=>html,set:value=>{
   if(intake)intake.isConnected=false;if(arrival)arrival.isConnected=false;html=value;intake=/<form[^>]*data-au-intake/.test(html)?form('intake'):null;arrival=/<form[^>]*data-au-arrival/.test(html)?form('arrival'):null;viewport=html.includes('au-graph-viewport')?{scrollLeft:0,scrollTop:0}:null;
   details=[...html.matchAll(/<details[^>]*data-au-disclosure="([^"]+)"[^>]*>/g)].map(match=>({dataset:{auDisclosure:match[1]},open:match[0].includes(' open'),querySelector:()=>null}));
   panels=[...html.matchAll(/<section[^>]*data-au-panel="([^"]+)"[^>]*>/g)].map(match=>({dataset:{auPanel:match[1]},hidden:match[0].includes(' hidden')}));
@@ -766,4 +766,78 @@ test('paused interpretation describes an unaccepted result instead of active rea
  const s=state({status:'deferred',phase:'deferred',run_id:'paused-run',deferral:{code:'paused',reason:'Paused'}});
  const html=ui.progressMarkup(s,[{kind:'work.started',payload:{run_id:'paused-run'}},{kind:'work.phase',payload:{phase:'interpreting'}}]);
  assert.match(html,/Interpretation not accepted/);assert.doesNotMatch(html,/Reading the evidence|aria-current="step"/);
+});
+
+test('an exhausted authoritative call allowance is visible before intake while packet saving remains available',async t=>{
+ const savedStatus={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}},before=JSON.stringify(savedStatus),f=dom();
+ const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/>Work</);await newClaim(f);
+ const message=f.host.querySelector('[data-au-service]').textContent;assert.match(message,/allowance does not permit more autonomous work/i);assert.match(message,/still save a new claim.*named deferral/i);assert.doesNotMatch(message,/Local evidence acquisition and document preparation are available/);
+ assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.doesNotMatch(f.submit.textContent,/retry|saving/i);assert.equal(f.message.textContent,'');assert.equal(JSON.stringify(savedStatus),before);
+ assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('cost, pending and unknown allowance statuses keep distinct honest intake messages without disabling saving',async()=>{
+ const cases=[
+  {limits:{autonomous_can_start:false,autonomous_reason:'cost_limit_reached'},matches:[/cost allowance does not permit more autonomous work/i,/still save a new claim.*named deferral/i]},
+  {limits:{autonomous_can_start:false,autonomous_reason:'provider_outcome_pending'},matches:[/pending|unconfirmed/i,/cannot start yet/i,/still save a new claim.*named deferral/i],excludes:/allowance does not permit|exhausted|spent/i},
+  {limits:{autonomous_can_start:false,autonomous_reason:'provider_cost_bound_exceeded'},matches:[/provider cost.*bound/i,/still save a new claim.*named deferral/i],excludes:/allowance.*spent|call limit reached|cost limit reached/i},
+  {limits:{autonomous_can_start:false,autonomous_reason:'unknown_future_condition',effective_autonomous_max_provider_calls:24,provider_calls_used:24},excludes:/allowance does not permit|exhausted|spent|call limit reached/i},
+  {limits:{autonomous_can_start:false,autonomous_reason:'constructor'},matches:[/Autonomous inference is unavailable for new work/],excludes:/allowance does not permit|exhausted|spent|function|object Object/i},
+  {limits:{autonomous_can_start:false,autonomous_reason:'__proto__'},matches:[/Autonomous inference is unavailable for new work/],excludes:/allowance does not permit|exhausted|spent|function|object Object/i},
+  {limits:{autonomous_can_start:true,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24},matches:[/Local evidence acquisition and document preparation are available/],excludes:/allowance does not permit|exhausted|spent/i},
+  {limits:{autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24},matches:[/Local evidence acquisition and document preparation are available/],excludes:/allowance does not permit|exhausted|spent/i},
+  {limits:{autonomous_can_start:'false',autonomous_reason:'cost_limit_reached'},matches:[/Local evidence acquisition and document preparation are available/],excludes:/allowance does not permit|exhausted|spent/i},
+  {matches:[/Local evidence acquisition and document preparation are available/],excludes:/allowance does not permit|exhausted|spent/i}
+ ];
+ for(const example of cases) {
+  const f=dom(),savedStatus={enabled:true,provider_ready:true,...('limits' in example?{limits:example.limits}:{})},api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});
+  try { await settle();await newClaim(f);const message=f.host.querySelector('[data-au-service]').textContent;for(const pattern of example.matches||[])assert.match(message,pattern,JSON.stringify(savedStatus));if(example.excludes)assert.doesNotMatch(message,example.excludes,JSON.stringify(savedStatus));assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.equal(f.message.textContent,'');assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0); }
+  finally { controller.destroy(); }
+ }
+});
+
+test('disabled service and unavailable provider keep precedence over allowance messages',async()=>{
+ for(const [savedStatus,pattern,disabled]of [
+  [{enabled:false,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached'}},/^Autonomous work is disabled\.$/,true],
+  [{enabled:true,provider_ready:false,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached'}},/^Inference is unavailable\. New packets are saved with a named deferral\.$/,false]
+ ]) {
+  const f=dom(),api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});
+  try { await settle();await newClaim(f);assert.match(f.host.querySelector('[data-au-service]').textContent,pattern);assert.equal(f.submit.disabled,disabled);assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0); }
+  finally { controller.destroy(); }
+ }
+});
+
+test('accepted refresh preserves an open document-rules disclosure and focuses its replacement summary',async t=>{
+ const f=nativeFixture(),original=Object.getOwnPropertyDescriptor(f.host,'innerHTML');let summary=null;
+ Object.defineProperty(f.host,'innerHTML',{get:original.get,set:value=>{
+  if(summary)summary.isConnected=false;original.set(value);summary=null;
+  for(const detail of f.disclosures) {
+   const panel=f.panels.find(node=>node.dataset.auPanel==='step');detail.closest=selector=>selector==='[data-au-panel]'?panel:null;detail.hasAttribute=name=>name==='data-au-disclosure';
+   if(detail.dataset.auDisclosure==='document-rules:branch') { summary=control(f,'data-unused');summary.hasAttribute=()=>false;summary.matches=selector=>selector==='summary';summary.parentElement=detail;summary.closest=selector=>selector==='[data-au-panel]'?panel:null;summary.focus=options=>{summary.focusOptions=options;if(!panel?.hidden)f.container.ownerDocument.activeElement=summary;};detail.querySelector=selector=>selector==='summary'?summary:null; }
+  }
+ }});f.host.contains=element=>element===summary;
+ let saved=state();const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ assert.match(f.host.innerHTML,/<details class="au-document-rules"[^>]*data-au-disclosure="document-rules:branch"/);const detail=f.disclosures.find(node=>node.dataset.auDisclosure==='document-rules:branch');detail.open=true;summary.focus();const oldSummary=summary;
+ saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.notEqual(summary,oldSummary);assert.equal(f.disclosures.find(node=>node.dataset.auDisclosure==='document-rules:branch').open,true);assert.equal(f.container.ownerDocument.activeElement,summary);assert.deepEqual(summary.focusOptions,{preventScroll:true});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('delayed claim collections preserve verified revisions without rejecting genuinely newer rows',async t=>{
+ const other={claim_id:'claim-b',title:'Other saved claim',status:'resolved',revision:2,state_sha256:hash('b')};
+ for(const example of [
+  {name:'a delayed older current row',row:{claim_id:'claim-a',title:'Old collection title',status:'running',revision:3,state_sha256:hash('a')},expectedStatus:'Deferred'},
+  {name:'a missing current row',row:null,expectedStatus:'Deferred'},
+  {name:'a conflicting identity at the verified revision',row:{claim_id:'claim-a',title:'Conflicting collection title',status:'running',revision:4,state_sha256:hash('9')},expectedStatus:'Deferred'},
+  {name:'a genuinely newer collection row',row:{claim_id:'claim-a',title:'Newer collection title',status:'queued',revision:5,state_sha256:hash('5')},expectedStatus:'Queued'}
+ ])await t.test(example.name,async child=>{
+  routingFixture(child,'#autonomous/claim/claim-a');const f=dom(),queue={innerHTML:''},query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-recent-claims]'?queue:query(selector);
+  let saved=state(),projection={},finishList;const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?new Promise(resolve=>{finishList=resolve;}):path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,...projection}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('revision 3')&&Boolean(finishList));
+  saved=state({revision:4,state_sha256:hash('f'),status:'deferred',deferral:{code:'missing_evidence',reason:'Recorded evidence needed.'}});await controller.refresh();assert.match(queue.innerHTML,/Deferred/);assert.match(f.host.innerHTML,/revision 4/);
+  finishList(response({claims:[other,...(example.row?[example.row]:[])]}));await waitFor(()=>queue.innerHTML.includes('Other saved claim'));
+  const row=queue.innerHTML.match(/<button[^>]*data-au-claim="claim-a"[\s\S]*?<\/button>/)?.[0];assert.ok(row,'the current verified claim remains reachable');assert.ok(row.includes(example.expectedStatus),row);assert.match(f.host.innerHTML,/revision 4/);assert.match(f.host.innerHTML,/Recorded evidence needed/);assert.doesNotMatch(queue.innerHTML,/Old collection title|Conflicting collection title/);
+  if(example.row)assert.ok(queue.innerHTML.indexOf('Other saved claim')<queue.innerHTML.indexOf('data-au-claim="claim-a"'),'the API collection order is retained');
+  if(example.row?.revision===5)projection={node_capabilities:{branch:{authorized:false,id:null,reason:'Projection changed after newer collection row.'}}};
+  await controller.refresh();assert.ok(queue.innerHTML.includes(example.expectedStatus));
+  if(example.row?.revision===5){assert.match(f.host.innerHTML,/Projection changed after newer collection row/);assert.match(f.host.innerHTML,/revision 4/);assert.match(queue.innerHTML,/Newer collection title/);}
+  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ });
 });
