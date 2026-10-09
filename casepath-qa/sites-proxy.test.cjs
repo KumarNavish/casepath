@@ -7,6 +7,20 @@ const origin = 'https://casepath-demo.example';
 const env = {CASEPATH_API_ORIGIN: 'https://casepath-api.example', CASEPATH_PROXY_TOKEN: 'x'.repeat(48)};
 const load = async () => (await import(pathToFileURL(resolve(__dirname, '../casepath/tools/sites_worker.mjs')).href)).default;
 
+test('Sites sends the legacy collection entry to the unified Cases page without fetching data', async t => {
+  const worker = await load();
+  const fetch = t.mock.method(globalThis, 'fetch', async () => {throw Error('must not send');});
+  const assets = t.mock.fn(async () => {throw Error('must not open the older collection');});
+  for (const method of ['GET', 'HEAD']) {
+    const response = await worker.fetch(new Request(origin + '/corpus.html?view=old', {method}),
+      {...env, ASSETS:{fetch:assets}});
+    assert.equal(response.status, 302);
+    assert.equal(response.headers.get('location'), origin + '/#autonomous/cases');
+  }
+  assert.equal(fetch.mock.callCount(), 0);
+  assert.equal(assets.mock.callCount(), 0);
+});
+
 test('Sites authenticates its upstream request without leaking browser credentials', async t => {
   const worker = await load();
   t.mock.method(globalThis, 'fetch', async req => {
