@@ -268,18 +268,36 @@ def test_interrupted_source_upload_admits_no_event_and_exact_retry_recovers(serv
 def test_maximum_source_survives_restart_under_small_response_bound(server, tmp_path, monkeypatch):
     # This is stricter than production's 32MiB transport bound and fails if a
     # single query attempts to return the entire 16MiB original as base64 JSON.
-    monkeypatch.setattr(sql, 'MAX_BYTES', 4 * 1024 * 1024)
+    response_bound = 4 * 1024 * 1024
+    monkeypatch.setattr(sql, 'MAX_BYTES', response_bound)
+    response_bytes, source_responses = [], []
+    original_handle = server.handle
+
+    def observe_response(request):
+        response = original_handle(request)
+        response_bytes.append(len(response.content))
+        # Source chunks are the only returned blobs in this isolated scenario.
+        # Count each physical response, independent of SQL spelling or columns.
+        chunk_sizes = [len(sql._decode(cell))
+                       for entry in response.json()['results']
+                       for row in entry.get('response', {}).get('result', {}).get('rows', [])
+                       for cell in row if cell['type'] == 'blob']
+        if chunk_sizes:
+            source_responses.append((len(chunk_sizes), sum(chunk_sizes)))
+        return response
+
+    monkeypatch.setattr(server, 'handle', observe_response)
     assert MAX_FILE_BYTES == 16 * 1024 * 1024
     HostedJournal(tmp_path / 'unused-large-source-journal', server.connection)
     raw = bytes(range(256)) * (MAX_FILE_BYTES // 256)
     expected = sha256(raw).hexdigest()
     assert HostedSources(server.connection).publish(raw) == expected
-    before = len(server.requests)
+    before = len(source_responses)
     assert HostedSources(server.connection).read(expected) == raw
-    statements = [operation['stmt'] for request in server.requests[before:]
-                  for operation in request['requests'] if operation['type'] == 'execute']
-    source_reads = [stmt for stmt in statements if 'SELECT chunk_index,content' in stmt['sql']]
-    assert len(source_reads) > 1
+    cold_read_responses = source_responses[before:]
+    assert len(cold_read_responses) > 1
+    assert sum(count for count, _ in cold_read_responses) == 64
+    assert sum(length for _, length in cold_read_responses) == MAX_FILE_BYTES
     with server.connection() as db:
         count, length = db.execute('SELECT COUNT(*),SUM(length(content)) FROM autonomous_source_chunks '
                                   'WHERE sha256=?', (expected,)).fetchone()
@@ -288,6 +306,7 @@ def test_maximum_source_survives_restart_under_small_response_bound(server, tmp_
     with pytest.raises(AutonomousStoreError):
         HostedSources(server.connection).publish(raw + b'!')
     assert len(server.requests) == sent
+    assert response_bytes and max(response_bytes) <= response_bound
 
 
 @pytest.mark.parametrize('raw', [b'', b'x', b'xy', b'xyz', bytes(range(256))])
