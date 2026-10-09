@@ -150,6 +150,10 @@ def saved_budget_receipt(repo, budget, *, name='ready.json', launch_id='prior-la
     if budget.get('autonomous_policy'):
         public['autonomous_policy_sha256'] = budget['autonomous_policy']['policy_sha256']
         public.update({k: budget[k] for k in ('autonomous_workflows_used', 'autonomous_provider_calls_used')})
+    if 'effective_autonomous_max_provider_calls' in budget:
+        public.update({k: budget[k] for k in ('effective_autonomous_max_provider_calls',
+            'autonomous_grant_workflows_used', 'autonomous_grant_provider_calls_used')})
+        public['autonomous_capacity_grant_sha256'] = (budget.get('autonomous_capacity_grant') or {}).get('grant_sha256')
     launch = repo / '.runtime/casepath-openrouter-demo' / launch_id
     launch.mkdir(parents=True, exist_ok=True)
     field = 'readiness' if name == 'ready.json' else 'last_observed_readiness'
@@ -633,6 +637,190 @@ def autonomous_packet(head):
         'policy_id': 'casepath.autonomous-local/1.0.0', 'model': model, 'limits': budget,
         'automatic_inference_retry': False}
     return packet
+
+
+def capacity_packet(head, *, workflows=0, calls=0, prior_calls=18):
+    packet = autonomous_packet(head)
+    budget = packet['/api/claim-loops/v1/autonomous/status']['limits']
+    budget.update(provider_calls_used=prior_calls, autonomous_workflows_used=9, autonomous_provider_calls_used=prior_calls,
+        actual_cost_usd='0.003', reserved_cost_usd='0', remaining_cost_usd='0.097', can_start=False,
+        reason='call_limit_reached', autonomous_can_start=False, autonomous_reason='call_limit_reached',
+        autonomous_capacity_grant=None, effective_autonomous_max_provider_calls=18,
+        autonomous_grant_workflows_used=0, autonomous_grant_provider_calls_used=0)
+    prior = json.loads(json.dumps(budget))
+    grant = {'contract': 'casepath.autonomous-capacity-grant/1.0.0', 'additional_workflows': 3,
+        'additional_provider_calls': 6, 'base_policy_sha256': budget['base_policy_sha256'],
+        'autonomous_policy_sha256': budget['autonomous_policy']['policy_sha256'],
+        'prior_budget_sha256': demo.sha(demo.canonical(prior)), 'prior_budget': prior,
+        'prior_workflows': [{'workflow_id': f'workflow-{i}', 'workflow_sha256': str(i) * 64} for i in range(9)],
+        'actor': 'Authorized operator', 'reason': 'Three bounded autonomous workflows',
+        'idempotency_key': 'capacity-fixture', 'granted_at': '2026-10-09T00:00:00+00:00'}
+    grant['grant_sha256'] = demo.sha(demo.canonical(grant))
+    budget.update(autonomous_capacity_grant=grant, effective_autonomous_max_provider_calls=24,
+        autonomous_grant_workflows_used=workflows, autonomous_grant_provider_calls_used=calls,
+        provider_calls_used=prior_calls+calls, autonomous_workflows_used=9+workflows, autonomous_provider_calls_used=prior_calls+calls,
+        autonomous_can_start=workflows < 3 and calls < 6,
+        autonomous_reason=None if workflows < 3 and calls < 6 else 'call_limit_reached')
+    return packet
+
+
+@pytest.mark.parametrize('prior_calls', [17, 18])
+def test_capacity_readiness_retains_verified_grant_and_usage_without_changing_base(prepared, prior_calls):
+    info = {**demo.preflight(prepared.repo), 'autonomous_catalogue_entry_sha256': 'c' * 64}
+    packet = capacity_packet(info['head'], workflows=2, calls=3, prior_calls=prior_calls)
+    result = demo.readiness(info, 'vendor/model', request=packet.__getitem__, autonomous=True)
+    budget = result['budget']
+    native = packet['/api/claim-loops/v1/autonomous/status']['limits']
+    assert budget['autonomous_capacity_grant_sha256'] == native['autonomous_capacity_grant']['grant_sha256']
+    assert budget['effective_autonomous_max_provider_calls'] == 24
+    assert budget['autonomous_grant_workflows_used'] == 2 and budget['autonomous_grant_provider_calls_used'] == 3
+    assert all(budget[key] == value for key, value in demo.POLICY.items())
+    assert 'autonomous_capacity_grant' not in budget
+
+
+@pytest.mark.parametrize('change', ['missing', 'tampered', 'resealed_extra', 'wrong_policy', 'effective',
+    'workflows', 'calls', 'counts', 'roster', 'unexhausted', 'short_money'])
+def test_capacity_readiness_rejects_unproved_or_inconsistent_extension(prepared, change):
+    info = {**demo.preflight(prepared.repo), 'autonomous_catalogue_entry_sha256': 'c' * 64}
+    packet = capacity_packet(info['head'])
+    budget = packet['/api/claim-loops/v1/autonomous/status']['limits']
+    grant = budget['autonomous_capacity_grant']
+    if change == 'missing': budget['autonomous_capacity_grant'] = None
+    if change == 'tampered': grant['reason'] = 'Changed'
+    if change == 'resealed_extra': grant['additional_provider_calls'] = 7
+    if change == 'wrong_policy': grant['autonomous_policy_sha256'] = 'f' * 64
+    if change == 'effective': budget['effective_autonomous_max_provider_calls'] = 25
+    if change == 'workflows': budget['autonomous_grant_workflows_used'] = 4
+    if change == 'calls': budget['autonomous_grant_provider_calls_used'] = True
+    if change == 'counts': budget['provider_calls_used'] = 19
+    if change == 'roster': grant['prior_workflows'].pop()
+    if change == 'unexhausted': grant['prior_budget']['provider_calls_used'] = 16
+    if change == 'short_money': grant['prior_budget']['remaining_cost_usd'] = '0.059'
+    if change in {'resealed_extra', 'wrong_policy', 'roster', 'unexhausted', 'short_money'}:
+        grant['prior_budget_sha256'] = demo.sha(demo.canonical(grant['prior_budget']))
+        grant['grant_sha256'] = demo.sha(demo.canonical({k:v for k,v in grant.items() if k != 'grant_sha256'}))
+    with pytest.raises(demo.DemoError):
+        demo.readiness(info, 'vendor/model', request=packet.__getitem__, autonomous=True)
+
+
+@pytest.mark.parametrize('change', ['missing_grant', 'workflow_rollback', 'call_rollback'])
+def test_capacity_preservation_floor_rejects_disappearance_or_usage_rollback(prepared, monkeypatch, change):
+    info = demo.preflight(prepared.repo)
+    prior = capacity_packet(info['head'], workflows=0 if change == 'missing_grant' else 2,
+        calls=0 if change == 'missing_grant' else 3)['/api/claim-loops/v1/autonomous/status']['limits']
+    saved_budget_receipt(prepared.repo, prior)
+    current = capacity_packet(info['head'], workflows=1 if change == 'workflow_rollback' else 2,
+                              calls=2 if change == 'call_rollback' else 3)['/api/claim-loops/v1/autonomous/status']['limits']
+    if change == 'missing_grant':
+        current = prior['autonomous_capacity_grant']['prior_budget']
+    monkeypatch.setattr(demo, 'read_only_provider_budget', lambda _: current)
+    with pytest.raises(demo.DemoError, match='rolled back'):
+        demo.verify_preserved_provider_budget(info)
+
+
+def test_capacity_preservation_accepts_old_receipts_without_extension_fields(prepared, monkeypatch):
+    info = demo.preflight(prepared.repo)
+    current = capacity_packet(info['head'])['/api/claim-loops/v1/autonomous/status']['limits']
+    prior = dict(current['autonomous_capacity_grant']['prior_budget'])
+    for key in ('autonomous_capacity_grant', 'effective_autonomous_max_provider_calls',
+                'autonomous_grant_workflows_used', 'autonomous_grant_provider_calls_used'):
+        prior.pop(key)
+    saved_budget_receipt(prepared.repo, prior)
+    monkeypatch.setattr(demo, 'read_only_provider_budget', lambda _: current)
+    demo.verify_preserved_provider_budget(info)
+
+
+def test_capacity_offline_operation_uses_pinned_child_leases_and_readback(prepared, monkeypatch):
+    info = demo.preflight(prepared.repo)
+    database = info['data'] / 'agent-work-v1.sqlite3'
+    database.parent.mkdir(parents=True); database.write_bytes(b'mocked isolated ledger')
+    monkeypatch.setattr(demo, 'preflight', lambda _: info)
+    events = []
+    monkeypatch.setattr(demo, 'acquire_lease', lambda path, stack: events.append(('lease', path)))
+    monkeypatch.setattr(demo, 'reserve_origin', lambda stack: events.append(('origin', None)))
+    monkeypatch.setattr(demo, 'keychain_credential', lambda: pytest.fail('credential access'))
+    monkeypatch.setattr(demo.subprocess, 'Popen', lambda *a, **k: pytest.fail('server startup'))
+    budget = capacity_packet(info['head'])['/api/claim-loops/v1/autonomous/status']['limits']
+    grant = budget['autonomous_capacity_grant']
+    def child(argv, **options):
+        events.append(('child', argv))
+        assert argv[:4] == [str(info['python']), '-I', '-B', '-P']
+        assert str(info['capsule']/'casepath-api') in argv and str(database) in argv
+        assert '.grant_three_autonomous_workflows(' in argv[5]
+        assert 'OPENROUTER_API_KEY' not in options['env'] and 'CASEPATH_AUTONOMOUS_ENABLED' not in options['env']
+        assert json.loads(argv[-1])['expected_budget_sha256'] == grant['prior_budget_sha256']
+        return demo.canonical(grant)
+    monkeypatch.setattr(demo, 'run_checked', child)
+    monkeypatch.setattr(demo, 'read_only_provider_budget', lambda _: events.append(('readback', None)) or budget)
+    result = demo.grant_autonomous_capacity(prepared.repo, expected_budget_sha256=grant['prior_budget_sha256'],
+        actor=grant['actor'], reason=grant['reason'], idempotency_key=grant['idempotency_key'])
+    assert result['grant'] == grant and result['budget'] == budget and result['provider_requests_started'] == 0
+    assert [e[0] for e in events] == ['lease', 'lease', 'origin', 'child', 'readback']
+    assert [e[1] for e in events[:2]] == [prepared.runtime/'environment.lock', prepared.repo/'.runtime/casepath-data-v1.lock']
+
+
+def test_capacity_cli_is_separate_explicit_operation_without_serving(monkeypatch):
+    calls = []
+    monkeypatch.setattr(demo, 'grant_autonomous_capacity', lambda repository, **kw: calls.append(kw) or {'grant':'fixture'}, raising=False)
+    monkeypatch.setattr(demo, 'serve', lambda *a, **k: pytest.fail('server startup'))
+    monkeypatch.setattr(demo, 'grant_extra_run', lambda *a, **k: pytest.fail('legacy allowance'))
+    args = ['--grant-three-autonomous-workflows', '--expected-budget-sha256', 'a'*64,
+            '--actor', 'Operator', '--reason', 'Three bounded workflows', '--idempotency-key', 'capacity-fixture']
+    assert demo.main(args) == 0 and len(calls) == 1
+    for additional in [['--autonomous'], ['--grant-one-extra-run'], ['--model', 'vendor/model']]:
+        with pytest.raises(SystemExit): demo.main(args + additional)
+    with pytest.raises(SystemExit): demo.main(['--grant-three-autonomous-workflows'])
+
+
+@pytest.mark.parametrize('last,prior_calls', [('complete', 18), ('rejected', 17)])
+def test_capacity_command_and_preservation_replay_real_disposable_store(prepared, tmp_path, monkeypatch, last, prior_calls):
+    from test_autonomous_budget_grant_v1 import prepared as grant_history, pair
+    from casepath_api.agent_work.store import WorkStore
+    data = tmp_path / 'disposable-ledger'
+    store = grant_history(data, last=last)
+    before = store.external_budget()
+    assert before['provider_calls_used'] == prior_calls and before['autonomous_reason'] == 'call_limit_reached'
+    store.close()
+    (data / 'work.sqlite3').rename(data / 'agent-work-v1.sqlite3')
+    info = {**demo.preflight(prepared.repo), 'data': data, 'capsule': SCRIPT.parents[2], 'python': Path(sys.executable)}
+    monkeypatch.setattr(demo, 'preflight', lambda _: info)
+    monkeypatch.setattr(demo, 'reserve_origin', lambda stack: None)
+    monkeypatch.setattr(demo, 'keychain_credential', lambda: pytest.fail('credential access'))
+    monkeypatch.setattr(demo, 'run_checked', lambda argv, **options: subprocess.check_output(argv, timeout=30, **options))
+    args = {'expected_budget_sha256': demo.sha(demo.canonical(before)), 'actor': 'Fixture operator',
+            'reason': 'Three isolated workflows', 'idempotency_key': 'launcher-capacity-fixture'}
+    result = demo.grant_autonomous_capacity(prepared.repo, **args)
+    assert result == demo.grant_autonomous_capacity(prepared.repo, **args)
+    assert result['provider_requests_started'] == 0
+    assert all(result['budget'][k] == before[k] for k in
+               ('provider_calls_used', 'actual_cost_usd', 'reserved_cost_usd', 'unknown_calls'))
+    saved_budget_receipt(prepared.repo, result['budget'])
+    demo.verify_preserved_provider_budget(info)
+    with_store = WorkStore(data / 'agent-work-v1.sqlite3')
+    for index in range(10, 13):
+        pair(with_store, index)
+    grown = with_store.external_budget()
+    with_store.close()
+    assert grown['autonomous_grant_workflows_used'] == 3 and grown['autonomous_grant_provider_calls_used'] == 6
+    assert grown['provider_calls_used'] == prior_calls + 6
+    assert grown['effective_autonomous_max_provider_calls'] == 24 and grown['autonomous_can_start'] is False
+    demo.verify_preserved_provider_budget(info)
+    assert demo.read_only_provider_budget(info) == grown
+
+
+def test_capacity_operation_refuses_unconfirmed_readback(prepared, monkeypatch):
+    info = demo.preflight(prepared.repo)
+    database = info['data'] / 'agent-work-v1.sqlite3'
+    database.parent.mkdir(parents=True); database.write_bytes(b'mocked ledger')
+    monkeypatch.setattr(demo, 'preflight', lambda _: info)
+    monkeypatch.setattr(demo, 'reserve_origin', lambda stack: None)
+    budget = capacity_packet(info['head'])['/api/claim-loops/v1/autonomous/status']['limits']
+    grant = budget['autonomous_capacity_grant']
+    monkeypatch.setattr(demo, 'run_checked', lambda *a, **k: demo.canonical(grant))
+    monkeypatch.setattr(demo, 'read_only_provider_budget', lambda _: grant['prior_budget'])
+    with pytest.raises(demo.DemoError, match='could not be confirmed'):
+        demo.grant_autonomous_capacity(prepared.repo, expected_budget_sha256=grant['prior_budget_sha256'],
+            actor=grant['actor'], reason=grant['reason'], idempotency_key=grant['idempotency_key'])
 
 
 def test_autonomous_profile_is_explicit_and_keeps_original_budget_environment(prepared):

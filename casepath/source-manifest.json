@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1587,
+  "file_count": 1588,
   "files": [
     {
       "executable": false,
@@ -701,8 +701,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/agent_work/openrouter.py",
-      "sha256": "35fa321399c5024b378d683cb8489f782f407e7b27162c988d29a9fe25dd518d",
-      "size_bytes": 24742
+      "sha256": "ee9bc03d1d545894afb44f54ff14bf7a074b769e7ffa1b3140cdfe9df39707cc",
+      "size_bytes": 25167
     },
     {
       "executable": false,
@@ -725,8 +725,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/agent_work/store.py",
-      "sha256": "16186a71a9c763fe4b79b7006a25181232560ee5f6420e80c413003b8963abb5",
-      "size_bytes": 77759
+      "sha256": "e7eabfac679ed8ba94a834f06eb702c641bd718c89c23c8779d8d745ec761b3a",
+      "size_bytes": 87507
     },
     {
       "executable": false,
@@ -899,14 +899,14 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_model_v1.py",
-      "sha256": "e19fffeaec88da45bad37d5752111942e91fb697e1125af18789d46abc2f677b",
-      "size_bytes": 18124
+      "sha256": "e86df072410ba8c4c219c935274bcc4d4a3891e65097e3d052f24a5f466ff671",
+      "size_bytes": 18485
     },
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_policy_v1.py",
-      "sha256": "18e720b7ffbd2848859e2332f429ba099f4d082f5567af26f28145c072239864",
-      "size_bytes": 22475
+      "sha256": "5f8c5dd7772be64666285e244a1d57597d6cb99ecc3297cff048eb0ec06481ed",
+      "size_bytes": 24353
     },
     {
       "executable": false,
@@ -7619,8 +7619,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_agent_demo_launcher.py",
-      "sha256": "3ccea6c810642ba9b46651b68b944953a340863c6d3cbc6d52edb62eef405b9f",
-      "size_bytes": 40270
+      "sha256": "4b5b1173884acf84d32847c4920c2588f8f44c7d2ed715152075e0a3c6741810",
+      "size_bytes": 53336
     },
     {
       "executable": false,
@@ -7661,8 +7661,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_agent_work_openrouter_demo.py",
-      "sha256": "5505ff4e0529af87f9fee0ba2c0340cc50002c4d54b7c7152fb70b0579a8df3e",
-      "size_bytes": 44252
+      "sha256": "57d58741cc87d26da27abd4c54795c4a4d6188aff417eb8a783ff59caaf7b079",
+      "size_bytes": 45697
     },
     {
       "executable": false,
@@ -7714,6 +7714,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/test_autonomous_budget_grant_v1.py",
+      "sha256": "dbe2d4a18fa4f3a977ace41e7c0d98bee052007f851114b95274e09490e11953",
+      "size_bytes": 16857
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/test_autonomous_budget_v1.py",
       "sha256": "2efbd93eda71035351e27ac90a711ffd370ceae26910a422f8795ea01481a9aa",
       "size_bytes": 12289
@@ -7739,8 +7745,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_autonomous_model_v1.py",
-      "sha256": "6184e3e440c0e00b96b5cc0f7adf48606041ce2b3b5e26f6d4b3f344026f30f6",
-      "size_bytes": 17838
+      "sha256": "8d79941b270968c0ea2cb1e02add39f5908e0d573077b8031acce3fc85cd1bea",
+      "size_bytes": 22414
     },
     {
       "executable": false,
@@ -9173,8 +9179,8 @@
     {
       "executable": false,
       "path": "casepath/tools/run_agent_demo.py",
-      "sha256": "d95ae365d1af36eee3960418c5e19213b11a1770d743bca67a1ad81ee6563485",
-      "size_bytes": 42031
+      "sha256": "7d9519f4c1ec6ed88120f283c9335b06d09531e71153e10eb8269b0495fcd9ec",
+      "size_bytes": 52974
     },
     {
       "executable": false,
@@ -9395,8 +9401,8 @@
     {
       "executable": false,
       "path": "docs/product/AUTONOMOUS_WORKSPACE.md",
-      "sha256": "56be7d444de71b9822777a3a593ac70bca4be10b2c9bd876e10d6a0a2af1a053",
-      "size_bytes": 8365
+      "sha256": "28b9ff77048eeed92427cbedc82a0a8ded578bc836c6668ba7b9866e90528324",
+      "size_bytes": 9432
     },
     {
       "executable": false,

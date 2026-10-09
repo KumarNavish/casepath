@@ -130,7 +130,10 @@ def _catalogue_entry(worker, supplied):
     # Legacy selection considers tiers through 24KB; this adapter admits 64KB.
     for tier in row["pricing"].get("overrides", []):
         if tier["min_prompt_tokens"] <= 64000:
-            for raw, key in (("prompt", "prompt_price"), ("completion", "completion_price"), ("request", "request_price")):
+            for raw, key in (("prompt", "prompt_price"), ("input_cache_read", "prompt_price"),
+                             ("input_cache_write", "prompt_price"),
+                             ("input_cache_write_1h", "prompt_price"),
+                             ("completion", "completion_price"), ("request", "request_price")):
                 prices[key] = max(prices[key], Decimal(str(tier.get(raw, prices[key]))))
     config = {**selected, **{k: str(v) for k, v in prices.items()}, "free": all(v == 0 for v in prices.values()), "max_request_bytes": 64000,
             "max_output_tokens": 3500, "timeout_seconds": 60, "max_calls_per_workflow": 2,
@@ -206,7 +209,9 @@ class AutonomousModelV1:
                                 "max_price": {"prompt": float(Decimal(cfg["prompt_price"]) * 1_000_000),
                                               "completion": float(Decimal(cfg["completion_price"]) * 1_000_000)}}}
         if cfg["reasoning_supported"]:
-            request["reasoning"] = {"enabled": False, "exclude": True}
+            # Reasoning shares the existing output-token allowance; retain only
+            # the typed public result, never the model's private reasoning.
+            request["reasoning"] = {"effort": "low", "exclude": True}
         data = canonical(request)
         if len(data) > cfg["max_request_bytes"] or len(data) + cfg["max_output_tokens"] > cfg["context_length"]:
             raise AutonomousModelError("The semantic request exceeds its frozen byte or context limit; no request was sent.")

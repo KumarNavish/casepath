@@ -51,13 +51,15 @@ only when new evidence or a changed dependency justifies another step.
 Provider request intents and conservative cost reservations precede HTTP. Typed
 results are persisted before application. Restart reuses a completed result and
 idempotent action receipt; unknown requests are never resent automatically.
-The persistent aggregate limits remain USD 0.10 and 18 requests, including prior
-usage and unknown-cost reserves. A sealed autonomous-mode activation preserves
+The persistent base allowance is 18 requests under a USD 0.10 aggregate ceiling,
+including prior usage and unknown-cost reserves. A sealed autonomous-mode activation preserves
 the original policy and adds no per-run allowance. A workflow reserves at most
 USD 0.02 for two independent semantic calls. Request bodies are limited to
 64,000 bytes and outputs to 3,500 tokens. Expired catalogue metadata blocks new
 requests after 24 hours while saved results remain replayable. Routine mechanics
-do not require inference.
+do not require inference. Cost reservations use the highest applicable input or
+cache rate. Supported models use low reasoning effort within the same output
+limit; only the typed public result is retained.
 
 The explicit local `run_agent_demo.py --autonomous` profile requires a clean
 committed source capsule, a matching normal boot, fresh model and endpoint
@@ -71,7 +73,7 @@ For the existing prepared checkout, launch the configured model from the
 repository root after sealing and a matching normal boot:
 
 ```bash
-.runtime/casepath-dev-v2/venv/bin/python casepath/tools/run_agent_demo.py --autonomous --model qwen/qwen3-235b-a22b-2507 --catalogue .runtime/casepath-openrouter-demo/catalogue.json --endpoints .runtime/casepath-openrouter-demo/endpoints-qwen-235b.json
+.runtime/casepath-dev-v2/venv/bin/python casepath/tools/run_agent_demo.py --autonomous --model openai/gpt-6-luna --catalogue .runtime/casepath-openrouter-demo/catalogue.json --endpoints .runtime/casepath-openrouter-demo/endpoints-gpt-6-luna.json
 ```
 
 These are local catalogue and endpoint snapshots, not credentials. They must
@@ -86,6 +88,18 @@ cannot silently change the meaning of a paid request. Pause preserves a saved
 interpretation and its unsent verifier allowance; resume can replay it. New
 evidence supersedes the old workflow, releases only unsent work, and retains all
 completed or uncertain provider charges.
+
+When the base allowance cannot admit another two-call workflow, the stopped local profile can record
+one explicit allowance for three further autonomous workflows and at most six
+calls. The USD 0.10 aggregate and USD 0.02 workflow ceilings still apply. The
+grant requires an exact current budget hash, an actor, a reason and an
+idempotency key, with no active workflow and at least USD 0.06 remaining after
+existing charges and reservations. This occurs at 17 or 18 used calls; a failed
+single-call workflow does not strand the remaining allowance. The separate
+`run_agent_demo.py --grant-three-autonomous-workflows` command records the
+allowance and starts no inference. New submitted workflows consume its slots;
+failed workflows consume a slot too. Existing usage, uncertain charges and
+failed claims stay in the ledger. The legacy review allowance is separate.
 
 ## Knowledge
 
@@ -122,10 +136,10 @@ completed work is labelled as recorded. Reduced motion retains all information.
 No private model reasoning transcript is displayed; short cited decision
 summaries explain accepted actions and uncertainty.
 
-Acceptance requires two newly introduced packets through the real backend, an
+Acceptance requires three newly introduced packets through the real backend, an
 evidence-driven branch/checklist change, actual supporting-file acquisition,
 autonomous progression to completion or justified deferral, qualified knowledge
-publication and reuse on the next claim, and saved-state agreement after restart.
+publication, refinement and reuse on later claims, and saved-state agreement after restart.
 Also test stale and duplicate requests, source tampering, cross-claim citations,
 contradictions, unsupported extraction, invalid knowledge, provider failures,
 unknown effects and capability boundaries. Inspect actual events and source

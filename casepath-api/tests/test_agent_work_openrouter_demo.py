@@ -142,16 +142,42 @@ def test_unknown_provider_timeout_is_never_retried_or_unreserved(tmp_path):
     store.close()
 
 
-def test_applicable_tiers_are_reserved_and_unrequested_features_do_not_add_cost():
+def test_applicable_tiers_and_automatic_cache_writes_are_reserved():
     packet = catalogue(web_search="0.01", input_cache_write="0.001", overrides=[
         {"min_prompt_tokens": 100000, "prompt": "1", "completion": "2"},
         {"min_prompt_tokens": 4000, "prompt": "0.0000003", "completion": "0.0000004"}])
     selected = choose_model(packet, model="test/reader")
-    assert Decimal(selected["prompt_price"]) == Decimal("0.0000003")
+    assert Decimal(selected["prompt_price"]) == Decimal("0.001")
     assert Decimal(selected["completion_price"]) == Decimal("0.0000004")
     for override in [{"min_prompt_tokens": True, "prompt": "1"}, {"min_prompt_tokens": 0, "new_condition": "1"}]:
         with pytest.raises(Exception, match="compatible"):
             choose_model(catalogue(overrides=[override]), model="test/reader")
+
+
+@pytest.mark.parametrize("pricing,expected", [
+    ({"input_cache_write": "0.000000125"}, "0.000000125"),
+    ({"input_cache_write": "0.00000001"}, "0.0000001"),
+    ({"input_cache_write_1h": "0.0000002"}, "0.0000002"),
+    ({"input_cache_read": "0.0000002"}, "0.0000002"),
+    ({"overrides": [{"min_prompt_tokens": 24000, "input_cache_write": "0.0000003"}]}, "0.0000003"),
+    ({"overrides": [{"min_prompt_tokens": 24000, "input_cache_write_1h": "0.0000004"}]}, "0.0000004"),
+    ({"overrides": [{"min_prompt_tokens": 24000, "input_cache_read": "0.0000004"}]}, "0.0000004"),
+    ({"overrides": [{"min_prompt_tokens": 24001, "input_cache_write": "1"}]}, "0.0000001"),
+])
+def test_cache_write_prices_replace_input_rate_and_respect_legacy_tier_bound(pricing, expected):
+    selected = choose_model(catalogue(**pricing), model="test/reader")
+    assert Decimal(selected["prompt_price"]) == Decimal(expected)
+    assert Decimal(selected["completion_price"]) == Decimal("0.0000002")
+
+
+@pytest.mark.parametrize("pricing", [
+    {"input_cache_write": "NaN"}, {"input_cache_write_1h": "-1"},
+    {"overrides": [{"min_prompt_tokens": 0, "input_cache_write": "Infinity"}]},
+    {"overrides": [{"min_prompt_tokens": 0, "unrecognized_cache_write": "0.0000001"}]},
+])
+def test_invalid_cache_prices_and_unknown_paid_tier_fields_still_fail_closed(pricing):
+    with pytest.raises(Exception, match="compatible"):
+        choose_model(catalogue(**pricing), model="test/reader")
 
 
 def test_explicit_start_replays_same_run_and_guard_rejection_spends_nothing(tmp_path):

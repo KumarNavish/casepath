@@ -37,7 +37,7 @@ def response(content=None, *, cost=0.0001, model="test/semantic-v1"):
         "usage": {"prompt_tokens": 100, "completion_tokens": 10, "cost": cost}})
 
 
-def setup(tmp_path, handler=None, *, policy=None):
+def setup(tmp_path, handler=None, *, policy=None, catalogue_entry=None):
     from casepath_api.autonomous_model_v1 import AutonomousModelV1
     store = WorkStore(tmp_path / "work.sqlite3")
     store.configure_external_budget(policy or POLICY)
@@ -48,7 +48,8 @@ def setup(tmp_path, handler=None, *, policy=None):
         calls.append(request)
         return handler(request) if handler else response()
     client = httpx.Client(transport=httpx.MockTransport(transport))
-    model = AutonomousModelV1(store, worker=worker(entry()), catalogue_entry=entry(),
+    model_entry = catalogue_entry or entry()
+    model = AutonomousModelV1(store, worker=worker(model_entry), catalogue_entry=model_entry,
         schemas={"interpret": SCHEMA, "verify": SCHEMA}, client=client)
     return store, model, calls, receipt
 
@@ -253,6 +254,86 @@ def test_catalogue_requires_structured_output_and_prices_extended_tiers(tmp_path
     assert Decimal(model.config['prompt_price']) == Decimal('0.0000003')
     assert Decimal(model.config['completion_price']) == Decimal('0.0000004')
     assert Decimal(model.config['request_price']) == Decimal('0.00001')
+    store.close()
+
+
+@pytest.mark.parametrize('threshold,key,expected', [
+    (32000, 'input_cache_write', '0.0000003'),
+    (32000, 'input_cache_read', '0.0000003'),
+    (64000, 'input_cache_write_1h', '0.0000003'),
+    (64001, 'input_cache_write', '0.000000125'),
+])
+def test_autonomous_cache_write_reservation_covers_only_applicable_64kb_tiers(tmp_path, threshold, key, expected):
+    model_entry = entry(pricing={'prompt': '0.0000001', 'completion': '0.0000005',
+        'input_cache_write': '0.000000125',
+        'overrides': [{'min_prompt_tokens': threshold, key: '0.0000003'}]})
+    store, model, calls, _ = setup(tmp_path, catalogue_entry=model_entry)
+    assert Decimal(model.config['prompt_price']) == Decimal(expected)
+    assert Decimal(model.config['completion_price']) == Decimal('0.0000005')
+    assert not calls and store.external_budget()['provider_calls_used'] == 0
+    store.close()
+
+
+def test_cache_write_bound_is_persisted_and_pair_fits_unchanged_workflow_cap(tmp_path):
+    model_entry = entry(pricing={'prompt': '0.0000001', 'completion': '0.0000005',
+        'input_cache_write': '0.000000125',
+        'overrides': [{'min_prompt_tokens': 272000, 'prompt': '0.0000002',
+                      'completion': '0.00000075', 'input_cache_write': '0.00000025'}]})
+    store, model, calls, _ = setup(tmp_path, lambda _: response(cost=None), catalogue_entry=model_entry)
+    assert 2 * (Decimal(model.config['prompt_price']) * 64000 +
+                Decimal(model.config['completion_price']) * 3500) == Decimal('0.0195')
+    context = {'text': 'x' * 60000}
+    first = model.interpret(context, IDENTITY)
+    second = model.verify(context, first['result'], IDENTITY)
+    maxima = []
+    for request, outcome in zip(calls, (first, second)):
+        body = json.loads(request.content)
+        assert body['provider']['max_price'] == {'prompt': 0.125, 'completion': 0.5}
+        assert 'prompt_cache_options' not in body
+        maximum = Decimal('0.000000125') * len(request.content) + Decimal('0.0000005') * 3500
+        assert Decimal(outcome['receipt']['maximum_cost_usd']) == maximum
+        maxima.append(maximum)
+    before = store.external_budget()
+    assert before['max_provider_calls'] == 18 and before['total_cost_limit_usd'] == '0.10'
+    assert before['run_cost_limit_usd'] == '0.02' and before['provider_calls_used'] == 2
+    assert before['unknown_calls'] == 2 and Decimal(before['reserved_cost_usd']) == sum(maxima)
+    assert model.interpret(context, IDENTITY) == first
+    assert model.verify(context, first['result'], IDENTITY) == second
+    assert store.external_budget() == before and len(calls) == 2
+    store.close()
+
+
+def test_cache_write_bound_over_workflow_cap_reserves_and_sends_nothing(tmp_path):
+    from casepath_api.autonomous_model_v1 import AutonomousModelError
+    model_entry = entry(pricing={'prompt': '0.0000001', 'completion': '0.0000005',
+                                'input_cache_write': '0.000001'})
+    store, model, calls, _ = setup(tmp_path, catalogue_entry=model_entry)
+    before = store.external_budget()
+    with pytest.raises(AutonomousModelError, match='configured inference allowance is unavailable'):
+        model.interpret({'text': 'x' * 60000}, IDENTITY)
+    assert store.external_budget() == before and not calls
+    with store.connect() as db:
+        assert db.execute('SELECT COUNT(*) FROM work_autonomous_calls').fetchone()[0] == 0
+        assert db.execute('SELECT COUNT(*) FROM work_autonomous_workflows').fetchone()[0] == 0
+    store.close()
+
+
+def test_supported_reasoning_uses_low_effort_within_output_cap_and_stays_private(tmp_path):
+    model_entry = entry(supported_parameters=['tools', 'response_format', 'structured_outputs', 'reasoning'])
+    def reply(_):
+        payload = json.loads(response().content)
+        payload['choices'][0]['message']['reasoning'] = 'Private fixture reasoning must not persist'
+        return httpx.Response(200, json=payload)
+    store, model, calls, _ = setup(tmp_path, reply, catalogue_entry=model_entry)
+    first = model.interpret({}, IDENTITY)
+    second = model.verify({}, first['result'], IDENTITY)
+    for request in calls:
+        body = json.loads(request.content)
+        assert body['reasoning'] == {'effort': 'low', 'exclude': True}
+        assert body['max_tokens'] == 3500
+    assert 'Private fixture reasoning' not in json.dumps([first, second])
+    assert model.config['max_calls_per_workflow'] == 2
+    assert store.external_budget()['run_cost_limit_usd'] == '0.02'
     store.close()
 
 

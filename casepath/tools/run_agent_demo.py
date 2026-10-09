@@ -3,7 +3,9 @@
 
 Requires a clean committed checkout and a successful normal local boot of that
 same commit. The explicit --autonomous profile resumes saved autonomous work
-under the original lifetime budget. The default facts-role profile requires
+under the preserved lifetime budget. A separate offline command can record the
+single three-workflow capacity extension without starting inference. Dollar
+limits remain unchanged. The default facts-role profile requires
 manual review admission. Normal zero-credential boot history is preserved.
 """
 from __future__ import annotations
@@ -195,7 +197,8 @@ def prior_demo_budgets(root):
                 budget = observed["budget"]
                 if any(budget[k] != v for k, v in POLICY.items()):
                     raise ValueError
-                for key in ("runs_used", "provider_calls_used", "autonomous_workflows_used", "autonomous_provider_calls_used"):
+                for key in ("runs_used", "provider_calls_used", "autonomous_workflows_used", "autonomous_provider_calls_used",
+                            "autonomous_grant_workflows_used", "autonomous_grant_provider_calls_used"):
                     if key in budget and (type(budget[key]) is not int or budget[key] < 0):
                         raise ValueError
                 for key in ("runs_used", "provider_calls_used", "actual_cost_usd"):
@@ -204,10 +207,16 @@ def prior_demo_budgets(root):
                 cost = Decimal(budget["actual_cost_usd"])
                 if not cost.is_finite() or cost < 0:
                     raise ValueError
-                for key in ("run_grant_sha256", "autonomous_policy_sha256"):
+                for key in ("run_grant_sha256", "autonomous_policy_sha256", "autonomous_capacity_grant_sha256"):
                     if budget.get(key) is not None and re.fullmatch(r"[0-9a-f]{64}", budget[key]) is None:
                         raise ValueError
                 if budget.get("effective_max_runs", 3) not in (3, 4):
+                    raise ValueError
+                effective_calls = budget.get("effective_autonomous_max_provider_calls", 18)
+                if (type(effective_calls) is not int or effective_calls not in (18, 24)
+                        or (budget.get("autonomous_capacity_grant_sha256") is None) != (effective_calls == 18)
+                        or budget.get("autonomous_grant_workflows_used", 0) > 3
+                        or budget.get("autonomous_grant_provider_calls_used", 0) > 6):
                     raise ValueError
                 observations.append(budget)
             except (AttributeError, KeyError, TypeError, ValueError, InvalidOperation):
@@ -273,21 +282,26 @@ def verify_preserved_provider_budget(info):
             raise ValueError
         grant_sha = verified_run_grant(current["run_grant"]) if current.get("run_grant") else None
         policy_sha = verified_autonomous_policy(current["autonomous_policy"]) if current.get("autonomous_policy") else None
+        capacity = verified_autonomous_capacity(current)
         for prior in observations:
             if prior is None:
                 continue  # Existence and complete replay are still required above.
-            for key in ("runs_used", "provider_calls_used", "autonomous_workflows_used", "autonomous_provider_calls_used"):
+            for key in ("runs_used", "provider_calls_used", "autonomous_workflows_used", "autonomous_provider_calls_used",
+                        "autonomous_grant_workflows_used", "autonomous_grant_provider_calls_used"):
                 if key in prior and (type(current.get(key)) is not int or current[key] < prior[key]):
                     raise ValueError
             if Decimal(current["actual_cost_usd"]) < Decimal(prior["actual_cost_usd"]):
                 raise ValueError
             if (current["effective_max_runs"] < prior.get("effective_max_runs", 3)
                     or prior.get("run_grant_sha256") is not None and prior["run_grant_sha256"] != grant_sha
-                    or prior.get("autonomous_policy_sha256") is not None and prior["autonomous_policy_sha256"] != policy_sha):
+                    or prior.get("autonomous_policy_sha256") is not None and prior["autonomous_policy_sha256"] != policy_sha
+                    or capacity["effective_autonomous_max_provider_calls"] < prior.get("effective_autonomous_max_provider_calls", 18)
+                    or prior.get("autonomous_capacity_grant_sha256") is not None and
+                       prior["autonomous_capacity_grant_sha256"] != capacity["autonomous_capacity_grant_sha256"]):
                 raise ValueError
         # Reservations and unknown counts may decrease when retained requests
         # settle. Their current validity is checked by WorkStore's full replay.
-    except (KeyError, TypeError, ValueError, InvalidOperation):
+    except (DemoError, KeyError, TypeError, ValueError, InvalidOperation):
         raise DemoError("The provider ledger rolled back behind a saved demo budget; no new allowance was opened.") from None
 
 
@@ -441,6 +455,77 @@ def verified_autonomous_policy(policy):
         raise DemoError("The autonomous profile has no valid preserved budget activation.") from None
 
 
+def verified_autonomous_capacity_grant(grant):
+    """Verify the fixed extension and the frozen base allowance it preserves."""
+    try:
+        fields = {"contract", "additional_workflows", "additional_provider_calls", "base_policy_sha256",
+                  "autonomous_policy_sha256", "prior_budget_sha256", "prior_budget", "prior_workflows",
+                  "actor", "reason", "idempotency_key", "granted_at", "grant_sha256"}
+        prior, roster = grant["prior_budget"], grant["prior_workflows"]
+        base_sha = sha(canonical(POLICY))
+        if (set(grant) != fields or grant["contract"] != "casepath.autonomous-capacity-grant/1.0.0"
+                or any(type(grant[k]) is not int or grant[k] != v for k, v in
+                       (("additional_workflows", 3), ("additional_provider_calls", 6)))
+                or grant["base_policy_sha256"] != base_sha or prior["base_policy_sha256"] != base_sha
+                or any(prior[k] != v for k, v in POLICY.items())
+                or verified_autonomous_policy(prior["autonomous_policy"]) != grant["autonomous_policy_sha256"]
+                or prior["autonomous_capacity_grant"] is not None
+                or type(prior["provider_calls_used"]) is not int or prior["provider_calls_used"] not in (17, 18)
+                or any(type(prior[k]) is not int or prior[k] != v for k, v in
+                       (("effective_autonomous_max_provider_calls", 18),
+                        ("autonomous_grant_workflows_used", 0), ("autonomous_grant_provider_calls_used", 0)))
+                or prior["in_flight"] is not False or prior["automatic_retry"] is not False
+                or prior["autonomous_can_start"] is not False or prior["autonomous_reason"] != "call_limit_reached"
+                or grant["prior_budget_sha256"] != sha(canonical(prior))
+                or type(prior["autonomous_provider_calls_used"]) is not int
+                or not 0 <= prior["autonomous_provider_calls_used"] <= 18
+                or not isinstance(roster, list) or type(prior["autonomous_workflows_used"]) is not int
+                or len(roster) != prior["autonomous_workflows_used"] or len(roster) > 18
+                or any(set(item) != {"workflow_id", "workflow_sha256"}
+                       or not isinstance(item["workflow_id"], str) or not 1 <= len(item["workflow_id"]) <= 180
+                       or re.fullmatch(r"[0-9a-f]{64}", item["workflow_sha256"]) is None for item in roster)
+                or [item["workflow_id"] for item in roster] != sorted({item["workflow_id"] for item in roster})
+                or datetime.fromisoformat(grant["granted_at"]).utcoffset() != timezone.utc.utcoffset(None)
+                or any(not isinstance(grant[k], str) or not minimum <= len(grant[k]) <= maximum
+                       or grant[k] != grant[k].strip() or not grant[k].isprintable()
+                       for k, minimum, maximum in (("actor", 1, 180), ("reason", 1, 2000), ("idempotency_key", 8, 128)))
+                or grant["grant_sha256"] != sha(canonical({k:v for k,v in grant.items() if k != "grant_sha256"}))):
+            raise ValueError
+        money = [Decimal(prior[k]) for k in ("actual_cost_usd", "reserved_cost_usd", "remaining_cost_usd")]
+        if any(not v.is_finite() or v < 0 for v in money) or sum(money) != Decimal("0.10") or money[2] < Decimal("0.06"):
+            raise ValueError
+        return grant["grant_sha256"]
+    except (DemoError, AttributeError, KeyError, TypeError, ValueError, InvalidOperation):
+        raise DemoError("The autonomous capacity extension has no valid preserved grant receipt.") from None
+
+
+def verified_autonomous_capacity(budget):
+    """Check native usage and return only the public extension identity/counters."""
+    try:
+        grant = budget.get("autonomous_capacity_grant")
+        effective = budget.get("effective_autonomous_max_provider_calls", 18)
+        workflows = budget.get("autonomous_grant_workflows_used", 0)
+        calls = budget.get("autonomous_grant_provider_calls_used", 0)
+        if (type(effective) is not int or effective != (24 if grant else 18)
+                or type(workflows) is not int or not 0 <= workflows <= 3
+                or type(calls) is not int or not workflows <= calls <= 2 * workflows
+                or (grant is None and (workflows or calls))):
+            raise ValueError
+        grant_sha = verified_autonomous_capacity_grant(grant) if grant is not None else None
+        if grant is not None:
+            prior = grant["prior_budget"]
+            if (budget["autonomous_policy"] != prior["autonomous_policy"]
+                    or any(budget[k] != v for k, v in POLICY.items())
+                    or budget["provider_calls_used"] != prior["provider_calls_used"] + calls
+                    or budget["autonomous_provider_calls_used"] != prior["autonomous_provider_calls_used"] + calls
+                    or budget["autonomous_workflows_used"] != prior["autonomous_workflows_used"] + workflows):
+                raise ValueError
+        return {"autonomous_capacity_grant_sha256": grant_sha, "effective_autonomous_max_provider_calls": effective,
+                "autonomous_grant_workflows_used": workflows, "autonomous_grant_provider_calls_used": calls}
+    except (DemoError, KeyError, TypeError, ValueError):
+        raise DemoError("The autonomous capacity usage differs from its sealed extension.") from None
+
+
 def readiness(info, model, request=local_json, *, autonomous=False):
     health = request("/healthz")
     deploy = request("/deployment.json")
@@ -457,7 +542,9 @@ def readiness(info, model, request=local_json, *, autonomous=False):
                     or auto["policy_id"] != "casepath.autonomous-local/1.0.0"
                     or auto["automatic_inference_retry"] is not False
                     or any(auto["limits"][k] != budget[k] for k in POLICY)
-                    or auto["limits"]["base_policy_sha256"] != budget["base_policy_sha256"]):
+                    or auto["limits"]["base_policy_sha256"] != budget["base_policy_sha256"]
+                    or auto["limits"].get("autonomous_capacity_grant") != budget.get("autonomous_capacity_grant")
+                    or auto["limits"].get("effective_autonomous_max_provider_calls", 18) != budget.get("effective_autonomous_max_provider_calls", 18)):
                 raise DemoError("The autonomous service is unavailable or differs from the shared budget.")
             budget = auto["limits"]
         if (any(value.get("source_commit") != info["head"] for value in (health, deploy, api))
@@ -497,6 +584,7 @@ def readiness(info, model, request=local_json, *, autonomous=False):
         selected = {k: budget[k] for k in (*POLICY, "runs_used", "provider_calls_used", "actual_cost_usd",
                     "reserved_cost_usd", "remaining_cost_usd", "unknown_calls", "can_start", "reason")}
         selected.update(effective_max_runs=effective, run_grant_sha256=grant_sha)
+        selected.update(verified_autonomous_capacity(budget))
         result = {"source_commit": info["head"], "model": model, "budget": selected,
                   "credential_configured": True, "automatic_provider_start": autonomous}
         if autonomous:
@@ -579,6 +667,53 @@ def grant_extra_run(repository, *, expected_budget_sha256, actor, reason, idempo
             raise DemoError("The allowance result could not be confirmed. Inspect its saved receipt before retrying; no provider request was started.") from None
         return {"contract": "casepath.explicit-agent-demo-allowance/1.0.0", "source_commit": info["head"],
                 "source_manifest_sha256": info["manifest_sha256"], "grant": grant,
+                "provider_requests_started": 0}
+
+
+def grant_autonomous_capacity(repository, *, expected_budget_sha256, actor, reason, idempotency_key):
+    """Record the one three-workflow extension offline, then replay its ledger."""
+    if not re.fullmatch(r"[0-9a-f]{64}", expected_budget_sha256):
+        raise DemoError("Provide the exact saved budget hash for the autonomous capacity extension.")
+    runtime = repository / ".runtime/casepath-dev-v2"
+    if any(path.is_symlink() or not path.is_dir() for path in (repository / ".runtime", runtime)):
+        raise DemoError("Prepare and boot the normal local runtime first.")
+    request = {"expected_budget_sha256": expected_budget_sha256, "actor": actor,
+               "reason": reason, "idempotency_key": idempotency_key}
+    with ExitStack() as stack:
+        acquire_lease(runtime / "environment.lock", stack)
+        acquire_lease(repository / ".runtime/casepath-data-v1.lock", stack)
+        reserve_origin(stack)
+        info = preflight(repository)
+        database = info["data"] / "agent-work-v1.sqlite3"
+        try:
+            fd = os.open(database, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+            stack.callback(os.close, fd)
+            metadata = os.fstat(fd)
+            if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+                raise OSError
+        except OSError:
+            raise DemoError("The existing work database is unavailable; no capacity extension was created.") from None
+        command = [str(info["python"]), "-I", "-B", "-P", "-c",
+                   'import json,sys; sys.path.insert(0,sys.argv[1]); '
+                   'from casepath_api.agent_work.store import WorkStore; '
+                   'store=WorkStore(sys.argv[2]); '
+                   'result=store.grant_three_autonomous_workflows(**json.loads(sys.argv[3])); store.close(); '
+                   'print(json.dumps(result,sort_keys=True,separators=(",",":")))',
+                   str(info["capsule"] / "casepath-api"), str(database), canonical(request).decode()]
+        try:
+            grant = json.loads(run_checked(command, cwd=repository, env=info["env"]))
+            grant_sha = verified_autonomous_capacity_grant(grant)
+            if any(grant[k] != request[k] for k in ("actor", "reason", "idempotency_key")) or grant["prior_budget_sha256"] != expected_budget_sha256:
+                raise ValueError
+            budget = read_only_provider_budget(info)
+            if (budget["autonomous_capacity_grant"] != grant
+                    or verified_autonomous_capacity(budget)["autonomous_capacity_grant_sha256"] != grant_sha):
+                raise ValueError
+        except (DemoError, KeyError, TypeError, ValueError):
+            raise DemoError("The capacity extension result could not be confirmed. Inspect its saved receipt before retrying; no provider request was started.") from None
+        return {"contract": "casepath.explicit-autonomous-capacity-grant/1.0.0", "source_commit": info["head"],
+                "source_manifest_sha256": info["manifest_sha256"], "normal_boot_id": info["normal_boot_id"],
+                "normal_boot_file_sha256": info["normal_boot_file_sha256"], "grant": grant, "budget": budget,
                 "provider_requests_started": 0}
 
 
@@ -688,15 +823,18 @@ def main(argv=None):
     parser.add_argument("--model", help="Exact concrete model ID from the local catalogue")
     parser.add_argument("--catalogue", type=Path, help="Locally acquired catalogue snapshot; no download occurs here")
     parser.add_argument("--endpoints", type=Path, help="Recent model endpoint snapshot; defaults to endpoints.json beside the catalogue")
-    parser.add_argument("--autonomous", action="store_true", help="Enable durable autonomous intake and resume under the original 18-call/$0.10 lifetime budget")
+    parser.add_argument("--autonomous", action="store_true", help="Enable durable autonomous intake under the preserved budget and any sealed capacity extension")
     parser.add_argument("--grant-one-extra-run", action="store_true", help="Record one explicitly approved extra review; no server or provider request starts")
+    parser.add_argument("--grant-three-autonomous-workflows", action="store_true", help="Record the single three-workflow/six-call extension after base exhaustion; dollar caps unchanged, no inference starts")
     parser.add_argument("--expected-budget-sha256")
     parser.add_argument("--actor")
     parser.add_argument("--reason")
     parser.add_argument("--idempotency-key")
     args = parser.parse_args(argv)
     grant_args = (args.expected_budget_sha256, args.actor, args.reason, args.idempotency_key)
-    if args.grant_one_extra_run:
+    if args.grant_one_extra_run and args.grant_three_autonomous_workflows:
+        parser.error("Choose only one separate allowance operation.")
+    if args.grant_one_extra_run or args.grant_three_autonomous_workflows:
         if not all(grant_args) or any((args.model, args.catalogue, args.endpoints, args.autonomous)):
             parser.error("An extra review requires its budget hash, actor, reason and idempotency key, without serving options.")
     elif not args.model or any(grant_args):
@@ -707,6 +845,10 @@ def main(argv=None):
         if args.grant_one_extra_run:
             result = grant_extra_run(repository, expected_budget_sha256=args.expected_budget_sha256,
                                      actor=args.actor, reason=args.reason, idempotency_key=args.idempotency_key)
+            print(canonical(result).decode())
+        elif args.grant_three_autonomous_workflows:
+            result = grant_autonomous_capacity(repository, expected_budget_sha256=args.expected_budget_sha256,
+                                               actor=args.actor, reason=args.reason, idempotency_key=args.idempotency_key)
             print(canonical(result).decode())
         else:
             serve(repository, catalogue.absolute(), args.model, args.endpoints.absolute() if args.endpoints else None,

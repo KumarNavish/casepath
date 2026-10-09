@@ -41,28 +41,34 @@ def choose_model(catalogue: dict, *, model: str | None = None) -> dict:
             params = row.get("supported_parameters", [])
             price = row["pricing"]
             if not isinstance(price, dict):continue
-            # This request has no web plugin, cache_control, image, or audio.
-            # Those catalogue feature prices are not applicable. Unknown paid
-            # features and unknown tier conditions fail closed.
-            unused = {"web_search", "input_cache_read", "input_cache_write", "input_cache_write_1h", "image", "audio", "input_audio", "output_audio"}
+            # Cache writes may be automatic without cache_control. Their price
+            # replaces the input rate, so reserve the highest input rate.
+            # https://openrouter.ai/docs/guides/best-practices/prompt-caching
+            # Include reads too rather than assuming every future rate discounts
+            # input. No web plugin, image or audio is requested. Unknown paid
+            # features fail closed.
+            cache_prices = {"input_cache_read", "input_cache_write", "input_cache_write_1h"}
+            unused = {"web_search", "image", "audio", "input_audio", "output_audio"}
             base = {key: Decimal(str(value)) for key, value in price.items() if key != "overrides"}
             if any(not amount.is_finite() or amount < 0 for amount in base.values()):continue
-            if any(amount != 0 for key, amount in base.items() if key not in {"prompt", "completion", "request"} | unused):continue
-            prompt, completion = base["prompt"], base["completion"]
+            if any(amount != 0 for key, amount in base.items() if key not in {"prompt", "completion", "request"} | cache_prices | unused):continue
+            prompt = max(base["prompt"], *(base.get(key, Decimal(0)) for key in cache_prices))
+            completion = base["completion"]
             request_price = base.get("request", Decimal(0))
             overrides = price.get("overrides", [])
             if not isinstance(overrides, list) or len(overrides) > 32 or row.get("pricing_tiers") is not None:continue
             valid = True
             for tier in overrides:
                 if (not isinstance(tier, dict) or type(tier.get("min_prompt_tokens")) is not int
-                    or tier["min_prompt_tokens"] < 0 or set(tier) - ({"min_prompt_tokens", "prompt", "completion", "request"} | unused)):
+                    or tier["min_prompt_tokens"] < 0 or set(tier) - ({"min_prompt_tokens", "prompt", "completion", "request"} | cache_prices | unused)):
                     valid = False; break
                 amounts = {key: Decimal(str(value)) for key, value in tier.items() if key != "min_prompt_tokens"}
                 if any(not amount.is_finite() or amount < 0 for amount in amounts.values()):
                     valid = False; break
                 # UTF-8 request bytes conservatively bound admitted prompt tokens.
                 if tier["min_prompt_tokens"] <= 24000:
-                    prompt = max(prompt, amounts.get("prompt", prompt))
+                    prompt = max(prompt, amounts.get("prompt", prompt),
+                                 *(amounts.get(key, Decimal(0)) for key in cache_prices))
                     completion = max(completion, amounts.get("completion", completion))
                     request_price = max(request_price, amounts.get("request", request_price))
             if not valid:continue

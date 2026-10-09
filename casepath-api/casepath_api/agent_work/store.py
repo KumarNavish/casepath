@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS work_objects (
 
 # This ledger shares the original budget, but never rewrites historical permits.
 for _table, _keys in (("work_autonomous_policy", "singleton INTEGER PRIMARY KEY CHECK(singleton=1)"),
+                     ("work_autonomous_capacity_grant", "singleton INTEGER PRIMARY KEY CHECK(singleton=1)"),
                      ("work_autonomous_workflows", "workflow_id TEXT PRIMARY KEY"),
                      ("work_autonomous_calls", "workflow_id TEXT NOT NULL, stage TEXT NOT NULL, PRIMARY KEY(workflow_id,stage)"),
                      ("work_autonomous_outcomes", "workflow_id TEXT NOT NULL, stage TEXT NOT NULL, PRIMARY KEY(workflow_id,stage)"),
@@ -115,7 +116,7 @@ for _table, _keys in (("work_autonomous_policy", "singleton INTEGER PRIMARY KEY 
     SCHEMA += f"CREATE TABLE IF NOT EXISTS {_table} ({_columns}, record_json TEXT NOT NULL, record_sha256 TEXT NOT NULL{', PRIMARY KEY' + _constraint if _separator else ''});\n"
     for _action in ("UPDATE", "DELETE"):
         SCHEMA += f"CREATE TRIGGER IF NOT EXISTS {_table}_no_{_action.lower()} BEFORE {_action} ON {_table} BEGIN SELECT RAISE(ABORT,'autonomous records are immutable'); END;\n"
-    _match = "singleton=NEW.singleton" if _table.endswith("policy") else "workflow_id=NEW.workflow_id"
+    _match = "singleton=NEW.singleton" if _keys.startswith("singleton") else "workflow_id=NEW.workflow_id"
     if _table.endswith(("calls", "outcomes")):
         _match += " AND stage=NEW.stage"
     SCHEMA += f"CREATE TRIGGER IF NOT EXISTS {_table}_no_replace BEFORE INSERT ON {_table} WHEN EXISTS(SELECT 1 FROM {_table} WHERE {_match}) BEGIN SELECT RAISE(ABORT,'autonomous records are immutable'); END;\n"
@@ -325,6 +326,7 @@ class WorkStore:
             raise WorkStoreError("persisted demo budget identity differs")
         grant = self._external_run_grant(db, policy)
         autonomous_policy = self._autonomous_policy(db, policy)
+        capacity_grant = self._autonomous_capacity_grant(db, policy, autonomous_policy)
         effective_max_runs = policy["max_runs"] + (grant["additional_runs"] if grant else 0)
         runs, calls, pending = usage or self._external_usage(db)
         granted_runs = [r for r in runs.values() if r["grant_sha256"] is not None]
@@ -333,6 +335,7 @@ class WorkStore:
                 or any(not grant or r["grant_sha256"] != grant["grant_sha256"] for r in granted_runs)):
             raise WorkStoreError("external run grant does not bind the admitted allowance")
         autonomous = self._autonomous_usage(db, autonomous_policy)
+        granted_workflows, granted_calls = self._autonomous_capacity_usage(capacity_grant, runs, calls, autonomous)
         calls = [*calls, *autonomous["calls"]]
         pending = pending or autonomous["pending"]
         actual = sum((c["cost"] for c in calls if c["cost"] is not None), Decimal(0))
@@ -355,11 +358,14 @@ class WorkStore:
                 "unknown_calls": sum(c["cost"] is None for c in calls), "in_flight": pending,
                 "can_start": reason is None, "reason": reason, "automatic_retry": False}
         if autonomous_policy:
+            effective_calls = policy["max_provider_calls"] + (capacity_grant["additional_provider_calls"] if capacity_grant else 0)
             auto_reason = ("provider_cost_bound_exceeded" if exceeded else "provider_outcome_pending" if pending else
-                           "call_limit_reached" if len(calls) + 2 > policy["max_provider_calls"] else
+                           "call_limit_reached" if len(calls) + 2 > effective_calls or capacity_grant and granted_workflows >= capacity_grant["additional_workflows"] else
                            "cost_limit_reached" if available < self._money(autonomous_policy["workflow_cost_limit_usd"]) else None)
             result.update(autonomous_policy=autonomous_policy, autonomous_workflows_used=len(autonomous["workflows"]),
                           autonomous_provider_calls_used=len(autonomous["calls"]),
+                          autonomous_capacity_grant=capacity_grant, effective_autonomous_max_provider_calls=effective_calls,
+                          autonomous_grant_workflows_used=granted_workflows, autonomous_grant_provider_calls_used=granted_calls,
                           autonomous_can_start=auto_reason is None, autonomous_reason=auto_reason)
         return result
 
@@ -424,7 +430,7 @@ class WorkStore:
         value = self._autonomous_decode(db.execute("SELECT * FROM work_autonomous_policy WHERE singleton=1").fetchone(), "policy_sha256")
         if value is None:
             if any(db.execute(f"SELECT 1 FROM {table} LIMIT 1").fetchone() for table in
-                   ("work_autonomous_workflows", "work_autonomous_calls", "work_autonomous_outcomes", "work_autonomous_terminals")):
+                   ("work_autonomous_workflows", "work_autonomous_calls", "work_autonomous_outcomes", "work_autonomous_terminals", "work_autonomous_capacity_grant")):
                 raise WorkStoreError("autonomous work has no sealed policy")
             return None
         try:
@@ -470,6 +476,106 @@ class WorkStore:
                 "prior_budget_sha256": expected_budget_sha256, "prior_budget": budget, "actor": actor, "reason": reason,
                 "idempotency_key": idempotency_key, "activated_at": utcnow(), "max_calls_per_workflow": 2,
                 "workflow_cost_limit_usd": budget["run_cost_limit_usd"]}, "policy_sha256")
+
+    def _autonomous_capacity_grant(self, db, base, policy):
+        value = self._autonomous_decode(db.execute("SELECT * FROM work_autonomous_capacity_grant WHERE singleton=1").fetchone(), "grant_sha256")
+        if value is None:
+            return None
+        try:
+            prior, roster = value["prior_budget"], value["prior_workflows"]
+            self._validate_grant_command(value["prior_budget_sha256"], value["actor"], value["reason"], value["idempotency_key"])
+            if (set(value) != {"contract", "additional_workflows", "additional_provider_calls", "base_policy_sha256",
+                               "autonomous_policy_sha256", "prior_budget_sha256", "prior_budget", "prior_workflows",
+                               "actor", "reason", "idempotency_key", "granted_at", "grant_sha256"}
+                    or value["contract"] != "casepath.autonomous-capacity-grant/1.0.0" or base is None or policy is None
+                    or base != {"max_runs": 3, "max_provider_calls": 18, "total_cost_limit_usd": "0.10", "run_cost_limit_usd": "0.02"}
+                    or type(value["additional_workflows"]) is not int or value["additional_workflows"] != 3
+                    or type(value["additional_provider_calls"]) is not int or value["additional_provider_calls"] != 6
+                    or value["base_policy_sha256"] != digest(base) or value["autonomous_policy_sha256"] != policy["policy_sha256"]
+                    or digest(prior) != value["prior_budget_sha256"] or prior["base_policy_sha256"] != digest(base)
+                    or any(prior[k] != v for k, v in base.items()) or prior["autonomous_policy"] != policy
+                    or prior["autonomous_capacity_grant"] is not None or prior["effective_autonomous_max_provider_calls"] != 18
+                    or type(prior["provider_calls_used"]) is not int or prior["provider_calls_used"] not in (17, 18)
+                    or any(type(prior[k]) is not int or prior[k] != v for k, v in
+                           (("autonomous_grant_workflows_used", 0), ("autonomous_grant_provider_calls_used", 0)))
+                    or any(type(prior[k]) is not int or not 0 <= prior[k] <= limit for k, limit in
+                           (("runs_used", 4), ("autonomous_provider_calls_used", 18), ("unknown_calls", 18)))
+                    or prior["in_flight"] is not False or prior["automatic_retry"] is not False
+                    or prior["autonomous_can_start"] is not False or prior["autonomous_reason"] != "call_limit_reached"
+                    or self._money(prior["remaining_cost_usd"]) < Decimal("0.06")
+                    or self._money(prior["actual_cost_usd"]) + self._money(prior["reserved_cost_usd"]) + self._money(prior["remaining_cost_usd"]) != Decimal("0.10")
+                    or not isinstance(roster, list) or type(prior["autonomous_workflows_used"]) is not int
+                    or len(roster) != prior["autonomous_workflows_used"] or len(roster) > 18
+                    or not len(roster) <= prior["autonomous_provider_calls_used"] <= 2 * len(roster)
+                    or any(set(item) != {"workflow_id", "workflow_sha256"}
+                           or not isinstance(item["workflow_id"], str) or not 1 <= len(item["workflow_id"]) <= 180
+                           or not self._autonomous_hash(item["workflow_sha256"]) for item in roster)
+                    or [item["workflow_id"] for item in roster] != sorted({item["workflow_id"] for item in roster})
+                    or not self._autonomous_time(value["granted_at"])):
+                raise ValueError
+        except (KeyError, TypeError, ValueError, AttributeError) as exc:
+            raise WorkStoreError("autonomous capacity grant does not preserve the original allowance") from exc
+        return value
+
+    def _autonomous_capacity_usage(self, grant, runs, legacy_calls, autonomous):
+        """Bind the extension to new workflows; historical records never move into it."""
+        works = autonomous["workflows"]
+        if grant is None:
+            if any("capacity_grant_sha256" in work["record"] for work in works.values()):
+                raise WorkStoreError("autonomous workflow has no capacity grant")
+            return 0, 0
+        prior = grant["prior_budget"]
+        roster = {row["workflow_id"]: row["workflow_sha256"] for row in grant["prior_workflows"]}
+        try:
+            if (any(key not in works or works[key]["record"]["workflow_sha256"] != value
+                    or works[key]["terminal"] is None or "capacity_grant_sha256" in works[key]["record"]
+                    for key, value in roster.items())
+                    or len(legacy_calls) != prior["provider_calls_used"] - prior["autonomous_provider_calls_used"]
+                    or len(runs) != prior["runs_used"] or any(r["run"]["status"] in ACTIVE for r in runs.values())
+                    or sum(len(works[key]["calls"]) for key in roster) != prior["autonomous_provider_calls_used"]):
+                raise ValueError
+            added = [work for key, work in works.items() if key not in roster]
+            call_count = sum(len(work["calls"]) for work in added)
+            if (len(added) > grant["additional_workflows"] or call_count > grant["additional_provider_calls"]
+                    or any(work["record"].get("capacity_grant_sha256") != grant["grant_sha256"] for work in added)):
+                raise ValueError
+        except (KeyError, TypeError, ValueError, AttributeError) as exc:
+            raise WorkStoreError("autonomous capacity grant does not bind the preserved workflow roster") from exc
+        return len(added), call_count
+
+    def grant_three_autonomous_workflows(self, expected_budget_sha256, actor, reason, idempotency_key):
+        """One offline extension: three workflows, six calls, unchanged dollar limits."""
+        self._validate_grant_command(expected_budget_sha256, actor, reason, idempotency_key)
+        with self.transaction() as db:
+            budget = self._external_budget(db)
+            if budget is None or budget.get("autonomous_policy") is None:
+                raise WorkStoreError("an existing autonomous budget policy is required")
+            prior = budget["autonomous_capacity_grant"]
+            if prior:
+                if (prior["prior_budget_sha256"], prior["actor"], prior["reason"], prior["idempotency_key"]) != (
+                        expected_budget_sha256, actor, reason, idempotency_key):
+                    raise ConflictError("the single autonomous capacity grant already binds a different approval")
+                return prior
+            if digest(budget) != expected_budget_sha256:
+                raise ConflictError("the autonomous budget snapshot changed; inspect it before approval")
+            if any(budget[k] != v for k, v in {"max_runs": 3, "max_provider_calls": 18, "total_cost_limit_usd": "0.10", "run_cost_limit_usd": "0.02"}.items()):
+                raise ConflictError("the original bounded demo policy is required for this grant")
+            usage = self._autonomous_usage(db, budget["autonomous_policy"])
+            active = db.execute("SELECT 1 FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits) "
+                                "AND status IN ('queued','running','interrupted') LIMIT 1").fetchone()
+            if budget["in_flight"] or active or any(work["terminal"] is None for work in usage["workflows"].values()):
+                raise ConflictError("active or pending provider work must finish before a capacity grant")
+            if budget["provider_calls_used"] not in (17, 18) or budget["autonomous_reason"] != "call_limit_reached":
+                raise ConflictError("the original eighteen-call allowance must be exhausted for a two-call workflow before a capacity grant")
+            if self._money(budget["remaining_cost_usd"]) < Decimal("0.06"):
+                raise ConflictError("three workflow ceilings must fit within the remaining original dollar allowance")
+            return self._autonomous_insert(db, "work_autonomous_capacity_grant", {"singleton": 1}, {
+                "contract": "casepath.autonomous-capacity-grant/1.0.0", "additional_workflows": 3, "additional_provider_calls": 6,
+                "base_policy_sha256": budget["base_policy_sha256"], "autonomous_policy_sha256": budget["autonomous_policy"]["policy_sha256"],
+                "prior_budget_sha256": expected_budget_sha256, "prior_budget": budget,
+                "prior_workflows": [{"workflow_id": key, "workflow_sha256": work["record"]["workflow_sha256"]}
+                                    for key, work in sorted(usage["workflows"].items())],
+                "actor": actor, "reason": reason, "idempotency_key": idempotency_key, "granted_at": utcnow()}, "grant_sha256")
 
     def _autonomous_usage(self, db, policy):
         workflows, calls, pending, unused = {}, [], False, Decimal(0)
@@ -598,14 +704,16 @@ class WorkStore:
                 raise ConflictError("the autonomous provider profile is not explicitly enabled; no request was reserved")
             if budget["in_flight"]:
                 raise ConflictError("another provider outcome is pending; no concurrent inference")
-            if budget["reason"] == "provider_cost_bound_exceeded" or budget["provider_calls_used"] >= budget["max_provider_calls"]:
+            if budget["reason"] == "provider_cost_bound_exceeded" or budget["provider_calls_used"] >= budget["effective_autonomous_max_provider_calls"]:
                 raise ConflictError("the shared provider budget is exhausted")
             if work is None:
                 if not budget["autonomous_can_start"]:
                     raise ConflictError("autonomous budget unavailable: " + budget["autonomous_reason"])
+                capacity = budget["autonomous_capacity_grant"]
                 record = self._autonomous_insert(db, "work_autonomous_workflows", {"workflow_id": workflow_id}, {
                     "contract": "casepath.autonomous-workflow/1.0.0", "workflow_id": workflow_id, "identity": identity,
                     "identity_sha256": digest(identity), "config": config, "config_sha256": digest(config),
+                    **({"capacity_grant_sha256": capacity["grant_sha256"]} if capacity else {}),
                     "policy_sha256": policy["policy_sha256"], "created_at": utcnow()}, "workflow_sha256")
                 work = {"record": record, "calls": {}}
             if stage == "verify":
