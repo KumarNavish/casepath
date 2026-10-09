@@ -437,9 +437,13 @@ async function mountFixture(page, config = {}) {
           if (state.original_binding?.[field] !== undefined) provenance[field] = state.original_binding[field];
         }
         const currentEvent = live.state.revision === 0 ? null : live.state.last_event_sha256;
-        return response(200, {...envelope, ...batch(state, 0), mode: 'replay', replay_only: true, through_seq: through,
+        const replay = {...envelope, ...batch(state, 0), mode: 'replay', replay_only: true, through_seq: through,
           current_revision: live.state.revision, current_state_sha256: live.state.state_sha256, current_event_sha256: currentEvent,
-          current_head: {revision: live.state.revision, state_sha256: live.state.state_sha256, event_sha256: currentEvent}, provenance});
+          current_head: {revision: live.state.revision, state_sha256: live.state.state_sha256, event_sha256: currentEvent}, provenance};
+        if (fixture.holdReplayId === id && through === fixture.holdReplayThrough) {
+          return new Promise(resolve => fixture.held.push({id, kind: 'replay', release: () => resolve(response(200, replay))}));
+        }
+        return response(200, replay);
       }
       if (kind === 'snapshot') {
         if (fixture.presentationSuite === 'live' && fixture.suitePosts[id] && (fixture.suiteReads[id] = (fixture.suiteReads[id] || 0) + 1) >= 2) fixture.envelopes[id] = structuredClone(fixture.acceptedHistories[id][2]);
@@ -1094,4 +1098,294 @@ test('a delayed response from an abandoned claim cannot replace the next claim o
   await title(page, otherId);
   assert.equal(new URL(page.url()).hash, `#autonomous/claim/${otherId}`);
   assert.deepEqual(await renderedIdentity(), before, 'the abandoned response must not replace the visible saved claim');
+});
+
+async function connectorContrast(page) {
+  return page.evaluate(() => {
+    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1;
+    const context = canvas.getContext('2d', {willReadFrequently: true});
+    const color = css => {
+      context.clearRect(0, 0, 1, 1); context.fillStyle = css; context.fillRect(0, 0, 1, 1);
+      return [...context.getImageData(0, 0, 1, 1).data].map((value, index) => index === 3 ? value / 255 : value);
+    };
+    const over = (front, back) => front.slice(0, 3).map((value, index) => value * front[3] + back[index] * (1 - front[3])).concat(1);
+    const luminance = rgb => rgb.slice(0, 3).map(value => value / 255).map(value => value <= .04045 ? value / 12.92 : ((value + .055) / 1.055) ** 2.4).reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
+    const ratio = (front, back) => { const a = luminance(front), b = luminance(back); return (Math.max(a, b) + .05) / (Math.min(a, b) + .05); };
+    return [...document.querySelectorAll('.au-graph-lines path, .au-evidence-lines path, .au-evidence-lines circle, .au-evidence-tether path')].filter(element => element.getAttribute('d') || element.tagName.toLowerCase() === 'circle').map(element => {
+      const ancestry = []; for (let ancestor = element; ancestor; ancestor = ancestor.parentElement) ancestry.unshift(ancestor);
+      let background = [255, 255, 255, 1], opacity = 1;
+      for (const ancestor of ancestry) {
+        const style = getComputedStyle(ancestor);
+        background = over(color(style.backgroundColor), background);
+        opacity *= Number(style.opacity);
+      }
+      const style = getComputedStyle(element), stroke = color(style.stroke);
+      stroke[3] *= opacity * Number(style.strokeOpacity);
+      const effective = over(stroke, background);
+      return {kind: element.closest('.au-graph-lines') ? 'graph' : element.closest('.au-evidence-lines') ? 'evidence' : 'selection',
+        edge: element.dataset.auEdge || null, state: element.dataset.state || null, selected: element.dataset.selected || null,
+        stroke: style.stroke, opacity, strokeOpacity: Number(style.strokeOpacity), dash: style.strokeDasharray,
+        background: background.slice(0, 3), effective: effective.slice(0, 3), contrast: ratio(effective, background)};
+    });
+  });
+}
+
+test('graph routes and evidence connectors retain at least 3:1 effective contrast with dashed excluded routes and coral selection', async t => {
+  for (const width of [1440, 390]) {
+    const page = await fixturePage(t, {width});
+    await open(page, processedId);
+    await title(page, processedId);
+    const receipt = await connectorContrast(page);
+    assert.ok(receipt.some(row => row.kind === 'graph' && row.selected === 'false'), 'the contrast check must include ordinary recorded connections');
+    assert.ok(receipt.some(row => row.kind === 'evidence'), 'the contrast check must include actual evidence connectors');
+    assert.ok(receipt.some(row => row.kind === 'selection'), 'the contrast check must include the selected-step tether and its opacity');
+    for (const row of receipt) assert.ok(row.contrast >= 3, `${width}px ${row.kind} connector must reach 3:1 after opacity and background composition: ${JSON.stringify(row)}`);
+    const excluded = receipt.filter(row => row.kind === 'graph' && ['false', 'inactive', 'not_reached'].includes(row.state));
+    assert.ok(excluded.length > 0, 'the real process must retain excluded routes');
+    assert.ok(excluded.every(row => row.dash !== 'none' && /[1-9]/.test(row.dash)), 'excluded routes remain dashed');
+    const selection = await page.evaluate(() => {
+      const node = document.querySelector('[data-au-node][aria-pressed="true"]'), workspace = document.querySelector('.au-workspace');
+      const probe = document.createElement('span'); probe.style.color = getComputedStyle(workspace).getPropertyValue('--au-accent'); workspace.append(probe);
+      const accent = getComputedStyle(probe).color; probe.remove();
+      return {accent, title: getComputedStyle(node.querySelector('.au-node-title')).color, junction: getComputedStyle(node.querySelector('.au-node-index')).backgroundColor};
+    });
+    assert.equal(selection.title, selection.accent);
+    assert.equal(selection.junction, selection.accent);
+    if (process.env.CASEPATH_BROWSER_RECEIPTS) {
+      await page.screenshot({path: `/tmp/casepath-visual-graph-${width}.png`, fullPage: true});
+      fs.writeFileSync(`/tmp/casepath-visual-contrast-${width}.json`, JSON.stringify(receipt, null, 2));
+    }
+  }
+});
+
+test('the demonstration itinerary numbers its nine domain-grouped cases and shows verified status at the current presentation position', async t => {
+  const page = await fixturePage(t, {presentationSuite: 'replay', width: 390, height: 844});
+  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  const groups = page.locator('.au-demo-selection section');
+  assert.equal(await groups.count(), 3);
+  assert.deepEqual(await groups.locator('h2, h3').allTextContents(), ['Defects & repairs', 'Lease termination', 'Rent changes']);
+  for (let index = 0; index < 3; index++) assert.deepEqual(await groups.nth(index).locator('[data-au-demo-case]').evaluateAll(rows => rows.map(row => row.dataset.auDemoCase)), demoIds.slice(index * 3, index * 3 + 3));
+  assert.deepEqual(await page.locator('.au-demo-selection .au-demo-order').allTextContents(), ['01', '02', '03', '04', '05', '06', '07', '08', '09']);
+  assert.equal(await page.locator('.au-demo-selection svg').count(), 0, 'the itinerary cannot imply a process or causal connection between separate cases');
+  await page.locator('[data-au-demo-play]').click();
+  await title(page, demoIds[0]);
+  const itinerary = page.locator('details.au-demo-itinerary[data-au-disclosure="demo-itinerary"]');
+  assert.equal(await itinerary.count(), 1);
+  const position = () => itinerary.locator('.au-demo-position').innerText().then(text => text.match(/\d+/g).map(Number));
+  assert.deepEqual(await position(), [1, 9]);
+  assert.equal(await itinerary.locator('[data-au-demo-case][aria-current="step"]').getAttribute('data-au-demo-case'), demoIds[0]);
+  assert.equal(await itinerary.locator('[aria-current="step"] .au-status').textContent(), 'Not started', 'the verified original overrides the collection summary of a completed head');
+  await itinerary.locator('summary').click();
+  assert.deepEqual(await itinerary.locator('.au-demo-order').allTextContents(), ['01', '02', '03', '04', '05', '06', '07', '08', '09']);
+  await page.clock.runFor(1400);
+  await eventually(() => itinerary.locator('[aria-current="step"] .au-status').textContent().then(text => text === 'Working'), 'the itinerary retained a stale collection status after the accepted prefix changed');
+  assert.deepEqual(await position(), [1, 9]);
+  await page.clock.runFor(1400);
+  await page.clock.runFor(3200);
+  await title(page, demoIds[1]);
+  assert.deepEqual(await position(), [2, 9]);
+  assert.equal(await itinerary.locator('[data-au-demo-case][aria-current="step"]').getAttribute('data-au-demo-case'), demoIds[1]);
+  if (process.env.CASEPATH_BROWSER_RECEIPTS) await page.screenshot({path: '/tmp/casepath-visual-itinerary-390.png', fullPage: true});
+  await page.locator('.au-nav [data-au-nav="work"]').click();
+});
+
+for (const reducedMotion of ['no-preference', 'reduce']) test(`mobile inspection navigates and centers every real step while retaining forks, excluded routes and free pan (${reducedMotion})`, async t => {
+  const page = await fixturePage(t, {width: 390, height: 844});
+  await page.emulateMedia({reducedMotion});
+  await open(page, processedId);
+  await title(page, processedId);
+  const record = await page.evaluate(id => structuredClone(window.__fixture.envelopes[id].state), processedId);
+  const ids = record.graph.nodes.map(node => node.node_id);
+  assert.equal(ids.length, 11);
+  assert.equal(record.graph.edges.length, 13);
+  const topology = () => page.locator('[data-au-edge]').evaluateAll(edges => edges.map(edge => [edge.dataset.auEdge, edge.dataset.state]));
+  const before = await topology();
+  assert.equal(before.length, record.graph.edges.length);
+  assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(nodes => nodes.map(node => node.dataset.auNode))), sorted(ids));
+  const inspection = page.locator('.au-mobile-inspection[data-au-node-inspection]');
+  assert.equal(await inspection.isVisible(), true);
+  const previous = inspection.locator('[data-au-node-previous]'), next = inspection.locator('[data-au-node-next]');
+  const label = control => control.getAttribute('aria-label').then(async text => text || await control.innerText());
+  assert.match(await label(previous), /previous.*step|step.*previous/i);
+  assert.match(await label(next), /next.*step|step.*next/i);
+  await page.locator(`[data-au-node="${ids[0]}"]`).click();
+  assert.equal(await previous.isDisabled(), true);
+  assert.equal(await next.isDisabled(), false);
+  const assertStep = async index => {
+    assert.match(await inspection.locator('[data-au-inspection-position]').innerText(), new RegExp(`Step\\s+${index + 1}\\s+of\\s+${ids.length}\\b`, 'i'));
+    assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'), ids[index]);
+    assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), ids[index]);
+    const geometry = await page.evaluate(id => {
+      const viewport = document.querySelector('[data-au-graph-pan]'), node = document.querySelector(`[data-au-node="${id}"]`), area = viewport.getBoundingClientRect(), bounds = node.getBoundingClientRect();
+      return {left: bounds.left, right: bounds.right, viewportLeft: area.left, viewportRight: area.right, centerDifference: Math.abs((bounds.left + bounds.right - area.left - area.right) / 2), scroll: viewport.scrollLeft, maximum: viewport.scrollWidth - viewport.clientWidth};
+    }, ids[index]);
+    assert.ok(geometry.left >= geometry.viewportLeft - 1 && geometry.right <= geometry.viewportRight + 1, 'the selected real step must be visible in the mobile graph');
+    if (geometry.scroll > 1 && geometry.scroll < geometry.maximum - 1) assert.ok(geometry.centerDifference <= 3, `mobile inspection must center the actual selected node: ${JSON.stringify(geometry)}`);
+  };
+  await assertStep(0);
+  for (let index = 1; index < ids.length; index++) {
+    await next.scrollIntoViewIfNeeded();
+    const pageTop = await page.evaluate(() => scrollY);
+    await next.click();
+    if (reducedMotion === 'reduce') assert.equal(await page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length), 0, 'reduced motion must suppress navigation animation');
+    await assertStep(index);
+    assert.equal(await page.evaluate(() => scrollY), pageTop, 'mobile inspection centers the real node without moving the page');
+    if (index < ids.length - 1) assert.equal(await next.evaluate(element => document.activeElement === element), true, 'enabled inspection controls retain their accessible focus');
+  }
+  assert.equal(await next.isDisabled(), true);
+  assert.equal(await previous.isDisabled(), false);
+  await previous.click();
+  await assertStep(ids.length - 2);
+  const excludedId = record.evaluation.nodes.find(node => node.activation === 'false').node_id;
+  await page.locator(`[data-au-node="${excludedId}"]`).click();
+  assert.equal(await page.locator(`[data-au-node="${excludedId}"]`).getAttribute('aria-pressed'), 'true', 'an excluded branch remains inspectable without becoming applicable');
+  assert.equal(await page.locator(`[data-au-node="${excludedId}"]`).getAttribute('data-status'), 'inactive');
+  await page.evaluate(() => { const viewport = document.querySelector('[data-au-graph-pan]'); viewport.scrollLeft = (viewport.scrollWidth - viewport.clientWidth) * .7; viewport.dispatchEvent(new Event('scroll')); });
+  const panned = await page.locator('[data-au-graph-pan]').evaluate(element => element.scrollLeft);
+  await page.evaluate(() => window.__controller.refresh());
+  assert.equal(await page.locator('[data-au-graph-pan]').evaluate(element => element.scrollLeft), panned, 'a matching update must preserve arbitrary free panning');
+  assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'), excludedId);
+  assert.deepEqual(await topology(), before, 'inspection order cannot alter recorded forks or route applicability');
+  await next.click();
+  await assertStep(ids.indexOf(excludedId) + 1);
+  if (process.env.CASEPATH_BROWSER_RECEIPTS) await page.screenshot({path: `/tmp/casepath-visual-inspection-390-${reducedMotion}.png`, fullPage: true});
+});
+
+test('collection search retains a persistent input affordance and visible focus while filtering exact case IDs', async t => {
+  for (const width of [1440, 390]) {
+    const page = await fixturePage(t, {width, height: 844});
+    const input = page.locator('[data-au-claim-search]');
+    const style = () => input.evaluate(element => { const css = getComputedStyle(element); return {border: Number.parseFloat(css.borderBottomWidth), borderStyle: css.borderBottomStyle, shadow: css.boxShadow, outline: Number.parseFloat(css.outlineWidth), outlineStyle: css.outlineStyle, focusVisible: element.matches(':focus-visible'), height: element.getBoundingClientRect().height}; });
+    const idle = await style();
+    assert.ok(idle.border >= 1 && idle.borderStyle !== 'none', 'search must remain visibly underlined before focus');
+    assert.match(idle.shadow, /inset/, 'search retains its subtle inset affordance');
+    assert.ok(idle.height >= 44);
+    await input.focus();
+    const focused = await style();
+    assert.equal(focused.focusVisible, true);
+    assert.ok(focused.outline >= 2 && focused.outlineStyle !== 'none', 'keyboard search focus must remain visible');
+    await input.fill(demoIds[0]);
+    await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 1), 'focused search did not retain exact case ID filtering');
+    assert.equal(await page.locator('[data-au-claim-row]').getAttribute('data-au-claim-row'), demoIds[0]);
+    assert.equal(await input.evaluate(element => document.activeElement === element), true, 'filtering must preserve the search input focus');
+    assert.ok(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('q') === demoIds[0]);
+    if (process.env.CASEPATH_BROWSER_RECEIPTS) await page.screenshot({path: `/tmp/casepath-visual-search-${width}.png`, fullPage: true});
+  }
+});
+
+test('a working claim keeps completed step and action labels scoped to Completed', async t => {
+  const page = await fixturePage(t);
+  const expected = await page.evaluate(id => {
+    const state = window.__fixture.envelopes[id].state;
+    state.status = 'running';
+    return {nodes: structuredClone(state.evaluation.nodes), actions: structuredClone(state.actions)};
+  }, processedId);
+  await open(page, processedId);
+  await title(page, processedId);
+  assert.equal(await page.locator('.au-work-head .au-status').innerText(), 'Working');
+  const completedNodes = page.locator('[data-au-node][data-status="completed"]');
+  assert.ok(await completedNodes.count() > 0, 'the accepted record must include completed steps within a working claim');
+  for (const label of await completedNodes.locator('.au-node-state').allTextContents()) assert.equal(label, 'Completed');
+  const actionLabels = await page.locator('.au-recorded-actions .au-action-heading span').allTextContents();
+  assert.ok(actionLabels.length > 0, 'the accepted record must include completed actions');
+  for (const label of actionLabels) assert.equal(label, 'Completed');
+  const id = await completedNodes.first().getAttribute('data-au-node');
+  await completedNodes.first().click();
+  assert.equal(await page.locator('.au-step-status').innerText(), 'Completed');
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), id);
+  const saved = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
+  assert.equal(saved.status, 'running');
+  assert.deepEqual(saved.evaluation.nodes, expected.nodes);
+  assert.deepEqual(saved.actions, expected.actions, 'presentation labels cannot rewrite the accepted action status or receipt');
+});
+
+test('the desktop demonstration overview keeps all nine numbered cases visible while retaining each exact original subject', async t => {
+  const page = await fixturePage(t, {presentationSuite: 'replay', width: 1440, height: 900});
+  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  const rows = page.locator('.au-demo-selection [data-au-demo-case]');
+  assert.equal(await rows.count(), 9);
+  const geometry = await rows.evaluateAll(elements => elements.map(element => ({id: element.dataset.auDemoCase, number: element.querySelector('.au-demo-order').textContent, ...element.getBoundingClientRect().toJSON()})));
+  assert.deepEqual(geometry.map(row => row.number), ['01', '02', '03', '04', '05', '06', '07', '08', '09']);
+  for (const row of geometry) assert.ok(row.top >= 0 && row.bottom <= 900, `all nine itinerary positions must remain in the desktop overview: ${JSON.stringify(row)}`);
+  const columns = await page.locator('.au-demo-selection > section').evaluateAll(elements => elements.map(element => element.getBoundingClientRect().x));
+  assert.equal(new Set(columns).size, 3, 'the desktop overview groups its three domains into adjacent columns');
+  for (const id of demoIds) {
+    const row = page.locator(`[data-au-demo-case="${id}"]`), subject = originals.find(original => original.claim_id === id).subject;
+    const preview = row.locator('button > span');
+    assert.equal(await preview.textContent(), subject, 'a compact itinerary cannot rewrite the original subject');
+    assert.equal(await preview.getAttribute('title') || await row.locator('button').getAttribute('title'), subject, 'the full original subject remains available on the preview');
+    assert.ok((await row.locator('button').getAttribute('aria-label') || await row.locator('button').textContent()).includes(subject), 'the complete subject remains in the accessible case name');
+    const style = await preview.evaluate(element => { const css = getComputedStyle(element); return {whiteSpace: css.whiteSpace, overflow: css.overflow, ellipsis: css.textOverflow, height: element.getBoundingClientRect().height, lineHeight: Number.parseFloat(css.lineHeight)}; });
+    assert.equal(style.whiteSpace, 'nowrap');
+    assert.equal(style.ellipsis, 'ellipsis');
+    assert.ok(style.height <= style.lineHeight + 1, 'desktop subject previews remain one readable line');
+    assert.equal(await row.locator('.au-status').innerText(), 'Investigation complete');
+  }
+  if (process.env.CASEPATH_BROWSER_RECEIPTS) {
+    await page.screenshot({path: '/tmp/casepath-visual-itinerary-1440.png', fullPage: true});
+    fs.writeFileSync('/tmp/casepath-visual-itinerary-1440.json', JSON.stringify(geometry, null, 2));
+  }
+});
+
+test('pending raw navigation blocks automatic Live Start, timed advancement and delayed replay before route events dispatch', async t => {
+  const freezeRoutes = page => page.evaluate(() => {
+    window.__freezeRouteEvents = event => event.stopImmediatePropagation();
+    window.addEventListener('hashchange', window.__freezeRouteEvents, true);
+    window.addEventListener('popstate', window.__freezeRouteEvents, true);
+  });
+  const resumeRoutes = page => page.evaluate(() => {
+    window.removeEventListener('hashchange', window.__freezeRouteEvents, true);
+    window.removeEventListener('popstate', window.__freezeRouteEvents, true);
+    window.dispatchEvent(new Event('hashchange'));
+  });
+  const id = demoIds[0], opening = await fixturePage(t, {originalStartId: id, holdId: id, holdRemaining: 1});
+  await opening.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await opening.locator('[data-au-demo-mode="live"]').click();
+  await opening.locator('[data-au-demo-play]').click();
+  await eventually(() => opening.evaluate(() => window.__fixture.held.length === 1), 'the original opening GET was not held');
+  await freezeRoutes(opening);
+  await opening.evaluate(() => {
+    location.hash = '#autonomous/cases';
+    for (const held of window.__fixture.held.splice(0)) held.release();
+  });
+  await opening.evaluate(async () => { for (let turn = 0; turn < 20; turn++) await Promise.resolve(); });
+  await opening.clock.runFor(1000);
+  assert.equal((await calls(opening, `/claims/${id}/start`)).length, 0, 'a verified stale GET cannot reuse Play authorization after the URL changes');
+  await resumeRoutes(opening);
+  await eventually(() => opening.locator('[data-au-claim-row]').count().then(count => count === 150), 'the pending raw route did not restore Cases');
+  assert.equal((await calls(opening, `/claims/${id}/start`)).length, 0);
+
+  const timed = await fixturePage(t, {presentationSuite: 'live'});
+  await timed.evaluate(ids => { for (const id of ids) window.__fixture.envelopes[id] = structuredClone(window.__fixture.acceptedHistories[id][2]); }, demoIds);
+  await timed.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await timed.locator('[data-au-demo-mode="live"]').click();
+  await timed.locator('[data-au-demo-play]').click();
+  await title(timed, id);
+  await freezeRoutes(timed);
+  await timed.evaluate(() => { location.hash = '#autonomous/cases'; });
+  await timed.clock.runFor(5000);
+  assert.equal((await calls(timed, `/claims/${demoIds[1]}/snapshot`)).length, 0, 'a timed presentation cannot open its next case while product navigation is pending');
+  assert.deepEqual(await timed.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST')), []);
+  await resumeRoutes(timed);
+  await eventually(() => timed.locator('[data-au-claim-row]').count().then(count => count === 150), 'timed pending navigation did not restore Cases');
+
+  const replay = await fixturePage(t, {presentationSuite: 'replay', holdReplayId: id, holdReplayThrough: 1});
+  await replay.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await replay.locator('[data-au-demo-play]').click();
+  await title(replay, id);
+  await replay.clock.runFor(1400);
+  await eventually(() => replay.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the next accepted replay prefix was not held');
+  await freezeRoutes(replay);
+  await replay.evaluate(() => {
+    location.hash = '#autonomous/cases';
+    for (const held of window.__fixture.held.splice(0)) held.release();
+  });
+  await replay.evaluate(async () => { for (let turn = 0; turn < 20; turn++) await Promise.resolve(); });
+  await replay.clock.runFor(5000);
+  assert.equal(new URL(replay.url()).hash, '#autonomous/cases', 'a delayed accepted replay prefix cannot replace the newly selected product route');
+  assert.equal((await calls(replay, `/claims/${id}/replay`)).length, 2, 'the abandoned replay cannot request another prefix');
+  assert.equal((await calls(replay, `/claims/${demoIds[1]}/replay`)).length, 0);
+  assert.deepEqual(await replay.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST')), []);
+  await resumeRoutes(replay);
+  await eventually(() => replay.locator('[data-au-claim-row]').count().then(count => count === 150), 'delayed replay cancellation did not retain Cases');
 });

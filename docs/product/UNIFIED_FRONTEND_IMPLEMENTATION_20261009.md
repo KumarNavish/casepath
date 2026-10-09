@@ -178,3 +178,59 @@ verification and Escape focus return passed.
 These are isolated mechanical checks, not visual acceptance, provider
 execution, nine-case qualification or hosted publication. No provider or
 production mutation was performed, and the source manifest remains unchanged.
+
+## Separate presentation and inspection followup
+
+This followup starts at `6badec6e69ba03e28d8fb6b72593c6b410c98c14` and
+remains separate from the original/added collection and recovery fixes.
+
+The nine-case itinerary now has global 01–09 numbering and three domain columns
+on desktop. Its labels describe presentation order across independent cases.
+Full original subjects remain in the DOM, title and accessible name, with a
+single-line preview in the compact overview and the exact full subject in claim
+context. Active presentation position comes from the matching session index;
+its current row uses the verified current state ahead of an older collection
+summary. A disclosure keeps that itinerary available while inspecting a case.
+The desktop fixture measured every row within a 1440×900 viewport, at
+y=570–860px, rather than requiring a scroll past the first domain.
+
+Mobile graph controls show **Step X of Y · Inspection position**. Previous and
+Next select and center actual nodes in the complete saved graph's display
+order. They preserve forks, convergence, excluded routes, free pan, page scroll
+and enabled-button focus. This position is unrelated to execution completion.
+Normal and reduced-motion checks inspect all 11 actual nodes of the recorded
+forked fixture. Individual completed nodes and recorded actions again say
+**Completed**, while claim lifecycle surfaces retain **Investigation complete**.
+A running claim cannot inherit its completed step's handling label.
+
+Graph and evidence connectors now meet 3:1 against their effective background,
+including computed path, stroke and ancestor opacity. The recorded minima at
+1440px and 390px were 3.528:1 for inactive dashed graph routes, 3.961:1 for normal
+graph/evidence lines and endpoint circles, and 4.782:1 for coral selection and
+tether paths. Dashed exclusions and coral selection remain distinct. Search
+retains a persistent underline and subtle inset with its existing focus outline.
+
+Pending hash navigation is checked before automatic Start, presentation
+advancement and post-await route replacement. Held initial or replay reads
+cannot overwrite a newly selected Cases destination before its hash event is
+handled. Exact explicit retries and read-only replay identities are preserved.
+
+Local mechanical screenshots and bounds are under
+`/tmp/casepath-visual-itinerary-1440.{png,json}`,
+`/tmp/casepath-visual-itinerary-390.png`,
+`/tmp/casepath-visual-inspection-390-{no-preference,reduce}.png`,
+`/tmp/casepath-visual-search-{1440,390}.png` and
+`/tmp/casepath-visual-contrast-{1440,390}.json`. The itinerary screenshots use
+explicitly mocked accepted histories; their completed labels do not establish
+actual execution of the nine originals. This followup does not claim visual
+acceptance, qualification, hosting changes or provider execution.
+
+Final focused results for this separate followup: **93 Node**, **24 existing
+browser/Sites**, and **42 product browser** checks passed, with zero failures,
+skips or cancellations. Commands are the same three focused commands above.
+The 42 browser checks preserve all prior 34, including both complete nine-case
+mocked sequences, and add the eight presentation, inspection, effective
+contrast, search, lifecycle-label and pending-navigation regressions. A separate
+read-only review independently passed the eight new cases with no findings.
+The entry's JS and CSS SHA-256 query values match their final bytes. No source
+manifest, backend, allowance, provider or hosting change is included.

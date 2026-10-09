@@ -253,7 +253,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-context-nav button:hover { color: var(--au-ink); }
 .au-workspace .au-evidence-stage { position: relative; min-width: 0; }
 .au-workspace .au-evidence-tether { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
-.au-workspace .au-evidence-tether path { fill: none; stroke: var(--au-accent); stroke-width: 1.2; opacity: .72; }
+.au-workspace .au-evidence-tether path { fill: none; stroke: var(--au-accent); stroke-width: 1.2; opacity: 1; }
 .au-workspace .au-evidence-process { position: relative; z-index: 1; padding: 20px 0 20px; }
 .au-workspace .au-evidence-graph-help { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; color: var(--au-muted); font-size: 12px; line-height: 1.65; margin-bottom: 8px; }
 .au-workspace .au-evidence-packet-count { flex-shrink: 0; color: var(--au-muted); font-size: 13px; }
@@ -263,9 +263,9 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-graph-viewport { width: 100%; max-width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8ca38f var(--au-field); padding: 7px 0 12px; scroll-padding: 18px; }
 .au-workspace .au-graph { position: relative; display: flex; flex-direction: row; align-items: stretch; justify-content: space-between; gap: 28px; width: max-content; min-width: 100%; margin: 0; padding: 14px 14px 18px; isolation: isolate; }
 .au-workspace .au-graph-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
-.au-workspace .au-graph-lines path { fill: none; stroke: #8fa497; stroke-width: 1.15; }
-.au-workspace .au-graph-lines path:is([data-state=false],[data-state=inactive],[data-state=not_reached]) { stroke: #98a99a; stroke-dasharray: 4 5; }
-.au-workspace .au-graph-lines path[data-selected=true] { stroke: #6f8b78; stroke-width: 1.45; }
+.au-workspace .au-graph-lines path { fill: none; stroke: #657c6e; stroke-width: 1.15; }
+.au-workspace .au-graph-lines path:is([data-state=false],[data-state=inactive],[data-state=not_reached]) { stroke: #6f8475; stroke-dasharray: 4 5; }
+.au-workspace .au-graph-lines path[data-selected=true] { stroke: var(--au-accent); stroke-width: 1.45; }
 .au-workspace .au-graph-lines path.au-live-edge { stroke: var(--au-accent); stroke-width: 1.7; }
 .au-workspace .au-graph-rank { position: relative; z-index: 1; display: flex; flex: 0 0 156px; flex-direction: column; justify-content: center; align-items: stretch; gap: 18px; width: 156px; min-width: 0; }
 .au-workspace .au-node { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; min-width: 0; min-height: 90px; border: 0; border-radius: 0; background: transparent; padding: 4px 3px; color: var(--au-ink); text-align: center; line-height: 1.4; }
@@ -291,8 +291,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-evidence-column { position: relative; z-index: 1; min-width: 0; }
 .au-workspace .au-evidence-column > :is(h4,.au-eyebrow,.au-column-label) { display: block; margin-bottom: 20px; padding: 0; border: 0; color: var(--au-muted); font-size: 12px; font-weight: 500; line-height: 1.6; letter-spacing: 0; text-transform: none; }
 .au-workspace .au-evidence-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
-.au-workspace .au-evidence-lines path { fill: none; stroke: #7d987f; stroke-width: 1.3; }
-.au-workspace .au-evidence-lines circle { fill: var(--au-field); stroke: #7d987f; stroke-width: 1.2; }
+.au-workspace .au-evidence-lines path { fill: none; stroke: #657c6e; stroke-width: 1.3; }
+.au-workspace .au-evidence-lines circle { fill: var(--au-field); stroke: #657c6e; stroke-width: 1.2; }
 .au-workspace .au-evidence-lines text { fill: var(--au-muted); font-family: inherit; font-size: 11px; }
 .au-workspace .au-source-link { display: block; width: 100%; min-width: 0; border: 0; border-left: 1px solid #8ca18a; background: transparent; color: var(--au-ink); padding: 8px 0 8px 13px; margin-top: 12px; text-align: left; font-size: 14px; line-height: 1.6; }
 .au-workspace .au-source-link:hover { border-color: var(--au-accent); }
@@ -692,4 +692,42 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-original-source-rail { width: 100%; border-left: 0; padding-left: 0; }
   .au-workspace .au-original-source-rail .au-source-list { margin-bottom: 0; }
   .au-workspace .au-original-message { font-size: 16px; }
+}
+
+
+/* Presentation order and graph inspection do not imply completed work. */
+.au-workspace .au-demo-order-note { margin-bottom: 12px; }
+.au-workspace .au-demo-selection > section { margin-top: 23px; }
+.au-workspace .au-demo-selection .au-section-heading h2 { font-size: 19px; letter-spacing: -.3px; }
+.au-workspace .au-demo-selection li { align-items: center; flex-direction: row; gap: 17px; padding: 12px 0; }
+.au-workspace .au-demo-order { flex: 0 0 28px; color: var(--au-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.au-workspace .au-demo-selection li > button strong { font-size: 17px; line-height: 1.35; letter-spacing: -.2px; }
+.au-workspace .au-demo-selection li > button span { margin-top: 4px; font-size: 12px; }
+.au-workspace .au-demo-selection li[aria-current=step] .au-demo-order { color: var(--au-accent); font-weight: 650; }
+.au-workspace .au-demo-itinerary { margin: 0 0 20px; border-block: 1px solid var(--au-line); }
+.au-workspace .au-demo-itinerary .au-demo-selection { padding: 0 0 18px; }
+.au-workspace .au-demo-itinerary summary > .au-demo-position { margin-left: 0; color: var(--au-ink); font-size: 14px; font-weight: 550; }
+.au-workspace .au-mobile-inspection { display: none; }
+.au-workspace .au-collection-tools [data-au-claim-search] { border-bottom: 1px solid #657c6e; padding-inline: 10px; background: #e9eee5; box-shadow: inset 0 1px 2px rgb(24 61 53 / .04); }
+.au-workspace .au-collection-tools [data-au-claim-search]:focus { border-bottom-color: var(--au-accent); }
+@media (max-width: 650px) {
+  .au-workspace .au-demo-selection li { gap: 12px; flex-wrap: wrap; }
+  .au-workspace .au-demo-selection li > button { flex-basis: calc(100% - 40px); }
+  .au-workspace .au-demo-selection li > .au-status { margin-left: 40px; }
+  .au-workspace .au-mobile-inspection { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+  .au-workspace .au-mobile-inspection > div { flex: 1; text-align: center; }
+  .au-workspace .au-mobile-inspection strong { display: block; font-size: 14px; font-weight: 500; }
+  .au-workspace .au-mobile-inspection span { display: block; margin-top: 3px; color: var(--au-muted); font-size: 11px; }
+  .au-workspace .au-mobile-inspection button { min-height: 44px; padding: 8px 11px; font-size: 13px; }
+}
+
+/* The desktop itinerary is one compact overview across the three domains. */
+.au-workspace .au-demo-selection { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 30px; }
+.au-workspace .au-demo-selection li { display: grid; grid-template-columns: 24px minmax(0,1fr); gap: 4px 12px; padding: 10px 0; }
+.au-workspace .au-demo-order { grid-column: 1; grid-row: 1 / 3; align-self: start; padding-top: 2px; }
+.au-workspace .au-demo-selection li > button { grid-column: 2; grid-row: 1; }
+.au-workspace .au-demo-selection li > button span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.au-workspace .au-demo-selection li > .au-status { grid-column: 2; grid-row: 2; margin-left: 0; justify-self: start; font-size: 12px; }
+@media (max-width: 900px) {
+  .au-workspace .au-demo-selection { grid-template-columns: minmax(0,1fr); gap: 0; }
 }

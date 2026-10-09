@@ -68,3 +68,8 @@ test('handling completion labels do not rewrite lifecycle codes or recorded lega
  const html=ui.collectionMarkup(rows);assert.match(html,/Investigation complete/);assert.doesNotMatch(html,/>Resolved</);assert.equal(ui.matchingClaims(rows,{filter:'investigation_complete'}).length,3);assert.equal(ui.matchingClaims(rows,{search:'investigation complete'}).length,3);
  assert.match(ui.workMarkup(rows[2],{},null,[]),/No settlement has been recorded\./);assert.equal(JSON.stringify(rows),before);
 });
+test('completed steps and actions remain local to a running investigation',()=>{
+ const s={...original(),revision:1,mode:'saved',status:'running',graph:{claim_id:'clm_original',nodes:[{node_id:'first',title:'Check original source'}],edges:[]},evaluation:{nodes:[{node_id:'first',execution_state:'completed'}]},actions:[{action_id:'source-check',title:'Source checked',status:'completed'}]};
+ const html=ui.workMarkup(s,{},'first',[]);assert.match(html,/class="au-status"[^>]*>Working</);assert.match(html,/class="au-node-state">Completed</);assert.match(html,/au-action-heading[^]*?<span>Completed<\/span>/);assert.doesNotMatch(html,/Investigation complete/);
+ assert.match(ui.collectionMarkup([{...s,origin:'canonical_original',status:'completed'}]),/Investigation complete/);assert.equal(s.status,'running');assert.equal(s.actions[0].status,'completed');
+});
