@@ -103,6 +103,15 @@ failed claims stay in the ledger. The legacy review allowance is separate.
 
 ## Knowledge
 
+New workflows pin `casepath.supplied-document-review/1.0.0`. An independently
+verified supporting original can receive a local evidence assessment while its
+process route is unresolved or inactive. The receipt records that distinction;
+reviewing the file does not activate the route, request an inactive obligation,
+or complete a blocked step. Historical workflows retain their pinned behavior.
+The intake routing question distinguishes a cited report of receiving a notice
+from authenticating its contents, proving effective service or calculating a
+legal deadline. Those further conclusions still require their own evidence.
+
 Knowledge is organized by category, process, facts, obligations and authority.
 Candidates carry source provenance, proposer/verifier receipts and a causal
 regression receipt. Claim-specific values, source files and completion states

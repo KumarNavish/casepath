@@ -7,6 +7,7 @@ from .assessment_grammar_v1 import FAMILY_FLAGS
 from .autonomous_knowledge_v1 import AutonomousKnowledge, qualify
 from .autonomous_policy_v1 import (
     POLICY_ID, REQUIRED_FACTS, REQUIRED_FIELDS, KNOWLEDGE_RECIPE_COMPILER,
+    SUPPLIED_DOCUMENT_REVIEW_POLICY, OPERATIONAL_CONDITION_QUESTIONS,
     INTERPRET_INSTRUCTIONS, VERIFY_INSTRUCTIONS, compile_process, compile_verification_proposal,
     initial_process, receipt, validate_interpretation,
 )
@@ -149,6 +150,8 @@ class AutonomousController:
             self._phase(claim_id, workflow, 'interpreting', 'Interpreting the source packet against the admitted tenancy rules.')
             context = {'claim_id': claim_id, 'title': state['title'], 'policy_id': POLICY_ID,
                        'knowledge_recipe_compiler': KNOWLEDGE_RECIPE_COMPILER,
+                       'document_review_policy': SUPPLIED_DOCUMENT_REVIEW_POLICY,
+                       'operational_condition_questions': deepcopy(OPERATIONAL_CONDITION_QUESTIONS),
                        'rule_packs': [{'family': t['domain'], 'template_id': t['template_id'], 'title': t['title'],
                                        'content': t['content'], 'template_sha256': digest_value(t),
                                        'process_catalog': {kind: [{k: v for k, v in row.items() if k != 'assertion'} for row in rows]
@@ -166,6 +169,8 @@ class AutonomousController:
                                                    'rule_pack_sha256', 'evidence_recipes', 'knowledge_sha256')}
                     for family in FAMILY_FLAGS if (value := self.knowledge.compatible(family))]
                 self._once(claim_id, f'{workflow}.context', 'work.context', {'workflow_id': workflow, 'context': context})
+            if context.get('document_review_policy') not in (None, SUPPLIED_DOCUMENT_REVIEW_POLICY):
+                raise ValueError('unknown supplied-document review policy')
             identity = {'workflow_id': workflow, 'claim_id': claim_id, 'policy_id': POLICY_ID,
                         'source_roster_sha256': source_identity, 'rule_set_sha256': digest_value(self.policy)}
             proposal = self.model.interpret(context, identity)
@@ -184,6 +189,8 @@ class AutonomousController:
                             'knowledge_rejections': verified['knowledge_rejections']}
             if compilation is not None:
                 base_receipt['knowledge_recipe_compilation'] = compilation
+            if context.get('document_review_policy') is not None:
+                base_receipt['document_review_policy'] = context['document_review_policy']
             pinned = next((k for k in context.get('compatible_knowledge', []) if k['family'] == verified['category']['family']), None)
             version = next((k for k in self.knowledge.view()['versions'] if pinned and k['knowledge_id'] == pinned['knowledge_id']
                             and k['version'] == pinned['version']), None)
@@ -227,17 +234,25 @@ class AutonomousController:
         return self.store.get(claim_id)
 
     def _documents(self, claim_id, workflow, verified, base_receipt):
+        context = self.store.get(claim_id).get('semantic_contexts', {}).get(workflow, {})
+        review_policy = context.get('document_review_policy')
+        if (review_policy not in (None, SUPPLIED_DOCUMENT_REVIEW_POLICY)
+                or base_receipt.get('document_review_policy') != review_policy):
+            raise ValueError('document review policy differs from the pinned workflow context')
         for document in verified['documents']:
             state = self.store.get(claim_id)
             graph = deepcopy(state['graph'])
             view = evaluate(graph)
             route = next(d for d in view['documents'] if d['document_type'] == document['document_type'])
-            # All reachable, active obligations are actionable even if their
-            # handling step awaits a predecessor. Conditional routes stay held.
-            if route['activation'] != 'true':
+            source = next(s for s in state['acquired_sources'] if s['artifact_id'] == document['artifact_id'])
+            # Reviewing an available original does not activate its process
+            # route. Historical contexts retain the original active-only rule.
+            supplied_review = (review_policy == SUPPLIED_DOCUMENT_REVIEW_POLICY
+                               and document.get('independently_verified') is True
+                               and source['role'] == 'supporting_document')
+            if route['activation'] != 'true' and not supplied_review:
                 continue
             definition = next(d for d in graph['document_catalog'] if d['document_type'] == document['document_type'])
-            source = next(s for s in state['acquired_sources'] if s['artifact_id'] == document['artifact_id'])
             review = {'artifact_id': source['artifact_id'], 'file_name': source['file_name'], 'media_type': source['media_type'],
                       'sha256': source['sha256'], 'source_quote': document['citations'][0]['quote'] if document['citations'] else '',
                       'review': document['assessment'], 'reviewed_by': 'independent_machine_verification',
@@ -256,6 +271,8 @@ class AutonomousController:
                       'document_type': document['document_type'], 'node_ids': route['required_at_node_ids'],
                       'capability_id': 'local_evidence.assess', 'status': 'completed', 'summary': document['summary'],
                       'assessment': document['assessment'], 'citations': document['citations']}
+            if review_policy is not None:
+                result.update(review_scope='supplied_file_assessment', route_activation_at_review=route['activation'])
             self._once(claim_id, f"{workflow}.document.{document['document_type']}.{source['artifact_id']}", 'action.completed', lambda s: {
                 'graph': graph, 'result': result, 'receipt': receipt(s, 'record_verified_document_review', **base_receipt,
                                                                  after_graph_sha256=graph['graph_sha256'])})

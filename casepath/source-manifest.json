@@ -102,7 +102,7 @@
     "sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2"
   },
   "contract": "casepath.source-manifest/2.1.0",
-  "file_count": 1590,
+  "file_count": 1592,
   "files": [
     {
       "executable": false,
@@ -887,8 +887,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_controller_v1.py",
-      "sha256": "15e2f7f54039d08ee78d4f3b123aeab6764fca8b742f1b14a43e2fc5c10ad750",
-      "size_bytes": 24267
+      "sha256": "419b5ca23c4567afe15215d3f36553f968b53c4b4d0c9ddce50327f6b60e0074",
+      "size_bytes": 25677
     },
     {
       "executable": false,
@@ -905,8 +905,8 @@
     {
       "executable": false,
       "path": "casepath-api/casepath_api/autonomous_policy_v1.py",
-      "sha256": "18cae3534660e7504c420f1e23f625b7c7f37382e554c0d7c651487b1f1d72db",
-      "size_bytes": 28179
+      "sha256": "e15317feaef34eeece13e83c848a8109499c4983aae907270e049d13bd54e958",
+      "size_bytes": 29878
     },
     {
       "executable": false,
@@ -7456,6 +7456,12 @@
     },
     {
       "executable": false,
+      "path": "casepath-api/tests/fixtures/autonomous_nila_held_reviews_v1.json",
+      "sha256": "32cfa5085f25935b6cb182994e77bb3929253e698a4de1e0e19f84aa235e5d02",
+      "size_bytes": 20843
+    },
+    {
+      "executable": false,
       "path": "casepath-api/tests/fixtures/autonomous_robin_omitted_recipe_v1.json",
       "sha256": "35bdf90577a2dd88bf652a99268bf2876ee1f0806ac5c89bdec08b9631493977",
       "size_bytes": 23580
@@ -7751,8 +7757,8 @@
     {
       "executable": false,
       "path": "casepath-api/tests/test_autonomous_model_v1.py",
-      "sha256": "8d79941b270968c0ea2cb1e02add39f5908e0d573077b8031acce3fc85cd1bea",
-      "size_bytes": 22414
+      "sha256": "f12b450c9bbb10d7cb18a87d82a62c089d3b95a1d9afce1fc2c372dbf657bffc",
+      "size_bytes": 24710
     },
     {
       "executable": false,
@@ -7771,6 +7777,12 @@
       "path": "casepath-api/tests/test_autonomous_store_v1.py",
       "sha256": "ae8e6a527f76fd97a4f73917d04e6b428c0aae62935a6c1bfaf79e230dc44ce3",
       "size_bytes": 12801
+    },
+    {
+      "executable": false,
+      "path": "casepath-api/tests/test_autonomous_supplied_review_v1.py",
+      "sha256": "a1cd074dcef8598e040a8bbfb40155c58e24c67a7dc171db0b3517c195e36635",
+      "size_bytes": 11097
     },
     {
       "executable": false,
@@ -9413,8 +9425,8 @@
     {
       "executable": false,
       "path": "docs/product/AUTONOMOUS_WORKSPACE.md",
-      "sha256": "67c40892d05ed3501b609cf047c326db0c8c35cf872ddce3b187c8a0020240ac",
-      "size_bytes": 9980
+      "sha256": "89e977bb09a7cd47530739f2d12f3a3420150b04ccbbaabe1edfbb4857c7bf30",
+      "size_bytes": 10608
     },
     {
       "executable": false,

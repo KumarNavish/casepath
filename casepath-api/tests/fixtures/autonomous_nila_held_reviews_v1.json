@@ -1,0 +1,426 @@
+{
+  "description": "Public fictional Nila packet: unresolved termination routing, both original files and both recipes independently accepted; pre-fix controller skipped all held routes.",
+  "raw_proposal": {
+    "category": {
+      "citations": [
+        {
+          "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+          "quote": "We dispute the termination and want the documents reviewed."
+        }
+      ],
+      "family": "lease_termination_dispute",
+      "summary": "The customer reports a disputed tenancy termination, identifying the lease-termination investigation process; this does not establish the notice’s validity."
+    },
+    "conditions": [
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "On 5 October 2026 I personally received a registered item containing a tenancy-termination notice from our landlord."
+          },
+          {
+            "artifact_id": "src_2f766a157f724e551fded4ce6165affd",
+            "quote": "The carrier did not open or authenticate the envelope contents."
+          }
+        ],
+        "flag": "termination_received",
+        "summary": "The customer reports receiving a termination notice, and the delivery record documents delivery of an item declared to be a tenancy termination; the carrier did not authenticate its contents.",
+        "verdict": "unresolved"
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+            "quote": "Occupancy: Nila Aven and Teo Aven reside together in this apartment as their family home."
+          }
+        ],
+        "flag": "family_home",
+        "summary": "The complete agreement records the tenants’ shared occupancy as their family home.",
+        "verdict": "true"
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "We report no rent arrears or earlier tenancy-rights dispute."
+          }
+        ],
+        "flag": "arrears",
+        "summary": "The customer reports no arrears; no independent payment evidence was supplied.",
+        "verdict": "unresolved"
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "We report no rent arrears or earlier tenancy-rights dispute."
+          }
+        ],
+        "flag": "retaliation_screen",
+        "summary": "The customer reports no earlier tenancy-rights dispute; the relevant history is not independently documented.",
+        "verdict": "unresolved"
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "We have not decided about an extension and no hardship assessment has been completed."
+          }
+        ],
+        "flag": "extension_relevant",
+        "summary": "Extension relevance and hardship remain unassessed, and the customer has not decided whether to seek an extension.",
+        "verdict": "unresolved"
+      }
+    ],
+    "documents": [
+      {
+        "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+        "assessment": "sufficient",
+        "citations": [
+          {
+            "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+            "quote": "Landlord: Sample Walk Homes SA, Fiction Square 5, 3000 Bern, Switzerland (fictional address)."
+          },
+          {
+            "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+            "quote": "Tenants: Nila Aven and Teo Aven, joint tenants and married spouses."
+          },
+          {
+            "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+            "quote": "The tenancy starts on 1 October 2024 and continues for an indefinite term."
+          }
+        ],
+        "document_type": "lease_contract",
+        "summary": "Complete original agreement identifies the parties and property and records the tenancy terms."
+      },
+      {
+        "artifact_id": "src_2f766a157f724e551fded4ce6165affd",
+        "assessment": "sufficient",
+        "citations": [
+          {
+            "artifact_id": "src_2f766a157f724e551fded4ce6165affd",
+            "quote": "Named addressee: Nila Aven."
+          },
+          {
+            "artifact_id": "src_2f766a157f724e551fded4ce6165affd",
+            "quote": "The item was handed directly to Nila Aven at the delivery address on 5 October 2026 at 14:32 local time."
+          }
+        ],
+        "document_type": "proof_of_receipt",
+        "summary": "The complete delivery record identifies the addressee and records direct delivery and its date; it does not establish the envelope contents or any delivery to Teo."
+      }
+    ],
+    "knowledge_candidates": [
+      {
+        "citations": [
+          {
+            "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+            "quote": "RESIDENTIAL TENANCY AGREEMENT — SW-2024-006"
+          },
+          {
+            "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+            "quote": "The tenancy starts on 1 October 2024 and continues for an indefinite term."
+          }
+        ],
+        "document_type": "lease_contract",
+        "required_fields": [
+          "contracting_parties",
+          "property",
+          "tenancy_terms"
+        ],
+        "rule_refs": [
+          "policy-lease_termination_dispute-v1"
+        ],
+        "summary": "Reusable evidence-reading recipe for a complete lease agreement, retaining the admitted template’s required fields."
+      }
+    ],
+    "steps": [
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "We dispute the termination and want the documents reviewed."
+          }
+        ],
+        "node_id": "lt_intake",
+        "status": "established",
+        "summary": "A customer-reported termination dispute is identified; the claimed notice contents remain unverified."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "On 5 October 2026 I personally received a registered item containing a tenancy-termination notice from our landlord. The letter proposed an end date of 31 March 2027."
+          }
+        ],
+        "node_id": "lt_deadline",
+        "status": "unresolved",
+        "summary": "Reported receipt and proposed end date are available, but the notice is absent and no deadline assessment is recorded."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "I do not yet have a scan of the termination notice."
+          }
+        ],
+        "node_id": "lt_form",
+        "status": "unresolved",
+        "summary": "The termination notice was not supplied, so form and contents cannot be reviewed."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "The letter proposed an end date of 31 March 2027."
+          }
+        ],
+        "node_id": "lt_type",
+        "status": "unresolved",
+        "summary": "A proposed end date is reported, but the notice and termination type are unavailable."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "We report no rent arrears or earlier tenancy-rights dispute."
+          }
+        ],
+        "node_id": "lt_arrears",
+        "status": "unresolved",
+        "summary": "The customer reports no arrears; no independent arrears evidence or notice was supplied."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+            "quote": "Occupancy: Nila Aven and Teo Aven reside together in this apartment as their family home."
+          },
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "Whether Teo received a separate notice is unknown; I have no such copy or delivery record."
+          }
+        ],
+        "node_id": "lt_family",
+        "status": "unresolved",
+        "summary": "The agreement identifies a family home, but separate notice or service to Teo is unknown."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "We report no rent arrears or earlier tenancy-rights dispute."
+          }
+        ],
+        "node_id": "lt_abuse",
+        "status": "unresolved",
+        "summary": "The customer reports no earlier rights dispute; the notice’s stated ground and supporting facts are unavailable."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "We have not decided about an extension and no hardship assessment has been completed."
+          }
+        ],
+        "node_id": "lt_extension",
+        "status": "unresolved",
+        "summary": "No extension decision or hardship assessment is recorded."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "I do not yet have a scan of the termination notice."
+          }
+        ],
+        "node_id": "lt_evidence",
+        "status": "unresolved",
+        "summary": "The notice and supporting type-specific evidence needed for assessment remain incomplete."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "No challenge, settlement or outbound response has taken place."
+          }
+        ],
+        "node_id": "lt_resolution",
+        "status": "unresolved",
+        "summary": "No challenge or settlement has taken place; no resolution is established."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+            "quote": "No challenge, settlement or outbound response has taken place."
+          }
+        ],
+        "node_id": "lt_close",
+        "status": "unresolved",
+        "summary": "The record expressly reports no challenge or settlement; no termination outcome is documented."
+      }
+    ]
+  },
+  "original_verifier": {
+    "checks": [
+      {
+        "accepted": true,
+        "item_id": "category",
+        "reason": "The customer expressly disputes a tenancy termination, supporting this process category without establishing validity."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:termination_received",
+        "reason": "The customer reports receipt, while the delivery record does not authenticate the envelope contents; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:family_home",
+        "reason": "The complete agreement records the shared apartment as the spouses’ family home."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:arrears",
+        "reason": "The customer reports no arrears, but no independent payment evidence is supplied; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:retaliation_screen",
+        "reason": "The customer reports no earlier tenancy-rights dispute, but the history is not independently documented; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:extension_relevant",
+        "reason": "The customer says no extension decision or hardship assessment has been made; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "document:lease_contract:src_629d70204ce7dc1d22e6b4a1c981a3b3",
+        "reason": "The complete agreement supports the required parties, property, and tenancy terms."
+      },
+      {
+        "accepted": true,
+        "item_id": "document:proof_of_receipt:src_2f766a157f724e551fded4ce6165affd",
+        "reason": "The complete delivery record identifies the recipient and records delivery evidence and date; it does not establish envelope contents or service to Teo."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_intake",
+        "reason": "The customer’s dispute report supports establishing the intake assessment without verifying notice contents."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_deadline",
+        "reason": "Receipt and proposed end date are reported, but the notice is absent and no deadline assessment is established."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_form",
+        "reason": "The customer confirms the termination notice scan is unavailable, leaving form review unresolved."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_type",
+        "reason": "Only a proposed end date is reported; the notice and termination type are unavailable."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_arrears",
+        "reason": "The customer reports no arrears, but independent evidence and any cure notice are absent."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_family",
+        "reason": "The agreement supports family-home status, while separate notice or service to Teo remains unknown."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_abuse",
+        "reason": "The customer reports no earlier rights dispute, but the notice’s stated ground and supporting facts are unavailable."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_extension",
+        "reason": "No extension decision or hardship assessment is recorded, so the assessment remains unresolved."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_evidence",
+        "reason": "The missing termination notice leaves type-specific evidence assessment incomplete."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_resolution",
+        "reason": "The source expressly reports that no challenge or settlement has taken place; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_close",
+        "reason": "No termination outcome is documented, and the source reports no challenge or settlement."
+      },
+      {
+        "accepted": true,
+        "item_id": "knowledge:lease_contract",
+        "reason": "The complete agreement supports a recipe with the exact admitted lease fields and lease-termination rule reference."
+      },
+      {
+        "accepted": true,
+        "item_id": "knowledge:proof_of_receipt",
+        "reason": "The complete delivery record supports the exact required proof-of-receipt fields and admitted rule reference; its limits are accurately retained."
+      }
+    ],
+    "family_supported": true,
+    "issues": []
+  },
+  "sources": [
+    {
+      "artifact_id": "src_0b619834ea38ef7b6f13d6fd89d4093d",
+      "file_name": "customer-message.txt",
+      "media_type": "text/plain",
+      "role": "customer_message",
+      "sha256": "6e328c4167220c20ce994355425b8d375908939349ae64113e3f064949e3dee1",
+      "text_sha256": "6e328c4167220c20ce994355425b8d375908939349ae64113e3f064949e3dee1",
+      "text": "FICTIONAL PUBLIC DEMO — all people, addresses and events below are invented.\n\nI am Nila Aven. My spouse Teo Aven and I share the apartment at Sample Walk 6, apartment 1, Bern as our family home. On 5 October 2026 I personally received a registered item containing a tenancy-termination notice from our landlord. The letter proposed an end date of 31 March 2027. We dispute the termination and want the documents reviewed.\n\nI attach our complete tenancy agreement and the original delivery record for the item addressed to me. I do not yet have a scan of the termination notice. Whether Teo received a separate notice is unknown; I have no such copy or delivery record.\n\nWe report no rent arrears or earlier tenancy-rights dispute. We have not decided about an extension and no hardship assessment has been completed. No challenge, settlement or outbound response has taken place. Please distinguish the recorded delivery from the unassessed legal validity and deadlines.\n",
+      "complete": true,
+      "coverage": {
+        "characters_read": 971,
+        "characters_total": 971,
+        "full_text_sha256": "6e328c4167220c20ce994355425b8d375908939349ae64113e3f064949e3dee1",
+        "visual_interpretation_performed": false
+      }
+    },
+    {
+      "artifact_id": "src_629d70204ce7dc1d22e6b4a1c981a3b3",
+      "file_name": "tenancy-agreement.txt",
+      "media_type": "text/plain",
+      "role": "supporting_document",
+      "sha256": "5e5caf3326e396228d423d2a789c1a69f2798e3104369b45ec44792dc7fc0e2c",
+      "text_sha256": "5e5caf3326e396228d423d2a789c1a69f2798e3104369b45ec44792dc7fc0e2c",
+      "text": "FICTIONAL PUBLIC DEMO DOCUMENT\nAll persons, addresses, signatures, amounts and events are invented. This is the complete original text of this synthetic document.\n\nRESIDENTIAL TENANCY AGREEMENT — SW-2024-006\nSigned on 18 September 2024.\n\nLandlord: Sample Walk Homes SA, Fiction Square 5, 3000 Bern, Switzerland (fictional address).\nTenants: Nila Aven and Teo Aven, joint tenants and married spouses.\nProperty: Sample Walk 6, apartment 1, 3000 Bern, Switzerland (fictional address); a three-room residential apartment with cellar C1.\nOccupancy: Nila Aven and Teo Aven reside together in this apartment as their family home.\n\nThe tenancy starts on 1 October 2024 and continues for an indefinite term. The premises are for the tenants' ordinary residential use. The agreed net monthly rent is CHF 1,940 and the monthly advance for ancillary costs is CHF 195. Payment is due on the first day of each month. The agreed deposit is CHF 3,880.\n\nThe contractual notice period is three months to 31 March, 30 June, 30 September or 31 December. A notice must identify the tenancy and intended termination date. These are the parties' recorded contractual terms; this agreement does not establish the validity or service of any later notice.\n\nThere are no omitted schedules or later amendments in this fictional agreement.\nLandlord signature: Elin Vale, authorized representative of Sample Walk Homes SA (fictional signature).\nTenant signatures: Nila Aven and Teo Aven (fictional signatures).\n",
+      "complete": true,
+      "coverage": {
+        "characters_read": 1481,
+        "characters_total": 1481,
+        "full_text_sha256": "5e5caf3326e396228d423d2a789c1a69f2798e3104369b45ec44792dc7fc0e2c",
+        "visual_interpretation_performed": false
+      }
+    },
+    {
+      "artifact_id": "src_2f766a157f724e551fded4ce6165affd",
+      "file_name": "delivery-record.txt",
+      "media_type": "text/plain",
+      "role": "supporting_document",
+      "sha256": "209091db7cbc765bc5a41cac95b906bef35d0c1669289a46ca59a69215d19b00",
+      "text_sha256": "209091db7cbc765bc5a41cac95b906bef35d0c1669289a46ca59a69215d19b00",
+      "text": "FICTIONAL PUBLIC DEMO DOCUMENT\nAll persons, addresses, signatures and events are invented. This is the complete original delivery record in this synthetic case.\n\nEXAMPLE PARCEL SERVICE — SIGNED DELIVERY RECORD\nRecord: EPS-DEMO-20261005-319\nService: registered letter with recipient signature.\nSender: Sample Walk Homes SA, Fiction Square 5, 3000 Bern (fictional address).\nNamed addressee: Nila Aven.\nDelivery address: Sample Walk 6, apartment 1, 3000 Bern (fictional address).\n\nThe item was handed directly to Nila Aven at the delivery address on 5 October 2026 at 14:32 local time. Recipient identity was checked against the addressee name on the registered item. Nila Aven signed the delivery device upon receipt.\nRecipient signature record: Nila Aven — received in person at 14:32 on 5 October 2026 (fictional signature).\nDelivery agent: Neri Falk; route DEMO-BE-07 (fictional operator).\nService status: delivered; no failed delivery or proxy recipient is recorded.\n\nSender-declared item description: tenancy termination, reference SW-2024-006. The carrier did not open or authenticate the envelope contents. This record establishes only the named recipient, delivery method and recorded delivery date. It contains no delivery entry for Teo Aven and makes no statement about a separate item.\nRecord issued by Example Parcel Service on 5 October 2026 at 14:34 local time.\n",
+      "complete": true,
+      "coverage": {
+        "characters_read": 1374,
+        "characters_total": 1374,
+        "full_text_sha256": "209091db7cbc765bc5a41cac95b906bef35d0c1669289a46ca59a69215d19b00",
+        "visual_interpretation_performed": false
+      }
+    }
+  ]
+}

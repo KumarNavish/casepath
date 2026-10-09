@@ -16,6 +16,23 @@ from .workspace_corpus import digest_value
 
 POLICY_ID = 'casepath.autonomous-local/1.0.0'
 KNOWLEDGE_RECIPE_COMPILER = 'casepath.knowledge-recipe-compiler/1.0.0'
+SUPPLIED_DOCUMENT_REVIEW_POLICY = 'casepath.supplied-document-review/1.0.0'
+
+# The admitted process captures receipt at intake before checking form/service.
+# This explains the routing question without changing a fact or a legal rule.
+OPERATIONAL_CONDITION_QUESTIONS = {
+    'lease_termination_dispute': {'termination_received': {
+        'question': 'Is receipt of a tenancy-termination notice reported or evidenced for this dispute?',
+        'meaning': 'An explicit cited report of receiving a termination notice can support this investigation-routing flag. '
+                   'A missing notice scan or a carrier not authenticating contents does not by itself negate that report. '
+                   'Keep ambiguous, hypothetical or contradicted receipt unresolved; silence is not false.',
+        'limits': 'This flag does not establish authenticated contents, formal validity, legally effective service, '
+                  'separate spouse service, a receipt date for legal calculation, or a challenge deadline. '
+                  'Those remain separate evidence and assessment questions.',
+        'rule_refs': ['policy-lease_termination_dispute-v1'],
+        'process_basis': ['lt_intake', 'lt_form', 'lt_deadline'],
+    }},
+}
 
 # Operational evidence questions, separate from the files that can answer them.
 # These define the scope of a source assessment, not new legal rules.
@@ -353,6 +370,9 @@ a concise factual summary. Never claim sending, filing, medical inspection, sett
 an outcome has occurred without its source record. Do not complete actions; the controller handles them.
 Your summaries are concise cited decision explanations, not private reasoning transcripts."""
 INTERPRET_INSTRUCTIONS += """
+Use operational_condition_questions, when supplied, to interpret the scope of the named routing
+question. Assess its evidence; do not treat the question description as a fact or force a verdict."""
+INTERPRET_INSTRUCTIONS += """
 For each document type supported by a sufficient original file, propose one reusable evidence-reading
 recipe (at most ten types). A recipe compiles the supplied required_fields_by_document exactly, keeping
 all required fields, and cites this case's supporting file and the admitted template ID. It cannot add
@@ -374,6 +394,9 @@ contents. Reject unsupported completion or legal/external authority. Do not appr
 quotation matches. A step's established status means its internal evidence assessment is supportable,
 not permission to perform an external action. Identify unresolved conflicts in issues. Be conservative;
 the system will keep rejected items unresolved. Return the closed JSON schema only."""
+VERIFY_INSTRUCTIONS += """
+Use operational_condition_questions, when supplied, to check the intended scope of the routing flag.
+Verify the proposed verdict against the sources; the question description supplies no case evidence."""
 VERIFY_INSTRUCTIONS += """
 Category and family_supported ask whether the cited sources describe a dispute handled by the selected
 admitted process. Do not require downstream notice, delivery or other substantive proof merely to
