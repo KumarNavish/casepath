@@ -561,6 +561,7 @@ function nativeFixture() {
  }
  Object.defineProperty(f.host,'innerHTML',{configurable:true,get:()=>html,set:value=>{
   if(intake)intake.isConnected=false;if(arrival)arrival.isConnected=false;html=value;intake=/<form[^>]*data-au-intake/.test(html)?form('intake'):null;arrival=/<form[^>]*data-au-arrival/.test(html)?form('arrival'):null;viewport=html.includes('au-graph-viewport')?{scrollLeft:0,scrollTop:0}:null;
+  const submitLabel=html.match(/<button[^>]*type="submit"[^>]*>([\s\S]*?)<\/button>/)?.[1]?.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();if(intake&&submitLabel)intake.querySelector('button[type="submit"]').textContent=submitLabel;
   details=[...html.matchAll(/<details[^>]*data-au-disclosure="([^"]+)"[^>]*>/g)].map(match=>({dataset:{auDisclosure:match[1]},open:match[0].includes(' open'),querySelector:()=>null}));
   panels=[...html.matchAll(/<section[^>]*data-au-panel="([^"]+)"[^>]*>/g)].map(match=>({dataset:{auPanel:match[1]},hidden:match[0].includes(' hidden')}));
   tabs=[...html.matchAll(/<button[^>]*data-au-detail="([^"]+)"[^>]*aria-pressed="(true|false)"[^>]*>/g)].map(match=>{const node=control(f,'data-au-detail',match[1]);node.pressed=match[2];node.setAttribute=(attr,value)=>{if(attr==='aria-pressed')node.pressed=value;};return node;});
@@ -840,4 +841,58 @@ test('delayed claim collections preserve verified revisions without rejecting ge
   if(example.row?.revision===5){assert.match(f.host.innerHTML,/Projection changed after newer collection row/);assert.match(f.host.innerHTML,/revision 4/);assert.match(queue.innerHTML,/Newer collection title/);}
   assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
  });
+});
+
+test('idle intake labels distinguish saving a claim from available or unknown autonomous work',async()=>{
+ const exhausted={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}};
+ for(const [savedStatus,label,disabled]of [
+  [exhausted,/^Save claim$/,false],
+  [{enabled:true,provider_ready:false,limits:{}},/^Save claim$/,false],
+  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'provider_outcome_pending'}},/^Save claim$/,false],
+  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'unknown_future_condition'}},/^Save claim$/,false],
+  [{enabled:true,provider_ready:true,limits:{autonomous_can_start:true}},/^Start autonomous work/,false],
+  [{enabled:true,provider_ready:true},/^Start autonomous work/,false],
+  [{enabled:true,provider_ready:true,limits:{autonomous_reason:'call_limit_reached'}},/^Start autonomous work/,false],
+  [{enabled:true,limits:{}},/^Start autonomous work/,false],
+  [{enabled:false,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached'}},/^Start autonomous work/,true]
+ ]) {
+  const f=nativeFixture(),api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});
+  try { await settle();await newClaim(f);const submit=f.intake.querySelector('button[type="submit"]');assert.match(submit.textContent,label,JSON.stringify(savedStatus));assert.equal(submit.disabled,disabled);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0); }
+  finally { controller.destroy(); }
+ }
+});
+
+test('an unresolved service status keeps the default intake action until authoritative readiness arrives',async t=>{
+ const f=nativeFixture(),held=[];const api=fakeApi({handle:async path=>path.endsWith('/status')?new Promise(resolve=>held.push(resolve)):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));controller.destroy();});await settle();await newClaim(f);
+ assert.equal(held.length,2);assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);assert.equal(f.intake.querySelector('button[type="submit"]').disabled,false);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));await settle();assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);
+});
+
+test('late status reads preserve Saving and exact Retry labels while retaining the same intake files and draft',async t=>{
+ const f=nativeFixture(),available={enabled:true,provider_ready:true,limits:{}},unavailable={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}};let statusReads=0,finishStatus,rejectPost;
+ const api=fakeApi({handle:async(path,init)=>{if(path.endsWith('/status')){statusReads++;return statusReads===2||statusReads===4?new Promise(resolve=>{finishStatus=resolve;}):response(available);}if(init.method==='POST')return new Promise((_resolve,reject)=>{rejectPost=reject;});}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finishStatus?.(response(unavailable));rejectPost?.(new Error('Unconfirmed intake'));controller.destroy();});await settle();await newClaim(f);
+ const form=f.intake,list=[fileFixture()],submit=form.querySelector('button[type="submit"]');form.elements.title.value='Retained original draft';form.elements.message.value='Original source message';form.elements.files.files=list;
+ const submission=f.listeners.get('submit')({target:form,preventDefault(){}});await waitFor(()=>Boolean(rejectPost));assert.equal(submit.textContent,'Saving…');finishStatus(response(unavailable));await settle();assert.equal(submit.textContent,'Saving…');assert.equal(submit.disabled,true);
+ rejectPost(new Error('Intake response lost'));await submission;assert.equal(submit.textContent,'Retry same request');assert.equal(submit.disabled,false);assert.equal(form.elements.title.disabled,true);
+ navClick(f,'work');await settle();await newClaim(f);assert.equal(statusReads,4);assert.equal(f.intake,form);assert.equal(submit.textContent,'Retry same request');finishStatus(response(unavailable));await settle();
+ assert.equal(submit.textContent,'Retry same request');assert.equal(submit.disabled,false);assert.equal(form.elements.files.files,list);assert.equal(form.elements.title.value,'Retained original draft');assert.equal(form.elements.message.value,'Original source message');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,1);
+});
+
+test('a late unavailable status cannot replace Saving while native source bytes are still being prepared',async t=>{
+ const f=nativeFixture(),available={enabled:true,provider_ready:true,limits:{}},unavailable={enabled:true,provider_ready:false,limits:{}},bytes=Buffer.from('Original retained bytes');let statusReads=0,finishStatus,finishBytes;
+ const api=fakeApi({handle:async(path,init)=>{if(path.endsWith('/status'))return ++statusReads===2?new Promise(resolve=>{finishStatus=resolve;}):response(available);if(init.method==='POST')throw new Error('Unconfirmed packet response');}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finishStatus?.(response(unavailable));finishBytes?.(bytes);controller.destroy();});await settle();await newClaim(f);
+ const form=f.intake,submit=form.querySelector('button[type="submit"]'),list=[{...fileFixture(),arrayBuffer:()=>new Promise(resolve=>{finishBytes=resolve;})}];form.elements.title.value='Original claim';form.elements.message.value='Original source';form.elements.files.files=list;
+ const submission=f.listeners.get('submit')({target:form,preventDefault(){}});await waitFor(()=>Boolean(finishBytes));assert.equal(submit.textContent,'Saving…');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ finishStatus(response(unavailable));await settle();assert.match(f.host.querySelector('[data-au-service]').textContent,/Inference is unavailable/);assert.equal(submit.textContent,'Saving…');assert.equal(submit.disabled,true);
+ finishBytes(bytes);await submission;assert.equal(submit.textContent,'Retry same request');assert.equal(form.elements.files.files,list);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,1);
+});
+
+test('returning to intake updates its idle label and local validation restores that label without replacing draft files',async t=>{
+ const f=nativeFixture();let savedStatus={enabled:true,provider_ready:true,limits:{}},finishStatus,statusReads=0,holdNext=false;
+ const api=fakeApi({handle:async path=>{if(!path.endsWith('/status'))return null;statusReads++;if(holdNext){holdNext=false;return new Promise(resolve=>{finishStatus=resolve;});}return response(savedStatus);}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finishStatus?.(response(savedStatus));controller.destroy();});await settle();await newClaim(f);
+ const form=f.intake,list=Array.from({length:21},()=>fileFixture()),submit=form.querySelector('button[type="submit"]');form.elements.title.value='Typed original draft';form.elements.message.value='Retained original message';form.elements.files.files=list;
+ await f.listeners.get('submit')({target:form,preventDefault(){}});assert.match(form.querySelector('.au-form-status').textContent,/at most 20/);assert.match(submit.textContent,/^Start autonomous work/);assert.equal(form.elements.title.disabled,false);
+ savedStatus={enabled:true,provider_ready:false,limits:{}};navClick(f,'work');await settle();holdNext=true;await newClaim(f);assert.equal(f.intake,form);assert.equal(submit.textContent,'Save claim','the cached unavailable status applies before the fresh status response');assert.equal(form.elements.files.files,list);assert.equal(form.elements.title.value,'Typed original draft');assert.equal(form.elements.message.value,'Retained original message');
+ finishStatus(response(savedStatus));await settle();await f.listeners.get('submit')({target:form,preventDefault(){}});assert.equal(submit.textContent,'Save claim');assert.equal(submit.disabled,false);assert.equal(form.elements.title.disabled,false);assert.equal(form.elements.files.files,list);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ savedStatus={enabled:true,provider_ready:true,limits:{}};navClick(f,'work');await settle();await newClaim(f);assert.equal(f.intake,form);assert.match(submit.textContent,/^Start autonomous work/);assert.equal(form.elements.files.files,list);assert.equal(statusReads,6);
 });
