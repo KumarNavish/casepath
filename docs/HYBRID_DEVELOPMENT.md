@@ -3,6 +3,8 @@
 Use the Mac coordination chat for the product conversation and integration.
 Use the published `casepath` Codex Cloud environment for `KumarNavish/casepath`
 for bounded implementation, independent review, and parallel deterministic tests.
+Use `gpt-6.1-sol` with `xhigh` reasoning for Cloud planning, implementation and
+review workers, as requested by the user. Set both explicitly when dispatching.
 The Mac chat stays local. Each cloud task has its own workspace; reuse the
 prepared environment and preserve results in Git and task artifacts.
 
