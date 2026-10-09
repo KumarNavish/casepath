@@ -24,7 +24,6 @@ import unicodedata
 from urllib.parse import quote
 
 from .causal_process_v1 import evaluate, seal_graph, validate_graph
-from .claim_loop_store import ClaimLoopStore
 from .workspace_corpus import digest_value
 
 
@@ -99,7 +98,10 @@ class AutonomousStore:
         path = Path(self.storage.path if self.storage is not None else storage_or_path)
         if path.is_symlink():
             raise AutonomousStoreError("journal path must not be a symlink")
-        self.journal = journal if journal is not None else ClaimLoopStore(path)
+        if journal is None:
+            from .claim_loop_store import ClaimLoopStore
+            journal = ClaimLoopStore(path)
+        self.journal = journal
         self._source_store = source_store
         self.path = self.journal.path
         if self.storage is not None and hasattr(self.storage, "protected_session_ids"):

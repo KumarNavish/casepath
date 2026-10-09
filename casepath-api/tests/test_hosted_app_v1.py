@@ -50,3 +50,16 @@ def test_model_metadata_refresh_is_free_bounded_and_never_sends_inference():
         model._refresh()
     assert len(requests) == 3 and model.config == original
     client.close()
+
+
+def test_cloud_import_does_not_require_generated_legacy_artifacts(tmp_path):
+    from pathlib import Path
+    import shutil
+    import subprocess
+    import sys
+    source = Path(__file__).resolve().parents[1] / 'casepath_api'
+    shutil.copytree(source, tmp_path / 'casepath_api', ignore=shutil.ignore_patterns('corpora','__pycache__'))
+    result = subprocess.run([sys.executable, '-B', '-c', 'import casepath_api.hosted_app_v1'],
+                            cwd=tmp_path, env={'PYTHONDONTWRITEBYTECODE':'1'}, capture_output=True, text=True, timeout=15)
+    assert result.returncode == 0, result.stderr
+    assert not (tmp_path / 'artifacts').exists()
