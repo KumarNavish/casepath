@@ -129,35 +129,39 @@
     if (!before || before.claim_id!==after.claim_id || after.revision<=before.revision || !accepted?.ready || !accepted.animate?.length) return null;
     const newest=accepted.animate.at(-1),identity=eventIdentity(newest);
     if (identity.revision!==after.revision || identity.state_sha256!==after.state_sha256 || newest.seq!==accepted.cursor) return null;
-    const changes=changedTargets(before,after),layout=layoutGraph(after.graph),ranks=new Map(layout.rows.flatMap((row,rank)=>row.map(node=>[node.node_id,rank])));
-    const minimum=changes.nodes.length ? Math.min(...changes.nodes.map(id=>ranks.get(id) || 0)) : 0;
-    const nodes=changes.nodes.map(id=>({id,delay:180+Math.min(140,((ranks.get(id)||0)-minimum)*20),duration:220}));
-    const edges=list(after.graph?.edges).filter(edge=>changes.nodes.includes(edge.target_node_id)).map(edge=>({id:edge.edge_id,delay:0,duration:160}));
-    const facts=list(after.facts).filter(fact=>JSON.stringify(list(before.facts).find(row=>row.fact_id===fact.fact_id))!==JSON.stringify(fact)).map(fact=>({id:fact.fact_id,delay:360,duration:180}));
-    const documents=changes.documents.map(id=>({id,delay:580,duration:180}));
-    const previousStages=progressModel(before,history).stages;
-    const stages=progressModel(after,history.concat(accepted.events)).stages.filter((stage,index)=>JSON.stringify(stage)!==JSON.stringify(previousStages[index])).map(stage=>({id:stage.id,delay:0,duration:280}));
-    return {nodes,edges,facts,documents,stages,duration:760};
+    const changes=changedTargets(before,after), layout=layoutGraph(after.graph), ranks=new Map(layout.rows.flatMap((row,rank)=>row.map(node=>[node.node_id,rank])));
+    const changedFacts=list(after.facts).filter(fact=>JSON.stringify(list(before.facts).find(row=>row.fact_id===fact.fact_id))!==JSON.stringify(fact));
+    const sourceValue=(state,id)=>JSON.stringify([list(state.source_descriptors).find(row=>row.artifact_id===id),list(state.acquired_sources).find(row=>row.artifact_id===id)]);
+    const sourceIds=new Set(list(after.source_descriptors).filter(source=>sourceValue(before,source.artifact_id)!==sourceValue(after,source.artifact_id)).map(source=>source.artifact_id));
+    for (const fact of changedFacts) for (const citation of citationRows(fact)) sourceIds.add(citation.artifact_id);
+    const edgeValue=(state,id)=>JSON.stringify([list(state.graph?.edges).find(row=>row.edge_id===id),list(state.evaluation?.edges).find(row=>row.edge_id===id)]);
+    const edges=list(after.graph?.edges).filter(edge=>edgeValue(before,edge.edge_id)!==edgeValue(after,edge.edge_id)).map(edge=>({id:edge.edge_id,delay:260,duration:140}));
+    const minimum=changes.nodes.length ? Math.min(...changes.nodes.map(id=>ranks.get(id)||0)) : 0;
+    const nodes=changes.nodes.map(id=>({id,delay:400+Math.min(40,((ranks.get(id)||0)-minimum)*10),duration:180}));
+    const facts=changedFacts.map(fact=>({id:fact.fact_id,delay:120,duration:140}));
+    const sources=[...sourceIds].filter(Boolean).map(id=>({id,delay:0,duration:120}));
+    const documents=changes.documents.map(id=>({id,delay:620,duration:160}));
+    return {sources,facts,edges,nodes,documents,stages:[],duration:780};
   }
   function animateTransition(host,plan,environment={}) {
     const animations=new Set(),overlays=new Set();
     const cancel=()=>{for(const animation of animations)animation.cancel();animations.clear();for(const overlay of overlays)overlay.remove();overlays.clear();};
     if (!plan || environment.reducedMotion || environment.hidden || environment.dialogOpen || environment.keyboard) return {cancel,count:0};
     const run=(element,frames,timing,cleanup=()=>{})=>{
-      if (!element?.animate || element.closest?.('[hidden]') || element===environment.activeElement || element.contains?.(environment.activeElement)) { cleanup(); return; }
+      if (!element?.animate || (element.closest?.('[hidden]') || element.closest?.('details:not([open])')) || element===environment.activeElement || element.contains?.(environment.activeElement)) { cleanup(); return; }
       const animation=element.animate(frames,{...timing,easing:'cubic-bezier(.2,.65,.3,1)',fill:'none'});animations.add(animation);
       animation.finished?.then(()=>{animations.delete(animation);cleanup();},()=>{animations.delete(animation);cleanup();});
     };
     for(const edge of host.querySelectorAll('[data-au-edge]')) {
-      const timing=plan.edges.find(row=>row.id===edge.dataset.auEdge);if(!timing)continue;
+      const timing=(plan.edges || []).find(row=>row.id===edge.dataset.auEdge);if(!timing)continue;
       const length=edge.getTotalLength?.();if(!Number.isFinite(length)||length<=0)continue;
       const overlay=edge.cloneNode(false);overlay.setAttribute('class','au-live-edge');overlay.removeAttribute?.('data-au-edge');edge.parentNode.appendChild(overlay);overlays.add(overlay);overlay.removeAttribute?.('data-state');overlay.removeAttribute?.('data-selected');
       run(overlay,[{strokeDasharray:`${length} ${length}`,strokeDashoffset:String(length),opacity:1},{strokeDasharray:`${length} ${length}`,strokeDashoffset:'0',opacity:1}],timing,()=>{overlay.remove();overlays.delete(overlay);});
     }
-    for(const [selector,field,rows]of [['[data-au-node]','auNode',plan.nodes],['[data-au-fact]','auFact',plan.facts],['[data-au-document]','auDocument',plan.documents],['[data-au-stage]','auStage',plan.stages]]) {
+    for(const [selector,field,rows]of [['[data-au-source]','auSource',plan.sources || []],['[data-au-node]','auNode',plan.nodes || []],['[data-au-fact]','auFact',plan.facts || []],['[data-au-document]','auDocument',plan.documents || []]]) {
       for(const element of host.querySelectorAll(selector)) {
         const timing=rows.find(row=>row.id===element.dataset[field]);if(!timing)continue;
-        run(element,[{backgroundColor:'#f4e6eb'},{backgroundColor:'rgba(244,230,235,0)'}],timing);
+        run(element,[{opacity:.58},{opacity:1}],timing);
       }
     }
     return {cancel,count:animations.size};
@@ -165,31 +169,26 @@
 
   const citationRows = item => list(item?.citations || item?.sources || item?.source_spans);
   const sourceLabel = (state, id) => name(list(state.source_descriptors).find(source => source.artifact_id === id)) || list(state.source_descriptors).find(source => source.artifact_id === id)?.file_name || 'Original source';
-  function sourceButtons(state, item) {
-    return citationRows(item).map(citation => `<button type="button" class="au-source-link" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}">${h(sourceLabel(state, citation.artifact_id))}${citation.quote ? `<q>${h(citation.quote)}</q>` : ''}</button>`).join('');
+  function sourceButtons(state, item, origin = `record:${item?.fact_id || item?.obligation_id || item?.document_type || item?.action_id || item?.kind || 'claim'}`) {
+    return citationRows(item).map(citation => `<button type="button" class="au-source-link" data-au-source="${h(citation.artifact_id)}" data-au-source-origin="${h(origin)}" data-au-citation="${h(JSON.stringify(citation))}">${h(sourceLabel(state, citation.artifact_id))}${citation.quote ? `<q>${h(citation.quote)}</q>` : ''}</button>`).join('');
   }
-  const compactLabels = {
-    'Capture issuer, receipt and end date':'Notice details',
-    'Preserve challenge or extension deadline':'Preserve deadline',
-    'Check form and service':'Form & service',
-    'Classify termination type':'Termination type',
-    'Check arrears cure preconditions':'Arrears conditions',
-    'Check separate family-home service':'Separate service',
-    'Screen stated reason and good-faith concerns':'Grounds & good faith',
-    'Assess extension evidence':'Extension evidence',
-    'Collect type-specific evidence':'Required evidence',
-    'Prepare challenge, extension or settlement':'Prepare resolution',
-    'Record termination outcome':'Record outcome'
-  };
+  function preferredNode(state, remembered = null) {
+    const nodes = list(state.graph?.nodes), has = id => nodes.some(node => node.node_id === id);
+    return has(remembered) ? remembered : has(state.evaluation?.focus_node_id) ? state.evaluation.focus_node_id : list(state.evaluation?.nodes).find(node => node.execution_state === 'ready' && has(node.node_id))?.node_id || nodes[0]?.node_id || null;
+  }
+  function edgeState(state, id) {
+    const evaluation = list(state.evaluation?.edges).find(edge => edge.edge_id === id);
+    return evaluation?.activation || evaluation?.condition_verdict || 'unresolved';
+  }
   function graphMarkup(state, selected, projection = {}) {
     const graph = state.graph;
     if (!graph) return '<p class="au-empty">The packet is saved. No process has been committed yet.</p>';
     const layout = layoutGraph(graph), evaluation = new Map(list(state.evaluation?.nodes).map(node => [node.node_id, node]));
-    return `<div class="au-graph-viewport" data-au-graph-pan tabindex="0" role="region" aria-label="Working process diagram"><div class="au-graph" data-au-graph data-orientation="vertical" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true"></svg>${layout.rows.map((row, rank) => `<div class="au-graph-rank" data-rank="${rank}">${row.map(node => {
+    return `<div class="au-evidence-graph-help"><span>Complete recorded process · ${layout.nodes.length} steps · ${layout.edges.length} connections</span><span>Dashed routes do not apply. Scroll to follow every branch.</span></div><div class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan tabindex="0" role="region" aria-label="Complete process graph; scroll horizontally"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true">${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-state="${h(edgeState(state,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || 'Recorded process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row, rank) => `<div class="au-graph-rank" data-rank="${rank}">${row.map(node => {
       const evaluated = evaluation.get(node.node_id) || {}, status = evaluated.execution_state || evaluated.state || 'pending';
       const statusText = statusLabel(status) + (status === 'ready' && projection.node_capabilities?.[node.node_id]?.authorized === false ? ' · execution unavailable' : '');
       const parents = layout.parents.get(node.node_id).map(id => name(layout.byId.get(id))), fullName = name(node);
-      return `<button type="button" class="au-node" data-au-node="${h(node.node_id)}" data-status="${h(status)}" aria-pressed="${selected === node.node_id}" aria-label="${h(fullName)}. ${h(statusText)}${parents.length ? `. After ${h(parents.join(' + '))}` : ''}" title="${h(fullName)}"><span class="au-node-index">${status === 'completed' ? '✓' : String(layout.nodes.indexOf(node) + 1).padStart(2, '0')}</span><span class="au-node-copy"><strong class="au-node-title">${h(compactLabels[fullName] || fullName)}</strong><span class="au-node-state">${h(statusText)}</span><span class="au-node-deps au-sr-only">${parents.length ? `After ${h(parents.join(' + '))}` : 'Starting point'}</span></span></button>`;
+      return `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" aria-pressed="${selected === node.node_id}" aria-label="${h(fullName)}. ${h(statusText)}${parents.length ? `. After ${h(parents.join(' + '))}` : ''}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}">${status === 'completed' ? '✓' : String(layout.nodes.indexOf(node) + 1).padStart(2, '0')}</span><span class="au-node-copy"><strong class="au-node-title">${h(fullName)}</strong><span class="au-node-state">${h(statusText)}</span><span class="au-node-deps au-sr-only">${parents.length ? `After ${h(parents.join(' + '))}` : 'Starting point'}</span></span></button>`;
     }).join('')}</div>`).join('')}</div></div>`;
   }
   function obligationMarkup(state, selected, suppliedRows) {
@@ -203,19 +202,24 @@
       return `<li class="au-obligation" data-au-obligation="${h(obligation.obligation_id || obligation.document_type)}" data-au-document="${h(obligation.document_type)}" data-status="${h(status)}"${nodes.includes(selected) ? ' data-selected="true"' : ''}><div><strong>${h(name(obligation) || name(doc))}</strong><span class="au-obligation-state">${h(statusLabel(status))}${doc.review_state && doc.review_state !== 'unreviewed' ? ` · ${h(words(doc.review_state))}` : ''}</span>${requiredFacts.length && !suppliedRows ? `<p>${h(requiredFacts.join('; '))}</p>` : ''}${obligation.reason ? `<details data-au-disclosure="obligation:${h(obligation.obligation_id || obligation.document_type)}"><summary>Why required</summary><p>${h(obligation.reason)}</p></details>` : ''}<div class="au-related">${nodes.filter(id => !suppliedRows || id !== selected).map(id => button(name(list(state.graph?.nodes).find(node => node.node_id === id)) || words(id), `data-au-select="${h(id)}"`)).join('')}</div>${['needed_now','unresolved','pending','held_behind_question'].includes(status) ? button('Add supporting files','data-au-add-files') : ''}</div>${sourceButtons(state, obligation)}</li>`;
     }).join('')}</ul>`;
   }
+  function actionInstanceIdentity(action, receipt = {}, index = 0, entry = {}) {
+    const logical = action.action_id || name(action) || 'recorded-action';
+    const binding = receipt.receipt_sha256 ? `receipt:${receipt.receipt_sha256}` : `record:${JSON.stringify([receipt.parent_revision ?? null,receipt.parent_state_sha256 ?? null,receipt.workflow_id || entry.workflow_id || action.workflow_id || null,receipt.run_id || entry.run_id || action.run_id || null,index])}`;
+    return `${logical}:${binding}`;
+  }
   function actionRows(state, events = []) {
     let start = null;
     const runId = typeof state.run_id === 'string' && state.run_id.trim() ? state.run_id : null;
     if (runId) for (const event of events) if (event.kind === 'work.started' && event.payload?.run_id === runId) start = event.seq;
-    return list(state.actions).map(entry => {
+    return list(state.actions).map((entry,index) => {
       const result = entry.result || entry, receipt = entry.receipt || {};
       const revision = receipt.parent_revision;
       const scope = Number.isSafeInteger(start) && Number.isSafeInteger(revision) ? revision >= start ? 'current' : 'historical' : 'unassociated';
-      return {result, receipt, scope};
+      return {result, receipt, scope,instanceId:actionInstanceIdentity(result,receipt,index,entry)};
     });
   }
   function actionMarkup(state, rows) {
-    return rows.map(({result:action,receipt,scope}) => `<article class="au-action" data-au-action-scope="${scope}"><div class="au-action-heading"><strong>${h(name(action))}</strong><span>${h(statusLabel(action.status))}</span></div><p class="au-meta">${scope === 'current' ? 'Recorded in this run' : scope === 'historical' ? 'Recorded in an earlier run' : 'Recorded action · run association not recorded'}</p><p>${h(action.summary || action.reason || '')}</p>${sourceButtons(state,action)}${Object.keys(receipt).length ? `<details class="au-receipt" data-au-disclosure="action:${h(action.action_id || receipt.receipt_sha256 || name(action))}"><summary>Action receipt</summary>${Number.isSafeInteger(receipt.parent_revision) ? `<p>Recorded after revision ${h(receipt.parent_revision)}.</p>` : ''}${receipt.operation ? `<p>${h(words(receipt.operation))}</p>` : ''}<pre class="au-record-body">${h(JSON.stringify(receipt,null,2))}</pre></details>` : ''}</article>`).join('') || '<p class="au-empty">No action result recorded for this step.</p>';
+    return rows.map(({result:action,receipt,scope,instanceId},index) => `<article class="au-action" data-au-action-scope="${scope}"><div class="au-action-heading"><strong>${h(name(action))}</strong><span>${h(statusLabel(action.status))}</span></div><p class="au-meta">${scope === 'current' ? 'Recorded in this run' : scope === 'historical' ? 'Recorded in an earlier run' : 'Recorded action · run association not recorded'}</p><p>${h(action.summary || action.reason || '')}</p>${sourceButtons(state,action,`action:${instanceId || actionInstanceIdentity(action,receipt,index)}`)}${Object.keys(receipt).length ? `<details class="au-receipt" data-au-disclosure="action:${h(instanceId || actionInstanceIdentity(action,receipt,index))}"><summary>Action receipt</summary>${Number.isSafeInteger(receipt.parent_revision) ? `<p>Recorded after revision ${h(receipt.parent_revision)}.</p>` : ''}${receipt.operation ? `<p>${h(words(receipt.operation))}</p>` : ''}<pre class="au-record-body">${h(JSON.stringify(receipt,null,2))}</pre></details>` : ''}<details class="au-technical-record" data-au-disclosure="action-record:${h(instanceId || actionInstanceIdentity(action,receipt,index))}"><summary>Full public action record</summary><pre class="au-record-body">${h(JSON.stringify({result:action,receipt,scope},null,2))}</pre></details></article>`).join('') || '<p class="au-empty">No action result recorded for this step.</p>';
   }
   function routeMarkup(state, selected) {
     const nodes = new Map(list(state.graph?.nodes).map(node => [node.node_id,node]));
@@ -238,22 +242,40 @@
       return `<li data-au-relation="${h(edge.relation || 'recorded_connection')}" data-au-edge-status="${h(view?.activation || view?.condition_verdict || 'unknown')}"><span>${h(incoming ? 'From' : 'To')} ${h(name(nodes.get(other)) || words(other))} · ${h(relation)}${view?.activation || view?.condition_verdict ? ` · ${h(statusLabel(view.activation || view.condition_verdict))}` : ''}</span>${edge.condition ? `<p>${condition(edge.condition)}</p>` : ''}${button('Inspect connected step',`data-au-select="${h(other)}"`)}</li>`;
     }).join('') || '<li>No process connection recorded for this step.</li>'}</ul></details>`;
   }
-  function inspectorMarkup(state, selected, projection = {}, events = []) {
+  function evidenceRelationships(state, selected, context = {}) {
     const node = list(state.graph?.nodes).find(item => item.node_id === selected);
+    const relates = item => item.node_id === selected || item.decision_node_id === selected || list(item.node_ids).includes(selected) || list(item.required_at_node_ids).includes(selected);
+    const obligations = list(state.obligations).filter(relates), incoming = list(state.graph?.edges).filter(edge => edge.target_node_id === selected);
+    const ids = new Set(obligations.flatMap(item => list(item.required_fact_ids)));
+    for (const flag of conditionFlags(node?.condition).concat(incoming.flatMap(edge => conditionFlags(edge.condition)))) ids.add(`condition:${flag}`);
+    const facts = list(state.facts).filter(item => ids.has(item.fact_id) || relates(item)).sort((a,b) => Number(b.fact_id?.startsWith('condition:')) - Number(a.fact_id?.startsWith('condition:')));
+    const evaluated = list(state.evaluation?.documents).filter(relates);
+    const types = [...new Set([...obligations,...evaluated].map(item => item.document_type))];
+    const documents = types.map(type => ({...obligations.find(item => item.document_type === type),...list(state.evaluation?.documents).find(item => item.document_type === type)}));
+    return {node,obligations,incoming,facts,documents,fact:facts.find(item => item.fact_id === context.fact) || facts[0],document:documents.find(item => item.document_type === context.document) || documents[0],evaluation:list(state.evaluation?.nodes).find(item => item.node_id === selected) || {}};
+  }
+  function factRecordMarkup(state, fact) {
+    return `<article class="au-fact" data-au-fact="${h(fact.fact_id)}"><strong>${h(name(fact) || words(fact.flag))}</strong><span>${h(statusLabel(fact.verdict || fact.status))}</span>${fact.summary || fact.reason ? `<p>${h(fact.summary || fact.reason)}</p>` : ''}${sourceButtons(state,fact)}${['unresolved','unknown','insufficient'].includes(fact.verdict || fact.status) ? button('Add evidence','data-au-add-files') : ''}<details class="au-technical-record" data-au-disclosure="fact-record:${h(fact.fact_id)}"><summary>Full fact record</summary><pre class="au-record-body">${h(JSON.stringify(fact,null,2))}</pre></details></article>`;
+  }
+  function evidencePathMarkup(state, selected, projection = {}, context = {}) {
+    const r = evidenceRelationships(state,selected,context), {node,fact,document:requirement,evaluation} = r;
+    if (!node) return '<p class="au-empty">No process step has been recorded yet.</p>';
+    const citations = citationRows(fact), capability = projection.node_capabilities?.[selected], execution = evaluation.execution_state || evaluation.state;
+    const stepStatus = execution === 'ready' ? `Process ready${capability?.authorized === false ? ' · execution unavailable' : ''}` : statusLabel(execution);
+    const blocked = list(evaluation.blocked_by || evaluation.unresolved_dependencies);
+    const sources = citations.slice(0,2).map((citation,index) => `<button type="button" class="au-source-link au-evidence-source" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="path:${h(selected)}:${h(fact.fact_id)}" data-au-wire="source-${index}"><span class="au-evidence-source-label">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true">↗</span></span>${citation.quote ? `<q>${context.trace ? `<mark>${h(citation.quote)}</mark>` : h(citation.quote)}</q>` : '<span>No passage text recorded.</span>'}</button>`).join('');
+    const route = requirement?.route_state || 'pending', review = requirement?.review_state || 'unreviewed';
+    const timing = {needed_later:'Needed when a requiring step is reached',needed_now:'Needed now in the recorded process',held_behind_question:'Held until the recorded question is resolved',held_not_reviewed:'Acquired; its evidence has not been established',not_needed:'Not required on the recorded route'}[route] || statusLabel(route);
+    return `<div class="au-evidence-path${context.trace ? ' au-evidence-trace' : ''}" data-au-evidence-path><svg class="au-evidence-lines" aria-hidden="true"></svg><section class="au-evidence-column au-evidence-column--sources"><h4 class="au-evidence-column-label">01 · Original passages</h4><div class="au-evidence-source-stack">${sources || '<p class="au-empty">No supporting source passage is recorded for this fact.</p>'}</div>${citations.length > 2 ? `<details data-au-disclosure="passages:${h(fact.fact_id)}"><summary>All ${citations.length} supporting passages</summary>${sourceButtons(state,fact,`passages:${selected}:${fact.fact_id}`)}</details>` : ''}</section><section class="au-evidence-column au-evidence-column--facts"><h4 class="au-evidence-column-label">02 · ${fact?.fact_id?.startsWith('condition:') ? 'Branch condition' : 'Recorded fact'}</h4>${fact ? `<article class="au-fact au-evidence-fact" data-au-fact="${h(fact.fact_id)}" data-au-wire="fact"><button type="button" class="au-evidence-fact-select" data-au-fact-select="${h(fact.fact_id)}" aria-pressed="${Boolean(context.trace)}"><span class="au-evidence-object-symbol" aria-hidden="true">${['true','established'].includes(fact.verdict || fact.status) ? '✓' : (fact.verdict || fact.status) === 'false' ? '−' : '?'}</span><strong>${h(name(fact))}</strong><span>${h(statusLabel(fact.verdict || fact.status))}</span></button><details data-au-disclosure="focused-fact:${h(fact.fact_id)}"><summary>Inspect fact record</summary>${fact.summary || fact.reason ? `<p>${h(fact.summary || fact.reason)}</p>` : ''}<pre class="au-record-body">${h(JSON.stringify(fact,null,2))}</pre></details></article>` : '<p class="au-empty">No fact dependency is attached to this step.</p>'}${r.facts.length > 1 ? `<div class="au-evidence-options" aria-label="Related facts">${r.facts.filter(item => item !== fact).map(item => `<button type="button" data-au-fact-select="${h(item.fact_id)}" aria-pressed="false">${h(name(item))} · ${h(statusLabel(item.verdict || item.status))}</button>`).join('')}</div>` : ''}</section><section class="au-evidence-column au-evidence-column--step"><h4 class="au-evidence-column-label">03 · Selected process step</h4><header class="au-step-heading au-evidence-step" data-au-wire="step"><span class="au-evidence-step-junction" data-au-expanded-junction="${h(selected)}" aria-hidden="true">${String(layoutGraph(state.graph).nodes.findIndex(item => item.node_id === selected)+1).padStart(2,'0')}</span><h3 tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h3><p class="au-step-status">${h(stepStatus)}</p>${blocked.length ? `<p class="au-evidence-wait">Waiting for ${h(blocked.map(id => name(list(state.graph?.nodes).find(item => item.node_id === id)) || words(id)).join(', '))}.</p>` : evaluation.activation === 'false' ? '<p class="au-evidence-wait">This route does not apply to the recorded facts.</p>' : evaluation.activation === 'unresolved' ? '<p class="au-evidence-wait">Applicability remains unresolved.</p>' : ''}</header>${capability?.authorized === false ? `<p class="au-evidence-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}<button type="button" class="au-link au-back-process" data-au-back-process="${h(selected)}">Return focus to process ↗</button></section><section class="au-evidence-column au-evidence-column--requirements"><h4 class="au-evidence-column-label">04 · Derived requirement</h4>${requirement ? `<article class="au-evidence-requirement" data-au-document="${h(requirement.document_type)}" data-route="${h(route)}" data-au-wire="requirement"><span class="au-evidence-object-symbol" aria-hidden="true">${review === 'satisfied' ? '✓' : '·'}</span><h3>${h(name(requirement))}</h3><p class="au-evidence-review">${h(statusLabel(review))}</p><p class="au-evidence-timing">${h(timing)}</p><details data-au-disclosure="focused-document:${h(requirement.document_type)}"><summary>Inspect requirement</summary>${requirement.reason ? `<p>${h(requirement.reason)}</p>` : ''}${sourceButtons(state,requirement)}<pre class="au-record-body">${h(JSON.stringify({evaluation:list(state.evaluation?.documents).find(item => item.document_type === requirement.document_type),obligations:list(state.obligations).filter(item => item.document_type === requirement.document_type)},null,2))}</pre></details></article>` : '<p class="au-empty">No document requirement is attached to this step.</p>'}${r.documents.length > 1 ? `<div class="au-evidence-options" aria-label="Requirements for this step">${r.documents.map(item => `<button type="button" data-au-document-select="${h(item.document_type)}" aria-pressed="${item.document_type === requirement.document_type}">${h(name(item))} · ${h(statusLabel(item.route_state))}</button>`).join('')}</div>` : ''}</section></div>`;
+  }
+  function inspectorMarkup(state, selected, projection = {}, events = [], context = {}) {
+    const r = evidenceRelationships(state,selected,context), {node,facts,obligations,evaluation} = r;
     if (!node) return '<div class="au-empty">Select a process step to inspect its evidence and consequences.</div>';
     const relates = item => item.node_id === selected || item.decision_node_id === selected || list(item.node_ids).includes(selected) || list(item.required_at_node_ids).includes(selected);
-    const obligations = list(state.obligations).filter(relates);
-    const ids = new Set(obligations.flatMap(item => list(item.required_fact_ids)));
-    for (const flag of conditionFlags(node.condition).concat(list(state.graph?.edges).filter(edge => edge.target_node_id === selected).flatMap(edge => conditionFlags(edge.condition)))) ids.add(`condition:${flag}`);
-    const facts = list(state.facts).filter(item => ids.has(item.fact_id) || relates(item)).sort((a,b) => Number(b.fact_id?.startsWith('condition:')) - Number(a.fact_id?.startsWith('condition:')));
     const actions = actionRows(state,events).filter(({result:item}) => relates(item) || obligations.some(obligation => item.obligation_id === obligation.obligation_id));
-    const evaluation = list(state.evaluation?.nodes).find(item => item.node_id === selected) || {};
-    const required = list(evaluation.blocked_by || evaluation.unresolved_dependencies);
-    const capability = projection.node_capabilities?.[selected];
-    const executionState = evaluation.execution_state || evaluation.state;
-    const stepStatus = executionState === 'ready' ? `Process ready${capability?.authorized === false ? ' · execution unavailable' : ''}` : statusLabel(executionState);
-    const execution = capability ? `<section class="au-capability" data-authorized="${capability.authorized === true}"><strong>${capability.authorized === true ? ['ready','completed'].includes(executionState) ? 'Available capability' : 'Available after prerequisites' : 'Execution limit'}</strong><p>${h(capability.reason || words(capability.id))}</p></section>` : '';
-    return `<div class="au-inspector" data-au-selected-step="${h(selected)}"><button type="button" class="au-link au-back-process" data-au-back-process="${h(selected)}">← Back to process</button><header class="au-step-heading"><p class="au-eyebrow">Selected step</p><h3 tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h3><p class="au-step-status">${h(stepStatus)}</p>${required.length ? `<p>Waiting for ${h(required.map(id => name(list(state.graph?.nodes).find(n => n.node_id === id)) || words(id)).join(', '))}.</p>` : ''}</header>${execution}<div class="au-step-evidence"><section class="au-step-facts"><h4>Facts this step requires</h4>${facts.map(fact => `<article class="au-fact" data-au-fact="${h(fact.fact_id)}"><strong>${h(name(fact) || words(fact.flag))}</strong><span>${h(statusLabel(fact.verdict || fact.status))}</span>${fact.summary || fact.reason ? `<p>${h(fact.summary || fact.reason)}</p>` : ''}${sourceButtons(state,fact)}${['unresolved','unknown','insufficient'].includes(fact.verdict || fact.status) ? button('Add evidence','data-au-add-files') : ''}</article>`).join('') || '<p class="au-empty">No fact dependencies recorded for this step.</p>'}</section><section class="au-step-documents"><h4>Required documents</h4>${obligationMarkup(state,selected,obligations)}${obligations.length ? `<details class="au-document-rules" data-au-disclosure="document-rules:${h(selected)}"><summary>Document rules and acquisition</summary>` : ''}${obligations.map(item => `<p class="au-meta">${list(item.rule_refs).length ? `Rule ${h(list(item.rule_refs).map(ref => typeof ref === 'string' ? ref : ref.rule_id || ref.title || ref.authority_id).join(' · '))} · ` : ''}${item.capability_id ? `Acquisition: ${h(words(item.capability_id))}` : 'No acquisition capability recorded'}</p>`).join('')}${obligations.length ? '</details>' : ''}</section><section class="au-step-actions"><h4>Recorded actions</h4>${actionMarkup(state,actions)}</section></div>${routeMarkup(state,selected)}<details class="au-rule-trace" data-au-disclosure="rules:${h(selected)}"><summary>Admitted rules</summary>${node.authority?.title ? `<strong>${h(node.authority.title)}</strong>` : ''}${node.authority?.quote ? `<blockquote>${h(node.authority.quote)}</blockquote>` : ''}${node.meaning && node.meaning !== node.authority?.quote ? `<p>${h(node.meaning)}</p>` : ''}${list(node.provenance?.rule_refs).map(ref => `<p>${h(typeof ref === 'string' ? ref : ref.title || ref.rule_id || ref.authority_id)}</p>`).join('')}${node.authority?.source_id ? `<p class="au-meta">${h(node.authority.source_id)}</p>` : ''}</details></div>`;
+    const capability = projection.node_capabilities?.[selected], executionState = evaluation.execution_state || evaluation.state;
+    const execution = capability ? `<section class="au-capability" data-authorized="${capability.authorized === true}"><strong>${capability.authorized === true ? ['ready','completed'].includes(executionState) ? 'Available capability' : 'Available after prerequisites' : 'Execution limit'}</strong><p>${h(capability.reason || words(capability.id))}</p><p class="au-meta">Process readiness does not record execution or external authorization.</p></section>` : '';
+    return `<div class="au-inspector au-evidence-inspector" data-au-selected-step="${h(selected)}">${evidencePathMarkup(state,selected,projection,context)}<details class="au-evidence-inspection" data-au-disclosure="inspection:${h(selected)}"><summary>Step evidence, actions and authority <span>${facts.length} facts · ${obligations.length} obligations · ${actions.length} recorded actions</span></summary>${execution}<div class="au-step-evidence"><section class="au-step-facts"><h4>Facts this step requires</h4>${facts.map(fact => factRecordMarkup(state,fact)).join('') || '<p class="au-empty">No fact dependencies recorded for this step.</p>'}</section><section class="au-step-documents"><h4>Required documents</h4>${obligationMarkup(state,selected,obligations)}${obligations.length ? `<details class="au-document-rules" data-au-disclosure="document-rules:${h(selected)}"><summary>Document rules and acquisition</summary>` : ''}${obligations.map(item => `<p class="au-meta">${list(item.rule_refs).length ? `Rule ${h(list(item.rule_refs).map(ref => typeof ref === 'string' ? ref : ref.rule_id || ref.title || ref.authority_id).join(' · '))} · ` : ''}${item.capability_id ? `Acquisition: ${h(words(item.capability_id))}` : 'No acquisition capability recorded'}</p>`).join('')}${obligations.length ? '</details>' : ''}</section><section class="au-step-actions"><h4>Recorded actions</h4>${actionMarkup(state,actions)}</section></div>${routeMarkup(state,selected)}<details class="au-rule-trace" data-au-disclosure="rules:${h(selected)}"><summary>Admitted rules</summary>${node.authority?.title ? `<strong>${h(node.authority.title)}</strong>` : ''}${node.authority?.quote ? `<blockquote>${h(node.authority.quote)}</blockquote>` : ''}${node.meaning && node.meaning !== node.authority?.quote ? `<p>${h(node.meaning)}</p>` : ''}${list(node.provenance?.rule_refs).map(ref => `<p>${h(typeof ref === 'string' ? ref : ref.title || ref.rule_id || ref.authority_id)}</p>`).join('')}${node.authority?.source_id ? `<p class="au-meta">${h(node.authority.source_id)}</p>` : ''}</details><details class="au-technical-record" data-au-disclosure="step-record:${h(selected)}"><summary>Complete step and capability record</summary><pre class="au-record-body">${h(JSON.stringify({node,evaluation,capability},null,2))}</pre></details></details></div>`;
   }
   function eventLabel(event) {
     if (event.kind === 'knowledge.published') return event.payload?.knowledge?.qualification?.status === 'qualified' ? 'Qualified knowledge version published' : 'Knowledge candidate withheld';
@@ -267,15 +289,15 @@
     return `<details class="au-outcome" data-status="${h(state.status)}" data-au-disclosure="outcome"><summary><strong>${h(summary)}</strong><span>${h(reason)}</span></summary><div class="au-outcome-body"><p class="au-eyebrow">${state.status === 'deferred' ? 'Why work stopped' : 'Recorded outcome'}</p><h2>${h(outcome.title || statusLabel(outcome.status || state.status))}</h2><p>${h(outcome.summary || outcome.reason || '')}</p>${list(outcome.authority_limits).map(reason => `<p>${h(reason)}</p>`).join('')}${gaps ? `<p><strong>Evidence still needed:</strong> ${h(outcome.missing_evidence.map(item => item.label || words(item.document_type)).join('; '))}.</p>${button('Add supporting files','data-au-add-files')}` : ''}${list(outcome.unresolved_facts).length ? `<p><strong>Unresolved:</strong> ${h(outcome.unresolved_facts.map(item => item.summary || words(item.fact_id)).join('; '))}.</p>` : ''}${outcome.next_action ? `<p>${h(outcome.next_action)}</p>` : ''}${sourceButtons(state,outcome)}${outcome.request_draft ? `<details data-au-disclosure="request-draft"><summary>Evidence request · ${h(statusLabel(outcome.request_draft.status))}</summary><p><strong>${h(outcome.request_draft.subject)}</strong></p><pre class="au-draft-body">${h(outcome.request_draft.body)}</pre></details>` : ''}<details class="au-technical-record" data-au-disclosure="outcome-record"><summary>Full public ${state.outcome ? 'outcome' : state.deferral ? 'deferral' : 'outcome'} record</summary><pre class="au-record-body">${h(JSON.stringify(state.outcome || state.deferral || outcome,null,2))}</pre></details></div></details>`;
   }
   function sourcesMarkup(state) {
-    return `<section class="au-supporting"><div class="au-section-heading"><h2>Original sources</h2><span>${list(state.acquired_sources).length} of ${list(state.source_descriptors).length} acquired</span></div><ul class="au-source-list">${list(state.source_descriptors).map(source => `<li>${button(source.file_name || name(source) || 'Original source', `data-au-source="${h(source.artifact_id)}"`)}<span>${list(state.acquired_sources).some(row => row.artifact_id === source.artifact_id) ? 'Acquired' : 'In packet'}</span></li>`).join('') || '<li>No original source recorded.</li>'}</ul><form data-au-arrival class="au-arrival"><label for="auAdditionalFiles">Add supporting files</label><input id="auAdditionalFiles" name="files" type="file" multiple required><button class="au-secondary" type="submit">Add files</button><p class="au-form-status" role="status"></p></form></section>`;
+    return `<section class="au-supporting"><div class="au-section-heading"><h2>Original sources</h2><span>${list(state.acquired_sources).length} of ${list(state.source_descriptors).length} acquired</span></div><ul class="au-source-list">${list(state.source_descriptors).map(source => `<li>${button(source.file_name || name(source) || 'Original source', `data-au-source="${h(source.artifact_id)}" data-au-source-origin="originals:${h(source.artifact_id)}"`)}<span>${list(state.acquired_sources).some(row => row.artifact_id === source.artifact_id) ? 'Acquired' : 'In packet'}</span></li>`).join('') || '<li>No original source recorded.</li>'}</ul><form data-au-arrival class="au-arrival"><label for="auAdditionalFiles">Add supporting files</label><input id="auAdditionalFiles" name="files" type="file" multiple required><button class="au-secondary" type="submit">Add files</button><p class="au-form-status" role="status"></p></form></section>`;
   }
-  function activityMarkup(state, events) {
-    return `<section class="au-activity"><h2>Activity</h2><p class="au-meta">The saved journal records work in sequence.</p><details class="au-history" data-au-disclosure="history"><summary>Recorded work <span>${events.length} events</span></summary><ol class="au-event-list">${events.slice().reverse().map(event => `<li><span class="au-event-seq">${h(event.seq)}</span><div><strong>${h(eventLabel(event))}</strong><time datetime="${h(event.timestamp || '')}">${h(dateLabel(event.timestamp))}</time></div></li>`).join('') || '<li>No events loaded.</li>'}</ol></details><section class="au-recorded-actions"><h3>Action record</h3>${actionMarkup(state,actionRows(state,events))}</section>${list(state.knowledge_uses).length ? `<section class="au-reuse"><h3>Knowledge used here</h3>${list(state.knowledge_uses).map(use => `<article><strong>${h(use.name || use.knowledge_id || use.version_id)} · version ${h(use.version || use.version_id)}</strong>${reuseDetails(use)}${knowledgeLink(use)}</article>`).join('')}${button('Inspect knowledge','data-au-nav="knowledge"')}</section>` : '<p class="au-empty">No knowledge reuse recorded for this claim.</p>'}</section>`;
+  function activityMarkup(state, events, projection = {}) {
+    return `<section class="au-activity"><h2>Activity</h2><p class="au-meta">The saved journal records work in sequence.</p><details class="au-history" data-au-disclosure="history"><summary>Recorded work <span>${events.length} events</span></summary><ol class="au-event-list">${events.slice().reverse().map(event => `<li><span class="au-event-seq">${h(event.seq)}</span><div><strong>${h(eventLabel(event))}</strong><time datetime="${h(event.timestamp || '')}">${h(dateLabel(event.timestamp))}</time><details class="au-technical-record" data-au-disclosure="event:${h(event.seq)}"><summary>Journal entry</summary><pre class="au-record-body">${h(JSON.stringify(event,null,2))}</pre></details></div></li>`).join('') || '<li>No events loaded.</li>'}</ol></details><section class="au-recorded-actions"><h3>Action record</h3>${actionMarkup(state,actionRows(state,events))}</section>${list(state.knowledge_uses).length ? `<section class="au-reuse"><h3>Knowledge used here</h3>${list(state.knowledge_uses).map(use => `<article><strong>${h(use.name || use.knowledge_id || use.version_id)} · version ${h(use.version || use.version_id)}</strong>${reuseDetails(use)}${knowledgeLink(use)}</article>`).join('')}${button('Inspect knowledge','data-au-nav="knowledge"')}</section>` : '<p class="au-empty">No knowledge reuse recorded for this claim.</p>'}<details class="au-technical-record" data-au-disclosure="claim-record"><summary>Complete saved claim and capability record</summary><pre class="au-record-body">${h(JSON.stringify({state,projection},null,2))}</pre></details></section>`;
   }
-  function workMarkup(state, projection, selected, events, detail = 'step') {
+  function workMarkup(state, projection, selected, events, detail = 'step', context = {}) {
     const outcome = state.outcome || (state.deferral ? {title:words(state.deferral.code),reason:state.deferral.reason,status:'deferred',details:state.deferral.details} : null);
-    const panels = [['step','This step',inspectorMarkup(state,selected,projection,events)],['documents','All documents',`<section aria-labelledby="auDocumentsTitle" class="au-documents"><div class="au-section-heading"><h2 id="auDocumentsTitle">All documents</h2><span>${new Set([...list(state.obligations),...list(state.evaluation?.documents)].map(item => item.document_type)).size} documents</span></div>${obligationMarkup(state,selected)}</section>`],['sources','Sources',sourcesMarkup(state)],['activity','Activity',activityMarkup(state,events)]];
-    return `<header class="au-work-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Work</button><span aria-hidden="true"> / </span>Claim · revision ${h(state.revision)}</p><h1 class="au-page-heading" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(state.title)}</h1></div><div class="au-work-controls"><span class="au-status" data-tone="${tone(state.status)}">${h(statusLabel(state.status))}</span>${state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : ''}</div></header>${progressMarkup(state,events)}${outcomeMarkup(state,outcome)}<div class="au-causal-layout"><section class="au-process-hero au-path-panel" aria-labelledby="auProcessTitle"><div class="au-section-heading"><h2 id="auProcessTitle">Working process</h2><span>${list(state.graph?.nodes).length} step${list(state.graph?.nodes).length === 1 ? '' : 's'}</span></div>${graphMarkup(state,selected,projection)}</section><div class="au-work-layout au-context-panel au-detail-panel" aria-label="Step evidence and consequences" data-au-context="${h(detail)}"><nav class="au-context-nav" aria-label="Claim details">${panels.map(([id,label]) => `<button type="button" data-au-detail="${id}" aria-pressed="${detail === id}" aria-controls="auPanel-${id}">${h(label)}</button>`).join('')}</nav><div class="au-context-body">${panels.map(([id,label,body]) => `<section class="au-context-view" id="auPanel-${id}" data-au-panel="${id}" aria-label="${h(label)}"${detail === id ? '' : ' hidden'}>${body}</section>`).join('')}</div></div></div>`;
+    const panels = [['step','Evidence path',inspectorMarkup(state,selected,projection,events,context)],['documents','Documents',`<section aria-labelledby="auDocumentsTitle" class="au-documents"><div class="au-section-heading"><h2 id="auDocumentsTitle">All document requirements</h2><span>${new Set([...list(state.obligations),...list(state.evaluation?.documents)].map(item => item.document_type)).size} documents</span></div><p class="au-meta">Requirements follow the recorded route. Acquiring a file does not establish its facts.</p>${obligationMarkup(state,selected)}</section>`],['sources','Original sources',sourcesMarkup(state)],['activity','Recorded work',activityMarkup(state,events,projection)]];
+    return `<header class="au-work-head au-identity-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Work</button><span aria-hidden="true"> / </span>Claim · revision ${h(state.revision)}</p><h1 class="au-page-heading" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(state.title)}</h1><p class="au-meta">${h(state.graph?.title || state.graph?.label || 'Source-grounded investigation')}${state.phase ? ` · Recorded phase: ${h(words(state.phase))}` : ''}</p></div><div class="au-work-controls"><span class="au-status" data-tone="${tone(state.status)}">${h(statusLabel(state.status))}</span>${state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : ''}</div></header>${active(state.status) ? `<p class="au-evidence-working" role="status" aria-live="polite">${h(state.phase_summary || progressModel(state,events).explanation)}</p>` : ''}${outcomeMarkup(state,outcome)}<section class="au-evidence-canvas" data-au-canvas aria-label="Connected claim evidence"><div class="au-evidence-toolbar"><nav class="au-context-nav" aria-label="Claim details">${panels.map(([id,label]) => `<button type="button" data-au-detail="${id}" aria-pressed="${detail === id}" aria-controls="auPanel-${id}">${h(label)}</button>`).join('')}</nav><span class="au-evidence-packet-count">${list(state.source_descriptors).length} originals</span></div><div class="au-evidence-stage" data-au-evidence-stage><svg class="au-evidence-tether" data-au-tether aria-hidden="true"><path/></svg><section class="au-process-hero au-evidence-process" aria-labelledby="auProcessTitle"><h2 id="auProcessTitle" class="au-sr-only">Complete process</h2>${graphMarkup(state,selected,projection)}</section><div class="au-context-body" data-au-context="${h(detail)}">${panels.map(([id,label,body]) => `<section class="au-context-view" id="auPanel-${id}" data-au-panel="${id}" aria-label="${h(label)}"${detail === id ? '' : ' hidden'}>${body}</section>`).join('')}</div></div></section>`;
   }
   function knowledgeLink(use) {
     const id = use.knowledge_id || use.version_id, version = use.version || use.version_id;
@@ -298,21 +320,30 @@
     const parent = versions.find(item => item.knowledge_sha256 && item.knowledge_sha256 === version.parent_knowledge_sha256);
     return `<div class="au-lineage-summary">${version.change_reason ? `<p>${h(version.change_reason)}</p>` : ''}${version.parent_knowledge_sha256 ? `<p class="au-meta">${parent ? `Derived from version ${h(parent.version || parent.version_id)}` : 'Parent version is not in this record'}${parent?.source_claim_id ? ` · ${button('Open parent source claim',`data-au-claim="${h(parent.source_claim_id)}"`)}` : ''}</p>` : '<p class="au-meta">First recorded version</p>'}</div>`;
   }
+  function knowledgeUses(version, uses = []) {
+    return list(uses).filter(use => {
+      if ((use.knowledge_id || use.version_id) !== (version.knowledge_id || version.version_id) || String(use.version ?? use.version_id) !== String(version.version ?? version.version_id)) return false;
+      if (Object.prototype.hasOwnProperty.call(use,'knowledge_sha256') && use.knowledge_sha256 != null) return Boolean(use.knowledge_sha256) && use.knowledge_sha256 === version.knowledge_sha256;
+      return true;
+    });
+  }
   function knowledgeMarkup(data, claims = []) {
     const claimLabel = (id, fallback) => list(claims).find(claim => claim.claim_id === id)?.title || `${fallback} · ${String(id).slice(-8)}`;
+    const claimLink = (id, fallback) => button(claimLabel(id,fallback),`data-au-claim="${h(id)}"`);
     const versions = list(data?.versions), uses = list(data?.uses), quarantined = list(data?.quarantined), groups = new Map();
     for (const version of versions) { const id = version.knowledge_id || version.version_id; if (!groups.has(id)) groups.set(id,[]); groups.get(id).push(version); }
     const versionMarkup = (version,history,latest) => {
-      const receiving = uses.filter(use => (use.knowledge_id || use.version_id) === (version.knowledge_id || version.version_id) && (use.knowledge_sha256 ? use.knowledge_sha256 === version.knowledge_sha256 : String(use.version || use.version_id) === String(version.version || version.version_id)));
+      const receiving = knowledgeUses(version,uses), receivingIds = [...new Set(receiving.map(use => use.claim_id).filter(Boolean))];
       const identity = `${version.knowledge_id || version.version_id || name(version)}:${version.version || version.version_id || ''}`;
-      return `<li class="au-knowledge-version au-version-row" data-au-version="${h(version.version || version.version_id)}" data-au-knowledge-identity="${h(identity)}" data-current="${latest}"><div class="au-version-heading"><strong>Version ${h(version.version || version.version_id)}</strong><span>${latest ? 'Latest recorded version' : 'Earlier recorded version'}</span>${version.created_at ? `<time datetime="${h(version.created_at)}" title="${h(version.created_at)}">${h(dateLabel(version.created_at))}</time>` : ''}</div>${version.source_claim_id ? `<div class="au-knowledge-claims"><div><h4>Source claim</h4>${button(claimLabel(version.source_claim_id,'Open source claim'),`data-au-claim="${h(version.source_claim_id)}"`)}</div><div><h4>Reused in ${new Set(receiving.map(use => use.claim_id).filter(Boolean)).size} claims</h4>${[...new Set(receiving.map(use => use.claim_id).filter(Boolean))].map(id => button(claimLabel(id,'Open receiving claim'),`data-au-claim="${h(id)}"`)).join('') || '<p class="au-meta">No receiving claim recorded yet</p>'}</div></div>` : '<p class="au-meta">Source claim not recorded</p>'}${lineageMarkup(version,history)}${definitionMarkup(version)}<details class="au-qualification" data-au-disclosure="qualification:${h(identity)}"><summary>Qualification checks</summary><p>${h(version.qualification?.summary || statusLabel(version.qualification?.status || version.validation?.status || version.status))}</p>${version.qualification?.regression_cases ? `<p>${h(version.qualification.regression_cases)} branch assignments checked</p>` : ''}<ul>${list(version.qualification?.checks).map(check => `<li>${h(typeof check === 'string' ? words(check) : check.summary || check.name || check.check || check.status)}</li>`).join('') || '<li>No qualification checks recorded.</li>'}</ul></details><details class="au-provenance" data-au-disclosure="provenance:${h(identity)}"><summary>Provenance and receipts</summary><dl class="au-chain">${['source_claim_id','parent_knowledge_sha256','parent_definition_sha256','knowledge_sha256','rule_pack_sha256','source_state_sha256','proposer_receipt_sha256','verifier_receipt_sha256','regression_receipt_sha256'].filter(field => version[field]).map(field => `<div><dt>${h(words(field.replace('_sha256','')))}</dt><dd class="${field.endsWith('sha256') ? 'au-hash' : ''}">${h(version[field])}</dd></div>`).join('')}</dl><details class="au-technical-record"><summary>Full public version record</summary><pre class="au-record-body">${h(JSON.stringify(version,null,2))}</pre></details></details></li>`;
+      const qualification = version.qualification || {}, status = qualification.status || version.validation?.status || version.status;
+      return `<li class="au-knowledge-version au-version-row au-identity-knowledge-version" data-au-version="${h(version.version || version.version_id)}" data-au-knowledge-identity="${h(identity)}" data-current="${latest}"><div class="au-version-heading"><strong>Version ${h(version.version || version.version_id)}</strong><span>${latest ? 'Latest recorded version' : 'Earlier recorded version'}</span>${version.created_at ? `<time datetime="${h(version.created_at)}" title="${h(version.created_at)}">${h(dateLabel(version.created_at))}</time>` : ''}</div><div class="au-evidence-knowledge-path" data-au-knowledge-path><svg class="au-evidence-lines" aria-hidden="true"></svg><section class="au-evidence-knowledge-origin" data-au-wire="origin"><h4 class="au-evidence-column-label">01 · Learned from</h4>${version.source_claim_id ? claimLink(version.source_claim_id,'Open source claim') : '<p class="au-meta">Source claim not recorded</p>'}${lineageMarkup(version,history)}</section><section class="au-evidence-knowledge-definition" data-au-wire="version"><h4 class="au-evidence-column-label">02 · Qualified process version</h4><div class="au-evidence-version-object"><span class="au-knowledge-status">${h(statusLabel(status))} · version ${h(version.version || version.version_id)}</span><h3>${h(name(version))}</h3><p>${list(version.graph?.nodes).length} process steps · ${list(version.evidence_recipes).length} evidence recipes</p>${qualification.regression_cases ? `<p>${h(qualification.regression_cases)} branch assignments checked</p>` : ''}${qualification.summary ? `<p>${h(qualification.summary)}</p>` : ''}</div></section><section class="au-evidence-knowledge-receiving" data-au-wire="reuse"><h4 class="au-evidence-column-label">03 · Reused in ${receivingIds.length} claims</h4>${receivingIds.map(id => claimLink(id,'Open receiving claim')).join('') || '<p class="au-meta">No receiving claim recorded yet</p>'}<p class="au-meta">Reuse carries a process definition. Each claim must establish its own facts from its original sources.</p></section></div><details class="au-evidence-inspection" data-au-disclosure="knowledge-inspection:${h(identity)}"><summary>Version definition, qualification and lineage</summary>${definitionMarkup(version)}<details class="au-qualification" data-au-disclosure="qualification:${h(identity)}"><summary>Qualification checks</summary><p>${h(qualification.summary || statusLabel(status))}</p>${qualification.regression_cases ? `<p>${h(qualification.regression_cases)} branch assignments checked</p>` : ''}<ul>${list(qualification.checks).map(check => `<li>${h(typeof check === 'string' ? words(check) : check.summary || check.name || check.check || check.status)}</li>`).join('') || '<li>No qualification checks recorded.</li>'}</ul></details>${receiving.length ? `<details data-au-disclosure="version-uses:${h(identity)}"><summary>Exact receiving-claim reuse records</summary>${receiving.map(use => `<article>${use.claim_id ? claimLink(use.claim_id,'Open receiving claim') : ''}${reuseDetails(use)}</article>`).join('')}</details>` : ''}<details class="au-provenance" data-au-disclosure="provenance:${h(identity)}"><summary>Provenance and receipts</summary><dl class="au-chain">${['source_claim_id','parent_knowledge_sha256','parent_definition_sha256','knowledge_sha256','rule_pack_sha256','source_state_sha256','proposer_receipt_sha256','verifier_receipt_sha256','regression_receipt_sha256'].filter(field => version[field]).map(field => `<div><dt>${h(words(field.replace('_sha256','')))}</dt><dd class="${field.endsWith('sha256') ? 'au-hash' : ''}">${h(version[field])}</dd></div>`).join('')}</dl><details class="au-technical-record"><summary>Full public version record</summary><pre class="au-record-body">${h(JSON.stringify(version,null,2))}</pre></details></details></details></li>`;
     };
     const cards = [...groups.values()].map(history => {
       history.sort((a,b) => Number(b.version) - Number(a.version));
       const version = history[0], identity = version.knowledge_id || version.version_id || name(version);
-      return `<article class="au-knowledge-card"><p class="au-eyebrow">${h(words(version.category || version.family || 'Process knowledge'))}</p><h2>${h(name(version) || version.knowledge_id || version.version_id)}</h2><p>${h(version.summary || version.description || '')}</p><p class="au-knowledge-status">${h(version.qualification?.summary || statusLabel(version.qualification?.status || version.validation?.status || version.status))}</p><ol class="au-version-lineage">${versionMarkup(version,history,true)}</ol><details class="au-version-disclosure" data-au-disclosure="versions:${h(identity)}"><summary>Version history <span>${history.length}</span></summary><ol class="au-version-history">${history.slice(1).map(item => versionMarkup(item,history,false)).join('') || '<li>No earlier recorded version.</li>'}</ol></details></article>`;
+      return `<article class="au-knowledge-card au-identity-knowledge-card"><p class="au-eyebrow">${h(words(version.category || version.family || 'Process knowledge'))}</p><h2>${h(name(version) || version.knowledge_id || version.version_id)}</h2>${version.summary || version.description ? `<p>${h(version.summary || version.description)}</p>` : ''}<ol class="au-version-lineage">${versionMarkup(version,history,true)}</ol><details class="au-version-disclosure" data-au-disclosure="versions:${h(identity)}"><summary>Version history <span>${history.length}</span></summary><ol class="au-version-history">${history.slice(1).map(item => versionMarkup(item,history,false)).join('') || '<li>No earlier recorded version.</li>'}</ol></details></article>`;
     }).join('');
-    return `<header class="au-work-head"><div><p class="au-eyebrow">From recorded investigations</p><h1 class="au-page-heading" tabindex="-1">Knowledge</h1></div></header><p class="au-lead">Qualified process knowledge keeps its version, source and applicability record each time it is reused.</p><div class="au-knowledge-summary"><span><strong>${versions.length}</strong> qualified versions</span><span><strong>${uses.length}</strong> recorded uses</span><span><strong>${quarantined.length}</strong> quarantined candidates</span></div><div class="au-knowledge-grid">${cards || '<p class="au-empty">No qualified knowledge version has been published.</p>'}</div>${uses.length ? `<section class="au-knowledge-reuse"><h2>Recorded reuse</h2><ul class="au-event-list">${uses.map(use => `<li><div><strong>${h(use.name || use.knowledge_id || use.version_id)} · version ${h(use.version || use.version_id)}</strong>${reuseDetails(use)}${knowledgeLink(use)}${use.claim_id ? button(claimLabel(use.claim_id,'Open receiving claim'),`data-au-claim="${h(use.claim_id)}"`) : ''}</div></li>`).join('')}</ul></section>` : ''}<details class="au-history au-quarantine" data-au-disclosure="quarantine"><summary>Quarantined candidates <span>${quarantined.length}</span></summary><ul class="au-event-list">${quarantined.map(item => `<li><div><strong>${h(name(item) || item.candidate_id)}</strong><p>${h(item.qualification?.reason || item.reason || item.summary || 'No qualification recorded')}</p>${item.source_claim_id ? button('Open source claim',`data-au-claim="${h(item.source_claim_id)}"`) : ''}<details class="au-technical-record"><summary>Public quarantine record</summary><pre class="au-record-body">${h(JSON.stringify(item,null,2))}</pre></details></div></li>`).join('') || '<li>No quarantined candidates.</li>'}</ul></details>`;
+    return `<header class="au-work-head au-identity-knowledge-head"><div><p class="au-eyebrow">A memory with a source</p><h1 class="au-page-heading" tabindex="-1">Knowledge in context.</h1></div></header><p class="au-lead">Qualified process definitions carry their origin, checks and applicability into the next investigation. Case values and original files stay with their claim.</p><div class="au-knowledge-summary"><span><strong>${versions.length}</strong> recorded versions</span><span><strong>${uses.length}</strong> recorded uses</span><span><strong>${quarantined.length}</strong> quarantined candidates</span></div><div class="au-knowledge-grid">${cards || '<p class="au-empty">No qualified knowledge version has been published.</p>'}</div>${uses.length ? `<details class="au-knowledge-reuse au-evidence-inspection" data-au-disclosure="all-knowledge-uses"><summary>All recorded reuse <span>${uses.length}</span></summary><ul class="au-event-list">${uses.map(use => `<li><div><strong>${h(use.name || use.knowledge_id || use.version_id)} · version ${h(use.version || use.version_id)}</strong>${reuseDetails(use)}${knowledgeLink(use)}${use.claim_id ? claimLink(use.claim_id,'Open receiving claim') : ''}</div></li>`).join('')}</ul></details>` : ''}<details class="au-history au-quarantine" data-au-disclosure="quarantine"><summary>Quarantined candidates <span>${quarantined.length}</span></summary><ul class="au-event-list">${quarantined.map(item => `<li><div><strong>${h(name(item) || item.candidate_id || item.knowledge_id || 'Quarantined candidate')}</strong><p>${h(item.qualification?.reason || item.reason || item.summary || 'No qualification recorded')}</p>${item.source_claim_id ? claimLink(item.source_claim_id,'Open source claim') : ''}<details class="au-technical-record"><summary>Public quarantine record</summary><pre class="au-record-body">${h(JSON.stringify(item,null,2))}</pre></details></div></li>`).join('') || '<li>No quarantined candidates.</li>'}</ul></details>`;
   }
   function matchingClaims(claims, {search = '', filter = 'all'} = {}) {
     const query = search.trim().toLocaleLowerCase();
@@ -326,13 +357,13 @@
   function claimsMarkup(claims, options = {}) {
     return matchingClaims(claims,options).map(claim => {
       const constraint = claimConstraint(claim) || claim.outcome?.summary || (active(claim.status) ? claim.phase_summary : 'Open the claim to inspect its recorded outcome.');
-      return `<article class="au-claim-row" data-au-claim-row="${h(claim.claim_id)}"><button type="button" class="au-claim-open" data-au-claim="${h(claim.claim_id)}"><strong>${h(claim.title || 'Untitled claim')}</strong>${constraint ? `<span class="au-claim-constraint">${h(constraint)}</span>` : ''}<span class="au-claim-phase">${claim.phase ? `Recorded phase: ${h(words(claim.phase))}` : 'No phase recorded'}${Number.isSafeInteger(claim.revision) ? ` · revision ${h(claim.revision)}` : ''}</span></button><span class="au-status" data-tone="${tone(claim.status)}">${h(statusLabel(claim.status))}</span></article>`;
+      return `<article class="au-claim-row au-identity-claim-row" data-au-claim-row="${h(claim.claim_id)}"><button type="button" class="au-claim-open" data-au-claim="${h(claim.claim_id)}"><strong>${h(claim.title || 'Untitled claim')}</strong>${constraint ? `<span class="au-claim-constraint">${h(constraint)}</span>` : ''}<span class="au-claim-phase">${claim.phase ? `Recorded phase: ${h(words(claim.phase))}` : 'No phase recorded'}${Number.isSafeInteger(claim.revision) ? ` · revision ${h(claim.revision)}` : ''}</span></button><span class="au-status" data-tone="${tone(claim.status)}">${h(statusLabel(claim.status))}</span></article>`;
     }).join('') || `<p class="au-empty">${list(claims).length ? 'No saved claims match this search.' : 'Your incoming claims will appear here.'}</p>`;
   }
   function collectionMarkup(claims, {search = '', filter = 'all'} = {}) {
     const rows = list(claims), filters = [...new Set(['all','working','deferred','resolved',...rows.map(claim => claim.status).filter(status => status && !active(status))])];
     const counts = [['Saved claims',rows.length],['In progress',rows.filter(claim => active(claim.status)).length],['Deferred',rows.filter(claim => claim.status === 'deferred').length],['Resolved',rows.filter(claim => claim.status === 'resolved').length]];
-    return `<section class="au-collection"><header class="au-collection-head"><div><p class="au-eyebrow">Claim workspace</p><h1 class="au-page-heading" tabindex="-1">Work</h1><p class="au-lead">Follow saved claims from their original evidence to a recorded outcome.</p></div>${button('New claim','data-au-nav="intake"',true)}</header><div class="au-collection-summary">${counts.map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('')}</div><div class="au-collection-tools"><label for="auClaimSearch">Search claims<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Title or recorded work" autocomplete="off"></label><label for="auClaimFilter">Status<select id="auClaimFilter" data-au-claim-filter>${filters.map(value => `<option value="${h(value)}"${filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</option>`).join('')}</select></label><button type="button" class="au-link" data-au-refresh-claims>Refresh</button></div><div class="au-section-heading"><h2>Saved claims</h2><span data-au-collection-count>${matchingClaims(rows,{search,filter}).length} of ${rows.length}</span></div><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,{search,filter})}</div></section>`;
+    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><p class="au-eyebrow">Claim workspace</p><h1 class="au-page-heading" tabindex="-1">Work in context.</h1><p class="au-lead">Follow saved claims from their original evidence to a recorded outcome.</p></div>${button('New claim','data-au-nav="intake"',true)}</header><div class="au-collection-summary">${counts.map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('')}</div><div class="au-collection-tools"><label for="auClaimSearch">Search claims<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Title or recorded work" autocomplete="off"></label><label for="auClaimFilter">Status<select id="auClaimFilter" data-au-claim-filter>${filters.map(value => `<option value="${h(value)}"${filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</option>`).join('')}</select></label><button type="button" class="au-link" data-au-refresh-claims>Refresh</button></div><div class="au-section-heading"><h2>Saved claims</h2><span data-au-collection-count>${matchingClaims(rows,{search,filter}).length} of ${rows.length}</span></div><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,{search,filter})}</div></section>`;
   }
   function mediaType(file) {
     if (text(file.type).trim()) return file.type;
@@ -393,13 +424,14 @@
     const mainTag = container.tagName === 'MAIN' ? 'div' : 'main';
     if (!fetcher) throw new Error('The autonomous API is unavailable.');
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, sourceEpoch = 0, polling = false;
+    let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null;
     const controllers = new Set();
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
-    let motion = null, keyboard = false, edgeFrame = null, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0;
+    let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0;
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map();
     const collection = {search:'',filter:'all'};
     container.classList.add('au-workspace');
-    container.innerHTML = `<div class="au-shell"><aside class="au-rail"><header class="au-header"><a class="au-brand" href="/">CasePath<span>Claim workspace</span></a></header><nav class="au-nav" aria-label="Workspace"><button type="button" data-au-nav="work" aria-current="page">Work</button><button type="button" data-au-nav="knowledge">Knowledge</button><button type="button" data-au-nav="intake">New claim</button></nav><section class="au-recent-queue" aria-label="Recent claims"><h2>Recent claims</h2><div data-au-recent-claims><p class="au-empty">Loading saved claims.</p></div></section>${root.CASEPATH_HOSTED_AUTONOMOUS ? '' : '<a class="au-review-link" href="/?journey=review">Review workspace</a>'}</aside><${mainTag} class="au-main"><div class="au-global-status" role="status" aria-live="polite"></div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog>`;
+    container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="/">CasePath<span>Claim workspace</span></a><nav class="au-nav" aria-label="Workspace"><button type="button" data-au-nav="work" aria-current="page">Work</button><button type="button" data-au-nav="knowledge">Knowledge</button><button type="button" data-au-nav="intake">New claim <span aria-hidden="true">↗</span></button></nav>${root.CASEPATH_HOSTED_AUTONOMOUS ? '' : '<a class="au-review-link" href="/?journey=review">Review workspace</a>'}</header><${mainTag} class="au-main"><div class="au-global-status" role="status" aria-live="polite"></div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog>`;
     const host = container.querySelector('[data-au-view]'), globalStatus = container.querySelector('.au-global-status'), dialog = container.querySelector('dialog');
     function notice(message, error = false) { globalStatus.textContent = message; globalStatus.classList.toggle('au-error', error); }
     function route(fragment, writeHistory = true) {
@@ -444,55 +476,90 @@
     function focusToken(element) {
       if (!element || !host.contains(element)) return null;
       const panel = focusPanel(element)?.dataset.auPanel || null;
-      for (const attr of ['data-au-node','data-au-select','data-au-source','data-au-nav','data-au-pause','data-au-resume','data-au-graph-pan','data-au-claim-title','data-au-inspector-heading','data-au-back-process','data-au-detail','data-au-add-files']) if (element.hasAttribute(attr)) return {attr,value:element.getAttribute(attr),citation:element.getAttribute('data-au-citation'),panel};
+      for (const attr of ['data-au-node','data-au-select','data-au-fact-select','data-au-document-select','data-au-source','data-au-nav','data-au-pause','data-au-resume','data-au-graph-pan','data-au-claim-title','data-au-inspector-heading','data-au-back-process','data-au-detail','data-au-add-files']) if (element.hasAttribute(attr)) return {attr,value:element.getAttribute(attr),citation:element.getAttribute('data-au-citation'),origin:element.getAttribute('data-au-source-origin'),panel};
       const details = element.matches('summary') ? element.parentElement : null;
       return details?.hasAttribute('data-au-disclosure') ? {disclosure:details.dataset.auDisclosure,panel} : null;
     }
     function focusTarget(token) {
       if (!token) return null;
       if (token.disclosure) return [...host.querySelectorAll('[data-au-disclosure]')].find(el => el.dataset.auDisclosure === token.disclosure && focusEligible(el.querySelector('summary'),token))?.querySelector('summary');
-      return [...host.querySelectorAll(`[${token.attr}]`)].find(el => el.getAttribute(token.attr) === token.value && el.getAttribute('data-au-citation') === token.citation && focusEligible(el,token));
+      return [...host.querySelectorAll(`[${token.attr}]`)].find(el => el.getAttribute(token.attr) === token.value && el.getAttribute('data-au-citation') === token.citation && el.getAttribute('data-au-source-origin') === token.origin && focusEligible(el,token));
     }
     function nav(name) { container.querySelectorAll('.au-nav [data-au-nav]').forEach(item => { if (item.dataset.auNav === name) item.setAttribute('aria-current','page'); else item.removeAttribute('aria-current'); }); }
-    function drawEdges() {
-      const graph = host.querySelector('[data-au-graph]'), svg = graph?.querySelector('svg');
-      if (!graph || !svg || !current?.graph) return;
-      const frame = graph.getBoundingClientRect();
-      const signature = `${frame.width}:${frame.height}:${selected}`;
-      if (edgeFrame?.graph === graph && edgeFrame.signature === signature) return;
-      edgeFrame = {graph,signature};
-      svg.setAttribute('viewBox', `0 0 ${frame.width} ${frame.height}`);
-      const nodes = new Map([...graph.querySelectorAll('[data-au-node]')].map(el => [el.dataset.auNode, el]));
-      const horizontal = graph.dataset?.orientation !== 'vertical' && root.matchMedia?.('(min-width: 801px)').matches;
-      const evaluated = new Map(list(current.evaluation?.edges).map(edge => [edge.edge_id,edge]));
-      svg.innerHTML = list(current.graph.edges).map((edge,index) => {
-        const source = nodes.get(edge.source_node_id), target = nodes.get(edge.target_node_id);
-        const from = source?.getBoundingClientRect(), to = target?.getBoundingClientRect();
-        if (!from || !to) return '';
-        const skip = Number(target.parentElement.dataset.rank) - Number(source.parentElement.dataset.rank) > 1;
-        let path;
-        if (horizontal) {
-          const x1=from.right-frame.left,y1=from.top+from.height/2-frame.top,x2=to.left-frame.left,y2=to.top+to.height/2-frame.top,lane=frame.height-8-index%2*8;
-          path=skip ? `M${x1},${y1} C${x1+7},${y1} ${x1+7},${lane} ${x1+14},${lane} L${x2-14},${lane} C${x2-7},${lane} ${x2-7},${y2} ${x2},${y2}` : `M${x1},${y1} C${(x1+x2)/2},${y1} ${(x1+x2)/2},${y2} ${x2},${y2}`;
-        } else {
-          const x1=from.left+from.width/2-frame.left,y1=from.bottom-frame.top,x2=to.left+to.width/2-frame.left,y2=to.top-frame.top,lane=frame.width-4;
-          path=skip ? `M${x1},${y1} C${x1},${y1+10} ${lane},${y1+10} ${lane},${y1+20} L${lane},${y2-20} C${lane},${y2-10} ${x2},${y2-10} ${x2},${y2}` : `M${x1},${y1} C${x1},${(y1+y2)/2} ${x2},${(y1+y2)/2} ${x2},${y2}`;
-        }
-        const view = evaluated.get(edge.edge_id);
-        return `<path d="${path}" data-au-edge="${h(edge.edge_id)}" data-state="${h(view?.activation || view?.condition_verdict || 'unresolved')}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"/>`;
+    function connectionGeometry(surface, pairs) {
+      const svg = surface?.querySelector?.('.au-evidence-lines'), frame = surface?.getBoundingClientRect?.();
+      if (!svg || !frame?.width || !frame.height || surface.closest?.('[hidden],details:not([open])')) return null;
+      const ports = new Map([...surface.querySelectorAll('[data-au-wire]')].map(element => [element.dataset.auWire,element.getBoundingClientRect()]));
+      const paths = pairs.map(([from,to,muted=false]) => {
+        const a = ports.get(from), b = ports.get(to); if (!a || !b) return '';
+        const horizontal = b.left >= a.right, x1 = horizontal ? a.right-frame.left : a.left+a.width/2-frame.left, y1 = horizontal ? a.top+a.height/2-frame.top : a.bottom-frame.top, x2 = horizontal ? b.left-frame.left : b.left+b.width/2-frame.left, y2 = horizontal ? b.top+b.height/2-frame.top : b.top-frame.top;
+        const path = horizontal ? `M${x1} ${y1} C${(x1+x2)/2} ${y1},${(x1+x2)/2} ${y2},${x2} ${y2}` : `M${x1} ${y1} C${x1} ${(y1+y2)/2},${x2} ${(y1+y2)/2},${x2} ${y2}`;
+        return `<path d="${path}" data-state="${muted ? 'false' : 'true'}"/><circle cx="${x2}" cy="${y2}" r="2"/>`;
       }).join('');
+      return {svg,width:frame.width,height:frame.height,paths};
+    }
+    function drawEdges(navigation = false) {
+      if (disposed) return;
+      // Read every relevant rectangle before writing SVG geometry.
+      const graph = host.querySelector('[data-au-graph]'), graphSvg = graph?.querySelector('svg'), frame = graph?.getBoundingClientRect?.();
+      let graphPaths = null;
+      if (graphSvg && frame?.width && frame.height && current?.graph) {
+        const nodes = new Map([...graph.querySelectorAll('[data-au-node]')].map(element => {
+          const junction = element.querySelector?.('[data-au-junction]') || element;
+          return [element.dataset.auNode,{bounds:junction.getBoundingClientRect(),rank:Number(element.parentElement.dataset.rank)}];
+        }));
+        graphPaths = list(current.graph.edges).map((edge,index) => {
+          const from = nodes.get(edge.source_node_id), to = nodes.get(edge.target_node_id); if (!from || !to) return '';
+          const x1=from.bounds.right-frame.left,y1=from.bounds.top+from.bounds.height/2-frame.top,x2=to.bounds.left-frame.left,y2=to.bounds.top+to.bounds.height/2-frame.top,lane=frame.height-14-(index%3)*9;
+          const path=to.rank-from.rank>1 ? `M${x1} ${y1} C${x1+18} ${y1},${x1+18} ${lane},${x1+34} ${lane} L${x2-34} ${lane} C${x2-18} ${lane},${x2-18} ${y2},${x2} ${y2}` : `M${x1} ${y1} C${(x1+x2)/2} ${y1},${(x1+x2)/2} ${y2},${x2} ${y2}`;
+          return `<path d="${path}" data-au-edge="${h(edge.edge_id)}" data-state="${h(edgeState(current,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || 'Recorded process connection')} · ${h(statusLabel(edgeState(current,edge.edge_id)))}</title></path>`;
+        }).join('');
+      }
+      const lens = host.querySelector('[data-au-evidence-path]'), relations = current ? evidenceRelationships(current,selected,evidenceContext) : null;
+      const wires = [connectionGeometry(lens,[...citationRows(relations?.fact).slice(0,2).map((_,index) => [`source-${index}`,'fact']),['fact','step'],['step','requirement',relations?.evaluation.activation === 'false']]), ...[...host.querySelectorAll('[data-au-knowledge-path]')].map(surface => connectionGeometry(surface,[['origin','version'],['version','reuse']]))].filter(Boolean);
+      const stage=host.querySelector('.au-evidence-stage'), tether=host.querySelector('[data-au-tether]'), path=tether?.querySelector('path'), junction=[...host.querySelectorAll('[data-au-junction]')].find(element => element.dataset.auJunction === selected), expanded=host.querySelector('[data-au-expanded-junction]'), viewport=host.querySelector('.au-graph-viewport');
+      const a=junction?.getBoundingClientRect?.(), b=expanded?.getBoundingClientRect?.(), area=viewport?.getBoundingClientRect?.(), bounds=stage?.getBoundingClientRect?.();
+      let nextTether=null;
+      if (detail === 'step' && current && path && bounds?.width && bounds.height && a && b && area && a.left >= area.left && a.right <= area.right && !expanded.closest?.('[hidden]')) {
+        const x=a.left+a.width/2-bounds.left,y=a.bottom-bounds.top,mid=area.bottom-bounds.top+18;
+        const narrow = root.matchMedia?.('(max-width: 1000px)')?.matches || bounds.width < 650;
+        const tx=narrow ? b.left-bounds.left : b.left+b.width/2-bounds.left,ty=narrow ? b.top+b.height/2-bounds.top : b.top-bounds.top;
+        let geometry;
+        if (narrow) {
+          const lane=2,bend=mid+20,end=Math.max(bend,ty-18);
+          geometry=`M${x} ${y} C${x} ${mid},${lane} ${mid},${lane} ${bend} L${lane} ${end} C${lane} ${ty},${tx} ${ty},${tx} ${ty}`;
+        } else {
+          // Split the measured desktop cubic without changing its shape; both
+          // responsive routes retain M/C/L/C commands for one cancellable morph.
+          const mx=(x+tx)/2,my=(y+6*mid+ty)/8;
+          geometry=`M${x} ${y} C${x} ${(y+mid)/2},${(3*x+tx)/4} ${(y+3*mid)/4},${mx} ${my} L${mx} ${my} C${(x+3*tx)/4} ${(3*mid+ty)/4},${tx} ${(mid+ty)/2},${tx} ${ty}`;
+        }
+        nextTether={claim:current.claim_id,node:selected,width:bounds.width,height:bounds.height,d:geometry};
+      }
+      if (!navigation && selectionMotion && tetherGeometry?.d !== nextTether?.d) selectionMotion.cancel();
+      if (graphPaths !== null) { graphSvg.setAttribute('viewBox',`0 0 ${frame.width} ${frame.height}`); graphSvg.innerHTML=graphPaths; }
+      for (const wire of wires) { wire.svg.setAttribute('viewBox',`0 0 ${wire.width} ${wire.height}`); wire.svg.innerHTML=wire.paths; }
+      if (path) {
+        if (nextTether) {
+          tether.setAttribute('viewBox',`0 0 ${nextTether.width} ${nextTether.height}`); path.setAttribute('d',nextTether.d); path.setAttribute('data-au-selected-junction',selected);
+          if (navigation && tetherGeometry?.claim === nextTether.claim && tetherGeometry.node !== nextTether.node && tetherGeometry.width === nextTether.width && !doc.hidden && !dialog.open && !reduced?.matches && !keyboard && path.animate) {
+            selectionMotion?.cancel(); selectionMotion=path.animate([{d:`path("${tetherGeometry.d}")`},{d:`path("${nextTether.d}")`}],{duration:320,easing:'cubic-bezier(.22,.75,.18,1)',fill:'none'});
+          }
+        } else path.removeAttribute('d');
+      }
+      tetherGeometry=nextTether; graphViewportWidth=area?.width ?? null;
     }
     function preserveClaimView() {
       if (view !== 'claim' || !current) return;
       const viewport = host.querySelector('.au-graph-viewport');
-      claimViews.set(current.claim_id,{selected,detail,scrollLeft:viewport?.scrollLeft || 0,scrollTop:viewport?.scrollTop || 0,open:new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure))});
+      claimViews.set(current.claim_id,{selected,detail,evidenceContext:{...evidenceContext},scrollLeft:viewport?.scrollLeft || 0,scrollTop:viewport?.scrollTop || 0,open:new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure))});
       const arrival = host.querySelector('[data-au-arrival]');
       if (arrival) { arrivalForms.set(current.claim_id,arrival); arrival.remove?.(); }
       if (pendingArrival) arrivals.set(current.claim_id,pendingArrival); else arrivals.delete(current.claim_id);
       if (pendingControl) controls.set(current.claim_id,pendingControl); else controls.delete(current.claim_id);
     }
     function leaveView() {
-      motion?.cancel();
+      motion?.cancel(); selectionMotion?.cancel(); tetherGeometry = null;
       if (view === 'intake') { intakeForm = host.querySelector('[data-au-intake]') || intakeForm; intakeForm?.remove?.(); }
       if (view === 'work') { const main = container.querySelector('.au-main'); collection.scrollTop = host.scrollTop || 0; collection.mainTop = main?.scrollTop || 0; collection.mainLeft = main?.scrollLeft || 0; collection.scrollX = root.scrollX || 0; collection.scrollY = root.scrollY || 0; }
       preserveClaimView();
@@ -502,12 +569,12 @@
       const viewport = host.querySelector('.au-graph-viewport');
       const area = viewport?.getBoundingClientRect?.(), bounds = node?.getBoundingClientRect?.();
       if (!area || !bounds) return;
-      if (bounds.top < area.top) viewport.scrollTop += bounds.top - area.top;
-      else if (bounds.bottom > area.bottom) viewport.scrollTop += bounds.bottom - area.bottom;
+      if (bounds.left < area.left+8 || bounds.right > area.right-8) viewport.scrollLeft += bounds.left-area.left-(area.width-bounds.width)/2;
+      if (bounds.top < area.top+8 || bounds.bottom > area.bottom-8) viewport.scrollTop += bounds.top-area.top-(area.height-bounds.height)/2;
     }
-    function renderClaim(changes = null) {
+    function renderClaim(changes = null, navigation = false) {
       if (!current || view !== 'claim') return;
-      motion?.cancel();
+      motion?.cancel(); selectionMotion?.cancel();
       const focused = doc.activeElement, focusKey = focusToken(focused);
       const previous = claimViews.get(current.claim_id);
       const open = new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure));
@@ -517,7 +584,7 @@
       const arrival = host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
       // Moving the original node keeps native FileList, entered text and retry state.
       arrival?.remove?.();
-      host.innerHTML = workMarkup(current,projection,selected,history,detail);
+      host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext);
       if (arrival) host.querySelector('[data-au-arrival]')?.replaceWith(arrival);
       const presentArrival = host.querySelector('[data-au-arrival]');
       if (presentArrival) arrivalForms.set(current.claim_id,presentArrival);
@@ -526,15 +593,18 @@
       const viewport = host.querySelector('.au-graph-viewport'); if (viewport) { viewport.scrollLeft = scrollLeft; viewport.scrollTop = scrollTop; }
       for (const disclosure of host.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
       focusTarget(focusKey)?.focus({preventScroll:true});
-      drawEdges();
+      if (navigation || !priorViewport) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
+      if (pendingControl?.claimId === current.claim_id) { const control = host.querySelector(`[data-au-${pendingControl.action}]`); if (control) { control.textContent = busy ? `${pendingControl.action === 'pause' ? 'Pausing' : 'Resuming'}…` : `Retry ${pendingControl.action}`; control.disabled = busy; } }
+      drawEdges(navigation);
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open,reducedMotion:reduced?.matches,keyboard,activeElement:doc.activeElement});
     }
     function setDetail(value, focusFiles = false) {
       if (view !== 'claim' || !['step','documents','sources','activity'].includes(value)) return;
-      motion?.cancel(); detail = value;
+      motion?.cancel(); selectionMotion?.cancel(); detail = value;
       host.querySelector('[data-au-context]')?.setAttribute('data-au-context',value);
       for (const panel of host.querySelectorAll('[data-au-panel]')) panel.hidden = panel.dataset.auPanel !== value;
       for (const control of host.querySelectorAll('.au-context-nav [data-au-detail]')) control.setAttribute('aria-pressed',String(control.dataset.auDetail === value));
+      drawEdges();
       if (focusFiles) host.querySelector('#auAdditionalFiles')?.focus({preventScroll:true});
     }
     async function poll() {
@@ -555,7 +625,7 @@
         current = incoming.state; projection = incoming.projection; cursor = accepted.cursor;
         const existing = new Map(history.map(event => [event.seq,event])); for (const event of accepted.events) existing.set(event.seq,event);
         history = [...existing.values()].sort((a,b) => a.seq-b.seq);
-        if (!list(current.graph?.nodes).some(node => node.node_id === selected)) selected = list(current.evaluation?.nodes).find(node => node.execution_state === 'ready')?.node_id || current.graph?.nodes?.[0]?.node_id || null;
+        selected = preferredNode(current,selected);
         if (changed) { renderClaim(changes); rememberClaim(current); }
         if (disconnected) notice('Connection restored. Showing saved work.'); else notice('');
         disconnected = false;
@@ -580,7 +650,7 @@
         if (!accepted?.ready) throw new Error('The saved claim and event cursor have not matched. Retry opening the claim to load a verified record.');
         current = incoming.state; projection = incoming.projection; cursor = accepted.cursor; history = accepted.events;
         const previous = claimViews.get(id);
-        selected = list(current.graph?.nodes).some(node => node.node_id === previous?.selected) ? previous.selected : list(current.evaluation?.nodes).find(node => node.execution_state === 'ready')?.node_id || current.graph?.nodes?.[0]?.node_id || null;
+        selected = preferredNode(current,previous?.selected); evidenceContext = previous?.evidenceContext || {};
         detail = previous?.detail || 'step';
         renderClaim(); rememberClaim(current); notice(''); focusTitle(); schedule();
         if (!claimsLoaded) loadClaims(token).catch(() => {});
@@ -650,7 +720,7 @@
       if (view === 'intake' && host.querySelector('[data-au-intake]')) { route('#autonomous/new',writeHistory); return; }
       leaveView(); route('#autonomous/new',writeHistory);
       epoch++; const token = epoch; cancelPoll(); setView('intake'); nav('intake'); current = null; notice('');
-      host.innerHTML = `<div class="au-intake-layout"><section><p class="au-eyebrow">New claim</p><h1 class="au-page-heading" tabindex="-1">Introduce the claim</h1><p class="au-lead">Add the original message and files. The recorded work will show the evidence, process, actions and any limits.</p><form class="au-intake" data-au-intake><div class="au-examples" data-au-examples hidden><label for="auExample">Try a fictional claim</label><select id="auExample" data-au-example><option value="">Choose a fictional example</option></select></div><label for="auTitle">Claim title</label><input id="auTitle" name="title" required maxlength="300" autocomplete="off" placeholder="A short name for this claim"><label for="auMessage">Incoming message</label><textarea id="auMessage" name="message" required maxlength="100000" rows="7" placeholder="Paste the original message"></textarea><label class="au-upload" for="auFiles">Supporting files <span>Optional · original files stay available for inspection</span></label><input id="auFiles" name="files" type="file" multiple><div class="au-intake-controls"><button class="au-primary" type="submit">Start autonomous work <span aria-hidden="true">↗</span></button><button type="button" class="au-secondary" data-au-nav="work">Cancel</button></div><p class="au-form-status" role="status"></p></form></section><aside class="au-intake-aside"><p class="au-eyebrow">From evidence to outcome</p><ol class="au-intake-path"><li>Original sources</li><li>Verified facts</li><li>Process &amp; documents</li><li>Qualified knowledge</li></ol><p class="au-meta" data-au-service>Checking service availability…</p></aside></div>`;
+      host.innerHTML = `<div class="au-intake-layout au-identity-intake"><section><p class="au-eyebrow">New claim</p><h1 class="au-page-heading" tabindex="-1">Start with the source.</h1><p class="au-lead">Add the original message and files. Evidence establishes the facts, process and document requirements.</p><p class="au-meta" data-au-service>Checking service availability…</p><form class="au-intake" data-au-intake><div class="au-examples" data-au-examples hidden><label for="auExample">Try a fictional claim</label><select id="auExample" data-au-example><option value="">Choose a fictional example</option></select></div><label for="auTitle">Claim title</label><input id="auTitle" name="title" required maxlength="300" autocomplete="off" placeholder="A short name for this claim"><label for="auMessage">Incoming message</label><textarea id="auMessage" name="message" required maxlength="100000" rows="7" placeholder="Paste the original message"></textarea><label class="au-upload" for="auFiles">Supporting files <span>Optional · original files stay available for inspection</span></label><input id="auFiles" name="files" type="file" multiple><div class="au-intake-controls"><button class="au-primary" type="submit">Start autonomous work <span aria-hidden="true">↗</span></button><button type="button" class="au-secondary" data-au-nav="work">Cancel</button></div><p class="au-form-status" role="status"></p></form></section></div>`;
       if (intakeForm) host.querySelector('[data-au-intake]')?.replaceWith?.(intakeForm);
       else intakeForm = host.querySelector('[data-au-intake]');
       if (pendingIntake && intakeForm) {
@@ -701,12 +771,12 @@
         if (disposed || token !== epoch) return;
         if (results[0].status === 'rejected') throw results[0].reason;
         const data = results[0].value;
-        host.innerHTML = knowledgeMarkup(data,claims); notice(''); focusTitle();
+        host.innerHTML = knowledgeMarkup(data,claims); drawEdges(); notice(''); focusTitle();
         if (pin) {
           const version = list(data.versions).find(item => String(item.knowledge_id || item.version_id) === String(pin.knowledge_id) && String(item.version || item.version_id) === String(pin.version) && (!pin.knowledge_sha256 || item.knowledge_sha256 === pin.knowledge_sha256));
           if (!version) { notice('The exact reused knowledge version is not available in this record.',true); return; }
           const row = [...host.querySelectorAll('[data-au-knowledge-identity]')].find(element => element.dataset.auKnowledgeIdentity === `${pin.knowledge_id}:${pin.version}`);
-          if (row) { let parent = row.parentElement; while (parent && parent !== host) { if (parent.tagName === 'DETAILS') parent.open = true; parent = parent.parentElement; } row.setAttribute('data-pinned','true'); row.setAttribute('tabindex','-1'); row.focus({preventScroll:true}); row.scrollIntoView?.({block:'nearest',behavior:'instant'}); }
+          if (row) { let parent = row.parentElement; while (parent && parent !== host) { if (parent.tagName === 'DETAILS') parent.open = true; parent = parent.parentElement; } row.setAttribute('data-pinned','true'); row.setAttribute('tabindex','-1'); row.focus({preventScroll:true}); row.scrollIntoView?.({block:'nearest',behavior:'instant'}); drawEdges(); }
         }
       } catch (error) { if (!disposed && token === epoch) notice(error.message,true); }
     }
@@ -784,13 +854,13 @@
       if (!descriptor) { notice('This source is not part of the saved claim.',true); return; }
       dialogReturn = {element:trigger,token:focusToken(trigger)}; container.querySelector('#auSourceTitle').textContent = descriptor.file_name || 'Original source';
       const body = container.querySelector('[data-au-source-content]'); body.innerHTML = '<p class="au-empty">Checking source identity…</p>';
-      motion?.cancel();
+      motion?.cancel(); selectionMotion?.cancel();
       if (!dialog.open) dialog.showModal();
       try {
         const response = await request(`/sources/${key(saved.claim_id)}/${key(id)}/text`);
         const checked = await checkedSource(saved,descriptor,response,citation);
         if (disposed || token !== epoch || sourceToken !== sourceEpoch || !dialog.open) return;
-        body.innerHTML = `<div class="au-source-meta"><span>${checked.source.complete ? 'Extracted text' : 'Extraction incomplete'}</span><a href="${h(base)}/sources/${key(saved.claim_id)}/${key(id)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${!checked.source.complete ? `<p class="au-notice">${h(checked.source.reason || checked.source.limitation || 'This source does not have a complete text extraction.')}</p>` : ''}<pre class="au-source-body">${checked.span ? `${h(checked.span.before)}<mark tabindex="-1">${h(checked.span.quote)}</mark>${h(checked.span.after)}` : h(checked.source.text) || 'No readable text was extracted.'}</pre><details><summary>Source identity</summary><dl class="au-chain"><div><dt>Original bytes · SHA-256</dt><dd class="au-hash">${h(descriptor.sha256)}</dd></div><div><dt>Extracted text · SHA-256</dt><dd class="au-hash">${h(checked.source.text_sha256)}</dd></div></dl></details>`;
+        body.innerHTML = `<div class="au-source-meta"><span>Source text verified${checked.span ? ' · exact cited span verified' : ''}</span><span>${checked.source.complete ? 'Extracted text' : 'Extraction incomplete'}</span><a href="${h(base)}/sources/${key(saved.claim_id)}/${key(id)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${!checked.source.complete ? `<p class="au-notice">${h(checked.source.reason || checked.source.limitation || 'This source does not have a complete text extraction.')}</p>` : ''}<pre class="au-source-body">${checked.span ? `${h(checked.span.before)}<mark tabindex="-1">${h(checked.span.quote)}</mark>${h(checked.span.after)}` : h(checked.source.text) || 'No readable text was extracted.'}</pre><details><summary>Source identity</summary><dl class="au-chain"><div><dt>Original bytes · SHA-256</dt><dd class="au-hash">${h(descriptor.sha256)}</dd></div><div><dt>Extracted text · SHA-256</dt><dd class="au-hash">${h(checked.source.text_sha256)}</dd></div></dl></details>`;
         body.querySelector('mark')?.scrollIntoView({block:'center'});
       } catch (error) { if (!disposed && token === epoch && sourceToken === sourceEpoch && dialog.open) body.innerHTML = `<p class="au-error" role="alert">${h(error.message)}</p><a href="${h(base)}/sources/${key(saved.claim_id)}/${key(id)}" download>Download original</a>`; }
     }
@@ -805,16 +875,27 @@
       else if (target.hasAttribute('data-au-add-files')) setDetail('sources',true);
       else if (target.hasAttribute('data-au-detail')) setDetail(target.dataset.auDetail);
       else if (target.hasAttribute('data-au-back-process')) {
-        const node = [...host.querySelectorAll('[data-au-node]')].find(el => el.dataset.auNode === selected);
-        node?.focus({preventScroll:true}); node?.scrollIntoView({block:'center',behavior:'instant'});
+        const node = [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
+        node?.focus({preventScroll:true}); revealGraphNode(node); drawEdges();
+      }
+      else if (target.hasAttribute('data-au-fact-select') || target.hasAttribute('data-au-document-select')) {
+        if (view !== 'claim') return;
+        const relations=evidenceRelationships(current,selected,evidenceContext);
+        if (target.hasAttribute('data-au-fact-select')) {
+          const id=target.dataset.auFactSelect;if (!relations.facts.some(fact => fact.fact_id === id)) return;
+          evidenceContext={...evidenceContext,fact:id,trace:relations.fact?.fact_id === id ? !evidenceContext.trace : true};
+        } else {
+          const type=target.dataset.auDocumentSelect;if (!relations.documents.some(item => item.document_type === type)) return;
+          evidenceContext={...evidenceContext,document:type};
+        }
+        renderClaim();
       }
       else if (target.hasAttribute('data-au-node') || target.hasAttribute('data-au-select')) {
-        selected = target.dataset.auNode || target.dataset.auSelect; detail = 'step'; renderClaim();
-        if (target.hasAttribute('data-au-select')) { const node = [...host.querySelectorAll('[data-au-node]')].find(el => el.dataset.auNode === selected); node?.focus({preventScroll:true}); if (root.matchMedia?.('(max-width: 800px)').matches) node?.scrollIntoView({block:'nearest'}); else revealGraphNode(node); }
-        else if (root.matchMedia?.('(max-width: 800px)').matches) {
-          host.querySelector('[data-au-inspector-heading]')?.focus({preventScroll:true});
-          host.querySelector('.au-inspector')?.scrollIntoView({block:'start',behavior:'instant'});
-        }
+        const id=target.dataset.auNode || target.dataset.auSelect;
+        if (!list(current?.graph?.nodes).some(node => node.node_id === id)) return;
+        const changed=selected !== id; selected=id; detail='step'; if (changed) evidenceContext={}; renderClaim(null,changed);
+        const node=[...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
+        node?.focus({preventScroll:true});
       } else if (target.hasAttribute('data-au-source')) {
         let citation; try { citation = target.dataset.auCitation ? JSON.parse(target.dataset.auCitation) : null; } catch (_) { notice('The source reference is invalid.',true); return; }
         openSource(target.dataset.auSource,citation,target);
@@ -824,19 +905,27 @@
       if (view === 'work' && event.target.matches?.('[data-au-claim-search]')) { collection.search = event.target.value; refreshCollection(); }
     }
     function closed() { (dialogReturn?.element?.isConnected && focusEligible(dialogReturn.element,dialogReturn.token) ? dialogReturn.element : focusTarget(dialogReturn?.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true}); dialogReturn = null; sourceEpoch++; }
-    function visibility() { motion?.cancel(); if (!doc.hidden && view === 'claim') { disconnected = true; cancelPoll(); poll(); } }
-    function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;motion?.cancel(); } }
+    function visibility() { motion?.cancel(); selectionMotion?.cancel(); if (!doc.hidden && view === 'claim') { disconnected = true; cancelPoll(); poll(); } }
+    function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;motion?.cancel();selectionMotion?.cancel(); } }
     function pointerInput() { keyboard=false; }
-    function motionPreference() { if (reduced?.matches) motion?.cancel(); }
+    function motionPreference() { if (reduced?.matches) { motion?.cancel();selectionMotion?.cancel(); } }
     doc.addEventListener('keydown',keyboardInput);container.addEventListener('pointerdown',pointerInput);reduced?.addEventListener?.('change',motionPreference);
+    function geometryEvent(event) { if (event.type === 'toggle' || event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }
+    container.addEventListener('scroll',geometryEvent,true);container.addEventListener('toggle',geometryEvent,true);
+    doc.fonts?.ready?.then(() => { if (!disposed) drawEdges(); });
     container.addEventListener('click',click); container.addEventListener('submit',submit); container.addEventListener('change',change); container.addEventListener('input',input); dialog.addEventListener('close',closed); doc.addEventListener('visibilitychange',visibility);
     root.addEventListener?.('hashchange',routeChanged); root.addEventListener?.('popstate',routeChanged);
-    const resize = root.ResizeObserver ? new root.ResizeObserver(drawEdges) : null; resize?.observe(host);
-    const controller = {openClaim,showWork,showIntake,showKnowledge,refresh:poll,destroy() { if (disposed) return; disposed = true; epoch++; cancelPoll(); motion?.cancel();root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect(); container.removeEventListener('click',click); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
+    function resized() {
+      const area=host.querySelector('.au-graph-viewport')?.getBoundingClientRect?.();
+      if (area && graphViewportWidth !== null && area.width !== graphViewportWidth) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
+      drawEdges();
+    }
+    const resize = root.ResizeObserver ? new root.ResizeObserver(resized) : null; resize?.observe(host); root.addEventListener?.('resize',resized);
+    const controller = {openClaim,showWork,showIntake,showKnowledge,refresh:poll,destroy() { if (disposed) return; disposed = true; epoch++; cancelPoll(); motion?.cancel(); selectionMotion?.cancel();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
     mounts.set(container,controller); activeMount = controller;
     routeChanged();
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });

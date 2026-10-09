@@ -213,14 +213,15 @@ test('the real graph is the hero and the detailed outcome defaults closed withou
  assert.doesNotMatch(html,/<details class="au-outcome"[^>]* open/);
  const summary=html.match(/<details class="au-outcome"[^>]*><summary>(.*?)<\/summary>/s)[1];
  assert.match(summary,/2 evidence gaps/);assert.match(summary,/Filing capability is not configured/);
- assert.match(html,/class="au-causal-layout"/);
- assert.ok(html.indexOf('class="au-process-hero')<html.indexOf('class="au-work-layout au-context-panel au-detail-panel"'));
- assert.match(html,/class="au-graph-viewport"/);assert.match(html,/--au-ranks:2/);
+ assert.match(html,/data-au-canvas/);
+ assert.ok(html.indexOf('class="au-process-hero')<html.indexOf('data-au-panel="step"'));
+ assert.match(html,/class="au-graph-viewport(?:\s[^"]*)?"/);assert.match(html,/--au-ranks:2/);
+ assert.doesNotMatch(html,/data-au-stage="(?:sources|interpretation|verification|process|knowledge)"/);
 });
 
-test('compact graph labels preserve complete node names and rule text remains inspectable',()=>{
+test('complete graph labels and operational rule text remain inspectable',()=>{
  const s=state();s.graph.nodes[1].label='Preserve challenge or extension deadline';s.graph.nodes[1].meaning='The process includes a step owned by claim_handler.';s.graph.nodes[1].authority={title:'Admitted tenancy workflow',quote:'Exact recorded operational rule.'};
- const html=ui.graphMarkup(s,'branch');assert.match(html,/Preserve deadline/);assert.match(html,/aria-label="Preserve challenge or extension deadline/);
+ const html=ui.graphMarkup(s,'branch');assert.match(html,/<strong class="au-node-title">Preserve challenge or extension deadline<\/strong>/);assert.match(html,/aria-label="Preserve challenge or extension deadline/);
  const inspector=ui.inspectorMarkup(s,'branch');assert.match(inspector,/<summary>Admitted rules<\/summary>/);assert.match(inspector,/Admitted tenancy workflow/);assert.match(inspector,/Exact recorded operational rule/);
  assert.ok(inspector.indexOf('The process includes')>inspector.indexOf('<summary>Admitted rules'));
 });
@@ -253,10 +254,11 @@ test('a new evidence workflow does not inherit the earlier pass completed interp
 });
 
 test('causal choreography requires a fresh matching accepted event and targets only actual changed dependencies',()=>{
- const before=state(),after=structuredClone(before);after.revision=4;after.state_sha256=hash('f');after.evaluation.nodes[1].execution_state='completed';after.evaluation.documents[0].review_state='sufficient';after.facts[1].status='established';
+ const before=state();before.evaluation.edges=[{edge_id:'next',activation:'unresolved'}];const after=structuredClone(before);after.revision=4;after.state_sha256=hash('f');after.evaluation.nodes[1].execution_state='completed';after.evaluation.documents[0].review_state='sufficient';after.facts[1].status='established';
  const accepted=ui.acceptEvents(3,events(after,3),after),plan=ui.transitionPlan(before,after,accepted,[]);
- assert.deepEqual(plan.nodes.map(row=>row.id),['branch']);assert.deepEqual(plan.edges.map(row=>row.id),['next']);assert.deepEqual(plan.documents.map(row=>row.id),['notice']);assert.deepEqual(plan.facts.map(row=>row.id),['fact:notice']);
- assert.ok(Math.max(...plan.edges.map(row=>row.delay+row.duration))<=Math.min(...plan.nodes.map(row=>row.delay)));
+ assert.deepEqual(plan.nodes.map(row=>row.id),['branch']);assert.deepEqual(plan.edges,[]);assert.deepEqual(plan.documents.map(row=>row.id),['notice']);assert.deepEqual(plan.facts.map(row=>row.id),['fact:notice']);
+ after.evaluation.edges[0].activation='true';const changedEdgePlan=ui.transitionPlan(before,after,accepted,[]);assert.deepEqual(changedEdgePlan.edges.map(row=>row.id),['next']);
+ assert.ok(Math.max(...changedEdgePlan.edges.map(row=>row.delay+row.duration))<=Math.min(...changedEdgePlan.nodes.map(row=>row.delay)));
  assert.ok(Math.max(...plan.nodes.map(row=>row.delay+row.duration))<=Math.min(...plan.documents.map(row=>row.delay)));
  assert.ok(plan.duration<=800);
  assert.equal(ui.transitionPlan(before,after,ui.acceptEvents(null,events(after),after),[]),null);
@@ -343,8 +345,8 @@ function navClick(f,value) {
 async function newClaim(f) { navClick(f,'intake');await settle(); }
 test('initial deep links and duplicate browser history events read saved state once without adding entries',async t=>{
  const routing=routingFixture(t,'#autonomous/claim/claim-a'),f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
- assert.match(f.host.innerHTML,/Working process/);assert.equal(routing.pushes,0);assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,1);
- routing.external('#autonomous/knowledge');await settle();assert.match(f.host.innerHTML,/>Knowledge</);assert.equal(api.calls.filter(call=>call.path.endsWith('/knowledge')).length,1);assert.equal(routing.pushes,0);
+ assert.match(f.host.innerHTML,/data-au-graph/);assert.equal(routing.pushes,0);assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,1);
+ routing.external('#autonomous/knowledge');await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);assert.equal(api.calls.filter(call=>call.path.endsWith('/knowledge')).length,1);assert.equal(routing.pushes,0);
  routing.external('#autonomous/claim/claim-a');await settle();assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,2);assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a/events?after=0')).length,2);
  routing.external('#autonomous/claim/claim-a');await settle();assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,2);assert.equal(routing.pushes,0);
  controller.destroy();assert.equal(routing.listeners.size,0);
@@ -354,9 +356,9 @@ test('internal Work, Knowledge and claim navigation adds only changed fragments 
  const routing=routingFixture(t),f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.equal(routing.pushes,0);
  navClick(f,'knowledge');await settle();assert.equal(routing.hash,'#autonomous/knowledge');assert.equal(routing.pushes,1);
  navClick(f,'knowledge');await settle();assert.equal(routing.pushes,1);
- await controller.openClaim('claim-a');assert.equal(routing.pushes,2);assert.match(f.host.innerHTML,/Working process/);
- routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge</);routing.back();await settle();assert.match(f.host.innerHTML,/>Work</);
- routing.forward();await settle();assert.match(f.host.innerHTML,/>Knowledge</);routing.forward();await settle();assert.match(f.host.innerHTML,/Working process/);assert.equal(routing.pushes,2);
+ await controller.openClaim('claim-a');assert.equal(routing.pushes,2);assert.match(f.host.innerHTML,/data-au-graph/);
+ routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.back();await settle();assert.match(f.host.innerHTML,/>Work in context\.</);
+ routing.forward();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.forward();await settle();assert.match(f.host.innerHTML,/data-au-graph/);assert.equal(routing.pushes,2);
  navClick(f,'intake');await settle();assert.equal(routing.hash,'#autonomous/new');assert.equal(routing.pushes,3);assert.equal(globalThis.location.search,'?journey=autonomous');
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
@@ -365,13 +367,13 @@ test('a browser route change during an uncertain intake waits for its result and
  const routing=routingFixture(t),f=dom();let rejectPost;
  const api=fakeApi({handle:async(path,init)=>{if(init.method==='POST')return new Promise((resolve,reject)=>{rejectPost=reject;});}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
  const submission=f.listeners.get('submit')({target:f.form,preventDefault(){}});await settle();routing.external('#autonomous/knowledge');assert.equal(api.calls.filter(call=>call.path.endsWith('/knowledge')).length,0);
- rejectPost(new Error('Intake response unconfirmed'));await submission;await settle();assert.match(f.host.innerHTML,/>Knowledge</);assert.equal(routing.pushes,1,'only the explicit New claim navigation added an entry');
+ rejectPost(new Error('Intake response unconfirmed'));await submission;await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);assert.equal(routing.pushes,1,'only the explicit New claim navigation added an entry');
  routing.external('#autonomous/new');await settle();assert.match(f.message.textContent,/same saved intake request/);assert.equal(f.fields.title.disabled,true);assert.equal(f.submit.disabled,false);
  const retry=f.listeners.get('submit')({target:f.form,preventDefault(){}});await settle();const writes=api.calls.filter(call=>call.init.method==='POST');assert.equal(writes.length,2);assert.equal(writes[0].init.body,writes[1].init.body);rejectPost(new Error('Still unconfirmed'));await retry;
 });
 
 
-test('mobile graph selection reveals the selected inspector and Back returns to its node; polling and desktop stay settled',async t=>{
+test('graph selection and return keep focus on its junction without moving the page at either width',async t=>{
  const originalMatch=globalThis.matchMedia;let mobile=true;globalThis.matchMedia=query=>({matches:query==='(max-width: 800px)'&&mobile,addEventListener(){},removeEventListener(){}});t.after(()=>{globalThis.matchMedia=originalMatch;});
  const f=dom(),doc=f.container.ownerDocument,scrolls=[];
  function element(attr,value){return{dataset:{[attr.replace(/^data-/, '').replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]:value},hasAttribute:name=>name===attr,getAttribute:name=>name===attr?value:null,matches:()=>false,closest(){return this;},focus(options){doc.activeElement=this;this.focusOptions=options;},scrollIntoView(options){scrolls.push({attr,value,options});}};}
@@ -381,10 +383,10 @@ test('mobile graph selection reveals the selected inspector and Back returns to 
  f.host.querySelectorAll=selector=>all.filter(el=>el.hasAttribute(selector.slice(1,-1)));
  let saved=state();const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');assert.equal(scrolls.length,0);
- node.focus();f.listeners.get('click')({target:node});assert.equal(doc.activeElement,heading);assert.deepEqual(heading.focusOptions,{preventScroll:true});assert.deepEqual(scrolls.at(-1),{attr:'inspector',options:{block:'start',behavior:'instant'}});
- saved=state({revision:4,state_sha256:hash('f')});const beforePoll=scrolls.length;await controller.refresh();assert.equal(doc.activeElement,heading);assert.equal(scrolls.length,beforePoll);
- f.listeners.get('click')({target:back});assert.equal(doc.activeElement,node);assert.deepEqual(scrolls.at(-1),{attr:'data-au-node',value:'branch',options:{block:'center',behavior:'instant'}});
- f.listeners.get('click')({target:relation});assert.equal(doc.activeElement,node);assert.equal(scrolls.at(-1).attr,'data-au-node');assert.equal(scrolls.at(-1).options.block,'nearest');
+ node.focus();f.listeners.get('click')({target:node});assert.equal(doc.activeElement,node);assert.deepEqual(node.focusOptions,{preventScroll:true});assert.equal(scrolls.length,0);
+ saved=state({revision:4,state_sha256:hash('f')});const beforePoll=scrolls.length;await controller.refresh();assert.equal(doc.activeElement,node);assert.equal(scrolls.length,beforePoll);
+ f.listeners.get('click')({target:back});assert.equal(doc.activeElement,node);assert.equal(scrolls.length,0);
+ f.listeners.get('click')({target:relation});assert.equal(doc.activeElement,node);assert.equal(scrolls.length,0);
  mobile=false;node.focus();const beforeDesktop=scrolls.length;f.listeners.get('click')({target:node});assert.equal(doc.activeElement,node);assert.equal(scrolls.length,beforeDesktop);
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
@@ -506,8 +508,8 @@ const claimRows=[
 ];
 test('the default Work collection uses saved statuses and explicit New claim navigation',async t=>{
  const f=dom(),api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
- assert.match(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake"[^>]*>New claim/);
- assert.match(f.host.innerHTML,/class="au-collection"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
+ assert.match(f.container.innerHTML,/<header class="au-identity-header"/);assert.doesNotMatch(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake"[^>]*>New claim/);
+ assert.match(f.host.innerHTML,/class="au-collection(?:\s[^"]*)?"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
  const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Deferred/);assert.match(html,/Working/);assert.match(html,/Resolved/);assert.match(html,/Stopped/);assert.match(html,/Queued/);
  await newClaim(f);assert.match(f.host.innerHTML,/<form[^>]*data-au-intake/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
@@ -534,8 +536,8 @@ test('each context view keeps the same selected real process and only one visibl
  for(const detail of ['step','documents','sources','activity']) {
   const html=ui.workMarkup(s,{},'branch',events(s).events,detail),panels=[...html.matchAll(/<section[^>]*data-au-panel="([^"]+)"[^>]*>/g)];
   assert.equal(panels.length,4);assert.deepEqual(panels.filter(match=>!match[0].includes(' hidden')).map(match=>match[1]),[detail]);
-  assert.match(html,new RegExp(`data-au-detail="${detail}" aria-pressed="true"`));assert.match(html,/data-orientation="vertical"/);assert.match(html,/data-au-node="branch"[^>]*aria-pressed="true"/);assert.match(html,/data-au-selected-step="branch"/);
-  assert.match(html,/data-au-panel="sources"[\s\S]*data-au-arrival/);assert.ok(html.indexOf('class="au-process-hero au-path-panel"')<html.indexOf('class="au-work-layout au-context-panel au-detail-panel"'));
+  assert.match(html,new RegExp(`data-au-detail="${detail}" aria-pressed="true"`));assert.match(html,/data-orientation="horizontal"/);assert.match(html,/data-au-node="branch"[^>]*aria-pressed="true"/);assert.match(html,/data-au-selected-step="branch"/);
+  assert.match(html,/data-au-panel="sources"[\s\S]*data-au-arrival/);assert.ok(html.indexOf('class="au-process-hero')<html.indexOf('data-au-panel="step"'));
  }
  assert.equal(JSON.stringify(s),before);
 });
@@ -640,8 +642,8 @@ test('full public provenance, receipt checks and quarantine reasons remain inspe
  const quarantine={knowledge_id:'withheld',qualification:{status:'quarantined',reason:'Exact rule identity changed',details:{failed_check:'public discrepancy marker'}},candidate:{summary:attack}};
  const html=ui.knowledgeMarkup({versions:[version],uses:[],quarantined:[quarantine]});
  for(const value of ['Version-specific public check','recorded independent check','Public ancestry marker','Exact rule identity changed','public discrepancy marker'])assert.ok(html.includes(value),value);
- assert.match(html,/&lt;svg/);assert.doesNotMatch(html,/<svg|onload="alert/);assert.match(html,/<details[\s\S]*Provenance/);
- const s=state();s.actions[0].receipt.checks=[{accepted:true,reason:'Public action check',payload:{summary:attack}}];const action=ui.inspectorMarkup(s,'branch');assert.match(action,/Public action check/);assert.match(action,/&lt;svg/);assert.doesNotMatch(action,/<svg|onload="alert/);
+ assert.match(html,/&lt;svg/);assert.doesNotMatch(html,/<svg[^>]*onload=|onload="alert/);assert.match(html,/<details[\s\S]*Provenance/);
+ const s=state();s.actions[0].receipt.checks=[{accepted:true,reason:'Public action check',payload:{summary:attack}}];const action=ui.inspectorMarkup(s,'branch');assert.match(action,/Public action check/);assert.match(action,/&lt;svg/);assert.doesNotMatch(action,/<svg[^>]*onload=|onload="alert/);
 });
 
 function knowledgeFixture() {
@@ -771,7 +773,7 @@ test('paused interpretation describes an unaccepted result instead of active rea
 
 test('an exhausted authoritative call allowance is visible before intake while packet saving remains available',async t=>{
  const savedStatus={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}},before=JSON.stringify(savedStatus),f=dom();
- const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/>Work</);await newClaim(f);
+ const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/>Work in context\.</);await newClaim(f);
  const message=f.host.querySelector('[data-au-service]').textContent;assert.match(message,/allowance does not permit more autonomous work/i);assert.match(message,/still save a new claim.*named deferral/i);assert.doesNotMatch(message,/Local evidence acquisition and document preparation are available/);
  assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.doesNotMatch(f.submit.textContent,/retry|saving/i);assert.equal(f.message.textContent,'');assert.equal(JSON.stringify(savedStatus),before);
  assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
