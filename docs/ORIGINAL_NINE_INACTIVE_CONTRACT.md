@@ -50,6 +50,15 @@ epoch. At most nine slots/eighteen physical calls are available. Rejection,
 abandonment or unknown consumes the original slot permanently. An unknown
 blocks all further inference and retains its reserve; an unacknowledged intent
 cannot be resent. The historical unknown reserve remains in the old epoch.
+An exact-nine interpretation awaiting verification or terminal closure also
+blocks every fresh workflow in the ledger, including after restart, with
+`autonomous_reason=workflow_in_progress` and a separate logical-pending flag.
+This leaves physical `in_flight` and `provider_outcome_pending` unchanged.
+The owning workflow can verify and recorded outcomes can replay. Each new
+exact-nine physical intent additionally requires the server composition's
+validated deployed source commit to match the approved preflight; missing or
+different runtime identity prevents new sends while saved outcomes remain
+readable. A caller's workflow/config fields cannot provide this authority.
 
 `existing_010` keeps effective aggregate USD `0.10`, with conditional completion
 and a full USD `0.02` available at each fresh start. `new_018_total_022` permits

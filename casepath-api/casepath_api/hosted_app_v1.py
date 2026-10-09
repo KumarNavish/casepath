@@ -40,7 +40,8 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
             lease = HostedWorkflowLease(database.connect)
             lease.initialize()
             journal = HostedJournal(root / 'remote-claim-journal', lease.connect)
-            work = WorkStore(root / 'remote-work-journal', connection_factory=lease.connect)
+            work = WorkStore(root / 'remote-work-journal', connection_factory=lease.connect,
+                             validated_source_commit=commit)
             sources = HostedSources(lease.connect)
             store = HostedAutonomousStore(journal.path, journal=journal, source_store=sources)
             model = None

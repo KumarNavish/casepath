@@ -204,7 +204,8 @@ def main(argv=None):
     from casepath_api.hosted_lease_v1 import HostedWorkflowLease, _CURRENT_OWNER
     database = TursoDatabase(os.environ['CASEPATH_TURSO_URL'],os.environ['TURSO_AUTH_TOKEN'])
     lease = HostedWorkflowLease(database.connect)
-    work = WorkStore(Path('/tmp/casepath-original-nine-remote-handle'),connection_factory=lease.connect)
+    work = WorkStore(Path('/tmp/casepath-original-nine-remote-handle'),connection_factory=lease.connect,
+                     validated_source_commit=current)
     token = lease.acquire()
     if token is None:
         raise ValueError('the hosted writer lease is busy; no allowance was applied')

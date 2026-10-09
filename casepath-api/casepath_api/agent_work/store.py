@@ -258,12 +258,15 @@ for _table, _keys in (("work_autonomous_policy", "singleton INTEGER PRIMARY KEY 
 
 
 class WorkStore:
-    def __init__(self, path: Path, *, connection_factory=None):
+    def __init__(self, path: Path, *, connection_factory=None, validated_source_commit=None):
         self.path = Path(path)
         if self.path.is_symlink() or self.path.parent.is_symlink():
             raise WorkStoreError("work journal path cannot be a symlink")
         self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
         self._connection_factory = connection_factory
+        # Only server/operator composition supplies this value. It is never
+        # accepted from a workflow request, model config or approval string.
+        self._validated_source_commit = validated_source_commit
         self._lock = RLock()
         self._validated_event_cache: dict[str, tuple[str, tuple[tuple[int, str, bytes], ...], list[dict]]] = {}
         self._validated_object_cache: dict[str, tuple[tuple, tuple, bytes]] = {}
@@ -530,7 +533,9 @@ class WorkStore:
                 effective_calls += 18
             slots_exhausted = len(nine_works) >= 9 if nine else bool(capacity_grant and granted_workflows >= capacity_grant["additional_workflows"])
             nine_remaining = Decimal("0.18") - nine_actual - nine_reserved
+            nine_workflow_pending = any(work["terminal"] is None for work in nine_works.values())
             auto_reason = ("provider_cost_bound_exceeded" if exceeded else "provider_outcome_pending" if pending else
+                           "workflow_in_progress" if nine_workflow_pending else
                            "call_limit_reached" if len(calls) + 2 > effective_calls or slots_exhausted else
                            "cost_limit_reached" if available < self._money(autonomous_policy["workflow_cost_limit_usd"])
                            or nine and nine_remaining < Decimal("0.02") else None)
@@ -541,6 +546,7 @@ class WorkStore:
                           autonomous_can_start=auto_reason is None, autonomous_reason=auto_reason)
             if nine:
                 result.update(original_nine_grant=nine, effective_total_cost_limit_usd=effective_total,
+                    original_nine_workflow_pending=nine_workflow_pending,
                     original_nine_workflows_used=len(nine_works), original_nine_provider_calls_used=sum(len(w["calls"]) for w in nine_works.values()),
                     original_nine_actual_cost_usd=str(nine_actual), original_nine_reserved_cost_usd=str(nine_reserved),
                     original_nine_committed_cost_usd=str(nine_actual + nine_reserved),
@@ -890,6 +896,9 @@ class WorkStore:
             if any(call["intent"]["schema_sha256"] != rows[key]["interpretation" if stage == "interpret" else "verification"]["schema_sha256"]
                    for key,work in added.items() for stage,call in work["calls"].items()):
                 raise ValueError
+            if any(call["intent"].get("source_commit") != grant["preflight"]["source_commit"]
+                   for work in added.values() for call in work["calls"].values()):
+                raise ValueError
             actual = sum((c["cost"] for c in own if c["cost"] is not None),Decimal(0))
             reserved = sum((c["reserved"] for c in own if c["cost"] is None),Decimal(0))
             for work in added.values():
@@ -1117,6 +1126,11 @@ class WorkStore:
                 if (row is None or canonical(config) != canonical(nine["preflight"]["frozen_model_config"])
                         or schema_sha256 != row["interpretation" if stage == "interpret" else "verification"]["schema_sha256"]):
                     raise ConflictError("the original identity, frozen config or stage schema is outside the exact-nine allowlist")
+                # Exact recorded outcomes returned above remain readable across
+                # deployment changes. Every new physical intent must belong to
+                # the approved server-owned deployed source, including verify.
+                if self._validated_source_commit != nine["preflight"]["source_commit"]:
+                    raise ConflictError("the validated runtime source commit differs from the exact-nine preflight")
             if not allow_send:
                 raise ConflictError("the autonomous provider profile is not explicitly enabled; no request was reserved")
             if budget["in_flight"]:
@@ -1147,6 +1161,7 @@ class WorkStore:
                 raise ConflictError("the autonomous workflow cost ceiling is exhausted")
             intent = self._autonomous_insert(db, "work_autonomous_calls", {"workflow_id": workflow_id, "stage": stage}, {
                 "contract": "casepath.autonomous-provider-intent/1.0.0", **command,
+                **({"source_commit":self._validated_source_commit} if nine else {}),
                 "workflow_sha256": work["record"]["workflow_sha256"], "maximum_cost_usd": str(maximum), "started_at": utcnow()}, "intent_sha256")
             return {"intent": intent, "policy_sha256": policy["policy_sha256"]}
 

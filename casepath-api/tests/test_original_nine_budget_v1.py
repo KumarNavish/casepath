@@ -19,6 +19,9 @@ def exhausted(tmp_path):
     for index in range(10, 13):
         pair(store, index)
     assert store.external_budget()["provider_calls_used"] == 24
+    path = store.path
+    store.close()
+    store = WorkStore(path,validated_source_commit='8'*40)
     yield store
     store.close()
 
@@ -89,7 +92,7 @@ def test_additive_epoch_preserves_old_rows_and_admits_only_eighteen_calls(exhaus
     assert apply(exhausted, proposal) == receipt
     saved = begin(exhausted, proposal, 8, "verify", allow_send=False)
     exhausted.close()
-    second = WorkStore(exhausted.path)
+    second = WorkStore(exhausted.path,validated_source_commit='8'*40)
     try:
         assert second.external_budget() == final
         assert begin(second, proposal, 8, "verify", allow_send=False) == saved
@@ -99,7 +102,7 @@ def test_additive_epoch_preserves_old_rows_and_admits_only_eighteen_calls(exhaus
 
 
 def test_same_approval_concurrent_application_is_one_immutable_receipt(exhausted, proposal):
-    peer = WorkStore(exhausted.path)
+    peer = WorkStore(exhausted.path,validated_source_commit='8'*40)
     try:
         with ThreadPoolExecutor(max_workers=2) as pool:
             rows = list(pool.map(lambda s:apply(s, proposal), (exhausted, peer)))
@@ -258,3 +261,66 @@ def test_preserved_legacy_bytes_have_same_seal_under_reversed_sql_traversal(exha
         forward = exhausted._original_nine_legacy_seal(db)
         db.execute('PRAGMA reverse_unordered_selects=ON')
         assert exhausted._original_nine_legacy_seal(db) == forward
+
+
+def test_exact_nine_midpoint_blocks_fresh_workflow_but_allows_verifier_and_replay(exhausted,proposal):
+    apply(exhausted,proposal)
+    saved = complete(exhausted,proposal,0)
+    midpoint = exhausted.external_budget()
+    assert midpoint['in_flight'] is False
+    assert midpoint['autonomous_can_start'] is False
+    assert midpoint['autonomous_reason'] == 'workflow_in_progress'
+    assert midpoint['original_nine_workflow_pending'] is True
+    with pytest.raises(ConflictError,match='workflow_in_progress'):
+        begin(exhausted,proposal,1)
+    assert exhausted.external_budget() == midpoint
+    assert begin(exhausted,proposal,0,allow_send=False) == saved
+    exhausted.close()
+    peer = WorkStore(exhausted.path,validated_source_commit='8'*40)
+    try:
+        assert peer.external_budget() == midpoint
+        with pytest.raises(ConflictError,match='workflow_in_progress'):
+            begin(peer,proposal,1)
+        assert begin(peer,proposal,0,allow_send=False) == saved
+        complete(peer,proposal,0,'verify')
+        assert peer.external_budget()['original_nine_workflow_pending'] is False
+        begin(peer,proposal,1)
+    finally:
+        peer.close()
+
+
+def test_missing_runtime_source_identity_cannot_create_new_exact_nine_intent(exhausted,proposal):
+    apply(exhausted,proposal)
+    peer = WorkStore(exhausted.path)
+    try:
+        before = peer.external_budget()
+        with pytest.raises(ConflictError,match='source commit'):
+            begin(peer,proposal,0)
+        assert peer.external_budget() == before
+    finally:
+        peer.close()
+
+
+@pytest.mark.parametrize('runtime_commit',[None,'unknown','9'*40])
+def test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay(exhausted,proposal,runtime_commit):
+    apply(exhausted,proposal)
+    saved = complete(exhausted,proposal,0)
+    with exhausted.connect() as db:
+        intent = db.execute('SELECT record_json FROM work_autonomous_calls WHERE workflow_id=? AND stage=?',
+            (proposal['eligible_originals'][0]['identity']['workflow_id'],'interpret')).fetchone()[0]
+        import json
+        assert json.loads(intent)['source_commit'] == '8'*40
+    peer = WorkStore(exhausted.path,validated_source_commit=runtime_commit)
+    try:
+        before = peer.external_budget()
+        assert begin(peer,proposal,0,allow_send=False) == saved
+        with pytest.raises(ConflictError,match='source commit'):
+            begin(peer,proposal,0,'verify')
+        assert peer.external_budget() == before
+        complete(exhausted,proposal,0,'verify')
+        before = peer.external_budget()
+        with pytest.raises(ConflictError,match='source commit'):
+            begin(peer,proposal,1)
+        assert peer.external_budget() == before
+    finally:
+        peer.close()
