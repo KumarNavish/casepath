@@ -1225,11 +1225,14 @@ for (const reducedMotion of ['no-preference', 'reduce']) test(`mobile inspection
   await assertStep(0);
   for (let index = 1; index < ids.length; index++) {
     await next.scrollIntoViewIfNeeded();
-    const pageTop = await page.evaluate(() => scrollY);
     await next.click();
     if (reducedMotion === 'reduce') assert.equal(await page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length), 0, 'reduced motion must suppress navigation animation');
     await assertStep(index);
-    assert.equal(await page.evaluate(() => scrollY), pageTop, 'mobile inspection centers the real node without moving the page');
+    const selectedVisible = await page.locator('[data-au-node][aria-pressed="true"]').evaluate(element => {
+      const bounds = element.getBoundingClientRect();
+      return bounds.top >= 15 && bounds.bottom <= innerHeight - 15;
+    });
+    assert.equal(selectedVisible, true, 'explicit inspection keeps the selected real step inside the browser viewport');
     if (index < ids.length - 1) assert.equal(await next.evaluate(element => document.activeElement === element), true, 'enabled inspection controls retain their accessible focus');
   }
   assert.equal(await next.isDisabled(), true);

@@ -658,7 +658,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-collection-scope [aria-pressed=true] { color: var(--au-ink); box-shadow: inset 0 -2px var(--au-green); }
 .au-workspace .au-original-head { align-items: flex-start; padding-bottom: 14px; }
 .au-workspace .au-original-head > div:first-child { flex: 1; }
-.au-workspace .au-original-head .au-original-subject { max-width: 58ch; font-size: 30px; line-height: 1.2; letter-spacing: -.7px; overflow-wrap: anywhere; }
+.au-workspace .au-work-head .au-page-heading { max-width: 58ch; font-size: 30px; line-height: 1.2; letter-spacing: -.7px; overflow-wrap: anywhere; }
 .au-workspace .au-original-head .au-work-controls { margin-top: 29px; }
 .au-workspace .au-original-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(260px,.43fr); gap: 38px; align-items: start; }
 .au-workspace .au-original-message-column { min-width: 0; grid-column: 1; grid-row: 1; }
@@ -685,7 +685,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-nav button { white-space: nowrap; }
   .au-workspace .au-collection-scope { gap: 25px; margin-bottom: 16px; }
   .au-workspace .au-original-head { gap: 14px; }
-  .au-workspace .au-original-head .au-original-subject { font-size: 27px; line-height: 1.22; letter-spacing: -.5px; }
+  .au-workspace .au-work-head .au-page-heading { font-size: 27px; line-height: 1.22; letter-spacing: -.5px; }
   .au-workspace .au-original-head .au-work-controls { margin-top: 0; }
   .au-workspace .au-original-intake { padding-top: 5px; }
   .au-workspace .au-original-layout { display: flex; flex-direction: column; gap: 25px; }
@@ -707,18 +707,18 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-demo-itinerary { margin: 0 0 20px; border-block: 1px solid var(--au-line); }
 .au-workspace .au-demo-itinerary .au-demo-selection { padding: 0 0 18px; }
 .au-workspace .au-demo-itinerary summary > .au-demo-position { margin-left: 0; color: var(--au-ink); font-size: 14px; font-weight: 550; }
-.au-workspace .au-mobile-inspection { display: none; }
+.au-workspace .au-mobile-inspection { display: flex; align-items: center; justify-content: space-between; gap: 10px; max-width: 420px; margin: 0 0 14px auto; }
+.au-workspace .au-mobile-inspection > div { flex: 1; text-align: center; }
+.au-workspace .au-mobile-inspection strong { display: block; font-size: 14px; font-weight: 500; }
+.au-workspace .au-mobile-inspection span { display: block; margin-top: 3px; color: var(--au-muted); font-size: 11px; }
+.au-workspace .au-mobile-inspection button { min-height: 44px; padding: 8px 11px; font-size: 13px; }
 .au-workspace .au-collection-tools [data-au-claim-search] { border-bottom: 1px solid #657c6e; padding-inline: 10px; background: #e9eee5; box-shadow: inset 0 1px 2px rgb(24 61 53 / .04); }
 .au-workspace .au-collection-tools [data-au-claim-search]:focus { border-bottom-color: var(--au-accent); }
 @media (max-width: 650px) {
   .au-workspace .au-demo-selection li { gap: 12px; flex-wrap: wrap; }
   .au-workspace .au-demo-selection li > button { flex-basis: calc(100% - 40px); }
   .au-workspace .au-demo-selection li > .au-status { margin-left: 40px; }
-  .au-workspace .au-mobile-inspection { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
-  .au-workspace .au-mobile-inspection > div { flex: 1; text-align: center; }
-  .au-workspace .au-mobile-inspection strong { display: block; font-size: 14px; font-weight: 500; }
-  .au-workspace .au-mobile-inspection span { display: block; margin-top: 3px; color: var(--au-muted); font-size: 11px; }
-  .au-workspace .au-mobile-inspection button { min-height: 44px; padding: 8px 11px; font-size: 13px; }
+  .au-workspace .au-mobile-inspection { max-width: none; }
 }
 
 /* The desktop itinerary is one compact overview across the three domains. */

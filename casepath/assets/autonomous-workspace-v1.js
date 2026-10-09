@@ -1252,6 +1252,11 @@
         const control = host.querySelector(direction < 0 ? '[data-au-node-previous]' : '[data-au-node-next]'), selectedNode = [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
         (control && !control.disabled ? control : selectedNode)?.focus({preventScroll:true});
         revealGraphNode(selectedNode,true); drawEdges();
+        const bounds = selectedNode?.getBoundingClientRect?.();
+        if (bounds) {
+          const offset = bounds.top < 16 ? bounds.top-16 : Math.max(0,bounds.bottom-root.innerHeight+16);
+          if (offset) root.scrollBy?.(0,offset);
+        }
       }
       else if (target.hasAttribute('data-au-node') || target.hasAttribute('data-au-select')) {
         const id=target.dataset.auNode || target.dataset.auSelect;
