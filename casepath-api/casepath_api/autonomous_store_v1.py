@@ -93,13 +93,14 @@ def _receipt(value, *, interpretation=False):
 
 
 class AutonomousStore:
-    def __init__(self, storage_or_path, source_root=None):
+    def __init__(self, storage_or_path, source_root=None, *, journal=None, source_store=None):
         self._read_only = False
         self.storage = storage_or_path if hasattr(storage_or_path, "path") else None
         path = Path(self.storage.path if self.storage is not None else storage_or_path)
         if path.is_symlink():
             raise AutonomousStoreError("journal path must not be a symlink")
-        self.journal = ClaimLoopStore(path)
+        self.journal = journal if journal is not None else ClaimLoopStore(path)
+        self._source_store = source_store
         self.path = self.journal.path
         if self.storage is not None and hasattr(self.storage, "protected_session_ids"):
             # The shared Storage instance's generic reset/write APIs cannot own
@@ -138,6 +139,7 @@ class AutonomousStore:
 
         value = cls.__new__(cls)
         value._read_only, value.storage = True, None
+        value._source_store = None
         value.path, value.journal, value.source_root = path, ReadOnlyJournal(path), root.resolve()
         value._extractions, value._extraction_lock = {}, RLock()
         return value
@@ -145,6 +147,11 @@ class AutonomousStore:
     def _blob(self, digest):
         if not isinstance(digest, str) or not _HASH.fullmatch(digest):
             raise AutonomousStoreError("source hash is invalid")
+        if self._source_store is not None:
+            raw = self._source_store.read(digest)
+            if not isinstance(raw, bytes) or len(raw) > MAX_FILE_BYTES or sha256(raw).hexdigest() != digest:
+                raise AutonomousStoreError("source bytes differ from their hash")
+            return raw
         path = self.source_root / digest
         try:
             fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
@@ -162,6 +169,11 @@ class AutonomousStore:
     def _publish(self, raw):
         if self._read_only:
             raise AutonomousStoreError("read-only replay cannot publish sources")
+        if self._source_store is not None:
+            digest = self._source_store.publish(raw)
+            if digest != sha256(raw).hexdigest():
+                raise AutonomousStoreError("source publication identity differs")
+            return digest
         digest = sha256(raw).hexdigest()
         path = self.source_root / digest
         # Publish only a fully fsynced inode. Concurrent exact retries never see
@@ -622,37 +634,55 @@ class AutonomousStore:
             raise AutonomousStoreError("claim does not exist")
         return events[after:]
 
-    def append(self, claim_id, kind, payload, *, expected_revision, expected_state_sha256, idempotency_key):
+    def _append_command(self, claim_id, kind, payload, expected_revision, expected_state_sha256, idempotency_key):
         if self._read_only:
-            raise AutonomousStoreError("read-only replay cannot append events")
-        _identifier(claim_id, "claim identity")
-        _identifier(kind, "event kind")
-        _identifier(idempotency_key, "idempotency key")
+            raise AutonomousStoreError('read-only replay cannot append events')
+        _identifier(claim_id, 'claim identity')
+        _identifier(kind, 'event kind')
+        _identifier(idempotency_key, 'idempotency key')
         if type(expected_revision) is not int or expected_revision < 0:
-            raise AutonomousStoreError("expected revision is invalid")
-        payload = _copy(payload)
-        command = {"kind": kind, "payload": payload, "expected_revision": expected_revision, "expected_state_sha256": expected_state_sha256}
-        command_hash = digest_value(command)
+            raise AutonomousStoreError('expected revision is invalid')
+        command = {'kind': kind, 'payload': _copy(payload), 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256}
+        return command, digest_value(command)
+
+    def _prepare_append(self, rows, claim_id, command, command_hash, idempotency_key):
+        state, events, states = self._replay(rows, with_history=True)
+        existing = next((event for event in events if event['idempotency_key'] == idempotency_key), None)
+        if existing:
+            if existing['command_sha256'] != command_hash:
+                raise AutonomousStoreError('idempotency key binds different input')
+            return None, deepcopy(states[existing['sequence'] - 1])
+        if (command['expected_revision'] != len(events) or
+                command['expected_state_sha256'] != (state['state_sha256'] if state else None)):
+            raise AutonomousStoreError('stale claim revision or state hash')
+        if len(events) >= 2000:
+            raise AutonomousStoreError('claim event limit reached')
+        event = _seal({'contract': EVENT_CONTRACT, 'session_id': SESSION_ID, 'claim_id': claim_id,
+                       **command, 'sequence': command['expected_revision'] + 1, 'command_sha256': command_hash,
+                       'idempotency_key': idempotency_key,
+                       'previous_event_sha256': state['last_event_sha256'] if state else None,
+                       'created_at': datetime.now(timezone.utc).isoformat()}, 'event_sha256')
+        result = self._reduce(state, event)
+        event['resulting_state_sha256'] = result['state_sha256']
+        parameters = (SESSION_ID, 'autonomous.' + claim_id, event['sequence'], idempotency_key, command_hash,
+                      event['event_sha256'], json.dumps(event, ensure_ascii=False, sort_keys=True,
+                                                      separators=(',', ':')), event['created_at'])
+        return parameters, result
+
+    @staticmethod
+    def _insert_prepared(connection, parameters):
+        if parameters is not None:
+            connection.execute('INSERT INTO claim_loop_events '
+                '(session_id,loop_id,sequence,idempotency_key,command_sha256,event_sha256,event_json,created_at) '
+                'VALUES (?,?,?,?,?,?,?,?)', parameters)
+
+    def append(self, claim_id, kind, payload, *, expected_revision, expected_state_sha256, idempotency_key):
+        command, command_hash = self._append_command(claim_id, kind, payload, expected_revision,
+                                                   expected_state_sha256, idempotency_key)
         with self.journal.connect() as connection:
-            connection.execute("BEGIN IMMEDIATE")
-            rows = self._rows(connection, claim_id)
-            state, events, states = self._replay(rows, with_history=True)
-            existing = next((e for e in events if e["idempotency_key"] == idempotency_key), None)
-            if existing:
-                if existing["command_sha256"] != command_hash:
-                    raise AutonomousStoreError("idempotency key binds different input")
-                return deepcopy(states[existing["sequence"] - 1])
-            if expected_revision != len(events) or expected_state_sha256 != (state["state_sha256"] if state else None):
-                raise AutonomousStoreError("stale claim revision or state hash")
-            if len(events) >= 2000:
-                raise AutonomousStoreError("claim event limit reached")
-            event = _seal({"contract": EVENT_CONTRACT, "session_id": SESSION_ID, "claim_id": claim_id,
-                           **command, "sequence": expected_revision + 1, "command_sha256": command_hash,
-                           "idempotency_key": idempotency_key, "previous_event_sha256": state["last_event_sha256"] if state else None,
-                           "created_at": datetime.now(timezone.utc).isoformat()}, "event_sha256")
-            result = self._reduce(state, event)
-            event["resulting_state_sha256"] = result["state_sha256"]
-            connection.execute("INSERT INTO claim_loop_events (session_id,loop_id,sequence,idempotency_key,command_sha256,event_sha256,event_json,created_at) VALUES (?,?,?,?,?,?,?,?)",
-                               (SESSION_ID, "autonomous." + claim_id, event["sequence"], idempotency_key, command_hash,
-                                event["event_sha256"], json.dumps(event, ensure_ascii=False, sort_keys=True, separators=(",", ":")), event["created_at"]))
+            connection.execute('BEGIN IMMEDIATE')
+            prepared, result = self._prepare_append(self._rows(connection, claim_id), claim_id,
+                                                    command, command_hash, idempotency_key)
+            self._insert_prepared(connection, prepared)
             return result

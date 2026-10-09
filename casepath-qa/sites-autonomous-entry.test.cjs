@@ -5,7 +5,7 @@ const {readFileSync} = require('node:fs');
 const {resolve} = require('node:path');
 const {pathToFileURL} = require('node:url');
 const index = readFileSync(resolve(__dirname, '../casepath/index.html'), 'utf8');
-const configuration = '<script>window.CASEPATH_API = window.location.origin;</script>';
+const configuration = '<script>window.CASEPATH_API = window.location.origin;window.CASEPATH_HOSTED_AUTONOMOUS = true;</script>';
 const entry = '<script src="assets/autonomous-entry-v1.js';
 
 for (const preconfigured of [false, true]) {

@@ -291,8 +291,8 @@ def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, 
     builder = (
         release_tool.REPOSITORY / "casepath" / "tools" / "build_sites_site.py"
     ).read_text(encoding="utf-8")
-    # This standalone repository has no hosting installation. Validate the
-    # bundle in a temporary local fixture without inventing a deployment target.
+    # Validate the bundle in an isolated local fixture; deployment identity and
+    # runtime secrets are configured separately from the public assets.
     import build_sites_site as sites
     import build_static_site as static
     public = tmp_path / "casepath-public"
@@ -310,10 +310,12 @@ def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, 
     )
     assert static.inventory(tmp_path / "dist/client")[0] == static.PUBLIC_INVENTORY
     assert not (tmp_path / ".openai").exists()
-    assert "https://casepath-agentic-api.onrender.com" in worker
+    assert "env.CASEPATH_API_ORIGIN" in worker
+    assert "X-CasePath-Proxy-Token" in worker
     assert 'pathname.startsWith("/api/")' in worker
     assert '"/healthz"' in worker and '"/readyz"' in worker
-    assert "return fetch(upstreamRequest)" in worker
+    assert "await fetch(new Request" in worker
+    assert "AbortSignal.timeout(14000)" in worker
     assert "request.body" in worker
     assert "window.CASEPATH_API = window.location.origin" in worker
     assert "API_CONFIGURATION" in builder

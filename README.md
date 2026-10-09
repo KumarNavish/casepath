@@ -56,6 +56,11 @@ The [main repository](https://github.com/KumarNavish/casepath) is the runnable r
 ./bin/casepath replay <claim-id>
 ```
 
+The agent-native hosted workspace uses ChatGPT Sites, FastAPI Cloud Hobby, and
+Turso Free. Its original evidence and allowance are stored in the remote database;
+compute may sleep between visits. See [hosted operations](docs/HOSTED_CASEPATH.md)
+for persistence, ownership, deployment, and restart verification.
+
 ## Paper and method
 
 **A process-first architecture for deciding which evidence an agent should

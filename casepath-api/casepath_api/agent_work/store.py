@@ -123,22 +123,26 @@ for _table, _keys in (("work_autonomous_policy", "singleton INTEGER PRIMARY KEY 
 
 
 class WorkStore:
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, *, connection_factory=None):
         self.path = Path(path)
         if self.path.is_symlink() or self.path.parent.is_symlink():
             raise WorkStoreError("work journal path cannot be a symlink")
         self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+        self._connection_factory = connection_factory
         self._lock = RLock()
         self._validated_event_cache: dict[str, tuple[str, tuple[tuple[int, str, bytes], ...], list[dict]]] = {}
         self._validated_object_cache: dict[str, tuple[tuple, tuple, bytes]] = {}
         with self.connect() as db:
             db.executescript(SCHEMA)
-            db.execute("PRAGMA journal_mode=WAL")
+            if connection_factory is None:
+                db.execute("PRAGMA journal_mode=WAL")
         # Keep one reader open so short tool-call connections do not checkpoint
         # the WAL after every durable commit. FULL synchronous still protects it.
-        self._keeper = sqlite3.connect(self.path, timeout=10, isolation_level=None, check_same_thread=False)
-        self._keeper.execute("PRAGMA journal_mode").fetchone()
-        os.chmod(self.path, 0o600)
+        self._keeper = None
+        if connection_factory is None:
+            self._keeper = sqlite3.connect(self.path, timeout=10, isolation_level=None, check_same_thread=False)
+            self._keeper.execute("PRAGMA journal_mode").fetchone()
+            os.chmod(self.path, 0o600)
 
     def close(self):
         with self._lock:
@@ -148,11 +152,14 @@ class WorkStore:
 
     @contextmanager
     def connect(self):
-        db = sqlite3.connect(self.path, timeout=10, isolation_level=None)
-        db.row_factory = sqlite3.Row
-        db.execute("PRAGMA foreign_keys=ON")
-        db.execute("PRAGMA synchronous=FULL")
-        db.execute("PRAGMA busy_timeout=10000")
+        if self._connection_factory is None:
+            db = sqlite3.connect(self.path, timeout=10, isolation_level=None)
+            db.row_factory = sqlite3.Row
+            db.execute("PRAGMA foreign_keys=ON")
+            db.execute("PRAGMA synchronous=FULL")
+            db.execute("PRAGMA busy_timeout=10000")
+        else:
+            db = self._connection_factory()
         try:
             yield db
         finally:
@@ -294,11 +301,15 @@ class WorkStore:
     def _external_usage(self, db):
         """Derive spend from validated journals within the admission transaction."""
         rows = db.execute("SELECT * FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits)").fetchall()
+        event_rows = db.execute("SELECT * FROM work_events WHERE run_id IN (SELECT run_id FROM work_external_permits) ORDER BY run_id,sequence").fetchall()
+        events_by_run = {}
+        for event_row in event_rows:
+            events_by_run.setdefault(event_row['run_id'], []).append(event_row)
         runs, calls = {}, []
         for row in rows:
             run = self._decode_run(dict(row))
             run_id = run["run_id"]
-            events = self._validate_events(run, db.execute("SELECT * FROM work_events WHERE run_id=? ORDER BY sequence", (run_id,)).fetchall())
+            events = self._validate_events(run, events_by_run.get(run_id, []))
             responses = {e["object_id"]: e for e in events if e["operation"] == Operation.PROVIDER_RESPONSE_RECEIVED}
             run_calls = []
             for event in events:
@@ -316,6 +327,23 @@ class WorkStore:
         return runs, calls, pending
 
     def _external_budget(self, db, usage=None):
+        # The remote adapter fetches these in one transaction-scoped batch.
+        # Local SQLite keeps ordinary reads; nothing is cached across commits.
+        prefetch = getattr(db, 'prefetch', None)
+        if prefetch is not None:
+            prefetch([(sql, ()) for sql in (
+                "SELECT * FROM work_external_budget WHERE singleton=1",
+                "SELECT * FROM work_external_run_grant WHERE singleton=1",
+                "SELECT * FROM work_autonomous_policy WHERE singleton=1",
+                "SELECT * FROM work_autonomous_capacity_grant WHERE singleton=1",
+                "SELECT * FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits)",
+                "SELECT * FROM work_events WHERE run_id IN (SELECT run_id FROM work_external_permits) ORDER BY run_id,sequence",
+                "SELECT 1 FROM work_calls WHERE tool_name='provider_request' AND status='started' LIMIT 1",
+                "SELECT * FROM work_autonomous_workflows ORDER BY workflow_id",
+                "SELECT * FROM work_autonomous_calls ORDER BY workflow_id,stage",
+                "SELECT * FROM work_autonomous_outcomes ORDER BY workflow_id,stage",
+                "SELECT * FROM work_autonomous_terminals ORDER BY workflow_id",
+            )])
         row = db.execute("SELECT * FROM work_external_budget WHERE singleton=1").fetchone()
         if row is None:
             self._external_run_grant(db, None)  # An orphaned allowance cannot become a permit.
