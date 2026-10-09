@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+from tempfile import TemporaryDirectory
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'casepath-api'))
@@ -204,22 +205,29 @@ def main(argv=None):
     from casepath_api.hosted_lease_v1 import HostedWorkflowLease, _CURRENT_OWNER
     database = TursoDatabase(os.environ['CASEPATH_TURSO_URL'],os.environ['TURSO_AUTH_TOKEN'])
     lease = HostedWorkflowLease(database.connect)
-    work = WorkStore(Path('/tmp/casepath-original-nine-remote-handle'),connection_factory=lease.connect,
-                     validated_source_commit=current)
-    token = lease.acquire()
-    if token is None:
-        raise ValueError('the hosted writer lease is busy; no allowance was applied')
-    context_token = _CURRENT_OWNER.set(token)
-    try:
-        receipt = work.apply_original_nine_grant(preflight=packet,expected_budget_sha256=args.expected_budget_sha256,
-            actor=args.actor,reason=args.reason,idempotency_key=args.idempotency_key,
-            human_approval_reference=args.human_approval_reference,monetary_option=args.monetary_option,
-            acknowledged_preflight_sha256=args.acknowledged_preflight_sha256)
-        print(json.dumps(receipt,ensure_ascii=False,sort_keys=True))
-    finally:
-        _CURRENT_OWNER.reset(context_token)
-        lease.release(token)
-        work.close()
+    with TemporaryDirectory(prefix='casepath-original-nine-') as directory:
+        work = WorkStore(Path(directory).resolve() / 'remote-handle',connection_factory=lease.connect,
+                         validated_source_commit=current)
+        try:
+            token = lease.acquire()
+            if token is None:
+                raise ValueError('the hosted writer lease is busy; no allowance was applied')
+            context_token = None
+            try:
+                context_token = _CURRENT_OWNER.set(token)
+                receipt = work.apply_original_nine_grant(preflight=packet,expected_budget_sha256=args.expected_budget_sha256,
+                    actor=args.actor,reason=args.reason,idempotency_key=args.idempotency_key,
+                    human_approval_reference=args.human_approval_reference,monetary_option=args.monetary_option,
+                    acknowledged_preflight_sha256=args.acknowledged_preflight_sha256)
+                print(json.dumps(receipt,ensure_ascii=False,sort_keys=True))
+            finally:
+                try:
+                    if context_token is not None:
+                        _CURRENT_OWNER.reset(context_token)
+                finally:
+                    lease.release(token)
+        finally:
+            work.close()
     return 0
 
 
