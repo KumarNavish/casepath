@@ -25,9 +25,45 @@ def test_readonly_cloud_boot_health_and_intake_boundary(tmp_path):
             assert health.status_code == 200 and health.json()['source_commit'] == 'a'*40
             prefix = '/api/claim-loops/v1/autonomous'
             assert client.get(prefix+'/claims').status_code == 403
-            assert client.get(prefix+'/claims', headers=headers).json() == {'claims': []}
+            collection = client.get(prefix+'/claims', headers=headers).json()
+            assert collection['total'] == 150 and len(collection['claims']) == 150
+            assert all(row['mode'] == 'unprocessed' and row['revision'] == 0 for row in collection['claims'])
             assert client.get(prefix+'/status', headers=headers).json()['provider_ready'] is False
             assert client.post(prefix+'/claims', headers=headers, json={}).status_code == 503
+    finally:
+        server.close()
+
+
+def test_writable_original_browsing_never_wakes_or_starts_work(tmp_path, monkeypatch):
+    from casepath_api.hosted_lease_v1 import HostedAutonomousController
+    def forbidden(*args, **kwargs):
+        raise AssertionError('GET or never-started startup dispatched work')
+    monkeypatch.setattr(HostedAutonomousController, 'submit', forbidden)
+    wake = HostedAutonomousController.wake_pending
+    calls = []
+    def startup_wake(controller, **kwargs):
+        calls.append(kwargs)
+        assert kwargs == {'force_discovery': True}, 'GET must not wake pending work'
+        return wake(controller, **kwargs)
+    monkeypatch.setattr(HostedAutonomousController, 'wake_pending', startup_wake)
+    server = MockHrana(tmp_path / 'browse.db')
+    database = TursoDatabase('libsql://fixture.turso.io', 'fixture-token-' * 4, client_factory=server.client)
+    env = {'CASEPATH_SITE_ORIGIN': 'https://casepath.example', 'CASEPATH_PROXY_TOKEN': 't'*48,
+           'CASEPATH_SOURCE_COMMIT': 'a'*40, 'CASEPATH_HOSTED_WRITABLE': '1', 'CASEPATH_AUTONOMOUS_ENABLED': '0'}
+    app = create_hosted_app(database=database, environment=env, runtime_directory=tmp_path / 'runtime')
+    headers = {'X-CasePath-Proxy-Token': 't'*48, 'X-CasePath-Site-Origin': env['CASEPATH_SITE_ORIGIN'],
+               'Origin': env['CASEPATH_SITE_ORIGIN']}
+    try:
+        with TestClient(app) as client:
+            result = client.get('/api/claim-loops/v1/autonomous/claims', headers=headers)
+            assert result.status_code == 200 and result.json()['total'] == 150
+            cid = result.json()['claims'][0]['claim_id']
+            for path in ('', '/snapshot', '/events', '/replay?through_seq=0'):
+                response = client.get(f'/api/claim-loops/v1/autonomous/claims/{cid}{path}', headers=headers)
+                assert response.status_code == 200, response.text
+            with database.connect() as db:
+                assert db.execute('SELECT COUNT(*) AS n FROM claim_loop_events').fetchone()['n'] == 0
+            assert calls == [{'force_discovery': True}]
     finally:
         server.close()
 

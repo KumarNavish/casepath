@@ -106,6 +106,21 @@ class HostedSources:
             raise AutonomousStoreError('Persistent source publication differs.')
         return digest
 
+    def verify_many(self, digests):
+        """Freshly hash-check persisted bytes once per result source roster.
+
+        A cached blob accelerates repeated reducer reads but cannot establish
+        that the remote primary still has that exact complete chunk inventory.
+        Retain the extraction cache; refresh original bytes before exposing a
+        verified journal projection, including a recorded historical prefix.
+        """
+        with self._lock:
+            for digest in dict.fromkeys(digests):
+                cached = self._cache.pop(digest, None)
+                if cached is not None:
+                    self._size -= len(cached)
+                self.read(digest)
+
 
 class HostedAutonomousStore(AutonomousStore):
     @staticmethod
@@ -113,9 +128,7 @@ class HostedAutonomousStore(AutonomousStore):
         # Include names AND every SQL column/value, including raw event_json.
         return tuple(tuple((name, row[name]) for name in row.keys()) for row in rows)
 
-    def append(self, claim_id, kind, payload, *, expected_revision, expected_state_sha256, idempotency_key):
-        command, command_hash = self._append_command(claim_id, kind, payload, expected_revision,
-                                                   expected_state_sha256, idempotency_key)
+    def _commit_command(self, claim_id, command, command_hash, idempotency_key):
         with self.journal.connect() as connection:
             rows = self._rows(connection, claim_id)
         for attempt in range(2):
@@ -126,7 +139,8 @@ class HostedAutonomousStore(AutonomousStore):
                 current = self._rows(connection, claim_id)
                 if self._journal_snapshot(current) == snapshot:
                     self._insert_prepared(connection, prepared)
-                    return result  # __exit__ must acknowledge COMMIT before this returns.
+                    # __exit__ must acknowledge COMMIT before this returns.
+                    return {"state": result, "replayed": prepared is None}
                 connection.rollback()
             rows = current  # Reprepare only after releasing the write transaction.
         raise AutonomousStoreError('stale claim revision or state hash')

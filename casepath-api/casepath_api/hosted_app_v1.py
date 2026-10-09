@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 
 from .agent_work.store import WorkStore
 from .autonomous_api_v1 import create_autonomous_router
+from .autonomous_corpus_v1 import CanonicalCorpus
 from .hosted_lease_v1 import HostedAutonomousController, HostedWorkflowLease
 from .hosted_model_v1 import HostedModel
 from .hosted_proxy_v1 import SitesProxyBoundary
@@ -30,10 +31,9 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
     api = FastAPI(title='CasePath', docs_url=None, redoc_url=None, openapi_url=None)
 
     def service():
-        controller = state['controller']
-        if writable:
-            controller.wake_pending()
-        return controller
+        # Reads must never wake or dispatch work. Startup resume and explicit
+        # mutation commands retain the existing single-worker scheduler.
+        return state['controller']
 
     def startup():
         with lock:
@@ -48,9 +48,10 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
                 if not writable or not work.external_budget():
                     raise ValueError('Inference requires an imported allowance and writable cloud ownership.')
                 model = HostedModel(work, env['CASEPATH_AGENT_WORK_MODEL'], env['OPENROUTER_API_KEY'])
-            policy = PublicCorpus(default_workspace_corpus_root()).static_policy()
+            corpus = PublicCorpus(default_workspace_corpus_root())
+            policy = corpus.static_policy()
             controller = HostedAutonomousController(store, policy, model, lease=lease)
-            state.update(controller=controller, work=work)
+            state.update(controller=controller, work=work, corpus=CanonicalCorpus(corpus))
             if writable:
                 controller.resume()
 
@@ -77,7 +78,8 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
         return {'status': 'ok', 'component': 'api', 'source_commit': commit,
                 'storage': 'remote_primary', 'writable': writable}
 
-    api.include_router(create_autonomous_router(service, lambda: state['work'].external_budget()))
+    api.include_router(create_autonomous_router(service, lambda: state['work'].external_budget(),
+                                               corpus_getter=lambda: state['corpus']))
     api.add_event_handler('startup', startup)
     api.add_event_handler('shutdown', shutdown)
     api.add_middleware(SitesProxyBoundary, site_origin=origin, token=token)

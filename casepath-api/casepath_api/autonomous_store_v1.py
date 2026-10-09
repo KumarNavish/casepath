@@ -31,6 +31,7 @@ SESSION_ID = "casepath-autonomous-local-v1"
 CONTRACT = "casepath.autonomous-claim/1.0.0"
 EVENT_CONTRACT = "casepath.autonomous-event/1.0.0"
 SOURCE_CONTRACT = "casepath.autonomous-source/1.0.0"
+ORIGINAL_BINDING_CONTRACT = "casepath.autonomous-original-binding/1.0.0"
 MAX_FILE_BYTES = 16 * 1024 * 1024
 MAX_PACKET_BYTES = 32 * 1024 * 1024
 MAX_TEXT_CHARS = 48_000
@@ -116,6 +117,7 @@ class AutonomousStore:
         self.source_root = root.resolve()
         self._extractions = {}
         self._extraction_lock = RLock()
+        self._summary_lock = RLock()
 
     @classmethod
     def open_read_only(cls, path, source_root=None):
@@ -144,6 +146,7 @@ class AutonomousStore:
         value._source_store = None
         value.path, value.journal, value.source_root = path, ReadOnlyJournal(path), root.resolve()
         value._extractions, value._extraction_lock = {}, RLock()
+        value._summary_lock = RLock()
         return value
 
     def _blob(self, digest):
@@ -236,22 +239,38 @@ class AutonomousStore:
         return _seal({"contract": SOURCE_CONTRACT, **identity, "size_bytes": len(raw),
                       "artifact_id": "src_" + digest_value(identity)[:32]}, "descriptor_sha256")
 
-    def _validate_descriptor(self, value, claim_id):
+    @staticmethod
+    def _descriptor_metadata(value, claim_id):
         fields = {"contract", "claim_id", "file_name", "media_type", "sha256", "role", "size_bytes", "artifact_id", "descriptor_sha256"}
         _fields(value, fields)
         if value["contract"] != SOURCE_CONTRACT or value["claim_id"] != claim_id or value["role"] not in {"customer_message", "supporting_document"}:
             raise AutonomousStoreError("source descriptor belongs to another claim")
         if value["descriptor_sha256"] != digest_value({k: v for k, v in value.items() if k != "descriptor_sha256"}):
             raise AutonomousStoreError("source descriptor seal differs")
+        name = _text(value["file_name"], "file name", 240)
+        if name in {".", ".."} or "/" in name or "\\" in name or any(ord(c) < 32 or ord(c) == 127 for c in name):
+            raise AutonomousStoreError("unsafe source file name")
+        media = _text(value["media_type"], "media type", 120)
+        if not re.fullmatch(r"[a-z0-9.+-]+/[a-z0-9.+-]+", media.split(";", 1)[0].strip().lower()):
+            raise AutonomousStoreError("invalid source media type")
+        if not isinstance(value["sha256"], str) or not _HASH.fullmatch(value["sha256"]):
+            raise AutonomousStoreError("source hash is invalid")
         identity = {k: value[k] for k in ("claim_id", "file_name", "media_type", "sha256", "role")}
-        if value["artifact_id"] != "src_" + digest_value(identity)[:32] or type(value["size_bytes"]) is not int:
+        if (value["artifact_id"] != "src_" + digest_value(identity)[:32]
+                or type(value["size_bytes"]) is not int or not 1 <= value["size_bytes"] <= MAX_FILE_BYTES):
             raise AutonomousStoreError("source descriptor identity differs")
+
+    def _validate_descriptor(self, value, claim_id):
+        self._descriptor_metadata(value, claim_id)
         raw = self._blob(value["sha256"])
         if len(raw) != value["size_bytes"]:
             raise AutonomousStoreError("source size differs")
         return raw
 
     def _extract(self, raw, media):
+        # Reader dispatch uses the essence; immutable descriptors retain all
+        # original media parameters and their original source identity.
+        media = media.split(";", 1)[0].strip().lower()
         key = (sha256(raw).hexdigest(), media)
         with self._extraction_lock:
             if key in self._extractions:
@@ -366,6 +385,118 @@ class AutonomousStore:
         payload = {"title": title, "message": message, "sources": descriptors, "acquired_sources": [source]}
         return self.append(claim_id, "intake", payload, expected_revision=0, expected_state_sha256=None, idempotency_key=idempotency_key)
 
+    @staticmethod
+    def _original_binding(binding, claim_id, sources, message):
+        _fields(binding, {"contract", "claim_id", "corpus_id", "claim_binding_sha256", "intake", "source_map",
+                          "original_binding_sha256"}, {"corpus_manifest_sha256", "static_template_sha256"})
+        if binding["contract"] != ORIGINAL_BINDING_CONTRACT or binding["claim_id"] != claim_id:
+            raise AutonomousStoreError("original binding belongs to another claim")
+        _identifier(binding["corpus_id"], "corpus identity")
+        for key in ("claim_binding_sha256", "corpus_manifest_sha256", "static_template_sha256"):
+            if key in binding and (not isinstance(binding[key], str) or not _HASH.fullmatch(binding[key])):
+                raise AutonomousStoreError("original binding hash is invalid")
+        if binding["original_binding_sha256"] != digest_value({k: v for k, v in binding.items()
+                                                               if k != "original_binding_sha256"}):
+            raise AutonomousStoreError("original binding seal differs")
+        intake = binding["intake"]
+        _fields(intake, {"submission", "customer_message", "attachments"})
+        if not isinstance(intake["submission"], dict) or not isinstance(intake["customer_message"], dict):
+            raise AutonomousStoreError("original intake metadata is missing")
+        if intake["submission"].get("claim_id") != claim_id:
+            raise AutonomousStoreError("original intake belongs to another claim")
+        _text(intake["submission"].get("channel"), "original intake channel", 120)
+        if intake["customer_message"].get("body") != message:
+            raise AutonomousStoreError("original message differs from observed intake body")
+        mapping = binding["source_map"]
+        if not isinstance(mapping, list) or len(mapping) != len(sources):
+            raise AutonomousStoreError("original source map is incomplete")
+        expected = {s["artifact_id"]: s["sha256"] for s in sources}
+        actual, originals = {}, set()
+        for item in mapping:
+            _fields(item, {"original_artifact_id", "artifact_id", "sha256"})
+            original = _identifier(item["original_artifact_id"], "original artifact identity")
+            artifact_id = _identifier(item["artifact_id"], "source artifact identity")
+            if not isinstance(item["sha256"], str) or not _HASH.fullmatch(item["sha256"]):
+                raise AutonomousStoreError("original source map hash is invalid")
+            if original in originals or artifact_id in actual:
+                raise AutonomousStoreError("original source map contains duplicate identities")
+            originals.add(original)
+            actual[artifact_id] = item["sha256"]
+        if actual != expected:
+            raise AutonomousStoreError("original source map differs from immutable descriptors")
+        attachments = intake["attachments"]
+        if not isinstance(attachments, list) or len(attachments) != len(sources) - 1:
+            raise AutonomousStoreError("original attachment metadata roster differs")
+        original_files = [intake["customer_message"].get("raw_file"), *attachments]
+        mapped_originals = {row["artifact_id"]: row["original_artifact_id"] for row in mapping}
+        for original, source in zip(original_files, sources):
+            _fields(original, {"artifact_id", "file_name", "media_type", "sha256", "size_bytes"})
+            if (original["artifact_id"] != mapped_originals[source["artifact_id"]]
+                    or any(original[key] != source[key] for key in ("file_name", "media_type", "sha256", "size_bytes"))):
+                raise AutonomousStoreError("original native source metadata differs from immutable descriptor")
+        customer_message = intake["customer_message"]
+        if ("message_id" in customer_message and customer_message["message_id"] != original_files[0]["artifact_id"]
+                or "attachment_ids" in customer_message
+                and customer_message["attachment_ids"] != [row["artifact_id"] for row in attachments]):
+            raise AutonomousStoreError("original message attachment relationships differ")
+
+    def admit_original(self, claim_id, packet, *, expected_revision, expected_state_sha256, idempotency_key):
+        """Explicitly admit a server-bound original packet into the existing stream.
+
+        Preview state is not a journal event. Its checked revision-zero hash is
+        recorded in the immutable command payload; the journal retains its
+        existing initial parent (None) and all restart-validation semantics.
+        """
+        if self._read_only:
+            raise AutonomousStoreError("read-only replay cannot admit original sources")
+        _identifier(claim_id, "claim identity")
+        _fields(packet, {"title", "message", "sources", "original_binding", "source_bytes", "initial_state_sha256"})
+        initial_hash = packet["initial_state_sha256"]
+        if (type(expected_revision) is not int or expected_revision != 0
+                or not isinstance(initial_hash, str) or not _HASH.fullmatch(initial_hash)
+                or expected_state_sha256 != initial_hash):
+            raise AutonomousStoreError("stale original claim revision or state hash")
+        payload = _copy({k: v for k, v in packet.items() if k != "source_bytes"})
+        payload["acquired_sources"] = []
+        _text(payload["title"], "claim title", 300)
+        _text(payload["message"], "claim message", 100_000)
+        sources, raw_by_id = payload["sources"], packet["source_bytes"]
+        if not isinstance(sources, list) or not 1 <= len(sources) <= 21:
+            raise AutonomousStoreError("original source roster is invalid")
+        for source in sources:
+            self._descriptor_metadata(source, claim_id)
+        if (sources[0]["role"] != "customer_message"
+                or any(s["role"] != "supporting_document" for s in sources[1:])
+                or len({s["artifact_id"] for s in sources}) != len(sources)):
+            raise AutonomousStoreError("original source identities are invalid")
+        self._original_binding(payload["original_binding"], claim_id, sources, payload["message"])
+        if not isinstance(raw_by_id, dict) or set(raw_by_id) != {s["artifact_id"] for s in sources}:
+            raise AutonomousStoreError("original source bytes roster differs")
+        for source in sources:
+            raw = raw_by_id[source["artifact_id"]]
+            if (not isinstance(raw, bytes) or len(raw) != source["size_bytes"]
+                    or sha256(raw).hexdigest() != source["sha256"]):
+                raise AutonomousStoreError("original source bytes differ from immutable identity")
+        if sum(len(raw) for raw in raw_by_id.values()) > MAX_PACKET_BYTES:
+            raise AutonomousStoreError("original packet is too large")
+        command, command_hash = self._append_command(claim_id, "intake", payload, 0, None, idempotency_key)
+        # Resolve exact retries, conflicting keys and stale existing streams
+        # before publishing any bytes. The final append fences a concurrent
+        # winner and is the only acknowledgement on which work may be queued.
+        with self.journal.connect() as connection:
+            state, events, states = self._replay(self._rows(connection, claim_id), with_history=True)
+        existing = next((e for e in events if e["idempotency_key"] == idempotency_key), None)
+        if existing:
+            if existing["command_sha256"] != command_hash:
+                raise AutonomousStoreError("idempotency key binds different input")
+            return {"state": deepcopy(states[existing["sequence"] - 1]), "replayed": True}
+        if state is not None:
+            raise AutonomousStoreError("stale claim revision or state hash")
+        for source in sources:
+            if self._publish(raw_by_id[source["artifact_id"]]) != source["sha256"]:
+                raise AutonomousStoreError("original source publication identity differs")
+        return self._commit_command(claim_id, command, command_hash, idempotency_key)
+
     def add_sources(self, claim_id, files, *, expected_revision, expected_state_sha256, idempotency_key):
         if not isinstance(files, list) or not 1 <= len(files) <= 20:
             raise AutonomousStoreError("supply one to twenty supporting files")
@@ -448,7 +579,8 @@ class AutonomousStore:
         if state is None:
             if kind != "intake":
                 raise AutonomousStoreError("journal must begin with intake")
-            _fields(payload, {"title", "message", "sources", "acquired_sources"})
+            _fields(payload, {"title", "message", "sources", "acquired_sources"},
+                    {"original_binding", "initial_state_sha256"})
             sources = payload["sources"]
             if not isinstance(sources, list) or not 1 <= len(sources) <= 21:
                 raise AutonomousStoreError("intake source roster is invalid")
@@ -457,10 +589,20 @@ class AutonomousStore:
             if len({s["artifact_id"] for s in sources}) != len(sources) or sources[0]["role"] != "customer_message":
                 raise AutonomousStoreError("intake source identities are invalid")
             _text(payload["message"], "claim message", 100_000)
-            if self._blob(sources[0]["sha256"]) != payload["message"].encode():
-                raise AutonomousStoreError("intake message differs from immutable source")
-            if payload["acquired_sources"] != [self._source_receipt(sources[0])]:
-                raise AutonomousStoreError("intake acquired source differs")
+            if "original_binding" in payload:
+                self._original_binding(payload["original_binding"], claim_id, sources, payload["message"])
+                if (not isinstance(payload.get("initial_state_sha256"), str)
+                        or not _HASH.fullmatch(payload["initial_state_sha256"])):
+                    raise AutonomousStoreError("original intake initial state hash is invalid")
+                if payload["acquired_sources"] != [] or any(s["role"] != "supporting_document" for s in sources[1:]):
+                    raise AutonomousStoreError("original intake cannot acquire evidence implicitly")
+            else:
+                if "initial_state_sha256" in payload:
+                    raise AutonomousStoreError("initial state hash requires an original binding")
+                if self._blob(sources[0]["sha256"]) != payload["message"].encode():
+                    raise AutonomousStoreError("intake message differs from immutable source")
+                if payload["acquired_sources"] != [self._source_receipt(sources[0])]:
+                    raise AutonomousStoreError("intake acquired source differs")
             state = {"contract": CONTRACT, "claim_id": claim_id, "title": _text(payload["title"], "title", 300),
                      "message": payload["message"], "status": "received", "source_descriptors": deepcopy(sources),
                      "acquired_sources": deepcopy(payload["acquired_sources"]), "graph": None, "evaluation": None,
@@ -470,6 +612,10 @@ class AutonomousStore:
             state["intake_receipt"] = _seal({"claim_id": claim_id, "packet_sha256": digest_value(payload),
                                               "source_roster_sha256": digest_value(sources)}, "receipt_sha256")
             state["source_roster_sha256"] = digest_value(sources)
+            if "original_binding" in payload:
+                state["original_binding"] = deepcopy(payload["original_binding"])
+                state["corpus_id"] = payload["original_binding"]["corpus_id"]
+                state["initial_state_sha256"] = payload["initial_state_sha256"]
         elif kind == "intake":
             raise AutonomousStoreError("claim already has an intake")
         else:
@@ -583,7 +729,14 @@ class AutonomousStore:
         state.pop("state_sha256", None)
         return _seal(state, "state_sha256")
 
-    def _replay(self, rows, *, with_history=False):
+    def _validate_state_sources(self, state, *, verify_persistence=True):
+        if (verify_persistence and self._source_store is not None
+                and hasattr(self._source_store, "verify_many")):
+            self._source_store.verify_many(s["sha256"] for s in state["source_descriptors"])
+        for descriptor in state["source_descriptors"]:
+            self._validate_descriptor(descriptor, state["claim_id"])
+
+    def _replay(self, rows, *, with_history=False, verify_persistence=True):
         state, events, states = None, [], []
         previous = None
         for sequence, row in enumerate(rows, 1):
@@ -610,8 +763,7 @@ class AutonomousStore:
             except (KeyError, TypeError, json.JSONDecodeError) as exc:
                 raise AutonomousStoreError("journal event is malformed") from exc
         if state:
-            for descriptor in state["source_descriptors"]:
-                self._validate_descriptor(descriptor, state["claim_id"])
+            self._validate_state_sources(state, verify_persistence=verify_persistence)
         return state, events, states
 
     def get(self, claim_id):
@@ -628,13 +780,109 @@ class AutonomousStore:
         return [s for s in values if statuses is None or s["status"] in statuses]
 
     def events(self, claim_id, after=0):
+        return self.snapshot(claim_id, after=after)["events"]
+
+    def snapshot(self, claim_id, after=0):
+        """One verified SQL snapshot supplies both state and its event cursor."""
         if type(after) is not int or after < 0:
             raise AutonomousStoreError("event cursor is invalid")
         with self.journal.connect() as connection:
             state, events, _ = self._replay(self._rows(connection, claim_id))
         if state is None:
             raise AutonomousStoreError("claim does not exist")
-        return events[after:]
+        return {"state": state, "events": events[after:], "current_revision": state["revision"],
+                "current_state_sha256": state["state_sha256"], "current_event_sha256": state["last_event_sha256"]}
+
+    def replay(self, claim_id, through_seq):
+        """Return a recorded reducer prefix after validating the entire saved head."""
+        if type(through_seq) is not int or through_seq < 1:
+            raise AutonomousStoreError("replay sequence cursor is invalid")
+        with self.journal.connect() as connection:
+            head, events, states = self._replay(self._rows(connection, claim_id), with_history=True)
+        if head is None:
+            raise AutonomousStoreError("claim does not exist")
+        if through_seq > head["revision"]:
+            raise AutonomousStoreError("replay sequence exceeds current revision")
+        state = states[through_seq - 1]
+        return {"state": state, "events": events[:through_seq], "replay_only": True, "through_seq": through_seq,
+                "current_revision": head["revision"], "current_state_sha256": head["state_sha256"],
+                "current_event_sha256": head["last_event_sha256"],
+                "current_head": {"revision": head["revision"], "state_sha256": head["state_sha256"],
+                                 **self._provenance(head)}, "provenance": self._provenance(state)}
+
+    @staticmethod
+    def _provenance(state):
+        binding = state.get("original_binding") or {}
+        return {"source_roster_sha256": state["source_roster_sha256"],
+                "sources": deepcopy(state["source_descriptors"]),
+                "source_map": deepcopy(binding.get("source_map", [])),
+                "original_binding_sha256": binding.get("original_binding_sha256"),
+                "claim_binding_sha256": binding.get("claim_binding_sha256"),
+                "corpus_manifest_sha256": binding.get("corpus_manifest_sha256"),
+                "static_template_sha256": binding.get("static_template_sha256"),
+                "policy_id": state["policy_id"],
+                "rule_pack_sha256": sorted({row["receipt"]["rule_pack_sha256"] for row in state["receipts"]
+                                             if row["receipt"].get("rule_pack_sha256")}),
+                "run_id": state["run_id"], "event_sha256": state["last_event_sha256"]}
+
+    @staticmethod
+    def _journal_snapshot(rows):
+        return tuple(tuple((name, row[name]) for name in row.keys()) for row in rows)
+
+    def list_summaries(self, *, statuses=None):
+        """Compact derived rows cached only while every authority byte matches.
+
+        This cache is in memory, uses no derived SQL authority, and avoids
+        reducing unchanged histories. Earlier-row edits cannot hide behind an
+        unchanged head; every current immutable source is also hash-verified.
+        """
+        # Order collection SQL snapshots and cache observations together. A
+        # slower old snapshot must not mistake a concurrent admission already
+        # observed by a newer collection read for a deleted stream.
+        with getattr(self, "_summary_lock", self._extraction_lock):
+            return self._read_summaries(statuses=statuses)
+
+    def _read_summaries(self, *, statuses=None):
+        with self.journal.connect() as connection:
+            rows = connection.execute("SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence",
+                                      (SESSION_ID,)).fetchall()
+        streams = {}
+        for row in rows:
+            loop = row["loop_id"]
+            if not loop.startswith("autonomous."):
+                raise AutonomousStoreError("journal autonomous namespace differs")
+            claim_id = _identifier(loop.removeprefix("autonomous."), "claim identity")
+            streams.setdefault(claim_id, []).append(row)
+        summaries, source_digests = [], set()
+        with getattr(self, "_summary_lock", self._extraction_lock):
+            cache = getattr(self, "_summary_cache", None)
+            if cache is None:
+                self._summary_cache = cache = {}
+            if set(cache) - set(streams):
+                raise AutonomousStoreError("journal accepted claim stream disappeared")
+            for claim_id, claim_rows in streams.items():
+                identity = self._journal_snapshot(claim_rows)
+                cached = cache.get(claim_id)
+                if cached is not None and len(claim_rows) < cached[1]["revision"]:
+                    raise AutonomousStoreError("journal accepted claim revision regressed")
+                if cached is not None and cached[0] == identity:
+                    state = cached[1]
+                    for descriptor in state["source_descriptors"]:
+                        self._validate_descriptor(descriptor, claim_id)
+                else:
+                    state, _, _ = self._replay(claim_rows, verify_persistence=False)
+                    if len(cache) >= 256 and claim_id not in cache:
+                        cache.pop(next(iter(cache)))
+                    cache[claim_id] = (identity, state)
+                source_digests.update(source["sha256"] for source in state["source_descriptors"])
+                if statuses is None or state["status"] in statuses:
+                    summaries.append(deepcopy({key: state.get(key) for key in
+                        ("claim_id", "title", "status", "phase", "phase_summary", "revision", "state_sha256",
+                         "updated_at", "outcome", "run_id", "policy_id", "source_roster_sha256", "last_event_sha256",
+                         "corpus_id")}))
+            if self._source_store is not None and hasattr(self._source_store, "verify_many"):
+                self._source_store.verify_many(source_digests)
+        return summaries
 
     def _append_command(self, claim_id, kind, payload, expected_revision, expected_state_sha256, idempotency_key):
         if self._read_only:
@@ -666,6 +914,8 @@ class AutonomousStore:
                        'previous_event_sha256': state['last_event_sha256'] if state else None,
                        'created_at': datetime.now(timezone.utc).isoformat()}, 'event_sha256')
         result = self._reduce(state, event)
+        if state is None or command["kind"] == "sources.arrived":
+            self._validate_state_sources(result)
         event['resulting_state_sha256'] = result['state_sha256']
         parameters = (SESSION_ID, 'autonomous.' + claim_id, event['sequence'], idempotency_key, command_hash,
                       event['event_sha256'], json.dumps(event, ensure_ascii=False, sort_keys=True,
@@ -682,9 +932,12 @@ class AutonomousStore:
     def append(self, claim_id, kind, payload, *, expected_revision, expected_state_sha256, idempotency_key):
         command, command_hash = self._append_command(claim_id, kind, payload, expected_revision,
                                                    expected_state_sha256, idempotency_key)
+        return self._commit_command(claim_id, command, command_hash, idempotency_key)["state"]
+
+    def _commit_command(self, claim_id, command, command_hash, idempotency_key):
         with self.journal.connect() as connection:
             connection.execute('BEGIN IMMEDIATE')
             prepared, result = self._prepare_append(self._rows(connection, claim_id), claim_id,
                                                     command, command_hash, idempotency_key)
             self._insert_prepared(connection, prepared)
-            return result
+            return {"state": result, "replayed": prepared is None}
