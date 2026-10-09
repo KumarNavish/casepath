@@ -69,7 +69,7 @@ class HostedRecoveryTests(unittest.TestCase):
         # A queue barrier also waits for prior Future completion callbacks.
         controller._executor.submit(lambda: None).result(timeout=10)
 
-    def test_http_poll_discovers_claim_saved_after_startup(self):
+    def test_http_reads_stay_passive_and_restart_discovers_saved_claim(self):
         from fastapi.testclient import TestClient
         import casepath_api.hosted_app_v1 as hosted_app
         live, calls = [], []
@@ -100,9 +100,18 @@ class HostedRecoveryTests(unittest.TestCase):
                 response = client.get('/api/claim-loops/v1/autonomous/status', headers=headers)
                 self.assertEqual(response.status_code, 200)
                 self.drain(live[0])
-                self.assertEqual(calls, ['late-claim'])
+                self.assertEqual(calls, [])
                 client.get('/api/claim-loops/v1/autonomous/status', headers=headers)
                 self.drain(live[0])
+                self.assertEqual(calls, [])
+            # A process that missed another writer's admission discovers its
+            # accepted journal on startup; reading status is never dispatch.
+            with TestClient(app) as client:
+                self.assertEqual(len(live), 2)
+                self.drain(live[1])
+                self.assertEqual(calls, ['late-claim'])
+                client.get('/api/claim-loops/v1/autonomous/status', headers=headers)
+                self.drain(live[1])
                 self.assertEqual(calls, ['late-claim'])
 
     def test_all_failure_deferrals_and_pause_are_excluded(self):

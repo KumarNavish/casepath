@@ -54,6 +54,28 @@ original source hashes; it avoids reducing unchanged histories. Hosted reads
 verify fresh persisted chunks at each result boundary, including warm-cache
 reads. No cache is journal authority.
 
+Hosted verification batches fresh bytes on one shared connection per batch,
+with at most eight 256-KiB chunks per response and 128 requested digests per SQL
+group. Complete chunk indexes, canonical chunk lengths, whole-file size and
+content hash are verified; extra empty chunks are rejected too. A cold byte cache
+prefetches only source descriptors from the same captured journal rows, then
+retains full replay and fresh final verification. It never admits an event.
+The realistic isolated 31-source collection uses eight HTTP requests warm and
+14 cold, versus 64 and 126 respectively before batching. A three-source snapshot
+uses four warm or six cold requests. These are MockHrana request counts, not
+production latency measurements.
+
+Accepted hosted jobs parked behind a busy or lost lease recover internally,
+including legacy `auto_` and canonical `clm_` streams discovered at startup.
+One cancellable timer checks only remembered pending IDs every five seconds;
+there is no idle global scan or browser-triggered dispatch. It stops after 190
+seconds without local owned-job completion, covering a normal 180-second lease
+expiry. Successful local completion refreshes pending windows. Existing recovery
+guards exclude paused/failed/uncertain work and preserve unknown-call reserves,
+single-worker execution and late files. Shutdown cancels the timer. An external
+owner that renews beyond the window leaves work parked until an authorized wake
+or restart; this remains a bounded recovery limitation.
+
 ## Browsing boundary and limits
 
 Domain/family labels are navigation metadata only. Their source is the exact

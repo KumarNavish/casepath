@@ -737,6 +737,8 @@ class AutonomousStore:
             self._validate_descriptor(descriptor, state["claim_id"])
 
     def _replay(self, rows, *, with_history=False, verify_persistence=True):
+        if self._source_store is not None and hasattr(self._source_store, "prefetch_journal_sources"):
+            self._source_store.prefetch_journal_sources(rows)
         state, events, states = None, [], []
         previous = None
         for sequence, row in enumerate(rows, 1):
@@ -846,6 +848,8 @@ class AutonomousStore:
         with self.journal.connect() as connection:
             rows = connection.execute("SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence",
                                       (SESSION_ID,)).fetchall()
+        if self._source_store is not None and hasattr(self._source_store, "prefetch_journal_sources"):
+            self._source_store.prefetch_journal_sources(rows)
         streams = {}
         for row in rows:
             loop = row["loop_id"]

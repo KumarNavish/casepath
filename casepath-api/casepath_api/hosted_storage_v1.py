@@ -5,6 +5,7 @@ send HTTP. A failed or ambiguous database operation is never retried here.
 """
 from collections import OrderedDict
 from hashlib import sha256
+import json
 from pathlib import Path
 from threading import RLock
 
@@ -48,6 +49,8 @@ class HostedSources:
     """Immutable original bytes, committed before an event can reference them."""
     CHUNK_BYTES = 256 * 1024
     CACHE_BYTES = 64 * 1024 * 1024
+    PAGE_CHUNKS = 8
+    BATCH_DIGESTS = 128
 
     def __init__(self, connection_factory):
         self.connect = connection_factory
@@ -64,29 +67,120 @@ class HostedSources:
                 self._size -= len(removed)
         return raw
 
+    @staticmethod
+    def _digests(digests):
+        values = set()
+        for digest in digests:
+            if not isinstance(digest, str) or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
+                raise AutonomousStoreError('Source identity is invalid.')
+            values.add(digest)
+        return sorted(values)
+
+    def _fetch_many(self, digests, *, return_digest=None):
+        """Read all requested chunks with bounded pages on one connection.
+
+        Eight 256-KiB blobs cap a page at two MiB before wire encoding. Oversize
+        or wrongly typed chunks return metadata and NULL rather than an unbounded
+        blob. Keyset pagination verifies ordering and cannot skip a later-page
+        gap. Keep one file buffer at a time and retain the existing bounded cache.
+        """
+        max_chunks = (MAX_FILE_BYTES + self.CHUNK_BYTES - 1) // self.CHUNK_BYTES
+        result = None
+        with self.connect() as db:
+            for start in range(0, len(digests), self.BATCH_DIGESTS):
+                batch = digests[start:start + self.BATCH_DIGESTS]
+                wanted, seen = set(batch), set()
+                current, raw, count, previous_size = None, bytearray(), 0, None
+                after_digest, after_index = '', -1
+
+                def finish():
+                    nonlocal result
+                    if current is None:
+                        return
+                    content = bytes(raw)
+                    expected_count = max(1, (len(content) + self.CHUNK_BYTES - 1) // self.CHUNK_BYTES)
+                    if count != expected_count or sha256(content).hexdigest() != current:
+                        raise AutonomousStoreError('Persistent source bytes or chunk roster differ from their hash.')
+                    self._remember(current, content)
+                    seen.add(current)
+                    if current == return_digest:
+                        result = content
+
+                placeholders = ','.join('?' for _ in batch)
+                query = ('SELECT sha256,chunk_index,length(content) AS size_bytes,'
+                         "CASE WHEN typeof(content)='blob' AND length(content)<=? THEN content ELSE NULL END AS content "
+                         'FROM autonomous_source_chunks WHERE sha256 IN (' + placeholders + ') '
+                         'AND (sha256>? OR (sha256=? AND chunk_index>?)) '
+                         'ORDER BY sha256,chunk_index LIMIT 8')
+                max_pages = (len(batch) * max_chunks + self.PAGE_CHUNKS - 1) // self.PAGE_CHUNKS + 1
+                for _ in range(max_pages):
+                    page = db.execute(query, (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index)).fetchall()
+                    if len(page) > self.PAGE_CHUNKS:
+                        raise AutonomousStoreError('Persistent source page exceeds its bound.')
+                    for row in page:
+                        digest, index, size, chunk = (row[key] for key in ('sha256', 'chunk_index', 'size_bytes', 'content'))
+                        if (digest not in wanted or type(index) is not int or type(size) is not int
+                                or not isinstance(chunk, bytes) or not 0 <= size <= self.CHUNK_BYTES or len(chunk) != size
+                                or (digest, index) <= (after_digest, after_index)):
+                            raise AutonomousStoreError('Persistent source chunk identity or size is invalid.')
+                        if digest != current:
+                            finish()
+                            current, raw, count, previous_size = digest, bytearray(), 0, None
+                        if (index != count or count >= max_chunks
+                                or previous_size is not None and previous_size != self.CHUNK_BYTES
+                                or len(raw) + size > MAX_FILE_BYTES):
+                            raise AutonomousStoreError('Persistent original source chunk roster is incomplete or oversized.')
+                        raw.extend(chunk)
+                        count, previous_size = count + 1, size
+                        after_digest, after_index = digest, index
+                    if len(page) < self.PAGE_CHUNKS:
+                        break
+                else:
+                    raise AutonomousStoreError('Persistent source chunk roster exceeds its bound.')
+                finish()
+                if seen != wanted:
+                    raise AutonomousStoreError('Persistent original source bytes are incomplete.')
+        return result
+
     def read(self, digest):
-        if not isinstance(digest, str) or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
-            raise AutonomousStoreError('Source identity is invalid.')
+        self._digests([digest])
         with self._lock:
             cached = self._cache.get(digest)
             if cached is not None:
                 self._cache.move_to_end(digest)
                 return cached
-        rows = []
-        with self.connect() as db:
-            # Keep each response below the remote service's result-size limit.
-            for offset in range(0, MAX_FILE_BYTES // self.CHUNK_BYTES + 1, 8):
-                page = db.execute('SELECT chunk_index,content FROM autonomous_source_chunks WHERE sha256=? '
-                                  'ORDER BY chunk_index LIMIT 8 OFFSET ?', (digest, offset)).fetchall()
-                rows.extend(page)
-                if len(page) < 8:
-                    break
-        if not rows or [row['chunk_index'] for row in rows] != list(range(len(rows))):
-            raise AutonomousStoreError('Persistent original source bytes are incomplete.')
-        raw = b''.join(row['content'] for row in rows)
-        if len(raw) > MAX_FILE_BYTES or sha256(raw).hexdigest() != digest:
-            raise AutonomousStoreError('Persistent source bytes differ from their hash.')
-        return self._remember(digest, raw)
+            return self._fetch_many([digest], return_digest=digest)
+
+    def read_many(self, digests):
+        """Populate only missing byte-cache entries; this admits no evidence."""
+        values = self._digests(digests)
+        with self._lock:
+            missing = [digest for digest in values if digest not in self._cache]
+            if missing:
+                self._fetch_many(missing)
+
+    def prefetch_journal_sources(self, rows):
+        """Bounded byte lookups from the same rows the existing engine will replay.
+
+        Source descriptors are checked before a lookup, but no event or state is
+        accepted here. Full chain/reducer validation and the fresh final source
+        verification remain mandatory before any journal result is returned.
+        """
+        digests = set()
+        for row in rows:
+            try:
+                event = json.loads(row['event_json'])
+                if event.get('kind') not in {'intake', 'sources.arrived'}:
+                    continue
+                sources = event['payload']['sources']
+                if not isinstance(sources, list) or not 1 <= len(sources) <= 21:
+                    raise AutonomousStoreError('Journal source lookup roster is invalid.')
+                for descriptor in sources:
+                    AutonomousStore._descriptor_metadata(descriptor, event['claim_id'])
+                    digests.add(descriptor['sha256'])
+            except (KeyError, TypeError, AttributeError, json.JSONDecodeError) as exc:
+                raise AutonomousStoreError('Journal source lookup is malformed.') from exc
+        self.read_many(digests)
 
     def publish(self, raw):
         if not isinstance(raw, bytes) or len(raw) > MAX_FILE_BYTES:
@@ -115,11 +209,13 @@ class HostedSources:
         verified journal projection, including a recorded historical prefix.
         """
         with self._lock:
-            for digest in dict.fromkeys(digests):
+            values = self._digests(digests)
+            for digest in values:
                 cached = self._cache.pop(digest, None)
                 if cached is not None:
                     self._size -= len(cached)
-                self.read(digest)
+            if values:
+                self._fetch_many(values)
 
 
 class HostedAutonomousStore(AutonomousStore):
