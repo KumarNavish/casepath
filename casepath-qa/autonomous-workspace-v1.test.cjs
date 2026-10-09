@@ -99,12 +99,12 @@ function dom() {
  const listeners=new Map(),doc={activeElement:null,hidden:false,addEventListener(){},removeEventListener(){}};
  const status={textContent:'',classList:{toggle(){}}},message={textContent:''};
  const submit={disabled:false,textContent:''},fields={title:{value:'New title'},message:{value:'Original source message'},files:{files:[]}};
- const form={elements:fields,matches:s=>s.includes('data-au-intake'),querySelector:s=>s==='.au-form-status'?message:submit,querySelectorAll:()=>[...Object.values(fields),submit]};
+ const form={elements:fields,matches:s=>s.includes('data-au-intake'),querySelector:s=>s==='.au-form-status'?message:submit,querySelectorAll:()=>[...Object.values(fields),submit],contains:element=>Object.values(fields).includes(element),remove(){},replaceWith(){}};
  const claimList={innerHTML:''},service={textContent:''},heading={focus(){doc.activeElement=this;}};
  const host={innerHTML:'',contains:()=>false,querySelector(s){return {'[data-au-intake]':form,'[data-au-claims]':claimList,'[data-au-service]':service,'button[type="submit"]':submit,h1:heading}[s]||null;},querySelectorAll:()=>[]};
  const dialog={open:false,addEventListener(){},removeEventListener(){},close(){this.open=false;}};
  const container={ownerDocument:doc,classList:{add(){}},innerHTML:'',querySelector(s){return {'[data-au-view]':host,'.au-global-status':status,dialog}[s];},querySelectorAll:()=>[],addEventListener(type,fn){listeners.set(type,fn);},removeEventListener(type){listeners.delete(type);},contains:()=>true};
- return {container,host,form,fields,message,submit,status,listeners};
+ return {container,host,form,fields,message,submit,status,listeners,dialog};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));
 const response=(data,code=200)=>({ok:code<400,status:code,json:async()=>data});
@@ -120,7 +120,7 @@ function fakeApi(overrides={}) {
 
 test('uncertain intake retries the identical payload/key with required mutation header and never auto-retries',async t=>{
  const f=dom();let posts=0;const api=fakeApi({handle:async(path,init)=>{if(init.method==='POST'){posts++;if(posts===1)throw new Error('Connection lost');return response(state());}}});
- const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});
  assert.equal(posts,1);assert.match(f.message.textContent,/same request key/);assert.equal(f.fields.title.disabled,true);assert.equal(f.submit.disabled,false);
  f.fields.title.value='Must not silently create a second intake';
@@ -144,7 +144,7 @@ test('a late claim response cannot replace a more recently selected claim',async
 });
 
 test('local file validation sends nothing and leaves the intake editable',async t=>{
- const f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
  f.fields.files.files=Array.from({length:21},()=>({name:'one.txt'}));
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);assert.equal(f.fields.title.disabled,false);assert.match(f.message.textContent,/at most 20/);assert.doesNotMatch(f.message.textContent,/unconfirmed/);
@@ -192,7 +192,7 @@ test('knowledge inspection connects reusable steps, required facts, obligations 
 
 test('MIME fallbacks affect only blank types and never rewrite submitted bytes',async t=>{
  for(const [file,expected]of [[{name:'source.EML',type:''},'message/rfc822'],[{name:'a.txt',type:''},'text/plain'],[{name:'a.md',type:''},'text/markdown'],[{name:'a.csv',type:''},'text/csv'],[{name:'a.json',type:''},'application/json'],[{name:'a.txt',type:'application/custom'},'application/custom'],[{name:'a.unknown',type:''},'application/octet-stream']])assert.equal(ui.mediaType(file),expected);
- const f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
  const bytes=Buffer.from('Subject: Exact\r\n\r\nOriginal =3D MIME bytes.\r\n','utf8');
  f.fields.files.files=[{name:'source.eml',type:'',size:bytes.length,arrayBuffer:async()=>bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)}];
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});
@@ -213,7 +213,8 @@ test('the real graph is the hero and the detailed outcome defaults closed withou
  assert.doesNotMatch(html,/<details class="au-outcome"[^>]* open/);
  const summary=html.match(/<details class="au-outcome"[^>]*><summary>(.*?)<\/summary>/s)[1];
  assert.match(summary,/2 evidence gaps/);assert.match(summary,/Filing capability is not configured/);
- assert.ok(html.indexOf('class="au-process-hero"')<html.indexOf('class="au-work-layout"'));
+ assert.match(html,/class="au-causal-layout"/);
+ assert.ok(html.indexOf('class="au-process-hero')<html.indexOf('class="au-work-layout au-context-panel au-detail-panel"'));
  assert.match(html,/class="au-graph-viewport"/);assert.match(html,/--au-ranks:2/);
 });
 
@@ -320,7 +321,7 @@ test('explicit fictional selection fills native files without submitting and can
  const originalQuery=f.host.querySelector;f.host.querySelector=s=>s==='[data-au-example]'?select:s==='[data-au-examples]'?wrapper:originalQuery(s);
  f.form.querySelectorAll=()=>[...Object.values(f.fields),select,f.submit];
  const api=fakeApi({handle:async(path,init)=>{if(path.includes('/assets/examples.json'))return{ok:true,arrayBuffer:async()=>bytes};if(init.method==='POST')throw new Error('Intake response lost');}});
- const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
  for(let i=0;i<20&&wrapper.hidden;i++)await settle();assert.equal(wrapper.hidden,false);assert.equal(f.fields.title.value,'New title');
  f.listeners.get('change')({target:select});assert.equal(f.fields.title.value,packet.title);assert.equal(f.fields.message.value,packet.message);assert.deepEqual(Buffer.from(await f.fields.files.files[0].arrayBuffer()),source);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});assert.equal(select.disabled,true);const originalTitle=f.fields.title.value;select.disabled=false;select.value='0';f.fields.title.value='Retained pending title';f.listeners.get('change')({target:select});assert.equal(f.fields.title.value,'Retained pending title');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,1);assert.equal(originalTitle,packet.title);
@@ -339,6 +340,7 @@ function routingFixture(t,fragment='') {
 function navClick(f,value) {
  const target={dataset:{auNav:value},closest(){return this;},hasAttribute:attr=>attr==='data-au-nav'};f.listeners.get('click')({target});
 }
+async function newClaim(f) { navClick(f,'intake');await settle(); }
 test('initial deep links and duplicate browser history events read saved state once without adding entries',async t=>{
  const routing=routingFixture(t,'#autonomous/claim/claim-a'),f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  assert.match(f.host.innerHTML,/Working process/);assert.equal(routing.pushes,0);assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,1);
@@ -348,23 +350,23 @@ test('initial deep links and duplicate browser history events read saved state o
  controller.destroy();assert.equal(routing.listeners.size,0);
 });
 
-test('internal Claims, Knowledge and claim navigation adds only changed fragments and supports Back/Forward',async t=>{
+test('internal Work, Knowledge and claim navigation adds only changed fragments and supports Back/Forward',async t=>{
  const routing=routingFixture(t),f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.equal(routing.pushes,0);
  navClick(f,'knowledge');await settle();assert.equal(routing.hash,'#autonomous/knowledge');assert.equal(routing.pushes,1);
  navClick(f,'knowledge');await settle();assert.equal(routing.pushes,1);
  await controller.openClaim('claim-a');assert.equal(routing.pushes,2);assert.match(f.host.innerHTML,/Working process/);
- routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge</);routing.back();await settle();assert.match(f.host.innerHTML,/Bring the claim/);
+ routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge</);routing.back();await settle();assert.match(f.host.innerHTML,/>Work</);
  routing.forward();await settle();assert.match(f.host.innerHTML,/>Knowledge</);routing.forward();await settle();assert.match(f.host.innerHTML,/Working process/);assert.equal(routing.pushes,2);
- navClick(f,'intake');await settle();assert.equal(routing.hash,'');assert.equal(routing.pushes,3);assert.equal(globalThis.location.search,'?journey=autonomous');
+ navClick(f,'intake');await settle();assert.equal(routing.hash,'#autonomous/new');assert.equal(routing.pushes,3);assert.equal(globalThis.location.search,'?journey=autonomous');
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('a browser route change during an uncertain intake waits for its result and preserves the exact retry request',async t=>{
  const routing=routingFixture(t),f=dom();let rejectPost;
- const api=fakeApi({handle:async(path,init)=>{if(init.method==='POST')return new Promise((resolve,reject)=>{rejectPost=reject;});}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const api=fakeApi({handle:async(path,init)=>{if(init.method==='POST')return new Promise((resolve,reject)=>{rejectPost=reject;});}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
  const submission=f.listeners.get('submit')({target:f.form,preventDefault(){}});await settle();routing.external('#autonomous/knowledge');assert.equal(api.calls.filter(call=>call.path.endsWith('/knowledge')).length,0);
- rejectPost(new Error('Intake response unconfirmed'));await submission;await settle();assert.match(f.host.innerHTML,/>Knowledge</);assert.equal(routing.pushes,0);
- routing.external('');await settle();assert.match(f.message.textContent,/same saved intake request/);assert.equal(f.fields.title.disabled,true);assert.equal(f.submit.disabled,false);
+ rejectPost(new Error('Intake response unconfirmed'));await submission;await settle();assert.match(f.host.innerHTML,/>Knowledge</);assert.equal(routing.pushes,1,'only the explicit New claim navigation added an entry');
+ routing.external('#autonomous/new');await settle();assert.match(f.message.textContent,/same saved intake request/);assert.equal(f.fields.title.disabled,true);assert.equal(f.submit.disabled,false);
  const retry=f.listeners.get('submit')({target:f.form,preventDefault(){}});await settle();const writes=api.calls.filter(call=>call.init.method==='POST');assert.equal(writes.length,2);assert.equal(writes[0].init.body,writes[1].init.body);rejectPost(new Error('Still unconfirmed'));await retry;
 });
 
@@ -406,4 +408,293 @@ test('a failed render is retried from saved state even if the next poll has the 
  assert.match(f.status.textContent,/Updates paused/);assert.match(html,/revision 3/);
  await controller.refresh();assert.match(html,/revision 4/);assert.match(f.status.textContent,/Connection restored/);
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('present projection identities must bind to the same claim, revision and saved state',()=>{
+ const saved=state(),matching={claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,node_capabilities:{branch:{authorized:false,reason:'Not configured.'}}};
+ assert.equal(ui.readState({state:saved,projection:matching},saved.claim_id).projection,matching);
+ for(const projection of [{...matching,claim_id:'claim-b'},{...matching,revision:4},{...matching,state_sha256:hash('9')},{...matching,revision:0},{...matching,state_sha256:null}]) {
+  assert.throws(()=>ui.readState({state:saved,projection},saved.claim_id),/projection|identity|revision|claim/i);
+ }
+ // Older envelopes omit identity fields; they still cannot alter the saved state.
+ const before=JSON.stringify(saved),legacy={node_capabilities:{branch:{authorized:true}}};
+ assert.equal(ui.readState({state:saved,projection:legacy}).projection,legacy);assert.equal(JSON.stringify(saved),before);
+});
+
+test('an initial event/state revision mismatch keeps the claim private until a matching read arrives',{timeout:1000},async t=>{
+ const f=dom();let reads=0,finishRead;
+ const next=state({revision:4,state_sha256:hash('f'),title:'Verified new revision'});
+ const api=fakeApi({handle:async path=>{
+  if(path.endsWith('/claims/claim-a')){reads++;return reads===1?response(state()):new Promise(resolve=>{finishRead=resolve;});}
+  if(path.includes('/claim-a/events?'))return response(events(next));
+ }}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const opening=controller.openClaim('claim-a');await settle();
+ assert.doesNotMatch(f.host.innerHTML,/Original incoming claim|Inspect message|Check separate service|data-au-node/);
+ assert.equal(reads,2,'the first mismatch should trigger a bounded fresh snapshot read');
+ finishRead(response(next));await opening;
+ assert.match(f.host.innerHTML,/Verified new revision/);assert.match(f.host.innerHTML,/revision 4/);
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('permanent initial revision mismatch stops after bounded reads and offers explicit retry',{timeout:1000},async t=>{
+ const f=dom(),api=fakeApi({handle:async path=>path.includes('/claim-a/events?')?response(events(state({revision:4,state_sha256:hash('f')}))):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ const reads=api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length;
+ assert.ok(reads>=2&&reads<=3,`mismatched initial load made ${reads} snapshot reads`);
+ assert.doesNotMatch(f.host.innerHTML,/Original incoming claim|data-au-node/);assert.match(f.host.innerHTML,/Retry opening claim/);
+ for(let i=0;i<4;i++)await settle();assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,reads,'an unmatched initial claim must not start background polling');
+});
+
+test('a mismatched refresh projection and a stale saved revision retain the last verified claim',async t=>{
+ const f=dom();let saved=state(),projection={claim_id:'claim-a',revision:3,state_sha256:hash('a')};
+ const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response({state:saved,projection}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ await controller.openClaim('claim-a');
+ const verified=f.host.innerHTML;
+ saved=state({revision:4,state_sha256:hash('f'),title:'Unverified capability snapshot'});projection={claim_id:'claim-a',revision:3,state_sha256:hash('a')};await controller.refresh();
+ assert.equal(f.host.innerHTML,verified);assert.match(f.status.textContent,/Updates paused/);assert.doesNotMatch(f.host.innerHTML,/Unverified capability snapshot/);
+ saved=state({revision:2,state_sha256:hash('2'),title:'Stale claim title'});projection={claim_id:'claim-a',revision:2,state_sha256:hash('2')};await controller.refresh();
+ assert.equal(f.host.innerHTML,verified);assert.doesNotMatch(f.host.innerHTML,/Stale claim title/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+function control(f,attribute,value='') {
+ const dataset={[attribute.replace(/^data-/,'').replace(/-([a-z])/g,(_,char)=>char.toUpperCase())]:value};
+ return {dataset,isConnected:true,disabled:false,hasAttribute:attr=>attr===attribute,getAttribute:attr=>attr===attribute?value:null,matches:()=>false,closest(){return this;},focus(options){f.container.ownerDocument.activeElement=this;this.focusOptions=options;}};
+}
+function sourceFixture() {
+ const f=dom(),callbacks=new Map(),body={innerHTML:'',querySelector:()=>null},title={textContent:''},close=control(f,'data-au-close');
+ f.dialog.addEventListener=(type,callback)=>callbacks.set(type,callback);f.dialog.removeEventListener=type=>callbacks.delete(type);
+ f.dialog.showModal=()=>{f.dialog.open=true;close.focus();};f.dialog.close=()=>{f.dialog.open=false;callbacks.get('close')?.();};
+ const query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-source-content]'?body:selector==='#auSourceTitle'?title:query(selector);
+ return {...f,body,sourceTitle:title,close};
+}
+async function waitFor(predicate) { for(let i=0;i<30&&!predicate();i++)await settle();assert.ok(predicate(),'the expected asynchronous operation did not complete'); }
+
+test('source inspection verifies exact identity, preserves claim context and returns focus after close',async t=>{
+ const f=sourceFixture(),body='😀\nExact source passage.\nAfter',source={claim_id:'claim-a',artifact_id:'original',sha256:hash('d'),text:body,text_sha256:sha(body),complete:true};
+ const citation={artifact_id:'original',sha256:hash('d'),text_sha256:sha(body),start_char:2,end_char:23,quote:'Exact source passage.'};
+ const api=fakeApi({handle:async path=>path.endsWith('/sources/claim-a/original/text')?response(source):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ const trigger=control(f,'data-au-source','original');trigger.dataset.auCitation=JSON.stringify(citation);trigger.focus();const verified=f.host.innerHTML;
+ f.listeners.get('click')({target:trigger});await waitFor(()=>f.body.innerHTML.includes('<mark'));
+ assert.equal(f.sourceTitle.textContent,'message.txt');assert.match(f.body.innerHTML,/<mark tabindex="-1">Exact source passage\.<\/mark>/);assert.match(f.body.innerHTML,/Download original/);assert.ok(f.body.innerHTML.includes(source.text_sha256));
+ assert.equal(f.host.innerHTML,verified);assert.equal(f.dialog.open,true);assert.equal(f.container.ownerDocument.activeElement,f.close);
+ f.listeners.get('click')({target:f.close});assert.equal(f.dialog.open,false);assert.equal(f.container.ownerDocument.activeElement,trigger);assert.deepEqual(trigger.focusOptions,{preventScroll:true});
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('an invalid source text never becomes cited evidence and a late source response cannot reopen another claim',async t=>{
+ const f=sourceFixture();let finish;
+ const source={claim_id:'claim-a',artifact_id:'original',sha256:hash('d'),text:'Unexpected bytes',text_sha256:sha('Different bytes'),complete:true};
+ const b=state({claim_id:'claim-b',title:'Second claim',graph:null});let deferred=false;
+ const api=fakeApi({handle:async path=>{
+  if(path.endsWith('/sources/claim-a/original/text'))return deferred?new Promise(resolve=>{finish=resolve;}):response(source);
+  if(path.endsWith('/claims/claim-b'))return response(b);if(path.includes('/claim-b/events?'))return response(events(b));
+ }}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ const trigger=control(f,'data-au-source','original');f.listeners.get('click')({target:trigger});await waitFor(()=>f.body.innerHTML.includes('role="alert"'));
+ assert.match(f.body.innerHTML,/identity check/);assert.doesNotMatch(f.body.innerHTML,/<mark|<pre|Unexpected bytes/);
+ f.dialog.close();deferred=true;f.listeners.get('click')({target:trigger});await settle();await controller.openClaim('claim-b');const settled=f.body.innerHTML;
+ finish(response({...source,text_sha256:sha(source.text)}));await settle();await settle();
+ assert.equal(f.dialog.open,false);assert.equal(f.body.innerHTML,settled);assert.match(f.host.innerHTML,/Second claim/);
+});
+
+const claimRows=[
+ {claim_id:'claim-a',title:'Notice needs a receipt',status:'deferred',phase_summary:'Waiting for the original receipt'},
+ {claim_id:'claim-b',title:'Policy investigation',status:'running',phase_summary:'Checking the cited policy'},
+ {claim_id:'claim-c',title:'Completed assessment',status:'resolved',outcome:{summary:'Internal assessment recorded.'}},
+ {claim_id:'claim-d',title:'Unsupported original format',status:'failed'},
+ {claim_id:'claim-e',title:'Queued acquisition',status:'queued'}
+];
+test('the default Work collection uses saved statuses and explicit New claim navigation',async t=>{
+ const f=dom(),api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ assert.match(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake"[^>]*>New claim/);
+ assert.match(f.host.innerHTML,/class="au-collection"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
+ const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Deferred/);assert.match(html,/Working/);assert.match(html,/Resolved/);assert.match(html,/Stopped/);assert.match(html,/Queued/);
+ await newClaim(f);assert.match(f.host.innerHTML,/<form[^>]*data-au-intake/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('search and filters select only matching saved claims and preserve original statuses',()=>{
+ const before=JSON.stringify(claimRows),ids=options=>[...ui.claimsMarkup(claimRows,options).matchAll(/data-au-claim="([^"]+)"/g)].map(match=>match[1]);
+ assert.deepEqual(ids({filter:'working'}),['claim-b','claim-e']);assert.deepEqual(ids({filter:'deferred'}),['claim-a']);assert.deepEqual(ids({filter:'resolved'}),['claim-c']);assert.deepEqual(ids({filter:'failed'}),['claim-d']);
+ assert.deepEqual(ids({search:'RECEIPT'}),['claim-a']);assert.deepEqual(ids({filter:'working',search:'policy'}),['claim-b']);assert.deepEqual(ids({filter:'deferred',search:'policy'}),[]);
+ const collection=ui.collectionMarkup(claimRows,{filter:'working',search:'policy'});assert.match(collection,/data-au-collection-count[^>]*>1 of 5/);assert.match(collection,/<strong>2<\/strong> In progress/);assert.match(collection,/<strong>1<\/strong> Deferred/);assert.match(collection,/<strong>1<\/strong> Resolved/);assert.match(collection,/<option value="failed"/);
+ assert.equal(JSON.stringify(claimRows),before);assert.doesNotMatch(ui.claimsMarkup([]),/data-au-claim="/);
+});
+
+test('typing a collection search updates results without replacing the focused native search input',async t=>{
+ const f=dom(),search=control(f,'data-au-claim-search'),filter=control(f,'data-au-claim-filter'),count={textContent:''},rows={innerHTML:''};search.value='';filter.value='all';
+ search.matches=selector=>selector==='[data-au-claim-search]';filter.matches=selector=>selector==='[data-au-claim-filter]';
+ const query=f.host.querySelector;f.host.querySelector=selector=>({'[data-au-claim-search]':search,'[data-au-claim-filter]':filter,'[data-au-collection-count]':count,'[data-au-claims]':rows})[selector]||query(selector);
+ const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ const shell=f.host.innerHTML;search.focus();search.value='receipt';f.listeners.get('input')({target:search});assert.equal(f.host.innerHTML,shell);assert.equal(f.container.ownerDocument.activeElement,search);assert.match(rows.innerHTML,/Notice needs a receipt/);assert.doesNotMatch(rows.innerHTML,/Policy investigation/);assert.equal(count.textContent,'1 of 5');
+ filter.value='working';f.listeners.get('change')({target:filter});assert.equal(f.host.innerHTML,shell);assert.doesNotMatch(rows.innerHTML,/data-au-claim="/);assert.equal(count.textContent,'0 of 5');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('each context view keeps the same selected real process and only one visible details body',()=>{
+ const s=state(),before=JSON.stringify(s);
+ for(const detail of ['step','documents','sources','activity']) {
+  const html=ui.workMarkup(s,{},'branch',events(s).events,detail),panels=[...html.matchAll(/<section[^>]*data-au-panel="([^"]+)"[^>]*>/g)];
+  assert.equal(panels.length,4);assert.deepEqual(panels.filter(match=>!match[0].includes(' hidden')).map(match=>match[1]),[detail]);
+  assert.match(html,new RegExp(`data-au-detail="${detail}" aria-pressed="true"`));assert.match(html,/data-orientation="vertical"/);assert.match(html,/data-au-node="branch"[^>]*aria-pressed="true"/);assert.match(html,/data-au-selected-step="branch"/);
+  assert.match(html,/data-au-panel="sources"[\s\S]*data-au-arrival/);assert.ok(html.indexOf('class="au-process-hero au-path-panel"')<html.indexOf('class="au-work-layout au-context-panel au-detail-panel"'));
+ }
+ assert.equal(JSON.stringify(s),before);
+});
+
+test('supported document routes stay distinct and evidence intake is reachable from current needs',()=>{
+ const statuses=['needed_now','needed_later','held_behind_question','held_not_reviewed','not_needed','optional'],labels=['Needed now','Needed later','Depends on unresolved evidence','Acquired · not established','Not required','Optional'];
+ const s=state();s.obligations=statuses.map((status,index)=>({obligation_id:`obligation:${index}`,node_id:'branch',document_type:`document-${index}`,label:`Evidence ${index}`}));s.evaluation.documents=statuses.map((route_state,index)=>({document_type:`document-${index}`,route_state,review_state:'unreviewed'}));
+ const markup=ui.obligationMarkup(s,'branch');for(let i=0;i<statuses.length;i++){assert.match(markup,new RegExp(`data-status="${statuses[i]}"`));assert.ok(markup.includes(labels[i]),labels[i]);}
+ assert.match(ui.inspectorMarkup(state(),'branch'),/data-au-add-files/);assert.match(ui.workMarkup(state(),{},'branch',[],'sources'),/<form data-au-arrival/);
+});
+
+// This fixture models the relevant native-node lifetime: assigning innerHTML
+// creates new form, panel and scroll nodes unless production moves the old form.
+// It deliberately does not emulate rendering, layout, or browser accessibility.
+function nativeFixture() {
+ const f=dom(),query=f.host.querySelector;let html='',intake=null,arrival=null,viewport=null,details=[],panels=[],tabs=[];
+ function form(kind) {
+  const message={textContent:''},submit={disabled:false,textContent:'',isConnected:true},files=control(f,'data-files');files.files=[];files.name='files';
+  const fields={files};if(kind==='intake'){fields.title=control(f,'data-title');fields.title.value='';fields.message=control(f,'data-message');fields.message.value='';}
+  const node={elements:fields,isConnected:true,matches:selector=>selector.includes(`data-au-${kind}`),contains:element=>Object.values(fields).includes(element)||element===submit,querySelector:selector=>selector==='.au-form-status'?message:selector==='button[type="submit"]'?submit:null,querySelectorAll:()=>[...Object.values(fields),submit],remove(){this.isConnected=false;if(kind==='intake'&&intake===this)intake=null;if(kind==='arrival'&&arrival===this)arrival=null;},replaceWith(other){this.isConnected=false;other.isConnected=true;if(kind==='intake')intake=other;else arrival=other;}};
+  for(const field of Object.values(fields)){field.closest=selector=>selector==='form'?node:null;field.matches=selector=>/input|textarea/.test(selector);}
+  return node;
+ }
+ Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{
+  if(intake)intake.isConnected=false;if(arrival)arrival.isConnected=false;html=value;intake=/<form[^>]*data-au-intake/.test(html)?form('intake'):null;arrival=/<form[^>]*data-au-arrival/.test(html)?form('arrival'):null;viewport=html.includes('au-graph-viewport')?{scrollLeft:0,scrollTop:0}:null;
+  details=[...html.matchAll(/<details[^>]*data-au-disclosure="([^"]+)"[^>]*>/g)].map(match=>({dataset:{auDisclosure:match[1]},open:match[0].includes(' open'),querySelector:()=>null}));
+  panels=[...html.matchAll(/<section[^>]*data-au-panel="([^"]+)"[^>]*>/g)].map(match=>({dataset:{auPanel:match[1]},hidden:match[0].includes(' hidden')}));
+  tabs=[...html.matchAll(/<button[^>]*data-au-detail="([^"]+)"[^>]*aria-pressed="(true|false)"[^>]*>/g)].map(match=>{const node=control(f,'data-au-detail',match[1]);node.pressed=match[2];node.setAttribute=(attr,value)=>{if(attr==='aria-pressed')node.pressed=value;};return node;});
+ }});
+ f.host.querySelector=selector=>selector==='[data-au-intake]'?intake:selector==='[data-au-arrival]'?arrival:selector==='.au-graph-viewport'?viewport:selector==='button[type="submit"]'?intake?.querySelector(selector)||arrival?.querySelector(selector):query(selector);
+ f.host.querySelectorAll=selector=>selector==='[data-au-panel]'?panels:selector==='[data-au-detail]'||selector==='.au-context-nav [data-au-detail]'?tabs:selector==='details[open][data-au-disclosure]'?details.filter(node=>node.open):selector==='[data-au-disclosure]'?details:[];
+ f.host.contains=element=>intake?.contains(element)||arrival?.contains(element)||tabs.includes(element)||false;
+ return {...f,get intake(){return intake;},get arrival(){return arrival;},get viewport(){return viewport;},get disclosures(){return details;},get panels(){return panels;}};
+}
+function fileFixture() { const bytes=Buffer.from('Exact original \r\nUnicode: ü.');return{name:'evidence.txt',type:'text/plain',size:bytes.length,arrayBuffer:async()=>bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)}; }
+
+test('an editable New claim draft retains the native form, FileList and typed values through Work and Knowledge',async t=>{
+ const f=nativeFixture(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
+ const form=f.intake,list=[fileFixture()];form.elements.title.value='Unsubmitted draft';form.elements.message.value='Typing the original incoming message.';form.elements.files.files=list;
+ navClick(f,'work');await settle();assert.equal(f.intake,null);navClick(f,'knowledge');await settle();await newClaim(f);
+ assert.equal(f.intake,form);assert.equal(f.intake.elements.files.files,list);assert.equal(f.intake.elements.title.value,'Unsubmitted draft');assert.equal(f.intake.elements.message.value,'Typing the original incoming message.');assert.equal(f.intake.elements.title.disabled,false);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('an uncertain New claim keeps its native files and exact retry payload through Work navigation',async t=>{
+ const f=nativeFixture(),api=fakeApi({handle:async(_path,init)=>{if(init.method==='POST')throw new Error('Intake response lost');}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
+ const form=f.intake,list=[fileFixture()];form.elements.title.value='Retained original claim';form.elements.message.value='Original source text';form.elements.files.files=list;await f.listeners.get('submit')({target:form,preventDefault(){}});
+ navClick(f,'work');await settle();await newClaim(f);assert.equal(f.intake,form);assert.equal(f.intake.elements.files.files,list);assert.equal(f.intake.elements.title.disabled,true);assert.equal(f.intake.querySelector('button[type="submit"]').disabled,false);
+ await f.listeners.get('submit')({target:f.intake,preventDefault(){}});const writes=api.calls.filter(call=>call.init.method==='POST');assert.equal(writes.length,2);assert.equal(writes[0].init.body,writes[1].init.body);assert.ok(JSON.parse(writes[0].init.body).files[0].content_base64);assert.equal(JSON.parse(writes[0].init.body).title,'Retained original claim');
+});
+
+test('claim refresh preserves context, vertical graph scroll, open disclosures and native arrival files',async t=>{
+ const f=nativeFixture();let saved=state();const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ f.listeners.get('click')({target:control(f,'data-au-detail','sources')});const form=f.arrival,list=[fileFixture()];form.elements.files.files=list;form.elements.files.focus();f.viewport.scrollTop=184;f.viewport.scrollLeft=27;const rules=f.disclosures.find(node=>node.dataset.auDisclosure==='rules:branch');rules.open=true;
+ saved=state({revision:4,state_sha256:hash('f'),phase:'acquiring'});await controller.refresh();
+ assert.equal(f.arrival,form);assert.equal(f.arrival.elements.files.files,list);assert.equal(f.container.ownerDocument.activeElement,form.elements.files);assert.equal(f.viewport.scrollTop,184);assert.equal(f.viewport.scrollLeft,27);assert.equal(f.disclosures.find(node=>node.dataset.auDisclosure==='rules:branch').open,true);
+ assert.match(f.host.innerHTML,/data-au-context="sources"/);assert.match(f.host.innerHTML,/data-au-node="branch"[^>]*aria-pressed="true"/);
+});
+
+test('uncertain file arrivals retain their claim guard and retry key across details and other claims',async t=>{
+ const f=nativeFixture(),b=state({claim_id:'claim-b',title:'Other claim',graph:null});const api=fakeApi({handle:async(path,init)=>{
+  if(path.endsWith('/sources')&&init.method==='POST')throw new Error('File arrival response lost');if(path.endsWith('/claims/claim-b'))return response(b);if(path.includes('/claim-b/events?'))return response(events(b));
+ }}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ f.listeners.get('click')({target:control(f,'data-au-add-files')});const form=f.arrival,list=[fileFixture()];form.elements.files.files=list;await f.listeners.get('submit')({target:form,preventDefault(){}});
+ f.listeners.get('click')({target:control(f,'data-au-detail','step')});f.listeners.get('click')({target:control(f,'data-au-detail','sources')});assert.equal(f.arrival,form);assert.equal(f.arrival.elements.files.files,list);
+ await controller.openClaim('claim-b');await controller.openClaim('claim-a');f.listeners.get('click')({target:control(f,'data-au-detail','sources')});assert.equal(f.arrival,form);assert.equal(f.arrival.elements.files.disabled,true);assert.equal(f.arrival.querySelector('button[type="submit"]').disabled,false);
+ await f.listeners.get('submit')({target:f.arrival,preventDefault(){}});const writes=api.calls.filter(call=>call.path.endsWith('/sources')&&call.init.method==='POST');assert.equal(writes.length,2);assert.equal(writes[0].path,writes[1].path);assert.equal(writes[0].init.body,writes[1].init.body);assert.equal(JSON.parse(writes[0].init.body).expected_revision,3);assert.equal(JSON.parse(writes[0].init.body).expected_state_sha256,hash('a'));assert.ok(JSON.parse(writes[0].init.body).idempotency_key);
+});
+
+test('recorded actions distinguish the current accepted run from historical and unassociated results',()=>{
+ const s=state({run_id:'run.new',actions:[
+  {result:{action_id:'old',node_ids:['branch'],status:'completed',summary:'Earlier receipt assessed.'},receipt:{parent_revision:2,receipt_sha256:hash('1'),operation:'document_review'}},
+  {result:{action_id:'new',node_ids:['branch'],status:'completed',summary:'Current receipt assessed.'},receipt:{parent_revision:6,receipt_sha256:hash('2'),operation:'document_review'}},
+  {result:{action_id:'unknown',node_ids:['branch'],status:'completed',summary:'Legacy assessment without run association.'},receipt:{receipt_sha256:hash('3')}}
+ ]}),history=[{seq:1,kind:'work.started',payload:{run_id:'run.old'}},{seq:5,kind:'work.started',payload:{run_id:'run.new'}}];
+ assert.deepEqual(ui.actionRows(s,history).map(row=>row.scope),['historical','current','unassociated']);
+ const html=ui.inspectorMarkup(s,'branch',{},history);assert.match(html,/data-au-action-scope="historical"[\s\S]*?Recorded in an earlier run[\s\S]*?Earlier receipt assessed/);assert.match(html,/data-au-action-scope="current"[\s\S]*?Recorded in this run[\s\S]*?Current receipt assessed/);assert.match(html,/run association not recorded/);
+ assert.ok(html.includes(hash('1')));assert.ok(html.includes(hash('2')));assert.ok(html.includes(hash('3')));assert.deepEqual(ui.actionRows(s,[]).map(row=>row.scope),['unassociated','unassociated','unassociated']);
+});
+
+test('a branch inspector joins its own condition, evidence need, document and capability without borrowing sibling facts',()=>{
+ const s=state();s.graph.nodes.push({node_id:'excluded',label:'Other conditional path',condition:{flag:'commercial_use'}});s.graph.edges.push({edge_id:'other',source_node_id:'start',target_node_id:'excluded'});s.evaluation.nodes.push({node_id:'excluded',execution_state:'inactive'});s.facts.push({fact_id:'condition:commercial_use',label:'Commercial-only condition',status:'false',summary:'Commercial condition does not apply.'});
+ s.facts[0].citations=[{artifact_id:'original',sha256:hash('d'),text_sha256:hash('e'),start_char:0,end_char:11,quote:'Family home'}];
+ const projection={node_capabilities:{branch:{authorized:false,id:null,reason:'External dispatch is not configured.'}}},html=ui.inspectorMarkup(s,'branch',projection);
+ for(const phrase of ['Check separate service','Family home','Applies','A separate notice is required.','Separate notice','Needed now','tenancy.v1','Local inbox read','External dispatch is not configured.','Family home'])assert.ok(html.includes(phrase),phrase);
+ assert.match(html,/data-au-source="original"[^>]*data-au-citation=/);assert.match(html,/data-authorized="false"/);assert.doesNotMatch(html,/Commercial-only condition|Commercial condition does not apply/);
+ const graph=ui.graphMarkup(s,'branch',projection);assert.match(graph,/Other conditional path\. Does not apply/);assert.match(graph,/data-au-node="excluded"[^>]*data-status="inactive"/);assert.equal(s.facts[0].status,'true');
+});
+
+test('knowledge reuse retains the exact historical version, originating claim and applicability without proving current facts',()=>{
+ const old={knowledge_id:'procedure.one',version:1,title:'Service process',source_claim_id:'origin-one',knowledge_sha256:hash('1'),summary:'Original service procedure.',qualification:{status:'qualified',regression_cases:243,checks:['no_case_values_or_files']},graph:state().graph,facts:state().facts,obligations:state().obligations};
+ const latest={...old,version:2,source_claim_id:'origin-two',knowledge_sha256:hash('2'),parent_knowledge_sha256:hash('1'),change_reason:'Verified new receipt field.'};
+ const use={knowledge_id:'procedure.one',version:1,knowledge_sha256:hash('1'),claim_id:'receiving-claim',applicability:'same_verified_family_and_rule_version',avoided_rule_compilations:1,avoided_qualification_cases:243};
+ const html=ui.knowledgeMarkup({versions:[old,latest],uses:[use],quarantined:[]});
+ assert.match(html,/data-au-version="2"[^>]*data-current="true"/);assert.match(html,/data-au-version="1"[^>]*data-current="false"/);assert.match(html,/procedure.one · version 1/);assert.match(html,/data-au-claim="origin-one"/);assert.match(html,/data-au-claim="origin-two"/);assert.match(html,/data-au-claim="receiving-claim"/);assert.ok(html.includes(hash('1')));assert.ok(html.includes(hash('2')));assert.match(html,/Same verified family and rule version/);assert.match(html,/243 qualification cases reused/);
+ const saved=state({knowledge_uses:[use]}),before=JSON.stringify(saved),claim=ui.workMarkup(saved,{},'branch',[],'activity');assert.match(claim,/procedure.one · version 1/);assert.match(claim,/Evidence needed/);assert.equal(JSON.stringify(saved),before);
+ assert.doesNotMatch(claim,/notice.*proven by.*reuse|fact.*established by.*knowledge|human approved|improved accuracy/i);
+});
+
+test('full public provenance, receipt checks and quarantine reasons remain inspectable and escaped',()=>{
+ const attack='<svg onload="alert(1)">',version={knowledge_id:'k',version:1,title:'Procedure',source_claim_id:'claim-a',knowledge_sha256:hash('a'),qualification:{status:'qualified',regression_cases:243,checks:['no_case_values_or_files'],additional_check:{reason:'Version-specific public check',accepted:true}},source_evidence:{notice:{artifact_id:'original',source_verification:'recorded independent check'}},custom_lineage:{reason:'Public ancestry marker'}};
+ const quarantine={knowledge_id:'withheld',qualification:{status:'quarantined',reason:'Exact rule identity changed',details:{failed_check:'public discrepancy marker'}},candidate:{summary:attack}};
+ const html=ui.knowledgeMarkup({versions:[version],uses:[],quarantined:[quarantine]});
+ for(const value of ['Version-specific public check','recorded independent check','Public ancestry marker','Exact rule identity changed','public discrepancy marker'])assert.ok(html.includes(value),value);
+ assert.match(html,/&lt;svg/);assert.doesNotMatch(html,/<svg|onload="alert/);assert.match(html,/<details[\s\S]*Provenance/);
+ const s=state();s.actions[0].receipt.checks=[{accepted:true,reason:'Public action check',payload:{summary:attack}}];const action=ui.inspectorMarkup(s,'branch');assert.match(action,/Public action check/);assert.match(action,/&lt;svg/);assert.doesNotMatch(action,/<svg|onload="alert/);
+});
+
+function knowledgeFixture() {
+ const f=dom();let html='',rows=[],history=null;
+ Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{
+  html=value;history={tagName:'DETAILS',open:false,parentElement:f.host};rows=[...value.matchAll(/data-au-knowledge-identity="([^"]+)"/g)].map(match=>{
+   const row=control(f,'data-au-knowledge-identity',match[1]);row.parentElement=match[1].endsWith(':1')?history:f.host;row.attributes={};row.setAttribute=(name,value)=>{row.attributes[name]=value;};row.scrollIntoView=options=>{row.scrollOptions=options;};return row;
+  });
+ }});
+ f.host.querySelectorAll=selector=>selector==='[data-au-knowledge-identity]'?rows:[];
+ return {...f,get versions(){return rows;},get historyDisclosure(){return history;}};
+}
+
+test('Inspect reused knowledge navigates to and reveals the exact historical version and hash',async t=>{
+ const routing=routingFixture(t),f=knowledgeFixture(),old={knowledge_id:'procedure.one',version:1,title:'Original procedure',knowledge_sha256:hash('1'),source_claim_id:'origin-one',qualification:{status:'qualified'}},latest={...old,version:2,title:'Latest procedure',knowledge_sha256:hash('2'),source_claim_id:'origin-two'};
+ const saved=state({knowledge_uses:[{knowledge_id:old.knowledge_id,version:1,knowledge_sha256:hash('1'),applicability:'same_verified_family_and_rule_version'}]});
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response({versions:[old,latest],uses:[],quarantined:[]}):path.endsWith('/claims/claim-a')?response(saved):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ assert.match(f.host.innerHTML,/data-au-knowledge="procedure.one"[^>]*data-au-version="1"[^>]*data-au-knowledge-sha="1{64}"/);
+ const trigger=control(f,'data-au-knowledge','procedure.one');trigger.dataset.auVersion='1';trigger.dataset.auKnowledgeSha=hash('1');f.listeners.get('click')({target:trigger});await waitFor(()=>f.versions.length===2);
+ const historical=f.versions.find(row=>row.dataset.auKnowledgeIdentity==='procedure.one:1'),current=f.versions.find(row=>row.dataset.auKnowledgeIdentity==='procedure.one:2');
+ assert.equal(routing.hash,`#autonomous/knowledge?knowledge=procedure.one&version=1&sha256=${hash('1')}`);assert.equal(historical.attributes['data-pinned'],'true');assert.equal(current.attributes['data-pinned'],undefined);assert.equal(f.historyDisclosure.open,true);assert.equal(f.container.ownerDocument.activeElement,historical);assert.deepEqual(historical.scrollOptions,{block:'nearest',behavior:'instant'});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('an unavailable pinned knowledge version or hash never selects the latest version as its replacement',async t=>{
+ const routing=routingFixture(t,`#autonomous/knowledge?knowledge=procedure.one&version=1&sha256=${hash('9')}`),f=knowledgeFixture(),latest={knowledge_id:'procedure.one',version:2,title:'Latest procedure',knowledge_sha256:hash('2'),source_claim_id:'origin-two',qualification:{status:'qualified'}};
+ const api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response({versions:[latest],uses:[],quarantined:[]}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await waitFor(()=>f.status.textContent.includes('not available'));
+ assert.match(f.status.textContent,/exact reused knowledge version is not available/);assert.equal(f.versions[0].attributes['data-pinned'],undefined);assert.notEqual(f.container.ownerDocument.activeElement,f.versions[0]);assert.equal(routing.pushes,0);assert.ok(routing.hash.includes('version=1'));
+ routing.external(`#autonomous/knowledge?knowledge=procedure.one&version=2&sha256=${hash('9')}`);await waitFor(()=>api.calls.filter(call=>call.path.endsWith('/knowledge')).length===2&&f.status.textContent.includes('not available'));
+ assert.equal(f.versions[0].attributes['data-pinned'],undefined);assert.notEqual(f.container.ownerDocument.activeElement,f.versions[0]);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('Cancel returns to the same Work search, status filter and scroll position without writing intake',async t=>{
+ const f=dom(),search=control(f,'data-au-claim-search'),filter=control(f,'data-au-claim-filter'),rows={innerHTML:''},count={textContent:''},main={scrollTop:0,scrollLeft:0},scrollCalls=[];
+ search.matches=selector=>selector==='[data-au-claim-search]';filter.matches=selector=>selector==='[data-au-claim-filter]';
+ const prior=Object.fromEntries(['scrollX','scrollY','scrollTo'].map(name=>[name,globalThis[name]]));Object.assign(globalThis,{scrollX:0,scrollY:0,scrollTo(options){scrollCalls.push(options);globalThis.scrollX=options.left;globalThis.scrollY=options.top;}});t.after(()=>Object.assign(globalThis,prior));
+ const containerQuery=f.container.querySelector;f.container.querySelector=selector=>selector==='.au-main'?main:containerQuery(selector);
+ let html='';Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{html=value;f.host.scrollTop=0;main.scrollTop=0;main.scrollLeft=0;search.value=value.match(/data-au-claim-search value="([^"]*)"/)?.[1]||'';filter.value=value.match(/<option value="([^"]+)" selected/)?.[1]||'all';}});
+ const query=f.host.querySelector;f.host.querySelector=selector=>({'[data-au-claim-search]':search,'[data-au-claim-filter]':filter,'[data-au-claims]':rows,'[data-au-collection-count]':count})[selector]||query(selector);
+ const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ search.value='receipt';f.listeners.get('input')({target:search});filter.value='deferred';f.listeners.get('change')({target:filter});f.host.scrollTop=127;main.scrollTop=246;main.scrollLeft=6;globalThis.scrollX=12;globalThis.scrollY=418;
+ await newClaim(f);globalThis.scrollX=0;globalThis.scrollY=0;navClick(f,'work');await settle();
+ assert.equal(search.value,'receipt');assert.equal(filter.value,'deferred');assert.match(rows.innerHTML,/Notice needs a receipt/);assert.doesNotMatch(rows.innerHTML,/Policy investigation/);assert.equal(count.textContent,'1 of 5');assert.equal(f.host.scrollTop,127);assert.equal(main.scrollTop,246);assert.equal(main.scrollLeft,6);assert.deepEqual(scrollCalls.at(-1),{left:12,top:418,behavior:'instant'});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('a mismatched polling event cursor never advances the displayed state or consumes the pending event',async t=>{
+ const f=dom();let saved=state(),ahead=false;
+ const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(ahead?state({revision:5,state_sha256:hash('5')}):saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');const verified=f.host.innerHTML;
+ saved=state({revision:4,state_sha256:hash('f'),title:'Fourth saved revision'});ahead=true;await controller.refresh();assert.equal(f.host.innerHTML,verified);
+ ahead=false;await controller.refresh();assert.match(f.host.innerHTML,/Fourth saved revision/);assert.match(f.host.innerHTML,/revision 4/);const reads=api.calls.filter(call=>call.path.includes('/claim-a/events?'));assert.equal(reads.at(-2).path,reads.at(-1).path);assert.ok(reads.at(-1).path.endsWith('after=3'));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('closing a source after a saved refresh focuses the replacement citation control in the same claim',async t=>{
+ const f=sourceFixture(),body='Verified original text',source={claim_id:'claim-a',artifact_id:'original',sha256:hash('d'),text:body,text_sha256:sha(body),complete:true};let saved=state(),trigger=control(f,'data-au-source','original');
+ f.host.contains=element=>element===trigger;f.host.querySelectorAll=selector=>selector==='[data-au-source]'?[trigger]:[];
+ const api=fakeApi({handle:async path=>path.endsWith('/sources/claim-a/original/text')?response(source):path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');trigger.focus();f.listeners.get('click')({target:trigger});await waitFor(()=>f.body.innerHTML.includes('Verified original text'));
+ const oldTrigger=trigger;oldTrigger.isConnected=false;trigger=control(f,'data-au-source','original');saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.equal(f.dialog.open,true);assert.equal(f.container.ownerDocument.activeElement,f.close);f.dialog.close();assert.equal(f.container.ownerDocument.activeElement,trigger);assert.deepEqual(trigger.focusOptions,{preventScroll:true});
 });
