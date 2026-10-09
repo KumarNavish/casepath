@@ -60,7 +60,7 @@ async function proxyApi(request, env, url) {
 }
 
 async function serveStatic(request, env, url) {
-  if (url.pathname === '/corpus.html') {
+  if (url.pathname === '/corpus.html' || url.pathname === '/corpus') {
     return Response.redirect(new URL('/#autonomous/cases', url), 302);
   }
   if (url.pathname === '/' && url.searchParams.get('journey') === 'review') {

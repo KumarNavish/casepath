@@ -7,15 +7,17 @@ const origin = 'https://casepath-demo.example';
 const env = {CASEPATH_API_ORIGIN: 'https://casepath-api.example', CASEPATH_PROXY_TOKEN: 'x'.repeat(48)};
 const load = async () => (await import(pathToFileURL(resolve(__dirname, '../casepath/tools/sites_worker.mjs')).href)).default;
 
-test('Sites sends the legacy collection entry to the unified Cases page without fetching data', async t => {
+test('Sites sends native and normalized legacy collection entries to Cases without fetching data', async t => {
   const worker = await load();
   const fetch = t.mock.method(globalThis, 'fetch', async () => {throw Error('must not send');});
   const assets = t.mock.fn(async () => {throw Error('must not open the older collection');});
-  for (const method of ['GET', 'HEAD']) {
-    const response = await worker.fetch(new Request(origin + '/corpus.html?view=old', {method}),
-      {...env, ASSETS:{fetch:assets}});
-    assert.equal(response.status, 302);
-    assert.equal(response.headers.get('location'), origin + '/#autonomous/cases');
+  for (const path of ['/corpus.html?legacy=1', '/corpus?legacy=1']) {
+    for (const method of ['GET', 'HEAD']) {
+      const response = await worker.fetch(new Request(origin + path, {method}),
+        {...env, ASSETS:{fetch:assets}});
+      assert.equal(response.status, 302);
+      assert.equal(response.headers.get('location'), origin + '/#autonomous/cases');
+    }
   }
   assert.equal(fetch.mock.callCount(), 0);
   assert.equal(assets.mock.callCount(), 0);
