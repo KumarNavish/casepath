@@ -17,7 +17,7 @@ The preview imports the production `CasePathAutonomous` validation helpers from 
 ## Identity and interaction
 
 - Instrument Sans; expressive case typography, readable facts, quiet supporting labels.
-- Forest text `#183D35` on mineral `#EFF1EC`. Vermilion `#C3422B` identifies the selected junction. Color supplements text and shape.
+- Forest text `#183D35` on mineral `#EFF1EC`. Vermilion `#BC3E2A` identifies the selected junction. Color supplements text and shape.
 - Facts and process junctions sit on the field. Sources and requirements use paper shapes.
 - The complete saved DAG remains visible above the selected evidence path. Its forks, convergences, excluded routes, and stable identities are preserved.
 - The selected graph junction connects to its expanded process step. Selecting a different step reshapes this connection once. This is navigation, never simulated agent work.

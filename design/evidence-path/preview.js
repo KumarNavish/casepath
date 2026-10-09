@@ -172,7 +172,7 @@
     const target=$(`[data-graph-node="${CSS.escape(id)}"]`);
     target?.focus({preventScroll:true});centerSelection();
     if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
-      const ring=target?.querySelector('.graph-number');ring?.animate([{boxShadow:'0 0 0 8px #274eb51a'},{boxShadow:'0 0 0 0 #274eb500'}],{duration:360,easing:'ease-out'});
+      const ring=target?.querySelector('.graph-number');ring?.animate([{boxShadow:'0 0 0 8px #bc3e2a22'},{boxShadow:'0 0 0 0 #bc3e2a00'}],{duration:360,easing:'ease-out'});
       const next=$('[data-sheet="step"]');
       if(next&&old){const bounds=next.getBoundingClientRect();next.animate([{transform:`translate(${old.left-bounds.left}px,${old.top-bounds.top}px)`},{transform:'translate(0,0)'}],{duration:360,easing:'cubic-bezier(.22,.75,.18,1)'});}
       for(const el of all('#lens-panel .source-card, #lens-panel .fact-object, #lens-panel .doc-object'))el.animate([{opacity:.4,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],{duration:320,easing:'cubic-bezier(.22,.75,.18,1)'});
