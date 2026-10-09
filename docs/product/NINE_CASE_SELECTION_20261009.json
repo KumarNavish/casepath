@@ -1,0 +1,589 @@
+{
+  "contract": "casepath.nine-original-case-selection/1.0.0",
+  "status": "selected_for_implementation_execution_unverified",
+  "corpus_id": "synthetic-150",
+  "corpus_manifest_file_sha256": "7c885d3fd112dfc7314719d661fa73449f72b7bdf5b83159da9fa3e0b9a1b7eb",
+  "authority": "Navigation and presentation selection only. Never supply these labels, selection reasons or review observations as operational evidence or expected answers. Resolve original sources through the canonical corpus binding.",
+  "execution_performed": false,
+  "qualification_performed": false,
+  "counts": {
+    "claim_count": 9,
+    "domain_counts": {
+      "defect_mold_heating": 3,
+      "lease_termination_dispute": 3,
+      "rent_increase_dispute": 3
+    },
+    "language_counts": {
+      "de-CH": 4,
+      "en": 5
+    },
+    "distinct_scenario_families": 9,
+    "attachment_free_claims": 3,
+    "attachments": 8,
+    "attachment_media_counts": {
+      "image/jpeg": 1,
+      "application/pdf": 7
+    },
+    "genuinely_incomplete_pdf_originals": 3
+  },
+  "records": [
+    {
+      "demo_order": 1,
+      "claim_id": "clm_e262801f9368bc12",
+      "display_label": "Recurring leak and a received image",
+      "domain": "defect_mold_heating",
+      "scenario_family_id": "ndg_1ac923f8ee27f5e78f9f",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "de-CH",
+      "channel": "portal",
+      "subject": "Bitte um Prüfung: bestätigtes wiederkehrendes Wasserleck nach abgelaufener Reparaturfrist",
+      "selection_reason": "A reported management acknowledgement and expired written deadline contrast with unresolved duration and repair completion. The original JPEG supplies actual image evidence whose presence alone does not establish these facts.",
+      "evidence_shape": "image_received",
+      "residual_uncertainty": "Reported acknowledgement, duration and repair completion are not proved by the JPEG.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_e262801f9368bc12.json",
+      "claim_source_sha256": "1a3e6b0dcbb3319460d5c465e6e10d3c2fa30d21a155465cb3c742b8385f4305",
+      "binding_sha256": "0846d88797534edb24b46340ac5d596d5fd952c1d85ed482661e5f9b8000d373",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_e262801f9368bc12/00-f877fc5bd65e-00-Bitte-um-Pruefung-bestaetigtes-wiederkehrendes-Wasserleck-nach-abgelaufener-Reparaturfrist_2025-05-24_1300_f8bea1.txt",
+      "original_message_sha256": "f877fc5bd65e45a0d5505b541727aa13740fe3b398b0e207eab239f8c763f721",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_e262801f9368bc12/02-8cf8996c711a-message-body-projection.txt",
+      "original_message_body_projection_sha256": "8cf8996c711aa1e9f968268afd2266422a78cba7285eb3ee02afd6808618b57d",
+      "message_quotes": [
+        {
+          "quote": "Die Verwaltung hat das Leck unter der Spüle per E-Mail bestätigt",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_e262801f9368bc12/02-8cf8996c711a-message-body-projection.txt",
+          "source_sha256": "8cf8996c711aa1e9f968268afd2266422a78cba7285eb3ee02afd6808618b57d",
+          "line_start": 3,
+          "char_start": 41,
+          "char_end": 105
+        },
+        {
+          "quote": "wie lange der Wasseraustritt genau angedauert hat ist noch ungeklärt",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_e262801f9368bc12/02-8cf8996c711a-message-body-projection.txt",
+          "source_sha256": "8cf8996c711aa1e9f968268afd2266422a78cba7285eb3ee02afd6808618b57d",
+          "line_start": 5,
+          "char_start": 394,
+          "char_end": 462
+        },
+        {
+          "quote": "wann die Reparatur tatsächlich abgeschlossen wurde bleibt ebenfalls offen",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_e262801f9368bc12/02-8cf8996c711a-message-body-projection.txt",
+          "source_sha256": "8cf8996c711aa1e9f968268afd2266422a78cba7285eb3ee02afd6808618b57d",
+          "line_start": 5,
+          "char_start": 712,
+          "char_end": 785
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": [
+        {
+          "artifact_id": "doc_336f88b3a077b170",
+          "file_name": "IMG_19650627.jpg",
+          "media_type": "image/jpeg",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_e262801f9368bc12/01-653894c9f4bd-01-IMG_19650627.jpg",
+          "source_sha256": "653894c9f4bd01095b8d26cabbc593b24f26bfe4a08461d2e532484d5af9a757",
+          "size_bytes": 90715,
+          "observed_image_size": [
+            673,
+            591
+          ],
+          "manual_visual_observation": "Close-up plumbing fittings visible; image alone does not establish acknowledgement, leak duration, repair completion or property identity.",
+          "agent_image_interpretation_verified": false
+        }
+      ]
+    },
+    {
+      "demo_order": 2,
+      "claim_id": "clm_521c20913f4e0f9b",
+      "display_label": "Cold home and an unconfirmed repair plan",
+      "domain": "defect_mold_heating",
+      "scenario_family_id": "ndg_5f8a5967e30c99ace5fd",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "en",
+      "channel": "phone_note",
+      "subject": "Unusual circumstances: repeated boiler failure during freezing weather in a vulnerable household",
+      "selection_reason": "Barely warm heating, an uncalibrated temperature and a telephone statement about an ordered part create a genuine missing-evidence situation. No service or delivery record is supplied.",
+      "evidence_shape": "message_only",
+      "residual_uncertainty": "Calibrated temperature, technical diagnosis and part delivery remain unsupported by independent originals.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_521c20913f4e0f9b.json",
+      "claim_source_sha256": "fa1afdae83bcf277e1e7df91696fa18aefe534c1bc8f329d951c690d619cfc19",
+      "binding_sha256": "68bd7b4cc0ec8d59abcdeaf578d92e662dd79c7cd8fd8af63cfad11f10c36213",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_521c20913f4e0f9b/00-2f1b53f2d716-00-Unusual-circumstances-repeated-boiler-failure-during-freezing-weather-in-a-vulnerable-household_2025-01-12_0900_4c721a.txt",
+      "original_message_sha256": "2f1b53f2d716152c1ef32bacdbf08a9f3fcba604d227223d2c49d7af4be9b81a",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_521c20913f4e0f9b/01-16bde779efbb-message-body-projection.txt",
+      "original_message_body_projection_sha256": "16bde779efbbf2e6e8bb3ecf21d797f55e337887816fd3815e0253ad2a7bd22a",
+      "message_quotes": [
+        {
+          "quote": "The heating has been barely warm for three nights",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_521c20913f4e0f9b/01-16bde779efbb-message-body-projection.txt",
+          "source_sha256": "16bde779efbbf2e6e8bb3ecf21d797f55e337887816fd3815e0253ad2a7bd22a",
+          "line_start": 3,
+          "char_start": 39,
+          "char_end": 88
+        },
+        {
+          "quote": "The living-room thermometer shows 15 to 17 degrees but is not calibrated",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_521c20913f4e0f9b/01-16bde779efbb-message-body-projection.txt",
+          "source_sha256": "16bde779efbbf2e6e8bb3ecf21d797f55e337887816fd3815e0253ad2a7bd22a",
+          "line_start": 3,
+          "char_start": 146,
+          "char_end": 218
+        },
+        {
+          "quote": "I currently have only part of the records",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_521c20913f4e0f9b/01-16bde779efbb-message-body-projection.txt",
+          "source_sha256": "16bde779efbbf2e6e8bb3ecf21d797f55e337887816fd3815e0253ad2a7bd22a",
+          "line_start": 5,
+          "char_start": 596,
+          "char_end": 637
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": []
+    },
+    {
+      "demo_order": 3,
+      "claim_id": "clm_ee29ac770b1bf7b9",
+      "display_label": "Dampness with disputed contractor access",
+      "domain": "defect_mold_heating",
+      "scenario_family_id": "ndg_2c84c98c26fa701f0b1d",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "en",
+      "channel": "portal",
+      "subject": "Unusual circumstances: uninspected dampness with disputed access at scheduled visits",
+      "selection_reason": "Reported disagreement about access and a potentially inaccurate door-system clock add conflicting accounts and timestamp uncertainty. Neither access log nor inspection report is attached.",
+      "evidence_shape": "message_only",
+      "residual_uncertainty": "The message supplies accounts, not the door log, contractor record or technical inspection.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_ee29ac770b1bf7b9.json",
+      "claim_source_sha256": "c7ec12ee2e5e54d9d9f93fff9c203087acb492b40bb37e158d1833a0db909bb6",
+      "binding_sha256": "289f28194f74ecfb7144e2b17e3d0e5b46c54cff4056b08e55aca8df3e8a04dd",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_ee29ac770b1bf7b9/00-75268f43ce2e-00-Unusual-circumstances-uninspected-dampness-with-disputed-access-at-scheduled-visits_2025-02-05_1400_98e09e.txt",
+      "original_message_sha256": "75268f43ce2ee9156e3f9c977e32d907abca97de9927badb656e1e7c1256a2fc",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_ee29ac770b1bf7b9/01-e4b19a1bf1d6-message-body-projection.txt",
+      "original_message_body_projection_sha256": "e4b19a1bf1d68dedb4f32814d1c744f66c6e6b9376ccd49039eefaeafcc00a24",
+      "message_quotes": [
+        {
+          "quote": "I was home on both agreed mornings",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_ee29ac770b1bf7b9/01-e4b19a1bf1d6-message-body-projection.txt",
+          "source_sha256": "e4b19a1bf1d68dedb4f32814d1c744f66c6e6b9376ccd49039eefaeafcc00a24",
+          "line_start": 3,
+          "char_start": 39,
+          "char_end": 73
+        },
+        {
+          "quote": "The contractor says nobody answered",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_ee29ac770b1bf7b9/01-e4b19a1bf1d6-message-body-projection.txt",
+          "source_sha256": "e4b19a1bf1d68dedb4f32814d1c744f66c6e6b9376ccd49039eefaeafcc00a24",
+          "line_start": 3,
+          "char_start": 75,
+          "char_end": 110
+        },
+        {
+          "quote": "its clock may be a few minutes off",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_ee29ac770b1bf7b9/01-e4b19a1bf1d6-message-body-projection.txt",
+          "source_sha256": "e4b19a1bf1d68dedb4f32814d1c744f66c6e6b9376ccd49039eefaeafcc00a24",
+          "line_start": 3,
+          "char_start": 159,
+          "char_end": 193
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": []
+    },
+    {
+      "demo_order": 4,
+      "claim_id": "clm_f69b1747447bc221",
+      "display_label": "Different tenant and spouse notice dates",
+      "domain": "lease_termination_dispute",
+      "scenario_family_id": "ndg_d96952eab1221dc77757",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "en",
+      "channel": "email",
+      "subject": "Please help me decide what to do: separately served but substantively inconsistent family-home termination notices",
+      "selection_reason": "Two originals name different recipients and different end dates. The tenant notice has two physical pages; the spouse notice has one despite referring to page two. This supports real source comparison and an incomplete-original limitation.",
+      "evidence_shape": "pdfs_with_incomplete_original",
+      "residual_uncertainty": "Receipt dates, intended end date and complete spouse-notice contents remain unresolved.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_f69b1747447bc221.json",
+      "claim_source_sha256": "f651c236382850cce6b7114ab6f9bc5126356803f65daac18687fc50fdf02441",
+      "binding_sha256": "770f57ec0de6073f1d1009abf8a768c4abe4fbf45148cce8e4826373cbcb9c09",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_f69b1747447bc221/00-2e4ba3a2cf36-00-Please-help-me-decide-what-to-do-separately-served-but-substantively-inconsistent-family-home-termination-notices_2025-08-26_1200_418777.eml",
+      "original_message_sha256": "2e4ba3a2cf367013066b35c51d27f81a5e592c3818daa3c8bb90a8e4c19a54dd",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_f69b1747447bc221/03-d24a3209cabc-message-body-projection.txt",
+      "original_message_body_projection_sha256": "d24a3209cabc2ba346009f66b58d679beb3c0d257b3ced0a0862384fb6474fa7",
+      "message_quotes": [
+        {
+          "quote": "My form arrived on Monday and says the end of June",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_f69b1747447bc221/03-d24a3209cabc-message-body-projection.txt",
+          "source_sha256": "d24a3209cabc2ba346009f66b58d679beb3c0d257b3ced0a0862384fb6474fa7",
+          "line_start": 3,
+          "char_start": 41,
+          "char_end": 91
+        },
+        {
+          "quote": "My wife's arrived on Wednesday and says the end of July",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_f69b1747447bc221/03-d24a3209cabc-message-body-projection.txt",
+          "source_sha256": "d24a3209cabc2ba346009f66b58d679beb3c0d257b3ced0a0862384fb6474fa7",
+          "line_start": 3,
+          "char_start": 93,
+          "char_end": 148
+        },
+        {
+          "quote": "page two is absent from the scan",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_f69b1747447bc221/03-d24a3209cabc-message-body-projection.txt",
+          "source_sha256": "d24a3209cabc2ba346009f66b58d679beb3c0d257b3ced0a0862384fb6474fa7",
+          "line_start": 3,
+          "char_start": 150,
+          "char_end": 182
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": [
+        {
+          "artifact_id": "doc_0d043bd02b074535",
+          "file_name": "Tenant_termination_notice_June_Robin-Foster.pdf",
+          "media_type": "application/pdf",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_f69b1747447bc221/01-6fec533be661-01-Tenant_termination_notice_June_Robin-Foster.pdf",
+          "source_sha256": "6fec533be661db939f8b62b272d7195a4a4b5d13ed7e22bdf53425019e096253",
+          "size_bytes": 91394,
+          "observed_page_count": 2,
+          "physical_second_page_absent_despite_page_two_reference": false
+        },
+        {
+          "artifact_id": "doc_b137c2a1c0239f90",
+          "file_name": "Spouse_termination_notice_July_Robin-Foster.pdf",
+          "media_type": "application/pdf",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_f69b1747447bc221/02-6788e6ce28d0-02-Spouse_termination_notice_July_Robin-Foster.pdf",
+          "source_sha256": "6788e6ce28d07f65b59e4b04ceb2e765c7458287ded3e06c70d7392e5ae0094f",
+          "size_bytes": 61983,
+          "observed_page_count": 1,
+          "physical_second_page_absent_despite_page_two_reference": true
+        }
+      ]
+    },
+    {
+      "demo_order": 5,
+      "claim_id": "clm_0c5e7c7723a3c694",
+      "display_label": "Competing notices and an alleged correction",
+      "domain": "lease_termination_dispute",
+      "scenario_family_id": "ndg_3a823602ce7bef9d0920",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "de-CH",
+      "channel": "email",
+      "subject": "Sichere Einordnung erbeten: zwei widersprüchliche Kündigungen ohne klare Ersetzung",
+      "selection_reason": "Two originals name the same tenant/property but different end dates. Both contain only page one. The reported telephone correction does not settle which notice replaces the other.",
+      "evidence_shape": "pdfs_with_incomplete_original",
+      "residual_uncertainty": "Written replacement authority and both complete notices are absent.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_0c5e7c7723a3c694.json",
+      "claim_source_sha256": "4ede32cf7f4d02dc9801eadaed1513697badd13631c50eeec1b8ccd9fcb194ea",
+      "binding_sha256": "974ff199d11c260d0bc923e675d9c79bbb3bd75ffbf861f68999702bc717758c",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_0c5e7c7723a3c694/00-c0ff19171d11-00-Sichere-Einordnung-erbeten-zwei-widerspruechliche-Kuendigungen-ohne-klare-Ersetzung_2025-08-02_1100_60107f.eml",
+      "original_message_sha256": "c0ff19171d11500be727305b468c807b7a7c19a04c49f2e2f670a41a43d06011",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_0c5e7c7723a3c694/03-b0654e4466fb-message-body-projection.txt",
+      "original_message_body_projection_sha256": "b0654e4466fb4b9fac8ad9f13c7793909ad25fcba77bdfb7311011301675eea3",
+      "message_quotes": [
+        {
+          "quote": "Ein Formular nennt Ende September, das andere Ende Oktober",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_0c5e7c7723a3c694/03-b0654e4466fb-message-body-projection.txt",
+          "source_sha256": "b0654e4466fb4b9fac8ad9f13c7793909ad25fcba77bdfb7311011301675eea3",
+          "line_start": 3,
+          "char_start": 62,
+          "char_end": 120
+        },
+        {
+          "quote": "nur die erste Seite jedes Formulars eingescannt",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_0c5e7c7723a3c694/03-b0654e4466fb-message-body-projection.txt",
+          "source_sha256": "b0654e4466fb4b9fac8ad9f13c7793909ad25fcba77bdfb7311011301675eea3",
+          "line_start": 3,
+          "char_start": 155,
+          "char_end": 202
+        },
+        {
+          "quote": "Die Verwaltung sagte telefonisch, eines sei eine Korrektur",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_0c5e7c7723a3c694/03-b0654e4466fb-message-body-projection.txt",
+          "source_sha256": "b0654e4466fb4b9fac8ad9f13c7793909ad25fcba77bdfb7311011301675eea3",
+          "line_start": 3,
+          "char_start": 204,
+          "char_end": 262
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": [
+        {
+          "artifact_id": "doc_5f8bb67f9b9af579",
+          "file_name": "Kuendigung_September_Simon-Baumann.pdf",
+          "media_type": "application/pdf",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_0c5e7c7723a3c694/01-1fb324a2f8bc-01-Kuendigung_September_Simon-Baumann.pdf",
+          "source_sha256": "1fb324a2f8bcb53b4e06912b376c4b0063c53c996e97a78cd7cb9451a4e5c305",
+          "size_bytes": 61959,
+          "observed_page_count": 1,
+          "physical_second_page_absent_despite_page_two_reference": true
+        },
+        {
+          "artifact_id": "doc_64d1c01e7c356a53",
+          "file_name": "Kuendigung_Oktober_Simon-Baumann.pdf",
+          "media_type": "application/pdf",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_0c5e7c7723a3c694/02-3c125530bec9-02-Kuendigung_Oktober_Simon-Baumann.pdf",
+          "source_sha256": "3c125530bec92dd00310239b9a1f9d54eb4b5df32f56fe91097107d07dbf2590",
+          "size_bytes": 61957,
+          "observed_page_count": 1,
+          "physical_second_page_absent_despite_page_two_reference": true
+        }
+      ]
+    },
+    {
+      "demo_order": 6,
+      "claim_id": "clm_2a9c260c26afaa34",
+      "display_label": "Mixed debt demand and unknown payment allocation",
+      "domain": "lease_termination_dispute",
+      "scenario_family_id": "ndg_a5c0081018016ea8071e",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "en",
+      "channel": "chat",
+      "subject": "Request for review: arrears termination after a mixed demand and unclear payment allocation",
+      "selection_reason": "The supplied payment demand separates rent, refrigerator repair and fees. The customer reports paying only rent, while the subsequent allocation is unknown. Separates demanded components from proof of payment.",
+      "evidence_shape": "complete_pdf_with_residual_gaps",
+      "residual_uncertainty": "The demand does not establish receipt, payment transfer or ledger allocation.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_2a9c260c26afaa34.json",
+      "claim_source_sha256": "206d87c99890b809f83942f69b7247fa2711eb3c3aa526e76efd923163a2f4df",
+      "binding_sha256": "62bef9011eab6221fbedc03387f2805a39a56b27956d7864e757f6932a3a7082",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_2a9c260c26afaa34/00-f72f011ef64e-00-Request-for-review-arrears-termination-after-a-mixed-demand-and-unclear-payment-allocation_2026-05-12_1000_abc2b8.txt",
+      "original_message_sha256": "f72f011ef64ed3c2d9273dcca98fa0851f929dadf79ccb04d32a47964af6523e",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_2a9c260c26afaa34/02-8ad52fdcc0b2-message-body-projection.txt",
+      "original_message_body_projection_sha256": "8ad52fdcc0b267e753424149bf6fc4e794536dae5ac504e1598efd5a2bfb669e",
+      "message_quotes": [
+        {
+          "quote": "I transferred the month's rent within the stated period but not the damaged-fridge invoice",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_2a9c260c26afaa34/02-8ad52fdcc0b2-message-body-projection.txt",
+          "source_sha256": "8ad52fdcc0b267e753424149bf6fc4e794536dae5ac504e1598efd5a2bfb669e",
+          "line_start": 3,
+          "char_start": 40,
+          "char_end": 130
+        },
+        {
+          "quote": "I cannot see how my payment was allocated",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_2a9c260c26afaa34/02-8ad52fdcc0b2-message-body-projection.txt",
+          "source_sha256": "8ad52fdcc0b267e753424149bf6fc4e794536dae5ac504e1598efd5a2bfb669e",
+          "line_start": 3,
+          "char_start": 175,
+          "char_end": 216
+        },
+        {
+          "quote": "the rent principal outstanding remains unresolved",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_2a9c260c26afaa34/02-8ad52fdcc0b2-message-body-projection.txt",
+          "source_sha256": "8ad52fdcc0b267e753424149bf6fc4e794536dae5ac504e1598efd5a2bfb669e",
+          "line_start": 5,
+          "char_start": 355,
+          "char_end": 404
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": [
+        {
+          "artifact_id": "doc_ffe6a2bab04dbdd7",
+          "file_name": "Payment_demand_Alex-Miller_2026-04-28.pdf",
+          "media_type": "application/pdf",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_2a9c260c26afaa34/01-c16ab766716a-01-Payment_demand_Alex-Miller_2026-04-28.pdf",
+          "source_sha256": "c16ab766716af850b617ebe4443abd44754ad449be4e7e324760e73ac724bd91",
+          "size_bytes": 2506,
+          "observed_page_count": 1,
+          "physical_second_page_absent_despite_page_two_reference": false
+        }
+      ]
+    },
+    {
+      "demo_order": 7,
+      "claim_id": "clm_c44ddc0914ba9298",
+      "display_label": "Net rent and ancillary-charge reclassification",
+      "domain": "rent_increase_dispute",
+      "scenario_family_id": "ndg_df13fa653dbc7412d7fd",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "de-CH",
+      "channel": "chat",
+      "subject": "Bitte um Prüfung: ungeklärte Umgliederung von Nebenkosten in den Nettomietzins",
+      "selection_reason": "A complete three-page form contains net/gross amounts and a generic reason; the message identifies a missing ancillary-charge statement. A small total increase contrasts with a larger net-rent change.",
+      "evidence_shape": "complete_pdf_with_residual_gaps",
+      "residual_uncertainty": "The supplied values do not establish the missing ancillary-charge basis or relevant prior contractual terms.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_c44ddc0914ba9298.json",
+      "claim_source_sha256": "90ba08fd590b5d9c19a988cd846215f3d5225b2bdf9ebd3747f2e6604906ec2a",
+      "binding_sha256": "ecc52d165d8784124fd301a68198cf7f74a72e1051ef83713fff356b41e130ad",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_c44ddc0914ba9298/00-92f9cf7a40e3-00-Bitte-um-Pruefung-ungeklaerte-Umgliederung-von-Nebenkosten-in-den-Nettomietzins_2025-11-26_1300_156660.txt",
+      "original_message_sha256": "92f9cf7a40e34c99770fa8683e5299256fd31dc5474426290f0aeda241252e42",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_c44ddc0914ba9298/02-be5efac59cb6-message-body-projection.txt",
+      "original_message_body_projection_sha256": "be5efac59cb65470242f990c5c4cbb3420154098c5cb2949852c96818690d2d7",
+      "message_quotes": [
+        {
+          "quote": "Brutto zahle ich nur zwölf Franken mehr",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_c44ddc0914ba9298/02-be5efac59cb6-message-body-projection.txt",
+          "source_sha256": "be5efac59cb65470242f990c5c4cbb3420154098c5cb2949852c96818690d2d7",
+          "line_start": 3,
+          "char_start": 38,
+          "char_end": 77
+        },
+        {
+          "quote": "der Nettomietzins steigt um 140 Franken und das Heizkostenakonto sinkt",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_c44ddc0914ba9298/02-be5efac59cb6-message-body-projection.txt",
+          "source_sha256": "be5efac59cb65470242f990c5c4cbb3420154098c5cb2949852c96818690d2d7",
+          "line_start": 3,
+          "char_start": 84,
+          "char_end": 154
+        },
+        {
+          "quote": "Die letzte Nebenkostenabrechnung ist noch nicht da",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_c44ddc0914ba9298/02-be5efac59cb6-message-body-projection.txt",
+          "source_sha256": "be5efac59cb65470242f990c5c4cbb3420154098c5cb2949852c96818690d2d7",
+          "line_start": 3,
+          "char_start": 156,
+          "char_end": 206
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": [
+        {
+          "artifact_id": "doc_a450b443b2995748",
+          "file_name": "Mietzinsanpassung_Nettomiete_Nina-Steiner_2025-11-20.pdf",
+          "media_type": "application/pdf",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_c44ddc0914ba9298/01-bc2081f80ba8-01-Mietzinsanpassung_Nettomiete_Nina-Steiner_2025-11-20.pdf",
+          "source_sha256": "bc2081f80ba8fe00dae1b9c8ec9d7d6609cb943e17946f0d8da6e804fad4a448",
+          "size_bytes": 122974,
+          "observed_page_count": 3,
+          "physical_second_page_absent_despite_page_two_reference": false,
+          "manual_visual_observation": "Page one shows net1650/1790, heating210/82, total1900/1912 and Kostenanpassung; the return address and issuer line use different organisation names. Neither sufficient explanation nor authority is assumed."
+        }
+      ]
+    },
+    {
+      "demo_order": 8,
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "display_label": "A supplied form with an unfilled reason field",
+      "domain": "rent_increase_dispute",
+      "scenario_family_id": "ndg_cd00f7dc71077b84ac60",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "en",
+      "channel": "email",
+      "subject": "Chronology still unclear: official increase form with no stated reason",
+      "selection_reason": "A complete three-page original provides amounts/date but no inserted reason. A later email and calculation basis are reported rather than supplied. Its form structure provides a plausible reuse candidate with different evidence content.",
+      "evidence_shape": "complete_pdf_with_residual_gaps",
+      "residual_uncertainty": "The reported email and calculation baseline are not supplied originals; sufficiency is unverified.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_7dbd7c7d1c4ddf90.json",
+      "claim_source_sha256": "13fe9b0dd05b1e5ea520065d9725cb1b9428e02ea28cb17c63fc1ed94d7a64c9",
+      "binding_sha256": "2464f5bb86f065e9c7ecbca0027966e68eb047936e2f3c98f3bfa7ce133768d6",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_7dbd7c7d1c4ddf90/00-d94224aafa20-00-Chronology-still-unclear-official-increase-form-with-no-stated-reason_2025-11-28_0900_58dc2c.eml",
+      "original_message_sha256": "d94224aafa20713b7f38ff42050b0cc34f20b4e587aa2850a95c4ba81d1331f6",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_7dbd7c7d1c4ddf90/02-2a021da8a612-message-body-projection.txt",
+      "original_message_body_projection_sha256": "2a021da8a612e518aa6664815aafb38243bb620bc4f44d9e941e0f5e2dedd937",
+      "message_quotes": [
+        {
+          "quote": "The form contains only the amounts and date",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_7dbd7c7d1c4ddf90/02-2a021da8a612-message-body-projection.txt",
+          "source_sha256": "2a021da8a612e518aa6664815aafb38243bb620bc4f44d9e941e0f5e2dedd937",
+          "line_start": 3,
+          "char_start": 41,
+          "char_end": 84
+        },
+        {
+          "quote": "I received an email saying the rent was being adjusted to the market",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_7dbd7c7d1c4ddf90/02-2a021da8a612-message-body-projection.txt",
+          "source_sha256": "2a021da8a612e518aa6664815aafb38243bb620bc4f44d9e941e0f5e2dedd937",
+          "line_start": 3,
+          "char_start": 101,
+          "char_end": 169
+        },
+        {
+          "quote": "I have no calculation attachment or prior baseline",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_7dbd7c7d1c4ddf90/02-2a021da8a612-message-body-projection.txt",
+          "source_sha256": "2a021da8a612e518aa6664815aafb38243bb620bc4f44d9e941e0f5e2dedd937",
+          "line_start": 3,
+          "char_start": 171,
+          "char_end": 221
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": [
+        {
+          "artifact_id": "doc_e6c53a28b36dd296",
+          "file_name": "Mietzinserhoehung_Formular_Drew-Shaw_2025-11-22.pdf",
+          "media_type": "application/pdf",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_7dbd7c7d1c4ddf90/01-b04f70766b81-01-Mietzinserhoehung_Formular_Drew-Shaw_2025-11-22.pdf",
+          "source_sha256": "b04f70766b8111ff7ed2a7d3d20c7358fd07b574cfa53164020179f5583b0b6c",
+          "size_bytes": 122897,
+          "observed_page_count": 3,
+          "physical_second_page_absent_despite_page_two_reference": false,
+          "manual_visual_observation": "The explanation lines on page one contain no inserted reason; old/new values and effective date are present."
+        }
+      ]
+    },
+    {
+      "demo_order": 9,
+      "claim_id": "clm_9a179a4481767d43",
+      "display_label": "Reference-rate date conflict without supplied forms",
+      "domain": "rent_increase_dispute",
+      "scenario_family_id": "ndg_4d4dcce6ba3807cfa53f",
+      "browsing_metadata_is_decision_evidence": false,
+      "language": "de-CH",
+      "channel": "chat",
+      "subject": "Zeitliche Abfolge unklar: Referenzzinsberechnung mit zeitlich widersprüchlicher Satzangabe",
+      "selection_reason": "A reported rate-table date follows the management signature by two weeks, while the customer acknowledges a possible reading error. No old/new notice or rate table is attached.",
+      "evidence_shape": "message_only",
+      "residual_uncertainty": "The reported chronology cannot be checked without the mentioned originals.",
+      "claim_source_path": "casepath-api/casepath_api/corpora/synthetic-150/claims/clm_9a179a4481767d43.json",
+      "claim_source_sha256": "d226fd384edfc4c4214785e2b5f6c920b7dc3e8f6cbcfb41605517c57eff51e8",
+      "binding_sha256": "c168703d5ae2669ab15e045d2736ceca0c22e0f8a19483cbc00406bc787c4270",
+      "original_message_source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_9a179a4481767d43/00-3ed0a2540759-00-Zeitliche-Abfolge-unklar-Referenzzinsberechnung-mit-zeitlich-widerspruechlicher-Satzangabe_2025-02-15_1000_e7f1fa.txt",
+      "original_message_sha256": "3ed0a2540759901821fae78bdc523c3e9aeb229a17419b096fb54c642adf86c2",
+      "original_message_body_projection_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_9a179a4481767d43/01-a2e070ffffc0-message-body-projection.txt",
+      "original_message_body_projection_sha256": "a2e070ffffc0a23285468f4ef4f0b5b3ddb6200acbe1ed5c16ccfdbea8ad88f7",
+      "message_quotes": [
+        {
+          "quote": "ein Referenzzinssatz mit einem Datum zwei Wochen nach der Unterschrift der Verwaltung",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_9a179a4481767d43/01-a2e070ffffc0-message-body-projection.txt",
+          "source_sha256": "a2e070ffffc0a23285468f4ef4f0b5b3ddb6200acbe1ed5c16ccfdbea8ad88f7",
+          "line_start": 3,
+          "char_start": 121,
+          "char_end": 206
+        },
+        {
+          "quote": "Vielleicht lese ich die Tabelle falsch",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_9a179a4481767d43/01-a2e070ffffc0-message-body-projection.txt",
+          "source_sha256": "a2e070ffffc0a23285468f4ef4f0b5b3ddb6200acbe1ed5c16ccfdbea8ad88f7",
+          "line_start": 3,
+          "char_start": 208,
+          "char_end": 246
+        },
+        {
+          "quote": "welche Zinssatz- oder Berechnungstabelle verwendet wurde ist noch ungeklärt",
+          "source_path": "casepath-api/casepath_api/corpora/synthetic-150/artifacts/clm_9a179a4481767d43/01-a2e070ffffc0-message-body-projection.txt",
+          "source_sha256": "a2e070ffffc0a23285468f4ef4f0b5b3ddb6200acbe1ed5c16ccfdbea8ad88f7",
+          "line_start": 5,
+          "char_start": 398,
+          "char_end": 473
+        }
+      ],
+      "selection_asserts_expected_outcome": false,
+      "attachments": []
+    }
+  ],
+  "knowledge_reuse_candidate": {
+    "status": "source_based_candidate_only_not_qualified_or_executed",
+    "preferred_sequence": [
+      "clm_c44ddc0914ba9298",
+      "clm_7dbd7c7d1c4ddf90"
+    ],
+    "candidate_scope": "Read complete original rent-notice form fields, distinguish prior/new net rent, ancillary components, total, effective date and populated/unpopulated explanation. Recheck own-case originals; do not reuse values or infer legal sufficiency.",
+    "source_compatibility": "Both supplied originals have three pages and the same official form structure, with different values and explanation presence.",
+    "qualification_requirements": [
+      "Independent source-bound interpretation and verification of each original.",
+      "An accepted compatible recipe/version whose declared document type and applicability pass existing knowledge qualification.",
+      "Recorded version use, influence and bidirectional contributing/consuming case links.",
+      "Additional support without a manufactured version when the definition is unchanged."
+    ],
+    "unverified": [
+      "Current admitted-procedure compatibility.",
+      "Actual interpretation and independent verification.",
+      "Qualification, refinement, reuse, actual influence and saved-state agreement."
+    ],
+    "secondary_sequence": [
+      "clm_f69b1747447bc221",
+      "clm_0c5e7c7723a3c694"
+    ],
+    "secondary_limit": "Notice-field comparison and completeness detection only; three originals lack page two. Their complete contents, service and legal effect are not established."
+  }
+}
