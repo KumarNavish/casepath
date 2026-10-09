@@ -1361,7 +1361,10 @@ def test_all_generic_surfaces_reject_workspace_session_with_zero_mutation(
     assert _file_tree_snapshot(facade.adapter.root) == authority_before
 
 
-def test_autonomous_surface_cannot_redirect_into_workspace_namespace(tmp_path: Path) -> None:
+@pytest.mark.parametrize("corpus_mode", ["omitted", "returns_none"])
+def test_autonomous_surface_cannot_redirect_into_workspace_namespace(
+    tmp_path: Path, corpus_mode: str
+) -> None:
     from casepath_api.autonomous_api_v1 import create_autonomous_router
     from casepath_api.autonomous_store_v1 import AutonomousStore, SESSION_ID
 
@@ -1372,7 +1375,8 @@ def test_autonomous_surface_cannot_redirect_into_workspace_namespace(tmp_path: P
     submitted = []
     service = SimpleNamespace(store=store, submit=submitted.append)
     app = FastAPI()
-    app.include_router(create_autonomous_router(lambda: service))
+    corpus_options = {"corpus_getter": lambda: None} if corpus_mode == "returns_none" else {}
+    app.include_router(create_autonomous_router(lambda: service, **corpus_options))
     client = TestClient(app)
     prefix = "/api/claim-loops/v1/autonomous"
     headers = {
@@ -1388,7 +1392,7 @@ def test_autonomous_surface_cannot_redirect_into_workspace_namespace(tmp_path: P
     before = _database_dump(storage)
     evidence_before = _file_tree_snapshot(facade.adapter.root)
     sources_before = _file_tree_snapshot(store.source_root)
-    for path in (f"/claims/{claim_id}", f"/claims/{claim_id}/events",
+    for path in (f"/claims/{claim_id}", f"/claims/{claim_id}/snapshot", f"/claims/{claim_id}/events",
                  f"/sources/{claim_id}/artifact.legacy", f"/sources/{claim_id}/artifact.legacy/text"):
         assert client.get(prefix + path, headers=headers).status_code == 409
     for suffix, body in (("pause", command), ("resume", command), ("sources", {**command, "files": [file]})):

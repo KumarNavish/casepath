@@ -45,6 +45,36 @@ def test_all_original_reads_have_no_events_or_dispatch(api, corpus):
     assert store.list() == [] and submitted == []
 
 
+def test_installed_corpus_distinguishes_unknown_and_unprocessed_without_writes(api, corpus):
+    client, store, submitted = api
+    with store.journal.connect() as db:
+        before = tuple(db.iterdump())
+    sources_before = {path.relative_to(store.source_root): path.read_bytes()
+                      for path in store.source_root.rglob('*') if path.is_file()}
+    cid = corpus.ids[0]
+    preview = corpus.preview_state(cid)
+    for suffix in ('', '/snapshot', '/events'):
+        unknown = client.get(f'{PREFIX}/claims/clm_0000000000000000{suffix}')
+        assert unknown.status_code == 404
+        assert unknown.json()['detail'] == 'Unknown original claim.'
+        response = client.get(f'{PREFIX}/claims/{cid}{suffix}')
+        assert response.status_code == 200
+        result = response.json()
+        assert result['current_revision'] == 0 and result['events'] == []
+        assert result['current_state_sha256'] == preview['state_sha256']
+        assert result['cursor_sha256'] is None
+        if suffix != '/events':
+            assert result['mode'] == 'unprocessed' and result['current_event_sha256'] is None
+            assert result['state'] == preview
+            assert result['state']['graph'] is None and result['state']['evaluation'] is None
+            assert result['state']['acquired_sources'] == []
+    with store.journal.connect() as db:
+        assert tuple(db.iterdump()) == before
+    assert {path.relative_to(store.source_root): path.read_bytes()
+            for path in store.source_root.rglob('*') if path.is_file()} == sources_before
+    assert store.list() == [] and submitted == []
+
+
 def test_original_source_preview_is_not_admission(api, corpus):
     client, store, submitted = api
     cid = 'clm_7dbd7c7d1c4ddf90'
