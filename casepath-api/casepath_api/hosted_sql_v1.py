@@ -9,6 +9,7 @@ from __future__ import annotations
 import base64
 from dataclasses import dataclass
 import json
+import logging
 import math
 import re
 import time
@@ -28,6 +29,7 @@ class HostedSQLFailure(HostedStorageError):
 MAX_BYTES = 32 * 1024 * 1024
 REQUEST_SECONDS = 12.0
 INT64_MIN, INT64_MAX = -(2**63), 2**63 - 1
+_LOG = logging.getLogger(__name__)
 
 
 def _https_origin(url):
@@ -179,12 +181,15 @@ class LibsqlConnection:
         if len(payload) > MAX_BYTES:
             raise HostedStorageError('The persistent database request exceeds its size bound.')
         deadline = time.monotonic() + REQUEST_SECONDS
+        phase = 'request'
         try:
             with self._client.stream('POST', self._base + '/v2/pipeline',
                     headers={'Authorization': 'Bearer ' + self._token,
                              'Content-Type': 'application/json', 'Accept-Encoding': 'identity'}, content=payload) as response:
+                phase = 'http_status_and_encoding'
                 if response.status_code != 200 or response.headers.get('content-encoding', 'identity') != 'identity':
                     raise ValueError('HTTP failure')
+                phase = 'response_body'
                 body = bytearray()
                 for chunk in response.iter_bytes():
                     if time.monotonic() > deadline or len(body) + len(chunk) > MAX_BYTES:
@@ -194,13 +199,16 @@ class LibsqlConnection:
                     raise ValueError('response deadline')
             def invalid_constant(_):
                 raise ValueError('invalid JSON constant')
+            phase = 'response_json'
             result = json.loads(body, parse_constant=invalid_constant)
             baton, base = result['baton'], result['base_url']
             entries = result['results']
             if not (baton is None or isinstance(baton, str) and 0 < len(baton) <= 65536):
                 raise ValueError('invalid baton')
+            phase = 'response_origin'
             if base is not None and _https_origin(base) != self._origin:
                 raise ValueError('unexpected database origin')
+            phase = 'response_protocol'
             if not isinstance(entries, list) or len(entries) != len(requests):
                 raise ValueError('invalid response count')
             for request, entry in zip(requests, entries):
@@ -213,7 +221,10 @@ class LibsqlConnection:
                     raise ValueError('invalid response type')
             if self._in_transaction and baton is None and not ending:
                 raise ValueError('transaction stream closed')
-        except Exception:
+        except Exception as error:
+            # Fixed phase labels and exception classes only: no SQL, parameters,
+            # response bodies, endpoint URLs, batons, or credential values.
+            _LOG.warning('hosted_database_failure phase=%s category=%s', phase, type(error).__name__)
             self._uncertain()
         # A SQL error still rotates the baton. Save it before raising.
         self._baton = baton
@@ -387,4 +398,3 @@ class TursoDatabase:
     def connect(self):
         client = self._client_factory() if self._client_factory is not None else None
         return LibsqlConnection(self._url, self._token, client=client)
-

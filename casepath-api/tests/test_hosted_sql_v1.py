@@ -146,7 +146,7 @@ def test_disappearing_transaction_baton_does_not_open_fresh_transaction(server):
 
 
 @pytest.mark.parametrize('fault', ['non_json', 'missing_statement_result', 'invalid_cell', 'redirect'])
-def test_malformed_http_responses_are_sanitized_and_never_followed(fault):
+def test_malformed_http_responses_are_sanitized_and_never_followed(fault, caplog):
     seen = []
     private = 'PRIVATE_FIXTURE_SQL_AND_TOKEN'
     def handler(request):
@@ -172,6 +172,9 @@ def test_malformed_http_responses_are_sanitized_and_never_followed(fault):
     assert len(seen) == 1
     assert str(seen[0].url) == 'https://fixture.turso.io/v2/pipeline'
     assert 'fictional-test-token' not in repr(db)
+    assert private not in caplog.text
+    assert 'fictional-test-token' not in caplog.text
+    assert 'https://' not in caplog.text
 
 
 def test_response_byte_limit_closes_stream_and_poisons_connection(monkeypatch):
