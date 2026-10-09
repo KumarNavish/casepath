@@ -124,6 +124,8 @@ async function fixturePage(t,{width=1440,reducedMotion='no-preference'}={}){
  await page.addStyleTag({path:path.join(root,'casepath/assets/autonomous-workspace-v1.css')});
  await page.addScriptTag({path:path.join(root,'casepath/assets/autonomous-workspace-v1.js')});
  await page.evaluate(({responses,base})=>{
+  responses[`${base}/claims`].claims=responses[`${base}/claims`].claims.map(row=>({...row,origin:'native_intake'}));
+  history.replaceState(null,'','#autonomous/cases?scope=added');
   window.__responses=responses;window.__base=base;window.__calls=[];window.__animations=[];window.__throwWrites=false;
   const animate=Element.prototype.animate;
   Element.prototype.animate=function(...args){window.__animations.push({node:this.dataset.auNode,edge:this.dataset.auEdge,fact:this.dataset.auFact,document:this.dataset.auDocument});return animate.apply(this,args);};

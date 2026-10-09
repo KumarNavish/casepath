@@ -103,3 +103,78 @@ corrected behavior. Mac owns final integration, source sealing, native PDF visua
 inspection, visual acceptance and publication. The hosted 24/24 allowance was
 not changed. No substantive nine-case demonstration or qualified cross-case
 reuse is claimed.
+
+## Bounded UX and recovery followup
+
+This followup starts at frontend commit
+`6851b41ec280abbc8326b8fe584ad4b4d2c2023f`. The default collection now shows
+only the API's `canonical_original` records. An internal **Added cases** scope
+shows native intakes with their separate identities and histories; missing
+legacy origin metadata is disclosed as unrecorded instead of inferred from IDs.
+The scope is encoded in the collection hash and survives reload and browser
+Back/Forward. A confirmed native intake is remembered from its explicit intake
+route and cannot enter the original collection.
+
+Completed handling displays **Investigation complete** for the existing
+`completed`, `complete` and `resolved` lifecycle codes. Metrics, searches and
+status filters use that label without changing saved codes, journal identities
+or recorded legal outcome titles and summaries.
+
+Unprocessed correspondence keeps its exact full subject and body. The compact
+subject and readable message column place original files beside the message on
+desktop and before it on mobile. The 390px header places New claim beside the
+brand and the three primary destinations on a second row. The native PDF/image
+Blob viewer and its byte/hash checks are unchanged. Unsupported image previews
+show one capability statement; exact source identity, preview admission flags,
+extraction coverage and limitations remain under a technical disclosure. A
+failed native byte check cannot advertise an available image preview.
+
+Opening and polling reads share a generation guard and enforce monotonic
+verified revisions. Superseded responses and errors cannot replace a newer
+saved state or its forms and disclosures. Live Play resumes an automatically
+recovered, verified opening only for the same active session, navigation epoch,
+canonical case and selection index. It attempts original Start once; an
+unconfirmed admission stops automatic progression and retains explicit retry
+with the original request key. Selecting a linked process node from Documents
+also synchronizes the visible detail hash for reload. A normal visibility
+refresh no longer reports a restored connection unless a prior poll failed.
+
+Final focused commands passed with zero failures, skips or cancellations:
+
+```sh
+node --test casepath-qa/unified-product-v1.test.cjs \
+  casepath-qa/autonomous-workspace-v1.test.cjs
+# 92 passed
+node --test casepath-qa/autonomous-evidence-identity-v2.test.cjs \
+  casepath-qa/sites-autonomous-entry.test.cjs
+# 24 passed
+node --test casepath-qa/unified-product-browser-v1.test.cjs
+# 34 passed
+```
+
+The browser fixture now separates the real 150 original IDs from the nine
+recorded native histories. Both complete timed presentations use explicitly
+mocked accepted histories and a virtual clock. They visit the nine canonical
+IDs in order without manual advancement, pause during modal inspection and
+hidden tabs, and stop on navigation. Replay issues zero POSTs; live issues one
+guarded Start per unprocessed original. Separate regressions cover recovered
+initial GETs, uncertain terminal admission with explicit exact-key retry,
+overlapping reads and conflicting same-revision hashes, linked-node reload,
+original/added scope reload and history, exact full correspondence, two-row
+mobile navigation, JPEG disclosure/focus and corrupted native bytes.
+
+Local screenshot and bounds inspection retains the exact long original
+`clm_e262801f9368bc12` at 1440px and 390×844px. The mobile header is 106px high,
+the full subject is 165px high, and its JPEG source button begins at y=633px,
+before the original body. Desktop sources align alongside the message at
+y=281px. The message is 16px and constrained to 72ch; neither viewport overflows
+horizontally. The exact subject and complete original body remain present.
+Receipts and screenshots are under
+`/tmp/casepath-original-clm_e262801f9368bc12-{1440,390}.{json,png}`; a separate
+actual corpus JPEG inspection is under
+`/tmp/casepath-original-jpeg-dialog-390.{json,png}`. Native viewer identity
+verification and Escape focus return passed.
+
+These are isolated mechanical checks, not visual acceptance, provider
+execution, nine-case qualification or hosted publication. No provider or
+production mutation was performed, and the source manifest remains unchanged.

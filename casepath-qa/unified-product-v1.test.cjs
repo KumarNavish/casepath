@@ -4,7 +4,7 @@ const {webcrypto,createHash}=require('node:crypto');
 if(!globalThis.crypto)globalThis.crypto=webcrypto;
 const ui=require('../casepath/assets/autonomous-workspace-v1.js');
 const hash=c=>c.repeat(64),sha=v=>createHash('sha256').update(v).digest('hex');
-const original=()=>({claim_id:'clm_original',title:'Original intake',mode:'unprocessed',status:'not_started',phase:'not_run',revision:0,state_sha256:hash('a'),graph:null,evaluation:null,source_preview:{text:'The original customer message.'},source_descriptors:[{claim_id:'clm_original',artifact_id:'message',file_name:'message.eml',media_type:'message/rfc822',sha256:hash('b')}],acquired_sources:[],facts:[],obligations:[],actions:[]});
+const original=()=>({claim_id:'clm_original',origin:'canonical_original',title:'Original intake',mode:'unprocessed',status:'not_started',phase:'not_run',revision:0,state_sha256:hash('a'),graph:null,evaluation:null,source_preview:{text:'The original customer message.'},source_descriptors:[{claim_id:'clm_original',artifact_id:'message',file_name:'message.eml',media_type:'message/rfc822',sha256:hash('b')}],acquired_sources:[],facts:[],obligations:[],actions:[]});
 const snapshot=s=>({state:s,projection:{claim_id:s.claim_id,revision:s.revision,state_sha256:s.state_sha256},events:[],current_revision:s.revision,current_state_sha256:s.state_sha256,cursor_sha256:null});
 test('revision zero requires an explicit source-bound unprocessed state and has no invented process',()=>{
  const s=original();assert.equal(ui.readState({state:s},s.claim_id).state,s);
@@ -22,7 +22,7 @@ test('full collection search and domain browsing use supplied presentation metad
  assert.equal(ui.matchingClaims(rows,{domain:'defect_mold_heating'}).length,50);
  assert.equal(ui.matchingClaims(rows,{search:'rare original'}).at(0).claim_id,'clm_149');
  const html=ui.collectionMarkup(rows);assert.match(html,/150/);assert.match(html,/Defects &amp; repairs/);assert.match(html,/Lease termination/);assert.match(html,/Rent changes/);assert.match(html,/Rare original passage/);
- const unclassified=ui.collectionMarkup([{...original(),title:'Mold termination rent increase'}]);assert.doesNotMatch(unclassified,/data-au-domain="defect_mold_heating"[^>]*>[\s\S]*?<strong>1/);
+ const unclassified=ui.collectionMarkup([{...original(),title:'Mold termination rent increase'}]);assert.doesNotMatch(unclassified,/data-au-domain="defect_mold_heating"[^>]*><span>[^<]*<\/span><strong>1/);
 });
 test('demonstration selection is exactly nine canonical identities with three per domain',()=>{
  assert.equal(ui.DEMO_CASES.length,9);assert.equal(new Set(ui.DEMO_CASES.map(x=>x.claim_id)).size,9);
@@ -56,4 +56,15 @@ test('replay binds prefix provenance and same-revision heads without confusing a
  for(const extra of [{provenance:{}},{current_revision:1},{current_event_sha256:null},{current_head:{...value.current_head,revision:3}},{current_head:{...value.current_head,state_sha256:hash('a')}},{current_head:{...value.current_head,event_sha256:hash('a')}},{provenance:{...provenance,sources:[{...state.source_descriptors[0],sha256:hash('9')}]}},{provenance:{...provenance,sources:[{...state.source_descriptors[0],size_bytes:999}]}},{provenance:{...provenance,source_map:[]}},{provenance:{...provenance,rule_pack_sha256:[]}}])assert.throws(()=>ui.readReplay({...value,...extra},state.claim_id,1),/replay|prefix|provenance|identity|head|binding/);
  const same={...value,current_revision:1,current_state_sha256:state.state_sha256,current_event_sha256:state.last_event_sha256,current_head:{revision:1,state_sha256:state.state_sha256,event_sha256:state.last_event_sha256}};
  assert.equal(ui.readReplay(same,state.claim_id,1).state,state);
+});
+test('original collection and added intakes retain separate explicit identities',()=>{
+ const rows=[{...original(),origin:'canonical_original'},{...original(),claim_id:'added',origin:'native_intake',title:'A native intake',mode:'saved',revision:1,status:'completed'}];
+ const html=ui.collectionMarkup(rows);assert.match(html,/data-au-claim="clm_original"/);assert.doesNotMatch(html,/data-au-claim="added"/);assert.match(html,/data-au-collection-count[^>]*>1 of 1/);
+ const added=ui.collectionMarkup(rows,{scope:'added'});assert.match(added,/data-au-claim="added"/);assert.doesNotMatch(added,/data-au-claim="clm_original"/);assert.match(added,/Added intake/);
+ assert.deepEqual(ui.matchingClaims(rows,{scope:'originals'}).map(row=>row.claim_id),['clm_original']);assert.deepEqual(ui.matchingClaims(rows,{scope:'added'}).map(row=>row.claim_id),['added']);
+});
+test('handling completion labels do not rewrite lifecycle codes or recorded legal outcomes',()=>{
+ const rows=['completed','complete','resolved'].map((status,index)=>({...original(),origin:'canonical_original',claim_id:`done_${index}`,status,revision:1,mode:'saved',outcome:{summary:'No settlement has been recorded.'}}));const before=JSON.stringify(rows);
+ const html=ui.collectionMarkup(rows);assert.match(html,/Investigation complete/);assert.doesNotMatch(html,/>Resolved</);assert.equal(ui.matchingClaims(rows,{filter:'investigation_complete'}).length,3);assert.equal(ui.matchingClaims(rows,{search:'investigation complete'}).length,3);
+ assert.match(ui.workMarkup(rows[2],{},null,[]),/No settlement has been recorded\./);assert.equal(JSON.stringify(rows),before);
 });

@@ -34,11 +34,13 @@
   const dateLabel = value => { const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value || '') : new Intl.DateTimeFormat('en', {dateStyle:'medium',timeStyle:'short'}).format(date); };
   const key = value => encodeURIComponent(String(value));
   const button = (label, attr, primary = false) => `<button type="button" class="${primary ? 'au-primary' : 'au-secondary'}" ${attr}>${h(label)}</button>`;
+  const complete = status => ['completed','complete','resolved'].includes(status);
+  const statusFilter = status => complete(status) ? 'investigation_complete' : status;
   const active = status => ['received', 'queued', 'running', 'working', 'investigating'].includes(status);
   const tone = status => ['completed', 'complete', 'resolved', 'established', 'satisfied', 'qualified'].includes(status) ? 'done' : ['deferred', 'blocked', 'failed', 'unresolved', 'unknown', 'quarantined'].includes(status) ? 'blocked' : active(status) || status === 'ready' ? 'active' : 'neutral';
-  const statusLabel = status => ({not_started:'Not started',not_run:'Not run',received:'Received', queued:'Queued', running:'Working', working:'Working', completed:'Completed', resolved:'Resolved', deferred:'Deferred', failed:'Stopped', ready:'Ready', true:'Applies', false:'Does not apply', insufficient:'Insufficient evidence', prepared_not_sent:'Prepared · not sent', not_reached:'Not reached', inactive:'Does not apply', unresolved:'Evidence needed', blocked:'Waiting for prerequisites', established:'Established', satisfied:'Satisfied', needed_now:'Needed now', needed_later:'Needed later', held_behind_question:'Depends on unresolved evidence', held_not_reviewed:'Acquired · not established', not_needed:'Not required', optional:'Optional'})[status] || words(status) || 'Not recorded';
+  const statusLabel = status => ({not_started:'Not started',not_run:'Not run',received:'Received', queued:'Queued', running:'Working', working:'Working', completed:'Investigation complete', complete:'Investigation complete', resolved:'Investigation complete', investigation_complete:'Investigation complete', deferred:'Deferred', failed:'Stopped', ready:'Ready', true:'Applies', false:'Does not apply', insufficient:'Insufficient evidence', prepared_not_sent:'Prepared · not sent', not_reached:'Not reached', inactive:'Does not apply', unresolved:'Evidence needed', blocked:'Waiting for prerequisites', established:'Established', satisfied:'Satisfied', needed_now:'Needed now', needed_later:'Needed later', held_behind_question:'Depends on unresolved evidence', held_not_reviewed:'Acquired · not established', not_needed:'Not required', optional:'Optional'})[status] || words(status) || 'Not recorded';
   const isHash = value => /^[a-f0-9]{64}$/i.test(value || '');
-  const originalText = state => typeof state.source_preview === 'string' ? state.source_preview : state.source_preview?.text || state.message || state.original_binding?.intake?.customer_message?.body || '';
+  const originalText = state => state.message || state.original_binding?.intake?.customer_message?.body || (typeof state.source_preview === 'string' ? state.source_preview : state.source_preview?.text) || '';
   const domainOf = claim => claim.browse_metadata?.domain || '';
 
   function readState(response, claimId) {
@@ -323,7 +325,7 @@
     const gaps = list(outcome.missing_evidence).length, limits = list(outcome.authority_limits).length;
     const summary = [statusLabel(state.status), gaps ? `${gaps} evidence gap${gaps === 1 ? '' : 's'}` : '', limits ? `${limits} execution limit${limits === 1 ? '' : 's'}` : ''].filter(Boolean).join(' · ');
     const reason = outcome.reason || outcome.authority_limits?.[0] || outcome.summary || outcome.title;
-    return `<details class="au-outcome" data-status="${h(state.status)}" data-au-disclosure="outcome"><summary><strong>${h(summary)}</strong><span>${h(reason)}</span></summary><div class="au-outcome-body"><p class="au-eyebrow">${state.status === 'deferred' ? 'Why work stopped' : 'Recorded outcome'}</p><h2>${h(outcome.title || statusLabel(outcome.status || state.status))}</h2><p>${h(outcome.summary || outcome.reason || '')}</p>${list(outcome.authority_limits).map(reason => `<p>${h(reason)}</p>`).join('')}${gaps ? `<p><strong>Evidence still needed:</strong> ${h(outcome.missing_evidence.map(item => item.label || words(item.document_type)).join('; '))}.</p>${button('Add supporting files','data-au-add-files')}` : ''}${list(outcome.unresolved_facts).length ? `<p><strong>Unresolved:</strong> ${h(outcome.unresolved_facts.map(item => item.summary || words(item.fact_id)).join('; '))}.</p>` : ''}${outcome.next_action ? `<p>${h(outcome.next_action)}</p>` : ''}${sourceButtons(state,outcome)}${outcome.request_draft ? `<details data-au-disclosure="request-draft"><summary>Evidence request · ${h(statusLabel(outcome.request_draft.status))}</summary><p><strong>${h(outcome.request_draft.subject)}</strong></p><pre class="au-draft-body">${h(outcome.request_draft.body)}</pre></details>` : ''}<details class="au-technical-record" data-au-disclosure="outcome-record"><summary>Full public ${state.outcome ? 'outcome' : state.deferral ? 'deferral' : 'outcome'} record</summary><pre class="au-record-body">${h(JSON.stringify(state.outcome || state.deferral || outcome,null,2))}</pre></details></div></details>`;
+    return `<details class="au-outcome" data-status="${h(state.status)}" data-au-disclosure="outcome"><summary><strong>${h(summary)}</strong><span>${h(reason)}</span></summary><div class="au-outcome-body"><p class="au-eyebrow">${state.status === 'deferred' ? 'Why work stopped' : 'Recorded outcome'}</p><h2>${h(outcome.title || words(outcome.status) || statusLabel(state.status))}</h2><p>${h(outcome.summary || outcome.reason || '')}</p>${list(outcome.authority_limits).map(reason => `<p>${h(reason)}</p>`).join('')}${gaps ? `<p><strong>Evidence still needed:</strong> ${h(outcome.missing_evidence.map(item => item.label || words(item.document_type)).join('; '))}.</p>${button('Add supporting files','data-au-add-files')}` : ''}${list(outcome.unresolved_facts).length ? `<p><strong>Unresolved:</strong> ${h(outcome.unresolved_facts.map(item => item.summary || words(item.fact_id)).join('; '))}.</p>` : ''}${outcome.next_action ? `<p>${h(outcome.next_action)}</p>` : ''}${sourceButtons(state,outcome)}${outcome.request_draft ? `<details data-au-disclosure="request-draft"><summary>Evidence request · ${h(statusLabel(outcome.request_draft.status))}</summary><p><strong>${h(outcome.request_draft.subject)}</strong></p><pre class="au-draft-body">${h(outcome.request_draft.body)}</pre></details>` : ''}<details class="au-technical-record" data-au-disclosure="outcome-record"><summary>Full public ${state.outcome ? 'outcome' : state.deferral ? 'deferral' : 'outcome'} record</summary><pre class="au-record-body">${h(JSON.stringify(state.outcome || state.deferral || outcome,null,2))}</pre></details></div></details>`;
   }
   function sourcesMarkup(state, readOnly = false) {
     return `<section class="au-supporting"><div class="au-section-heading"><h2>Original sources</h2><span>${list(state.acquired_sources).length} of ${list(state.source_descriptors).length} acquired</span></div><ul class="au-source-list">${list(state.source_descriptors).map(source => {const acquired = list(state.acquired_sources).find(row => row.artifact_id === source.artifact_id);return `<li>${button(source.file_name || name(source) || 'Original source', `data-au-source="${h(source.artifact_id)}" data-au-source-origin="originals:${h(source.artifact_id)}"`)}<span>${!acquired ? 'Received' : acquired.extraction === 'unsupported_metadata' ? 'Received · interpretation unsupported' : acquired.complete ? 'Extracted · sufficiency not established' : 'Partially extracted'}</span></li>`;}).join('') || '<li>No original source recorded.</li>'}</ul>${state.revision > 0 && !readOnly ? '<form data-au-arrival class="au-arrival"><label for="auAdditionalFiles">Add supporting files</label><input id="auAdditionalFiles" name="files" type="file" multiple required><button class="au-secondary" type="submit">Add files</button><p class="au-form-status" role="status"></p></form>' : ''}</section>`;
@@ -334,7 +336,7 @@
   function workMarkup(state, projection, selected, events, detail = 'step', context = {}, presentation = {}) {
     const mode = presentation.mode === 'replay' ? 'Verified replay' : presentation.mode === 'live' ? 'Live execution' : 'Saved state';
     const presentationControls = presentation.playing ? button('Pause presentation','data-au-demo-stop') : '';
-    if (state.revision === 0) return `<header class="au-work-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button> / Original intake</p><h1 class="au-page-heading" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(state.title)}</h1><p class="au-meta" data-au-presentation-mode>${h(mode)}</p></div><div class="au-work-controls"><span class="au-status">Not started</span>${presentation.mode !== 'replay' ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>Start investigation</button>` : ''}${presentationControls}</div></header><section class="au-original-intake" aria-labelledby="auOriginalMessage"><p class="au-eyebrow">Original customer message</p><h2 id="auOriginalMessage" class="au-sr-only">Original message</h2><pre class="au-original-message">${h(originalText(state))}</pre>${sourcesMarkup(state)}<p class="au-meta" data-au-start-availability>${h(presentation.mode === 'replay' ? 'No investigation had started at this point in the recorded history.' : presentation.availability?.reason || 'Checking live execution availability…')}</p></section>${presentation.replay ? replayIdentityMarkup(presentation.replay) : ''}`;
+    if (state.revision === 0) return `<header class="au-work-head au-original-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button> / Original intake</p><h1 class="au-page-heading au-original-subject" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(state.title)}</h1><p class="au-meta" data-au-presentation-mode>${h(mode)}</p></div><div class="au-work-controls"><span class="au-status">Not started</span>${presentation.mode !== 'replay' ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>Start investigation</button>` : ''}${presentationControls}</div></header><section class="au-original-intake" aria-labelledby="auOriginalMessage"><div class="au-original-layout"><aside class="au-original-source-rail" aria-label="Original sources">${sourcesMarkup(state)}</aside><div class="au-original-message-column"><p class="au-eyebrow">Original customer message</p><h2 id="auOriginalMessage" class="au-sr-only">Original message</h2><pre class="au-original-message">${h(originalText(state))}</pre></div></div><p class="au-meta" data-au-start-availability>${h(presentation.mode === 'replay' ? 'No investigation had started at this point in the recorded history.' : presentation.availability?.reason || 'Checking live execution availability…')}</p></section>${presentation.replay ? replayIdentityMarkup(presentation.replay) : ''}`;
     const outcome = state.outcome || (state.deferral ? {title:words(state.deferral.code),reason:state.deferral.reason,status:'deferred',details:state.deferral.details} : null);
     const panels = [['step','Evidence path',inspectorMarkup(state,selected,projection,events,context)],['documents','Documents',`<section aria-labelledby="auDocumentsTitle" class="au-documents"><div class="au-section-heading"><h2 id="auDocumentsTitle">All document requirements</h2><span>${new Set([...list(state.obligations),...list(state.evaluation?.documents)].map(item => item.document_type)).size} documents</span></div><p class="au-meta">Requirements follow the recorded route. Acquiring a file does not establish its facts.</p>${obligationMarkup(state,selected)}</section>`],['sources','Original sources',sourcesMarkup(state,presentation.mode === 'replay')],['activity','Recorded work',activityMarkup(state,events,projection)]];
     return `<header class="au-work-head au-identity-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button><span aria-hidden="true"> / </span>Claim · revision ${h(state.revision)}</p><h1 class="au-page-heading" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(state.title)}</h1><p class="au-meta"><span data-au-presentation-mode>${h(mode)}</span> · ${h(state.graph?.title || state.graph?.label || 'Source-grounded investigation')}${state.phase ? ` · Recorded phase: ${h(words(state.phase))}` : ''}</p></div><div class="au-work-controls"><span class="au-status" data-tone="${tone(state.status)}">${h(statusLabel(state.status))}</span>${presentation.mode !== 'replay' ? state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${presentation.pendingStart && presentation.mode !== 'replay' ? button('Retry start','data-au-start') : ''}${presentationControls}</div></header>${active(state.status) ? `<p class="au-evidence-working" role="status" aria-live="polite">${h(state.phase_summary || progressModel(state,events).explanation)}</p>` : ''}${outcomeMarkup(state,outcome)}<section class="au-evidence-canvas" data-au-canvas aria-label="Connected claim evidence"><div class="au-evidence-toolbar"><nav class="au-context-nav" aria-label="Claim details">${panels.map(([id,label]) => `<button type="button" data-au-detail="${id}" aria-pressed="${detail === id}" aria-controls="auPanel-${id}">${h(label)}</button>`).join('')}</nav><span class="au-evidence-packet-count">${list(state.source_descriptors).length} originals</span></div><div class="au-evidence-stage" data-au-evidence-stage><svg class="au-evidence-tether" data-au-tether aria-hidden="true"><path/></svg><section class="au-process-hero au-evidence-process" aria-labelledby="auProcessTitle"${detail === 'step' ? '' : ' hidden'}><h2 id="auProcessTitle" class="au-sr-only">Complete process</h2>${graphMarkup(state,selected,projection)}</section><div class="au-context-body" data-au-context="${h(detail)}">${panels.map(([id,label,body]) => `<section class="au-context-view" id="auPanel-${id}" data-au-panel="${id}" aria-label="${h(label)}"${detail === id ? '' : ' hidden'}>${body}</section>`).join('')}</div></div></section>${presentation.replay ? replayIdentityMarkup(presentation.replay) : ''}`;
@@ -388,9 +390,18 @@
     }).join('');
     return `<header class="au-work-head au-identity-knowledge-head"><div><p class="au-eyebrow">A memory with a source</p><h1 class="au-page-heading" tabindex="-1">Knowledge in context.</h1></div></header><p class="au-lead">Qualified process definitions carry their origin, checks and applicability into the next investigation. Case values and original files stay with their claim.</p><div class="au-knowledge-summary"><span><strong>${versions.length}</strong> recorded versions</span><span><strong>${uses.length}</strong> recorded uses</span><span><strong>${quarantined.length}</strong> quarantined candidates</span></div><div class="au-knowledge-grid">${cards || '<p class="au-empty">No qualified knowledge version has been published.</p>'}</div>${uses.length ? `<details class="au-knowledge-reuse au-evidence-inspection" data-au-disclosure="all-knowledge-uses"><summary>All recorded reuse <span>${uses.length}</span></summary><ul class="au-event-list">${uses.map(use => `<li><div><strong>${h(use.name || use.knowledge_id || use.version_id)} · version ${h(use.version || use.version_id)}</strong>${reuseDetails(use)}${knowledgeLink(use)}${use.claim_id ? claimLink(use.claim_id,'Open receiving claim') : ''}</div></li>`).join('')}</ul></details>` : ''}<details class="au-history au-quarantine" data-au-disclosure="quarantine"><summary>Quarantined candidates <span>${quarantined.length}</span></summary><ul class="au-event-list">${quarantined.map(item => `<li><div><strong>${h(name(item) || item.candidate_id || item.knowledge_id || 'Quarantined candidate')}</strong><p>${h(item.qualification?.reason || item.reason || item.summary || 'No qualification recorded')}</p>${item.source_claim_id ? claimLink(item.source_claim_id,'Open source claim') : ''}<details class="au-technical-record"><summary>Public quarantine record</summary><pre class="au-record-body">${h(JSON.stringify(item,null,2))}</pre></details></div></li>`).join('') || '<li>No quarantined candidates.</li>'}</ul></details>`;
   }
-  function matchingClaims(claims, {search = '', filter = 'all', domain = 'all'} = {}) {
+  function collectionRows(claims, scope = 'all') {
+    return list(claims).filter(claim => scope === 'all' || (scope === 'originals' ? claim.origin === 'canonical_original' : claim.origin !== 'canonical_original'));
+  }
+  function collectionFilters(rows) {
+    return [...new Set(['all','not_started','working','deferred','investigation_complete',...rows.map(claim => statusFilter(claim.status)).filter(status => status && !active(status))])];
+  }
+  function collectionCounts(rows, scope) {
+    return [[scope === 'added' ? 'Added cases' : 'Original cases',rows.length],['In progress',rows.filter(claim => active(claim.status)).length],['Deferred',rows.filter(claim => claim.status === 'deferred').length],['Investigation complete',rows.filter(claim => complete(claim.status)).length]];
+  }
+  function matchingClaims(claims, {search = '', filter = 'all', domain = 'all', scope = 'all'} = {}) {
     const terms = search.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-    return list(claims).filter(claim => (domain === 'all' || domainOf(claim) === domain) && (filter === 'all' || filter === 'working' && active(claim.status) || claim.status === filter) && terms.every(term => [claim.claim_id,claim.title,originalText(claim),claim.language,claim.channel,statusLabel(claim.status),claim.phase,claim.phase_summary,claim.outcome?.summary,claim.outcome?.reason,claimConstraint(claim),claim.browse_metadata?.family_id].filter(Boolean).join(' ').toLocaleLowerCase().includes(term)));
+    return collectionRows(claims,scope).filter(claim => (domain === 'all' || domainOf(claim) === domain) && (filter === 'all' || filter === 'working' && active(claim.status) || statusFilter(claim.status) === statusFilter(filter)) && terms.every(term => [claim.claim_id,claim.title,originalText(claim),claim.language,claim.channel,statusLabel(claim.status),claim.phase,claim.phase_summary,claim.outcome?.summary,claim.outcome?.reason,claimConstraint(claim),claim.browse_metadata?.family_id].filter(Boolean).join(' ').toLocaleLowerCase().includes(term)));
   }
   function claimConstraint(claim) {
     const outcome = claim.outcome;
@@ -402,17 +413,16 @@
       const unprocessed = claim.mode === 'unprocessed' || claim.status === 'not_started';
       const constraint = originalText(claim).slice(0,240) || claimConstraint(claim) || claim.outcome?.summary || (active(claim.status) ? claim.phase_summary : 'Open original sources and recorded work.');
       const native = [claim.language === 'de-CH' ? 'Deutsch' : claim.language === 'en' ? 'English' : claim.language,claim.channel,Number.isSafeInteger(claim.attachment_count) ? `${claim.attachment_count} attachment${claim.attachment_count === 1 ? '' : 's'}` : ''].filter(Boolean);
-      return `<article class="au-claim-row au-identity-claim-row" data-au-claim-row="${h(claim.claim_id)}"><button type="button" class="au-claim-open" data-au-claim="${h(claim.claim_id)}"><strong>${h(claim.title || 'Untitled claim')}</strong>${constraint ? `<span class="au-claim-constraint">${h(constraint)}</span>` : ''}<span class="au-claim-phase">${h(native.join(' · '))}${native.length ? ' · ' : ''}${unprocessed ? 'Original intake' : claim.phase ? `Recorded phase: ${h(words(claim.phase))}` : 'Saved work'}${Number.isSafeInteger(claim.revision) && !unprocessed ? ` · revision ${h(claim.revision)}` : ''}</span></button><span class="au-status" data-tone="${tone(claim.status)}">${h(statusLabel(claim.status))}</span></article>`;
+      return `<article class="au-claim-row au-identity-claim-row" data-au-claim-row="${h(claim.claim_id)}"><button type="button" class="au-claim-open" data-au-claim="${h(claim.claim_id)}"><strong>${h(claim.title || 'Untitled claim')}</strong>${constraint ? `<span class="au-claim-constraint">${h(constraint)}</span>` : ''}<span class="au-claim-phase">${claim.origin !== 'canonical_original' ? `${claim.origin === 'native_intake' ? 'Added intake' : 'Origin not recorded'} · ` : ''}${h(native.join(' · '))}${native.length ? ' · ' : ''}${unprocessed ? 'Original intake' : claim.phase ? `Recorded phase: ${h(words(claim.phase))}` : 'Saved work'}${Number.isSafeInteger(claim.revision) && !unprocessed ? ` · revision ${h(claim.revision)}` : ''}</span></button><span class="au-status" data-tone="${tone(claim.status)}">${h(statusLabel(claim.status))}</span></article>`;
     }).join('') || `<p class="au-empty">${list(claims).length ? 'No cases match this search.' : 'No cases are available.'}</p>`;
   }
   function domainMarkup(claims, domain = 'all') {
     return `<nav class="au-domain-browse" aria-label="Browse case domains"><button type="button" data-au-domain="all" aria-pressed="${domain === 'all'}"><span>All cases</span><strong>${claims.length}</strong></button>${DOMAINS.map(item => `<button type="button" data-au-domain="${item.id}" aria-pressed="${domain === item.id}"${claims.some(claim => domainOf(claim) === item.id) ? '' : ' disabled'}><span>${h(item.label)}</span><strong>${claims.filter(claim => domainOf(claim) === item.id).length}</strong></button>`).join('')}</nav>`;
   }
   function collectionMarkup(claims, options = {}) {
-    const {search = '', filter = 'all', domain = 'all'} = options;
-    const rows = list(claims), filters = [...new Set(['all','not_started','working','deferred','completed','resolved',...rows.map(claim => claim.status).filter(status => status && !active(status))])];
-    const counts = [['Original cases',rows.filter(claim => claim.origin === 'canonical_original').length],['In progress',rows.filter(claim => active(claim.status)).length],['Deferred',rows.filter(claim => claim.status === 'deferred').length],['Resolved',rows.filter(claim => claim.status === 'resolved').length]];
-    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><p class="au-eyebrow">Case collection</p><h1 class="au-page-heading" tabindex="-1">Every case has a source.</h1><p class="au-lead">Explore the original intake, then follow the work that actually exists.</p></div>${button('New claim','data-au-nav="intake"',true)}</header>${domainMarkup(rows,domain)}<div class="au-collection-summary">${counts.map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('')}</div><div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Original message, title or case ID" autocomplete="off"></label><label for="auClaimFilter">Status<select id="auClaimFilter" data-au-claim-filter>${filters.map(value => `<option value="${h(value)}"${filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</option>`).join('')}</select></label><button type="button" class="au-link" data-au-refresh-claims>Refresh</button></div><div class="au-section-heading"><h2>Cases</h2><span data-au-collection-count>${matchingClaims(rows,options).length} of ${rows.length}</span></div><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,options)}</div><p class="au-meta au-collection-origin">Original collection records retain their canonical identity. Additional saved intakes retain their own history.</p></section>`;
+    const {search = '', domain = 'all', scope = 'originals'} = options, filter = statusFilter(options.filter || 'all');
+    const rows = collectionRows(claims,scope), filters = collectionFilters(rows), counts = collectionCounts(rows,scope), matching = {...options,scope,filter};
+    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><p class="au-eyebrow">${scope === 'added' ? 'Added cases' : 'Original case collection'}</p><h1 class="au-page-heading" tabindex="-1">Every case has a source.</h1><p class="au-lead">${scope === 'added' ? 'Additional intakes retain their own sources and recorded history.' : 'Explore the 150 original intakes, then follow the work that actually exists.'}</p></div>${button('New claim','data-au-nav="intake"',true)}</header><nav class="au-collection-scope" aria-label="Case collection"><button type="button" data-au-collection-scope="originals" aria-pressed="${scope === 'originals'}">Original cases <span>${collectionRows(claims,'originals').length}</span></button><button type="button" data-au-collection-scope="added" aria-pressed="${scope === 'added'}">Added cases <span>${collectionRows(claims,'added').length}</span></button></nav>${scope === 'originals' ? domainMarkup(rows,domain) : ''}<div class="au-collection-summary">${counts.map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('')}</div><div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Original message, title or case ID" autocomplete="off"></label><label for="auClaimFilter">Status<select id="auClaimFilter" data-au-claim-filter>${filters.map(value => `<option value="${h(value)}"${filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</option>`).join('')}</select></label><button type="button" class="au-link" data-au-refresh-claims>Refresh</button></div><div class="au-section-heading"><h2>${scope === 'added' ? 'Added cases' : 'Cases'}</h2><span data-au-collection-count>${matchingClaims(rows,matching).length} of ${rows.length}</span></div><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,matching)}</div></section>`;
   }
   function liveAvailability(status) {
     if (!status) return {ready:false,reason:'Checking live execution availability…'};
@@ -525,16 +535,16 @@
     const doc = container.ownerDocument, fetcher = options.fetch || root.fetch?.bind(root), base = options.apiBase || BASE;
     const mainTag = container.tagName === 'MAIN' ? 'div' : 'main';
     if (!fetcher) throw new Error('The autonomous API is unavailable.');
-    let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, sourceEpoch = 0, polling = null;
+    let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, sourceEpoch = 0, polling = null, claimRead = 0;
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'replay', demoSession = null, demoTimer = null, pendingStart = null, nativeSourceURL = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null;
     const controllers = new Set();
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
     let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0;
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
-    const collection = {search:'',filter:'all',domain:'all'};
+    const collection = {search:'',filter:'all',domain:'all',scope:'originals'};
     container.classList.add('au-workspace');
-    container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Evidence into action</span></a><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button><button type="button" data-au-nav="intake">New claim <span aria-hidden="true">↗</span></button></nav></header><${mainTag} class="au-main"><div class="au-global-status" role="status" aria-live="polite"></div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog>`;
+    container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Evidence into action</span></a><button type="button" class="au-header-new" data-au-nav="intake">New claim <span aria-hidden="true">↗</span></button><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav></header><${mainTag} class="au-main"><div class="au-global-status" role="status" aria-live="polite"></div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog>`;
     const host = container.querySelector('[data-au-view]'), globalStatus = container.querySelector('.au-global-status'), dialog = container.querySelector('dialog');
     function notice(message, error = false) { globalStatus.textContent = message; globalStatus.classList.toggle('au-error', error); }
     function route(fragment, writeHistory = true) {
@@ -554,9 +564,9 @@
         catch (_) { showWork(false); }
       } else if (fragment.startsWith('#autonomous/demonstration')) { const params = new URLSearchParams(fragment.split('?')[1] || ''); demoMode = params.get('mode') === 'live' ? 'live' : 'replay'; showDemonstration(false); }
       else if (fragment.startsWith('#autonomous/cases?') || fragment.startsWith('#autonomous/work?')) {
-        const params = new URLSearchParams(fragment.split('?')[1]); collection.search = params.get('q') || ''; collection.filter = params.get('status') || 'all'; collection.domain = params.get('domain') || 'all'; showWork(false);
+        const params = new URLSearchParams(fragment.split('?')[1]); collection.search = params.get('q') || ''; collection.filter = statusFilter(params.get('status') || 'all'); collection.domain = params.get('domain') || 'all'; collection.scope = params.get('scope') === 'added' ? 'added' : 'originals'; showWork(false);
       } else if (['#autonomous/new','#autonomous/intake'].includes(fragment)) showIntake(false);
-      else showWork(false);
+      else { collection.search = ''; collection.filter = 'all'; collection.domain = 'all'; collection.scope = 'originals'; showWork(false); }
     }
     async function request(path, init = {}) {
       const controller = new AbortController(); controllers.add(controller);
@@ -604,7 +614,7 @@
       if (token.disclosure) return [...host.querySelectorAll('[data-au-disclosure]')].find(el => el.dataset.auDisclosure === token.disclosure && focusEligible(el.querySelector('summary'),token))?.querySelector('summary');
       return [...host.querySelectorAll(`[${token.attr}]`)].find(el => el.getAttribute(token.attr) === token.value && el.getAttribute('data-au-citation') === token.citation && el.getAttribute('data-au-source-origin') === token.origin && focusEligible(el,token));
     }
-    function nav(name) { container.querySelectorAll('.au-nav [data-au-nav]').forEach(item => { if (item.dataset.auNav === name) item.setAttribute('aria-current','page'); else item.removeAttribute('aria-current'); }); }
+    function nav(name) { container.querySelectorAll('.au-identity-header [data-au-nav]').forEach(item => { if (item.dataset.auNav === name) item.setAttribute('aria-current','page'); else item.removeAttribute('aria-current'); }); }
     function connectionGeometry(surface, pairs) {
       const svg = surface?.querySelector?.('.au-evidence-lines'), frame = surface?.getBoundingClientRect?.();
       if (!svg || !frame?.width || !frame.height || surface.closest?.('[hidden],details:not([open])')) return null;
@@ -757,10 +767,10 @@
     async function poll() {
       const token = epoch, id = current?.claim_id;
       if (!id || disposed || view !== 'claim' || presentationMode === 'replay' || polling === token) return;
-      polling = token;
+      polling = token; const read = ++claimRead;
       try {
         const incoming = await consistentRead(id,cursor,disconnected);
-        if (disposed || token !== epoch || view !== 'claim') return;
+        if (disposed || token !== epoch || view !== 'claim' || read !== claimRead) return;
         const accepted = incoming.accepted;
         if (!accepted.ready) return;
         verifiedAdvance(incoming);
@@ -771,13 +781,14 @@
         history = [...existing.values()].sort((a,b) => a.seq-b.seq);
         selected = preferredNode(current,selected);
         if (changed) { renderClaim(changes); rememberClaim(current); }
-        if (disconnected) notice('Connection restored. Showing saved work.'); else notice('');
-        disconnected = false;
+        if (connectionFailed) notice('Connection restored. Showing saved work.'); else notice('');
+        disconnected = false; connectionFailed = false;
         advanceLivePresentation();
-      } catch (error) { if (!disposed && token === epoch) { disconnected = true; notice(`Updates paused: ${error.message} Saved work remains visible.`, true); } }
+      } catch (error) { if (!disposed && token === epoch && read === claimRead) { disconnected = true; connectionFailed = true; notice(`Updates paused: ${error.message} Saved work remains visible.`, true); } }
       finally { if (polling === token) polling = null; if (!disposed && token === epoch && view === 'claim') schedule(); }
     }
     async function loadOpenedClaim(id, token, preferences = openingPreferences) {
+      const read = ++claimRead;
       try {
         let incoming;
         // Old servers still need paired reads. Three attempts stay bounded;
@@ -785,24 +796,27 @@
         for (let attempt = 0; attempt < 3; attempt++) {
           try { incoming = await consistentRead(id,null,true,token); }
           catch (error) { if (!error.transientAdvance) throw error; incoming = null; }
-          if (disposed || token !== epoch || view !== 'claim' || id !== openingId) return;
+          if (disposed || token !== epoch || view !== 'claim' || id !== openingId || read !== claimRead) return;
           if (incoming?.accepted.ready) break;
         }
         if (!incoming?.accepted.ready) {
           const error = new Error('The writer advanced while the claim was opening. Checking again automatically.'); error.transientAdvance = true; throw error;
         }
+        verifiedAdvance(incoming);
+        const initial = !current, changed = initial || current.state_sha256 !== incoming.state.state_sha256 || JSON.stringify(projection) !== JSON.stringify(incoming.projection);
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events;
-        const previous = claimViews.get(id);
+        const previous = initial ? claimViews.get(id) : {selected,evidenceContext,detail};
         selected = preferredNode(current,previous?.selected); evidenceContext = previous?.evidenceContext || {};
         detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
-        renderClaim(); rememberClaim(current); notice(''); focusTitle(); schedule();
+        if (changed) renderClaim(); rememberClaim(current); notice(''); if (initial) focusTitle(); schedule();
+        resumeLivePresentation();
         if (!claimsLoaded) loadClaims(token).catch(() => {});
         serviceStatus(token).catch(() => {});
         return current;
       } catch (error) {
-        if (!disposed && token === epoch && view === 'claim') {
+        if (!disposed && token === epoch && view === 'claim' && read === claimRead) {
           notice(error.message,true);
-          host.innerHTML = button('Retry opening claim',`data-au-claim="${h(id)}"`);
+          if (!current) host.innerHTML = button('Retry opening claim',`data-au-claim="${h(id)}"`);
           if (error.transientAdvance || !error.status || error.status >= 500) schedule();
         }
       }
@@ -816,7 +830,7 @@
     async function openClaim(id, writeHistory = true, preferences = {}) {
       if (!preferences.demo) stopPresentation();
       leaveView(); route(claimFragment(id,preferences),writeHistory);
-      epoch++; const token = epoch; cancelPoll(); motion?.cancel(); setView('claim'); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo ? 'demonstration' : 'work'); notice(presentationMode === 'replay' ? 'Verifying recorded history…' : 'Opening saved claim…');
+      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo ? 'demonstration' : 'work'); notice(presentationMode === 'replay' ? 'Verifying recorded history…' : 'Opening saved claim…');
       host.innerHTML = '<p class="au-empty">Loading the saved claim.</p>';
       if (presentationMode !== 'replay') return loadOpenedClaim(id,token,preferences);
       try {
@@ -834,9 +848,9 @@
       if (!queue) return;
       queue.innerHTML = claims.slice(0,6).map(claim => `<button type="button" class="au-recent-claim" data-au-claim="${h(claim.claim_id)}"${current?.claim_id === claim.claim_id && view === 'claim' ? ' aria-current="page"' : ''}><strong>${h(claim.title || 'Untitled claim')}</strong><span data-tone="${tone(claim.status)}">${h(statusLabel(claim.status))}</span></button>`).join('') || '<p class="au-empty">No saved claims yet.</p>';
     }
-    function rememberClaim(state) {
+    function rememberClaim(state, origin) {
       const index = claims.findIndex(row => row.claim_id === state.claim_id);
-      const summary = {...(index >= 0 ? claims[index] : {}),claim_id:state.claim_id,title:state.title,status:state.status,phase:state.phase,phase_summary:state.phase_summary,revision:state.revision,state_sha256:state.state_sha256,updated_at:state.updated_at,outcome:state.outcome,mode:state.revision === 0 ? 'unprocessed' : 'saved'};
+      const summary = {...(index >= 0 ? claims[index] : {}),...(origin ? {origin} : {}),claim_id:state.claim_id,title:state.title,status:state.status,phase:state.phase,phase_summary:state.phase_summary,revision:state.revision,state_sha256:state.state_sha256,updated_at:state.updated_at,outcome:state.outcome,mode:state.revision === 0 ? 'unprocessed' : 'saved'};
       if (index >= 0) {
         if (!Number.isSafeInteger(claims[index].revision) || claims[index].revision <= summary.revision) claims[index] = summary;
       } else claims.unshift(summary);
@@ -845,16 +859,21 @@
     function refreshCollection() {
       if (view !== 'work') return;
       const output = host.querySelector('[data-au-claims]'); if (output) output.innerHTML = claimsMarkup(claims,collection);
-      const count = host.querySelector('[data-au-collection-count]'); if (count) count.textContent = `${matchingClaims(claims,collection).length} of ${claims.length}`;
+      const scoped = collectionRows(claims,collection.scope);
+      const count = host.querySelector('[data-au-collection-count]'); if (count) count.textContent = `${matchingClaims(scoped,collection).length} of ${scoped.length}`;
       const summary = host.querySelector('.au-collection-summary');
-      if (summary) summary.innerHTML = [['Original cases',claims.filter(claim => claim.origin === 'canonical_original').length],['In progress',claims.filter(claim => active(claim.status)).length],['Deferred',claims.filter(claim => claim.status === 'deferred').length],['Resolved',claims.filter(claim => claim.status === 'resolved').length]].map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('');
+      if (summary) summary.innerHTML = collectionCounts(scoped,collection.scope).map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('');
+      for (const control of host.querySelectorAll('[data-au-collection-scope]')) {
+        control.setAttribute('aria-pressed',String(collection.scope === control.dataset.auCollectionScope));
+        const number = control.querySelector('span'); if (number) number.textContent = String(collectionRows(claims,control.dataset.auCollectionScope).length);
+      }
       for (const control of host.querySelectorAll('[data-au-domain]')) {
-        const id = control.dataset.auDomain, count = id === 'all' ? claims.length : claims.filter(claim => domainOf(claim) === id).length;
+        const id = control.dataset.auDomain, count = id === 'all' ? scoped.length : scoped.filter(claim => domainOf(claim) === id).length;
         control.setAttribute('aria-pressed',String(collection.domain === id)); control.disabled = id !== 'all' && !count;
         const number = control.querySelector('strong'); if (number) number.textContent = String(count);
       }
       const filter = host.querySelector('[data-au-claim-filter]');
-      if (filter) { const options = [...new Set(['all','not_started','working','deferred','completed','resolved',...claims.map(claim => claim.status).filter(status => status && !active(status))])]; filter.innerHTML = options.map(value => `<option value="${h(value)}"${collection.filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</option>`).join(''); }
+      if (filter) filter.innerHTML = collectionFilters(scoped).map(value => `<option value="${h(value)}"${collection.filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</option>`).join('');
     }
     async function loadClaims(token = epoch) {
       const read = ++claimsRead;
@@ -890,6 +909,7 @@
         const availability = host.querySelector('[data-au-start-availability]'); if (availability) availability.textContent = liveAvailability(status).reason;
       }
       if (view === 'demonstration') refreshDemonstration();
+      resumeLivePresentation();
       const service = host.querySelector('[data-au-service]');
       const allowanceMessage = status.limits?.autonomous_can_start === false ? new Map([
         ['call_limit_reached','The recorded call allowance does not permit more autonomous work.'],
@@ -903,6 +923,7 @@
     }
     function collectionFragment() {
       const params = new URLSearchParams();
+      if (collection.scope === 'added') params.set('scope','added');
       if (collection.search) params.set('q',collection.search);
       if (collection.filter !== 'all') params.set('status',collection.filter);
       if (collection.domain !== 'all') params.set('domain',collection.domain);
@@ -939,15 +960,13 @@
     async function openPresentationCase(session) {
       if (demoSession !== session || disposed) return;
       if (session.index >= DEMO_CASES.length) { stopPresentation(); notice('The selected recorded histories have been inspected.'); renderClaim(); return; }
-      const id = DEMO_CASES[session.index].claim_id;
+      const id = DEMO_CASES[session.index].claim_id; session.claimId = id; session.startAttempted = false;
       await openClaim(id,true,{mode:session.mode,through:0,demo:true});
       if (demoSession !== session || !current || disposed) return;
       if (session.mode === 'replay') {
         if (!replayRecord.current_revision) { stopPresentation(); renderClaim(); notice('This original case has no accepted execution to replay. Its original sources remain available.'); return; }
         demoTimer = root.setTimeout(() => replayTick(session,epoch),1400);
-      } else if (current.revision === 0) {
-        await startOriginal(host.querySelector('[data-au-start]'));
-      } else advanceLivePresentation();
+      } else { resumeLivePresentation(); advanceLivePresentation(); }
     }
     async function replayTick(session, token) {
       demoTimer = null;
@@ -967,11 +986,26 @@
         demoTimer = root.setTimeout(() => replayTick(session,token),through >= replayRecord.current_revision ? 3200 : 1400);
       } catch (error) { if (!disposed && token === epoch) { stopPresentation(); renderClaim(); notice(`Verified replay stopped: ${error.message}`,true); } }
     }
+    function resumeLivePresentation() {
+      const session = demoSession;
+      if (!session || session.mode !== 'live' || session.epoch !== epoch || disposed || doc.hidden || dialog.open || view !== 'claim' || presentationMode !== 'live' || !openingPreferences.demo || !current || current.claim_id !== session.claimId || DEMO_CASES[session.index]?.claim_id !== session.claimId || current.revision !== 0 || busy || pendingStart || session.startAttempted || !liveAvailability(status).ready) return;
+      // Play authorizes one original Start after a verified opening. An uncertain
+      // admission retains its exact request for explicit operator recovery.
+      session.startAttempted = true;
+      startOriginal(host.querySelector('[data-au-start]'));
+    }
     function advanceLivePresentation() {
       const session = demoSession;
-      if (!session || session.mode !== 'live' || !current || active(current.status) || current.revision === 0 || demoTimer) return;
+      if (!session || session.mode !== 'live' || !current || busy || pendingStart || active(current.status) || current.revision === 0 || demoTimer) return;
       if (['model_unavailable','call_limit_reached','cost_limit_reached'].includes(current.deferral?.code)) { stopPresentation(); renderClaim(); notice(current.deferral.reason || 'Live execution is unavailable.',true); return; }
-      demoTimer = root.setTimeout(() => { demoTimer = null; if (demoSession === session) { session.index++; openPresentationCase(session); } },3200);
+      const token = epoch, id = current.claim_id;
+      demoTimer = root.setTimeout(() => livePresentationTick(session,token,id),3200);
+    }
+    function livePresentationTick(session, token, id) {
+      demoTimer = null;
+      if (demoSession !== session || disposed || token !== epoch || session.epoch !== token || view !== 'claim' || presentationMode !== 'live' || current?.claim_id !== id || session.claimId !== id || DEMO_CASES[session.index]?.claim_id !== id || busy || pendingStart || active(current.status)) return;
+      if (doc.hidden || dialog.open) { demoTimer = root.setTimeout(() => livePresentationTick(session,token,id),1600); return; }
+      session.index++; openPresentationCase(session);
     }
     async function startOriginal(target) {
       if (busy || !current || current.revision !== 0 && !pendingStart || presentationMode === 'replay' || !liveAvailability(status).ready && !pendingStart) return;
@@ -1102,7 +1136,7 @@
         submitted = true;
         const response = await request(intake ? '/claims' : `/claims/${key(operation.claimId)}/sources`, {method:'POST',body:JSON.stringify(operation.body)});
         const accepted = readState(response, intake ? undefined : operation.claimId);
-        if (intake) { pendingIntake = null; form.reset?.(); lockForm(form,false); } else { pendingArrival = null; arrivals.delete(operation.claimId); form.reset?.(); lockForm(form,false); }
+        if (intake) { rememberClaim(accepted.state,'native_intake'); pendingIntake = null; form.reset?.(); lockForm(form,false); } else { pendingArrival = null; arrivals.delete(operation.claimId); form.reset?.(); lockForm(form,false); }
         if (!disposed && token === epoch && !pendingRoute()) await openClaim(accepted.state.claim_id);
       } catch (error) {
         if (!disposed && token === epoch) {
@@ -1135,7 +1169,7 @@
       dialogReturn = {element:trigger,token:focusToken(trigger)}; container.querySelector('#auSourceTitle').textContent = descriptor.file_name || 'Original source';
       const body = container.querySelector('[data-au-source-content]'), url = `${base}/sources/${key(saved.claim_id)}/${key(id)}`;
       const native = descriptor.media_type?.split(';')[0];
-      let nativeMarkup = ''; clearNativeSource();
+      let nativeMarkup = '', nativeViewable = false; clearNativeSource();
       body.innerHTML = `<div class="au-source-meta"><span>${h(descriptor.media_type || 'Original file')}</span><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${nativeMarkup}<p class="au-empty">Checking source identity…</p>`;
       motion?.cancel(); selectionMotion?.cancel();
       if (!dialog.open) dialog.showModal();
@@ -1155,13 +1189,16 @@
           try {
             const blob = await nativeSource(url.slice(base.length),descriptor,token,sourceToken);
             if (!blob) return;
+            nativeViewable = true;
             nativeMarkup = native === 'application/pdf' ? `<iframe class="au-native-document" src="${h(blob)}" title="${h(descriptor.file_name || 'Original PDF')}"></iframe>` : `<img class="au-native-image" src="${h(blob)}" alt="Original file: ${h(descriptor.file_name)}">`;
           } catch (error) { nativeMarkup = `<p class="au-meta">${h(error.message)}</p>`; }
         }
         if (disposed || token !== epoch || sourceToken !== sourceEpoch || !dialog.open) return;
         const source = checked.source, unsupported = source.extraction === 'unsupported_metadata';
         const extraction = unsupported ? 'Received · interpretation unsupported' : source.complete ? 'Extracted text' : 'Extraction incomplete';
-        body.innerHTML = `<div class="au-source-meta"><span>${acquired ? 'Source text verified' : 'Read-only preview verified'}${checked.span ? ' · exact cited span verified' : ''}</span><span>${h(extraction)}</span><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${nativeMarkup}${!acquired ? '<p class="au-meta">Preview does not admit evidence or establish understanding or sufficiency.</p>' : ''}${!source.complete ? `<p class="au-notice">${h(source.reason || source.limitation || words(source.coverage?.limitation) || 'This source does not have a complete text extraction.')}</p>` : ''}${source.text ? `<pre class="au-source-body">${checked.span ? `${h(checked.span.before)}<mark tabindex="-1">${h(checked.span.quote)}</mark>${h(checked.span.after)}` : h(source.text)}</pre>` : '<p class="au-meta">No readable text was extracted.</p>'}<details><summary>Source identity</summary><dl class="au-chain"><div><dt>Original bytes · SHA-256</dt><dd class="au-hash">${h(descriptor.sha256)}</dd></div><div><dt>Extracted text · SHA-256</dt><dd class="au-hash">${h(source.text_sha256)}</dd></div>${!acquired ? `<div><dt>Preview · SHA-256</dt><dd class="au-hash">${h(source.preview_sha256)}</dd></div>` : ''}</dl></details>`;
+        const identity = `<details class="au-source-identity"><summary>Source identity and extraction</summary><p class="au-meta">${acquired ? 'Source text verified' : 'Read-only preview verified'}${checked.span ? ' · exact cited span verified' : ''} · ${h(extraction)}</p>${!acquired ? '<p class="au-meta">Preview does not admit evidence or establish understanding or sufficiency.</p>' : ''}<dl class="au-chain"><div><dt>Original filename</dt><dd>${h(descriptor.file_name)}</dd></div><div><dt>Media type</dt><dd>${h(descriptor.media_type)}</dd></div><div><dt>Original bytes · SHA-256</dt><dd class="au-hash">${h(descriptor.sha256)}</dd></div><div><dt>Extracted text · SHA-256</dt><dd class="au-hash">${h(source.text_sha256)}</dd></div>${!acquired ? `<div><dt>Preview · SHA-256</dt><dd class="au-hash">${h(source.preview_sha256)}</dd></div>` : ''}</dl><pre class="au-record-body">${h(JSON.stringify({descriptor,preview_only:source.preview_only,evidence_admitted:source.evidence_admitted,receipt_sha256:source.receipt_sha256,preview_sha256:source.preview_sha256,extraction:source.extraction,complete:source.complete,coverage:source.coverage,reason:source.reason,limitation:source.limitation},null,2))}</pre>${!source.text ? '<p class="au-meta">No readable text was extracted.</p>' : ''}</details>`;
+        const unsupportedImage = unsupported && native?.startsWith('image/');
+        body.innerHTML = unsupportedImage ? `<div class="au-source-meta"><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div><p class="au-source-capability">${nativeViewable ? 'Original image viewable.' : 'Original image preview unavailable.'} The agent cannot interpret this image.</p>${nativeMarkup}${identity}` : `<div class="au-source-meta"><span>${acquired ? 'Source text verified' : 'Read-only preview verified'}${checked.span ? ' · exact cited span verified' : ''}</span><span>${h(extraction)}</span><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${nativeMarkup}${!acquired ? '<p class="au-meta">Preview does not admit evidence or establish understanding or sufficiency.</p>' : ''}${!source.complete ? `<p class="au-notice">${h(source.reason || source.limitation || words(source.coverage?.limitation) || 'This source does not have a complete text extraction.')}</p>` : ''}${source.text ? `<pre class="au-source-body">${checked.span ? `${h(checked.span.before)}<mark tabindex="-1">${h(checked.span.quote)}</mark>${h(checked.span.after)}` : h(source.text)}</pre>` : '<p class="au-meta">No readable text was extracted.</p>'}${identity}`;
         body.querySelector('mark')?.scrollIntoView({block:'center'});
       } catch (error) { if (!disposed && token === epoch && sourceToken === sourceEpoch && dialog.open) body.innerHTML = `<div class="au-source-meta"><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${nativeMarkup}<p class="au-error" role="alert">${h(error.message)}</p>`; }
     }
@@ -1173,6 +1210,7 @@
       else if (target.hasAttribute('data-au-demo-play')) beginPresentation();
       else if (target.hasAttribute('data-au-demo-stop')) { stopPresentation(); renderClaim(); }
       else if (target.hasAttribute('data-au-start')) startOriginal(target);
+      else if (target.hasAttribute('data-au-collection-scope')) { if (busy) return; collection.scope = target.dataset.auCollectionScope === 'added' ? 'added' : 'originals'; collection.domain = 'all'; collection.search = ''; collection.filter = 'all'; showWork(); }
       else if (target.hasAttribute('data-au-domain')) { collection.domain = target.dataset.auDomain; refreshCollection(); rememberCollectionRoute(); }
       else if (target.hasAttribute('data-au-pause')) controlWork(target,'pause');
       else if (target.hasAttribute('data-au-resume')) controlWork(target,'resume');
@@ -1199,7 +1237,7 @@
       else if (target.hasAttribute('data-au-node') || target.hasAttribute('data-au-select')) {
         const id=target.dataset.auNode || target.dataset.auSelect;
         if (!list(current?.graph?.nodes).some(node => node.node_id === id)) return;
-        const changed=selected !== id; selected=id; detail='step'; if (changed) evidenceContext={}; renderClaim(null,changed);
+        const changed=selected !== id; selected=id; setDetail('step'); if (changed) evidenceContext={}; renderClaim(null,changed);
         const node=[...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
         node?.focus({preventScroll:true});
       } else if (target.hasAttribute('data-au-source')) {
@@ -1210,8 +1248,8 @@
     function input(event) {
       if (view === 'work' && event.target.matches?.('[data-au-claim-search]')) { collection.search = event.target.value; refreshCollection(); rememberCollectionRoute(); }
     }
-    function closed() { (dialogReturn?.element?.isConnected && focusEligible(dialogReturn.element,dialogReturn.token) ? dialogReturn.element : focusTarget(dialogReturn?.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true}); dialogReturn = null; sourceEpoch++; clearNativeSource(); }
-    function visibility() { motion?.cancel(); selectionMotion?.cancel(); if (!doc.hidden && view === 'claim' && presentationMode !== 'replay') { disconnected = true; cancelPoll(); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); } }
+    function closed() { (dialogReturn?.element?.isConnected && focusEligible(dialogReturn.element,dialogReturn.token) ? dialogReturn.element : focusTarget(dialogReturn?.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true}); dialogReturn = null; sourceEpoch++; clearNativeSource(); resumeLivePresentation(); }
+    function visibility() { motion?.cancel(); selectionMotion?.cancel(); if (!doc.hidden && view === 'claim' && presentationMode !== 'replay') { disconnected = true; cancelPoll(); resumeLivePresentation(); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); } }
     function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;motion?.cancel();selectionMotion?.cancel(); } }
     function pointerInput() { keyboard=false; }
     function motionPreference() { if (reduced?.matches) { motion?.cancel();selectionMotion?.cancel(); } }

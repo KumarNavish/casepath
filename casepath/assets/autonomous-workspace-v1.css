@@ -647,3 +647,49 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-demo-selection li { align-items: flex-start; flex-direction: column; gap: 12px; }
   .au-workspace .au-demo-selection li > button strong { font-size: 23px; }
 }
+
+/* Original correspondence and its files remain adjacent before work starts. */
+.au-workspace .au-header-new { order: 3; flex-shrink: 0; min-height: 42px; margin-left: 28px; border: 1px solid #adbbaf; border-radius: 0; padding: 9px 16px; background: transparent; color: var(--au-ink); font-size: 13px; }
+.au-workspace .au-header-new:hover { background: var(--au-ink); color: var(--au-field); }
+.au-workspace .au-nav { order: 2; }
+.au-workspace .au-collection-scope { display: flex; gap: 26px; border-bottom: 1px solid var(--au-line); margin: 0 0 22px; }
+.au-workspace .au-collection-scope button { display: flex; gap: 12px; align-items: baseline; min-height: 48px; padding: 10px 0; border: 0; background: transparent; color: var(--au-muted); font-size: 15px; }
+.au-workspace .au-collection-scope span { font-size: 13px; }
+.au-workspace .au-collection-scope [aria-pressed=true] { color: var(--au-ink); box-shadow: inset 0 -2px var(--au-green); }
+.au-workspace .au-original-head { align-items: flex-start; padding-bottom: 14px; }
+.au-workspace .au-original-head > div:first-child { flex: 1; }
+.au-workspace .au-original-head .au-original-subject { max-width: 58ch; font-size: 30px; line-height: 1.2; letter-spacing: -.7px; overflow-wrap: anywhere; }
+.au-workspace .au-original-head .au-work-controls { margin-top: 29px; }
+.au-workspace .au-original-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(260px,.43fr); gap: 38px; align-items: start; }
+.au-workspace .au-original-message-column { min-width: 0; grid-column: 1; grid-row: 1; }
+.au-workspace .au-original-message { max-width: 72ch; margin-block: 12px 20px; font-size: 16px; line-height: 1.7; }
+.au-workspace .au-original-source-rail { min-width: 0; grid-column: 2; grid-row: 1; border-left: 1px solid var(--au-line); padding-left: 25px; }
+.au-workspace .au-original-source-rail .au-supporting { margin: 0; padding-top: 0; }
+.au-workspace .au-original-source-rail .au-section-heading { flex-wrap: wrap; gap: 8px; }
+.au-workspace .au-original-source-rail h2 { font-size: 21px; }
+.au-workspace .au-original-source-rail .au-source-list { margin-top: 6px; }
+.au-workspace .au-original-source-rail .au-source-list li { display: block; padding: 9px 0; }
+.au-workspace .au-original-source-rail .au-source-list button { width: 100%; min-height: 38px; padding-block: 5px; font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+.au-workspace .au-original-source-rail .au-source-list li > span { display: block; padding-top: 0; font-size: 12px; }
+.au-workspace .au-source-capability { margin: 12px 0; font-size: 16px; line-height: 1.5; }
+.au-workspace .au-source-identity { margin-top: 20px; }
+@media (max-width: 900px) {
+  .au-workspace .au-header-new { margin-left: 0; }
+  .au-workspace .au-original-layout { grid-template-columns: minmax(0,1fr) minmax(230px,.48fr); gap: 24px; }
+}
+@media (max-width: 650px) {
+  .au-workspace .au-identity-header { display: grid; grid-template-columns: minmax(0,1fr) auto; min-height: 106px; gap: 6px 10px; padding: 14px 20px 0; }
+  .au-workspace .au-brand { grid-column: 1; grid-row: 1; }
+  .au-workspace .au-header-new { grid-column: 2; grid-row: 1; min-height: 38px; padding: 7px 10px; }
+  .au-workspace .au-nav { grid-column: 1 / -1; grid-row: 2; flex-wrap: nowrap; gap: 25px; min-width: 0; }
+  .au-workspace .au-nav button { white-space: nowrap; }
+  .au-workspace .au-collection-scope { gap: 25px; margin-bottom: 16px; }
+  .au-workspace .au-original-head { gap: 14px; }
+  .au-workspace .au-original-head .au-original-subject { font-size: 27px; line-height: 1.22; letter-spacing: -.5px; }
+  .au-workspace .au-original-head .au-work-controls { margin-top: 0; }
+  .au-workspace .au-original-intake { padding-top: 5px; }
+  .au-workspace .au-original-layout { display: flex; flex-direction: column; gap: 25px; }
+  .au-workspace .au-original-source-rail { width: 100%; border-left: 0; padding-left: 0; }
+  .au-workspace .au-original-source-rail .au-source-list { margin-bottom: 0; }
+  .au-workspace .au-original-message { font-size: 16px; }
+}

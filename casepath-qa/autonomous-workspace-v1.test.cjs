@@ -502,17 +502,17 @@ test('an invalid source text never becomes cited evidence and a late source resp
 });
 
 const claimRows=[
- {claim_id:'claim-a',title:'Notice needs a receipt',status:'deferred',phase_summary:'Waiting for the original receipt'},
- {claim_id:'claim-b',title:'Policy investigation',status:'running',phase_summary:'Checking the cited policy'},
- {claim_id:'claim-c',title:'Completed assessment',status:'resolved',outcome:{summary:'Internal assessment recorded.'}},
- {claim_id:'claim-d',title:'Unsupported original format',status:'failed'},
- {claim_id:'claim-e',title:'Queued acquisition',status:'queued'}
+ {origin:'canonical_original',claim_id:'claim-a',title:'Notice needs a receipt',status:'deferred',phase_summary:'Waiting for the original receipt'},
+ {origin:'canonical_original',claim_id:'claim-b',title:'Policy investigation',status:'running',phase_summary:'Checking the cited policy'},
+ {origin:'canonical_original',claim_id:'claim-c',title:'Completed assessment',status:'resolved',outcome:{summary:'Internal assessment recorded.'}},
+ {origin:'canonical_original',claim_id:'claim-d',title:'Unsupported original format',status:'failed'},
+ {origin:'canonical_original',claim_id:'claim-e',title:'Queued acquisition',status:'queued'}
 ];
 test('the default Work collection uses saved statuses and explicit New claim navigation',async t=>{
  const f=dom(),api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  assert.match(f.container.innerHTML,/<header class="au-identity-header"/);assert.doesNotMatch(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake"[^>]*>New claim/);
  assert.match(f.host.innerHTML,/class="au-collection(?:\s[^"]*)?"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
- const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Deferred/);assert.match(html,/Working/);assert.match(html,/Resolved/);assert.match(html,/Stopped/);assert.match(html,/Queued/);
+ const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Deferred/);assert.match(html,/Working/);assert.match(html,/Investigation complete/);assert.match(html,/Stopped/);assert.match(html,/Queued/);
  await newClaim(f);assert.match(f.host.innerHTML,/<form[^>]*data-au-intake/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
@@ -520,7 +520,7 @@ test('search and filters select only matching saved claims and preserve original
  const before=JSON.stringify(claimRows),ids=options=>[...ui.claimsMarkup(claimRows,options).matchAll(/data-au-claim="([^"]+)"/g)].map(match=>match[1]);
  assert.deepEqual(ids({filter:'working'}),['claim-b','claim-e']);assert.deepEqual(ids({filter:'deferred'}),['claim-a']);assert.deepEqual(ids({filter:'resolved'}),['claim-c']);assert.deepEqual(ids({filter:'failed'}),['claim-d']);
  assert.deepEqual(ids({search:'RECEIPT'}),['claim-a']);assert.deepEqual(ids({filter:'working',search:'policy'}),['claim-b']);assert.deepEqual(ids({filter:'deferred',search:'policy'}),[]);
- const collection=ui.collectionMarkup(claimRows,{filter:'working',search:'policy'});assert.match(collection,/data-au-collection-count[^>]*>1 of 5/);assert.match(collection,/<strong>2<\/strong> In progress/);assert.match(collection,/<strong>1<\/strong> Deferred/);assert.match(collection,/<strong>1<\/strong> Resolved/);assert.match(collection,/<option value="failed"/);
+ const collection=ui.collectionMarkup(claimRows,{filter:'working',search:'policy'});assert.match(collection,/data-au-collection-count[^>]*>1 of 5/);assert.match(collection,/<strong>2<\/strong> In progress/);assert.match(collection,/<strong>1<\/strong> Deferred/);assert.match(collection,/<strong>1<\/strong> Investigation complete/);assert.match(collection,/<option value="failed"/);
  assert.equal(JSON.stringify(claimRows),before);assert.doesNotMatch(ui.claimsMarkup([]),/data-au-claim="/);
 });
 
