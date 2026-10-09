@@ -17,6 +17,22 @@ OUTPUT_ROOT = REPOSITORY / "dist"
 WORKER_SOURCE = Path(__file__).with_name("sites_worker.mjs")
 API_CONFIGURATION = "<script>window.CASEPATH_API = window.location.origin;window.CASEPATH_HOSTED_AUTONOMOUS = true;</script>"
 API_SCRIPT_MARKER = '<script src="assets/autonomous-entry-v1.js'
+SITES_CORPUS_REDIRECT_HTML = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url=/#autonomous/cases">
+  <title>CasePath cases</title>
+</head>
+<body>
+  <main>
+    <h1>CasePath cases</h1>
+    <p><a href="/#autonomous/cases">Continue to CasePath cases</a></p>
+  </main>
+</body>
+</html>
+"""
 
 
 class SitesBuildError(RuntimeError):
@@ -32,6 +48,9 @@ def build() -> None:
     previous: Path | None = None
     try:
         shutil.copytree(PUBLIC_ROOT, staging / "client")
+        (staging / "client" / "corpus.html").write_bytes(
+            SITES_CORPUS_REDIRECT_HTML.encode("utf-8")
+        )
         index_path = staging / "client" / "index.html"
         index_html = index_path.read_text(encoding="utf-8")
         if API_SCRIPT_MARKER not in index_html:

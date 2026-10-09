@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 from copy import deepcopy
 import hashlib
+from html.parser import HTMLParser
 import json
 import os
 import sys
@@ -295,9 +296,14 @@ def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, 
     # runtime secrets are configured separately from the public assets.
     import build_sites_site as sites
     import build_static_site as static
+    original_corpus = (static.SOURCE_ROOT / "corpus.html").read_bytes()
     public = tmp_path / "casepath-public"
     monkeypatch.setattr(static, "DEFAULT_OUTPUT", public)
-    static.build_static_site(public, {})
+    source_commit = "011b073540bafb038fe8b55396740cd36ad3ea94"
+    identity = static.build_static_site(
+        public, {"CASEPATH_SOURCE_COMMIT": source_commit}, require_known_commit=True
+    )
+    public_before = {name: (public / name).read_bytes() for name in static.PUBLIC_INVENTORY}
     monkeypatch.setattr(sites, "REPOSITORY", tmp_path)
     monkeypatch.setattr(sites, "PUBLIC_ROOT", public)
     monkeypatch.setattr(sites, "OUTPUT_ROOT", tmp_path / "dist")
@@ -308,7 +314,52 @@ def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, 
     assert index_html.index(sites.API_CONFIGURATION) < index_html.index(
         '<script src="assets/autonomous-entry-v1.js'
     )
-    assert static.inventory(tmp_path / "dist/client")[0] == static.PUBLIC_INVENTORY
+    client = tmp_path / "dist/client"
+    assert static.inventory(client) == (static.PUBLIC_INVENTORY, static.PUBLIC_DIRECTORIES)
+    # Inspect the actual deployed asset without invoking the worker: asset-first
+    # hosting must navigate to Cases even when worker redirects are bypassed.
+    class RedirectDocument(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.tags = []
+            self.text = []
+        def handle_starttag(self, tag, attributes):
+            self.tags.append((tag, dict(attributes)))
+        def handle_data(self, data):
+            self.text.append(data)
+    redirect = (client / "corpus.html").read_bytes()
+    document = RedirectDocument()
+    document.feed(redirect.decode("utf-8"))
+    assert [attrs.get("content") for tag, attrs in document.tags
+            if tag == "meta" and attrs.get("http-equiv", "").lower() == "refresh"] == [
+        "0; url=/#autonomous/cases"
+    ]
+    assert [attrs.get("href") for tag, attrs in document.tags if tag == "a"] == [
+        "/#autonomous/cases"
+    ]
+    assert "Continue to CasePath cases" in "".join(document.text)
+    assert {tag for tag, _ in document.tags} <= {
+        "html", "head", "meta", "title", "body", "main", "h1", "p", "a"
+    }
+    assert redirect == sites.SITES_CORPUS_REDIRECT_HTML.encode("utf-8")
+    literals = [node.value for node in ast.parse(builder).body
+                if isinstance(node, ast.Assign) and any(
+                    isinstance(target, ast.Name) and target.id == "SITES_CORPUS_REDIRECT_HTML"
+                    for target in node.targets)]
+    assert len(literals) == 1 and isinstance(literals[0], ast.Constant)
+    assert redirect == ast.literal_eval(literals[0]).encode("utf-8")
+    assert json.loads((client / "deployment.json").read_bytes()) == identity
+    assert identity["source_commit"] == source_commit and identity["alignment_eligible"]
+    for name, content in public_before.items():
+        assert (public / name).read_bytes() == content
+        if name not in {"index.html", "corpus.html"}:
+            assert (client / name).read_bytes() == content
+    assert (static.SOURCE_ROOT / "corpus.html").read_bytes() == original_corpus
+    assert index_html == public_before["index.html"].decode("utf-8").replace(
+        sites.API_SCRIPT_MARKER,
+        f"{sites.API_CONFIGURATION}\n  {sites.API_SCRIPT_MARKER}",
+        1,
+    )
     assert not (tmp_path / ".openai").exists()
     assert "env.CASEPATH_API_ORIGIN" in worker
     assert "X-CasePath-Proxy-Token" in worker
