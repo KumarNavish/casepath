@@ -94,6 +94,20 @@ python casepath/tools/build_sites_site.py
 The root `.openai/hosting.json` contains the stable project identity only. Publish
 through the Sites workflow and connector using the exact pushed commit.
 
+The Site source repository contains a compact frontend distribution because
+the canonical Git history includes research archives larger than the Sites
+object limit. Preserve canonical history. The distribution contains the exact
+public allowlist from `build_static_site.py`, the three build scripts, the Sites
+worker, and the same `.openai/hosting.json`. Its committed
+`casepath-source-provenance.json` records the canonical commit, tree, and every
+copied file's hash. Its README documents the reproducible build. Do not include
+databases, secrets, API runtime state, or research archives in that distribution.
+
+The native Sites version uses the distribution's pushed Git commit. The API
+and frontend `source_commit` both use the canonical product commit whose bytes
+were copied and verified. Record these two identities separately in release
+receipts; do not present the distribution commit as the canonical API source.
+
 Deploy the linked FastAPI Cloud app from the repository root. Start read-only,
 verify authenticated saved-state readback, then complete the single-writer
 cutover. Verify deployment status rather than treating submission as success.

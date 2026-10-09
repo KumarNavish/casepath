@@ -46,15 +46,16 @@ def test_hosted_boundary_rejects_unsafe_configuration(origin, token):
         SitesProxyBoundary(None, site_origin=origin, token=token)
 
 
-def test_hosted_entrypoint_installs_boundary_before_opening_app(monkeypatch):
-    import sys
-    from types import SimpleNamespace
-    from casepath_api.hosted_proxy_v1 import create_app
-    app = FastAPI()
-    monkeypatch.setitem(sys.modules, 'casepath_api.app', SimpleNamespace(app=app))
-    monkeypatch.setenv('CASEPATH_SITE_ORIGIN', 'https://casepath-demo.example')
-    monkeypatch.setenv('CASEPATH_PROXY_TOKEN', 't'*48)
-    boundary = create_app()
-    assert isinstance(boundary, SitesProxyBoundary) and boundary.app is app
-    with TestClient(boundary) as client:
-        assert client.get('/api/claim-loops/v1/autonomous/claims').status_code == 403
+def test_hosted_entrypoint_rejects_unsafe_boundary_before_opening_database(monkeypatch):
+    from casepath_api import hosted_app_v1
+
+    def unexpected_database(*args, **kwargs):
+        pytest.fail('Unsafe boundary configuration must fail before opening the database.')
+
+    monkeypatch.setattr(hosted_app_v1, 'TursoDatabase', unexpected_database)
+    env = {'CASEPATH_SITE_ORIGIN': 'http://insecure.example',
+           'CASEPATH_PROXY_TOKEN': 't' * 48, 'CASEPATH_SOURCE_COMMIT': 'a' * 40,
+           'CASEPATH_TURSO_URL': 'libsql://fixture.turso.io',
+           'TURSO_AUTH_TOKEN': 'fixture-token'}
+    with pytest.raises(ValueError, match='fixed HTTPS Site origin and server secret'):
+        hosted_app_v1.create_hosted_app(environment=env)
