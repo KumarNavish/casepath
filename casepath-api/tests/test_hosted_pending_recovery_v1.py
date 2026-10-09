@@ -161,6 +161,103 @@ def test_lost_ownership_after_saved_start_resumes_same_work(runtime, identity, m
 
 
 @pytest.mark.parametrize('identity', ['canonical', 'legacy'])
+def test_long_owned_loss_refreshes_window_once_and_busy_reacquisition_keeps_deadline(runtime, identity, monkeypatch):
+    controller, store, lease, clock, _ = runtime
+    claim = accepted(store, identity)
+    once, lost = controller._once, []
+    def interrupted(*args, **kwargs):
+        state = once(*args, **kwargs)
+        if not lost:
+            lost.append(True)
+            clock.now = 200  # Active work outlasts the original 190-second window.
+            raise hosted.HostedOwnershipLost('long owned attempt lost its saved start acknowledgement')
+        return state
+    monkeypatch.setattr(controller, '_once', interrupted)
+    monkeypatch.setattr(store, 'list', lambda: pytest.fail('recovery performed global discovery'))
+    controller.submit(claim)
+    drain(controller)
+    saved = store.get(claim)
+    assert saved['status'] == 'running' and saved['claim_id'] == claim
+    assert controller._retry_until[claim] == 200 + hosted.RECOVERY_STALLED_SECONDS
+    assert len(clock.pending) == 1 and clock.pending[0].when == 205
+    incumbent = lease.acquire()
+    clock.advance(180, controller)
+    assert clock.now == 380
+    assert controller._retry_until[claim] == 200 + hosted.RECOVERY_STALLED_SECONDS
+    assert store.get(claim)['state_sha256'] == saved['state_sha256']
+    lease.release(incumbent)
+    clock.advance(5, controller)
+    settled = store.get(claim)
+    assert settled['claim_id'] == claim and settled['run_id'] == saved['run_id']
+    assert settled['deferral']['code'] == 'model_unavailable'
+    assert sum(event['kind'] == 'work.started' for event in store.events(claim)) == 1
+    assert controller._jobs == controller._waiting == controller._retry_until == {}
+    assert clock.pending == []
+
+
+def test_long_owned_loss_keeps_other_accepted_jobs_eligible_and_new_generation_fenced(runtime, monkeypatch):
+    controller, store, lease, clock, server = runtime
+    claims = [accepted(store, 'canonical'), accepted(store, 'legacy')]
+    once, lost = controller._once, []
+    entered, release = Event(), Event()
+    def interrupted(*args, **kwargs):
+        state = once(*args, **kwargs)
+        if args[0] == claims[0] and not lost:
+            lost.append(True)
+            entered.set()
+            assert release.wait(timeout=10)
+            raise hosted.HostedOwnershipLost('long owned job fenced by another generation')
+        return state
+    monkeypatch.setattr(controller, '_once', interrupted)
+    controller.submit(claims[0])
+    try:
+        assert entered.wait(timeout=10)
+        controller.submit(claims[1])
+        assert clock.pending == []
+        clock.now = 200
+        with server.connection() as db:
+            db.execute('UPDATE hosted_workflow_lease SET expires_at=0')
+        incumbent = lease.acquire()
+    finally:
+        release.set()
+    drain(controller)
+    assert set(controller._waiting) == set(claims)
+    assert all(controller._retry_until[claim] == 200 + hosted.RECOVERY_STALLED_SECONDS for claim in claims)
+    assert len(clock.pending) == 1
+    with server.connection() as db:
+        row = db.execute('SELECT owner,generation FROM hosted_workflow_lease').fetchone()
+        assert row['owner'] == incumbent.owner and row['generation'] == incumbent.generation
+    monkeypatch.setattr(store, 'list', lambda: pytest.fail('recovery performed global discovery'))
+    clock.advance(10, controller)
+    assert all(controller._retry_until[claim] == 200 + hosted.RECOVERY_STALLED_SECONDS for claim in claims)
+    lease.release(incumbent)
+    clock.advance(5, controller)
+    assert all(store.get(claim)['deferral']['code'] == 'model_unavailable' for claim in claims)
+    assert sum(event['kind'] == 'work.started' for event in store.events(claims[0])) == 1
+    assert controller._jobs == controller._waiting == controller._retry_until == {}
+    assert clock.pending == []
+
+
+def test_unconfirmed_reacquisition_never_refreshes_its_bounded_wait_window(runtime, monkeypatch):
+    controller, store, lease, clock, _ = runtime
+    claim = accepted(store, 'canonical')
+    attempts = []
+    def unavailable():
+        attempts.append(clock.now)
+        raise hosted.HostedOwnershipLost('ownership acquisition was not confirmed')
+    monkeypatch.setattr(lease, 'acquire', unavailable)
+    controller.submit(claim)
+    drain(controller)
+    assert controller._retry_until[claim] == hosted.RECOVERY_STALLED_SECONDS
+    clock.advance(hosted.RECOVERY_STALLED_SECONDS + 500, controller)
+    assert controller._retry_until[claim] == hosted.RECOVERY_STALLED_SECONDS
+    assert attempts[-1] == hosted.RECOVERY_STALLED_SECONDS
+    assert claim in controller._waiting and controller._jobs == {}
+    assert store.get(claim)['revision'] == 1
+    assert clock.pending == []
+
+
+@pytest.mark.parametrize('identity', ['canonical', 'legacy'])
 @pytest.mark.parametrize('code', ['paused', 'provider_deferred', 'verification_deferred', 'execution_deferred'])
 def test_lost_job_with_recorded_deferral_is_never_resent(runtime, identity, code, monkeypatch):
     controller, store, _, clock, _ = runtime

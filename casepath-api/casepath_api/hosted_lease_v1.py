@@ -303,6 +303,15 @@ class HostedAutonomousController(AutonomousController):
                     self._retry_until[claim] = monotonic() + RECOVERY_STALLED_SECONDS
             return result
         except HostedOwnershipLost:
+            if reset is not None:
+                # Owned execution can outlast its original retry window. Start
+                # the bounded wait when it loses ownership, including accepted
+                # jobs queued behind it. Failed acquisition has no owner context
+                # and must keep its existing deadline instead of extending it.
+                with self._lock:
+                    deadline = monotonic() + RECOVERY_STALLED_SECONDS
+                    for claim in self._waiting.keys() | self._jobs.keys() | {claim_id}:
+                        self._retry_until[claim] = deadline
             self._remember(claim_id, job)
             return None
         finally:
