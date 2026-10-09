@@ -153,7 +153,9 @@ class LibsqlConnection:
         self._client = client if client is not None else httpx.Client(
             follow_redirects=False, trust_env=False,
             transport=httpx.HTTPTransport(retries=0),
-            timeout=httpx.Timeout(connect=3, read=4, write=4, pool=2))
+            # A real cold budget read took 5.9 seconds. Allow that response
+            # while retaining the independent 12-second request deadline.
+            timeout=httpx.Timeout(connect=3, read=8, write=4, pool=2))
         self._baton = None
         self._poisoned = self._closed = self._in_transaction = False
         self._cache = {}
@@ -182,6 +184,10 @@ class LibsqlConnection:
             raise HostedStorageError('The persistent database request exceeds its size bound.')
         deadline = time.monotonic() + REQUEST_SECONDS
         phase = 'request'
+        operation = requests[0]['type']
+        if operation == 'execute':
+            verb = requests[0]['stmt']['sql'].strip().split(None, 1)[0].upper()
+            operation = verb if verb in {'SELECT', 'BEGIN', 'COMMIT', 'ROLLBACK', 'INSERT', 'UPDATE', 'DELETE'} else 'execute'
         try:
             with self._client.stream('POST', self._base + '/v2/pipeline',
                     headers={'Authorization': 'Bearer ' + self._token,
@@ -224,7 +230,7 @@ class LibsqlConnection:
         except Exception as error:
             # Fixed phase labels and exception classes only: no SQL, parameters,
             # response bodies, endpoint URLs, batons, or credential values.
-            _LOG.warning('hosted_database_failure phase=%s category=%s', phase, type(error).__name__)
+            _LOG.warning('hosted_database_failure operation=%s phase=%s category=%s', operation, phase, type(error).__name__)
             self._uncertain()
         # A SQL error still rotates the baton. Save it before raising.
         self._baton = baton
