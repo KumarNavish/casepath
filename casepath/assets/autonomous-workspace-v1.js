@@ -634,6 +634,7 @@
         ['provider_cost_bound_exceeded','A recorded provider cost exceeded its bound, so new autonomous work cannot start.']
       ]).get(status.limits.autonomous_reason) || 'Autonomous inference is unavailable for new work.' : '';
       if (service) service.textContent = !status.enabled ? 'Autonomous work is disabled.' : !status.provider_ready ? 'Inference is unavailable. New packets are saved with a named deferral.' : allowanceMessage ? `${allowanceMessage} You can still save a new claim; autonomous work will have a named deferral.` : 'Local evidence acquisition and document preparation are available. External dispatch is not configured.';
+      if (view === 'intake' && !busy && !pendingIntake) idleIntakeSubmit(host.querySelector('[data-au-intake]'));
       if (view === 'intake' && !status.enabled && !pendingIntake) { const submit = host.querySelector('button[type="submit"]'); if (submit) submit.disabled = true; }
     }
     async function showWork(writeHistory = true) {
@@ -655,7 +656,7 @@
       if (pendingIntake && intakeForm) {
         intakeForm.elements.title.value = pendingIntake.body.title; intakeForm.elements.message.value = pendingIntake.body.message;
         lockForm(intakeForm,true,true); intakeForm.querySelector('.au-form-status').textContent = 'The prior response was not confirmed. Retry sends the same saved intake request.';
-      }
+      } else if (!busy) idleIntakeSubmit(intakeForm);
       loadExamples(token); focusTitle();
       try { await serviceStatus(token); } catch (error) { if (!disposed && token === epoch) notice(error.message,true); }
     }
@@ -709,11 +710,18 @@
         }
       } catch (error) { if (!disposed && token === epoch) notice(error.message,true); }
     }
+    function idleIntakeSubmit(form) {
+      const submit = form?.querySelector('button[type="submit"]');
+      if (!submit) return;
+      submit.textContent = status?.enabled === true && (status.provider_ready === false || status.limits?.autonomous_can_start === false) ? 'Save claim' : 'Start autonomous work ↗';
+      if (status) submit.disabled = !status.enabled;
+    }
     function lockForm(form, lock, retry = false) {
       for (const control of form.querySelectorAll('input,textarea,select,button[type="submit"]')) control.disabled = lock;
       const submit = form.querySelector('button[type="submit"]');
       if (retry) { submit.disabled = false; submit.textContent = 'Retry same request'; }
-      else submit.textContent = lock ? 'Saving…' : form.matches('[data-au-intake]') ? 'Start autonomous work ↗' : 'Add files';
+      else if (!lock && form.matches('[data-au-intake]')) idleIntakeSubmit(form);
+      else submit.textContent = lock ? 'Saving…' : 'Add files';
     }
     async function filesFrom(input) {
       const files = [...input.files], output = [];
