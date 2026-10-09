@@ -24,7 +24,7 @@ inherit their execution host; do not describe them as cloud workers.
 ## Establish the source before starting
 
 The active integration branch for this workstream is
-`codex/casepath-sites-hosting-20261009`. `main` remains the repository default;
+`codex/casepath-causal-experience-integration-20261009`. `main` remains the repository default;
 it does not contain this work merely because an environment started from it.
 Confirm the current owner and fetch the active branch before every task:
 
@@ -32,7 +32,7 @@ Confirm the current owner and fetch the active branch before every task:
 git fetch origin
 git status --short
 git rev-parse HEAD
-git rev-parse origin/codex/casepath-sites-hosting-20261009
+git rev-parse origin/codex/casepath-causal-experience-integration-20261009
 ```
 
 Record the full base commit in the handoff. Preserve an existing checkout's

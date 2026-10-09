@@ -7,7 +7,8 @@ Review workspace remains available in the local product.
 
 ## Services and persistence
 
-- Frontend: owner-private ChatGPT Site `casepath-autonomous`.
+- Frontend: ChatGPT Site `casepath-autonomous`.
+  Preserve the Site's current audience during a release.
 - Compute: FastAPI Cloud Hobby app `casepath-agent`, configured directory
   `casepath-api`, entrypoint `hosted_main:app`.
 - Storage: Turso Free database `casepath-autonomous`, primary in Ireland.
@@ -34,7 +35,7 @@ Keep runtime values out of source and the Sites manifest. Sites requires
 
 | Variable | Meaning |
 | --- | --- |
-| `CASEPATH_SITE_ORIGIN` | Exact HTTPS origin of the private Site |
+| `CASEPATH_SITE_ORIGIN` | Exact HTTPS origin of the Site |
 | `CASEPATH_PROXY_TOKEN` | Same secret as the Sites worker |
 | `CASEPATH_TURSO_URL` | Remote libSQL database URL |
 | `TURSO_AUTH_TOKEN` | Database-scoped secret |

@@ -322,7 +322,7 @@ test('explicit fictional selection fills native files without submitting and can
  f.form.querySelectorAll=()=>[...Object.values(f.fields),select,f.submit];
  const api=fakeApi({handle:async(path,init)=>{if(path.includes('/assets/examples.json'))return{ok:true,arrayBuffer:async()=>bytes};if(init.method==='POST')throw new Error('Intake response lost');}});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
- for(let i=0;i<20&&wrapper.hidden;i++)await settle();assert.equal(wrapper.hidden,false);assert.equal(f.fields.title.value,'New title');
+ await waitFor(()=>!wrapper.hidden);assert.equal(f.fields.title.value,'New title');
  f.listeners.get('change')({target:select});assert.equal(f.fields.title.value,packet.title);assert.equal(f.fields.message.value,packet.message);assert.deepEqual(Buffer.from(await f.fields.files.files[0].arrayBuffer()),source);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});assert.equal(select.disabled,true);const originalTitle=f.fields.title.value;select.disabled=false;select.value='0';f.fields.title.value='Retained pending title';f.listeners.get('change')({target:select});assert.equal(f.fields.title.value,'Retained pending title');assert.equal(api.calls.filter(call=>call.init.method==='POST').length,1);assert.equal(originalTitle,packet.title);
 });
@@ -468,7 +468,7 @@ function sourceFixture() {
  const query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-source-content]'?body:selector==='#auSourceTitle'?title:query(selector);
  return {...f,body,sourceTitle:title,close};
 }
-async function waitFor(predicate) { for(let i=0;i<30&&!predicate();i++)await settle();assert.ok(predicate(),'the expected asynchronous operation did not complete'); }
+async function waitFor(predicate) { const deadline=Date.now()+1000;while(!predicate()&&Date.now()<deadline)await new Promise(resolve=>setTimeout(resolve,1));assert.ok(predicate(),'the expected asynchronous operation did not complete'); }
 
 test('source inspection verifies exact identity, preserves claim context and returns focus after close',async t=>{
  const f=sourceFixture(),body='😀\nExact source passage.\nAfter',source={claim_id:'claim-a',artifact_id:'original',sha256:hash('d'),text:body,text_sha256:sha(body),complete:true};
@@ -697,4 +697,73 @@ test('closing a source after a saved refresh focuses the replacement citation co
  f.host.contains=element=>element===trigger;f.host.querySelectorAll=selector=>selector==='[data-au-source]'?[trigger]:[];
  const api=fakeApi({handle:async path=>path.endsWith('/sources/claim-a/original/text')?response(source):path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');trigger.focus();f.listeners.get('click')({target:trigger});await waitFor(()=>f.body.innerHTML.includes('Verified original text'));
  const oldTrigger=trigger;oldTrigger.isConnected=false;trigger=control(f,'data-au-source','original');saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.equal(f.dialog.open,true);assert.equal(f.container.ownerDocument.activeElement,f.close);f.dialog.close();assert.equal(f.container.ownerDocument.activeElement,trigger);assert.deepEqual(trigger.focusOptions,{preventScroll:true});
+});
+
+test('missing or empty run identities never associate recorded actions with a current run',()=>{
+ const actions=[{result:{action_id:'old',status:'completed'},receipt:{parent_revision:2}}];
+ for(const run_id of [undefined,null,'','  '])for(const eventRun of [undefined,null,'','  ']) {
+  const saved={actions,...(run_id===undefined?{}:{run_id})},event={seq:1,kind:'work.started',payload:{...(eventRun===undefined?{}:{run_id:eventRun})}};
+  assert.deepEqual(ui.actionRows(saved,[event]).map(row=>row.scope),['unassociated'],`state run ${String(run_id)} / event run ${String(eventRun)}`);
+ }
+});
+
+function duplicatePanelFixture() {
+ const f=sourceFixture(),query=f.host.querySelector;let html='',panels=[],sources=[],disclosures=[],summaries=[];
+ function attach(node,panel) {
+  node.parentElement=panel;node.closest=selector=>selector==='[data-au-panel]'?panel:/hidden|inert/.test(selector)?panel.hidden?panel:null:selector==='button,[data-au-nav]'?node:null;
+  node.getClientRects=()=>panel.hidden?[]:[{}];Object.defineProperty(node,'offsetParent',{get:()=>panel.hidden?null:f.host});
+  node.focus=options=>{node.focusOptions=options;if(!panel.hidden)f.container.ownerDocument.activeElement=node;};return node;
+ }
+ Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{
+  for(const node of [...sources,...summaries])node.isConnected=false;html=value;panels=['step','documents'].map(id=>({dataset:{auPanel:id},hidden:id!==(value.match(/data-au-context="([^"]+)"/)?.[1]||'step'),parentElement:f.host,getAttribute:name=>name==='data-au-panel'?id:null}));
+  const citation=JSON.stringify({artifact_id:'original',sha256:hash('d'),text_sha256:sha('Text'),start_char:0,end_char:4,quote:'Text'});
+  sources=panels.map(panel=>{const node=attach(control(f,'data-au-source','original'),panel),get=node.getAttribute;node.dataset.auCitation=citation;node.getAttribute=name=>name==='data-au-citation'?citation:get(name);return node;});
+  disclosures=panels.map(panel=>({dataset:{auDisclosure:'obligation:obligation:branch:notice'},open:false,parentElement:panel,closest:selector=>selector==='[data-au-panel]'?panel:null,hasAttribute:name=>name==='data-au-disclosure',getAttribute:name=>name==='data-au-disclosure'?'obligation:obligation:branch:notice':null}));
+  summaries=disclosures.map((disclosure,index)=>{const node=attach(control(f,'data-unused'),panels[index]);node.hasAttribute=()=>false;node.matches=selector=>selector==='summary';node.parentElement=disclosure;disclosure.querySelector=selector=>selector==='summary'?node:null;return node;});
+ }});
+ f.host.contains=node=>sources.includes(node)||summaries.includes(node);
+ f.host.querySelector=selector=>selector==='[data-au-context]'?{setAttribute(){}}:query(selector);
+ f.host.querySelectorAll=selector=>selector==='[data-au-source]'?sources:selector==='[data-au-panel]'?panels:selector==='[data-au-disclosure]'?disclosures:selector==='details[open][data-au-disclosure]'?disclosures.filter(node=>node.open):[];
+ return {...f,get documentSource(){return sources[1];},get hiddenSource(){return sources[0];},get documentSummary(){return summaries[1];},get hiddenSummary(){return summaries[0];}};
+}
+
+test('a source dialog returns to its visible All documents origin after polling duplicates its citation in hidden This step',async t=>{
+ const f=duplicatePanelFixture(),source={claim_id:'claim-a',artifact_id:'original',sha256:hash('d'),text:'Text',text_sha256:sha('Text'),complete:true};let saved=state();
+ const api=fakeApi({handle:async path=>path.endsWith('/sources/claim-a/original/text')?response(source):path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');f.listeners.get('click')({target:control(f,'data-au-detail','documents')});
+ f.documentSource.focus();f.listeners.get('click')({target:f.documentSource});await waitFor(()=>f.body.innerHTML.includes('<mark'));saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.equal(f.container.ownerDocument.activeElement,f.close);f.dialog.close();
+ assert.equal(f.container.ownerDocument.activeElement,f.documentSource);assert.notEqual(f.container.ownerDocument.activeElement,f.hiddenSource);assert.deepEqual(f.documentSource.focusOptions,{preventScroll:true});
+});
+
+test('a refreshed Why required summary retains its visible All documents focus despite a duplicated hidden disclosure',async t=>{
+ const f=duplicatePanelFixture();let saved=state();const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');f.listeners.get('click')({target:control(f,'data-au-detail','documents')});f.documentSummary.focus();
+ saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.equal(f.container.ownerDocument.activeElement,f.documentSummary);assert.notEqual(f.container.ownerDocument.activeElement,f.hiddenSummary);assert.deepEqual(f.documentSummary.focusOptions,{preventScroll:true});
+});
+
+test('actual reuse provenance stays available in closed escaped disclosures in Knowledge and claim Activity',()=>{
+ const attack='<img src=x onerror="alert(1)">',use={knowledge_id:'procedure.one',version:1,definition_sha256:hash('d'),rule_pack_sha256:hash('e'),applicability:'same_verified_family_and_rule_version',avoided_rule_compilations:1,reused_evidence_recipes:2,workflow_id:'workflow.recorded',public_extension:{reason:attack}};
+ for(const html of [ui.knowledgeMarkup({versions:[],uses:[{...use,claim_id:'receiving-claim'}],quarantined:[]}),ui.workMarkup(state({knowledge_uses:[use]}),{},'branch',[],'activity')]) {
+  for(const value of [hash('d'),hash('e'),'workflow.recorded','reused_evidence_recipes','2','Same verified family and rule version'])assert.ok(html.includes(value),value);
+  const disclosure=html.match(/<details[^>]*data-au-disclosure="reuse:[^"]*"[^>]*>/);assert.ok(disclosure,'the saved reuse provenance has a stable disclosure');assert.doesNotMatch(disclosure[0],/\sopen(?:\s|>)/);assert.match(html,/&lt;img/);assert.doesNotMatch(html,/<img|onerror="alert/);
+ }
+});
+
+test('outcome verifier issues and deferral details retain complete escaped public records without opening by default',()=>{
+ const attack='<svg onload="alert(1)">',outcome={status:'deferred',title:'Evidence assessment complete; claim deferred',summary:'Recorded source assessment.',missing_evidence:[],unresolved_facts:[],issues:[{code:'source_discrepancy',reason:'Recorded verifier discrepancy',details:{original_quote:attack}}],authority_limits:[],next_action:'Await named evidence.'};
+ const deferred={code:'unsupported_format',reason:'No supported extraction.',details:{file_name:'recorded-file.bin',limitation:attack,public_check:'Original receipt retained'}};
+ for(const [saved,values]of [[state({status:'deferred',outcome}),['Recorded verifier discrepancy','source_discrepancy']],[state({status:'deferred',deferral:deferred}),['recorded-file.bin','Original receipt retained']]]) {
+  const html=ui.workMarkup(saved,{},'branch',[]);for(const value of values)assert.ok(html.includes(value),value);
+  const disclosure=html.match(/<details[^>]*data-au-disclosure="outcome-record"[^>]*>/);assert.ok(disclosure,'the full public operational record is inspectable');assert.doesNotMatch(disclosure[0],/\sopen(?:\s|>)/);assert.match(html,/&lt;svg/);assert.doesNotMatch(html,/<svg\s+onload|onload="alert/);
+ }
+});
+
+test('accepted changes leave hidden document contexts still',()=>{
+ const f=motionFixture(),doc=f.host.querySelectorAll('[data-au-document]')[0];
+ doc.closest=selector=>selector==='[hidden]'?{hidden:true}:null;
+ const run=ui.animateTransition(f.host,{nodes:[],edges:[],facts:[],documents:[{id:'notice',delay:580,duration:180}],stages:[]},{});
+ assert.equal(f.calls.length,0);run.cancel();
+});
+test('paused interpretation describes an unaccepted result instead of active reading',()=>{
+ const s=state({status:'deferred',phase:'deferred',run_id:'paused-run',deferral:{code:'paused',reason:'Paused'}});
+ const html=ui.progressMarkup(s,[{kind:'work.started',payload:{run_id:'paused-run'}},{kind:'work.phase',payload:{phase:'interpreting'}}]);
+ assert.match(html,/Interpretation not accepted/);assert.doesNotMatch(html,/Reading the evidence|aria-current="step"/);
 });
