@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>CasePath · Evidence path preview</title>
+  <link rel="stylesheet" href="/preview.css">
+  <link rel="stylesheet" href="/identity.css">
+</head>
+<body>
+  <a href="#main" class="skip">Skip to investigation</a>
+  <header class="global-header">
+    <a class="brand" href="#work" aria-label="CasePath work"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M5 6h7a7 7 0 0 1 0 14H5M5 6v14m0-7h17"/><circle cx="22" cy="13" r="2.5"/></svg>CasePath<span class="preview-tag">Evidence, in motion.</span></a>
+    <nav aria-label="Workspace"><a href="#work" data-nav="work">Work</a><a href="#knowledge" data-nav="knowledge">Knowledge</a></nav>
+    <a class="new-claim" href="#intake">+ <span>New claim</span></a>
+  </header>
+  <main id="main" tabindex="-1"><p class="loading">Opening saved investigation…</p></main>
+  <footer class="preview-note"><span class="preview-dot"></span> Design preview · saved fictional work <span class="preview-note-detail">Read-only · no model calls</span></footer>
+  <dialog id="sheet" aria-labelledby="sheet-title"><div id="sheet-content"></div></dialog>
+  <script src="/core.js"></script>
+  <script src="/preview.js"></script>
+</body>
+</html>
