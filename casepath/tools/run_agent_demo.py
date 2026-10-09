@@ -198,7 +198,8 @@ def prior_demo_budgets(root):
                 if any(budget[k] != v for k, v in POLICY.items()):
                     raise ValueError
                 for key in ("runs_used", "provider_calls_used", "autonomous_workflows_used", "autonomous_provider_calls_used",
-                            "autonomous_grant_workflows_used", "autonomous_grant_provider_calls_used"):
+                            "autonomous_grant_workflows_used", "autonomous_grant_provider_calls_used",
+                            "original_nine_workflows_used", "original_nine_provider_calls_used"):
                     if key in budget and (type(budget[key]) is not int or budget[key] < 0):
                         raise ValueError
                 for key in ("runs_used", "provider_calls_used", "actual_cost_usd"):
@@ -207,16 +208,19 @@ def prior_demo_budgets(root):
                 cost = Decimal(budget["actual_cost_usd"])
                 if not cost.is_finite() or cost < 0:
                     raise ValueError
-                for key in ("run_grant_sha256", "autonomous_policy_sha256", "autonomous_capacity_grant_sha256"):
+                for key in ("run_grant_sha256", "autonomous_policy_sha256", "autonomous_capacity_grant_sha256", "original_nine_grant_sha256"):
                     if budget.get(key) is not None and re.fullmatch(r"[0-9a-f]{64}", budget[key]) is None:
                         raise ValueError
                 if budget.get("effective_max_runs", 3) not in (3, 4):
                     raise ValueError
                 effective_calls = budget.get("effective_autonomous_max_provider_calls", 18)
-                if (type(effective_calls) is not int or effective_calls not in (18, 24)
+                if (type(effective_calls) is not int or effective_calls not in (18, 24, 42)
                         or (budget.get("autonomous_capacity_grant_sha256") is None) != (effective_calls == 18)
+                        or (budget.get("original_nine_grant_sha256") is not None) != (effective_calls == 42)
                         or budget.get("autonomous_grant_workflows_used", 0) > 3
-                        or budget.get("autonomous_grant_provider_calls_used", 0) > 6):
+                        or budget.get("autonomous_grant_provider_calls_used", 0) > 6
+                        or not 0 <= budget.get("original_nine_workflows_used",0) <= 9
+                        or not budget.get("original_nine_workflows_used",0) <= budget.get("original_nine_provider_calls_used",0) <= 2 * budget.get("original_nine_workflows_used",0)):
                     raise ValueError
                 observations.append(budget)
             except (AttributeError, KeyError, TypeError, ValueError, InvalidOperation):
@@ -287,7 +291,8 @@ def verify_preserved_provider_budget(info):
             if prior is None:
                 continue  # Existence and complete replay are still required above.
             for key in ("runs_used", "provider_calls_used", "autonomous_workflows_used", "autonomous_provider_calls_used",
-                        "autonomous_grant_workflows_used", "autonomous_grant_provider_calls_used"):
+                        "autonomous_grant_workflows_used", "autonomous_grant_provider_calls_used",
+                        "original_nine_workflows_used", "original_nine_provider_calls_used"):
                 if key in prior and (type(current.get(key)) is not int or current[key] < prior[key]):
                     raise ValueError
             if Decimal(current["actual_cost_usd"]) < Decimal(prior["actual_cost_usd"]):
@@ -297,7 +302,9 @@ def verify_preserved_provider_budget(info):
                     or prior.get("autonomous_policy_sha256") is not None and prior["autonomous_policy_sha256"] != policy_sha
                     or capacity["effective_autonomous_max_provider_calls"] < prior.get("effective_autonomous_max_provider_calls", 18)
                     or prior.get("autonomous_capacity_grant_sha256") is not None and
-                       prior["autonomous_capacity_grant_sha256"] != capacity["autonomous_capacity_grant_sha256"]):
+                       prior["autonomous_capacity_grant_sha256"] != capacity["autonomous_capacity_grant_sha256"]
+                    or prior.get("original_nine_grant_sha256") is not None and
+                       prior["original_nine_grant_sha256"] != capacity.get("original_nine_grant_sha256")):
                 raise ValueError
         # Reservations and unknown counts may decrease when retained requests
         # settle. Their current validity is checked by WorkStore's full replay.
@@ -502,6 +509,53 @@ def verified_autonomous_capacity_grant(grant):
 def verified_autonomous_capacity(budget):
     """Check native usage and return only the public extension identity/counters."""
     try:
+        nine = budget.get("original_nine_grant")
+        if nine is not None:
+            # Reuse the native pin/bounds validator without constructing a
+            # database, provider or approval application. The complete ledger
+            # ancestry is independently validated by WorkStore readback.
+            native_root = str(Path(__file__).resolve().parents[2] / "casepath-api")
+            sys.path.insert(0,native_root)
+            try:
+                from casepath_api.agent_work.store import WorkStore, WorkStoreError
+                try:
+                    WorkStore.validate_original_nine_preflight(nine["preflight"])
+                except WorkStoreError:
+                    raise ValueError from None
+            finally:
+                sys.path.remove(native_root)
+            prior, command = nine["prior_budget"], nine["approval_command"]
+            new_works, new_calls = budget["original_nine_workflows_used"], budget["original_nine_provider_calls_used"]
+            if (nine["contract"] != "casepath.original-nine-capacity-grant/1.0.0"
+                    or nine["grant_sha256"] != sha(canonical({k:v for k,v in nine.items() if k != "grant_sha256"}))
+                    or prior != nine["preflight"]["prior_budget"]
+                    or nine["prior_budget_sha256"] != sha(canonical(prior))
+                    or command["expected_budget_sha256"] != nine["prior_budget_sha256"]
+                    or command["acknowledged_preflight_sha256"] != nine["preflight"]["preflight_sha256"]
+                    or not isinstance(command["human_approval_reference"],str) or not command["human_approval_reference"].strip()
+                    or command["monetary_option"] not in {"existing_010","new_018_total_022"}
+                    or nine["effective_total_cost_limit_usd"] != ("0.10" if command["monetary_option"] == "existing_010" else "0.22")
+                    or budget["effective_total_cost_limit_usd"] != nine["effective_total_cost_limit_usd"]
+                    or nine["max_new_workflow_reservations_usd"] != "0.18"
+                    or type(new_works) is not int or not 0 <= new_works <= 9
+                    or type(new_calls) is not int or not new_works <= new_calls <= 2 * new_works
+                    or budget["effective_autonomous_max_provider_calls"] != 42
+                    or prior["provider_calls_used"] != 24 or prior["effective_autonomous_max_provider_calls"] != 24
+                    or budget["autonomous_capacity_grant"] != prior["autonomous_capacity_grant"]
+                    or nine["old_capacity_grant_sha256"] != prior["autonomous_capacity_grant"]["grant_sha256"]
+                    or nine["base_policy_sha256"] != sha(canonical(POLICY))
+                    or nine["autonomous_policy_sha256"] != verified_autonomous_policy(prior["autonomous_policy"])):
+                raise ValueError
+            old_budget = dict(budget)
+            old_budget.pop("original_nine_grant")
+            old_budget["effective_autonomous_max_provider_calls"] = 24
+            for key,count in (("provider_calls_used",new_calls),("autonomous_provider_calls_used",new_calls),("autonomous_workflows_used",new_works)):
+                old_budget[key] -= count
+            selected = verified_autonomous_capacity(old_budget)
+            selected.update(original_nine_grant_sha256=nine["grant_sha256"],
+                effective_autonomous_max_provider_calls=42, original_nine_workflows_used=new_works,
+                original_nine_provider_calls_used=new_calls, effective_total_cost_limit_usd=budget["effective_total_cost_limit_usd"])
+            return selected
         grant = budget.get("autonomous_capacity_grant")
         effective = budget.get("effective_autonomous_max_provider_calls", 18)
         workflows = budget.get("autonomous_grant_workflows_used", 0)

@@ -171,7 +171,8 @@ class AutonomousModelV1:
             raise AutonomousModelError("The saved semantic attempt is rejected or unconfirmed; no retry was sent.", outcome["receipt"])
         return outcome
 
-    def call(self, stage, context, schema, identity):
+    def prepare_request(self, stage, context, schema):
+        """Construct the real bounded request without a ledger, credential or I/O."""
         if stage not in {"interpret", "verify"} or not isinstance(context, dict):
             raise ValueError("a bounded semantic stage and object context are required")
         validate_schema(schema)
@@ -219,6 +220,19 @@ class AutonomousModelV1:
         data = canonical(request)
         if len(data) > cfg["max_request_bytes"] or len(data) + cfg["max_output_tokens"] > cfg["context_length"]:
             raise AutonomousModelError("The semantic request exceeds its frozen byte or context limit; no request was sent.")
+        maximum = (Decimal(cfg["prompt_price"]) * len(data)
+                   + Decimal(cfg["completion_price"]) * cfg["max_output_tokens"]
+                   + Decimal(cfg["request_price"]))
+        return {"data": data, "request_sha256": digest(request), "request_bytes": len(data),
+                "context_sha256": digest(source_context), "schema_sha256": digest(schema),
+                "proposal_sha256": digest(context["proposal"]) if stage == "verify" else None,
+                "maximum_cost_usd": str(maximum), "compilation": compilation}
+
+    def call(self, stage, context, schema, identity):
+        prepared = self.prepare_request(stage, context, schema)
+        cfg, data, compilation = self.config, prepared["data"], prepared["compilation"]
+        source_context = context["context"] if stage == "verify" else context
+        identity = self.store.bind_original_nine_identity(identity, source_context)
         # Expiry is a send gate, not part of the frozen request/config identity.
         # An unchanged refreshed catalogue may continue a workflow; already
         # persisted results remain replayable after the original packet expires.
@@ -226,9 +240,9 @@ class AutonomousModelV1:
         age = (catalogue_checked_at - self._catalogue_fetched_at).total_seconds()
         fresh = 0 <= age <= 86400
         try:
-            admitted = self.store.begin_autonomous_call(stage, identity, cfg, request_sha256=digest(request), request_bytes=len(data),
-                context_sha256=digest(source_context), schema_sha256=digest(schema),
-                proposal_sha256=digest(context["proposal"]) if stage == "verify" else None,
+            admitted = self.store.begin_autonomous_call(stage, identity, cfg, request_sha256=prepared["request_sha256"], request_bytes=len(data),
+                context_sha256=prepared["context_sha256"], schema_sha256=prepared["schema_sha256"],
+                proposal_sha256=prepared["proposal_sha256"],
                 allow_send=fresh and (self._client is not None or os.getenv("CASEPATH_AUTONOMOUS_ENABLED") == "1"))
         except ConflictError as error:
             if not fresh:

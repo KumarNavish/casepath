@@ -42,6 +42,139 @@ class WorkPaused(WorkStoreError):
 
 
 ACTIVE = ("queued", "running", "interrupted")
+
+# Identity pins from the non-authorizing Mac execution-candidates packet.
+# These restrict a later operator application; they never activate allowance.
+ORIGINAL_NINE_CANDIDATES = [
+    {
+        "claim_id": "clm_e262801f9368bc12",
+        "binding_sha256": "0846d88797534edb24b46340ac5d596d5fd952c1d85ed482661e5f9b8000d373",
+        "original_binding_sha256": "6229c4e2c1084f234a27ed9c3fa4f1716b94fb8cc7ba1dd662aff05020b6a3ad",
+        "identity": {
+            "claim_id": "clm_e262801f9368bc12",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "bfd762e5a7c569f30be4245ab0c8a161b82506fbada4330f634de2a8357dc7ae",
+            "workflow_id": "autonomy.3f2638d4faf538af641c98bc"
+        }
+    },
+    {
+        "claim_id": "clm_521c20913f4e0f9b",
+        "binding_sha256": "68bd7b4cc0ec8d59abcdeaf578d92e662dd79c7cd8fd8af63cfad11f10c36213",
+        "original_binding_sha256": "891c905267ac6825bd03aa61c80f25d4c830d9b29d7a132a9976d8f424c293a7",
+        "identity": {
+            "claim_id": "clm_521c20913f4e0f9b",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "eedda3aeeebe51660c572e8a8a9dcee123dd10a4b995def5c0377996bd2412a7",
+            "workflow_id": "autonomy.5c02a7df9e603ad36ef048f6"
+        }
+    },
+    {
+        "claim_id": "clm_ee29ac770b1bf7b9",
+        "binding_sha256": "289f28194f74ecfb7144e2b17e3d0e5b46c54cff4056b08e55aca8df3e8a04dd",
+        "original_binding_sha256": "370ffc087137cd80afb9e896a861567fbcee34701202fadcb461eac77f2e1ddb",
+        "identity": {
+            "claim_id": "clm_ee29ac770b1bf7b9",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "2b6257ef0e839436c5b26976c900d1a275d906146f671948f9a723b67b70da68",
+            "workflow_id": "autonomy.edfa74ca44fb9f65c5701b4c"
+        }
+    },
+    {
+        "claim_id": "clm_f69b1747447bc221",
+        "binding_sha256": "770f57ec0de6073f1d1009abf8a768c4abe4fbf45148cce8e4826373cbcb9c09",
+        "original_binding_sha256": "7f55bdba8605f6147551782d125d0e434827698e99f86499f8651cc4e2c13278",
+        "identity": {
+            "claim_id": "clm_f69b1747447bc221",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "e273c8501100b8fce897c33ec7afa6951c8abd116d82dec8e488505bd886f0af",
+            "workflow_id": "autonomy.82b74a59b4b0261007edb9c4"
+        }
+    },
+    {
+        "claim_id": "clm_0c5e7c7723a3c694",
+        "binding_sha256": "974ff199d11c260d0bc923e675d9c79bbb3bd75ffbf861f68999702bc717758c",
+        "original_binding_sha256": "7efcb9de6e711e299818ee575411b7c4996f184e7d4cbbc5ea3784f6b1f3213f",
+        "identity": {
+            "claim_id": "clm_0c5e7c7723a3c694",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "a6763a11101c5683fe2c0f9f028d6bad77243fef37d6629e115641d6f047c674",
+            "workflow_id": "autonomy.86061008d180f70727c4f23c"
+        }
+    },
+    {
+        "claim_id": "clm_2a9c260c26afaa34",
+        "binding_sha256": "62bef9011eab6221fbedc03387f2805a39a56b27956d7864e757f6932a3a7082",
+        "original_binding_sha256": "e1e9a7c4c63c1e721ba604c7a1aa12bb9056deb7f627b616a65371a1c4efaf0b",
+        "identity": {
+            "claim_id": "clm_2a9c260c26afaa34",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "73a0c0eeb5699b7080be310c2fecd8abbcb533526d422c39e2537c01d2e3f85a",
+            "workflow_id": "autonomy.2de798f221d3ecaf5bbc7916"
+        }
+    },
+    {
+        "claim_id": "clm_c44ddc0914ba9298",
+        "binding_sha256": "ecc52d165d8784124fd301a68198cf7f74a72e1051ef83713fff356b41e130ad",
+        "original_binding_sha256": "e91da0c18f43791ec9882b654c520dd99e72ec16920b54264e2625fb914634af",
+        "identity": {
+            "claim_id": "clm_c44ddc0914ba9298",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "5c05cb6bc5f0ebad8a649f6565aeb6a74abffc6fbfe41711dcdccb843eb51d9f",
+            "workflow_id": "autonomy.91d09441d92b69e3f6d6b692"
+        }
+    },
+    {
+        "claim_id": "clm_7dbd7c7d1c4ddf90",
+        "binding_sha256": "2464f5bb86f065e9c7ecbca0027966e68eb047936e2f3c98f3bfa7ce133768d6",
+        "original_binding_sha256": "08e2798cbc1121de5c43d9cf1b76367ae885a170b81f4c3d7c14e78726500ecf",
+        "identity": {
+            "claim_id": "clm_7dbd7c7d1c4ddf90",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "c615f63d7b60a7aec55b3bcd5d607c9b7aefbae9e68de82d0c785cccbba82f50",
+            "workflow_id": "autonomy.02621d905b30706c1fb4f7d2"
+        }
+    },
+    {
+        "claim_id": "clm_9a179a4481767d43",
+        "binding_sha256": "c168703d5ae2669ab15e045d2736ceca0c22e0f8a19483cbc00406bc787c4270",
+        "original_binding_sha256": "0921c6729ccfd1bd655507b9fd3daa06fd9cee70c3d7b6544bb111a5fe5cc6e9",
+        "identity": {
+            "claim_id": "clm_9a179a4481767d43",
+            "policy_id": "casepath.autonomous-local/1.0.0",
+            "rule_set_sha256": "986bf411784ada0524f03d06ef5038d2fb90e27422ee12300a713c644d849343",
+            "source_roster_sha256": "5e866440a03d6d14a4f32dcf862d238ff3aef58e299e67545bb064953eb9e83c",
+            "workflow_id": "autonomy.caf321179cc7b4cc4f7bf27e"
+        }
+    }
+]
+ORIGINAL_NINE_CONFIG = {
+    "adapter_version": "casepath.autonomous-model/1.0.0",
+    "canonical_model": "openai/gpt-6-luna-20260922",
+    "catalogue_entry_sha256": "9aff2d6e3996eeb35eb5dd22a26904b6fcea7f610312b98c4222812f185720d9",
+    "completion_price": "5E-7",
+    "context_length": 1050000,
+    "free": False,
+    "max_calls_per_workflow": 2,
+    "max_output_tokens": 3500,
+    "max_request_bytes": 64000,
+    "model": "openai/gpt-6-luna",
+    "prompt_price": "1.25E-7",
+    "protocol": "strict_json_schema",
+    "reasoning_supported": True,
+    "request_price": "0",
+    "timeout_seconds": 60
+}
+ORIGINAL_NINE_SELECTION_SHA256 = "7d70edaf6e886ace18ea55f6b41ab3e44dd5760431bcf8f844ee47ab30b9537e"
+ORIGINAL_NINE_CORPUS_SHA256 = "7c885d3fd112dfc7314719d661fa73449f72b7bdf5b83159da9fa3e0b9a1b7eb"
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS work_runs (
  run_id TEXT PRIMARY KEY, claim_id TEXT NOT NULL, idempotency_key TEXT NOT NULL,
@@ -107,6 +240,7 @@ CREATE TABLE IF NOT EXISTS work_objects (
 
 # This ledger shares the original budget, but never rewrites historical permits.
 for _table, _keys in (("work_autonomous_policy", "singleton INTEGER PRIMARY KEY CHECK(singleton=1)"),
+                     ("work_original_nine_grant", "singleton INTEGER PRIMARY KEY CHECK(singleton=1)"),
                      ("work_autonomous_capacity_grant", "singleton INTEGER PRIMARY KEY CHECK(singleton=1)"),
                      ("work_autonomous_workflows", "workflow_id TEXT PRIMARY KEY"),
                      ("work_autonomous_calls", "workflow_id TEXT NOT NULL, stage TEXT NOT NULL, PRIMARY KEY(workflow_id,stage)"),
@@ -124,12 +258,15 @@ for _table, _keys in (("work_autonomous_policy", "singleton INTEGER PRIMARY KEY 
 
 
 class WorkStore:
-    def __init__(self, path: Path, *, connection_factory=None):
+    def __init__(self, path: Path, *, connection_factory=None, validated_source_commit=None):
         self.path = Path(path)
         if self.path.is_symlink() or self.path.parent.is_symlink():
             raise WorkStoreError("work journal path cannot be a symlink")
         self.path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
         self._connection_factory = connection_factory
+        # Only server/operator composition supplies this value. It is never
+        # accepted from a workflow request, model config or approval string.
+        self._validated_source_commit = validated_source_commit
         self._lock = RLock()
         self._validated_event_cache: dict[str, tuple[str, tuple[tuple[int, str, bytes], ...], list[dict]]] = {}
         self._validated_object_cache: dict[str, tuple[tuple, tuple, bytes]] = {}
@@ -337,6 +474,7 @@ class WorkStore:
                 "SELECT * FROM work_external_run_grant WHERE singleton=1",
                 "SELECT * FROM work_autonomous_policy WHERE singleton=1",
                 "SELECT * FROM work_autonomous_capacity_grant WHERE singleton=1",
+                "SELECT * FROM work_original_nine_grant WHERE singleton=1",
                 "SELECT * FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits)",
                 "SELECT * FROM work_events WHERE run_id IN (SELECT run_id FROM work_external_permits) ORDER BY run_id,sequence",
                 "SELECT 1 FROM work_calls WHERE tool_name='provider_request' AND status='started' LIMIT 1",
@@ -364,7 +502,9 @@ class WorkStore:
                 or any(not grant or r["grant_sha256"] != grant["grant_sha256"] for r in granted_runs)):
             raise WorkStoreError("external run grant does not bind the admitted allowance")
         autonomous = self._autonomous_usage(db, autonomous_policy)
-        granted_workflows, granted_calls = self._autonomous_capacity_usage(capacity_grant, runs, calls, autonomous)
+        nine = self._original_nine_grant(db, policy, autonomous_policy, capacity_grant)
+        old_autonomous, nine_works, nine_actual, nine_reserved = self._original_nine_usage(db, nine, autonomous)
+        granted_workflows, granted_calls = self._autonomous_capacity_usage(capacity_grant, runs, calls, old_autonomous)
         calls = [*calls, *autonomous["calls"]]
         pending = pending or autonomous["pending"]
         actual = sum((c["cost"] for c in calls if c["cost"] is not None), Decimal(0))
@@ -375,7 +515,8 @@ class WorkStore:
                 limit = self._money(config.get("cost_limit_usd", policy["run_cost_limit_usd"]))
                 committed = sum((c["cost"] if c["cost"] is not None else c["reserved"] for c in record["calls"]), Decimal(0))
                 reserved += max(Decimal(0), limit - committed)
-        available = max(Decimal(0), self._money(policy["total_cost_limit_usd"]) - actual - reserved)
+        effective_total = nine["effective_total_cost_limit_usd"] if nine else policy["total_cost_limit_usd"]
+        available = max(Decimal(0), self._money(effective_total) - actual - reserved)
         exceeded = any(c["cost"] is not None and c["cost"] > c["reserved"] for c in calls)
         reason = ("provider_cost_bound_exceeded" if exceeded else "provider_outcome_pending" if pending else
                   "run_limit_reached" if len(runs) >= effective_max_runs else
@@ -388,14 +529,28 @@ class WorkStore:
                 "can_start": reason is None, "reason": reason, "automatic_retry": False}
         if autonomous_policy:
             effective_calls = policy["max_provider_calls"] + (capacity_grant["additional_provider_calls"] if capacity_grant else 0)
+            if nine:
+                effective_calls += 18
+            slots_exhausted = len(nine_works) >= 9 if nine else bool(capacity_grant and granted_workflows >= capacity_grant["additional_workflows"])
+            nine_remaining = Decimal("0.18") - nine_actual - nine_reserved
+            nine_workflow_pending = any(work["terminal"] is None for work in nine_works.values())
             auto_reason = ("provider_cost_bound_exceeded" if exceeded else "provider_outcome_pending" if pending else
-                           "call_limit_reached" if len(calls) + 2 > effective_calls or capacity_grant and granted_workflows >= capacity_grant["additional_workflows"] else
-                           "cost_limit_reached" if available < self._money(autonomous_policy["workflow_cost_limit_usd"]) else None)
+                           "workflow_in_progress" if nine_workflow_pending else
+                           "call_limit_reached" if len(calls) + 2 > effective_calls or slots_exhausted else
+                           "cost_limit_reached" if available < self._money(autonomous_policy["workflow_cost_limit_usd"])
+                           or nine and nine_remaining < Decimal("0.02") else None)
             result.update(autonomous_policy=autonomous_policy, autonomous_workflows_used=len(autonomous["workflows"]),
                           autonomous_provider_calls_used=len(autonomous["calls"]),
                           autonomous_capacity_grant=capacity_grant, effective_autonomous_max_provider_calls=effective_calls,
                           autonomous_grant_workflows_used=granted_workflows, autonomous_grant_provider_calls_used=granted_calls,
                           autonomous_can_start=auto_reason is None, autonomous_reason=auto_reason)
+            if nine:
+                result.update(original_nine_grant=nine, effective_total_cost_limit_usd=effective_total,
+                    original_nine_workflow_pending=nine_workflow_pending,
+                    original_nine_workflows_used=len(nine_works), original_nine_provider_calls_used=sum(len(w["calls"]) for w in nine_works.values()),
+                    original_nine_actual_cost_usd=str(nine_actual), original_nine_reserved_cost_usd=str(nine_reserved),
+                    original_nine_committed_cost_usd=str(nine_actual + nine_reserved),
+                    original_nine_remaining_cost_usd=str(max(Decimal(0),nine_remaining)))
         return result
 
     @staticmethod
@@ -459,7 +614,7 @@ class WorkStore:
         value = self._autonomous_decode(db.execute("SELECT * FROM work_autonomous_policy WHERE singleton=1").fetchone(), "policy_sha256")
         if value is None:
             if any(db.execute(f"SELECT 1 FROM {table} LIMIT 1").fetchone() for table in
-                   ("work_autonomous_workflows", "work_autonomous_calls", "work_autonomous_outcomes", "work_autonomous_terminals", "work_autonomous_capacity_grant")):
+                   ("work_autonomous_workflows", "work_autonomous_calls", "work_autonomous_outcomes", "work_autonomous_terminals", "work_autonomous_capacity_grant", "work_original_nine_grant")):
                 raise WorkStoreError("autonomous work has no sealed policy")
             return None
         try:
@@ -606,6 +761,242 @@ class WorkStore:
                                     for key, work in sorted(usage["workflows"].items())],
                 "actor": actor, "reason": reason, "idempotency_key": idempotency_key, "granted_at": utcnow()}, "grant_sha256")
 
+    @staticmethod
+    def validate_original_nine_budget_snapshot(value):
+        fields = {"scope","max_runs","max_provider_calls","total_cost_limit_usd","run_cost_limit_usd",
+            "runs_used","provider_calls_used","base_policy_sha256","effective_max_runs","run_grant",
+            "actual_cost_usd","reserved_cost_usd","remaining_cost_usd","unknown_calls","in_flight",
+            "can_start","reason","automatic_retry","autonomous_policy","autonomous_workflows_used",
+            "autonomous_provider_calls_used","autonomous_capacity_grant","effective_autonomous_max_provider_calls",
+            "autonomous_grant_workflows_used","autonomous_grant_provider_calls_used","autonomous_can_start","autonomous_reason"}
+        if not isinstance(value,dict) or set(value) != fields:
+            raise WorkStoreError("a complete saved old-epoch WorkStore budget projection is required")
+
+    @staticmethod
+    def validate_original_nine_preflight(value):
+        """Validate identity and bounds, never infer human approval from a seal."""
+        try:
+            if (not isinstance(value, dict) or value["preflight_sha256"] != digest({k:v for k,v in value.items() if k != "preflight_sha256"})
+                    or value["contract"] != "casepath.original-nine-preflight/1.0.0"
+                    or value["inactive"] is not True or value["allowance_applied"] is not False
+                    or value["execution_authorized"] is not False or value["automatic_retry"] is not False
+                    or type(value["provider_calls_sent"]) is not int or value["provider_calls_sent"] != 0
+                    or type(value["source_admissions"]) is not int or value["source_admissions"] != 0
+                    or value["selection_file_sha256"] != ORIGINAL_NINE_SELECTION_SHA256
+                    or value["corpus_manifest_file_sha256"] != ORIGINAL_NINE_CORPUS_SHA256
+                    or canonical(value["frozen_model_config"]) != canonical(ORIGINAL_NINE_CONFIG)
+                    or value["max_new_workflows"] != 9 or type(value["max_new_workflows"]) is not int
+                    or value["max_new_physical_calls"] != 18 or type(value["max_new_physical_calls"]) is not int
+                    or value["max_request_bytes"] != 64000 or value["max_output_tokens"] != 3500
+                    or not isinstance(value["source_commit"], str) or len(value["source_commit"]) != 40
+                    or any(c not in "0123456789abcdef" for c in value["source_commit"])
+                    or len(value["eligible_originals"]) != 9):
+                raise ValueError
+            from ..autonomous_policy_v1 import INTERPRET_SCHEMA, VERIFY_SCHEMA
+            for row, candidate in zip(value["eligible_originals"], ORIGINAL_NINE_CANDIDATES):
+                binding, identity, request = row["original_binding"], row["identity"], row["interpretation"]
+                expected = {**candidate["identity"], "original_binding_sha256":candidate["original_binding_sha256"],
+                    "claim_binding_sha256":candidate["binding_sha256"], "corpus_manifest_sha256":binding["corpus_manifest_sha256"]}
+                if (canonical(identity) != canonical(expected) or binding["claim_id"] != candidate["claim_id"]
+                        or binding["corpus_id"] != "synthetic-150"
+                        or binding["original_binding_sha256"] != candidate["original_binding_sha256"]
+                        or binding["original_binding_sha256"] != digest({k:v for k,v in binding.items() if k != "original_binding_sha256"})
+                        or binding["claim_binding_sha256"] != candidate["binding_sha256"]
+                        or type(request["request_bytes"]) is not int or not 0 < request["request_bytes"] <= 64000
+                        or request["schema_sha256"] != digest(INTERPRET_SCHEMA)
+                        or row["verification"]["schema_sha256"] != digest(VERIFY_SCHEMA)
+                        or not WorkStore._autonomous_hash(request["request_sha256"])
+                        or not WorkStore._autonomous_hash(request["context_sha256"])
+                        or not WorkStore._autonomous_hash(row["semantic_context_sha256"])
+                        or Decimal(request["maximum_cost_usd"]) != Decimal("1.25E-7") * request["request_bytes"] + Decimal("5E-7") * 3500):
+                    raise ValueError
+            if (value["current_budget_cas_ready"] is not True or not isinstance(value["prior_budget"],dict)
+                    or digest(value["prior_budget"]) != value["prior_budget_sha256"]):
+                raise ValueError
+            WorkStore.validate_original_nine_budget_snapshot(value["prior_budget"])
+        except (KeyError, TypeError, ValueError, AttributeError, InvalidOperation) as exc:
+            raise WorkStoreError("exact-nine preflight identity or full budget snapshot is invalid") from exc
+
+    @staticmethod
+    def _original_nine_roster(usage):
+        return [{"workflow_id":key, "workflow_sha256":work["record"]["workflow_sha256"],
+            "calls":[{"stage":stage,"intent_sha256":call["intent"]["intent_sha256"],
+                      "receipt_sha256":call["outcome"]["receipt_sha256"] if call["outcome"] else None}
+                     for stage,call in sorted(work["calls"].items())],
+            "terminal_sha256":work["terminal"]["terminal_sha256"] if work["terminal"] else None}
+            for key,work in sorted(usage["workflows"].items())]
+
+    @staticmethod
+    def _original_nine_legacy_seal(db):
+        queries = ["SELECT * FROM work_external_budget WHERE singleton=1",
+                   "SELECT * FROM work_external_run_grant WHERE singleton=1",
+                   "SELECT * FROM work_autonomous_policy WHERE singleton=1",
+                   "SELECT * FROM work_autonomous_capacity_grant WHERE singleton=1",
+                   "SELECT * FROM work_runs WHERE run_id IN (SELECT run_id FROM work_external_permits)",
+                   "SELECT * FROM work_events WHERE run_id IN (SELECT run_id FROM work_external_permits) ORDER BY run_id,sequence"]
+        # Query plans may traverse an unchanged table in a different order.
+        # Bind every raw column/byte without binding that incidental traversal.
+        return digest([sorted((dict(row) for row in db.execute(sql)),key=canonical) for sql in queries])
+
+    def _original_nine_grant(self, db, base, policy, capacity):
+        value = self._autonomous_decode(db.execute("SELECT * FROM work_original_nine_grant WHERE singleton=1").fetchone(), "grant_sha256")
+        if value is None:
+            return None
+        try:
+            self.validate_original_nine_preflight(value["preflight"])
+            prior, command = value["prior_budget"], value["approval_command"]
+            self._validate_grant_command(command["expected_budget_sha256"],command["actor"],command["reason"],command["idempotency_key"])
+            self._validate_grant_command(command["acknowledged_preflight_sha256"],command["human_approval_reference"],command["reason"],command["idempotency_key"])
+            option = command["monetary_option"]
+            if (set(value) != {"contract","base_policy_sha256","autonomous_policy_sha256","old_capacity_grant_sha256",
+                    "prior_budget","prior_budget_sha256","prior_workflows","prior_external_sha256","preflight","approval_command",
+                    "effective_total_cost_limit_usd","max_new_workflow_reservations_usd","granted_at","grant_sha256"}
+                    or value["contract"] != "casepath.original-nine-capacity-grant/1.0.0"
+                    or base is None or policy is None or capacity is None
+                    or value["base_policy_sha256"] != digest(base) or value["autonomous_policy_sha256"] != policy["policy_sha256"]
+                    or value["old_capacity_grant_sha256"] != capacity["grant_sha256"]
+                    or prior["autonomous_capacity_grant"] != capacity or prior["autonomous_policy"] != policy
+                    or value["prior_budget_sha256"] != digest(prior) or prior != value["preflight"]["prior_budget"]
+                    or command["expected_budget_sha256"] != digest(prior)
+                    or command["acknowledged_preflight_sha256"] != value["preflight"]["preflight_sha256"]
+                    or option not in {"existing_010","new_018_total_022"}
+                    or value["effective_total_cost_limit_usd"] != ("0.10" if option == "existing_010" else "0.22")
+                    or value["max_new_workflow_reservations_usd"] != "0.18"
+                    or value["prior_external_sha256"] != self._original_nine_legacy_seal(db)
+                    or any(prior[k] != v for k,v in {"max_provider_calls":18,"total_cost_limit_usd":"0.10","run_cost_limit_usd":"0.02",
+                            "provider_calls_used":24,"effective_autonomous_max_provider_calls":24,
+                            "autonomous_grant_workflows_used":3,"autonomous_grant_provider_calls_used":6,"in_flight":False}.items())
+                    or "original_nine_grant" in prior or not self._autonomous_time(value["granted_at"])):
+                raise ValueError
+        except (KeyError, TypeError, ValueError, AttributeError) as exc:
+            raise WorkStoreError("exact-nine grant does not preserve the original allowance") from exc
+        return value
+
+    def _original_nine_usage(self, db, grant, usage):
+        works = usage["workflows"]
+        added = {key:work for key,work in works.items() if "original_nine_grant_sha256" in work["record"]}
+        old = {key:work for key,work in works.items() if key not in added}
+        old_usage = {**usage,"workflows":old,"calls":[call for work in old.values() for call in work["calls"].values()]}
+        if grant is None:
+            if added:
+                raise WorkStoreError("an exact-nine workflow has no immutable grant")
+            return old_usage, added, Decimal(0), Decimal(0)
+        expected = {r["identity"]["workflow_id"]:r["identity"] for r in grant["preflight"]["eligible_originals"]}
+        try:
+            if (self._original_nine_roster(old_usage) != grant["prior_workflows"]
+                    or any(w["terminal"] is None for w in old.values())
+                    or len(added) > 9 or sum(len(w["calls"]) for w in added.values()) > 18
+                    or any(key not in expected or work["record"]["identity"] != expected[key]
+                        or work["record"]["config"] != ORIGINAL_NINE_CONFIG
+                        or work["record"]["original_nine_grant_sha256"] != grant["grant_sha256"]
+                        or "capacity_grant_sha256" in work["record"] for key,work in added.items())):
+                raise ValueError
+            own = [c for work in added.values() for c in work["calls"].values()]
+            rows = {r["identity"]["workflow_id"]:r for r in grant["preflight"]["eligible_originals"]}
+            if any(call["intent"]["schema_sha256"] != rows[key]["interpretation" if stage == "interpret" else "verification"]["schema_sha256"]
+                   for key,work in added.items() for stage,call in work["calls"].items()):
+                raise ValueError
+            if any(call["intent"].get("source_commit") != grant["preflight"]["source_commit"]
+                   for work in added.values() for call in work["calls"].values()):
+                raise ValueError
+            actual = sum((c["cost"] for c in own if c["cost"] is not None),Decimal(0))
+            reserved = sum((c["reserved"] for c in own if c["cost"] is None),Decimal(0))
+            for work in added.values():
+                if work["terminal"] is None:
+                    committed = sum((c["cost"] if c["cost"] is not None else c["reserved"] for c in work["calls"].values()),Decimal(0))
+                    reserved += max(Decimal(0),Decimal("0.02") - committed)
+        except (KeyError, TypeError, ValueError, AttributeError) as exc:
+            raise WorkStoreError("exact-nine epoch differs from its immutable original roster") from exc
+        return old_usage, added, actual, reserved
+
+    def apply_original_nine_grant(self, *, preflight, expected_budget_sha256, actor, reason, idempotency_key,
+                                 human_approval_reference, monetary_option, acknowledged_preflight_sha256):
+        """Operator-only application; this method never sends or starts work.
+
+        Caller authentication belongs to the explicitly invoked remote-primary
+        operator transport. Strings/hashes are audit identities, never proof of
+        direct human approval. There is deliberately no API/startup caller.
+        """
+        self.validate_original_nine_preflight(preflight)
+        self._validate_grant_command(expected_budget_sha256,actor,reason,idempotency_key)
+        self._validate_grant_command(acknowledged_preflight_sha256,human_approval_reference,reason,idempotency_key)
+        if (expected_budget_sha256 != preflight["prior_budget_sha256"]
+                or acknowledged_preflight_sha256 != preflight["preflight_sha256"]
+                or monetary_option not in {"existing_010","new_018_total_022"}):
+            raise ConflictError("the exact-nine approval differs from the supplied preflight")
+        command = {"expected_budget_sha256":expected_budget_sha256,"actor":actor,"reason":reason,
+            "idempotency_key":idempotency_key,"human_approval_reference":human_approval_reference,
+            "monetary_option":monetary_option,"acknowledged_preflight_sha256":acknowledged_preflight_sha256}
+        with self.transaction() as db:
+            budget = self._external_budget(db)
+            if budget is None or budget.get("autonomous_capacity_grant") is None:
+                raise WorkStoreError("the exhausted original and three-workflow policies are required")
+            prior = budget.get("original_nine_grant")
+            if prior:
+                if prior["approval_command"] != command or prior["preflight"] != preflight:
+                    raise ConflictError("the immutable exact-nine grant already binds a different approval")
+                return prior
+            if digest(budget) != expected_budget_sha256:
+                raise ConflictError("the exact current budget snapshot changed before operator application")
+            usage = self._autonomous_usage(db,budget["autonomous_policy"])
+            if (budget["in_flight"] or any(w["terminal"] is None for w in usage["workflows"].values())
+                    or budget["provider_calls_used"] != 24 or budget["effective_autonomous_max_provider_calls"] != 24
+                    or budget["autonomous_grant_workflows_used"] != 3 or budget["autonomous_grant_provider_calls_used"] != 6):
+                raise ConflictError("the old 24-call allowance must be exhausted and every workflow settled")
+            if any(cid in {w["record"]["identity"]["claim_id"] for w in usage["workflows"].values()}
+                   for cid in (c["claim_id"] for c in ORIGINAL_NINE_CANDIDATES)):
+                raise ConflictError("an eligible original already consumed a historical workflow")
+            if budget["reason"] == "provider_cost_bound_exceeded":
+                raise ConflictError("a provider overrun cannot receive a new grant")
+            approvals = [budget.get("run_grant"),budget.get("autonomous_policy"),budget.get("autonomous_capacity_grant")]
+            if any(value and value.get("idempotency_key") == idempotency_key for value in approvals):
+                raise ConflictError("this approval command identity already belongs to an old epoch")
+            total = "0.10" if monetary_option == "existing_010" else "0.22"
+            if (self._money(budget["actual_cost_usd"]) + self._money(budget["reserved_cost_usd"]) +
+                    (Decimal("0.02") if monetary_option == "existing_010" else Decimal("0.18")) > Decimal(total)):
+                raise ConflictError("the proposed workflow reservations exceed the chosen aggregate ceiling")
+            return self._autonomous_insert(db,"work_original_nine_grant",{"singleton":1},{
+                "contract":"casepath.original-nine-capacity-grant/1.0.0","base_policy_sha256":budget["base_policy_sha256"],
+                "autonomous_policy_sha256":budget["autonomous_policy"]["policy_sha256"],
+                "old_capacity_grant_sha256":budget["autonomous_capacity_grant"]["grant_sha256"],
+                "prior_budget":budget,"prior_budget_sha256":expected_budget_sha256,
+                "prior_workflows":self._original_nine_roster(usage),"prior_external_sha256":self._original_nine_legacy_seal(db),
+                "preflight":preflight,"approval_command":command,
+                "effective_total_cost_limit_usd":total,"max_new_workflow_reservations_usd":"0.18","granted_at":utcnow()},"grant_sha256")
+
+    def bind_original_nine_identity(self, identity, source_context):
+        """Bind the existing controller identity to current canonical originals."""
+        with self.connect() as db:
+            db.execute("BEGIN")
+            budget = self._external_budget(db)
+            grant = (budget or {}).get("original_nine_grant")
+            if grant is None:
+                return identity
+            usage = self._autonomous_usage(db,budget["autonomous_policy"])
+            work = usage["workflows"].get(identity["workflow_id"])
+            if work and "original_nine_grant_sha256" not in work["record"]:
+                return identity
+        from ..autonomous_corpus_v1 import CanonicalCorpus
+        from ..workspace_corpus import PublicCorpus, default_workspace_corpus_root
+        from ..autonomous_policy_v1 import INTERPRET_INSTRUCTIONS, VERIFY_INSTRUCTIONS
+        corpus = CanonicalCorpus()
+        public = PublicCorpus(default_workspace_corpus_root())
+        if public.manifest_file_sha256 != ORIGINAL_NINE_CORPUS_SHA256:
+            raise ConflictError("the canonical corpus changed after approval")
+        cid = identity["claim_id"]
+        row = next((r for r in grant["preflight"]["eligible_originals"] if r["identity"]["claim_id"] == cid),None)
+        if row is None or identity != {k:v for k,v in row["identity"].items() if k not in {"original_binding_sha256","claim_binding_sha256","corpus_manifest_sha256"}}:
+            raise ConflictError("the workflow is outside the exact-nine original identity allowlist")
+        state = corpus.preview_state(cid)
+        sources = [corpus.source_preview(cid,d["artifact_id"]) for d in state["source_descriptors"]]
+        expected_sources = [{k:s[k] for k in ("artifact_id","file_name","media_type","role","sha256","text","complete","coverage")} for s in sources]
+        if (state["original_binding"] != row["original_binding"] or digest(public.static_policy()) != identity["rule_set_sha256"]
+                or source_context.get("sources") != expected_sources or source_context.get("claim_id") != cid
+                or source_context.get("instructions") != {"interpret":INTERPRET_INSTRUCTIONS,"verify":VERIFY_INSTRUCTIONS}
+                or digest({k:v for k,v in source_context.items() if k != "compatible_knowledge"}) != row["semantic_context_sha256"]):
+            raise ConflictError("the original binding, source extraction or instructions changed after approval")
+        return row["identity"]
+
     def _autonomous_usage(self, db, policy):
         workflows, calls, pending, unused = {}, [], False, Decimal(0)
         if policy is None:
@@ -729,6 +1120,17 @@ class WorkStore:
                     raise ConflictError("the autonomous workflow already ended")
             elif stage != "interpret":
                 raise ConflictError("verification requires a persisted interpretation")
+            nine = budget.get("original_nine_grant")
+            if nine and (work is None or "original_nine_grant_sha256" in work["record"]):
+                row = next((row for row in nine["preflight"]["eligible_originals"] if row["identity"] == identity),None)
+                if (row is None or canonical(config) != canonical(nine["preflight"]["frozen_model_config"])
+                        or schema_sha256 != row["interpretation" if stage == "interpret" else "verification"]["schema_sha256"]):
+                    raise ConflictError("the original identity, frozen config or stage schema is outside the exact-nine allowlist")
+                # Exact recorded outcomes returned above remain readable across
+                # deployment changes. Every new physical intent must belong to
+                # the approved server-owned deployed source, including verify.
+                if self._validated_source_commit != nine["preflight"]["source_commit"]:
+                    raise ConflictError("the validated runtime source commit differs from the exact-nine preflight")
             if not allow_send:
                 raise ConflictError("the autonomous provider profile is not explicitly enabled; no request was reserved")
             if budget["in_flight"]:
@@ -739,10 +1141,15 @@ class WorkStore:
                 if not budget["autonomous_can_start"]:
                     raise ConflictError("autonomous budget unavailable: " + budget["autonomous_reason"])
                 capacity = budget["autonomous_capacity_grant"]
+                if nine:
+                    candidate = next((row for row in nine["preflight"]["eligible_originals"] if row["identity"] == identity),None)
+                    if candidate is None or canonical(config) != canonical(nine["preflight"]["frozen_model_config"]):
+                        raise ConflictError("the original identity or provider configuration is outside the exact-nine allowlist")
                 record = self._autonomous_insert(db, "work_autonomous_workflows", {"workflow_id": workflow_id}, {
                     "contract": "casepath.autonomous-workflow/1.0.0", "workflow_id": workflow_id, "identity": identity,
                     "identity_sha256": digest(identity), "config": config, "config_sha256": digest(config),
-                    **({"capacity_grant_sha256": capacity["grant_sha256"]} if capacity else {}),
+                    **({"original_nine_grant_sha256":nine["grant_sha256"]} if nine else
+                       {"capacity_grant_sha256": capacity["grant_sha256"]} if capacity else {}),
                     "policy_sha256": policy["policy_sha256"], "created_at": utcnow()}, "workflow_sha256")
                 work = {"record": record, "calls": {}}
             if stage == "verify":
@@ -754,6 +1161,7 @@ class WorkStore:
                 raise ConflictError("the autonomous workflow cost ceiling is exhausted")
             intent = self._autonomous_insert(db, "work_autonomous_calls", {"workflow_id": workflow_id, "stage": stage}, {
                 "contract": "casepath.autonomous-provider-intent/1.0.0", **command,
+                **({"source_commit":self._validated_source_commit} if nine else {}),
                 "workflow_sha256": work["record"]["workflow_sha256"], "maximum_cost_usd": str(maximum), "started_at": utcnow()}, "intent_sha256")
             return {"intent": intent, "policy_sha256": policy["policy_sha256"]}
 
