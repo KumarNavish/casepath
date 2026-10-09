@@ -287,6 +287,19 @@ test('knowledge reuse and quarantine cannot be presented as newly learned qualif
  assert.equal(ui.progressModel(s,[{kind:'interpretation.accepted',payload:{}}]).stages.find(stage=>stage.id==='verification').state,'pending');
 });
 
+test('recorded knowledge reuse has a readable marker without implying new qualification',()=>{
+ const s=state({status:'deferred',run_id:'run.one',knowledge_published:[],knowledge_uses:[{knowledge_id:'k',version:1}]}),start={kind:'work.started',payload:{run_id:'run.one'}};
+ const reuse={kind:'knowledge.used',payload:{knowledge:{knowledge_id:'k',version:1}}};
+ const knowledgeMarkup=history=>ui.progressMarkup(s,history).match(/<li data-au-stage="knowledge"[\s\S]*?<\/li>/)[0];
+ const pending=knowledgeMarkup([start]);assert.match(pending,/data-state="pending"/);assert.doesNotMatch(pending,/Reuse recorded|↺|✓/);
+ const recorded=knowledgeMarkup([start,reuse]);assert.match(recorded,/data-state="recorded"/);assert.match(recorded,/aria-hidden="true">↺<\/span>/);assert.match(recorded,/<span>Reuse recorded · 0 published · 1 reused<\/span>/);assert.doesNotMatch(recorded,/✓|data-state="complete"/);
+ assert.equal(ui.progressModel(s,[start,reuse]).stages.at(-1).complete,false);
+ const qualified={kind:'knowledge.published',payload:{knowledge:{qualification:{status:'qualified'}}}};
+ s.knowledge_published=[qualified.payload.knowledge];const published=knowledgeMarkup([start,reuse,qualified]);assert.match(published,/data-state="complete"/);assert.match(published,/✓/);assert.match(published,/1 published · 1 reused/);assert.doesNotMatch(published,/Reuse recorded|↺/);
+ const quarantined={kind:'knowledge.published',payload:{knowledge:{qualification:{status:'quarantined'}}}};
+ s.knowledge_published=[quarantined.payload.knowledge];const withheld=knowledgeMarkup([start,reuse,quarantined]);assert.match(withheld,/data-state="blocked"/);assert.match(withheld,/0 published · 1 reused · 1 quarantined/);assert.doesNotMatch(withheld,/Reuse recorded|↺|✓/);
+});
+
 test('fictional assets require a same-origin hash-bound URL and exact bytes before use',async()=>{
  const location=new URL('http://localhost:8123/'),packet={title:'Fictional claim',message:'All people are invented.',files:[{file_name:'original.txt',media_type:'text/plain',content_base64:Buffer.from('Exact \r\nbytes').toString('base64')}]};
  const bytes=Buffer.from(JSON.stringify({packets:[packet]})),url=ui.demoAssetURL('/assets/examples.json?sha256='+sha(bytes),location);

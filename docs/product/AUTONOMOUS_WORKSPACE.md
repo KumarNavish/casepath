@@ -122,6 +122,14 @@ carry `parent_definition_sha256`, `parent_knowledge_sha256`, `change_reason` and
 records the exact version and `reused_evidence_recipes`; these counts describe
 actual stored work avoided, not better legal decisions.
 
+For newly admitted workflows, a versioned compiler adds any omitted recipe
+candidate from the interpreter's explicit assessment of a complete original as
+sufficient. It copies the admitted field roster and source citations, then sends
+the candidate to independent verification. Compilation grants no acceptance;
+both the document and recipe must still pass their evidence checks. The saved
+receipt binds the untouched model proposal, compiled proposal and derived items.
+Historical contexts retain their original request and validation semantics.
+
 [Three public fictional packets](autonomous-demo/README.md) are available for a
 qualification, refinement and reuse demonstration through native or API intake.
 They are prepared inputs with conditional checks, not precomputed answers or

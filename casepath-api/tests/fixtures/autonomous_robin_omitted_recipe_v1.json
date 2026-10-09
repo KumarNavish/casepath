@@ -1,0 +1,457 @@
+{
+  "description": "Public fictional Robin packet: exact paid interpretation omitted the proof_of_receipt recipe; original verifier never checked that absent candidate.",
+  "raw_proposal": {
+    "category": {
+      "citations": [
+        {
+          "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+          "quote": "We dispute the termination and want the available evidence assessed."
+        }
+      ],
+      "family": "lease_termination_dispute",
+      "summary": "The customer reports a disputed tenancy termination, so the lease-termination investigation process applies. This identifies the process, not whether the termination was valid or properly served."
+    },
+    "conditions": [
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "A registered item delivered to me on 2 October 2026 contained the landlord's tenancy-termination notice, with a proposed end date of 31 March 2027."
+          },
+          {
+            "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+            "quote": "Sender-declared item description: tenancy termination, reference IL-2023-008."
+          }
+        ],
+        "flag": "termination_received",
+        "summary": "The customer reports receiving an item containing a termination notice. The delivery record confirms delivery of an item declared as a tenancy termination, but the carrier did not authenticate its contents; the notice itself is not supplied.",
+        "verdict": "true"
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "Occupancy: Robin Senn and Sami Senn reside together in this apartment as their family home."
+          }
+        ],
+        "flag": "family_home",
+        "summary": "The tenancy agreement records the apartment as the tenants' family home.",
+        "verdict": "true"
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We report no rent arrears"
+          }
+        ],
+        "flag": "arrears",
+        "summary": "The customer reports no rent arrears, but no ledger or payment evidence is supplied to establish the arrears position independently.",
+        "verdict": "unresolved"
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We report no rent arrears and no earlier complaint about tenancy rights."
+          }
+        ],
+        "flag": "retaliation_screen",
+        "summary": "The customer reports no earlier complaint about tenancy rights. The termination notice and stated ground are not supplied, so the screen remains unresolved.",
+        "verdict": "unresolved"
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We have not decided whether to seek an extension; hardship and extension grounds remain unassessed."
+          }
+        ],
+        "flag": "extension_relevant",
+        "summary": "The customer has not decided whether to seek an extension, and hardship and extension grounds remain unassessed.",
+        "verdict": "unresolved"
+      }
+    ],
+    "documents": [
+      {
+        "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+        "assessment": "sufficient",
+        "citations": [
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "Landlord: Illustration Lane Properties SA, Fiction Square 3, 3000 Bern, Switzerland (fictional address)."
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "Tenants: Robin Senn and Sami Senn, joint tenants and married spouses."
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "Property: Illustration Lane 8, apartment 4, 3000 Bern, Switzerland (fictional address); a three-room residential apartment with cellar C4."
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "The tenancy starts on 1 July 2023 and continues for an indefinite term."
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "The contractual notice period is three months to 31 March, 30 June, 30 September or 31 December."
+          }
+        ],
+        "document_type": "lease_contract",
+        "summary": "The complete agreement supplies the contracting parties, property and tenancy terms."
+      },
+      {
+        "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+        "assessment": "sufficient",
+        "citations": [
+          {
+            "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+            "quote": "Named addressee: Robin Senn."
+          },
+          {
+            "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+            "quote": "The item was handed directly to Robin Senn at the delivery address on 2 October 2026 at 10:14 local time."
+          },
+          {
+            "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+            "quote": "Recipient signature record: Robin Senn — received in person at 10:14 on 2 October 2026 (fictional signature)."
+          }
+        ],
+        "document_type": "proof_of_receipt",
+        "summary": "The complete delivery record identifies the recipient and records delivery in person on 2 October 2026. It does not establish delivery to Sami or authenticate the envelope contents."
+      }
+    ],
+    "knowledge_candidates": [
+      {
+        "citations": [
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "RESIDENTIAL TENANCY AGREEMENT — IL-2023-008"
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "Landlord: Illustration Lane Properties SA, Fiction Square 3, 3000 Bern, Switzerland (fictional address)."
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "Tenants: Robin Senn and Sami Senn, joint tenants and married spouses."
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "Property: Illustration Lane 8, apartment 4, 3000 Bern, Switzerland (fictional address); a three-room residential apartment with cellar C4."
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "The tenancy starts on 1 July 2023 and continues for an indefinite term."
+          }
+        ],
+        "document_type": "lease_contract",
+        "required_fields": [
+          "contracting_parties",
+          "property",
+          "tenancy_terms"
+        ],
+        "rule_refs": [
+          "policy-lease_termination_dispute-v1"
+        ],
+        "summary": "Reusable recipe for reading a complete lease contract, based on the supplied agreement and the admitted lease-termination template."
+      }
+    ],
+    "steps": [
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "A registered item delivered to me on 2 October 2026 contained the landlord's tenancy-termination notice, with a proposed end date of 31 March 2027."
+          },
+          {
+            "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+            "quote": "The item was handed directly to Robin Senn at the delivery address on 2 October 2026 at 10:14 local time."
+          }
+        ],
+        "node_id": "lt_intake",
+        "status": "established",
+        "summary": "The available evidence identifies the reported recipient, recorded delivery date and customer-reported proposed end date; the notice itself is absent."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+            "quote": "Record issued by Example Parcel Service on 2 October 2026 at 10:16 local time."
+          },
+          {
+            "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+            "quote": "The contractual notice period is three months to 31 March, 30 June, 30 September or 31 December."
+          }
+        ],
+        "node_id": "lt_deadline",
+        "status": "unresolved",
+        "summary": "Receipt and the customer-reported proposed end date are available, but the notice is absent and no challenge or extension deadline assessment is established."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We do not have a scan of the notice yet."
+          }
+        ],
+        "node_id": "lt_form",
+        "status": "unresolved",
+        "summary": "The termination notice is not supplied, so its form and contents cannot be reviewed."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We dispute the termination and want the available evidence assessed."
+          }
+        ],
+        "node_id": "lt_type",
+        "status": "unresolved",
+        "summary": "The notice and its stated termination type are not supplied."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We report no rent arrears"
+          }
+        ],
+        "node_id": "lt_arrears",
+        "status": "unresolved",
+        "summary": "The customer reports no arrears, but no ledger or payment evidence is supplied."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "I cannot confirm whether Sami was served separately, and no separate spouse notice is supplied."
+          },
+          {
+            "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+            "quote": "It contains no delivery entry for Sami Senn and makes no statement about a separate item."
+          }
+        ],
+        "node_id": "lt_family",
+        "status": "unresolved",
+        "summary": "The agreement identifies a family home, but the supplied delivery record is for Robin and does not establish whether Sami received a separate notice."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We report no rent arrears and no earlier complaint about tenancy rights."
+          }
+        ],
+        "node_id": "lt_abuse",
+        "status": "unresolved",
+        "summary": "The customer reports no earlier rights complaint, but the notice and stated ground are absent."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We have not decided whether to seek an extension; hardship and extension grounds remain unassessed."
+          }
+        ],
+        "node_id": "lt_extension",
+        "status": "unresolved",
+        "summary": "The customer has not decided whether to seek an extension; hardship evidence and grounds remain unassessed."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "We do not have a scan of the notice yet."
+          },
+          {
+            "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+            "quote": "The carrier did not open or authenticate the envelope contents."
+          }
+        ],
+        "node_id": "lt_evidence",
+        "status": "established",
+        "summary": "The available record establishes delivery evidence and a missing notice; it does not establish the notice contents or separate spouse service."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "No challenge has been filed, no settlement reached and no response sent on our behalf."
+          }
+        ],
+        "node_id": "lt_resolution",
+        "status": "unresolved",
+        "summary": "The customer reports that no challenge, settlement or response has occurred; no resolution is established."
+      },
+      {
+        "citations": [
+          {
+            "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+            "quote": "No challenge has been filed, no settlement reached and no response sent on our behalf."
+          }
+        ],
+        "node_id": "lt_close",
+        "status": "unresolved",
+        "summary": "No termination outcome is established."
+      }
+    ]
+  },
+  "original_verifier": {
+    "checks": [
+      {
+        "accepted": true,
+        "item_id": "category",
+        "reason": "The customer describes a disputed tenancy termination, which fits the admitted lease-termination process; this does not establish validity or service."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:termination_received",
+        "reason": "The customer reports receiving a termination notice, and the delivery record confirms delivery of an item declared as a tenancy termination. The notice contents remain unauthenticated."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:family_home",
+        "reason": "The complete tenancy agreement records the apartment as the tenants’ family home."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:arrears",
+        "reason": "The customer reports no arrears, but no independent ledger or payment evidence establishes the position; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:retaliation_screen",
+        "reason": "The customer reports no earlier rights complaint, but the notice and stated ground are absent; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "condition:extension_relevant",
+        "reason": "The customer says extension grounds remain unassessed and has not decided whether to seek an extension; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "document:lease_contract:src_ade93aeaac9b20950115f1f18077ce82",
+        "reason": "Citations are from the complete agreement and support the required parties, property, and tenancy terms."
+      },
+      {
+        "accepted": true,
+        "item_id": "document:proof_of_receipt:src_ac02511ef69d861f589ebd9bdeab25a1",
+        "reason": "The complete delivery record supports the named recipient and recorded delivery date and evidence; the assessment appropriately does not establish notice contents or service on Sami."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_intake",
+        "reason": "The evidence supports an internal intake assessment of the reported recipient and end date and the recorded delivery date, while noting the notice is absent."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_deadline",
+        "reason": "The proposal leaves deadline assessment unresolved; the absent notice and customer-reported end date do not establish a challenge or extension deadline."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_form",
+        "reason": "The customer confirms the notice scan is unavailable, so form and contents cannot be reviewed."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_type",
+        "reason": "The absent notice leaves the termination type unresolved; the cited dispute report does not classify it."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_arrears",
+        "reason": "The customer’s report does not independently establish arrears, and the proposal correctly leaves the assessment unresolved."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_family",
+        "reason": "The agreement establishes a family home, while the delivery record concerns Robin and does not establish separate service on Sami; unresolved is supported."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_abuse",
+        "reason": "The customer reports no earlier rights complaint, but the absent notice and stated ground leave the screen unresolved."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_extension",
+        "reason": "The customer reports that extension grounds remain unassessed; the proposal does not claim an extension assessment is complete."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_evidence",
+        "reason": "The cited sources support identifying delivery evidence and the missing notice as available evidence and an unresolved gap."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_resolution",
+        "reason": "The customer reports no challenge, settlement, or response; unresolved is appropriate."
+      },
+      {
+        "accepted": true,
+        "item_id": "step:lt_close",
+        "reason": "No outcome is established, and the proposal leaves the step unresolved."
+      },
+      {
+        "accepted": true,
+        "item_id": "knowledge:lease_contract",
+        "reason": "The complete lease supports a sufficient lease-contract recipe; its fields exactly match the required roster and its sole rule reference is the admitted template."
+      }
+    ],
+    "family_supported": true,
+    "issues": []
+  },
+  "sources": [
+    {
+      "artifact_id": "src_5d95f90925df7350538a8074edec13a4",
+      "file_name": "customer-message.txt",
+      "media_type": "text/plain",
+      "role": "customer_message",
+      "sha256": "73615ebb479f59d3c5bd8d4dcd16292a28cffae508298c5ef3e1989052921ab0",
+      "text_sha256": "73615ebb479f59d3c5bd8d4dcd16292a28cffae508298c5ef3e1989052921ab0",
+      "text": "FICTIONAL PUBLIC DEMO — all people, addresses and events below are invented.\n\nI am Robin Senn. My spouse Sami Senn and I live together at Illustration Lane 8, apartment 4, Bern. This is our family home. A registered item delivered to me on 2 October 2026 contained the landlord's tenancy-termination notice, with a proposed end date of 31 March 2027. We dispute the termination and want the available evidence assessed.\n\nI attach our complete tenancy agreement and the original delivery record for the item addressed to me. The receipt proves what that delivery service recorded; it does not reproduce the notice or establish its legal validity. We do not have a scan of the notice yet. I cannot confirm whether Sami was served separately, and no separate spouse notice is supplied.\n\nWe report no rent arrears and no earlier complaint about tenancy rights. We have not decided whether to seek an extension; hardship and extension grounds remain unassessed. No challenge has been filed, no settlement reached and no response sent on our behalf.\n",
+      "complete": true,
+      "coverage": {
+        "characters_read": 1044,
+        "characters_total": 1044,
+        "full_text_sha256": "73615ebb479f59d3c5bd8d4dcd16292a28cffae508298c5ef3e1989052921ab0",
+        "visual_interpretation_performed": false
+      }
+    },
+    {
+      "artifact_id": "src_ade93aeaac9b20950115f1f18077ce82",
+      "file_name": "tenancy-agreement.txt",
+      "media_type": "text/plain",
+      "role": "supporting_document",
+      "sha256": "091b33508dc7fab52a26da835963bdc28590b48d1e7a00b4e7b424eaf711b158",
+      "text_sha256": "091b33508dc7fab52a26da835963bdc28590b48d1e7a00b4e7b424eaf711b158",
+      "text": "FICTIONAL PUBLIC DEMO DOCUMENT\nAll persons, addresses, signatures, amounts and events are invented. This is the complete original text of this synthetic document.\n\nRESIDENTIAL TENANCY AGREEMENT — IL-2023-008\nSigned on 12 June 2023.\n\nLandlord: Illustration Lane Properties SA, Fiction Square 3, 3000 Bern, Switzerland (fictional address).\nTenants: Robin Senn and Sami Senn, joint tenants and married spouses.\nProperty: Illustration Lane 8, apartment 4, 3000 Bern, Switzerland (fictional address); a three-room residential apartment with cellar C4.\nOccupancy: Robin Senn and Sami Senn reside together in this apartment as their family home.\n\nThe tenancy starts on 1 July 2023 and continues for an indefinite term. The premises are for the tenants' ordinary residential use. The agreed net monthly rent is CHF 1,820 and the monthly advance for ancillary costs is CHF 210. Payment is due on the first day of each month. The agreed deposit is CHF 3,640.\n\nThe contractual notice period is three months to 31 March, 30 June, 30 September or 31 December. A notice must identify the tenancy and intended termination date. These are the parties' recorded contractual terms; this agreement does not establish the validity or service of any later notice.\n\nThere are no omitted schedules or later amendments in this fictional agreement.\nLandlord signature: Elin Vale, authorized representative of Illustration Lane Properties SA (fictional signature).\nTenant signatures: Robin Senn and Sami Senn (fictional signatures).\n",
+      "complete": true,
+      "coverage": {
+        "characters_read": 1507,
+        "characters_total": 1507,
+        "full_text_sha256": "091b33508dc7fab52a26da835963bdc28590b48d1e7a00b4e7b424eaf711b158",
+        "visual_interpretation_performed": false
+      }
+    },
+    {
+      "artifact_id": "src_ac02511ef69d861f589ebd9bdeab25a1",
+      "file_name": "delivery-record.txt",
+      "media_type": "text/plain",
+      "role": "supporting_document",
+      "sha256": "94ecb0cfe809817ff2e5458e5597ed5661ce45b093bf509f3442c98d5ed08ac6",
+      "text_sha256": "94ecb0cfe809817ff2e5458e5597ed5661ce45b093bf509f3442c98d5ed08ac6",
+      "text": "FICTIONAL PUBLIC DEMO DOCUMENT\nAll persons, addresses, signatures and events are invented. This is the complete original delivery record in this synthetic case.\n\nEXAMPLE PARCEL SERVICE — SIGNED DELIVERY RECORD\nRecord: EPS-DEMO-20261002-204\nService: registered letter with recipient signature.\nSender: Illustration Lane Properties SA, Fiction Square 3, 3000 Bern (fictional address).\nNamed addressee: Robin Senn.\nDelivery address: Illustration Lane 8, apartment 4, 3000 Bern (fictional address).\n\nThe item was handed directly to Robin Senn at the delivery address on 2 October 2026 at 10:14 local time. Recipient identity was checked against the addressee name on the registered item. Robin Senn signed the delivery device upon receipt.\nRecipient signature record: Robin Senn — received in person at 10:14 on 2 October 2026 (fictional signature).\nDelivery agent: Neri Falk; route DEMO-BE-04 (fictional operator).\nService status: delivered; no failed delivery or proxy recipient is recorded.\n\nSender-declared item description: tenancy termination, reference IL-2023-008. The carrier did not open or authenticate the envelope contents. This record establishes only the named recipient, delivery method and recorded delivery date. It contains no delivery entry for Sami Senn and makes no statement about a separate item.\nRecord issued by Example Parcel Service on 2 October 2026 at 10:16 local time.\n",
+      "complete": true,
+      "coverage": {
+        "characters_read": 1396,
+        "characters_total": 1396,
+        "full_text_sha256": "94ecb0cfe809817ff2e5458e5597ed5661ce45b093bf509f3442c98d5ed08ac6",
+        "visual_interpretation_performed": false
+      }
+    }
+  ]
+}

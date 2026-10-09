@@ -117,7 +117,7 @@
   }
   function progressMarkup(state,history) {
     const progress=progressModel(state,history);
-    return `<section class="au-work-progress" aria-label="Recorded autonomous work"><ol class="au-progress-track">${progress.stages.map((stage,index)=>`<li data-au-stage="${stage.id}" data-state="${stage.state}"${stage.state==='active'?' aria-current="step"':''}><span class="au-progress-marker" aria-hidden="true">${stage.state==='complete'?'✓':index+1}</span><div><strong>${h(stage.label)}</strong><span>${h(stage.detail)}</span></div></li>`).join('')}</ol><p class="au-progress-explanation" role="status" aria-live="polite">${h(progress.explanation)}</p></section>`;
+    return `<section class="au-work-progress" aria-label="Recorded autonomous work"><ol class="au-progress-track">${progress.stages.map((stage,index)=>`<li data-au-stage="${stage.id}" data-state="${stage.state}"${stage.state==='active'?' aria-current="step"':''}><span class="au-progress-marker" aria-hidden="true">${stage.state==='complete'?'✓':stage.state==='recorded'?'↺':index+1}</span><div><strong>${h(stage.label)}</strong><span>${stage.state==='recorded'?'Reuse recorded · ':''}${h(stage.detail)}</span></div></li>`).join('')}</ol><p class="au-progress-explanation" role="status" aria-live="polite">${h(progress.explanation)}</p></section>`;
   }
   function transitionPlan(before,after,accepted,history=[]) {
     if (!before || before.claim_id!==after.claim_id || after.revision<=before.revision || !accepted?.ready || !accepted.animate?.length) return null;

@@ -15,6 +15,7 @@ from .causal_process_v1 import build_graph, evaluate, seal_graph
 from .workspace_corpus import digest_value
 
 POLICY_ID = 'casepath.autonomous-local/1.0.0'
+KNOWLEDGE_RECIPE_COMPILER = 'casepath.knowledge-recipe-compiler/1.0.0'
 
 # Operational evidence questions, separate from the files that can answer them.
 # These define the scope of a source assessment, not new legal rules.
@@ -136,6 +137,55 @@ def _citations(row, sources, *, required=False):
     if required and not result:
         raise ValueError('established interpretation requires a source citation')
     return result
+
+
+def compile_verification_proposal(context, proposal):
+    """Add missing canonical recipe candidates before independent verification.
+
+    The untouched interpretation remains the provider ledger's parent. Pinned
+    historical contexts retain their original verifier request and semantics.
+    """
+    marker = context.get('knowledge_recipe_compiler')
+    if marker is None:
+        return deepcopy(proposal), None
+    if marker != KNOWLEDGE_RECIPE_COMPILER:
+        raise ValueError('unknown knowledge recipe compiler')
+    proposal_items(proposal)  # Duplicate model rows remain an error, never repaired.
+    compiled = deepcopy(proposal)
+    templates = [row for row in context['rule_packs'] if row['family'] == proposal['category']['family']]
+    sources = {row['artifact_id']: row for row in context['sources']}
+    derived = []
+    if len(templates) == 1:
+        template = templates[0]
+        documents = {row['document_type'] for row in template['process_catalog']['documents']}
+        present = {row['document_type'] for row in proposal.get('knowledge_candidates', [])}
+        for document in sorted(proposal['documents'], key=lambda row: (row['document_type'], row['artifact_id'])):
+            kind = document['document_type']
+            source = sources.get(document['artifact_id'])
+            if (kind in present or kind not in documents or kind not in REQUIRED_FIELDS
+                    or document['assessment'] != 'sufficient' or source is None
+                    or source.get('role') != 'supporting_document' or source.get('complete') is not True):
+                continue
+            try:
+                citations = _citations(document, sources, required=True)
+                if any(row['artifact_id'] != source['artifact_id'] for row in citations):
+                    continue
+            except ValueError:
+                continue  # The original invalid document still reaches its existing gate.
+            candidate = {'document_type': kind, 'required_fields': list(REQUIRED_FIELDS[kind]),
+                         'summary': 'Read a complete original supporting file for: ' + REQUIRED_FACTS[kind] + '.',
+                         'citations': deepcopy(document['citations']), 'rule_refs': [template['template_id']]}
+            compiled.setdefault('knowledge_candidates', []).append(candidate)
+            present.add(kind)
+            derived.append({'item_id': 'knowledge:' + kind,
+                            'source_item_id': f"document:{kind}:{document['artifact_id']}",
+                            'source_item_sha256': digest_value(document), 'candidate_sha256': digest_value(candidate)})
+    if (len(compiled.get('knowledge_candidates', [])) > INTERPRET_SCHEMA['properties']['knowledge_candidates']['maxItems']
+            or len(proposal_items(compiled)) > VERIFY_SCHEMA['properties']['checks']['maxItems']):
+        raise ValueError('compiled knowledge candidates exceed the bounded verification contract')
+    material = {'contract': KNOWLEDGE_RECIPE_COMPILER, 'raw_proposal_sha256': digest_value(proposal),
+                'compiled_proposal_sha256': digest_value(compiled), 'derived_items': derived}
+    return compiled, {**material, 'receipt_sha256': digest_value(material)}
 
 
 def validate_interpretation(policy, acquired_sources, proposal, verifier):
@@ -337,3 +387,9 @@ exact required-fields roster and admitted rule reference. Reject recipes based o
 files, unsupported values, weakened field requirements or case-specific assumptions. Unrelated missing
 documents or overall deferral do not invalidate a supported limited recipe. Flag a sufficient original
 document type whose required recipe was omitted; never invent or silently repair a candidate."""
+VERIFY_INSTRUCTIONS += """
+The supplied proposal may include canonical recipe candidates appended by the deterministic compiler
+from the interpreter's explicit sufficient-document judgments. Their compilation receipt records that
+origin, not acceptance. Check every such knowledge item independently against the original supporting
+file, required fields and admitted rule, including whether its parent document is actually sufficient.
+Reject an unsupported candidate even when its fields or compilation hashes are correct."""

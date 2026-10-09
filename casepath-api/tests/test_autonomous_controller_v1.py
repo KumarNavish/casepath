@@ -2,7 +2,7 @@ import base64
 from copy import deepcopy
 
 from casepath_api.autonomous_controller_v1 import AutonomousController
-from casepath_api.autonomous_policy_v1 import proposal_items
+from casepath_api.autonomous_policy_v1 import compile_verification_proposal, proposal_items
 from casepath_api.autonomous_store_v1 import AutonomousStore
 from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root
 
@@ -31,8 +31,10 @@ class SemanticFixture:
 
     def verify(self, context, proposal, identity):
         self.calls.append(('verify', identity))
+        proposal, compilation = compile_verification_proposal(context, proposal)
         return {'result': {'family_supported': True, 'checks': [{'item_id': key, 'accepted': True, 'reason': 'Test fixture'}
-                                                               for key in proposal_items(proposal)], 'issues': []}, 'receipt': {'fixture': True}}
+                                                               for key in proposal_items(proposal)], 'issues': []},
+                'receipt': {'fixture': True, 'metadata': {'knowledge_recipe_compilation': compilation}}}
 
 
 def packet(title='New incoming termination'):

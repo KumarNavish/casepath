@@ -198,9 +198,13 @@ class AutonomousModelV1:
                 raise ValueError("a bounded stage instruction string is required")
             system += " Workflow instructions: " + selected
         envelope = context
+        compilation = None
         if stage == "verify" and {"category", "conditions", "documents", "steps"}.issubset(context["proposal"]):
-            from .autonomous_policy_v1 import proposal_items
-            envelope = {**context, "item_ids": list(proposal_items(context["proposal"]))}
+            from .autonomous_policy_v1 import compile_verification_proposal, proposal_items
+            verification_proposal, compilation = compile_verification_proposal(source_context, context["proposal"])
+            envelope = {**context, "proposal": verification_proposal, "item_ids": list(proposal_items(verification_proposal))}
+            if compilation is not None:
+                envelope["knowledge_recipe_compilation"] = compilation
         request = {"model": cfg["model"], "messages": [{"role": "system", "content": system},
                     {"role": "user", "content": canonical(envelope).decode()}],
                    "response_format": {"type": "json_schema", "json_schema": {"name": "casepath_" + stage, "strict": True, "schema": schema}},
@@ -245,6 +249,7 @@ class AutonomousModelV1:
         def persist(status, result=None, cost=None, metadata=None):
             return self.store.complete_autonomous_call(identity["workflow_id"], stage, intent_sha256=intent["intent_sha256"],
                 status=status, result=result, cost_usd=cost, metadata={**(metadata or {}),
+                    **({"knowledge_recipe_compilation": compilation} if compilation is not None else {}),
                     "catalogue_fetched_at": self._catalogue_fetched_at.isoformat(),
                     "catalogue_checked_at": catalogue_checked_at.isoformat()})
         client = self._client or httpx.Client(timeout=cfg["timeout_seconds"], follow_redirects=False, trust_env=False)

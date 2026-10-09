@@ -6,7 +6,8 @@ from threading import RLock
 from .assessment_grammar_v1 import FAMILY_FLAGS
 from .autonomous_knowledge_v1 import AutonomousKnowledge, qualify
 from .autonomous_policy_v1 import (
-    POLICY_ID, REQUIRED_FACTS, REQUIRED_FIELDS, INTERPRET_INSTRUCTIONS, VERIFY_INSTRUCTIONS, compile_process,
+    POLICY_ID, REQUIRED_FACTS, REQUIRED_FIELDS, KNOWLEDGE_RECIPE_COMPILER,
+    INTERPRET_INSTRUCTIONS, VERIFY_INSTRUCTIONS, compile_process, compile_verification_proposal,
     initial_process, receipt, validate_interpretation,
 )
 from .causal_process_v1 import evaluate, seal_graph, _document_definition_sha256
@@ -147,6 +148,7 @@ class AutonomousController:
                 return self.store.get(claim_id)
             self._phase(claim_id, workflow, 'interpreting', 'Interpreting the source packet against the admitted tenancy rules.')
             context = {'claim_id': claim_id, 'title': state['title'], 'policy_id': POLICY_ID,
+                       'knowledge_recipe_compiler': KNOWLEDGE_RECIPE_COMPILER,
                        'rule_packs': [{'family': t['domain'], 'template_id': t['template_id'], 'title': t['title'],
                                        'content': t['content'], 'template_sha256': digest_value(t),
                                        'process_catalog': {kind: [{k: v for k, v in row.items() if k != 'assertion'} for row in rows]
@@ -168,15 +170,20 @@ class AutonomousController:
                         'source_roster_sha256': source_identity, 'rule_set_sha256': digest_value(self.policy)}
             proposal = self.model.interpret(context, identity)
             self._current(self.store.get(claim_id), workflow)
+            verification_proposal, compilation = compile_verification_proposal(context, proposal['result'])
             self._phase(claim_id, workflow, 'verifying', 'Independently checking the proposed facts, branches and document sufficiency.')
             verifier = self.model.verify(context, proposal['result'], identity)
             self._current(self.store.get(claim_id), workflow)
-            verified = validate_interpretation(self.policy, state['acquired_sources'], proposal['result'], verifier['result'])
+            if compilation is not None and verifier['receipt'].get('metadata', {}).get('knowledge_recipe_compilation') != compilation:
+                raise ValueError('independent verifier receipt differs from the compiled proposal')
+            verified = validate_interpretation(self.policy, state['acquired_sources'], verification_proposal, verifier['result'])
             base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
                             'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
                             'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
                             'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
                             'knowledge_rejections': verified['knowledge_rejections']}
+            if compilation is not None:
+                base_receipt['knowledge_recipe_compilation'] = compilation
             pinned = next((k for k in context.get('compatible_knowledge', []) if k['family'] == verified['category']['family']), None)
             version = next((k for k in self.knowledge.view()['versions'] if pinned and k['knowledge_id'] == pinned['knowledge_id']
                             and k['version'] == pinned['version']), None)
