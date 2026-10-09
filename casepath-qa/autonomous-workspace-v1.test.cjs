@@ -111,6 +111,8 @@ const response=(data,code=200)=>({ok:code<400,status:code,json:async()=>data});
 function fakeApi(overrides={}) {
  const calls=[];
  const fetch=async(path,init)=>{calls.push({path,init});if(overrides.handle){const result=await overrides.handle(path,init,calls);if(result)return result;}
+  if(path.includes('/snapshot?'))return response({detail:'Snapshot capability unavailable'},404);
+  if(path.endsWith('/preview'))return response({detail:'Preview capability unavailable'},404);
   if(path.endsWith('/status'))return response({enabled:true,provider_ready:true,limits:{}});
   if(path.endsWith('/claims')&&init.method!=='POST')return response({claims:[]});
   if(path.includes('/events?'))return response(events(state()));
@@ -357,7 +359,7 @@ test('internal Work, Knowledge and claim navigation adds only changed fragments 
  navClick(f,'knowledge');await settle();assert.equal(routing.hash,'#autonomous/knowledge');assert.equal(routing.pushes,1);
  navClick(f,'knowledge');await settle();assert.equal(routing.pushes,1);
  await controller.openClaim('claim-a');assert.equal(routing.pushes,2);assert.match(f.host.innerHTML,/data-au-graph/);
- routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.back();await settle();assert.match(f.host.innerHTML,/>Work in context\.</);
+ routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.back();await settle();assert.match(f.host.innerHTML,/>Every case has a source\.</);
  routing.forward();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.forward();await settle();assert.match(f.host.innerHTML,/data-au-graph/);assert.equal(routing.pushes,2);
  navClick(f,'intake');await settle();assert.equal(routing.hash,'#autonomous/new');assert.equal(routing.pushes,3);assert.equal(globalThis.location.search,'?journey=autonomous');
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
@@ -438,7 +440,7 @@ test('an initial event/state revision mismatch keeps the claim private until a m
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
-test('permanent initial revision mismatch stops after bounded reads and offers explicit retry',{timeout:1000},async t=>{
+test('initial revision mismatch bounds immediate reads and retains automatic recovery plus explicit retry',{timeout:1000},async t=>{
  const f=dom(),api=fakeApi({handle:async path=>path.includes('/claim-a/events?')?response(events(state({revision:4,state_sha256:hash('f')}))):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
  const reads=api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length;
@@ -500,17 +502,17 @@ test('an invalid source text never becomes cited evidence and a late source resp
 });
 
 const claimRows=[
- {claim_id:'claim-a',title:'Notice needs a receipt',status:'deferred',phase_summary:'Waiting for the original receipt'},
- {claim_id:'claim-b',title:'Policy investigation',status:'running',phase_summary:'Checking the cited policy'},
- {claim_id:'claim-c',title:'Completed assessment',status:'resolved',outcome:{summary:'Internal assessment recorded.'}},
- {claim_id:'claim-d',title:'Unsupported original format',status:'failed'},
- {claim_id:'claim-e',title:'Queued acquisition',status:'queued'}
+ {origin:'canonical_original',claim_id:'claim-a',title:'Notice needs a receipt',status:'deferred',phase_summary:'Waiting for the original receipt'},
+ {origin:'canonical_original',claim_id:'claim-b',title:'Policy investigation',status:'running',phase_summary:'Checking the cited policy'},
+ {origin:'canonical_original',claim_id:'claim-c',title:'Completed assessment',status:'resolved',outcome:{summary:'Internal assessment recorded.'}},
+ {origin:'canonical_original',claim_id:'claim-d',title:'Unsupported original format',status:'failed'},
+ {origin:'canonical_original',claim_id:'claim-e',title:'Queued acquisition',status:'queued'}
 ];
 test('the default Work collection uses saved statuses and explicit New claim navigation',async t=>{
  const f=dom(),api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  assert.match(f.container.innerHTML,/<header class="au-identity-header"/);assert.doesNotMatch(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake"[^>]*>New claim/);
  assert.match(f.host.innerHTML,/class="au-collection(?:\s[^"]*)?"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
- const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Deferred/);assert.match(html,/Working/);assert.match(html,/Resolved/);assert.match(html,/Stopped/);assert.match(html,/Queued/);
+ const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Deferred/);assert.match(html,/Working/);assert.match(html,/Investigation complete/);assert.match(html,/Stopped/);assert.match(html,/Queued/);
  await newClaim(f);assert.match(f.host.innerHTML,/<form[^>]*data-au-intake/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
@@ -518,7 +520,7 @@ test('search and filters select only matching saved claims and preserve original
  const before=JSON.stringify(claimRows),ids=options=>[...ui.claimsMarkup(claimRows,options).matchAll(/data-au-claim="([^"]+)"/g)].map(match=>match[1]);
  assert.deepEqual(ids({filter:'working'}),['claim-b','claim-e']);assert.deepEqual(ids({filter:'deferred'}),['claim-a']);assert.deepEqual(ids({filter:'resolved'}),['claim-c']);assert.deepEqual(ids({filter:'failed'}),['claim-d']);
  assert.deepEqual(ids({search:'RECEIPT'}),['claim-a']);assert.deepEqual(ids({filter:'working',search:'policy'}),['claim-b']);assert.deepEqual(ids({filter:'deferred',search:'policy'}),[]);
- const collection=ui.collectionMarkup(claimRows,{filter:'working',search:'policy'});assert.match(collection,/data-au-collection-count[^>]*>1 of 5/);assert.match(collection,/<strong>2<\/strong> In progress/);assert.match(collection,/<strong>1<\/strong> Deferred/);assert.match(collection,/<strong>1<\/strong> Resolved/);assert.match(collection,/<option value="failed"/);
+ const collection=ui.collectionMarkup(claimRows,{filter:'working',search:'policy'});assert.match(collection,/data-au-collection-count[^>]*>1 of 5/);assert.match(collection,/<strong>2<\/strong> In progress/);assert.match(collection,/<strong>1<\/strong> Deferred/);assert.match(collection,/<strong>1<\/strong> Investigation complete/);assert.match(collection,/<option value="failed"/);
  assert.equal(JSON.stringify(claimRows),before);assert.doesNotMatch(ui.claimsMarkup([]),/data-au-claim="/);
 });
 
@@ -773,7 +775,7 @@ test('paused interpretation describes an unaccepted result instead of active rea
 
 test('an exhausted authoritative call allowance is visible before intake while packet saving remains available',async t=>{
  const savedStatus={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}},before=JSON.stringify(savedStatus),f=dom();
- const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/>Work in context\.</);await newClaim(f);
+ const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/>Every case has a source\.</);await newClaim(f);
  const message=f.host.querySelector('[data-au-service]').textContent;assert.match(message,/allowance does not permit more autonomous work/i);assert.match(message,/still save a new claim.*named deferral/i);assert.doesNotMatch(message,/Local evidence acquisition and document preparation are available/);
  assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.doesNotMatch(f.submit.textContent,/retry|saving/i);assert.equal(f.message.textContent,'');assert.equal(JSON.stringify(savedStatus),before);
  assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
