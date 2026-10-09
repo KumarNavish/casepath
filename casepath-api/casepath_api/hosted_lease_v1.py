@@ -3,7 +3,7 @@
 from contextvars import ContextVar
 from dataclasses import dataclass
 from uuid import uuid4
-from threading import Lock
+from threading import Lock, Timer
 from time import monotonic
 
 from .workspace_corpus import digest_value
@@ -12,6 +12,8 @@ from .autonomous_controller_v1 import AutonomousController
 
 
 LEASE_SECONDS = 180
+RECOVERY_RETRY_SECONDS = 5.0
+RECOVERY_STALLED_SECONDS = LEASE_SECONDS + 2 * RECOVERY_RETRY_SECONDS
 _DB_NOW = "CAST(strftime('%s','now') AS INTEGER)"
 _CURRENT_OWNER = ContextVar("casepath_hosted_workflow_owner", default=None)
 
@@ -215,7 +217,7 @@ class _FencedConnection:
 
 
 class HostedAutonomousController(AutonomousController):
-    """One leased workflow at a time; HTTP polls recover queued/lost work."""
+    """One leased workflow, with bounded recovery of accepted pending work."""
 
     def __init__(self, store, policy, model=None, *, lease):
         super().__init__(store, policy, model)
@@ -224,6 +226,8 @@ class HostedAutonomousController(AutonomousController):
         self._learned = set()
         self._discovery_lock = Lock()
         self._next_discovery = 0.0
+        self._recovery_timer = None
+        self._retry_until = {}
 
     def _remember(self, claim_id, job):
         with self._lock:
@@ -232,6 +236,46 @@ class HostedAutonomousController(AutonomousController):
             prior = self._waiting.get(claim_id)
             if prior is None or job[0] == "run":
                 self._waiting[claim_id] = job
+            self._retry_until.setdefault(claim_id, monotonic() + RECOVERY_STALLED_SECONDS)
+            self._arm_recovery()
+
+    def _arm_recovery(self):
+        # Caller holds _lock. Active executor completion will arm the timer;
+        # never poll alongside local work or recursively submit from completion.
+        eligible = any(monotonic() < self._retry_until[claim] for claim in self._waiting)
+        if self._closed or not eligible:
+            if self._recovery_timer is not None:
+                self._recovery_timer.cancel()
+                self._recovery_timer = None
+            return
+        if self._recovery_timer is not None or self._jobs:
+            return
+        timer = Timer(RECOVERY_RETRY_SECONDS, lambda: self._recover_pending(timer))
+        timer.daemon = True
+        self._recovery_timer = timer
+        timer.start()
+
+    def _recover_pending(self, timer):
+        with self._lock:
+            # Cancellation may race with a callback already entering this lock.
+            if self._closed or self._recovery_timer is not timer:
+                return
+            self._recovery_timer = None
+            if not self._jobs:
+                for claim in tuple(self._waiting):
+                    if monotonic() > self._retry_until[claim]:
+                        continue  # Park until an authorized wake or restart.
+                    try:
+                        job = self._recovery_job(self.store.get(claim))
+                    except Exception:
+                        continue  # Unconfirmed reads grant no new authority.
+                    if job is None:
+                        self._waiting.pop(claim, None)
+                        self._retry_until.pop(claim, None)
+                    else:
+                        self._waiting[claim] = job
+                        self._start(claim)
+            self._arm_recovery()
 
     def _owned(self, claim_id, job, callback):
         nested = _CURRENT_OWNER.get()
@@ -251,8 +295,23 @@ class HostedAutonomousController(AutonomousController):
             if self._closed:
                 return None
             reset = _CURRENT_OWNER.set(token)
-            return callback()
+            result = callback()
+            with self._lock:
+                # A long local workflow must not consume the retry window for
+                # another accepted job or new evidence waiting behind it.
+                for claim in self._waiting:
+                    self._retry_until[claim] = monotonic() + RECOVERY_STALLED_SECONDS
+            return result
         except HostedOwnershipLost:
+            if reset is not None:
+                # Owned execution can outlast its original retry window. Start
+                # the bounded wait when it loses ownership, including accepted
+                # jobs queued behind it. Failed acquisition has no owner context
+                # and must keep its existing deadline instead of extending it.
+                with self._lock:
+                    deadline = monotonic() + RECOVERY_STALLED_SECONDS
+                    for claim in self._waiting.keys() | self._jobs.keys() | {claim_id}:
+                        self._retry_until[claim] = deadline
             self._remember(claim_id, job)
             return None
         finally:
@@ -326,8 +385,9 @@ class HostedAutonomousController(AutonomousController):
             with self._lock:
                 if self._jobs.get(claim_id) is completed:
                     self._jobs.pop(claim_id, None)
-            # Busy/lost jobs and arrivals during an active job stay in _waiting.
-            # Only a later HTTP wake_pending()/explicit submission queues them.
+                    if claim_id not in self._waiting:
+                        self._retry_until.pop(claim_id, None)
+                self._arm_recovery()
 
         future.add_done_callback(finished)
 
@@ -335,11 +395,13 @@ class HostedAutonomousController(AutonomousController):
         with self._lock:
             if self._closed:
                 return
+            self._retry_until[claim_id] = monotonic() + RECOVERY_STALLED_SECONDS
             self._remember(claim_id, ("run", None))
             self._start(claim_id)
+            self._arm_recovery()
 
     def wake_pending(self, *, force_discovery=False):
-        """Discover saved work on HTTP traffic; never spawn a polling loop."""
+        """Explicitly discover saved work; recovery timers never scan the store."""
         if self._closed or not self._discovery_lock.acquire(blocking=False):
             return
         try:
@@ -358,10 +420,13 @@ class HostedAutonomousController(AutonomousController):
                     job = self._recovery_job(state)
                     if job is None:
                         self._waiting.pop(claim, None)
+                        self._retry_until.pop(claim, None)
                     else:
                         self._remember(claim, job)
                 for claim in tuple(self._waiting):
+                    self._retry_until[claim] = monotonic() + RECOVERY_STALLED_SECONDS
                     self._start(claim)
+                self._arm_recovery()
         finally:
             self._discovery_lock.release()
 
@@ -374,4 +439,9 @@ class HostedAutonomousController(AutonomousController):
         # The base method closes admission, waits for the active executor job,
         # and cancels jobs not yet started. _owned releases only after its work
         # exits; never release the active lease early while HTTP may settle.
+        with self._lock:
+            self._closed = True
+            if self._recovery_timer is not None:
+                self._recovery_timer.cancel()
+                self._recovery_timer = None
         super().shutdown()
