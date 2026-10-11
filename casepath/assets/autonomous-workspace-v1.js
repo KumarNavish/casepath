@@ -289,6 +289,30 @@
     const relevant = list(state.evaluation?.nodes).find(node => has(node.node_id) && (node.execution_state === 'ready' || node.activation === 'unresolved') && evidenceRelationships(state,node.node_id).documents.length);
     return relevant?.node_id || list(state.evaluation?.nodes).find(node => node.execution_state === 'ready' && has(node.node_id))?.node_id || nodes[0]?.node_id || null;
   }
+  function acceptedEventContext(state, event, selected) {
+    const semantic = semanticEventRecord(state,event);
+    if (semantic?.type !== 'action' || !semantic.nodes.includes(selected)) return {};
+    const result = semantic.record.result, relationships = evidenceRelationships(state,selected), context = {};
+    const obligations = [result.obligation_id,...list(result.obligation_ids)].filter(Boolean);
+    const requirement = relationships.documents.find(item => obligations.includes(requirementIdentity(item)) && (!result.document_type || item.document_type === result.document_type)) || relationships.documents.find(item => item.document_type === result.document_type);
+    if (requirement) Object.assign(context,{document:requirement.document_type,obligation:requirementIdentity(requirement)});
+    const facts = [result.fact_id,...list(result.fact_ids),...list(result.required_fact_ids)].filter(Boolean);
+    const compatible = evidenceRelationships(state,selected,context);
+    const fact = compatible.facts.find(item => facts.includes(item.fact_id) && (!requirement || list(requirement.required_fact_ids).includes(item.fact_id)));
+    if (fact) context.fact = fact.fact_id;
+    // The requirement's recorded dependency is the existing graph relation;
+    // no document or fact is inferred from the action's prose or citations.
+    return evidenceSelection(state,selected,context);
+  }
+  function preferredEvidenceContext(state, selected, events, preferences = {}, previous = null) {
+    if (preferences.node || preferences.document || preferences.obligation || preferences.fact) return {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace};
+    if (previous?.selected) return previous.evidenceContext || {};
+    for (const event of [...events].reverse()) {
+      const semantic = semanticEventRecord(state,event);
+      if (semantic?.type === 'action' && semantic.nodes.includes(selected)) return acceptedEventContext(state,event,selected);
+    }
+    return {};
+  }
   function edgeState(state, id) {
     const evaluation = list(state.evaluation?.edges).find(edge => edge.edge_id === id);
     return evaluation?.activation || evaluation?.condition_verdict || 'unresolved';
@@ -299,7 +323,7 @@
     const layout = layoutGraph(graph), evaluation = new Map(list(state.evaluation?.nodes).map(node => [node.node_id, node]));
     const inspectionIndex = layout.nodes.findIndex(node => node.node_id === selected);
     const inspection = `<nav class="au-mobile-inspection" data-au-node-inspection aria-label="Inspect recorded process steps"><button type="button" class="au-secondary" data-au-node-previous aria-label="Inspect previous recorded step"${inspectionIndex <= 0 ? ' disabled' : ''}>Previous</button><div><strong data-au-inspection-position>${inspectionIndex >= 0 ? `Step ${inspectionIndex+1} of ${layout.nodes.length}` : `${layout.nodes.length} recorded steps`}</strong><span>Inspection position</span></div><button type="button" class="au-secondary" data-au-node-next aria-label="Inspect next recorded step"${inspectionIndex === layout.nodes.length-1 || !layout.nodes.length ? ' disabled' : ''}>Next</button></nav>`;
-    return `<div class="au-graph-chrome">${inspection}<div class="au-evidence-graph-help"><span>${layout.nodes.length} steps · ${layout.edges.length} connections</span><span>Dashed routes do not apply.</span></div></div><div class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan tabindex="0" role="region" aria-label="Complete process graph; scroll horizontally"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true">${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-state="${h(edgeState(state,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || 'Recorded process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row, rank) => `<div class="au-graph-rank" data-rank="${rank}">${row.map(node => {
+    return `<div class="au-graph-chrome">${inspection}<div class="au-evidence-graph-help"><span>${layout.nodes.length} steps · ${layout.edges.length} connections</span><span>Dashed routes do not apply.</span><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">Expand process</button></div></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-expanded="false" tabindex="0" role="region" aria-label="Complete process graph; scroll horizontally"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true">${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-state="${h(edgeState(state,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || 'Recorded process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row, rank) => `<div class="au-graph-rank" data-rank="${rank}">${row.map(node => {
       const evaluated = evaluation.get(node.node_id) || {}, status = evaluated.execution_state || evaluated.state || 'pending';
       const statusText = statusLabel(status) + (status === 'ready' && projection.node_capabilities?.[node.node_id]?.authorized === false ? ' · execution unavailable' : '');
       const parents = layout.parents.get(node.node_id).map(id => name(layout.byId.get(id))), fullName = name(node);
@@ -793,11 +817,14 @@
         control.disabled = busy || !freshClaim || presentationMode === 'replay' || control.hasAttribute('data-au-start') && !canStartHere() && !pendingStart;
       }
       const form = host.querySelector('[data-au-arrival]');
-      if (form && !busy) {
-        if (pendingArrival) lockForm(form,true,true);
-        else lockForm(form,!freshClaim || presentationMode === 'replay');
-        if (!freshClaim) { const submit = form.querySelector('button[type="submit"]'); if (submit) submit.disabled = true; }
+      if (form) {
+        const readonly = busy || !freshClaim || presentationMode === 'replay';
+        if (readonly) {
+          for (const control of form.querySelectorAll('input,textarea,select,button[type="submit"]')) control.disabled = true;
+        } else if (pendingArrival) lockForm(form,true,true);
+        else lockForm(form,false);
       }
+
     }
     function interact(element, direction = 1) {
       interactionMotion?.cancel(); interactionMotion = null;
@@ -854,7 +881,7 @@
     function focusToken(element) {
       if (!element || !host.contains(element)) return null;
       const panel = focusPanel(element)?.dataset.auPanel || null;
-      for (const attr of ['data-au-start','data-au-node-previous','data-au-node-next','data-au-node','data-au-select','data-au-fact-select','data-au-document-select','data-au-source','data-au-knowledge','data-au-nav','data-au-pause','data-au-resume','data-au-graph-pan','data-au-claim-title','data-au-inspector-heading','data-au-back-process','data-au-detail','data-au-add-files']) if (element.hasAttribute(attr)) return {attr,value:element.getAttribute(attr),citation:element.getAttribute('data-au-citation'),origin:element.getAttribute('data-au-source-origin'),obligation:element.getAttribute('data-au-obligation-select') || element.getAttribute('data-au-select-obligation'),version:element.getAttribute('data-au-version'),knowledgeSha:element.getAttribute('data-au-knowledge-sha'),definitionSha:element.getAttribute('data-au-definition-sha'),panel};
+      for (const attr of ['data-au-start','data-au-node-previous','data-au-node-next','data-au-node','data-au-select','data-au-fact-select','data-au-document-select','data-au-source','data-au-knowledge','data-au-nav','data-au-pause','data-au-resume','data-au-graph-pan','data-au-expand-process','data-au-claim-title','data-au-inspector-heading','data-au-back-process','data-au-detail','data-au-add-files']) if (element.hasAttribute(attr)) return {attr,value:element.getAttribute(attr),citation:element.getAttribute('data-au-citation'),origin:element.getAttribute('data-au-source-origin'),obligation:element.getAttribute('data-au-obligation-select') || element.getAttribute('data-au-select-obligation'),version:element.getAttribute('data-au-version'),knowledgeSha:element.getAttribute('data-au-knowledge-sha'),definitionSha:element.getAttribute('data-au-definition-sha'),panel};
       const details = element.matches('summary') ? element.parentElement : null;
       return details?.hasAttribute('data-au-disclosure') ? {disclosure:details.dataset.auDisclosure,panel} : null;
     }
@@ -933,7 +960,7 @@
     function preserveClaimView() {
       if (view !== 'claim' || !current) return;
       const viewport = host.querySelector('.au-graph-viewport');
-      claimViews.set(current.claim_id,{selected,detail,evidenceContext:{...evidenceContext},scrollLeft:viewport?.scrollLeft || 0,scrollTop:viewport?.scrollTop || 0,open:new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure))});
+      claimViews.set(current.claim_id,{selected,detail,evidenceContext:{...evidenceContext},graphExpanded:viewport?.dataset?.auGraphExpanded === 'true',scrollLeft:viewport?.scrollLeft || 0,scrollTop:viewport?.scrollTop || 0,open:new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure))});
       const arrival = host.querySelector('[data-au-arrival]');
       if (arrival) { arrivalForms.set(current.claim_id,arrival); arrival.remove?.(); }
       if (pendingArrival) arrivals.set(current.claim_id,pendingArrival); else arrivals.delete(current.claim_id);
@@ -963,6 +990,7 @@
       const open = new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure));
       if (!host.querySelector('[data-au-claim-title]') && previous) for (const id of previous.open) open.add(id);
       const priorViewport = host.querySelector('.au-graph-viewport');
+      const graphExpanded = priorViewport ? priorViewport.dataset?.auGraphExpanded === 'true' : Boolean(previous?.graphExpanded);
       const scrollLeft = priorViewport?.scrollLeft ?? previous?.scrollLeft ?? 0, scrollTop = priorViewport?.scrollTop ?? previous?.scrollTop ?? 0;
       const arrival = host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
       // Moving the original node keeps native FileList, entered text and retry state.
@@ -973,7 +1001,7 @@
       if (presentArrival) arrivalForms.set(current.claim_id,presentArrival);
       if (pendingArrival && presentArrival) { lockForm(presentArrival,true,true); presentArrival.querySelector('.au-form-status').textContent ||= 'The prior response was not confirmed. Retry sends the same saved supporting-file request.'; }
       if (focusInArrival) focused?.focus?.({preventScroll:true});
-      const viewport = host.querySelector('.au-graph-viewport'); if (viewport) { viewport.scrollLeft = scrollLeft; viewport.scrollTop = scrollTop; }
+      const viewport = host.querySelector('.au-graph-viewport'); if (viewport) { setGraphExpanded(graphExpanded); viewport.scrollLeft = scrollLeft; viewport.scrollTop = scrollTop; }
       for (const disclosure of host.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
       focusTarget(focusKey)?.focus({preventScroll:true});
       if (navigation || !priorViewport) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
@@ -983,6 +1011,13 @@
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open,reducedMotion:reduced?.matches,keyboard,activeElement:doc.activeElement,selected});
       synchronizeAuthority();
       claimRenderComplete = true;
+    }
+    function setGraphExpanded(expanded) {
+      const viewport = host.querySelector('[data-au-graph-pan]'), control = host.querySelector('[data-au-expand-process]');
+      if (!viewport || !control) return;
+      viewport.dataset.auGraphExpanded = String(expanded);
+      control.setAttribute('aria-expanded',String(expanded));
+      control.textContent = expanded ? 'Collapse process' : 'Expand process';
     }
     function renderSelection(navigation = false) {
       if (!current || view !== 'claim') return;
@@ -1065,7 +1100,9 @@
         current = incoming.state; projection = incoming.projection; cursor = accepted.cursor; freshClaim = true;
         const existing = new Map(history.map(event => [event.seq,event])); for (const event of accepted.events) existing.set(event.seq,event);
         history = [...existing.values()].sort((a,b) => a.seq-b.seq);
-        selected = preferredNode(current,demoSession ? acceptedEventNode(current,accepted.events.at(-1)) || selected : selected,history);
+        const followed = demoSession && [...accepted.events].reverse().find(event => acceptedEventNode(current,event));
+        selected = preferredNode(current,followed ? acceptedEventNode(current,followed) : selected,history);
+        if (followed) evidenceContext = acceptedEventContext(current,followed,selected);
         if (changed) { renderClaim(changes); rememberClaim(current); } else synchronizeAuthority();
         snapshotCache();
         if (connectionFailed) notice('Connection restored. Showing saved work.'); else notice('');
@@ -1093,7 +1130,7 @@
         const initial = !current, changed = initial || current.state_sha256 !== incoming.state.state_sha256 || JSON.stringify(projection) !== JSON.stringify(incoming.projection);
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; freshClaim = true;
         const previous = initial ? claimViews.get(id) : {selected,evidenceContext,detail};
-        selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {};
+        selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous);
         detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
         if (changed) renderClaim(); else synchronizeAuthority(); snapshotCache(); rememberClaim(current); notice(''); if (initial) focusTitle(); schedule();
         resumeLivePresentation();
@@ -1121,6 +1158,7 @@
     function rememberSelectionRoute() { if (current) route(selectedClaimFragment()); }
     async function openClaim(id, writeHistory = true, preferences = {}) {
       if (!preferences.demo) stopPresentation();
+      else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
       leaveView(); route(claimFragment(id,preferences),writeHistory);
       epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo ? 'demonstration' : 'work'); notice(presentationMode === 'replay' ? 'Verifying recorded history…' : 'Opening saved claim…');
       claimRenderComplete = false;
@@ -1128,7 +1166,7 @@
       const cached = presentationMode !== 'replay' ? cachedRead(snapshots,id) : null;
       if (cached) {
         current = cached.state; projection = cached.projection; cursor = cached.cursor; history = [...cached.history];
-        const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {}; detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
+        const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
         renderClaim(); synchronizeAuthority('refreshing'); focusTitle(); notice('Refreshing saved claim…');
       } else host.innerHTML = readSkeletonMarkup('claim',claims.find(claim => claim.claim_id === id)?.title,id);
       interact(host);
@@ -1138,7 +1176,7 @@
         const incoming = readReplay(await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
         if (disposed || token !== epoch || pendingRoute() || view !== 'claim') return;
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
-        const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {}; detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
+        const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
         renderClaim(); notice(''); focusTitle();
         if (preferences.demo && demoSession?.mode === 'replay') { demoSession.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256}; demoSession.displayedAt = Date.now(); prefetchReplay(demoSession); if (replayRecord.current_revision > replayRecord.through_seq) replayTick(demoSession,token); }
         return current;
@@ -1340,7 +1378,10 @@
         if (newest && Object.prototype.hasOwnProperty.call(newest,'previous_event_sha256') && newest.previous_event_sha256 !== previousHash || newest && Object.prototype.hasOwnProperty.call(newest,'prev_event_sha256') && newest.prev_event_sha256 !== previousHash) throw new Error('The replay journal chain no longer follows the accepted prefix.');
         const changes = transitionPlan(current,incoming.state,accepted,history);
         replayPrefixes.delete(`${current.claim_id}:${through}:${session.replayHead.state_sha256}`);
-        current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay; selected = preferredNode(current,demoSession ? acceptedEventNode(current,accepted.events.at(-1)) || selected : selected,history);
+        current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
+        const followed = demoSession && [...accepted.events].reverse().find(event => acceptedEventNode(current,event));
+        selected = preferredNode(current,followed ? acceptedEventNode(current,followed) : selected,history);
+        if (followed) evidenceContext = acceptedEventContext(current,followed,selected);
         evidenceContext = evidenceSelection(current,selected,evidenceContext);
         const fragment = selectedClaimFragment();
         if (root.history?.replaceState) { root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); routedFragment = fragment; }
@@ -1627,6 +1668,7 @@
       else if (target.hasAttribute('data-au-refresh-claims')) { const token = epoch; loadClaims(token,true).catch(error => { if (!disposed && token === epoch) notice(error.message,true); }); }
       else if (target.hasAttribute('data-au-knowledge')) { if (!busy) showKnowledge(true,{knowledge_id:target.dataset.auKnowledge,version:target.dataset.auVersion,knowledge_sha256:target.dataset.auKnowledgeSha,definition_sha256:target.dataset.auDefinitionSha}); }
       else if (target.hasAttribute('data-au-add-files')) { pauseInspection(); setDetail('sources',true); }
+      else if (target.hasAttribute('data-au-expand-process')) { pauseInspection(); setGraphExpanded(target.getAttribute('aria-expanded') !== 'true'); drawEdges(); }
       else if (target.hasAttribute('data-au-detail')) { pauseInspection(); setDetail(target.dataset.auDetail); }
       else if (target.hasAttribute('data-au-back-process')) {
         const node = [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
@@ -1714,5 +1756,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {acceptedEventNode,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });

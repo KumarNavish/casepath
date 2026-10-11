@@ -235,7 +235,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-evidence-process .au-section-heading { margin-bottom: 8px; }
 .au-workspace .au-evidence-process .au-section-heading h2 { color: var(--au-muted); font-size: 13px; font-weight: 500; line-height: 1.5; letter-spacing: 0; }
 .au-workspace .au-evidence-process .au-section-heading > span { font-size: 12px; }
-.au-workspace .au-graph-viewport { clear: both; width: 100%; max-width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8ca38f var(--au-field); padding: 2px 0 8px; scroll-padding: 18px; max-height: 160px; }
+.au-workspace .au-graph-viewport { clear: both; width: 100%; max-width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #657c6e var(--au-field); padding: 2px 0 8px; scroll-padding: 18px; max-height: 160px; }
+.au-workspace .au-graph-viewport:not([data-au-graph-expanded=true]) { mask-image: linear-gradient(to bottom,transparent,#000 10px,#000 calc(100% - 10px),transparent); }
+.au-workspace .au-graph-viewport[data-au-graph-expanded=true] { max-height: none; mask-image: none; }
+.au-workspace [data-au-expand-process] { min-height: 32px; padding: 3px 0; margin: 0; border: 0; background: transparent; color: var(--au-ink); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
 .au-workspace .au-graph { position: relative; display: flex; flex-direction: row; align-items: stretch; justify-content: space-between; gap: 22px; width: max-content; min-width: 100%; margin: 0; padding: 8px 10px 12px; isolation: isolate; }
 .au-workspace .au-graph-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
 .au-workspace .au-graph-lines path { fill: none; stroke: #657c6e; stroke-width: 1.15; }
