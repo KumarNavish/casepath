@@ -165,9 +165,10 @@ class AutonomousController:
             if workflow in state.get('semantic_contexts', {}):
                 context = state['semantic_contexts'][workflow]
             else:
+                knowledge_view = self.knowledge.view()
                 context['compatible_knowledge'] = [{key: value.get(key) for key in ('knowledge_id', 'version', 'family',
                                                    'rule_pack_sha256', 'evidence_recipes', 'knowledge_sha256')}
-                    for family in FAMILY_FLAGS if (value := self.knowledge.compatible(family))]
+                    for family in FAMILY_FLAGS if (value := self.knowledge.compatible(family, view=knowledge_view))]
                 self._once(claim_id, f'{workflow}.context', 'work.context', {'workflow_id': workflow, 'context': context})
             if context.get('document_review_policy') not in (None, SUPPLIED_DOCUMENT_REVIEW_POLICY):
                 raise ValueError('unknown supplied-document review policy')

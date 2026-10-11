@@ -206,10 +206,12 @@ class AutonomousKnowledge:
 
     def view(self):
         versions, uses, quarantined, conflicts = {}, [], [], set()
-        for state in self.store.list():
-            # Store.list may return queue summaries; authoritative retrieval is
-            # necessary for knowledge, including its immutable provenance.
-            state = self.store.get(state['claim_id'])
+        validated = getattr(self.store, 'validated_states', None)
+        # Explicit full-state reads already validate the accepted journals and
+        # original bytes. Keep the summary-only adapter contract as a fallback.
+        states = validated() if validated is not None else (
+            self.store.get(row['claim_id']) for row in self.store.list())
+        for state in states:
             for value in state.get('knowledge_published', []):
                 if value.get('qualification', {}).get('status') == 'qualified':
                     try:
@@ -249,9 +251,10 @@ class AutonomousKnowledge:
         return max((row for row in self.view()['versions'] if row['family'] == family),
                    key=lambda row: row['version'], default=None)
 
-    def compatible(self, family):
+    def compatible(self, family, *, view=None):
         template = next(row for row in self.policy['templates'] if row['domain'] == family)
-        return max((row for row in self.view()['versions'] if row['family'] == family
+        projection = self.view() if view is None else view
+        return max((row for row in projection['versions'] if row['family'] == family
                     and row['rule_pack_sha256'] == digest_value(template) and row['policy_id'] == POLICY_ID),
                    key=lambda row: row['version'], default=None)
 
