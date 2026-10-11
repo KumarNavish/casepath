@@ -166,6 +166,7 @@ test('zero recorded active gaps still expose held requirements, questions and th
  assert.deepEqual(state.outcome.missing_evidence,[]);
  assert.equal(state.evaluation.documents.filter(doc=>doc.route_state==='held_behind_question').length,11);
  const page=await fixturePage(t);await open(page,id);
+ await page.locator('[data-au-disclosure="context-records"] > summary').click();
  const outcome=page.locator('[data-au-disclosure="outcome"]');await outcome.locator(':scope > summary').click();
  assert.match(await outcome.innerText(),/No active document gaps are listed in this outcome\. Unresolved questions still hold 11 document requirements/);
  await outcome.locator('[data-au-disclosure="request-draft"] > summary').click();
@@ -212,12 +213,12 @@ test('the production browser draws all nine saved graphs without demo substituti
  const page=await fixturePage(t);
  for(const claim of claims){
   await open(page,claim.claim_id);const state=saved(claim.claim_id);
-  const actual=await page.evaluate(()=>({nodes:[...document.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,label:node.querySelector('.au-node-title').textContent,selected:node.getAttribute('aria-pressed')})),edges:[...document.querySelectorAll('[data-au-edge]')].map(edge=>({id:edge.dataset.auEdge,state:edge.dataset.state,path:edge.getAttribute('d')})),selected:document.querySelector('[data-au-selected-step]')?.dataset.auSelectedStep,animations:window.__animations.length,stages:document.querySelectorAll('[data-au-stage="sources"],[data-au-stage="interpretation"],[data-au-stage="verification"],[data-au-stage="process"],[data-au-stage="knowledge"]').length}));
+  const actual=await page.evaluate(()=>({nodes:[...document.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,label:node.querySelector('.au-node-title').textContent,selected:node.getAttribute('aria-pressed')})),edges:[...document.querySelectorAll('[data-au-edge]')].map(edge=>({id:edge.dataset.auEdge,state:edge.dataset.state,path:edge.getAttribute('d')})),selected:document.querySelector('[data-au-selected-step]')?.dataset.auSelectedStep,animations:window.__animations.filter(row=>row.node || row.edge || row.fact || row.document).length,stages:[...document.querySelectorAll('[data-au-stage="sources"],[data-au-stage="interpretation"],[data-au-stage="verification"],[data-au-stage="process"],[data-au-stage="knowledge"]')].filter(row=>!row.closest('[hidden],details:not([open])')).length}));
   assert.deepEqual(sorted(actual.nodes.map(node=>node.id)),sorted(state.graph.nodes.map(node=>node.node_id)),claim.claim_id);
   assert.deepEqual(sorted(actual.edges.map(edge=>edge.id)),sorted(state.graph.edges.map(edge=>edge.edge_id)),claim.claim_id);
   for(const node of actual.nodes) assert.equal(node.label,state.graph.nodes.find(row=>row.node_id===node.id).label);
   for(const edge of actual.edges){assert.equal(edge.state,state.evaluation.edges.find(row=>row.edge_id===edge.id).activation);assert.ok(edge.path && !/NaN|Infinity/.test(edge.path));}
-  assert.equal(actual.selected,ui.preferredNode(state));assert.equal(actual.nodes.filter(node=>node.selected==='true').length,1);
+  assert.equal(actual.selected,ui.preferredNode(state,null,responses[`${base}/claims/${claim.claim_id}/events?after=0`].events));assert.equal(actual.nodes.filter(node=>node.selected==='true').length,1);
   assert.equal(actual.animations,0);assert.equal(actual.stages,0);
  }
  await noWrites(page);
@@ -225,7 +226,7 @@ test('the production browser draws all nine saved graphs without demo substituti
 
 test('manual graph focus survives saved refresh and return navigation instead of reverting to the verified default',async t=>{
  const page=await fixturePage(t,{width:390});await open(page,robin);
- assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'),'lt_deadline');
+ assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'),ui.preferredNode(saved(robin),null,responses[`${base}/claims/${robin}/events?after=0`].events));
  await page.locator('[data-au-node="lt_family"]').click();
  assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'),'lt_family');
  assert.equal(await page.evaluate(()=>document.activeElement?.dataset.auNode),'lt_family');
@@ -284,7 +285,7 @@ test('repeated logical action IDs retain the exact saved receipt and record disc
  };
  const initial=[action(markers[0],1,'isolated.earlier-run'),action(markers[1],saved(robin).revision-1,saved(robin).run_id)];
  await page.evaluate(({id,actions})=>{window.__responses[`${window.__base}/claims/${id}`].state.actions=actions;},{id:robin,actions:initial});
- await open(page,robin);await page.locator('[data-au-detail="activity"]').click();
+ await open(page,robin);await page.locator('.au-context-nav [data-au-detail="activity"]').click();
  const records=()=>page.locator('[data-au-panel="activity"] .au-recorded-actions .au-action');
  const record=summary=>records().filter({hasText:summary});
  assert.equal(await record(markers[0]).getAttribute('data-au-action-scope'),'historical');

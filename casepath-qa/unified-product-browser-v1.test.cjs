@@ -14,6 +14,10 @@ const root = path.resolve(__dirname, '..');
 const base = '/api/claim-loops/v1/autonomous';
 const captured = JSON.parse(gunzipSync(fs.readFileSync(path.join(root, 'design/evidence-path/recorded-fixtures.json.gz')))).responses;
 const historicalIds = captured[`${base}/claims`].claims.map(row => row.claim_id);
+const completeStatusIds = historicalIds.filter(id => {
+  const state = captured[`${base}/claims/${id}`].state;
+  return state.outcome && !state.deferral;
+}).slice(0, 3);
 const corpusRoot = path.join(root, 'casepath-api/casepath_api/corpora/synthetic-150');
 const corpusManifest = JSON.parse(fs.readFileSync(path.join(corpusRoot, 'manifest.json')));
 const originals = JSON.parse(fs.readFileSync(path.join(root, 'casepath/assets/corpus-index.json'))).claims;
@@ -195,6 +199,21 @@ const canonical = value => Array.isArray(value)
     : JSON.stringify(value);
 
 let acceptedFixture;
+let sourceDrawerFixture;
+function pdfDrawerFixture() {
+  if (!sourceDrawerFixture) {
+    const binding = corpusManifest.claims.find(row => row.observable_artifacts.some(source => source.media_type === 'application/pdf'));
+    const descriptor = binding.observable_artifacts.find(source => source.media_type === 'application/pdf');
+    const bytes = fs.readFileSync(path.join(corpusRoot, descriptor.path));
+    assert.equal(sha(bytes), descriptor.sha256);
+    const text = JSON.parse(execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python',
+      ['-c', 'import json,sys; from pypdf import PdfReader; print(json.dumps("\\n".join(page.extract_text() or "" for page in PdfReader(sys.argv[1]).pages)))', path.join(corpusRoot, descriptor.path)],
+      {encoding: 'utf8', env: {...process.env, PYTHONDONTWRITEBYTECODE: '1'}}));
+    assert.ok(text.length > 100);
+    sourceDrawerFixture = {claim_id: binding.claim_id, descriptor: {...descriptor, claim_id: binding.claim_id}, bytes: bytes.toString('base64'), text};
+  }
+  return sourceDrawerFixture;
+}
 function priorAssessmentFixture() {
   if (!acceptedFixture) {
     const encoded = process.env.CASEPATH_PRIOR_ASSESSMENT_FIXTURE
@@ -259,21 +278,51 @@ function fixtureData(config = {}) {
       if (recorded) sources[`${id}/${descriptor.artifact_id}`] = clone(recorded);
     }
   });
-  const acceptedHistories = {};
+  const acceptedHistories = {}, authoredEvents = {};
+  if (config.pdfDrawer) {
+    // A source-viewer boundary fixture, with real original PDF bytes and text.
+    // It supplies no process, facts, model interpretation or legal outcome.
+    const pdf = pdfDrawerFixture(), envelope = envelopes[pdf.claim_id], state = envelope.state;
+    const source = {...pdf.descriptor, text: pdf.text, text_sha256: sha(pdf.text), complete: true, extraction: 'pdf_text'};
+    Object.assign(state, {revision: 1, state_sha256: sha('isolated PDF viewer boundary state'), last_event_sha256: sha('isolated PDF viewer boundary event'), mode: 'saved', status: 'received', phase: 'received', acquired_sources: [source]});
+    Object.assign(envelope.projection, {revision: state.revision, state_sha256: state.state_sha256});
+    sources[`${pdf.claim_id}/${pdf.descriptor.artifact_id}`] = source;
+    rawSources[`${pdf.claim_id}/${pdf.descriptor.artifact_id}`] = pdf.bytes;
+  }
   if (config.presentationSuite) for (const id of demoIds) {
+    // Authored scheduler/navigation control histories. Their only outcome is
+    // deterministic packet-inspection completion; they supply no model result,
+    // legal conclusion or performance evidence. Real replay acceptance uses
+    // the separately exported 28-prefix journal below.
     const original = clone(envelopes[id]);
+    original.state.last_event_sha256 = null;
+    const openingFields = {...original.state}; delete openingFields.state_sha256;
+    original.state.state_sha256 = sha(canonical(openingFields));
+    original.projection.state_sha256 = original.state.state_sha256;
+    envelopes[id] = clone(original);
+    authoredEvents[id] = [];
     acceptedHistories[id] = [original, ...[1, 2].map(revision => {
-      const state = {...clone(original.state), revision, state_sha256: sha(`accepted fixture ${id} revision ${revision}`),
-        last_event_sha256: sha(`accepted fixture ${id} event ${revision}`), mode: 'started',
+      const state = {...clone(original.state), revision, mode: 'started',
         status: revision === 1 ? 'running' : 'completed', phase: revision === 1 ? 'acquiring' : 'complete',
+        outcome: revision === 2 && config.presentationOutcome !== false ? {status: 'inspection_fixture_complete', title: 'Fixture packet inspection complete', summary: 'Authored scheduler fixture inspected its original packet. No legal or model result is supplied.'} : null,
         graph: {claim_id: id, title: 'Deterministic source inspection fixture', graph_sha256: sha(`fixture graph ${id}`),
           nodes: [{node_id: 'inspect_packet', label: 'Inspect original packet', entry: true}], edges: []},
         evaluation: {nodes: [{node_id: 'inspect_packet', execution_state: revision === 1 ? 'ready' : 'completed'}], edges: [], documents: []}};
+      delete state.state_sha256; delete state.last_event_sha256;
+      state.state_sha256 = sha(canonical(state));
+      const event = {seq: revision, claim_id: id, revision, state_sha256: state.state_sha256,
+        previous_event_sha256: authoredEvents[id].at(-1)?.event_sha256 || null,
+        kind: revision === 1 ? 'intake' : state.outcome ? 'outcome.recorded' : 'work.phase',
+        payload: state.outcome ? {outcome: state.outcome} : {summary: 'Authored packet-inspection scheduler fixture'}};
+      event.event_sha256 = sha(canonical(event)); state.last_event_sha256 = event.event_sha256;
+      authoredEvents[id].push(event);
       return {state, projection: {claim_id: id, revision, state_sha256: state.state_sha256}};
     })];
     if (config.presentationSuite === 'replay') envelopes[id] = clone(acceptedHistories[id][2]);
   }
-  if (config.completeStatuses) ['completed', 'complete', 'resolved'].forEach((status, index) => { envelopes[historicalIds[index]].state.status = status; });
+  // Lifecycle-code variants reuse recorded settled outcomes. A recorded
+  // execution failure must never be relabeled merely by changing its code.
+  if (config.completeStatuses) ['completed', 'complete', 'resolved'].forEach((status, index) => { envelopes[completeStatusIds[index]].state.status = status; });
   if (config.recordedHistoryId) envelopes[config.recordedHistoryId] = clone(captured[`${base}/claims/${config.recordedHistoryId}`]);
   const accepted = config.priorAssessment ? clone(priorAssessmentFixture()) : null;
   if (accepted) {
@@ -290,7 +339,7 @@ function fixtureData(config = {}) {
   }));
   assert.equal(rows.filter(row => row.origin === 'canonical_original').length, 150);
   assert.equal(rows.filter(row => row.origin === 'native_intake').length, 9);
-  return {envelopes, sources, rawSources, acceptedHistories, accepted,
+  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, accepted,
     recordedHistory: config.recordedHistoryId ? clone(captured[`${base}/claims/${config.recordedHistoryId}/events?after=0`].events) : [],
     acceptedEvents: accepted ? clone((config.acceptedPrefix ? accepted.prefixes[config.acceptedPrefix] : accepted.snapshots[config.priorAssessment]).events) : [],
     acceptedPrefixes: accepted ? config.priorAssessment === 'failed' ? accepted.failure_prefixes : accepted.prefixes : {},
@@ -382,6 +431,10 @@ async function mountFixture(page, config = {}) {
     } : fixture.accepted?.claim_id === state.claim_id ? {
       events: structuredClone(fixture.acceptedEvents.filter(event => event.seq > after && event.seq <= state.revision)),
       current_revision: state.revision, current_state_sha256: state.state_sha256, cursor_sha256: state.last_event_sha256,
+    } : fixture.authoredEvents[state.claim_id] ? {
+      events: structuredClone(fixture.authoredEvents[state.claim_id].filter(event => event.seq > after && event.seq <= state.revision)),
+      current_revision: state.revision, current_state_sha256: state.state_sha256,
+      cursor_sha256: state.revision === 0 ? null : state.last_event_sha256,
     } : ({
       events: Array.from({length: Math.max(0, state.revision - after)}, (_, index) => {
         const seq = after + index + 1;
@@ -430,7 +483,10 @@ async function mountFixture(page, config = {}) {
         const envelope = {state, projection: {claim_id: state.claim_id, revision: 1, state_sha256: state.state_sha256}};
         const accepted = structuredClone(envelope);
         fixture.envelopes[state.claim_id] = envelope;
-        if (fixture.startPosts === 1) throw new TypeError('Isolated Start network outcome is uncertain.');
+        if (fixture.startPosts === 1) {
+          if (fixture.holdStart) return new Promise((_resolve, reject) => fixture.held.push({kind: 'start', release: () => reject(new TypeError('Isolated Start network outcome is uncertain.'))}));
+          throw new TypeError('Isolated Start network outcome is uncertain.');
+        }
         // The explicit retry returns the same accepted result. A concurrent
         // writer advances the live head before the follow-up snapshot.
         advance(state.claim_id);
@@ -447,7 +503,11 @@ async function mountFixture(page, config = {}) {
         if (fixture.holdKnowledge) return new Promise(resolve => fixture.held.push({kind: 'knowledge', release: () => resolve(result)}));
         return result;
       }
-      if (relative === '/status') return response(200, {enabled: true, provider_ready: fixture.providerReady ?? Boolean(fixture.originalStartId || fixture.presentationSuite === 'live')});
+      if (relative === '/status') {
+        const result = response(200, {enabled: true, provider_ready: fixture.providerReady ?? Boolean(fixture.originalStartId || fixture.presentationSuite === 'live')});
+        if (fixture.holdStatus) return new Promise(resolve => fixture.held.push({kind: 'status', release: () => resolve(result)}));
+        return result;
+      }
       const rawSource = relative.match(/^\/sources\/([^/]+)\/([^/]+)$/);
       if (rawSource && fixture.rawSources[`${rawSource[1]}/${rawSource[2]}`]) {
         const raw = fixture.rawSources[`${rawSource[1]}/${rawSource[2]}`];
@@ -540,7 +600,7 @@ async function open(page, id) {
 async function title(page, id) {
   await eventually(async () => {
     const rendered = await page.locator('[data-au-claim-title]').count() ? await page.locator('[data-au-claim-title]').textContent() : null;
-    const expected = await page.evaluate(id => window.__fixture.envelopes[id].state.title, id);
+    const expected = await page.evaluate(id => window.CasePathAutonomous.DEMO_CASES.find(row => row.claim_id === id)?.label || window.__fixture.envelopes[id].state.title, id);
     return rendered === expected;
   }, `The matching saved claim ${id} did not render`);
 }
@@ -635,10 +695,10 @@ test('Investigation complete groups completed codes without changing the raw cla
   assert.equal(await filter.locator('option[value="investigation_complete"]').innerText(), 'Investigation complete');
   assert.equal(await filter.locator('option[value="completed"], option[value="complete"], option[value="resolved"]').count(), 0);
   await filter.selectOption('investigation_complete');
-  assert.deepEqual(sorted(await page.locator('[data-au-claim-row]').evaluateAll(rows => rows.map(row => row.dataset.auClaimRow))), sorted(historicalIds.slice(0, 3)));
+  assert.deepEqual(sorted(await page.locator('[data-au-claim-row]').evaluateAll(rows => rows.map(row => row.dataset.auClaimRow))), sorted(completeStatusIds));
   assert.deepEqual(await page.locator('[data-au-claim-row] > .au-status').allTextContents(), ['Investigation complete', 'Investigation complete', 'Investigation complete']);
   for (const [index, status] of ['completed', 'complete', 'resolved'].entries()) {
-    const id = historicalIds[index], expected = await page.evaluate(id => window.__fixture.envelopes[id].state.outcome, id);
+    const id = completeStatusIds[index], expected = await page.evaluate(id => window.__fixture.envelopes[id].state.outcome, id);
     await open(page, id);
     await title(page, id);
     assert.equal(await page.locator('.au-work-head .au-status').innerText(), 'Investigation complete');
@@ -666,11 +726,17 @@ for (const width of [1440, 390]) test(`original subjects, full bodies and adjace
   const id = demoIds[0], page = await fixturePage(t, {width, height: 844}), original = originals.find(row => row.claim_id === id);
   await open(page, id);
   await title(page, id);
-  assert.equal(await page.locator('.au-original-subject').textContent(), original.subject);
+  const subjectDisclosure = page.locator('[data-au-disclosure="original-subject"]');
+  if (await subjectDisclosure.count()) {
+    assert.equal(await subjectDisclosure.locator('p').textContent(), original.subject, 'the concise heading retains the exact original subject');
+    await subjectDisclosure.locator('summary').click();
+    assert.equal(await subjectDisclosure.locator('p').isVisible(), true);
+    assert.equal(await subjectDisclosure.locator('p').evaluate(element => element.scrollWidth <= element.clientWidth + 1), true, 'the complete original subject remains readable');
+  } else assert.equal(await page.locator('.au-original-subject').textContent(), original.subject);
   assert.equal(await page.locator('.au-original-message').textContent(), original.message);
   const geometry = await originalGeometry(page);
   assert.equal(geometry.fontSize, 16);
-  assert.ok(geometry.subjectFontSize >= (width === 390 ? 24 : 28) && geometry.subjectFontSize <= (width === 390 ? 32 : 34), `the exact subject must remain comfortably sized: ${JSON.stringify(geometry)}`);
+  assert.ok(geometry.subjectFontSize >= 24 && geometry.subjectFontSize <= (width === 390 ? 32 : 34), `the claim heading must remain comfortably sized while the exact original subject stays accessible: ${JSON.stringify(geometry)}`);
   assert.ok(geometry.message.width <= 72 * geometry.ch + 3, `message lines must stay within approximately 72 characters: ${JSON.stringify(geometry)}`);
   assert.ok(geometry.subject.scrollWidth <= geometry.subject.clientWidth + 1 && geometry.subject.scrollHeight <= geometry.subject.clientHeight + 1, 'the full subject cannot be clipped');
   assert.notEqual(geometry.ellipsis, 'ellipsis');
@@ -769,6 +835,14 @@ test('Live Play resumes a verified original opening once after bounded mismatche
 
 for (const mode of ['live', 'replay']) test(`timed ${mode} presentation inspects all nine canonical cases with modal and hidden pauses, then cancels on navigation`, async t => {
   const page = await fixturePage(t, {presentationSuite: mode});
+  if (mode === 'replay') await page.evaluate(() => {
+    window.__consumedControlStates = [];
+    new MutationObserver(() => {
+      const record = document.querySelector('[data-au-disclosure="claim-record"] pre'); if (!record) return;
+      const state = JSON.parse(record.textContent).state, previous = window.__consumedControlStates.at(-1);
+      if (!previous || previous.claim_id !== state.claim_id || previous.revision !== state.revision || previous.state_sha256 !== state.state_sha256) window.__consumedControlStates.push(state);
+    }).observe(document.querySelector('[data-au-view]'), {childList: true, subtree: true});
+  });
   await page.locator('.au-nav [data-au-nav="demonstration"]').click();
   await page.locator(`[data-au-demo-mode="${mode}"]`).click();
   await page.locator('[data-au-demo-play]').click();
@@ -793,6 +867,8 @@ for (const mode of ['live', 'replay']) test(`timed ${mode} presentation inspects
   assert.equal(new URL(page.url()).hash.split('?')[0], `#autonomous/claim/${demoIds[0]}`, 'a hidden tab pauses the canonical presentation');
   if (mode === 'replay') assert.equal((await reads()).length, hiddenReads);
   await page.evaluate(() => { window.__fixture.hidden = false; document.dispatchEvent(new Event('visibilitychange')); });
+  assert.equal(await page.locator('[data-au-demo-resume]').count(), 1, 'inspection requires deliberate resumption of the same presentation');
+  await page.locator('[data-au-demo-resume]').click();
   for (let tick = 0; tick < 90 && await page.locator('[data-au-demo-stop]').count(); tick++) {
     await page.clock.runFor(1600);
     await delay(10);
@@ -804,7 +880,10 @@ for (const mode of ['live', 'replay']) test(`timed ${mode} presentation inspects
   const posts = await page.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST'));
   if (mode === 'replay') {
     assert.deepEqual(posts, []);
-    for (const id of demoIds) assert.deepEqual((await calls(page, `/claims/${id}/replay`)).map(call => Number(new URL(call.url, 'http://fixture.invalid').searchParams.get('through_seq'))), [0, 1, 2], 'each replay exposes the verified original and both accepted prefixes');
+    for (const id of demoIds) assert.deepEqual((await calls(page, `/claims/${id}/replay`)).map(call => Number(new URL(call.url, 'http://fixture.invalid').searchParams.get('through_seq'))), id === demoIds[0] ? [0, 1, 2, 1, 2] : [0, 1, 2], 'each replay verifies both prefixes; deliberate Resume revalidates the first case\'s cancelled prefetch');
+    const consumed = await page.evaluate(() => window.__consumedControlStates);
+    const expected = await page.evaluate(ids => ids.flatMap(id => window.__fixture.acceptedHistories[id].slice(1).map(record => record.state)), demoIds);
+    assert.deepEqual(consumed, expected, 'all nine authored control histories consume each exact accepted prefix once in roster order');
   } else {
     assert.equal(posts.length, 9, 'Live Play may admit one Start for each of the nine unprocessed originals');
     assert.deepEqual(posts.map(call => call.url.match(/\/claims\/([^/]+)\//)[1]), demoIds);
@@ -823,6 +902,26 @@ for (const mode of ['live', 'replay']) test(`timed ${mode} presentation inspects
   assert.equal(await page.locator('[data-au-claim-row]').count(), 150);
 });
 
+test('a replay control history without an accepted operational outcome stops honestly at its exact saved head', async t => {
+  const page = await fixturePage(t, {presentationSuite: 'replay', presentationOutcome: false});
+  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await page.locator('[data-au-demo-play]').click();
+  await title(page, demoIds[0]);
+  await page.clock.runFor(700);
+  await eventually(() => page.locator('.au-global-status').innerText().then(text => /no settled operational outcome/i.test(text)), 'the authored history without an outcome did not stop');
+  const saved = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent());
+  const expected = await page.evaluate(id => window.__fixture.acceptedHistories[id][2], demoIds[0]);
+  assert.deepEqual(saved.state, expected.state);
+  assert.deepEqual(saved.projection, {...expected.projection, parent_revision: expected.state.revision, parent_state_sha256: expected.state.state_sha256});
+  assert.equal(saved.state.outcome, null);
+  assert.equal(new URL(page.url()).hash.split('?')[0], `#autonomous/claim/${demoIds[0]}`);
+  const before = (await calls(page, '/replay')).length;
+  await page.clock.runFor(12000);
+  assert.equal((await calls(page, '/replay')).length, before);
+  assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
+  assert.deepEqual(await page.evaluate(() => window.__fixture.calls.filter(call => call.method !== 'GET')), []);
+});
+
 test('leaving a recovering Live Play cancels its original Start authorization', async t => {
   const id = demoIds[0], page = await fixturePage(t, {originalStartId: id, mismatchedSnapshots: 3});
   await page.locator('.au-nav [data-au-nav="demonstration"]').click();
@@ -837,12 +936,13 @@ test('leaving a recovering Live Play cancels its original Start authorization', 
 });
 
 test('overlapping opening reads preserve the newer record and source disclosure while equal revisions remain strict', async t => {
-  const page = await fixturePage(t, {holdId: processedId, holdRemaining: 1});
+  const page = await fixturePage(t);
   const revision = await page.evaluate(id => window.__fixture.envelopes[id].state.revision, processedId);
-  await open(page, processedId);
-  await eventually(() => page.evaluate(() => window.__fixture.held.length === 1), 'the earlier opening read was not held');
-  await page.evaluate(id => { window.__fixture.advance(id); document.dispatchEvent(new Event('visibilitychange')); }, processedId);
-  await title(page, processedId);
+  await open(page, processedId); await title(page, processedId);
+  await page.evaluate(id => { window.__fixture.holdId = id; window.__fixture.holdRemaining = 1; void window.__controller.refresh(); }, processedId);
+  await eventually(() => page.evaluate(() => window.__fixture.held.length === 1), 'the earlier cursor refresh was not held');
+  await page.evaluate(id => { window.__fixture.advance(id); void window.__controller.openClaim(id); }, processedId);
+  await eventually(async () => (await visibleRecord(page)).state.revision === revision + 1, 'the distinct full snapshot did not render its newer accepted record');
   assert.match(await page.locator('.au-work-head').innerText(), new RegExp(`revision ${revision + 1}\\b`, 'i'));
   const chosen = await page.locator('[data-au-node]').last().getAttribute('data-au-node');
   await page.locator(`[data-au-node="${chosen}"]`).click();
@@ -910,7 +1010,23 @@ test('a recorded document selection retains its exact obligation and fact throug
     assert.equal(query.get('fact'), obligation.required_fact_ids[0]);
   }
   await page.locator('.au-context-nav [data-au-detail="documents"]').click();
+  const documentRows = page.locator('[data-au-panel="documents"] .au-obligation');
+  const expectedRows = await page.evaluate(id => window.__fixture.envelopes[id].state.obligations.map(row => row.obligation_id || row.document_type), id);
+  assert.equal(await documentRows.count(), 11, 'the compact list preserves all eleven recorded requirements');
+  assert.deepEqual(sorted(await documentRows.evaluateAll(rows => rows.map(row => row.dataset.auObligation))), sorted(expectedRows));
+  const rowGeometry = await documentRows.evaluateAll(rows => rows.slice(0, 3).map(row => { const rect = row.getBoundingClientRect(); return {top: rect.top, bottom: rect.bottom, height: rect.height}; }));
+  assert.ok(rowGeometry[2].bottom <= 1000, `at least three real requirements are scannable on arrival: ${JSON.stringify(rowGeometry)}`);
+  assert.ok(rowGeometry.every(row => row.height <= 160), 'contextual reasons do not turn the requirements into permanent large panels');
+  assert.equal(await documentRows.locator('details[open]').count(), 0);
   await page.locator(`[data-au-panel="documents"] [data-au-obligation="${notice.obligation_id}"] [data-au-select="lt_deadline"]`).click();
+  await focus(notice);
+  await page.locator('.au-context-nav [data-au-detail="documents"]').click();
+  const selectedRequirement = page.locator('[data-au-panel="documents"] .au-obligation[data-selected="true"]');
+  assert.equal(await selectedRequirement.count(), 1, 'sharing a process node does not select sibling obligations');
+  assert.equal(await selectedRequirement.getAttribute('data-au-obligation'), notice.obligation_id);
+  await selectedRequirement.locator('summary').first().click();
+  assert.ok((await selectedRequirement.textContent()).includes(notice.reason));
+  await selectedRequirement.locator('[data-au-select="lt_deadline"]').click();
   await focus(notice);
   await page.locator(`[data-au-document-select="${receipt.document_type}"]`).click();
   await focus(receipt);
@@ -996,7 +1112,7 @@ test('historical verified replay derives assessment coverage from that prefix an
     const through = fixture.revisions[position];
     await page.evaluate(({id, through}) => window.__controller.openClaim(id, true, {mode: 'replay', through}), {id, through});
     await title(page, id);
-    assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+    assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
     assert.equal(await page.locator('[data-au-assessment-freshness="prior"]').count(), ['arrived', 'deferred'].includes(position) ? 1 : 0, position);
     const rendered = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
     assert.deepEqual(rendered, fixture.states[position]);
@@ -1024,7 +1140,11 @@ test('a recorded withheld knowledge candidate stays visible in the default claim
   assert.equal(event.kind, 'knowledge.published');
   assert.equal(event.payload.knowledge.qualification.status, 'quarantined');
   await observeAnimations(page); await open(page, id); await title(page, id);
-  const object = page.locator(`[data-au-semantic-event="${event.event_sha256}"]`);
+  const cue = page.locator(`[data-au-event-seq="${event.seq}"][data-au-semantic-event="${event.event_sha256}"]`);
+  assert.equal(await cue.isVisible(), true);
+  assert.match(await cue.innerText(), /Knowledge candidate withheld/i);
+  await page.locator('[data-au-disclosure="context-records"] > summary').click();
+  const object = page.locator(`.au-semantic-event[data-au-semantic-event="${event.event_sha256}"]`);
   assert.equal(await object.isVisible(), true);
   assert.equal(await object.getAttribute('data-au-semantic-type'), 'withheld');
   assert.match(await object.innerText(), /Knowledge candidate withheld/i);
@@ -1045,17 +1165,20 @@ for (const kind of ['action.completed', 'knowledge.published', 'knowledge.used']
   assert.deepEqual(await page.evaluate(() => window.__acceptedAnimations), [], 'opening accepted history settles without replaying its motion');
   await page.evaluate(position => window.__fixture.loadAccepted(position), through);
   await page.evaluate(() => window.__controller.refresh());
-  const object = page.locator(`[data-au-semantic-event="${event.event_sha256}"]`);
-  assert.equal(await object.isVisible(), true, 'the semantic object is visible in the default step context');
-  assert.equal(await object.getAttribute('data-au-semantic-kind'), kind);
-  assert.equal(await object.getAttribute('data-au-semantic-seq'), String(through));
+  const cue = page.locator(`[data-au-event-seq="${through}"][data-au-semantic-event="${event.event_sha256}"]`);
+  assert.equal(await cue.isVisible(), true, 'the exact accepted event carries the default compact cue');
+  assert.equal(await cue.getAttribute('data-au-semantic-kind'), kind);
+  assert.equal(await cue.getAttribute('data-au-event-seq'), String(through));
   const animations = await page.evaluate(() => window.__acceptedAnimations);
   assert.equal(animations.filter(row => row.event === event.event_sha256).length, 1, 'the accepted receipt/event is the motion identity');
   assert.ok(animations.every(row => row.options.fill === 'none' && row.options.iterations !== Infinity && row.options.delay + row.options.duration <= 800));
-  assert.equal(await page.locator('[data-au-stage]').count(), 0);
+  assert.equal(await page.locator('[data-au-stage]:visible').count(), 0, 'detailed recorded work stays contextual rather than competing with the graph');
   const count = animations.length;
   await page.evaluate(async () => { await window.__controller.refresh(); await window.__controller.refresh(); });
   assert.equal(await page.evaluate(() => window.__acceptedAnimations.length), count, 'same accepted events cannot animate on repeated polling');
+  await page.locator('[data-au-disclosure="context-records"] > summary').click();
+  const object = page.locator(`.au-semantic-event[data-au-semantic-event="${event.event_sha256}"]`);
+  assert.equal(await object.isVisible(), true, 'the full accepted result remains available in its contextual record');
   if (kind === 'action.completed') {
     assert.equal(await object.locator('[data-au-select]').count() > 0, true);
     await object.locator('summary').click();
@@ -1079,7 +1202,7 @@ for (const kind of ['action.completed', 'knowledge.published', 'knowledge.used']
   await observeAnimations(replay);
   await replay.evaluate(({id, through}) => window.__controller.openClaim(id, true, {mode: 'replay', through}), {id, through});
   await title(replay, id);
-  assert.equal(await replay.locator(`[data-au-semantic-event="${event.event_sha256}"]`).isVisible(), true);
+  assert.equal(await replay.locator(`[data-au-event-seq="${through}"][data-au-semantic-event="${event.event_sha256}"]`).isVisible(), true);
   assert.deepEqual(await replay.evaluate(() => window.__acceptedAnimations), [], 'initial verified prefix inspection is settled');
 });
 
@@ -1110,7 +1233,7 @@ for (const interruption of ['reduce', 'reconnect', 'dialog', 'keyboard', 'hidden
     Object.defineProperty(document, 'hidden', {configurable: true, get: () => false});
     document.dispatchEvent(new Event('visibilitychange'));
   });
-  await eventually(() => page.locator(`[data-au-semantic-event="${event.event_sha256}"]`).count().then(count => count === 1), 'the accepted action did not remain inspectable');
+  await eventually(() => page.locator(`[data-au-event-seq="${event.seq}"][data-au-semantic-event="${event.event_sha256}"]`).count().then(count => count === 1), 'the exact accepted action cue did not remain inspectable');
   assert.equal(await page.evaluate(eventHash => window.__acceptedAnimations.filter(row => row.event === eventHash).length, event.event_sha256), 0);
   assert.deepEqual(JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, fixture.prefixes[event.seq].state);
 });
@@ -1119,7 +1242,7 @@ test('Verified replay stays visible as presentation mode when the accepted prefi
   const page = await fixturePage(t, {replayStatus: 'running'});
   await page.evaluate(id => { void window.__controller.openClaim(id, true, {mode: 'replay', through: 2}); }, processedId);
   await title(page, processedId);
-  assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
   assert.equal(await page.locator('.au-work-head .au-status').innerText(), 'Working');
   assert.match(new URL(page.url()).hash, /mode=replay/);
   assert.match(new URL(page.url()).hash, /through=2/);
@@ -1129,7 +1252,7 @@ test('Verified replay stays visible as presentation mode when the accepted prefi
   await page.evaluate(async () => { await window.__controller.refresh(); await window.__controller.refresh(); });
   await page.clock.runFor(7000);
   assert.equal((await calls(page, `/claims/${processedId}/snapshot`)).length, before, 'a replay must not poll live state');
-  assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
   await page.evaluate(id => { void window.__controller.openClaim(id, true, {mode: 'replay', through: 0}); }, processedId);
   await title(page, processedId);
   assert.equal(await page.locator('[data-au-arrival], [data-au-pause], [data-au-resume], [data-au-start]').count(), 0, 'a revision-zero replay cannot expose Start or file arrival');
@@ -1170,7 +1293,7 @@ test('an explicit original Start preserves its guarded retry after background ac
   const liveReads = (await calls(page, `/claims/${startId}/snapshot`)).length;
   await page.evaluate(id => { void window.__controller.openClaim(id, true, {mode: 'replay', through: 1}); }, startId);
   await title(page, startId);
-  assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
   assert.equal(await page.locator('[data-au-arrival], [data-au-pause], [data-au-resume], [data-au-start]').count(), 0, 'replay must hide write controls even when that claim has a pending Start');
   await page.evaluate(() => window.__controller.refresh());
   assert.equal((await calls(page, `/claims/${startId}/snapshot`)).length, liveReads, 'refreshing the pending claim in replay cannot read live state');
@@ -1200,7 +1323,7 @@ test('an explicit original Start preserves its guarded retry after background ac
   assert.equal(saved.projection.state_sha256, saved.state.state_sha256);
   assert.deepEqual(saved.state.source_descriptors, original.source_descriptors, 'Start must preserve the original source identity');
   assert.equal(saved.state.title, original.title);
-  assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Live execution');
+  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Live execution · revision \d+$/);
   assert.equal(new URL(page.url()).hash, `#autonomous/claim/${startId}`);
   assert.match(await page.locator('.au-work-head').innerText(), /revision 2\b/i);
   assert.equal(await page.locator('[data-au-start]').count(), 0);
@@ -1412,6 +1535,8 @@ test('graph routes and evidence connectors retain at least 3:1 effective contras
     const page = await fixturePage(t, {width});
     await open(page, processedId);
     await title(page, processedId);
+    await page.clock.runFor(320);
+    await page.evaluate(async () => { const animations = document.getAnimations(); for (const animation of animations) animation.finish(); await Promise.allSettled(animations.map(animation => animation.finished)); });
     const receipt = await connectorContrast(page);
     assert.ok(receipt.some(row => row.kind === 'graph' && row.selected === 'false'), 'the contrast check must include ordinary recorded connections');
     assert.ok(receipt.some(row => row.kind === 'evidence'), 'the contrast check must include actual evidence connectors');
@@ -1454,11 +1579,10 @@ test('the demonstration itinerary numbers its nine domain-grouped cases and show
   assert.equal(await itinerary.locator('[aria-current="step"] .au-status').textContent(), 'Not started', 'the verified original overrides the collection summary of a completed head');
   await itinerary.locator('summary').click();
   assert.deepEqual(await itinerary.locator('.au-demo-order').allTextContents(), ['01', '02', '03', '04', '05', '06', '07', '08', '09']);
-  await page.clock.runFor(1400);
+  await page.clock.runFor(300);
   await eventually(() => itinerary.locator('[aria-current="step"] .au-status').textContent().then(text => text === 'Working'), 'the itinerary retained a stale collection status after the accepted prefix changed');
   assert.deepEqual(await position(), [1, 9]);
-  await page.clock.runFor(1400);
-  await page.clock.runFor(3200);
+  for (let tick = 0; tick < 180 && new URL(page.url()).hash.split('?')[0] !== `#autonomous/claim/${demoIds[1]}`; tick++) await page.clock.runFor(20);
   await title(page, demoIds[1]);
   assert.deepEqual(await position(), [2, 9]);
   assert.equal(await itinerary.locator('[data-au-demo-case][aria-current="step"]').getAttribute('data-au-demo-case'), demoIds[1]);
@@ -1655,6 +1779,8 @@ test('pending raw navigation blocks automatic Live Start, timed advancement and 
   await title(replay, id);
   await replay.clock.runFor(1400);
   await eventually(() => replay.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the next accepted replay prefix was not held');
+  const prefetchedReads = (await calls(replay, `/claims/${id}/replay`)).length;
+  assert.ok(prefetchedReads >= 2 && prefetchedReads <= 3, 'the paused next-prefix read permits at most two bounded prefixes ahead');
   await freezeRoutes(replay);
   await replay.evaluate(() => {
     location.hash = '#autonomous/cases';
@@ -1663,7 +1789,7 @@ test('pending raw navigation blocks automatic Live Start, timed advancement and 
   await replay.evaluate(async () => { for (let turn = 0; turn < 20; turn++) await Promise.resolve(); });
   await replay.clock.runFor(5000);
   assert.equal(new URL(replay.url()).hash, '#autonomous/cases', 'a delayed accepted replay prefix cannot replace the newly selected product route');
-  assert.equal((await calls(replay, `/claims/${id}/replay`)).length, 2, 'the abandoned replay cannot request another prefix');
+  assert.equal((await calls(replay, `/claims/${id}/replay`)).length, prefetchedReads, 'the abandoned replay cannot request another prefix');
   assert.equal((await calls(replay, `/claims/${demoIds[1]}/replay`)).length, 0);
   assert.deepEqual(await replay.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST')), []);
   await resumeRoutes(replay);
@@ -1786,6 +1912,57 @@ test('focused flow: selected process changes preserve the graph, original arriva
   assert.equal(await files.evaluate(element => element.files[0].name), 'isolated-retained-original.txt');
 });
 
+test('focused flow: a recorded action opens its exact document and fact while manual inspection retains its chosen context', async t => {
+  const fixture = priorAssessmentFixture(), event = fixture.snapshots.reassessed.events.find(row => row.kind === 'action.completed' && row.payload.result.document_type);
+  const page = await fixturePage(t, {priorAssessment: 'reassessed', acceptedPrefix: event.seq});
+  await open(page, fixture.claim_id); await title(page, fixture.claim_id);
+  const selected = event.payload.result.node_ids[0], requirement = fixture.prefixes[event.seq].state.obligations.find(row => row.node_id === selected && row.document_type === event.payload.result.document_type);
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected);
+  const context = async () => ({document: await page.locator('[data-au-evidence-path] [data-au-wire="requirement"]').getAttribute('data-au-document'), fact: await page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact'), obligation: new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('obligation')});
+  assert.equal((await context()).document, requirement.document_type);
+  assert.equal((await context()).fact, requirement.required_fact_ids[0]);
+  assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[event.seq].state);
+  await page.locator('[data-au-detail="documents"]').click();
+  const manual = fixture.prefixes[event.seq].state.obligations.find(row => row.node_id === 'lt_form' && row.document_type === 'termination_notice');
+  await page.locator(`[data-au-panel="documents"] [data-au-select-obligation="${manual.obligation_id}"]`).click();
+  assert.deepEqual(await context(), {document: manual.document_type, fact: manual.required_fact_ids[0], obligation: manual.obligation_id});
+  await page.evaluate(() => window.__controller.refresh());
+  assert.deepEqual(await context(), {document: manual.document_type, fact: manual.required_fact_ids[0], obligation: manual.obligation_id}, 'a settled refresh may not replace an explicit inspection with the latest action');
+  assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[event.seq].state);
+});
+
+for (const width of [1428, 390]) test(`focused flow: expanding the complete process retains its native nodes and chosen inspection at ${width}px`, async t => {
+  const page = await fixturePage(t, {width, height: width === 390 ? 844 : 801});
+  await open(page, processedId); await title(page, processedId);
+  const record = await visibleRecord(page), selected = await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node');
+  await page.evaluate(() => { window.__expandedGraph = document.querySelector('[data-au-graph]'); window.__expandedNodes = [...document.querySelectorAll('[data-au-node]')]; });
+  const viewport = page.locator('[data-au-graph-pan]'), expand = page.locator('[data-au-expand-process]');
+  const collapsed = await viewport.evaluate(element => ({height: element.clientHeight, content: element.scrollHeight}));
+  assert.equal(await expand.getAttribute('aria-expanded'), 'false');
+  await expand.focus(); await page.keyboard.press('Enter');
+  assert.equal(await expand.getAttribute('aria-expanded'), 'true');
+  assert.equal(await viewport.getAttribute('data-au-graph-expanded'), 'true');
+  const expanded = await viewport.evaluate(element => ({height: element.clientHeight, content: element.scrollHeight}));
+  assert.ok(expanded.height > collapsed.height && expanded.height >= expanded.content - 1, `Expand exposes the complete existing graph instead of clipping its rows: ${JSON.stringify({collapsed, expanded})}`);
+  const nodeIdentity = () => page.evaluate(() => window.__expandedGraph === document.querySelector('[data-au-graph]') && window.__expandedNodes.every(node => node.isConnected && document.querySelector(`[data-au-node="${node.dataset.auNode}"]`) === node));
+  assert.equal(await nodeIdentity(), true);
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected);
+  await page.locator('[data-au-node-next]').click();
+  const changed = await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step');
+  assert.equal(await nodeIdentity(), true);
+  assert.equal(await viewport.getAttribute('data-au-graph-expanded'), 'true');
+  await page.evaluate(() => window.__controller.refresh());
+  assert.equal(await viewport.getAttribute('data-au-graph-expanded'), 'true');
+  assert.equal(await nodeIdentity(), true, 'a matching accepted refresh preserves native graph elements');
+  await open(page, otherId); await title(page, otherId); await open(page, processedId); await title(page, processedId);
+  assert.equal(await viewport.getAttribute('data-au-graph-expanded'), 'true', 'local claim navigation remembers the explicit expansion');
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), changed);
+  assert.deepEqual((await visibleRecord(page)).state, record.state);
+  await expand.click();
+  assert.equal(await viewport.getAttribute('data-au-graph-expanded'), 'false');
+  await focusedReceipt(page, `expanded-process-${width}`, {collapsed, expanded, selected, changed, nodes: record.state.graph.nodes.map(node => node.node_id)});
+});
+
 for (const width of [1428, 390]) test(`focused flow: substantive collection, claim and Knowledge objects fit the first ${width}px viewport`, async t => {
   const height = width === 390 ? 844 : 801, page = await fixturePage(t, {width, height, priorAssessment: 'reassessed'});
   const bounds = selector => page.locator(selector).first().evaluate(element => { const r = element.getBoundingClientRect(); return {top: r.top, bottom: r.bottom, left: r.left, right: r.right}; });
@@ -1798,12 +1975,40 @@ for (const width of [1428, 390]) test(`focused flow: substantive collection, cla
   await page.locator('.au-nav [data-au-nav="knowledge"]').click();
   await eventually(() => page.locator('[data-au-knowledge-identity]').count().then(count => count > 0), 'qualified fixture Knowledge did not render');
   const qualification = await bounds('.au-evidence-knowledge-definition'), consumers = await bounds('.au-evidence-knowledge-receiving');
-  await focusedReceipt(page, `knowledge-${width}`, {width, height, qualification, consumers});
+  const knowledgePath = await page.locator('[data-au-knowledge-path]').first().evaluate(element => {
+    const area = element.getBoundingClientRect(), box = selector => { const rect = element.querySelector(selector).getBoundingClientRect(); return {left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, width: rect.width}; };
+    const wires = [...element.querySelectorAll('svg path')].map(path => { const length = path.getTotalLength(), start = path.getPointAtLength(0), end = path.getPointAtLength(length); return {length, start: {x: start.x, y: start.y}, end: {x: end.x, y: end.y}, d: path.getAttribute('d'), visible: getComputedStyle(path.closest('svg')).display !== 'none'}; });
+    return {width: area.width, origin: box('[data-au-wire="origin"]'), definition: box('[data-au-wire="version"]'), receiving: box('[data-au-wire="reuse"]'), wires,
+      version: element.closest('[data-au-version]').dataset.auVersion, identity: element.closest('[data-au-knowledge-identity]').dataset.auKnowledgeIdentity, links: [...element.querySelectorAll('[data-au-claim]')].map(link => link.dataset.auClaim)};
+  });
+  if (width === 390) {
+    assert.ok(knowledgePath.origin.bottom <= knowledgePath.definition.top && knowledgePath.definition.bottom <= knowledgePath.receiving.top, 'mobile Knowledge follows source → qualified version → exact receiving claims');
+    for (const item of [knowledgePath.origin, knowledgePath.definition, knowledgePath.receiving]) assert.ok(item.width >= knowledgePath.width - 2, 'every mobile Knowledge object occupies its full column');
+    assert.ok(knowledgePath.wires.length >= 2 && knowledgePath.wires.every(wire => wire.visible && Number.isFinite(wire.length) && wire.length > 0 && wire.end.y > wire.start.y && !/NaN|Infinity/.test(wire.d)), 'actual mobile connectors run finitely downward between the ordered objects');
+  }
+  const expectedVersion = await page.evaluate(identity => window.__fixture.accepted.knowledge.versions.find(version => `${version.knowledge_id}:${version.version}` === identity), knowledgePath.identity);
+  assert.equal(knowledgePath.version, String(expectedVersion.version));
+  assert.equal(knowledgePath.links[0], expectedVersion.source_claim_id);
+  const expectedUses = await page.evaluate(({id, version}) => [...new Set(window.__fixture.accepted.knowledge.uses.filter(use => use.knowledge_id === id && use.version === version).map(use => use.claim_id))], {id: expectedVersion.knowledge_id, version: expectedVersion.version});
+  assert.deepEqual(knowledgePath.links.slice(1), expectedUses, 'responsive placement preserves every exact recorded source/receiving link');
+  await focusedReceipt(page, `knowledge-${width}`, {width, height, qualification, consumers, knowledgePath});
   assert.ok(collection.bottom <= height, `the first actual case must fit without scrolling: ${JSON.stringify(collection)}`);
   assert.ok(collection.top <= height * .65, 'navigation and controls cannot consume most of the collection viewport');
   assert.ok(graph.top < height - 160 && selected.top < height - 60, `a real graph and the selected decision must share the initial viewport: ${JSON.stringify({graph, selected})}`);
-  assert.ok(qualification.top < height && consumers.top < height, `qualification and receiving claims must be visible on arrival: ${JSON.stringify({qualification, consumers})}`);
+  assert.ok(qualification.top < height, `the qualified version must be visible on arrival: ${JSON.stringify(qualification)}`);
+  if (width !== 390) assert.ok(consumers.top < height, `desktop receiving claims must share the arrival viewport: ${JSON.stringify(consumers)}`);
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
+  if (width === 390) {
+    // The accepted mobile sequence uses one full-width column. Exact receiving
+    // claims follow the qualified version below the first fold when required.
+    const receiver = page.locator(`[data-au-knowledge-path] [data-au-wire="reuse"] [data-au-claim="${expectedUses[0]}"]`).first();
+    assert.ok((await receiver.textContent()).trim().length > 0, 'an exact receiving claim remains named and accessible');
+    await receiver.scrollIntoViewIfNeeded(); await receiver.focus();
+    const accessible = await receiver.evaluate(element => { const rect = element.getBoundingClientRect(); return {top: rect.top, bottom: rect.bottom, focused: document.activeElement === element}; });
+    assert.ok(accessible.top >= 0 && accessible.bottom <= height && accessible.focused, 'normal scrolling exposes the native receiving link for keyboard activation');
+    await page.keyboard.press('Enter'); await title(page, expectedUses[0]);
+    assert.equal((await visibleRecord(page)).state.claim_id, expectedUses[0]);
+  }
 });
 
 // Reuse the public replay-opening preference to exercise the real scheduler
@@ -1814,17 +2019,17 @@ async function actualJournalPresentation(t, config = {}) {
   await page.locator('.au-nav [data-au-nav="demonstration"]').click();
   await page.locator('[data-au-demo-play]').click();
   await title(page, demoIds[0]);
-  await page.evaluate(({id, latency}) => {
+  await page.evaluate(({id, latency, through, node}) => {
     window.__fixture.replayLatency = latency;
-    void window.__controller.openClaim(id, true, {mode: 'replay', through: 1, demo: true});
-  }, {id: fixture.claim_id, latency: config.replayLatency || 0});
+    void window.__controller.openClaim(id, true, {mode: 'replay', through, node, demo: true});
+  }, {id: fixture.claim_id, latency: config.replayLatency || 0, through: config.startThrough || 1, node: config.startNode});
   if (config.replayLatency) await page.clock.runFor(config.replayLatency);
   await title(page, fixture.claim_id);
   return {page, fixture, id: fixture.claim_id};
 }
 
-test('focused flow: actual accepted replay prefixes stay immutable and bounded prefetch absorbs GET latency', async t => {
-  const {page, fixture, id} = await actualJournalPresentation(t, {replayLatency: 120});
+for (const latency of [0, 120]) test(`focused flow: actual accepted replay prefixes stay immutable with ${latency}ms GET latency and bounded prefetch`, async t => {
+  const {page, fixture, id} = await actualJournalPresentation(t, {replayLatency: latency});
   const rendered = [], times = [];
   for (let through = 1; through <= fixture.snapshots.reassessed.state.revision; through++) {
     let record = await visibleRecord(page);
@@ -1834,7 +2039,7 @@ test('focused flow: actual accepted replay prefixes stay immutable and bounded p
     assert.equal(record.state.revision, through, 'replay may not skip an accepted journal prefix');
     assert.deepEqual(record.state, fixture.prefixes[through].state, `prefix ${through} keeps every accepted field and hash`);
     assert.deepEqual(record.projection, fixture.prefixes[through].projection);
-    assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+    assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
     assert.equal(await page.locator('[data-au-arrival], [data-au-start], [data-au-pause], [data-au-resume]').count(), 0);
     const prefixCalls = (await calls(page, `/claims/${id}/replay`)).map(call => Number(new URL(call.url, 'http://fixture.invalid').searchParams.get('through_seq')));
     assert.ok(prefixCalls.every(seq => seq <= through + 2), 'prefetch must remain at most two accepted prefixes ahead');
@@ -1846,8 +2051,9 @@ test('focused flow: actual accepted replay prefixes stay immutable and bounded p
   assert.deepEqual(rendered, Array.from({length: 28}, (_, index) => index + 1));
   const replayCalls = await calls(page, `/claims/${id}/replay`);
   assert.equal(replayCalls.length, 28);
+  assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|stopped|changed identity/i, 'immediate responses cannot schedule the same accepted prefix twice');
   await page.locator('.au-nav [data-au-nav="work"]').click();
-  await focusedReceipt(page, 'actual-28-prefix-replay', {identity: id, rendered, virtualTimes: times, gaps, replayCalls});
+  await focusedReceipt(page, `actual-28-prefix-replay-${latency}`, {identity: id, latency, rendered, virtualTimes: times, gaps, replayCalls});
 });
 
 test('focused flow: a corrupted prefetched original identity stops before replacing the accepted replay prefix', async t => {
@@ -1857,7 +2063,7 @@ test('focused flow: a corrupted prefetched original identity stops before replac
   await page.clock.runFor(1400);
   await eventually(() => page.locator('.au-global-status').innerText().then(text => /stopped|provenance|identity/i.test(text)), 'corrupt prefetched provenance did not stop replay');
   assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[2].state);
-  assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
   await page.clock.runFor(5000);
   assert.equal((await visibleRecord(page)).state.revision, 2, 'a rejected prefetched prefix cannot advance later');
   assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
@@ -1868,13 +2074,14 @@ for (const interruption of ['source', 'hidden', 'navigation']) test(`focused flo
   const {page} = await actualJournalPresentation(t, {holdReplayId: id, holdReplayThrough: 2});
   await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the next accepted prefix was not prefetched');
   if (interruption === 'source') {
+    await page.locator('.au-context-nav [data-au-detail="sources"]').click();
     await page.locator('[data-au-panel="sources"] [data-au-source]').first().click();
     await eventually(() => page.locator('dialog[open] details.au-source-identity').count().then(count => count === 1), 'original inspection did not open');
   } else if (interruption === 'hidden') await page.evaluate(() => {
     Object.defineProperty(document, 'hidden', {configurable: true, get: () => true}); document.dispatchEvent(new Event('visibilitychange'));
   });
   else await page.locator('.au-nav [data-au-nav="knowledge"]').click();
-  await page.evaluate(() => { for (const held of window.__fixture.held.splice(0)) held.release(); });
+  await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
   await page.clock.runFor(7000);
   if (interruption === 'navigation') assert.equal(new URL(page.url()).hash, '#autonomous/knowledge');
   else assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[1].state, 'inspection or hiding must leave the current accepted prefix stable');
@@ -1886,6 +2093,42 @@ for (const interruption of ['source', 'hidden', 'navigation']) test(`focused flo
   await page.clock.runFor(5000);
   assert.equal((await calls(page, `/claims/${id}/replay`)).length, before, 'a cancelled replay cannot restart on close or visibility resume');
   assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
+  if (interruption !== 'navigation') {
+    assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
+    await page.locator('[data-au-demo-resume]').click();
+    let record = await visibleRecord(page);
+    for (let tick = 0; record.state.revision === 1 && tick < 70; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
+    assert.deepEqual(record.state, fixture.prefixes[2].state, 'explicit Resume consumes exactly the next accepted prefix of the same journal');
+    assert.deepEqual(record.projection, fixture.prefixes[2].projection);
+    assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|changed identity/i);
+  }
+});
+
+for (const inspection of ['node', 'fact', 'document']) test(`focused flow: manual ${inspection} inspection pauses the same accepted journal until deliberate Resume`, async t => {
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+  const {page} = await actualJournalPresentation(t, {startThrough: 11, startNode: 'lt_form', holdReplayId: id, holdReplayThrough: 12});
+  await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the exact next accepted prefix was not held');
+  if (inspection === 'node') await page.locator('[data-au-node="lt_deadline"]').click();
+  if (inspection === 'fact') await page.locator('[data-au-panel="step"] [data-au-fact-select="fact:termination_notice"]').click();
+  if (inspection === 'document') await page.locator('[data-au-panel="step"] [data-au-document-select="termination_notice"]').click();
+  assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
+  const selected = await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), route = new URL(page.url()).hash;
+  if (inspection !== 'node') assert.equal(await page.locator('[data-au-evidence-path] [data-au-wire="requirement"]').getAttribute('data-au-document'), 'termination_notice');
+  await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
+  const reads = (await calls(page, `/claims/${id}/replay`)).length;
+  await page.clock.runFor(7000);
+  assert.equal((await calls(page, `/claims/${id}/replay`)).length, reads, 'manual inspection cannot trigger idle replay reads');
+  assert.equal(new URL(page.url()).hash, route);
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected);
+  assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[11].state);
+  await page.locator('[data-au-demo-resume]').click();
+  let record = await visibleRecord(page);
+  for (let tick = 0; record.state.revision === 11 && tick < 90; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
+  assert.deepEqual(record.state, fixture.prefixes[12].state, 'Resume verifies and consumes the exact next immutable prefix');
+  assert.deepEqual(record.projection, fixture.prefixes[12].projection);
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), fixture.prefixes[12].events.at(-1).payload.result.node_id, 'active playback follows only the recorded accepted action node');
+  assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|changed identity/i);
+  await page.locator('.au-nav [data-au-nav="work"]').click();
 });
 
 async function traceFocusedMotion(page) {
@@ -1905,12 +2148,13 @@ async function motionTrace(page) {
     transform: getComputedStyle(row.element).transform, opacity: getComputedStyle(row.element).opacity,
   })));
 }
-function assertFocusedMotion(trace) {
+function assertFocusedMotion(trace, acceptedWave = false) {
   assert.ok(trace.length > 0, 'the actual interaction must create a native animation');
   for (const row of trace) {
     assert.ok(row.options.duration >= 180 && row.options.duration <= 320, `bounded duration: ${JSON.stringify(row.options)}`);
     assert.notEqual(row.options.iterations, Infinity);
-    assert.ok((row.options.delay || 0) <= 80);
+    assert.ok((row.options.delay || 0) >= 0 && (row.options.delay || 0) + row.options.duration <= (acceptedWave ? 800 : 400));
+    if (!acceptedWave) assert.ok((row.options.delay || 0) <= 80);
     const frames = Array.isArray(row.frames) ? row.frames : [row.frames];
     assert.ok(frames.some(frame => frame.transform !== undefined) && frames.some(frame => frame.opacity !== undefined), 'motion must carry visible transform and opacity frames');
     for (const frame of frames) assert.ok(Object.keys(frame).every(key => ['transform', 'opacity', 'offset', 'easing', 'composite'].includes(key)), 'motion cannot animate layout, scroll or an SVG path');
@@ -1936,7 +2180,7 @@ test('focused flow: page motion has real bounded frames and rapid navigation, ke
   assert.equal(trace[first].state, 'idle', 'a newer page interaction cancels the previous native animation');
   assert.ok(trace.filter(row => row.state === 'running').length <= 1, 'only one interaction animation may run at once');
   await page.emulateMedia({reducedMotion: 'reduce'});
-  assert.equal(await page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length), 0, 'changing reduced motion cancels active animations immediately');
+  await eventually(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length === 0), 'the native reduced-motion change must cancel active animations');
   const count = (await motionTrace(page)).length;
   await page.locator('.au-nav [data-au-nav="work"]').focus(); await page.keyboard.press('Enter');
   await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'keyboard navigation must preserve the complete collection under reduced motion');
@@ -1972,4 +2216,120 @@ test('focused flow: tabs, disclosures, filters and source dialog use the same ca
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('dialog[open]').count(), 0);
   assert.equal(await page.locator('[data-au-panel="sources"]').isVisible(), true);
+});
+
+test('focused flow: fresh status waits for cached revision zero revalidation and attempted writes invalidate the mutated claim authority', async t => {
+  const id = demoIds[0], page = await fixturePage(t, {originalStartId: id, holdStart: true});
+  await open(page, otherId); await title(page, otherId);
+  await open(page, id); await title(page, id);
+  await page.locator('.au-nav [data-au-nav="work"]').click();
+  await page.clock.runFor(10001);
+  await page.evaluate(id => { window.__fixture.holdId = id; window.__fixture.holdRemaining = 1; window.__fixture.holdStatus = true; }, id);
+  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await page.locator('[data-au-demo-mode="live"]').click();
+  await page.locator('[data-au-demo-play]').click();
+  assert.equal(await currentReadState(page), 'refreshing');
+  assert.equal(await page.locator('[data-au-start]:enabled').count(), 0);
+  await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'status') && window.__fixture.held.some(held => held.id)), 'the fresh capability and cached snapshot reads were not held independently');
+  await page.evaluate(() => {
+    window.__fixture.holdStatus = false;
+    const status = window.__fixture.held.filter(held => held.kind === 'status'); window.__fixture.held = window.__fixture.held.filter(held => held.kind !== 'status');
+    for (const held of status) held.release();
+  });
+  await page.evaluate(async () => { for (let turn = 0; turn < 20; turn++) await Promise.resolve(); });
+  assert.equal((await calls(page, `/claims/${id}/start`)).length, 0, 'fresh capabilities cannot authorize a still-cached claim revision');
+  await page.evaluate(() => { window.__fixture.holdId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
+  await eventually(async () => (await calls(page, `/claims/${id}/start`)).length === 1, 'Live Play must retain its authorization until the original snapshot revalidates');
+  await page.clock.runFor(2000);
+  assert.equal((await calls(page, `/claims/${id}/start`)).length, 1, 'the uncertain accepted Start cannot repeat automatically');
+  const oldCache = await page.evaluate(id => {
+    window.__fixture.holdId = id; void window.__controller.openClaim(id);
+    const host = document.querySelector('[data-au-view]');
+    return {state: host.dataset.auReadState, title: host.querySelector('[data-au-claim-title]')?.textContent || null,
+      enabledWrites: [...host.querySelectorAll('[data-au-arrival] input, [data-au-arrival] button, [data-au-pause], [data-au-resume], [data-au-start]')].filter(element => !element.disabled).length};
+  }, otherId);
+  assert.equal(oldCache.state, 'refreshing');
+  assert.equal(oldCache.enabledWrites, 0, 'an unchanged other claim cache remains read-only until its own snapshot matches');
+  const changedCache = await page.evaluate(id => {
+    window.__fixture.holdId = id; void window.__controller.openClaim(id);
+    return {skeleton: Boolean(document.querySelector('[data-au-skeleton="claim"]')), title: document.querySelector('[data-au-claim-title]')?.textContent || null};
+  }, id);
+  assert.deepEqual(changedCache, {skeleton: true, title: null}, 'an attempted mutation evicts the previously verified snapshot of its own claim');
+  await page.evaluate(() => { for (const held of window.__fixture.held.splice(0)) held.release(); });
+});
+
+for (const width of [1428, 390]) test(`focused flow: exact cited PDF keeps its filename and native Close visible through drawer scrolling at ${width}px`, async t => {
+  const pdf = pdfDrawerFixture(), page = await fixturePage(t, {pdfDrawer: true, width, height: width === 390 ? 844 : 801});
+  await open(page, pdf.claim_id); await title(page, pdf.claim_id);
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();
+  const trigger = page.locator(`[data-au-panel="sources"] [data-au-source="${pdf.descriptor.artifact_id}"]`);
+  const start = Math.max(0, Math.floor(pdf.text.length * .7)), quote = pdf.text.slice(start, start + 70);
+  const citation = {artifact_id: pdf.descriptor.artifact_id, sha256: pdf.descriptor.sha256, text_sha256: sha(pdf.text), start_char: [...pdf.text.slice(0, start)].length, end_char: [...pdf.text.slice(0, start + quote.length)].length, quote};
+  await trigger.evaluate((element, citation) => { element.dataset.auCitation = JSON.stringify(citation); }, citation);
+  await trigger.focus(); await page.keyboard.press('Enter');
+  await eventually(() => page.locator('dialog[open] .au-source-body mark').count().then(count => count === 1), 'the original PDF citation did not verify');
+  assert.equal(await page.locator('dialog[open] .au-native-document').count(), 1, 'the original hash-checked PDF remains available beside the exact source span');
+  assert.equal(await page.locator('dialog[open] .au-source-body mark').textContent(), quote);
+  const geometry = () => page.evaluate(() => {
+    const box = selector => { const r = document.querySelector(selector).getBoundingClientRect(); return {top: r.top, bottom: r.bottom, left: r.left, right: r.right}; };
+    return {height: innerHeight, header: box('dialog[open] .au-dialog-header'), close: box('dialog[open] [data-au-close]'), filename: box('#auSourceTitle'), quote: box('dialog[open] mark'), scroll: document.querySelector('dialog').scrollTop};
+  });
+  const cited = await geometry();
+  assert.ok(cited.close.top >= 0 && cited.close.bottom <= cited.height && cited.filename.top >= 0 && cited.filename.bottom <= cited.height, `source identity and Close must stay visible after cited-span navigation: ${JSON.stringify(cited)}`);
+  assert.ok(cited.quote.top >= cited.header.bottom - 1 && cited.quote.bottom <= cited.height, 'a highlighted citation cannot be obscured by the persistent header');
+  await page.locator('dialog[open]').evaluate(element => { element.scrollTop = element.scrollHeight; });
+  const scrolled = await geometry();
+  assert.ok(scrolled.close.top >= 0 && scrolled.close.bottom <= scrolled.height && scrolled.filename.top >= 0 && scrolled.filename.bottom <= scrolled.height, 'manual source scrolling retains Close and the exact filename');
+  assert.equal(await page.locator('#auSourceTitle').textContent(), pdf.descriptor.file_name);
+  await page.locator('[data-au-close]').click();
+  assert.equal(await trigger.evaluate(element => document.activeElement === element), true);
+  await focusedReceipt(page, `cited-pdf-drawer-${width}`, {citation, cited, scrolled, filename: pdf.descriptor.file_name});
+});
+
+test('focused flow: accepted changes settle every record while animating only the selected visible causal path', async t => {
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id, event = fixture.snapshots.reassessed.events.find(row => row.kind === 'action.completed');
+  const page = await fixturePage(t, {priorAssessment: 'assessed', acceptedPrefix: event.seq - 1, width: 1428, height: 801});
+  const node = event.payload.result.node_ids[0], requirement = fixture.prefixes[event.seq].state.obligations.find(item => item.node_id === node && item.document_type === event.payload.result.document_type);
+  await page.evaluate(preferences => window.__controller.openClaim(preferences.id, true, preferences), {id, node, document: requirement.document_type, obligation: requirement.obligation_id, fact: requirement.required_fact_ids[0]});
+  await title(page, id); await traceFocusedMotion(page);
+  await page.evaluate(() => {
+    const animate = Element.prototype.animate;
+    window.__attentionTargets = [];
+    Element.prototype.animate = function(frames, options) {
+      const bounds = this.getBoundingClientRect(), host = document.querySelector('[data-au-view]');
+      const selected = host.querySelector('[data-au-node][aria-pressed="true"]')?.dataset.auNode;
+      const inspector = host.querySelector('[data-au-selected-step]');
+      const allowedSources = [...(inspector?.querySelectorAll('[data-au-source]') || [])].map(element => element.dataset.auSource);
+      const allowedFacts = [...(inspector?.querySelectorAll('[data-au-fact]') || [])].map(element => element.dataset.auFact);
+      const allowedRequirements = [...(inspector?.querySelectorAll('[data-au-document]') || [])].map(element => element.dataset.auDocument);
+      const allowedEdges = [...host.querySelectorAll('[data-au-edge][data-selected="true"]')].map(element => element.dataset.auEdge);
+      const edgeOverlay = this.classList.contains('au-live-edge'), edgeOverlayMatches = edgeOverlay && [...host.querySelectorAll('[data-au-edge][data-selected="true"]')].some(element => element.getAttribute('d') === this.getAttribute('d'));
+      window.__attentionTargets.push({tag: this.tagName, node: this.dataset.auNode, junction: this.querySelector('[data-au-expanded-junction]')?.dataset.auExpandedJunction, edge: this.dataset.auEdge, edgeOverlay, edgeOverlayMatches, source: this.dataset.auSource, fact: this.dataset.auFact, document: this.dataset.auDocument, semantic: this.dataset.auSemanticEvent,
+        selected, allowedSources, allowedFacts, allowedRequirements, allowedEdges, closed: Boolean(this.closest('[hidden], details:not([open])')), bounds: {left: bounds.left, right: bounds.right, top: bounds.top, bottom: bounds.bottom}, width: innerWidth, height: innerHeight, options});
+      return animate.call(this, frames, options);
+    };
+  });
+  await page.evaluate(seq => window.__fixture.loadAccepted(seq), event.seq);
+  await page.evaluate(() => window.__controller.refresh());
+  assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[event.seq].state, 'static updates retain all accepted changes even when their objects do not animate');
+  const targets = await page.evaluate(() => window.__attentionTargets);
+  assert.ok(targets.some(row => row.semantic === event.event_sha256), 'the actual accepted event carries a visible cue');
+  for (const row of targets) {
+    assert.equal(row.closed, false, 'closed disclosures and hidden contexts cannot animate');
+    assert.ok(row.bounds.bottom > 0 && row.bounds.top < row.height && row.bounds.right > 0 && row.bounds.left < row.width, `offviewport records settle without animation: ${JSON.stringify(row)}`);
+    const belongs = row.semantic === event.event_sha256 || row.node && row.node === row.selected || row.junction && row.junction === row.selected || row.edge && row.allowedEdges.includes(row.edge) || row.edgeOverlayMatches || row.source && row.allowedSources.includes(row.source) || row.fact && row.allowedFacts.includes(row.fact) || row.document && row.allowedRequirements.includes(row.document);
+    assert.ok(belongs, `motion belongs to the selected meaningful source → fact → step → requirement or its accepted cue: ${JSON.stringify(row)}`);
+    assert.ok((row.options.delay || 0) + row.options.duration <= 800);
+  }
+  // Only visible changed groups participate in the source → fact → process →
+  // requirement sequence. Native 180ms groups finish before the next starts;
+  // missing or clipped groups remain static and do not introduce empty waits.
+  const orderedGroups = [targets.filter(row => row.source), targets.filter(row => row.fact), targets.filter(row => row.node || row.junction || row.edge || row.edgeOverlay), targets.filter(row => row.document)].filter(rows => rows.length);
+  assert.ok(orderedGroups.length >= 3, 'the actual accepted action must exercise at least three visible causal stages, beyond its compact cue');
+  for (let index = 1; index < orderedGroups.length; index++) assert.ok(Math.max(...orderedGroups[index - 1].map(row => (row.options.delay || 0) + row.options.duration)) <= Math.min(...orderedGroups[index].map(row => row.options.delay || 0)), 'each visible actual changed group finishes before source → fact → selected step/junction → derived requirement advances');
+  assert.ok(targets.filter(row => row.node || row.junction || row.edge || row.edgeOverlay).length <= 1, 'the selected graph, edge and expanded context cannot become parallel strong motion targets');
+  assertFocusedMotion(await motionTrace(page), true);
+  await focusedReceipt(page, 'accepted-visible-causal-motion', {identity: id, event_sha256: event.event_sha256, sequence: event.seq, targets});
+  await page.emulateMedia({reducedMotion: 'reduce'});
+  await eventually(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length === 0), 'reduced motion cancels the whole accepted wave');
 });

@@ -640,10 +640,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
  .au-workspace .au-knowledge-summary strong { font-size:14px; }
  .au-workspace .au-knowledge-card > h2 { font-size:24px; }
  .au-workspace .au-evidence-knowledge-path, .au-workspace .au-knowledge-claims, .au-workspace .au-knowledge-path { grid-template-columns:minmax(0,1fr);gap:16px;padding:4px 0 16px; }
- .au-workspace .au-evidence-knowledge-path { grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
- .au-workspace .au-evidence-knowledge-definition { grid-column:1 / -1;grid-row:1; }
- .au-workspace .au-evidence-knowledge-origin { grid-column:1;grid-row:2; }
- .au-workspace .au-evidence-knowledge-receiving { grid-column:2;grid-row:2; }
+ .au-workspace .au-evidence-knowledge-path .au-evidence-lines { display:block; }
  .au-workspace .au-evidence-knowledge-path .au-secondary { font-size:15px; }
  .au-workspace .au-evidence-version-object { padding:16px; }
  .au-workspace .au-version-heading > time { margin-left:0;flex-basis:100%; }

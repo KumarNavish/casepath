@@ -361,7 +361,11 @@ test('the real graph is the hero and the detailed outcome defaults closed withou
  assert.match(html,/data-au-canvas/);
  assert.ok(html.indexOf('class="au-process-hero')<html.indexOf('data-au-panel="step"'));
  assert.match(html,/class="au-graph-viewport(?:\s[^"]*)?"/);assert.match(html,/--au-ranks:2/);
- assert.doesNotMatch(html,/data-au-stage="(?:sources|interpretation|verification|process|knowledge)"/);
+ const disclosure=html.match(/<details class="au-context-records"[^>]*data-au-disclosure="context-records"[^>]*>([^]*)<\/details>/);
+ assert.ok(disclosure,'the detailed work stages remain inspectable in a contextual disclosure');
+ assert.doesNotMatch(disclosure[0].split('>')[0],/\bopen\b/);
+ assert.doesNotMatch(html.slice(0,html.indexOf('class="au-context-records"')),/data-au-stage="(?:sources|interpretation|verification|process|knowledge)"/);
+ assert.match(disclosure[1],/data-au-stage="process"/);
 });
 
 test('complete graph labels and operational rule text remain inspectable',()=>{
@@ -403,8 +407,10 @@ test('causal choreography requires a fresh matching accepted event and targets o
  const accepted=ui.acceptEvents(3,events(after,3),after),plan=ui.transitionPlan(before,after,accepted,[]);
  assert.deepEqual(plan.nodes.map(row=>row.id),['branch']);assert.deepEqual(plan.edges,[]);assert.deepEqual(plan.documents.map(row=>row.id),['notice']);assert.deepEqual(plan.facts.map(row=>row.id),['fact:notice']);
  after.evaluation.edges[0].activation='true';const changedEdgePlan=ui.transitionPlan(before,after,accepted,[]);assert.deepEqual(changedEdgePlan.edges.map(row=>row.id),['next']);
- assert.ok(Math.max(...changedEdgePlan.edges.map(row=>row.delay+row.duration))<=Math.min(...changedEdgePlan.nodes.map(row=>row.delay)));
- assert.ok(Math.max(...plan.nodes.map(row=>row.delay+row.duration))<=Math.min(...plan.documents.map(row=>row.delay)));
+ assert.ok(Math.max(...changedEdgePlan.edges.map(row=>row.delay))<=Math.min(...changedEdgePlan.nodes.map(row=>row.delay)),'the actual dependency route belongs to its changed process group');
+ assert.ok(Math.max(...plan.facts.map(row=>row.delay+row.duration))<=Math.min(...plan.nodes.map(row=>row.delay)),'the accepted fact settles before the process group starts');
+ assert.ok(Math.max(...plan.nodes.map(row=>row.delay+row.duration))<=Math.min(...plan.documents.map(row=>row.delay)),'the selected process settles before its derived requirement starts');
+ for(const row of [...plan.nodes,...plan.documents,...plan.facts,...changedEdgePlan.edges])assert.ok(row.duration>=180&&row.duration<=320&&row.delay+row.duration<=800,'accepted change motion stays within the bounded causal wave');
  assert.ok(plan.duration<=800);
  assert.equal(ui.transitionPlan(before,after,ui.acceptEvents(null,events(after),after),[]),null);
  assert.equal(ui.transitionPlan(before,after,ui.acceptEvents(3,events(after,3),after,true),[]),null);
@@ -416,12 +422,31 @@ function motionFixture(){
  const element=(kind,id)=>({dataset:{[kind]:id},isConnected:true,contains:()=>false,animate(frames,options){calls.push({kind,id,frames,options});return{finished:new Promise(()=>{}),cancel(){cancelled.push(id);}};},getTotalLength:()=>120,cloneNode(){const clone=element('clone',id);clone.setAttribute=()=>{};clone.remove=()=>{clone.removed=true;};clones.push(clone);return clone;},parentNode:{appendChild(){}}});
  const all=[element('auNode','branch'),element('auEdge','next'),element('auDocument','notice'),element('auFact','fact:notice'),element('auStage','process'),element('auSemanticEvent',hash('9'))];
  const host={querySelectorAll:selector=>all.filter(el=>({'[data-au-node]':'auNode','[data-au-edge]':'auEdge','[data-au-document]':'auDocument','[data-au-fact]':'auFact','[data-au-stage]':'auStage','[data-au-semantic-event]':'auSemanticEvent'})[selector] in el.dataset)};
- return{host,calls,clones,cancelled};
+ return{host,calls,clones,cancelled,all};
 }
+test('accepted action context selects its exact shared-step requirement and fact while explicit inspection retains authority',()=>{
+ const notice=state().obligations[0], alternate={...notice,obligation_id:'obligation:branch:lease',document_type:'lease',required_fact_ids:['fact:lease']};
+ const result={action_id:'inspect:notice',type:'document_review',status:'completed',node_ids:['branch'],document_type:'notice',obligation_id:notice.obligation_id,fact_id:'fact:notice',summary:'Authored source-inspection context fixture.'},receipt={receipt_sha256:hash('8'),parent_revision:3,parent_state_sha256:hash('a')};
+ const s=state({revision:4,state_sha256:hash('f'),last_event_sha256:hash('9'),obligations:[alternate,notice],facts:[...state().facts,{fact_id:'fact:lease',label:'Lease',status:'unresolved'}],actions:[{result,receipt}]});
+ const event={seq:4,revision:4,claim_id:s.claim_id,state_sha256:s.state_sha256,event_sha256:s.last_event_sha256,kind:'action.completed',payload:{result,receipt}};
+ const saved=JSON.stringify(s),expected={document:'notice',obligation:notice.obligation_id,fact:'fact:notice'};
+ assert.equal(ui.acceptedEventNode(s,event),'branch');
+ assert.deepEqual(ui.preferredEvidenceContext(s,'branch',[event]),expected,'the latest accepted action cannot borrow the first different document at its node');
+ const explicit={document:'lease',obligation:alternate.obligation_id,fact:'fact:lease'};
+ assert.deepEqual(ui.preferredEvidenceContext(s,'branch',[event],explicit),{...explicit,trace:undefined});
+ assert.deepEqual(ui.preferredEvidenceContext(s,'branch',[event],{},{selected:'branch',evidenceContext:explicit}),explicit);
+ for(const forged of [{...event,claim_id:'unrelated'},{...event,event_sha256:hash('0')},{...event,payload:{}}])assert.deepEqual(ui.acceptedEventContext(s,forged,'branch'),{});
+ const duplicate={...notice,obligation_id:'obligation:branch:second-notice',required_fact_ids:['fact:lease']};
+ s.obligations.push(duplicate);result.obligation_id=duplicate.obligation_id;result.fact_id='fact:lease';
+ assert.deepEqual(ui.acceptedEventContext(s,event,'branch'),{document:'notice',obligation:duplicate.obligation_id,fact:'fact:lease'},'equal document types must keep the recorded obligation identity');
+ result.obligation_id=notice.obligation_id;result.fact_id='fact:notice';s.obligations.pop();
+ assert.equal(JSON.stringify(s),saved,'inspection context may not mutate an accepted saved record');
+});
 test('reduced motion, hidden views, modal inspection and keyboard mode consume changes without running animations',()=>{
  const plan={nodes:[{id:'branch',delay:160,duration:220}],edges:[{id:'next',delay:0,duration:160}],documents:[{id:'notice',delay:580,duration:180}],facts:[],stages:[],duration:760};
  for(const blocked of [{reducedMotion:true},{hidden:true},{dialogOpen:true},{keyboard:true}]){const f=motionFixture();const run=ui.animateTransition(f.host,plan,blocked);assert.equal(f.calls.length,0);assert.equal(f.clones.length,0);run.cancel();}
- const f=motionFixture(),run=ui.animateTransition(f.host,plan,{});assert.equal(f.clones.length,1);assert.ok(f.calls.some(row=>row.kind==='clone'));assert.ok(f.calls.some(row=>row.kind==='auDocument'));assert.ok(f.calls.every(row=>row.options.delay+row.options.duration<=800));run.cancel();assert.ok(f.clones.every(clone=>clone.removed));assert.equal(f.cancelled.length,f.calls.length);
+ const f=motionFixture(),run=ui.animateTransition(f.host,plan,{});assert.equal(f.clones.length,0,'a visible selected node keeps its parallel graph edge static');assert.equal(f.calls.filter(row=>row.kind==='auNode').length,1);assert.ok(f.calls.some(row=>row.kind==='auDocument'));assert.ok(f.calls.every(row=>row.options.delay+row.options.duration<=800));run.cancel();assert.equal(f.cancelled.length,f.calls.length);
+ const edgeOnly=motionFixture();edgeOnly.all.splice(0,1);const edgeRun=ui.animateTransition(edgeOnly.host,plan,{});assert.equal(edgeOnly.clones.length,1,'an edge-only process representation uses one temporary overlay');assert.equal(edgeOnly.calls.filter(row=>row.kind==='clone').length,1);assert.equal(edgeOnly.calls.filter(row=>row.kind==='auNode').length,0);edgeRun.cancel();assert.ok(edgeOnly.clones.every(clone=>clone.removed));assert.equal(edgeOnly.cancelled.length,edgeOnly.calls.length);
 });
 
 test('action and knowledge motion uses exact accepted event objects, settles after consumption, and retains qualification distinctions',()=>{
@@ -546,7 +571,7 @@ for(const scenario of ['failed-only','partial-outcome-with-failure','failed-reco
  await controller.showDemonstration();
  const target={dataset:{},closest(){return this;},hasAttribute:attr=>attr==='data-au-demo-play'};f.listeners.get('click')({target});await settle();
  for(let seq=1;seq<=head;seq++){
-  t.mock.timers.tick(1400);await settle();assert.ok(f.host.innerHTML.includes(`Claim · revision ${seq}`));assert.match(f.host.innerHTML,/data-au-context="step"/);assert.match(f.host.innerHTML,/<section class="au-process-hero au-evidence-process" aria-labelledby="auProcessTitle">/);
+  t.mock.timers.tick(1400);await settle();assert.match(f.host.innerHTML,new RegExp(`revision ${seq}\\b`));assert.match(f.host.innerHTML,/data-au-context="step"/);assert.match(f.host.innerHTML,/<section class="au-process-hero au-evidence-process" aria-labelledby="auProcessTitle">/);
   if(scenario==='failed-then-reconciled'&&seq>=12){assert.ok(f.host.innerHTML.includes(seq===15?'Saved-result reconciliation completed':'Saved-result reconciliation started'));assert.ok(f.host.innerHTML.includes(stopped.reason));}
  }
  assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length-priorReads,head+1,'every saved prefix, including failure, remains inspectable');
@@ -576,7 +601,7 @@ test('internal Work, Knowledge and claim navigation adds only changed fragments 
  navClick(f,'knowledge');await settle();assert.equal(routing.hash,'#autonomous/knowledge');assert.equal(routing.pushes,1);
  navClick(f,'knowledge');await settle();assert.equal(routing.pushes,1);
  await controller.openClaim('claim-a');assert.equal(routing.pushes,2);assert.match(f.host.innerHTML,/data-au-graph/);
- routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.back();await settle();assert.match(f.host.innerHTML,/>Every case has a source\.</);
+ routing.back();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.back();await settle();assert.match(f.host.innerHTML,/<h1[^>]*>Cases<\/h1>/);
  routing.forward();await settle();assert.match(f.host.innerHTML,/>Knowledge in context\.</);routing.forward();await settle();assert.match(f.host.innerHTML,/data-au-graph/);assert.equal(routing.pushes,2);
  navClick(f,'intake');await settle();assert.equal(routing.hash,'#autonomous/new');assert.equal(routing.pushes,3);assert.equal(globalThis.location.search,'?journey=autonomous');
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
@@ -622,7 +647,7 @@ test('a focused claim title allows saved revisions to render during polling',asy
 });
 
 test('unchanged verified polling and reconnect keep existing claim nodes while changed capabilities and revisions still render',async t=>{
- const f=dom(),visibility=new Map(),viewport={scrollLeft:37,scrollTop:69},query=f.host.querySelector;
+ const f=dom(),visibility=new Map(),viewport={scrollLeft:0,scrollTop:0},query=f.host.querySelector;
  f.container.ownerDocument.addEventListener=(type,fn)=>visibility.set(type,fn);f.container.ownerDocument.removeEventListener=type=>visibility.delete(type);
  f.host.querySelector=selector=>selector==='.au-graph-viewport'?viewport:query(selector);
  let saved=state({status:'deferred',outcome:{status:'deferred',summary:'A question remains unresolved.'}}),capabilities={},failRead=false;
@@ -630,6 +655,7 @@ test('unchanged verified polling and reconnect keep existing claim nodes while c
   if(path.endsWith('/claims/claim-a')){if(failRead){failRead=false;throw new Error('Read unavailable');}return response({state:saved,projection:{revision:saved.revision,state_sha256:saved.state_sha256,node_capabilities:capabilities}});}
   if(path.includes('/claim-a/events?'))return response(events(saved,Number(path.split('after=')[1])));
  }}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ viewport.scrollLeft=37;viewport.scrollTop=69;
  const target={dataset:{auSelect:'start'},closest(){return this;},hasAttribute:attr=>attr==='data-au-select'};f.listeners.get('click')({target});
  let html=f.host.innerHTML,replacements=0;Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{replacements++;html=value;}});
  const focused={isConnected:true};f.container.ownerDocument.activeElement=focused;
@@ -1023,7 +1049,7 @@ test('paused interpretation describes an unaccepted result instead of active rea
 
 test('an exhausted authoritative call allowance is visible before intake while packet saving remains available',async t=>{
  const savedStatus={enabled:true,provider_ready:true,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached',effective_autonomous_max_provider_calls:24,provider_calls_used:24}},before=JSON.stringify(savedStatus),f=dom();
- const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/>Every case has a source\.</);await newClaim(f);
+ const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/<h1[^>]*>Cases<\/h1>/);await newClaim(f);
  const message=f.host.querySelector('[data-au-service]').textContent;assert.match(message,/allowance does not permit more autonomous work/i);assert.match(message,/still save a new claim.*named deferral/i);assert.doesNotMatch(message,/Local evidence acquisition and document preparation are available/);
  assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.doesNotMatch(f.submit.textContent,/retry|saving/i);assert.equal(f.message.textContent,'');assert.equal(JSON.stringify(savedStatus),before);
  assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
@@ -1116,7 +1142,7 @@ test('idle intake labels distinguish saving a claim from available or unknown au
 
 test('an unresolved service status keeps the default intake action until authoritative readiness arrives',async t=>{
  const f=nativeFixture(),held=[];const api=fakeApi({handle:async path=>path.endsWith('/status')?new Promise(resolve=>held.push(resolve)):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));controller.destroy();});await settle();await newClaim(f);
- assert.equal(held.length,2);assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);assert.equal(f.intake.querySelector('button[type="submit"]').disabled,false);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.equal(held.length,1,'navigation shares the exact unresolved status GET');assert.equal(api.calls.filter(call=>call.path.endsWith('/status')).length,1);assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);assert.equal(f.intake.querySelector('button[type="submit"]').disabled,false);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
  for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));await settle();assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);
 });
 
@@ -1140,11 +1166,12 @@ test('a late unavailable status cannot replace Saving while native source bytes 
 });
 
 test('returning to intake updates its idle label and local validation restores that label without replacing draft files',async t=>{
+ let now=Date.now();t.mock.method(Date,'now',()=>now);
  const f=nativeFixture();let savedStatus={enabled:true,provider_ready:true,limits:{}},finishStatus,statusReads=0,holdNext=false;
  const api=fakeApi({handle:async path=>{if(!path.endsWith('/status'))return null;statusReads++;if(holdNext){holdNext=false;return new Promise(resolve=>{finishStatus=resolve;});}return response(savedStatus);}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finishStatus?.(response(savedStatus));controller.destroy();});await settle();await newClaim(f);
  const form=f.intake,list=Array.from({length:21},()=>fileFixture()),submit=form.querySelector('button[type="submit"]');form.elements.title.value='Typed original draft';form.elements.message.value='Retained original message';form.elements.files.files=list;
  await f.listeners.get('submit')({target:form,preventDefault(){}});assert.match(form.querySelector('.au-form-status').textContent,/at most 20/);assert.match(submit.textContent,/^Start autonomous work/);assert.equal(form.elements.title.disabled,false);
- savedStatus={enabled:true,provider_ready:false,limits:{}};navClick(f,'work');await settle();holdNext=true;await newClaim(f);assert.equal(f.intake,form);assert.equal(submit.textContent,'Save claim','the cached unavailable status applies before the fresh status response');assert.equal(form.elements.files.files,list);assert.equal(form.elements.title.value,'Typed original draft');assert.equal(form.elements.message.value,'Retained original message');
+ savedStatus={enabled:true,provider_ready:false,limits:{}};now+=10001;navClick(f,'work');await settle();holdNext=true;await newClaim(f);assert.equal(f.intake,form);assert.equal(submit.textContent,'Save claim','the cached unavailable status applies before the fresh status response');assert.equal(form.elements.files.files,list);assert.equal(form.elements.title.value,'Typed original draft');assert.equal(form.elements.message.value,'Retained original message');
  finishStatus(response(savedStatus));await settle();await f.listeners.get('submit')({target:form,preventDefault(){}});assert.equal(submit.textContent,'Save claim');assert.equal(submit.disabled,false);assert.equal(form.elements.title.disabled,false);assert.equal(form.elements.files.files,list);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
- savedStatus={enabled:true,provider_ready:true,limits:{}};navClick(f,'work');await settle();await newClaim(f);assert.equal(f.intake,form);assert.match(submit.textContent,/^Start autonomous work/);assert.equal(form.elements.files.files,list);assert.equal(statusReads,6);
+ savedStatus={enabled:true,provider_ready:true,limits:{}};now+=10001;navClick(f,'work');await settle();await newClaim(f);assert.equal(f.intake,form);assert.match(submit.textContent,/^Start autonomous work/);assert.equal(form.elements.files.files,list);assert.equal(statusReads,6);
 });

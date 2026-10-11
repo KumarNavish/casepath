@@ -178,49 +178,48 @@
     if (!before || before.claim_id!==after.claim_id || after.revision<=before.revision || !accepted?.ready || !accepted.animate?.length) return null;
     const newest=accepted.animate.at(-1),identity=eventIdentity(newest);
     if (identity.revision!==after.revision || identity.state_sha256!==after.state_sha256 || newest.seq!==accepted.cursor) return null;
-    const changes=changedTargets(before,after), layout=layoutGraph(after.graph), ranks=new Map(layout.rows.flatMap((row,rank)=>row.map(node=>[node.node_id,rank])));
+    const changes=changedTargets(before,after);
     const changedFacts=list(after.facts).filter(fact=>JSON.stringify(list(before.facts).find(row=>row.fact_id===fact.fact_id))!==JSON.stringify(fact));
     const sourceValue=(state,id)=>JSON.stringify([list(state.source_descriptors).find(row=>row.artifact_id===id),list(state.acquired_sources).find(row=>row.artifact_id===id)]);
     const sourceIds=new Set(list(after.source_descriptors).filter(source=>sourceValue(before,source.artifact_id)!==sourceValue(after,source.artifact_id)).map(source=>source.artifact_id));
     for (const fact of changedFacts) for (const citation of citationRows(fact)) sourceIds.add(citation.artifact_id);
     const edgeValue=(state,id)=>JSON.stringify([list(state.graph?.edges).find(row=>row.edge_id===id),list(state.evaluation?.edges).find(row=>row.edge_id===id)]);
-    const edges=list(after.graph?.edges).filter(edge=>edgeValue(before,edge.edge_id)!==edgeValue(after,edge.edge_id)).map(edge=>({id:edge.edge_id,delay:40,duration:220}));
-    const minimum=changes.nodes.length ? Math.min(...changes.nodes.map(id=>ranks.get(id)||0)) : 0;
-    const nodes=changes.nodes.map(id=>({id,delay:60+Math.min(20,((ranks.get(id)||0)-minimum)*5),duration:220}));
-    const facts=changedFacts.map(fact=>({id:fact.fact_id,delay:20,duration:220}));
-    const sources=[...sourceIds].filter(Boolean).map(id=>({id,delay:0,duration:220}));
-    const documents=changes.documents.map(id=>({id,delay:80,duration:220}));
+    const edges=list(after.graph?.edges).filter(edge=>edgeValue(before,edge.edge_id)!==edgeValue(after,edge.edge_id)).map(edge=>({id:edge.edge_id,delay:360,duration:180}));
+    const nodes=changes.nodes.map(id=>({id,delay:360,duration:180}));
+    const facts=changedFacts.map(fact=>({id:fact.fact_id,delay:180,duration:180}));
+    const sources=[...sourceIds].filter(Boolean).map(id=>({id,delay:0,duration:180}));
+    const documents=changes.documents.map(id=>({id,delay:540,duration:180}));
     const semantic = semanticEventRecord(after,newest);
-    return {cue:{seq:newest.seq},sources,facts,edges,nodes,documents,semantic:semantic ? [{id:semantic.id,delay:80,duration:220}] : [],stages:[],duration:300};
+    return {cue:{seq:newest.seq},sources,facts,edges,nodes,documents,semantic:semantic ? [{id:semantic.id,delay:360,duration:180}] : [],stages:[],duration:720};
   }
   function animateTransition(host,plan,environment={}) {
     const animations = new Set(), overlays = new Set();
     const cancel = () => { for (const animation of animations) animation.cancel(); animations.clear(); for (const overlay of overlays) overlay.remove(); overlays.clear(); };
-    if (!plan || environment.reducedMotion || environment.hidden || environment.dialogOpen || environment.keyboard) return {cancel,count:0};
+    if (!plan || environment.reducedMotion || environment.hidden || environment.dialogOpen || environment.keyboard) return {cancel,count:0,duration:0};
     const selected = environment.selected ?? host.querySelector?.('[data-au-node][aria-pressed="true"]')?.dataset.auNode;
     const candidates = [], seen = new Set();
-    const add = (element,timing,edge = false) => {
+    const add = (element,timing,edge = false,stage = 'process') => {
       if (!element?.animate || !timing || seen.has(element) || element.closest?.('[hidden],details:not([open])') || element === environment.activeElement || element.contains?.(environment.activeElement)) return;
-      seen.add(element); candidates.push({element,timing,edge});
+      seen.add(element); candidates.push({element,timing,edge,stage});
     };
     // Only the visible selected evidence path carries motion. Every other
     // accepted change renders immediately into its inspectable settled state.
-    for (const [selector,field,rows] of [['[data-au-source]','auSource',plan.sources || []],['[data-au-node]','auNode',plan.nodes || []],['[data-au-fact]','auFact',plan.facts || []],['[data-au-document]','auDocument',plan.documents || []],['[data-au-semantic-event]','auSemanticEvent',plan.semantic || []]]) {
+    for (const [selector,field,rows,stage] of [['[data-au-source]','auSource',plan.sources || [],'sources'],['[data-au-node]','auNode',plan.nodes || [],'process'],['[data-au-fact]','auFact',plan.facts || [],'facts'],['[data-au-document]','auDocument',plan.documents || [],'documents'],['[data-au-semantic-event]','auSemanticEvent',plan.semantic || [],'cue']]) {
       for (const element of host.querySelectorAll(selector)) {
         if (field === 'auNode' && selected && element.dataset.auNode !== selected) continue;
         if (['auSource','auFact','auDocument'].includes(field) && element.closest && !element.closest('[data-au-evidence-path]')) continue;
         if (field === 'auSemanticEvent' && element.matches && !element.matches('.au-event-cue')) continue;
-        add(element,rows.find(row => row.id === element.dataset[field]));
+        add(element,rows.find(row => row.id === element.dataset[field]),false,stage);
       }
     }
     const stepTiming = (plan.nodes || []).find(row => row.id === selected);
     if (stepTiming) for (const junction of host.querySelectorAll('[data-au-expanded-junction]')) if (junction.dataset.auExpandedJunction === selected) add(junction.closest?.('header'),stepTiming);
-    if (plan.cue) for (const cue of host.querySelectorAll('[data-au-event-seq]')) if (Number(cue.dataset.auEventSeq) === plan.cue.seq) add(cue,{delay:80,duration:220});
+    if (plan.cue) for (const cue of host.querySelectorAll('[data-au-event-seq]')) if (Number(cue.dataset.auEventSeq) === plan.cue.seq) add(cue,{delay:360,duration:180},false,'cue');
     const edge = [...host.querySelectorAll('[data-au-edge]')].find(element => (!selected || element.getAttribute?.('data-selected') === 'true') && (plan.edges || []).some(row => row.id === element.dataset.auEdge));
     if (edge) add(edge,plan.edges.find(row => row.id === edge.dataset.auEdge),true);
     // Complete all visibility/clip and path-length measurements before WAAPI
     // or SVG writes. Partly clipped graph objects settle without animation.
-    const clips = new Map(), visible = candidates.filter(candidate => {
+    const clips = new Map(); let visible = candidates.filter(candidate => {
       const {element} = candidate, bounds = element.getBoundingClientRect?.();
       if (bounds) {
         if (!bounds.width || !bounds.height || bounds.right <= 0 || bounds.bottom <= 0 || bounds.left >= (root.innerWidth || Infinity) || bounds.top >= (root.innerHeight || Infinity)) return false;
@@ -230,6 +229,15 @@
       if (candidate.edge) { candidate.length = element.getTotalLength?.(); if (!Number.isFinite(candidate.length) || candidate.length <= 0) return false; }
       return true;
     });
+    // Carry process attention on one real object. Its other representations
+    // still render the accepted state, without another competing pulse.
+    const process = visible.find(({element}) => element.querySelector?.('[data-au-expanded-junction]')) || visible.find(({element}) => element.dataset?.auNode) || visible.find(row => row.stage === 'process');
+    visible = visible.filter(row => row.stage !== 'process' || row === process);
+    const stages = ['sources','facts','process','documents'].filter(stage => visible.some(row => row.stage === stage));
+    if (!stages.length && visible.length) stages.push('process');
+    const cueStage = stages.includes('process') ? 'process' : stages.at(-1);
+    for (const row of visible) row.timing = {delay:stages.indexOf(row.stage === 'cue' ? cueStage : row.stage)*180,duration:180};
+    const duration = stages.length*180;
     const run = (element,timing,cleanup = () => {}) => {
       const animation = element.animate([{opacity:.58,transform:'translateY(3px)'},{opacity:1,transform:'translateY(0)'}],{...timing,easing:'cubic-bezier(.2,.65,.3,1)',fill:'none'}); animations.add(animation);
       animation.finished?.then(() => { animations.delete(animation); cleanup(); },() => { animations.delete(animation); cleanup(); });
@@ -239,7 +247,7 @@
       const overlay = element.cloneNode(false); overlay.setAttribute('class','au-live-edge'); overlay.removeAttribute?.('data-au-edge'); overlay.removeAttribute?.('data-state'); overlay.removeAttribute?.('data-selected'); element.parentNode.appendChild(overlay); overlays.add(overlay);
       run(overlay,timing,() => { overlay.remove(); overlays.delete(overlay); });
     }
-    return {cancel,count:animations.size};
+    return {cancel,count:animations.size,duration};
   }
 
   const citationRows = item => list(item?.citations || item?.sources || item?.source_spans);
@@ -754,7 +762,7 @@
     const snapshots = new Map(), sourcePreviews = new Map(), nativeBytes = new Map(), replayPrefixes = new Map(), inflightReads = new Map();
     const controllers = new Set();
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
-    let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0, claimRenderComplete = false;
+    let motion = null, keyboard = false, examples = null, routedFragment = null, intakeForm = null, claims = [], claimsLoaded = false, claimsRead = 0, claimRenderComplete = false, renderedClaimId = null;
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
     const collection = {search:'',filter:'all',domain:'all',scope:'originals'};
     container.classList.add('au-workspace');
@@ -972,7 +980,7 @@
       if (view === 'work') { const main = container.querySelector('.au-main'); collection.scrollTop = host.scrollTop || 0; collection.mainTop = main?.scrollTop || 0; collection.mainLeft = main?.scrollLeft || 0; collection.scrollX = root.scrollX || 0; collection.scrollY = root.scrollY || 0; }
       preserveClaimView();
     }
-    function setView(name) { view = name; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
+    function setView(name) { view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
     function revealGraphNode(node, center = false) {
       const viewport = host.querySelector('.au-graph-viewport');
       const area = viewport?.getBoundingClientRect?.(), bounds = node?.getBoundingClientRect?.();
@@ -987,12 +995,12 @@
       motion?.cancel(); selectionMotion?.cancel();
       const focused = doc.activeElement, focusKey = focusToken(focused);
       const previous = claimViews.get(current.claim_id);
-      const open = new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure));
-      if (!host.querySelector('[data-au-claim-title]') && previous) for (const id of previous.open) open.add(id);
-      const priorViewport = host.querySelector('.au-graph-viewport');
+      const sameClaim = renderedClaimId === current.claim_id;
+      const open = new Set(sameClaim ? [...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure) : previous?.open || []);
+      const priorViewport = sameClaim ? host.querySelector('.au-graph-viewport') : null;
       const graphExpanded = priorViewport ? priorViewport.dataset?.auGraphExpanded === 'true' : Boolean(previous?.graphExpanded);
       const scrollLeft = priorViewport?.scrollLeft ?? previous?.scrollLeft ?? 0, scrollTop = priorViewport?.scrollTop ?? previous?.scrollTop ?? 0;
-      const arrival = host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
+      const arrival = sameClaim && host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
       // Moving the original node keeps native FileList, entered text and retry state.
       arrival?.remove?.();
       host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,replay:replayRecord,pendingStart:Boolean(pendingStart),playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : liveAvailability(status)});
@@ -1010,7 +1018,7 @@
       drawEdges(navigation);
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open,reducedMotion:reduced?.matches,keyboard,activeElement:doc.activeElement,selected});
       synchronizeAuthority();
-      claimRenderComplete = true;
+      claimRenderComplete = true; renderedClaimId = current.claim_id;
     }
     function setGraphExpanded(expanded) {
       const viewport = host.querySelector('[data-au-graph-pan]'), control = host.querySelector('[data-au-expand-process]');
@@ -1178,7 +1186,7 @@
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
         const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
         renderClaim(); notice(''); focusTitle();
-        if (preferences.demo && demoSession?.mode === 'replay') { demoSession.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256}; demoSession.displayedAt = Date.now(); prefetchReplay(demoSession); if (replayRecord.current_revision > replayRecord.through_seq) replayTick(demoSession,token); }
+        if (preferences.demo && demoSession?.mode === 'replay') { demoSession.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256}; demoSession.displayedAt = Date.now(); demoSession.motionDuration = motion?.duration || 0; prefetchReplay(demoSession); if (replayRecord.current_revision > replayRecord.through_seq) replayTick(demoSession,token); }
         return current;
       } catch (error) { if (!disposed && token === epoch) { notice(`Verified replay unavailable: ${error.message}`,true); host.innerHTML = button('Return to demonstration','data-au-nav="demonstration"'); stopPresentation(); } }
     }
@@ -1385,7 +1393,7 @@
         evidenceContext = evidenceSelection(current,selected,evidenceContext);
         const fragment = selectedClaimFragment();
         if (root.history?.replaceState) { root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); routedFragment = fragment; }
-        renderClaim(changes); session.displayedAt = Date.now(); prefetchReplay(session); replayTick(session,token);
+        renderClaim(changes); session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0; prefetchReplay(session); replayTick(session,token);
       } catch (error) { if (replayActive(session,token)) { stopPresentation(); renderClaim(); notice(`Verified replay stopped: ${error.message}`,true); } }
     }
     async function replayTick(session, token) {
@@ -1402,7 +1410,7 @@
       try {
         const response = await replayPrefix(id,through,session);
         if (!replayActive(session,token) || doc.hidden || dialog.open) return;
-        const remaining = Math.max(0,replayPacing(history.at(-1)) - (Date.now() - session.displayedAt));
+        const remaining = Math.max(0,Math.max(replayPacing(history.at(-1)),session.motionDuration || 0) - (Date.now() - session.displayedAt));
         demoTimer = root.setTimeout(() => consumeReplay(session,token,through,response),remaining);
       } catch (error) { if (replayActive(session,token)) { stopPresentation(); renderClaim(); notice(`Verified replay stopped: ${error.message}`,true); } }
       finally { if (session.preparing === token) session.preparing = null; }
