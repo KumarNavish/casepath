@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from casepath_api.autonomous_controller_v1 import AutonomousController
+from casepath_api.autonomous_controller_v1 import AutonomousController, SupersededWorkflow
 from casepath_api.autonomous_policy_v1 import (
     OPERATIONAL_CONDITION_QUESTIONS, POLICY_ID, SUPPLIED_DOCUMENT_REVIEW_POLICY,
     compile_verification_proposal, proposal_items,
@@ -117,8 +117,10 @@ def test_context_without_review_policy_retains_historical_skip_and_quarantine(tm
     service = AutonomousController(store, PublicCorpus(default_workspace_corpus_root()).static_policy(), model)
     # The first invocation records a context as an older executable would, then
     # stops before model work. Reconnection must load that exact pinned context.
+    # A real verification failure is parked and requires explicit reconciliation
+    # of a completed saved pair; this unsent fixture has no such results.
     original_interpret = model.interpret
-    model.interpret = lambda *_: (_ for _ in ()).throw(ValueError('fixture interruption after pinning'))
+    model.interpret = lambda *_: (_ for _ in ()).throw(SupersededWorkflow('fixture interruption after pinning'))
     try:
         incoming = store.intake(packet(), 'review.legacy-context')
         interrupted = service.run(incoming['claim_id'])

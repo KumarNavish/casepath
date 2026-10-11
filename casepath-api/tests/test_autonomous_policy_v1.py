@@ -28,8 +28,17 @@ def test_verifier_must_cover_every_proposition_and_exact_source():
     with pytest.raises(ValueError, match='coverage'):
         validate_interpretation(policy, sources, proposal, {**verifier, 'checks': []})
     proposal['conditions'][0]['citations'][0]['artifact_id'] = 'another-claim'
-    with pytest.raises(ValueError, match='source'):
-        validate_interpretation(policy, sources, proposal, verifier)
+    original = deepcopy(proposal['conditions'][0])
+    verified = validate_interpretation(policy, sources, proposal, verifier)
+    condition = verified['conditions'][0]
+    assert condition['verdict'] == 'unresolved'
+    assert condition['independently_verified'] is False
+    assert condition['citations'] == []
+    assert condition['summary'] != original['summary']
+    assert verified['item_rejections'] == [{'item_id': 'condition:family_home', 'item': original,
+                                          'reason': 'interpretation citation is not an exact claim source span'}]
+    assert proposal['conditions'][0] == original
+    assert verified['category']['citations'] and verified['steps'][0]['citations']
 
 
 def test_quotes_are_not_semantic_acceptance_and_absence_stays_unknown():
