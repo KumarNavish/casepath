@@ -1021,7 +1021,7 @@
       if (demoSession !== session || disposed || pendingRoute()) return;
       if (session.index >= DEMO_CASES.length) { stopPresentation(); notice('The selected recorded histories have been inspected.'); renderClaim(); return; }
       const id = DEMO_CASES[session.index].claim_id; session.claimId = id; session.startAttempted = false;
-      await openClaim(id,true,{mode:session.mode,through:0,demo:true});
+      await openClaim(id,true,{mode:session.mode,through:0,detail:'step',demo:true});
       if (demoSession !== session || !current || disposed || pendingRoute()) return;
       if (session.mode === 'replay') {
         if (!replayRecord.current_revision) { stopPresentation(); renderClaim(); notice('This original case has no recorded execution to replay. Its original sources remain available.'); return; }

@@ -443,13 +443,16 @@ for(const scenario of ['failed-only','partial-outcome-with-failure','failed-reco
   if(path.endsWith('/claims'))return response({claims:[{...saved(head),origin:'canonical_original'}]});
   const replay=path.match(/\/claims\/([^/]+)\/replay\?through_seq=(\d+)$/);if(replay)return response(envelope(replay[1],Number(replay[2])));
  }});
- const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration();
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ await controller.openClaim(id,true,{mode:'replay',through:head,detail:'activity'});assert.match(f.host.innerHTML,/data-au-context="activity"/);
+ const priorReads=api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length;
+ await controller.showDemonstration();
  const target={dataset:{},closest(){return this;},hasAttribute:attr=>attr==='data-au-demo-play'};f.listeners.get('click')({target});await settle();
  for(let seq=1;seq<=head;seq++){
-  t.mock.timers.tick(1400);await settle();assert.ok(f.host.innerHTML.includes(`Claim · revision ${seq}`));
+  t.mock.timers.tick(1400);await settle();assert.ok(f.host.innerHTML.includes(`Claim · revision ${seq}`));assert.match(f.host.innerHTML,/data-au-context="step"/);assert.match(f.host.innerHTML,/<section class="au-process-hero au-evidence-process" aria-labelledby="auProcessTitle">/);
   if(scenario==='failed-then-reconciled'&&seq>=12){assert.ok(f.host.innerHTML.includes(seq===15?'Saved-result reconciliation completed':'Saved-result reconciliation started'));assert.ok(f.host.innerHTML.includes(stopped.reason));}
  }
- assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length,head+1,'every saved prefix, including failure, remains inspectable');
+ assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length-priorReads,head+1,'every saved prefix, including failure, remains inspectable');
  if(blocked)assert.match(f.host.innerHTML,/>Execution failed<\/span>/);
  t.mock.timers.tick(3200);await settle();
  const nextReads=api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`));
