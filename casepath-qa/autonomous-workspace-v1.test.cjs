@@ -72,6 +72,39 @@ test('deferral and prepared request retain missing evidence and external authori
  assert.match(ui.workMarkup(state({status:'deferred',deferral:{code:'unsupported_format',reason:'The image has no supported extraction.'}}),{},'start',[]),/The image has no supported extraction/);
 });
 
+test('missing reviews do not hide received unassigned originals or infer their document type',()=>{
+ const s=state(),descriptor=(id,file_name,media_type='text/plain')=>({claim_id:s.claim_id,artifact_id:id,file_name,media_type,role:'supporting_document',sha256:hash('d')});
+ s.source_descriptors=[{...s.source_descriptors[0],role:'customer_message'},descriptor('photo','notice.jpg','image/jpeg'),descriptor('partial','partial.txt'),descriptor('complete','complete.txt'),descriptor('received','received.txt'),descriptor('assigned','assigned.txt')];
+ s.acquired_sources=[{artifact_id:'photo',extraction:'unsupported_metadata',complete:false},{artifact_id:'partial',extraction:'utf8',complete:false},{artifact_id:'complete',extraction:'utf8',complete:true}];
+ s.graph.document_catalog=[{document_type:'notice',held_files:[{artifact_id:'assigned',review:'insufficient'}]}];
+ s.evaluation.documents[0].review_state='missing';
+ const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[],'documents');
+ const docs=html.match(/<section class="au-supporting" aria-label="Received supporting files without a document assignment">([\s\S]*?)<\/section>/)[1];
+ for(const id of ['photo','partial','complete','received'])assert.ok(docs.includes(`data-au-source="${id}"`),id);
+ assert.doesNotMatch(docs,/data-au-source="(?:original|assigned)"|data-au-document=/);
+ for(const phrase of ['notice.jpg','Received · interpretation unsupported','Partially extracted · sufficiency not established','Extracted · sufficiency not established','>Received<'])assert.ok(docs.includes(phrase),phrase);
+ assert.match(ui.obligationMarkup(s,'branch'),/Needed now · No reviewed source matched/);
+ assert.match(ui.evidencePathMarkup(s,'branch'),/class="au-evidence-review">No reviewed source matched/);
+ assert.equal(JSON.stringify(s),before);
+});
+
+test('zero active gaps can leave requirements held by unresolved questions without rewriting the outcome or draft',()=>{
+ const s=state({status:'deferred',outcome:{title:'Saved provider outcome',summary:'The received evidence leaves the branch unresolved.',missing_evidence:[],unresolved_facts:[{fact_id:'condition:family_home',summary:'The family-home condition remains unresolved.'}],request_draft:{status:'prepared_not_sent',subject:'Saved request subject',body:'No active document request is recorded.'}}});
+ s.evaluation.documents[0]={...s.evaluation.documents[0],route_state:'held_behind_question',review_state:'missing',required_at_node_ids:['branch']};
+ s.evaluation.nodes[1]={...s.evaluation.nodes[1],activation:'unresolved',execution_state:'unresolved'};
+ const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[]);
+ assert.match(html,/No active document gaps are listed in this outcome\. Unresolved questions still hold 1 document requirement;/);
+ assert.match(html,/data-au-detail="documents">Inspect document requirements/);
+ assert.match(html,/data-au-select="branch">Inspect questions and prerequisites/);
+ assert.match(html,/This saved request draft covers active document requirements only/);
+ assert.match(html,/<pre class="au-draft-body">No active document request is recorded\.<\/pre>/);
+ assert.ok(html.includes(s.outcome.summary));assert.ok(html.includes(s.actions[0].receipt.receipt_sha256));
+ assert.doesNotMatch(html,/Evidence still needed:|All evidence satisfied|All documents received/);
+ assert.equal(JSON.stringify(s),before);
+ s.evaluation.documents[0].route_state='not_needed';
+ assert.doesNotMatch(ui.workMarkup(s,{},'branch',[]),/No active document gaps are listed|Unresolved questions still hold/);
+});
+
 test('all displayed untrusted title, fact, source, outcome and knowledge text is escaped',()=>{
  const attack='<img src=x onerror="alert(1)">',s=state({title:attack,outcome:{summary:attack}});
  s.graph.nodes[0].label=attack;s.facts[0].summary=attack;s.facts[0].citations=[{artifact_id:'original',quote:attack}];

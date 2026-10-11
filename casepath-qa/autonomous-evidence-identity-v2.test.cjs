@@ -161,6 +161,53 @@ async function advance(page,id,changes={}){
 }
 async function noWrites(page){assert.deepEqual(await page.evaluate(()=>window.__calls.filter(call=>call.method!=='GET')),[]);}
 
+test('zero recorded active gaps still expose held requirements, questions and the exact saved draft',async t=>{
+ const id='auto_7373bbf206ab25bacf71b82e',state=saved(id),before=JSON.stringify(state);
+ assert.deepEqual(state.outcome.missing_evidence,[]);
+ assert.equal(state.evaluation.documents.filter(doc=>doc.route_state==='held_behind_question').length,11);
+ const page=await fixturePage(t);await open(page,id);
+ const outcome=page.locator('[data-au-disclosure="outcome"]');await outcome.locator(':scope > summary').click();
+ assert.match(await outcome.innerText(),/No active document gaps are listed in this outcome\. Unresolved questions still hold 11 document requirements/);
+ await outcome.locator('[data-au-disclosure="request-draft"] > summary').click();
+ assert.equal(await outcome.locator('.au-draft-body').textContent(),state.outcome.request_draft.body);
+ assert.match(await outcome.innerText(),/This saved request draft covers active document requirements only/);
+ await outcome.getByRole('button',{name:'Inspect document requirements',exact:true}).click();
+ assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(),true);
+ assert.match(await page.locator('[data-au-panel="documents"]').innerText(),/Depends on unresolved evidence · No reviewed source matched/);
+ const question=outcome.getByRole('button',{name:'Inspect questions and prerequisites',exact:true}),node=await question.getAttribute('data-au-select');
+ await question.click();
+ assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),node);
+ assert.equal(await page.locator('[data-au-panel="step"]').isVisible(),true);
+ assert.equal(await page.evaluate(id=>JSON.stringify(window.__responses[`${window.__base}/claims/${id}`].state),id),before);
+ await noWrites(page);
+});
+
+test('Documents opens an unassigned received JPEG through the verified original source viewer',async t=>{
+ const page=await fixturePage(t),artifact_id='isolated-unassigned-photo';
+ await page.evaluate(({id,artifact_id,emptyHash})=>{
+  const state=window.__responses[`${window.__base}/claims/${id}`].state;
+  const descriptor={claim_id:id,artifact_id,file_name:'termination_notice.jpg',media_type:'image/jpeg',role:'supporting_document',sha256:'d'.repeat(64)};
+  const source={...descriptor,text:'',text_sha256:emptyHash,extraction:'unsupported_metadata',complete:false,coverage:{visual_interpretation_performed:false}};
+  state.source_descriptors.push(descriptor);state.acquired_sources.push(source);
+  window.__responses[`${window.__base}/sources/${id}/${artifact_id}/text`]=source;
+ },{id:robin,artifact_id,emptyHash:sha('')});
+ const before=await page.evaluate(id=>JSON.stringify(window.__responses[`${window.__base}/claims/${id}`].state),robin);
+ await open(page,robin);await page.getByRole('button',{name:'Documents',exact:true}).click();
+ const files=page.locator('[data-au-panel="documents"] [aria-label="Received supporting files without a document assignment"]');
+ assert.deepEqual(await files.locator('[data-au-source]').evaluateAll(nodes=>nodes.map(node=>node.dataset.auSource)),[artifact_id]);
+ assert.match(await files.innerText(),/termination_notice\.jpg[\s\S]*Received · interpretation unsupported/);
+ const trigger=files.locator(`[data-au-source="${artifact_id}"]`);await trigger.click();
+ await page.locator('dialog[open] .au-source-capability').waitFor();
+ assert.match(await page.locator('dialog').innerText(),/Original image preview unavailable\. The agent cannot interpret this image\./);
+ assert.equal(await page.locator('dialog .au-source-body').count(),0);
+ await page.locator('dialog .au-source-identity > summary').click();
+ assert.match(await page.locator('dialog').innerText(),/Source text verified[\s\S]*Received · interpretation unsupported[\s\S]*No readable text was extracted/);
+ await page.keyboard.press('Escape');await page.locator('dialog[open]').waitFor({state:'detached'});
+ assert.equal(await page.evaluate(()=>document.activeElement?.dataset.auSourceOrigin),`documents:${artifact_id}`);
+ assert.equal(await page.evaluate(id=>JSON.stringify(window.__responses[`${window.__base}/claims/${id}`].state),robin),before);
+ await noWrites(page);
+});
+
 test('the production browser draws all nine saved graphs without demo substitution, stage reports or initial motion',async t=>{
  const page=await fixturePage(t);
  for(const claim of claims){
