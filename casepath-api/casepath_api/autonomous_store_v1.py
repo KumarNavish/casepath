@@ -831,6 +831,21 @@ class AutonomousStore:
     def _journal_snapshot(rows):
         return tuple(tuple((name, row[name]) for name in row.keys()) for row in rows)
 
+    def _state_rows(self):
+        with self.journal.connect() as connection:
+            return connection.execute("SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence",
+                                      (SESSION_ID,)).fetchall()
+
+    def validated_states(self):
+        """Full accepted states from one fresh journal read, with fresh sources.
+
+        Reuse only the existing reducer cache whose identity contains every row
+        and column. Neither queue summaries nor an unchanged head alone supply
+        authority. Callers receive copies, never the cached mutable objects.
+        """
+        with getattr(self, "_summary_lock", self._extraction_lock):
+            return deepcopy(self._validated_states(self._state_rows()))
+
     def list_summaries(self, *, statuses=None):
         """Compact derived rows cached only while every authority byte matches.
 
@@ -848,6 +863,13 @@ class AutonomousStore:
         with self.journal.connect() as connection:
             rows = connection.execute("SELECT * FROM claim_loop_events WHERE session_id=? ORDER BY loop_id,sequence",
                                       (SESSION_ID,)).fetchall()
+        return [deepcopy({key: state.get(key) for key in
+                    ("claim_id", "title", "status", "phase", "phase_summary", "revision", "state_sha256",
+                     "updated_at", "outcome", "run_id", "policy_id", "source_roster_sha256", "last_event_sha256",
+                     "corpus_id")}) for state in self._validated_states(rows)
+                if statuses is None or state["status"] in statuses]
+
+    def _validated_states(self, rows):
         if self._source_store is not None and hasattr(self._source_store, "prefetch_journal_sources"):
             self._source_store.prefetch_journal_sources(rows)
         streams = {}
@@ -857,7 +879,7 @@ class AutonomousStore:
                 raise AutonomousStoreError("journal autonomous namespace differs")
             claim_id = _identifier(loop.removeprefix("autonomous."), "claim identity")
             streams.setdefault(claim_id, []).append(row)
-        summaries, source_digests = [], set()
+        values, source_digests = [], set()
         with getattr(self, "_summary_lock", self._extraction_lock):
             cache = getattr(self, "_summary_cache", None)
             if cache is None:
@@ -879,14 +901,10 @@ class AutonomousStore:
                         cache.pop(next(iter(cache)))
                     cache[claim_id] = (identity, state)
                 source_digests.update(source["sha256"] for source in state["source_descriptors"])
-                if statuses is None or state["status"] in statuses:
-                    summaries.append(deepcopy({key: state.get(key) for key in
-                        ("claim_id", "title", "status", "phase", "phase_summary", "revision", "state_sha256",
-                         "updated_at", "outcome", "run_id", "policy_id", "source_roster_sha256", "last_event_sha256",
-                         "corpus_id")}))
+                values.append(state)
             if self._source_store is not None and hasattr(self._source_store, "verify_many"):
                 self._source_store.verify_many(source_digests)
-        return summaries
+        return values
 
     def _append_command(self, claim_id, kind, payload, expected_revision, expected_state_sha256, idempotency_key):
         if self._read_only:

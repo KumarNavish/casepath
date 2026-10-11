@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 from threading import RLock
 
-from .autonomous_store_v1 import AutonomousStore, AutonomousStoreError, MAX_FILE_BYTES
+from .autonomous_store_v1 import AutonomousStore, AutonomousStoreError, MAX_FILE_BYTES, SESSION_ID
 
 
 from .hosted_sql_v1 import HostedStorageError, LibsqlConnection, TursoDatabase
@@ -219,6 +219,61 @@ class HostedSources:
 
 
 class HostedAutonomousStore(AutonomousStore):
+    JOURNAL_PAGE_ROWS = 128
+    JOURNAL_PAGE_BYTES = 4 * 1024 * 1024
+    JOURNAL_ROW_BYTES = JOURNAL_PAGE_BYTES + 64 * 1024
+
+    def list(self, *, statuses=None):
+        # Startup discovery needs the same full accepted states as knowledge,
+        # without per-claim remote reads. Scheduling semantics remain with the
+        # controller; this read never admits or resumes work itself.
+        return [state for state in self.validated_states()
+                if statuses is None or state['status'] in statuses]
+
+    def _state_rows(self):
+        """Bounded journal pages from one read snapshot, before source work.
+
+        The raw byte budget leaves room for Hrana's JSON escaping within its
+        existing transport bound. Pagination includes every SQL column; the
+        temporary size/order columns never enter the accepted-state cache.
+        """
+        columns = ('session_id', 'loop_id', 'sequence', 'idempotency_key',
+                   'command_sha256', 'event_sha256', 'event_json', 'created_at')
+        size = '+'.join('COALESCE(length(CAST(' + key + ' AS BLOB)),0)' for key in columns) + '+1024'
+        # Keep SELECT as the outer verb so owned workflow connections recognize
+        # this as a read without weakening their fenced-write guard.
+        query = ('SELECT * FROM (SELECT *,sum(__read_size) OVER (ORDER BY loop_id,sequence) AS __read_total,'
+                 'row_number() OVER (ORDER BY loop_id,sequence) AS __read_position FROM '
+                 '(SELECT *,(' + size + ') AS __read_size FROM claim_loop_events WHERE session_id=? '
+                 'AND (? OR loop_id>? OR (loop_id=? AND sequence>?)) '
+                 'ORDER BY loop_id,sequence LIMIT ?)) '
+                 'WHERE __read_total<=? OR __read_position=1 ORDER BY loop_id,sequence')
+        rows, after_loop, after_sequence = [], '', -1
+        with self.journal.connect() as connection:
+            # A read transaction fixes the accepted head across all pages. It
+            # ends before replay/extraction/source checks and never renews a
+            # writer lease or acquires an IMMEDIATE transaction.
+            connection.execute('BEGIN')
+            while True:
+                page = connection.execute(query, (SESSION_ID, not rows, after_loop, after_loop, after_sequence,
+                                                  self.JOURNAL_PAGE_ROWS, self.JOURNAL_PAGE_BYTES)).fetchall()
+                if not page:
+                    break
+                if len(page) > self.JOURNAL_PAGE_ROWS:
+                    raise AutonomousStoreError('Journal read page exceeds its bound.')
+                for row in page:
+                    loop, sequence, byte_size = (row[key] for key in ('loop_id', 'sequence', '__read_size'))
+                    if (not isinstance(loop, str) or not loop.startswith('autonomous.')
+                            or type(sequence) is not int or sequence < 1
+                            or type(byte_size) is not int or not 0 < byte_size <= self.JOURNAL_ROW_BYTES
+                            or (loop, sequence) <= (after_loop, after_sequence)):
+                        raise AutonomousStoreError('Journal read page identity or size differs.')
+                    rows.append({key: row[key] for key in row.keys()
+                                 if key not in {'__read_size', '__read_total', '__read_position'}})
+                    after_loop, after_sequence = loop, sequence
+            connection.commit()
+        return rows
+
     @staticmethod
     def _journal_snapshot(rows):
         # Include names AND every SQL column/value, including raw event_json.
