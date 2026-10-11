@@ -68,6 +68,25 @@ test('handling completion labels do not rewrite lifecycle codes or recorded lega
  const html=ui.collectionMarkup(rows);assert.match(html,/Investigation complete/);assert.doesNotMatch(html,/>Resolved</);assert.equal(ui.matchingClaims(rows,{filter:'investigation_complete'}).length,3);assert.equal(ui.matchingClaims(rows,{search:'investigation complete'}).length,3);
  assert.match(ui.workMarkup(rows[2],{},null,[]),/No settlement has been recorded\./);assert.equal(JSON.stringify(rows),before);
 });
+test('execution failure remains separate from an accepted evidence deferral in claim and itinerary labels',()=>{
+ const failed={...original(),claim_id:ui.DEMO_CASES[4].claim_id,revision:11,mode:'saved',status:'deferred',phase:'deferred',outcome:null,deferral:{code:'verification_deferred',reason:'interpretation citation is not an exact claim source span',details:{error_type:'ValueError',workflow_id:'saved-workflow'}}};
+ const evidence={...failed,deferral:null,outcome:{status:'deferred',summary:'A received source leaves the question unresolved.',missing_evidence:[],unresolved_facts:[{fact_id:'condition:notice_authority',summary:'Which notice governs remains unresolved.'}]}};
+ const before=JSON.stringify([failed,evidence]);
+ for(const [claim,label]of [[failed,'Execution failed'],[evidence,'Evidence deferred']]) {
+  assert.match(ui.workMarkup(claim,{},null,[]),new RegExp(`<strong>${label}</strong>`));
+  assert.match(ui.claimsMarkup([claim]),new RegExp(`>${label}</span>`));
+  assert.match(ui.demoItineraryMarkup([claim]),new RegExp(`>${label}</span>`));
+ }
+ assert.match(ui.workMarkup(failed,{},null,[]),/interpretation citation is not an exact claim source span/);
+ assert.match(ui.claimsMarkup([{...failed,deferral:undefined}]),/>Execution stopped<\/span>/,'queue summaries do not infer the failure code they omit');
+ assert.equal(ui.replayCanAdvance(failed),false);
+ assert.equal(ui.replayCanAdvance({...failed,status:'completed'}),false,'a completed code without an accepted outcome cannot finish the replay');
+ assert.equal(ui.replayCanAdvance(evidence),true);
+ assert.equal(ui.replayCanAdvance({...evidence,status:'running'}),false);
+ assert.equal(JSON.stringify([failed,evidence]),before);
+ const demo=ui.demonstrationMarkup([failed,evidence],null);
+ assert.match(demo,/sources and recorded histories/);assert.match(demo,/Playback stops if no operational outcome was accepted/);assert.doesNotMatch(demo,/accepted histories/);
+});
 test('completed steps and actions remain local to a running investigation',()=>{
  const s={...original(),revision:1,mode:'saved',status:'running',graph:{claim_id:'clm_original',nodes:[{node_id:'first',title:'Check original source'}],edges:[]},evaluation:{nodes:[{node_id:'first',execution_state:'completed'}]},actions:[{action_id:'source-check',title:'Source checked',status:'completed'}]};
  const html=ui.workMarkup(s,{},'first',[]);assert.match(html,/class="au-status"[^>]*>Working</);assert.match(html,/class="au-node-state">Completed</);assert.match(html,/au-action-heading[^]*?<span>Completed<\/span>/);assert.doesNotMatch(html,/Investigation complete/);

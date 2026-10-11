@@ -82,9 +82,22 @@ test('missing reviews do not hide received unassigned originals or infer their d
  const docs=html.match(/<section class="au-supporting" aria-label="Received supporting files without a document assignment">([\s\S]*?)<\/section>/)[1];
  for(const id of ['photo','partial','complete','received'])assert.ok(docs.includes(`data-au-source="${id}"`),id);
  assert.doesNotMatch(docs,/data-au-source="(?:original|assigned)"|data-au-document=/);
- for(const phrase of ['notice.jpg','Received · interpretation unsupported','Partially extracted · sufficiency not established','Extracted · sufficiency not established','>Received<'])assert.ok(docs.includes(phrase),phrase);
+ for(const phrase of ['notice.jpg','Received · interpretation unsupported','Partially extracted · document review is separate','Extracted · document review is separate','>Received<'])assert.ok(docs.includes(phrase),phrase);
  assert.match(ui.obligationMarkup(s,'branch'),/Needed now · No reviewed source matched/);
  assert.match(ui.evidencePathMarkup(s,'branch'),/class="au-evidence-review">No reviewed source matched/);
+ assert.equal(JSON.stringify(s),before);
+});
+
+test('source extraction labels do not contradict a sufficient review for one document requirement',()=>{
+ const s=state(),source={claim_id:s.claim_id,artifact_id:'supplied-form',file_name:'supplied-form.pdf',media_type:'application/pdf',role:'supporting_document',sha256:hash('f')};
+ s.source_descriptors.push(source);s.acquired_sources=[{artifact_id:source.artifact_id,extraction:'pdf_text',complete:true}];
+ s.graph.document_catalog=[{document_type:'notice',held_files:[{artifact_id:source.artifact_id,review:'sufficient'}]}];
+ s.evaluation.documents[0].review_state='satisfied';
+ s.actions=[{result:{action_id:'review:notice:supplied-form',type:'document_review',node_ids:['branch'],document_type:'notice',status:'completed',verdict:'sufficient',summary:'The supplied form establishes this requirement.'},receipt:{receipt_sha256:hash('c')}}];
+ const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[],'sources');
+ assert.match(html,/Extracted · document review is separate/);assert.doesNotMatch(html,/sufficiency not established/);
+ assert.match(ui.obligationMarkup(s,'branch'),/Needed now · Satisfied/);
+ assert.match(ui.workMarkup(s,{},'branch',[],'activity'),/The supplied form establishes this requirement\./);
  assert.equal(JSON.stringify(s),before);
 });
 
@@ -377,6 +390,38 @@ function routingFixture(t,fragment='') {
 function navClick(f,value) {
  const target={dataset:{auNav:value},closest(){return this;},hasAttribute:attr=>attr==='data-au-nav'};f.listeners.get('click')({target});
 }
+for(const scenario of ['failed-only','evidence-deferred','failed-then-reconciled']) test(`recorded presentation retains ${scenario} history and advances only after an accepted outcome`,async t=>{
+ t.mock.timers.enable({apis:['setTimeout']});
+ const f=dom(),id=ui.DEMO_CASES[0].claim_id,next=ui.DEMO_CASES[1].claim_id;
+ const stopped={code:'verification_deferred',reason:'interpretation citation is not an exact claim source span',details:{error_type:'ValueError',workflow_id:'saved-workflow'}};
+ const outcome={status:'deferred',title:'Recorded evidence assessment',summary:'The supplied source leaves a question unresolved.',missing_evidence:[],unresolved_facts:[]};
+ const head=scenario==='failed-only'?11:scenario==='failed-then-reconciled'?12:11;
+ const zero=claim_id=>({claim_id,title:'Original source packet',message:'Original customer message.',revision:0,state_sha256:sha(`${claim_id}:0`),status:'not_started',mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,outcome:null,deferral:null,facts:[],obligations:[],actions:[],acquired_sources:[],source_descriptors:[]});
+ const saved=seq=>seq===0?zero(id):state({claim_id:id,title:'Original source packet',revision:seq,state_sha256:sha(`${id}:${seq}`),last_event_sha256:sha(`event:${seq}`),graph:{...state().graph,claim_id:id},status:seq===11||seq===head?'deferred':'running',phase:seq===11||seq===head?'deferred':'verifying',outcome:seq===head&&scenario!=='failed-only'?outcome:null,deferral:seq===11&&scenario!=='evidence-deferred'?stopped:null,actions:[]});
+ const envelope=(claim_id,seq)=>{
+  const current_revision=claim_id===id?head:0,s=claim_id===id?saved(seq):zero(claim_id);
+  const events=Array.from({length:seq},(_,i)=>({seq:i+1,kind:i+1===11?'work.deferred':i===0?'intake':'work.phase',revision:i+1,state_sha256:sha(`${id}:${i+1}`),event_sha256:sha(`event:${i+1}`),payload:i+1===11?stopped:{phase:'verifying'}}));
+  return {state:s,projection:{revision:seq,state_sha256:s.state_sha256},events,cursor_sha256:seq?sha(`event:${seq}`):null,mode:'replay',replay_only:true,through_seq:seq,current_revision,current_state_sha256:sha(`${claim_id}:${current_revision}`),current_event_sha256:current_revision?sha(`event:${current_revision}`):null,provenance:seq?{event_sha256:s.last_event_sha256}:{} };
+ };
+ const api=fakeApi({handle:async(path)=>{
+  if(path.endsWith('/claims'))return response({claims:[{...saved(head),origin:'canonical_original'}]});
+  const replay=path.match(/\/claims\/([^/]+)\/replay\?through_seq=(\d+)$/);if(replay)return response(envelope(replay[1],Number(replay[2])));
+ }});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration();
+ const target={dataset:{},closest(){return this;},hasAttribute:attr=>attr==='data-au-demo-play'};f.listeners.get('click')({target});await settle();
+ for(let seq=1;seq<=head;seq++){t.mock.timers.tick(1400);await settle();assert.ok(f.host.innerHTML.includes(`Claim · revision ${seq}`));}
+ assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length,head+1,'every saved prefix, including failure, remains inspectable');
+ if(scenario==='failed-only')assert.match(f.host.innerHTML,/>Execution failed<\/span>/);
+ t.mock.timers.tick(3200);await settle();
+ const nextReads=api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`));
+ assert.equal(nextReads.length,scenario==='failed-only'?0:1);
+ if(scenario==='failed-only'){
+  assert.match(f.status.textContent,/no accepted operational outcome.*stopped at its saved head/i);
+  assert.ok(f.host.innerHTML.includes(stopped.reason));assert.doesNotMatch(f.host.innerHTML,/data-au-demo-stop/);
+  t.mock.timers.tick(20000);await settle();assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`)).length,0);
+ }
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
 async function newClaim(f) { navClick(f,'intake');await settle(); }
 test('initial deep links and duplicate browser history events read saved state once without adding entries',async t=>{
  const routing=routingFixture(t,'#autonomous/claim/claim-a'),f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
@@ -435,6 +480,27 @@ test('a focused claim title allows saved revisions to render during polling',asy
  saved=state({revision:4,state_sha256:hash('f'),phase:'interpreting',phase_summary:'Reading the original agreement.'});
  await controller.refresh();
  assert.match(f.host.innerHTML,/revision 4/);assert.match(f.host.innerHTML,/Reading the original agreement/);assert.doesNotMatch(f.status.textContent,/Updates paused/);
+});
+
+test('unchanged verified polling and reconnect keep existing claim nodes while changed capabilities and revisions still render',async t=>{
+ const f=dom(),visibility=new Map(),viewport={scrollLeft:37,scrollTop:69},query=f.host.querySelector;
+ f.container.ownerDocument.addEventListener=(type,fn)=>visibility.set(type,fn);f.container.ownerDocument.removeEventListener=type=>visibility.delete(type);
+ f.host.querySelector=selector=>selector==='.au-graph-viewport'?viewport:query(selector);
+ let saved=state({status:'deferred',outcome:{status:'deferred',summary:'A question remains unresolved.'}}),capabilities={},failRead=false;
+ const api=fakeApi({handle:async path=>{
+  if(path.endsWith('/claims/claim-a')){if(failRead){failRead=false;throw new Error('Read unavailable');}return response({state:saved,projection:{revision:saved.revision,state_sha256:saved.state_sha256,node_capabilities:capabilities}});}
+  if(path.includes('/claim-a/events?'))return response(events(saved,Number(path.split('after=')[1])));
+ }}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ const target={dataset:{auSelect:'start'},closest(){return this;},hasAttribute:attr=>attr==='data-au-select'};f.listeners.get('click')({target});
+ let html=f.host.innerHTML,replacements=0;Object.defineProperty(f.host,'innerHTML',{get:()=>html,set:value=>{replacements++;html=value;}});
+ const focused={isConnected:true};f.container.ownerDocument.activeElement=focused;
+ await controller.refresh();await controller.refresh();visibility.get('visibilitychange')();await settle();
+ failRead=true;await controller.refresh();assert.match(f.status.textContent,/Updates paused/);await controller.refresh();
+ assert.equal(replacements,0,'same verified state, cursor and capability projection preserve connected controls even after reconnect');
+ assert.match(html,/data-au-selected-step="start"/);assert.equal(f.container.ownerDocument.activeElement,focused);assert.equal(viewport.scrollLeft,37);assert.equal(viewport.scrollTop,69);
+ capabilities={start:{authorized:false,reason:'Changed execution limit.'}};await controller.refresh();assert.equal(replacements,1);assert.match(html,/Changed execution limit/);
+ saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.equal(replacements,2);assert.match(html,/revision 4/);
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('a failed render is retried from saved state even if the next poll has the same revision',async t=>{
@@ -545,7 +611,7 @@ test('the default Work collection uses saved statuses and explicit New claim nav
  const f=dom(),api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?response({claims:claimRows}):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  assert.match(f.container.innerHTML,/<header class="au-identity-header"/);assert.doesNotMatch(f.container.innerHTML,/class="au-rail"/);assert.match(f.container.innerHTML,/data-au-nav="work"/);assert.match(f.container.innerHTML,/data-au-nav="intake"[^>]*>New claim/);
  assert.match(f.host.innerHTML,/class="au-collection(?:\s[^"]*)?"/);assert.doesNotMatch(f.host.innerHTML,/<form[^>]*data-au-intake/);
- const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Deferred/);assert.match(html,/Working/);assert.match(html,/Investigation complete/);assert.match(html,/Stopped/);assert.match(html,/Queued/);
+ const html=ui.claimsMarkup(claimRows);assert.equal([...html.matchAll(/data-au-claim="/g)].length,5);assert.match(html,/Execution stopped/);assert.match(html,/Working/);assert.match(html,/Investigation complete/);assert.match(html,/Execution failed/);assert.match(html,/Queued/);
  await newClaim(f);assert.match(f.host.innerHTML,/<form[^>]*data-au-intake/);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
@@ -862,14 +928,14 @@ test('accepted refresh preserves an open document-rules disclosure and focuses i
 test('delayed claim collections preserve verified revisions without rejecting genuinely newer rows',async t=>{
  const other={claim_id:'claim-b',title:'Other saved claim',status:'resolved',revision:2,state_sha256:hash('b')};
  for(const example of [
-  {name:'a delayed older current row',row:{claim_id:'claim-a',title:'Old collection title',status:'running',revision:3,state_sha256:hash('a')},expectedStatus:'Deferred'},
-  {name:'a missing current row',row:null,expectedStatus:'Deferred'},
-  {name:'a conflicting identity at the verified revision',row:{claim_id:'claim-a',title:'Conflicting collection title',status:'running',revision:4,state_sha256:hash('9')},expectedStatus:'Deferred'},
+  {name:'a delayed older current row',row:{claim_id:'claim-a',title:'Old collection title',status:'running',revision:3,state_sha256:hash('a')},expectedStatus:'Evidence deferred'},
+  {name:'a missing current row',row:null,expectedStatus:'Evidence deferred'},
+  {name:'a conflicting identity at the verified revision',row:{claim_id:'claim-a',title:'Conflicting collection title',status:'running',revision:4,state_sha256:hash('9')},expectedStatus:'Evidence deferred'},
   {name:'a genuinely newer collection row',row:{claim_id:'claim-a',title:'Newer collection title',status:'queued',revision:5,state_sha256:hash('5')},expectedStatus:'Queued'}
  ])await t.test(example.name,async child=>{
   routingFixture(child,'#autonomous/claim/claim-a');const f=dom(),queue={innerHTML:''},query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-recent-claims]'?queue:query(selector);
   let saved=state(),projection={},finishList;const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?new Promise(resolve=>{finishList=resolve;}):path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,...projection}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('revision 3')&&Boolean(finishList));
-  saved=state({revision:4,state_sha256:hash('f'),status:'deferred',deferral:{code:'missing_evidence',reason:'Recorded evidence needed.'}});await controller.refresh();assert.match(queue.innerHTML,/Deferred/);assert.match(f.host.innerHTML,/revision 4/);
+  saved=state({revision:4,state_sha256:hash('f'),status:'deferred',outcome:{status:'deferred',reason:'Recorded evidence needed.',missing_evidence:[{document_type:'notice',label:'Notice receipt'}]}});await controller.refresh();assert.match(queue.innerHTML,/Evidence deferred/);assert.match(f.host.innerHTML,/revision 4/);
   finishList(response({claims:[other,...(example.row?[example.row]:[])]}));await waitFor(()=>queue.innerHTML.includes('Other saved claim'));
   const row=queue.innerHTML.match(/<button[^>]*data-au-claim="claim-a"[\s\S]*?<\/button>/)?.[0];assert.ok(row,'the current verified claim remains reachable');assert.ok(row.includes(example.expectedStatus),row);assert.match(f.host.innerHTML,/revision 4/);assert.match(f.host.innerHTML,/Recorded evidence needed/);assert.doesNotMatch(queue.innerHTML,/Old collection title|Conflicting collection title/);
   if(example.row)assert.ok(queue.innerHTML.indexOf('Other saved claim')<queue.innerHTML.indexOf('data-au-claim="claim-a"'),'the API collection order is retained');
