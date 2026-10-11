@@ -298,6 +298,7 @@ test('local file validation sends nothing and leaves the intake editable',async 
 test('pause is an explicit guarded action and an uncertain response retains its exact key',async t=>{
  const f=dom(),api=fakeApi({handle:async(path,init)=>{if(path.endsWith('/pause'))throw new Error('Pause response lost');}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
  const target={dataset:{},disabled:false,isConnected:true,textContent:'Pause work',closest(){return this;},hasAttribute:attr=>attr==='data-au-pause'};
+ f.host.querySelectorAll=selector=>selector==='[data-au-start],[data-au-pause],[data-au-resume]'?[target]:[];
  f.listeners.get('click')({target});await settle();f.listeners.get('click')({target});await settle();
  const pauses=api.calls.filter(call=>call.path.endsWith('/pause'));assert.equal(pauses.length,2);assert.equal(pauses[0].init.body,pauses[1].init.body);assert.deepEqual({...JSON.parse(pauses[0].init.body),idempotency_key:undefined},{expected_revision:3,expected_state_sha256:hash('a'),idempotency_key:undefined});assert.equal(target.textContent,'Retry pause');
  assert.match(ui.workMarkup(state(),{},'branch',[]),/data-au-pause/);assert.doesNotMatch(ui.workMarkup(state({status:'deferred'}),{},'branch',[]),/data-au-pause/);
@@ -381,6 +382,7 @@ test('only an explicitly paused deferral offers guarded resume with one retained
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
  assert.match(f.host.innerHTML,/data-au-resume/);assert.doesNotMatch(ui.workMarkup(state({status:'deferred',deferral:{code:'missing_evidence'}}),{},'branch',[]),/data-au-resume/);
  const target={dataset:{},disabled:false,isConnected:true,textContent:'Resume work',closest(){return this;},hasAttribute:attr=>attr==='data-au-resume'};
+ f.host.querySelectorAll=selector=>selector==='[data-au-start],[data-au-pause],[data-au-resume]'?[target]:[];
  f.listeners.get('click')({target});await settle();f.listeners.get('click')({target});await settle();
  const writes=api.calls.filter(call=>call.path.endsWith('/resume'));assert.equal(writes.length,2);assert.equal(writes[0].init.body,writes[1].init.body);assert.equal(JSON.parse(writes[0].init.body).expected_revision,3);assert.equal(writes[0].init.headers['X-CasePath-Agent-Work'],'1');assert.equal(target.textContent,'Retry resume');
 });

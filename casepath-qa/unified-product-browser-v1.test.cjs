@@ -278,7 +278,31 @@ function fixtureData(config = {}) {
       if (recorded) sources[`${id}/${descriptor.artifact_id}`] = clone(recorded);
     }
   });
-  const acceptedHistories = {}, authoredEvents = {};
+  const acceptedHistories = {}, authoredEvents = {}, controlHistories = {};
+  if (config.controlRetryId) {
+    // Authored command-authority boundary only: no model facts or outcome.
+    // A lost response advances revision while leaving the requested command
+    // legal; the explicit retry then returns its definite operational result.
+    const id = config.controlRetryId, original = clone(envelopes[id].state);
+    authoredEvents[id] = [];
+    controlHistories[id] = [1, 2, 3].map(revision => {
+      const paused = config.controlRetryAction === 'resume' ? revision < 3 : revision === 3;
+      const state = {...clone(original), revision, mode: 'started', status: paused ? 'deferred' : 'running', phase: paused ? 'paused' : 'acquiring',
+        deferral: paused ? {code: 'paused', reason: 'Authored command boundary is paused.'} : null,
+        graph: {claim_id: id, title: 'Command retry boundary', graph_sha256: sha('command retry graph'),
+          nodes: [{node_id: 'inspect_packet', label: 'Inspect original packet', entry: true}], edges: []},
+        evaluation: {nodes: [{node_id: 'inspect_packet', execution_state: 'ready'}], edges: [], documents: []}};
+      delete state.state_sha256; delete state.last_event_sha256;
+      state.state_sha256 = sha(canonical(state));
+      const event = {seq: revision, claim_id: id, revision, state_sha256: state.state_sha256,
+        previous_event_sha256: authoredEvents[id].at(-1)?.event_sha256 || null,
+        kind: revision === 1 ? 'intake' : 'work.phase', payload: {summary: 'Authored command retry boundary'}};
+      event.event_sha256 = sha(canonical(event)); state.last_event_sha256 = event.event_sha256;
+      authoredEvents[id].push(event);
+      return {state, projection: {claim_id: id, revision, state_sha256: state.state_sha256}};
+    });
+    envelopes[id] = clone(controlHistories[id][0]);
+  }
   if (config.pdfDrawer) {
     // A source-viewer boundary fixture, with real original PDF bytes and text.
     // It supplies no process, facts, model interpretation or legal outcome.
@@ -339,7 +363,7 @@ function fixtureData(config = {}) {
   }));
   assert.equal(rows.filter(row => row.origin === 'canonical_original').length, 150);
   assert.equal(rows.filter(row => row.origin === 'native_intake').length, 9);
-  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, accepted,
+  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, controlHistories, accepted,
     recordedHistory: config.recordedHistoryId ? clone(captured[`${base}/claims/${config.recordedHistoryId}/events?after=0`].events) : [],
     acceptedEvents: accepted ? clone((config.acceptedPrefix ? accepted.prefixes[config.acceptedPrefix] : accepted.snapshots[config.priorAssessment]).events) : [],
     acceptedPrefixes: accepted ? config.priorAssessment === 'failed' ? accepted.failure_prefixes : accepted.prefixes : {},
@@ -373,7 +397,10 @@ async function fixturePage(t, config = {}) {
     const startViolations = await page.evaluate(() => window.__fixture?.startViolations || []);
     await page.evaluate(() => window.__controller?.destroy());
     await context.close();
-    if (config.originalStartId || config.presentationSuite === 'live') {
+    if (config.controlRetryId) {
+      assert.ok(writes.every(call => call.method === 'POST' && call.url === `${base}/claims/${config.controlRetryId}/${config.controlRetryAction}`), 'only the explicitly configured guarded command POST is permitted');
+      assert.deepEqual(startViolations, [], 'the command retry must carry the original guard and literal unchanged body');
+    } else if (config.originalStartId || config.presentationSuite === 'live') {
       const allowed = config.originalStartId ? [config.originalStartId] : demoIds;
       assert.ok(writes.every(call => call.method === 'POST' && allowed.some(id => call.url === `${base}/claims/${id}/start`)), 'only the explicitly configured Start POST is permitted');
       assert.deepEqual(startViolations, [], 'every mocked Start must carry the original guard and unchanged retry identity');
@@ -448,6 +475,20 @@ async function mountFixture(page, config = {}) {
       const parsed = new URL(String(url), location.origin), method = init.method || 'GET';
       fixture.calls.push({url: parsed.pathname + parsed.search, method, time: performance.now(), body: init.body, headers: init.headers || {}});
       const relative = parsed.pathname.slice(base.length);
+      if (method === 'POST' && fixture.controlRetryId && relative === `/claims/${fixture.controlRetryId}/${fixture.controlRetryAction}`) {
+        const body = JSON.parse(init.body), original = fixture.controlHistories[fixture.controlRetryId][0].state, headers = init.headers || {};
+        if (body.expected_revision !== original.revision || body.expected_state_sha256 !== original.state_sha256
+          || !body.idempotency_key?.startsWith('browser.') || headers['X-CasePath-Agent-Work'] !== '1'
+          || headers['Content-Type'] !== 'application/json' || fixture.firstControlBody && fixture.firstControlBody !== init.body) {
+          fixture.startViolations.push('Command guard, intent header or exact retry body changed.');
+          return response(422, {detail: 'Changed command identity.'});
+        }
+        fixture.firstControlBody ||= init.body; fixture.controlPosts = (fixture.controlPosts || 0) + 1;
+        const result = fixture.controlHistories[fixture.controlRetryId][fixture.controlPosts === 1 ? 1 : 2];
+        fixture.envelopes[fixture.controlRetryId] = structuredClone(result);
+        if (fixture.controlPosts === 1) throw new TypeError('Isolated command response is uncertain.');
+        return response(200, result);
+      }
       const suiteStart = relative.match(/^\/claims\/([^/]+)\/start$/);
       if (method === 'POST' && fixture.presentationSuite === 'live' && suiteStart && fixture.acceptedHistories[suiteStart[1]]) {
         const id = suiteStart[1], original = fixture.acceptedHistories[id][0], body = JSON.parse(init.body), headers = init.headers || {};
@@ -1287,6 +1328,7 @@ test('an explicit original Start preserves its guarded retry after background ac
     return JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state.revision === 1;
   }, 'background polling did not observe the accepted revision after the Start response was lost');
   assert.match(await page.locator('.au-work-head').innerText(), /revision 1\b/i);
+  await eventually(async () => await currentReadState(page) === 'verified' && await page.locator('[data-au-start]').innerText() === 'Retry start' && await page.locator('[data-au-start]').isEnabled(), 'the fresh accepted snapshot must finish the pending admission and restore its exact Start retry');
   assert.equal(await page.locator('[data-au-start]').innerText(), 'Retry start');
   assert.equal(await page.locator('[data-au-start]').isEnabled(), true, 'the nonzero accepted revision must retain its original pending Start retry');
   assert.equal((await posts()).length, 1, 'a network-uncertain Start cannot retry automatically');
@@ -1360,11 +1402,11 @@ test('an atomic snapshot renders a matching state and cursor even while a writer
   await page.evaluate(() => window.__controller.refresh());
   await eventually(async () => new RegExp(`revision ${revision + 1}\\b`, 'i').test(await page.locator('.au-work-head').innerText()), 'polling did not render the next atomic revision');
   assert.deepEqual((await calls(page, `/claims/${processedId}/snapshot`)).map(call => new URL(call.url, 'http://fixture.invalid').searchParams.get('after')), ['0', String(revision)]);
-  await page.locator('[data-au-detail="documents"]').click();
+  await page.locator('.au-context-nav [data-au-detail="documents"]').click();
   assert.equal(await page.locator('[data-au-graph]').isVisible(), false, 'Documents must hide the process graph');
-  await page.locator('[data-au-detail="sources"]').click();
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();
   assert.equal(await page.locator('[data-au-graph]').isVisible(), false, 'Original sources must hide the process graph');
-  await page.locator('[data-au-detail="step"]').click();
+  await page.locator('.au-context-nav [data-au-detail="step"]').click();
   assert.equal(await page.locator('[data-au-graph]').isVisible(), true);
 });
 
@@ -1805,6 +1847,43 @@ async function focusedReceipt(page, name, measurements) {
 }
 const visibleRecord = page => page.locator('[data-au-disclosure="claim-record"] pre').textContent().then(JSON.parse);
 const currentReadState = page => page.locator('[data-au-view]').getAttribute('data-au-read-state');
+
+for (const action of ['start', 'pause', 'resume']) test(`focused flow: uncertain ${action} restores the current replacement control and its exact guarded retry`, async t => {
+  const id = demoIds[3], config = action === 'start' ? {originalStartId: id} : {controlRetryId: id, controlRetryAction: action};
+  const page = await fixturePage(t, config), selector = `[data-au-${action}]`;
+  await open(page, id); await title(page, id);
+  await eventually(() => page.locator(selector).isEnabled(), 'the fresh command did not become available');
+  const original = await page.evaluate(id => structuredClone(window.__fixture.envelopes[id].state), id);
+  const posts = async () => (await calls(page, `/claims/${id}/${action}`)).filter(call => call.method === 'POST');
+  await page.evaluate(({id, selector}) => {
+    window.__fixture.holdId = id; window.__fixture.holdRemaining = 1;
+    window.__clickedCommand = document.querySelector(selector);
+  }, {id, selector});
+  await page.locator(selector).click();
+  await eventually(() => page.evaluate(id => window.__fixture.held.some(held => held.id === id), id), 'the uncertain response did not trigger a held fresh snapshot');
+  assert.equal(await currentReadState(page), 'refreshing');
+  assert.equal(await page.locator(selector).innerText(), {start: 'Starting…', pause: 'Pausing…', resume: 'Resuming…'}[action]);
+  assert.equal(await page.locator('[data-au-start]:enabled, [data-au-pause]:enabled, [data-au-resume]:enabled, [data-au-arrival] input:enabled, [data-au-arrival] button:enabled').count(), 0, 'a held fresh read cannot authorize any mutation');
+  await page.clock.runFor(7000);
+  assert.equal((await posts()).length, 1, 'uncertainty cannot automatically retry a command');
+  const first = (await posts())[0], body = JSON.parse(first.body);
+  assert.deepEqual(sorted(Object.keys(body)), ['expected_revision', 'expected_state_sha256', 'idempotency_key']);
+  assert.equal(body.expected_revision, original.revision); assert.equal(body.expected_state_sha256, original.state_sha256);
+  assert.match(body.idempotency_key, /^browser\.[a-f0-9-]+$/i);
+  assert.equal(first.headers['X-CasePath-Agent-Work'], '1'); assert.equal(first.headers['Content-Type'], 'application/json');
+  await page.evaluate(() => { window.__fixture.holdId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
+  await eventually(async () => await currentReadState(page) === 'verified' && await page.locator(selector).innerText() === `Retry ${action}` && await page.locator(selector).isEnabled(), 'the matched fresh snapshot must label and enable the current exact retry');
+  assert.deepEqual(await page.evaluate(selector => ({replaced: document.querySelector(selector) !== window.__clickedCommand, oldConnected: window.__clickedCommand.isConnected}), selector), {replaced: true, oldConnected: false});
+  const accepted = await page.evaluate(id => window.__fixture.envelopes[id].state, id);
+  assert.deepEqual(JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, accepted, 'the full matched accepted state remains inspectable');
+  assert.equal((await posts()).length, 1);
+  await page.locator(selector).click();
+  const normalSelector = action === 'pause' ? '[data-au-resume]' : '[data-au-pause]', normalLabel = action === 'pause' ? 'Resume work' : 'Pause work';
+  await eventually(async () => await currentReadState(page) === 'verified' && await page.locator(normalSelector).count() === 1 && await page.locator(normalSelector).innerText() === normalLabel && await page.locator(normalSelector).isEnabled(), 'a definite response must restore the current normal command label');
+  const writes = await posts(); assert.equal(writes.length, 2);
+  assert.equal(writes[1].body, first.body, 'the explicit retry must preserve the literal guard and idempotency body');
+  assert.deepEqual(writes[1].headers, first.headers);
+});
 
 test('focused flow: cached claim revisits paint the verified record synchronously and fail revalidation read-only', async t => {
   const page = await fixturePage(t);

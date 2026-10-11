@@ -822,6 +822,9 @@
       const label = host.querySelector('[data-au-read-state-label]');
       if (label) label.textContent = presentationMode === 'replay' || readState === 'verified' ? '' : readState === 'failed' ? 'Saved copy · refresh failed' : 'Saved copy · refreshing';
       for (const control of host.querySelectorAll('[data-au-start],[data-au-pause],[data-au-resume]')) {
+        const action = control.hasAttribute('data-au-start') ? 'start' : control.hasAttribute('data-au-pause') ? 'pause' : 'resume';
+        const pending = action === 'start' ? pendingStart?.claimId === current?.claim_id : pendingControl?.claimId === current?.claim_id && pendingControl?.action === action;
+        control.textContent = pending ? busy ? ({start:'Starting…',pause:'Pausing…',resume:'Resuming…'})[action] : `Retry ${action}` : action === 'start' ? 'Start investigation' : `${words(action)} work`;
         control.disabled = busy || !freshClaim || presentationMode === 'replay' || control.hasAttribute('data-au-start') && !canStartHere() && !pendingStart;
       }
       const form = host.querySelector('[data-au-arrival]');
@@ -1013,8 +1016,6 @@
       for (const disclosure of host.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
       focusTarget(focusKey)?.focus({preventScroll:true});
       if (navigation || !priorViewport) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
-      if (pendingStart?.claimId === current.claim_id) { const start = host.querySelector('[data-au-start]'); if (start) { start.textContent = busy ? 'Starting…' : 'Retry start'; start.disabled = busy; } }
-      if (pendingControl?.claimId === current.claim_id) { const control = host.querySelector(`[data-au-${pendingControl.action}]`); if (control) { control.textContent = busy ? `${pendingControl.action === 'pause' ? 'Pausing' : 'Resuming'}…` : `Retry ${pendingControl.action}`; control.disabled = busy; } }
       drawEdges(navigation);
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open,reducedMotion:reduced?.matches,keyboard,activeElement:doc.activeElement,selected});
       synchronizeAuthority();
@@ -1440,7 +1441,7 @@
       if (busy || pendingRoute() || !freshClaim || !current || current.revision !== 0 && !pendingStart || presentationMode === 'replay' || !canStartHere() && !pendingStart) return;
       const token = epoch, id = current.claim_id;
       pendingStart ||= {claimId:id,body:{expected_revision:current.revision,expected_state_sha256:current.state_sha256,idempotency_key:`browser.${root.crypto.randomUUID()}`}};
-      starts.set(id,pendingStart); busy = true; if (target) { target.disabled = true; target.textContent = 'Starting…'; }
+      starts.set(id,pendingStart); busy = true;
       try {
         invalidateReads(id);
         readState(await request(`/claims/${key(id)}/start`,{method:'POST',body:JSON.stringify(pendingStart.body)}),id);
@@ -1450,7 +1451,7 @@
         if (error.status && error.status < 500) { starts.delete(id); pendingStart = null; }
         if (!disposed && token === epoch && !pendingRoute()) await loadOpenedClaim(id,token);
         if (!disposed && token === epoch) notice(`${error.message}${pendingStart ? ' Response unconfirmed; retry uses the same request.' : ''}`,true);
-      } finally { busy = false; synchronizeAuthority(); routeChanged(); if (target?.isConnected) { target.disabled = !freshClaim || !pendingStart && !canStartHere(); target.textContent = pendingStart ? 'Retry start' : 'Start investigation'; } }
+      } finally { busy = false; synchronizeAuthority(); routeChanged(); }
     }
     async function showWork(writeHistory = true) {
       stopPresentation(); leaveView(); route(collectionFragment(),writeHistory);
@@ -1603,7 +1604,7 @@
       if (pendingControl?.action !== action) pendingControl = null;
       const token = epoch, saved = current;
       pendingControl ||= {action,claimId:saved.claim_id,body:{expected_revision:saved.revision,expected_state_sha256:saved.state_sha256,idempotency_key:`browser.${root.crypto.randomUUID()}`}};
-      busy = true; target.disabled = true;
+      busy = true;
       try {
         invalidateReads(pendingControl.claimId);
         const accepted = readState(await request(`/claims/${key(pendingControl.claimId)}/${action}`,{method:'POST',body:JSON.stringify(pendingControl.body)}),pendingControl.claimId);
@@ -1614,7 +1615,7 @@
         if (!disposed && token === epoch) notice(`${error.message}${pendingControl ? ` ${words(action)} response unconfirmed; retry uses the same request.` : ' Refreshing the saved claim.'}`,true);
         if (!disposed && token === epoch && !pendingRoute()) await loadOpenedClaim(saved.claim_id,token);
         if (!disposed && token === epoch && pendingControl) notice(`${error.message} ${words(action)} response unconfirmed; retry uses the same request.`,true);
-      } finally { busy = false; synchronizeAuthority(); routeChanged(); if (target.isConnected) { target.disabled = !freshClaim; target.textContent = pendingControl ? `Retry ${action}` : `${words(action)} work`; } }
+      } finally { busy = false; synchronizeAuthority(); routeChanged(); }
     }
     async function openSource(id, citation, trigger) {
       if (!current) return;
