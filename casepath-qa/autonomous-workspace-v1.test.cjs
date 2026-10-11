@@ -161,6 +161,20 @@ test('reconciliation and item rejection history preserve rejected provenance wit
  assert.match(html,/<strong>Execution failed<\/strong><span>Current execution stopped\.<\/span>/);assert.match(html,/Retained outcome record/);assert.match(html,/Older accepted assessment/);
 });
 
+test('activity consolidates repeated rejection disclosures while preserving distinct runs and complete receipts',()=>{
+ const rejection={item_id:'step:lt_type',reason:'Quote is not exact.',item:{node_id:'lt_type',citations:[{artifact_id:'original',quote:'die Familie'}]}};
+ const interpretation={workflow_id:'run-a',receipt_sha256:sha('interpretation'),item_rejections:[rejection]},outcome={...interpretation,receipt_sha256:sha('outcome')};
+ const distinct={...interpretation,receipt_sha256:sha('distinct'),item_rejections:[{...rejection,reason:'A separate rejection.'}]},later={...interpretation,workflow_id:'run-b',receipt_sha256:sha('later')};
+ const saved=state({receipts:[{receipt:interpretation},{receipt:outcome},{receipt:distinct},{receipt:later}],actions:[{result:{action_id:'document-review',status:'completed'},receipt:interpretation}]}),before=JSON.stringify(saved);
+ const html=ui.workMarkup(saved,{},'branch',[],'activity');
+ assert.equal((html.match(/<strong>Rejected · step:lt_type<\/strong>/g)||[]).length,3);
+ assert.equal((html.match(/<summary>Rejected proposal items/g)||[]).length,3);
+ assert.ok(html.includes('Action receipt'));assert.ok(html.includes('Full public action record'));assert.ok(html.includes(outcome.receipt_sha256));
+ assert.equal(JSON.stringify(saved),before);
+ const actionOnly=ui.workMarkup(state({actions:saved.actions}),{},'branch',[],'activity');
+ assert.equal((actionOnly.match(/<strong>Rejected · step:lt_type<\/strong>/g)||[]).length,1);
+});
+
 // A minimal DOM boundary exercises the production mount/request/submit lifecycle.
 // It does not stand in for browser layout or native keyboard acceptance.
 function dom() {
