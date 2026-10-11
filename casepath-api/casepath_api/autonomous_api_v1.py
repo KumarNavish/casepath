@@ -41,13 +41,18 @@ class SourceArrival(RevisionCommand):
     files: list[IncomingFile] = Field(min_length=1, max_length=20)
 
 
+class SavedResultReconciliation(RevisionCommand):
+    actor: str = Field(min_length=1, max_length=180)
+    reason: str = Field(min_length=1, max_length=1000)
+
+
 class OriginalStart(StrictBody):
     idempotency_key: str = Field(min_length=8, max_length=128, pattern=r'^[a-zA-Z0-9_.:-]+$')
     expected_revision: int = Field(ge=0)
     expected_state_sha256: str = Field(pattern=r'^[a-f0-9]{64}$')
 
 
-def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corpus_getter=None):
+def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corpus_getter=None, saved_work_getter=None):
     router = APIRouter(prefix='/api/claim-loops/v1/autonomous')
 
     def invoke(fn):
@@ -279,6 +284,15 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             return state
         return invoke(apply)
 
+    @router.post('/claims/{claim_id}/reconcile-saved-results')
+    def reconcile(claim_id: str, body: SavedResultReconciliation, request: Request):
+        guard(request)
+        def apply(service):
+            if saved_work_getter is None:
+                raise AutonomousStoreError('saved semantic results are unavailable for explicit reconciliation')
+            return service.reconcile_saved_results(claim_id, work_store=saved_work_getter(), **body.model_dump())
+        return invoke(apply)
+
     @router.get('/sources/{claim_id}/{artifact_id}')
     def source(claim_id: str, artifact_id: str):
         def read(service):
@@ -328,7 +342,8 @@ def install_autonomous(app, storage_getter, corpus_getter, agent_work_getter):
         return AutonomousController(AutonomousStore(storage_getter()), corpus_getter().static_policy(), model)
 
     app.include_router(create_autonomous_router(service, lambda: agent_work_getter().store.external_budget(),
-                                               corpus_getter=canonical_corpus))
+                                               corpus_getter=canonical_corpus,
+                                               saved_work_getter=lambda: agent_work_getter().store))
     app.add_event_handler('startup', lambda: service().resume())
     app.add_event_handler('shutdown', lambda: service().shutdown())
     return service

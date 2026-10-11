@@ -75,7 +75,7 @@ class AutonomousController:
 
     def resume(self):
         for state in self.store.list():
-            if (state.get('deferral') or {}).get('code') == 'paused':
+            if (state.get('deferral') or {}).get('code') not in (None, 'model_unavailable'):
                 continue
             if state.get('outcome') and state.get('run_id'):
                 # The accepted outcome may precede a process stop by only one
@@ -120,7 +120,7 @@ class AutonomousController:
         workflow = 'autonomy.' + digest_value({'claim': claim_id, 'sources': source_identity, 'policy': POLICY_ID,
                                               'rules': digest_value(self.policy)})[:24]
         self._contexts[workflow] = source_identity
-        if (state.get('deferral') or {}).get('code') == 'paused':
+        if (state.get('deferral') or {}).get('code') not in (None, 'model_unavailable'):
             return state
         # A terminal outcome for this exact input is settled on reconnect.
         if any(e['idempotency_key'] == f'{workflow}.outcome' for e in self.store.events(claim_id)):
@@ -183,35 +183,7 @@ class AutonomousController:
             if compilation is not None and verifier['receipt'].get('metadata', {}).get('knowledge_recipe_compilation') != compilation:
                 raise ValueError('independent verifier receipt differs from the compiled proposal')
             verified = validate_interpretation(self.policy, state['acquired_sources'], verification_proposal, verifier['result'])
-            base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
-                            'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
-                            'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
-                            'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
-                            'knowledge_rejections': verified['knowledge_rejections']}
-            if compilation is not None:
-                base_receipt['knowledge_recipe_compilation'] = compilation
-            if context.get('document_review_policy') is not None:
-                base_receipt['document_review_policy'] = context['document_review_policy']
-            pinned = next((k for k in context.get('compatible_knowledge', []) if k['family'] == verified['category']['family']), None)
-            version = next((k for k in self.knowledge.view()['versions'] if pinned and k['knowledge_id'] == pinned['knowledge_id']
-                            and k['version'] == pinned['version']), None)
-            if version:
-                graph, facts, obligations = self.knowledge.instantiate(version, claim_id, verified)
-                self._once(claim_id, f'{workflow}.reuse', 'knowledge.used', {'knowledge': {
-                    'knowledge_id': version['knowledge_id'], 'version': version['version'],
-                    'definition_sha256': version['qualification']['definition_sha256'], 'rule_pack_sha256': version['rule_pack_sha256'],
-                    'applicability': 'same_verified_family_and_rule_version', 'avoided_rule_compilations': 1,
-                    'reused_evidence_recipes': len(version.get('evidence_recipes', [])), 'workflow_id': workflow}})
-            else:
-                graph, facts, obligations = compile_process(self.policy, claim_id, verified)
-            self._once(claim_id, f'{workflow}.interpretation', 'interpretation.accepted', lambda s: {
-                'graph': graph, 'facts': facts, 'obligations': obligations,
-                'receipt': receipt(s, 'accept_verified_interpretation', **base_receipt, after_graph_sha256=graph['graph_sha256'])})
-            self._phase(claim_id, workflow, 'progressing', 'Applying verified evidence to active process obligations.')
-            self._documents(claim_id, workflow, verified, base_receipt)
-            self._steps(claim_id, workflow, verified, base_receipt)
-            self._outcome(claim_id, workflow, verified, base_receipt)
-            self._learn(claim_id, workflow)
+            self._apply_verified(claim_id, workflow, context, proposal, verifier, verified, compilation)
         except SupersededWorkflow:
             if digest_value(self.store.get(claim_id)['source_descriptors']) != source_identity and hasattr(self.model, 'abandon'):
                 self.model.abandon(workflow, 'superseded_or_paused')
@@ -234,6 +206,46 @@ class AutonomousController:
                 self.model.abandon(workflow, 'execution_deferred')
         return self.store.get(claim_id)
 
+    def reconcile_saved_results(self, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        """Explicit synchronous cache-only repair; never invokes or queues a model."""
+        from .autonomous_reconciliation_v1 import reconcile_saved_results
+        return reconcile_saved_results(self, claim_id, work_store=work_store,
+            expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+            idempotency_key=idempotency_key, actor=actor, reason=reason)
+
+    def _apply_verified(self, claim_id, workflow, context, proposal, verifier, verified, compilation):
+        base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
+                        'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
+                        'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
+                        'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
+                        'knowledge_rejections': verified['knowledge_rejections'],
+                        'item_rejections': verified['item_rejections']}
+        if compilation is not None:
+            base_receipt['knowledge_recipe_compilation'] = compilation
+        if context.get('document_review_policy') is not None:
+            base_receipt['document_review_policy'] = context['document_review_policy']
+        pinned = next((k for k in context.get('compatible_knowledge', []) if k['family'] == verified['category']['family']), None)
+        version = next((k for k in self.knowledge.view()['versions'] if pinned and k['knowledge_id'] == pinned['knowledge_id']
+                        and k['version'] == pinned['version']), None)
+        if version:
+            graph, facts, obligations = self.knowledge.instantiate(version, claim_id, verified)
+            self._once(claim_id, f'{workflow}.reuse', 'knowledge.used', {'knowledge': {
+                'knowledge_id': version['knowledge_id'], 'version': version['version'],
+                'definition_sha256': version['qualification']['definition_sha256'], 'rule_pack_sha256': version['rule_pack_sha256'],
+                'applicability': 'same_verified_family_and_rule_version', 'avoided_rule_compilations': 1,
+                'reused_evidence_recipes': len(version.get('evidence_recipes', [])), 'workflow_id': workflow}})
+        else:
+            graph, facts, obligations = compile_process(self.policy, claim_id, verified)
+        self._once(claim_id, f'{workflow}.interpretation', 'interpretation.accepted', lambda s: {
+            'graph': graph, 'facts': facts, 'obligations': obligations,
+            'receipt': receipt(s, 'accept_verified_interpretation', **base_receipt, after_graph_sha256=graph['graph_sha256'])})
+        self._phase(claim_id, workflow, 'progressing', 'Applying verified evidence to active process obligations.')
+        self._documents(claim_id, workflow, verified, base_receipt)
+        self._steps(claim_id, workflow, verified, base_receipt)
+        self._outcome(claim_id, workflow, verified, base_receipt)
+        self._learn(claim_id, workflow)
+
     def _documents(self, claim_id, workflow, verified, base_receipt):
         context = self.store.get(claim_id).get('semantic_contexts', {}).get(workflow, {})
         review_policy = context.get('document_review_policy')
@@ -241,6 +253,9 @@ class AutonomousController:
                 or base_receipt.get('document_review_policy') != review_policy):
             raise ValueError('document review policy differs from the pinned workflow context')
         for document in verified['documents']:
+            if any(row['item_id'] == f"document:{document['document_type']}:{document['artifact_id']}"
+                   for row in verified['item_rejections']):
+                continue
             state = self.store.get(claim_id)
             graph = deepcopy(state['graph'])
             view = evaluate(graph)

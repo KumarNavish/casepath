@@ -88,12 +88,23 @@ def test_compiler_cannot_invent_support_for_ineligible_documents(robin, mutation
     original = deepcopy(proposal)
     compiled, receipt = compile_verification_proposal(context, proposal)
     assert proposal == original and compiled == proposal and receipt['derived_items'] == []
-    if mutation in {'unsupported', 'wrong_source', 'wrong_artifact_quote', 'invented_quote'}:
+    if mutation == 'unsupported':
         with pytest.raises(ValueError):
             validate_interpretation(policy, context['sources'], compiled, accept_all(compiled))
     else:
         verified = validate_interpretation(policy, context['sources'], compiled, accept_all(compiled))
         assert verified['documents'][1]['assessment'] == 'insufficient'
+        if mutation in {'wrong_source', 'wrong_artifact_quote', 'invented_quote'}:
+            rejected = verified['documents'][1]
+            reason = ('document assessment source differs from its citations' if mutation == 'wrong_source'
+                      else 'interpretation citation is not an exact claim source span')
+            assert rejected['citations'] == []
+            assert rejected['independently_verified'] is False
+            assert rejected['summary'] != document['summary']
+            assert verified['item_rejections'] == [{
+                'item_id': 'document:' + document['document_type'] + ':' + document['artifact_id'],
+                'item': document, 'reason': reason}]
+            assert proposal == original
 
 
 def test_invalid_model_candidate_is_preserved_and_duplicates_are_never_repaired(robin):

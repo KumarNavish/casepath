@@ -221,6 +221,7 @@ def validate_interpretation(policy, acquired_sources, proposal, verifier):
     sources = {row['artifact_id']: row for row in acquired_sources}
     result = deepcopy(proposal)
     result['category']['citations'] = _citations(proposal['category'], sources, required=True)
+    result['item_rejections'] = []
     documents = {row['document_type'] for row in template['process_catalog']['documents']}
     nodes = {row['node_id'] for row in template['process_catalog']['nodes']}
     for field, prefix, key in (('conditions', 'condition', 'flag'), ('documents', 'document', 'document_type'),
@@ -232,7 +233,22 @@ def validate_interpretation(policy, acquired_sources, proposal, verifier):
             identity = f"{prefix}:{row[key]}" + (f":{row['artifact_id']}" if field == 'documents' else '')
             value_key = 'verdict' if field == 'conditions' else 'assessment' if field == 'documents' else 'status'
             established = row[value_key] not in {'unresolved', 'insufficient'}
-            row['citations'] = _citations(row, sources, required=established)
+            try:
+                row['citations'] = _citations(row, sources, required=established)
+                if field == 'documents':
+                    source = sources.get(row['artifact_id'])
+                    if source is None or any(c['artifact_id'] != row['artifact_id'] for c in row['citations']):
+                        raise ValueError('document assessment source differs from its citations')
+            except ValueError as error:
+                # Reject the entire proposition, including otherwise exact spans
+                # and its factual narrative. The raw item remains audit material.
+                reason = str(error)
+                result['item_rejections'].append({'item_id': identity, 'item': deepcopy(items[identity]),
+                                                  'reason': reason})
+                row[value_key] = 'insufficient' if field == 'documents' else 'unresolved'
+                row.update(citations=[], independently_verified=False,
+                           summary='This interpretation item was rejected: ' + reason + '.')
+                continue
             row['independently_verified'] = accepted[identity]
             # Incomplete extraction cannot establish sufficiency or a negative
             # fact. Positive exact observations remain inspectable but unresolved.
@@ -240,19 +256,21 @@ def validate_interpretation(policy, acquired_sources, proposal, verifier):
             if not accepted[identity] or not complete:
                 row[value_key] = 'insufficient' if field == 'documents' else 'unresolved'
             if field == 'documents':
-                source = sources.get(row['artifact_id'])
-                if source is None or any(c['artifact_id'] != row['artifact_id'] for c in row['citations']):
-                    raise ValueError('document assessment source differs from its citations')
                 if source.get('role') in {'message', 'customer_message', 'intake_message'}:
                     row['assessment'] = 'insufficient'
                     row['summary'] = 'An account of a document cannot replace the original supporting file.'
     result['rule_pack_sha256'] = digest_value(template)
     result['knowledge_candidates'] = []
     result['knowledge_rejections'] = []
+    rejected_documents = {(row['item']['document_type'], row['item']['artifact_id'])
+                          for row in result['item_rejections'] if row['item_id'].startswith('document:')}
     for row in proposal.get('knowledge_candidates', []):
         try:
             if row['document_type'] not in documents:
                 raise ValueError('Knowledge candidate refers to an unknown policy item.')
+            if any((row['document_type'], citation['artifact_id']) in rejected_documents
+                   for citation in row['citations']):
+                raise ValueError('Knowledge candidate cites a document item rejected during citation admission.')
             citations = _citations(row, sources, required=True)
             if not accepted[f"knowledge:{row['document_type']}"]:
                 raise ValueError('The independent verifier rejected this knowledge candidate.')

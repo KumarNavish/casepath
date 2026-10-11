@@ -1083,6 +1083,27 @@ class WorkStore:
             raise WorkStoreError("autonomous provider ledger is invalid") from exc
         return {"workflows": workflows, "calls": calls, "pending": pending, "unspent_reserved": unused}
 
+    def saved_completed_autonomous_workflow(self, workflow_id):
+        """Read one sealed, fully completed pair without reservation or send authority."""
+        if not isinstance(workflow_id, str) or not 1 <= len(workflow_id) <= 180:
+            raise WorkStoreError("invalid saved autonomous workflow identity")
+        with self.connect() as db:
+            db.execute("BEGIN")
+            budget = self._external_budget(db)
+            policy = (budget or {}).get("autonomous_policy")
+            work = self._autonomous_usage(db, policy)["workflows"].get(workflow_id)
+            if (work is None or set(work["calls"]) != {"interpret", "verify"}
+                    or any((call["outcome"] or {}).get("status") != "completed" for call in work["calls"].values())
+                    or (work["terminal"] or {}).get("status") != "completed"
+                    or work["terminal"]["receipt_sha256"] != work["calls"]["verify"]["outcome"]["receipt_sha256"]):
+                raise ConflictError("cache-only reconciliation requires both completed saved stages and their completed terminal")
+            result = {"record": work["record"], "terminal": work["terminal"],
+                      "calls": {stage: {"intent": call["intent"], "outcome": call["outcome"]}
+                                for stage, call in work["calls"].items()}}
+            # End the SELECT snapshot explicitly; it never acquires a write lock.
+            db.commit()
+            return json.loads(canonical(result))
+
     def begin_autonomous_call(self, stage, identity, config, *, request_sha256, request_bytes, context_sha256, schema_sha256, proposal_sha256=None, allow_send=True):
         """Reserve before send, or return the exact persisted outcome without send."""
         self._autonomous_inputs(identity, config)

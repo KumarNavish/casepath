@@ -80,7 +80,8 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
                 'storage': 'remote_primary', 'writable': writable}
 
     api.include_router(create_autonomous_router(service, lambda: state['work'].external_budget(),
-                                               corpus_getter=lambda: state['corpus']))
+                                               corpus_getter=lambda: state['corpus'],
+                                               saved_work_getter=lambda: state['work']))
     api.add_event_handler('startup', startup)
     api.add_event_handler('shutdown', shutdown)
     api.add_middleware(SitesProxyBoundary, site_origin=origin, token=token)

@@ -141,6 +141,74 @@ def _catalogue_entry(worker, supplied):
     return config, fetched_at
 
 
+class SavedAutonomousResultsV1:
+    """A detached cache-only admission gate, with no transport or ledger mutator.
+
+    Frozen requests are reconstructed by the same pure builder as live calls.
+    Both stages are checked before any claim journal admission is possible.
+    """
+    def __init__(self, workflow, *, context, identity, schemas):
+        frozen = json.loads(canonical(workflow))
+        record, calls, terminal = frozen['record'], frozen['calls'], frozen['terminal']
+        if (not isinstance(record, dict) or not isinstance(terminal, dict) or not isinstance(calls, dict)
+                or set(calls) != {'interpret', 'verify'}
+                or any(not isinstance(call, dict) or not isinstance(call.get('intent'), dict)
+                       or not isinstance(call.get('outcome'), dict) for call in calls.values())):
+            raise ValueError('both completed saved semantic records are required')
+        sealed = [(record, 'workflow_sha256'), (terminal, 'terminal_sha256')]
+        sealed += [(call['intent'], 'intent_sha256') for call in calls.values()]
+        sealed += [(call['outcome'], 'receipt_sha256') for call in calls.values()]
+        if (any(value[field] != digest({k: v for k, v in value.items() if k != field}) for value, field in sealed)
+                or record['config_sha256'] != digest(record['config'])
+                or record['identity_sha256'] != digest(record['identity'])
+                or terminal['workflow_sha256'] != record['workflow_sha256']):
+            raise ValueError('saved semantic records or frozen configuration seals differ')
+        if (record['identity'] != identity or set(calls) != {'interpret', 'verify'}
+                or terminal['status'] != 'completed'
+                or any(call['outcome']['status'] != 'completed' for call in calls.values())
+                or terminal['receipt_sha256'] != calls['verify']['outcome']['receipt_sha256']):
+            raise ValueError('saved semantic pair or frozen workflow identity differs')
+        if set(schemas) != {'interpret', 'verify'}:
+            raise ValueError('both exact saved-result schemas are required')
+        self.config = record['config']
+        proposal = calls['interpret']['outcome']['result']
+        prepared = {}
+        for stage in ('interpret', 'verify'):
+            schema = schemas[stage]
+            validate_schema(schema)
+            if schema['type'] != 'object':
+                raise ValueError('saved semantic results require closed object schemas')
+            call = calls[stage]
+            if (call['intent']['workflow_sha256'] != record['workflow_sha256']
+                    or call['outcome']['intent_sha256'] != call['intent']['intent_sha256']
+                    or call['outcome']['result_sha256'] != digest(call['outcome']['result'])):
+                raise ValueError('saved semantic receipt or result linkage differs')
+            validate_result(call['outcome']['result'], schema)
+            envelope = context if stage == 'interpret' else {'context': context, 'proposal': proposal}
+            prepared[stage] = AutonomousModelV1.prepare_request(self, stage, envelope, schema)
+            if any(prepared[stage][key] != call['intent'][key] for key in (
+                    'request_sha256', 'request_bytes', 'context_sha256', 'schema_sha256',
+                    'proposal_sha256', 'maximum_cost_usd')):
+                raise ValueError('saved semantic request, context, schema or proposal identity differs')
+        compilation = prepared['verify']['compilation']
+        if (compilation is not None
+                and calls['verify']['outcome'].get('metadata', {}).get('knowledge_recipe_compilation') != compilation):
+            raise ValueError('saved verifier receipt differs from the frozen compiled proposal')
+        self.proposal = {'result': proposal, 'receipt': calls['interpret']['outcome']}
+        self.verifier = {'result': calls['verify']['outcome']['result'], 'receipt': calls['verify']['outcome']}
+        self.compilation = compilation
+        admission = {'contract': 'casepath.saved-result-admission/1.0.0', 'identity': identity,
+                     'workflow_sha256': record['workflow_sha256'], 'config_sha256': record['config_sha256'],
+                     'terminal_sha256': terminal['terminal_sha256'], 'context_sha256': digest(context),
+                     'proposal_sha256': digest(proposal), 'verifier_sha256': digest(self.verifier['result']),
+                     'proposal_receipt_sha256': self.proposal['receipt']['receipt_sha256'],
+                     'verifier_receipt_sha256': self.verifier['receipt']['receipt_sha256']}
+        for stage in ('interpret', 'verify'):
+            for key in ('request_sha256', 'schema_sha256'):
+                admission[stage + '_' + key] = prepared[stage][key]
+        self.admission = {**admission, 'admission_sha256': digest(admission)}
+
+
 class AutonomousModelV1:
     def __init__(self, store, *, worker, schemas, catalogue_entry=None, client=None):
         if set(schemas) != {"interpret", "verify"}:

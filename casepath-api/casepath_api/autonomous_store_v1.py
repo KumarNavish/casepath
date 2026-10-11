@@ -574,6 +574,29 @@ class AutonomousStore:
                 if item.get("review") == "sufficient" and (not quote or not source["complete"] or source["role"] == "customer_message"):
                     raise AutonomousStoreError("document sufficiency requires a complete supporting source")
 
+    @staticmethod
+    def _reconciliation_admission(state, admission):
+        hashes = {'workflow_sha256', 'config_sha256', 'terminal_sha256', 'context_sha256',
+                  'proposal_sha256', 'verifier_sha256', 'proposal_receipt_sha256', 'verifier_receipt_sha256',
+                  'interpret_request_sha256', 'interpret_schema_sha256', 'verify_request_sha256',
+                  'verify_schema_sha256', 'admission_sha256'}
+        _fields(admission, hashes | {'contract', 'identity'})
+        if (admission['contract'] != 'casepath.saved-result-admission/1.0.0'
+                or any(not isinstance(admission[key], str) or not _HASH.fullmatch(admission[key]) for key in hashes)
+                or admission['admission_sha256'] != digest_value({k: v for k, v in admission.items() if k != 'admission_sha256'})):
+            raise AutonomousStoreError('saved-result reconciliation admission seal differs')
+        identity = admission['identity']
+        required = {'workflow_id', 'claim_id', 'policy_id', 'source_roster_sha256', 'rule_set_sha256'}
+        bindings = {'original_binding_sha256', 'claim_binding_sha256', 'corpus_manifest_sha256'}
+        _fields(identity, required, bindings)
+        if (identity['workflow_id'] != state['run_id'] or identity['claim_id'] != state['claim_id']
+                or identity['policy_id'] != state['policy_id']
+                or identity['source_roster_sha256'] != digest_value(state['source_descriptors'])
+                or not isinstance(identity['rule_set_sha256'], str) or not _HASH.fullmatch(identity['rule_set_sha256'])
+                or any(identity[key] != state.get('original_binding', {}).get(key) for key in set(identity) & bindings)
+                or admission['context_sha256'] != digest_value(state.get('semantic_contexts', {}).get(state['run_id']))):
+            raise AutonomousStoreError('saved-result reconciliation workflow, source or context identity differs')
+
     def _reduce(self, state, event):
         kind, payload, claim_id = event["kind"], event["payload"], event["claim_id"]
         if state is None:
@@ -643,6 +666,57 @@ class AutonomousStore:
                 if (state.get("deferral") or {}).get("code") != "paused":
                     raise AutonomousStoreError("only explicitly paused work can be resumed")
                 state.update(status="running", phase="queued", deferral=None)
+            elif kind == 'reconciliation.started':
+                _fields(payload, {'reconciliation_id', 'request', 'original_deferral',
+                                  'failure_event_sha256', 'admission'})
+                identity = _identifier(payload['reconciliation_id'], 'reconciliation identity')
+                request = payload['request']
+                _fields(request, {'claim_id', 'expected_revision', 'expected_state_sha256',
+                                  'idempotency_key', 'actor', 'reason'})
+                _text(request['actor'], 'reconciliation actor', 180)
+                _text(request['reason'], 'reconciliation reason')
+                failure = next((row for row in reversed(state['events']) if row['kind'] == 'work.deferred'), None)
+                if (request['claim_id'] != claim_id or request['idempotency_key'] != identity
+                        or type(request['expected_revision']) is not int or request['expected_revision'] != state['revision']
+                        or request['expected_state_sha256'] != state['state_sha256']
+                        or (state.get('deferral') or {}).get('code') != 'verification_deferred'
+                        or payload['original_deferral'] != state['deferral'] or failure is None
+                        or failure['event_sha256'] != payload['failure_event_sha256']):
+                    raise AutonomousStoreError('saved-result reconciliation differs from the exact failed claim head')
+                self._reconciliation_admission(state, payload['admission'])
+                reconciliations = state.setdefault('reconciliations', [])
+                if any(row['reconciliation_id'] == identity for row in reconciliations):
+                    raise AutonomousStoreError('saved-result reconciliation identity is already recorded')
+                reconciliations.append({**deepcopy(payload), 'status': 'started',
+                                        'started_event_sha256': event['event_sha256']})
+            elif kind in {'reconciliation.completed', 'reconciliation.failed'}:
+                _fields(payload, {'reconciliation_id', 'admission_sha256'},
+                        {'reason'} if kind == 'reconciliation.failed' else ())
+                entry = next((row for row in state.get('reconciliations', [])
+                              if row['reconciliation_id'] == payload['reconciliation_id']), None)
+                if (entry is None or entry['status'] != 'started'
+                        or entry['admission']['admission_sha256'] != payload['admission_sha256']
+                        or state.get('deferral') != entry['original_deferral']):
+                    raise AutonomousStoreError('saved-result reconciliation no longer owns its original failure')
+                if kind == 'reconciliation.failed':
+                    _text(payload.get('reason'), 'reconciliation failure reason')
+                    entry.update(status='failed', failure_reason=payload['reason'])
+                    state.update(status='deferred', phase='deferred')
+                else:
+                    self._reconciliation_admission(state, entry['admission'])
+                    admission = entry['admission']
+                    def matching(kind):
+                        return any(row['kind'] == kind
+                                   and row['receipt'].get('workflow_id') == admission['identity']['workflow_id']
+                                   and row['receipt'].get('proposal_sha256') == admission['proposal_sha256']
+                                   and row['receipt'].get('verifier_sha256') == admission['verifier_sha256']
+                                   and row['receipt'].get('proposal_receipt', {}).get('receipt_sha256') == admission['proposal_receipt_sha256']
+                                   and row['receipt'].get('verifier_receipt', {}).get('receipt_sha256') == admission['verifier_receipt_sha256']
+                                   for row in state['receipts'])
+                    if not state.get('outcome') or not matching('interpretation.accepted') or not matching('outcome.recorded'):
+                        raise AutonomousStoreError('saved-result reconciliation requires its linked accepted interpretation and outcome')
+                    entry.update(status='completed', completed_event_sha256=event['event_sha256'])
+                    state['deferral'] = None
             elif kind == "sources.arrived":
                 _fields(payload, {"sources"})
                 sources = payload["sources"]
