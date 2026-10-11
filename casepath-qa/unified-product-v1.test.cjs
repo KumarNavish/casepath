@@ -83,6 +83,14 @@ test('execution failure remains separate from an accepted evidence deferral in c
  assert.equal(ui.replayCanAdvance({...failed,status:'completed'}),false,'a completed code without an accepted outcome cannot finish the replay');
  assert.equal(ui.replayCanAdvance(evidence),true);
  assert.equal(ui.replayCanAdvance({...evidence,status:'running'}),false);
+ for(const code of ['verification_deferred','provider_deferred','execution_deferred','model_unavailable','paused']) {
+  const partial={...evidence,deferral:{code,reason:'Execution remains unresolved.'}};
+  assert.equal(ui.replayCanAdvance(partial),false,'an existing outcome cannot clear a current execution deferral');
+  assert.doesNotMatch(ui.workMarkup(partial,{},null,[]),/<strong>Evidence deferred<\/strong>/);
+ }
+ assert.equal(ui.replayCanAdvance({...evidence,reconciliations:[{status:'failed'}]}),false);
+ assert.equal(ui.replayCanAdvance({...evidence,reconciliations:[{status:'started'}]}),false);
+ assert.equal(ui.replayCanAdvance({...evidence,reconciliations:[{status:'failed'},{status:'completed'}]}),true);
  assert.equal(JSON.stringify([failed,evidence]),before);
  const demo=ui.demonstrationMarkup([failed,evidence],null);
  assert.match(demo,/sources and recorded histories/);assert.match(demo,/Playback stops if no operational outcome was accepted/);assert.doesNotMatch(demo,/accepted histories/);

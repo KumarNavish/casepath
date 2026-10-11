@@ -139,6 +139,28 @@ test('knowledge qualification and quarantine render recorded proofs rather than 
  assert.match(html,/243 branch assignments checked/);assert.match(html,/No case values or files/);assert.match(html,/Changed rule identity/);assert.doesNotMatch(html,/more accurate|improved accuracy|human approved/i);
 });
 
+function reconciliation(claim_id,status='completed') {
+ const admission={contract:'casepath.saved-result-admission/1.0.0',identity:{claim_id,workflow_id:'saved-workflow'}};
+ for(const field of ['workflow_sha256','config_sha256','terminal_sha256','context_sha256','proposal_sha256','verifier_sha256','proposal_receipt_sha256','verifier_receipt_sha256','interpret_request_sha256','interpret_schema_sha256','verify_request_sha256','verify_schema_sha256','admission_sha256'])admission[field]=sha(field);
+ return {reconciliation_id:'saved-reconciliation',request:{claim_id,expected_revision:11,expected_state_sha256:sha(`${claim_id}:11`),idempotency_key:'saved-reconciliation-key',actor:'Local operator',reason:'Review the saved failure.'},original_deferral:{code:'verification_deferred',reason:'interpretation citation is not an exact claim source span'},failure_event_sha256:sha('original-failure'),admission,status,started_event_sha256:sha('reconciliation-started'),...(status==='completed'?{completed_event_sha256:sha('reconciliation-completed')}:status==='failed'?{failure_reason:'Saved-result admission remains unresolved.'}:{})};
+}
+test('reconciliation and item rejection history preserve rejected provenance without presenting proposed quotes as accepted evidence',()=>{
+ const attack='<img src=x onerror="alert(1)">',rejection={item_id:'step:lt_type',reason:'citation is not exact: '+attack,item:{node_id:'lt_type',citations:[{artifact_id:'original',quote:'die Familie',claimed_extension:attack},{artifact_id:'outside-claim',quote:'Unbound text'}]}};
+ const receipt={receipt_sha256:hash('f'),item_rejections:[rejection,{item_id:'document:notice:original',reason:'No sufficient review accepted.',item:{artifact_id:'original',verdict:'sufficient'}}]};
+ for(const status of ['started','failed','completed']) {
+  const record=reconciliation('claim-a',status),s=state({status:'deferred',deferral:status==='completed'?null:record.original_deferral,outcome:status==='completed'?{status:'deferred',summary:'Evidence remains unresolved.'}:null,reconciliations:[record],receipts:[{receipt}],actions:[{result:{action_id:'rejected-item-review',status:'completed',citations:[]},receipt}]});
+  const before=JSON.stringify(s),journal=[{seq:11,kind:'work.deferred',payload:record.original_deferral},{seq:12,kind:`reconciliation.${status}`,payload:{reconciliation_id:record.reconciliation_id}}],html=ui.workMarkup(s,{},'branch',journal,'activity');
+  assert.ok(html.includes(`Saved-result reconciliation ${status}`));assert.ok(html.includes(record.original_deferral.reason));assert.ok(html.includes(record.admission.proposal_sha256));assert.ok(html.includes(record.admission.verifier_receipt_sha256));
+  for(const value of ['Rejected · step:lt_type','Rejected · document:notice:original','Original rejected proposal','die Familie','data-au-source="original"','The original execution failure remains in the journal.'])assert.ok(html.includes(value),value);
+  assert.doesNotMatch(html,/data-au-source="outside-claim"|data-au-citation=|<q>|<mark|<img|onerror="alert/);assert.match(html,/&lt;img/);
+  if(status==='completed'){assert.match(html,/<strong>Evidence deferred<\/strong>/);assert.equal(ui.replayCanAdvance(s),true);}
+  else assert.equal(ui.replayCanAdvance(s),false);
+  assert.equal(JSON.stringify(s),before);
+ }
+ const s=state({status:'deferred',deferral:{code:'execution_deferred',reason:'Current execution stopped.'},outcome:{status:'deferred',summary:'Older accepted assessment.'}}),html=ui.workMarkup(s,{},'branch',[]);
+ assert.match(html,/<strong>Execution failed<\/strong><span>Current execution stopped\.<\/span>/);assert.match(html,/Retained outcome record/);assert.match(html,/Older accepted assessment/);
+});
+
 // A minimal DOM boundary exercises the production mount/request/submit lifecycle.
 // It does not stand in for browser layout or native keyboard acceptance.
 function dom() {
@@ -390,17 +412,17 @@ function routingFixture(t,fragment='') {
 function navClick(f,value) {
  const target={dataset:{auNav:value},closest(){return this;},hasAttribute:attr=>attr==='data-au-nav'};f.listeners.get('click')({target});
 }
-for(const scenario of ['failed-only','evidence-deferred','failed-then-reconciled']) test(`recorded presentation retains ${scenario} history and advances only after an accepted outcome`,async t=>{
+for(const scenario of ['failed-only','partial-outcome-with-failure','failed-reconciliation','evidence-deferred','failed-then-reconciled']) test(`recorded presentation retains ${scenario} history and advances only after an accepted outcome`,async t=>{
  t.mock.timers.enable({apis:['setTimeout']});
  const f=dom(),id=ui.DEMO_CASES[0].claim_id,next=ui.DEMO_CASES[1].claim_id;
  const stopped={code:'verification_deferred',reason:'interpretation citation is not an exact claim source span',details:{error_type:'ValueError',workflow_id:'saved-workflow'}};
  const outcome={status:'deferred',title:'Recorded evidence assessment',summary:'The supplied source leaves a question unresolved.',missing_evidence:[],unresolved_facts:[]};
- const head=scenario==='failed-only'?11:scenario==='failed-then-reconciled'?12:11;
+ const blocked=['failed-only','partial-outcome-with-failure','failed-reconciliation'].includes(scenario),head=scenario==='failed-then-reconciled'?15:scenario==='failed-reconciliation'?13:11;
  const zero=claim_id=>({claim_id,title:'Original source packet',message:'Original customer message.',revision:0,state_sha256:sha(`${claim_id}:0`),status:'not_started',mode:'unprocessed',phase:'not_run',graph:null,evaluation:null,outcome:null,deferral:null,facts:[],obligations:[],actions:[],acquired_sources:[],source_descriptors:[]});
- const saved=seq=>seq===0?zero(id):state({claim_id:id,title:'Original source packet',revision:seq,state_sha256:sha(`${id}:${seq}`),last_event_sha256:sha(`event:${seq}`),graph:{...state().graph,claim_id:id},status:seq===11||seq===head?'deferred':'running',phase:seq===11||seq===head?'deferred':'verifying',outcome:seq===head&&scenario!=='failed-only'?outcome:null,deferral:seq===11&&scenario!=='evidence-deferred'?stopped:null,actions:[]});
+ const saved=seq=>seq===0?zero(id):state({claim_id:id,title:'Original source packet',revision:seq,state_sha256:sha(`${id}:${seq}`),last_event_sha256:sha(`event:${seq}`),graph:{...state().graph,claim_id:id},status:seq>=11?'deferred':'running',phase:seq>=11?'deferred':'verifying',outcome:seq>=11&&['partial-outcome-with-failure','failed-reconciliation','evidence-deferred'].includes(scenario)||seq>=14?outcome:null,deferral:seq>=11&&scenario!=='evidence-deferred'&&seq<15?stopped:null,reconciliations:seq>=12?[reconciliation(id,seq===15?'completed':scenario==='failed-reconciliation'&&seq===13?'failed':'started')]:[],actions:[]});
  const envelope=(claim_id,seq)=>{
   const current_revision=claim_id===id?head:0,s=claim_id===id?saved(seq):zero(claim_id);
-  const events=Array.from({length:seq},(_,i)=>({seq:i+1,kind:i+1===11?'work.deferred':i===0?'intake':'work.phase',revision:i+1,state_sha256:sha(`${id}:${i+1}`),event_sha256:sha(`event:${i+1}`),payload:i+1===11?stopped:{phase:'verifying'}}));
+  const events=Array.from({length:seq},(_,i)=>({seq:i+1,kind:({11:scenario==='evidence-deferred'?'outcome.recorded':'work.deferred',12:'reconciliation.started',13:scenario==='failed-reconciliation'?'reconciliation.failed':'interpretation.accepted',14:'outcome.recorded',15:'reconciliation.completed'})[i+1] || (i===0?'intake':'work.phase'),revision:i+1,state_sha256:sha(`${id}:${i+1}`),event_sha256:sha(`event:${i+1}`),payload:i+1===11?scenario==='evidence-deferred'?{outcome}:stopped:i+1===12?reconciliation(id,'started'):i+1===13&&scenario==='failed-reconciliation'?{reconciliation_id:'saved-reconciliation',admission_sha256:sha('admission_sha256'),reason:'Saved-result admission remains unresolved.'}:i+1===15?{reconciliation_id:'saved-reconciliation',admission_sha256:sha('admission_sha256')}:{phase:'verifying'}}));
   return {state:s,projection:{revision:seq,state_sha256:s.state_sha256},events,cursor_sha256:seq?sha(`event:${seq}`):null,mode:'replay',replay_only:true,through_seq:seq,current_revision,current_state_sha256:sha(`${claim_id}:${current_revision}`),current_event_sha256:current_revision?sha(`event:${current_revision}`):null,provenance:seq?{event_sha256:s.last_event_sha256}:{} };
  };
  const api=fakeApi({handle:async(path)=>{
@@ -409,14 +431,17 @@ for(const scenario of ['failed-only','evidence-deferred','failed-then-reconciled
  }});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.showDemonstration();
  const target={dataset:{},closest(){return this;},hasAttribute:attr=>attr==='data-au-demo-play'};f.listeners.get('click')({target});await settle();
- for(let seq=1;seq<=head;seq++){t.mock.timers.tick(1400);await settle();assert.ok(f.host.innerHTML.includes(`Claim · revision ${seq}`));}
+ for(let seq=1;seq<=head;seq++){
+  t.mock.timers.tick(1400);await settle();assert.ok(f.host.innerHTML.includes(`Claim · revision ${seq}`));
+  if(scenario==='failed-then-reconciled'&&seq>=12){assert.ok(f.host.innerHTML.includes(seq===15?'Saved-result reconciliation completed':'Saved-result reconciliation started'));assert.ok(f.host.innerHTML.includes(stopped.reason));}
+ }
  assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length,head+1,'every saved prefix, including failure, remains inspectable');
- if(scenario==='failed-only')assert.match(f.host.innerHTML,/>Execution failed<\/span>/);
+ if(blocked)assert.match(f.host.innerHTML,/>Execution failed<\/span>/);
  t.mock.timers.tick(3200);await settle();
  const nextReads=api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`));
- assert.equal(nextReads.length,scenario==='failed-only'?0:1);
- if(scenario==='failed-only'){
-  assert.match(f.status.textContent,/no accepted operational outcome.*stopped at its saved head/i);
+ assert.equal(nextReads.length,blocked?0:1);
+ if(blocked){
+  assert.match(f.status.textContent,/no settled operational outcome.*stopped at its saved head/i);
   assert.ok(f.host.innerHTML.includes(stopped.reason));assert.doesNotMatch(f.host.innerHTML,/data-au-demo-stop/);
   t.mock.timers.tick(20000);await settle();assert.equal(api.calls.filter(call=>call.path.includes(`/claims/${next}/replay?`)).length,0);
  }
@@ -583,6 +608,16 @@ test('source inspection verifies exact identity, preserves claim context and ret
  assert.equal(f.host.innerHTML,verified);assert.equal(f.dialog.open,true);assert.equal(f.container.ownerDocument.activeElement,f.close);
  f.listeners.get('click')({target:f.close});assert.equal(f.dialog.open,false);assert.equal(f.container.ownerDocument.activeElement,trigger);assert.deepEqual(trigger.focusOptions,{preventScroll:true});
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('a rejected citation opens its verified original without highlighting the invalid proposed quote',async t=>{
+ const f=sourceFixture(),body='Die Familie is the exact original text.',source={claim_id:'claim-a',artifact_id:'original',sha256:hash('d'),text:body,text_sha256:sha(body),complete:true};
+ const saved=state({receipts:[{receipt:{receipt_sha256:hash('f'),item_rejections:[{item_id:'step:lt_type',reason:'Quote is not an exact source span.',item:{citations:[{artifact_id:'original',quote:'die Familie'}]}}]}}]});
+ const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.endsWith('/sources/claim-a/original/text')?response(source):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+ const markup=f.host.innerHTML.match(/<button[^>]*data-au-source="original"[^>]*data-au-source-origin="rejected:[^"]*"[^>]*>/)?.[0];assert.ok(markup);assert.doesNotMatch(markup,/data-au-citation/);
+ const trigger=control(f,'data-au-source','original');trigger.dataset.auSourceOrigin=markup.match(/data-au-source-origin="([^"]*)"/)[1];
+ f.listeners.get('click')({target:trigger});await waitFor(()=>f.body.innerHTML.includes('Die Familie'));
+ assert.doesNotMatch(f.body.innerHTML,/<mark|die Familie/);assert.ok(f.body.innerHTML.includes(source.text_sha256));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('an invalid source text never becomes cited evidence and a late source response cannot reopen another claim',async t=>{
