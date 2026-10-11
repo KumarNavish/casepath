@@ -64,6 +64,67 @@ test('selected step joins condition facts, obligations, rule and nested recorded
  const docs=ui.obligationMarkup(s,'branch');assert.match(docs,/data-au-select="branch"/);assert.match(docs,/Needed now/);
 });
 
+test('document focus follows its exact obligation and required fact when a node has multiple requirements',()=>{
+ const s=state(),first=s.obligations[0];
+ s.facts.push({fact_id:'fact:receipt',label:'Delivery date',status:'established'}, {fact_id:'fact:other-notice',label:'Second notice fact',status:'unresolved'});
+ s.obligations.push({...first,obligation_id:'obligation:branch:receipt',document_type:'receipt',required_fact_ids:['fact:receipt']},
+  {...first,obligation_id:'obligation:branch:other-notice',required_fact_ids:['fact:other-notice']});
+ s.evaluation.documents.push({document_type:'receipt',route_state:'needed_now',review_state:'unreviewed'});
+ const before=JSON.stringify(s),checklist=ui.obligationMarkup(s,'branch');
+ for(const obligation of s.obligations) {
+  const item=checklist.match(new RegExp(`<li[^>]*data-au-obligation="${obligation.obligation_id}"[\\s\\S]*?<\\/li>`))[0];
+  assert.ok(item.includes(`data-au-select-document="${obligation.document_type}"`));
+  assert.ok(item.includes(`data-au-select-obligation="${obligation.obligation_id}"`));
+  assert.ok(item.includes(`data-au-select-fact="${obligation.required_fact_ids[0]}"`));
+  const html=ui.evidencePathMarkup(s,'branch',{}, {document:obligation.document_type,obligation:obligation.obligation_id,trace:true});
+  assert.match(html,new RegExp(`data-au-fact="${obligation.required_fact_ids[0]}"`),'a focused requirement defaults to its own required fact');
+  assert.match(html,new RegExp(`data-au-document="${obligation.document_type}"[^>]*data-au-obligation="${obligation.obligation_id}"`));
+ }
+ assert.equal(JSON.stringify(s),before,'document focus is a read-only join over accepted state');
+});
+
+function assessedState(extra={}) {
+ const s=state({run_id:'accepted-run',source_roster_sha256:hash('1'),...extra});
+ s.semantic_contexts={'accepted-run':{claim_id:s.claim_id,workflow_id:'accepted-run',sources:s.source_descriptors.map(source=>({artifact_id:source.artifact_id,sha256:source.sha256}))}};
+ s.receipts=[{kind:'interpretation.accepted',receipt:{operation:'interpretation.accept',workflow_id:'accepted-run',receipt_sha256:hash('2'),parent_revision:1,parent_state_sha256:hash('3'),checks:[{item_id:'condition:family_home',accepted:true}]}}];
+ return s;
+}
+
+test('prior assessment labels survive new source acquisition and failed rereading without rewriting valid evidence',()=>{
+ const accepted=assessedState(),sameRosterRetry={...structuredClone(accepted),run_id:'retry-run',status:'deferred',deferral:{code:'model_unavailable'}};
+ assert.doesNotMatch(ui.workMarkup(sameRosterRetry,{},'branch',[]),/data-au-assessment-freshness="prior"/,'a changed run alone does not make a same-input assessment stale');
+ const fresh={claim_id:accepted.claim_id,artifact_id:'later-source',file_name:'later-statement.txt',sha256:hash('4'),role:'supporting_document',media_type:'text/plain'};
+ for(const acquired of [false,true]) for(const code of ['model_unavailable','call_limit_reached','verification_deferred']) {
+  const s=structuredClone(accepted);s.source_descriptors.push(fresh);s.source_roster_sha256=hash('5');s.run_id='retry-run';s.status='deferred';s.deferral={code,reason:'The new evidence has no accepted reassessment.'};
+  if(acquired)s.acquired_sources.push({artifact_id:fresh.artifact_id,complete:true,extraction:'utf8'});
+  const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[],'sources');
+  assert.match(html,/data-au-assessment-freshness="prior"/);assert.match(html,/Prior assessment/);assert.match(html,/1 new source awaiting assessment/);
+  assert.match(html,/data-au-source-freshness="unassessed"/);assert.ok(html.includes(fresh.file_name));
+  assert.ok(html.includes('The customer reports a family home.'));assert.ok(html.includes(s.actions[0].receipt.receipt_sha256));
+  assert.doesNotMatch(html,/New evidence contradicts|Contradiction established|Earlier assessment invalid/);
+  assert.equal(JSON.stringify(s),before,'presentation must preserve the complete accepted state byte for byte');
+ }
+ assert.equal(JSON.stringify(accepted),JSON.stringify(assessedState()));
+});
+
+test('an accepted reassessment clears freshness only when its bound roster matches; historical prefixes use their own sources',()=>{
+ const prior=assessedState(),next=structuredClone(prior),fresh={claim_id:prior.claim_id,artifact_id:'later-source',file_name:'later-statement.txt',sha256:hash('4'),role:'supporting_document'};
+ next.source_descriptors.push(fresh);next.run_id='reassessed-run';next.semantic_contexts[next.run_id]={claim_id:next.claim_id,sources:next.source_descriptors.map(source=>({artifact_id:source.artifact_id,sha256:source.sha256}))};
+ next.receipts.push({kind:'interpretation.accepted',receipt:{...prior.receipts[0].receipt,workflow_id:next.run_id,receipt_sha256:hash('6'),parent_revision:3}});
+ next.facts[0].status='false';next.facts[0].summary='The accepted reassessment records a different family-home condition.';
+ for(const s of [prior,next]) {
+  const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[]);
+  assert.doesNotMatch(html,/data-au-assessment-freshness="prior"|data-au-source-freshness="unassessed"/);
+  assert.equal(JSON.stringify(s),before);
+ }
+ // A latest receipt without its accepted input context cannot borrow another
+ // run's roster and claim that its sources were assessed.
+ delete next.semantic_contexts[next.run_id];
+ assert.doesNotMatch(ui.workMarkup(next,{},'branch',[]),/Prior assessment/);
+ const unbound=state({source_descriptors:[...prior.source_descriptors,fresh]});
+ assert.doesNotMatch(ui.workMarkup(unbound,{},'branch',[]),/Prior assessment/,'no accepted binding means unknown assessment coverage, not an invented prior assessment');
+});
+
 test('deferral and prepared request retain missing evidence and external authority boundary',()=>{
  const s=state({status:'deferred',outcome:{status:'deferred',title:'Evidence assessed',summary:'Service is not yet established.',missing_evidence:[{label:'Separate notice'}],authority_limits:['External filing is not configured.'],request_draft:{status:'prepared_not_sent',subject:'Evidence request',body:'Please provide the notice.'}}});
  const html=ui.workMarkup(s,{},'branch',[]);
@@ -353,14 +414,50 @@ test('causal choreography requires a fresh matching accepted event and targets o
 function motionFixture(){
  const calls=[],clones=[],cancelled=[];
  const element=(kind,id)=>({dataset:{[kind]:id},isConnected:true,contains:()=>false,animate(frames,options){calls.push({kind,id,frames,options});return{finished:new Promise(()=>{}),cancel(){cancelled.push(id);}};},getTotalLength:()=>120,cloneNode(){const clone=element('clone',id);clone.setAttribute=()=>{};clone.remove=()=>{clone.removed=true;};clones.push(clone);return clone;},parentNode:{appendChild(){}}});
- const all=[element('auNode','branch'),element('auEdge','next'),element('auDocument','notice'),element('auFact','fact:notice'),element('auStage','process')];
- const host={querySelectorAll:selector=>all.filter(el=>({'[data-au-node]':'auNode','[data-au-edge]':'auEdge','[data-au-document]':'auDocument','[data-au-fact]':'auFact','[data-au-stage]':'auStage'})[selector] in el.dataset)};
+ const all=[element('auNode','branch'),element('auEdge','next'),element('auDocument','notice'),element('auFact','fact:notice'),element('auStage','process'),element('auSemanticEvent',hash('9'))];
+ const host={querySelectorAll:selector=>all.filter(el=>({'[data-au-node]':'auNode','[data-au-edge]':'auEdge','[data-au-document]':'auDocument','[data-au-fact]':'auFact','[data-au-stage]':'auStage','[data-au-semantic-event]':'auSemanticEvent'})[selector] in el.dataset)};
  return{host,calls,clones,cancelled};
 }
 test('reduced motion, hidden views, modal inspection and keyboard mode consume changes without running animations',()=>{
  const plan={nodes:[{id:'branch',delay:160,duration:220}],edges:[{id:'next',delay:0,duration:160}],documents:[{id:'notice',delay:580,duration:180}],facts:[],stages:[],duration:760};
  for(const blocked of [{reducedMotion:true},{hidden:true},{dialogOpen:true},{keyboard:true}]){const f=motionFixture();const run=ui.animateTransition(f.host,plan,blocked);assert.equal(f.calls.length,0);assert.equal(f.clones.length,0);run.cancel();}
  const f=motionFixture(),run=ui.animateTransition(f.host,plan,{});assert.equal(f.clones.length,1);assert.ok(f.calls.some(row=>row.kind==='clone'));assert.ok(f.calls.some(row=>row.kind==='auDocument'));assert.ok(f.calls.every(row=>row.options.delay+row.options.duration<=800));run.cancel();assert.ok(f.clones.every(clone=>clone.removed));assert.equal(f.cancelled.length,f.calls.length);
+});
+
+test('action and knowledge motion uses exact accepted event objects, settles after consumption, and retains qualification distinctions',()=>{
+ const before=state({knowledge_published:[]}),eventHash=hash('9');
+ for(const kind of ['action.completed','knowledge.used','knowledge.published','withheld']) {
+  const after=structuredClone(before);after.revision=4;after.state_sha256=hash('f');after.last_event_sha256=eventHash;
+  const event={seq:4,revision:4,claim_id:after.claim_id,state_sha256:after.state_sha256,event_sha256:eventHash,kind:kind==='withheld'?'knowledge.published':kind};
+  if(kind==='action.completed') {
+   const result={action_id:'assess:notice',status:'completed',node_ids:['branch'],summary:'The accepted notice assessment.'};
+   const receipt={receipt_sha256:hash('6'),parent_revision:3,parent_state_sha256:before.state_sha256};
+   event.payload={result,receipt};after.actions.push({result,receipt});
+  } else {
+   const knowledge={knowledge_id:'procedure.notice',version:1,...kind==='knowledge.used'?{definition_sha256:hash('7'),applicability:'same_verified_rule_version'}:{knowledge_sha256:hash('8'),source_claim_id:after.claim_id,qualification:{status:kind==='withheld'?'quarantined':'qualified',reason:kind==='withheld'?'The candidate lacks supported applicability.':'Recorded qualification checks.'}}};
+   event.payload={knowledge};after[kind==='knowledge.used'?'knowledge_uses':'knowledge_published'].push(knowledge);
+  }
+  const batch={current_revision:4,current_state_sha256:after.state_sha256,cursor_sha256:eventHash,events:[event]},accepted=ui.acceptEvents(3,batch,after);
+  const saved=JSON.stringify(after),plan=ui.transitionPlan(before,after,accepted,[event]),html=ui.workMarkup(after,{},'branch',[event]);
+  assert.deepEqual(plan.semantic.map(row=>row.id),[eventHash]);assert.deepEqual(plan.stages,[]);
+  assert.match(html,new RegExp(`data-au-semantic-event="${eventHash}"`));
+  assert.match(html,kind==='action.completed'?/Action completed/:kind==='knowledge.used'?/Qualified knowledge reused/:kind==='withheld'?/Knowledge candidate withheld/:/Knowledge qualified/);
+  if(kind==='knowledge.used')assert.match(html,/data-au-definition-sha="777777/);
+  if(kind==='withheld')assert.doesNotMatch(ui.semanticEventMarkup(after,[event]),/Inspect exact version|Knowledge qualified/);
+  for(const changed of [{...event,claim_id:'another-claim'},{...event,event_sha256:hash('0')},{...event,state_sha256:hash('0')},{...event,payload:{}}]) {
+   assert.equal(ui.semanticEventRecord(after,changed),null,'an unrelated event cannot borrow a matching saved object');
+  }
+  const initialBatch={...batch,events:[...events(after).events.slice(0,-1),event]};
+  assert.equal(ui.transitionPlan(before,after,ui.acceptEvents(null,initialBatch,after),[event]),null);
+  assert.equal(ui.transitionPlan(before,after,ui.acceptEvents(3,batch,after,true),[event]),null);
+  assert.equal(ui.transitionPlan(after,after,ui.acceptEvents(4,{...batch,events:[]},after),[event]),null);
+  for(const environment of [{reducedMotion:true},{hidden:true},{dialogOpen:true},{keyboard:true}]) {
+   const f=motionFixture();ui.animateTransition(f.host,plan,environment);assert.equal(f.calls.length,0);
+  }
+  const f=motionFixture(),animation=ui.animateTransition(f.host,plan,{});
+  assert.equal(f.calls.filter(row=>row.kind==='auSemanticEvent').length,1);assert.ok(f.calls.every(row=>row.options.iterations===undefined&&row.options.fill==='none'));
+  animation.cancel();assert.equal(JSON.stringify(after),saved);
+ }
 });
 
 

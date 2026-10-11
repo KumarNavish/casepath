@@ -7,6 +7,7 @@ const path = require('node:path');
 const {gunzipSync} = require('node:zlib');
 const {createHash} = require('node:crypto');
 const {setTimeout: delay} = require('node:timers/promises');
+const {execFileSync} = require('node:child_process');
 const {chromium} = require('playwright');
 
 const root = path.resolve(__dirname, '..');
@@ -193,6 +194,19 @@ const canonical = value => Array.isArray(value)
     ? `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonical(value[key])}`).join(',')}}`
     : JSON.stringify(value);
 
+let acceptedFixture;
+function priorAssessmentFixture() {
+  if (!acceptedFixture) {
+    const encoded = process.env.CASEPATH_PRIOR_ASSESSMENT_FIXTURE
+      ? fs.readFileSync(process.env.CASEPATH_PRIOR_ASSESSMENT_FIXTURE, 'utf8')
+      : execFileSync(process.env.CASEPATH_PYTHON || path.join(root, '.runtime/casepath-dev-v2/venv/bin/python'),
+        [path.join(root, 'casepath-qa/build-prior-assessment-fixture-v1.py')],
+        {encoding: 'utf8', env: {...process.env, PYTHONDONTWRITEBYTECODE: '1'}, maxBuffer: 64 * 1024 * 1024});
+    acceptedFixture = JSON.parse(encoded);
+  }
+  return acceptedFixture;
+}
+
 function processedEnvelope(id, recordedId) {
   const envelope = clone(captured[`${base}/claims/${recordedId}`]);
   envelope.state.claim_id = id;
@@ -260,15 +274,27 @@ function fixtureData(config = {}) {
     if (config.presentationSuite === 'replay') envelopes[id] = clone(acceptedHistories[id][2]);
   }
   if (config.completeStatuses) ['completed', 'complete', 'resolved'].forEach((status, index) => { envelopes[historicalIds[index]].state.status = status; });
+  if (config.recordedHistoryId) envelopes[config.recordedHistoryId] = clone(captured[`${base}/claims/${config.recordedHistoryId}`]);
+  const accepted = config.priorAssessment ? clone(priorAssessmentFixture()) : null;
+  if (accepted) {
+    const snapshot = config.acceptedPrefix ? accepted.prefixes[config.acceptedPrefix] : accepted.snapshots[config.priorAssessment];
+    assert.ok(snapshot, 'the browser starts from an exported verified prefix');
+    envelopes[accepted.claim_id] = {state: snapshot.state, projection: snapshot.projection};
+    Object.assign(sources, accepted.sources);
+  }
   const rows = Object.values(envelopes).map(({state}) => ({
-    claim_id: state.claim_id, title: state.title, origin: state.origin, mode: state.mode, status: state.status,
+    claim_id: state.claim_id, title: state.title, origin: state.origin || (historicalIds.includes(state.claim_id) ? 'native_intake' : undefined), mode: state.mode, status: state.status,
     phase: state.phase, phase_summary: state.phase_summary, revision: state.revision,
     state_sha256: state.state_sha256, outcome: state.outcome,
     source_preview: state.source_preview, browse_metadata: state.browse_metadata || {},
   }));
   assert.equal(rows.filter(row => row.origin === 'canonical_original').length, 150);
   assert.equal(rows.filter(row => row.origin === 'native_intake').length, 9);
-  return {envelopes, sources, rawSources, acceptedHistories, rows: config.rememberedNativeId ? rows.filter(row => row.claim_id !== config.rememberedNativeId) : rows};
+  return {envelopes, sources, rawSources, acceptedHistories, accepted,
+    recordedHistory: config.recordedHistoryId ? clone(captured[`${base}/claims/${config.recordedHistoryId}/events?after=0`].events) : [],
+    acceptedEvents: accepted ? clone((config.acceptedPrefix ? accepted.prefixes[config.acceptedPrefix] : accepted.snapshots[config.priorAssessment]).events) : [],
+    acceptedPrefixes: accepted ? config.priorAssessment === 'failed' ? accepted.failure_prefixes : accepted.prefixes : {},
+    rows: config.rememberedNativeId ? rows.filter(row => row.claim_id !== config.rememberedNativeId) : rows};
 }
 
 let browser;
@@ -344,7 +370,19 @@ async function mountFixture(page, config = {}) {
       return envelope;
     };
     fixture.advance = advance;
-    const batch = (state, after) => ({
+    fixture.loadAccepted = position => {
+      const snapshot = fixture.accepted.snapshots[position] || fixture.accepted.prefixes[position];
+      if (!snapshot) throw new Error('No verified fixture position');
+      fixture.envelopes[fixture.accepted.claim_id] = {state: structuredClone(snapshot.state), projection: structuredClone(snapshot.projection)};
+      fixture.acceptedEvents = structuredClone(snapshot.events);
+    };
+    const batch = (state, after) => fixture.recordedHistoryId === state.claim_id ? {
+      events: structuredClone(fixture.recordedHistory.filter(event => event.seq > after && event.seq <= state.revision)),
+      current_revision: state.revision, current_state_sha256: state.state_sha256, cursor_sha256: state.last_event_sha256,
+    } : fixture.accepted?.claim_id === state.claim_id ? {
+      events: structuredClone(fixture.acceptedEvents.filter(event => event.seq > after && event.seq <= state.revision)),
+      current_revision: state.revision, current_state_sha256: state.state_sha256, cursor_sha256: state.last_event_sha256,
+    } : ({
       events: Array.from({length: Math.max(0, state.revision - after)}, (_, index) => {
         const seq = after + index + 1;
         const accepted = fixture.acceptedHistories[state.claim_id]?.[seq]?.state;
@@ -404,7 +442,7 @@ async function mountFixture(page, config = {}) {
         if (fixture.holdCollections) return new Promise(resolve => fixture.held.push({id: 'collection', release: () => resolve(response(200, {claims: fixture.rows.slice(offset, offset + limit), total: fixture.rows.length, limit, offset}))}));
         return response(200, {claims: fixture.rows.slice(offset, offset + limit), total: fixture.rows.length, limit, offset});
       }
-      if (relative === '/knowledge') return response(200, {versions: [], uses: [], quarantined: []});
+      if (relative === '/knowledge') return response(200, fixture.accepted?.knowledge || {versions: [], uses: [], quarantined: []});
       if (relative === '/status') return response(200, {enabled: true, provider_ready: fixture.providerReady ?? Boolean(fixture.originalStartId || fixture.presentationSuite === 'live')});
       const rawSource = relative.match(/^\/sources\/([^/]+)\/([^/]+)$/);
       if (rawSource && fixture.rawSources[`${rawSource[1]}/${rawSource[2]}`]) {
@@ -418,6 +456,7 @@ async function mountFixture(page, config = {}) {
       const [, id, kind] = read, after = Number(parsed.searchParams.get('after') || 0);
       if (kind === 'replay') {
         const live = fixture.envelopes[id], through = Number(parsed.searchParams.get('through_seq') || 0);
+        if (fixture.accepted?.claim_id === id && fixture.acceptedPrefixes[through]) return response(200, fixture.acceptedPrefixes[through]);
         const envelope = structuredClone(fixture.acceptedHistories[id]?.[through] || live), state = envelope.state;
         state.revision = through;
         if (!fixture.acceptedHistories[id]) {
@@ -446,6 +485,7 @@ async function mountFixture(page, config = {}) {
         return response(200, replay);
       }
       if (kind === 'snapshot') {
+        if (fixture.readFailures > 0) { fixture.readFailures--; throw new TypeError('Isolated snapshot read interrupted.'); }
         if (fixture.presentationSuite === 'live' && fixture.suitePosts[id] && (fixture.suiteReads[id] = (fixture.suiteReads[id] || 0) + 1) >= 2) fixture.envelopes[id] = structuredClone(fixture.acceptedHistories[id][2]);
         if (fixture.snapshotStatus && fixture.snapshotStatus !== 200) return response(fixture.snapshotStatus, {detail: 'Configured snapshot transport response.'});
         const envelope = structuredClone(fixture.envelopes[id]);
@@ -823,7 +863,7 @@ test('a Documents link returns to its process step and reload retains the step d
   const page = await fixturePage(t);
   await open(page, processedId);
   await title(page, processedId);
-  await page.locator('[data-au-detail="documents"]').click();
+  await page.locator('.au-context-nav [data-au-detail="documents"]').click();
   assert.match(new URL(page.url()).hash, /detail=documents/);
   const target = page.locator('[data-au-panel="documents"] [data-au-select]').first();
   assert.equal(await target.count(), 1, 'the recorded document requirement must link to a requiring node');
@@ -836,6 +876,230 @@ test('a Documents link returns to its process step and reload retains the step d
   await mountFixture(page);
   assert.equal(await page.locator('[data-au-panel="step"]').isVisible(), true);
   assert.equal(await page.locator('[data-au-graph]').isVisible(), true);
+});
+
+test('a recorded document selection retains its exact obligation and fact through picker changes, Back and reload', async t => {
+  const page = await fixturePage(t), id = 'auto_265cf377bb7485dce74573c8';
+  await open(page, id); await title(page, id);
+  const expected = await page.evaluate(id => {
+    const s = window.__fixture.envelopes[id].state;
+    return s.obligations.filter(row => row.node_id === 'lt_deadline');
+  }, id);
+  assert.ok(expected.length > 1, 'the recorded decision has multiple document obligations');
+  const notice = expected.find(row => row.document_type === 'notice_period_evidence');
+  const receipt = expected.find(row => row.document_type === 'proof_of_receipt');
+  async function focus(obligation) {
+    const hero = page.locator('[data-au-evidence-path]');
+    assert.equal(await hero.locator('[data-au-document][data-au-wire="requirement"]').getAttribute('data-au-document'), obligation.document_type);
+    assert.equal(await hero.locator('[data-au-document][data-au-wire="requirement"]').getAttribute('data-au-obligation'), obligation.obligation_id);
+    assert.equal(await hero.locator('[data-au-fact]').getAttribute('data-au-fact'), obligation.required_fact_ids[0]);
+    const query = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+    assert.equal(query.get('node'), 'lt_deadline');
+    assert.equal(query.get('document'), obligation.document_type);
+    assert.equal(query.get('obligation'), obligation.obligation_id);
+    assert.equal(query.get('fact'), obligation.required_fact_ids[0]);
+  }
+  await page.locator('.au-context-nav [data-au-detail="documents"]').click();
+  await page.locator(`[data-au-panel="documents"] [data-au-obligation="${notice.obligation_id}"] [data-au-select="lt_deadline"]`).click();
+  await focus(notice);
+  await page.locator(`[data-au-document-select="${receipt.document_type}"]`).click();
+  await focus(receipt);
+  // The old picker retained this fact while showing the notice-period document.
+  await page.locator('[data-au-panel="step"] [data-au-fact-select="fact:proof_of_receipt"]').click();
+  await page.locator(`[data-au-document-select="${notice.document_type}"]`).click();
+  await focus(notice);
+  const route = new URL(page.url()).hash;
+  await page.locator(`[data-au-document-select="${notice.document_type}"]`).click();
+  assert.equal(new URL(page.url()).hash, route);
+  await page.goBack();
+  await eventually(() => page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact').then(value => value === receipt.required_fact_ids[0]), 'Back lost the previous exact obligation');
+  await focus(receipt);
+  await page.goForward();
+  await eventually(() => page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact').then(value => value === notice.required_fact_ids[0]), 'Forward lost the requested obligation');
+  await focus(notice);
+  await page.reload(); await mountFixture(page);
+  await focus(notice);
+  assert.equal(await page.locator('[data-au-panel="step"]').isVisible(), true);
+  await page.locator(`[data-au-document-select="${receipt.document_type}"]`).click();
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();
+  await page.goBack();
+  await eventually(() => page.locator('[data-au-panel="step"]').isVisible(), 'Back to an exact requirement retained the later Sources context');
+  await focus(notice);
+  await page.goForward();
+  await eventually(() => page.locator('[data-au-panel="sources"]').isVisible(), 'Forward did not restore the explicit Sources context');
+  await page.locator('.au-context-nav [data-au-detail="documents"]').click();
+  await page.goBack();
+  await eventually(() => page.locator('[data-au-panel="step"]').isVisible(), 'Back to an exact requirement retained the later Documents context');
+  await focus(notice);
+  await page.reload(); await mountFixture(page);
+  assert.equal(await page.locator('[data-au-panel="step"]').isVisible(), true);
+  await focus(notice);
+});
+
+test('verified new-source prefixes retain prior assessment through unavailable and failed rereading, then accepted reassessment clears it', async t => {
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+  const page = await fixturePage(t, {priorAssessment: 'assessed'});
+  await open(page, id); await title(page, id);
+  assert.equal(await page.locator('[data-au-assessment-freshness]').count(), 0);
+  const newSource = fixture.states.arrived.source_descriptors.find(row => !fixture.states.assessed.source_descriptors.some(old => old.artifact_id === row.artifact_id));
+  for (const position of ['arrived', 'deferred', 'same_roster_retry']) {
+    await page.evaluate(position => window.__fixture.loadAccepted(position), position);
+    await page.evaluate(() => window.__controller.refresh());
+    const notice = page.locator('[data-au-assessment-freshness="prior"]');
+    assert.equal(await notice.isVisible(), true, position);
+    assert.match(await notice.innerText(), /Prior assessment[\s\S]*1 new source awaiting assessment/);
+    await page.locator('.au-context-nav [data-au-detail="sources"]').click();
+    const source = page.locator(`[data-au-panel="sources"] [data-au-source-freshness="unassessed"]`).filter({has: page.locator(`[data-au-source="${newSource.artifact_id}"]`)});
+    assert.equal(await source.count(), 1);
+    assert.match(await source.innerText(), position === 'arrived' ? /Received · Awaiting assessment/ : /Extracted · document review is separate · Awaiting assessment/);
+    const rendered = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
+    assert.deepEqual(rendered, fixture.states[position], `${position} presentation cannot rewrite a saved field or hash`);
+    assert.deepEqual(rendered.facts, fixture.states.assessed.facts);
+    assert.deepEqual(rendered.actions, fixture.states.assessed.actions);
+    assert.doesNotMatch(await notice.innerText(), /contradiction|invalidated/i);
+  }
+  await page.locator(`[data-au-assessment-freshness] [data-au-source="${newSource.artifact_id}"]`).click();
+  await eventually(() => page.locator('dialog[open] [data-au-source-freshness="unassessed"]').count().then(count => count === 1), 'the new source viewer lost its assessment distinction');
+  await page.locator('[data-au-close]').click();
+  await page.evaluate(() => window.__fixture.loadAccepted('reassessed'));
+  await page.evaluate(() => window.__controller.refresh());
+  assert.equal(await page.locator('[data-au-assessment-freshness], [data-au-panel] [data-au-source-freshness="unassessed"]').count(), 0);
+  const after = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
+  assert.deepEqual(after, fixture.states.reassessed);
+  assert.equal(after.facts.find(row => row.fact_id === 'condition:family_home').status, 'false');
+  assert.deepEqual(after.actions.slice(0, fixture.states.assessed.actions.length), fixture.states.assessed.actions);
+  await page.locator(`[data-au-panel="sources"] [data-au-source="${newSource.artifact_id}"]`).click();
+  await eventually(() => page.locator('dialog[open] details.au-source-identity').count().then(count => count === 1), 'the reassessed source did not reopen');
+  assert.equal(await page.locator('dialog[open] [data-au-source-freshness="unassessed"]').count(), 0);
+  await page.locator('[data-au-close]').click();
+  const failed = await fixturePage(t, {priorAssessment: 'failed'});
+  await open(failed, id); await title(failed, id);
+  await failed.evaluate(() => window.__controller.refresh());
+  assert.equal(await failed.locator('[data-au-assessment-freshness="prior"]').isVisible(), true);
+  assert.deepEqual(JSON.parse(await failed.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, fixture.states.failed);
+  assert.deepEqual(fixture.states.failed.receipts, fixture.states.assessed.receipts);
+});
+
+test('historical verified replay derives assessment coverage from that prefix and preserves every saved state field', async t => {
+  const fixture = priorAssessmentFixture(), page = await fixturePage(t, {priorAssessment: 'reassessed'}), id = fixture.claim_id;
+  for (const position of ['assessed', 'arrived', 'deferred', 'reassessed']) {
+    const through = fixture.revisions[position];
+    await page.evaluate(({id, through}) => window.__controller.openClaim(id, true, {mode: 'replay', through}), {id, through});
+    await title(page, id);
+    assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+    assert.equal(await page.locator('[data-au-assessment-freshness="prior"]').count(), ['arrived', 'deferred'].includes(position) ? 1 : 0, position);
+    const rendered = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
+    assert.deepEqual(rendered, fixture.states[position]);
+  }
+  assert.equal((await calls(page, `/claims/${id}/snapshot`)).length, 0);
+});
+
+async function observeAnimations(page) {
+  await page.evaluate(() => {
+    window.__acceptedAnimations = [];
+    const original = Element.prototype.animate;
+    Element.prototype.animate = function(frames, options) {
+      window.__acceptedAnimations.push({event: this.dataset.auSemanticEvent || null, kind: this.dataset.auSemanticKind || null, options});
+      return original.call(this, frames, options);
+    };
+  });
+}
+
+test('a recorded withheld knowledge candidate stays visible in the default claim without a qualification or version link', async t => {
+  const id = 'auto_7373bbf206ab25bacf71b82e', page = await fixturePage(t, {recordedHistoryId: id});
+  const event = captured[`${base}/claims/${id}/events?after=0`].events.at(-1);
+  assert.equal(event.kind, 'knowledge.published');
+  assert.equal(event.payload.knowledge.qualification.status, 'quarantined');
+  await observeAnimations(page); await open(page, id); await title(page, id);
+  const object = page.locator(`[data-au-semantic-event="${event.event_sha256}"]`);
+  assert.equal(await object.isVisible(), true);
+  assert.equal(await object.getAttribute('data-au-semantic-type'), 'withheld');
+  assert.match(await object.innerText(), /Knowledge candidate withheld/i);
+  assert.doesNotMatch(await object.innerText(), /Knowledge qualified|Qualified knowledge reused/i);
+  assert.equal(await object.locator('[data-au-knowledge]').count(), 0);
+  await object.locator('summary').click();
+  const record = JSON.parse(await object.locator('pre').textContent());
+  assert.deepEqual(record.knowledge, event.payload.knowledge);
+  assert.deepEqual(JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, captured[`${base}/claims/${id}`].state);
+  assert.deepEqual(await page.evaluate(() => window.__acceptedAnimations), [], 'existing withheld history is settled');
+});
+
+for (const kind of ['action.completed', 'knowledge.published', 'knowledge.used']) test(`the default claim animates the exact accepted ${kind} object once and verified replay exposes the same settled record`, async t => {
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+  const event = fixture.snapshots.reassessed.events.find(row => row.kind === kind), through = event.seq;
+  const page = await fixturePage(t, {priorAssessment: 'assessed', acceptedPrefix: through - 1});
+  await observeAnimations(page); await open(page, id); await title(page, id);
+  assert.deepEqual(await page.evaluate(() => window.__acceptedAnimations), [], 'opening accepted history settles without replaying its motion');
+  await page.evaluate(position => window.__fixture.loadAccepted(position), through);
+  await page.evaluate(() => window.__controller.refresh());
+  const object = page.locator(`[data-au-semantic-event="${event.event_sha256}"]`);
+  assert.equal(await object.isVisible(), true, 'the semantic object is visible in the default step context');
+  assert.equal(await object.getAttribute('data-au-semantic-kind'), kind);
+  assert.equal(await object.getAttribute('data-au-semantic-seq'), String(through));
+  const animations = await page.evaluate(() => window.__acceptedAnimations);
+  assert.equal(animations.filter(row => row.event === event.event_sha256).length, 1, 'the accepted receipt/event is the motion identity');
+  assert.ok(animations.every(row => row.options.fill === 'none' && row.options.iterations !== Infinity && row.options.delay + row.options.duration <= 800));
+  assert.equal(await page.locator('[data-au-stage]').count(), 0);
+  const count = animations.length;
+  await page.evaluate(async () => { await window.__controller.refresh(); await window.__controller.refresh(); });
+  assert.equal(await page.evaluate(() => window.__acceptedAnimations.length), count, 'same accepted events cannot animate on repeated polling');
+  if (kind === 'action.completed') {
+    assert.equal(await object.locator('[data-au-select]').count() > 0, true);
+    await object.locator('summary').click();
+    assert.ok((await object.locator('pre').textContent()).includes(event.payload.receipt.receipt_sha256));
+    const source = object.locator('[data-au-source]').first(), citation = event.payload.result.citations[0];
+    assert.equal(await source.getAttribute('data-au-source'), citation.artifact_id);
+    await source.focus(); await page.keyboard.press('Enter');
+    await eventually(() => page.locator('dialog[open] .au-source-body mark').count().then(count => count === 1), 'the accepted action citation did not open by keyboard');
+    assert.equal(await page.locator('dialog[open] .au-source-body mark').textContent(), citation.quote);
+    await page.locator('[data-au-close]').click();
+    assert.equal(await page.evaluate(() => document.activeElement.dataset.auSourceOrigin), `semantic:${event.event_sha256}`);
+  } else {
+    const version = object.locator('[data-au-knowledge]');
+    assert.equal(await version.getAttribute('data-au-version'), String(event.payload.knowledge.version));
+    if (kind === 'knowledge.used') assert.equal(await version.getAttribute('data-au-definition-sha'), event.payload.knowledge.definition_sha256);
+    else assert.equal(await version.getAttribute('data-au-knowledge-sha'), event.payload.knowledge.knowledge_sha256);
+    await version.click();
+    await eventually(() => page.locator('[data-au-version][data-au-knowledge-identity]').count().then(count => count > 0), 'the accepted knowledge version link did not open');
+  }
+  const replay = await fixturePage(t, {priorAssessment: 'reassessed'});
+  await observeAnimations(replay);
+  await replay.evaluate(({id, through}) => window.__controller.openClaim(id, true, {mode: 'replay', through}), {id, through});
+  await title(replay, id);
+  assert.equal(await replay.locator(`[data-au-semantic-event="${event.event_sha256}"]`).isVisible(), true);
+  assert.deepEqual(await replay.evaluate(() => window.__acceptedAnimations), [], 'initial verified prefix inspection is settled');
+});
+
+for (const interruption of ['reduce', 'reconnect', 'dialog', 'keyboard', 'hidden']) test(`accepted action motion stays still during ${interruption} while its recorded result remains inspectable`, async t => {
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+  const event = fixture.snapshots.reassessed.events.find(row => row.kind === 'action.completed');
+  const page = await fixturePage(t, {priorAssessment: 'assessed', acceptedPrefix: event.seq - 1});
+  await open(page, id); await title(page, id); await observeAnimations(page);
+  if (interruption === 'reduce') await page.emulateMedia({reducedMotion: 'reduce'});
+  if (interruption === 'reconnect') {
+    await page.evaluate(() => { window.__fixture.readFailures = 1; });
+    await page.evaluate(() => window.__controller.refresh());
+    assert.match(await page.locator('.au-global-status').innerText(), /paused|interrupted|unavailable/i);
+  }
+  if (interruption === 'dialog') {
+    await page.locator('.au-context-nav [data-au-detail="sources"]').click();
+    await page.locator('[data-au-panel="sources"] [data-au-source]').first().click();
+    await eventually(() => page.locator('dialog[open]').count().then(count => count === 1), 'the source inspection did not open');
+  }
+  if (interruption === 'keyboard') await page.keyboard.press('Tab');
+  if (interruption === 'hidden') await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', {configurable: true, get: () => true});
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await page.evaluate(position => window.__fixture.loadAccepted(position), event.seq);
+  await page.evaluate(() => window.__controller.refresh());
+  if (interruption === 'hidden') await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', {configurable: true, get: () => false});
+    document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await eventually(() => page.locator(`[data-au-semantic-event="${event.event_sha256}"]`).count().then(count => count === 1), 'the accepted action did not remain inspectable');
+  assert.equal(await page.evaluate(eventHash => window.__acceptedAnimations.filter(row => row.event === eventHash).length, event.event_sha256), 0);
+  assert.deepEqual(JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, fixture.prefixes[event.seq].state);
 });
 
 test('Verified replay stays visible as presentation mode when the accepted prefix status is Working', async t => {
