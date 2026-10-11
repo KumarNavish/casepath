@@ -79,6 +79,23 @@ acknowledgement poisons that connection and prevents model dispatch. An uncertai
 provider call remains reserved and is never automatically resent. Restarting a
 service cannot replenish the allowance.
 
+A verification failure stays stopped across service restarts. An operator may
+explicitly apply an already completed, sealed interpretation and verification
+pair through `POST /api/claim-loops/v1/autonomous/claims/{claim_id}/reconcile-saved-results`.
+This authenticated command requires the failed claim's exact `expected_revision`
+and `expected_state_sha256`, a unique `idempotency_key`, `actor`, and `reason`,
+with the existing `X-CasePath-Agent-Work: 1` header. It has no provider transport,
+model reservation, or retry queue. It verifies the saved requests, results,
+receipts, original source bytes, and frozen rule context before writing.
+
+Reconciliation appends its admission and completion to the existing journal;
+the original failure and provider records remain unchanged. An inaccurate
+citation rejects the whole affected item, which remains unresolved and cannot
+complete a graph node or qualify reusable evidence. The UI exposes the rejection
+and reconciliation history. After an uncertain response, read the journal and
+ledger before considering another command. Incomplete reconciliation never
+automatically restarts, and a newer source arrival or pause retains ownership.
+
 Do not restart the old local paid writer after cloud cutover. If rollback becomes
 necessary, first disable and drain the cloud writer, then reconcile and export
 the current cloud ledger. A stale pre-cutover copy is not a writable rollback.
