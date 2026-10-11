@@ -351,8 +351,8 @@ async function fixturePage(t, config = {}) {
 }
 
 async function mountFixture(page, config = {}) {
-  await page.addStyleTag({path: path.join(root, 'casepath/assets/autonomous-workspace-v1.css')});
-  await page.addScriptTag({path: path.join(root, 'casepath/assets/autonomous-workspace-v1.js')});
+  await page.addStyleTag({path: process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root, 'casepath/assets/autonomous-workspace-v1.css')});
+  await page.addScriptTag({path: process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root, 'casepath/assets/autonomous-workspace-v1.js')});
   await page.evaluate(({data, config, base}) => {
     window.__fixture = {...data, ...config, calls: [], held: [], splitRevision: {}, startPosts: 0, startViolations: [], suitePosts: {}, suiteReads: {}};
     const fixture = window.__fixture;
@@ -442,7 +442,11 @@ async function mountFixture(page, config = {}) {
         if (fixture.holdCollections) return new Promise(resolve => fixture.held.push({id: 'collection', release: () => resolve(response(200, {claims: fixture.rows.slice(offset, offset + limit), total: fixture.rows.length, limit, offset}))}));
         return response(200, {claims: fixture.rows.slice(offset, offset + limit), total: fixture.rows.length, limit, offset});
       }
-      if (relative === '/knowledge') return response(200, fixture.accepted?.knowledge || {versions: [], uses: [], quarantined: []});
+      if (relative === '/knowledge') {
+        const result = response(200, fixture.accepted?.knowledge || {versions: [], uses: [], quarantined: []});
+        if (fixture.holdKnowledge) return new Promise(resolve => fixture.held.push({kind: 'knowledge', release: () => resolve(result)}));
+        return result;
+      }
       if (relative === '/status') return response(200, {enabled: true, provider_ready: fixture.providerReady ?? Boolean(fixture.originalStartId || fixture.presentationSuite === 'live')});
       const rawSource = relative.match(/^\/sources\/([^/]+)\/([^/]+)$/);
       if (rawSource && fixture.rawSources[`${rawSource[1]}/${rawSource[2]}`]) {
@@ -456,7 +460,13 @@ async function mountFixture(page, config = {}) {
       const [, id, kind] = read, after = Number(parsed.searchParams.get('after') || 0);
       if (kind === 'replay') {
         const live = fixture.envelopes[id], through = Number(parsed.searchParams.get('through_seq') || 0);
-        if (fixture.accepted?.claim_id === id && fixture.acceptedPrefixes[through]) return response(200, fixture.acceptedPrefixes[through]);
+        if (fixture.accepted?.claim_id === id && fixture.acceptedPrefixes[through]) {
+          const prefix = structuredClone(fixture.acceptedPrefixes[through]);
+          if (fixture.corruptReplayThrough === through) prefix.provenance.sources[0].sha256 = '0'.repeat(64);
+          if (fixture.holdReplayId === id && through === fixture.holdReplayThrough) return new Promise(resolve => fixture.held.push({id, kind: 'replay', through, release: () => resolve(response(200, prefix))}));
+          if (fixture.replayLatency) await new Promise(resolve => setTimeout(resolve, fixture.replayLatency));
+          return response(200, prefix);
+        }
         const envelope = structuredClone(fixture.acceptedHistories[id]?.[through] || live), state = envelope.state;
         state.revision = through;
         if (!fixture.acceptedHistories[id]) {
@@ -997,9 +1007,12 @@ test('historical verified replay derives assessment coverage from that prefix an
 async function observeAnimations(page) {
   await page.evaluate(() => {
     window.__acceptedAnimations = [];
+    window.__uiAnimations = [];
     const original = Element.prototype.animate;
     Element.prototype.animate = function(frames, options) {
-      window.__acceptedAnimations.push({event: this.dataset.auSemanticEvent || null, kind: this.dataset.auSemanticKind || null, options});
+      const record = {event: this.dataset.auSemanticEvent || null, kind: this.dataset.auSemanticKind || null, options, frames};
+      window.__uiAnimations.push(record);
+      if (record.event) window.__acceptedAnimations.push(record);
       return original.call(this, frames, options);
     };
   });
@@ -1655,4 +1668,308 @@ test('pending raw navigation blocks automatic Live Start, timed advancement and 
   assert.deepEqual(await replay.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST')), []);
   await resumeRoutes(replay);
   await eventually(() => replay.locator('[data-au-claim-row]').count().then(count => count === 150), 'delayed replay cancellation did not retain Cases');
+});
+
+const focusedReceiptRoot = process.env.CASEPATH_FOCUSED_RECEIPTS;
+async function focusedReceipt(page, name, measurements) {
+  if (!focusedReceiptRoot) return;
+  fs.mkdirSync(focusedReceiptRoot, {recursive: true});
+  fs.writeFileSync(path.join(focusedReceiptRoot, `${name}.json`), JSON.stringify(measurements, null, 2));
+  await page.screenshot({path: path.join(focusedReceiptRoot, `${name}.png`), fullPage: true});
+}
+const visibleRecord = page => page.locator('[data-au-disclosure="claim-record"] pre').textContent().then(JSON.parse);
+const currentReadState = page => page.locator('[data-au-view]').getAttribute('data-au-read-state');
+
+test('focused flow: cached claim revisits paint the verified record synchronously and fail revalidation read-only', async t => {
+  const page = await fixturePage(t);
+  await open(page, processedId); await title(page, processedId);
+  const verified = await visibleRecord(page);
+  await open(page, otherId); await title(page, otherId);
+  const immediate = await page.evaluate(id => {
+    window.__fixture.holdId = id;
+    void window.__controller.openClaim(id);
+    const host = document.querySelector('[data-au-view]');
+    return {title: host.querySelector('[data-au-claim-title]')?.textContent, state: host.dataset.auReadState,
+      record: host.querySelector('[data-au-disclosure="claim-record"] pre')?.textContent,
+      enabledWrites: [...host.querySelectorAll('[data-au-arrival] input, [data-au-arrival] button, [data-au-pause], [data-au-resume], [data-au-start]')].filter(element => !element.disabled).length};
+  }, processedId);
+  assert.equal(immediate.title, verified.state.title, 'the cached accepted record must paint in the same navigation turn');
+  assert.equal(immediate.state, 'refreshing');
+  assert.deepEqual(JSON.parse(immediate.record).state, verified.state);
+  assert.equal(immediate.enabledWrites, 0, 'a cached revision cannot authorize a mutation while its read is pending');
+  await eventually(() => page.evaluate(() => window.__fixture.held.length > 0), 'the fresh revalidation was not requested');
+  await page.evaluate(() => { window.__fixture.holdId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
+  await eventually(() => currentReadState(page).then(state => state === 'verified'), 'the matching accepted snapshot did not release read-only mode');
+  await open(page, otherId); await title(page, otherId);
+  await page.evaluate(id => { window.__fixture.readFailures = 1; void window.__controller.openClaim(id); }, processedId);
+  await eventually(() => currentReadState(page).then(state => state === 'failed'), 'the failed cache revalidation did not retain a read-only record');
+  assert.deepEqual((await visibleRecord(page)).state, verified.state);
+  assert.equal(await page.locator('[data-au-claim-title]').textContent(), verified.state.title);
+  assert.equal(await page.locator('[data-au-arrival] input:enabled, [data-au-arrival] button:enabled, [data-au-pause]:enabled, [data-au-resume]:enabled, [data-au-start]:enabled').count(), 0);
+  assert.match(await page.locator('.au-global-status').innerText(), /paused|unavailable|interrupted|refresh/i);
+  await focusedReceipt(page, 'cache-failed-revalidation', {immediate, snapshots: (await calls(page, `/claims/${processedId}/snapshot`)).length});
+});
+
+test('focused flow: cold claim and Knowledge reads show honest stable skeletons and overlapping GETs deduplicate', async t => {
+  const page = await fixturePage(t, {holdId: processedId, holdKnowledge: true});
+  await open(page, processedId);
+  await eventually(() => page.evaluate(() => window.__fixture.held.length === 1), 'the cold claim read was not held');
+  assert.equal(await page.locator('[data-au-skeleton="claim"]').isVisible(), true);
+  assert.equal(await page.locator('[data-au-node], [data-au-fact], [data-au-obligation], [data-au-outcome], [data-au-claim-title]').count(), 0, 'a loading skeleton cannot invent claim facts or a result');
+  await page.evaluate(id => { void window.__controller.openClaim(id); document.dispatchEvent(new Event('visibilitychange')); }, processedId);
+  await page.evaluate(async () => { for (let turn = 0; turn < 20; turn++) await Promise.resolve(); });
+  assert.equal((await calls(page, `/claims/${processedId}/snapshot`)).length, 1, 'the exact same inflight GET must be shared');
+  await page.evaluate(() => { window.__fixture.holdId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
+  await title(page, processedId);
+  await page.locator('.au-nav [data-au-nav="knowledge"]').click();
+  await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'knowledge')), 'the first Knowledge read was not held');
+  assert.equal(await page.locator('[data-au-skeleton="knowledge"]').isVisible(), true);
+  assert.equal(await page.locator('[data-au-knowledge-identity]').count(), 0, 'the skeleton cannot imply a qualified knowledge entry');
+  const heading = await page.locator('h1').textContent();
+  await page.keyboard.press('Tab');
+  await page.evaluate(() => { window.__fixture.holdKnowledge = false; for (const held of window.__fixture.held.splice(0)) held.release(); });
+  await eventually(() => page.locator('.au-knowledge-grid').count().then(count => count === 1), 'Knowledge did not settle from its own response');
+  assert.equal(await page.locator('h1').textContent(), heading, 'settlement keeps the same page identity');
+  await page.locator('.au-nav [data-au-nav="work"]').click();
+  const knowledge = await page.evaluate(() => {
+    window.__fixture.holdKnowledge = true;
+    document.querySelector('.au-nav [data-au-nav="knowledge"]').click();
+    return {heading: document.querySelector('h1')?.textContent, grid: Boolean(document.querySelector('.au-knowledge-grid')), skeleton: Boolean(document.querySelector('[data-au-skeleton="knowledge"]'))};
+  });
+  assert.equal(knowledge.grid, true, 'warm Knowledge navigation must render without awaiting another response');
+  assert.equal(knowledge.skeleton, false);
+  assert.equal(knowledge.heading, heading);
+  await focusedReceipt(page, 'cold-and-warm-reads', {claimReads: (await calls(page, `/claims/${processedId}/snapshot`)).length, knowledgeReads: (await calls(page, '/knowledge')).length, knowledge});
+});
+
+test('focused flow: bounded claim cache evicts the oldest accepted record without borrowing another identity', async t => {
+  const page = await fixturePage(t), ids = originals.slice(0, 13).map(row => row.claim_id);
+  for (const id of ids) { await open(page, id); await title(page, id); }
+  const oldest = await page.evaluate(id => {
+    window.__fixture.holdId = id; void window.__controller.openClaim(id);
+    return {skeleton: Boolean(document.querySelector('[data-au-skeleton="claim"]')), title: document.querySelector('[data-au-claim-title]')?.textContent || null};
+  }, ids[0]);
+  assert.deepEqual(oldest, {skeleton: true, title: null}, 'a cache beyond twelve records must evict the oldest');
+  await page.evaluate(() => { window.__fixture.holdId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
+  await title(page, ids[0]);
+  const newest = await page.evaluate(id => {
+    window.__fixture.holdId = id; void window.__controller.openClaim(id);
+    return {state: document.querySelector('[data-au-view]').dataset.auReadState, title: document.querySelector('[data-au-claim-title]')?.textContent};
+  }, ids.at(-1));
+  assert.equal(newest.state, 'refreshing');
+  assert.equal(newest.title, originals.find(row => row.claim_id === ids.at(-1)).subject);
+});
+
+test('focused flow: selected process changes preserve the graph, original arrival FileList and source-origin focus', async t => {
+  const page = await fixturePage(t); await open(page, processedId); await title(page, processedId);
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();
+  const files = page.locator('[data-au-arrival] input[type="file"]');
+  await files.setInputFiles({name: 'isolated-retained-original.txt', mimeType: 'text/plain', buffer: Buffer.from('Fictional QA original retained locally; never submitted.')});
+  await page.evaluate(() => {
+    window.__retainedGraph = document.querySelector('[data-au-graph]');
+    window.__retainedArrival = document.querySelector('[data-au-arrival]');
+    window.__retainedFiles = window.__retainedArrival.elements.files.files;
+    window.__retainedNodes = [...document.querySelectorAll('[data-au-node]')];
+  });
+  await page.locator('.au-context-nav [data-au-detail="step"]').click();
+  const node = await page.locator('[data-au-node]').last().getAttribute('data-au-node');
+  await page.locator(`[data-au-node="${node}"]`).focus(); await page.keyboard.press('Enter');
+  assert.equal(await page.evaluate(() => document.querySelector('[data-au-graph]') === window.__retainedGraph && window.__retainedNodes.every(element => element.isConnected)), true, 'selecting a real node must update the inspector without replacing the graph');
+  assert.equal(await page.evaluate(() => document.querySelector('[data-au-arrival]') === window.__retainedArrival && window.__retainedArrival.elements.files.files === window.__retainedFiles), true, 'selection must preserve the same native files');
+  assert.equal(await page.locator(`[data-au-node="${node}"]`).getAttribute('aria-pressed'), 'true');
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();
+  const source = page.locator('[data-au-panel="sources"] [data-au-source]').first();
+  await source.focus(); await page.keyboard.press('Enter');
+  await eventually(() => page.locator('dialog[open] details.au-source-identity').count().then(count => count === 1), 'the exact original did not open by keyboard');
+  await page.keyboard.press('Escape');
+  assert.equal(await source.evaluate(element => document.activeElement === element), true, 'closing the original viewer must restore its visible source origin');
+  assert.equal(await files.evaluate(element => element.files[0].name), 'isolated-retained-original.txt');
+});
+
+for (const width of [1428, 390]) test(`focused flow: substantive collection, claim and Knowledge objects fit the first ${width}px viewport`, async t => {
+  const height = width === 390 ? 844 : 801, page = await fixturePage(t, {width, height, priorAssessment: 'reassessed'});
+  const bounds = selector => page.locator(selector).first().evaluate(element => { const r = element.getBoundingClientRect(); return {top: r.top, bottom: r.bottom, left: r.left, right: r.right}; });
+  const collection = await bounds('[data-au-claim-row]');
+  await focusedReceipt(page, `cases-${width}`, {width, height, firstCase: collection, calls: await page.evaluate(() => window.__fixture.calls)});
+  await open(page, processedId); await title(page, processedId);
+  const graph = await bounds('[data-au-graph-pan]'), selected = await bounds('[data-au-selected-step]');
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
+  await focusedReceipt(page, `claim-${width}`, {width, height, graph, selected, snapshots: (await calls(page, `/claims/${processedId}/snapshot`)).length});
+  await page.locator('.au-nav [data-au-nav="knowledge"]').click();
+  await eventually(() => page.locator('[data-au-knowledge-identity]').count().then(count => count > 0), 'qualified fixture Knowledge did not render');
+  const qualification = await bounds('.au-evidence-knowledge-definition'), consumers = await bounds('.au-evidence-knowledge-receiving');
+  await focusedReceipt(page, `knowledge-${width}`, {width, height, qualification, consumers});
+  assert.ok(collection.bottom <= height, `the first actual case must fit without scrolling: ${JSON.stringify(collection)}`);
+  assert.ok(collection.top <= height * .65, 'navigation and controls cannot consume most of the collection viewport');
+  assert.ok(graph.top < height - 160 && selected.top < height - 60, `a real graph and the selected decision must share the initial viewport: ${JSON.stringify({graph, selected})}`);
+  assert.ok(qualification.top < height && consumers.top < height, `qualification and receiving claims must be visible on arrival: ${JSON.stringify({qualification, consumers})}`);
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
+});
+
+// Reuse the public replay-opening preference to exercise the real scheduler
+// against one actual deterministic accepted journal. This does not change the
+// canonical nine roster or count the native fixture as a demonstration case.
+async function actualJournalPresentation(t, config = {}) {
+  const fixture = priorAssessmentFixture(), page = await fixturePage(t, {presentationSuite: 'replay', priorAssessment: 'reassessed', ...config});
+  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await page.locator('[data-au-demo-play]').click();
+  await title(page, demoIds[0]);
+  await page.evaluate(({id, latency}) => {
+    window.__fixture.replayLatency = latency;
+    void window.__controller.openClaim(id, true, {mode: 'replay', through: 1, demo: true});
+  }, {id: fixture.claim_id, latency: config.replayLatency || 0});
+  if (config.replayLatency) await page.clock.runFor(config.replayLatency);
+  await title(page, fixture.claim_id);
+  return {page, fixture, id: fixture.claim_id};
+}
+
+test('focused flow: actual accepted replay prefixes stay immutable and bounded prefetch absorbs GET latency', async t => {
+  const {page, fixture, id} = await actualJournalPresentation(t, {replayLatency: 120});
+  const rendered = [], times = [];
+  for (let through = 1; through <= fixture.snapshots.reassessed.state.revision; through++) {
+    let record = await visibleRecord(page);
+    for (let tick = 0; record.state.revision < through && tick < 90; tick++) {
+      await page.clock.runFor(20); record = await visibleRecord(page);
+    }
+    assert.equal(record.state.revision, through, 'replay may not skip an accepted journal prefix');
+    assert.deepEqual(record.state, fixture.prefixes[through].state, `prefix ${through} keeps every accepted field and hash`);
+    assert.deepEqual(record.projection, fixture.prefixes[through].projection);
+    assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+    assert.equal(await page.locator('[data-au-arrival], [data-au-start], [data-au-pause], [data-au-resume]').count(), 0);
+    const prefixCalls = (await calls(page, `/claims/${id}/replay`)).map(call => Number(new URL(call.url, 'http://fixture.invalid').searchParams.get('through_seq')));
+    assert.ok(prefixCalls.every(seq => seq <= through + 2), 'prefetch must remain at most two accepted prefixes ahead');
+    assert.equal(new Set(prefixCalls).size, prefixCalls.length, 'each prefetched prefix GET is deduplicated');
+    rendered.push(through); times.push(await page.evaluate(() => performance.now()));
+  }
+  const gaps = times.slice(1).map((time, index) => time - times[index]);
+  assert.ok(gaps.every(gap => gap <= 1440), `120ms GET latency must fit within presentation time instead of adding to every prefix: ${JSON.stringify(gaps)}`);
+  assert.deepEqual(rendered, Array.from({length: 28}, (_, index) => index + 1));
+  const replayCalls = await calls(page, `/claims/${id}/replay`);
+  assert.equal(replayCalls.length, 28);
+  await page.locator('.au-nav [data-au-nav="work"]').click();
+  await focusedReceipt(page, 'actual-28-prefix-replay', {identity: id, rendered, virtualTimes: times, gaps, replayCalls});
+});
+
+test('focused flow: a corrupted prefetched original identity stops before replacing the accepted replay prefix', async t => {
+  const {page, fixture, id} = await actualJournalPresentation(t, {corruptReplayThrough: 3});
+  await page.clock.runFor(1400);
+  await eventually(async () => (await visibleRecord(page)).state.revision === 2, 'the second accepted prefix did not render');
+  await page.clock.runFor(1400);
+  await eventually(() => page.locator('.au-global-status').innerText().then(text => /stopped|provenance|identity/i.test(text)), 'corrupt prefetched provenance did not stop replay');
+  assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[2].state);
+  assert.equal(await page.locator('[data-au-presentation-mode]').innerText(), 'Verified replay');
+  await page.clock.runFor(5000);
+  assert.equal((await visibleRecord(page)).state.revision, 2, 'a rejected prefetched prefix cannot advance later');
+  assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
+});
+
+for (const interruption of ['source', 'hidden', 'navigation']) test(`focused flow: ${interruption} cancels replay with a prefetched accepted response in flight`, async t => {
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+  const {page} = await actualJournalPresentation(t, {holdReplayId: id, holdReplayThrough: 2});
+  await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the next accepted prefix was not prefetched');
+  if (interruption === 'source') {
+    await page.locator('[data-au-panel="sources"] [data-au-source]').first().click();
+    await eventually(() => page.locator('dialog[open] details.au-source-identity').count().then(count => count === 1), 'original inspection did not open');
+  } else if (interruption === 'hidden') await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', {configurable: true, get: () => true}); document.dispatchEvent(new Event('visibilitychange'));
+  });
+  else await page.locator('.au-nav [data-au-nav="knowledge"]').click();
+  await page.evaluate(() => { for (const held of window.__fixture.held.splice(0)) held.release(); });
+  await page.clock.runFor(7000);
+  if (interruption === 'navigation') assert.equal(new URL(page.url()).hash, '#autonomous/knowledge');
+  else assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[1].state, 'inspection or hiding must leave the current accepted prefix stable');
+  const before = (await calls(page, `/claims/${id}/replay`)).length;
+  if (interruption === 'source') await page.locator('[data-au-close]').click();
+  if (interruption === 'hidden') await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', {configurable: true, get: () => false}); document.dispatchEvent(new Event('visibilitychange'));
+  });
+  await page.clock.runFor(5000);
+  assert.equal((await calls(page, `/claims/${id}/replay`)).length, before, 'a cancelled replay cannot restart on close or visibility resume');
+  assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
+});
+
+async function traceFocusedMotion(page) {
+  await page.evaluate(() => {
+    window.__focusedMotion = [];
+    const animate = Element.prototype.animate;
+    Element.prototype.animate = function(frames, options) {
+      const animation = animate.call(this, frames, options);
+      window.__focusedMotion.push({element: this, animation, frames, options});
+      return animation;
+    };
+  });
+}
+async function motionTrace(page) {
+  return page.evaluate(() => window.__focusedMotion.map(row => ({
+    tag: row.element.tagName, frames: row.frames, options: row.options, state: row.animation.playState,
+    transform: getComputedStyle(row.element).transform, opacity: getComputedStyle(row.element).opacity,
+  })));
+}
+function assertFocusedMotion(trace) {
+  assert.ok(trace.length > 0, 'the actual interaction must create a native animation');
+  for (const row of trace) {
+    assert.ok(row.options.duration >= 180 && row.options.duration <= 320, `bounded duration: ${JSON.stringify(row.options)}`);
+    assert.notEqual(row.options.iterations, Infinity);
+    assert.ok((row.options.delay || 0) <= 80);
+    const frames = Array.isArray(row.frames) ? row.frames : [row.frames];
+    assert.ok(frames.some(frame => frame.transform !== undefined) && frames.some(frame => frame.opacity !== undefined), 'motion must carry visible transform and opacity frames');
+    for (const frame of frames) assert.ok(Object.keys(frame).every(key => ['transform', 'opacity', 'offset', 'easing', 'composite'].includes(key)), 'motion cannot animate layout, scroll or an SVG path');
+  }
+}
+
+test('focused flow: page motion has real bounded frames and rapid navigation, keyboard and reduced motion cancel it', async t => {
+  const page = await fixturePage(t); await traceFocusedMotion(page);
+  await page.evaluate(() => document.querySelector('.au-nav [data-au-nav="demonstration"]').click());
+  let trace = await motionTrace(page); assertFocusedMotion(trace);
+  const first = trace.length - 1;
+  const frames = await page.evaluate(index => {
+    const row = window.__focusedMotion[index], timing = row.animation.effect.getComputedTiming();
+    row.animation.pause(); row.animation.currentTime = 0;
+    const start = {opacity: getComputedStyle(row.element).opacity, transform: getComputedStyle(row.element).transform};
+    row.animation.currentTime = timing.duration / 2;
+    const middle = {opacity: getComputedStyle(row.element).opacity, transform: getComputedStyle(row.element).transform};
+    row.animation.play(); return {start, middle, timing};
+  }, first);
+  assert.notDeepEqual(frames.start, frames.middle, 'the native animation must produce a visible intermediate frame');
+  await page.evaluate(() => document.querySelector('.au-nav [data-au-nav="knowledge"]').click());
+  trace = await motionTrace(page);
+  assert.equal(trace[first].state, 'idle', 'a newer page interaction cancels the previous native animation');
+  assert.ok(trace.filter(row => row.state === 'running').length <= 1, 'only one interaction animation may run at once');
+  await page.emulateMedia({reducedMotion: 'reduce'});
+  assert.equal(await page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length), 0, 'changing reduced motion cancels active animations immediately');
+  const count = (await motionTrace(page)).length;
+  await page.locator('.au-nav [data-au-nav="work"]').focus(); await page.keyboard.press('Enter');
+  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'keyboard navigation must preserve the complete collection under reduced motion');
+  assert.equal((await motionTrace(page)).length, count, 'reduced motion cannot start another animation');
+  await focusedReceipt(page, 'motion-native-page', {frames, trace: await motionTrace(page)});
+});
+
+test('focused flow: tabs, disclosures, filters and source dialog use the same cancellable motion without changing source identity', async t => {
+  const page = await fixturePage(t); await traceFocusedMotion(page);
+  await page.evaluate(() => {
+    const search = document.querySelector('[data-au-claim-search]'); search.value = 'heating'; search.dispatchEvent(new Event('input', {bubbles: true}));
+  });
+  assertFocusedMotion(await motionTrace(page));
+  await open(page, processedId); await title(page, processedId);
+  await page.evaluate(() => { window.__focusedMotion.length = 0; document.querySelector('.au-context-nav [data-au-detail="sources"]').click(); });
+  assertFocusedMotion(await motionTrace(page));
+  await page.evaluate(() => {
+    Object.defineProperty(document, 'hidden', {configurable: true, get: () => true}); document.dispatchEvent(new Event('visibilitychange'));
+  });
+  assert.equal(await page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length), 0);
+  await page.evaluate(() => { Object.defineProperty(document, 'hidden', {configurable: true, get: () => false}); document.dispatchEvent(new Event('visibilitychange')); });
+  await page.evaluate(() => { window.__focusedMotion.length = 0; document.querySelector('[data-au-panel="sources"] [data-au-source]').click(); });
+  await eventually(() => page.locator('dialog[open] details.au-source-identity').count().then(count => count === 1), 'the original source must verify before the dialog animation');
+  assertFocusedMotion(await motionTrace(page));
+  const identity = await page.locator('dialog[open] details.au-source-identity').textContent();
+  await page.locator('dialog[open] details.au-source-identity > summary').click();
+  await page.evaluate(async () => { for (let turn = 0; turn < 20; turn++) await Promise.resolve(); });
+  const afterDisclosure = await motionTrace(page); assertFocusedMotion(afterDisclosure);
+  assert.equal(await page.locator('dialog[open] details.au-source-identity').textContent(), identity);
+  assert.ok(afterDisclosure.filter(row => row.state === 'running').length <= 1);
+  await page.keyboard.press('Tab');
+  assert.equal(await page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length), 0, 'keyboard inspection cancels pointer motion');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('dialog[open]').count(), 0);
+  assert.equal(await page.locator('[data-au-panel="sources"]').isVisible(), true);
 });
