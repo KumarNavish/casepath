@@ -191,28 +191,53 @@
     const sources=[...sourceIds].filter(Boolean).map(id=>({id,delay:0,duration:220}));
     const documents=changes.documents.map(id=>({id,delay:80,duration:220}));
     const semantic = semanticEventRecord(after,newest);
-    return {sources,facts,edges,nodes,documents,semantic:semantic ? [{id:semantic.id,delay:80,duration:220}] : [],stages:[],duration:300};
+    return {cue:{seq:newest.seq},sources,facts,edges,nodes,documents,semantic:semantic ? [{id:semantic.id,delay:80,duration:220}] : [],stages:[],duration:300};
   }
   function animateTransition(host,plan,environment={}) {
-    const animations=new Set(),overlays=new Set();
-    const cancel=()=>{for(const animation of animations)animation.cancel();animations.clear();for(const overlay of overlays)overlay.remove();overlays.clear();};
+    const animations = new Set(), overlays = new Set();
+    const cancel = () => { for (const animation of animations) animation.cancel(); animations.clear(); for (const overlay of overlays) overlay.remove(); overlays.clear(); };
     if (!plan || environment.reducedMotion || environment.hidden || environment.dialogOpen || environment.keyboard) return {cancel,count:0};
-    const run=(element,frames,timing,cleanup=()=>{})=>{
-      if (!element?.animate || (element.closest?.('[hidden]') || element.closest?.('details:not([open])')) || element===environment.activeElement || element.contains?.(environment.activeElement)) { cleanup(); return; }
-      const animation=element.animate(frames,{...timing,easing:'cubic-bezier(.2,.65,.3,1)',fill:'none'});animations.add(animation);
-      animation.finished?.then(()=>{animations.delete(animation);cleanup();},()=>{animations.delete(animation);cleanup();});
+    const selected = environment.selected ?? host.querySelector?.('[data-au-node][aria-pressed="true"]')?.dataset.auNode;
+    const candidates = [], seen = new Set();
+    const add = (element,timing,edge = false) => {
+      if (!element?.animate || !timing || seen.has(element) || element.closest?.('[hidden],details:not([open])') || element === environment.activeElement || element.contains?.(environment.activeElement)) return;
+      seen.add(element); candidates.push({element,timing,edge});
     };
-    for(const edge of host.querySelectorAll('[data-au-edge]')) {
-      const timing=(plan.edges || []).find(row=>row.id===edge.dataset.auEdge);if(!timing)continue;
-      const length=edge.getTotalLength?.();if(!Number.isFinite(length)||length<=0)continue;
-      const overlay=edge.cloneNode(false);overlay.setAttribute('class','au-live-edge');overlay.removeAttribute?.('data-au-edge');edge.parentNode.appendChild(overlay);overlays.add(overlay);overlay.removeAttribute?.('data-state');overlay.removeAttribute?.('data-selected');
-      run(overlay,[{opacity:0,transform:'translateX(-3px)'},{opacity:1,transform:'translateX(0)'}],timing,()=>{overlay.remove();overlays.delete(overlay);});
-    }
-    for(const [selector,field,rows]of [['[data-au-source]','auSource',plan.sources || []],['[data-au-node]','auNode',plan.nodes || []],['[data-au-fact]','auFact',plan.facts || []],['[data-au-document]','auDocument',plan.documents || []],['[data-au-semantic-event]','auSemanticEvent',plan.semantic || []]]) {
-      for(const element of host.querySelectorAll(selector)) {
-        const timing=rows.find(row=>row.id===element.dataset[field]);if(!timing)continue;
-        run(element,[{opacity:.58,transform:'translateY(3px)'},{opacity:1,transform:'translateY(0)'}],timing);
+    // Only the visible selected evidence path carries motion. Every other
+    // accepted change renders immediately into its inspectable settled state.
+    for (const [selector,field,rows] of [['[data-au-source]','auSource',plan.sources || []],['[data-au-node]','auNode',plan.nodes || []],['[data-au-fact]','auFact',plan.facts || []],['[data-au-document]','auDocument',plan.documents || []],['[data-au-semantic-event]','auSemanticEvent',plan.semantic || []]]) {
+      for (const element of host.querySelectorAll(selector)) {
+        if (field === 'auNode' && selected && element.dataset.auNode !== selected) continue;
+        if (['auSource','auFact','auDocument'].includes(field) && element.closest && !element.closest('[data-au-evidence-path]')) continue;
+        if (field === 'auSemanticEvent' && element.matches && !element.matches('.au-event-cue')) continue;
+        add(element,rows.find(row => row.id === element.dataset[field]));
       }
+    }
+    const stepTiming = (plan.nodes || []).find(row => row.id === selected);
+    if (stepTiming) for (const junction of host.querySelectorAll('[data-au-expanded-junction]')) if (junction.dataset.auExpandedJunction === selected) add(junction.closest?.('header'),stepTiming);
+    if (plan.cue) for (const cue of host.querySelectorAll('[data-au-event-seq]')) if (Number(cue.dataset.auEventSeq) === plan.cue.seq) add(cue,{delay:80,duration:220});
+    const edge = [...host.querySelectorAll('[data-au-edge]')].find(element => (!selected || element.getAttribute?.('data-selected') === 'true') && (plan.edges || []).some(row => row.id === element.dataset.auEdge));
+    if (edge) add(edge,plan.edges.find(row => row.id === edge.dataset.auEdge),true);
+    // Complete all visibility/clip and path-length measurements before WAAPI
+    // or SVG writes. Partly clipped graph objects settle without animation.
+    const clips = new Map(), visible = candidates.filter(candidate => {
+      const {element} = candidate, bounds = element.getBoundingClientRect?.();
+      if (bounds) {
+        if (!bounds.width || !bounds.height || bounds.right <= 0 || bounds.bottom <= 0 || bounds.left >= (root.innerWidth || Infinity) || bounds.top >= (root.innerHeight || Infinity)) return false;
+        const clip = element.closest?.('.au-graph-viewport');
+        if (clip) { if (!clips.has(clip)) clips.set(clip,clip.getBoundingClientRect()); const area = clips.get(clip); if (bounds.left < area.left || bounds.right > area.right || bounds.top < area.top || bounds.bottom > area.bottom) return false; }
+      }
+      if (candidate.edge) { candidate.length = element.getTotalLength?.(); if (!Number.isFinite(candidate.length) || candidate.length <= 0) return false; }
+      return true;
+    });
+    const run = (element,timing,cleanup = () => {}) => {
+      const animation = element.animate([{opacity:.58,transform:'translateY(3px)'},{opacity:1,transform:'translateY(0)'}],{...timing,easing:'cubic-bezier(.2,.65,.3,1)',fill:'none'}); animations.add(animation);
+      animation.finished?.then(() => { animations.delete(animation); cleanup(); },() => { animations.delete(animation); cleanup(); });
+    };
+    for (const {element,timing,edge} of visible) {
+      if (!edge) { run(element,timing); continue; }
+      const overlay = element.cloneNode(false); overlay.setAttribute('class','au-live-edge'); overlay.removeAttribute?.('data-au-edge'); overlay.removeAttribute?.('data-state'); overlay.removeAttribute?.('data-selected'); element.parentNode.appendChild(overlay); overlays.add(overlay);
+      run(overlay,timing,() => { overlay.remove(); overlays.delete(overlay); });
     }
     return {cancel,count:animations.size};
   }
@@ -248,9 +273,21 @@
     if (!rows.length) return '';
     return `<section class="au-reconciliation-history"><h3>Saved-result reconciliation</h3><p class="au-meta">This history records checks of saved results. The original execution failure remains in the journal.</p><ol class="au-event-list">${rows.map(row => `<li><div><strong>${h(({started:'Saved-result reconciliation started',completed:'Saved-result reconciliation completed',failed:'Saved-result reconciliation failed'})[row.status] || 'Saved-result reconciliation status not recorded')}</strong><p>${h(row.reconciliation_id)}</p>${row.original_deferral?.reason ? `<p>Original execution failure: ${h(row.original_deferral.reason)}</p>` : ''}${row.failure_reason ? `<p>${h(row.failure_reason)}</p>` : ''}${row.status === 'completed' ? '<p>The saved results were reconciled. The recorded operational outcome determines which evidence remains unresolved.</p>' : row.status === 'started' ? '<p>No completed reconciliation is recorded for this attempt.</p>' : ''}<details class="au-technical-record" data-au-disclosure="reconciliation:${h(row.reconciliation_id)}"><summary>Full reconciliation record</summary><pre class="au-record-body">${h(JSON.stringify(row,null,2))}</pre></details></div></li>`).join('')}</ol></section>`;
   }
-  function preferredNode(state, remembered = null) {
+  function acceptedEventNode(state, event) {
+    const semantic = semanticEventRecord(state,event), known = new Set(list(state.graph?.nodes).map(node => node.node_id));
+    if (semantic?.nodes?.length) return semantic.nodes.find(id => known.has(id)) || null;
+    if (!event || event.claim_id !== state.claim_id || !['action.completed','graph.advanced','interpretation.accepted'].includes(event.kind) || !Number.isSafeInteger(event.seq) || event.seq > state.revision || eventIdentity(event).revision !== event.seq || !isHash(event.event_sha256) || !isHash(eventIdentity(event).state_sha256)) return null;
+    if (event.seq === state.revision && (eventIdentity(event).state_sha256 !== state.state_sha256 || state.last_event_sha256 && event.event_sha256 !== state.last_event_sha256)) return null;
+    const payload = event.payload || {};
+    return [payload.node_id,...list(payload.node_ids)].find(id => known.has(id)) || null;
+  }
+  function preferredNode(state, remembered = null, events = []) {
     const nodes = list(state.graph?.nodes), has = id => nodes.some(node => node.node_id === id);
-    return has(remembered) ? remembered : has(state.evaluation?.focus_node_id) ? state.evaluation.focus_node_id : list(state.evaluation?.nodes).find(node => node.execution_state === 'ready' && has(node.node_id))?.node_id || nodes[0]?.node_id || null;
+    if (has(remembered)) return remembered;
+    for (const event of [...events].reverse()) { const node = acceptedEventNode(state,event); if (node) return node; }
+    if (has(state.evaluation?.focus_node_id)) return state.evaluation.focus_node_id;
+    const relevant = list(state.evaluation?.nodes).find(node => has(node.node_id) && (node.execution_state === 'ready' || node.activation === 'unresolved') && evidenceRelationships(state,node.node_id).documents.length);
+    return relevant?.node_id || list(state.evaluation?.nodes).find(node => node.execution_state === 'ready' && has(node.node_id))?.node_id || nodes[0]?.node_id || null;
   }
   function edgeState(state, id) {
     const evaluation = list(state.evaluation?.edges).find(edge => edge.edge_id === id);
@@ -262,14 +299,14 @@
     const layout = layoutGraph(graph), evaluation = new Map(list(state.evaluation?.nodes).map(node => [node.node_id, node]));
     const inspectionIndex = layout.nodes.findIndex(node => node.node_id === selected);
     const inspection = `<nav class="au-mobile-inspection" data-au-node-inspection aria-label="Inspect recorded process steps"><button type="button" class="au-secondary" data-au-node-previous aria-label="Inspect previous recorded step"${inspectionIndex <= 0 ? ' disabled' : ''}>Previous</button><div><strong data-au-inspection-position>${inspectionIndex >= 0 ? `Step ${inspectionIndex+1} of ${layout.nodes.length}` : `${layout.nodes.length} recorded steps`}</strong><span>Inspection position</span></div><button type="button" class="au-secondary" data-au-node-next aria-label="Inspect next recorded step"${inspectionIndex === layout.nodes.length-1 || !layout.nodes.length ? ' disabled' : ''}>Next</button></nav>`;
-    return `${inspection}<div class="au-evidence-graph-help"><span>Complete recorded process · ${layout.nodes.length} steps · ${layout.edges.length} connections</span><span>Dashed routes do not apply. Scroll to follow every branch.</span></div><div class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan tabindex="0" role="region" aria-label="Complete process graph; scroll horizontally"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true">${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-state="${h(edgeState(state,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || 'Recorded process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row, rank) => `<div class="au-graph-rank" data-rank="${rank}">${row.map(node => {
+    return `<div class="au-graph-chrome">${inspection}<div class="au-evidence-graph-help"><span>${layout.nodes.length} steps · ${layout.edges.length} connections</span><span>Dashed routes do not apply.</span></div></div><div class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan tabindex="0" role="region" aria-label="Complete process graph; scroll horizontally"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true">${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-state="${h(edgeState(state,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || 'Recorded process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row, rank) => `<div class="au-graph-rank" data-rank="${rank}">${row.map(node => {
       const evaluated = evaluation.get(node.node_id) || {}, status = evaluated.execution_state || evaluated.state || 'pending';
       const statusText = statusLabel(status) + (status === 'ready' && projection.node_capabilities?.[node.node_id]?.authorized === false ? ' · execution unavailable' : '');
       const parents = layout.parents.get(node.node_id).map(id => name(layout.byId.get(id))), fullName = name(node);
       return `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" aria-pressed="${selected === node.node_id}" aria-label="${h(fullName)}. ${h(statusText)}${parents.length ? `. After ${h(parents.join(' + '))}` : ''}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}">${status === 'completed' ? '✓' : String(layout.nodes.indexOf(node) + 1).padStart(2, '0')}</span><span class="au-node-copy"><strong class="au-node-title">${h(fullName)}</strong><span class="au-node-state">${h(statusText)}</span><span class="au-node-deps au-sr-only">${parents.length ? `After ${h(parents.join(' + '))}` : 'Starting point'}</span></span></button>`;
     }).join('')}</div>`).join('')}</div></div>`;
   }
-  function obligationMarkup(state, selected, suppliedRows) {
+  function obligationMarkup(state, selected, suppliedRows, context = {}) {
     const documents = new Map(list(state.evaluation?.documents).map(doc => [doc.document_type, doc]));
     const rows = suppliedRows || list(state.obligations).concat(list(state.evaluation?.documents).filter(doc => !list(state.obligations).some(item => item.document_type === doc.document_type)));
     if (!rows.length) return '<p class="au-empty">No document obligations have been accepted yet.</p>';
@@ -277,7 +314,7 @@
       const doc = documents.get(obligation.document_type) || {}, nodes = [...new Set([obligation.node_id,obligation.decision_node_id,...list(obligation.required_at_node_ids),...list(obligation.node_ids)].filter(Boolean))];
       const status = doc.route_state || obligation.status || 'pending';
       const requiredFacts = list(obligation.required_fact_ids).map(id => list(state.facts).find(fact => fact.fact_id === id)?.label).filter(Boolean);
-      return `<li class="au-obligation" data-au-obligation="${h(obligation.obligation_id || obligation.document_type)}" data-au-document="${h(obligation.document_type)}" data-status="${h(status)}"${nodes.includes(selected) ? ' data-selected="true"' : ''}><div><strong>${h(name(obligation) || name(doc))}</strong><span class="au-obligation-state">${h(statusLabel(status))}${doc.review_state && doc.review_state !== 'unreviewed' ? ` · ${h(statusLabel(doc.review_state))}` : ''}</span>${requiredFacts.length && !suppliedRows ? `<p>${h(requiredFacts.join('; '))}</p>` : ''}${obligation.reason ? `<details data-au-disclosure="obligation:${h(obligation.obligation_id || obligation.document_type)}"><summary>Why required</summary><p>${h(obligation.reason)}</p></details>` : ''}<div class="au-related">${nodes.filter(id => !suppliedRows || id !== selected).map(id => button(name(list(state.graph?.nodes).find(node => node.node_id === id)) || words(id), `data-au-select="${h(id)}" data-au-select-document="${h(obligation.document_type)}" data-au-select-obligation="${h(requirementIdentity(obligation))}" data-au-select-fact="${h(list(obligation.required_fact_ids).find(factId => list(state.facts).some(fact => fact.fact_id === factId)) || '')}"`)).join('')}</div>${['needed_now','unresolved','pending','held_behind_question'].includes(status) ? button('Add supporting files','data-au-add-files') : ''}</div>${sourceButtons(state, obligation)}</li>`;
+      return `<li class="au-obligation" data-au-obligation="${h(obligation.obligation_id || obligation.document_type)}" data-au-document="${h(obligation.document_type)}" data-status="${h(status)}"${context.obligation ? requirementIdentity(obligation) === context.obligation ? ' data-selected="true"' : '' : context.document === obligation.document_type ? ' data-selected="true"' : ''}><div><strong>${h(name(obligation) || name(doc))}</strong><span class="au-obligation-state">${h(statusLabel(status))}${doc.review_state && doc.review_state !== 'unreviewed' ? ` · ${h(statusLabel(doc.review_state))}` : ''}</span>${obligation.reason || requiredFacts.length ? `<details data-au-disclosure="obligation:${h(obligation.obligation_id || obligation.document_type)}"><summary>Why required</summary>${requiredFacts.length ? `<p>Required facts: ${h(requiredFacts.join('; '))}</p>` : ''}${obligation.reason ? `<p>${h(obligation.reason)}</p>` : ''}</details>` : ''}<div class="au-related au-obligation-actions">${nodes.filter(id => !suppliedRows || id !== selected).map(id => button('Inspect process step', `title="${h(name(list(state.graph?.nodes).find(node => node.node_id === id)) || words(id))}" aria-label="Inspect ${h(name(list(state.graph?.nodes).find(node => node.node_id === id)) || words(id))}" data-au-select="${h(id)}" data-au-select-document="${h(obligation.document_type)}" data-au-select-obligation="${h(requirementIdentity(obligation))}" data-au-select-fact="${h(list(obligation.required_fact_ids).find(factId => list(state.facts).some(fact => fact.fact_id === factId)) || '')}"`)).join('')}${['needed_now','unresolved','pending','held_behind_question'].includes(status) ? button('Add supporting files','data-au-add-files') : ''}</div></div>${sourceButtons(state, obligation)}</li>`;
     }).join('')}</ul>`;
   }
   function actionInstanceIdentity(action, receipt = {}, index = 0, entry = {}) {
@@ -430,7 +467,7 @@
     const actions = actionRows(state,events).filter(({result:item}) => relates(item) || obligations.some(obligation => item.obligation_id === obligation.obligation_id));
     const capability = projection.node_capabilities?.[selected], executionState = evaluation.execution_state || evaluation.state;
     const execution = capability ? `<section class="au-capability" data-authorized="${capability.authorized === true}"><strong>${capability.authorized === true ? ['ready','completed'].includes(executionState) ? 'Available capability' : 'Available after prerequisites' : 'Execution limit'}</strong><p>${h(capability.reason || words(capability.id))}</p><p class="au-meta">Process readiness does not record execution or external authorization.</p></section>` : '';
-    return `<div class="au-inspector au-evidence-inspector" data-au-selected-step="${h(selected)}">${evidencePathMarkup(state,selected,projection,context)}<details class="au-evidence-inspection" data-au-disclosure="inspection:${h(selected)}"><summary>Step evidence, actions and authority <span>${facts.length} facts · ${obligations.length} obligations · ${actions.length} recorded actions</span></summary>${execution}<div class="au-step-evidence"><section class="au-step-facts"><h4>Facts this step requires</h4>${facts.map(fact => factRecordMarkup(state,fact)).join('') || '<p class="au-empty">No fact dependencies recorded for this step.</p>'}</section><section class="au-step-documents"><h4>Required documents</h4>${obligationMarkup(state,selected,obligations)}${obligations.length ? `<details class="au-document-rules" data-au-disclosure="document-rules:${h(selected)}"><summary>Document rules and acquisition</summary>` : ''}${obligations.map(item => `<p class="au-meta">${list(item.rule_refs).length ? `Rule ${h(list(item.rule_refs).map(ref => typeof ref === 'string' ? ref : ref.rule_id || ref.title || ref.authority_id).join(' · '))} · ` : ''}${item.capability_id ? `Acquisition: ${h(words(item.capability_id))}` : 'No acquisition capability recorded'}</p>`).join('')}${obligations.length ? '</details>' : ''}</section><section class="au-step-actions"><h4>Recorded actions</h4>${actionMarkup(state,actions)}</section></div>${routeMarkup(state,selected)}<details class="au-rule-trace" data-au-disclosure="rules:${h(selected)}"><summary>Admitted rules</summary>${node.authority?.title ? `<strong>${h(node.authority.title)}</strong>` : ''}${node.authority?.quote ? `<blockquote>${h(node.authority.quote)}</blockquote>` : ''}${node.meaning && node.meaning !== node.authority?.quote ? `<p>${h(node.meaning)}</p>` : ''}${list(node.provenance?.rule_refs).map(ref => `<p>${h(typeof ref === 'string' ? ref : ref.title || ref.rule_id || ref.authority_id)}</p>`).join('')}${node.authority?.source_id ? `<p class="au-meta">${h(node.authority.source_id)}</p>` : ''}</details><details class="au-technical-record" data-au-disclosure="step-record:${h(selected)}"><summary>Complete step and capability record</summary><pre class="au-record-body">${h(JSON.stringify({node,evaluation,capability},null,2))}</pre></details></details></div>`;
+    return `<div class="au-inspector au-evidence-inspector" data-au-selected-step="${h(selected)}">${evidencePathMarkup(state,selected,projection,context)}<details class="au-evidence-inspection" data-au-disclosure="inspection:${h(selected)}"><summary>Step evidence, actions and authority <span>${facts.length} facts · ${obligations.length} obligations · ${actions.length} recorded actions</span></summary>${execution}<div class="au-step-evidence"><section class="au-step-facts"><h4>Facts this step requires</h4>${facts.map(fact => factRecordMarkup(state,fact)).join('') || '<p class="au-empty">No fact dependencies recorded for this step.</p>'}</section><section class="au-step-documents"><h4>Required documents</h4>${obligationMarkup(state,selected,obligations,context)}${obligations.length ? `<details class="au-document-rules" data-au-disclosure="document-rules:${h(selected)}"><summary>Document rules and acquisition</summary>` : ''}${obligations.map(item => `<p class="au-meta">${list(item.rule_refs).length ? `Rule ${h(list(item.rule_refs).map(ref => typeof ref === 'string' ? ref : ref.rule_id || ref.title || ref.authority_id).join(' · '))} · ` : ''}${item.capability_id ? `Acquisition: ${h(words(item.capability_id))}` : 'No acquisition capability recorded'}</p>`).join('')}${obligations.length ? '</details>' : ''}</section><section class="au-step-actions"><h4>Recorded actions</h4>${actionMarkup(state,actions)}</section></div>${routeMarkup(state,selected)}<details class="au-rule-trace" data-au-disclosure="rules:${h(selected)}"><summary>Admitted rules</summary>${node.authority?.title ? `<strong>${h(node.authority.title)}</strong>` : ''}${node.authority?.quote ? `<blockquote>${h(node.authority.quote)}</blockquote>` : ''}${node.meaning && node.meaning !== node.authority?.quote ? `<p>${h(node.meaning)}</p>` : ''}${list(node.provenance?.rule_refs).map(ref => `<p>${h(typeof ref === 'string' ? ref : ref.title || ref.rule_id || ref.authority_id)}</p>`).join('')}${node.authority?.source_id ? `<p class="au-meta">${h(node.authority.source_id)}</p>` : ''}</details><details class="au-technical-record" data-au-disclosure="step-record:${h(selected)}"><summary>Complete step and capability record</summary><pre class="au-record-body">${h(JSON.stringify({node,evaluation,capability},null,2))}</pre></details></details></div>`;
   }
   function eventLabel(event) {
     if (event.kind === 'knowledge.published') return event.payload?.knowledge?.qualification?.status === 'qualified' ? 'Qualified knowledge version published' : 'Knowledge candidate withheld';
@@ -467,19 +504,24 @@
     if (!event) return '';
     const semantic = semanticEventRecord(state,event), identity = semantic?.id;
     const label = semantic ? `${semantic.label} · ${semantic.title}` : eventLabel(event);
-    return `<button type="button" class="au-event-cue" data-au-detail="activity" data-au-event-seq="${h(event.seq)}"${identity ? ` data-au-semantic-event="${h(identity)}" data-au-semantic-kind="${h(event.kind)}"` : ''} title="${h(label)}"><span class="au-event-marker" aria-hidden="true">${semantic?.type === 'reused' ? '↺' : '·'}</span><span>${h(label.length > 180 ? label.slice(0,177) + '…' : label)}</span><span class="au-event-revision">${h(event.seq)} ↗</span></button>`;
+    return `<button type="button" class="au-event-cue" data-au-detail="activity" data-au-event-seq="${h(event.seq)}"${identity ? ` data-au-semantic-event="${h(identity)}" data-au-semantic-kind="${h(event.kind)}"` : ''} title="${h(label)} · accepted revision ${h(event.seq)}"><span class="au-event-marker" aria-hidden="true">${semantic?.type === 'reused' ? '↺' : '·'}</span><span>${h(label.length > 180 ? label.slice(0,177) + '…' : label)}</span><span class="au-event-revision">↗</span></button>`;
   }
-  function readSkeletonMarkup(kind, title = '') {
-    return `<section class="au-read-skeleton" data-au-skeleton="${h(kind)}" aria-busy="true"><header class="au-work-head"><div><p class="au-eyebrow">${kind === 'knowledge' ? 'Knowledge' : 'Claim'}</p><h1 class="au-page-heading" tabindex="-1">${h(title || (kind === 'knowledge' ? 'Knowledge in context.' : 'Opening claim'))}</h1><p class="au-meta">${kind === 'knowledge' ? 'Reading recorded definitions and relationships…' : 'Verifying saved sources and accepted history…'}</p></div></header><div class="au-skeleton-graph" aria-hidden="true"><span></span><span></span><span></span></div><div class="au-skeleton-object" aria-hidden="true"><span></span><span></span></div></section>`;
+  function claimHeadingMarkup(state, extraClass = '') {
+    const featured = DEMO_CASES.find(row => row.claim_id === state.claim_id), subject = String(state.title || 'Untitled claim');
+    return `<h1 class="au-page-heading ${extraClass}" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(featured?.label || subject)}</h1>${featured || subject.length > 110 ? `<details class="au-original-subject-disclosure" data-au-disclosure="original-subject"><summary>Original subject</summary><p>${h(subject)}</p></details>` : ''}`;
+  }
+  function readSkeletonMarkup(kind, title = '', claimId = '') {
+    const featured = kind === 'claim' && DEMO_CASES.find(row => row.claim_id === claimId);
+    return `<section class="au-read-skeleton" data-au-skeleton="${h(kind)}" aria-busy="true"><header class="au-work-head"><div><p class="au-eyebrow">${kind === 'knowledge' ? 'Knowledge' : 'Claim'}</p><h1 class="au-page-heading" tabindex="-1">${h(featured?.label || title || (kind === 'knowledge' ? 'Knowledge in context.' : 'Opening claim'))}</h1><p class="au-meta">${kind === 'knowledge' ? 'Reading recorded definitions and relationships…' : 'Verifying saved sources and accepted history…'}</p></div></header><div class="au-skeleton-graph" aria-hidden="true"><span></span><span></span><span></span></div><div class="au-skeleton-object" aria-hidden="true"><span></span><span></span></div></section>`;
   }
   function workMarkup(state, projection, selected, events, detail = 'step', context = {}, presentation = {}) {
     const mode = presentation.mode === 'replay' ? 'Verified replay' : presentation.mode === 'live' ? 'Live execution' : 'Saved state';
-    const presentationControls = presentation.playing ? button('Pause presentation','data-au-demo-stop') : '';
+    const presentationControls = presentation.playing ? button('Pause presentation','data-au-demo-stop') : presentation.paused ? button('Resume presentation','data-au-demo-resume') : '';
     const itinerary = presentation.playing && DEMO_CASES[presentation.position]?.claim_id === state.claim_id ? `<details class="au-demo-itinerary" data-au-disclosure="demo-itinerary"><summary><span class="au-demo-position">Presentation ${String(presentation.position+1).padStart(2,'0')} of 09</span> · independent case order</summary>${demoItineraryMarkup(presentation.claims || [],presentation.position,state)}</details>` : '';
-    if (state.revision === 0) return `<header class="au-work-head au-original-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button> / Original intake</p><h1 class="au-page-heading au-original-subject" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(state.title)}</h1><p class="au-meta" data-au-presentation-mode>${h(mode)} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls"><span class="au-status">Not started</span>${presentation.mode !== 'replay' ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>Start investigation</button>` : ''}${presentationControls}</div></header>${itinerary}<section class="au-original-intake" aria-labelledby="auOriginalMessage"><div class="au-original-layout"><aside class="au-original-source-rail" aria-label="Original sources">${sourcesMarkup(state)}</aside><div class="au-original-message-column"><p class="au-eyebrow">Original customer message</p><h2 id="auOriginalMessage" class="au-sr-only">Original message</h2><pre class="au-original-message">${h(originalText(state))}</pre></div></div><p class="au-meta" data-au-start-availability>${h(presentation.mode === 'replay' ? 'No investigation had started at this point in the recorded history.' : presentation.availability?.reason || 'Checking live execution availability…')}</p></section>${presentation.replay ? replayIdentityMarkup(presentation.replay) : ''}`;
+    if (state.revision === 0) return `<header class="au-work-head au-original-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button> / Original intake</p>${claimHeadingMarkup(state,'au-original-subject')}<p class="au-meta" data-au-presentation-mode>${h(mode)} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls"><span class="au-status">Not started</span>${presentation.mode !== 'replay' ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>Start investigation</button>` : ''}${presentationControls}<button type="button" class="au-link au-refresh-claim" data-au-refresh-claim aria-label="Refresh saved state" title="Refresh saved state">↻</button></div></header>${itinerary}<section class="au-original-intake" aria-labelledby="auOriginalMessage"><div class="au-original-layout"><aside class="au-original-source-rail" aria-label="Original sources">${sourcesMarkup(state)}</aside><div class="au-original-message-column"><p class="au-eyebrow">Original customer message</p><h2 id="auOriginalMessage" class="au-sr-only">Original message</h2><pre class="au-original-message">${h(originalText(state))}</pre></div></div><p class="au-meta" data-au-start-availability>${h(presentation.mode === 'replay' ? 'No investigation had started at this point in the recorded history.' : presentation.availability?.reason || 'Checking live execution availability…')}</p></section>${presentation.replay ? replayIdentityMarkup(presentation.replay) : ''}`;
     const outcome = state.deferral ? {title:words(state.deferral.code),reason:state.deferral.reason,status:'deferred',details:state.deferral.details} : state.outcome;
-    const panels = [['step','Evidence path',inspectorMarkup(state,selected,projection,events,context)],['documents','Documents',`<section aria-labelledby="auDocumentsTitle" class="au-documents"><div class="au-section-heading"><h2 id="auDocumentsTitle">All document requirements</h2><span>${new Set([...list(state.obligations),...list(state.evaluation?.documents)].map(item => item.document_type)).size} documents</span></div><p class="au-meta">Requirements follow the recorded route. Acquiring a file does not establish its facts.</p>${obligationMarkup(state,selected)}${unassignedSourcesMarkup(state)}</section>`],['sources','Original sources',sourcesMarkup(state,presentation.mode === 'replay')],['activity','Recorded work',activityMarkup(state,events,projection)]];
-    return `<header class="au-work-head au-identity-claim-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button><span aria-hidden="true"> / </span>Claim · revision ${h(state.revision)}</p><h1 class="au-page-heading" id="auClaimTitle" data-au-claim-title tabindex="-1">${h(state.title)}</h1><p class="au-meta"><span data-au-presentation-mode>${h(mode)}</span> · ${h(state.graph?.title || state.graph?.label || 'Source-grounded investigation')}<span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls"><span class="au-status" data-tone="${tone(state.status)}">${h(claimStatusLabel(state.status,state))}</span>${presentation.mode !== 'replay' ? state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${presentation.pendingStart && presentation.mode !== 'replay' ? button('Retry start','data-au-start') : ''}${presentationControls}</div></header>${itinerary}${eventCueMarkup(state,events)}${assessmentFreshnessMarkup(state)}<section class="au-evidence-canvas" data-au-canvas aria-label="Connected claim evidence"><div class="au-evidence-toolbar"><nav class="au-context-nav" aria-label="Claim details">${panels.map(([id,label]) => `<button type="button" data-au-detail="${id}" aria-pressed="${detail === id}" aria-controls="auPanel-${id}">${h(label)}</button>`).join('')}</nav><span class="au-evidence-packet-count">${list(state.source_descriptors).length} originals</span></div><div class="au-evidence-stage" data-au-evidence-stage><svg class="au-evidence-tether" data-au-tether aria-hidden="true"><path/></svg><section class="au-process-hero au-evidence-process" aria-labelledby="auProcessTitle"${detail === 'step' ? '' : ' hidden'}><h2 id="auProcessTitle" class="au-sr-only">Complete process</h2>${graphMarkup(state,selected,projection)}</section><div class="au-context-body" data-au-context="${h(detail)}">${panels.map(([id,label,body]) => `<section class="au-context-view" id="auPanel-${id}" data-au-panel="${id}" aria-label="${h(label)}"${detail === id ? '' : ' hidden'}>${body}</section>`).join('')}</div></div></section><details class="au-context-records" data-au-disclosure="context-records"><summary>Investigation context <span>${h(claimStatusLabel(state.status,state))}${state.phase ? ` · ${h(words(state.phase))}` : ''}</span></summary>${progressMarkup(state,events)}${semanticEventMarkup(state,events)}${outcomeMarkup(state,outcome)}</details>${presentation.replay ? replayIdentityMarkup(presentation.replay) : ''}`;
+    const panels = [['step','Evidence path',inspectorMarkup(state,selected,projection,events,context)],['documents','Documents',`<section aria-labelledby="auDocumentsTitle" class="au-documents"><div class="au-section-heading"><h2 id="auDocumentsTitle">All document requirements</h2><span>${new Set([...list(state.obligations),...list(state.evaluation?.documents)].map(item => item.document_type)).size} documents</span></div><p class="au-meta">Requirements follow the recorded route. Acquiring a file does not establish its facts.</p>${obligationMarkup(state,selected,undefined,context)}${unassignedSourcesMarkup(state)}</section>`],['sources','Original sources',sourcesMarkup(state,presentation.mode === 'replay')],['activity','Recorded work',activityMarkup(state,events,projection)]];
+    return `<header class="au-work-head au-identity-claim-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button><span aria-hidden="true"> / </span>Claim</p>${claimHeadingMarkup(state)}<div class="au-meta au-claim-meta"><span data-au-presentation-mode>${h(mode)} · revision ${h(state.revision)}</span><span class="au-read-state" data-au-read-state-label></span>${eventCueMarkup(state,events)}</div></div><div class="au-work-controls"><span class="au-status" data-tone="${tone(state.status)}">${h(claimStatusLabel(state.status,state))}</span>${presentation.mode !== 'replay' ? state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${presentation.pendingStart && presentation.mode !== 'replay' ? button('Retry start','data-au-start') : ''}${presentationControls}<button type="button" class="au-link au-refresh-claim" data-au-refresh-claim aria-label="Refresh saved state" title="Refresh saved state">↻</button></div></header>${itinerary}${assessmentFreshnessMarkup(state)}<section class="au-evidence-canvas" data-au-canvas aria-label="Connected claim evidence"><div class="au-evidence-toolbar"><nav class="au-context-nav" aria-label="Claim details">${panels.map(([id,label]) => `<button type="button" data-au-detail="${id}" aria-pressed="${detail === id}" aria-controls="auPanel-${id}">${h(label)}</button>`).join('')}</nav><span class="au-evidence-packet-count">${list(state.source_descriptors).length} originals</span></div><div class="au-evidence-stage" data-au-evidence-stage><svg class="au-evidence-tether" data-au-tether aria-hidden="true"><path/></svg><section class="au-process-hero au-evidence-process" aria-labelledby="auProcessTitle"${detail === 'step' ? '' : ' hidden'}><h2 id="auProcessTitle" class="au-sr-only">Complete process</h2>${graphMarkup(state,selected,projection)}</section><div class="au-context-body" data-au-context="${h(detail)}">${panels.map(([id,label,body]) => `<section class="au-context-view" id="auPanel-${id}" data-au-panel="${id}" aria-label="${h(label)}"${detail === id ? '' : ' hidden'}>${body}</section>`).join('')}</div></div></section><details class="au-context-records" data-au-disclosure="context-records"><summary>Investigation context <span>${h(claimStatusLabel(state.status,state))}${state.phase ? ` · ${h(words(state.phase))}` : ''}</span></summary>${progressMarkup(state,events)}${semanticEventMarkup(state,events)}${outcomeMarkup(state,outcome)}</details>${presentation.replay ? replayIdentityMarkup(presentation.replay) : ''}`;
   }
   function replayIdentityMarkup(record) {
     return `<details class="au-technical-record au-replay-identity"><summary>Verified replay · revision ${h(record.through_seq)} of ${h(record.current_revision)}</summary><dl class="au-chain"><div><dt>Recorded prefix · state</dt><dd class="au-hash">${h(record.state?.state_sha256)}</dd></div><div><dt>Current saved head</dt><dd class="au-hash">${h(record.current_state_sha256)}</dd></div></dl><pre class="au-record-body">${h(JSON.stringify(record.provenance,null,2))}</pre></details>`;
@@ -528,7 +570,7 @@
       const version = history[0], identity = version.knowledge_id || version.version_id || name(version);
       return `<article class="au-knowledge-card au-identity-knowledge-card"><p class="au-eyebrow">${h(words(version.category || version.family || 'Process knowledge'))}</p><h2>${h(name(version) || version.knowledge_id || version.version_id)}</h2>${version.summary || version.description ? `<p>${h(version.summary || version.description)}</p>` : ''}<ol class="au-version-lineage">${versionMarkup(version,history,true)}</ol><details class="au-version-disclosure" data-au-disclosure="versions:${h(identity)}"><summary>Version history <span>${history.length}</span></summary><ol class="au-version-history">${history.slice(1).map(item => versionMarkup(item,history,false)).join('') || '<li>No earlier recorded version.</li>'}</ol></details></article>`;
     }).join('');
-    return `<header class="au-work-head au-identity-knowledge-head"><div><p class="au-eyebrow">A memory with a source</p><h1 class="au-page-heading" tabindex="-1">Knowledge in context.</h1></div></header><p class="au-lead">Qualified process definitions carry their origin, checks and applicability into the next investigation. Case values and original files stay with their claim.</p><div class="au-knowledge-summary"><span><strong>${versions.length}</strong> recorded version${versions.length === 1 ? '' : 's'}</span><span><strong>${uses.length}</strong> recorded use${uses.length === 1 ? '' : 's'}</span><span><strong>${quarantined.length}</strong> quarantined candidate${quarantined.length === 1 ? '' : 's'}</span></div><div class="au-knowledge-grid">${cards || '<p class="au-empty">No qualified knowledge version has been published.</p>'}</div>${uses.length ? `<details class="au-knowledge-reuse au-evidence-inspection" data-au-disclosure="all-knowledge-uses"><summary>All recorded reuse <span>${uses.length}</span></summary><ul class="au-event-list">${uses.map(use => `<li><div><strong>${h(use.name || use.knowledge_id || use.version_id)} · version ${h(use.version || use.version_id)}</strong>${reuseDetails(use)}${knowledgeLink(use)}${use.claim_id ? claimLink(use.claim_id,'Open receiving claim') : ''}</div></li>`).join('')}</ul></details>` : ''}<details class="au-history au-quarantine" data-au-disclosure="quarantine"><summary>Quarantined candidates <span>${quarantined.length}</span></summary><ul class="au-event-list">${quarantined.map(item => `<li><div><strong>${h(name(item) || item.candidate_id || item.knowledge_id || 'Quarantined candidate')}</strong><p>${h(item.qualification?.reason || item.reason || item.summary || 'No qualification recorded')}</p>${item.source_claim_id ? claimLink(item.source_claim_id,'Open source claim') : ''}<details class="au-technical-record"><summary>Public quarantine record</summary><pre class="au-record-body">${h(JSON.stringify(item,null,2))}</pre></details></div></li>`).join('') || '<li>No quarantined candidates.</li>'}</ul></details>`;
+    return `<header class="au-work-head au-identity-knowledge-head"><div><p class="au-eyebrow">A memory with a source</p><h1 class="au-page-heading" tabindex="-1">Knowledge in context.</h1></div></header><p class="au-lead">Reusable processes, their sources, and recorded use across cases.</p><div class="au-knowledge-summary"><span><strong>${versions.length}</strong> recorded version${versions.length === 1 ? '' : 's'}</span><span><strong>${uses.length}</strong> recorded use${uses.length === 1 ? '' : 's'}</span><span><strong>${quarantined.length}</strong> quarantined candidate${quarantined.length === 1 ? '' : 's'}</span></div><div class="au-knowledge-grid">${cards || '<p class="au-empty">No qualified knowledge version has been published.</p>'}</div>${uses.length ? `<details class="au-knowledge-reuse au-evidence-inspection" data-au-disclosure="all-knowledge-uses"><summary>All recorded reuse <span>${uses.length}</span></summary><ul class="au-event-list">${uses.map(use => `<li><div><strong>${h(use.name || use.knowledge_id || use.version_id)} · version ${h(use.version || use.version_id)}</strong>${reuseDetails(use)}${knowledgeLink(use)}${use.claim_id ? claimLink(use.claim_id,'Open receiving claim') : ''}</div></li>`).join('')}</ul></details>` : ''}<details class="au-history au-quarantine" data-au-disclosure="quarantine"><summary>Quarantined candidates <span>${quarantined.length}</span></summary><ul class="au-event-list">${quarantined.map(item => `<li><div><strong>${h(name(item) || item.candidate_id || item.knowledge_id || 'Quarantined candidate')}</strong><p>${h(item.qualification?.reason || item.reason || item.summary || 'No qualification recorded')}</p>${item.source_claim_id ? claimLink(item.source_claim_id,'Open source claim') : ''}<details class="au-technical-record"><summary>Public quarantine record</summary><pre class="au-record-body">${h(JSON.stringify(item,null,2))}</pre></details></div></li>`).join('') || '<li>No quarantined candidates.</li>'}</ul></details>`;
   }
   function collectionRows(claims, scope = 'all') {
     return list(claims).filter(claim => scope === 'all' || (scope === 'originals' ? claim.origin === 'canonical_original' : claim.origin !== 'canonical_original'));
@@ -537,7 +579,7 @@
     return [...new Set(['all','not_started','working','deferred','investigation_complete',...rows.map(claim => statusFilter(claim.status)).filter(status => status && !active(status))])];
   }
   function collectionCounts(rows, scope) {
-    return [[scope === 'added' ? 'Added cases' : 'Original cases',rows.length],['In progress',rows.filter(claim => active(claim.status)).length],['Deferred',rows.filter(claim => claim.status === 'deferred').length],['Investigation complete',rows.filter(claim => complete(claim.status)).length]];
+    return [['In progress',rows.filter(claim => active(claim.status)).length],['Deferred',rows.filter(claim => claim.status === 'deferred').length],['Investigation complete',rows.filter(claim => complete(claim.status)).length]];
   }
   function matchingClaims(claims, {search = '', filter = 'all', domain = 'all', scope = 'all'} = {}) {
     const terms = search.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
@@ -562,7 +604,7 @@
   function collectionMarkup(claims, options = {}) {
     const {search = '', domain = 'all', scope = 'originals'} = options, filter = statusFilter(options.filter || 'all');
     const rows = collectionRows(claims,scope), filters = collectionFilters(rows), counts = collectionCounts(rows,scope), matching = {...options,scope,filter};
-    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><p class="au-eyebrow">${scope === 'added' ? 'Added cases' : 'Original case collection'}</p><h1 class="au-page-heading" tabindex="-1">Every case has a source.</h1><p class="au-lead">${scope === 'added' ? 'Additional intakes retain their own sources and recorded history.' : 'Explore the 150 original intakes, then follow the work that actually exists.'}</p></div>${button('New claim','data-au-nav="intake"',true)}</header><nav class="au-collection-scope" aria-label="Case collection"><button type="button" data-au-collection-scope="originals" aria-pressed="${scope === 'originals'}">Original cases <span>${collectionRows(claims,'originals').length}</span></button><button type="button" data-au-collection-scope="added" aria-pressed="${scope === 'added'}">Added cases <span>${collectionRows(claims,'added').length}</span></button></nav>${scope === 'originals' ? domainMarkup(rows,domain) : ''}<div class="au-collection-summary">${counts.map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('')}</div><div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Original message, title or case ID" autocomplete="off"></label><label for="auClaimFilter">Status<select id="auClaimFilter" data-au-claim-filter>${filters.map(value => `<option value="${h(value)}"${filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</option>`).join('')}</select></label><button type="button" class="au-link" data-au-refresh-claims>Refresh</button></div><div class="au-section-heading"><h2>${scope === 'added' ? 'Added cases' : 'Cases'}</h2><span data-au-collection-count>${matchingClaims(rows,matching).length} of ${rows.length}</span></div><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,matching)}</div></section>`;
+    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><p class="au-eyebrow">${scope === 'added' ? 'Added cases' : 'Original case collection'}</p><h1 class="au-page-heading" tabindex="-1">Cases</h1><p class="au-lead">${scope === 'added' ? 'Added cases retain their own sources and history.' : '150 originals. Added cases stay distinct.'}</p></div>${button('New claim','data-au-nav="intake"',true)}</header><nav class="au-collection-scope" aria-label="Case collection"><button type="button" data-au-collection-scope="originals" aria-pressed="${scope === 'originals'}">Original cases <span>${collectionRows(claims,'originals').length}</span></button><button type="button" data-au-collection-scope="added" aria-pressed="${scope === 'added'}">Added cases <span>${collectionRows(claims,'added').length}</span></button></nav>${scope === 'originals' ? domainMarkup(rows,domain) : ''}<div class="au-collection-summary">${counts.map(([label,count]) => `<span><strong>${count}</strong> ${h(label)}</span>`).join('')}</div><div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Original message, title or case ID" autocomplete="off"></label><label for="auClaimFilter">Status<select id="auClaimFilter" data-au-claim-filter>${filters.map(value => `<option value="${h(value)}"${filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</option>`).join('')}</select></label><button type="button" class="au-link" data-au-refresh-claims>Refresh</button></div><div class="au-section-heading"><h2>${scope === 'added' ? 'Added cases' : 'Cases'}</h2><span data-au-collection-count>${matchingClaims(rows,matching).length} of ${rows.length}</span></div><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,matching)}</div></section>`;
   }
   function liveAvailability(status) {
     if (!status) return {ready:false,reason:'Checking live execution availability…'};
@@ -682,8 +724,8 @@
     const mainTag = container.tagName === 'MAIN' ? 'div' : 'main';
     if (!fetcher) throw new Error('The autonomous API is unavailable.');
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, sourceEpoch = 0, polling = null, claimRead = 0;
-    let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'replay', demoSession = null, demoTimer = null, pendingStart = null, nativeSourceURL = null;
-    let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, readGeneration = 0;
+    let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'replay', demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
+    let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
     let collectionCache = null, knowledgeCache = null, statusCache = null, knowledgeRead = 0, renderedKnowledge = null;
     const snapshots = new Map(), sourcePreviews = new Map(), nativeBytes = new Map(), replayPrefixes = new Map(), inflightReads = new Map();
     const controllers = new Set();
@@ -739,15 +781,16 @@
       readGeneration++; claimRead++; claimsRead++; knowledgeRead++; collectionCache = null; knowledgeCache = null; statusCache = null;
       if (id) snapshots.delete(id); else snapshots.clear();
       sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear();
-      freshClaim = false; synchronizeAuthority('refreshing');
+      freshClaim = false; statusAuthority = null; synchronizeAuthority('refreshing');
     }
+    function canStartHere() { return statusAuthority?.epoch === epoch && statusAuthority?.generation === readGeneration && liveAvailability(status).ready; }
     function synchronizeAuthority(readState = freshClaim ? 'verified' : 'refreshing') {
       if (view !== 'claim') return;
       host.setAttribute?.('data-au-read-state',presentationMode === 'replay' ? 'verified' : readState);
       const label = host.querySelector('[data-au-read-state-label]');
       if (label) label.textContent = presentationMode === 'replay' || readState === 'verified' ? '' : readState === 'failed' ? 'Saved copy · refresh failed' : 'Saved copy · refreshing';
       for (const control of host.querySelectorAll('[data-au-start],[data-au-pause],[data-au-resume]')) {
-        control.disabled = busy || !freshClaim || presentationMode === 'replay' || control.hasAttribute('data-au-start') && !liveAvailability(status).ready && !pendingStart;
+        control.disabled = busy || !freshClaim || presentationMode === 'replay' || control.hasAttribute('data-au-start') && !canStartHere() && !pendingStart;
       }
       const form = host.querySelector('[data-au-arrival]');
       if (form && !busy) {
@@ -798,7 +841,7 @@
       if (disposed || token !== epoch || sourceToken !== sourceEpoch || !dialog.open) return null;
       clearNativeSource(); nativeSourceURL = root.URL.createObjectURL(new root.Blob([bytes],{type:descriptor.media_type})); return nativeSourceURL;
     }
-    function schedule() { cancelPoll(); if (!disposed && view === 'claim' && openingId && presentationMode !== 'replay') timer = root.setTimeout(current ? poll : () => loadOpenedClaim(openingId,epoch), current && !active(current.status) ? 6000 : 1600); }
+    function schedule() { cancelPoll(); if (!disposed && !doc.hidden && view === 'claim' && openingId && presentationMode !== 'replay') timer = root.setTimeout(current ? poll : () => loadOpenedClaim(openingId,epoch), current && !active(current.status) && !pendingStart && !pendingArrival && !pendingControl && !connectionFailed ? 20000 : 1600); }
     function focusTitle() { host.querySelector('h1')?.focus({preventScroll:true}); }
     function focusPanel(element) {
       const panel = element?.closest?.('[data-au-panel]');
@@ -844,14 +887,14 @@
           return [element.dataset.auNode,{bounds:junction.getBoundingClientRect(),rank:Number(element.parentElement.dataset.rank)}];
         }));
         graphPaths = list(current.graph.edges).map((edge,index) => {
-          const from = nodes.get(edge.source_node_id), to = nodes.get(edge.target_node_id); if (!from || !to) return '';
+          const from = nodes.get(edge.source_node_id), to = nodes.get(edge.target_node_id); if (!from || !to) return null;
           const x1=from.bounds.right-frame.left,y1=from.bounds.top+from.bounds.height/2-frame.top,x2=to.bounds.left-frame.left,y2=to.bounds.top+to.bounds.height/2-frame.top,lane=frame.height-14-(index%3)*9;
           const path=to.rank-from.rank>1 ? `M${x1} ${y1} C${x1+18} ${y1},${x1+18} ${lane},${x1+34} ${lane} L${x2-34} ${lane} C${x2-18} ${lane},${x2-18} ${y2},${x2} ${y2}` : `M${x1} ${y1} C${(x1+x2)/2} ${y1},${(x1+x2)/2} ${y2},${x2} ${y2}`;
-          return `<path d="${path}" data-au-edge="${h(edge.edge_id)}" data-state="${h(edgeState(current,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || 'Recorded process connection')} · ${h(statusLabel(edgeState(current,edge.edge_id)))}</title></path>`;
-        }).join('');
+          return {id:edge.edge_id,d:path,state:edgeState(current,edge.edge_id),selected:edge.source_node_id === selected || edge.target_node_id === selected};
+        }).filter(Boolean);
       }
       const lens = host.querySelector('[data-au-evidence-path]'), relations = current ? evidenceRelationships(current,selected,evidenceContext) : null;
-      const wires = [connectionGeometry(lens,[...citationRows(relations?.fact).slice(0,2).map((_,index) => [`source-${index}`,'fact']),['fact','step'],['step','requirement',relations?.evaluation.activation === 'false']]), ...[...host.querySelectorAll('[data-au-knowledge-path]')].map(surface => connectionGeometry(surface,[['origin','version'],['version','reuse']]))].filter(Boolean);
+      const wires = [connectionGeometry(lens,[...citationRows(relations?.fact).slice(0,2).map((_,index) => [`source-${index}`,'fact'])]), ...[...host.querySelectorAll('[data-au-knowledge-path]')].map(surface => connectionGeometry(surface,[['origin','version'],['version','reuse']]))].filter(Boolean);
       const stage=host.querySelector('.au-evidence-stage'), tether=host.querySelector('[data-au-tether]'), path=tether?.querySelector('path'), junction=[...host.querySelectorAll('[data-au-junction]')].find(element => element.dataset.auJunction === selected), expanded=host.querySelector('[data-au-expanded-junction]'), viewport=host.querySelector('.au-graph-viewport');
       const a=junction?.getBoundingClientRect?.(), b=expanded?.getBoundingClientRect?.(), area=viewport?.getBoundingClientRect?.(), bounds=stage?.getBoundingClientRect?.();
       let nextTether=null;
@@ -864,15 +907,18 @@
           const lane=2,bend=mid+20,end=Math.max(bend,ty-18);
           geometry=`M${x} ${y} C${x} ${mid},${lane} ${mid},${lane} ${bend} L${lane} ${end} C${lane} ${ty},${tx} ${ty},${tx} ${ty}`;
         } else {
-          // Split the measured desktop cubic without changing its shape; both
-          // responsive routes retain M/C/L/C commands for one cancellable morph.
+          // Geometry settles immediately; selection uses the shared short fade.
           const mx=(x+tx)/2,my=(y+6*mid+ty)/8;
           geometry=`M${x} ${y} C${x} ${(y+mid)/2},${(3*x+tx)/4} ${(y+3*mid)/4},${mx} ${my} L${mx} ${my} C${(x+3*tx)/4} ${(3*mid+ty)/4},${tx} ${(mid+ty)/2},${tx} ${ty}`;
         }
         nextTether={claim:current.claim_id,node:selected,width:bounds.width,height:bounds.height,d:geometry};
       }
       if (!navigation && selectionMotion && tetherGeometry?.d !== nextTether?.d) selectionMotion.cancel();
-      if (graphPaths !== null) { graphSvg.setAttribute('viewBox',`0 0 ${frame.width} ${frame.height}`); graphSvg.innerHTML=graphPaths; }
+      if (graphPaths !== null) {
+        graphSvg.setAttribute('viewBox',`0 0 ${frame.width} ${frame.height}`);
+        const paths = new Map([...graphSvg.querySelectorAll('[data-au-edge]')].map(edge => [edge.dataset.auEdge,edge]));
+        for (const geometry of graphPaths) { const edge = paths.get(geometry.id); if (edge) { edge.setAttribute('d',geometry.d); edge.setAttribute('data-state',geometry.state); edge.setAttribute('data-selected',String(geometry.selected)); } }
+      }
       for (const wire of wires) { wire.svg.setAttribute('viewBox',`0 0 ${wire.width} ${wire.height}`); wire.svg.innerHTML=wire.paths; }
       if (path) {
         if (nextTether) {
@@ -899,7 +945,7 @@
       if (view === 'work') { const main = container.querySelector('.au-main'); collection.scrollTop = host.scrollTop || 0; collection.mainTop = main?.scrollTop || 0; collection.mainLeft = main?.scrollLeft || 0; collection.scrollX = root.scrollX || 0; collection.scrollY = root.scrollY || 0; }
       preserveClaimView();
     }
-    function setView(name) { view = name; freshClaim = false; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
+    function setView(name) { view = name; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
     function revealGraphNode(node, center = false) {
       const viewport = host.querySelector('.au-graph-viewport');
       const area = viewport?.getBoundingClientRect?.(), bounds = node?.getBoundingClientRect?.();
@@ -921,7 +967,7 @@
       const arrival = host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
       // Moving the original node keeps native FileList, entered text and retry state.
       arrival?.remove?.();
-      host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,replay:replayRecord,pendingStart:Boolean(pendingStart),playing:Boolean(demoSession),position:demoSession?.index,claims,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : liveAvailability(status)});
+      host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,replay:replayRecord,pendingStart:Boolean(pendingStart),playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : liveAvailability(status)});
       if (arrival) host.querySelector('[data-au-arrival]')?.replaceWith(arrival);
       const presentArrival = host.querySelector('[data-au-arrival]');
       if (presentArrival) arrivalForms.set(current.claim_id,presentArrival);
@@ -934,7 +980,7 @@
       if (pendingStart?.claimId === current.claim_id) { const start = host.querySelector('[data-au-start]'); if (start) { start.textContent = busy ? 'Starting…' : 'Retry start'; start.disabled = busy; } }
       if (pendingControl?.claimId === current.claim_id) { const control = host.querySelector(`[data-au-${pendingControl.action}]`); if (control) { control.textContent = busy ? `${pendingControl.action === 'pause' ? 'Pausing' : 'Resuming'}…` : `Retry ${pendingControl.action}`; control.disabled = busy; } }
       drawEdges(navigation);
-      motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open,reducedMotion:reduced?.matches,keyboard,activeElement:doc.activeElement});
+      motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open,reducedMotion:reduced?.matches,keyboard,activeElement:doc.activeElement,selected});
       synchronizeAuthority();
       claimRenderComplete = true;
     }
@@ -951,8 +997,8 @@
       for (const node of host.querySelectorAll('[data-au-node]')) node.setAttribute('aria-pressed',String(node.dataset.auNode === selected));
       for (const row of host.querySelectorAll('.au-obligation[data-au-document]')) {
         const item = list(current.obligations).find(item => (item.obligation_id || item.document_type) === row.dataset.auObligation);
-        const ids = [item?.node_id,item?.decision_node_id,...list(item?.required_at_node_ids),...list(item?.node_ids)];
-        if (ids.includes(selected)) row.setAttribute('data-selected','true'); else row.removeAttribute('data-selected');
+        const focused = item && (evidenceContext.obligation ? requirementIdentity(item) === evidenceContext.obligation : evidenceContext.document === item.document_type);
+        if (focused) row.setAttribute('data-selected','true'); else row.removeAttribute('data-selected');
       }
       const nodes = layoutGraph(current.graph).nodes, index = nodes.findIndex(node => node.node_id === selected);
       const position = host.querySelector('[data-au-inspection-position]'); if (position) position.textContent = `Step ${index + 1} of ${nodes.length}`;
@@ -965,6 +1011,11 @@
     }
     function setDetail(value, focusFiles = false, writeRoute = true) {
       if (view !== 'claim' || !['step','documents','sources','activity'].includes(value)) return;
+      if (detail === value) {
+        if (writeRoute && root.history?.replaceState && current) { const fragment = selectedClaimFragment(); root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); routedFragment = fragment; }
+        if (focusFiles) host.querySelector('#auAdditionalFiles')?.focus({preventScroll:true});
+        return;
+      }
       motion?.cancel(); selectionMotion?.cancel(); detail = value;
       host.querySelector('[data-au-context]')?.setAttribute('data-au-context',value);
       const process = host.querySelector('.au-evidence-process'); if (process) process.hidden = value !== 'step';
@@ -1014,7 +1065,7 @@
         current = incoming.state; projection = incoming.projection; cursor = accepted.cursor; freshClaim = true;
         const existing = new Map(history.map(event => [event.seq,event])); for (const event of accepted.events) existing.set(event.seq,event);
         history = [...existing.values()].sort((a,b) => a.seq-b.seq);
-        selected = preferredNode(current,selected);
+        selected = preferredNode(current,demoSession ? acceptedEventNode(current,accepted.events.at(-1)) || selected : selected,history);
         if (changed) { renderClaim(changes); rememberClaim(current); } else synchronizeAuthority();
         snapshotCache();
         if (connectionFailed) notice('Connection restored. Showing saved work.'); else notice('');
@@ -1042,7 +1093,7 @@
         const initial = !current, changed = initial || current.state_sha256 !== incoming.state.state_sha256 || JSON.stringify(projection) !== JSON.stringify(incoming.projection);
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; freshClaim = true;
         const previous = initial ? claimViews.get(id) : {selected,evidenceContext,detail};
-        selected = preferredNode(current,preferences.node || previous?.selected); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {};
+        selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {};
         detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
         if (changed) renderClaim(); else synchronizeAuthority(); snapshotCache(); rememberClaim(current); notice(''); if (initial) focusTitle(); schedule();
         resumeLivePresentation();
@@ -1073,20 +1124,21 @@
       leaveView(); route(claimFragment(id,preferences),writeHistory);
       epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo ? 'demonstration' : 'work'); notice(presentationMode === 'replay' ? 'Verifying recorded history…' : 'Opening saved claim…');
       claimRenderComplete = false;
+      if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
       const cached = presentationMode !== 'replay' ? cachedRead(snapshots,id) : null;
       if (cached) {
         current = cached.state; projection = cached.projection; cursor = cached.cursor; history = [...cached.history];
-        const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {}; detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
+        const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {}; detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
         renderClaim(); synchronizeAuthority('refreshing'); focusTitle(); notice('Refreshing saved claim…');
-      } else host.innerHTML = readSkeletonMarkup('claim',claims.find(claim => claim.claim_id === id)?.title);
-      interact(host); 
+      } else host.innerHTML = readSkeletonMarkup('claim',claims.find(claim => claim.claim_id === id)?.title,id);
+      interact(host);
       if (presentationMode !== 'replay') return loadOpenedClaim(id,token,preferences);
       try {
         const through = preferences.through ?? 0;
         const incoming = readReplay(await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
         if (disposed || token !== epoch || pendingRoute() || view !== 'claim') return;
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
-        const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {}; detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
+        const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferences.node || preferences.document || preferences.obligation || preferences.fact ? {document:preferences.document,obligation:preferences.obligation,fact:preferences.fact,trace:preferences.trace} : previous?.evidenceContext || {}; detail = preferences.detail || previous?.detail || (current.revision === 0 ? 'sources' : 'step');
         renderClaim(); notice(''); focusTitle();
         if (preferences.demo && demoSession?.mode === 'replay') { demoSession.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256}; demoSession.displayedAt = Date.now(); prefetchReplay(demoSession); if (replayRecord.current_revision > replayRecord.through_seq) replayTick(demoSession,token); }
         return current;
@@ -1099,7 +1151,8 @@
     }
     function rememberClaim(state, origin) {
       const index = claims.findIndex(row => row.claim_id === state.claim_id);
-      const summary = {...(index >= 0 ? claims[index] : {}),...(origin ? {origin} : {}),claim_id:state.claim_id,title:state.title,status:state.status,phase:state.phase,phase_summary:state.phase_summary,revision:state.revision,state_sha256:state.state_sha256,updated_at:state.updated_at,outcome:state.outcome,mode:state.revision === 0 ? 'unprocessed' : 'saved'};
+      const inferredOrigin = origin || state.origin || (index >= 0 ? claims[index].origin : state.revision > 0 && !state.original_binding ? 'native_intake' : state.original_binding ? 'canonical_original' : undefined);
+      const summary = {...(index >= 0 ? claims[index] : {}),...(inferredOrigin ? {origin:inferredOrigin} : {}),claim_id:state.claim_id,title:state.title,status:state.status,phase:state.phase,phase_summary:state.phase_summary,revision:state.revision,state_sha256:state.state_sha256,updated_at:state.updated_at,outcome:state.outcome,deferral:state.deferral,reconciliations:state.reconciliations,mode:state.revision === 0 ? 'unprocessed' : 'saved'};
       if (index >= 0) {
         if (!Number.isSafeInteger(claims[index].revision) || claims[index].revision <= summary.revision) claims[index] = summary;
       } else claims.unshift(summary);
@@ -1126,7 +1179,8 @@
     }
     async function loadClaims(token = epoch, force = false) {
       const read = ++claimsRead, generation = readGeneration;
-      const data = !force && collectionCache && Date.now() - collectionCache.at < 15000 ? collectionCache.value : await request('/claims');
+      const fromCache = !force && collectionCache && Date.now() - collectionCache.at < 15000;
+      const data = fromCache ? collectionCache.value : await request('/claims');
       if (disposed || token !== epoch || generation !== readGeneration || read !== claimsRead) return;
       const rows = [...list(data.claims)];
       if (Number.isSafeInteger(data.total) && data.total > rows.length) {
@@ -1139,7 +1193,8 @@
         }
       }
       if (new Set(rows.map(row => row.claim_id)).size !== rows.length) throw new Error('The case collection contains duplicate canonical identities.');
-      collectionCache = {at:Date.now(),value:{...data,claims:rows}};
+      const cacheValue = {...data,claims:rows};
+      collectionCache = JSON.stringify(cacheValue).length * 2 <= 8 * 1024 * 1024 ? {at:Date.now(),value:cacheValue} : null;
       const remembered = new Map(claims.map(row => [row.claim_id,row]));
       claims = rows.map(row => {
         const known = remembered.get(row.claim_id);
@@ -1147,17 +1202,20 @@
         const verified = current?.claim_id === row.claim_id && current.revision === row.revision && known.revision === current.revision && known.state_sha256 === current.state_sha256;
         return !Number.isSafeInteger(row.revision) || known.revision > row.revision || verified ? {...row,...known} : row;
       });
-      if (current && !claims.some(row => row.claim_id === current.claim_id) && remembered.has(current.claim_id)) claims.unshift(remembered.get(current.claim_id));
+      if (fromCache) { for (const [id,row] of remembered) if (!claims.some(claim => claim.claim_id === id)) claims.push(row); }
+      else if (current && !claims.some(row => row.claim_id === current.claim_id) && remembered.has(current.claim_id)) claims.unshift(remembered.get(current.claim_id));
       claimsLoaded = true; railClaims(); refreshCollection(); refreshDemonstration();
     }
     async function serviceStatus(token, force = false) {
       const generation = readGeneration;
-      const data = !force && statusCache && Date.now() - statusCache.at < 10000 ? statusCache.value : await request('/status');
+      const fromCache = !force && statusCache && Date.now() - statusCache.at < 10000;
+      const data = fromCache ? statusCache.value : await request('/status');
       if (disposed || token !== epoch || generation !== readGeneration) return;
-      statusCache = {at:Date.now(),value:data};
+      if (!fromCache && JSON.stringify(data).length < 128 * 1024) statusCache = {at:Date.now(),value:data};
+      if (!fromCache) statusAuthority = {epoch:token,generation};
       status = data;
       if (view === 'claim') {
-        const start = host.querySelector('[data-au-start]'); if (start) start.disabled = busy || !freshClaim || !liveAvailability(status).ready && !pendingStart;
+        const start = host.querySelector('[data-au-start]'); if (start) start.disabled = busy || !freshClaim || !canStartHere() && !pendingStart;
         const availability = host.querySelector('[data-au-start-availability]'); if (availability) availability.textContent = liveAvailability(status).reason;
       }
       if (view === 'demonstration') refreshDemonstration();
@@ -1201,7 +1259,28 @@
       if (!disposed && token === epoch) { refreshDemonstration(); for (const result of results) if (result.status === 'rejected') notice(result.reason.message,true); }
     }
     function stopPresentation() {
-      if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; demoSession = null; replayPrefixes.clear();
+      if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; demoSession = null; pausedPresentation = null; replayPrefixes.clear();
+    }
+    function pausePresentation() {
+      if (!demoSession) return false;
+      pausedPresentation = {...demoSession,preparing:null};
+      if (demoTimer) root.clearTimeout(demoTimer);
+      demoTimer = null; demoSession = null; replayPrefixes.clear();
+      motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
+      return true;
+    }
+    function pauseInspection() {
+      if (!pausePresentation()) return false;
+      const control = host.querySelector('[data-au-demo-stop]');
+      if (control) { control.removeAttribute('data-au-demo-stop'); control.setAttribute('data-au-demo-resume',''); control.textContent = 'Resume presentation'; }
+      return true;
+    }
+    function resumePresentation() {
+      const session = pausedPresentation;
+      if (!session || disposed || pendingRoute() || doc.hidden || dialog.open || view !== 'claim' || !current || (session.mode === 'replay' ? session.replayHead?.claimId : session.claimId) !== current.claim_id) return;
+      pausedPresentation = null; demoSession = session; session.epoch = epoch; session.displayedAt = Date.now(); renderClaim();
+      if (session.mode === 'replay') { prefetchReplay(session); replayTick(session,epoch); }
+      else { resumeLivePresentation(); advanceLivePresentation(); }
     }
     async function beginPresentation() {
       if (busy || view !== 'demonstration') return;
@@ -1217,7 +1296,6 @@
       if (demoSession !== session || !current || disposed || pendingRoute()) return;
       if (session.mode === 'replay') {
         if (!replayRecord.current_revision) { stopPresentation(); renderClaim(); notice('This original case has no recorded execution to replay. Its original sources remain available.'); return; }
-        replayTick(session,epoch);
       } else { resumeLivePresentation(); advanceLivePresentation(); }
     }
     function checkedReplayHead(incoming, session) {
@@ -1262,7 +1340,7 @@
         if (newest && Object.prototype.hasOwnProperty.call(newest,'previous_event_sha256') && newest.previous_event_sha256 !== previousHash || newest && Object.prototype.hasOwnProperty.call(newest,'prev_event_sha256') && newest.prev_event_sha256 !== previousHash) throw new Error('The replay journal chain no longer follows the accepted prefix.');
         const changes = transitionPlan(current,incoming.state,accepted,history);
         replayPrefixes.delete(`${current.claim_id}:${through}:${session.replayHead.state_sha256}`);
-        current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay; selected = preferredNode(current,selected);
+        current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay; selected = preferredNode(current,demoSession ? acceptedEventNode(current,accepted.events.at(-1)) || selected : selected,history);
         evidenceContext = evidenceSelection(current,selected,evidenceContext);
         const fragment = selectedClaimFragment();
         if (root.history?.replaceState) { root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); routedFragment = fragment; }
@@ -1270,7 +1348,7 @@
       } catch (error) { if (replayActive(session,token)) { stopPresentation(); renderClaim(); notice(`Verified replay stopped: ${error.message}`,true); } }
     }
     async function replayTick(session, token) {
-      demoTimer = null;
+      if (demoTimer) return;
       if (!replayActive(session,token) || doc.hidden || dialog.open || session.preparing === token) return;
       if (replayRecord.through_seq >= replayRecord.current_revision) {
         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
@@ -1288,12 +1366,9 @@
       } catch (error) { if (replayActive(session,token)) { stopPresentation(); renderClaim(); notice(`Verified replay stopped: ${error.message}`,true); } }
       finally { if (session.preparing === token) session.preparing = null; }
     }
-    function resumeReplayPresentation() {
-      if (demoSession?.mode === 'replay' && !demoTimer && !doc.hidden && !dialog.open) { prefetchReplay(demoSession); replayTick(demoSession,epoch); }
-    }
     function resumeLivePresentation() {
       const session = demoSession;
-      if (!session || session.mode !== 'live' || session.epoch !== epoch || disposed || pendingRoute() || doc.hidden || dialog.open || view !== 'claim' || presentationMode !== 'live' || !openingPreferences.demo || !current || current.claim_id !== session.claimId || DEMO_CASES[session.index]?.claim_id !== session.claimId || current.revision !== 0 || busy || pendingStart || session.startAttempted || !liveAvailability(status).ready) return;
+      if (!session || session.mode !== 'live' || session.epoch !== epoch || disposed || pendingRoute() || doc.hidden || dialog.open || view !== 'claim' || presentationMode !== 'live' || !openingPreferences.demo || !current || !freshClaim || current.claim_id !== session.claimId || DEMO_CASES[session.index]?.claim_id !== session.claimId || current.revision !== 0 || busy || pendingStart || session.startAttempted || !canStartHere()) return;
       // Play authorizes one original Start after a verified opening. An uncertain
       // admission retains its exact request for explicit operator recovery.
       session.startAttempted = true;
@@ -1313,7 +1388,7 @@
       session.index++; openPresentationCase(session);
     }
     async function startOriginal(target) {
-      if (busy || pendingRoute() || !freshClaim || !current || current.revision !== 0 && !pendingStart || presentationMode === 'replay' || !liveAvailability(status).ready && !pendingStart) return;
+      if (busy || pendingRoute() || !freshClaim || !current || current.revision !== 0 && !pendingStart || presentationMode === 'replay' || !canStartHere() && !pendingStart) return;
       const token = epoch, id = current.claim_id;
       pendingStart ||= {claimId:id,body:{expected_revision:current.revision,expected_state_sha256:current.state_sha256,idempotency_key:`browser.${root.crypto.randomUUID()}`}};
       starts.set(id,pendingStart); busy = true; if (target) { target.disabled = true; target.textContent = 'Starting…'; }
@@ -1326,7 +1401,7 @@
         if (error.status && error.status < 500) { starts.delete(id); pendingStart = null; }
         if (!disposed && token === epoch && !pendingRoute()) await loadOpenedClaim(id,token);
         if (!disposed && token === epoch) notice(`${error.message}${pendingStart ? ' Response unconfirmed; retry uses the same request.' : ''}`,true);
-      } finally { busy = false; synchronizeAuthority(); routeChanged(); if (target?.isConnected) { target.disabled = !freshClaim || !pendingStart && !liveAvailability(status).ready; target.textContent = pendingStart ? 'Retry start' : 'Start investigation'; } }
+      } finally { busy = false; synchronizeAuthority(); routeChanged(); if (target?.isConnected) { target.disabled = !freshClaim || !pendingStart && !canStartHere(); target.textContent = pendingStart ? 'Retry start' : 'Start investigation'; } }
     }
     async function showWork(writeHistory = true) {
       stopPresentation(); leaveView(); route(collectionFragment(),writeHistory);
@@ -1415,7 +1490,7 @@
         const data = await request('/knowledge');
         if (disposed || token !== epoch || read !== knowledgeRead || generation !== readGeneration || pendingRoute()) return;
         if (!data || !Array.isArray(data.versions) || data.uses !== undefined && !Array.isArray(data.uses) || data.quarantined !== undefined && !Array.isArray(data.quarantined)) throw new Error('The recorded knowledge response is incomplete.');
-        knowledgeCache = {value:data};
+        knowledgeCache = JSON.stringify(data).length * 2 <= 8 * 1024 * 1024 ? {value:data} : null;
         host.setAttribute?.('data-au-read-state','verified');
         notice(''); renderKnowledge(data,pin,!host.querySelector('[data-au-knowledge-identity]'));
       } catch (error) { if (!disposed && token === epoch && read === knowledgeRead) { host.setAttribute?.('data-au-read-state','failed'); notice(knowledgeCache ? `Refresh failed: ${error.message} Recorded knowledge remains visible.` : error.message,true); } }
@@ -1468,6 +1543,8 @@
         if (!disposed && token === epoch) {
           const uncertain = submitted && (!error.status || error.status >= 500);
           if (!uncertain) { if (intake) pendingIntake = null; else pendingArrival = null; }
+          if (!intake && submitted && !pendingRoute()) await loadOpenedClaim(saved.claim_id,token);
+          if (disposed || token !== epoch || pendingRoute()) return;
           lockForm(form, uncertain, uncertain); message.textContent = uncertain ? `${error.message} The response is unconfirmed. Retry reuses the same request key.` : error.message;
         }
       } finally { busy = false; synchronizeAuthority(); routeChanged(); }
@@ -1499,8 +1576,10 @@
       const native = descriptor.media_type?.split(';')[0];
       let nativeMarkup = '', nativeViewable = false; clearNativeSource();
       body.innerHTML = `<div class="au-source-meta"><span>${h(descriptor.media_type || 'Original file')}</span><a href="${h(url)}" download="${h(descriptor.file_name || 'source')}">Download original</a></div>${nativeMarkup}<p class="au-empty">Checking source identity…</p>`;
+      pauseInspection();
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
       if (!dialog.open) dialog.showModal();
+      const nativePreview = native === 'application/pdf' || native?.startsWith('image/') ? nativeSource(url.slice(base.length),descriptor,token,sourceToken).then(blob => ({blob}),error => ({error})) : null;
       try {
         let acquired = list(saved.acquired_sources).some(source => source.artifact_id === id), response;
         const generation = readGeneration, sourceIdentity = `${saved.claim_id}:${id}:${descriptor.sha256}:${acquired ? 'text' : 'preview'}:${saved.original_binding?.original_binding_sha256 || ''}`;
@@ -1516,13 +1595,10 @@
         if (!disposed && generation === readGeneration) rememberRead(sourcePreviews,sourceIdentity,response,16,8 * 1024 * 1024);
         if (!acquired && citation) throw new Error('The cited source has no admitted acquisition record.');
         if (disposed || token !== epoch || sourceToken !== sourceEpoch || !dialog.open) return;
-        if (native === 'application/pdf' || native?.startsWith('image/')) {
-          try {
-            const blob = await nativeSource(url.slice(base.length),descriptor,token,sourceToken);
-            if (!blob) return;
-            nativeViewable = true;
-            nativeMarkup = native === 'application/pdf' ? `<iframe class="au-native-document" src="${h(blob)}" title="${h(descriptor.file_name || 'Original PDF')}"></iframe>` : `<img class="au-native-image" src="${h(blob)}" alt="Original file: ${h(descriptor.file_name)}">`;
-          } catch (error) { nativeMarkup = `<p class="au-meta">${h(error.message)}</p>`; }
+        if (nativePreview) {
+          const preview = await nativePreview;
+          if (preview.error) nativeMarkup = `<p class="au-meta">${h(preview.error.message)}</p>`;
+          else if (preview.blob) { nativeViewable = true; nativeMarkup = native === 'application/pdf' ? `<iframe class="au-native-document" src="${h(preview.blob)}" title="${h(descriptor.file_name || 'Original PDF')}"></iframe>` : `<img class="au-native-image" src="${h(preview.blob)}" alt="Original file: ${h(descriptor.file_name)}">`; }
         }
         if (disposed || token !== epoch || sourceToken !== sourceEpoch || !dialog.open) return;
         const unassessed = assessmentFreshness(current).sources.some(source => source.artifact_id === descriptor.artifact_id);
@@ -1540,21 +1616,24 @@
       else if (target.hasAttribute('data-au-claim')) { if (!busy) openClaim(target.dataset.auClaim); }
       else if (target.hasAttribute('data-au-demo-mode')) { demoMode = target.dataset.auDemoMode === 'live' ? 'live' : 'replay'; refreshDemonstration(); route(`#autonomous/demonstration?mode=${demoMode}`); }
       else if (target.hasAttribute('data-au-demo-play')) beginPresentation();
-      else if (target.hasAttribute('data-au-demo-stop')) { stopPresentation(); renderClaim(); }
+      else if (target.hasAttribute('data-au-demo-stop')) { pausePresentation(); renderClaim(); }
+      else if (target.hasAttribute('data-au-demo-resume')) resumePresentation();
       else if (target.hasAttribute('data-au-start')) startOriginal(target);
+      else if (target.hasAttribute('data-au-refresh-claim')) { if (!busy && current) { pauseInspection(); if (presentationMode === 'replay') openClaim(current.claim_id,true,{mode:'replay',through:replayRecord.through_seq,detail,node:selected,...evidenceContext}); else { freshClaim = false; synchronizeAuthority('refreshing'); disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); poll(); } } }
       else if (target.hasAttribute('data-au-collection-scope')) { if (busy) return; collection.scope = target.dataset.auCollectionScope === 'added' ? 'added' : 'originals'; collection.domain = 'all'; collection.search = ''; collection.filter = 'all'; showWork(); }
       else if (target.hasAttribute('data-au-domain')) { collection.domain = target.dataset.auDomain; refreshCollection(); rememberCollectionRoute(); }
       else if (target.hasAttribute('data-au-pause')) controlWork(target,'pause');
       else if (target.hasAttribute('data-au-resume')) controlWork(target,'resume');
       else if (target.hasAttribute('data-au-refresh-claims')) { const token = epoch; loadClaims(token,true).catch(error => { if (!disposed && token === epoch) notice(error.message,true); }); }
       else if (target.hasAttribute('data-au-knowledge')) { if (!busy) showKnowledge(true,{knowledge_id:target.dataset.auKnowledge,version:target.dataset.auVersion,knowledge_sha256:target.dataset.auKnowledgeSha,definition_sha256:target.dataset.auDefinitionSha}); }
-      else if (target.hasAttribute('data-au-add-files')) setDetail('sources',true);
-      else if (target.hasAttribute('data-au-detail')) setDetail(target.dataset.auDetail);
+      else if (target.hasAttribute('data-au-add-files')) { pauseInspection(); setDetail('sources',true); }
+      else if (target.hasAttribute('data-au-detail')) { pauseInspection(); setDetail(target.dataset.auDetail); }
       else if (target.hasAttribute('data-au-back-process')) {
         const node = [...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected);
         node?.focus({preventScroll:true}); revealGraphNode(node); drawEdges();
       }
       else if (target.hasAttribute('data-au-fact-select') || target.hasAttribute('data-au-document-select')) {
+        pauseInspection();
         if (view !== 'claim') return;
         const relations=evidenceRelationships(current,selected,evidenceContext);
         if (target.hasAttribute('data-au-fact-select')) {
@@ -1571,6 +1650,7 @@
         renderSelection(); rememberSelectionRoute();
       }
       else if (target.hasAttribute('data-au-node-previous') || target.hasAttribute('data-au-node-next')) {
+        pauseInspection();
         if (view !== 'claim' || !current?.graph || target.disabled) return;
         const nodes = layoutGraph(current.graph).nodes, index = nodes.findIndex(node => node.node_id === selected), direction = target.hasAttribute('data-au-node-previous') ? -1 : 1, node = nodes[index+direction];
         if (!node) return;
@@ -1585,6 +1665,7 @@
         }
       }
       else if (target.hasAttribute('data-au-node') || target.hasAttribute('data-au-select')) {
+        pauseInspection();
         const id=target.dataset.auNode || target.dataset.auSelect;
         if (!list(current?.graph?.nodes).some(node => node.node_id === id)) return;
         const changed=selected !== id; selected=id;
@@ -1604,8 +1685,14 @@
     function input(event) {
       if (view === 'work' && event.target.matches?.('[data-au-claim-search]')) { collection.search = event.target.value; refreshCollection(); rememberCollectionRoute(); }
     }
-    function closed() { (dialogReturn?.element?.isConnected && focusEligible(dialogReturn.element,dialogReturn.token) ? dialogReturn.element : focusTarget(dialogReturn?.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true}); dialogReturn = null; sourceEpoch++; clearNativeSource(); resumeLivePresentation(); resumeReplayPresentation(); }
-    function visibility() { motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); if (doc.hidden && demoTimer) { root.clearTimeout(demoTimer); demoTimer = null; } if (!doc.hidden) resumeReplayPresentation(); if (!doc.hidden && view === 'claim' && presentationMode !== 'replay') { disconnected = true; cancelPoll(); resumeLivePresentation(); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); } }
+    function closed() { (dialogReturn?.element?.isConnected && focusEligible(dialogReturn.element,dialogReturn.token) ? dialogReturn.element : focusTarget(dialogReturn?.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true}); dialogReturn = null; sourceEpoch++; clearNativeSource(); }
+    function visibility() {
+      motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
+      if (doc.hidden) { pauseInspection(); cancelPoll(); freshClaim = false; statusAuthority = null; synchronizeAuthority('refreshing'); return; }
+      if (view === 'claim') {
+        if (presentationMode !== 'replay') { disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); }
+      }
+    }
     function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     function pointerInput() { keyboard=false; }
     function motionPreference() { if (reduced?.matches) { motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
@@ -1627,5 +1714,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {acceptedEventNode,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });

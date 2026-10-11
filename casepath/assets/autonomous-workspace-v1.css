@@ -230,12 +230,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-evidence-tether { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
 .au-workspace .au-evidence-tether path { fill: none; stroke: var(--au-accent); stroke-width: 1.2; opacity: 1; }
 .au-workspace .au-evidence-process { position: relative; z-index: 1; padding: 8px 0 12px; }
-.au-workspace .au-evidence-graph-help { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; color: var(--au-muted); font-size: 11px; line-height: 1.65; margin-bottom: 2px; }
+.au-workspace .au-evidence-graph-help { display: flex; min-height: 44px; width: calc(100% - 370px); flex-direction: column; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; color: var(--au-muted); font-size: 11px; line-height: 1.65; margin-bottom: 2px; }
 .au-workspace .au-evidence-packet-count { flex-shrink: 0; color: var(--au-muted); font-size: 13px; }
 .au-workspace .au-evidence-process .au-section-heading { margin-bottom: 8px; }
 .au-workspace .au-evidence-process .au-section-heading h2 { color: var(--au-muted); font-size: 13px; font-weight: 500; line-height: 1.5; letter-spacing: 0; }
 .au-workspace .au-evidence-process .au-section-heading > span { font-size: 12px; }
-.au-workspace .au-graph-viewport { width: 100%; max-width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8ca38f var(--au-field); padding: 2px 0 8px; scroll-padding: 18px; max-height: 216px; }
+.au-workspace .au-graph-viewport { clear: both; width: 100%; max-width: 100%; min-width: 0; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #8ca38f var(--au-field); padding: 2px 0 8px; scroll-padding: 18px; max-height: 160px; }
 .au-workspace .au-graph { position: relative; display: flex; flex-direction: row; align-items: stretch; justify-content: space-between; gap: 22px; width: max-content; min-width: 100%; margin: 0; padding: 8px 10px 12px; isolation: isolate; }
 .au-workspace .au-graph-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
 .au-workspace .au-graph-lines path { fill: none; stroke: #657c6e; stroke-width: 1.15; }
@@ -363,16 +363,21 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-rule-trace > p { color: var(--au-muted); font-size: 14px; margin-top: 10px; }
 .au-workspace :is(.au-documents,.au-supporting,.au-activity) { max-width: 1200px; margin: 0 auto; padding: 16px 0 0; }
 .au-workspace .au-obligations { padding: 0; list-style: none; }
-.au-workspace .au-obligation { border-top: 1px solid var(--au-line); padding: 23px 0; font-size: 15px; }
+.au-workspace .au-obligation { border-top: 1px solid var(--au-line); padding: 12px 0; font-size: 14px; }
+.au-workspace .au-obligation > div { display: grid; grid-template-columns: minmax(0,1fr) minmax(240px,.55fr); gap: 3px 24px; align-items: start; }
 .au-workspace .au-obligation:first-child { border-top: 0; }
-.au-workspace .au-obligation > div > strong { display: block; font-size: 23px; font-weight: 450; line-height: 1.25; letter-spacing: -.4px; }
-.au-workspace .au-obligation-state { display: block; color: var(--au-muted); font-size: 14px; margin-top: 7px; }
+.au-workspace .au-obligation > div > strong { grid-column: 1; display: block; font-size: 18px; font-weight: 450; line-height: 1.25; letter-spacing: -.4px; }
+.au-workspace .au-obligation-state { grid-column: 1; display: block; color: var(--au-muted); font-size: 12px; margin-top: 2px; }
+.au-workspace .au-obligation > div > details { grid-column: 1; font-size: 13px; }
+.au-workspace .au-obligation > div > details > summary { min-height: 32px; padding: 4px 0; color: var(--au-muted); font-size: 12px; }
+.au-workspace .au-obligation .au-obligation-actions { grid-column: 2; grid-row: 1 / 4; justify-content: flex-end; margin: 0; }
+.au-workspace .au-obligation .au-obligation-sources { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px 16px; }
 .au-workspace .au-obligation[data-selected=true] > div > strong { color: var(--au-accent); }
 .au-workspace .au-obligation[data-status=established] .au-obligation-state { color: var(--au-green); }
-.au-workspace .au-obligation p { max-width: 85ch; margin-top: 10px; color: var(--au-muted); font-size: 15px; line-height: 1.65; }
+.au-workspace .au-obligation p { max-width: 85ch; margin-top: 8px; color: var(--au-muted); font-size: 13px; line-height: 1.65; }
 .au-workspace .au-related { display: flex; flex-wrap: wrap; gap: 7px 15px; margin-top: 10px; }
 .au-workspace .au-related:empty { display: none; }
-.au-workspace .au-related .au-secondary { min-height: 44px; border: 0; padding: 8px 0; color: var(--au-ink); font-size: 14px; text-decoration: underline; text-underline-offset: 5px; }
+.au-workspace .au-related .au-secondary { min-height: 44px; border: 0; padding: 6px 0; color: var(--au-ink); font-size: 12px; text-decoration: underline; text-underline-offset: 5px; }
 .au-workspace .au-document-rules { margin-top: 14px; }
 .au-workspace .au-source-list { list-style: none; padding: 0; }
 .au-workspace .au-source-list li { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--au-line); flex-wrap: wrap; }
@@ -441,16 +446,16 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-chain dt { color: var(--au-muted); }
 .au-workspace .au-chain dd { min-width: 0; margin: 0; }
 .au-workspace .au-hash { font: 12px/1.7 ui-monospace, monospace; word-break: break-all; }
-.au-workspace .au-source-dialog { width: min(780px,92vw); height: 100dvh; max-width: 100vw; max-height: 100dvh; margin: 0 0 0 auto; padding: 24px 28px; overflow: auto; overscroll-behavior: contain; border: 0; border-left: 1px solid #a6b9a8; border-radius: 0; background: var(--au-field); color: var(--au-ink); font: inherit; box-shadow: -20px 0 70px #1c39291a; }
+.au-workspace .au-source-dialog { scroll-padding-block-start: 120px; width: min(780px,92vw); height: 100dvh; max-width: 100vw; max-height: 100dvh; margin: 0 0 0 auto; padding: 24px 28px; overflow: auto; overscroll-behavior: contain; border: 0; border-left: 1px solid #a6b9a8; border-radius: 0; background: var(--au-field); color: var(--au-ink); font: inherit; box-shadow: -20px 0 70px #1c39291a; }
 .au-workspace .au-source-dialog::backdrop { background: #24443333; }
-.au-workspace .au-dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--au-line); padding-bottom: 14px; }
+.au-workspace .au-dialog-header { position: sticky; top: 0; z-index: 3; background: var(--au-field); display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--au-line); padding-bottom: 14px; }
 .au-workspace .au-dialog-header > div { min-width: 0; }
 .au-workspace .au-dialog-header h2 { margin-top: 6px; font-size: 26px; font-weight: 450; line-height: 1.2; letter-spacing: -1px; }
 .au-workspace .au-dialog-header button { flex-shrink: 0; }
 .au-workspace .au-source-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 10px 0; color: var(--au-muted); font-size: 13px; }
 .au-workspace .au-source-meta a { display: inline-flex; align-items: center; min-height: 44px; }
 .au-workspace .au-source-body { margin: 14px 0 28px; font: 400 16px/1.9 'CasePath Instrument', Arial, sans-serif; white-space: pre-wrap; overflow-wrap: anywhere; }
-.au-workspace .au-source-body mark { background: #e0eabd; color: #244a31; padding: 2px 0; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.au-workspace .au-source-body mark { scroll-margin-block-start: 120px; background: #e0eabd; color: #244a31; padding: 2px 0; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .au-workspace :is(.au-demonstration,.au-original-intake) { max-width: 1320px; margin-inline: auto; }
 .au-workspace .au-domain-browse { display: grid; grid-template-columns: .7fr repeat(3,1fr); border-block: 1px solid var(--au-line); margin: 0 0 12px; }
 .au-workspace .au-domain-browse button { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; min-height: 48px; padding: 8px 16px; border: 0; border-right: 1px solid var(--au-line); background: transparent; text-align: left; color: var(--au-muted); font-size: 13px; }
@@ -508,7 +513,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-demo-itinerary { margin: 0 0 10px; border-block: 1px solid var(--au-line); }
 .au-workspace .au-demo-itinerary .au-demo-selection { padding: 0 0 10px; }
 .au-workspace .au-demo-itinerary summary > .au-demo-position { margin-left: 0; color: var(--au-ink); font-size: 14px; font-weight: 550; }
-.au-workspace .au-mobile-inspection { display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 360px; margin: 0 0 4px auto; }
+.au-workspace .au-mobile-inspection { float: right; width: 350px; display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 360px; margin: 0 0 4px auto; }
 .au-workspace .au-mobile-inspection > div { flex: 1; text-align: center; }
 .au-workspace .au-mobile-inspection strong { display: block; font-size: 13px; font-weight: 500; }
 .au-workspace .au-mobile-inspection span { display: block; margin-top: 0; color: var(--au-muted); font-size: 11px; }
@@ -520,14 +525,22 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-evidence-column--sources { grid-area: sources; }
 .au-workspace .au-evidence-column--facts { grid-area: facts; }
 .au-workspace .au-evidence-column--requirements { grid-area: requirements; }
+.au-workspace .au-evidence-column--step > .au-evidence-limit { margin-left: 46px; }
 .au-workspace .au-evidence-column--step > :is(h4,.au-eyebrow,.au-column-label) { display: none; }
-.au-workspace .au-evidence-step > * { grid-column: 2; }
+.au-workspace .au-evidence-step > :not(.au-evidence-step-junction) { grid-column: 2; }
 .au-workspace .au-context-records { margin: 16px 0 0; border-top: 1px solid var(--au-line); }
 .au-workspace .au-context-records > summary { color: var(--au-muted); font-size: 13px; }
-.au-workspace .au-event-cue { display: flex; align-items: center; gap: 10px; max-width: 100%; min-height: 36px; margin: 0 0 6px; padding: 5px 0; border: 0; background: transparent; color: var(--au-muted); font-size: 12px; line-height: 1.5; text-align: left; }
+.au-workspace .au-event-cue { display: inline-flex; vertical-align: middle; align-items: center; gap: 10px; min-width: 0; max-width: min(480px,100%); min-height: 28px; margin: 0; padding: 2px 0; border: 0; background: transparent; color: var(--au-muted); font-size: 12px; line-height: 1.5; text-align: left; }
+.au-workspace .au-event-cue > span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 58ch; }
 .au-workspace .au-event-cue .au-event-marker { color: var(--au-green); font-size: 18px; }
 .au-workspace .au-event-cue .au-event-revision { flex-shrink: 0; margin-left: auto; font-variant-numeric: tabular-nums; }
 .au-workspace .au-event-cue strong { color: var(--au-ink); font-size: 12px; font-weight: 500; }
+.au-workspace .au-focused-claim-head .au-page-heading { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; font-size: 24px; line-height: 1.25; }
+.au-workspace .au-claim-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; }
+.au-workspace .au-read-state:empty { display: none; }
+.au-workspace .au-original-subject-disclosure { margin-top: 3px; font-size: 12px; }
+.au-workspace .au-original-subject-disclosure summary { min-height: 28px; padding: 3px 0; color: var(--au-muted); font-size: 12px; }
+.au-workspace .au-original-subject-disclosure p { max-width: 75ch; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; padding: 8px 0; }
 .au-workspace .au-event-cue:hover { color: var(--au-accent); }
 .au-workspace [data-au-read-state-label] { color: var(--au-muted); font-size: 12px; font-weight: 400; }
 .au-workspace .au-read-skeleton { max-width: 1320px; margin: 0 auto; min-height: 400px; contain: layout; }
@@ -588,12 +601,12 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
  .au-workspace .au-evidence-toolbar { gap:0; }
  .au-workspace .au-evidence-packet-count { display:none; }
  .au-workspace .au-evidence-process { padding-block:6px 8px; }
- .au-workspace .au-evidence-graph-help { font-size:10px;gap:2px; }
+ .au-workspace .au-evidence-graph-help { min-height:0;width:100%;font-size:10px;gap:2px; }
  .au-workspace .au-evidence-graph-help > :last-child { flex-basis:100%; }
- .au-workspace .au-graph-viewport { max-height:188px; }
+ .au-workspace .au-graph-viewport { max-height:140px; }
  .au-workspace .au-graph { padding:6px 10px 10px;gap:20px; }
  .au-workspace .au-graph-rank { flex-basis:154px;width:154px;gap:10px; }
- .au-workspace .au-mobile-inspection { max-width:none; }
+ .au-workspace .au-mobile-inspection { float:none;width:100%;max-width:none; }
  .au-workspace .au-evidence-path { display:flex;flex-direction:column;align-items:stretch;gap:18px;padding:12px 0 18px; }
  .au-workspace .au-evidence-column--step { order:0; }
  .au-workspace .au-evidence-column--facts { order:1; }
@@ -616,11 +629,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
  .au-workspace .au-source-list li > span { padding-top:6px;font-size:12px; }
  .au-workspace .au-arrival { display:grid;grid-template-columns:minmax(0,1fr);gap:10px; }
  .au-workspace .au-arrival .au-secondary { justify-self:start; }
+ .au-workspace .au-obligation > div { grid-template-columns:minmax(0,1fr);gap:2px; }
+ .au-workspace .au-obligation .au-obligation-actions { grid-column:1;grid-row:auto;justify-content:flex-start;gap:4px 16px; }
  .au-workspace .au-outcome > summary > span { display:block;margin:4px 0 0; }
  .au-workspace .au-knowledge-summary { gap:8px 16px;font-size:11px; }
+
  .au-workspace .au-knowledge-summary strong { font-size:14px; }
  .au-workspace .au-knowledge-card > h2 { font-size:24px; }
  .au-workspace .au-evidence-knowledge-path, .au-workspace .au-knowledge-claims, .au-workspace .au-knowledge-path { grid-template-columns:minmax(0,1fr);gap:16px;padding:4px 0 16px; }
+ .au-workspace .au-evidence-knowledge-path { grid-template-columns:repeat(2,minmax(0,1fr));gap:12px; }
+ .au-workspace .au-evidence-knowledge-definition { grid-column:1 / -1;grid-row:1; }
+ .au-workspace .au-evidence-knowledge-origin { grid-column:1;grid-row:2; }
+ .au-workspace .au-evidence-knowledge-receiving { grid-column:2;grid-row:2; }
+ .au-workspace .au-evidence-knowledge-path .au-secondary { font-size:15px; }
  .au-workspace .au-evidence-version-object { padding:16px; }
  .au-workspace .au-version-heading > time { margin-left:0;flex-basis:100%; }
  .au-workspace .au-chain > div { grid-template-columns:minmax(0,1fr);gap:6px; }
@@ -632,7 +653,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
  .au-workspace .au-original-layout { display:flex;flex-direction:column;gap:20px; }
  .au-workspace .au-original-source-rail { width:100%;border-left:0;padding-left:0; }
  .au-workspace .au-original-source-rail .au-source-list { margin-bottom:0; }
- .au-workspace .au-source-dialog { width:100%;padding:22px 18px; }
+ .au-workspace .au-source-dialog { scroll-padding-block-start: 120px; width:100%;padding:22px 18px; }
  .au-workspace .au-dialog-header { gap:12px;flex-wrap:wrap; }
  .au-workspace .au-dialog-header h2 { font-size:24px; }
  .au-workspace .au-dialog-header button { min-height:44px; }
