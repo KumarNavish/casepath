@@ -325,11 +325,12 @@ function fixtureData(config = {}) {
     // Real original .eml bytes and parsed intake body, isolated at the source
     // display boundary. This supplies no inferred facts, process or outcome.
     const mime=mimeDrawerFixture(),envelope=envelopes[mime.claim_id],state=envelope.state;
-    const source={...mime.descriptor,text:mime.text,text_sha256:sha(mime.text),complete:true,extraction:'utf8_text'};
+    const source={...mime.descriptor,text:mime.text,text_sha256:sha(mime.text),complete:true,extraction:'utf8_text'},variant=config.mimeDrawer.replace(/-plain$/,'');
+    if(config.mimeDrawer.endsWith('-plain')){source.media_type='text/plain';state.source_descriptors.find(row=>row.artifact_id===source.artifact_id).media_type='text/plain';}
     state.original_binding={claim_id:mime.claim_id,intake:clone(mime.intake),source_map:[{artifact_id:source.artifact_id,original_artifact_id:mime.intake.customer_message.raw_file.artifact_id,sha256:source.sha256}]};
-    if(config.mimeDrawer==='foreign')state.original_binding.claim_id=demoIds[0];
-    if(config.mimeDrawer==='unbound')state.original_binding.source_map=[];
-    if(config.mimeDrawer==='supporting')state.source_descriptors.find(row=>row.artifact_id===source.artifact_id).role='supporting_document';
+    if(variant==='foreign')state.original_binding.claim_id=demoIds[0];
+    if(variant==='unbound')state.original_binding.source_map=[];
+    if(variant==='supporting')state.source_descriptors.find(row=>row.artifact_id===source.artifact_id).role='supporting_document';
     Object.assign(state,{revision:1,state_sha256:sha(`isolated MIME display boundary ${config.mimeDrawer}`),last_event_sha256:sha('isolated MIME display event'),mode:'saved',status:'received',phase:'received',acquired_sources:[source]});
     Object.assign(envelope.projection,{revision:state.revision,state_sha256:state.state_sha256});
     sources[`${mime.claim_id}/${source.artifact_id}`]=source;rawSources[`${mime.claim_id}/${source.artifact_id}`]=mime.bytes;
@@ -388,6 +389,7 @@ function fixtureData(config = {}) {
     recordedHistory: config.recordedHistoryId ? clone(captured[`${base}/claims/${config.recordedHistoryId}/events?after=0`].events) : [],
     acceptedEvents: accepted ? clone((config.acceptedPrefix ? accepted.prefixes[config.acceptedPrefix] : accepted.snapshots[config.priorAssessment]).events) : [],
     acceptedPrefixes: accepted ? config.priorAssessment === 'failed' ? accepted.failure_prefixes : accepted.prefixes : {},
+    recordedKnowledgeData:config.recordedKnowledge?clone(captured[`${base}/knowledge`]):null,
     rows: config.rememberedNativeId ? rows.filter(row => row.claim_id !== config.rememberedNativeId) : rows};
 }
 
@@ -570,7 +572,7 @@ async function mountFixture(page, config = {}) {
       }
       if (relative === '/knowledge') {
         if(fixture.knowledgeFailures>0){fixture.knowledgeFailures--;return response(500,{detail:'Isolated Knowledge warm read failed.'});}
-        const result = response(200, fixture.accepted?.knowledge || {versions: [], uses: [], quarantined: []});
+        const result = response(200, fixture.recordedKnowledgeData || fixture.accepted?.knowledge || {versions: [], uses: [], quarantined: []});
         if (fixture.holdKnowledge) return new Promise(resolve => fixture.held.push({kind: 'knowledge', release: () => resolve(result)}));
         return result;
       }
@@ -670,6 +672,27 @@ async function closeRecord(page){
   await eventually(()=>page.evaluate(({kind,id})=>!document.querySelector('.au-record-dialog').open&&document.activeElement?.dataset.auInspect===kind&&document.activeElement?.dataset.auRecordId===id,identity),'native record close did not restore its exact inspection origin');
 }
 
+async function caseDetails(page){
+  const prior={detail:await page.locator('[data-au-panel]').getAttribute('data-au-panel'),route:new URL(page.url()).hash,playing:await page.locator('[data-au-demo-stop]').count()===1};
+  if(prior.detail!=='activity')await page.locator('.au-work-head [data-au-detail="activity"]').click();
+  await page.locator('[data-au-panel="activity"] [data-au-inspect="claim"]').click();
+  const record=JSON.parse(await page.locator('.au-record-dialog[open] pre[data-au-record-kind="claim"]').textContent());
+  await closeRecord(page);
+  if(prior.detail!=='activity')await page.locator(`.au-context-nav [data-au-detail="${prior.detail}"]`).click();
+  const before=new URLSearchParams(prior.route.split('?')[1]),after=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+  assert.equal(new URL(page.url()).hash.split('?')[0],prior.route.split('?')[0],'technical inspection cannot replace its exact claim');
+  for(const [key,value]of before)assert.equal(after.get(key),value,`technical inspection must restore the explicit ${key} route identity`);
+  assert.equal(await page.locator('[data-au-panel]').getAttribute('data-au-panel'),prior.detail,'History inspection returns to its original local purpose');
+  if(prior.playing)await page.locator('[data-au-demo-resume]').click();
+  return record;
+}
+
+async function knowledgeDetails(page){
+  await page.locator('[data-au-inspect="knowledge-index"]').click();
+  const record=JSON.parse(await page.locator('.au-record-dialog[open] pre[data-au-record-kind="knowledge-index"]').textContent());
+  await closeRecord(page);return record;
+}
+
 async function originalPageIds(page){return page.locator('[data-au-claim-row]').evaluateAll(rows=>rows.map(row=>row.dataset.auClaimRow));}
 async function collectVisiblePages(page){
   const ids=[];
@@ -728,13 +751,39 @@ async function title(page, id) {
   // assertions read UI output without changing the scheduler on every poll.
   const record = page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]');
   if (!await record.count()) {
-    const playing = await page.locator('[data-au-demo-stop]').count() === 1;
-    await page.locator('.au-work-head [data-au-inspect="claim"]').click();
-    await eventually(() => record.count().then(count => count === 1), 'the native claim record drawer did not expose its accepted state');
-    await closeRecord(page);
-    if (playing) await page.locator('[data-au-demo-resume]').click();
+    await caseDetails(page);
+    await eventually(() => record.count().then(count => count === 1), 'History Case details did not expose the synchronized exact accepted state');
   }
 }
+
+for(const width of [1428,390])test(`quiet language: the saved insufficient reason owns the reading view while History retains every exact record at ${width}px`,async t=>{
+  const id='auto_764f712d3833988ce6ff6cfd',saved=fixtureData().envelopes[id],fact=saved.state.facts.find(row=>row.fact_id==='fact:notice_period_evidence'),obligation=saved.state.obligations.find(row=>row.required_fact_ids.includes(fact.fact_id)),page=await fixturePage(t,{width,height:width===390?844:801});
+  assert.equal(fact.status,'insufficient');assert.ok(fact.citations.length,'this recorded conclusion has an original-source span');
+  await page.evaluate(preferences=>window.__controller.openClaim(preferences.id,true,preferences),{id,node:obligation.node_id,document:obligation.document_type,obligation:obligation.obligation_id,fact:fact.fact_id});await title(page,id);
+  const reading=page.locator('[data-au-evidence-path]'),reason=reading.locator('.au-fact-summary'),header=page.locator('.au-work-head');
+  assert.equal(await reason.textContent(),fact.summary,'the visible conclusion uses the exact saved reason, without an inferred missing page or rewritten field checklist');
+  assert.equal(await reading.locator('[data-au-fact] > .au-meta').count(),0,'the selected reason is not followed by a field-list and generic verdict suffix');
+  assert.equal(await reading.locator('[data-au-inspect]').count(),0,'raw object controls do not divide the dominant reading surface');
+  assert.equal(await header.locator('[data-au-refresh-claim], [data-au-inspect="claim"]').count(),0,'the claim header has no technical Record or Refresh workflow');
+  assert.equal(await header.locator('[data-au-detail="activity"]').innerText(),'History');assert.equal(await page.locator('.au-context-nav [data-au-detail="activity"]').count(),0,'History is available once');
+  assert.equal((await header.innerText()).includes(fact.summary),false,'the header does not repeat the current source-grounded conclusion');
+  assert.ok((await page.locator('[data-au-node] .au-node-state').allTextContents()).every(text=>text.trim()!=='Evidence needed'),'the map does not repeat a generic unresolved badge beneath every question');
+  const citation=fact.citations[0],source=reading.locator(`[data-au-source="${citation.artifact_id}"]`);assert.equal(JSON.parse(await source.getAttribute('data-au-citation')).quote,citation.quote);
+  const route=new URL(page.url()).hash;await source.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the saved insufficient reason lost its precise original source');
+  assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
+  assert.equal(new URL(page.url()).hash,route);assert.deepEqual(await visibleRecord(page),saved,'reading and native source inspection preserve the full accepted state and capability projection');
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();assert.equal(await page.locator('[data-au-panel="sources"] [data-au-inspect="claim"]').count(),0,'the source list uses the same quiet History access');assert.doesNotMatch(await page.locator('[data-au-panel="sources"]').innerText(),/Original file received/);assert.deepEqual(await visibleRecord(page),saved);
+});
+
+test('quiet language: Cases omit repetitive unstarted badges and global History opens the complete recorded Knowledge index',async t=>{
+  const page=await fixturePage(t,{recordedKnowledge:true}),expected=captured[`${base}/knowledge`];assert.equal(await page.locator('[data-au-claim-row]').count(),20);
+  assert.doesNotMatch((await page.locator('[data-au-claim-row]').allInnerTexts()).join('\n'),/Not started/i,'original case rows show useful identity and excerpts instead of repeating their initial status');
+  await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===1),'the actual recorded procedure index did not render');
+  const selected=page.locator('[data-au-knowledge-identity]');assert.equal(await selected.locator('[data-au-inspect]').count(),0,'the main procedure reading has no per-version or reuse technical buttons');
+  const history=page.locator('[data-au-inspect="knowledge-index"]');assert.equal(await history.count(),1);assert.equal(await history.innerText(),'History');await history.focus();await page.keyboard.press('Enter');
+  const drawer=page.locator('.au-record-dialog[open] pre');assert.equal(await drawer.getAttribute('data-au-record-kind'),'knowledge-index');assert.deepEqual(JSON.parse(await drawer.textContent()),expected,'History preserves all exact versions, uses and quarantine records rather than only the selected friendly procedure');
+  assert.equal(expected.versions.length,2);assert.equal(expected.uses.length,5);assert.equal(expected.quarantined.length,2);await closeRecord(page);assert.equal(await history.evaluate(element=>document.activeElement===element),true);
+});
 
 test('Cases pages all 150 originals and Demo enters their exact canonical identities as autoplaying real claims', async t => {
   const page = await fixturePage(t, {presentationSuite:'replay'});
@@ -1089,8 +1138,7 @@ test('a recorded document selection retains its exact obligation and fact throug
   assert.equal(await selectedRequirement.count(), 1, 'sharing a process node does not select sibling obligations');
   assert.equal(await selectedRequirement.getAttribute('data-au-obligation'), notice.obligation_id);
   await selectedRequirement.locator('[data-au-select="lt_deadline"]').click();
-  await page.locator(`[data-au-evidence-path] [data-au-inspect="requirement"][data-au-record-id="${notice.obligation_id}"]`).click();
-  assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()).obligations,[notice]);await closeRecord(page);await title(page,id);
+  assert.deepEqual((await caseDetails(page)).state.obligations.filter(row=>row.obligation_id===notice.obligation_id),[notice]);await title(page,id);
   await focus(notice);
   await selectDocument(page,receipt.document_type);
   await focus(receipt);
@@ -1202,7 +1250,7 @@ test('a recorded withheld knowledge candidate remains distinguishable and expose
   const id='auto_7373bbf206ab25bacf71b82e',page=await fixturePage(t,{recordedHistoryId:id});
   const event=captured[`${base}/claims/${id}/events?after=0`].events.at(-1);assert.equal(event.payload.knowledge.qualification.status,'quarantined');
   await observeAnimations(page);await open(page,id);await title(page,id);
-  await page.locator('.au-context-nav [data-au-detail="activity"]').click();
+  await page.locator('.au-work-head [data-au-detail="activity"]').click();
   const entry=page.locator(`[data-au-inspect="event"][data-au-record-id="${event.seq}"]`);assert.match(await entry.locator('..').innerText(),/Knowledge candidate withheld/i);
   await entry.click();assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),event);await closeRecord(page);
   await page.locator('.au-context-nav [data-au-detail="knowledge"]').click();assert.equal(await page.locator('[data-au-panel="knowledge"] .au-knowledge-publication [data-au-knowledge]').count(),0,'withheld candidate cannot borrow a qualified version link');
@@ -1217,7 +1265,7 @@ for(const kind of ['action.completed','knowledge.published','knowledge.used'])te
   assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[through].state);
   const rendered=await page.evaluate(()=>window.__uiAnimations.length);await page.evaluate(async()=>{await window.__controller.refresh();await window.__controller.refresh();});
   assert.equal(await page.evaluate(()=>window.__uiAnimations.length),rendered,'repeated identical accepted reads cannot create another motion');
-  await page.locator('.au-context-nav [data-au-detail="activity"]').click();await page.locator(`[data-au-inspect="event"][data-au-record-id="${through}"]`).click();
+  await page.locator('.au-work-head [data-au-detail="activity"]').click();await page.locator(`[data-au-inspect="event"][data-au-record-id="${through}"]`).click();
   assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),event,'native drawer exposes the exact accepted event and receipt');await closeRecord(page);
   if(kind==='action.completed'){
     const citation=event.payload.result.citations[0],source=page.locator(`[data-au-panel="activity"] [data-au-source="${citation.artifact_id}"]`).first();
@@ -1226,8 +1274,7 @@ for(const kind of ['action.completed','knowledge.published','knowledge.used'])te
     await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
   }else{
     await page.locator('.au-context-nav [data-au-detail="knowledge"]').click();
-    const recordKind=kind==='knowledge.used'?'use':'publication';await page.locator(`[data-au-panel="knowledge"] [data-au-inspect="${recordKind}"]`).first().click();
-    const recorded=JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent());assert.deepEqual(recorded,event.payload.knowledge);await closeRecord(page);
+    const records=(await caseDetails(page)).state,recorded=kind==='knowledge.used'?records.knowledge_uses.at(-1):records.knowledge_published.at(-1);assert.deepEqual(recorded,event.payload.knowledge);
   }
   const replay=await fixturePage(t,{priorAssessment:'reassessed'});await replay.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',through}),{id,through});await title(replay,id);await observeAnimations(replay);
   assert.deepEqual((await visibleRecord(replay)).state,fixture.prefixes[through].state);await replay.evaluate(()=>window.__controller.refresh());assert.deepEqual(await replay.evaluate(()=>window.__uiAnimations),[],'an already verified prefix stays settled');
@@ -1445,7 +1492,10 @@ test('quiet work: known original previews remain exact and read only through a h
   const id=originals.find(row=>!demoIds.includes(row.claim_id)).claim_id,original=originals.find(row=>row.claim_id===id),page=await fixturePage(t,{holdId:id,holdRemaining:1,corruptProjection:true,providerReady:true});
   const assertPreview=async()=>{
     const preview=page.locator(`[data-au-preview="catalog"][data-au-preview-claim="${id}"]`);assert.equal(await preview.isVisible(),true);
-    assert.equal(await preview.locator('[data-au-catalog-title]').textContent(),original.subject);assert.equal(await preview.locator('.au-original-message').textContent(),[...original.message].slice(0,240).join(''));
+    assert.equal(await preview.locator('[data-au-catalog-title]').textContent(),original.subject);
+    const displayed=await preview.locator('.au-original-message').textContent(),body=displayed.replace(/…$/,'');
+    assert.ok(body.length>=120&&[...displayed].length<=240,'the pending preview exposes substantive original content within its bounded reading length');assert.equal(original.message.startsWith(body),true,'the displayed excerpt comes from this exact original message');
+    if(body.length<original.message.length)assert.match(original.message.slice(body.length,body.length+1),/\s/,'a clipped preview ends at a whole original word');
     assert.equal(await page.locator('[data-au-revision], [data-au-state-sha], [data-au-node], [data-au-fact], [data-au-obligation], [data-au-outcome], [data-au-claim-title], [data-au-start], [data-au-pause], [data-au-resume], [data-au-arrival], [data-au-submit], input[type=file]').count(),0,'a catalog excerpt cannot grant accepted state or command authority');
   };
   await page.locator(`[data-au-claim="${id}"]`).click();await eventually(()=>page.evaluate(()=>window.__fixture.held.length===1),'the fresh claim read was not held');await assertPreview();
@@ -1460,10 +1510,10 @@ test('quiet work: known original previews remain exact and read only through a h
 
 test('quiet work: acquired MIME originals use only their bound parsed message while exact wire bytes and text hashes stay inspectable',async t=>{
   const mime=mimeDrawerFixture();assert.match(mime.text,/MIME-Version:/);assert.notEqual(mime.text,mime.intake.customer_message.body);
-  for(const mode of ['bound','foreign','unbound','supporting'])await t.test(mode,async t=>{
+  for(const mode of ['bound','foreign','unbound','supporting','bound-plain','unbound-plain'])await t.test(mode,async t=>{
     const page=await fixturePage(t,{mimeDrawer:mode,width:390,height:844});await open(page,mime.claim_id);await title(page,mime.claim_id);
     const excerpt=page.locator('.au-acquired-text'),source=fixtureData({mimeDrawer:mode}).envelopes[mime.claim_id].state.acquired_sources[0];
-    if(mode==='bound'){
+    if(mode==='bound'||mode==='bound-plain'){
       assert.equal(await excerpt.textContent(),[...mime.intake.customer_message.body].slice(0,520).join('')+'…');assert.doesNotMatch(await excerpt.textContent(),/MIME-Version:|Content-Transfer-Encoding:|Content-Type:|^From:/);
       assert.equal(await page.locator('[data-au-source-identity]').getAttribute('data-au-source-identity'),[mime.claim_id,source.artifact_id,source.sha256,source.text_sha256].join(':'));
     }else assert.equal(await excerpt.count(),0,'a foreign, unbound or supporting MIME artifact cannot present wire content as a readable original message');
@@ -1720,7 +1770,7 @@ test('a working claim keeps completed step and action labels scoped to Completed
   assert.equal(saved.status, 'running');
   assert.deepEqual(saved.evaluation.nodes, expected.nodes);
   assert.deepEqual(saved.actions, expected.actions, 'presentation labels cannot rewrite the accepted action status or receipt');
-  await page.locator('.au-context-nav [data-au-detail="activity"]').click();
+  await page.locator('.au-work-head [data-au-detail="activity"]').click();
   const actions=page.locator('[data-au-panel="activity"] [data-au-inspect="action"]');assert.equal(await actions.count(),expected.actions.length);
   for(let index=0;index<expected.actions.length;index++){await actions.nth(index).click();const record=JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent());assert.deepEqual(record.result,expected.actions[index].result||expected.actions[index]);assert.equal(record.result.status,'completed');await closeRecord(page);}
   assert.equal((await page.locator('[data-au-claim-status]').innerText()).replace(/\.$/,''),'Working');
@@ -1832,8 +1882,7 @@ for (const width of [1428, 1440, 390]) test(`quiet work: one reading focus expos
   assert.equal(await reading.locator('select').count(), 0, 'the reading path cannot depend on a dropdown picker');
   assert.ok((await reading.innerText()).includes(fact.summary || fact.reason), 'the actual accepted fact reason is readable on arrival');
   assert.equal(await reading.locator('[data-au-document]').getAttribute('data-au-document'),obligation.document_type,'the visible consequence belongs to the exact requiring obligation');
-  await reading.locator(`[data-au-inspect="requirement"][data-au-record-id="${obligation.obligation_id}"]`).click();
-  assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()).obligations,[obligation],'the full recorded reason remains exact in its single contextual drawer');await closeRecord(page);await title(page,id);
+  assert.deepEqual((await caseDetails(page)).state.obligations.filter(row=>row.obligation_id===obligation.obligation_id),[obligation],'History retains the full exact requirement reason and binding');await title(page,id);
   assert.equal(await page.locator('.au-context-nav [data-au-detail="step"]').innerText(), 'Process');
   assert.equal(await page.locator('.au-context-nav [data-au-detail="documents"]').count(), 1);
   assert.equal(await page.locator('.au-context-nav [data-au-detail="knowledge"]').count(), 1);
@@ -1897,7 +1946,7 @@ test('quiet work: background Knowledge warming stays read only, revalidates exac
     const immediate=await page.evaluate(pin=>{void window.__controller.showKnowledge(true,pin);const row=document.querySelector('[data-au-knowledge-identity]');return {identity:row?.dataset.auKnowledgeIdentity,hash:row?.dataset.auKnowledgeHash,read:document.querySelector('[data-au-view]')?.dataset.auReadState};},pin);
     assert.equal(immediate.identity,`${version.knowledge_id}:${version.version}`);assert.equal(immediate.read,'refreshing');
     await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='knowledge')),'explicit Knowledge navigation did not revalidate its warmed representation');assert.equal((await calls(page,'/knowledge')).length,2);
-    await page.locator('[data-au-knowledge-identity] [data-au-inspect="knowledge"]').click();assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),version);await closeRecord(page);
+    assert.deepEqual((await knowledgeDetails(page)).versions.find(row=>row.knowledge_id===version.knowledge_id&&row.version===version.version&&row.knowledge_sha256===version.knowledge_sha256),version);
     await page.evaluate(()=>{window.__fixture.holdKnowledge=false;for(const held of window.__fixture.held.splice(0))held.release();});await eventually(()=>currentReadState(page).then(read=>read==='verified'),'fresh Knowledge did not settle its exact pin');
     const invalid={...pin,knowledge_sha256:'0'.repeat(64)};await page.evaluate(pin=>{void window.__controller.showKnowledge(true,pin);},invalid);
     await eventually(()=>page.locator('.au-global-status').textContent().then(text=>text.includes('exact reused knowledge version')),'the invalid pin was not surfaced');assert.equal(await page.locator('[data-au-knowledge-identity]').count(),0,'warmed content cannot substitute a different primary version for an invalid exact hash');
@@ -2088,7 +2137,7 @@ for(const width of [1428,390])test(`quiet work: substantive collection, current 
   const expectedUses=priorAssessmentFixture().knowledge.uses.filter(use=>use.knowledge_id===version.knowledge_id&&use.version===version.version&&(!use.knowledge_sha256||use.knowledge_sha256===version.knowledge_sha256)&&(!use.definition_sha256||use.definition_sha256===(version.qualification?.definition_sha256||version.definition_sha256)));
   assert.deepEqual(links,[version.source_claim_id,...expectedUses.map(use=>use.claim_id)],'every source and receiving link belongs to the exact selected recorded version');
   const procedureIds=await page.locator('.au-procedure-list [data-au-knowledge]').evaluateAll(rows=>rows.map(row=>row.dataset.auKnowledge));assert.deepEqual(sorted(procedureIds),sorted([...new Set(priorAssessmentFixture().knowledge.versions.map(row=>row.knowledge_id))]));const siblings=await page.locator('.au-procedure-versions [data-au-version]').evaluateAll(rows=>rows.map(row=>`${row.dataset.auKnowledge}:${row.dataset.auVersion}`));assert.deepEqual(sorted(siblings),sorted(priorAssessmentFixture().knowledge.versions.filter(row=>row.knowledge_id===version.knowledge_id).map(row=>`${row.knowledge_id}:${row.version}`)));
-  await selected.locator('[data-au-inspect="knowledge"]').click();assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),version,'the native version record preserves complete qualification and immutable lineage');await closeRecord(page);
+  assert.deepEqual((await knowledgeDetails(page)).versions.find(row=>row.knowledge_id===version.knowledge_id&&row.version===version.version&&row.knowledge_sha256===version.knowledge_sha256),version,'History preserves complete qualification and immutable lineage for the exact selected version');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);await focusedReceipt(page,`knowledge-${width}`,{width,height,identity,sourceClaim:version.source_claim_id,receivingClaims:expectedUses.map(use=>use.claim_id)});
   if(expectedUses.length){const receiver=selected.locator(`[data-au-claim="${expectedUses[0].claim_id}"]`).last();await receiver.scrollIntoViewIfNeeded();await receiver.focus();const reachable=await receiver.evaluate(element=>{const r=element.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&document.activeElement===element;});assert.equal(reachable,true,'normal scrolling keeps recorded receiving cases keyboard reachable');await page.keyboard.press('Enter');await title(page,expectedUses[0].claim_id);assert.equal((await visibleRecord(page)).state.claim_id,expectedUses[0].claim_id);}
 });
@@ -2109,6 +2158,19 @@ async function actualJournalPresentation(t, config = {}) {
   await title(page, fixture.claim_id);
   return {page, fixture, id: fixture.claim_id};
 }
+
+test('quiet language: History pauses the real replay immediately and exposes exact Playback details before Resume consumes only its next prefix',async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,{page}=await actualJournalPresentation(t,{startThrough:11,startNode:'lt_form',holdReplayId:id,holdReplayThrough:12});
+  await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='replay')),'the actual next accepted replay prefix was not held');
+  assert.equal(await page.locator('[data-au-inspect="replay"]').count(),0,'playback provenance is not repeated beneath the dominant reading view');
+  const prior=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);await page.locator('.au-work-head [data-au-detail="activity"]').click();assert.equal(await page.locator('[data-au-demo-resume]').count(),1,'opening History pauses playback immediately');
+  const details=page.locator('[data-au-panel="activity"] [data-au-inspect="replay"]');assert.equal(await details.innerText(),'Playback details');await details.focus();await page.keyboard.press('Enter');assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),fixture.prefixes[11],'History retains the complete original replay envelope and provenance');await closeRecord(page);
+  assert.deepEqual((await caseDetails(page)).state,fixture.prefixes[11].state);await page.locator('.au-context-nav [data-au-detail="step"]').click();
+  const route=new URL(page.url()).hash,restored=new URLSearchParams(route.split('?')[1]);for(const [key,value]of prior)assert.equal(restored.get(key),value,`History retains the explicit replay ${key} identity`);
+  await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const held of window.__fixture.held.splice(0))held.release();});const reads=(await calls(page,`/claims/${id}/replay`)).length;await page.clock.runFor(7000);
+  assert.equal(new URL(page.url()).hash,route);assert.equal((await calls(page,`/claims/${id}/replay`)).length,reads);assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[11].state);
+  await page.locator('[data-au-demo-resume]').click();let record=await visibleRecord(page);for(let tick=0;record.state.revision===11&&tick<300;tick++){await page.clock.runFor(20);record=await visibleRecord(page);}assert.deepEqual(record.state,fixture.prefixes[12].state);assert.deepEqual(record.projection,fixture.prefixes[12].projection);await page.locator('.au-nav [data-au-nav="work"]').click();
+});
 
 test('quiet work: Cases and global Knowledge return to the same verified claim and exact local requirement and knowledge version', async t => {
   const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed'});
@@ -2178,7 +2240,7 @@ test('quiet work: the single native technical drawer renders hostile public reco
   // source, proposed fact, operational result or verified journal prefix.
   await page.evaluate(({id,marker})=>{window.__fixture.envelopes[id].state.public_display_extension={note:marker};},{id:processedId,marker});
   await open(page,processedId);await title(page,processedId);
-  await page.locator('.au-work-head [data-au-inspect="claim"]').click();
+  await page.locator('.au-work-head [data-au-detail="activity"]').click();await page.locator('[data-au-panel="activity"] [data-au-inspect="claim"]').click();
   const drawer=page.locator('.au-record-dialog[open]');
   assert.equal(await drawer.locator('pre').count(),1,'one contextual record owns the technical surface');
   assert.equal(await drawer.locator('img,script').count(),0);
@@ -2210,7 +2272,7 @@ test('quiet work: real source-grounded prefixes keep a blocked question honest, 
   }
   const state=fixture.prefixes[24].state;await page.evaluate(({id})=>window.__controller.openClaim(id,true,{mode:'replay',through:24,detail:'knowledge'}),{id});await title(page,id);
   for(const [kind,expected]of [['publication',state.knowledge_published[0]],['use',state.knowledge_uses[0]]]){
-    assert.ok(expected);await page.locator(`[data-au-panel="knowledge"] [data-au-inspect="${kind}"]`).first().click();assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),expected);await closeRecord(page);
+    assert.ok(expected);const record=(await caseDetails(page)).state;assert.deepEqual(kind==='publication'?record.knowledge_published[0]:record.knowledge_uses[0],expected);
   }
   await title(page,id);assert.deepEqual((await visibleRecord(page)).state,state);
   assert.doesNotMatch(await page.locator('[data-au-panel="knowledge"]').innerText(),/facts established by reuse|improved accuracy|human approved/i);

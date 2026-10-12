@@ -90,8 +90,9 @@ test('family-home applicability does not establish separate spouse service or ad
  assert.match(html,/Required after a requiring step is reached/);assert.match(html,/Requires[\s\S]*Classify termination type/);
  assert.ok(html.includes(`<q>${escaped(relationship.fact.citations[0].quote)}</q>`));
  assert.ok(html.includes(escaped(relationship.fact.summary)),'the reading column retains the actual saved condition assessment');
- assert.match(html,/data-au-inspect="fact" data-au-record-id="condition:family_home"/);
- assert.match(html,/data-au-inspect="step" data-au-record-id="lt_family"/);
+ assert.doesNotMatch(html,/data-au-inspect=/,'the reading view presents its case evidence without raw record controls');
+ const history=ui.workMarkup(state,envelope(robin).projection,'lt_family',[],'activity');
+ assert.match(history,/data-au-inspect="claim" data-au-record-id="">Case details</,'the complete saved claim remains accessible through History');
  assert.doesNotMatch(html,/spouse_notice_copy"[^>]*data-route="needed_now"|Spouse service established|Separate spouse service completed/);
  assert.equal(JSON.stringify(state),before);
 });
@@ -180,6 +181,27 @@ async function openFullProcess(page){
  assert.equal(await control.getAttribute('aria-expanded'),'true');
  await page.waitForFunction(()=>[...document.querySelectorAll('[data-au-edge]')].every(edge=>edge.getAttribute('d') && !/NaN|Infinity/.test(edge.getAttribute('d'))));
 }
+async function caseHistoryRecord(page){
+ const previous=await page.locator('[data-au-panel]').getAttribute('data-au-panel');
+ const pins=await page.evaluate(()=>Object.fromEntries([...new URLSearchParams(location.hash.split('?')[1] || '')].filter(([key])=>['node','fact','document','obligation'].includes(key))));
+ const history=page.locator('.au-work-controls [data-au-detail="activity"]');
+ assert.equal(await page.locator('[data-au-detail="activity"]').count(),1,'each case has one History access point');
+ assert.equal(await history.textContent(),'History');assert.equal(await page.locator('[data-au-refresh-claim]').count(),0);
+ await history.click();
+ const trigger=page.locator('[data-au-panel="activity"] [data-au-inspect="claim"]');
+ assert.equal(await trigger.textContent(),'Case details');await trigger.click();
+ assert.equal(await page.locator('.au-record-dialog[open] pre').count(),1);
+ const record=await recordData(page);await closeRecord(page);
+ if(previous!=='activity') await page.locator(`[data-au-detail="${previous}"]`).click();
+ const returnedPins=await page.evaluate(()=>Object.fromEntries([...new URLSearchParams(location.hash.split('?')[1] || '')].filter(([key])=>['node','fact','document','obligation'].includes(key))));
+ for(const [key,value] of Object.entries(pins)) assert.equal(returnedPins[key],value,`History preserves the explicit ${key} route pin`);
+ return record;
+}
+async function knowledgeHistoryRecord(page){
+ const trigger=page.locator('.au-quiet-knowledge > .au-work-head [data-au-inspect="knowledge-index"]');
+ assert.equal(await trigger.textContent(),'History');assert.equal(await page.locator('.au-quiet-knowledge [data-au-inspect]').count(),1);
+ await trigger.click();const record=await recordData(page);await closeRecord(page);return record;
+}
 
 test('zero recorded active gaps still expose held requirements, questions and the exact saved draft',async t=>{
  const id='auto_7373bbf206ab25bacf71b82e',state=saved(id),before=JSON.stringify(state);
@@ -198,19 +220,17 @@ test('zero recorded active gaps still expose held requirements, questions and th
  assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(),true);
  const held=state.evaluation.documents.filter(doc=>doc.route_state==='held_behind_question');
  assert.deepEqual(sorted(await page.locator('[data-au-panel="documents"] [data-au-document]').evaluateAll(nodes=>nodes.filter(node=>node.dataset.status==='held_behind_question').map(node=>node.dataset.auDocument))),sorted(held.map(doc=>doc.document_type)));
- assert.match(await page.locator('[data-au-panel="documents"]').innerText(),/Depends on unresolved evidence · No reviewed source matched/);
+ assert.deepEqual(await page.locator('[data-au-panel="documents"] [data-status="held_behind_question"] .au-document-state').allTextContents(),held.map(()=>'May be needed'));
  const node=state.evaluation.nodes.find(node=>node.activation==='unresolved' && node.condition_flags.includes('termination_received')).node_id;
  await page.locator('[data-au-detail="step"]').click();await page.locator(`[data-au-node="${node}"]`).click();
  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),node);
  assert.equal(await page.locator('[data-au-panel="step"]').isVisible(),true);
- assert.match(await page.locator('.au-reading-decision').innerText(),/Evidence needed/);
+ assert.match(await page.locator('.au-reading-decision').innerText(),/Not established/);
  assert.equal(await page.locator(`[data-au-node="${node}"]`).getAttribute('data-activation'),'unresolved');
- await page.locator('[data-au-inspect="step"]').click();
- const decision=await recordData(page);assert.deepEqual(decision.evaluation,state.evaluation.nodes.find(row=>row.node_id===node));
- assert.equal(decision.evaluation.execution_state,'unresolved');await closeRecord(page);
- await page.locator('.au-work-controls [data-au-inspect="claim"]').click();
- assert.deepEqual(await recordData(page),{state,projection:envelope(id).projection});
- await closeRecord(page);
+ const record=await caseHistoryRecord(page);assert.deepEqual(record,{state,projection:envelope(id).projection});
+ assert.deepEqual(record.state.evaluation.documents.filter(doc=>doc.route_state==='held_behind_question'),held,'concise document labels retain every exact held requirement and its saved review state');
+ const decision=record.state.evaluation.nodes.find(row=>row.node_id===node);
+ assert.deepEqual(decision,state.evaluation.nodes.find(row=>row.node_id===node));assert.equal(decision.execution_state,'unresolved');
  assert.equal(await page.evaluate(id=>JSON.stringify(window.__responses[`${window.__base}/claims/${id}`].state),id),before);
  await noWrites(page);
 });
@@ -267,15 +287,7 @@ test('the production browser draws all nine saved graphs without demo substituti
   assert.deepEqual(collapsed,{...compact,sameNodes:true,sameEdges:true,sameReading:true,sameQuestion:true},'collapsing keeps the exact graph objects and selected evidence context');
   assert.equal(await page.locator('[data-au-panel]').count(),1);
   assert.equal(await page.locator('[data-au-panel] details').count(),0,'the current reading view has no nested record disclosures');
-  try {await page.locator('.au-work-controls [data-au-inspect="claim"]').click({timeout:5000});}
-  catch(error){
-   const artifactDir=process.env.CASEPATH_SOURCE_QA_DIAGNOSTICS;
-   if(artifactDir){fs.mkdirSync(artifactDir,{recursive:true});await page.screenshot({path:path.join(artifactDir,`${claim.claim_id}-record.png`)});fs.writeFileSync(path.join(artifactDir,`${claim.claim_id}-record.html`),await page.content());}
-   t.diagnostic(JSON.stringify({claim_id:claim.claim_id,geometry:await page.evaluate(()=>{const button=document.querySelector('.au-work-controls [data-au-inspect="claim"]'),bounds=button.getBoundingClientRect();return {scrollY,record:{x:bounds.x,y:bounds.y,width:bounds.width,height:bounds.height},point:document.elementFromPoint(bounds.x+bounds.width/2,bounds.y+bounds.height/2)?.outerHTML.slice(0,220),modal:[...document.querySelectorAll('dialog[open]')].map(row=>row.className),ancestors:[button,...[button.parentElement,button.parentElement.parentElement,button.closest('[data-au-view]'),button.closest('.au-main')]].map(row=>{const style=getComputedStyle(row);return {tag:row.tagName,class:row.className,inert:row.inert,rect:row.getBoundingClientRect().toJSON(),pointerEvents:style.pointerEvents,opacity:style.opacity,transform:style.transform,display:style.display,visibility:style.visibility,animations:row.getAnimations().map(animation=>({state:animation.playState,time:animation.currentTime}))};})};})}));throw error;
-  }
-  assert.deepEqual(await recordData(page),{state,projection:envelope(claim.claim_id).projection},`${claim.claim_id} retains its complete exact saved claim record`);
-  assert.equal(await page.locator('.au-record-dialog pre').count(),1);
-  await closeRecord(page);
+  assert.deepEqual(await caseHistoryRecord(page),{state,projection:envelope(claim.claim_id).projection},`${claim.claim_id} retains its complete exact saved claim record through History`);
  }
  await noWrites(page);
 });
@@ -307,12 +319,15 @@ test('fact selection exposes only its exact original passage and source inspecti
  assert.equal(await page.locator('[data-au-evidence-path] select').count(),0,'objects are selected with contextual buttons');
  const requirement=page.locator('[data-au-evidence-path] [data-au-document="spouse_notice_copy"]');
  assert.equal(await requirement.getAttribute('data-route'),'needed_later');assert.match(await requirement.innerText(),/Required after a requiring step is reached/);
- await page.locator('.au-reading-fact [data-au-inspect="fact"]').click();assert.deepEqual(await recordData(page),fact);await closeRecord(page);
  const obligation=saved(robin).obligations.find(row=>row.node_id==='lt_family' && row.document_type==='spouse_notice_copy');
  assert.equal(await requirement.getAttribute('data-au-obligation'),obligation.obligation_id);
- await requirement.locator('[data-au-inspect="requirement"]').click();
- assert.deepEqual(await recordData(page),{obligations:[obligation],evaluation:[saved(robin).evaluation.documents.find(row=>row.document_type==='spouse_notice_copy')]});
- await closeRecord(page);
+ assert.equal(await page.locator('[data-au-panel="step"] [data-au-inspect]').count(),0);
+ const record=await caseHistoryRecord(page);assert.deepEqual(record,{state:saved(robin),projection:envelope(robin).projection});
+ assert.deepEqual(record.state.facts.find(row=>row.fact_id===fact.fact_id),fact);
+ assert.deepEqual(record.state.obligations.find(row=>row.obligation_id===obligation.obligation_id),obligation);
+ assert.deepEqual(record.state.evaluation.documents.find(row=>row.document_type==='spouse_notice_copy'),saved(robin).evaluation.documents.find(row=>row.document_type==='spouse_notice_copy'));
+ assert.deepEqual(record.state.evaluation.nodes.find(row=>row.node_id==='lt_family'),saved(robin).evaluation.nodes.find(row=>row.node_id==='lt_family'));
+ assert.deepEqual(await page.locator('[data-au-evidence-path] .au-reading-passages q').allTextContents(),[citation.quote]);
  const source=page.locator('[data-au-evidence-path] .au-evidence-source').first();await source.click();
  await page.locator('.au-source-dialog[open] .au-source-body mark').waitFor();
  assert.equal(await page.locator('.au-source-dialog .au-source-body mark').textContent(),citation.quote);
@@ -349,7 +364,9 @@ test('receiving claims bind to their exact knowledge version, with id/version fa
   await selected.locator('[data-au-knowledge-facet="changes"]').click();
   assert.equal(await selected.locator('[data-au-knowledge-facet-panel="changes"]').count(),1);
   assert.equal(await page.locator('[data-au-knowledge-facet-panel]').count(),1,'one procedure facet is open for reading');
-  await selected.locator('[data-au-inspect="knowledge"]').click();assert.deepEqual(await recordData(page),version);await closeRecord(page);
+  const expected=await page.evaluate(()=>window.__responses[`${window.__base}/knowledge`]),record=await knowledgeHistoryRecord(page);
+  assert.deepEqual(record,expected,'Knowledge History preserves the complete saved versions, uses and quarantined candidates');
+  assert.deepEqual(record.versions.find(row=>row.knowledge_id===version.knowledge_id && row.version===number && row.knowledge_sha256===version.knowledge_sha256),version);
   return selected.locator('.au-procedure-provenance > article [data-au-claim]').evaluateAll(nodes=>nodes.map(node=>node.dataset.auClaim));
  }
  assert.deepEqual(sorted(await receiving(1)),sorted([robin,'auto_571f85327c290a71cde37df8','auto_7373bbf206ab25bacf71b82e']));
@@ -372,7 +389,7 @@ test('repeated logical action IDs retain the exact saved receipt, drawer and ret
  const initial=[action(markers[0],1,'isolated.earlier-run'),action(markers[1],saved(robin).revision-1,saved(robin).run_id)];
  const receipts=new Map(initial.map(row=>[row.result.summary,row.receipt.receipt_sha256]));
  await page.evaluate(({id,actions})=>{window.__responses[`${window.__base}/claims/${id}`].state.actions=actions;},{id:robin,actions:initial});
- await open(page,robin);await page.locator('.au-context-nav [data-au-detail="activity"]').click();
+ await open(page,robin);await page.locator('.au-work-controls [data-au-detail="activity"]').click();
  const records=()=>page.locator('[data-au-panel="activity"] .au-history-record[data-au-action-instance]');
  const record=summary=>page.locator(`[data-au-panel="activity"] .au-history-record[data-au-action-instance$=":receipt:${receipts.get(summary)}"]`);
  assert.equal(await record(markers[0]).getAttribute('data-au-action-scope'),'historical');

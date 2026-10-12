@@ -45,6 +45,15 @@ test('catalog previews expose only the exact known original message before accep
  const native={claim_id:'native-original',title:'Exact native catalog title'};assert.match(ui.catalogPreviewMarkup(native,native.claim_id),/Exact native catalog title/);assert.doesNotMatch(ui.catalogPreviewMarkup(native,native.claim_id),/Exact original intake excerpt/,'another record cannot supply a missing message');
  assert.equal(JSON.stringify(row),before,'catalog display cannot admit facts or promote its unverified status');
 });
+
+test('preview boundaries keep whole original words and the complete source searchable and unchanged',()=>{
+ const prefix='Whole source sentence. '.repeat(10),boundaryWord='BoundaryWordMustStayWhole',message=`${prefix}${boundaryWord} The source continues beyond the preview.`,row={...original(),source_preview:{text:message}},expected=prefix.trimEnd()+'…';row.source_descriptors[0].sha256=sha(message);
+ assert.ok(prefix.length<240&&prefix.length+boundaryWord.length>240,'the boundary falls inside a source word');
+ const before=JSON.stringify(row),cases=ui.claimsMarkup([row]),catalog=ui.catalogPreviewMarkup(row,row.claim_id);
+ assert.equal(cases.match(/class="au-claim-constraint">([^<]*)<\/span>/)[1],expected);assert.equal(catalog.match(/<pre class="au-original-message">([^<]*)<\/pre>/)[1],expected);assert.doesNotMatch(cases+catalog,/BoundaryWord|The source continues beyond the preview/);
+ assert.deepEqual(ui.matchingClaims([row],{search:'source continues beyond'}).map(item=>item.claim_id),[row.claim_id],'clipping the reading excerpt cannot clip full-source search');assert.equal(ui.contextualRecord(row,{},[],'claim').state.source_preview.text,message);assert.equal(row.source_descriptors[0].sha256,sha(message));assert.equal(JSON.stringify(row),before);
+ const short={...row,source_preview:{text:'The complete short original message.'}};assert.match(ui.claimsMarkup([short]),/>The complete short original message\.<\/span>/);assert.match(ui.catalogPreviewMarkup(short,short.claim_id),/>The complete short original message\.<\/pre>/);
+});
 test('demonstration selection is exactly nine canonical identities with three per domain',()=>{
  assert.equal(ui.DEMO_CASES.length,9);assert.equal(new Set(ui.DEMO_CASES.map(x=>x.claim_id)).size,9);
  assert.deepEqual(Object.values(ui.DEMO_CASES.reduce((counts,x)=>(counts[x.domain]=(counts[x.domain]||0)+1,counts),{})),[3,3,3]);
@@ -87,7 +96,7 @@ test('original collection and added intakes retain separate explicit identities'
 test('handling completion labels do not rewrite lifecycle codes or recorded legal outcomes',()=>{
  const rows=['completed','complete','resolved'].map((status,index)=>({...original(),origin:'canonical_original',claim_id:`done_${index}`,status,revision:1,mode:'saved',outcome:{summary:'No settlement has been recorded.'}}));const before=JSON.stringify(rows);
  const html=ui.collectionMarkup(rows);assert.match(html,/Investigation complete/);assert.doesNotMatch(html,/>Resolved</);assert.equal(ui.matchingClaims(rows,{filter:'investigation_complete'}).length,3);assert.equal(ui.matchingClaims(rows,{search:'investigation complete'}).length,3);
- assert.match(ui.workMarkup(rows[2],{},null,[]),/No settlement has been recorded\./);assert.equal(JSON.stringify(rows),before);
+ assert.match(ui.workMarkup(rows[2],{},null,[],'activity'),/No settlement has been recorded\./);assert.deepEqual(ui.contextualRecord(rows[2],{},[],'claim').state.outcome,rows[2].outcome);assert.equal(JSON.stringify(rows),before);
 });
 test('execution failure remains separate from an accepted evidence deferral in claim and itinerary labels',()=>{
  const failed={...original(),claim_id:ui.DEMO_CASES[4].claim_id,revision:11,mode:'saved',status:'deferred',phase:'deferred',outcome:null,deferral:{code:'verification_deferred',reason:'interpretation citation is not an exact claim source span',details:{error_type:'ValueError',workflow_id:'saved-workflow'}}};
@@ -145,7 +154,25 @@ test('one contextual record resolves exact accepted objects without expanding a 
  assert.deepEqual(ui.contextualRecord(s,projection,[event],'use','0',data),s.knowledge_uses[0]);
  assert.equal(JSON.stringify({s,projection,event,data}),before,'inspection cannot change source authority or invent facts from reuse');
  const html=ui.workMarkup(s,projection,'decision',[event]);
- assert.match(html,/data-au-inspect="claim"/);assert.match(html,new RegExp(`data-au-revision="${s.revision}" data-au-state-sha="${s.state_sha256}"`));assert.match(html,/data-au-inspect="fact"/);assert.match(html,/data-au-inspect="requirement"/);
+ assert.match(html,/data-au-detail="activity"[^>]*>History/);assert.match(html,new RegExp(`data-au-revision="${s.revision}" data-au-state-sha="${s.state_sha256}"`));assert.doesNotMatch(html,/data-au-inspect="(?:claim|fact|step|requirement|use)"/);assert.match(ui.workMarkup(s,projection,'decision',[event],'activity'),/data-au-inspect="claim"[^>]*>Case details/);
  assert.doesNotMatch(html,/<details[\s\S]*<details/,'primary reading does not replicate nested technical records');
- assert.ok(html.includes(s.facts[0].summary));assert.equal(ui.contextualRecord(s,projection,[event],'requirement','need:notice').obligations[0].reason,s.obligations[0].reason);assert.match(html,/May be needed/);assert.match(html,/Not yet supported/);assert.equal(ui.contextualRecord(s,projection,[event],'requirement','need:notice').evaluation[0].route_state,'held_behind_question');
+ assert.ok(html.includes(s.facts[0].summary));assert.equal(ui.contextualRecord(s,projection,[event],'requirement','need:notice').obligations[0].reason,s.obligations[0].reason);assert.match(html,/May be needed/);assert.doesNotMatch(html,/Not yet supported/);assert.equal(ui.contextualRecord(s,projection,[event],'requirement','need:notice').evaluation[0].route_state,'held_behind_question');
+});
+
+test('History owns Case details event action and playback controls while purpose views retain exact selections',()=>{
+ const s={...original(),revision:3,mode:'saved',status:'running',graph:{claim_id:'clm_original',nodes:[{node_id:'decision',label:'Check the supplied notice'}],edges:[]},evaluation:{nodes:[{node_id:'decision',execution_state:'ready'}],documents:[{document_type:'notice',route_state:'needed_now',review_state:'insufficient'}]},facts:[{fact_id:'fact:notice',summary:'The supplied notice has one addressee.',reason:'Its envelope names Alex.',verdict:'insufficient'}],obligations:[{obligation_id:'need:notice',node_id:'decision',document_type:'notice',required_fact_ids:['fact:notice']}],actions:[{result:{action_id:'review:notice',node_id:'decision',status:'completed'},receipt:{receipt_sha256:hash('c')}}],knowledge_uses:[{knowledge_id:'procedure.notice',version:2,knowledge_sha256:hash('d'),definition_sha256:hash('e'),applicability:'same_verified_family_and_rule_version'}],knowledge_published:[{knowledge_id:'procedure.notice',version:3,knowledge_sha256:hash('f'),qualification:{status:'qualified',definition_sha256:hash('1')}}]},projection={claim_id:s.claim_id,revision:3,state_sha256:s.state_sha256},event={claim_id:s.claim_id,seq:3,revision:3,state_sha256:s.state_sha256,event_sha256:hash('2'),kind:'action.completed',payload:s.actions[0]},replay={state:s,projection,events:[event],through_seq:3,current_revision:8,current_state_sha256:hash('3'),current_event_sha256:hash('4'),provenance:{source_roster_sha256:hash('5')}},before=JSON.stringify({s,projection,event,replay});
+ for(const detail of ['step','documents','knowledge','sources']) {
+  const html=ui.workMarkup(s,projection,'decision',[event],detail,{}, {mode:'replay',replay}),header=html.match(/<header[\s\S]*?<\/header>/)[0],nav=html.match(/<nav class="au-context-nav"[\s\S]*?<\/nav>/)[0];
+  assert.equal([...header.matchAll(/data-au-detail="activity"/g)].length,1);assert.match(header,/>History<\/button>/);assert.doesNotMatch(header,/data-au-refresh-claim|>Record<\/button>/);assert.doesNotMatch(nav,/data-au-detail="activity"/);
+  assert.match(html,new RegExp(`data-au-panel="${detail}"`));assert.doesNotMatch(html,/data-au-inspect="(?:claim|fact|requirement|step|use|publication|knowledge|event|action|replay)"|au-replay-record-link/);
+  if(detail==='step'){assert.match(html,/data-au-selected-step="decision"/);assert.match(html,/Document for this decision/);}if(detail==='documents'){assert.match(html,/Document checklist/);assert.match(html,/data-au-obligation="need:notice"/);}if(detail==='knowledge'){assert.match(html,/data-au-version="2"/);assert.match(html,/data-au-knowledge-sha="d{64}"/);}
+ }
+ const history=ui.workMarkup(s,projection,'decision',[event],'activity',{}, {mode:'replay',replay});assert.match(history,/data-au-inspect="claim"[^>]*>Case details<\/button>/);assert.match(history,/data-au-inspect="event" data-au-record-id="3">Details<\/button>/);assert.ok(history.includes(`data-au-inspect="action" data-au-record-id="${ui.actionRows(s,[event])[0].instanceId}">Details</button>`));assert.match(history,/data-au-inspect="replay"[^>]*>Playback details<\/button>/);assert.doesNotMatch(history,/au-replay-record-link/);
+ assert.deepEqual(ui.contextualRecord(s,projection,[event],'claim'),{state:s,projection});assert.equal(ui.contextualRecord(s,projection,[event],'replay','',{},replay),replay);assert.deepEqual(ui.contextualRecord(s,projection,[event],'event','3'),event);assert.deepEqual(ui.contextualRecord(s,projection,[event],'action',ui.actionRows(s,[event])[0].instanceId).receipt,s.actions[0].receipt);assert.equal(JSON.stringify({s,projection,event,replay}),before);
+});
+
+test('unstarted Cases and canonical demo rows show original identity and message without generic state badges',()=>{
+ const rows=ui.DEMO_CASES.map((demo,index)=>({...original(),claim_id:demo.claim_id,title:`Exact original title ${index}`,source_preview:{text:`Exact original message ${index}`}})),before=JSON.stringify(rows),cases=ui.claimsMarkup(rows),demo=ui.demoItineraryMarkup(rows);
+ for(const [index,row] of rows.entries()){assert.ok(cases.includes(`data-au-claim="${row.claim_id}"`));assert.ok(cases.includes(row.source_preview.text));assert.ok(demo.includes(`data-au-claim="${row.claim_id}"`));assert.ok(demo.includes(row.title));}
+ assert.doesNotMatch(cases,/class="au-claim-state"|>Not started<|>Not run<|>Received</);assert.doesNotMatch(demo,/class="au-status"|>Not started<|>Not run<|>Status not loaded</);assert.equal(JSON.stringify(rows),before);assert.equal(ui.matchingClaims(rows,{filter:'not_started'}).length,9,'the recorded status remains available for exact filtering');
 });

@@ -122,12 +122,27 @@ test('replay gives readable dwell to accepted content changes while routine pref
 
 test('selected decision joins its own facts and exact contextual authority and action records',()=>{
  const s=state(),before=JSON.stringify(s),html=ui.inspectorMarkup(s,'branch');
- for(const phrase of ['Family home','Applies','Separate notice'])assert.ok(html.includes(phrase),phrase);
+ for(const phrase of [s.facts[0].summary,'Separate notice'])assert.ok(html.includes(phrase),phrase);
+ assert.match(html,/Ready to check/);assert.match(html,/Document for this decision/);assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.execution_state,'ready');
  assert.deepEqual(ui.contextualRecord(s,{},[],'step','branch').node,s.graph.nodes[1]);
  assert.deepEqual(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).obligations,[s.obligations[0]]);
  assert.deepEqual(ui.contextualRecord(s,{},[],'action','0'),ui.actionRows(s)[0]);
- assert.match(html,/data-au-inspect="step"/);assert.match(html,/data-au-inspect="requirement"/);
+ assert.doesNotMatch(html,/data-au-inspect="(?:fact|step|requirement)"/);
  assert.ok(!ui.inspectorMarkup(s,'start').includes('Separate notice'));assert.equal(JSON.stringify(s),before);
+});
+
+test('case facts show the accepted account and unique reason once while keeping raw verdicts and unknown step states exact',()=>{
+ const s=state(),fact=s.facts[0];fact.label='INTERNAL_FACT_FIELD';fact.verdict='insufficient';fact.summary='The notice names only Alex.';fact.reason=fact.summary;
+ s.evaluation.nodes[1].execution_state='unknown_recorded_step_state';s.evaluation.documents[0].review_state='insufficient';
+ const render=()=>ui.inspectorMarkup(s,'branch'),factSection=html=>html.match(/<section class="au-reading-fact"[\s\S]*?<\/section>/)[0];
+ let before=JSON.stringify(s),html=render(),reading=factSection(html);
+ assert.equal(reading.split(fact.summary).length-1,1);assert.doesNotMatch(reading,/INTERNAL_FACT_FIELD|Insufficient|Not yet supported|data-au-inspect=/);
+ assert.equal(ui.contextualRecord(s,{},[],'fact',fact.fact_id).verdict,'insufficient');assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.execution_state,'unknown_recorded_step_state');assert.equal(JSON.stringify(s),before);
+ const graph=ui.graphMarkup(s,'branch'),node=graph.match(/<button[^>]*data-au-node="branch"[\s\S]*?<\/button>/)[0];assert.doesNotMatch(node.replace(/<[^>]*>/g,''),/Unknown recorded step state|Not recorded/);
+ fact.reason='The recorded envelope has one addressee.';before=JSON.stringify(s);reading=factSection(render());assert.equal(reading.split(fact.summary).length-1,1);assert.equal(reading.split(fact.reason).length-1,1);
+ const header=ui.workMarkup(s,{},'branch',[]).match(/<header[\s\S]*?<\/header>/)[0];assert.ok(!header.includes(fact.summary));assert.ok(!header.includes(fact.reason));assert.equal(JSON.stringify(s),before);
+ fact.reason=`${fact.summary} The recorded envelope has one addressee.`;before=JSON.stringify(s);reading=factSection(render());assert.equal(reading.split(fact.summary).length-1,1);assert.ok(reading.includes('The recorded envelope has one addressee.'),'a repeated summary cannot hide the unique part of the accepted reason');assert.equal(JSON.stringify(s),before);
+ fact.summary='';fact.reason='';before=JSON.stringify(s);reading=factSection(render());assert.match(reading,/question is not (?:yet )?established/i);assert.doesNotMatch(reading,/INTERNAL_FACT_FIELD|Insufficient|Not yet supported/);assert.equal(JSON.stringify(s),before);
 });
 
 test('document focus follows its exact obligation and required fact when a node has multiple requirements',()=>{
@@ -164,7 +179,7 @@ test('prior assessment labels survive new source acquisition and failed rereadin
   const s=structuredClone(accepted);s.source_descriptors.push(fresh);s.source_roster_sha256=hash('5');s.run_id='retry-run';s.status='deferred';s.deferral={code,reason:'The new evidence has no accepted reassessment.'};
   if(acquired)s.acquired_sources.push({artifact_id:fresh.artifact_id,complete:true,extraction:'utf8'});
   const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[],'sources');
-  assert.equal(ui.assessmentFreshness(s).status,'prior');assert.deepEqual(ui.assessmentFreshness(s).sources,[fresh]);assert.match(html,/Prior assessment/);assert.match(html,/Awaiting assessment/);
+  assert.equal(ui.assessmentFreshness(s).status,'prior');assert.deepEqual(ui.assessmentFreshness(s).sources,[fresh]);assert.match(html,/Earlier findings · new sources await review\./);assert.match(html,/Awaiting assessment/);
   assert.match(html,/data-au-source-freshness="unassessed"/);assert.ok(html.includes(fresh.file_name));
   assert.deepEqual(ui.contextualRecord(s,{},[],'fact','condition:family_home'),accepted.facts[0]);assert.deepEqual(ui.contextualRecord(s,{},[],'action','0').receipt,s.actions[0].receipt);
   assert.doesNotMatch(html,/New evidence contradicts|Contradiction established|Earlier assessment invalid/);
@@ -209,9 +224,10 @@ test('missing reviews do not hide received unassigned originals or infer their d
  const docs=html.match(/<section class="au-supporting"><h3>Files awaiting a document assignment<\/h3>([\s\S]*?)<\/section>/)[1];
  for(const id of ['photo','partial','complete','received'])assert.ok(docs.includes(`data-au-source="${id}"`),id);
  assert.doesNotMatch(docs,/data-au-source="(?:original|assigned)"|data-au-document=/);
- for(const phrase of ['notice.jpg','Interpretation unsupported','Only part of the source is readable','Text available for assessment','Original file received'])assert.ok(docs.includes(phrase),phrase);
- assert.match(ui.obligationMarkup(s,'branch'),/Needed now · No reviewed source matched/);
- assert.match(ui.evidencePathMarkup(s,'branch'),/Not yet supported/);assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'missing');
+ for(const phrase of ['notice.jpg','Interpretation unsupported','Only part of the source is readable'])assert.ok(docs.includes(phrase),phrase);
+ assert.doesNotMatch(docs,/Original file received|Text available for assessment/);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.source_descriptors,s.source_descriptors);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.acquired_sources,s.acquired_sources);
+ assert.match(ui.obligationMarkup(s,'branch'),/Needed now/);assert.doesNotMatch(ui.obligationMarkup(s,'branch'),/No reviewed source matched|Insufficient|Not yet supported/);
+ assert.doesNotMatch(ui.evidencePathMarkup(s,'branch'),/Not yet supported/);assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'missing');
  assert.equal(JSON.stringify(s),before);
 });
 
@@ -222,7 +238,7 @@ test('source extraction labels do not contradict a sufficient review for one doc
  s.evaluation.documents[0].review_state='satisfied';
  s.actions=[{result:{action_id:'review:notice:supplied-form',type:'document_review',node_ids:['branch'],document_type:'notice',status:'completed',verdict:'sufficient',summary:'The supplied form establishes this requirement.'},receipt:{receipt_sha256:hash('c')}}];
  const before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[],'sources');
- assert.match(html,/Text available for assessment/);assert.doesNotMatch(html,/sufficiency not established/);
+ assert.match(html,/data-au-source="supplied-form"/);assert.doesNotMatch(html,/Text available for assessment|sufficiency not established/);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.acquired_sources,s.acquired_sources);assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'satisfied');
  assert.match(ui.obligationMarkup(s,'branch'),/Needed now · Satisfied/);
  assert.match(ui.workMarkup(s,{},'branch',[],'activity'),/The supplied form establishes this requirement\./);
  assert.equal(JSON.stringify(s),before);
@@ -231,7 +247,7 @@ test('source extraction labels do not contradict a sufficient review for one doc
 test('zero active gaps can leave requirements held by unresolved questions without rewriting the outcome or draft',()=>{
  const s=state({status:'deferred',outcome:{title:'Saved provider outcome',summary:'The received evidence leaves the branch unresolved.',missing_evidence:[],unresolved_facts:[{fact_id:'condition:family_home',summary:'The family-home condition remains unresolved.'}],request_draft:{status:'prepared_not_sent',subject:'Saved request subject',body:'No active document request is recorded.'}}});
  s.evaluation.documents[0]={...s.evaluation.documents[0],route_state:'held_behind_question',review_state:'missing',required_at_node_ids:['branch']};s.evaluation.nodes[1]={...s.evaluation.nodes[1],activation:'unresolved',execution_state:'unresolved'};
- const before=JSON.stringify(s),html=ui.inspectorMarkup(s,'branch');assert.match(html,/May be needed/);assert.match(html,/Not yet supported/);assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.activation,'unresolved');assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'missing');assert.doesNotMatch(html,/All evidence satisfied|All documents received|Missing file|No attachment received/);
+ const before=JSON.stringify(s),html=ui.inspectorMarkup(s,'branch');assert.match(html,/May be needed/);assert.doesNotMatch(html,/Not yet supported/);assert.equal(ui.contextualRecord(s,{},[],'step','branch').evaluation.activation,'unresolved');assert.equal(ui.contextualRecord(s,{},[],'requirement',s.obligations[0].obligation_id).evaluation[0].review_state,'missing');assert.doesNotMatch(html,/All evidence satisfied|All documents received|Missing file|No attachment received/);
  assert.deepEqual(ui.contextualRecord(s,{},[],'outcome').outcome,s.outcome);assert.equal(JSON.stringify(s),before);
  s.evaluation.documents[0].route_state='not_needed';assert.match(ui.inspectorMarkup(s,'branch'),/not required on the recorded route/);
 });
@@ -255,7 +271,7 @@ test('exact citations use Python Unicode codepoint offsets, source hash and enti
 test('knowledge qualification and quarantine render recorded proofs rather than inferred learning quality',()=>{
  const version={knowledge_id:'k1',version:1,title:'Service process',source_claim_id:'claim-a',knowledge_sha256:hash('a'),qualification:{status:'qualified',regression_cases:243,checks:['no_case_values_or_files']}};
  const quarantine={knowledge_id:'q1',qualification:{status:'quarantined',reason:'Changed rule identity'}},data={versions:[version],uses:[],quarantined:[quarantine]};
- const html=ui.knowledgeMarkup(data);assert.match(html,/data-au-inspect="withheld-index"[^>]*>Withheld procedures/);assert.deepEqual(ui.contextualRecord(null,{},[],'withheld-index','',data),[quarantine]);assert.doesNotMatch(html,/more accurate|improved accuracy|human approved/i);
+ const html=ui.knowledgeMarkup(data);assert.match(html,/data-au-inspect="knowledge-index"[^>]*>History/);assert.doesNotMatch(html,/data-au-inspect="withheld-index"/);assert.deepEqual(ui.contextualRecord(null,{},[],'knowledge-index','',data),data);assert.deepEqual(ui.contextualRecord(null,{},[],'withheld-index','',data),[quarantine]);assert.doesNotMatch(html,/more accurate|improved accuracy|human approved/i);
  assert.deepEqual(ui.contextualRecord(null,{},[],'knowledge','k1:1',data),version);assert.deepEqual(ui.contextualRecord(null,{},[],'quarantine','0',data),quarantine);assert.equal(version.qualification.regression_cases,243);
 });
 
@@ -401,14 +417,14 @@ test('ready execution limits come only from the backend capability projection wi
 test('reuse exposes recorded applicability and avoided mechanical work without estimating savings',()=>{
  const use={knowledge_id:'procedure.one',version:2,applicability:'same_verified_family_and_rule_version',avoided_rule_compilations:1,avoided_qualification_cases:243},s=state({knowledge_uses:[use]});
  const record=ui.contextualRecord(s,{},[],'use','0');assert.deepEqual(record,use);assert.equal(record.avoided_rule_compilations,1);assert.equal(record.avoided_qualification_cases,243);
- const html=ui.workMarkup(s,{},'branch',[],'knowledge');assert.match(html,/Used for this current case/);assert.match(html,/own source evidence/);assert.doesNotMatch(html,/saved.*seconds|more accurate|improved accuracy/);
+ const html=ui.workMarkup(s,{},'branch',[],'knowledge');assert.match(html,/Used for this case · Version 2/);assert.match(html,/Used for this current case/);assert.match(html,/own source evidence/);assert.doesNotMatch(html,/saved.*seconds|more accurate|improved accuracy/);
 });
 
 test('knowledge inspection connects reusable steps, required facts, obligations and recipe rules to immutable lineage',()=>{
  const first={knowledge_id:'procedure.one',version:1,title:'Service process',knowledge_sha256:hash('a'),graph:state().graph,facts:state().facts,obligations:state().obligations,qualification:{status:'qualified'}};
  const next={...first,version:2,knowledge_sha256:hash('b'),parent_knowledge_sha256:hash('a'),parent_definition_sha256:hash('d'),change_reason:'Added a qualified service-evidence recipe.',evidence_recipes:[{document_type:'notice',required_fields:['Addressee','Delivery date'],summary:'Original notice must establish service.',rule_refs:['tenancy.v1']}]},data={versions:[first,next],uses:[],quarantined:[]};
  assert.deepEqual(ui.contextualRecord(null,{},[],'knowledge','procedure.one:1',data),first);assert.deepEqual(ui.contextualRecord(null,{},[],'knowledge','procedure.one:2',data),next);
- assert.deepEqual(next.evidence_recipes[0].rule_refs,['tenancy.v1']);assert.equal(next.parent_knowledge_sha256,first.knowledge_sha256);assert.match(ui.knowledgeMarkup(data),/data-au-inspect="knowledge"/);
+ assert.deepEqual(next.evidence_recipes[0].rule_refs,['tenancy.v1']);assert.equal(next.parent_knowledge_sha256,first.knowledge_sha256);assert.match(ui.knowledgeMarkup(data),/data-au-inspect="knowledge-index"[^>]*>History/);assert.doesNotMatch(ui.knowledgeMarkup(data),/data-au-inspect="knowledge"/);
 });
 
 test('MIME fallbacks affect only blank types and never rewrite submitted bytes',async t=>{
@@ -464,19 +480,19 @@ test('the claim envelope renders capability projection separately from the prese
  const f=dom(),saved=state(),original=JSON.stringify(saved),projection={node_capabilities:{branch:{id:null,authorized:false,reason:'Execution requires an unavailable external action.'}}};
  const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response({state:saved,projection}):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
- assert.match(f.host.innerHTML,/data-au-node="branch"[^>]*data-status="ready"/);assert.deepEqual(ui.contextualRecord(saved,projection,[],'step','branch').capability,projection.node_capabilities.branch);assert.match(f.host.innerHTML,/Execution requires an unavailable external action\./);f.listeners.get('click')({target:control(f,'data-au-inspect','claim')});assert.deepEqual(JSON.parse(f.recordPre.textContent),{state:saved,projection});assert.match(f.host.innerHTML,new RegExp(`data-au-revision="${saved.revision}" data-au-state-sha="${saved.state_sha256}"`));assert.equal(JSON.stringify(saved),original);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.match(f.host.innerHTML,/data-au-node="branch"[^>]*data-status="ready"/);assert.deepEqual(ui.contextualRecord(saved,projection,[],'step','branch').capability,projection.node_capabilities.branch);assert.match(f.host.innerHTML,/Execution requires an unavailable external action\./);assert.doesNotMatch(f.host.innerHTML,/data-au-inspect="claim"/);f.listeners.get('click')({target:control(f,'data-au-detail','activity')});assert.match(f.host.innerHTML,/data-au-inspect="claim"[^>]*>Case details/);f.listeners.get('click')({target:control(f,'data-au-inspect','claim')});assert.deepEqual(JSON.parse(f.recordPre.textContent),{state:saved,projection});assert.match(f.host.innerHTML,new RegExp(`data-au-revision="${saved.revision}" data-au-state-sha="${saved.state_sha256}"`));assert.equal(JSON.stringify(saved),original);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('a claim renders one selected real process and keeps exact outcome authority in one contextual record',()=>{
  const s=state({status:'deferred',outcome:{title:'Deferred',summary:'A termination dispute.',authority_limits:['Filing capability is not configured.'],missing_evidence:[{label:'Notice'},{label:'Receipt'}]}}),before=JSON.stringify(s),html=ui.workMarkup(s,{},'branch',[]);
- assert.match(html,/data-au-canvas/);assert.match(html,/data-au-selected-step="branch"/);assert.match(html,/data-au-inspect="claim"/);assert.doesNotMatch(html,/<details/);
+ assert.match(html,/data-au-canvas/);assert.match(html,/data-au-selected-step="branch"/);assert.match(html,/data-au-detail="activity"[^>]*>History/);assert.doesNotMatch(html,/data-au-inspect="claim"|<details/);assert.match(ui.workMarkup(s,{},'branch',[],'activity'),/data-au-inspect="claim"[^>]*>Case details/);
  assert.equal([...html.matchAll(/data-au-panel="/g)].length,1);assert.deepEqual(ui.contextualRecord(s,{},[],'outcome').outcome,s.outcome);assert.equal(JSON.stringify(s),before);
 });
 
 test('complete graph labels and operational rule text remain inspectable',()=>{
  const s=state();s.graph.nodes[1].label='Preserve challenge or extension deadline';s.graph.nodes[1].meaning='The process includes a step owned by claim_handler.';s.graph.nodes[1].authority={title:'Admitted tenancy workflow',quote:'Exact recorded operational rule.'};
  assert.match(ui.graphMarkup(s,'branch'),/Preserve challenge or extension deadline/);
- const record=ui.contextualRecord(s,{},[],'step','branch');assert.deepEqual(record.node,s.graph.nodes[1]);assert.equal(record.node.authority.quote,'Exact recorded operational rule.');assert.match(ui.inspectorMarkup(s,'branch'),/data-au-inspect="step"/);
+ const record=ui.contextualRecord(s,{},[],'step','branch');assert.deepEqual(record.node,s.graph.nodes[1]);assert.equal(record.node.authority.quote,'Exact recorded operational rule.');assert.doesNotMatch(ui.inspectorMarkup(s,'branch'),/data-au-inspect="step"/);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.graph.nodes[1],record.node);
 });
 
 test('only an explicitly paused deferral offers guarded resume with one retained request identity',async t=>{
@@ -940,7 +956,7 @@ test('each local view renders only its current purpose while retaining the same 
 });
 
 test('supported document routes stay distinct and evidence intake is reachable from current needs',()=>{
- const statuses=['needed_now','needed_later','held_behind_question','held_not_reviewed','not_needed','optional'],labels=['Needed now','Needed later','Depends on unresolved evidence','Acquired · not established','Not required','Optional'];
+ const statuses=['needed_now','needed_later','held_behind_question','held_not_reviewed','not_needed','optional'],labels=['Needed now','Needed later','May be needed','Needs checking','Not required','Optional'];
  const s=state();s.obligations=statuses.map((status,index)=>({obligation_id:`obligation:${index}`,node_id:'branch',document_type:`document-${index}`,label:`Evidence ${index}`}));s.evaluation.documents=statuses.map((route_state,index)=>({document_type:`document-${index}`,route_state,review_state:'unreviewed'}));
  const markup=ui.obligationMarkup(s,'branch');for(let i=0;i<statuses.length;i++){assert.match(markup,new RegExp(`data-status="${statuses[i]}"`));assert.ok(markup.includes(labels[i]),labels[i]);}
  assert.match(ui.workMarkup(state(),{},'branch',[],'documents'),/data-au-add-files/);assert.match(ui.workMarkup(state(),{},'branch',[],'sources'),/<form data-au-arrival/);
@@ -1025,7 +1041,7 @@ test('a branch inspector joins its own condition, evidence need, document and ca
  const projection={node_capabilities:{branch:{authorized:false,id:null,reason:'External dispatch is not configured.'}}},before=JSON.stringify(saved),html=ui.inspectorMarkup(saved,'branch',projection);
  assert.match(ui.workMarkup(saved,projection,'branch',[]),/class="au-process-question au-reading-question"[^>]*data-au-inspector-heading="branch"[^>]*>Check separate service/);
  assert.match(html,/data-au-selected-step="branch"/);assert.deepEqual(ui.contextualRecord(saved,projection,[],'step','branch').node,saved.graph.nodes[1]);
- for(const phrase of ['Family home','Applies','Separate notice','Required now in the recorded process.','External dispatch is not configured.'])assert.ok(html.includes(phrase),phrase);
+ for(const phrase of ['Family home',saved.facts[0].summary,'Separate notice','Required now in the recorded process.','External dispatch is not configured.'])assert.ok(html.includes(phrase),phrase);
  assert.match(html,/data-au-source="original"[^>]*data-au-citation=/);assert.doesNotMatch(html,/Commercial-only condition|Commercial condition does not apply/);
  assert.equal(ui.contextualRecord(saved,projection,[],'fact','fact:notice').summary,'A separate notice is required.');
  assert.deepEqual(ui.contextualRecord(saved,projection,[],'requirement',saved.obligations[0].obligation_id).obligations,[saved.obligations[0]]);assert.deepEqual(ui.contextualRecord(saved,projection,[],'step','branch').capability,projection.node_capabilities.branch);
@@ -1153,7 +1169,9 @@ test('a refreshed Why required summary retains its visible All documents focus d
 test('actual reuse provenance remains exact in one contextual record without asserting current facts',()=>{
  const attack='<img src=x onerror="alert(1)">',use={knowledge_id:'procedure.one',version:1,definition_sha256:hash('d'),rule_pack_sha256:hash('e'),applicability:'same_verified_family_and_rule_version',avoided_rule_compilations:1,reused_evidence_recipes:2,workflow_id:'workflow.recorded',public_extension:{reason:attack}},s=state({knowledge_uses:[use]}),before=JSON.stringify(s);
  assert.deepEqual(ui.contextualRecord(s,{},[],'use','0'),use);assert.deepEqual(ui.contextualRecord(null,{},[],'use','0',{uses:[use]}),use);
- for(const html of [ui.knowledgeMarkup({versions:[{knowledge_id:use.knowledge_id,version:1,definition_sha256:use.definition_sha256}],uses:[{...use,claim_id:'receiving-claim'}],quarantined:[]}),ui.workMarkup(s,{},'branch',[],'knowledge')]){assert.match(html,/data-au-inspect="use"/);assert.doesNotMatch(html,/<img|onerror="alert/);}
+ const data={versions:[{knowledge_id:use.knowledge_id,version:1,definition_sha256:use.definition_sha256}],uses:[{...use,claim_id:'receiving-claim'}],quarantined:[]};
+ for(const html of [ui.knowledgeMarkup(data),ui.workMarkup(s,{},'branch',[],'knowledge')]){assert.doesNotMatch(html,/data-au-inspect="(?:use|knowledge|publication)"|<img|onerror="alert/);}
+ assert.deepEqual(ui.contextualRecord(null,{},[],'knowledge-index','',data).uses,data.uses);assert.deepEqual(ui.contextualRecord(s,{},[],'claim').state.knowledge_uses,[use]);
  assert.equal(JSON.stringify(s),before);
 });
 
@@ -1215,15 +1233,21 @@ test('disabled service and unavailable provider keep precedence over allowance m
  }
 });
 
-test('accepted refresh keeps the decision record exact and closing its drawer returns to the replacement inspection control',async t=>{
- const f=dom();let saved=state(),trigger=control(f,'data-au-inspect','step');trigger.dataset.auRecordId='branch';trigger.textContent='Decision record';
- const attribute=trigger.getAttribute;trigger.getAttribute=name=>name==='data-au-record-id'?'branch':attribute(name);
+test('accepted refresh keeps History Case details exact and closing its drawer returns to the replacement inspection control',async t=>{
+ const f=dom();let saved=state(),trigger=control(f,'data-au-inspect','claim');trigger.textContent='Case details';
  f.host.contains=element=>element===trigger;f.host.querySelectorAll=selector=>selector==='[data-au-inspect]'?[trigger]:[];
  const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response(saved):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
- trigger.focus();f.listeners.get('click')({target:trigger});assert.equal(f.recordDialog.open,true);assert.deepEqual(JSON.parse(f.recordPre.textContent),JSON.parse(JSON.stringify(ui.contextualRecord(saved,{},events(saved).events,'step','branch'))));
- const old=trigger;old.isConnected=false;trigger=control(f,'data-au-inspect','step');trigger.dataset.auRecordId='branch';trigger.textContent='Decision record';const currentAttribute=trigger.getAttribute;trigger.getAttribute=name=>name==='data-au-record-id'?'branch':currentAttribute(name);
- saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.equal(f.recordDialog.open,true);assert.deepEqual(JSON.parse(f.recordPre.textContent),JSON.parse(JSON.stringify(ui.contextualRecord(saved,{},events(saved).events,'step','branch'))));
+ assert.doesNotMatch(f.host.innerHTML,/data-au-inspect="claim"/);f.listeners.get('click')({target:control(f,'data-au-detail','activity')});assert.match(f.host.innerHTML,/data-au-inspect="claim"[^>]*>Case details/);
+ trigger.focus();f.listeners.get('click')({target:trigger});assert.equal(f.recordDialog.open,true);assert.deepEqual(JSON.parse(f.recordPre.textContent),JSON.parse(JSON.stringify(ui.contextualRecord(saved,{},events(saved).events,'claim'))));
+ const old=trigger;old.isConnected=false;trigger=control(f,'data-au-inspect','claim');trigger.textContent='Case details';
+ saved=state({revision:4,state_sha256:hash('f')});await controller.refresh();assert.equal(f.recordDialog.open,true);const record=JSON.parse(f.recordPre.textContent);assert.deepEqual(record,JSON.parse(JSON.stringify(ui.contextualRecord(saved,{},events(saved).events,'claim'))));assert.deepEqual(record.state.graph.nodes[1],ui.contextualRecord(saved,{},[],'step','branch').node);
  f.recordDialog.close();assert.equal(f.container.ownerDocument.activeElement,trigger);assert.deepEqual(trigger.focusOptions,{preventScroll:true});assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions',async t=>{
+ const attack='<svg onload="alert(1)">',data={versions:[{knowledge_id:'procedure.one',version:2,knowledge_sha256:hash('a'),definition_sha256:hash('b'),qualification:{status:'qualified',checks:['no_case_values_or_files']},public_extension:{text:attack}}],uses:[{knowledge_id:'procedure.one',version:2,knowledge_sha256:hash('a'),definition_sha256:hash('b'),claim_id:'receiving-case',reason:'Exact recorded reuse reason.'}],quarantined:[{knowledge_id:'withheld',qualification:{status:'quarantined',reason:'Exact withheld reason.'}}],public_extension:{source:'Exact public catalog extension.'}},before=JSON.stringify(data),f=dom(),api=fakeApi({handle:async path=>path.endsWith('/knowledge')?response(data):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();navClick(f,'knowledge');await settle();
+ assert.equal([...f.host.innerHTML.matchAll(/data-au-inspect="knowledge-index"/g)].length,1);assert.match(f.host.innerHTML,/data-au-inspect="knowledge-index"[^>]*>History/);assert.doesNotMatch(f.host.innerHTML,/data-au-inspect="(?:knowledge|use|quarantine|withheld-index)"/);
+ f.listeners.get('click')({target:control(f,'data-au-inspect','knowledge-index')});assert.equal(f.recordDialog.open,true);assert.deepEqual(JSON.parse(f.recordPre.textContent),data);assert.doesNotMatch(f.recordBody.innerHTML,/<svg|onload=/);assert.equal(JSON.stringify(data),before);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('delayed claim collections preserve verified revisions without rejecting genuinely newer rows',async t=>{
@@ -1234,15 +1258,15 @@ test('delayed claim collections preserve verified revisions without rejecting ge
   {name:'a conflicting identity at the verified revision',row:{claim_id:'claim-a',title:'Conflicting collection title',status:'running',revision:4,state_sha256:hash('9')},expectedStatus:'More evidence needed'},
   {name:'a genuinely newer collection row',row:{claim_id:'claim-a',title:'Newer collection title',status:'queued',revision:5,state_sha256:hash('5')},expectedStatus:'Queued'}
  ])await t.test(example.name,async child=>{
-  routingFixture(child,'#autonomous/claim/claim-a');const f=dom(),queue={innerHTML:''},query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-recent-claims]'?queue:query(selector);
+  routingFixture(child,'#autonomous/claim/claim-a?detail=activity');const f=dom(),queue={innerHTML:''},query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-recent-claims]'?queue:query(selector);
   let saved=state(),projection={},finishList;const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?new Promise(resolve=>{finishList=resolve;}):path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,...projection}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('data-au-revision="3"')&&Boolean(finishList));
   saved=state({revision:4,state_sha256:hash('f'),status:'deferred',outcome:{status:'deferred',reason:'Recorded evidence needed.',missing_evidence:[{document_type:'notice',label:'Notice receipt'}]}});await controller.refresh();assert.match(queue.innerHTML,/More evidence needed/);assert.match(f.host.innerHTML,/data-au-revision="4"/);
   finishList(response({claims:[other,...(example.row?[example.row]:[])]}));await waitFor(()=>queue.innerHTML.includes('Other saved claim'));
-  const row=queue.innerHTML.match(/<button[^>]*data-au-claim="claim-a"[\s\S]*?<\/button>/)?.[0];assert.ok(row,'the current verified claim remains reachable');assert.ok(row.includes(example.expectedStatus),row);assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(f.host.innerHTML,/Recorded evidence needed/);assert.doesNotMatch(queue.innerHTML,/Old collection title|Conflicting collection title/);
+  const row=queue.innerHTML.match(/<button[^>]*data-au-claim="claim-a"[\s\S]*?<\/button>/)?.[0];assert.ok(row,'the current verified claim remains reachable');assert.ok(row.includes(example.expectedStatus),row);assert.match(row,/data-au-claim="claim-a"/);assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(f.host.innerHTML,/Recorded evidence needed/);assert.doesNotMatch(queue.innerHTML,/Old collection title|Conflicting collection title/);
   if(example.row)assert.ok(queue.innerHTML.indexOf('Other saved claim')<queue.innerHTML.indexOf('data-au-claim="claim-a"'),'the API collection order is retained');
   if(example.row?.revision===5)projection={node_capabilities:{branch:{authorized:false,id:null,reason:'Projection changed after newer collection row.'}}};
   await controller.refresh();assert.ok(queue.innerHTML.includes(example.expectedStatus));
-  if(example.row?.revision===5){assert.match(f.host.innerHTML,/Projection changed after newer collection row/);assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(queue.innerHTML,/Newer collection title/);}
+  if(example.row?.revision===5){f.listeners.get('click')({target:control(f,'data-au-inspect','claim')});const inspected=JSON.parse(f.recordPre.textContent);assert.equal(inspected.projection.node_capabilities.branch.reason,'Projection changed after newer collection row.');assert.deepEqual(inspected.state,saved);assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(queue.innerHTML,/Newer collection title/);}
   assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
  });
 });
