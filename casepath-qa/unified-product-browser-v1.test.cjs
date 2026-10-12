@@ -861,6 +861,12 @@ async function title(page, id) {
   }
 }
 
+async function junctionConnections(page){
+ const geometry=await page.locator('[data-au-graph]').evaluate(graph=>{const rectangle=element=>element.getBoundingClientRect().toJSON(),junction=id=>[...graph.querySelectorAll('[data-au-junction]')].find(row=>row.dataset.auJunction===id);return [...graph.querySelectorAll('[data-au-edge]')].map(path=>{const length=path.getTotalLength(),matrix=path.getScreenCTM(),screen=point=>new DOMPoint(point.x,point.y).matrixTransform(matrix).toJSON();return {id:path.dataset.auEdge,source:rectangle(junction(path.dataset.auEdgeSource)),target:rectangle(junction(path.dataset.auEdgeTarget)),start:screen(path.getPointAtLength(0)),end:screen(path.getPointAtLength(length)),length,samples:Array.from({length:101},(_,index)=>screen(path.getPointAtLength(length*index/100))),titles:[...graph.querySelectorAll('.au-node-title,.au-node-condition')].map(rectangle)};});});
+ for(const edge of geometry){assert.ok(edge.length>20,'a real dependency has a continuous visible route beyond its arrow');assert.ok(Math.abs(edge.start.x-(edge.source.left+edge.source.width/2))<1&&Math.abs(edge.start.y-edge.source.bottom)<1,'the source is its actual junction');assert.ok(Math.abs(edge.end.x-(edge.target.left+edge.target.width/2))<1&&Math.abs(edge.end.y-edge.target.top)<1,'the target is its actual junction');assert.equal(edge.samples.some(point=>edge.titles.some(title=>point.x>title.left+.5&&point.x<title.right-.5&&point.y>title.top+.5&&point.y<title.bottom-.5)),false,'dependencies route through clear margins and row gaps');}
+ return geometry;
+}
+
 for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,false]])test(`causal formation native: heating requirements enter at their actual steps and final content stays visible at ${width}x${height}`,async t=>{
  const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});
  if(reduced)await page.emulateMedia({reducedMotion:'reduce'});
@@ -877,6 +883,8 @@ for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,fa
   if(through<18)assert.equal(await page.locator('[data-au-forming-wire="process-document"]').count(),0,'hidden future requirements cannot leave a document connector');
   assert.equal(await page.locator('[data-au-knowledge-publication]').count(),0,'the saved head cannot lend future knowledge to a displayed prefix');
   if(through===18){
+   const probe=await page.evaluate(state=>{const copy=structuredClone(state),row=copy.obligations.find(item=>item.document_type==='tenancy_terms_evidence');row.node_id='dh_notice';row.decision_node_id='dh_notice';row.node_ids=['dh_notice','dh_scope'];const prior=structuredClone(copy);prior.evaluation.nodes.find(item=>item.node_id==='dh_scope').execution_state='blocked';prior.evaluation.nodes.find(item=>item.node_id==='dh_scope').blocked_by=['dh_intake'];return {context:window.CasePathAutonomous.enteredRequirementContext(prior,copy),html:window.CasePathAutonomous.obligationMarkup(copy,'dh_scope',[row],{},true)};},prefix.state);
+   assert.equal(probe.context.node,'dh_scope');assert.match(probe.html,/data-au-select="dh_scope"/);assert.doesNotMatch(probe.html,/data-au-select="dh_notice"/);
    const row=page.locator('.au-forming-documents [data-au-obligation]').first(),origin=row.locator('[data-au-source][data-au-citation]').first();assert.equal(await origin.count(),1);
    const citation=JSON.parse(await origin.getAttribute('data-au-citation'));await origin.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'exact native requirement source did not open');assert.equal(await page.locator('.au-source-dialog mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await origin.evaluate(element=>element===document.activeElement),true);
   }
@@ -886,11 +894,12 @@ for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,fa
  assert.deepEqual(sorted(await page.locator('.au-forming-documents [data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(head.state.obligations.map(row=>row.obligation_id)));
  assert.equal(await page.locator('.au-forming-documents .au-document-review[data-au-review="sufficient"]').count(),3);assert.equal(await page.locator('.au-forming-documents [data-au-source][data-au-citation]').count(),3);
  const publication=head.state.knowledge_published[0];assert.equal(await page.locator(`[data-au-knowledge-publication="${publication.knowledge_sha256}"]`).count(),1);assert.equal(await page.locator(`[data-au-knowledge-sha="${publication.knowledge_sha256}"]`).getAttribute('data-au-version'),String(publication.version));
- await focusedReceipt(page,`causal-native-heating-settled-${width}x${height}`,{claimId:id,revision:head.state.revision,state_sha256:head.state.state_sha256,documents:head.state.obligations.map(row=>row.obligation_id),reduced});
+ const connectors=await junctionConnections(page);
+ await focusedReceipt(page,`causal-native-heating-settled-${width}x${height}`,{connectors,claimId:id,revision:head.state.revision,state_sha256:head.state.state_sha256,documents:head.state.obligations.map(row=>row.obligation_id),reduced});
 });
 
-test('causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes',async t=>{
- const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed',acceptedPrefix:9,publicReadOnly:true,width:1440,height:900});
+for(const height of [900,1000])test(`causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes at 1440x${height}`,async t=>{
+ const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed',acceptedPrefix:9,publicReadOnly:true,width:1440,height});
  await open(page,id);await title(page,id);const saved=fixture.prefixes[9].state,layout=require('../casepath/assets/autonomous-workspace-v1.js').layoutGraph(saved.graph);
  assert.equal(layout.nodes.length,11);assert.equal(layout.edges.length,13);assert.equal(layout.children.get('lt_type').length,3);assert.equal(layout.children.get('lt_abuse').length,2);assert.ok([...layout.parents.values()].some(rows=>rows.length>1));
  assert.deepEqual(sorted(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.map(row=>row.dataset.auEdge))),sorted(layout.edges.map(row=>row.edge_id)));
@@ -898,11 +907,12 @@ test('causal formation native: the existing eleven-step termination fixture expo
  const labels=await page.locator('[data-au-edge-label]').evaluateAll(rows=>rows.map(row=>({id:row.dataset.auEdgeLabel,state:row.dataset.state,text:row.textContent,font:parseFloat(getComputedStyle(row).fontSize),width:row.clientWidth,scroll:row.scrollWidth})));
  assert.ok(labels.length>=5);for(const label of labels){const edge=layout.edges.find(row=>row.edge_id===label.id),evaluated=saved.evaluation.edges.find(row=>row.edge_id===label.id);assert.ok(edge?.condition);assert.equal(label.state,evaluated.activation);assert.ok(label.font>=12&&label.scroll<=label.width+1);assert.match(label.text,/Applies|Excluded|Unresolved/);}
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
+ const connectors=await junctionConnections(page);
  const bounds=await page.locator('[data-au-graph-pan]').evaluate(graph=>{const frame=graph.getBoundingClientRect();return {frame:frame.toJSON(),height:innerHeight,scrollHeight:graph.scrollHeight,clientHeight:graph.clientHeight,nodes:[...graph.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,rect:node.getBoundingClientRect().toJSON()}))};});
- await focusedReceipt(page,'causal-native-termination-forks-bounds',{bounds});
+ await focusedReceipt(page,`causal-native-termination-forks-bounds-${height}`,{bounds});
  assert.ok(bounds.nodes.every(row=>row.rect.left>=bounds.frame.left-1&&row.rect.right<=bounds.frame.right+1&&row.rect.top>=bounds.frame.top-1&&row.rect.bottom<=bounds.frame.bottom+1),'the compact native overview exposes all eleven actual nodes in its graph viewport');
  assert.ok(bounds.frame.bottom<=bounds.height+1,'the compact graph viewport stays in the initial desktop viewport');
- await focusedReceipt(page,'causal-native-termination-forks',{claimId:id,fixture:'build-prior-assessment-fixture-v1.py',revision:saved.revision,state_sha256:saved.state_sha256,labels,bounds,nodes:layout.nodes.map(row=>row.node_id),edges:layout.edges.map(row=>row.edge_id)});
+ await focusedReceipt(page,`causal-native-termination-forks-${height}`,{claimId:id,fixture:'build-prior-assessment-fixture-v1.py',revision:saved.revision,state_sha256:saved.state_sha256,labels,bounds,connectors,nodes:layout.nodes.map(row=>row.node_id),edges:layout.edges.map(row=>row.edge_id)});
 });
 
 test('causal formation native: autoplay introduces early-reviewed requirements at the exact newly reached steps',async t=>{
@@ -926,7 +936,7 @@ for(const interruption of ['none','pause','navigation','unstarted','pause-head',
  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.revision-1});await page.locator('[data-au-demo-play]').click();
  for(let step=0;step<200&&Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<head.revision;step++)await page.clock.runFor(50);
  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision));
- await page.evaluate(()=>{window.__handoffPaints=[];window.__handoffObserver=new MutationObserver(()=>window.__handoffPaints.push({claim:document.querySelector('[data-au-claim-title]')?.textContent,revision:document.querySelector('[data-au-revision]')?.dataset.auRevision,empty:!!document.querySelector('.au-catalog-preview')}));window.__handoffObserver.observe(document.querySelector('[data-au-view]'),{childList:true,subtree:true});});
+ await page.evaluate(()=>{window.__handoffPaints=[];window.__handoffObserver=new MutationObserver(()=>window.__handoffPaints.push({claim:document.querySelector('[data-au-claim-title]')?.textContent,revision:document.querySelector('[data-au-revision]')?.dataset.auRevision,state_sha256:document.querySelector('[data-au-revision]')?.dataset.auStateSha,nodes:[...document.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),knowledge:[...document.querySelectorAll('[data-au-knowledge-publication],[data-au-knowledge-use]')].map(row=>row.dataset.auKnowledgePublication||row.dataset.auKnowledgeUse),empty:!!document.querySelector('.au-catalog-preview,[data-au-preview=unknown],[data-au-skeleton]')}));window.__handoffObserver.observe(document.querySelector('[data-au-view]'),{childList:true,subtree:true});});
  await page.clock.runFor(4500);
  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision),'the last verified case survives a pending next-case read');assert.equal(await page.locator('.au-catalog-preview').count(),0);
  if(interruption.startsWith('navigation')){await page.locator('.au-nav [data-au-nav="work"]').click();}
@@ -934,7 +944,7 @@ for(const interruption of ['none','pause','navigation','unstarted','pause-head',
  await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});
  if(interruption.startsWith('navigation')){await page.clock.runFor(6000);assert.equal(await page.locator('[data-au-claim-row]').count(),20);assert.equal(await page.locator('[data-au-revision]').count(),0);}
  else if(['unstarted','changed-head','missing'].includes(interruption)){await eventually(()=>page.locator('.au-global-status').innerText().then(text=>text.includes('Next case')&&/No recorded execution|head changed|No recorded replay/.test(text)),'an unstarted next case did not fail truthfully');assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision));assert.ok((await page.locator('.au-global-status').innerText()).includes(next)|| (await page.locator('.au-global-status').innerText()).includes('Heating resets'));}
- else {await page.clock.runFor(4100);await eventually(()=>page.evaluate(()=>window.__handoffPaints.some(row=>row.revision==='0')),'verified next prefix zero did not paint directly');assert.ok(new URL(page.url()).hash.includes(next));assert.equal(await page.locator('[data-au-node]').count(),0,'the next verified head never lends its process to intake prefix zero');}
+ else {await page.clock.runFor(4100);await eventually(()=>page.evaluate(()=>window.__handoffPaints.some(row=>row.revision==='0')),'verified next prefix zero did not paint directly');assert.ok(new URL(page.url()).hash.includes(next));const opening=await page.evaluate(()=>window.__handoffPaints.find(row=>row.revision==='0'));assert.equal(opening.state_sha256,fixture.prefixes[next][0].state.state_sha256);assert.deepEqual(opening.nodes,[]);assert.deepEqual(opening.knowledge,[]);assert.equal(await page.locator('[data-au-node]').count(),0,'the next verified head never lends its process to intake prefix zero');}
  assert.equal(await page.evaluate(()=>window.__handoffPaints.some(row=>row.empty)),false,'no empty Choose a case interstitial is painted');assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
  await focusedReceipt(page,`causal-native-handoff-${interruption}`,{prior:id,next,interruption,paints:await page.evaluate(()=>window.__handoffPaints)});
 });
@@ -951,6 +961,13 @@ test('reference native: exact nine actual accepted assessments retain graph docu
  for(const id of referenceIds){
   await open(page,id);await title(page,id);const record=await visibleRecord(page),expected=fixture.snapshots[id];
   assert.deepEqual(record.state,expected.state);assert.deepEqual(record.projection,expected.projection);
+  assert.equal(await page.locator('[data-au-settled="true"]').count(),1);
+  assert.deepEqual(sorted(await page.locator('.au-forming-documents [data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(expected.state.obligations.map(row=>row.obligation_id)));
+  assert.equal(await page.locator('.au-forming-documents [data-au-review="sufficient"]').count(),expected.state.obligations.length);
+  assert.equal(await page.locator('.au-forming-documents [data-au-source][data-au-citation]').count(),expected.state.obligations.length);
+  for(const use of expected.state.knowledge_uses)assert.equal(await page.locator(`[data-au-knowledge-use="${use.knowledge_sha256||use.knowledge_id||use.version_id}"] [data-au-version="${use.version}"]`).count(),1);
+  for(const publication of expected.state.knowledge_published)assert.equal(await page.locator(`[data-au-knowledge-publication="${publication.knowledge_sha256}"] [data-au-version="${publication.version}"]`).count(),1);
+
   assert.equal(expected.state.status,'deferred');assert.equal(expected.state.outcome.status,'deferred');assert.equal(expected.state.outcome.assessment_status,'complete');
   assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based`);
   assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/Assessment only; no external action taken/);

@@ -200,7 +200,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-node:is([data-activation=excluded],[data-activation=false]) { color:var(--au-muted); }
 .au-workspace .au-node-copy { display:block; min-width:0; }
 .au-workspace .au-node-condition { display:block; margin-bottom:5px; color:#405c4a; font-size:12px; line-height:1.35; overflow-wrap:anywhere; }
-.au-workspace .au-node-condition > span { display:block; color:var(--au-muted); font-size:11px; }
+.au-workspace .au-node-condition > span { margin-left:8px; color:var(--au-muted); font-size:11px; }
 .au-workspace .au-node-condition:is([data-state=false],[data-state=excluded]) { color:#73766d; }
 .au-workspace .au-node-condition[data-state=unresolved] { color:#806838; }
 .au-workspace .au-node-relation { display:block; margin-bottom:3px; color:var(--au-muted); font-size:11px; font-weight:400; }
@@ -285,11 +285,11 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-forming-process .au-graph-chrome { min-height:26px; }
 .au-workspace .au-forming-process .au-graph-chrome button { min-height:26px; padding:3px 0; font-size:11px; }
 .au-workspace .au-forming-process .au-graph-viewport { max-height:660px; overflow:auto; overscroll-behavior:contain; scroll-padding:12px; }
-.au-workspace .au-forming-process .au-graph { flex-direction:column; align-items:stretch; gap:14px; width:100%; max-width:660px; min-width:0; margin:0 auto; padding:8px 24px 10px 4px; }
+.au-workspace .au-forming-process .au-graph { flex-direction:column; align-items:stretch; gap:12px; width:100%; max-width:660px; min-width:0; margin:0 auto; padding:8px 24px 10px 32px; }
 .au-workspace .au-forming-process .au-graph-rank { flex:0 0 auto; flex-direction:row; align-items:stretch; justify-content:center; gap:8px; width:100%; min-width:0; }
 .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] :is(.au-graph-rank,.au-node)[data-au-neighborhood=false] { display:flex; }
 .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-graph-lines [data-au-neighborhood=false] { display:block; }
-.au-workspace .au-forming-process .au-node { flex:1 1 0; width:auto; max-width:100%; min-height:36px; gap:5px; padding:3px 1px; background:var(--au-field); }
+.au-workspace .au-forming-process .au-node { flex:1 1 0; width:auto; max-width:100%; min-height:36px; gap:5px; padding:3px 1px; background:transparent; }
 .au-workspace .au-forming-process .au-node:hover { background:var(--au-wash); }
 .au-workspace .au-forming-process .au-node-copy { flex:1; }
 .au-workspace .au-forming-process .au-node-relation { display:none; }

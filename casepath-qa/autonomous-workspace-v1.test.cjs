@@ -380,12 +380,26 @@ test('forming publication remains central for a deferred live accepted publicati
  assert.equal(JSON.stringify({prior,head,history,attention}),before,'live and replay presentation must retain the actual revision and raw publication unchanged');
 });
 
+test('a multi-node requirement selects its genuinely reached node after an upstream-blocked sibling',()=>{
+ const after=state();after.graph.nodes.unshift({node_id:'future',label:'A later prerequisite'});after.evaluation.nodes.unshift({node_id:'future',activation:'true',execution_state:'blocked',blocked_by:['start']});after.obligations[0].node_id='future';after.obligations[0].decision_node_id='future';after.obligations[0].node_ids=['branch'];
+ const before=structuredClone(after);before.evaluation.nodes.find(row=>row.node_id==='branch').execution_state='blocked';before.evaluation.nodes.find(row=>row.node_id==='branch').blocked_by=['start'];
+ assert.deepEqual(ui.enteredRequirementContext(before,after),{node:'branch',document:'notice',obligation:'obligation:branch:notice',fact:'fact:notice'});
+ assert.match(ui.obligationMarkup(after,'branch',ui.formingRequirements(after),{},true),/data-au-select="branch"/);assert.doesNotMatch(ui.obligationMarkup(after,'branch',ui.formingRequirements(after),{},true),/data-au-select="future"/);
+ const reached=after.evaluation.nodes.find(row=>row.node_id==='branch');Object.assign(reached,{execution_state:'blocked',blocked_by:[],unresolved_dependencies:[],missing_document_types:['notice']});assert.equal(ui.enteredRequirementContext(before,after).node,'branch','own missing evidence stays a reached requiring node');
+});
+
 test('shared document types keep each obligation attached to its own reached requiring node',()=>{
  const saved=state();saved.graph.nodes.push({node_id:'future',label:'Later service'});saved.evaluation.nodes.push({node_id:'future',activation:'true',execution_state:'blocked',blocked_by:['branch']});saved.obligations.push({...saved.obligations[0],obligation_id:'obligation:future:notice',node_id:'future',decision_node_id:'future'});saved.evaluation.documents[0].required_at_node_ids=['branch','future'];
  assert.deepEqual(ui.formingRequirements(saved).map(ui.requirementIdentity),['obligation:branch:notice']);
  const before=structuredClone(saved);saved.revision=4;saved.state_sha256=hash('f');saved.evaluation.nodes[2].execution_state='ready';saved.evaluation.nodes[2].blocked_by=[];
  const event={claim_id:saved.claim_id,seq:4,revision:4,state_sha256:saved.state_sha256,event_sha256:hash('9'),kind:'graph.advanced'},plan=ui.transitionPlan(before,saved,{ready:true,cursor:4,animate:[event]});
  assert.ok(plan.documents.some(row=>row.id==='notice'),'the accepted readiness change introduces an already-reviewed document');
+});
+
+test('a reached obligation entrance animates only its exact identity when another visible obligation shares the document type',()=>{
+ const before=state();before.graph.nodes.push({node_id:'future',label:'Next requiring step'});before.evaluation.nodes.push({node_id:'future',activation:'true',execution_state:'blocked',blocked_by:['branch']});before.obligations.push({...before.obligations[0],node_id:'future',decision_node_id:'future',obligation_id:'obligation:future:notice'});
+ const after=structuredClone(before);after.revision=4;after.state_sha256=hash('f');after.evaluation.nodes[2].execution_state='ready';after.evaluation.nodes[2].blocked_by=[];after.evaluation.documents[0].active_node_ids=['branch','future'];const event={claim_id:after.claim_id,seq:4,revision:4,state_sha256:after.state_sha256,event_sha256:hash('9'),kind:'graph.advanced'},plan=ui.transitionPlan(before,after,{ready:true,cursor:4,animate:[event]});
+ assert.deepEqual(plan.documents[0].obligationIds,['obligation:future:notice']);const calls=[],path={};const rows=['obligation:branch:notice','obligation:future:notice'].map(id=>({dataset:{auDocument:'notice',auObligation:id},closest:selector=>selector==='[data-au-evidence-path]'?path:null,animate:(frames,options)=>{calls.push(id);return {cancel(){}};}}));const host={querySelector(){return null;},querySelectorAll:selector=>selector==='[data-au-document]'?rows:[]};ui.animateTransition(host,plan,{selected:'future'});assert.deepEqual(calls,['obligation:future:notice']);
 });
 
 test('real conditional split and join labels preserve applied excluded and unresolved edge states without labelling a linear unconditional dependency',()=>{
@@ -1094,6 +1108,15 @@ test('a focused claim title allows saved revisions to render during polling',asy
  saved=state({revision:4,state_sha256:hash('f'),phase:'interpreting',phase_summary:'Reading the original agreement.'});
  await controller.refresh();
  assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.deepEqual(ui.contextualRecord(saved,{},[],'claim').state.phase_summary,'Reading the original agreement.');assert.doesNotMatch(f.status.textContent,/Updates paused/);
+});
+
+test('direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance',async t=>{
+ for(const panel of ['sources','documents','knowledge','activity'])await t.test(panel,async t=>{
+  const f=dom(),before=state();before.evaluation.nodes[1].execution_state='blocked';before.evaluation.nodes[1].blocked_by=['start'];let saved=before;
+  const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a',true,{detail:panel});
+  assert.match(f.host.innerHTML,new RegExp(`data-au-context="${panel}"`));saved=structuredClone(before);saved.revision=4;saved.state_sha256=hash('f');saved.evaluation.nodes[1].execution_state='ready';saved.evaluation.nodes[1].blocked_by=[];await controller.refresh();await settle();
+  assert.match(f.host.innerHTML,new RegExp(`data-au-context="${panel}"`));assert.equal(api.calls.some(call=>call.init.method==='POST'),false);
+ });
 });
 
 test('an accepted live requiring-step advance focuses its actual new requirement while manual inspection keeps its focus',async t=>{
