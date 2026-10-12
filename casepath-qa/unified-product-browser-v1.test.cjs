@@ -537,7 +537,7 @@ async function fixturePage(t, config = {}) {
       ? route.fulfill({status: 200, contentType: 'text/html', body: '<!doctype html><html><head><meta charset="utf-8"></head><body><main id="workspace"></main></body></html>'})
       : route.abort('blockedbyclient');
   });
-  await page.goto('http://localhost:41999/');
+  await page.goto('http://localhost:41999/' + (config.initialFragment || ''));
   if (!config.nativeClock) {
     const time = new Date('2026-10-09T12:00:00Z');
     await page.clock.install({time});
@@ -660,6 +660,7 @@ async function mountFixture(page, config = {}) {
       }
       if (method !== 'GET') return response(405, {detail: 'This browser fixture prohibits writes.'});
       if (relative === '/claims') {
+        if (fixture.collectionFailures > 0) { fixture.collectionFailures--; return response(500,{detail:'Isolated collection warm read failed.'}); }
         const limit = Number(parsed.searchParams.get('limit') || 50), offset = Number(parsed.searchParams.get('offset') || 0);
         if (fixture.holdCollections) return new Promise(resolve => fixture.held.push({id: 'collection', release: () => resolve(response(200, {claims: fixture.rows.slice(offset, offset + limit), total: fixture.rows.length, limit, offset}))}));
         return response(200, {claims: fixture.rows.slice(offset, offset + limit), total: fixture.rows.length, limit, offset});
@@ -745,7 +746,7 @@ async function mountFixture(page, config = {}) {
         if ((fixture.holdSnapshots || fixture.holdIds?.includes(id) || fixture.holdId === id) && (fixture.holdRemaining === undefined || fixture.holdRemaining > 0)) {
           if (fixture.holdRemaining !== undefined) fixture.holdRemaining--;
           fixture.activeSnapshotReads++;fixture.peakSnapshotReads=Math.max(fixture.peakSnapshotReads,fixture.activeSnapshotReads);
-          return new Promise(resolve => fixture.held.push({id,kind:'snapshot',release:()=>{fixture.activeSnapshotReads--;resolve(response(200,snapshot));}}));
+          return new Promise(resolve => fixture.held.push({id,kind:'snapshot',release:()=>{fixture.activeSnapshotReads--;resolve(fixture.heldSnapshotStatus ? response(fixture.heldSnapshotStatus,{detail:'Held snapshot transport unavailable.'}) : response(200,snapshot));}}));
         }
         return response(200, snapshot);
       }
@@ -2385,6 +2386,70 @@ test('quiet work: background Knowledge warming stays read only, revalidates exac
     await eventually(async()=>await page.locator('[data-au-start]').isEnabled()&&(await page.locator('[data-au-start]').textContent()).includes('Retry'),'the uncertain guarded write did not settle to its native literal-retry control');
     await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='knowledge')),'the post-write fresh Knowledge read was not held');assert.equal(await page.locator('[data-au-knowledge-identity]').count(),0,'a late invalidated warm response cannot resurrect its old cache');assert.equal(await page.locator('[data-au-skeleton="knowledge"]').isVisible(),true);
     await page.evaluate(()=>{window.__fixture.holdKnowledge=false;const fresh=window.__fixture.held.filter(row=>row.kind==='knowledge');window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='knowledge');for(const held of fresh)held.release();});await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===1),'the current generation did not render its own fresh Knowledge result');
+  });
+});
+
+test('direct replay warmth: cold accepted entry primes real Cases and Knowledge without replacing its prefix or source inspection',async t=>{
+  const fixture=referenceFixture(),id=referenceIds[0],prefix=Object.values(fixture.prefixes[id]).find(row=>row.events.at(-1)?.kind==='sources.acquired');
+  assert.ok(prefix);assert.deepEqual(prefix.state.knowledge_uses,[]);
+  const fragment=`#autonomous/claim/${id}?mode=replay&collection=reference&through=${prefix.through_seq}&detail=sources`;
+  const page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,nativeClock:true,initialFragment:fragment,holdCollections:true,holdKnowledge:true,holdSnapshots:true});
+  await title(page,id);const record=await visibleRecord(page);assert.deepEqual(record,{state:prefix.state,projection:prefix.projection});
+  await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.id==='collection')),'direct replay did not quietly begin its first real collection read');
+  assert.equal((await calls(page,'/knowledge')).length,0,'collection identity loads before dependent warming');
+  const source=page.locator('[data-au-panel="sources"] [data-au-source]').first();await source.focus();await page.keyboard.press('Enter');
+  await eventually(()=>page.locator('.au-source-dialog[open] .au-source-body').count().then(count=>count===1),'the exact original did not open during a held background collection');
+  const inspected=await page.locator('.au-source-dialog').innerText(),active=await page.evaluate(()=>document.activeElement?.outerHTML),inspectedRoute=new URL(page.url()).hash;
+  const routeParams=new URLSearchParams(inspectedRoute.split('?')[1]);assert.equal(inspectedRoute.split('?')[0],fragment.split('?')[0]);assert.equal(routeParams.get('mode'),'replay');assert.equal(routeParams.get('through'),String(prefix.through_seq));assert.equal(routeParams.get('detail'),'sources');
+  await page.evaluate(()=>{window.__fixture.holdCollections=false;for(const held of window.__fixture.held.filter(row=>row.id==='collection'))held.release();window.__fixture.held=window.__fixture.held.filter(row=>row.id!=='collection');});
+  await eventually(()=>page.evaluate(()=>window.__fixture.activeSnapshotReads===2&&window.__fixture.held.some(row=>row.kind==='knowledge')),'verified collection did not prime bounded snapshot and Knowledge reads');
+  await page.evaluate(async()=>{window.__fixture.holdKnowledge=false;for(const held of window.__fixture.held.filter(row=>row.kind==='knowledge'))held.release();window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='knowledge');for(let turn=0;turn<100;turn++)await Promise.resolve();});
+  assert.deepEqual(await visibleRecord(page),record);assert.equal(new URL(page.url()).hash,inspectedRoute);assert.equal(await page.locator('.au-source-dialog').innerText(),inspected);assert.equal(await page.evaluate(()=>document.activeElement?.outerHTML),active);
+  assert.equal(await page.locator('[data-au-knowledge-identity],[data-au-skeleton="knowledge"]').count(),0,'global warm Knowledge cannot appear over the current prefix');assert.equal(await page.locator('.au-global-status').innerText(),'');
+  await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
+  await page.evaluate(()=>{window.__fixture.holdSnapshots=false;for(const held of window.__fixture.held.filter(row=>row.kind==='snapshot'))held.release();window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='snapshot');});
+  await eventually(()=>page.evaluate(ids=>ids.every(id=>window.__fixture.calls.some(row=>row.url.includes(`/claims/${id}/snapshot`))),referenceIds),'the bounded idle queue did not warm the nine real reference heads');
+  const snapshotReads=await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/snapshot'))),collectionReads=await calls(page,'/claims'),peak=await page.evaluate(()=>window.__fixture.peakSnapshotReads);
+  assert.equal(snapshotReads.length,9);assert.equal(peak,2);assert.equal(collectionReads.filter(row=>new URL(row.url,'http://fixture.invalid').pathname===`${base}/claims`).length,2,'the actual 159-case collection is paginated once');
+  assert.deepEqual(await visibleRecord(page),record);assert.equal(await page.locator('[data-au-start],[data-au-arrival],[data-au-pause],[data-au-resume]').count(),0);
+  await focusedReceipt(page,'direct-replay-warm-prefix-source',{claim_id:id,through_seq:prefix.through_seq,record,snapshotReads,collectionReads,peakSnapshotReads:peak});
+  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through,detail:'knowledge'}),{id,through:prefix.through_seq});await title(page,id);
+  assert.equal((await calls(page,'/knowledge')).length,1,'later case entry does not repeat a successful global warm');assert.deepEqual(await visibleRecord(page),record);assert.equal(await page.locator('[data-au-knowledge-version],[data-au-knowledge-identity]').count(),0,'future global versions cannot leak into a prefix without a recorded use');
+  const cases=await page.evaluate(()=>{void window.__controller.showWork();return {rows:document.querySelectorAll('[data-au-claim-row]').length,skeleton:document.querySelectorAll('[data-au-skeleton]').length};});assert.equal(cases.rows,20);assert.equal(cases.skeleton,0);
+  await page.evaluate(()=>{window.__fixture.holdKnowledge=true;});const knowledge=await page.evaluate(()=>{void window.__controller.showKnowledge();return {identities:document.querySelectorAll('[data-au-knowledge-identity]').length,read:document.querySelector('[data-au-view]').dataset.auReadState,skeleton:document.querySelectorAll('[data-au-skeleton="knowledge"]').length};});
+  assert.ok(knowledge.identities>0);assert.equal(knowledge.read,'refreshing');assert.equal(knowledge.skeleton,0);
+  await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='knowledge')),'explicit Knowledge did not revalidate its warm cache');assert.equal((await calls(page,'/knowledge')).length,2);assert.deepEqual(await knowledgeDetails(page),fixture.knowledge);
+  await focusedReceipt(page,'direct-replay-warm-knowledge',{cases,knowledge,recordedKnowledge:fixture.knowledge});
+});
+
+test('direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission',async t=>{
+  for(const interruption of ['hidden','navigation'])await t.test(interruption,async t=>{
+    const id=referenceIds[0],fragment=`#autonomous/claim/${id}?mode=replay&through=0`,page=await fixturePage(t,{referenceFixture:true,nativeClock:true,initialFragment:fragment,holdCollections:true});await title(page,id);
+    await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.id==='collection')),'the initial collection warm was not held');
+    if(interruption==='hidden')await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});document.dispatchEvent(new Event('visibilitychange'));});else await page.evaluate(()=>window.__controller.showIntake());
+    await page.evaluate(async()=>{for(const held of window.__fixture.held.splice(0))held.release();for(let turn=0;turn<100;turn++)await Promise.resolve();});await delay(100);
+    assert.equal((await calls(page,'/knowledge')).length,0);assert.equal((await calls(page,'/claims')).filter(row=>new URL(row.url,'http://fixture.invalid').pathname===`${base}/claims`).length,1,'canceled collection cannot start a second page');assert.equal(await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/snapshot')).length),0);
+    const immediate=await page.evaluate(()=>{void window.__controller.showWork();return document.querySelectorAll('[data-au-claim-row]').length;});assert.equal(immediate,0,'canceled metadata cannot seed the next Cases opening');
+    await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.id==='collection')),'Cases did not make its own fresh collection read');await page.evaluate(()=>{window.__fixture.holdCollections=false;for(const held of window.__fixture.held.splice(0))held.release();});await eventually(()=>page.locator('[data-au-claim-row]').count().then(count=>count===20),'fresh collection did not recover');
+  });
+});
+
+test('direct replay warmth: canceled Knowledge and snapshot fallback cannot drain or seed a later entry',async t=>{
+  const id=referenceIds[0],fragment=`#autonomous/claim/${id}?mode=replay&through=0`,page=await fixturePage(t,{referenceFixture:true,nativeClock:true,initialFragment:fragment,holdKnowledge:true,holdSnapshots:true,heldSnapshotStatus:404});await title(page,id);
+  await eventually(()=>page.evaluate(()=>window.__fixture.activeSnapshotReads===2&&window.__fixture.held.some(row=>row.kind==='knowledge')),'the direct warm reads were not held');
+  const before=await page.evaluate(()=>window.__fixture.calls.length),record=await visibleRecord(page);
+  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});document.dispatchEvent(new Event('visibilitychange'));});
+  await page.evaluate(async()=>{for(const held of window.__fixture.held.splice(0))held.release();for(let turn=0;turn<100;turn++)await Promise.resolve();});await delay(100);assert.equal(await page.evaluate(()=>window.__fixture.calls.length),before,'canceled snapshot queue cannot drain');assert.deepEqual(await visibleRecord(page),record);
+  const immediate=await page.evaluate(()=>{void window.__controller.showKnowledge();return {identities:document.querySelectorAll('[data-au-knowledge-identity]').length,skeleton:document.querySelectorAll('[data-au-skeleton="knowledge"]').length};});assert.equal(immediate.identities,0);assert.equal(immediate.skeleton,1,'hide→show late response cannot seed Knowledge');
+  await page.evaluate(()=>{window.__fixture.holdKnowledge=false;for(const held of window.__fixture.held.splice(0))held.release();});await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count>0),'explicit current Knowledge read did not recover');
+  await focusedReceipt(page,'direct-replay-hidden-cancellation',{before,immediate,record,calls:await page.evaluate(()=>window.__fixture.calls)});
+});
+
+test('direct replay warmth: metadata failures stay silent and explicit navigation recovers',async t=>{
+  for(const failed of ['collection','knowledge'])await t.test(failed,async t=>{
+    const id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,nativeClock:true,initialFragment:`#autonomous/claim/${id}?mode=replay&through=0`,[`${failed}Failures`]:1});await title(page,id);const record=await visibleRecord(page);
+    await eventually(async()=>(await calls(page,failed==='collection'?'/claims':'/knowledge')).length>0,'the failing metadata warm did not execute');await delay(100);assert.deepEqual(await visibleRecord(page),record);assert.equal(await page.locator('.au-global-status').innerText(),'');assert.equal(await page.locator('[data-au-skeleton="knowledge"]').count(),0);
+    if(failed==='collection'){await page.evaluate(()=>window.__controller.showWork());assert.equal(await page.locator('[data-au-claim-row]').count(),20);}else{await page.evaluate(()=>window.__controller.showKnowledge());assert.ok(await page.locator('[data-au-knowledge-identity]').count()>0);assert.equal((await calls(page,'/knowledge')).length,2);}
   });
 });
 

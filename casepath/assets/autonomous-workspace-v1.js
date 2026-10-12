@@ -1674,12 +1674,14 @@
       if (writeRoute && root.history?.replaceState && current) { const fragment = selectedClaimFragment(); root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); routedFragment = fragment; }
       if (focusFiles) host.querySelector('#auAdditionalFiles')?.focus({preventScroll:true});
     }
-    async function consistentRead(id, after, reconnect = false, token = epoch) {
+    async function consistentRead(id, after, reconnect = false, token = epoch, valid = null) {
       let missingSnapshot = false;
+      const check = () => { if (disposed || token !== epoch || valid && !valid()) throw new Error('The claim view changed while reading its snapshot.'); };
+      if (valid) check();
       if (snapshotAvailable !== false) {
         try {
           const response = await request(`/claims/${key(id)}/snapshot?after=${after ?? 0}`);
-          if (disposed || token !== epoch) throw new Error('The claim view changed while reading its snapshot.');
+          check();
           const result = readSnapshot(response,id,after,reconnect);
           snapshotAvailable = true;
           return result;
@@ -1688,8 +1690,9 @@
           if (error.status === 404) missingSnapshot = true; else snapshotAvailable = false;
         }
       }
+      if (valid) check();
       const incoming = readState(await request(`/claims/${key(id)}`),id);
-      if (disposed || token !== epoch) throw new Error('The claim view changed while reading its saved state.');
+      check();
       const batch = await request(`/claims/${key(id)}/events?after=${after ?? 0}`);
       const accepted = acceptEvents(after,batch,incoming.state,reconnect);
       if (missingSnapshot) snapshotAvailable = false;
@@ -1759,7 +1762,7 @@
         detail = initialPreferences.detail || previous?.detail || 'step';
         if (changed) renderClaim(); else { synchronizeAuthority(); rememberLastCase(); } snapshotCache(); rememberClaim(current); notice(''); if (initial) focusTitle(); schedule();
         resumeLivePresentation();
-        if (!claimsLoaded) loadClaims(token).catch(() => {});
+        primeClaimReads(token,!claimsLoaded);
         serviceStatus(token).catch(() => {});
         return current;
       } catch (error) {
@@ -1814,6 +1817,7 @@
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
         const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = preferences.detail || previous?.detail || 'step';
         renderClaim(); notice(''); focusTitle();
+        primeClaimReads(token,!claimsLoaded);
         if (preferences.demo && demoSession?.mode === 'replay') {
           const session = demoSession;
           session.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256};
@@ -1864,17 +1868,21 @@
       const filter = host.querySelector('[data-au-claim-filter]');
       if (filter) filter.innerHTML = collectionFilters(scoped).map(value => `<option value="${h(value)}"${collection.filter === value ? ' selected' : ''}>${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : value === 'investigation_complete' ? 'Assessment complete' : statusLabel(value))}</option>`).join('');
     }
+    function canWarmReads(token = epoch, generation = readGeneration, ticket = warmTicket) {
+      return !disposed && token === epoch && generation === readGeneration && ticket === warmTicket && !doc.hidden && !pendingRoute() && (view === 'work' || view === 'claim' && current);
+    }
     async function warmKnowledge(token = epoch) {
-      if (disposed || token !== epoch || view !== 'work' || doc.hidden || knowledgeWarmGeneration === readGeneration) return;
-      const generation = readGeneration, read = knowledgeRead; knowledgeWarmGeneration = generation;
+      const generation = readGeneration, ticket = warmTicket, attempt = `${generation}:${ticket}`;
+      if (!canWarmReads(token,generation,ticket) || knowledgeCache || knowledgeWarmGeneration === attempt) return;
+      const read = knowledgeRead; knowledgeWarmGeneration = attempt;
       try {
         const data = readKnowledge(await request('/knowledge'));
-        if (disposed || token !== epoch || generation !== readGeneration || read !== knowledgeRead || doc.hidden) return;
+        if (!canWarmReads(token,generation,ticket) || read !== knowledgeRead) return;
         if (JSON.stringify(data).length * 2 <= 8 * 1024 * 1024) knowledgeCache = {value:data};
       } catch (_) { /* A quiet GET warm never replaces a successful read or reports an error. */ }
     }
     function queueClaimWarm(id, intent = false) {
-      if (disposed || doc.hidden || view !== 'work' || pendingRoute() || !claims.some(claim => claim.claim_id === id) && !REFERENCE_DEMO_CASES.some(claim => claim.claim_id === id)) return;
+      if (!canWarmReads() || !claims.some(claim => claim.claim_id === id) && !REFERENCE_DEMO_CASES.some(claim => claim.claim_id === id)) return;
       if (intent) warmIntents.add(id);
       const cached = snapshots.get(id);
       if (cached) { if (intent) cachedRead(snapshots,id); return; }
@@ -1886,12 +1894,13 @@
       runClaimWarmQueue();
     }
     function runClaimWarmQueue() {
-      while (warmActive < 2 && warmQueue.length && !disposed && !doc.hidden && view === 'work' && !pendingRoute()) {
+      while (warmActive < 2 && warmQueue.length && canWarmReads()) {
         const row = warmQueue.shift(); warmAttempts.add(row.id); warmActive++;
         (async () => {
           try {
-            const incoming = await consistentRead(row.id,null,true,row.token);
-            if (!incoming.accepted.ready || disposed || row.token !== epoch || row.generation !== readGeneration || row.ticket !== warmTicket || doc.hidden || view !== 'work' || pendingRoute()) return;
+            const valid = () => canWarmReads(row.token,row.generation,row.ticket);
+            const incoming = await consistentRead(row.id,null,true,row.token,valid);
+            if (!incoming.accepted.ready || !valid()) return;
             const value = {state:incoming.state,projection:incoming.projection,cursor:incoming.accepted.cursor,history:incoming.accepted.events};
             rememberSnapshot(row.id,value,!row.intent && !warmIntents.has(row.id));
           } catch (_) { /* Speculative GET failures never change the current view. */ }
@@ -1899,12 +1908,22 @@
         })();
       }
     }
-    function primeClaimReads(token) {
-      if (!root.requestIdleCallback || warmIdle !== null || disposed || token !== epoch || view !== 'work' || doc.hidden) return;
+    function primeClaimReads(token, heads = true) {
+      if (warmIdle !== null || !canWarmReads(token)) return;
+      if (!root.requestIdleCallback) {
+        if (!claimsLoaded) loadClaims(token,false,true).catch(() => {});
+        else warmKnowledge(token);
+        return;
+      }
       const generation = readGeneration, ticket = warmTicket;
       warmIdle = root.requestIdleCallback(() => {
         warmIdle = null;
-        if (disposed || token !== epoch || generation !== readGeneration || ticket !== warmTicket || view !== 'work' || doc.hidden || pendingRoute()) return;
+        if (!canWarmReads(token,generation,ticket)) return;
+        // A direct claim entry has not visited Cases. Reuse its verified
+        // collection read before priming the same bounded snapshot queue.
+        if (!claimsLoaded) { loadClaims(token,false,true).catch(() => {}); return; }
+        warmKnowledge(token);
+        if (!heads) return;
         const visible = [...host.querySelectorAll('[data-au-claim]')].filter(element => { const bounds = element.getBoundingClientRect?.(); return bounds && bounds.bottom > 0 && bounds.top < (root.innerHeight || 1000); }).slice(0,2).map(element => element.dataset.auClaim);
         for (const id of [...new Set([...visible,...REFERENCE_DEMO_CASES.map(claim => claim.claim_id)])]) queueClaimWarm(id);
       });
@@ -1913,17 +1932,20 @@
       const target = event.target?.closest?.('[data-au-claim]');
       if (target && container.contains(target)) queueClaimWarm(target.dataset.auClaim,true);
     }
-    async function loadClaims(token = epoch, force = false) {
-      const read = ++claimsRead, generation = readGeneration;
+    async function loadClaims(token = epoch, force = false, quiet = false) {
+      const read = ++claimsRead, generation = readGeneration, ticket = warmTicket;
+      const valid = () => !disposed && token === epoch && generation === readGeneration && read === claimsRead && (!quiet || canWarmReads(token,generation,ticket));
+      if (!valid()) return;
       const fromCache = !force && collectionCache && Date.now() - collectionCache.at < 15000;
       const data = fromCache ? collectionCache.value : await request('/claims');
-      if (disposed || token !== epoch || generation !== readGeneration || read !== claimsRead) return;
+      if (!valid()) return;
       const rows = [...list(data.claims)];
       if (Number.isSafeInteger(data.total) && data.total > rows.length) {
         let offset = rows.length;
         while (offset < data.total) {
+          if (!valid()) return;
           const page = await request(`/claims?limit=200&offset=${offset}`);
-          if (disposed || token !== epoch || generation !== readGeneration || read !== claimsRead) return;
+          if (!valid()) return;
           if (page.total !== data.total || page.offset !== offset || !list(page.claims).length || (data.collection_sha256 && page.collection_sha256 !== data.collection_sha256)) throw new Error('The case collection changed while loading. Refresh to read one collection identity.');
           rows.push(...page.claims); offset += page.claims.length;
         }

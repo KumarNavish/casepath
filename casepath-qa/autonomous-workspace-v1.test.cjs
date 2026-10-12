@@ -1063,7 +1063,8 @@ async function newClaim(f) { navClick(f,'intake');await settle(); }
 test('initial deep links and duplicate browser history events read saved state once without adding entries',async t=>{
  const routing=routingFixture(t,'#autonomous/claim/claim-a'),f=dom(),api=fakeApi(),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  assert.match(f.host.innerHTML,/data-au-graph/);assert.equal(routing.pushes,0);assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,1);
- routing.external('#autonomous/knowledge');await settle();assert.match(f.host.innerHTML,/au-quiet-knowledge/);assert.equal(api.calls.filter(call=>call.path.endsWith('/knowledge')).length,1);assert.equal(routing.pushes,0);
+ assert.equal(api.calls.filter(call=>call.path.endsWith('/knowledge')).length,1,'direct entry quietly warms Knowledge even without an idle callback');
+ routing.external('#autonomous/knowledge');await settle();assert.match(f.host.innerHTML,/au-quiet-knowledge/);assert.equal(api.calls.filter(call=>call.path.endsWith('/knowledge')).length,2,'explicit Knowledge navigation revalidates the warmed read');assert.equal(routing.pushes,0);
  routing.external('#autonomous/claim/claim-a');await settle();assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,2);assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a/events?after=0')).length,2);
  routing.external('#autonomous/claim/claim-a');await settle();assert.equal(api.calls.filter(call=>call.path.endsWith('/claims/claim-a')).length,2);assert.equal(routing.pushes,0);
  controller.destroy();assert.equal(routing.listeners.size,0);
