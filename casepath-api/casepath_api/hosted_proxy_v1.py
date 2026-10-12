@@ -1,4 +1,4 @@
-"""Authenticate the Sites hop while retaining the API's same-origin guard."""
+"""Authenticate public read access through Sites; never admit work commands."""
 from hmac import compare_digest
 from urllib.parse import urlsplit
 
@@ -19,6 +19,12 @@ class SitesProxyBoundary:
     async def __call__(self, scope, receive, send):
         if scope['type'] != 'http':
             return await self.app(scope, receive, send)
+        # Reject before reading headers/body or entering any route or service.
+        # The server secret authenticates read transport, not visitor ownership.
+        if scope['method'] not in ('GET', 'HEAD'):
+            return await JSONResponse(
+                {'detail': 'The public workspace is read-only. Saved cases, sources, replay and Knowledge remain available.'},
+                status_code=403, headers={'Cache-Control': 'no-store'})(scope, receive, send)
         # This probe must contain no claims or credentials. All data routes
         # remain accessible only through the authenticated Sites hop.
         if scope['method'] == 'GET' and scope['path'] == '/healthz':
@@ -33,8 +39,6 @@ class SitesProxyBoundary:
         if (not compare_digest(candidate, self.token.encode('ascii')) or
                 headers.get(b'x-casepath-site-origin') != self.origin.encode('ascii')):
             return await JSONResponse({'detail': 'Authenticated Site access required.'}, status_code=403)(scope, receive, send)
-        if scope['method'] not in ('GET', 'HEAD') and headers.get(b'origin') != self.origin.encode('ascii'):
-            return await JSONResponse({'detail': 'Cross-origin work requests are not accepted.'}, status_code=403)(scope, receive, send)
         forwarded = {k: v for k, v in headers.items() if k not in (
             b'x-casepath-proxy-token', b'x-casepath-site-origin', b'forwarded',
             b'x-forwarded-host', b'x-forwarded-proto', b'x-forwarded-for')}

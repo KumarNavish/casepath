@@ -7,6 +7,45 @@ const origin = 'https://casepath-demo.example';
 const env = {CASEPATH_API_ORIGIN: 'https://casepath-api.example', CASEPATH_PROXY_TOKEN: 'x'.repeat(48)};
 const load = async () => (await import(pathToFileURL(resolve(__dirname, '../casepath/tools/sites_worker.mjs')).href)).default;
 
+test('public Sites refuses visitor-forged work authority before any upstream request', async t => {
+  const worker = await load();
+  const fetch = t.mock.method(globalThis, 'fetch', async () => Response.json({saved:true}, {status:202}));
+  const response = await worker.fetch(new Request(origin+'/api/claim-loops/v1/autonomous/claims', {
+    method:'POST', headers:{Origin:origin, 'Content-Type':'application/json',
+      'X-CasePath-Agent-Work':'1', 'X-CasePath-User-Id':'owner', 'X-CasePath-User-Email':'owner@example.test'},
+    body:'{"title":"Public visitor","message":"Untrusted intake","files":[],"idempotency_key":"public-forged-work-1"}',
+  }), env);
+  assert.equal(response.status,403);
+  assert.equal(fetch.mock.callCount(),0);
+});
+
+test('public Sites rejects every work verb across current generic aliased and unknown paths without reading bodies',async t=>{
+  const worker=await load(),upstream=t.mock.method(globalThis,'fetch',async()=>{throw Error('must not send');});
+  const assets=t.mock.fn(async()=>{throw Error('must not fetch assets');});
+  const prefix='/api/claim-loops/v1/autonomous',paths=[prefix+'/claims',...['start','sources','pause','resume','reconcile-saved-results'].map(action=>`${prefix}/claims/example/${action}`),
+    '/api/claim-loops/v1/claims/example/commands','/api/agent-work/v1/start','/api/demo/reset','/api/unknown/','/api','/api/','/healthz','/healthz/','/readyz','/deployment-health','/index.html','/unknown'];
+  for(const method of ['POST','PUT','PATCH','DELETE','OPTIONS','TRACE','CONNECT'])for(const path of paths) {
+    // Minimal request surface also proves no body/header evaluation precedes denial.
+    const request={method,url:origin+path,get body(){throw Error('must not read body');},get headers(){throw Error('must not read headers');}};
+    const result=await worker.fetch(request,{...env,CASEPATH_HOSTED_WRITABLE:'1',CASEPATH_AUTONOMOUS_ENABLED:'1',ASSETS:{fetch:assets}});
+    assert.equal(result.status,403,`${method} ${path}`);assert.equal(result.headers.get('cache-control'),'no-store');
+  }
+  assert.equal(upstream.mock.callCount(),0);assert.equal(assets.mock.callCount(),0);
+});
+
+test('public Sites keeps GET and HEAD inspection transport available on every public API shape',async t=>{
+  const worker=await load(),calls=[];
+  t.mock.method(globalThis,'fetch',async request=>{calls.push(request);return new Response(null,{headers:{'Set-Cookie':'upstream-private=1'}});});
+  const prefix='/api/claim-loops/v1/autonomous';
+  for(const method of ['GET','HEAD'])for(const path of ['/healthz','/readyz','/deployment-health',prefix+'/status',prefix+'/claims',prefix+'/claims/example',prefix+'/claims/example/snapshot',prefix+'/claims/example/events',prefix+'/claims/example/replay?through_seq=1',prefix+'/sources/example/source',prefix+'/sources/example/source/text',prefix+'/sources/example/source/preview',prefix+'/knowledge']) {
+    const result=await worker.fetch(new Request(origin+path,{method,headers:{Cookie:'browser-private',Authorization:'browser-private'}}),env);
+    assert.equal(result.status,200);assert.equal(result.headers.get('set-cookie'),null);
+    const sent=calls.at(-1);assert.equal(sent.method,method);assert.equal(sent.headers.get('x-casepath-proxy-token'),env.CASEPATH_PROXY_TOKEN);
+    assert.equal(sent.headers.get('cookie'),null);assert.equal(sent.headers.get('authorization'),null);
+  }
+  assert.equal(calls.length,26);
+});
+
 test('Sites sends native and normalized legacy collection entries to Cases without fetching data', async t => {
   const worker = await load();
   const fetch = t.mock.method(globalThis, 'fetch', async () => {throw Error('must not send');});
@@ -34,15 +73,14 @@ test('Sites authenticates its upstream request without leaking browser credentia
     assert.equal(req.headers.get('authorization'), null);
     assert.equal(req.headers.get('oai-sites-authorization'), null);
     assert.equal(req.headers.get('x-forwarded-host'), null);
-    assert.equal(await req.text(), '{"idempotency_key":"unchanged"}');
+    assert.equal(await req.text(), '');
     return Response.json({saved:true});
   });
   const response = await worker.fetch(new Request(origin+'/api/claim-loops/v1/autonomous/claims', {
-    method:'POST', headers:{Origin:origin, 'Content-Type':'application/json',
+    method:'GET', headers:{Origin:origin, 'Content-Type':'application/json',
       'X-CasePath-Agent-Work':'1', Cookie:'private', Authorization:'private',
       'OAI-Sites-Authorization':'private', 'X-Forwarded-Host':'hostile.example',
       'X-CasePath-Proxy-Token':'forged', 'X-CasePath-Site-Origin':'https://hostile.example'},
-    body:'{"idempotency_key":"unchanged"}',
   }), env);
   assert.equal(response.status,200);
   assert.equal(response.headers.get('cache-control'),'no-store');
@@ -76,7 +114,7 @@ test('Sites reports an unavailable backend without exposing upstream details', a
   assert.doesNotMatch(await response.text(),/private token/);
 });
 
-test('Sites preserves the Review workspace application headers without requiring an agent-work header', async t => {
+test('Sites preserves allowlisted Review read headers without requiring an agent-work header', async t => {
   const worker = await load();
   t.mock.method(globalThis,'fetch',async req => {
     assert.equal(req.headers.get('x-casepath-idempotency-key'),'review-operation-1');
@@ -85,9 +123,9 @@ test('Sites preserves the Review workspace application headers without requiring
     return Response.json({saved:true});
   });
   const response = await worker.fetch(new Request(origin+'/api/claim-loops/v1/claims/example/commands', {
-    method:'POST',headers:{Origin:origin,'Content-Type':'application/json',
+    method:'GET',headers:{Origin:origin,'Content-Type':'application/json',
       'X-CasePath-Idempotency-Key':'review-operation-1','X-CasePath-Native-Research-Mode':'1',
-      'X-CasePath-Session':'review-session-1'},body:'{}',
+      'X-CasePath-Session':'review-session-1'},
   }),env);
   assert.equal(response.status,200);
 });
