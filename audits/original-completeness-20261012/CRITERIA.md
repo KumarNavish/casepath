@@ -69,16 +69,25 @@ The corrected printed-heading extracts for259/259a/259d/259e/269/266n have now
 arrived and were independently read; they replace the rejected inline
 cross-reference extraction errors. `official_corrected_heading_extracts.json`
 preserves the supplied German text. All current-text provisions needed for the
-nine bounded candidate paths are now available. Actual272/272a text remains
-missing for original extension assessments, which stay conditional; those
-provisions are outside all nine active candidate paths. No older consolidated
-PDF has been independently verified and no historical-version verification is
-claimed. `criteria.json` keeps these separate authority limits explicit.
+nine bounded candidate paths are now available. Actual272/272a text has also
+arrived and been independently read for original extension criteria. The Mac
+retriever supplied an actual anchored2024/2026official source comparison,
+recorded in `official_historical_comparison.json`, with older official PDF SHA
+`e8aeb5b4d5101f696ce136d1e7857665ba7ab1b12132c69346c34b2faa00a94b`.
+The unchanged substantive259a/259d criteria support the Jan/Feb2025repair
+eligibility paths; Nov2025rent uses269d(4)/(5), effective1October2025, whereas the
+2024snapshot contains only(1)–(3). May2026termination uses current2026text.
+No full PDF hash is independently recomputed on Cloud and no exhaustive
+amendment-history verification is claimed. `criteria.json` distinguishes this
+actual transferred snapshot comparison from local byte-level retrieval.
 
 Observed sources include late2024/2025events and2026notices. The current statute
 is not automatically retrospective authority for every event. The rules below
-are applied provisionally subject to event-date confirmation; any legal finding
-depending on an unverified historical version must stay indeterminate.
+are assessed with the disclosed actual snapshot comparison and observed dates;
+any legal finding depending on a historical change outside that comparison
+must stay indeterminate. Comparison covers259a/d/e,269/269a,271/273,266l–266o,
+270b and272/272a; it is not a claim that every earlier statutory history was
+checked.
 Art269d(4)/(5) came into force1October2025 according to the supplied official
 footnotes. November2025rent forms therefore cannot be rejected merely for a
 mechanically reproduced signature. Ordinary versus stepped-rent applicability
@@ -158,3 +167,19 @@ commissioned real expert reports or court decisions. Independent fresh review
 of those complete candidate packets is required before final demonstration
 designation. The user has now authorized the smallest supplemental corpus fixes
 without an approval pause; the immutable original150 baseline remains separate.
+
+Fresh independent review has now approved all nine frozen source packets for
+their disclosed bounded legal-source eligibility, with the actual transferred
+official historical/current criteria. `independent_review_receipt.json` records
+the review and limits; it does not certify engine/process completion. The source
+candidate manifest remains byte-identical and the original baseline counts do
+not change. Operational completeness and final designation remain dependent on
+actual active-node checklist validation and disclosed runtime/UI as-of state.
+
+`supplemental_operator_plan.json` records the next reference-validation boundary.
+Candidate hand checklists are source-supported legally reviewed criteria; only
+the actual applicable active-process checklist can establish process completion.
+No engine execution or accepted journal state is asserted by this audit. Fictional
+as-of must remain visible and in scenario state, separately from real authoring
+and append times. Repository redeployment does not refresh stored publicDB
+source authority; original journals remain append-only.

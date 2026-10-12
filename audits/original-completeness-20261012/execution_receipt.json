@@ -18,7 +18,7 @@
   "provider_or_engine_calls": 0,
   "production_access": false,
   "original_source_edits": false,
-  "baseline_primary_law_complete": false,
+  "baseline_primary_law_complete": true,
   "artifacts": [
     {
       "path": "audits/original-completeness-20261012/.gitignore",
@@ -27,13 +27,13 @@
     },
     {
       "path": "audits/original-completeness-20261012/CANDIDATES.md",
-      "sha256": "97d1c35c1df1b98818a8ca62ddede85bca429a26edec50aa22f1997fc95e8758",
-      "size_bytes": 4637
+      "sha256": "34d95471cd20e98180a6d255e096d04cceb7b1768dbafaf98b2998fd0c15b3bf",
+      "size_bytes": 5481
     },
     {
       "path": "audits/original-completeness-20261012/CRITERIA.md",
-      "sha256": "62c2869eb848221b09d70eae7514663c5900762cc76040cf6b5790b93bc58c33",
-      "size_bytes": 14149
+      "sha256": "68409f90a4f42d137aee3fb6a4a00bf67a1562fde2e18e2f459e27fb8692e678",
+      "size_bytes": 15861
     },
     {
       "path": "audits/original-completeness-20261012/audit_150.csv",
@@ -42,8 +42,8 @@
     },
     {
       "path": "audits/original-completeness-20261012/audit_150.json",
-      "sha256": "770c9ff640210843e895fdce4849b0d056dd9994b2587e9d876db50dc8374091",
-      "size_bytes": 1287160
+      "sha256": "b6b0fac2179187b48bddb177a419858db5f1bdc34f3d5236867a9bad904c6a29",
+      "size_bytes": 1288060
     },
     {
       "path": "audits/original-completeness-20261012/baseline_counts.json",
@@ -212,13 +212,13 @@
     },
     {
       "path": "audits/original-completeness-20261012/compile_audit.py",
-      "sha256": "c04e0dd06bf70635d3b435b4b8b4e4180ec37d7a45e600214b77a87992ead2e7",
-      "size_bytes": 14143
+      "sha256": "decf95406236c7677d8405b2d174828a20459b8644ab6e732ada7460de53860a",
+      "size_bytes": 14424
     },
     {
       "path": "audits/original-completeness-20261012/criteria.json",
-      "sha256": "59a9aa7b6fa31290e5654265d2b058c78a56d3a8ab712a87b56473e25324a47a",
-      "size_bytes": 29329
+      "sha256": "cd4d2a5f402c388f547a01471810884cd065a97d3bad986f7f59272839d63f75",
+      "size_bytes": 29420
     },
     {
       "path": "audits/original-completeness-20261012/extract_sources.py",
@@ -226,9 +226,19 @@
       "size_bytes": 8131
     },
     {
+      "path": "audits/original-completeness-20261012/independent_review_receipt.json",
+      "sha256": "35969055b81384508cf2b1a8af5222e981732c90493603ed7a1ab8d78eccdf42",
+      "size_bytes": 13060
+    },
+    {
       "path": "audits/original-completeness-20261012/inventory_receipt.json",
       "sha256": "721423f8c01ad8a07b910e4acfaa694de303c564496e941e8053f6adcc590757",
       "size_bytes": 145648
+    },
+    {
+      "path": "audits/original-completeness-20261012/legal_source_eligibility.json",
+      "sha256": "0b4958b660280af9b0fd22f207b2d8c4193901e4e3f00fada639b079927210d2",
+      "size_bytes": 4367
     },
     {
       "path": "audits/original-completeness-20261012/official_corrected_heading_extracts.json",
@@ -236,9 +246,14 @@
       "size_bytes": 2524
     },
     {
+      "path": "audits/original-completeness-20261012/official_historical_comparison.json",
+      "sha256": "99bb51011110431805a24782a48dcf04a485f9d15f6ecc7311225eddee26f404",
+      "size_bytes": 3375
+    },
+    {
       "path": "audits/original-completeness-20261012/official_law_receipt.json",
-      "sha256": "1d5185465d1beea6aa1e41d5a0676c9bdf1130fb17c9cec5ca90c09bb9e00f54",
-      "size_bytes": 10789
+      "sha256": "ddea38d622df31cf2ade179fdf7450b48a5915553d8c9275cf2765896f1724f4",
+      "size_bytes": 12787
     },
     {
       "path": "audits/original-completeness-20261012/render_sources.py",
@@ -254,6 +269,11 @@
       "path": "audits/original-completeness-20261012/source_receipts.json",
       "sha256": "7f9a3ee0f1e8c8e54c0ce8bf2b4341d5e054a464ec07f6e9bbfd4d437cc7870a",
       "size_bytes": 981501
+    },
+    {
+      "path": "audits/original-completeness-20261012/supplemental_operator_plan.json",
+      "sha256": "58efc52122dc1d62bb2711e5cd39a4c24e34d8dad972767e5d934dd17ac8af01",
+      "size_bytes": 8455
     }
   ],
   "deterministic_replay": "PASS: same hashes before/after rerunning extraction, compilation and candidate source builder; case count150; augmented candidates9 with3perdomain and21new sources",
@@ -261,10 +281,14 @@
   "supplemental_candidates_status": "pending_fresh_independent_legal_review_not_final_designation",
   "diff_check_note": "Initial git diff --check flagged csv.writer CRLF as trailing whitespace; emitter now uses LF. Corrected check passed.",
   "current_primary_articles_for_active_nine_received": true,
-  "primary_articles_still_pending": [
-    "272",
-    "272a"
-  ],
+  "primary_articles_still_pending": [],
   "historical_pdf_verified": false,
-  "final_current_text_note": "Corrected actual printed-heading259/259a/259d/259e/269/266n independently read from Mac-relayed official DE source. No older PDF verification claimed."
+  "final_current_text_note": "Corrected actual printed-heading259/259a/259d/259e/269/266n independently read from Mac-relayed official DE source. No older PDF verification claimed.",
+  "baseline_primary_law_scope": "Required current CO criteria text received/read via Mac primary-source transfer; actual2024/2026snapshot comparison for disclosed selected temporal paths; not Cloud PDF retrieval or exhaustive amendment-history proof.",
+  "historical_official_source_comparison_received": true,
+  "independent_nine_legal_source_eligibility": "approved_by_fresh_reviewer_for_bounded_routes_and_exact_fictional_asof",
+  "completed_engine_runs": 0,
+  "final_designated_demonstrations": 0,
+  "actual_active_process_completeness_certified": false,
+  "runtime_operator_plan_executed": false
 }

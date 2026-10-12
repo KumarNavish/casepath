@@ -16,10 +16,7 @@
   "normalization_limit": "Coordinator joined PDF lines/hyphenation; spacing follows relay (including some concatenated numeric tokens). These are not byte-exact PDF extracts. Original full PDF hash is supplied, not locally verified.",
   "269d_4_5_effective_date": "2025-10-01",
   "269d_4_5_effective_date_provenance": "Official informational EN PDF footnotes106/107 relayed by Mac: FA29Sept2023 FormalRequirements; AS2025197; BBl20222100,2624. Authoritative DE footnote confirmation still pending.",
-  "missing_actual_articles_pending_primary_relay": [
-    "272",
-    "272a"
-  ],
+  "missing_actual_articles_pending_primary_relay": [],
   "valid_transferred_de_text": {
     "257d": "1 Ist der Mieter nach der Übernahme der Sache mit der Zahlung fälliger Mietzinse oder Nebenkosten im Rückstand, so kann ihm der Vermieter schriftlich eine Zahlungsfrist setzen und ihm androhen, dass bei unbenütztem Ablauf der Frist das Mietverhältnis gekündigt werde. Diese Frist beträgt mindestens zehn Tage, bei Wohn- und Geschäftsräumen mindestens30Tage. 2 Bezahlt der Mieter innert der gesetzten Frist nicht, so kann der Vermieter fristlos, bei Wohn- und Geschäftsräumen mit einer Frist von mindestens30Tagen auf Ende eines Monats kündigen.",
     "257g": "1 Der Mieter muss Mängel, die er nicht selber zu beseitigen hat, dem Vermieter melden.2 Unterlässt der Mieter die Meldung, so haftet er für den Schaden, der dem Vermieter daraus entsteht.",
@@ -40,7 +37,9 @@
     "259a": "Art. 259a \n1 Entstehen an der Sache Mängel, die der Mieter weder zu verantworten \nnoch auf eigene Kosten zu beseitigen hat, oder wird der Mieter im ver-\ntragsgemässen Gebrauch der Sache gestört, so kann er verlangen, dass \nder Vermieter: \na. \nden Mangel beseitigt; \nb. \nden Mietzins verhältnismässig herabsetzt; \nc. \nSchadenersatz leistet; \nd. \nden Rechtsstreit mit einem Dritten übernimmt. \n2 Der Mieter einer unbeweglichen Sache kann zudem den Mietzins hin-\nterlegen.",
     "259d": "Art. 259d \nWird die Tauglichkeit der Sache zum vorausgesetzten Gebrauch beein-\nträchtigt oder vermindert, so kann der Mieter vom Vermieter verlangen, \ndass er den Mietzins vom Zeitpunkt, in dem er vom Mangel erfahren \nhat, bis zur Behebung des Mangels entsprechend herabsetzt.",
     "259e": "Art. 259e \nHat der Mieter durch den Mangel Schaden erlitten, so muss ihm der \nVermieter dafür Ersatz leisten, wenn er nicht beweist, dass ihn kein Ver-\nschulden trifft.",
-    "269": "Art. 269 \nMietzinse sind missbräuchlich, wenn damit ein übersetzter Ertrag aus \nder Mietsache erzielt wird oder wenn sie auf einem offensichtlich über-\nsetzten Kaufpreis beruhen."
+    "269": "Art. 269 \nMietzinse sind missbräuchlich, wenn damit ein übersetzter Ertrag aus \nder Mietsache erzielt wird oder wenn sie auf einem offensichtlich über-\nsetzten Kaufpreis beruhen.",
+    "272": "1 Der Mieter kann die Erstreckung eines befristeten oder unbefristeten Mietverhältnisses verlangen, wenn die Beendigung der Miete für ihn oder seine Familie eine Härte zur Folge hätte, die durch die Interessen des Vermieters nicht zu rechtfertigen wäre.2 Bei der Interessenabwägung berücksichtigt die zuständige Behörde insbesondere:a.die Umstände des Vertragsabschlusses und den Inhalt des Vertrags;b.die Dauer des Mietverhältnisses;c.die persönlichen, familiären und wirtschaftlichen Verhältnisse der Parteien und deren Verhalten;d.einen allfälligen Eigenbedarf des Vermieters für sich, nahe Verwandte oder Verschwägerte sowie die Dringlichkeit dieses Bedarfs;e.die Verhältnisse auf dem örtlichen Markt für Wohn- und Geschäftsräume.3 Verlangt der Mieter eine zweite Erstreckung, so berücksichtigt die zuständige Behörde auch, ob er zur Abwendung der Härte alles unternommen hat, was ihm zuzumuten war.",
+    "272a": "1 Die Erstreckung ist ausgeschlossen bei Kündigungen:a.wegen Zahlungsrückstand des Mieters(Art257d);b.wegen schwerer Verletzung der Pflicht des Mieters zu Sorgfalt und Rücksichtnahme(Art257fAbs3und4);c.wegen Konkurs des Mieters(Art266h);d.eines Mietvertrages, welcher im Hinblick auf ein bevorstehendes Umbau- oder Abbruchvorhaben ausdrücklich nur für die beschränkte Zeit bis zum Baubeginn oder bis zum Erhalt der erforderlichen Bewilligung abgeschlossen wurde.2 Die Erstreckung ist in der Regel ausgeschlossen, wenn der Vermieter dem Mieter einen gleichwertigen Ersatz für die Wohn- oder Geschäftsräume anbietet."
   },
   "rejected_extraction_errors": "Initial259/259a/259d/259e/269 snippets were inline cross-references, never used as provisions; replaced with supplied actual printed-heading German extracts.",
   "corrected_heading_extracts": {
@@ -50,5 +49,11 @@
   },
   "current_text_primary_articles_needed_for_active_nine_received": true,
   "historical_consolidation_pdf_verified": false,
-  "historical_applicability": "Separate proof question: supplied current1Jan2026 text does not prove every prior2024/2025version. No older PDF verification claimed. Candidate date/applicability scope must be disclosed by final reviewer."
+  "historical_applicability": "Selected Jan/Feb2025 defect criteria259a/d are supported by Mac-transferred actual2024/2026official snapshot comparison; Nov2025rent uses269d4/5 in force1Oct2025; May2026termination uses current2026text. No Cloud-fetched older PDF or exhaustive amendment-history verification claimed.",
+  "historical_official_source_comparison_received": true,
+  "historical_comparison_receipt": {
+    "path": "audits/original-completeness-20261012/official_historical_comparison.json",
+    "sha256": "99bb51011110431805a24782a48dcf04a485f9d15f6ecc7311225eddee26f404"
+  },
+  "candidate_historical_applicability_supported_by_transferred_official_comparison": true
 }

@@ -1,0 +1,51 @@
+{
+  "contract": "casepath.independent-audit-transferred-official-snapshot-comparison/1.0.0",
+  "retrieval_actor": "Mac coordination owner; independently retrieved official Fedlex German PDFs; results relayed via /root",
+  "relay_date": "2026-10-12",
+  "older_snapshot": {
+    "consolidation_date": "2024-01-01",
+    "publisher_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20240101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20240101-de-pdf-a.pdf",
+    "pdf_sha256_supplied": "e8aeb5b4d5101f696ce136d1e7857665ba7ab1b12132c69346c34b2faa00a94b"
+  },
+  "current_snapshot": {
+    "consolidation_date": "2026-01-01",
+    "publisher_url": "https://www.fedlex.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20260101/de/pdf-a/fedlex-data-admin-ch-eli-cc-27-317_321_377-20260101-de-pdf-a.pdf",
+    "pdf_sha256_supplied": "d25aa4d78a563c7544d732fa9681145c4cf7456b66cfde2a79eb2d57fbe40d44"
+  },
+  "method": "Mac comparator anchored actual printed article headings; substantive paragraphs compared, excluding differing page headers, footnote numbers and layout.",
+  "substantive_paragraphs_reported_same": [
+    "259a",
+    "259d",
+    "259e",
+    "269",
+    "269a",
+    "271",
+    "273",
+    "266l",
+    "266m",
+    "266n",
+    "266o",
+    "270b",
+    "272",
+    "272a"
+  ],
+  "2024_259d_supplied_exact": "Wird die Tauglichkeit der Sache zum vorausgesetzten Gebrauch beein-\nträchtigt oder vermindert, so kann der Mieter vom Vermieter verlangen, \ndass er den Mietzins vom Zeitpunkt, in dem er vom Mangel erfahren \nhat, bis zur Behebung des Mangels entsprechend herabsetzt.",
+  "2024_259a_supplied_comparison": "Actual printed provision: same Entstehen an der Sache Mängel ... removal/proportional reduction/damages/third-party dispute; paragraph2 same official rent-deposit provision as corrected2026heading text.",
+  "269d_comparison": {
+    "2024": "Only paragraphs1–3, same substantive text as current1–3; no4/5.",
+    "2026": "Adds4mechanically reproduced signature and5written-form exception for269c agreed stepped increases.",
+    "amendment_effective": "2025-10-01",
+    "effective_date_evidence": "Official EN informational PDF footnotes106/107 from Mac; current DE footnote markers exist. Underlying FA29Sept2023 formal-requirements amendment, AS2025197."
+  },
+  "selected_candidate_temporal_scope": {
+    "Jan_Feb2025_defect_eligibility": "259a/259d current text and supplied2024official source comparison support the unchanged substantive criteria; no quantum/court determination.",
+    "Nov2025_increase_missing_reasons": "Apply amended269d including4/5; ordinary non269c tenancy is explicitly supplied; mechanical signature not rejected.",
+    "May2026_termination_form": "Current2026primary266l/266o; received packet/source proof, not requirement to receive nonexistent approved form."
+  },
+  "limits": [
+    "Full PDF byte hashes were supplied by Mac and are not independently recomputed on Cloud.",
+    "This is an actual source-bounded two-snapshot comparison, not an exhaustive independently verified amendment history.",
+    "Older257d/257g/259b/259g/259h histories are not claimed compared here; complete original deposit/arrears paths remain conditional on source and applicability.",
+    "No engine qualification or process-node completion is implied by the legal source comparison."
+  ]
+}

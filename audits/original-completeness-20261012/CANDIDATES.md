@@ -7,7 +7,13 @@ registry, manifest or journal. All21new text sources begin with a visible
 original ID/manifest SHA, disclose author date12October2026, and distinguish
 fictional historical source/as-of dates from actual creation.
 
-Status: **candidates for fresh independent legal review; no final designation**.
+Status: **independently approved for bounded legal-source eligibility; no
+process-completion certification or final designation**. The fresh reviewer
+approved all nine under the unchanged corrected manifest and their exact
+fictional as-of dates. `independent_review_receipt.json` transcribes that result
+and its limits; `legal_source_eligibility.json` binds the later review status to
+each unchanged candidate. Packet author-stage pending-review strings remain
+unchanged as source history.
 The authoritative byte binding is `candidate-packs/manifest.json`, which binds
 nine `candidate.json` packets to their new-source hashes and quoted checklists.
 Reproduce and mechanically verify it with:
@@ -49,8 +55,15 @@ The candidate packets deliberately distinguish removal/reduction eligibility
 from reduction quantum, no-reasons/form grounds from substantive abusive-rent
 merits, and actual supported current sources from hypothetical later events.
 No original-case completeness verdict is promoted by a supplement. The profile
-manifest remains pending independent review; the original baseline remains
+manifest's author-stage pending-review text is preserved as source history;
+the later review status is separately recorded. The original baseline remains
 0complete legal-merit demonstrations per domain.
+
+The later independent approval now closes the bounded legal-source review.
+Actual active-node checklist completeness, runtime as-of state and UI as-of
+visibility remain unexecuted/uncertified. Legal-source eligibility is not an
+engineCompleted state. `supplemental_operator_plan.json` supplies the next
+reference-validation boundary without executing it.
 
 Review corrections before reseal: original PDF identity was rechecked for all
 six notice candidates; every configured property must occur in its actual

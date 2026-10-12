@@ -1,0 +1,99 @@
+{
+  "contract": "casepath.synthetic-candidate-legal-source-eligibility/1.0.0",
+  "candidate_manifest_sha256": "d52fe799562d13fde92e884dd10230b1897f96ac960d839b1e0952714ee2e11c",
+  "independent_review_receipt": {
+    "path": "audits/original-completeness-20261012/independent_review_receipt.json",
+    "sha256": "35969055b81384508cf2b1a8af5222e981732c90493603ed7a1ab8d78eccdf42"
+  },
+  "eligible_source_candidates": [
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "candidate_sha256": "15088901f20bfa46eb50185a08a58bb3ddcc416cd3544b282e4ad17f8d028f55",
+      "domain": "defect_mold_heating",
+      "fictional_as_of": "2025-02-21",
+      "active_path": "defect_removal_and_rent_reduction_eligibility",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "candidate_sha256": "a6f502e03940e0e4df5b103b2c985ed5435ebbd6c5d963f0836ff9c8de646280",
+      "domain": "defect_mold_heating",
+      "fictional_as_of": "2025-01-30",
+      "active_path": "defect_removal_and_rent_reduction_eligibility",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "candidate_sha256": "0fd58214e4064313ae8a4af8f17bb3c0209c68b4d774fd828aa855dadd055852",
+      "domain": "defect_mold_heating",
+      "fictional_as_of": "2025-02-06",
+      "active_path": "defect_removal_and_rent_reduction_eligibility",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "candidate_sha256": "cda5c1a0796eadbe88ff037f037c8d07af732960c2e908f0f14e2c3094362b01",
+      "domain": "lease_termination_dispute",
+      "fictional_as_of": "2026-05-10",
+      "active_path": "received_landlord_notice_form_nullity_assessment",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "candidate_sha256": "636da0414b44a57c8f66fdb35d57e68a96870ef902e2a08dbf9f3755afb619de",
+      "domain": "lease_termination_dispute",
+      "fictional_as_of": "2026-05-06",
+      "active_path": "received_landlord_notice_form_nullity_assessment",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "candidate_sha256": "10052ce285e714545d0dd766e09505ab8b775fa5b64722a7cbca0e0b5a8da583",
+      "domain": "lease_termination_dispute",
+      "fictional_as_of": "2026-05-10",
+      "active_path": "received_landlord_notice_form_nullity_assessment",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "candidate_sha256": "b27c6ac4e3baa4c647ef57fadad1a381b1fdaeefec932e76bb02e78aed2bdad6",
+      "domain": "rent_increase_dispute",
+      "fictional_as_of": "2025-11-24",
+      "active_path": "original_increase_missing_reasons_nullity_assessment",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "candidate_sha256": "1ee26d307e46f60fe632695df68818be4c1a7d7119d4ffe72a7327a9afd96ccf",
+      "domain": "rent_increase_dispute",
+      "fictional_as_of": "2025-11-25",
+      "active_path": "original_increase_missing_reasons_nullity_assessment",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "candidate_sha256": "327730fb9632d6521acee7e697b5684321217eafc09e830b335d345213ba0588",
+      "domain": "rent_increase_dispute",
+      "fictional_as_of": "2025-11-29",
+      "active_path": "original_increase_missing_reasons_nullity_assessment",
+      "legal_source_eligibility": "approved",
+      "process_node_completion": "not_certified"
+    }
+  ],
+  "eligible_count_by_domain": {
+    "defect_mold_heating": 3,
+    "lease_termination_dispute": 3,
+    "rent_increase_dispute": 3
+  },
+  "completed_engine_runs": 0,
+  "final_designated_demonstrations": 0,
+  "operational_authority": "Actual active-process nodes and accepted journal state; this receipt supplies independently reviewed legal-source criteria only."
+}
