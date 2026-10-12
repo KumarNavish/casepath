@@ -48,6 +48,40 @@ test('event cursors cannot hide missing/duplicate sequences or a different resul
  for(const batch of [{...full,events:full.events.slice(1)},{...full,events:[full.events[0],full.events[0],...full.events.slice(1)]},{...full,events:full.events.slice(0,2)},{...full,events:full.events.map((event,i)=>i===2?{...event,state_sha256:hash('9')}:event)},{...full,events:full.events.map((event,i)=>i===1?{...event,claim_id:'other'}:event)}]) assert.throws(()=>ui.acceptEvents(null,batch,s),/sequence|cursor|identity|claim/);
 });
 
+function savedReadTuple() {
+ const body='Original lease 🏠. The notice names Alex.',saved=state({contract:'casepath.autonomous-claim/1.0.0',last_event_sha256:hash('3')}),rejection={item_id:'proposed-fact',reason:'The proposed quote was not in an original source.',item:{fact_id:'proposed-fact',citations:[{artifact_id:'outside-claim',quote:'UNACCEPTED_PROVIDER_QUOTE',start_char:0,end_char:24}]}};
+ saved.source_descriptors[0].descriptor_sha256=hash('6');saved.acquired_sources=[{claim_id:saved.claim_id,artifact_id:'original',sha256:hash('d'),descriptor_sha256:hash('6'),text:body,text_sha256:sha(body),extraction:'utf8',complete:true,receipt_sha256:hash('7')}];
+ saved.facts[0].citations=[{artifact_id:'original',sha256:hash('d'),text_sha256:sha(body),start_char:0,end_char:Array.from(body).length,quote:body}];saved.receipts=[{kind:'interpretation.accepted',receipt:{receipt_sha256:hash('4'),item_rejections:[rejection]}}];saved.actions[0].receipt.item_rejections=[rejection];
+ saved.original_binding={claim_id:saved.claim_id,source_map:[{artifact_id:'original',original_artifact_id:'raw-original',sha256:hash('d')}]};
+ const history=[{claim_id:saved.claim_id,seq:1,revision:1,state_sha256:hash('1'),event_sha256:hash('1'),previous_event_sha256:null,kind:'intake'},
+  {claim_id:saved.claim_id,seq:2,revision:2,state_sha256:hash('2'),event_sha256:hash('2'),previous_event_sha256:hash('1'),kind:'interpretation.accepted',payload:{proposal:{facts:[rejection.item]},receipt:saved.receipts[0].receipt}},
+  {claim_id:saved.claim_id,seq:3,revision:3,state_sha256:saved.state_sha256,event_sha256:hash('3'),previous_event_sha256:hash('2'),kind:'action.completed',payload:saved.actions[0]}];
+ return {state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,node_capabilities:{branch:{authorized:true,id:'local_assessment.record'}}},cursor:saved.revision,history};
+}
+
+test('saved read copies retain exact accepted source spans receipts and rejected historical provider quotes without admitting them as facts',async()=>{
+ const tuple=savedReadTuple(),before=JSON.stringify(tuple),checked=await ui.checkedSavedSnapshot(tuple,tuple.state.claim_id);assert.equal(checked,tuple);assert.equal(JSON.stringify(tuple),before);
+ assert.deepEqual(checked.state.receipts,tuple.state.receipts);assert.deepEqual(checked.history,tuple.history);assert.deepEqual(checked.state.acquired_sources,tuple.state.acquired_sources);assert.equal(checked.state.facts[0].citations[0].quote,checked.state.acquired_sources[0].text);
+ assert.equal(checked.history[1].payload.proposal.facts[0].citations[0].quote,'UNACCEPTED_PROVIDER_QUOTE');assert.equal(checked.state.actions[0].receipt.item_rejections[0].item.citations[0].artifact_id,'outside-claim');assert.ok(!checked.state.facts.some(fact=>fact.fact_id==='proposed-fact'));
+ const html=ui.inspectorMarkup(checked.state,'branch');assert.doesNotMatch(html,/UNACCEPTED_PROVIDER_QUOTE|data-au-source="outside-claim"/);assert.equal(JSON.stringify(tuple),before);
+});
+
+test('saved read validation rejects unbound cursors projections sources text and accepted citations even with otherwise intact records',async()=>{
+ const tuple=savedReadTuple(),before=JSON.stringify(tuple);
+ const cases=[
+  ['missing claim contract',copy=>{delete copy.state.contract;}],['wrong claim contract',copy=>{copy.state.contract='casepath.autonomous-claim/0';}],['wrong event contract',copy=>{copy.history[0].contract='casepath.autonomous-event/0';}],
+  ['cursor',copy=>{copy.cursor=2;}],['projection claim',copy=>{copy.projection.claim_id='another-claim';}],['projection revision',copy=>{copy.projection.revision=2;}],['projection hash',copy=>{copy.projection.state_sha256=hash('0');}],['missing projection identity',copy=>{copy.projection={};}],
+  ['latest cursor hash',copy=>{copy.state.last_event_sha256=hash('0');}],['event gap',copy=>{copy.history.splice(1,1);}],['duplicate event',copy=>{copy.history[1]=structuredClone(copy.history[0]);}],['event claim',copy=>{copy.history[1].claim_id='another-claim';}],['event hash',copy=>{copy.history[1].event_sha256='bad';}],['historical state hash',copy=>{copy.history[1].state_sha256='bad';}],['event chain',copy=>{copy.history[2].previous_event_sha256=hash('0');}],
+  ['graph ownership',copy=>{copy.state.graph.claim_id='another-claim';}],['graph cycle',copy=>{copy.state.graph.edges.push({source_node_id:'branch',target_node_id:'start'});}],['missing graph node',copy=>{copy.state.graph.edges[0].target_node_id='missing-step';}],
+  ['source roster claim',copy=>{copy.state.source_descriptors[0].claim_id='another-claim';}],['source roster hash',copy=>{copy.state.source_descriptors[0].sha256=hash('0');}],['duplicate source',copy=>{copy.state.source_descriptors.push(structuredClone(copy.state.source_descriptors[0]));}],['original binding claim',copy=>{copy.state.original_binding.claim_id='another-claim';}],['original mapping hash',copy=>{copy.state.original_binding.source_map[0].sha256=hash('0');}],
+  ['acquired source claim',copy=>{copy.state.acquired_sources[0].claim_id='another-claim';}],['acquired source hash',copy=>{copy.state.acquired_sources[0].sha256=hash('0');}],['acquired descriptor hash',copy=>{copy.state.acquired_sources[0].descriptor_sha256=hash('0');}],['changed acquired text',copy=>{copy.state.acquired_sources[0].text+=' Altered text.';}],['acquired text hash',copy=>{copy.state.acquired_sources[0].text_sha256=hash('0');}],
+  ['citation source',copy=>{copy.state.facts[0].citations[0].artifact_id='outside-claim';}],['citation source hash',copy=>{copy.state.facts[0].citations[0].sha256=hash('0');}],['citation text hash',copy=>{copy.state.facts[0].citations[0].text_sha256=hash('0');}],['citation quote',copy=>{copy.state.facts[0].citations[0].quote='UNACCEPTED_PROVIDER_QUOTE';}],['citation codepoint offset',copy=>{copy.state.facts[0].citations[0].end_char=copy.state.acquired_sources[0].text.length;}],['citation negative offset',copy=>{copy.state.facts[0].citations[0].start_char=-1;}]
+ ];
+ await assert.rejects(ui.checkedSavedSnapshot(tuple,'another-claim'),/claim/i);
+ for(const [label,change] of cases){const copy=structuredClone(tuple);change(copy);await assert.rejects(ui.checkedSavedSnapshot(copy,tuple.state.claim_id),undefined,label);}
+ assert.equal(JSON.stringify(tuple),before,'validation failures cannot rewrite the retained accepted copy');
+});
+
 test('motion targets describe actual persisted node/document changes only',()=>{
  const before=state(),after=structuredClone(before);
  assert.deepEqual(ui.changedTargets(before,after),{nodes:[],documents:[]});

@@ -17,6 +17,32 @@ test('atomic snapshots bind state, projection, events and journal cursor before 
  for(const extra of [{current_revision:1},{current_state_sha256:hash('d')},{cursor_sha256:'bad'},{projection:{...value.projection,revision:1}}])assert.throws(()=>ui.readSnapshot({...value,...extra},s.claim_id,null),/snapshot|cursor|projection|revision|identity/);
  assert.throws(()=>ui.readSnapshot(value,'other',null),/another claim/);
 });
+
+const readCacheAPI='https://casepath.example.invalid/api/claim-loops/v1/autonomous',readCacheNow=1700000000000;
+function readCacheHead(id='clm_original',at=readCacheNow) {const state={...original(),contract:'casepath.autonomous-claim/1.0.0',claim_id:id};state.source_descriptors=state.source_descriptors.map(source=>({...source,claim_id:id}));return{at,state,projection:{claim_id:id,revision:state.revision,state_sha256:state.state_sha256},cursor:0,history:[]};}
+function readCacheMaterial() {return{contract:'casepath.read-cache/1',api:readCacheAPI,saved_at:readCacheNow,snapshots:[readCacheHead()],knowledge:null};}
+function sealedReadCache(material) {return JSON.stringify({...material,sha256:sha(ui.canonicalJSON(material))});}
+
+test('the read cache retains at most three exact saved heads and the complete Knowledge DTO without altering source authority',async()=>{
+ const material=readCacheMaterial();material.snapshots=[readCacheHead('original-a'),readCacheHead('original-b'),readCacheHead('original-c')];material.knowledge={at:readCacheNow,value:{versions:[{knowledge_id:'procedure.one',version:2,knowledge_sha256:hash('b'),source_claim_id:'original-a',qualification:{status:'qualified',checks:['no_case_values_or_files']}}],uses:[{knowledge_id:'procedure.one',version:2,knowledge_sha256:hash('b'),claim_id:'original-b',applicability:'same_verified_family_and_rule_version'}],quarantined:[{knowledge_id:'withheld',qualification:{status:'quarantined',reason:'Exact original withheld reason.'}}],public_extension:{text:'Exact public DTO extension.'}}};
+ const before=JSON.stringify(material),serialized=sealedReadCache(material),restored=await ui.checkedReadCache(serialized,readCacheAPI,readCacheNow);assert.deepEqual(restored,material);assert.equal(restored.snapshots.length,3);assert.deepEqual(restored.knowledge.value,material.knowledge.value);assert.equal(JSON.stringify(material),before);assert.deepEqual(restored.snapshots.map(head=>head.state.source_descriptors[0].sha256),[hash('b'),hash('b'),hash('b')]);
+ const boundary=structuredClone(material);boundary.saved_at=readCacheNow-900000;for(const head of boundary.snapshots)head.at=boundary.saved_at;boundary.knowledge.at=boundary.saved_at;assert.deepEqual(await ui.checkedReadCache(sealedReadCache(boundary),readCacheAPI,readCacheNow),boundary,'a read at the exact fifteen-minute bound remains inspectable');
+});
+
+test('read cache checksums API contract age and complete entry identities fail closed independently',async()=>{
+ const material=readCacheMaterial(),serialized=sealedReadCache(material),before=JSON.stringify(material);
+ await assert.rejects(ui.checkedReadCache('{',readCacheAPI,readCacheNow));await assert.rejects(ui.checkedReadCache(JSON.stringify({...material,sha256:hash('0')}),readCacheAPI,readCacheNow));await assert.rejects(ui.checkedReadCache(serialized,readCacheAPI+'/another-namespace',readCacheNow));
+ const cases=[['contract',copy=>{copy.contract='casepath.read-cache/0';}],['API',copy=>{copy.api='https://other.example.invalid/api/claim-loops/v1/autonomous';}],['expired envelope',copy=>{copy.saved_at=readCacheNow-900001;}],['future envelope',copy=>{copy.saved_at=readCacheNow+1;}],['expired head',copy=>{copy.snapshots[0].at=readCacheNow-900001;}],['future head',copy=>{copy.snapshots[0].at=readCacheNow+1;}],['invalid timestamp',copy=>{copy.snapshots[0].at=String(readCacheNow);}],['wrong head claim',copy=>{copy.snapshots[0].state.claim_id='another-claim';}],['head cursor',copy=>{copy.snapshots[0].cursor=1;}],['head projection',copy=>{copy.snapshots[0].projection.state_sha256=hash('0');}]];
+ for(const [label,change] of cases){const copy=structuredClone(material);change(copy);await assert.rejects(ui.checkedReadCache(sealedReadCache(copy),readCacheAPI,readCacheNow),undefined,label);}
+ assert.equal(JSON.stringify(material),before,'failed local validation cannot modify the saved original');
+});
+
+test('read cache rejects duplicate or excess saved heads oversized storage and stale malformed Knowledge',async()=>{
+ const material=readCacheMaterial(),before=JSON.stringify(material),duplicate={...material,snapshots:[material.snapshots[0],structuredClone(material.snapshots[0])]},excess={...material,snapshots:['a','b','c','d'].map(id=>readCacheHead(id))};await assert.rejects(ui.checkedReadCache(sealedReadCache(duplicate),readCacheAPI,readCacheNow));await assert.rejects(ui.checkedReadCache(sealedReadCache(excess),readCacheAPI,readCacheNow));
+ const oversized={...material,knowledge:{at:readCacheNow,value:{versions:[],uses:[],quarantined:[],public_extension:'x'.repeat(1048577)}}};assert.ok(sealedReadCache(oversized).length*2>2*1024*1024);await assert.rejects(ui.checkedReadCache(sealedReadCache(oversized),readCacheAPI,readCacheNow),/bound/i);
+ for(const knowledge of [{at:readCacheNow-900001,value:{versions:[]}},{at:readCacheNow+1,value:{versions:[]}},{at:readCacheNow,value:{versions:{}}},{at:readCacheNow,value:{versions:[],uses:{}}},{at:readCacheNow,value:{versions:[],quarantined:{}}}])await assert.rejects(ui.checkedReadCache(sealedReadCache({...material,knowledge}),readCacheAPI,readCacheNow));
+ assert.equal(JSON.stringify(material),before);
+});
 test('full collection search and domain browsing use supplied presentation metadata only',()=>{
  const rows=Array.from({length:150},(_,i)=>({...original(),claim_id:`clm_${i}`,title:`Claim ${i}`,browse_metadata:{domain:i<50?'defect_mold_heating':i<100?'lease_termination_dispute':'rent_increase_dispute'},source_preview:{text:i===149?'Rare original passage':'Original message'}}));
  assert.equal(ui.matchingClaims(rows,{domain:'defect_mold_heating'}).length,50);

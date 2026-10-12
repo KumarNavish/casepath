@@ -233,6 +233,12 @@ function priorAssessmentFixture() {
   }
   return acceptedFixture;
 }
+const readCacheKey='casepath.read-cache/1';
+function seededReadCache(snapshot,knowledge=null){
+  const at=Date.parse('2026-10-09T12:00:00Z'),entry={at,state:clone(snapshot.state),projection:clone(snapshot.projection),cursor:snapshot.state.revision,history:clone(snapshot.events)},material={contract:readCacheKey,api:`http://localhost:41999${base}`,saved_at:at,snapshots:[entry],knowledge:knowledge?{at,value:clone(knowledge)}:null};
+  return {...material,sha256:sha(canonical(material))};
+}
+function resealReadCache(value){const material=clone(value);delete material.sha256;return {...material,sha256:sha(canonical(material))};}
 
 function processedEnvelope(id, recordedId) {
   const envelope = clone(captured[`${base}/claims/${recordedId}`]);
@@ -249,6 +255,7 @@ function processedEnvelope(id, recordedId) {
 function unprocessedEnvelope(original, binding) {
   const id = original.claim_id, message = original.message;
   const state = {
+    contract:'casepath.autonomous-claim/1.0.0',
     claim_id: id, title: original.subject, origin: 'canonical_original', browse_metadata: browsing.get(id),
     mode: 'unprocessed', status: 'not_started', phase: 'not_run', phase_summary: '',
     revision: 0, state_sha256: sha(`unprocessed fixture ${id}`),
@@ -461,7 +468,7 @@ async function mountFixture(page, config = {}) {
   await page.addStyleTag({path: process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root, 'casepath/assets/autonomous-workspace-v1.css')});
   await page.addScriptTag({path: process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root, 'casepath/assets/autonomous-workspace-v1.js')});
   await page.evaluate(({data, config, base}) => {
-    window.__fixture = {...data, ...config, calls: [], held: [], splitRevision: {}, startPosts: 0, startViolations: [], suitePosts: {}, suiteReads: {}};
+    window.__fixture = {...data, ...config, calls: [], held: [], splitRevision: {}, startPosts: 0, startViolations: [], suitePosts: {}, suiteReads: {},activeSnapshotReads:0,peakSnapshotReads:0};
     const fixture = window.__fixture;
     const originalStart = fixture.originalStartId ? structuredClone(fixture.envelopes[fixture.originalStartId]) : null;
     const response = (status, body) => ({ok: status >= 200 && status < 300, status, json: async () => structuredClone(body)});
@@ -640,9 +647,10 @@ async function mountFixture(page, config = {}) {
         if (fixture.atomicWriter) advance(id); // writer runs after the complete read was captured
         if (fixture.mismatchedSnapshots > 0) { fixture.mismatchedSnapshots--; snapshot.current_revision++; }
         if (fixture.corruptProjection) snapshot.projection.state_sha256 = '0'.repeat(64);
-        if (fixture.holdId === id && (fixture.holdRemaining === undefined || fixture.holdRemaining > 0)) {
+        if ((fixture.holdSnapshots || fixture.holdIds?.includes(id) || fixture.holdId === id) && (fixture.holdRemaining === undefined || fixture.holdRemaining > 0)) {
           if (fixture.holdRemaining !== undefined) fixture.holdRemaining--;
-          return new Promise(resolve => fixture.held.push({id, release: () => resolve(response(200, snapshot))}));
+          fixture.activeSnapshotReads++;fixture.peakSnapshotReads=Math.max(fixture.peakSnapshotReads,fixture.activeSnapshotReads);
+          return new Promise(resolve => fixture.held.push({id,kind:'snapshot',release:()=>{fixture.activeSnapshotReads--;resolve(response(200,snapshot));}}));
         }
         return response(200, snapshot);
       }
@@ -655,10 +663,15 @@ async function mountFixture(page, config = {}) {
       if (fixture.corruptLegacyHash) events.current_state_sha256 = '0'.repeat(64);
       return response(200, events);
     };
+    if(config.seedReadCache)sessionStorage.setItem('casepath.read-cache/1',JSON.stringify(config.seedReadCache));
+    if(config.storageQuota){const set=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='casepath.read-cache/1')throw new DOMException('Isolated cache quota exceeded.','QuotaExceededError');return set.call(this,key,value);};}
     window.__controller = window.CasePathAutonomous.mount(document.querySelector('#workspace'), {fetch});
   }, {data: fixtureData(config), config, base});
   const hash = new URL(page.url()).hash;
-  if (hash.startsWith('#autonomous/claim/')) await eventually(() => page.locator('[data-au-claim-title]').count().then(count => count === 1), 'the reloaded claim did not render');
+  if (hash.startsWith('#autonomous/claim/')) {
+    if(config.allowHeldPreview){const id=decodeURIComponent(hash.slice('#autonomous/claim/'.length).split('?')[0]);await eventually(()=>page.locator(`[data-au-preview="catalog"][data-au-preview-claim="${id}"], [data-au-preview="unknown"]`).count().then(count=>count===1),'the held uncached reload did not retain an opening view without accepted content');}
+    else await eventually(() => page.locator('[data-au-claim-title]').count().then(count => count === 1), 'the reloaded claim did not render');
+  }
   else {
     const params=new URLSearchParams(hash.split('?')[1]),total=hash.includes('scope=added')?(config.rememberedNativeId?8:9):150,requested=Math.max(1,Number(params.get('page'))||1),pageNumber=Math.min(Math.ceil(total/20),requested),expectedRows=Math.min(20,total-(pageNumber-1)*20);
     await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === expectedRows), 'Cases did not load the requested fixture scope');
@@ -1964,6 +1977,100 @@ test('quiet work: background Knowledge warming stays read only, revalidates exac
     await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='knowledge')),'the post-write fresh Knowledge read was not held');assert.equal(await page.locator('[data-au-knowledge-identity]').count(),0,'a late invalidated warm response cannot resurrect its old cache');assert.equal(await page.locator('[data-au-skeleton="knowledge"]').isVisible(),true);
     await page.evaluate(()=>{window.__fixture.holdKnowledge=false;const fresh=window.__fixture.held.filter(row=>row.kind==='knowledge');window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='knowledge');for(const held of fresh)held.release();});await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===1),'the current generation did not render its own fresh Knowledge result');
   });
+});
+
+test('read cache: visible and native hover warming bounds GET concurrency and shares the exact source-bound foreground read',async t=>{
+  const id=originals[0].claim_id,page=await fixturePage(t,{holdSnapshots:true});await page.clock.runFor(100);
+  await page.locator(`[data-au-claim="${id}"]`).hover();await page.locator(`[data-au-claim="${originals[1].claim_id}"]`).focus();
+  await eventually(()=>page.evaluate(()=>window.__fixture.activeSnapshotReads===2),'known visible/hovered claims did not start their bounded read-only warm');
+  assert.equal(await page.locator('[data-au-claim-row]').count(),20);assert.equal(await page.locator('[data-au-revision]').count(),0,'background warming cannot render accepted claim content over Cases');assert.equal(await page.evaluate(()=>window.__fixture.peakSnapshotReads),2);
+  assert.equal((await calls(page,`/claims/${id}/snapshot`)).length,1);await page.locator(`[data-au-claim="${id}"]`).click();await eventually(()=>page.locator('[data-au-preview="catalog"]').count().then(count=>count===1),'opening did not retain its matched original preview while the shared read was held');
+  assert.equal((await calls(page,`/claims/${id}/snapshot`)).length,1,'foreground opening shares the exact in-flight GET');
+  await page.evaluate(id=>{window.__fixture.holdSnapshots=false;const matching=window.__fixture.held.filter(row=>row.id===id);window.__fixture.held=window.__fixture.held.filter(row=>row.id!==id);for(const held of matching)held.release();},id);await title(page,id);
+  const record=await visibleRecord(page);assert.deepEqual(record,fixtureData().envelopes[id]);assert.deepEqual(record.state.source_descriptors.map(row=>({artifact_id:row.artifact_id,sha256:row.sha256})),corpusManifest.claims.find(row=>row.claim_id===id).observable_artifacts.map(row=>({artifact_id:row.artifact_id,sha256:row.sha256})));
+  const reads=(await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/snapshot')))).length;await page.clock.runFor(1000);assert.equal((await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/snapshot')))).length,reads,'navigation cancels queued background warm reads');
+});
+
+test('read cache: a validated saved head paints read only before held fresh reads and History and original source inspection retain its exact bytes',async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,snapshot=fixture.snapshots.assessed,seed=seededReadCache(snapshot,fixture.knowledge),page=await fixturePage(t,{priorAssessment:'assessed',seedReadCache:seed,holdId:id,holdRemaining:1,holdStatus:true});
+  await open(page,id);await eventually(()=>page.locator('[data-au-revision]').getAttribute('data-au-revision').then(revision=>revision===String(snapshot.state.revision)).catch(()=>false),'the verified session copy did not paint before the fresh read');await title(page,id);
+  assert.equal(await currentReadState(page),'refreshing');assert.deepEqual(await visibleRecord(page),{state:snapshot.state,projection:snapshot.projection});
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();assert.equal(await page.locator('[data-au-arrival] input:enabled, [data-au-arrival] button:enabled, [data-au-pause]:enabled, [data-au-resume]:enabled, [data-au-start]:enabled').count(),0,'a persisted head never grants write authority');
+  const source=page.locator('[data-au-panel="sources"] [data-au-source]').first();await source.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] .au-source-body').count().then(count=>count===1),'the read-only original source did not remain inspectable');await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);assert.deepEqual((await caseDetails(page)).state,snapshot.state);
+  await page.evaluate(()=>{window.__fixture.loadAccepted('reassessed');window.__fixture.holdId=null;window.__fixture.holdStatus=false;});
+  await page.evaluate(()=>window.__controller.refresh());await eventually(()=>currentReadState(page).then(state=>state==='verified'),'fresh server data did not replace saved-copy authority');
+  assert.deepEqual((await visibleRecord(page)).state,fixture.states.reassessed);assert.deepEqual((await visibleRecord(page)).projection,fixture.snapshots.reassessed.projection);assert.equal((await visibleRecord(page)).state.last_event_sha256,fixture.snapshots.reassessed.events.at(-1).event_sha256);
+  await page.evaluate(async()=>{for(const held of window.__fixture.held.splice(0))held.release();for(let turn=0;turn<100;turn++)await Promise.resolve();});assert.deepEqual((await visibleRecord(page)).state,fixture.states.reassessed,'a late older captured read cannot overwrite the newer foreground head');
+});
+
+test('read cache: an actual foreground head persists across reload and keeps its exact read-only return context while fresh GETs are held',async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,saved=fixture.states.assessed,obligation=saved.obligations.find(row=>row.document_type==='spouse_notice_copy'),fact=obligation.required_fact_ids[0],page=await fixturePage(t,{priorAssessment:'assessed'});
+  await page.evaluate(preferences=>window.__controller.openClaim(preferences.id,true,preferences),{id,node:obligation.node_id,document:obligation.document_type,obligation:obligation.obligation_id,fact});await title(page,id);
+  await eventually(()=>page.evaluate(({key,id})=>{const value=sessionStorage.getItem(key);return value&&JSON.parse(value).snapshots.some(row=>row.state.claim_id===id);},{key:readCacheKey,id}),'the accepted foreground snapshot was not persisted by the actual product');
+  const stored=await page.evaluate(key=>sessionStorage.getItem(key),readCacheKey),envelope=JSON.parse(stored);assert.ok(stored.length*2<=2*1024*1024);assert.ok(envelope.snapshots.length<=3);assert.deepEqual(envelope.snapshots.find(row=>row.state.claim_id===id).state,saved);assert.equal(envelope.snapshots.find(row=>row.state.claim_id===id).cursor,saved.revision);
+  await page.reload();await mountFixture(page,{priorAssessment:'assessed',holdId:id,holdStatus:true});await title(page,id);assert.equal(await currentReadState(page),'refreshing');assert.deepEqual((await visibleRecord(page)).state,saved);
+  await page.locator('.au-nav [data-au-nav="work"]').click();const process=page.locator('[data-au-return-case="step"]'),documents=page.locator('[data-au-return-case="documents"]');assert.equal(await process.isVisible(),true,'a checked reload copy retains its exact case navigation context');assert.equal(await documents.isVisible(),true);
+  await documents.click();await title(page,id);assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(),true);assert.equal(await page.locator(`[data-au-obligation="${obligation.obligation_id}"]`).getAttribute('data-selected'),'true');
+  assert.equal(await page.locator('[data-au-arrival] input:enabled, [data-au-arrival] button:enabled, [data-au-pause]:enabled, [data-au-resume]:enabled, [data-au-start]:enabled').count(),0);
+  await page.locator('.au-nav [data-au-nav="knowledge"]').click();await page.locator('[data-au-return-case="step"]').click();await title(page,id);const query=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);for(const [key,value]of Object.entries({node:obligation.node_id,document:obligation.document_type,obligation:obligation.obligation_id,fact}))assert.equal(query.get(key),value);
+  await page.goBack();await eventually(()=>page.locator('.au-quiet-knowledge').count().then(count=>count===1),'Back lost the prior Knowledge route');assert.equal(await page.locator('[data-au-return-case="step"]').isVisible(),true);
+});
+
+test('read cache: a newer manual node and exact requirement survive the held initial deep-link read and Back',async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,saved=fixture.states.assessed,spouse=saved.obligations.find(row=>row.document_type==='spouse_notice_copy'),receipt=saved.obligations.find(row=>row.document_type==='proof_of_receipt'&&row.node_id==='lt_deadline'),page=await fixturePage(t,{priorAssessment:'assessed',seedReadCache:seededReadCache(fixture.snapshots.assessed),holdId:id,holdRemaining:1});
+  await page.evaluate(preferences=>{void window.__controller.openClaim(preferences.id,true,preferences);},{id,node:spouse.node_id,document:spouse.document_type,obligation:spouse.obligation_id,fact:spouse.required_fact_ids[0]});await title(page,id);assert.equal(await currentReadState(page),'refreshing');
+  const initialRoute=new URL(page.url()).hash;await openFullProcess(page);await page.locator('[data-au-node="lt_deadline"]').click();await page.locator('.au-context-nav [data-au-detail="documents"]').click();const priorSelectionRoute=new URL(page.url()).hash;await page.locator(`[data-au-panel="documents"] [data-au-select-obligation="${receipt.obligation_id}"]`).click();const route=new URL(page.url()).hash;
+  assert.equal(await page.locator('[data-au-evidence-path] [data-au-obligation]').getAttribute('data-au-obligation'),receipt.obligation_id,'the native selection must display the exact newer requirement before the delayed read');
+  await page.evaluate(()=>{window.__fixture.holdId=null;for(const held of window.__fixture.held.splice(0))held.release();});await eventually(()=>currentReadState(page).then(state=>state==='verified'),'the held fresh snapshot did not reconcile');
+  await page.locator('.au-context-nav [data-au-detail="documents"]').click();assert.equal(await page.locator(`[data-au-obligation="${receipt.obligation_id}"]`).getAttribute('data-selected'),'true','a newer manual exact requirement must win over the initial requested one');await page.locator('.au-context-nav [data-au-detail="step"]').click();
+  const query=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);for(const [key,value]of Object.entries({node:receipt.node_id,document:receipt.document_type,obligation:receipt.obligation_id,fact:receipt.required_fact_ids[0]}))assert.equal(query.get(key),value);
+  assert.equal(new URL(page.url()).hash,route);assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),receipt.node_id);assert.deepEqual((await visibleRecord(page)).state,saved);
+  await page.goBack();await eventually(()=>page.locator('[data-au-panel="documents"]').count().then(count=>count===1),'Back did not restore the Documents view before the exact requirement selection');assert.equal(new URL(page.url()).hash,priorSelectionRoute);
+  for(let step=0;new URL(page.url()).hash!==initialRoute&&step<8;step++)await page.goBack();assert.equal(new URL(page.url()).hash,initialRoute,'bounded native Back navigation retains the earlier exact inspection route');await eventually(()=>page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step').then(node=>node===spouse.node_id).catch(()=>false),'Back did not retain the older explicitly requested inspection');
+  for(let step=0;new URL(page.url()).hash!==route&&step<8;step++)await page.goForward();assert.equal(new URL(page.url()).hash,route,'bounded native Forward navigation restores the newer exact inspection route');await title(page,id);
+  await page.locator('.au-nav [data-au-nav="work"]').click();await page.locator('[data-au-return-case="documents"]').click();await title(page,id);assert.equal(await page.locator(`[data-au-obligation="${receipt.obligation_id}"]`).getAttribute('data-selected'),'true');
+  await page.locator('.au-nav [data-au-nav="work"]').click();await page.locator('[data-au-return-case="step"]').click();await title(page,id);assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),receipt.node_id);const returned=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);for(const [key,value]of Object.entries({node:receipt.node_id,document:receipt.document_type,obligation:receipt.obligation_id,fact:receipt.required_fact_ids[0]}))assert.equal(returned.get(key),value);
+});
+
+test('read cache: corrupt, expired and mismatched saved representations cannot paint accepted content before fresh verification',async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,good=seededReadCache(fixture.snapshots.assessed);
+  const variants={checksum:value=>{value.sha256='0'.repeat(64);},expired:value=>{value.saved_at-=16*60000;value.snapshots[0].at-=16*60000;},api:value=>{value.api='http://other.invalid/api/claim-loops/v1/autonomous';},contract:value=>{value.contract='casepath.read-cache/obsolete';},claim:value=>{value.snapshots[0].projection.claim_id=otherId;},hash:value=>{value.snapshots[0].projection.state_sha256='0'.repeat(64);},cursor:value=>{value.snapshots[0].cursor--;},source:value=>{value.snapshots[0].state.acquired_sources[0].sha256='0'.repeat(64);},span:value=>{value.snapshots[0].state.facts.find(row=>row.citations?.length).citations[0].end_char++;}};
+  for(const [name,mutate]of Object.entries(variants))await t.test(name,async t=>{
+    const value=clone(good);mutate(value);const seed=name==='checksum'?value:resealReadCache(value),page=await fixturePage(t,{priorAssessment:'assessed',seedReadCache:seed,holdId:id,holdRemaining:1});await open(page,id);
+    await eventually(()=>page.evaluate(id=>window.__fixture.held.some(row=>row.id===id),id),'the independent fresh snapshot was not requested');await page.clock.runFor(100);await delay(40);
+    assert.equal(await page.locator('[data-au-revision], [data-au-state-sha], [data-au-node], [data-au-fact], [data-au-outcome]').count(),0,'invalid local data cannot be promoted into an accepted reading');assert.equal(await page.locator('[data-au-arrival], [data-au-start], [data-au-pause], [data-au-resume]').count(),0);
+    await page.evaluate(()=>{window.__fixture.holdId=null;for(const held of window.__fixture.held.splice(0))held.release();});await title(page,id);assert.deepEqual((await visibleRecord(page)).state,fixture.states.assessed);assert.equal(await currentReadState(page),'verified');
+  });
+});
+
+test('read cache: saved final heads never replace the actual Demo prefix zero and quota failure leaves fresh source reads intact',async t=>{
+  await t.test('stored head separation',async t=>{
+    const id=demoIds[0],page=await fixturePage(t,{presentationSuite:'replay'});await open(page,id);await title(page,id);assert.equal((await visibleRecord(page)).state.revision,2);
+    await eventually(()=>page.evaluate(({key,id})=>{const value=sessionStorage.getItem(key);return value&&JSON.parse(value).snapshots.some(row=>row.state.claim_id===id&&row.state.revision===2);},{key:readCacheKey,id}),'the normal saved head was not persisted');
+    await page.reload();await mountFixture(page,{presentationSuite:'replay'});await title(page,id);await page.locator('.au-nav [data-au-nav="demonstration"]').click();await title(page,id);const record=await visibleRecord(page);assert.equal(record.state.revision,0);assert.equal(record.state.graph,null);assert.deepEqual(record.state.facts,[]);assert.equal(record.state.outcome,null);const reads=await calls(page,`/claims/${id}/replay`);assert.equal(reads.filter(row=>new URL(row.url,'http://fixture.invalid').searchParams.get('through_seq')==='0').length,1);assert.ok(reads.length<=3,'at most two verified future prefixes may be prefetched');assert.match(new URL(page.url()).hash,/through=0/);assert.equal(await page.locator('[data-au-start], [data-au-arrival], [data-au-pause], [data-au-resume]').count(),0);
+  });
+  await t.test('quota fallback',async t=>{
+    const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'assessed',storageQuota:true});await open(page,id);await title(page,id);assert.deepEqual((await visibleRecord(page)).state,fixture.states.assessed);assert.equal(await currentReadState(page),'verified');assert.doesNotMatch(await page.locator('.au-global-status').innerText(),/quota|storage/i);
+    await page.reload();await mountFixture(page,{priorAssessment:'assessed',holdId:id,holdRemaining:1,storageQuota:true,allowHeldPreview:true});await eventually(()=>page.evaluate(id=>window.__fixture.held.some(row=>row.id===id),id),'the quota fallback did not continue through an ordinary fresh GET');assert.equal(await page.locator('[data-au-revision]').count(),0);await page.evaluate(()=>{window.__fixture.holdId=null;for(const held of window.__fixture.held.splice(0))held.release();});await title(page,id);assert.deepEqual((await visibleRecord(page)).state,fixture.states.assessed);
+  });
+});
+
+test('read cache: hidden and abandoned Cases cancel queued warming and late results cannot seed the next opening',async t=>{
+  for(const interruption of ['hidden','navigation'])await t.test(interruption,async t=>{
+    const page=await fixturePage(t,{holdSnapshots:true});await page.locator(`[data-au-claim="${originals[0].claim_id}"]`).hover();await page.locator(`[data-au-claim="${originals[1].claim_id}"]`).focus();await eventually(()=>page.evaluate(()=>window.__fixture.activeSnapshotReads===2),'the two warm reads were not held');
+    const ids=await page.evaluate(()=>window.__fixture.held.filter(row=>row.kind==='snapshot').map(row=>row.id)),before=(await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/snapshot')))).length;
+    if(interruption==='hidden')await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});else await page.locator('.au-nav [data-au-nav="knowledge"]').click();
+    await page.evaluate(async()=>{for(const held of window.__fixture.held.splice(0))held.release();for(let turn=0;turn<100;turn++)await Promise.resolve();});await page.clock.runFor(100);assert.equal((await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/snapshot')))).length,before,'abandoned warm queues cannot drain after their late responses');
+    if(interruption==='hidden')await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});});await page.evaluate(id=>{window.__fixture.holdSnapshots=false;window.__fixture.holdId=id;},ids[0]);await open(page,ids[0]);await eventually(()=>page.evaluate(id=>window.__fixture.held.some(row=>row.id===id),ids[0]),'the new opening did not make its own fresh GET');assert.equal(await page.locator('[data-au-revision]').count(),0,'late abandoned warm results must not repopulate the current cache');
+  });
+});
+
+test('read cache: idle pressure keeps the inspected foreground head and oversize persistence falls back to ordinary fresh reading',async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'assessed',presentationSuite:'replay'});await open(page,id);await title(page,id);const saved=await visibleRecord(page);
+  for(const other of historicalIds.filter(value=>value!==id).slice(0,3)){await open(page,other);await title(page,other);}
+  await page.locator('.au-nav [data-au-nav="work"]').click();await page.clock.runFor(500);await page.evaluate(async()=>{for(let turn=0;turn<100;turn++)await Promise.resolve();});
+  await page.evaluate(id=>{window.__fixture.holdId=id;},id);await open(page,id);await eventually(()=>page.locator('[data-au-revision]').getAttribute('data-au-revision').then(revision=>revision===String(saved.state.revision)).catch(()=>false),'idle warming evicted the explicitly inspected source-bound head');await title(page,id);assert.equal(await currentReadState(page),'refreshing');assert.deepEqual(await visibleRecord(page),saved);
+  const large=await fixturePage(t,{priorAssessment:'assessed'});await large.evaluate(id=>{window.__fixture.envelopes[id].state.public_display_extension={note:'x'.repeat(1100*1024)};},id);await open(large,id);await title(large,id);assert.equal(await currentReadState(large),'verified');assert.equal((await visibleRecord(large)).state.public_display_extension.note.length,1100*1024);await large.evaluate(async()=>{for(let turn=0;turn<100;turn++)await Promise.resolve();});const encoded=await large.evaluate(key=>sessionStorage.getItem(key),readCacheKey);assert.ok(!encoded||encoded.length*2<=2*1024*1024,'oversize state cannot exceed the storage budget');if(encoded)assert.equal(JSON.parse(encoded).snapshots.some(row=>row.state.claim_id===id),false,'an oversize head remains a foreground read rather than an unsafe stored derivative');
 });
 
 test('focused flow: cached claim revisits paint the verified record synchronously and fail revalidation read-only', async t => {
