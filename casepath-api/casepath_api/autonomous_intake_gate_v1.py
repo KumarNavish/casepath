@@ -1,5 +1,5 @@
 """Pure source-backed eligibility and checklist; no acquisition or journal writes."""
-from copy import deepcopy
+import re
 
 from .autonomous_policy_v1 import compile_process
 from .autonomous_reference_v1 import ReferenceProfile, reference_findings
@@ -8,6 +8,38 @@ from .causal_process_v1 import evaluate, seal_graph, _document_definition_sha256
 from .workspace_corpus import digest_value
 
 GATE_CONTRACT = 'casepath.source-backed-intake/1.0.0'
+
+
+def _investigation_family(state, sources):
+    """Lexical intake hints only; competing accounts remain unclassified."""
+    def hints(text):
+        text = text.casefold()
+        families = set()
+        if re.search(r'\b(?:mold|mould|dampness|moisture|leaks?|leakage|sewage\s+backflow|boiler|'
+                     r'heating(?!\s+(?:advance|costs?|charges?)))\b|'
+                     r'\b(?:schimmel\w*|feuchtigkeit\w*|wasserleck\w*|leckage\w*|'
+                     r'abwasserrückstau\w*|heizung\w*|heizkessel\w*)\b', text):
+            families.add('defect_mold_heating')
+        if (re.search(r'\b(?:rent\s+increases?|net\s+rent|higher\s+rent|'
+                      r'mietzinserh(?:ö|oe|o)hung\w*|erhöhungsformular\w*|nettomietzins\w*)\b', text)
+                or (re.search(r'\b(?:rent|miet\w*)\b', text)
+                    and re.search(r'\b(?:increase|erhöhung|reference[\s-]rate|referenzzins\w*|'
+                                  r'renovation\s+grant|sanierungsbeitrag\w*)\b', text))):
+            families.add('rent_increase_dispute')
+        if re.search(r'\b(?:terminations?|kündigung(?:en|sformular)?|verzugskündigung(?:en)?)\b', text):
+            families.add('lease_termination_dispute')
+        return families
+
+    # The supplied account outranks incidental amounts and legal boilerplate in
+    # attachments. Read title and message together so a second issue is retained.
+    accounts = ['\n'.join((state.get('title', ''), state.get('message', ''))),
+                '\n'.join(s.get('text', '') for s in sources if s.get('role') == 'customer_message'),
+                '\n'.join(s.get('text', '') for s in sources)]
+    for account in accounts:
+        families = hints(account)
+        if families:
+            return next(iter(families)) if len(families) == 1 else None
+    return None
 
 
 def inspect_sources(store, state):
@@ -28,10 +60,7 @@ def assess_intake(state, sources, base_policy, *, reference_policy=None, profile
         proposal, predicates = reference_findings(policy, sources)
     else:
         # A source account can identify an investigation family, never readiness.
-        text = '\n'.join(s.get('text', '') for s in sources).casefold()
-        family = ('defect_mold_heating' if any(x in text for x in ['heating', 'heizung', 'schimmel']) else
-                  'rent_increase_dispute' if any(x in text for x in ['mietzinserhöhung', 'erhöhungsformular', 'rent increase']) else
-                  'lease_termination_dispute' if any(x in text for x in ['termination', 'kündigung']) else None)
+        family = _investigation_family(state, sources)
         if family:
             proposal = {'category': {'family': family, 'summary': 'Source inspection identifies an investigation scope only.',
                                     'citations': []}, 'conditions': [], 'documents': [], 'steps': [],
@@ -53,7 +82,13 @@ def assess_intake(state, sources, base_policy, *, reference_policy=None, profile
         view = evaluate(seal_graph(graph))
         active = [n['node_id'] for n in view['nodes'] if n['activation'] == 'true']
         for doc in view['documents']:
-            if doc['activation'] == 'true' and doc['requirement_class'] != 'optional':
+            if not provenance and doc['requirement_class'] == 'mandatory':
+                # Questions from the existing template, not findings that a
+                # received file is absent, insufficient or of a particular type.
+                checklist.append({'document_type': doc['document_type'], 'label': doc['label'],
+                                  'node_ids': doc['required_at_node_ids'], 'status': 'unassessed',
+                                  'artifact_ids': [], 'investigation_only': True})
+            elif provenance and doc['activation'] == 'true' and doc['requirement_class'] != 'optional':
                 checklist.append({'document_type': doc['document_type'], 'label': doc['label'],
                                   'node_ids': doc['required_at_node_ids'],
                                   'status': 'sufficient' if doc['review_state'] == 'sufficient' else 'missing' if not doc['held_files'] else 'insufficient',
