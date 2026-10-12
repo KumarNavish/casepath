@@ -1,0 +1,104 @@
+[
+  {
+    "shard": "1",
+    "repo": "/workspace/casepath-release-ae0-shard1",
+    "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+    "command": [
+      "python",
+      "/tmp/casepath-release-85a-20261012/harness/run_shard.py",
+      "run",
+      "1"
+    ],
+    "cwd": "/workspace",
+    "assignment": "/tmp/casepath-release-85a-20261012/shard1/ids.txt",
+    "output": "/tmp/casepath-release-85a-20261012/shard1",
+    "environment_record": "/tmp/casepath-release-85a-20261012/shard1/command.json",
+    "expected_tests": 356,
+    "launch_condition": "Wait for root native-worker launch-window release. Preserve original failure; no silent retry."
+  },
+  {
+    "shard": "2",
+    "repo": "/workspace/casepath-release-ae0-shard2",
+    "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+    "command": [
+      "python",
+      "/tmp/casepath-release-85a-20261012/harness/run_shard.py",
+      "run",
+      "2"
+    ],
+    "cwd": "/workspace",
+    "assignment": "/tmp/casepath-release-85a-20261012/shard2/ids.txt",
+    "output": "/tmp/casepath-release-85a-20261012/shard2",
+    "environment_record": "/tmp/casepath-release-85a-20261012/shard2/command.json",
+    "expected_tests": 388,
+    "launch_condition": "Wait for root native-worker launch-window release. Preserve original failure; no silent retry."
+  },
+  {
+    "shard": "3",
+    "repo": "/workspace/casepath-release-ae0-shard3",
+    "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+    "command": [
+      "python",
+      "/tmp/casepath-release-85a-20261012/harness/run_shard.py",
+      "run",
+      "3"
+    ],
+    "cwd": "/workspace",
+    "assignment": "/tmp/casepath-release-85a-20261012/shard3/ids.txt",
+    "output": "/tmp/casepath-release-85a-20261012/shard3",
+    "environment_record": "/tmp/casepath-release-85a-20261012/shard3/command.json",
+    "expected_tests": 286,
+    "launch_condition": "Wait for root native-worker launch-window release. Preserve original failure; no silent retry."
+  },
+  {
+    "shard": "4",
+    "repo": "/workspace/casepath-release-ae0-shard4",
+    "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+    "command": [
+      "python",
+      "/tmp/casepath-release-85a-20261012/harness/run_shard.py",
+      "run",
+      "4"
+    ],
+    "cwd": "/workspace",
+    "assignment": "/tmp/casepath-release-85a-20261012/shard4/ids.txt",
+    "output": "/tmp/casepath-release-85a-20261012/shard4",
+    "environment_record": "/tmp/casepath-release-85a-20261012/shard4/command.json",
+    "expected_tests": 452,
+    "launch_condition": "Wait for root native-worker launch-window release. Preserve original failure; no silent retry."
+  },
+  {
+    "shard": "5",
+    "repo": "/workspace/casepath-release-ae0-shard5",
+    "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+    "command": [
+      "python",
+      "/tmp/casepath-release-85a-20261012/harness/run_shard.py",
+      "run",
+      "5"
+    ],
+    "cwd": "/workspace",
+    "assignment": "/tmp/casepath-release-85a-20261012/shard5/ids.txt",
+    "output": "/tmp/casepath-release-85a-20261012/shard5",
+    "environment_record": "/tmp/casepath-release-85a-20261012/shard5/command.json",
+    "expected_tests": 427,
+    "launch_condition": "Wait for root native-worker launch-window release. Preserve original failure; no silent retry."
+  },
+  {
+    "shard": "6",
+    "repo": "/workspace/casepath-release-ae0-shard6",
+    "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+    "command": [
+      "python",
+      "/tmp/casepath-release-85a-20261012/harness/run_shard.py",
+      "run",
+      "6"
+    ],
+    "cwd": "/workspace",
+    "assignment": "/tmp/casepath-release-85a-20261012/shard6/ids.txt",
+    "output": "/tmp/casepath-release-85a-20261012/shard6",
+    "environment_record": "/tmp/casepath-release-85a-20261012/shard6/command.json",
+    "expected_tests": 479,
+    "launch_condition": "Wait for root native-worker launch-window release. Preserve original failure; no silent retry."
+  }
+]

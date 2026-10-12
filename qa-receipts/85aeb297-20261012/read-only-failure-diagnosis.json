@@ -1,0 +1,22 @@
+{
+  "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "source_edits": false,
+  "reconciliation": {
+    "observed_error": "AttributeError: _SavedExecution object has no attribute reference_adapter",
+    "writer_source": "casepath-api/casepath_api/autonomous_reconciliation_v1.py:99",
+    "failing_consumer": "casepath-api/casepath_api/autonomous_controller_v1.py:290",
+    "cause": "Command-local subclass bypasses controller initialization; inherited application/learning now requires new attributes.",
+    "also_uninitialized_in_same_path": [
+      "_closed",
+      "policy_id"
+    ],
+    "minimal_proposed_scope": "Initialize explicit provider-free writer mode and lifecycle/policy fields in _SavedExecution; preserve saved-stage admission and transport prohibition. Requires a new source candidate."
+  },
+  "hosted_recovery": {
+    "observed_error": "TypeError: construct() got an unexpected keyword argument enforce_intake_gate",
+    "fixture_source": "casepath-api/tests/test_hosted_recovery_v1.py:76",
+    "consumer_source": "casepath-api/casepath_api/hosted_app_v1.py:49",
+    "cause": "Constructor test double does not accept/forward the actual hosted composition intake-gate keyword.",
+    "minimal_proposed_scope": "Match and assert the actual constructor argument while retaining public passive/read-only dispatch checks. Requires a new test candidate."
+  }
+}
