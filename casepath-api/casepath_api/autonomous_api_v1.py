@@ -78,9 +78,25 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
         return corpus if corpus is not None and corpus.contains(claim_id) else None
 
     def projection(state):
-        return {'revision': state['revision'], 'state_sha256': state['state_sha256'],
+        result = {'revision': state['revision'], 'state_sha256': state['state_sha256'],
                 'node_capabilities': {n['node_id']: execution_capability(n['node_id'])
                                       for n in (state['graph'] or {}).get('nodes', [])}}
+        corpus = original(state['claim_id'])
+        service = service_getter()
+        if originals() is not None or getattr(service, 'reference_adapter', None) is not None:
+            sources = ([{**s, **corpus.source_preview(state['claim_id'], s['artifact_id'])}
+                        for s in state['source_descriptors']] if state['revision'] == 0 else None)
+            result['intake'] = service.intake_projection(state, sources=sources)
+        return result
+
+    def eligible(service, state, *, corpus=None):
+        if hasattr(service, 'assert_execution_policy'):
+            service.assert_execution_policy(state)
+        if corpus is None and originals() is None and getattr(service, 'reference_adapter', None) is None:
+            return True  # Historical generic/private composition keeps its contract.
+        sources = ([{**s, **corpus.source_preview(state['claim_id'], s['artifact_id'])}
+                    for s in state['source_descriptors']] if state['revision'] == 0 and corpus else None)
+        return service.intake_projection(state, sources=sources)['eligible']
 
     def event_rows(rows):
         return [{**event, 'seq': event['sequence'], 'revision': event['sequence'],
@@ -163,7 +179,8 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             packet = body.model_dump()
             key = packet.pop('idempotency_key')
             state = service.store.intake(packet, key)
-            service.submit(state['claim_id'])
+            if eligible(service, state):
+                service.submit(state['claim_id'])
             return state
         return invoke(apply)
 
@@ -189,6 +206,14 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             corpus = original(claim_id)
             if corpus is None:
                 raise HTTPException(404, 'Unknown original claim.')
+            try:
+                current = service.store.get(claim_id)
+            except AutonomousStoreError as error:
+                if str(error) != 'claim does not exist':
+                    raise
+                current = corpus.preview_state(claim_id)
+            if not eligible(service, current, corpus=corpus):
+                raise HTTPException(409, {'code': 'intake_incomplete', 'intake': projection(current)['intake']})
             result = service.store.admit_original(claim_id, corpus.packet(claim_id), **body.model_dump())
             if not result['replayed']:
                 service.submit(claim_id)
@@ -229,7 +254,8 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
         guard(request)
         def apply(service):
             state = service.store.add_sources(claim_id, **body.model_dump())
-            service.submit(claim_id)
+            if eligible(service, state):
+                service.submit(claim_id)
             return state
         return invoke(apply)
 
@@ -279,6 +305,9 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
     def resume(claim_id: str, body: RevisionCommand, request: Request):
         guard(request)
         def apply(service):
+            if not eligible(service, service.store.get(claim_id)):
+                raise HTTPException(409, {'code': 'intake_incomplete',
+                                        'intake': projection(service.store.get(claim_id))['intake']})
             state = service.store.append(claim_id, 'work.resumed', {'reason': 'The operator resumed autonomous work.'}, **body.model_dump())
             service.submit(claim_id)
             return state
@@ -339,7 +368,8 @@ def install_autonomous(app, storage_getter, corpus_getter, agent_work_getter):
                         'casepath-autonomous-product-20261008')
                 model = AutonomousModelV1(work.store, worker=work.facts_worker,
                                           schemas={'interpret': INTERPRET_SCHEMA, 'verify': VERIFY_SCHEMA})
-        return AutonomousController(AutonomousStore(storage_getter()), corpus_getter().static_policy(), model)
+        return AutonomousController(AutonomousStore(storage_getter()), corpus_getter().static_policy(), model,
+                                    enforce_intake_gate=True)
 
     app.include_router(create_autonomous_router(service, lambda: agent_work_getter().store.external_budget(),
                                                corpus_getter=canonical_corpus,

@@ -46,14 +46,24 @@ def execution_capability(node_id):
 
 
 class AutonomousController:
-    def __init__(self, store, policy, model=None):
+    def __init__(self, store, policy, model=None, *, reference_adapter=None, enforce_intake_gate=False):
         self.store, self.policy, self.model = store, policy, model
+        if reference_adapter is not None and model is not None:
+            raise ValueError('reference execution cannot share a provider model')
+        self.reference_adapter = reference_adapter
+        self.enforce_intake_gate = enforce_intake_gate or reference_adapter is not None
+        self.policy_id = policy.get('policy_id', POLICY_ID)
         self.knowledge = AutonomousKnowledge(store, policy)
         self._executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix='casepath-autonomous')
         self._lock, self._jobs, self._pending, self._contexts = RLock(), {}, set(), {}
         self._closed = False
 
     def submit(self, claim_id):
+        if self.enforce_intake_gate:
+            from .autonomous_intake_gate_v1 import require_complete
+            state = self.store.get(claim_id)
+            self.assert_execution_policy(state)
+            require_complete(self.intake_projection(state))
         with self._lock:
             if self._closed:
                 return
@@ -75,6 +85,10 @@ class AutonomousController:
 
     def resume(self):
         for state in self.store.list():
+            if self.enforce_intake_gate and not self.intake_projection(state)['eligible']:
+                continue
+            if state.get('policy_id') not in (None, self.policy_id):
+                continue
             if (state.get('deferral') or {}).get('code') not in (None, 'model_unavailable'):
                 continue
             if state.get('outcome') and state.get('run_id'):
@@ -116,9 +130,17 @@ class AutonomousController:
 
     def run(self, claim_id):
         state = self.store.get(claim_id)
+        reference = self.reference_adapter
+        if self.enforce_intake_gate:
+            from .autonomous_intake_gate_v1 import require_complete
+            self.assert_execution_policy(state)
+            require_complete(self.intake_projection(state))
         source_identity = digest_value(state['source_descriptors'])
-        workflow = 'autonomy.' + digest_value({'claim': claim_id, 'sources': source_identity, 'policy': POLICY_ID,
-                                              'rules': digest_value(self.policy)})[:24]
+        workflow_material = {'claim': claim_id, 'sources': source_identity, 'policy': self.policy_id,
+                             'rules': digest_value(self.policy)}
+        if reference is not None:
+            workflow_material['reference'] = reference.config
+        workflow = 'autonomy.' + digest_value(workflow_material)[:24]
         self._contexts[workflow] = source_identity
         if (state.get('deferral') or {}).get('code') not in (None, 'model_unavailable'):
             return state
@@ -127,9 +149,9 @@ class AutonomousController:
             self._learn(claim_id, workflow)
             return self.store.get(claim_id)
         try:
-            self._once(claim_id, f'{workflow}.start', 'work.started', {'run_id': workflow, 'policy_id': POLICY_ID})
+            self._once(claim_id, f'{workflow}.start', 'work.started', {'run_id': workflow, 'policy_id': self.policy_id})
             if self.model is not None and (self.store.get(claim_id).get('deferral') or {}).get('code') == 'model_unavailable':
-                self._once(claim_id, f'{workflow}.configured', 'work.started', {'run_id': workflow, 'policy_id': POLICY_ID})
+                self._once(claim_id, f'{workflow}.configured', 'work.started', {'run_id': workflow, 'policy_id': self.policy_id})
             state = self.store.get(claim_id)
             if state['graph'] is None:
                 graph, facts, obligations = initial_process(claim_id, [d for d in state['source_descriptors'] if d['role'] != 'customer_message'])
@@ -143,12 +165,12 @@ class AutonomousController:
                 source = self.store.acquire(claim_id, descriptor['artifact_id'])
                 self._once(claim_id, f"{workflow}.acquire.{descriptor['artifact_id']}", 'sources.acquired', {'sources': [source]})
             state = self.store.get(claim_id)
-            if self.model is None:
+            if self.model is None and reference is None:
                 self._once(claim_id, f'{workflow}.model_unavailable', 'work.deferred', {
                     'code': 'model_unavailable', 'reason': 'The evidence is saved. Autonomous interpretation requires the configured inference service.'})
                 return self.store.get(claim_id)
             self._phase(claim_id, workflow, 'interpreting', 'Interpreting the source packet against the admitted tenancy rules.')
-            context = {'claim_id': claim_id, 'title': state['title'], 'policy_id': POLICY_ID,
+            context = {'claim_id': claim_id, 'title': state['title'], 'policy_id': self.policy_id,
                        'knowledge_recipe_compiler': KNOWLEDGE_RECIPE_COMPILER,
                        'document_review_policy': SUPPLIED_DOCUMENT_REVIEW_POLICY,
                        'operational_condition_questions': deepcopy(OPERATIONAL_CONDITION_QUESTIONS),
@@ -157,11 +179,16 @@ class AutonomousController:
                                        'process_catalog': {kind: [{k: v for k, v in row.items() if k != 'assertion'} for row in rows]
                                                            for kind, rows in t['process_catalog'].items()}} for t in self.policy['templates']],
                        'condition_catalog': FAMILY_FLAGS,
-                       'required_facts_by_document': REQUIRED_FACTS,
-                       'required_fields_by_document': REQUIRED_FIELDS,
+                       'required_facts_by_document': self.policy.get('required_facts_by_document', REQUIRED_FACTS),
+                       'required_fields_by_document': self.policy.get('required_fields_by_document', REQUIRED_FIELDS),
                        'sources': [{key: source[key] for key in ('artifact_id', 'file_name', 'media_type', 'role', 'sha256',
                                                                  'text', 'complete', 'coverage')} for source in state['acquired_sources']],
                        'instructions': {'interpret': INTERPRET_INSTRUCTIONS, 'verify': VERIFY_INSTRUCTIONS}}
+            if reference is not None:
+                provenance = self.intake_projection(state)['provenance']
+                context.update(reference_provenance=provenance,
+                               normative_sources=self.policy['normative_sources'],
+                               execution_mode='deterministic_reference')
             if workflow in state.get('semantic_contexts', {}):
                 context = state['semantic_contexts'][workflow]
             else:
@@ -172,13 +199,13 @@ class AutonomousController:
                 self._once(claim_id, f'{workflow}.context', 'work.context', {'workflow_id': workflow, 'context': context})
             if context.get('document_review_policy') not in (None, SUPPLIED_DOCUMENT_REVIEW_POLICY):
                 raise ValueError('unknown supplied-document review policy')
-            identity = {'workflow_id': workflow, 'claim_id': claim_id, 'policy_id': POLICY_ID,
+            identity = {'workflow_id': workflow, 'claim_id': claim_id, 'policy_id': self.policy_id,
                         'source_roster_sha256': source_identity, 'rule_set_sha256': digest_value(self.policy)}
-            proposal = self.model.interpret(context, identity)
+            proposal = reference.interpret_reference(context, identity) if reference is not None else self.model.interpret(context, identity)
             self._current(self.store.get(claim_id), workflow)
             verification_proposal, compilation = compile_verification_proposal(context, proposal['result'])
             self._phase(claim_id, workflow, 'verifying', 'Independently checking the proposed facts, branches and document sufficiency.')
-            verifier = self.model.verify(context, proposal['result'], identity)
+            verifier = reference.verify_reference(context, proposal['result'], identity) if reference is not None else self.model.verify(context, proposal['result'], identity)
             self._current(self.store.get(claim_id), workflow)
             if compilation is not None and verifier['receipt'].get('metadata', {}).get('knowledge_recipe_compilation') != compilation:
                 raise ValueError('independent verifier receipt differs from the compiled proposal')
@@ -206,6 +233,22 @@ class AutonomousController:
                 self.model.abandon(workflow, 'execution_deferred')
         return self.store.get(claim_id)
 
+    def intake_projection(self, state, *, sources=None, base_policy=None):
+        from .autonomous_intake_gate_v1 import assess_intake, inspect_sources
+        return assess_intake(state, sources if sources is not None else inspect_sources(self.store, state),
+                             base_policy or self.policy, reference_policy=self.policy if self.reference_adapter else None,
+                             profile=self.reference_adapter.profile if self.reference_adapter else None)
+
+    def assert_execution_policy(self, state):
+        if not self.enforce_intake_gate:
+            return
+        allowed = {None, self.policy_id}
+        if self.reference_adapter is not None:
+            allowed.add(POLICY_ID)  # Explicit append-only original-to-reference admission.
+        if state.get('policy_id') not in allowed:
+            from .autonomous_store_v1 import AutonomousStoreError
+            raise AutonomousStoreError('saved assessment belongs to a different explicit execution policy')
+
     def reconcile_saved_results(self, claim_id, *, work_store, expected_revision,
                                 expected_state_sha256, idempotency_key, actor, reason):
         """Explicit synchronous cache-only repair; never invokes or queues a model."""
@@ -225,6 +268,10 @@ class AutonomousController:
             base_receipt['knowledge_recipe_compilation'] = compilation
         if context.get('document_review_policy') is not None:
             base_receipt['document_review_policy'] = context['document_review_policy']
+        if self.reference_adapter is not None:
+            base_receipt['reference_execution'] = {'config': deepcopy(self.reference_adapter.config),
+                'provenance': deepcopy(context['reference_provenance']),
+                'normative_sources_sha256': self.policy['normative_sources_sha256']}
         pinned = next((k for k in context.get('compatible_knowledge', []) if k['family'] == verified['category']['family']), None)
         version = next((k for k in self.knowledge.view()['versions'] if pinned and k['knowledge_id'] == pinned['knowledge_id']
                         and k['version'] == pinned['version']), None)
@@ -338,13 +385,25 @@ class AutonomousController:
                    'citations': verified['category']['citations'], 'request_draft': {
                        'status': 'prepared_not_sent', 'subject': 'Evidence needed for the active claim process',
                        'body': '\n'.join(f"- {d['label']}: {d['reason']}" for d in gaps) or 'No additional active document gap was identified.'}}
+        if self.reference_adapter is not None:
+            gate = self.intake_projection(state)
+            if not gate['eligible'] or view['process_status'] != 'complete':
+                raise ValueError('bounded reference assessment did not complete its actual compiled process')
+            context = state['semantic_contexts'][workflow]
+            outcome.update(title='Bounded synthetic reference assessment recorded', assessment_status='complete',
+                           assessment_scope=gate['assessment_scope'], legal_predicates=gate['legal_predicates'],
+                           reference_provenance=deepcopy(context['reference_provenance']),
+                           authority_limits=['No repair, rent quantum, verified filing deadline, communication, filing or court outcome was performed.'],
+                           next_action='Inspect the recorded historical synthetic assessment; any real action needs its own current authority.',
+                           unresolved_facts=[], missing_evidence=[], request_draft={'status': 'prepared_not_sent',
+                               'subject': 'Bounded historical synthetic assessment', 'body': verified['category']['summary']})
         self._once(claim_id, f'{workflow}.outcome', 'outcome.recorded', lambda s: {
             'outcome': outcome, 'receipt': receipt(s, 'record_justified_deferral', **base_receipt,
                                                   graph_sha256=state['graph']['graph_sha256'])})
 
     def _learn(self, claim_id, workflow):
         state = self.store.get(claim_id)
-        if not state.get('outcome') or state['graph']['family'] == 'incoming_packet':
+        if not state.get('outcome') or state['graph']['family'] == 'incoming_packet' or state.get('policy_id') != self.policy_id:
             return
         previous = self.knowledge.latest(state['graph']['family'])
         accepted = next((r['receipt'] for r in reversed(state.get('receipts', [])) if r['kind'] == 'interpretation.accepted'

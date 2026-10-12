@@ -51,7 +51,7 @@ def create_hosted_app(*, database=None, environment=None, runtime_directory=None
                 model = HostedModel(work, env['CASEPATH_AGENT_WORK_MODEL'], env['OPENROUTER_API_KEY'])
             corpus = PublicCorpus(default_workspace_corpus_root())
             policy = corpus.static_policy()
-            controller = HostedAutonomousController(store, policy, model, lease=lease)
+            controller = HostedAutonomousController(store, policy, model, lease=lease, enforce_intake_gate=True)
             state.update(controller=controller, work=work, corpus=CanonicalCorpus(corpus))
             if writable:
                 controller.resume()

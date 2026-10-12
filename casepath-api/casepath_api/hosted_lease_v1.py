@@ -219,8 +219,8 @@ class _FencedConnection:
 class HostedAutonomousController(AutonomousController):
     """One leased workflow, with bounded recovery of accepted pending work."""
 
-    def __init__(self, store, policy, model=None, *, lease):
-        super().__init__(store, policy, model)
+    def __init__(self, store, policy, model=None, *, lease, reference_adapter=None, enforce_intake_gate=False):
+        super().__init__(store, policy, model, reference_adapter=reference_adapter, enforce_intake_gate=enforce_intake_gate)
         self._hosted_lease = lease
         self._waiting = {}  # claim_id -> ("run", None) or ("learn", workflow)
         self._learned = set()
@@ -230,6 +230,8 @@ class HostedAutonomousController(AutonomousController):
         self._retry_until = {}
 
     def _remember(self, claim_id, job):
+        if self.enforce_intake_gate and self._recovery_job(self.store.get(claim_id)) is None:
+            return
         with self._lock:
             # New intake/evidence work must not be replaced by an older request
             # to finish deterministic learning only.
@@ -321,6 +323,10 @@ class HostedAutonomousController(AutonomousController):
                 self._hosted_lease.release(token)
 
     def _recovery_job(self, state):
+        if self.enforce_intake_gate and not self.intake_projection(state)['eligible']:
+            return None
+        if self.enforce_intake_gate and state.get('policy_id') not in (None, self.policy_id):
+            return None
         code = (state.get('deferral') or {}).get('code')
         if code:
             # Failed/uncertain physical attempts are never automatically retried.
@@ -338,6 +344,11 @@ class HostedAutonomousController(AutonomousController):
 
 
     def run(self, claim_id):
+        if self.enforce_intake_gate:
+            from .autonomous_intake_gate_v1 import require_complete
+            state = self.store.get(claim_id)
+            self.assert_execution_policy(state)
+            require_complete(self.intake_projection(state))
         def current():
             # Discovery may race with pause, source arrival, another process's
             # outcome or a durable provider deferral. Recheck under ownership.
@@ -371,6 +382,10 @@ class HostedAutonomousController(AutonomousController):
         # Caller holds _lock. Completion never recursively calls submit.
         if self._closed or claim_id not in self._waiting:
             return
+        if self.enforce_intake_gate and self._recovery_job(self.store.get(claim_id)) is None:
+            self._waiting.pop(claim_id, None)
+            self._retry_until.pop(claim_id, None)
+            return
         prior = self._jobs.get(claim_id)
         if prior is not None and not prior.done():
             return
@@ -392,6 +407,11 @@ class HostedAutonomousController(AutonomousController):
         future.add_done_callback(finished)
 
     def submit(self, claim_id):
+        if self.enforce_intake_gate:
+            from .autonomous_intake_gate_v1 import require_complete
+            state = self.store.get(claim_id)
+            self.assert_execution_policy(state)
+            require_complete(self.intake_projection(state))
         with self._lock:
             if self._closed:
                 return

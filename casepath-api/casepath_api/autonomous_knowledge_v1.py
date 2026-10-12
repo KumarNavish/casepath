@@ -39,9 +39,10 @@ def _definition(version):
 
 def _recipe(document, template):
     document_type = document['document_type']
-    if document_type not in REQUIRED_FIELDS:
+    fields = template.get('required_fields_by_document', REQUIRED_FIELDS)
+    if document_type not in fields:
         raise ValueError('knowledge recipe has no admitted evidence criteria')
-    return {'document_type': document_type, 'required_fields': list(REQUIRED_FIELDS[document_type]),
+    return {'document_type': document_type, 'required_fields': list(fields[document_type]),
             'summary': document['assertion'], 'rule_refs': [template['template_id']]}
 
 
@@ -142,7 +143,8 @@ def qualify(policy, state, *, candidates=None, previous=None):
     prior_definition = _definition(previous) if previous is not None else None
     if previous is not None and previous['family'] != current['family']:
         raise ValueError('knowledge parent belongs to another procedure')
-    same_rules = previous is not None and previous['rule_pack_sha256'] == digest_value(template) and previous['policy_id'] == POLICY_ID
+    policy_id = policy.get('policy_id', POLICY_ID)
+    same_rules = previous is not None and previous['rule_pack_sha256'] == digest_value(template) and previous['policy_id'] == policy_id
     if same_rules:
         graph, facts, obligations = (deepcopy(previous[key]) for key in ('graph', 'facts', 'obligations'))
     else:
@@ -169,7 +171,7 @@ def qualify(policy, state, *, candidates=None, previous=None):
     if candidate['graph_sha256'] != graph['graph_sha256']:
         raise ValueError('knowledge candidate changes the admitted process definition')
     definition = {'family': graph['family'], 'rule_pack_sha256': digest_value(template),
-                  'graph': graph, 'facts': facts, 'obligations': obligations, 'policy_id': POLICY_ID,
+                  'graph': graph, 'facts': facts, 'obligations': obligations, 'policy_id': policy_id,
                   'evidence_recipes': [recipes[key] for key in sorted(recipes)]}
     identity = digest_value(definition)
     if prior_definition == definition:
@@ -255,14 +257,14 @@ class AutonomousKnowledge:
         template = next(row for row in self.policy['templates'] if row['domain'] == family)
         projection = self.view() if view is None else view
         return max((row for row in projection['versions'] if row['family'] == family
-                    and row['rule_pack_sha256'] == digest_value(template) and row['policy_id'] == POLICY_ID),
+                    and row['rule_pack_sha256'] == digest_value(template) and row['policy_id'] == self.policy.get('policy_id', POLICY_ID)),
                    key=lambda row: row['version'], default=None)
 
     def instantiate(self, version, claim_id, verified):
         """Reuse compiled structure while reassessing every case fact."""
         family = verified['category']['family']
         template = next(row for row in self.policy['templates'] if row['domain'] == family)
-        if version['family'] != family or version['rule_pack_sha256'] != digest_value(template) or version['policy_id'] != POLICY_ID:
+        if version['family'] != family or version['rule_pack_sha256'] != digest_value(template) or version['policy_id'] != self.policy.get('policy_id', POLICY_ID):
             raise ValueError('knowledge applicability differs from this claim')
         _definition(version)
         _validate_recipes(version['evidence_recipes'], template)

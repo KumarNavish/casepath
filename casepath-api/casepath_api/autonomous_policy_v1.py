@@ -171,6 +171,14 @@ def compile_verification_proposal(context, proposal):
     compiled = deepcopy(proposal)
     templates = [row for row in context['rule_packs'] if row['family'] == proposal['category']['family']]
     sources = {row['artifact_id']: row for row in context['sources']}
+    fields, facts = REQUIRED_FIELDS, REQUIRED_FACTS
+    if context.get('execution_mode') == 'deterministic_reference':
+        from .autonomous_reference_policy_v1 import REFERENCE_POLICY_ID, REFERENCE_FIELDS, REFERENCE_FACTS
+        if (context.get('policy_id') != REFERENCE_POLICY_ID
+                or context.get('required_fields_by_document') != REFERENCE_FIELDS
+                or context.get('required_facts_by_document') != REFERENCE_FACTS):
+            raise ValueError('reference evidence criteria differ from their scoped policy')
+        fields, facts = REFERENCE_FIELDS, REFERENCE_FACTS
     derived = []
     if len(templates) == 1:
         template = templates[0]
@@ -179,7 +187,7 @@ def compile_verification_proposal(context, proposal):
         for document in sorted(proposal['documents'], key=lambda row: (row['document_type'], row['artifact_id'])):
             kind = document['document_type']
             source = sources.get(document['artifact_id'])
-            if (kind in present or kind not in documents or kind not in REQUIRED_FIELDS
+            if (kind in present or kind not in documents or kind not in fields
                     or document['assessment'] != 'sufficient' or source is None
                     or source.get('role') != 'supporting_document' or source.get('complete') is not True):
                 continue
@@ -189,8 +197,8 @@ def compile_verification_proposal(context, proposal):
                     continue
             except ValueError:
                 continue  # The original invalid document still reaches its existing gate.
-            candidate = {'document_type': kind, 'required_fields': list(REQUIRED_FIELDS[kind]),
-                         'summary': 'Read a complete original supporting file for: ' + REQUIRED_FACTS[kind] + '.',
+            candidate = {'document_type': kind, 'required_fields': list(fields[kind]),
+                         'summary': 'Read a complete original supporting file for: ' + facts[kind] + '.',
                          'citations': deepcopy(document['citations']), 'rule_refs': [template['template_id']]}
             compiled.setdefault('knowledge_candidates', []).append(candidate)
             present.add(kind)
@@ -313,13 +321,13 @@ def compile_process(policy, claim_id, verified):
     facts, obligations = [], []
     for doc in catalog['documents']:
         fact_id = f"fact:{doc['document_type']}"
-        facts.append({'fact_id': fact_id, 'label': REQUIRED_FACTS[doc['document_type']], 'summary': 'This fact has not yet been established by a sufficient source.',
+        facts.append({'fact_id': fact_id, 'label': policy.get('required_facts_by_document', REQUIRED_FACTS)[doc['document_type']], 'summary': 'This fact has not yet been established by a sufficient source.',
                       'status': 'unresolved', 'citations': [], 'rule_refs': [template['template_id']]})
         for node_id in doc['required_at_node_ids']:
             obligations.append({'obligation_id': f"obligation:{node_id}:{doc['document_type']}", 'node_id': node_id,
                                 'decision_node_id': node_id, 'required_fact_ids': [fact_id],
                                 'document_type': doc['document_type'], 'label': doc['label'], 'reason': doc['assertion'],
-                                'rule_refs': [template['template_id'], POLICY_ID], 'rule_pack_sha256': digest_value(template),
+                                'rule_refs': [template['template_id'], policy.get('policy_id', POLICY_ID)], 'rule_pack_sha256': digest_value(template),
                                 'capability_id': 'local_inbox.read'})
     for flag, value in conditions.items():
         facts.append({'fact_id': f"condition:{flag}", 'label': flag.replace('_', ' '), 'status': value['verdict'],
@@ -328,9 +336,9 @@ def compile_process(policy, claim_id, verified):
     for node in graph['nodes']:
         node['document_types'] = [o['document_type'] for o in obligations if o['node_id'] == node['node_id']]
         node['provenance'] = {'kind': 'machine_validated', 'source': template['template_id'],
-                              'rule_pack_sha256': digest_value(template), 'policy_id': POLICY_ID}
+                              'rule_pack_sha256': digest_value(template), 'policy_id': policy.get('policy_id', POLICY_ID)}
     graph['assessment_context'] = {'facts': facts, 'obligations': obligations, 'summary': verified['category']['summary'],
-                                   'rule_pack_sha256': digest_value(template), 'policy_id': POLICY_ID}
+                                   'rule_pack_sha256': digest_value(template), 'policy_id': policy.get('policy_id', POLICY_ID)}
     return seal_graph(graph), facts, obligations
 
 
@@ -357,7 +365,7 @@ def initial_process(claim_id, descriptors):
 
 
 def receipt(state, operation, **details):
-    result = {'policy_id': POLICY_ID, 'parent_revision': state['revision'], 'parent_state_sha256': state['state_sha256'],
+    result = {'policy_id': state.get('policy_id') or POLICY_ID, 'parent_revision': state['revision'], 'parent_state_sha256': state['state_sha256'],
               'before_graph_sha256': (state.get('graph') or {}).get('graph_sha256'), 'operation': operation, **details}
     result.setdefault('gate_sha256', digest_value({'operation': operation, 'details': details}))
     return {**result, 'receipt_sha256': digest_value(result)}

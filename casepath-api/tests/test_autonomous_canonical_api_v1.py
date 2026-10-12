@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 from casepath_api.autonomous_api_v1 import create_autonomous_router
 from casepath_api.autonomous_corpus_v1 import CanonicalCorpus
 from casepath_api.autonomous_store_v1 import AutonomousStore
+from casepath_api.autonomous_controller_v1 import AutonomousController
 
 PREFIX = '/api/claim-loops/v1/autonomous'
 HEADERS = {'X-CasePath-Agent-Work': '1'}
@@ -23,11 +24,13 @@ def corpus():
 def api(tmp_path, corpus):
     store = AutonomousStore(tmp_path / 'canonical.sqlite3')
     submitted = []
-    service = SimpleNamespace(store=store, submit=submitted.append)
+    service = AutonomousController(store, corpus._corpus.static_policy(), enforce_intake_gate=True)
+    service.submit = submitted.append
     app = FastAPI()
     app.include_router(create_autonomous_router(lambda: service, corpus_getter=lambda: corpus))
     with TestClient(app) as client:
         yield client, store, submitted
+    service.shutdown()
 
 
 def test_all_original_reads_have_no_events_or_dispatch(api, corpus):
@@ -93,7 +96,7 @@ def test_original_source_preview_is_not_admission(api, corpus):
     assert client.get(f'{PREFIX}/claims/{cid}').json()['state'] == before
 
 
-def test_explicit_start_exact_retry_stale_and_unknown_fail_closed(api, corpus):
+def test_incomplete_original_start_exact_retry_stale_and_unknown_fail_closed(api, corpus):
     client, store, submitted = api
     cid = corpus.ids[0]
     preview = corpus.preview_state(cid)
@@ -105,16 +108,13 @@ def test_explicit_start_exact_retry_stale_and_unknown_fail_closed(api, corpus):
     assert client.post(path, json={**body, 'expected_state_sha256': '0'*64}, headers=HEADERS).status_code == 409
     assert client.post(path, json={**body, 'expected_revision': 1}, headers=HEADERS).status_code == 409
     result = client.post(path, json=body, headers=HEADERS)
-    assert result.status_code == 202, result.text
-    state = result.json()
-    assert state['claim_id'] == cid and state['revision'] == 1 and state['acquired_sources'] == []
-    assert state['original_binding'] == preview['original_binding']
-    assert client.post(path, json=body, headers=HEADERS).json() == state
-    assert submitted == [cid]
+    assert result.status_code == 409, result.text
+    assert result.json()['detail']['code'] == 'intake_incomplete'
+    assert result.json()['detail']['intake']['eligible'] is False
+    assert client.post(path, json=body, headers=HEADERS).json() == result.json()
+    assert submitted == [] and store.list() == []
     assert client.post(path, json={**body, 'idempotency_key': 'original-other-key'}, headers=HEADERS).status_code == 409
     assert client.post(PREFIX+'/claims/clm_0000000000000000/start', json=body, headers=HEADERS).status_code == 404
-    for descriptor in state['source_descriptors']:
-        assert store.artifact(cid, descriptor['artifact_id'])[0] == corpus.artifact(cid, descriptor['artifact_id'])[0]
 
 
 def test_atomic_snapshot_and_legacy_events_never_mix_a_writer_head(api, monkeypatch):
@@ -200,7 +200,7 @@ def test_domain_browsing_is_exact_metadata_without_operational_labels(api, corpu
     assert store.list() == [] and submitted == []
 
 
-def test_exact_hosted_start_retry_recovers_a_busy_lease_without_new_admission(tmp_path, corpus):
+def test_incomplete_hosted_start_cannot_park_or_retry_behind_busy_lease(tmp_path, corpus):
     from casepath_api.hosted_lease_v1 import HostedAutonomousController, HostedWorkflowLease
     from casepath_api.hosted_storage_v1 import HostedAutonomousStore, HostedJournal, HostedSources
     from casepath_api.hosted_sql_v1 import TursoDatabase
@@ -211,7 +211,7 @@ def test_exact_hosted_start_retry_recovers_a_busy_lease_without_new_admission(tm
     lease.initialize()
     journal = HostedJournal(tmp_path / 'remote-journal', lease.connect)
     store = HostedAutonomousStore(journal.path, journal=journal, source_store=HostedSources(lease.connect))
-    service = HostedAutonomousController(store, corpus._corpus.static_policy(), lease=lease)
+    service = HostedAutonomousController(store, corpus._corpus.static_policy(), lease=lease, enforce_intake_gate=True)
     futures = []
     submit = service._executor.submit
     def capture(*args, **kwargs):
@@ -229,22 +229,14 @@ def test_exact_hosted_start_retry_recovers_a_busy_lease_without_new_admission(tm
         with TestClient(app) as client:
             path = f'{PREFIX}/claims/{cid}/start'
             first = client.post(path, json=body, headers=HEADERS)
-            assert first.status_code == 202
-            futures[0].result(timeout=5)
-            assert store.get(cid)['revision'] == 1 and cid in service._waiting
+            assert first.status_code == 409 and first.json()['detail']['code'] == 'intake_incomplete'
+            assert store.list() == [] and service._waiting == {} and futures == []
             lease.release(token)
             token = None
-            assert client.get(f'{PREFIX}/claims/{cid}/snapshot').json()['state']['revision'] == 1
-            assert len(futures) == 1, 'GET must not recover or submit work'
+            assert client.get(f'{PREFIX}/claims/{cid}/snapshot').json()['state']['revision'] == 0
+            assert futures == [], 'GET must not recover or submit work'
             assert client.post(path, json=body, headers=HEADERS).json() == first.json()
-            assert len(futures) == 2, 'explicit exact retry must recover the parked accepted job'
-            futures[-1].result(timeout=15)
-            head = store.get(cid)
-            assert head['run_id'] is not None and head['deferral']['code'] == 'model_unavailable'
-            assert sum(event['kind'] == 'intake' for event in store.events(cid)) == 1
-            assert client.post(path, json=body, headers=HEADERS).json() == first.json()
-            assert len(futures) == 2, 'settled deferral must not create another physical attempt'
-            assert store.get(cid) == head
+            assert futures == [] and store.list() == [] and service._waiting == {}
     finally:
         if token is not None:
             lease.release(token)
