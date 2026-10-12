@@ -130,7 +130,7 @@ def reference_findings(policy, sources):
         predicate('issuer_authority_and_received_packet', archive, ['266l'])
         predicate('complete_channel_archive', complete, ['266l', '266o'])
         predicate('canton_approved_form', no_form, ['266l', '266o'], failed=True)
-        summary = 'The fictional complete received packet lacks a canton-approved termination form, supporting the bounded nullity assessment under CO 266l/266o. No challenge was filed and no court outcome or verified filing deadline is recorded.'
+        summary = 'The fictional complete received packet lacks a canton-approved termination form, supporting a finding that the notice is invalid under CO 266l/266o. No challenge was filed and no court outcome or verified filing deadline is recorded.'
     else:
         notice = _find(sources, r'Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1')
         archive = _find(sources, r'The fictional managing agent confirms[^\n]+?original notification\.')
@@ -143,7 +143,7 @@ def reference_findings(policy, sources):
         predicate('issuer_authority_and_complete_packet', archive, ['269d'])
         predicate('contemporaneous_substantive_reasons', none, ['269d'], failed=True)
         predicate('later_email_is_not_original_reasons', later, ['269d'])
-        summary = 'The fictional complete original increase packet omitted substantive reasons, supporting the bounded nullity assessment under CO 269d(2)(b). The later market reply is contextual evidence. A mechanical signature is permitted at this historical date; whether the rent is excessive, the disputed amount and filing deadlines remain undetermined.'
+        summary = 'The fictional complete original increase packet omitted substantive reasons, supporting a finding that the increase notice is invalid under CO 269d(2)(b). The later market reply is contextual evidence. A mechanical signature is permitted at this historical date; whether the rent is excessive, the disputed amount and filing deadlines remain undetermined.'
     present = {d['document_type'] for d in docs}
     complete = all(p['status'] != 'unknown' for p in predicates) and present == {
         d['document_type'] for d in template['process_catalog']['documents']}
