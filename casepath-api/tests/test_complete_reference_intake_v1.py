@@ -268,3 +268,76 @@ def test_existing_qualified_old_policy_knowledge_is_preserved_and_new_reference_
         assert store.events(old['claim_id']) == old_rows and store.get(old['claim_id']) == old
     finally:
         service.shutdown()
+
+
+@pytest.mark.parametrize('cid, family', [
+    ('clm_06400c75399e7f37', 'defect_mold_heating'),  # English mold and moisture.
+    ('clm_16ac3b7054d73cc0', 'defect_mold_heating'),  # English dampness.
+    ('clm_1e3f5e4acec3ef7f', 'defect_mold_heating'),  # English leak.
+    ('clm_37909940906c3d22', 'defect_mold_heating'),  # German Wasserleck.
+    ('clm_0c373e693a363f9e', 'rent_increase_dispute'),  # Renovation grant allocation.
+    ('clm_fc970e956872f431', 'rent_increase_dispute'),  # German reference-rate calculation.
+    ('clm_de7ddb30509c2358', 'rent_increase_dispute'),  # English reference-rate calculation.
+    ('clm_2a9c260c26afaa34', 'lease_termination_dispute'),  # Clear original account; bounded extraction.
+    ('clm_c44ddc0914ba9298', 'rent_increase_dispute'),  # Heating advance is a rent component.
+    ('clm_2c55cdd816b1d0e8', 'rent_increase_dispute'),  # Heating and termination form boilerplate.
+    ('clm_3f3c313482ea5657', 'rent_increase_dispute'),  # Notice dates do not establish termination.
+])
+def test_original_issue_language_routes_only_unassessed_template_evidence(corpus, cid, family):
+    from casepath_api.autonomous_intake_gate_v1 import assess_intake
+    base = corpus._corpus.static_policy()
+    state = corpus.preview_state(cid)
+    before = deepcopy(state)
+    sources = [corpus.source_preview(cid, s['artifact_id']) for s in state['source_descriptors']]
+    assert all(s['preview_only'] and not s['evidence_admitted'] for s in sources)
+    assert all(type(s['complete']) is bool for s in sources)
+    gate = assess_intake(state, sources, base)
+    template = next(t for t in base['templates'] if t['domain'] == family)
+    mandatory = [d for d in template['process_catalog']['documents'] if d['requirement_class'] == 'mandatory']
+    assert gate['status'] == 'incomplete' and not gate['eligible']
+    assert gate['assessment_scope'] is None and gate['provenance'] is None
+    assert all(p['status'] == 'unknown' and not p['citations'] for p in gate['legal_predicates'])
+    assert {d['document_type'] for d in gate['checklist']} == {d['document_type'] for d in mandatory}
+    assert all(d['status'] == 'unassessed' and d['investigation_only'] and d['artifact_ids'] == []
+               for d in gate['missing_documents'])
+    assert {n for d in gate['checklist'] for n in d['node_ids']} <= {
+        n['node_id'] for n in template['process_catalog']['nodes']}
+    assert gate['active_node_ids'] == [template['process_catalog']['nodes'][0]['node_id']]
+    bounded = [{**s, 'text': '', 'complete': False} for s in sources]
+    bounded_gate = assess_intake(state, bounded, base)
+    assert bounded_gate['checklist'] == gate['checklist'] and not bounded_gate['eligible']
+    assert bounded_gate['legal_predicates'] == gate['legal_predicates']
+    assert state == before == corpus.preview_state(cid)
+    assert not state['acquired_sources'] and not state['receipts'] and state['revision'] == 0
+
+
+@pytest.mark.parametrize('title, message, expected', [
+    ('Mold in my bedroom', 'Please review the available records.', 'incomplete'),
+    ('Wasserleck in der Wohnung', 'Bitte prüfen Sie meine Unterlagen.', 'incomplete'),
+    ('Please update my address', 'I moved; correct my postal address.', 'unsupported'),
+    ('Please sort my records', 'I need help putting the documents in order.', 'unsupported'),
+    ('Mold in my apartment', 'Mold persists and I also received a landlord termination notice.', 'unsupported'),
+    ('Unclear dispute', 'I may have a rent increase or a termination notice; I cannot tell.', 'unsupported'),
+])
+def test_subject_only_and_ambiguous_intake_never_establish_eligibility(tmp_path, corpus, title, message, expected):
+    from casepath_api.autonomous_intake_gate_v1 import inspect_sources
+    service = AutonomousController(AutonomousStore(tmp_path / 'routing.sqlite'),
+                                   corpus._corpus.static_policy(), enforce_intake_gate=True)
+    try:
+        state = service.store.intake({'title': title, 'message': message, 'files': []}, 'routing-language')
+        before = service.store.events(state['claim_id'])
+        sources = inspect_sources(service.store, state)
+        assert all(s['complete'] for s in sources)
+        gate = service.intake_projection(state, sources=sources)
+        assert gate['status'] == expected and not gate['eligible']
+        assert gate['assessment_scope'] is None and gate['provenance'] is None
+        assert all(p['status'] == 'unknown' for p in gate['legal_predicates'])
+        assert bool(gate['checklist']) == (expected == 'incomplete')
+        with pytest.raises(AutonomousStoreError, match='intake incomplete'):
+            service.run(state['claim_id'])
+        assert service.store.get(state['claim_id']) == state
+        assert service.store.events(state['claim_id']) == before
+        assert state['graph'] is None and state['outcome'] is None
+        assert not any(r['kind'] == 'interpretation.accepted' for r in state['receipts'])
+    finally:
+        service.shutdown()
