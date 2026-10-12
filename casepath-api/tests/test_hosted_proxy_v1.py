@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+import asyncio
 import pytest
 
 from casepath_api.autonomous_api_v1 import create_autonomous_router
@@ -9,7 +10,18 @@ from casepath_api.hosted_proxy_v1 import SitesProxyBoundary
 from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root
 
 
-def test_authenticated_sites_hop_preserves_real_intake_guards_and_originals(tmp_path):
+def test_public_method_denial_precedes_asgi_body_headers_and_route():
+    async def forbidden(*args):
+        pytest.fail('public command reached ASGI request body or application')
+    sent = []
+    async def send(message):
+        sent.append(message)
+    boundary = SitesProxyBoundary(forbidden, site_origin='https://casepath.example', token='t' * 48)
+    asyncio.run(boundary({'type': 'http', 'method': 'POST', 'path': '/api/unknown'}, forbidden, send))
+    assert sent[0]['status'] == 403
+
+
+def test_authenticated_public_sites_hop_refuses_all_intake_and_preserves_originals(tmp_path):
     store = AutonomousStore(tmp_path / 'claims.sqlite3')
     service = AutonomousController(store, PublicCorpus(default_workspace_corpus_root()).static_policy())
     service.submit = lambda _: None  # Isolated transport test, no provider or background work.
@@ -22,15 +34,16 @@ def test_authenticated_sites_hop_preserves_real_intake_guards_and_originals(tmp_
     prefix = '/api/claim-loops/v1/autonomous'
     packet = {'title': 'Fictional hosted intake', 'message': 'A termination notice arrived.',
               'files': [], 'idempotency_key': 'hosted-intake-01'}
+    state = store.intake(
+        {k: v for k, v in packet.items() if k != 'idempotency_key'}, packet['idempotency_key'])
     with TestClient(app, base_url='https://upstream.example') as client:
         assert client.get(prefix+'/claims').status_code == 403
         for overrides in [{'X-CasePath-Proxy-Token': 'wrong'}, {'Origin': 'https://hostile.example'},
                           {'X-CasePath-Site-Origin': 'https://hostile.example'}, {'X-CasePath-Agent-Work': '0'}]:
             assert client.post(prefix+'/claims', json=packet, headers={**headers, **overrides}).status_code == 403
         response = client.post(prefix+'/claims', json=packet, headers=headers)
-        assert response.status_code == 202, response.text
-        state = response.json()
-        assert client.post(prefix+'/claims', json=packet, headers=headers).json() == state
+        assert response.status_code == 403, response.text
+        assert client.get(prefix+'/claims', headers=headers).json()['claims'][0]['claim_id'] == state['claim_id']
         source = state['source_descriptors'][0]
         original = client.get(f"{prefix}/sources/{state['claim_id']}/{source['artifact_id']}", headers=headers)
         assert original.status_code == 200 and original.content == packet['message'].encode()

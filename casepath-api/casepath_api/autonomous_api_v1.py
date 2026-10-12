@@ -52,7 +52,8 @@ class OriginalStart(StrictBody):
     expected_state_sha256: str = Field(pattern=r'^[a-f0-9]{64}$')
 
 
-def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corpus_getter=None, saved_work_getter=None):
+def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corpus_getter=None, saved_work_getter=None,
+                             read_only=False):
     router = APIRouter(prefix='/api/claim-loops/v1/autonomous')
 
     def invoke(fn):
@@ -64,6 +65,8 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
             raise HTTPException(422, 'The saved autonomous state could not be verified.')
 
     def guard(request):
+        if read_only:
+            raise HTTPException(403, 'The public workspace is read-only.')
         if request.headers.get('X-CasePath-Agent-Work') != '1':
             raise HTTPException(403, 'Explicit same-origin work request required.')
         origin = request.headers.get('origin')
@@ -117,10 +120,13 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
     @router.get('/status')
     def status():
         return invoke(lambda s: {'enabled': True, 'provider_ready': s.model is not None,
+                                  'read_only': read_only, 'writable': not read_only,
                                   'model': s.model.config if s.model is not None and hasattr(s.model, 'config') else None,
                                   'policy_id': POLICY_ID, 'limits': budget_getter(),
-                                  'capabilities': ['local_inbox.read', 'local_evidence.assess', 'local_assessment.record',
-                                                   'local_request.prepare', 'knowledge.qualify'],
+                                  'capabilities': (['saved_claims.read', 'original_sources.read', 'original_sources.preview',
+                                                    'claim_history.replay', 'knowledge.inspect'] if read_only else
+                                                   ['local_inbox.read', 'local_evidence.assess', 'local_assessment.record',
+                                                    'local_request.prepare', 'knowledge.qualify']),
                                   'automatic_inference_retry': False})
 
     @router.get('/claims')

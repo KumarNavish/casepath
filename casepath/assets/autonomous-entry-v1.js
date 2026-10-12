@@ -1,6 +1,10 @@
 (async () => {
   'use strict';
   if (location.protocol === 'file:') return;
+  if (window.CASEPATH_PUBLIC_READ_ONLY === true) {
+    document.documentElement.dataset.autonomousWorkspace = 'true';
+    delete document.documentElement.dataset.claimsWorkspace;
+  }
   function load(name) {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');

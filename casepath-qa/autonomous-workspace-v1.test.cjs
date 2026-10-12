@@ -491,6 +491,46 @@ function fakeApi(overrides={}) {
  return {fetch,calls};
 }
 
+test('public read-only capability blocks forged forms and removes work controls while preserving inspection',async t=>{
+ const f=dom(),api=fakeApi({handle:async(path)=>path.endsWith('/status')?response({enabled:true,provider_ready:true,read_only:true,writable:false,limits:{}}):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
+ await f.listeners.get('submit')({target:f.form,preventDefault(){}});
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.match(f.host.innerHTML,/public workspace is read-only/i);
+ const presentation={mode:'saved',readOnly:true,availability:{ready:true}};
+ for(const saved of [state(),state({status:'deferred',deferral:{code:'paused'}}),state({revision:0})]) {
+  const before=JSON.stringify(saved),html=ui.workMarkup(saved,{},'branch',[],'sources',{},presentation)+ui.workMarkup(saved,{},'branch',[],'documents',{},presentation);
+  assert.doesNotMatch(html,/data-au-start(?:[ >])|data-au-pause(?:[ >])|data-au-resume(?:[ >])|data-au-arrival(?:[ >])|data-au-add-files(?:[ >])/);
+  assert.match(html,/Original sources|History/);assert.equal(JSON.stringify(saved),before);
+ }
+ assert.equal(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).ready,false);
+ assert.match(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).reason,/read-only/i);
+ assert.doesNotMatch(ui.demonstrationMarkup([],{enabled:true,provider_ready:true,read_only:true,writable:false}),/data-au-demo-mode="live"/);
+});
+
+test('public entry capability prevents work before a status response arrives',async t=>{
+ const before=globalThis.CASEPATH_PUBLIC_READ_ONLY;globalThis.CASEPATH_PUBLIC_READ_ONLY=true;
+ const f=dom(),held=[],api=fakeApi({handle:async path=>path.endsWith('/status')?new Promise(resolve=>held.push(resolve)):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{for(const resolve of held)resolve(response({enabled:true,provider_ready:true,writable:true}));controller.destroy();if(before===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=before;});
+ assert.match(f.container.innerHTML,/data-au-nav="intake" disabled/);await settle();await newClaim(f);
+ assert.match(f.host.innerHTML,/public workspace is read-only/i);
+ await f.listeners.get('submit')({target:f.form,preventDefault(){}});
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('a read-only status arriving during file preparation is denied centrally without an uncertain write retry',async t=>{
+ const f=nativeFixture(),publicStatus={enabled:true,provider_ready:false,read_only:true,writable:false,limits:{}},bytes=Buffer.from('Original fixture bytes');let reads=0,finishStatus,finishBytes;
+ const api=fakeApi({handle:async(path)=>path.endsWith('/status')?++reads===2?new Promise(resolve=>{finishStatus=resolve;}):response({enabled:true,provider_ready:true,limits:{}}):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finishStatus?.(response(publicStatus));finishBytes?.(bytes);controller.destroy();});await settle();await newClaim(f);
+ const form=f.intake;form.elements.title.value='Original fixture';form.elements.message.value='Supplied message';form.elements.files.files=[{...fileFixture(),arrayBuffer:()=>new Promise(resolve=>{finishBytes=resolve;})}];
+ const submission=f.listeners.get('submit')({target:form,preventDefault(){}});await waitFor(()=>Boolean(finishBytes));
+ finishStatus(response(publicStatus));await settle();finishBytes(bytes);await submission;
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.match(form.querySelector('.au-form-status').textContent,/public workspace is read-only/i);
+ assert.doesNotMatch(form.querySelector('.au-form-status').textContent,/unconfirmed|Retry/i);
+ assert.equal(form.querySelector('button[type="submit"]').disabled,true);
+});
+
 test('uncertain intake retries the identical payload/key with required mutation header and never auto-retries',async t=>{
  const f=dom();let posts=0;const api=fakeApi({handle:async(path,init)=>{if(init.method==='POST'){posts++;if(posts===1)throw new Error('Connection lost');return response(state());}}});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);

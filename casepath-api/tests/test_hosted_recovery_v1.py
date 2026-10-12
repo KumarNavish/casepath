@@ -69,11 +69,11 @@ class HostedRecoveryTests(unittest.TestCase):
         # A queue barrier also waits for prior Future completion callbacks.
         controller._executor.submit(lambda: None).result(timeout=10)
 
-    def test_http_reads_stay_passive_and_restart_discovers_saved_claim(self):
+    def test_public_http_reads_and_restart_leave_saved_claim_passive(self):
         from fastapi.testclient import TestClient
         import casepath_api.hosted_app_v1 as hosted_app
         live, calls = [], []
-        def construct(store, policy, model, *, lease):
+        def construct(store, policy, model=None, *, lease):
             controller = HostedAutonomousController(store, policy, model, lease=lease)
             live.append(controller)
             self.controllers.append(controller)
@@ -93,26 +93,25 @@ class HostedRecoveryTests(unittest.TestCase):
             app = hosted_app.create_hosted_app(database=SimpleNamespace(connect=self.connect),
                                                environment=env, runtime_directory=runtime_directory)
             with TestClient(app) as client:
-                self.drain(live[0])
-                self.store.put('late-claim')  # Another process commits after resume().
+                self.assertTrue(live[0]._closed)
+                self.store.put('late-claim')  # Simulate an authorized operator's saved admission.
                 self.assertEqual(calls, [])
                 live[0]._next_discovery = 0.0  # Next actual HTTP poll is due.
                 response = client.get('/api/claim-loops/v1/autonomous/status', headers=headers)
                 self.assertEqual(response.status_code, 200)
-                self.drain(live[0])
+                self.assertTrue(live[0]._closed)
                 self.assertEqual(calls, [])
                 client.get('/api/claim-loops/v1/autonomous/status', headers=headers)
-                self.drain(live[0])
+                self.assertTrue(live[0]._closed)
                 self.assertEqual(calls, [])
-            # A process that missed another writer's admission discovers its
-            # accepted journal on startup; reading status is never dispatch.
+            # Public restart never acquires a workflow or publishes saved learning.
             with TestClient(app) as client:
                 self.assertEqual(len(live), 2)
-                self.drain(live[1])
-                self.assertEqual(calls, ['late-claim'])
+                self.assertTrue(live[1]._closed)
+                self.assertEqual(calls, [])
                 client.get('/api/claim-loops/v1/autonomous/status', headers=headers)
-                self.drain(live[1])
-                self.assertEqual(calls, ['late-claim'])
+                self.assertTrue(live[1]._closed)
+                self.assertEqual(calls, [])
 
     def test_all_failure_deferrals_and_pause_are_excluded(self):
         for code in ('paused', 'provider_deferred', 'verification_deferred', 'execution_deferred', 'model_unavailable'):
