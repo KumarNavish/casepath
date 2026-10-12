@@ -32,23 +32,23 @@
     },
     {
       "path": "audits/original-completeness-20261012/CRITERIA.md",
-      "sha256": "a4f83d39b196aef1a1135640f0a1bb0d61894f165631cbd75726d90b5dd5b290",
-      "size_bytes": 13743
+      "sha256": "62c2869eb848221b09d70eae7514663c5900762cc76040cf6b5790b93bc58c33",
+      "size_bytes": 14149
     },
     {
       "path": "audits/original-completeness-20261012/audit_150.csv",
-      "sha256": "d8c90b417a01d35b2e71e513c5e8f3bde1900e26e7645899430f7930874f7f98",
-      "size_bytes": 154405
+      "sha256": "bb1652e4991842bf4e1a5a9fedfe0437c584d70d382f9c109974a4ea34450a4e",
+      "size_bytes": 156610
     },
     {
       "path": "audits/original-completeness-20261012/audit_150.json",
-      "sha256": "4baa83c5842aafa0f247ad0ff806970bf3fb731c76a527499c00d51a38ec24ed",
-      "size_bytes": 1281615
+      "sha256": "770c9ff640210843e895fdce4849b0d056dd9994b2587e9d876db50dc8374091",
+      "size_bytes": 1287160
     },
     {
       "path": "audits/original-completeness-20261012/baseline_counts.json",
-      "sha256": "6d108e2a901191f59d4bcc89bd585b2a09de2401739b973f1feb23f949211b84",
-      "size_bytes": 1333
+      "sha256": "d58690da950df3cae93034abad67284dbfd090fc8f5c8cdd623284dea15a5c09",
+      "size_bytes": 1334
     },
     {
       "path": "audits/original-completeness-20261012/build_candidate_packs.py",
@@ -212,13 +212,13 @@
     },
     {
       "path": "audits/original-completeness-20261012/compile_audit.py",
-      "sha256": "fc80b3b6c8ea6608b93706e6a0b27216ec5469005efdf3d574733093e8fadb00",
-      "size_bytes": 13849
+      "sha256": "c04e0dd06bf70635d3b435b4b8b4e4180ec37d7a45e600214b77a87992ead2e7",
+      "size_bytes": 14143
     },
     {
       "path": "audits/original-completeness-20261012/criteria.json",
-      "sha256": "ab05483232c1f19bbf81fa2581ecb664e0eabfed6bf1a6572cd92a546974206d",
-      "size_bytes": 28992
+      "sha256": "59a9aa7b6fa31290e5654265d2b058c78a56d3a8ab712a87b56473e25324a47a",
+      "size_bytes": 29329
     },
     {
       "path": "audits/original-completeness-20261012/extract_sources.py",
@@ -231,9 +231,14 @@
       "size_bytes": 145648
     },
     {
+      "path": "audits/original-completeness-20261012/official_corrected_heading_extracts.json",
+      "sha256": "16f645c19f08a575c597efed49733dda18922617bd2d549aa67383c76f2b0ba1",
+      "size_bytes": 2524
+    },
+    {
       "path": "audits/original-completeness-20261012/official_law_receipt.json",
-      "sha256": "4052ca4d7102ec470e221ed6c842249dcd8905c68398fb1ba60ba6814a363b6f",
-      "size_bytes": 8659
+      "sha256": "1d5185465d1beea6aa1e41d5a0676c9bdf1130fb17c9cec5ca90c09bb9e00f54",
+      "size_bytes": 10789
     },
     {
       "path": "audits/original-completeness-20261012/render_sources.py",
@@ -242,8 +247,8 @@
     },
     {
       "path": "audits/original-completeness-20261012/reviewed_paths.py",
-      "sha256": "0c21c9e65349f6b6d499044e9b125ae5b217cd7842faf3109fc00824d923af48",
-      "size_bytes": 22007
+      "sha256": "c2d9b499b482c35b96a2bb112c7f6630e37e5c2bf58359f7b18626ba004d2073",
+      "size_bytes": 22285
     },
     {
       "path": "audits/original-completeness-20261012/source_receipts.json",
@@ -254,5 +259,12 @@
   "deterministic_replay": "PASS: same hashes before/after rerunning extraction, compilation and candidate source builder; case count150; augmented candidates9 with3perdomain and21new sources",
   "source_scope": "audit artifacts only; original660 referenced corpus files, registry, raw bytes, manifest and existing journals unchanged",
   "supplemental_candidates_status": "pending_fresh_independent_legal_review_not_final_designation",
-  "diff_check_note": "Initial git diff --check flagged csv.writer CRLF as trailing whitespace; emitter now uses LF. Corrected check passed."
+  "diff_check_note": "Initial git diff --check flagged csv.writer CRLF as trailing whitespace; emitter now uses LF. Corrected check passed.",
+  "current_primary_articles_for_active_nine_received": true,
+  "primary_articles_still_pending": [
+    "272",
+    "272a"
+  ],
+  "historical_pdf_verified": false,
+  "final_current_text_note": "Corrected actual printed-heading259/259a/259d/259e/269/266n independently read from Mac-relayed official DE source. No older PDF verification claimed."
 }

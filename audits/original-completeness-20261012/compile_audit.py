@@ -87,7 +87,7 @@ def main():
             documents.append(d)
         limited = n in [9, 38, 49, 73, 85, 89, 29, 58, 81, 108, 149]
         closure = n in [21, 51, 86, 141, 148]
-        repair_account = n in [33, 48, 88, 106, 137]
+        repair_account = n in [2, 30, 54, 56, 113, 33, 48, 88, 106, 137]
         threat_account = n in [26, 43, 59, 62, 65]
         founded = "founded_limited_received_notice_objection" if limited else "founded_limited_reported_repair_request" if repair_account else "founded_limited_reported_termination_threat_objection" if threat_account else "not_applicable_administrative_closure" if closure else "indeterminate"
         founded_reason = (
@@ -97,7 +97,7 @@ def main():
             if limited else
             "Administrative record/closure is the actual request; repaired-and-dry report gives no current removal demand or new legal compensation claim. Bounded administrative closure advice is complete on that account; exact historical duration remains unknown but does not block this task."
             if closure else
-            "Firsthand about16-degree/recurrent-reset/three-call account supplies a prima facie narrow259a repair-request basis. Technical cause or calibration is not a mandatory prerequisite. Full further-remedies scope, dates/quantum and any responsibility defence remain unknown; no complete legal-merit nomination is made."
+            "Firsthand cold-room/heating-failure account and reported calls/phone response supply a prima facie narrow259a repair-request basis. Technical cause or calibration is not a mandatory prerequisite. Full further-remedies/deposit scope, dates/quantum and any responsibility defence remain unknown; no complete legal-merit nomination is made."
             if repair_account else
             "The express customer account of increase-or-termination supports a limited269d(2)(c) nullity objection. A missing attached letter or uncertain delivery alone does not defeat this reported ground. Stepped-rent form relaxation is distinct from the prohibition on accompanying termination threats; full communication/applicability remain unverified."
             if threat_account else
@@ -109,7 +109,7 @@ def main():
             "received_at": source["received_at"], "canton": source["canton"],
             "path": path, "relevant_CO_articles": laws,
             "official_citations": ["https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_" + code[:-1] + "_" + code[-1] if code[-1].isalpha() else "https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_" + code for code in laws],
-            "law_provenance": "Partial_official_DE_CO_1Jan2026_public_extract_relayed_by_Mac_via_coordinator; see_official_law_receipt.json; some_actual_articles_and_historical_applicability_pending; do_not_claim_full_primary_verification",
+            "law_provenance": "Official_DE_CO_1Jan2026_current_text_public_extract_relayed_by_Mac_via_coordinator; corrected_actual_headings_read;272/272a_still_missing_for_extension_paths; historical_versions_unverified; see_official_law_receipt.json",
             "message_receipt": {k: source["artifacts"][0][k] for k in ("artifact_id", "path", "sha256", "media_type", "file_name", "size_bytes")},
             "claim_receipt": source["claim_receipt"], "registry_receipt": source["registry_receipt"],
             "established_source_facts": observations,
@@ -154,6 +154,8 @@ def main():
         "administrative_closure_can_be_complete_without_substantive_legal_merit": True,
         "law_receipt": "official_law_receipt.json",
         "primary_articles_pending": law_receipt["missing_actual_articles_pending_primary_relay"],
+        "current_primary_articles_for_active_nine_received": law_receipt["current_text_primary_articles_needed_for_active_nine_received"],
+        "older_consolidation_pdf_verified": law_receipt["historical_consolidation_pdf_verified"],
         "paths": [{"reviewed_original_numbers": numbers, "path": path, "relevant_CO_articles": laws,
                    "material_unknowns": unknown, "route_relevant_documents_or_equivalent_reliable_evidence": needed,
                    "adverse_or_limiting_facts": adverse} for numbers, path, laws, unknown, needed, adverse in PATHS]})

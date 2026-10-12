@@ -65,10 +65,15 @@ The relayed strings normalize PDF whitespace and are not claimed byte-exact PDF
 extracts. Existing authored corpus authority mappings were not treated as an
 independently verified publisher source.
 
-At this baseline checkpoint the actual259a/259d/259e/269/272/272a provisions have
-not yet arrived in the primary-source transfer. Their citations and route
-criteria remain provisional pending independent reading; no complete primary
-law verification is claimed. `criteria.json` records the missing articles.
+The corrected printed-heading extracts for259/259a/259d/259e/269/266n have now
+arrived and were independently read; they replace the rejected inline
+cross-reference extraction errors. `official_corrected_heading_extracts.json`
+preserves the supplied German text. All current-text provisions needed for the
+nine bounded candidate paths are now available. Actual272/272a text remains
+missing for original extension assessments, which stay conditional; those
+provisions are outside all nine active candidate paths. No older consolidated
+PDF has been independently verified and no historical-version verification is
+claimed. `criteria.json` keeps these separate authority limits explicit.
 
 Observed sources include late2024/2025events and2026notices. The current statute
 is not automatically retrospective authority for every event. The rules below
@@ -92,7 +97,8 @@ must be checked before relying on the approved-form rule.
 | Rent increase/form/change | Ordinary versus statutory exception, actual communicated packet, approved form, reason, notice/effective dates and termination threat under [269d](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_269_d). Explicit no-form/no-reason/termination-threat nullity grounds support tenant objections. A late effective date/timing problem is distinct from these express grounds. Mechanical signatures and stepped-rent changes have the current(4)/(5) exceptions. |
 | Substantive rent merits | Relevant prior binding rent/cost/rate basis, amounts and actual supporting calculation under [269](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_269)/[269a](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_269_a), with notification and30-day challenge under [270b](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_270_b). Renovation allocations/subsidies, duplicate factors and charge reclassification require their actually relevant source calculations. Precise ordinance-specific percentages/completion rules were not assessed using CO alone. |
 
-Source-burden clarification after fresh review: the original heating report can
+Source-burden clarification after fresh review: the original repeated-heating
+and boiler-failure reports can
 support a narrow repair demand without a calibrated reading or settled service
 cause; full reduction/other-remedy merits remain open. For inspection/access
 reconciliation, actual logs or equivalent reliable accounts are needed to
