@@ -18,20 +18,20 @@ const events = (s,after=0) => ({current_revision:s.revision,events:Array.from({l
 
 test('reference intake stays a source inspection and completed assessment retains external deferral',()=>{
  const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_sha256:hash('1')};
- const s=state({status:'deferred',outcome:{status:'deferred',assessment_status:'complete',assessment_scope:'heating_notice',reference_provenance:provenance},semantic_contexts:{workflow:{claim_id:'claim-a',execution_mode:'deterministic_reference',reference_provenance:provenance}},receipts:[{kind:'interpretation.accepted',receipt:{workflow_id:'workflow',receipt_sha256:hash('2'),reference_execution:{provenance}}}]});
+ const s=state({policy_id:'casepath.bounded-reference-assessment/1.0.0',status:'deferred',outcome:{status:'deferred',assessment_status:'complete',assessment_scope:'heating_notice',reference_provenance:provenance},semantic_contexts:{workflow:{claim_id:'claim-a',execution_mode:'deterministic_reference',reference_provenance:provenance}},receipts:[{kind:'interpretation.accepted',receipt:{workflow_id:'workflow',receipt_sha256:hash('2'),reference_execution:{provenance}}}]});
  assert.equal(ui.claimStatusLabel(s.status,s),'Assessment complete');
  assert.equal(ui.referenceExecution(s).as_of,'2025-02-21');
  assert.equal(ui.referenceExecution(state({semantic_contexts:{future:s.semantic_contexts.workflow}})).as_of,'2025-02-21','accepted work.context identifies the execution before outcome');
  assert.equal(ui.referenceExecution(state()),null,'a roster label does not imply reference execution');
  const gate={contract:'casepath.source-backed-intake/1.0.0',status:'incomplete',eligible:false,gate_sha256:hash('3'),checklist:[{document_type:'notice',label:'Notice record',node_ids:['branch'],status:'insufficient',artifact_ids:['original']}],missing_documents:[{document_type:'notice',label:'Notice record',status:'insufficient'}],legal_predicates:[{predicate_id:'landlord_validity',status:'false',citations:[],rule_refs:[]}],provenance};
  const before=JSON.stringify({s,gate}),html=ui.intakeMarkup(s,{intake:gate});
- assert.match(html,/Source inspection/);assert.match(html,/Needs more support/);assert.match(html,/data-au-source="original"/);assert.doesNotMatch(html,/landlord_validity|Established|data-au-node=/);
+ assert.doesNotMatch(html,/accepted evidence and findings are separate/);assert.match(html,/Needs more support/);assert.match(html,/data-au-source="original"/);assert.doesNotMatch(html,/landlord_validity|Established|data-au-node=/);
  assert.equal(JSON.stringify({s,gate}),before);
  const early=state({revision:0,graph:null,evaluation:null,facts:[],obligations:[],actions:[],acquired_sources:[],mode:'unprocessed',status:'not_started',phase:'not_run'});
  const view=ui.workMarkup(early,{intake:gate},null,[],'step',{}, {availability:{ready:true}});
  assert.match(view,/data-au-start disabled/);assert.match(view,/Notice record/);assert.doesNotMatch(view,/data-au-node=/);
  const completed=ui.workMarkup(s,{},'branch',[]);
- assert.equal((completed.match(/Historical synthetic recording · as of 2025-02-21 · rules-based/g)||[]).length,1);assert.match(completed,/External handling deferred/);
+ assert.equal((completed.match(/Historical synthetic recording · as of 2025-02-21 · rules-based/g)||[]).length,1);assert.match(completed,/Assessment only; no external action taken/);
 });
 
 test('reference demonstration has the exact new nine and legacy history remains separate',()=>{
@@ -63,6 +63,22 @@ test('reference source labels require the exact recorded pin and later uploads r
  assert.equal(ui.referenceExecution(arrived).as_of,'2025-02-21');assert.equal(ui.assessmentFreshness(arrived).status,'prior');assert.deepEqual(ui.assessmentFreshness(arrived).sources,[late]);
  const html=ui.workMarkup(arrived,{},'branch',[],'sources');assert.match(html,/Authored synthetic supplement/);assert.doesNotMatch(html,/unrelated-later-jpeg[^<]*Authored synthetic/);
  assert.equal(JSON.stringify(s.source_descriptors),JSON.stringify([original,supplement]));
+});
+
+test('completed reference assessments filter with completed assessments while external and ordinary deferred states stay exact',()=>{
+ const reference=ui.REFERENCE_DEMO_CASES.map(row=>({...row,origin:'canonical_original',status:'deferred',policy_id:'casepath.bounded-reference-assessment/1.0.0',outcome:{status:'deferred',assessment_status:'complete',reference_provenance:{mode:'deterministic_reference',synthetic:true}}}));
+ const ordinary={claim_id:'ordinary',origin:'canonical_original',status:'deferred',policy_id:'casepath.autonomous/1',outcome:{status:'deferred'}},wrongPolicy={...ordinary,claim_id:'old-policy',outcome:reference[0].outcome};
+ const rows=[...reference,ordinary,wrongPolicy],before=JSON.stringify(rows);
+ assert.deepEqual(ui.matchingClaims(rows,{filter:'investigation_complete'}).map(row=>row.claim_id),ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id));
+ assert.deepEqual(ui.matchingClaims(rows,{filter:'deferred'}).map(row=>row.claim_id),['ordinary','old-policy']);
+ assert.match(ui.collectionMarkup(rows,{filter:'investigation_complete'}),/>Assessment complete<\/button>/);assert.equal(JSON.stringify(rows),before);
+});
+
+test('pinned synthetic source excerpts show the actual body while the full acquired bytes remain exact',()=>{
+ const body='SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\nFixture header and hash declarations.\n\nThe service observation records a continuing heating fault.',source={artifact_id:'source',sha256:hash('5'),media_type:'text/plain',role:'supporting_document',text:body};
+ const s=state({source_descriptors:[source],semantic_contexts:{recorded:{execution_mode:'deterministic_reference',reference_provenance:{synthetic:true},sources:[{artifact_id:source.artifact_id,sha256:source.sha256}]}}}),before=JSON.stringify(s);
+ assert.equal(ui.sourceExcerpt(s,source),'The service observation records a continuing heating fault.');assert.equal(ui.sourceExcerpt(state(),source),body,'a declared synthetic header alone cannot authorize hiding an unpinned source header');
+ assert.equal(ui.sourceExcerpt(s,{...source,sha256:hash('6')}),body);assert.equal(JSON.stringify(s),before);
 });
 
 test('actual DAG topology determines rank and branches independently of input order',()=>{
@@ -545,12 +561,12 @@ test('public read-only capability blocks forged forms and removes work controls 
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
- assert.match(f.host.innerHTML,/public workspace is read-only/i);
+ assert.doesNotMatch(f.host.innerHTML,/data-au-intake|data-au-arrival/);
  const presentation={mode:'saved',readOnly:true,availability:{ready:true}};
  for(const saved of [state(),state({status:'deferred',deferral:{code:'paused'}}),state({revision:0})]) {
   const before=JSON.stringify(saved),html=ui.workMarkup(saved,{},'branch',[],'sources',{},presentation)+ui.workMarkup(saved,{},'branch',[],'documents',{},presentation);
   assert.doesNotMatch(html,/data-au-start(?:[ >])|data-au-pause(?:[ >])|data-au-resume(?:[ >])|data-au-arrival(?:[ >])|data-au-add-files(?:[ >])/);
-  assert.match(html,/Original sources|History/);assert.equal(JSON.stringify(saved),before);
+  assert.match(html,/Sources|History/);assert.equal(JSON.stringify(saved),before);
  }
  assert.equal(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).ready,false);
  assert.match(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).reason,/read-only/i);
@@ -561,8 +577,8 @@ test('public entry capability prevents work before a status response arrives',as
  const before=globalThis.CASEPATH_PUBLIC_READ_ONLY;globalThis.CASEPATH_PUBLIC_READ_ONLY=true;
  const f=dom(),held=[],api=fakeApi({handle:async path=>path.endsWith('/status')?new Promise(resolve=>held.push(resolve)):null});
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{for(const resolve of held)resolve(response({enabled:true,provider_ready:true,writable:true}));controller.destroy();if(before===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=before;});
- assert.match(f.container.innerHTML,/data-au-nav="intake" disabled/);await settle();await newClaim(f);
- assert.match(f.host.innerHTML,/public workspace is read-only/i);
+ assert.doesNotMatch(f.container.innerHTML,/data-au-nav="intake"/);assert.match(f.container.innerHTML,/data-au-public-access>Read-only/);await settle();await newClaim(f);
+ assert.doesNotMatch(f.host.innerHTML,/data-au-intake|data-au-arrival/);
  await f.listeners.get('submit')({target:f.form,preventDefault(){}});
  assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });

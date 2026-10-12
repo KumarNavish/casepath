@@ -220,13 +220,14 @@ from fastapi.testclient import TestClient
 from casepath_api.autonomous_api_v1 import create_autonomous_router
 from casepath_api.autonomous_corpus_v1 import CanonicalCorpus
 from casepath_api.autonomous_reference_v1 import ReferenceProfile
+from casepath_api.autonomous_controller_v1 import AutonomousController
 from test_complete_reference_intake_v1 import service_at,admit
 from importlib.util import spec_from_file_location,module_from_spec
 spec=spec_from_file_location('existing_clock',Path.cwd()/'casepath-qa/build-prior-assessment-fixture-v1.py')
 clock=module_from_spec(spec);spec.loader.exec_module(clock)
 with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temporary,patch('casepath_api.autonomous_store_v1.datetime',clock.FixtureClock):
  corpus=CanonicalCorpus();service=service_at(Path(temporary)/'claims.sqlite',corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus))
- output={'snapshots':{},'prefixes':{},'unprocessed':{},'sources':{},'raw_sources':{},'knowledge':None,'profile_sha256':ReferenceProfile().sha256}
+ output={'snapshots':{},'prefixes':{},'unprocessed':{},'sources':{},'raw_sources':{},'knowledge':None,'profile_sha256':ReferenceProfile().sha256,'earlier_context':None}
  try:
   with TestClient(app) as client:
    base='/api/claim-loops/v1/autonomous'
@@ -235,7 +236,19 @@ with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temp
    ids=json.loads(sys.argv[1])
    for cid in ids:
     output['unprocessed'][cid]=get('/claims/'+cid+'/snapshot')
-    admit(service,corpus,cid);state=service.run(cid)
+    if cid=='clm_7dbd7c7d1c4ddf90':
+     # An actual earlier ordinary engine context, stopped before any authored
+     # model result. Reference admission must append and preserve its prefix.
+     packet=corpus.packet(cid);service.store.admit_original(cid,packet,expected_revision=0,expected_state_sha256=packet['initial_state_sha256'],idempotency_key='qa-earlier-original')
+     class NoTransport:
+      def interpret(self,context,identity):raise ValueError('Isolated ordinary context boundary; no provider transport or interpretation result.')
+     previous=AutonomousController(service.store,corpus._corpus.static_policy(),NoTransport())
+     try:
+      earlier=previous.run(cid);output['earlier_context']={'claim_id':cid,'revision':earlier['revision'],'state_sha256':earlier['state_sha256']}
+     finally:previous.shutdown()
+     service.store.add_sources(cid,ReferenceProfile().files(cid),expected_revision=earlier['revision'],expected_state_sha256=earlier['state_sha256'],idempotency_key='qa-reference-after-earlier')
+    else:admit(service,corpus,cid)
+    state=service.run(cid)
     assert state['outcome']['assessment_status']=='complete'
     output['snapshots'][cid]=get('/claims/'+cid+'/snapshot')
     output['prefixes'][cid]={str(seq):get('/claims/'+cid+'/replay?through_seq='+str(seq)) for seq in range(state['revision']+1)}
@@ -457,7 +470,7 @@ function fixtureData(config = {}) {
   const rows = Object.values(envelopes).map(({state}) => ({
     claim_id: state.claim_id, title: state.title, origin: state.origin || (state.original_binding ? 'canonical_original' : historicalIds.includes(state.claim_id) ? 'native_intake' : undefined), mode: state.mode, status: state.status,
     phase: state.phase, phase_summary: state.phase_summary, revision: state.revision,
-    state_sha256: state.state_sha256, outcome: state.outcome,
+    state_sha256: state.state_sha256, policy_id:state.policy_id,outcome: state.outcome,
     source_preview: state.origin==='canonical_original'?{text:[...String(state.source_preview?.text||'')].slice(0,240).join('')}:undefined, browse_metadata: state.browse_metadata || {},
   }));
   assert.equal(rows.filter(row => row.origin === 'canonical_original').length, 150);
@@ -828,7 +841,7 @@ async function open(page, id) {
 async function title(page, id) {
   await eventually(async () => {
     const rendered = await page.locator('[data-au-claim-title]').count() ? await page.locator('[data-au-claim-title]').textContent() : null;
-    const expected = await page.evaluate(id => window.CasePathAutonomous.REFERENCE_DEMO_CASES.find(row => row.claim_id === id)?.label || window.CasePathAutonomous.DEMO_CASES.find(row => row.claim_id === id)?.label || window.__fixture.envelopes[id].state.title, id);
+    const expected = await page.evaluate(id => window.CasePathAutonomous.REFERENCE_DEMO_CASES?.find(row => row.claim_id === id)?.label || window.CasePathAutonomous.DEMO_CASES.find(row => row.claim_id === id)?.label || window.__fixture.envelopes[id].state.title, id);
     return rendered === expected;
   }, `The matching saved claim ${id} did not render`);
   // Request the actual product's single technical drawer once. Its closed
@@ -845,12 +858,17 @@ test('reference native: exact nine actual accepted assessments retain graph docu
  const fixture=referenceFixture(),page=await fixturePage(t,{referenceFixture:true,readOnlyStatus:true});
  assert.equal(fixture.profile_sha256,'15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7');
  assert.deepEqual(await page.evaluate(()=>window.CasePathAutonomous.REFERENCE_DEMO_CASES.map(row=>row.claim_id)),referenceIds);
+ await page.locator('[data-au-filter="investigation_complete"]').click();
+ assert.equal(await page.locator('[data-au-filter="investigation_complete"]').innerText(),'Assessment complete');
+ assert.deepEqual(sorted(await page.locator('[data-au-claim-row]').evaluateAll(rows=>rows.map(row=>row.dataset.auClaimRow))),sorted(referenceIds));
+ await page.locator('[data-au-filter="deferred"]').click();assert.equal(await page.locator('[data-au-claim-row]').count(),0);
+ await page.locator('[data-au-filter="all"]').click();
  for(const id of referenceIds){
   await open(page,id);await title(page,id);const record=await visibleRecord(page),expected=fixture.snapshots[id];
   assert.deepEqual(record.state,expected.state);assert.deepEqual(record.projection,expected.projection);
   assert.equal(expected.state.status,'deferred');assert.equal(expected.state.outcome.status,'deferred');assert.equal(expected.state.outcome.assessment_status,'complete');
   assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based`);
-  assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/External handling deferred/);
+  assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/Assessment only; no external action taken/);
   assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(rows=>rows.map(row=>row.dataset.auNode))),sorted(expected.state.graph.nodes.map(row=>row.node_id)));
   await page.locator('.au-context-nav [data-au-detail="documents"]').click();
   assert.deepEqual(sorted(await page.locator('[data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(expected.state.obligations.map(row=>row.obligation_id)));
@@ -902,6 +920,38 @@ test('reference native: unavailable recordings retain actual unprocessed intake 
  await page.locator('.au-context-nav [data-au-detail="documents"]').click();assert.match(await page.locator('[data-au-intake-gate]').innerText(),/Intake incomplete/);assert.doesNotMatch(await page.locator('[data-au-intake-gate]').innerText(),/Reference assessment complete|Established/);
 });
 
+test('reference native: an earlier ordinary canonical prefix keeps its mode and context before reference admission',async t=>{
+ const fixture=referenceFixture(),id='clm_7dbd7c7d1c4ddf90',earlier=fixture.earlier_context,page=await fixturePage(t,{referenceFixture:true,referenceReplayIds:[id],publicReadOnly:true});
+ assert.equal(earlier.claim_id,id);const prefixes=fixture.prefixes[id],old=prefixes[earlier.revision];assert.equal(old.state.state_sha256,earlier.state_sha256);assert.ok(!old.state.outcome?.reference_provenance);
+ const start=Object.values(prefixes).find(row=>row.state.policy_id==='casepath.bounded-reference-assessment/1.0.0' && row.events.at(-1)?.kind==='work.started');
+ const context=Object.values(prefixes).find(row=>row.state.semantic_contexts?.[row.state.run_id]?.execution_mode==='deterministic_reference' && row.events.at(-1)?.kind==='work.context');
+ for(const [prefix,hasDate] of [[old,false],[start,false],[context,true]]){
+  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'legacy',through,detail:'activity'}),{id,through:prefix.through_seq});await title(page,id);
+  assert.deepEqual((await visibleRecord(page)).state,prefix.state);assert.deepEqual((await visibleRecord(page)).projection,prefix.projection);
+  const label=await page.locator('[data-au-reference-mode]').allTextContents();
+  if(prefix===old)assert.deepEqual(label,[]);else assert.deepEqual(label,[`Historical synthetic recording${hasDate ? ` · as of ${context.state.semantic_contexts[context.state.run_id].reference_provenance.as_of}` : ''} · rules-based`]);
+ }
+ await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'legacy',through,detail:'activity'}),{id,through:earlier.revision});await title(page,id);
+ await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('[data-au-return-case]').count().then(count=>count>0),'Knowledge lost the earlier recorded return context');
+ await page.locator('[data-au-return-case="step"]').click();await title(page,id);assert.deepEqual((await visibleRecord(page)).state,old.state);assert.equal(await page.locator('[data-au-reference-mode]').count(),0);
+ assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),'legacy');
+});
+
+test('reference native: public entry omits creation and forged flag status and controls cannot reopen writes',async t=>{
+ const page=await fixturePage(t,{publicReadOnly:true,providerReady:true,originalStartId:unprocessedId});
+ assert.equal(await page.locator('.au-header-new').count(),0);assert.equal(await page.locator('[data-au-public-access]:visible').count(),1);assert.equal(await page.locator('[data-au-public-access]').innerText(),'Read-only');
+ await page.evaluate(()=>{window.CASEPATH_PUBLIC_READ_ONLY=false;window.__fixture.readOnlyStatus=false;window.__fixture.providerReady=true;});
+ await open(page,unprocessedId);await title(page,unprocessedId);
+ assert.equal(await page.locator('[data-au-start],[data-au-pause],[data-au-resume],[data-au-arrival],[data-au-add-files]').count(),0);
+ await page.evaluate(()=>{
+  for(const action of ['start','pause','resume']){const button=document.createElement('button');button.setAttribute('data-au-'+action,'');document.querySelector('[data-au-view]').append(button);button.click();button.remove();}
+  const form=document.createElement('form');form.setAttribute('data-au-intake','');document.querySelector('[data-au-view]').append(form);form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));form.remove();
+ });
+ await page.evaluate(()=>window.__controller.showIntake());
+ assert.equal(await page.locator('[data-au-intake]').count(),0);assert.equal(await page.locator('.au-header-new').count(),0);assert.equal(await page.locator('[data-au-public-access]:visible').count(),1);
+ assert.equal(await page.evaluate(()=>window.__fixture.calls.some(row=>row.method!=='GET')),false);
+});
+
 for(const width of [1428,390])test(`quiet language: the saved insufficient reason owns the reading view while History retains every exact record at ${width}px`,async t=>{
   const id='auto_764f712d3833988ce6ff6cfd',saved=fixtureData().envelopes[id],fact=saved.state.facts.find(row=>row.fact_id==='fact:notice_period_evidence'),obligation=saved.state.obligations.find(row=>row.required_fact_ids.includes(fact.fact_id)),page=await fixturePage(t,{width,height:width===390?844:801});
   assert.equal(fact.status,'insufficient');assert.ok(fact.citations.length,'this recorded conclusion has an original-source span');
@@ -937,7 +987,7 @@ test('Cases pages all 150 originals and Demo enters their exact canonical identi
   assert.equal(new Set(actual).size,150);assert.deepEqual(sorted(actual),sorted(originals.map(row=>row.claim_id)));
   const collectionCalls=await calls(page,'/claims');let nextOffset=0;
   for(const call of collectionCalls){const params=new URL(call.url,'http://fixture.invalid').searchParams;assert.equal(Number(params.get('offset')||0),nextOffset);nextOffset+=Math.min(Number(params.get('limit')||50),159-nextOffset);}assert.equal(nextOffset,159);
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
   await eventually(()=>page.locator('[data-au-claim-title]').count().then(count=>count===1),'Demo did not enter a real claim');
   assert.equal(new URL(page.url()).hash.split('?')[0],`#autonomous/claim/${demoIds[0]}`);
   assert.equal(await page.locator('.au-demonstration').count(),0,'Demo has no separate showcase page');
@@ -1109,7 +1159,7 @@ for (const mode of ['replay']) test(`timed ${mode} presentation inspects all nin
       if (!previous || previous.claim_id !== state.claim_id || previous.revision !== state.revision || previous.state_sha256 !== state.state_sha256) window.__consumedControlStates.push(state);
     }).observe(document.querySelector('#workspace'), {childList: true, subtree: true});
   });
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
   await playIfPaused(page);
   await title(page, demoIds[0]);
   if (mode === 'live') {
@@ -1156,7 +1206,7 @@ for (const mode of ['replay']) test(`timed ${mode} presentation inspects all nin
   }
   // Restart an active presentation and abandon it through product navigation.
   // Live originals are already processed, so this restart has no Start intent.
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
   await playIfPaused(page);
   await title(page, demoIds[0]);
   await page.locator('.au-nav [data-au-nav="work"]').click();
@@ -1169,7 +1219,7 @@ for (const mode of ['replay']) test(`timed ${mode} presentation inspects all nin
 
 test('a replay control history without an accepted operational outcome stops honestly at its exact saved head', async t => {
   const page = await fixturePage(t, {presentationSuite: 'replay', presentationOutcome: false});
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
   await playIfPaused(page);
   await title(page, demoIds[0]);
   await page.clock.runFor(700);
@@ -1822,7 +1872,7 @@ test('real graph routes retain at least 3:1 effective contrast with dashed exclu
 
 test('the mobile Demo chooser keeps nine domain-bound independent identities and pauses accepted playback', async t => {
   const page=await fixturePage(t,{presentationSuite:'replay',width:390,height:844});
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();await title(page,demoIds[0]);
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));await title(page,demoIds[0]);
   const original=(await visibleRecord(page)).state;assert.equal(original.revision,0);assert.equal(original.status,'not_started');
   await page.locator('[data-au-inspect="demo"]').click();const picker=page.locator('.au-record-dialog[open]');
   assert.deepEqual(await picker.locator('h3').allTextContents(),['Defects & repairs','Lease termination','Rent changes']);
@@ -1924,7 +1974,7 @@ test('a working claim keeps completed step and action labels scoped to Completed
 
 test('the desktop Demo chooses actual canonical claims without an additional showcase or disclosure journey', async t => {
   const page=await fixturePage(t,{presentationSuite:'replay',width:1440,height:900});
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();await title(page,demoIds[0]);
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));await title(page,demoIds[0]);
   assert.equal(await page.locator('.au-demonstration').count(),0);await page.locator('[data-au-inspect="demo"]').click();
   const picker=page.locator('.au-record-dialog[open]'),rows=picker.locator('[data-au-demo-case]');assert.equal(await rows.count(),9);
   assert.deepEqual(await rows.evaluateAll(elements=>elements.map(element=>element.dataset.auDemoCase)),demoIds);
@@ -1962,7 +2012,7 @@ test('pending raw navigation blocks original admission, timed advancement and de
 
   const timed = await fixturePage(t, {presentationSuite: 'replay'});
   await timed.evaluate(ids => { for (const id of ids) window.__fixture.envelopes[id] = structuredClone(window.__fixture.acceptedHistories[id][2]); }, demoIds);
-  await timed.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await timed.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
   await playIfPaused(timed);
   await title(timed, id);
   await freezeRoutes(timed);
@@ -1974,7 +2024,7 @@ test('pending raw navigation blocks original admission, timed advancement and de
   await eventually(() => timed.locator('[data-au-claim-row]').count().then(count => count === 20), 'timed pending navigation did not restore Cases');
 
   const replay = await fixturePage(t, {presentationSuite: 'replay', holdReplayId: id, holdReplayThrough: 1});
-  await replay.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await replay.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
   await playIfPaused(replay);
   await title(replay, id);
   await replay.clock.runFor(1400);
@@ -2280,7 +2330,7 @@ test('read cache: saved final heads never replace the actual Demo prefix zero an
   await t.test('stored head separation',async t=>{
     const id=demoIds[0],page=await fixturePage(t,{presentationSuite:'replay'});await open(page,id);await title(page,id);assert.equal((await visibleRecord(page)).state.revision,2);
     await eventually(()=>page.evaluate(({key,id})=>{const value=sessionStorage.getItem(key);return value&&JSON.parse(value).snapshots.some(row=>row.state.claim_id===id&&row.state.revision===2);},{key:readCacheKey,id}),'the normal saved head was not persisted');
-    await page.reload();await mountFixture(page,{presentationSuite:'replay'});await title(page,id);await page.locator('.au-nav [data-au-nav="demonstration"]').click();await title(page,id);const record=await visibleRecord(page);assert.equal(record.state.revision,0);assert.equal(record.state.graph,null);assert.deepEqual(record.state.facts,[]);assert.equal(record.state.outcome,null);const reads=await calls(page,`/claims/${id}/replay`);assert.equal(reads.filter(row=>new URL(row.url,'http://fixture.invalid').searchParams.get('through_seq')==='0').length,1);assert.ok(reads.length<=3,'at most two verified future prefixes may be prefetched');assert.match(new URL(page.url()).hash,/through=0/);assert.equal(await page.locator('[data-au-start], [data-au-arrival], [data-au-pause], [data-au-resume]').count(),0);
+    await page.reload();await mountFixture(page,{presentationSuite:'replay'});await title(page,id);await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));await title(page,id);const record=await visibleRecord(page);assert.equal(record.state.revision,0);assert.equal(record.state.graph,null);assert.deepEqual(record.state.facts,[]);assert.equal(record.state.outcome,null);const reads=await calls(page,`/claims/${id}/replay`);assert.equal(reads.filter(row=>new URL(row.url,'http://fixture.invalid').searchParams.get('through_seq')==='0').length,1);assert.ok(reads.length<=3,'at most two verified future prefixes may be prefetched');assert.match(new URL(page.url()).hash,/through=0/);assert.equal(await page.locator('[data-au-start], [data-au-arrival], [data-au-pause], [data-au-resume]').count(),0);
   });
   await t.test('quota fallback',async t=>{
     const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'assessed',storageQuota:true});await open(page,id);await title(page,id);assert.deepEqual((await visibleRecord(page)).state,fixture.states.assessed);assert.equal(await currentReadState(page),'verified');assert.doesNotMatch(await page.locator('.au-global-status').innerText(),/quota|storage/i);
@@ -2487,7 +2537,7 @@ for(const width of [1428,390])test(`quiet work: substantive collection, current 
 // canonical nine roster or count the native fixture as a demonstration case.
 async function actualJournalPresentation(t, config = {}) {
   const fixture = priorAssessmentFixture(), page = await fixturePage(t, {presentationSuite: 'replay', priorAssessment: 'reassessed', ...config});
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
   await playIfPaused(page);
   await title(page, demoIds[0]);
   await page.evaluate(({id, latency, through, node}) => {
@@ -2501,7 +2551,7 @@ async function actualJournalPresentation(t, config = {}) {
 
 for(const interruption of ['visibility','context'])test(`forming work: trusted Play after ${interruption} reveals only its accepted mocked publication and retains real inspection`,async t=>{
   const config={presentationSuite:'replay',presentationPublication:true},id=demoIds[0],page=await fixturePage(t,config),fixture=fixtureData(config),publication=fixture.acceptedHistories[id][3].state.knowledge_published[0],event=fixture.authoredEvents[id][2];
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();await page.locator('[data-au-demo-stop]').click();await page.reload();await mountFixture(page,config);assert.equal(await page.locator('[data-au-demo-play]').count(),1);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'0');
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));await page.locator('[data-au-demo-stop]').click();await page.reload();await mountFixture(page,config);assert.equal(await page.locator('[data-au-demo-play]').count(),1);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'0');
   if(interruption==='visibility')await page.evaluate(()=>{for(let cycle=0;cycle<2;cycle++){Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});document.dispatchEvent(new Event('visibilitychange'));}});else await caseDetails(page);
   assert.equal(await page.locator('[data-au-publication-focus]').count(),0,'the saved final head cannot publish into prefix zero');await observeAnimations(page);await page.locator('[data-au-demo-play]').click();
   for(const through of [1,2,3]){for(let tick=0;Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<through&&tick<300;tick++)await page.clock.runFor(20);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(through));assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'),fixture.acceptedHistories[id][through].state.state_sha256);if(through<3)assert.equal(await page.locator('[data-au-publication-focus]').count(),0,'a future qualification is absent before its accepted event');}
@@ -2759,10 +2809,10 @@ for (const inspection of ['node', 'fact', 'document']) test(`focused flow: manua
   await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the exact next accepted prefix was not held');
   if (inspection === 'node') await page.locator('[data-au-node="lt_deadline"]').click();
   if (inspection === 'fact') await page.locator('[data-au-panel="step"] [data-au-fact-select="fact:termination_notice"]').click();
-  if (inspection === 'document') await page.locator('[data-au-panel="step"] [data-au-document-select="termination_notice"]').click();
+  if (inspection === 'document') await page.locator('.au-forming-documents [data-au-select-document="termination_notice"]').click();
   assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
   const selected = await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), route = new URL(page.url()).hash;
-  if (inspection !== 'node') assert.equal(await page.locator('[data-au-evidence-path] [data-au-document][data-au-obligation]').getAttribute('data-au-document'), 'termination_notice');
+  if (inspection !== 'node') assert.equal(await page.locator('.au-forming-documents [data-au-document][data-au-obligation][data-selected="true"]').getAttribute('data-au-document'), 'termination_notice');
   await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
   const reads = (await calls(page, `/claims/${id}/replay`)).length;
   await page.clock.runFor(7000);
@@ -2775,7 +2825,7 @@ for (const inspection of ['node', 'fact', 'document']) test(`focused flow: manua
   for (let tick = 0; record.state.revision === 11 && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
   assert.deepEqual(record.state, fixture.prefixes[12].state, 'Resume verifies and consumes the exact next immutable prefix');
   assert.deepEqual(record.projection, fixture.prefixes[12].projection);
-  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), fixture.prefixes[12].events.at(-1).payload.result.node_id, 'active playback follows only the recorded accepted action node');
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected, 'a recorded intake action with no changed fact or requirement preserves the selected evidence question');
   assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|changed identity/i);
   await page.locator('.au-nav [data-au-nav="work"]').click();
 });
@@ -2812,7 +2862,7 @@ function assertFocusedMotion(trace, acceptedWave = false) {
 
 test('quiet work: initial and reconnect navigation settle immediately while rapid routes, keyboard and reduced motion preserve authority',async t=>{
   const page=await fixturePage(t,{presentationSuite:'replay'});await traceFocusedMotion(page);
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();await title(page,demoIds[0]);
+  await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));await title(page,demoIds[0]);
   assert.deepEqual(await motionTrace(page),[],'opening accepted history and whole-page navigation stay settled');
   await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('.au-quiet-knowledge').count().then(count=>count===1),'rapid navigation did not retain Knowledge');
   await page.emulateMedia({reducedMotion:'reduce'});await page.locator('.au-nav [data-au-nav="work"]').focus();await page.keyboard.press('Enter');
