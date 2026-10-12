@@ -213,6 +213,24 @@ def _head_rows(values):
     return heads
 
 
+def _reference_source_bytes(corpus, profile):
+    """Only the selected originals and their exact reviewed supplements."""
+    result = {}
+    for cid in profile.ids:
+        packet = corpus.packet(cid)
+        for descriptor in packet['sources']:
+            raw = packet['source_bytes'][descriptor['artifact_id']]
+            if sha256(raw).hexdigest() != descriptor['sha256'] or len(raw) != descriptor['size_bytes']:
+                raise Refused('Selected original source bytes differ from their manifest-bound packet.')
+            result[descriptor['sha256']] = raw
+        for file, descriptor in zip(profile.files(cid), profile.value['claims'][cid]['sources']):
+            raw = base64.b64decode(file['content_base64'], validate=True)
+            if sha256(raw).hexdigest() != descriptor['sha256'] or len(raw) != descriptor['size_bytes']:
+                raise Refused('Selected supplemental source bytes differ from their reviewed profile.')
+            result[descriptor['sha256']] = raw
+    return result
+
+
 def prepare(connect, *, source_commit, corpus=None):
     identity = source_identity(source_commit)
     corpus, profile = corpus or CanonicalCorpus(), ReferenceProfile()
@@ -220,9 +238,7 @@ def prepare(connect, *, source_commit, corpus=None):
     sources = HostedSources(connect)
     source_hashes = {row[0] for row in rows['autonomous_source_chunks']['rows']}
     sources.verify_many(source_hashes)
-    all_original_hashes = {d['sha256'] for cid in corpus.ids for d in corpus.preview_state(cid)['source_descriptors']}
-    if not all_original_hashes <= source_hashes:
-        raise Refused('The hosted original source roster is incomplete; do not refresh it from deployment files.')
+    reference_bytes = _reference_source_bytes(corpus, profile)
     policy = bounded_reference_policy(corpus._corpus.static_policy())
     with tempfile.TemporaryDirectory(prefix='casepath-reference-plan-') as folder:
         path = Path(folder) / 'stage.sqlite'
@@ -269,8 +285,12 @@ def prepare(connect, *, source_commit, corpus=None):
                 if file.name in source_hashes:
                     continue
                 raw = file.read_bytes()
+                if file.name not in reference_bytes or raw != reference_bytes[file.name]:
+                    raise Refused('Staging added a source outside the exact selected original and supplement roster.')
                 chunks.extend((file.name, i, raw[offset:offset + HostedSources.CHUNK_BYTES])
                               for i, offset in enumerate(range(0, len(raw), HostedSources.CHUNK_BYTES)))
+            if {row[0] for row in chunks} != set(reference_bytes) - source_hashes:
+                raise Refused('Staging source additions differ from the exact selected missing byte roster.')
             final_heads = {cid: {'revision': store.get(cid)['revision'],
                                  'state_sha256': store.get(cid)['state_sha256'],
                                  'event_sha256': store.get(cid)['last_event_sha256']} for cid in profile.ids}
@@ -297,38 +317,40 @@ def apply(connect, plan, *, source_commit):
             or plan['profile_sha256'] != profile.sha256 or plan['rule_set_sha256'] != digest_value(policy)
             or plan['provider_calls'] != 0 or plan['budget_writes'] != 0):
         raise Refused('Plan expands or changes the exact source-bound reference scope.')
+    current, values = inventory(connect)
+    existing = {tuple(_unwire(r)) for r in values['claim_loop_events']['rows']}
+    planned = {tuple(_unwire(r)) for r in plan['append_rows']}
+    replayed = planned <= existing
+    if replayed:
+        baseline = deepcopy_inventory_without_planned(values, plan)
+        if (baseline != plan['before']['tables'] or current['budget'] != plan['before']['budget']
+                or current['schema_sha256'] != plan['before']['schema_sha256']):
+            raise Refused('Post-admission rows or budget changed; exact retry is not established.')
+        baseline_values = {}
+        for table, data in values.items():
+            exclude = plan['append_rows'] if table == 'claim_loop_events' else plan['source_chunks'] if table == 'autonomous_source_chunks' else []
+            exclude = {tuple(_unwire(row)) for row in exclude}
+            baseline_values[table] = {'columns': data['columns'],
+                'rows': [row for row in data['rows'] if tuple(_unwire(row)) not in exclude]}
+        _verify_plan(baseline_values, plan)
+    else:
+        if current != plan['before'] or _head_rows(values) != plan['before_heads']:
+            raise Refused('Stale journal, source, cost, or schema snapshot.')
+        _verify_plan(values, plan)
+    # Inventory, local execution and query encoding may exceed a lease lifetime.
+    # Ownership starts only when the final exact-CAS transaction is ready.
+    queries = list(_query_batches(_cas_queries(values)))
     lease = HostedWorkflowLease(connect)
     token = lease.acquire()
     if token is None:
         raise Refused('Hosted workflow ownership is busy.')
     owner = _CURRENT_OWNER.set(token)
     try:
-        current, values = inventory(connect, owner=token)
-        existing = {tuple(_unwire(r)) for r in values['claim_loop_events']['rows']}
-        planned = {tuple(_unwire(r)) for r in plan['append_rows']}
-        replayed = planned <= existing
-        if replayed:
-            baseline = deepcopy_inventory_without_planned(values, plan)
-            if (baseline != plan['before']['tables'] or current['budget'] != plan['before']['budget']
-                    or current['schema_sha256'] != plan['before']['schema_sha256']):
-                raise Refused('Post-admission rows or budget changed; exact retry is not established.')
-            baseline_values = {}
-            for table, data in values.items():
-                exclude = plan['append_rows'] if table == 'claim_loop_events' else plan['source_chunks'] if table == 'autonomous_source_chunks' else []
-                exclude = {tuple(_unwire(row)) for row in exclude}
-                baseline_values[table] = {'columns': data['columns'],
-                    'rows': [row for row in data['rows'] if tuple(_unwire(row)) not in exclude]}
-            _verify_plan(baseline_values, plan)
-        else:
-            if current != plan['before'] or _head_rows(values) != plan['before_heads']:
-                raise Refused('Stale journal, source, cost, or schema snapshot.')
-            _verify_plan(values, plan)
-        # Expensive extraction/replay happened in disposable SQLite. The remote
-        # transaction contains exact row CAS and bounded batches of inserts only.
-        queries = _cas_queries(values)
         with lease.connect() as db:
             db.execute('BEGIN IMMEDIATE')
-            for batch in _query_batches(queries):
+            if digest_value(schema_objects(db)) != current['schema_sha256']:
+                raise Refused('Schema changed at the final exact-row CAS.')
+            for batch in queries:
                 if hasattr(db, 'prefetch'):
                     db.prefetch([(sql, args) for sql, args, expected in batch])
                 for sql, args, expected in batch:
@@ -342,8 +364,7 @@ def apply(connect, plan, *, source_commit):
             # Entire accepted plan remains one CAS commit; uncertain commit is not retried.
         sources = HostedSources(connect)
         corpus = CanonicalCorpus()
-        sources.verify_many({r[0] for r in plan['source_chunks']} | {
-            d['sha256'] for cid in corpus.ids for d in corpus.preview_state(cid)['source_descriptors']})
+        sources.verify_many(set(_reference_source_bytes(corpus, profile)))
         class ExistingJournal:
             path = Path('/tmp/reference-readback-unused')
         journal = ExistingJournal()
@@ -457,7 +478,8 @@ def _verify_plan(values, plan):
 
         store = PlannedExecutionStore(path)
         old_digests = {wire[0] for wire in values['autonomous_source_chunks']['rows']}
-        wanted = {s['sha256'] for c in profile.value['claims'].values() for s in c['sources']} - old_digests
+        reference_bytes = _reference_source_bytes(corpus, profile)
+        wanted = set(reference_bytes) - old_digests
         if {wire[0] for wire in plan['source_chunks']} != wanted:
             raise Refused('Plan source additions differ from the exact reviewed synthetic byte roster.')
         chunks = {}
@@ -471,12 +493,19 @@ def _verify_plan(values, plan):
             if sorted(parts) != list(range(len(parts))):
                 raise Refused('Planned source chunk roster has a gap.')
             raw = b''.join(parts[i] for i in range(len(parts)))
-            if sha256(raw).hexdigest() != digest or store._publish(raw) != digest:
+            if sha256(raw).hexdigest() != digest or digest in wanted and raw != reference_bytes[digest]:
                 raise Refused('Planned source bytes do not match their immutable hash.')
+            if digest in old_digests and store._publish(raw) != digest:
+                raise Refused('Existing source byte publication differs.')
+        before_heads = _head_rows(values)
+        for cid in before_heads:
+            store.get(cid)  # New sources may not repair an invalid accepted prefix.
+        for digest in wanted:
+            if store._publish(reference_bytes[digest]) != digest:
+                raise Refused('Selected source byte publication differs.')
         policy = bounded_reference_policy(corpus._corpus.static_policy())
         controller = AutonomousController(store, policy, reference_adapter=DeterministicReferenceAdapter(policy))
         try:
-            before_heads = _head_rows(values)
             for cid in profile.ids:
                 if cid not in before_heads:
                     packet = corpus.packet(cid)
