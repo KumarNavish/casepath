@@ -1,0 +1,130 @@
+{
+  "candidate": "ae0ec12de331898280bd9000fb6548c848ce48b1",
+  "host": "656813ef2295",
+  "targets": [
+    "casepath-api/tests",
+    "casepath/tools/test_build_deployment_identity.py",
+    "casepath/tools/test_casepath_release.py"
+  ],
+  "collected_count": 2454,
+  "collected_sorted_sha256": "a05e8ec49b6b94f092fedc740c12dab3e031a62e0400a890058896438a45d65a",
+  "mac_ids_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "shards": {
+    "1": {
+      "tests": 365,
+      "passed": 365,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_seconds": 642.1987476348877,
+      "junit_duration_seconds": 639.361,
+      "assigned_collected_executed_equal": true,
+      "after_head": "ae0ec12de331898280bd9000fb6548c848ce48b1",
+      "after_status": "",
+      "sealed_files_verified": 1648,
+      "source_manifest_sha256": "373965a4509f075e043684287444c0b2d51983d5111e55f881be3377abe94af1"
+    },
+    "2": {
+      "tests": 291,
+      "passed": 290,
+      "failed": 0,
+      "skipped": 1,
+      "exit_code": 0,
+      "duration_seconds": 248.20950055122375,
+      "junit_duration_seconds": 244.567,
+      "assigned_collected_executed_equal": true,
+      "after_head": "ae0ec12de331898280bd9000fb6548c848ce48b1",
+      "after_status": "",
+      "sealed_files_verified": 1648,
+      "source_manifest_sha256": "373965a4509f075e043684287444c0b2d51983d5111e55f881be3377abe94af1"
+    },
+    "3": {
+      "tests": 396,
+      "passed": 396,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_seconds": 385.172687292099,
+      "junit_duration_seconds": 380.512,
+      "assigned_collected_executed_equal": true,
+      "after_head": "ae0ec12de331898280bd9000fb6548c848ce48b1",
+      "after_status": "",
+      "sealed_files_verified": 1648,
+      "source_manifest_sha256": "373965a4509f075e043684287444c0b2d51983d5111e55f881be3377abe94af1"
+    },
+    "4": {
+      "tests": 420,
+      "passed": 420,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_seconds": 558.6543827056885,
+      "junit_duration_seconds": 555.386,
+      "assigned_collected_executed_equal": true,
+      "after_head": "ae0ec12de331898280bd9000fb6548c848ce48b1",
+      "after_status": "",
+      "sealed_files_verified": 1648,
+      "source_manifest_sha256": "373965a4509f075e043684287444c0b2d51983d5111e55f881be3377abe94af1"
+    },
+    "5": {
+      "tests": 361,
+      "passed": 352,
+      "failed": 0,
+      "skipped": 9,
+      "exit_code": 0,
+      "duration_seconds": 109.0265998840332,
+      "junit_duration_seconds": 104.368,
+      "assigned_collected_executed_equal": true,
+      "after_head": "ae0ec12de331898280bd9000fb6548c848ce48b1",
+      "after_status": "",
+      "sealed_files_verified": 1648,
+      "source_manifest_sha256": "373965a4509f075e043684287444c0b2d51983d5111e55f881be3377abe94af1"
+    },
+    "6": {
+      "tests": 494,
+      "passed": 494,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_seconds": 136.7745668888092,
+      "junit_duration_seconds": 132.505,
+      "assigned_collected_executed_equal": true,
+      "after_head": "ae0ec12de331898280bd9000fb6548c848ce48b1",
+      "after_status": "",
+      "sealed_files_verified": 1648,
+      "source_manifest_sha256": "373965a4509f075e043684287444c0b2d51983d5111e55f881be3377abe94af1"
+    }
+  },
+  "mac": {
+    "tests": 127,
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 416.48,
+    "basis": "Mac coordinator attested JUnit and exact canonical ID equality; Mac JUnit not present on Cloud"
+  },
+  "cloud": {
+    "tests": 2327,
+    "passed": 2317,
+    "failed": 0,
+    "skipped": 10
+  },
+  "finished_epoch": 1791808873.7456255,
+  "source_edits": false,
+  "new_skips": false,
+  "provider_credentials_in_test_environment": false,
+  "full_combined": {
+    "tests": 2454,
+    "passed": 2444,
+    "failed": 0,
+    "skipped": 10,
+    "mac_basis": "attested Mac JUnit",
+    "cloud_basis": "independently parsed six JUnits and exact-ID observer reports"
+  },
+  "coverage": {
+    "missing": 0,
+    "duplicates": 0,
+    "extra": 0,
+    "all_assigned_collected_executed_equal": true
+  }
+}
