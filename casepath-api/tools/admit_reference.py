@@ -30,6 +30,7 @@ from casepath_api.autonomous_reference_policy_v1 import bounded_reference_policy
 from casepath_api.autonomous_store_v1 import AutonomousStore, SESSION_ID
 from casepath_api.hosted_lease_v1 import HostedWorkflowLease, _CURRENT_OWNER
 from casepath_api.hosted_storage_v1 import HostedSources, HostedAutonomousStore, JOURNAL_SCHEMA
+from casepath_api.hosted_sql_v1 import MAX_BYTES
 from casepath_api.workspace_corpus import digest_value
 
 _migration = runpy.run_path(str(Path(__file__).with_name('migrate_hosted.py')))
@@ -40,6 +41,28 @@ CONTRACT = 'casepath.reference-admission-plan/1.0.0'
 
 class Refused(RuntimeError):
     pass
+
+
+def read_row_bound(db, name, table):
+    """One aggregate bounds actual scalar rows in this consistent transaction.
+
+    JSON escaping needs at most six bytes per UTF-8 byte (including controls,
+    quotes and supplementary Unicode). Base64 has its exact four-per-three
+    bound. Sixty-four bytes cover each typed cell's metadata and any finite
+    signed-64 integer/float/null representation. Include row separators and
+    reserve envelope/column metadata within the existing transport limit.
+    """
+    cells = []
+    for column in table['columns']:
+        key = q(column)
+        cells.append("1+CASE typeof(" + key + ") WHEN 'text' THEN 64+6*length(CAST(" + key + " AS BLOB)) "
+                     "WHEN 'blob' THEN 64+4*((length(" + key + ")+2)/3) ELSE 64 END")
+    row = db.execute('SELECT COALESCE(MAX(2+' + '+'.join(cells) + '),0) AS max_wire_row_bytes FROM ' + q(name)).fetchone()
+    bound = row['max_wire_row_bytes']
+    envelope = 16384 + sum(128 + 6 * len(column.encode()) for column in table['columns'])
+    if type(bound) is not int or bound < 0 or bound + envelope > MAX_BYTES:
+        raise Refused('A persisted row cannot be read within the existing transport bound: ' + name)
+    return bound
 
 
 def _wire(row):
@@ -74,8 +97,10 @@ def inventory(connect, *, owner=None):
             if obj['type'] != 'table' or name == 'hosted_workflow_lease':
                 continue
             info = table_info(db, name)
-            info['max_wire_row_bytes'] = 360000 if name == 'autonomous_source_chunks' else 8 * 1024 * 1024
+            info['max_wire_row_bytes'] = read_row_bound(db, name, info)
             rows = [tuple(row) for row in remote_rows(db, name, info)]
+            if any(_migration['wire_size'](row) > info['max_wire_row_bytes'] for row in rows):
+                raise Refused('A persisted row exceeded its transaction-bound wire-size proof: ' + name)
             values[name] = {'columns': info['columns'], 'rows': [_wire(r) for r in rows]}
             tables[name] = table_digest(rows, info['columns'])
         lease = db.execute('SELECT owner,expires_at,CAST(strftime(\'%s\',\'now\') AS INTEGER) AS now '

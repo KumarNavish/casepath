@@ -59,14 +59,14 @@ class AutonomousController:
         self._closed = False
 
     def submit(self, claim_id):
-        if self.enforce_intake_gate:
-            from .autonomous_intake_gate_v1 import require_complete
-            state = self.store.get(claim_id)
-            self.assert_execution_policy(state)
-            require_complete(self.intake_projection(state))
         with self._lock:
             if self._closed:
                 return
+            if self.enforce_intake_gate:
+                from .autonomous_intake_gate_v1 import require_complete
+                state = self.store.get(claim_id)
+                self.assert_execution_policy(state)
+                require_complete(self.intake_projection(state))
             current = self._jobs.get(claim_id)
             if current and not current.done():
                 self._pending.add(claim_id)
@@ -76,6 +76,8 @@ class AutonomousController:
             self._jobs[claim_id] = future
             def finished(_):
                 with self._lock:
+                    if self._closed:
+                        return
                     changed = digest_value(self.store.get(claim_id)['source_descriptors']) != roster
                     pending = claim_id in self._pending
                     self._pending.discard(claim_id)
@@ -84,6 +86,9 @@ class AutonomousController:
             future.add_done_callback(finished)
 
     def resume(self):
+        with self._lock:
+            if self._closed:
+                return
         for state in self.store.list():
             if self.enforce_intake_gate and not self.intake_projection(state)['eligible']:
                 continue
@@ -129,6 +134,9 @@ class AutonomousController:
         return self._once(claim_id, f'{workflow}.{name}', 'work.phase', {'phase': name, 'summary': summary})
 
     def run(self, claim_id):
+        with self._lock:
+            if self._closed_without_owned_work():
+                return
         state = self.store.get(claim_id)
         reference = self.reference_adapter
         if self.enforce_intake_gate:
@@ -185,6 +193,8 @@ class AutonomousController:
                                                                  'text', 'complete', 'coverage')} for source in state['acquired_sources']],
                        'instructions': {'interpret': INTERPRET_INSTRUCTIONS, 'verify': VERIFY_INSTRUCTIONS}}
             if reference is not None:
+                for rule_pack, template in zip(context['rule_packs'], self.policy['templates']):
+                    rule_pack['legal_authority'] = deepcopy(template['legal_authority'])
                 provenance = self.intake_projection(state)['provenance']
                 context.update(reference_provenance=provenance,
                                normative_sources=self.policy['normative_sources'],
@@ -248,6 +258,15 @@ class AutonomousController:
         if state.get('policy_id') not in allowed:
             from .autonomous_store_v1 import AutonomousStoreError
             raise AutonomousStoreError('saved assessment belongs to a different explicit execution policy')
+
+    def _closed_without_owned_work(self):
+        if not self._closed:
+            return False
+        # Closing admission stops new work. An already committed hosted owner
+        # may still finish its accepted result/publication under the same fence.
+        from .hosted_lease_v1 import _CURRENT_OWNER
+        owner = _CURRENT_OWNER.get()
+        return owner is None or getattr(self, '_hosted_lease', None) is not owner.lease
 
     def reconcile_saved_results(self, claim_id, *, work_store, expected_revision,
                                 expected_state_sha256, idempotency_key, actor, reason):
@@ -402,6 +421,9 @@ class AutonomousController:
                                                   graph_sha256=state['graph']['graph_sha256'])})
 
     def _learn(self, claim_id, workflow):
+        with self._lock:
+            if self._closed_without_owned_work():
+                return
         state = self.store.get(claim_id)
         if not state.get('outcome') or state['graph']['family'] == 'incoming_packet' or state.get('policy_id') != self.policy_id:
             return
