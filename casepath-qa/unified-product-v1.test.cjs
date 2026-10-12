@@ -93,7 +93,7 @@ test('execution failure remains separate from an accepted evidence deferral in c
  const failed={...original(),claim_id:ui.DEMO_CASES[4].claim_id,revision:11,mode:'saved',status:'deferred',phase:'deferred',outcome:null,deferral:{code:'verification_deferred',reason:'interpretation citation is not an exact claim source span',details:{error_type:'ValueError',workflow_id:'saved-workflow'}}};
  const evidence={...failed,deferral:null,outcome:{status:'deferred',summary:'A received source leaves the question unresolved.',missing_evidence:[],unresolved_facts:[{fact_id:'condition:notice_authority',summary:'Which notice governs remains unresolved.'}]}};
  const before=JSON.stringify([failed,evidence]);
- for(const [claim,label]of [[failed,'Execution failed'],[evidence,'Evidence deferred']]) {
+ for(const [claim,label]of [[failed,'Execution failed'],[evidence,'More evidence needed']]) {
   assert.match(ui.workMarkup(claim,{},null,[]),new RegExp(`data-au-claim-status>${label}\\.<\\/span>`));
   assert.match(ui.claimsMarkup([claim]),new RegExp(`>${label}</span>`));
   assert.match(ui.demoItineraryMarkup([claim]),new RegExp(`>${label}</span>`));
@@ -107,7 +107,7 @@ test('execution failure remains separate from an accepted evidence deferral in c
  for(const code of ['verification_deferred','provider_deferred','execution_deferred','model_unavailable','paused']) {
   const partial={...evidence,deferral:{code,reason:'Execution remains unresolved.'}};
   assert.equal(ui.replayCanAdvance(partial),false,'an existing outcome cannot clear a current execution deferral');
-  assert.doesNotMatch(ui.workMarkup(partial,{},null,[]),/data-au-claim-status>Evidence deferred\.<\/span>/);
+  assert.doesNotMatch(ui.workMarkup(partial,{},null,[]),/data-au-claim-status>More evidence needed\.<\/span>/);
  }
  assert.equal(ui.replayCanAdvance({...evidence,reconciliations:[{status:'failed'}]}),false);
  assert.equal(ui.replayCanAdvance({...evidence,reconciliations:[{status:'started'}]}),false);

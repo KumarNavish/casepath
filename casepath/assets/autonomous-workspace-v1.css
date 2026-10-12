@@ -178,7 +178,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace :is(.au-context-utilities,.au-claim-utilities) { display:flex; align-items:center; flex-wrap:wrap; gap:16px; }
 .au-workspace :is(.au-context-utilities,.au-claim-utilities) button { min-height:38px; padding:6px 0; border:0; background:transparent; color:var(--au-muted); font-size:13px; text-decoration:underline; text-underline-offset:4px; }
 .au-workspace .au-evidence-stage { position:relative; }
-.au-workspace .au-evidence-process { position:relative; padding:10px 0 4px; }
+.au-workspace .au-evidence-process { position:relative; max-width:900px; margin:0 auto; padding:10px 0 4px; }
 .au-workspace .au-graph-chrome { display:flex; align-items:center; justify-content:flex-end; min-height:30px; }
 .au-workspace .au-graph-chrome button { min-height:32px; padding:4px 0; font-size:12px; }
 .au-workspace .au-graph-viewport { position:relative; width:100%; max-width:100%; height:auto; max-height:250px; overflow:auto; overscroll-behavior-inline:contain; scrollbar-width:thin; scrollbar-color:#839a8b transparent; scroll-padding:16px; }
@@ -223,10 +223,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-reading-passages { max-width:78ch; margin:12px 0; }
 .au-workspace .au-reading-acquisition { max-width:78ch; margin:18px 0; }
 .au-workspace .au-reading-acquisition .au-acquired-text { white-space:pre-wrap; overflow-wrap:anywhere; font:400 15px/1.65 'CasePath Instrument',Arial,sans-serif; }
-.au-workspace .au-evidence-source { position:relative; display:block; width:100%; min-width:0; border:0; border-left:2px solid #8ca18a; border-radius:0; padding:10px 14px; background:var(--au-paper); text-align:left; }
-.au-workspace .au-evidence-source + .au-evidence-source { margin-top:10px; }
+.au-workspace .au-evidence-source { position:relative; display:block; width:100%; min-width:0; border:0; border-left:2px solid #8ca18a; border-radius:0; padding:5px 14px; background:var(--au-paper); text-align:left; }
+.au-workspace .au-evidence-source + .au-evidence-source { margin-top:3px; }
 .au-workspace .au-evidence-source-label { display:flex; justify-content:space-between; gap:12px; color:var(--au-muted); font-size:12px; }
-.au-workspace .au-evidence-source q { display:block; margin-top:6px; color:var(--au-ink); font-size:15px; line-height:1.55; quotes:'“' '”'; }
+.au-workspace .au-evidence-source q { display:block; margin-top:3px; color:var(--au-ink); font-size:15px; line-height:1.55; quotes:'“' '”'; }
 .au-workspace .au-evidence-source mark { background:transparent; color:inherit; text-decoration:underline; text-decoration-color:#8ca18a; text-underline-offset:4px; }
 .au-workspace .au-reading-fact { max-width:80ch; margin:12px 0; }
 .au-workspace .au-reading-fact h3, .au-workspace .au-reading-fact > strong { font-size:18px; font-weight:500; letter-spacing:-.2px; }
@@ -241,8 +241,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace :is(.au-reading-options,.au-evidence-options) button { min-height:36px; max-width:100%; padding:5px 0; border:0; background:transparent; color:var(--au-muted); font-size:13px; text-align:left; text-decoration:underline; text-underline-offset:4px; }
 .au-workspace :is(.au-reading-options,.au-evidence-options) button[aria-pressed=true] { color:var(--au-ink); text-decoration-color:var(--au-accent); }
 .au-workspace [data-au-inspect] { min-height:34px; max-width:100%; border:0; padding:5px 0; background:transparent; color:var(--au-muted); font-size:13px; text-align:left; text-decoration:underline; text-underline-offset:4px; }
-.au-workspace .au-source-link { display:block; width:100%; border:0; border-left:1px solid var(--au-line); padding:10px 0 10px 14px; background:transparent; text-align:left; font-size:13px; }
-.au-workspace .au-source-link q { display:block; margin-top:6px; font-size:15px; }
+.au-workspace .au-source-link:not(.au-evidence-source) { display:block; width:100%; border:0; border-left:1px solid var(--au-line); padding:10px 0 10px 14px; background:transparent; text-align:left; font-size:13px; }
+.au-workspace .au-source-link:not(.au-evidence-source) q { display:block; margin-top:6px; font-size:15px; }
 .au-workspace :is(.au-documents,.au-supporting,.au-activity,.au-case-knowledge) { max-width:1000px; margin:0 auto; padding:24px 0 0; }
 .au-workspace .au-claim-knowledge { max-width:900px; margin:24px auto 0; }
 .au-workspace .au-claim-knowledge > h2 { margin-bottom:20px; color:var(--au-muted); font-size:13px; font-weight:400; letter-spacing:0; }
@@ -505,4 +505,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 }
 @media (prefers-reduced-motion:reduce) {
   .au-workspace *, .au-workspace *::before, .au-workspace *::after { animation:none !important; transition:none !important; scroll-behavior:auto !important; }
+}
+
+@media (min-width:901px) {
+  .au-workspace .au-evidence-process { padding:0; }
+  .au-workspace .au-evidence-process .au-graph-chrome { position:absolute; top:-36px; right:0; }
+  .au-workspace .au-process-question { padding-right:136px; }
 }

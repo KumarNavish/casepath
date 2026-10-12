@@ -401,7 +401,7 @@ test('ready execution limits come only from the backend capability projection wi
 test('reuse exposes recorded applicability and avoided mechanical work without estimating savings',()=>{
  const use={knowledge_id:'procedure.one',version:2,applicability:'same_verified_family_and_rule_version',avoided_rule_compilations:1,avoided_qualification_cases:243},s=state({knowledge_uses:[use]});
  const record=ui.contextualRecord(s,{},[],'use','0');assert.deepEqual(record,use);assert.equal(record.avoided_rule_compilations,1);assert.equal(record.avoided_qualification_cases,243);
- const html=ui.workMarkup(s,{},'branch',[],'knowledge');assert.match(html,/reused/);assert.match(html,/own source evidence/);assert.doesNotMatch(html,/saved.*seconds|more accurate|improved accuracy/);
+ const html=ui.workMarkup(s,{},'branch',[],'knowledge');assert.match(html,/Used for this current case/);assert.match(html,/own source evidence/);assert.doesNotMatch(html,/saved.*seconds|more accurate|improved accuracy/);
 });
 
 test('knowledge inspection connects reusable steps, required facts, obligations and recipe rules to immutable lineage',()=>{
@@ -1176,7 +1176,7 @@ test('an exhausted authoritative call allowance is visible before intake while p
  const api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();assert.match(f.host.innerHTML,/<h1[^>]*>Cases<\/h1>/);await newClaim(f);
  const message=f.host.querySelector('[data-au-service]').textContent;assert.match(message,/allowance does not permit more autonomous work/i);assert.match(message,/still save a new claim.*named deferral/i);assert.doesNotMatch(message,/Local evidence acquisition and document preparation are available/);
  assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.doesNotMatch(f.submit.textContent,/retry|saving/i);assert.equal(f.message.textContent,'');assert.equal(JSON.stringify(savedStatus),before);
- assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.ok(api.calls.every(call=>['/status','/claims','/knowledge'].some(path=>call.path.endsWith(path)) && (!call.init.method || call.init.method==='GET')));assert.ok(api.calls.filter(call=>call.path.endsWith('/knowledge')).length<=1);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
 });
 
 test('cost, pending and unknown allowance statuses keep distinct honest intake messages without disabling saving',async()=>{
@@ -1194,7 +1194,7 @@ test('cost, pending and unknown allowance statuses keep distinct honest intake m
  ];
  for(const example of cases) {
   const f=dom(),savedStatus={enabled:true,provider_ready:true,...('limits' in example?{limits:example.limits}:{})},api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});
-  try { await settle();await newClaim(f);const message=f.host.querySelector('[data-au-service]').textContent;for(const pattern of example.matches||[])assert.match(message,pattern,JSON.stringify(savedStatus));if(example.excludes)assert.doesNotMatch(message,example.excludes,JSON.stringify(savedStatus));assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.equal(f.message.textContent,'');assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0); }
+  try { await settle();await newClaim(f);const message=f.host.querySelector('[data-au-service]').textContent;for(const pattern of example.matches||[])assert.match(message,pattern,JSON.stringify(savedStatus));if(example.excludes)assert.doesNotMatch(message,example.excludes,JSON.stringify(savedStatus));assert.equal(f.submit.disabled,false);assert.notEqual(f.fields.title.disabled,true);assert.equal(f.message.textContent,'');assert.ok(api.calls.every(call=>['/status','/claims','/knowledge'].some(path=>call.path.endsWith(path)) && (!call.init.method || call.init.method==='GET')));assert.ok(api.calls.filter(call=>call.path.endsWith('/knowledge')).length<=1);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0); }
   finally { controller.destroy(); }
  }
 });
@@ -1205,7 +1205,7 @@ test('disabled service and unavailable provider keep precedence over allowance m
   [{enabled:true,provider_ready:false,limits:{autonomous_can_start:false,autonomous_reason:'call_limit_reached'}},/^Inference is unavailable\. New packets are saved with a named deferral\.$/,false]
  ]) {
   const f=dom(),api=fakeApi({handle:async path=>path.endsWith('/status')?response(savedStatus):null}),controller=ui.mount(f.container,{fetch:api.fetch});
-  try { await settle();await newClaim(f);assert.match(f.host.querySelector('[data-au-service]').textContent,pattern);assert.equal(f.submit.disabled,disabled);assert.ok(api.calls.every(call=>call.path.endsWith('/status')||call.path.endsWith('/claims')));assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0); }
+  try { await settle();await newClaim(f);assert.match(f.host.querySelector('[data-au-service]').textContent,pattern);assert.equal(f.submit.disabled,disabled);assert.ok(api.calls.every(call=>['/status','/claims','/knowledge'].some(path=>call.path.endsWith(path)) && (!call.init.method || call.init.method==='GET')));assert.ok(api.calls.filter(call=>call.path.endsWith('/knowledge')).length<=1);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0); }
   finally { controller.destroy(); }
  }
 });
@@ -1224,14 +1224,14 @@ test('accepted refresh keeps the decision record exact and closing its drawer re
 test('delayed claim collections preserve verified revisions without rejecting genuinely newer rows',async t=>{
  const other={claim_id:'claim-b',title:'Other saved claim',status:'resolved',revision:2,state_sha256:hash('b')};
  for(const example of [
-  {name:'a delayed older current row',row:{claim_id:'claim-a',title:'Old collection title',status:'running',revision:3,state_sha256:hash('a')},expectedStatus:'Evidence deferred'},
-  {name:'a missing current row',row:null,expectedStatus:'Evidence deferred'},
-  {name:'a conflicting identity at the verified revision',row:{claim_id:'claim-a',title:'Conflicting collection title',status:'running',revision:4,state_sha256:hash('9')},expectedStatus:'Evidence deferred'},
+  {name:'a delayed older current row',row:{claim_id:'claim-a',title:'Old collection title',status:'running',revision:3,state_sha256:hash('a')},expectedStatus:'More evidence needed'},
+  {name:'a missing current row',row:null,expectedStatus:'More evidence needed'},
+  {name:'a conflicting identity at the verified revision',row:{claim_id:'claim-a',title:'Conflicting collection title',status:'running',revision:4,state_sha256:hash('9')},expectedStatus:'More evidence needed'},
   {name:'a genuinely newer collection row',row:{claim_id:'claim-a',title:'Newer collection title',status:'queued',revision:5,state_sha256:hash('5')},expectedStatus:'Queued'}
  ])await t.test(example.name,async child=>{
   routingFixture(child,'#autonomous/claim/claim-a');const f=dom(),queue={innerHTML:''},query=f.container.querySelector;f.container.querySelector=selector=>selector==='[data-au-recent-claims]'?queue:query(selector);
   let saved=state(),projection={},finishList;const api=fakeApi({handle:async(path,init)=>path.endsWith('/claims')&&init.method!=='POST'?new Promise(resolve=>{finishList=resolve;}):path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256,...projection}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});child.after(()=>controller.destroy());await waitFor(()=>f.host.innerHTML.includes('data-au-revision="3"')&&Boolean(finishList));
-  saved=state({revision:4,state_sha256:hash('f'),status:'deferred',outcome:{status:'deferred',reason:'Recorded evidence needed.',missing_evidence:[{document_type:'notice',label:'Notice receipt'}]}});await controller.refresh();assert.match(queue.innerHTML,/Evidence deferred/);assert.match(f.host.innerHTML,/data-au-revision="4"/);
+  saved=state({revision:4,state_sha256:hash('f'),status:'deferred',outcome:{status:'deferred',reason:'Recorded evidence needed.',missing_evidence:[{document_type:'notice',label:'Notice receipt'}]}});await controller.refresh();assert.match(queue.innerHTML,/More evidence needed/);assert.match(f.host.innerHTML,/data-au-revision="4"/);
   finishList(response({claims:[other,...(example.row?[example.row]:[])]}));await waitFor(()=>queue.innerHTML.includes('Other saved claim'));
   const row=queue.innerHTML.match(/<button[^>]*data-au-claim="claim-a"[\s\S]*?<\/button>/)?.[0];assert.ok(row,'the current verified claim remains reachable');assert.ok(row.includes(example.expectedStatus),row);assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.match(f.host.innerHTML,/Recorded evidence needed/);assert.doesNotMatch(queue.innerHTML,/Old collection title|Conflicting collection title/);
   if(example.row)assert.ok(queue.innerHTML.indexOf('Other saved claim')<queue.innerHTML.indexOf('data-au-claim="claim-a"'),'the API collection order is retained');
