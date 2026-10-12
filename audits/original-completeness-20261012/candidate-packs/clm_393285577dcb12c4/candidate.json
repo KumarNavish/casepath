@@ -1,0 +1,162 @@
+{
+  "contract": "casepath.synthetic-audit-candidate-supplement/1.0.0",
+  "status": "candidate_for_fresh_independent_legal_review_not_final_designation",
+  "profile_id": "synthetic-original150-plus-audit-nine-candidates-v1",
+  "domain": "lease_termination_dispute",
+  "original_identity": {
+    "claim_id": "clm_393285577dcb12c4",
+    "original_manifest_file_sha256": "7c885d3fd112dfc7314719d661fa73449f72b7bdf5b83159da9fa3e0b9a1b7eb",
+    "original_source_manifest_file_sha256": "638630886a1d291dfe9009839eb0519130e56700bb4d454277ce2e45c6044f4c",
+    "original_binding_sha256": "40a5529a0dec3bc53c7527d50fccdbdb982f890586da75fa5a58a9c6cf485e22",
+    "original_claim": {
+      "path": "claims/clm_393285577dcb12c4.json",
+      "sha256": "55c11da2a36f6257ea615d21c74977db95531d129717c7541751a61a4b4044d1",
+      "size_bytes": 12686
+    },
+    "original_registry": {
+      "path": "registries/clm_393285577dcb12c4.json",
+      "sha256": "df21437fec85ece78ddd516368372cf70fd9d0f0472d94a327de6ed4ccbd096b",
+      "size_bytes": 119829
+    },
+    "original_observable_sources": [
+      {
+        "artifact_id": "com_dacf1a35dfec5fc0",
+        "path": "artifacts/clm_393285577dcb12c4/00-8ef92a67d654-00-Bitte-um-erste-Einschaetzung-per-E-Mail-erklaerte-Kuendigung-mit-fehlendem-amtlichem-Formular-und-unklarem-zusaetzlichem-Versand_2026-05-05_1400_6e5134.eml",
+        "file_name": "Bitte-um-erste-Einschaetzung-per-E-Mail-erklaerte-Kuendigung-mit-fehlendem-amtlichem-Formular-und-unklarem-zusaetzlichem-Versand_2026-05-05_1400_6e5134.eml",
+        "media_type": "message/rfc822",
+        "sha256": "8ef92a67d654747fc04006903abe9294e1614e3b7d809baed81a7455b843e8ba",
+        "size_bytes": 5384
+      },
+      {
+        "artifact_id": "doc_38b3de7c20fdcea5",
+        "path": "artifacts/clm_393285577dcb12c4/01-dcce8ab16b65-01-Kuendigung_per_E-Mail_Simon-Steiner_2026-05-04.pdf",
+        "file_name": "Kuendigung_per_E-Mail_Simon-Steiner_2026-05-04.pdf",
+        "media_type": "application/pdf",
+        "sha256": "dcce8ab16b65340dc19ee110648685a22880473019f38b912f2f2e370a8dde14",
+        "size_bytes": 2046
+      }
+    ]
+  },
+  "authored_on": "2026-10-12",
+  "fictional_as_of": "2026-05-06",
+  "new_sources": [
+    {
+      "artifact_id": "audit_supp_clm_393285577dcb12c4_01",
+      "role": "synthetic_customer_packet_and_receipt_clarification",
+      "file_name": "01-sole-packet-and-tenant-clarification.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "path": "candidate-packs/clm_393285577dcb12c4/01-sole-packet-and-tenant-clarification.txt",
+      "sha256": "1ea667571e687cbdde5a46cf23881a344a6bdc81102af4117f4e043de2731c0f",
+      "size_bytes": 1712,
+      "content_base64": "U1lOVEhFVElDIFNVUFBMRU1FTlQg4oCUIEZJQ1RJT05BTCBERU1PTlNUUkFUSU9OIFNPVVJDRQpBdXRob3JlZCBmb3IgYSBzeW50aGV0aWMgQ2FzZVBhdGggY2FuZGlkYXRlIG9uIDIwMjYtMTAtMTIuCk5vIHJlYWwgY29tbXVuaWNhdGlvbiB3YXMgc2VudCwgbm8gcmVhbCBleHBlcnQgd2FzIGNvbW1pc3Npb25lZCwgYW5kIG5vIHByb2R1Y3Rpb24gZXZlbnQgb2NjdXJyZWQuCkhpc3RvcmljYWwgZGF0ZXMgYmVsb3cgYXJlIGZpY3Rpb25hbCBzY2VuYXJpbyBkYXRlczsgdGhpcyBpcyBuZXdseSBhdXRob3JlZCBldmlkZW5jZSwgbm90IGFuIG9yaWdpbmFsIGludGFrZSBmYWN0LgpPcmlnaW5hbCBjbGFpbSBJRDogY2xtXzM5MzI4NTU3N2RjYjEyYzQKT3JpZ2luYWwgY29ycHVzIG1hbmlmZXN0IFNIQTI1NjogN2M4ODVkM2ZkMTEyZGZjNzMxNDcxOWQ2NjFmYTczNDQ5ZjcyYjdiZGY1YjgzMTU5ZGE5ZmEzZTBiOWExYjdlYgpGaWN0aW9uYWwgc291cmNlIGRhdGU6IDIwMjYtMDUtMDYKRmljdGlvbmFsIHJldmlldyBhcy1vZjogMjAyNi0wNS0wNgpGaXh0dXJlIGF1dGhvcjogaW5kZXBlbmRlbnQgYXVkaXQgd29ya2VyIC9yb290L29yaWdpbmFsX2NvbXBsZXRlbmVzc19hdWRpdAoKSSwgU2ltb24gU3RlaW5lciwgcmVudCB0aGUgZHdlbGxpbmcgYXRab2xsaWtlcnN0cmFzc2UgNjcsIDgwMDggWnVyaWNoIHVuZGVyIGFuIGluZGVmaW5pdGUgcmVzaWRlbnRpYWwgbGVhc2UgaW4gY2FudG9uIFp1cmljaC4gTGltbWF0IFZlcndhbHR1bmdzIEdtYkggaXMgdGhlIGF1dGhvcml6ZWQgbGFuZGxvcmQncyBtYW5hZ2luZyBhZ2VudCBmb3IgdGhpcyBmbGF0LiBJIGxpdmUgYWxvbmUsIGFtIHVubWFycmllZCBhbmQgaGF2ZSBubyByZWdpc3RlcmVkIHBhcnRuZXI7IHRoZSByZW50ZWQgZHdlbGxpbmcgaXMgbm90IGEgZmFtaWx5IGhvbWUuCgpJIGZpcnN0IHJlY2VpdmVkIHRoZSBhY3R1YWwgdGVybWluYXRpb24gZW1haWwgYW5kIGl0cyBzb2xlIGF0dGFjaGVkIFBERiBvbjIwMjYtMDUtMDRUMTE6MDA6MDArMDI6MDAuIFRoZSBhdHRhY2htZW50IGlzIGV4YWN0bHkgS3VlbmRpZ3VuZ19wZXJfRS1NYWlsX1NpbW9uLVN0ZWluZXJfMjAyNi0wNS0wNC5wZGYgd2l0aCBTSEEyNTYgZGNjZThhYjE2YjY1MzQwZGMxOWVlMTEwNjQ4Njg1YTIyODgwNDczMDE5ZjM4YjkxMmYyZjJlMzcwYThkZGUxNC4gTXkgZWFybGllciBhd2FyZW5lc3MgZW50cnkgMjAyNi0wNC0zMCBjb25jZXJuZWQgdGhlIGRldmVsb3BpbmcgZGlzcHV0ZSwgbm90IHJlY2VpcHQgb2YgdGhlIHRlcm1pbmF0aW9uOyBJIHByZXNlcnZlIHRoYXQgZGlzdGluY3Rpb24uIFRoZSBzb2xlIFBERiBoYXMgb25lIHBoeXNpY2FsIHBhZ2UgYW5kIGlzIHRoZSBmdWxsIGF0dGFjaG1lbnQsIG5vdCBhIGNyb3BwZWQgc2Nhbi4KCk15IGFjdGl2ZSByZXF1ZXN0IGlzIGFuIGFzc2Vzc21lbnQgb2YgdGhlIHJlY2VpdmVkIGxhbmRsb3JkIG5vdGljZSdzIGFwcHJvdmVkLWZvcm0vbnVsbGl0eSBkZWZlY3QgYW5kIHByZXBhcmF0aW9uIG9mIGEgcHJvdGVjdGl2ZSBvYmplY3Rpb24uIEkgZG8gbm90IHJlcXVlc3QgYSBoYXJkc2hpcCBleHRlbnNpb24sIGFuIG93bi11c2UvbW90aXZlIGRlY2lzaW9uIG9yIGEgY291cnQgb3V0Y29tZS4gTm8gY29tbXVuaWNhdGlvbiBoYXMgYmVlbiBzZW50IGFuZCBubyBjaGFsbGVuZ2UgaGFzIGJlZW4gZmlsZWQgYnkgdGhpcyBjYW5kaWRhdGUgcGFja2V0Lgo=",
+      "dated": "2026-05-06",
+      "provenance": "new_operator_authored_synthetic_source; no_original_source_or_real_action",
+      "received": "present_in_supplemental_candidate_profile_only; not_admitted_to_original_or_production_journal"
+    },
+    {
+      "artifact_id": "audit_supp_clm_393285577dcb12c4_02",
+      "role": "synthetic_landlord_issuance_archive",
+      "file_name": "02-issuer-authority-and-complete-channel-archive.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "path": "candidate-packs/clm_393285577dcb12c4/02-issuer-authority-and-complete-channel-archive.txt",
+      "sha256": "d495fb2fbaad0407cf328270fa2cc4dc756ad8d5ede146182f3f56558467ad12",
+      "size_bytes": 1453,
+      "content_base64": "U1lOVEhFVElDIFNVUFBMRU1FTlQg4oCUIEZJQ1RJT05BTCBERU1PTlNUUkFUSU9OIFNPVVJDRQpBdXRob3JlZCBmb3IgYSBzeW50aGV0aWMgQ2FzZVBhdGggY2FuZGlkYXRlIG9uIDIwMjYtMTAtMTIuCk5vIHJlYWwgY29tbXVuaWNhdGlvbiB3YXMgc2VudCwgbm8gcmVhbCBleHBlcnQgd2FzIGNvbW1pc3Npb25lZCwgYW5kIG5vIHByb2R1Y3Rpb24gZXZlbnQgb2NjdXJyZWQuCkhpc3RvcmljYWwgZGF0ZXMgYmVsb3cgYXJlIGZpY3Rpb25hbCBzY2VuYXJpbyBkYXRlczsgdGhpcyBpcyBuZXdseSBhdXRob3JlZCBldmlkZW5jZSwgbm90IGFuIG9yaWdpbmFsIGludGFrZSBmYWN0LgpPcmlnaW5hbCBjbGFpbSBJRDogY2xtXzM5MzI4NTU3N2RjYjEyYzQKT3JpZ2luYWwgY29ycHVzIG1hbmlmZXN0IFNIQTI1NjogN2M4ODVkM2ZkMTEyZGZjNzMxNDcxOWQ2NjFmYTczNDQ5ZjcyYjdiZGY1YjgzMTU5ZGE5ZmEzZTBiOWExYjdlYgpGaWN0aW9uYWwgc291cmNlIGRhdGU6IDIwMjYtMDUtMDYKRmljdGlvbmFsIHJldmlldyBhcy1vZjogMjAyNi0wNS0wNgpGaXh0dXJlIGF1dGhvcjogaW5kZXBlbmRlbnQgYXVkaXQgd29ya2VyIC9yb290L29yaWdpbmFsX2NvbXBsZXRlbmVzc19hdWRpdAoKRmljdGlvbmFsIGlzc3VhbmNlIGFyY2hpdmUgb2YgTGltbWF0IFZlcndhbHR1bmdzIEdtYkg6IHdlIHdlcmUgYXV0aG9yaXplZCB0byBpc3N1ZSBsYW5kbG9yZCBjb21tdW5pY2F0aW9ucyBmb3Jab2xsaWtlcnN0cmFzc2UgNjcsIDgwMDggWnVyaWNoLiBPbjIwMjYtMDUtMDRUMTE6MDA6MDArMDI6MDAgd2UgdHJhbnNtaXR0ZWQgdGhlIHNvbGUgcGxhaW4gdGVybWluYXRpb24gUERGIGlkZW50aWZpZWQgYWJvdmUgdG9TaW1vbiBTdGVpbmVyJ3MgY3VycmVudCBlbWFpbCBhY2NvdW50LCBhbmQgdGhlIGVtYWlsIGRlbGl2ZXJ5L29wZW4gcmVjb3JkIGNvbmZpcm1zIHJlY2VpcHQgYXQgdGhhdCB0aW1lLgoKVGhlIG9yaWdpbmFsIHRyYW5zbWl0dGVkIFBERiBoYWQgdGhlIGJsYW5rIHNpZ25hdHVyZSBsaW5lIHZpc2libGUgaW4gdGhlIHJlY2VpdmVkIGZpbGU7IG5vIGhhbmR3cml0dGVuIG9yIHF1YWxpZmllZCBlbGVjdHJvbmljIHNpZ25hdHVyZSB3YXMgYXBwbGllZC4gSXQgd2FzIGEgcGxhaW4gbGV0dGVyLCBub3QgYSBjYW50b24tYXBwcm92ZWQgdGVybWluYXRpb24gZm9ybS4gTm8gb3RoZXIgYXR0YWNobWVudCwgYXBwcm92ZWQgZm9ybSwgc2VwYXJhdGUgbm90aWNlLCBwb3N0IHRvIHRoZSBvbGQgb3IgY3VycmVudCBhZGRyZXNzLCBwb3J0YWwgbm90aWNlLCByZXBsYWNlbWVudCBvciBjb3JyZWN0aW9uIHdhcyBpc3N1ZWQgdXAgdG8gdGhlIGZpY3Rpb25hbCByZXZpZXcgYXMtb2YgZGF0ZS4gVGhpcyBhcmNoaXZlIGNvbmZpcm1hdGlvbiByZWNvcmRzIHRoZSBmaWN0aW9uYWwgZmFjdHVhbCBwYWNrZXQgb25seTsgaXQgZG9lcyBub3QgYXNzZXJ0IGEgbGVnYWwgZGVjaXNpb24uCg==",
+      "dated": "2026-05-06",
+      "provenance": "new_operator_authored_synthetic_source; no_original_source_or_real_action",
+      "received": "present_in_supplemental_candidate_profile_only; not_admitted_to_original_or_production_journal"
+    }
+  ],
+  "active_path": "received_landlord_notice_form_nullity_assessment",
+  "relevant_CO_articles": [
+    "266l",
+    "266o",
+    "273"
+  ],
+  "active_fact_checklist": [
+    {
+      "fact": "Residential landlord tenancy and conditional family-home applicability",
+      "source_artifact_id": "audit_supp_clm_393285577dcb12c4_01",
+      "source_sha256": "1ea667571e687cbdde5a46cf23881a344a6bdc81102af4117f4e043de2731c0f",
+      "source_path": "candidate-packs/clm_393285577dcb12c4/01-sole-packet-and-tenant-clarification.txt",
+      "quote": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich. Limmat Verwaltungs GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+      "start": 610,
+      "end": 919,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Exact formal receipt and unchanged complete original plain-PDF binding",
+      "source_artifact_id": "audit_supp_clm_393285577dcb12c4_01",
+      "source_sha256": "1ea667571e687cbdde5a46cf23881a344a6bdc81102af4117f4e043de2731c0f",
+      "source_path": "candidate-packs/clm_393285577dcb12c4/01-sole-packet-and-tenant-clarification.txt",
+      "quote": "I first received the actual termination email and its sole attached PDF on2026-05-04T11:00:00+02:00. The attachment is exactly Kuendigung_per_E-Mail_Simon-Steiner_2026-05-04.pdf with SHA256 dcce8ab16b65340dc19ee110648685a22880473019f38b912f2f2e370a8dde14. My earlier awareness entry 2026-04-30 concerned the developing dispute, not receipt of the termination; I preserve that distinction. The sole PDF has one physical page and is the full attachment, not a cropped scan.",
+      "start": 921,
+      "end": 1392,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Bounded notice objection; no actual filing/action/outcome",
+      "source_artifact_id": "audit_supp_clm_393285577dcb12c4_01",
+      "source_sha256": "1ea667571e687cbdde5a46cf23881a344a6bdc81102af4117f4e043de2731c0f",
+      "source_path": "candidate-packs/clm_393285577dcb12c4/01-sole-packet-and-tenant-clarification.txt",
+      "quote": "My active request is an assessment of the received landlord notice's approved-form/nullity defect and preparation of a protective objection. I do not request a hardship extension, an own-use/motive decision or a court outcome. No communication has been sent and no challenge has been filed by this candidate packet.",
+      "start": 1394,
+      "end": 1709,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Authorized landlord issuer and corroborated delivery date",
+      "source_artifact_id": "audit_supp_clm_393285577dcb12c4_02",
+      "source_sha256": "d495fb2fbaad0407cf328270fa2cc4dc756ad8d5ede146182f3f56558467ad12",
+      "source_path": "candidate-packs/clm_393285577dcb12c4/02-issuer-authority-and-complete-channel-archive.txt",
+      "quote": "Fictional issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich. On2026-05-04T11:00:00+02:00 we transmitted the sole plain termination PDF identified above toSimon Steiner's current email account, and the email delivery/open record confirms receipt at that time.",
+      "start": 610,
+      "end": 950,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Sole full notification packet, plain form, blank signature and no unknown later channel",
+      "source_artifact_id": "audit_supp_clm_393285577dcb12c4_02",
+      "source_sha256": "d495fb2fbaad0407cf328270fa2cc4dc756ad8d5ede146182f3f56558467ad12",
+      "source_path": "candidate-packs/clm_393285577dcb12c4/02-issuer-authority-and-complete-channel-archive.txt",
+      "quote": "The original transmitted PDF had the blank signature line visible in the received file; no handwritten or qualified electronic signature was applied. It was a plain letter, not a canton-approved termination form. No other attachment, approved form, separate notice, post to the old or current address, portal notice, replacement or correction was issued up to the fictional review as-of date. This archive confirmation records the fictional factual packet only; it does not assert a legal decision.",
+      "start": 952,
+      "end": 1450,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    }
+  ],
+  "active_document_checklist": [
+    {
+      "requirement": "Actual complete received termination document",
+      "original_artifact_ids": [
+        "doc_38b3de7c20fdcea5"
+      ],
+      "status": "unchanged_original_plain_one_page_PDF_received"
+    },
+    {
+      "requirement": "Tenancy/issuer/sole-packet/service facts",
+      "source_artifact_ids": [
+        "audit_supp_clm_393285577dcb12c4_01",
+        "audit_supp_clm_393285577dcb12c4_02"
+      ],
+      "status": "received_and_source_supported"
+    }
+  ],
+  "original_uncertainty_resolution": [
+    "Original uncertainty about old-address post is resolved only by the new fictional complete-channel archive.",
+    "Earlier original awareness date is preserved separately from actual formal delivery.",
+    "Original next-contractual-date wording remains unchanged and supplies no definite end date; this does not cure the received letter's independent approved-form failure."
+  ],
+  "remaining_limits_outside_active_path": [
+    "Raw calendar arithmetic only: receipt date+30days=2026-06-03; NOT a verified273 filing deadline or expiry. The active path is nullity assessment, not filing. Weekend/public-holiday rollover and applicable procedural rules require separate official-source verification before any deadline conclusion. Conservative handling target: prepare/review now at the fictional as-of date; no filing is asserted.",
+    "Assessing formal nullity does not establish a hardship extension, landlord motive or any later hypothetical termination."
+  ],
+  "handling_boundary": "Assess entitlement/notice objection and prepare permissible next handling. No sent notice, filed challenge, paid/deposited rent, commissioned real report, accepted event, court decision or provider/model call is asserted.",
+  "baseline_unchanged": true,
+  "fresh_legal_review_required": true
+}

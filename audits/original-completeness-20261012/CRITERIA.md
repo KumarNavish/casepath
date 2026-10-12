@@ -31,7 +31,9 @@ source-supported factual predicates under the applicable legal provision.
 `founded_limited_received_notice_objection` records a supported issue concerning
 the particular received landlord notice; it does not assert that all requested
 relief, procedural timeliness, all communications or the tenancy outcome are
-established. `indeterminate` means missing proof or applicability prevents that
+established. Limited reported repair/threat grounds likewise accept cognizable
+firsthand statements as evidence, while preserving source confidence and
+broader unresolved predicates. `indeterminate` means missing proof or applicability prevents that
 broader conclusion. No row equates missing proof with a failed legal condition.
 Five repaired-leak files ask for administrative record/closure: that is a proper
 limited handling task, not a new live substantive remedy. Their repair-and-dry
@@ -89,6 +91,15 @@ must be checked before relying on the approved-form rule.
 | Good faith and extension | Facts supporting violation of good faith and requested reason under [271](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_271); rights-assertion motive under [271a(1)(a)](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_271_a) requires more than chronology alone. Actual notice/receipt, hardship/landlord balance and exclusions under [272](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_272)/[272a](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_272_a), and the applicable challenge/extension clock under [273](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_273). A blank termination reason is not automatically nullity because271(2) requires reasons on request. |
 | Rent increase/form/change | Ordinary versus statutory exception, actual communicated packet, approved form, reason, notice/effective dates and termination threat under [269d](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_269_d). Explicit no-form/no-reason/termination-threat nullity grounds support tenant objections. A late effective date/timing problem is distinct from these express grounds. Mechanical signatures and stepped-rent changes have the current(4)/(5) exceptions. |
 | Substantive rent merits | Relevant prior binding rent/cost/rate basis, amounts and actual supporting calculation under [269](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_269)/[269a](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_269_a), with notification and30-day challenge under [270b](https://www.fedlex.admin.ch/eli/cc/27/317_321_377/de#art_270_b). Renovation allocations/subsidies, duplicate factors and charge reclassification require their actually relevant source calculations. Precise ordinance-specific percentages/completion rules were not assessed using CO alone. |
+
+Source-burden clarification after fresh review: the original heating report can
+support a narrow repair demand without a calibrated reading or settled service
+cause; full reduction/other-remedy merits remain open. For inspection/access
+reconciliation, actual logs or equivalent reliable accounts are needed to
+reconcile disputed visits, but causation must remain open as the customer asks;
+it cannot block arranging an inspection. For reported rent-increase threats,
+269d(2)(c) is an independent objection even if269c relaxes form, and lack of an
+attached letter or uncertain delivery does not by itself defeat that ground.
 
 ## Source and document distinctions
 

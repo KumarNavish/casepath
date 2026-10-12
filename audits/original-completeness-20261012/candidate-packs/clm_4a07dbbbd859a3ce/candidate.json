@@ -1,0 +1,185 @@
+{
+  "contract": "casepath.synthetic-audit-candidate-supplement/1.0.0",
+  "status": "candidate_for_fresh_independent_legal_review_not_final_designation",
+  "profile_id": "synthetic-original150-plus-audit-nine-candidates-v1",
+  "domain": "defect_mold_heating",
+  "original_identity": {
+    "claim_id": "clm_4a07dbbbd859a3ce",
+    "original_manifest_file_sha256": "7c885d3fd112dfc7314719d661fa73449f72b7bdf5b83159da9fa3e0b9a1b7eb",
+    "original_source_manifest_file_sha256": "638630886a1d291dfe9009839eb0519130e56700bb4d454277ce2e45c6044f4c",
+    "original_binding_sha256": "4e886feafbe2c7c29e8c19d385c2efc2105f6de32d0b654134b175994a862dc4",
+    "original_claim": {
+      "path": "claims/clm_4a07dbbbd859a3ce.json",
+      "sha256": "9c180ef40e8ae1b986c84948f7849bbf2575881b776806ea765298a82456a552",
+      "size_bytes": 4114
+    },
+    "original_registry": {
+      "path": "registries/clm_4a07dbbbd859a3ce.json",
+      "sha256": "027325980049455a2e10a94d722eb670f2033bcbc186b9d9816f76b1c74b0000",
+      "size_bytes": 120014
+    },
+    "original_observable_sources": [
+      {
+        "artifact_id": "com_bc7271964327ea36",
+        "path": "artifacts/clm_4a07dbbbd859a3ce/00-15ca97c3a12c-00-Mehrere-Angaben-sind-unklar-wiederholter-Heizungsausfall_2025-01-29_1200_0b5656.txt",
+        "file_name": "Mehrere-Angaben-sind-unklar-wiederholter-Heizungsausfall_2025-01-29_1200_0b5656.txt",
+        "media_type": "text/plain; charset=utf-8",
+        "sha256": "15ca97c3a12cb41e617f62c1d32f0ca6af35c9936eeef41aaf7e8567f0172321",
+        "size_bytes": 1421
+      }
+    ]
+  },
+  "authored_on": "2026-10-12",
+  "fictional_as_of": "2025-01-30",
+  "new_sources": [
+    {
+      "artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_01",
+      "role": "synthetic_customer_clarification_and_relevant_tenancy_terms",
+      "file_name": "01-customer-and-tenancy-clarification.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "path": "candidate-packs/clm_4a07dbbbd859a3ce/01-customer-and-tenancy-clarification.txt",
+      "sha256": "d9213612a2520302fae228d7a55fb528d8b048d9a27b8a782de9f794a1b3e3d6",
+      "size_bytes": 1353,
+      "content_base64": "U1lOVEhFVElDIFNVUFBMRU1FTlQg4oCUIEZJQ1RJT05BTCBERU1PTlNUUkFUSU9OIFNPVVJDRQpBdXRob3JlZCBmb3IgYSBzeW50aGV0aWMgQ2FzZVBhdGggY2FuZGlkYXRlIG9uIDIwMjYtMTAtMTIuCk5vIHJlYWwgY29tbXVuaWNhdGlvbiB3YXMgc2VudCwgbm8gcmVhbCBleHBlcnQgd2FzIGNvbW1pc3Npb25lZCwgYW5kIG5vIHByb2R1Y3Rpb24gZXZlbnQgb2NjdXJyZWQuCkhpc3RvcmljYWwgZGF0ZXMgYmVsb3cgYXJlIGZpY3Rpb25hbCBzY2VuYXJpbyBkYXRlczsgdGhpcyBpcyBuZXdseSBhdXRob3JlZCBldmlkZW5jZSwgbm90IGFuIG9yaWdpbmFsIGludGFrZSBmYWN0LgpPcmlnaW5hbCBjbGFpbSBJRDogY2xtXzRhMDdkYmJiZDg1OWEzY2UKT3JpZ2luYWwgY29ycHVzIG1hbmlmZXN0IFNIQTI1NjogN2M4ODVkM2ZkMTEyZGZjNzMxNDcxOWQ2NjFmYTczNDQ5ZjcyYjdiZGY1YjgzMTU5ZGE5ZmEzZTBiOWExYjdlYgpGaWN0aW9uYWwgc291cmNlIGRhdGU6IDIwMjUtMDEtMzAKRmljdGlvbmFsIHJldmlldyBhcy1vZjogMjAyNS0wMS0zMApGaXh0dXJlIGF1dGhvcjogaW5kZXBlbmRlbnQgYXVkaXQgd29ya2VyIC9yb290L29yaWdpbmFsX2NvbXBsZXRlbmVzc19hdWRpdAoKSSwgTmluYSBTdGVpbmVyLCBhbSB0aGUgdGVuYW50IHVuZGVyIGFuIGluZGVmaW5pdGUgb3JkaW5hcnkgcmVzaWRlbnRpYWwgbGVhc2UgZm9yIFN5bnRoZXRpYyBSb3NlbndlZyA0OCwgODAwOCBadXJpY2gsIGNhbnRvbiBadXJpY2guIFRoZSBsYW5kbG9yZCBpbiB0aGlzIGZpY3Rpb25hbCBzdXBwbGVtZW50IGlzIFN5bnRoZXRpc2NoZSBXb2hucmF1bSBBRy4gQ3VycmVudCBtb250aGx5IG5ldCByZW50IGlzIENIRjE2NTA7IHRoZSBsYW5kbG9yZCBtYWludGFpbnMgdGhlIGZpeGVkIGNlbnRyYWwgaGVhdGluZyBhbmQgY2lyY3VsYXRpb24gcHVtcC4gVGhlIGxlYXNlIHJlcXVpcmVzIHVzYWJsZSBoZWF0ZWQgbGl2aW5nIHJvb21zIGluIHdpbnRlci4KCk15IGFjdGl2ZSByZXF1ZXN0IGlzIHJlbW92YWwgb2YgdGhlIGNvbnRpbnVpbmcgaGVhdGluZyBkZWZlY3QgYW5kIGFzc2Vzc21lbnQgb2YgcHJvcG9ydGlvbmFsIHJlbnQtcmVkdWN0aW9uIGVsaWdpYmlsaXR5IGZyb20gdGhlIGxhbmRsb3JkJ3MgZmlyc3Qga25vd2xlZGdlIHVudGlsIHJlbWVkeS4gSSByZXBvcnQgbm8gaW5jdXJyZWQgbW9uZXRhcnkgbG9zcywgbm8gaGVhbHRoLWNvbXBlbnNhdGlvbiBjbGFpbSwgbm8gc2VsZi1oZWxwIGV4cGVuc2UgYW5kIG5vIGRlcG9zaXQvd2l0aGhvbGRpbmcgcmVxdWVzdC4gVGhlIHJlcGFpciBpcyBub3QgY29tcGxldGU7IG5vIHJlZHVjdGlvbiBwZXJjZW50YWdlIG9yIGF3YXJkIGhhcyBiZWVuIGFncmVlZC4K",
+      "dated": "2025-01-30",
+      "provenance": "new_operator_authored_synthetic_source; no_original_source_or_real_action",
+      "received": "present_in_supplemental_candidate_profile_only; not_admitted_to_original_or_production_journal"
+    },
+    {
+      "artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_02",
+      "role": "synthetic_technical_observation",
+      "file_name": "02-heating-service-observation.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "path": "candidate-packs/clm_4a07dbbbd859a3ce/02-heating-service-observation.txt",
+      "sha256": "6f652c1a6009110df6409cdf97523eb0f9f6f92c082070ed60e3a25f96ef2799",
+      "size_bytes": 1744,
+      "content_base64": "U1lOVEhFVElDIFNVUFBMRU1FTlQg4oCUIEZJQ1RJT05BTCBERU1PTlNUUkFUSU9OIFNPVVJDRQpBdXRob3JlZCBmb3IgYSBzeW50aGV0aWMgQ2FzZVBhdGggY2FuZGlkYXRlIG9uIDIwMjYtMTAtMTIuCk5vIHJlYWwgY29tbXVuaWNhdGlvbiB3YXMgc2VudCwgbm8gcmVhbCBleHBlcnQgd2FzIGNvbW1pc3Npb25lZCwgYW5kIG5vIHByb2R1Y3Rpb24gZXZlbnQgb2NjdXJyZWQuCkhpc3RvcmljYWwgZGF0ZXMgYmVsb3cgYXJlIGZpY3Rpb25hbCBzY2VuYXJpbyBkYXRlczsgdGhpcyBpcyBuZXdseSBhdXRob3JlZCBldmlkZW5jZSwgbm90IGFuIG9yaWdpbmFsIGludGFrZSBmYWN0LgpPcmlnaW5hbCBjbGFpbSBJRDogY2xtXzRhMDdkYmJiZDg1OWEzY2UKT3JpZ2luYWwgY29ycHVzIG1hbmlmZXN0IFNIQTI1NjogN2M4ODVkM2ZkMTEyZGZjNzMxNDcxOWQ2NjFmYTczNDQ5ZjcyYjdiZGY1YjgzMTU5ZGE5ZmEzZTBiOWExYjdlYgpGaWN0aW9uYWwgc291cmNlIGRhdGU6IDIwMjUtMDEtMzAKRmljdGlvbmFsIHJldmlldyBhcy1vZjogMjAyNS0wMS0zMApGaXh0dXJlIGF1dGhvcjogaW5kZXBlbmRlbnQgYXVkaXQgd29ya2VyIC9yb290L29yaWdpbmFsX2NvbXBsZXRlbmVzc19hdWRpdAoKRmljdGlvbmFsIHNlcnZpY2UgYXV0aG9yOiBNaXJhIEtlbGxlciwgc3ludGhldGljIGJ1aWxkaW5nLWhlYXRpbmcgdGVjaG5pY2lhbi4KUHJvcGVydHk6IFN5bnRoZXRpYyBSb3NlbndlZyA0OCwgODAwOCBadXJpY2gKCk9uIDIwMjUtMDEtMzAgYXQwNzozMCwgYSBjYWxpYnJhdGVkIGRpZ2l0YWwgaW5zdHJ1bWVudCAoZmljdGlvbmFsIGNhbGlicmF0aW9uIGNoZWNrMjAyNC0xMi0xNSwgdW5jZXJ0YWludHnCsTAuMkMpIG1lYXN1cmVkIHRoZSBsaXZpbmcgcm9vbSBhdDE2LjFDIGFmdGVyIG92ZXJuaWdodCBub3JtYWwgb3BlcmF0aW9uLiBNYWluIGxpdmluZyByb29tcyBzdGF5ZWQxNS414oCTMTYuM0MgaW4gdGhlIHNldmVuLWRheSBsb2dnZXIgcmVjb3JkLiBSZXNldHMgcmVzdG9yZSBoZWF0IGJyaWVmbHk7IHRoZSBwdW1wIGN1dHMgb3V0IHJlcGVhdGVkbHkuIFRoZSBmaXhlZCBjaXJjdWxhdGlvbiBwdW1wIGhhcyBhbiBpbnRlcm5hbCBiZWFyaW5nL2NvbnRyb2wgZmFpbHVyZTsgaXQgaXMgcGFydCBvZiBsYW5kbG9yZC1tYWludGFpbmVkIGVxdWlwbWVudCwgb3V0c2lkZSBvcmRpbmFyeSBzbWFsbCB0ZW5hbnQgbWFpbnRlbmFuY2UuIE5vcm1hbCB2ZW50aWxhdGlvbiBhbmQgdW5vYnN0cnVjdGVkIHJhZGlhdG9ycyB3ZXJlIG9ic2VydmVkOyBubyB0ZW5hbnQgYWx0ZXJhdGlvbiBvciBtaXN1c2UgZXhwbGFpbnMgdGhlIGZhaWx1cmUuCgpUaGUgZGVmZWN0IHBlcnNpc3RzIGF0IHRoaXMgcmVwb3J0J3MgYXMtb2YgdGltZTsgbm8gbGFzdGluZyBwdW1wIHJlcGFpciBvciByZXBsYWNlbWVudCBoYXMgYmVlbiBjb21wbGV0ZWQuIEhlYXRpbmcgaXMgaW5hZGVxdWF0ZSBmb3IgdGhlIGNvbnRyYWN0ZWQgd2ludGVyIHJlc2lkZW50aWFsIHVzZSBvZiB0aGUgcHJpbmNpcGFsIGxpdmluZyByb29tcy4gVGhlIHByb3Bvc2VkIHJlbWVkeSBpcyBhIGxhbmRsb3JkLWFycmFuZ2VkIHB1bXAgcmVwYWlyL3JlcGxhY2VtZW50LCB3aXRoIHRlbXBvcmFyeSBoZWF0IHdoaWxlIHBlbmRpbmcuIFRoaXMgZmljdGlvbmFsIHNlcnZpY2UgZmluZGluZyBtYWtlcyBubyBsZWdhbCBkZWNpc2lvbiwgYXdhcmRzIG5vIGNvbXBlbnNhdGlvbiBhbmQgY2xhaW1zIG5vIHJlYWwgY29tbWlzc2lvbmVkIGluc3BlY3Rpb24uCg==",
+      "dated": "2025-01-30",
+      "provenance": "new_operator_authored_synthetic_source; no_original_source_or_real_action",
+      "received": "present_in_supplemental_candidate_profile_only; not_admitted_to_original_or_production_journal"
+    },
+    {
+      "artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_03",
+      "role": "synthetic_landlord_acknowledgment",
+      "file_name": "03-landlord-knowledge-and-repair-status.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "path": "candidate-packs/clm_4a07dbbbd859a3ce/03-landlord-knowledge-and-repair-status.txt",
+      "sha256": "83ef327660e21416f13fd18f13e65ab07d8f26f9aaef7b00faae337283f3d944",
+      "size_bytes": 1334,
+      "content_base64": "U1lOVEhFVElDIFNVUFBMRU1FTlQg4oCUIEZJQ1RJT05BTCBERU1PTlNUUkFUSU9OIFNPVVJDRQpBdXRob3JlZCBmb3IgYSBzeW50aGV0aWMgQ2FzZVBhdGggY2FuZGlkYXRlIG9uIDIwMjYtMTAtMTIuCk5vIHJlYWwgY29tbXVuaWNhdGlvbiB3YXMgc2VudCwgbm8gcmVhbCBleHBlcnQgd2FzIGNvbW1pc3Npb25lZCwgYW5kIG5vIHByb2R1Y3Rpb24gZXZlbnQgb2NjdXJyZWQuCkhpc3RvcmljYWwgZGF0ZXMgYmVsb3cgYXJlIGZpY3Rpb25hbCBzY2VuYXJpbyBkYXRlczsgdGhpcyBpcyBuZXdseSBhdXRob3JlZCBldmlkZW5jZSwgbm90IGFuIG9yaWdpbmFsIGludGFrZSBmYWN0LgpPcmlnaW5hbCBjbGFpbSBJRDogY2xtXzRhMDdkYmJiZDg1OWEzY2UKT3JpZ2luYWwgY29ycHVzIG1hbmlmZXN0IFNIQTI1NjogN2M4ODVkM2ZkMTEyZGZjNzMxNDcxOWQ2NjFmYTczNDQ5ZjcyYjdiZGY1YjgzMTU5ZGE5ZmEzZTBiOWExYjdlYgpGaWN0aW9uYWwgc291cmNlIGRhdGU6IDIwMjUtMDEtMzAKRmljdGlvbmFsIHJldmlldyBhcy1vZjogMjAyNS0wMS0zMApGaXh0dXJlIGF1dGhvcjogaW5kZXBlbmRlbnQgYXVkaXQgd29ya2VyIC9yb290L29yaWdpbmFsX2NvbXBsZXRlbmVzc19hdWRpdAoKRmljdGlvbmFsIHNwZWFrZXI6IFN5bnRoZXRpc2NoZSBXb2hucmF1bSBBRyBwcm9wZXJ0eSBtYW5hZ2VyLgpQcm9wZXJ0eTogU3ludGhldGljIFJvc2Vud2VnIDQ4LCA4MDA4IFp1cmljaAoKT3VyIGZpY3Rpb25hbCBjYWxsIGxvZyByZWNvcmRzIE5pbmEgU3RlaW5lcidzIHRocmVlIGhlYXRpbmctZmFpbHVyZSByZXBvcnRzIG9uIDIwMjUtMDEtMjEsIDIwMjUtMDEtMjQsIDIwMjUtMDEtMjguIEVhY2ggcmVwb3J0IGlkZW50aWZpZWQgdGhlIHNhbWUgcmVudGVkIGZsYXQgYW5kIHJlY3VycmVudCBzdG9wcGFnZSBvZiB0aGUgZml4ZWQgaGVhdGluZy4gV2UgcmVjZWl2ZWQgdGhlIGZpcnN0IHJlcG9ydCBvbjIwMjUtMDEtMjE7IHRoaXMgaXMgdGhlIGxhbmRsb3JkJ3MgZmlyc3QgZG9jdW1lbnRlZCBrbm93bGVkZ2Ugb2YgdGhlIGRlZmVjdC4KCldlIGNvbmZpcm0gdGhlIHRlbmFudCB3YXMgdXNpbmcgdGhlIGhlYXRpbmcgbm9ybWFsbHkgYW5kIGRpZCBub3QgY2F1c2UgdGhpcyBwdW1wIGZhaWx1cmUuIFJlcGVhdGVkIHJlc2V0cyBkaWQgbm90IHJlbW92ZSB0aGUgY29udGludWluZyBkZWZlY3QuIFdlIGFja25vd2xlZGdlIHRoZSBkYXRlZCBzZXJ2aWNlIG9ic2VydmF0aW9uIGFuZCByZW1haW4gcmVzcG9uc2libGUgZm9yIGFycmFuZ2luZyBwdW1wIHJlcGFpcjsgbm8gbGFzdGluZyByZXBhaXIgaGFzIHlldCBvY2N1cnJlZCBhcyBvZiB0aGlzIGFja25vd2xlZGdtZW50Lgo=",
+      "dated": "2025-01-30",
+      "provenance": "new_operator_authored_synthetic_source; no_original_source_or_real_action",
+      "received": "present_in_supplemental_candidate_profile_only; not_admitted_to_original_or_production_journal"
+    }
+  ],
+  "active_path": "defect_removal_and_rent_reduction_eligibility",
+  "relevant_CO_articles": [
+    "257g",
+    "259a",
+    "259d"
+  ],
+  "active_fact_checklist": [
+    {
+      "fact": "Residential tenancy, relevant contractual use, rent and landlord maintenance",
+      "source_artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_01",
+      "source_sha256": "d9213612a2520302fae228d7a55fb528d8b048d9a27b8a782de9f794a1b3e3d6",
+      "source_path": "candidate-packs/clm_4a07dbbbd859a3ce/01-customer-and-tenancy-clarification.txt",
+      "quote": "I, Nina Steiner, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 48, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Synthetische Wohnraum AG. Current monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+      "start": 610,
+      "end": 978,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Defined actual relief; no deposit/damages/self-help route asserted",
+      "source_artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_01",
+      "source_sha256": "d9213612a2520302fae228d7a55fb528d8b048d9a27b8a782de9f794a1b3e3d6",
+      "source_path": "candidate-packs/clm_4a07dbbbd859a3ce/01-customer-and-tenancy-clarification.txt",
+      "quote": "My active request is removal of the continuing heating defect and assessment of proportional rent-reduction eligibility from the landlord's first knowledge until remedy. I report no incurred monetary loss, no health-compensation claim, no self-help expense and no deposit/withholding request. The repair is not complete; no reduction percentage or award has been agreed.",
+      "start": 980,
+      "end": 1350,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Reliable objective severity, recurrent defect and non-tenant landlord-maintained cause",
+      "source_artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_02",
+      "source_sha256": "6f652c1a6009110df6409cdf97523eb0f9f6f92c082070ed60e3a25f96ef2799",
+      "source_path": "candidate-packs/clm_4a07dbbbd859a3ce/02-heating-service-observation.txt",
+      "quote": "On 2025-01-30 at07:30, a calibrated digital instrument (fictional calibration check2024-12-15, uncertainty±0.2C) measured the living room at16.1C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+      "start": 734,
+      "end": 1309,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Continuing contractual-use impairment and unfinished repair",
+      "source_artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_02",
+      "source_sha256": "6f652c1a6009110df6409cdf97523eb0f9f6f92c082070ed60e3a25f96ef2799",
+      "source_path": "candidate-packs/clm_4a07dbbbd859a3ce/02-heating-service-observation.txt",
+      "quote": "The defect persists at this report's as-of time; no lasting pump repair or replacement has been completed. Heating is inadequate for the contracted winter residential use of the principal living rooms. The proposed remedy is a landlord-arranged pump repair/replacement, with temporary heat while pending. This fictional service finding makes no legal decision, awards no compensation and claims no real commissioned inspection.",
+      "start": 1311,
+      "end": 1738,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Exact landlord knowledge date and three notice records",
+      "source_artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_03",
+      "source_sha256": "83ef327660e21416f13fd18f13e65ab07d8f26f9aaef7b00faae337283f3d944",
+      "source_path": "candidate-packs/clm_4a07dbbbd859a3ce/03-landlord-knowledge-and-repair-status.txt",
+      "quote": "Our fictional call log records Nina Steiner's three heating-failure reports on 2025-01-21, 2025-01-24, 2025-01-28. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-21; this is the landlord's first documented knowledge of the defect.",
+      "start": 718,
+      "end": 1029,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Landlord acknowledges responsibility and persistence",
+      "source_artifact_id": "audit_supp_clm_4a07dbbbd859a3ce_03",
+      "source_sha256": "83ef327660e21416f13fd18f13e65ab07d8f26f9aaef7b00faae337283f3d944",
+      "source_path": "candidate-packs/clm_4a07dbbbd859a3ce/03-landlord-knowledge-and-repair-status.txt",
+      "quote": "We confirm the tenant was using the heating normally and did not cause this pump failure. Repeated resets did not remove the continuing defect. We acknowledge the dated service observation and remain responsible for arranging pump repair; no lasting repair has yet occurred as of this acknowledgment.",
+      "start": 1031,
+      "end": 1331,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    }
+  ],
+  "active_document_checklist": [
+    {
+      "requirement": "Relevant tenancy/use/rent basis",
+      "source_artifact_ids": [
+        "audit_supp_clm_4a07dbbbd859a3ce_01"
+      ],
+      "status": "received_and_source_supported"
+    },
+    {
+      "requirement": "Reliable current impairment/cause record",
+      "source_artifact_ids": [
+        "audit_supp_clm_4a07dbbbd859a3ce_02"
+      ],
+      "status": "received_and_source_supported"
+    },
+    {
+      "requirement": "Landlord notice/knowledge and persistence",
+      "source_artifact_ids": [
+        "audit_supp_clm_4a07dbbbd859a3ce_03"
+      ],
+      "status": "received_and_source_supported"
+    }
+  ],
+  "original_uncertainty_resolution": [
+    "Original approximate/unreliable temperature is preserved; new calibrated observations supply a separate measurement.",
+    "Original unknown service cause is resolved only within the new explicitly fictional service source.",
+    "Original three calls are preserved and dated in the new fictional landlord log; original first-awareness text is not used as a legal receipt proxy.",
+    "Any original unknown onset is distinguished from the newly sourced landlord-knowledge date."
+  ],
+  "remaining_limits_outside_active_path": [
+    "No precise reduction percentage, money award, successful filing, damage entitlement, tenant termination or official deposit is established or included in the active checklist.",
+    "Defect continues as of the historical fixture review date; future repair completion and final reduction period remain open without blocking current removal/reduction-eligibility assessment."
+  ],
+  "handling_boundary": "Assess entitlement/notice objection and prepare permissible next handling. No sent notice, filed challenge, paid/deposited rent, commissioned real report, accepted event, court decision or provider/model call is asserted.",
+  "baseline_unchanged": true,
+  "fresh_legal_review_required": true
+}

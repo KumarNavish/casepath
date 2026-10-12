@@ -87,14 +87,20 @@ def main():
             documents.append(d)
         limited = n in [9, 38, 49, 73, 85, 89, 29, 58, 81, 108, 149]
         closure = n in [21, 51, 86, 141, 148]
-        founded = "founded_limited_received_notice_objection" if limited else "not_applicable_administrative_closure" if closure else "indeterminate"
+        repair_account = n in [33, 48, 88, 106, 137]
+        threat_account = n in [26, 43, 59, 62, 65]
+        founded = "founded_limited_received_notice_objection" if limited else "founded_limited_reported_repair_request" if repair_account else "founded_limited_reported_termination_threat_objection" if threat_account else "not_applicable_administrative_closure" if closure else "indeterminate"
         founded_reason = (
             "The received plain landlord termination letter supports a tenant form/nullity objection under266l(2)/266o; sole/current tenancy termination and any separate later notice remain unestablished. This is a challenge ground, not a finding that tenant rights are invalid."
             if n in [9, 38, 49, 73, 85, 89] else
             "Received page-complete form has no substantive printed reason, providing a founded issue for269d(2)(b) nullity review. Whether original communication included separate contemporaneous reasons is unknown; overall increase nullity/substantive merits remain indeterminate."
             if limited else
-            "Administrative record/closure is the actual request; repaired-and-dry report gives no current removal demand or new legal compensation claim. Limited administrative closure advice is supported, while specifically requested exact chronology remains incomplete."
+            "Administrative record/closure is the actual request; repaired-and-dry report gives no current removal demand or new legal compensation claim. Bounded administrative closure advice is complete on that account; exact historical duration remains unknown but does not block this task."
             if closure else
+            "Firsthand about16-degree/recurrent-reset/three-call account supplies a prima facie narrow259a repair-request basis. Technical cause or calibration is not a mandatory prerequisite. Full further-remedies scope, dates/quantum and any responsibility defence remain unknown; no complete legal-merit nomination is made."
+            if repair_account else
+            "The express customer account of increase-or-termination supports a limited269d(2)(c) nullity objection. A missing attached letter or uncertain delivery alone does not defeat this reported ground. Stepped-rent form relaxation is distinct from the prohibition on accompanying termination threats; full communication/applicability remain unverified."
+            if threat_account else
             "The reported facts engage the cited legal route, but material factual/documentary predicates for the full requested assessment remain unresolved. This does not establish a failed legal requirement or an invalid tenant claim."
         )
         results.append({

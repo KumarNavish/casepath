@@ -6,7 +6,8 @@
   "date": "2026-10-12",
   "commands_passed": [
     "PYTHONDONTWRITEBYTECODE=1 python audits/original-completeness-20261012/extract_sources.py",
-    "PYTHONDONTWRITEBYTECODE=1 python audits/original-completeness-20261012/compile_audit.py"
+    "PYTHONDONTWRITEBYTECODE=1 python audits/original-completeness-20261012/compile_audit.py",
+    "PYTHONDONTWRITEBYTECODE=1 python audits/original-completeness-20261012/build_candidate_packs.py"
   ],
   "native_render_method": "PyMuPDF Matrix(1,1), all73physicalpages inspected in25three-column contact sheets; all10JPEG original views inspected",
   "versions": {
@@ -20,29 +21,209 @@
   "baseline_primary_law_complete": false,
   "artifacts": [
     {
-      "path": "audits/original-completeness-20261012/extract_sources.py",
-      "sha256": "76079b7d836a0dd6ca1a5f3a30e2ed2ce8b19fdc4703652ffa41a84c2587c5ce",
-      "size_bytes": 8131
+      "path": "audits/original-completeness-20261012/.gitignore",
+      "sha256": "601c38ec7b28ebd55fd617c054ea5d0a298f4526658abe3d317e8e00a8bcd134",
+      "size_bytes": 50
     },
     {
-      "path": "audits/original-completeness-20261012/render_sources.py",
-      "sha256": "aff9eb7e5c60965f7eb3e132c24ab06a72122342d7020630f4a21f964b745652",
-      "size_bytes": 1424
+      "path": "audits/original-completeness-20261012/CANDIDATES.md",
+      "sha256": "97d1c35c1df1b98818a8ca62ddede85bca429a26edec50aa22f1997fc95e8758",
+      "size_bytes": 4637
+    },
+    {
+      "path": "audits/original-completeness-20261012/CRITERIA.md",
+      "sha256": "a4f83d39b196aef1a1135640f0a1bb0d61894f165631cbd75726d90b5dd5b290",
+      "size_bytes": 13743
+    },
+    {
+      "path": "audits/original-completeness-20261012/audit_150.csv",
+      "sha256": "31486fc9bf5a88120e69407a25b5f19f499f9def662bb9360ca6d729431b0605",
+      "size_bytes": 154556
+    },
+    {
+      "path": "audits/original-completeness-20261012/audit_150.json",
+      "sha256": "4baa83c5842aafa0f247ad0ff806970bf3fb731c76a527499c00d51a38ec24ed",
+      "size_bytes": 1281615
+    },
+    {
+      "path": "audits/original-completeness-20261012/baseline_counts.json",
+      "sha256": "6d108e2a901191f59d4bcc89bd585b2a09de2401739b973f1feb23f949211b84",
+      "size_bytes": 1333
+    },
+    {
+      "path": "audits/original-completeness-20261012/build_candidate_packs.py",
+      "sha256": "6b3c48e896794d31d01f474c2c7c7795938479ef33b464d3ad4b6b54de88e61d",
+      "size_bytes": 25293
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_0f4f13b1e3e1328c/01-sole-packet-and-tenant-clarification.txt",
+      "sha256": "2b6c2af230dd69c31e489417b0919fa037b54c723aa2a1e8fa8c7f4c789b496a",
+      "size_bytes": 1701
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_0f4f13b1e3e1328c/02-issuer-authority-and-complete-channel-archive.txt",
+      "sha256": "ab1656712239715a823aa3914f848ab5ad60f89459ff8510be53958df8576b5d",
+      "size_bytes": 1443
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_0f4f13b1e3e1328c/candidate.json",
+      "sha256": "cda5c1a0796eadbe88ff037f037c8d07af732960c2e908f0f14e2c3094362b01",
+      "size_bytes": 14536
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_2c55cdd816b1d0e8/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+      "size_bytes": 2074
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_2c55cdd816b1d0e8/02-later-email-and-original-absence-of-reasons.txt",
+      "sha256": "8aedc3bb9a05121b997bfc95377bb8777220f3c309920a1f17cbc95b4072fbca",
+      "size_bytes": 1452
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_2c55cdd816b1d0e8/candidate.json",
+      "sha256": "b27c6ac4e3baa4c647ef57fadad1a381b1fdaeefec932e76bb02e78aed2bdad6",
+      "size_bytes": 16147
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_314f2d309fea25e6/01-customer-and-tenancy-clarification.txt",
+      "sha256": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615",
+      "size_bytes": 1353
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_314f2d309fea25e6/02-heating-service-observation.txt",
+      "sha256": "ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3",
+      "size_bytes": 1744
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_314f2d309fea25e6/03-landlord-knowledge-and-repair-status.txt",
+      "sha256": "ae66233b1e2853056ced10f26ebe615adef8fb17bf18293a94b93a984825576c",
+      "size_bytes": 1334
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_314f2d309fea25e6/candidate.json",
+      "sha256": "15088901f20bfa46eb50185a08a58bb3ddcc416cd3544b282e4ad17f8d028f55",
+      "size_bytes": 17438
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_393285577dcb12c4/01-sole-packet-and-tenant-clarification.txt",
+      "sha256": "1ea667571e687cbdde5a46cf23881a344a6bdc81102af4117f4e043de2731c0f",
+      "size_bytes": 1712
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_393285577dcb12c4/02-issuer-authority-and-complete-channel-archive.txt",
+      "sha256": "d495fb2fbaad0407cf328270fa2cc4dc756ad8d5ede146182f3f56558467ad12",
+      "size_bytes": 1453
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_393285577dcb12c4/candidate.json",
+      "sha256": "636da0414b44a57c8f66fdb35d57e68a96870ef902e2a08dbf9f3755afb619de",
+      "size_bytes": 14621
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_4a07dbbbd859a3ce/01-customer-and-tenancy-clarification.txt",
+      "sha256": "d9213612a2520302fae228d7a55fb528d8b048d9a27b8a782de9f794a1b3e3d6",
+      "size_bytes": 1353
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_4a07dbbbd859a3ce/02-heating-service-observation.txt",
+      "sha256": "6f652c1a6009110df6409cdf97523eb0f9f6f92c082070ed60e3a25f96ef2799",
+      "size_bytes": 1744
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_4a07dbbbd859a3ce/03-landlord-knowledge-and-repair-status.txt",
+      "sha256": "83ef327660e21416f13fd18f13e65ab07d8f26f9aaef7b00faae337283f3d944",
+      "size_bytes": 1334
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_4a07dbbbd859a3ce/candidate.json",
+      "sha256": "a6f502e03940e0e4df5b103b2c985ed5435ebbd6c5d963f0836ff9c8de646280",
+      "size_bytes": 17446
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_4a53299cfe619303/01-sole-packet-and-tenant-clarification.txt",
+      "sha256": "f6b6cc35bf071f6d5542ba76ab089750b79cc97edbe5677ef639992d6ec41603",
+      "size_bytes": 1705
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_4a53299cfe619303/02-issuer-authority-and-complete-channel-archive.txt",
+      "sha256": "2dfec10653acc05e4b89e54cec1b46953000c666f80dd22c55c87e75013f50ec",
+      "size_bytes": 1450
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_4a53299cfe619303/candidate.json",
+      "sha256": "10052ce285e714545d0dd766e09505ab8b775fa5b64722a7cbca0e0b5a8da583",
+      "size_bytes": 14601
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_543f08f2415b2a33/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "sha256": "705cd05ebb5339923465044dfeef60d709429d981f108adae796fbcd7e1479e7",
+      "size_bytes": 2075
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_543f08f2415b2a33/02-later-email-and-original-absence-of-reasons.txt",
+      "sha256": "04c3678309ed91f649b57a43e1170861912c57f43e58419ee682a9cbc171fee8",
+      "size_bytes": 1447
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_543f08f2415b2a33/candidate.json",
+      "sha256": "1ee26d307e46f60fe632695df68818be4c1a7d7119d4ffe72a7327a9afd96ccf",
+      "size_bytes": 16125
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_7dbd7c7d1c4ddf90/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "sha256": "3500967baad9f6dd0e660029c9d5005cb18504489bf2cc7300ad6db2a25cd00b",
+      "size_bytes": 2068
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_7dbd7c7d1c4ddf90/02-later-email-and-original-absence-of-reasons.txt",
+      "sha256": "b01980493eed20fc1175a3a1f58623c68808201defcd02f84009f1eac9e91f04",
+      "size_bytes": 1442
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_7dbd7c7d1c4ddf90/candidate.json",
+      "sha256": "327730fb9632d6521acee7e697b5684321217eafc09e830b335d345213ba0588",
+      "size_bytes": 16066
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_95d08975bc575592/01-customer-and-tenancy-clarification.txt",
+      "sha256": "d48757b482b2a3ec0bb4f2d00ffb12666b43dd760f0b2fdc1b251234c36a1cf3",
+      "size_bytes": 1350
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_95d08975bc575592/02-heating-service-observation.txt",
+      "sha256": "041454c7dde48e8830af80dd1d6c76c0fef404618730d8f1708dda4c3677ff83",
+      "size_bytes": 1744
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_95d08975bc575592/03-landlord-knowledge-and-repair-status.txt",
+      "sha256": "031355f0b396e375ab6d71e57d235f3f80f4cae298070b2438ff1c2398d22937",
+      "size_bytes": 1331
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/clm_95d08975bc575592/candidate.json",
+      "sha256": "0fd58214e4064313ae8a4af8f17bb3c0209c68b4d774fd828aa855dadd055852",
+      "size_bytes": 17430
+    },
+    {
+      "path": "audits/original-completeness-20261012/candidate-packs/manifest.json",
+      "sha256": "d52fe799562d13fde92e884dd10230b1897f96ac960d839b1e0952714ee2e11c",
+      "size_bytes": 6002
     },
     {
       "path": "audits/original-completeness-20261012/compile_audit.py",
-      "sha256": "ca81d7d3289f744ac51ad2337ac66b3fdc555b464000d65f0c302aaf09291984",
-      "size_bytes": 12800
+      "sha256": "35903eb3aa869a666fe33f3adcc2c9d213eb852a23cf065c1c762765cbc6d711",
+      "size_bytes": 13828
     },
     {
-      "path": "audits/original-completeness-20261012/reviewed_paths.py",
-      "sha256": "58a50e4e7691aa4ab14cc53b689650981b7038c12010a6a0f130cdb401131979",
-      "size_bytes": 21301
+      "path": "audits/original-completeness-20261012/criteria.json",
+      "sha256": "ab05483232c1f19bbf81fa2581ecb664e0eabfed6bf1a6572cd92a546974206d",
+      "size_bytes": 28992
     },
     {
-      "path": "audits/original-completeness-20261012/source_receipts.json",
-      "sha256": "7f9a3ee0f1e8c8e54c0ce8bf2b4341d5e054a464ec07f6e9bbfd4d437cc7870a",
-      "size_bytes": 981501
+      "path": "audits/original-completeness-20261012/extract_sources.py",
+      "sha256": "76079b7d836a0dd6ca1a5f3a30e2ed2ce8b19fdc4703652ffa41a84c2587c5ce",
+      "size_bytes": 8131
     },
     {
       "path": "audits/original-completeness-20261012/inventory_receipt.json",
@@ -50,34 +231,27 @@
       "size_bytes": 145648
     },
     {
-      "path": "audits/original-completeness-20261012/audit_150.json",
-      "sha256": "2b1343a1a64183b8ad87418527984d787c87d0ec2e8cd59ec54ac23e5702acf8",
-      "size_bytes": 1273425
-    },
-    {
-      "path": "audits/original-completeness-20261012/audit_150.csv",
-      "sha256": "d7e57aecf6bcea92a09da9ae29046b0e68e6aa82010161c1e0177d983939660f",
-      "size_bytes": 149576
-    },
-    {
-      "path": "audits/original-completeness-20261012/baseline_counts.json",
-      "sha256": "2ba9279dc4ca37b54e23074f179759b587d22a593bb8b68fc3db10b6f4246735",
-      "size_bytes": 1215
-    },
-    {
-      "path": "audits/original-completeness-20261012/CRITERIA.md",
-      "sha256": "baae633b85a58b321e238979789b45d3f1ac659c50afd6ddd4c1af4e724b2dba",
-      "size_bytes": 12948
-    },
-    {
-      "path": "audits/original-completeness-20261012/criteria.json",
-      "sha256": "03abcf29c6553aaa854ca5b80fdddb745d2f5b31af70d3c80d165584b80a350c",
-      "size_bytes": 28286
-    },
-    {
       "path": "audits/original-completeness-20261012/official_law_receipt.json",
       "sha256": "4052ca4d7102ec470e221ed6c842249dcd8905c68398fb1ba60ba6814a363b6f",
       "size_bytes": 8659
+    },
+    {
+      "path": "audits/original-completeness-20261012/render_sources.py",
+      "sha256": "aff9eb7e5c60965f7eb3e132c24ab06a72122342d7020630f4a21f964b745652",
+      "size_bytes": 1424
+    },
+    {
+      "path": "audits/original-completeness-20261012/reviewed_paths.py",
+      "sha256": "0c21c9e65349f6b6d499044e9b125ae5b217cd7842faf3109fc00824d923af48",
+      "size_bytes": 22007
+    },
+    {
+      "path": "audits/original-completeness-20261012/source_receipts.json",
+      "sha256": "7f9a3ee0f1e8c8e54c0ce8bf2b4341d5e054a464ec07f6e9bbfd4d437cc7870a",
+      "size_bytes": 981501
     }
-  ]
+  ],
+  "deterministic_replay": "PASS: same hashes before/after rerunning extraction, compilation and candidate source builder; case count150; augmented candidates9 with3perdomain and21new sources",
+  "source_scope": "audit artifacts only; original660 referenced corpus files, registry, raw bytes, manifest and existing journals unchanged",
+  "supplemental_candidates_status": "pending_fresh_independent_legal_review_not_final_designation"
 }

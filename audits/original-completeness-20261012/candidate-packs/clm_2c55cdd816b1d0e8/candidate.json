@@ -1,0 +1,170 @@
+{
+  "contract": "casepath.synthetic-audit-candidate-supplement/1.0.0",
+  "status": "candidate_for_fresh_independent_legal_review_not_final_designation",
+  "profile_id": "synthetic-original150-plus-audit-nine-candidates-v1",
+  "domain": "rent_increase_dispute",
+  "original_identity": {
+    "claim_id": "clm_2c55cdd816b1d0e8",
+    "original_manifest_file_sha256": "7c885d3fd112dfc7314719d661fa73449f72b7bdf5b83159da9fa3e0b9a1b7eb",
+    "original_source_manifest_file_sha256": "638630886a1d291dfe9009839eb0519130e56700bb4d454277ce2e45c6044f4c",
+    "original_binding_sha256": "462c8217555033ab5bba43c966848536cce00b326f7d1f2d92dcd9528d4717e7",
+    "original_claim": {
+      "path": "claims/clm_2c55cdd816b1d0e8.json",
+      "sha256": "6cbcf2a3f1296f0dbc3d8d090e7d044cdb4b606d9e531bb884743f0c974d24e3",
+      "size_bytes": 168673
+    },
+    "original_registry": {
+      "path": "registries/clm_2c55cdd816b1d0e8.json",
+      "sha256": "5653f3dd396f1da7efb3e60adc7547402fc204222e009a92745b29457726568a",
+      "size_bytes": 121306
+    },
+    "original_observable_sources": [
+      {
+        "artifact_id": "com_0b806db920fc67c9",
+        "path": "artifacts/clm_2c55cdd816b1d0e8/00-748837e982b5-00-Mehrere-Angaben-sind-unklar-amtliches-Erhoehungsformular-ohne-eingetragene-Begruendung_2025-11-23_1400_c712ca.txt",
+        "file_name": "Mehrere-Angaben-sind-unklar-amtliches-Erhoehungsformular-ohne-eingetragene-Begruendung_2025-11-23_1400_c712ca.txt",
+        "media_type": "text/plain; charset=utf-8",
+        "sha256": "748837e982b5986188a7a9095bc31b58253a7665fa5d80db67e184072956a70d",
+        "size_bytes": 1573
+      },
+      {
+        "artifact_id": "doc_06118bd7d0e217ef",
+        "path": "artifacts/clm_2c55cdd816b1d0e8/01-d48b447e1619-01-Mietzinserhoehung_Formular_Noah-Frei_2025-11-17.pdf",
+        "file_name": "Mietzinserhoehung_Formular_Noah-Frei_2025-11-17.pdf",
+        "media_type": "application/pdf",
+        "sha256": "d48b447e1619953f5dda38c43ec659283d50f717a839c6952c1beca46c92d89e",
+        "size_bytes": 122896
+      }
+    ]
+  },
+  "authored_on": "2026-10-12",
+  "fictional_as_of": "2025-11-24",
+  "new_sources": [
+    {
+      "artifact_id": "audit_supp_clm_2c55cdd816b1d0e8_01",
+      "role": "synthetic_customer_and_full_notification_packet_record",
+      "file_name": "01-ordinary-tenancy-and-original-notification-packet.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "path": "candidate-packs/clm_2c55cdd816b1d0e8/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+      "size_bytes": 2074,
+      "content_base64": "U1lOVEhFVElDIFNVUFBMRU1FTlQg4oCUIEZJQ1RJT05BTCBERU1PTlNUUkFUSU9OIFNPVVJDRQpBdXRob3JlZCBmb3IgYSBzeW50aGV0aWMgQ2FzZVBhdGggY2FuZGlkYXRlIG9uIDIwMjYtMTAtMTIuCk5vIHJlYWwgY29tbXVuaWNhdGlvbiB3YXMgc2VudCwgbm8gcmVhbCBleHBlcnQgd2FzIGNvbW1pc3Npb25lZCwgYW5kIG5vIHByb2R1Y3Rpb24gZXZlbnQgb2NjdXJyZWQuCkhpc3RvcmljYWwgZGF0ZXMgYmVsb3cgYXJlIGZpY3Rpb25hbCBzY2VuYXJpbyBkYXRlczsgdGhpcyBpcyBuZXdseSBhdXRob3JlZCBldmlkZW5jZSwgbm90IGFuIG9yaWdpbmFsIGludGFrZSBmYWN0LgpPcmlnaW5hbCBjbGFpbSBJRDogY2xtXzJjNTVjZGQ4MTZiMWQwZTgKT3JpZ2luYWwgY29ycHVzIG1hbmlmZXN0IFNIQTI1NjogN2M4ODVkM2ZkMTEyZGZjNzMxNDcxOWQ2NjFmYTczNDQ5ZjcyYjdiZGY1YjgzMTU5ZGE5ZmEzZTBiOWExYjdlYgpGaWN0aW9uYWwgc291cmNlIGRhdGU6IDIwMjUtMTEtMjQKRmljdGlvbmFsIHJldmlldyBhcy1vZjogMjAyNS0xMS0yNApGaXh0dXJlIGF1dGhvcjogaW5kZXBlbmRlbnQgYXVkaXQgd29ya2VyIC9yb290L29yaWdpbmFsX2NvbXBsZXRlbmVzc19hdWRpdAoKSSwgTm9haCBGcmVpLCByZW50IHRoZSBkd2VsbGluZyBhdEJlcmdzdHJhc3NlIDI3LCA4MDA4IFp1cmljaCB1bmRlciBhbiBpbmRlZmluaXRlIG9yZGluYXJ5IHJlc2lkZW50aWFsIGxlYXNlIGluIGNhbnRvbiBadXJpY2guIFRoZSByZW50IGlzIG5vdCBpbmRleGVkIG9yIHN0ZXBwZWQsIGFuZCB0aGVyZSBpcyBubyBBcnRpY2xlMjY5YyBhZ3JlZWQgaW5jcmVhc2UuIEN1cnJlbnQgYmluZGluZyBuZXQgcmVudCBpcyBDSEYxODUwIHBsdXMgaGVhdGluZy93YXJtLXdhdGVyIGFkdmFuY2VDSEYxODAgYW5kIHdhdGVyL290aGVyIGFkdmFuY2VDSEY2MCwgZ3Jvc3NDSEYyMDkwLiBUaGUgbmV4dCBvcmRpbmFyeSBsZWFzZSB0ZXJtaW5hdGlvbiBkYXRlIGlzMzFNYXJjaDIwMjYgd2l0aCB0aHJlZSBtb250aHMnIG5vdGljZS4KClRoZSBsYW5kbG9yZCdzIG1hbmFnaW5nIGFnZW50IERvbXVzIEFtbWluaXN0cmF6aW9uaSBTQSBub3RpZmllZCB0aGlzIHByb3Bvc2VkIGluY3JlYXNlIG9uMjAyNS0xMS0xN1QxNzoxNTowMCswMTowMC4gVGhlIHNvbGUgY29udGVtcG9yYW5lb3VzIGF0dGFjaG1lbnQgd2FzIE1pZXR6aW5zZXJob2VodW5nX0Zvcm11bGFyX05vYWgtRnJlaV8yMDI1LTExLTE3LnBkZiwgU0hBMjU2IGQ0OGI0NDdlMTYxOTk1M2Y1ZGRhMzhjNDNlYzY1OTI4M2Q1MGY3MTdhODM5YzY5NTJjMWJlY2E0NmM5MmQ4OWU6IGFsbCB0aHJlZSBwYWdlczEvMywyLzMsMy8zLCBuZXcgbmV0Q0hGMTk3NSBmcm9tMUFwcmlsMjAyNiBhbmQgdW5jaGFuZ2VkIGFkdmFuY2VzLCBncm9zc0NIRjIyMTUuIE5vIGNvbnRlbXBvcmFuZW91cyBhY2NvbXBhbnlpbmcgcmVhc29uIGxldHRlciwgZW1haWwgcmVhc29uLCBjYWxjdWxhdGlvbiBzaGVldCwgb3IgZWFybGllciBhZHZhbmNlIHJlYXNvbiBub3RpZmljYXRpb24gd2FzIGlzc3VlZCBvciByZWNlaXZlZC4gVGhlIHByaW50ZWQgcmVhc29uIGZpZWxkIHdhcyBibGFuazsgaXRzIHN0YW5kYXJkIHNlcGFyYXRlLWxldHRlciBsYWJlbCBkaWQgbm90IGNvcnJlc3BvbmQgdG8gYW4gYXR0YWNoZWQgbGV0dGVyLgoKTXkgYWN0aXZlIHJlcXVlc3QgaXMgYXNzZXNzbWVudCBvZiB0aGUgb3JpZ2luYWwgbm90aWNlJ3MgbWlzc2luZy1yZWFzb25zL251bGxpdHkgZ3JvdW5kIGFuZCBwcmVwYXJhdGlvbiBvZiBhIHByb3RlY3RpdmUgb2JqZWN0aW9uLiBJIGRvIG5vdCBzZWVrIGEgZmluZGluZyBvZiBleGNlc3NpdmUgcmVudCwgYSByZWZlcmVuY2UtcmF0ZSBjYWxjdWxhdGlvbiBvciBhIGNvc3QgYWxsb2NhdGlvbiBkZWNpc2lvbi4gVGhlIG9yaWdpbmFsIHVua25vd24gZGF0ZS9iYXNpcyBpcyBjbGFyaWZpZWQgYnkgdGhpcyBuZXcgZmljdGlvbmFsIHBhY2tldCBjb25maXJtYXRpb247IG5vIG9yaWdpbmFsIGJ5dGVzIGFyZSByZXdyaXR0ZW4gYW5kIG5vIGNoYWxsZW5nZSBvciBjb21tdW5pY2F0aW9uIGhhcyBhY3R1YWxseSBiZWVuIGZpbGVkL3NlbnQuCg==",
+      "dated": "2025-11-24",
+      "provenance": "new_operator_authored_synthetic_source; no_original_source_or_real_action",
+      "received": "present_in_supplemental_candidate_profile_only; not_admitted_to_original_or_production_journal"
+    },
+    {
+      "artifact_id": "audit_supp_clm_2c55cdd816b1d0e8_02",
+      "role": "synthetic_later_email_and_landlord_packet_confirmation",
+      "file_name": "02-later-email-and-original-absence-of-reasons.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "path": "candidate-packs/clm_2c55cdd816b1d0e8/02-later-email-and-original-absence-of-reasons.txt",
+      "sha256": "8aedc3bb9a05121b997bfc95377bb8777220f3c309920a1f17cbc95b4072fbca",
+      "size_bytes": 1452,
+      "content_base64": "U1lOVEhFVElDIFNVUFBMRU1FTlQg4oCUIEZJQ1RJT05BTCBERU1PTlNUUkFUSU9OIFNPVVJDRQpBdXRob3JlZCBmb3IgYSBzeW50aGV0aWMgQ2FzZVBhdGggY2FuZGlkYXRlIG9uIDIwMjYtMTAtMTIuCk5vIHJlYWwgY29tbXVuaWNhdGlvbiB3YXMgc2VudCwgbm8gcmVhbCBleHBlcnQgd2FzIGNvbW1pc3Npb25lZCwgYW5kIG5vIHByb2R1Y3Rpb24gZXZlbnQgb2NjdXJyZWQuCkhpc3RvcmljYWwgZGF0ZXMgYmVsb3cgYXJlIGZpY3Rpb25hbCBzY2VuYXJpbyBkYXRlczsgdGhpcyBpcyBuZXdseSBhdXRob3JlZCBldmlkZW5jZSwgbm90IGFuIG9yaWdpbmFsIGludGFrZSBmYWN0LgpPcmlnaW5hbCBjbGFpbSBJRDogY2xtXzJjNTVjZGQ4MTZiMWQwZTgKT3JpZ2luYWwgY29ycHVzIG1hbmlmZXN0IFNIQTI1NjogN2M4ODVkM2ZkMTEyZGZjNzMxNDcxOWQ2NjFmYTczNDQ5ZjcyYjdiZGY1YjgzMTU5ZGE5ZmEzZTBiOWExYjdlYgpGaWN0aW9uYWwgc291cmNlIGRhdGU6IDIwMjUtMTEtMjAKRmljdGlvbmFsIHJldmlldyBhcy1vZjogMjAyNS0xMS0yNApGaXh0dXJlIGF1dGhvcjogaW5kZXBlbmRlbnQgYXVkaXQgd29ya2VyIC9yb290L29yaWdpbmFsX2NvbXBsZXRlbmVzc19hdWRpdAoKRmljdGlvbmFsIGVtYWlsIGFyY2hpdmU6IEZyb21Eb211cyBBbW1pbmlzdHJhemlvbmkgU0EgdG9Ob2FoIEZyZWk7IERhdGUyMDI1LTExLTIwIGF0MTA6MDArMDE6MDA7IFN1YmplY3Q6IFJlcGx5IHRvIHlvdXIgcXVlc3Rpb24gYWJvdXQgdGhlIHJlbnQgaW5jcmVhc2UuIE1lc3NhZ2UgdGV4dDogJ1RoZSByZW50IGlzIGJlaW5nIGFkanVzdGVkIHRvIHRoZSBtYXJrZXQuJyBObyBjYWxjdWxhdGlvbiBvciBvdGhlciBhdHRhY2htZW50IGFjY29tcGFuaWVkIHRoaXMgcmVwbHkuIFRoaXMgcmVwbHkgd2FzIHNlbnQgYWZ0ZXIgdGhlIHRlbmFudCBhc2tlZCBhYm91dCB0aGUgYWxyZWFkeSByZWNlaXZlZCBub3RpY2U7IGl0IGRpZCBub3QgYWNjb21wYW55IHRoZSBvcmlnaW5hbCBjb21tdW5pY2F0aW9uLgoKVGhlIGZpY3Rpb25hbCBtYW5hZ2luZyBhZ2VudCBjb25maXJtcyBpdCB3YXMgYXV0aG9yaXplZCB0byBub3RpZnkgdGhlIGluY3JlYXNlIGZvciB0aGlzIGR3ZWxsaW5nLCB0aGF0IHRoZSBjb21wbGV0ZSBvcmlnaW5hbCBub3RpZmljYXRpb24gcGFja2V0IGNvbnRhaW5lZCBvbmx5IHRoZSB0aHJlZS1wYWdlIGZvcm0sIGFuZCB0aGF0IG5vIHN1YnN0YW50aXZlIHJlYXNvbiB3YXMgY29tbXVuaWNhdGVkIGF0IG9yaWdpbmFsIG5vdGlmaWNhdGlvbi4gVGhlIGxhdGVyIHJlcGx5IGlzIHJldGFpbmVkIGFzIGFkdmVyc2UvY29udGV4dHVhbCBldmlkZW5jZSByYXRoZXIgdGhhbiBzaWxlbnRseSB0cmVhdGVkIGFzIGFuIG9yaWdpbmFsIHJlYXNvbi4gVGhlIGZvcm0ncyBtZWNoYW5pY2FsbHkgcmVwcm9kdWNlZCBzaWduYXR1cmUgaXMgbm90IHJlbGllZCBvbiBhcyBhIGRlZmVjdC4K",
+      "dated": "2025-11-20",
+      "provenance": "new_operator_authored_synthetic_source; no_original_source_or_real_action",
+      "received": "present_in_supplemental_candidate_profile_only; not_admitted_to_original_or_production_journal"
+    }
+  ],
+  "active_path": "original_increase_missing_reasons_nullity_assessment",
+  "relevant_CO_articles": [
+    "269d",
+    "270b"
+  ],
+  "active_fact_checklist": [
+    {
+      "fact": "Ordinary residential rent, actual binding amounts and absence of stepped-rent exception",
+      "source_artifact_id": "audit_supp_clm_2c55cdd816b1d0e8_01",
+      "source_sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+      "source_path": "candidate-packs/clm_2c55cdd816b1d0e8/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+      "start": 610,
+      "end": 1017,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Exact notification date and complete unchanged three-page packet lacking substantive reasons",
+      "source_artifact_id": "audit_supp_clm_2c55cdd816b1d0e8_01",
+      "source_sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+      "source_path": "candidate-packs/clm_2c55cdd816b1d0e8/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "quote": "The landlord's managing agent Domus Amministrazioni SA notified this proposed increase on2025-11-17T17:15:00+01:00. The sole contemporaneous attachment was Mietzinserhoehung_Formular_Noah-Frei_2025-11-17.pdf, SHA256 d48b447e1619953f5dda38c43ec659283d50f717a839c6952c1beca46c92d89e: all three pages1/3,2/3,3/3, new netCHF1975 from1April2026 and unchanged advances, grossCHF2215. No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received. The printed reason field was blank; its standard separate-letter label did not correspond to an attached letter.",
+      "start": 1019,
+      "end": 1652,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Defined original notice-nullity assessment rather than substantive excessive-rent adjudication",
+      "source_artifact_id": "audit_supp_clm_2c55cdd816b1d0e8_01",
+      "source_sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+      "source_path": "candidate-packs/clm_2c55cdd816b1d0e8/01-ordinary-tenancy-and-original-notification-packet.txt",
+      "quote": "My active request is assessment of the original notice's missing-reasons/nullity ground and preparation of a protective objection. I do not seek a finding of excessive rent, a reference-rate calculation or a cost allocation decision. The original unknown date/basis is clarified by this new fictional packet confirmation; no original bytes are rewritten and no challenge or communication has actually been filed/sent.",
+      "start": 1654,
+      "end": 2071,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Actual text and chronology of later reported email, with no attachment",
+      "source_artifact_id": "audit_supp_clm_2c55cdd816b1d0e8_02",
+      "source_sha256": "8aedc3bb9a05121b997bfc95377bb8777220f3c309920a1f17cbc95b4072fbca",
+      "source_path": "candidate-packs/clm_2c55cdd816b1d0e8/02-later-email-and-original-absence-of-reasons.txt",
+      "quote": "Fictional email archive: FromDomus Amministrazioni SA toNoah Frei; Date2025-11-20 at10:00+01:00; Subject: Reply to your question about the rent increase. Message text: 'The rent is being adjusted to the market.' No calculation or other attachment accompanied this reply. This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication.",
+      "start": 610,
+      "end": 1007,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    },
+    {
+      "fact": "Authorized issuer confirms original no-reason packet; mechanical signature not rejected",
+      "source_artifact_id": "audit_supp_clm_2c55cdd816b1d0e8_02",
+      "source_sha256": "8aedc3bb9a05121b997bfc95377bb8777220f3c309920a1f17cbc95b4072fbca",
+      "source_path": "candidate-packs/clm_2c55cdd816b1d0e8/02-later-email-and-original-absence-of-reasons.txt",
+      "quote": "The fictional managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification. The later reply is retained as adverse/contextual evidence rather than silently treated as an original reason. The form's mechanically reproduced signature is not relied on as a defect.",
+      "start": 1009,
+      "end": 1449,
+      "offset_unit": "Unicode code points, zero-based, exclusive end",
+      "state": "supported_in_explicitly_synthetic_supplement"
+    }
+  ],
+  "active_document_checklist": [
+    {
+      "requirement": "Actual complete original form including reason field",
+      "original_artifact_ids": [
+        "doc_06118bd7d0e217ef"
+      ],
+      "status": "unchanged_original_three_page_PDF_received"
+    },
+    {
+      "requirement": "Notification/ordinary tenancy/original reasons packet",
+      "source_artifact_ids": [
+        "audit_supp_clm_2c55cdd816b1d0e8_01",
+        "audit_supp_clm_2c55cdd816b1d0e8_02"
+      ],
+      "status": "received_and_source_supported"
+    },
+    {
+      "requirement": "Later email as separately dated contextual source",
+      "source_artifact_ids": [
+        "audit_supp_clm_2c55cdd816b1d0e8_02"
+      ],
+      "status": "received_and_source_supported"
+    }
+  ],
+  "original_uncertainty_resolution": [
+    "Original full3page form remains unchanged; new packet confirmation resolves whether any separate reason accompanied it.",
+    "Original later-email uncertainty is resolved by newly supplied fictional dated email text and source distinction.",
+    "Original unknown prior binding rent is independently clarified within the fictional ordinary tenancy statement, matching the original form's old amounts.",
+    "November2025 dates fall after269d(4)/(5)'s1Oct2025 effective date; mechanically reproduced signature is not asserted invalid; the ordinary lease is not269c stepped rent."
+  ],
+  "remaining_limits_outside_active_path": [
+    "Raw calendar arithmetic only: notification date+30days=2025-12-17; NOT a verified270b filing deadline or expiry. No actual filing is asserted; nullity assessment is the active path. Weekend/public-holiday rollover and procedural rules require separate official-source verification before a deadline conclusion. Conservative handling target: prepare/review now at the fictional as-of date.",
+    "No excessive-return, market-rent, reference-rate or renovation-cost merits finding is made; these are outside the clarified active nullity request.",
+    "Later email cannot be assumed part of original notification; legal significance remains for fresh independent reviewer to assess."
+  ],
+  "handling_boundary": "Assess entitlement/notice objection and prepare permissible next handling. No sent notice, filed challenge, paid/deposited rent, commissioned real report, accepted event, court decision or provider/model call is asserted.",
+  "baseline_unchanged": true,
+  "fresh_legal_review_required": true
+}
