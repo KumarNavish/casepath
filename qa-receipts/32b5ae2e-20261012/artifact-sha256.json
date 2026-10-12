@@ -163,6 +163,10 @@
     "size_bytes": 631,
     "sha256": "d4a5a5fdd8fd67d81ef0b3766553ca708d8aafb7012b517f45d4305ffbc03ac8"
   },
+  "original-artifact-preservation.json": {
+    "size_bytes": 291,
+    "sha256": "9b6500a1cb1b17bdb810727a39a79f867d2b51af14ae8fa8942a9bb5ebcf572f"
+  },
   "per-test-durations.json": {
     "size_bytes": 1702691,
     "sha256": "eb481a3d491467e543db3b2337070546778c8c07b502f9640de23fc8d7f4f9df"
@@ -371,6 +375,42 @@
     "size_bytes": 2256,
     "sha256": "857924ccf303aa1b0093a6affed94c2e7a0c7f1bec5a8e5b730290861644881a"
   },
+  "shard4-serial/collected.json": {
+    "size_bytes": 135738,
+    "sha256": "577f0375839998cd208d8f7bf6b17cbba2306521bd871c3e2bbf5ec4dd95fa6d"
+  },
+  "shard4-serial/command.json": {
+    "size_bytes": 2318,
+    "sha256": "0133899937a8a4cede6496a07b1df3035222c9ddeccc78b5436dece0fb9402cd"
+  },
+  "shard4-serial/junit.xml": {
+    "size_bytes": 59884,
+    "sha256": "fa7e9b59415ebb67ea581e341b16fdfa33dbc8cfc09d7dca3f3e2762231eb962"
+  },
+  "shard4-serial/original-shard4-baseline.json": {
+    "size_bytes": 557700,
+    "sha256": "f05e68f2cbd0203f09f6232783b2b236f4c918fa02adaeaa8a71bf2e823b735b"
+  },
+  "shard4-serial/pytest-arguments.txt": {
+    "size_bytes": 49224,
+    "sha256": "3d33342d8918641a1084fde578aa5773bc91993faca40e687894ebeeed331273"
+  },
+  "shard4-serial/pytest.log": {
+    "size_bytes": 39013,
+    "sha256": "0204df19888169e42825229e7db5291d2bdceb0bc0652d18cd8bb16661accd90"
+  },
+  "shard4-serial/reports.jsonl": {
+    "size_bytes": 287303,
+    "sha256": "12c7344a12d4aa6f1d58278d215310bcfc4331dd09072eedd1c8b9fea79ac2db"
+  },
+  "shard4-serial/result.json": {
+    "size_bytes": 2499,
+    "sha256": "d193c33681f6171cc35fa12b0e51219102949c51356f4a73bb5a7d3ede83daf2"
+  },
+  "shard4-serial/shard-summary.json": {
+    "size_bytes": 756,
+    "sha256": "1d290bba43447380c9bcd91642535bfea75a4b77b58c8304f6c771fbfc543092"
+  },
   "shard4/collected.json": {
     "size_bytes": 135738,
     "sha256": "577f0375839998cd208d8f7bf6b17cbba2306521bd871c3e2bbf5ec4dd95fa6d"
@@ -442,42 +482,6 @@
   "shard4/verification.json": {
     "size_bytes": 2951,
     "sha256": "141fd6755cb997c72456cc92da68d17010dbab7ede7751631a6f979c8a745608"
-  },
-  "shard4-serial/collected.json": {
-    "size_bytes": 135738,
-    "sha256": "577f0375839998cd208d8f7bf6b17cbba2306521bd871c3e2bbf5ec4dd95fa6d"
-  },
-  "shard4-serial/command.json": {
-    "size_bytes": 2318,
-    "sha256": "0133899937a8a4cede6496a07b1df3035222c9ddeccc78b5436dece0fb9402cd"
-  },
-  "shard4-serial/junit.xml": {
-    "size_bytes": 59884,
-    "sha256": "fa7e9b59415ebb67ea581e341b16fdfa33dbc8cfc09d7dca3f3e2762231eb962"
-  },
-  "shard4-serial/original-shard4-baseline.json": {
-    "size_bytes": 557700,
-    "sha256": "f05e68f2cbd0203f09f6232783b2b236f4c918fa02adaeaa8a71bf2e823b735b"
-  },
-  "shard4-serial/pytest-arguments.txt": {
-    "size_bytes": 49224,
-    "sha256": "3d33342d8918641a1084fde578aa5773bc91993faca40e687894ebeeed331273"
-  },
-  "shard4-serial/pytest.log": {
-    "size_bytes": 39013,
-    "sha256": "0204df19888169e42825229e7db5291d2bdceb0bc0652d18cd8bb16661accd90"
-  },
-  "shard4-serial/reports.jsonl": {
-    "size_bytes": 287303,
-    "sha256": "12c7344a12d4aa6f1d58278d215310bcfc4331dd09072eedd1c8b9fea79ac2db"
-  },
-  "shard4-serial/result.json": {
-    "size_bytes": 2499,
-    "sha256": "d193c33681f6171cc35fa12b0e51219102949c51356f4a73bb5a7d3ede83daf2"
-  },
-  "shard4-serial/shard-summary.json": {
-    "size_bytes": 756,
-    "sha256": "1d290bba43447380c9bcd91642535bfea75a4b77b58c8304f6c771fbfc543092"
   },
   "shard5/collected.json": {
     "size_bytes": 139846,
