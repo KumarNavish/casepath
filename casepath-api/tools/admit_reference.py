@@ -34,8 +34,8 @@ from casepath_api.hosted_sql_v1 import MAX_BYTES
 from casepath_api.workspace_corpus import digest_value
 
 _migration = runpy.run_path(str(Path(__file__).with_name('migrate_hosted.py')))
-q, schema_objects, table_info, remote_rows, table_digest, insert_sql = (
-    _migration[k] for k in ('q', 'schema_objects', 'table_info', 'remote_rows', 'table_digest', 'insert_sql'))
+q, schema_objects, table_info, table_digest, insert_sql = (
+    _migration[k] for k in ('q', 'schema_objects', 'table_info', 'table_digest', 'insert_sql'))
 CONTRACT = 'casepath.reference-admission-plan/1.0.0'
 
 
@@ -43,26 +43,91 @@ class Refused(RuntimeError):
     pass
 
 
-def read_row_bound(db, name, table):
-    """One aggregate bounds actual scalar rows in this consistent transaction.
+def _wire_bound_sql(columns):
+    """Conservative typed-cell JSON size, including UTF-8, NUL and base64.
 
     JSON escaping needs at most six bytes per UTF-8 byte (including controls,
     quotes and supplementary Unicode). Base64 has its exact four-per-three
     bound. Sixty-four bytes cover each typed cell's metadata and any finite
     signed-64 integer/float/null representation. Include row separators and
-    reserve envelope/column metadata within the existing transport limit.
+    reserve envelope/column metadata separately within the transport limit.
     """
     cells = []
-    for column in table['columns']:
+    for column in columns:
         key = q(column)
         cells.append("1+CASE typeof(" + key + ") WHEN 'text' THEN 64+6*length(CAST(" + key + " AS BLOB)) "
                      "WHEN 'blob' THEN 64+4*((length(" + key + ")+2)/3) ELSE 64 END")
-    row = db.execute('SELECT COALESCE(MAX(2+' + '+'.join(cells) + '),0) AS max_wire_row_bytes FROM ' + q(name)).fetchone()
-    bound = row['max_wire_row_bytes']
+    return '2+' + '+'.join(cells)
+
+
+def _candidate_page(db, name, table, last):
+    """Aggregate only an ordered, keyset-limited candidate prefix; no PK payload."""
+    reserved = {column.casefold() for column in table['columns']}
+    bound_alias, null_alias = '__reference_candidate_wire_bound', '__reference_candidate_null_key'
+    while bound_alias.casefold() in reserved:
+        bound_alias += '_'
+    while null_alias.casefold() in reserved:
+        null_alias += '_'
+    keys = ','.join(q(key) for key in table['primary_key'])
+    where = '' if last is None else ' WHERE (' + keys + ') > (' + ','.join('?' for _ in last) + ')'
+    nullable = ' OR '.join(q(key) + ' IS NULL' for key in table['primary_key'])
+    sql = ('SELECT count(*) AS candidate_count,COALESCE(MAX(' + q(bound_alias) + '),0) AS max_wire_row_bytes,'
+           'COALESCE(sum(' + q(null_alias) + '),0) AS nullable_keys FROM (SELECT ' + _wire_bound_sql(table['columns']) +
+           ' AS ' + q(bound_alias) + ',CASE WHEN ' + nullable + ' THEN 1 ELSE 0 END AS ' + q(null_alias) + ' FROM ' + q(name) +
+           where + ' ORDER BY ' + keys + ' LIMIT ?)')
+    row = db.execute(sql, tuple(last or ()) + (_migration['MAX_ROWS'],)).fetchone()
+    count, bound, nullable_keys = (row[key] for key in ('candidate_count', 'max_wire_row_bytes', 'nullable_keys'))
     envelope = 16384 + sum(128 + 6 * len(column.encode()) for column in table['columns'])
-    if type(bound) is not int or bound < 0 or bound + envelope > MAX_BYTES:
+    if (type(count) is not int or not 0 <= count <= _migration['MAX_ROWS']
+            or type(bound) is not int or bound < 0 or (count == 0) != (bound == 0)
+            or type(nullable_keys) is not int or not 0 <= nullable_keys <= count):
+        raise Refused('Persisted candidate metadata is invalid: ' + name)
+    if nullable_keys:
+        raise Refused('Remote nullable primary key would evade keyset verification: ' + name)
+    if bound + 128 + envelope > MAX_BYTES:
         raise Refused('A persisted row cannot be read within the existing transport bound: ' + name)
-    return bound
+    return count, bound, envelope
+
+
+def bounded_rows(db, name, table):
+    """Size at most 64 candidates before each exact, bounded payload page.
+
+    Both reads use the same caller-owned snapshot and keyset cursor. The extra
+    per-row proof never enters the persisted row digest or admission plan.
+    """
+    columns, key_columns = table['columns'], table['primary_key']
+    reserved = {column.casefold() for column in columns}
+    bound_alias = '__reference_wire_bound'
+    while bound_alias.casefold() in reserved:
+        bound_alias += '_'
+    last = None
+    while True:
+        count, bound, envelope = _candidate_page(db, name, table, last)
+        if not count:
+            return
+        limit = min(count, max(1, (_migration['READ_BYTES'] - envelope) // max(256, bound + 128)))
+        keys = ','.join(q(key) for key in key_columns)
+        where = '' if last is None else ' WHERE (' + keys + ') > (' + ','.join('?' for _ in last) + ')'
+        sql = ('SELECT ' + ','.join(q(column) for column in columns) + ',' + _wire_bound_sql(columns) +
+               ' AS ' + q(bound_alias) + ' FROM ' + q(name) + where + ' ORDER BY ' + keys + ' LIMIT ?')
+        page = db.execute(sql, tuple(last or ()) + (limit,)).fetchall()
+        if len(page) != limit:
+            raise Refused('Persisted payload count differs from its snapshot metadata: ' + name)
+        page_keys = set()
+        for row in page:
+            values, row_bound = tuple(row)[:-1], tuple(row)[-1]
+            identity = tuple(values[columns.index(key)] for key in key_columns)
+            identity_bytes = _migration['row_bytes'](identity)
+            if any(value is None for value in identity) or identity_bytes in page_keys:
+                raise Refused('Persisted payload primary key differs: ' + name)
+            page_keys.add(identity_bytes)
+            if (len(values) != len(columns) or type(row_bound) is not int or not 0 < row_bound <= bound
+                    or _migration['wire_size'](values) > row_bound):
+                raise Refused('A persisted row exceeded its snapshot-bound wire-size proof: ' + name)
+            yield values
+            last = identity
+        if count < _migration['MAX_ROWS'] and limit == count:
+            return
 
 
 def _wire(row):
@@ -97,10 +162,7 @@ def inventory(connect, *, owner=None):
             if obj['type'] != 'table' or name == 'hosted_workflow_lease':
                 continue
             info = table_info(db, name)
-            info['max_wire_row_bytes'] = read_row_bound(db, name, info)
-            rows = [tuple(row) for row in remote_rows(db, name, info)]
-            if any(_migration['wire_size'](row) > info['max_wire_row_bytes'] for row in rows):
-                raise Refused('A persisted row exceeded its transaction-bound wire-size proof: ' + name)
+            rows = list(bounded_rows(db, name, info))
             values[name] = {'columns': info['columns'], 'rows': [_wire(r) for r in rows]}
             tables[name] = table_digest(rows, info['columns'])
         lease = db.execute('SELECT owner,expires_at,CAST(strftime(\'%s\',\'now\') AS INTEGER) AS now '
