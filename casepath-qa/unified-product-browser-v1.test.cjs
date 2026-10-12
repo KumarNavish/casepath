@@ -869,6 +869,11 @@ test('reference native: exact nine actual accepted assessments retain graph docu
   assert.equal(expected.state.status,'deferred');assert.equal(expected.state.outcome.status,'deferred');assert.equal(expected.state.outcome.assessment_status,'complete');
   assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based`);
   assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/Assessment only; no external action taken/);
+  assert.equal(await page.locator('.au-assessment-conclusion > p').first().textContent(),expected.state.outcome.summary);
+  const context=expected.state.semantic_contexts[expected.state.run_id],authority=context.rule_packs.find(row=>row.family===expected.state.graph.family).legal_authority;
+  const articles=[...new Set(expected.state.outcome.legal_predicates.flatMap(row=>row.rule_refs).map(ref=>/^CO:(\d+[a-z]?)$/.exec(ref)?.[1]).filter(Boolean))];
+  assert.deepEqual(sorted(await page.locator('[data-au-law-article]').evaluateAll(rows=>rows.map(row=>row.dataset.auLawArticle))),sorted(articles));
+  for(const article of articles)assert.equal(await page.locator(`[data-au-law-article="${article}"]`).getAttribute('href'),authority.find(row=>row.article===article).source.publisher_url);
   assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(rows=>rows.map(row=>row.dataset.auNode))),sorted(expected.state.graph.nodes.map(row=>row.node_id)));
   await page.locator('.au-context-nav [data-au-detail="documents"]').click();
   assert.deepEqual(sorted(await page.locator('[data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(expected.state.obligations.map(row=>row.obligation_id)));
@@ -950,6 +955,19 @@ test('reference native: public entry omits creation and forged flag status and c
  await page.evaluate(()=>window.__controller.showIntake());
  assert.equal(await page.locator('[data-au-intake]').count(),0);assert.equal(await page.locator('.au-header-new').count(),0);assert.equal(await page.locator('[data-au-public-access]:visible').count(),1);
  assert.equal(await page.evaluate(()=>window.__fixture.calls.some(row=>row.method!=='GET')),false);
+});
+
+test('reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access',async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],prefix=Object.values(fixture.prefixes[id]).find(row=>row.events.at(-1)?.kind==='sources.acquired' && row.events.at(-1).payload.sources.some(source=>source.text.startsWith('SYNTHETIC SUPPLEMENT —'))),page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true});
+ assert.ok(!prefix.state.semantic_contexts?.[prefix.state.run_id]);
+ await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',through,detail:'step'}),{id,through:prefix.through_seq});await title(page,id);
+ assert.deepEqual((await visibleRecord(page)).state,prefix.state);assert.equal(await page.locator('[data-au-legal-basis]').count(),0);
+ const supplement=prefix.events.at(-1).payload.sources.find(source=>source.text.startsWith('SYNTHETIC SUPPLEMENT —')),button=page.locator(`.au-reading-acquisition [data-au-source="${supplement.artifact_id}"]`),excerpt=await button.locator('.au-acquired-text').textContent();
+ assert.ok(excerpt.startsWith(supplement.text.slice(supplement.text.indexOf('\n\n')+2, supplement.text.indexOf('\n\n')+62)));assert.doesNotMatch(excerpt,/Original corpus manifest SHA256|Fixture author:|SYNTHETIC SUPPLEMENT —/);assert.equal(await button.getAttribute('data-au-citation'),null);
+ await button.click();await eventually(()=>page.locator('.au-source-body').count().then(count=>count===1),'the exact pre-context source did not open');assert.equal(await page.locator('.au-source-body').textContent(),supplement.text);await page.keyboard.press('Escape');
+ assert.deepEqual((await visibleRecord(page)).state,prefix.state);assert.equal(await page.evaluate(()=>window.__fixture.calls.some(row=>row.method!=='GET')),false);
+ const interpreted=Object.values(fixture.prefixes[id]).find(row=>row.events.at(-1)?.kind==='interpretation.accepted');
+ await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',through,detail:'step'}),{id,through:interpreted.through_seq});await title(page,id);assert.ok(!interpreted.state.outcome);assert.ok(await page.locator('[data-au-law-article]').count()>0);assert.deepEqual((await visibleRecord(page)).state,interpreted.state);
 });
 
 for(const width of [1428,390])test(`quiet language: the saved insufficient reason owns the reading view while History retains every exact record at ${width}px`,async t=>{
