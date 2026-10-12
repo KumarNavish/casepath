@@ -1,0 +1,55 @@
+{
+  "shard": 6,
+  "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "assigned_count": 479,
+  "collected_count": 479,
+  "executed_count": 479,
+  "call_count": 479,
+  "teardown_count": 479,
+  "junit_count": 479,
+  "arguments_equal_assignment": true,
+  "assigned_collected_executed_call_teardown_junit_equal": true,
+  "unmapped_junit_count": 0,
+  "observer_phases": {
+    "setup:passed": 479,
+    "call:passed": 478,
+    "teardown:passed": 479,
+    "call:failed": 1
+  },
+  "passed": 478,
+  "failed": 1,
+  "errors": 0,
+  "skipped": 0,
+  "failed_ids": [
+    "casepath/tools/test_casepath_release.py::test_sites_delivery_is_same_origin_and_streaming_proxy_safe"
+  ],
+  "skipped_ids": [],
+  "exit_code": 1,
+  "duration_seconds": 462.33019828796387,
+  "started_utc": "2026-10-12T20:58:49.119521+00:00",
+  "finished_utc": "2026-10-12T21:06:31.449719+00:00",
+  "after_head": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "after_status": "",
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "0",
+      "tests": "479",
+      "time": "454.804",
+      "timestamp": "2026-10-12T20:58:55.064121+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "artifact_sha256": {
+    "ids.txt": "fd4ed488df1c8deea54bf1c959b46891e3aa412ca318cb1a67cc367323d567cc",
+    "pytest-arguments.txt": "fd4ed488df1c8deea54bf1c959b46891e3aa412ca318cb1a67cc367323d567cc",
+    "command.json": "501fc4bfcbe3be71eeb75265b7b3c2e059e49c422e43bf5dbc3b211534ee9baa",
+    "collected.json": "06487fa9dc7c08d87d1b1133c218f0ea5ec7f7ea4b5438aa06cd73378e14dca5",
+    "reports.jsonl": "91282998c02c6ac5aed0eebf33069f67a6ae6c0e2af9f19b704e186c550892ab",
+    "pytest.log": "cef3985beae7b0e258cf083a3c7291d193f5568ce29d9c7c00994e2dd35ab5d7",
+    "junit.xml": "8edbe803b23a9b0a6d387bbc76ba1b4e78b8e7a7d73109f576e084d296e3e94a",
+    "result.json": "8996323f4081bb52ef21a382400ecdd71d93c35708361547923a5502e25c9a99"
+  }
+}

@@ -1,0 +1,416 @@
+........................................................................ [ 25%]
+........................................................................ [ 50%]
+.................................................F...................... [ 75%]
+......................................................................   [100%]
+=================================== FAILURES ===================================
+_ HostedRecoveryTests.test_public_http_reads_and_restart_leave_saved_claim_passive _
+
+self = <test_hosted_recovery_v1.HostedRecoveryTests testMethod=test_public_http_reads_and_restart_leave_saved_claim_passive>
+
+    def test_public_http_reads_and_restart_leave_saved_claim_passive(self):
+        from fastapi.testclient import TestClient
+        import casepath_api.hosted_app_v1 as hosted_app
+        live, calls = [], []
+        def construct(store, policy, model=None, *, lease):
+            controller = HostedAutonomousController(store, policy, model, lease=lease)
+            live.append(controller)
+            self.controllers.append(controller)
+            return controller
+        def run(instance, claim):
+            calls.append(claim)
+            instance.store.put(claim, status='deferred', deferral={'code': 'model_unavailable'})
+        env = {'CASEPATH_SITE_ORIGIN': 'https://casepath.example', 'CASEPATH_PROXY_TOKEN': 't'*48,
+               'CASEPATH_SOURCE_COMMIT': 'a'*40, 'CASEPATH_HOSTED_WRITABLE': '1',
+               'CASEPATH_AUTONOMOUS_ENABLED': '0'}
+        headers = {'X-CasePath-Proxy-Token': 't'*48, 'X-CasePath-Site-Origin': env['CASEPATH_SITE_ORIGIN'],
+                   'Origin': env['CASEPATH_SITE_ORIGIN'], 'X-CasePath-Agent-Work': '1'}
+        with TemporaryDirectory(prefix='casepath-hosted-recovery-') as runtime_directory, \
+             patch.object(hosted_app, 'HostedAutonomousController', side_effect=construct), \
+             patch.object(hosted_app, 'HostedAutonomousStore', return_value=self.store), \
+             patch.object(AutonomousController, 'run', run):
+            app = hosted_app.create_hosted_app(database=SimpleNamespace(connect=self.connect),
+                                               environment=env, runtime_directory=runtime_directory)
+>           with TestClient(app) as client:
+                 ^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_recovery_v1.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:694: in __enter__
+    portal.call(self.wait_startup)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:729: in wait_startup
+    await receive()
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:720: in receive
+    self.task.result()
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:710: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:151: in __call__
+    await self.app(scope, receive, send)
+casepath-api/casepath_api/hosted_proxy_v1.py:21: in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:725: in app
+    await self.lifespan(scope, receive, send)
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:694: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:134: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:571: in __aenter__
+    await self._router.startup()
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:673: in startup
+    handler()
+casepath-api/casepath_api/hosted_app_v1.py:49: in startup
+    controller = HostedAutonomousController(store, policy, lease=lease, enforce_intake_gate=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/unittest/mock.py:1169: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/unittest/mock.py:1173: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <MagicMock name='HostedAutonomousController' id='139906411904176'>
+args = (<test_hosted_recovery_v1.StateStore object at 0x7f3e83a8b530>, {'case_activation_values_included': False, 'contract':... 'case_invariant_process_nodes_transitions_and_document_obligations_with_no_case_truth_values_or_selected_paths', ...})
+kwargs = {'enforce_intake_gate': True, 'lease': <casepath_api.hosted_lease_v1.HostedWorkflowLease object at 0x7f3e808bd150>}
+effect = <function HostedRecoveryTests.test_public_http_reads_and_restart_leave_saved_claim_passive.<locals>.construct at 0x7f3e80ef9da0>
+
+    def _execute_mock_call(self, /, *args, **kwargs):
+        # separate from _increment_mock_call so that awaited functions are
+        # executed separately from their call, also AsyncMock overrides this method
+    
+        effect = self.side_effect
+        if effect is not None:
+            if _is_exception(effect):
+                raise effect
+            elif not _callable(effect):
+                result = next(effect)
+                if _is_exception(result):
+                    raise result
+            else:
+>               result = effect(*args, **kwargs)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+E               TypeError: HostedRecoveryTests.test_public_http_reads_and_restart_leave_saved_claim_passive.<locals>.construct() got an unexpected keyword argument 'enforce_intake_gate'
+
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/unittest/mock.py:1234: TypeError
+=============================== warnings summary ===============================
+tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+--- generated xml file: /tmp/casepath-release-85a-20261012/shard3/junit.xml ----
+============================== slowest durations ===============================
+34.42s setup    tests/test_autonomous_knowledge_reads_v1.py::test_authoritative_view_matches_summary_adapter_and_reduces_each_claim_only_once
+25.55s teardown tests/test_agent_desk_v1.py::test_replaying_superseded_pause_does_not_stop_a_resumed_delegate
+22.74s call     tests/test_agent_desk_v1.py::test_desk_arrival_is_persistently_idempotent_and_prepares_real_not_sent_draft
+16.73s call     tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication
+16.29s call     tests/test_autonomous_adversarial_v1.py::test_changed_rule_pack_reassesses_instead_of_accepting_old_terminal_workflow
+14.96s call     tests/test_insurance_protocol_v1.py::test_terminal_response_uses_one_prefix_during_concurrent_correction
+14.43s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-startup_reconciler]
+10.33s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages
+9.42s call     tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency
+9.09s call     tests/test_insurance_protocol_v1.py::test_distinct_valid_documents_are_server_admitted_and_unresolved_is_not_ready
+8.70s call     tests/test_insurance_protocol_v1.py::test_process_death_after_commit_resumes_from_registry_authority[AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-1]
+8.50s call     tests/test_insurance_protocol_v1.py::test_journal_repairs_corrupt_correction_and_evidence_indexes
+7.95s call     tests/test_insurance_protocol_v1.py::test_startup_reconciler_completes_v2_terminal_lineage_without_retry
+7.20s call     tests/test_autonomous_adversarial_v1.py::test_submit_automatically_resumes_new_evidence_arriving_during_inference
+6.65s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[normalized_assertion-extraction_method-forged.extractor/9]
+5.37s call     tests/test_agent_desk_v1.py::test_replaying_superseded_pause_does_not_stop_a_resumed_delegate
+5.30s call     tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[source_conflict-keep_open]
+4.89s call     tests/test_insurance_protocol_v1.py::test_fault_11_timeout_before_commit_cancels_on_same_intent
+4.40s call     tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+4.28s call     tests/test_agent_desk_v1.py::test_lesson_preview_requires_validated_scope_and_approval_is_replayable
+4.14s call     tests/test_agent_desk_v1.py::test_decision_preview_override_reason_and_exact_replay
+4.12s call     tests/test_autonomous_knowledge_reads_v1.py::test_authoritative_view_matches_summary_adapter_and_reduces_each_claim_only_once
+3.53s call     tests/test_autonomous_adversarial_v1.py::test_document_fact_aggregates_all_sources_instead_of_last_file
+3.45s call     tests/test_autonomous_knowledge_reads_v1.py::test_new_accepted_head_is_observed_by_a_warm_knowledge_read
+3.36s call     tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_finished_real_engine_work_never_redispatches_model_on_poll_or_restart
+3.35s call     tests/test_autonomous_adversarial_v1.py::test_startup_skips_paused_terminal_and_incomplete_claims
+3.10s call     tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_pending]
+2.75s call     tests/test_autonomous_knowledge_reads_v1.py::test_returned_full_states_and_knowledge_cannot_mutate_shared_cached_authority
+2.72s call     tests/test_autonomous_knowledge_reads_v1.py::test_controller_reads_one_view_for_all_families_before_interpretation
+2.20s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_warm_knowledge_rechecks_cached_source_bytes[changed]
+2.12s call     tests/test_autonomous_knowledge_reads_v1.py::test_compatible_selects_from_the_supplied_validated_view_without_another_read
+1.96s call     tests/test_claim_workspace_v1.py::test_projection_sort_scale_targets[10000-1.0]
+1.93s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[knowledge-changed]
+1.80s call     tests/test_autonomous_knowledge_reads_v1.py::test_earlier_row_tampering_is_rejected_with_an_unchanged_head[event_json]
+1.80s call     tests/test_autonomous_knowledge_reads_v1.py::test_earlier_row_tampering_is_rejected_with_an_unchanged_head[created_at]
+1.74s setup    tests/test_original_nine_budget_v1.py::test_additive_epoch_preserves_old_rows_and_admits_only_eighteen_calls
+1.66s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_reads_reject_missing_accepted_claims_or_events[head_deleted]
+1.65s call     tests/test_agent_desk_v1.py::test_queued_supersession_survives_restart_gap_and_exact_latest_retry
+1.54s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_warm_knowledge_rechecks_cached_source_bytes[missing]
+1.53s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_reads_reject_missing_accepted_claims_or_events[claim_deleted]
+1.52s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[states-missing]
+1.52s call     tests/test_claim_workspace_v1.py::test_seed_is_exactly_once_and_byte_stable
+1.51s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[summaries-changed]
+1.47s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[summaries-missing]
+1.45s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[knowledge-missing]
+1.39s call     tests/test_claim_workspace_v1.py::test_workspace_api_replays_exact_response_bytes
+1.36s call     tests/test_claim_workspace_v1.py::test_concurrent_distinct_assignments_have_one_cas_winner
+1.31s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[states-changed]
+1.29s call     tests/test_autonomous_knowledge_reads_v1.py::test_warm_reads_reject_missing_accepted_claims_or_events[later_sequence_deleted]
+1.26s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[ack]
+1.21s call     tests/test_claim_workspace_v1.py::test_rebuild_is_a_pure_journal_projection
+1.20s call     tests/test_claim_workspace_v1.py::test_projection_sort_scale_targets[150-0.3]
+1.13s setup    tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency
+0.96s setup    tests/test_original_nine_budget_v1.py::test_existing_dollar_option_stops_truthfully_at_full_workflow_reservation
+0.93s setup    tests/test_original_nine_budget_v1.py::test_exact_nine_midpoint_blocks_fresh_workflow_but_allows_verifier_and_replay
+0.92s setup    tests/test_original_nine_budget_v1.py::test_changed_stage_schema_is_refused_before_any_new_reservation
+0.90s setup    tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[UPDATE work_original_nine_grant SET record_sha256='changed']
+0.90s setup    tests/test_original_nine_budget_v1.py::test_resealed_wrong_schema_intent_is_rejected_during_readback
+0.88s setup    tests/test_original_nine_budget_v1.py::test_pending_serial_slot_unknown_and_rejection_consume_original_slots
+0.88s setup    tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[None]
+0.87s setup    tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[INSERT OR REPLACE INTO work_original_nine_grant SELECT * FROM work_original_nine_grant]
+0.87s setup    tests/test_original_nine_budget_v1.py::test_prior_epoch_approval_identity_cannot_be_reused
+0.86s setup    tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[unknown]
+0.86s call     tests/test_claim_workspace_v1.py::test_corrupt_journal_never_becomes_queue_authority
+0.85s call     tests/test_claim_workspace_v1.py::test_corpus_rechecks_claim_policy_and_manifest_after_admission
+0.84s setup    tests/test_original_nine_budget_v1.py::test_missing_or_resealed_invalid_prior_epoch_fails_closed
+0.83s setup    tests/test_original_nine_budget_v1.py::test_launcher_readback_partitions_old_and_new_receipt_counters
+0.81s setup    tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[corpus]
+0.81s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[approval]
+0.80s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[actor]
+0.77s setup    tests/test_original_nine_budget_v1.py::test_same_approval_concurrent_application_is_one_immutable_receipt
+0.77s setup    tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[workflow]
+0.76s setup    tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[sources]
+0.76s setup    tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[DELETE FROM work_original_nine_grant]
+0.76s setup    tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[9999999999999999999999999999999999999999]
+0.75s call     tests/test_claim_workspace_v1.py::test_filters_and_sorts_are_exact
+0.75s call     tests/test_original_nine_budget_v1.py::test_additive_epoch_preserves_old_rows_and_admits_only_eighteen_calls
+0.75s setup    tests/test_original_nine_budget_v1.py::test_missing_runtime_source_identity_cannot_create_new_exact_nine_intent
+0.75s call     tests/test_claim_workspace_v1.py::test_every_workspace_mutation_requires_an_exact_integer_revision[-1]
+0.74s call     tests/test_claim_workspace_v1.py::test_projection_sort_scale_targets[1000-0.5]
+0.73s setup    tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[model]
+0.72s call     tests/test_claim_workspace_v1.py::test_stale_revision_and_cross_route_key_fail_closed
+0.70s setup    tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[claim]
+0.70s setup    tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[binding]
+0.70s call     tests/test_claim_workspace_v1.py::test_journal_row_cannot_move_between_loop_partitions
+0.68s setup    tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[rules]
+0.68s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[budget]
+0.66s call     tests/test_claim_workspace_v1.py::test_mutation_replay_is_byte_identical_after_later_tail
+0.66s call     tests/test_claim_workspace_v1.py::test_every_workspace_mutation_requires_an_exact_integer_revision[False]
+0.66s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[key]
+0.66s call     tests/test_claim_workspace_v1.py::test_every_workspace_mutation_requires_an_exact_integer_revision[True]
+0.64s call     tests/test_claim_workspace_v1.py::test_cursor_pages_are_complete_disjoint_and_snapshot_bound
+0.62s call     tests/test_claim_workspace_v1.py::test_every_workspace_mutation_requires_an_exact_integer_revision[None]
+0.62s call     tests/test_claim_workspace_v1.py::test_journal_replay_dispatches_recorded_compiler_not_latest_default
+0.61s setup    tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[price]
+0.61s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[preflight]
+0.60s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[option]
+0.58s call     tests/test_autonomous_adversarial_v1.py::test_arrival_during_inference_cannot_be_overwritten_by_old_terminal_outcome
+0.56s call     tests/test_claim_workspace_v1.py::test_forged_intake_assessment_fails_before_journal_append
+0.56s setup    tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+0.53s call     tests/test_claim_workspace_v1.py::test_legacy_reset_cannot_delete_system_workspace_journal
+0.50s call     tests/test_reference_read_performance_v1.py::test_work_calls_candidate_prefixes_dense_sparse_composite_keys_and_escaped_json[True]
+0.47s call     tests/test_reference_read_performance_v1.py::test_work_calls_candidate_prefixes_dense_sparse_composite_keys_and_escaped_json[False]
+0.46s setup    tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[source_conflict-keep_open]
+0.46s setup    tests/test_agent_desk_v1.py::test_replaying_superseded_pause_does_not_stop_a_resumed_delegate
+0.46s setup    tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_pending]
+0.44s call     tests/test_canonicalizer_v15.py::test_canonicalizer_uses_synchronous_sdk_provider_without_generation_poll
+0.43s setup    tests/test_agent_desk_v1.py::test_queued_supersession_survives_restart_gap_and_exact_latest_retry
+0.42s setup    tests/test_agent_desk_v1.py::test_decision_preview_override_reason_and_exact_replay
+0.41s setup    tests/test_agent_desk_v1.py::test_desk_arrival_is_persistently_idempotent_and_prepares_real_not_sent_draft
+0.39s setup    tests/test_agent_desk_v1.py::test_lesson_preview_requires_validated_scope_and_approval_is_replayable
+0.38s call     tests/test_autonomous_knowledge_reads_v1.py::test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[parent_identity]
+0.37s call     tests/test_autonomous_api_v1.py::test_intake_api_headers_idempotency_saved_events_and_source_readback
+0.37s call     tests/test_original_nine_budget_v1.py::test_existing_dollar_option_stops_truthfully_at_full_workflow_reservation
+0.36s call     tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_public_http_reads_and_restart_leave_saved_claim_passive
+0.35s call     tests/test_autonomous_adversarial_v1.py::test_pause_during_inference_stops_before_the_verifier_and_graph_commit
+0.32s setup    tests/test_claim_workspace_v1.py::test_artifact_route_is_claim_scoped_and_safe
+0.30s call     tests/test_agent_demo_launcher.py::test_read_only_snapshot_includes_uncheckpointed_provider_wal
+0.29s call     tests/test_claim_workspace_v1.py::test_artifact_route_is_claim_scoped_and_safe
+0.27s call     tests/test_original_nine_budget_v1.py::test_pending_serial_slot_unknown_and_rejection_consume_original_slots
+0.27s call     tests/test_autonomous_knowledge_reads_v1.py::test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[conflicting_definition]
+0.25s call     tests/test_agent_work_store_incremental.py::test_workforce_reads_run_table_and_stream_replays_terminal_events
+0.23s call     tests/test_original_nine_budget_v1.py::test_exact_nine_midpoint_blocks_fresh_workflow_but_allows_verifier_and_replay
+0.23s setup    tests/test_original_nine_budget_v1.py::test_empty_preflight_cannot_apply_an_allowance
+0.23s setup    tests/test_original_nine_budget_v1.py::test_preserved_legacy_bytes_have_same_seal_under_reversed_sql_traversal
+0.21s call     tests/test_autonomous_budget_v1.py::test_historical_nine_calls_four_runs_and_unknown_reserve_are_never_reset
+0.21s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_first_page_rejects_malformed_namespace_and_sequence[-1]
+0.19s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_first_page_rejects_malformed_namespace_and_sequence[autonomous.fixture--1]
+0.18s call     tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[9999999999999999999999999999999999999999]
+0.18s call     tests/test_autonomous_policy_v1.py::test_message_cannot_stand_in_for_a_required_original_document
+0.18s call     tests/test_autonomous_policy_v1.py::test_quotes_are_not_semantic_acceptance_and_absence_stays_unknown
+0.18s call     tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[None]
+0.18s call     tests/test_reference_read_performance_v1.py::test_inventory_pages_2000_normal_journal_shaped_rows_without_limit_one
+0.18s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends
+0.16s call     tests/test_agent_demo_launcher.py::test_prior_ready_or_stopped_usage_cannot_roll_back[actual_cost_usd]
+0.15s call     tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[unknown]
+0.14s call     tests/test_autonomous_policy_v1.py::test_invalid_optional_knowledge_does_not_discard_valid_claim_interpretation
+0.14s call     tests/test_reference_read_performance_v1.py::test_inventory_large_escaped_unicode_and_blob_rows_keep_wire_bounds_and_exact_bytes
+0.14s call     tests/test_claim_workspace_v1.py::test_intake_compiler_is_source_bound_complete_and_outcome_blind
+0.14s call     tests/test_autonomous_policy_v1.py::test_verifier_must_cover_every_proposition_and_exact_source
+0.14s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_first_page_rejects_malformed_namespace_and_sequence[--1]
+0.14s call     tests/test_claim_queue_snapshot_evaluator_v1.py::test_snapshot_consistency_uses_canonical_corpus_identity
+0.13s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_paging_does_not_hide_a_later_sequence_gap
+0.11s call     tests/test_original_nine_budget_v1.py::test_changed_stage_schema_is_refused_before_any_new_reservation
+0.11s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__wire_bound-False]
+0.09s call     tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[length]
+0.09s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[COMMIT]
+0.08s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__REFERENCE_WIRE_BOUND-False]
+0.08s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__REFERENCE_WIRE_BOUND-True]
+0.08s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__NULL_KEY-False]
+0.08s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__REFERENCE_CANDIDATE_WIRE_BOUND-True]
+0.08s call     tests/test_original_nine_budget_v1.py::test_same_approval_concurrent_application_is_one_immutable_receipt
+0.07s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__null_key-False]
+0.07s call     tests/test_canonicalizer_v15.py::test_flagship_wire_schema_binds_every_fact_and_artifact_slot
+0.07s call     tests/test_canonicalizer_v15.py::test_concurrent_identical_cold_cache_calls_are_single_flight
+0.07s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__reference_candidate_null_key-False]
+0.07s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__reference_candidate_wire_bound-False]
+0.07s call     tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[sources]
+0.07s call     tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[workflow]
+0.07s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__REFERENCE_CANDIDATE_NULL_KEY-True]
+0.06s call     tests/test_original_nine_budget_v1.py::test_launcher_readback_partitions_old_and_new_receipt_counters
+0.06s call     tests/test_reference_read_performance_v1.py::test_inventory_wal_snapshot_keeps_sparse_keyset_consistent_when_writer_commits_after_bound
+0.06s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__WIRE_BOUND-True]
+0.06s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__reference_candidate_wire_bound-True]
+0.06s call     tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[corpus]
+0.06s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__wire_bound-True]
+0.06s call     tests/test_autonomous_budget_v1.py::test_global_dollar_reservation_prevents_parallel_workflow_overcommit
+0.05s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__REFERENCE_CANDIDATE_NULL_KEY-False]
+0.05s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__WIRE_BOUND-False]
+0.05s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__NULL_KEY-True]
+0.05s call     tests/test_agent_work_store_incremental.py::test_stop_is_journaled_and_survives_reload
+0.05s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__reference_candidate_null_key-True]
+0.05s call     tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[model]
+0.05s call     tests/test_canonicalizer_v15.py::test_dated_canonical_nemotron_response_identity_is_accepted
+0.05s call     tests/test_original_nine_budget_v1.py::test_missing_runtime_source_identity_cannot_create_new_exact_nine_intent
+0.05s call     tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[binding]
+0.05s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__null_key-True]
+0.05s call     tests/test_original_nine_budget_v1.py::test_missing_or_resealed_invalid_prior_epoch_fails_closed
+0.05s call     tests/test_autonomous_budget_v1.py::test_resealed_invalid_terminal_cannot_release_reserved_budget
+0.04s call     tests/test_claim_workspace_v1.py::test_v2_golden_start_event_and_state_are_exact
+0.04s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__REFERENCE_CANDIDATE_WIRE_BOUND-False]
+0.04s call     tests/test_autonomous_budget_v1.py::test_abandon_releases_only_unsent_remainder_and_prevents_late_verification
+0.04s call     tests/test_claim_workspace_v1.py::test_detail_and_artifact_bytes_match_binding
+0.04s call     tests/test_agent_work_store_incremental.py::test_cached_work_product_rejects_changed_persisted_bytes
+0.04s call     tests/test_original_nine_budget_v1.py::test_resealed_wrong_schema_intent_is_rejected_during_readback
+0.04s call     tests/test_autonomous_budget_v1.py::test_tampered_sealed_records_cannot_expand_limits_or_change_cached_results[work_autonomous_policy-max_calls_per_workflow]
+0.03s call     ::test_known_commit_requirement_fails_before_replacing_output
+0.03s call     tests/test_reference_read_performance_v1.py::test_nullable_composite_key_refuses_at_later_candidate_page_and_alias_scalar_types_are_exact
+0.03s call     tests/test_canonicalizer_v15.py::test_conflicting_selection_spans_two_related_artifacts
+0.03s call     tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[claim]
+0.03s call     tests/test_canonicalizer_v15.py::test_identical_canonicalization_uses_cache_without_network
+0.03s call     tests/test_claim_workspace_v1.py::test_intake_compiler_is_invariant_to_catalog_order
+0.03s call     tests/test_original_nine_budget_v1.py::test_empty_preflight_cannot_apply_an_allowance
+0.03s call     tests/test_autonomous_budget_v1.py::test_abandon_cannot_release_unknown_call_cost_or_enable_resend
+0.03s call     tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[rules]
+0.03s call     tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[price]
+0.03s call     tests/test_canonicalizer_v15.py::test_prior_one_of_eighteen_state_collapse_cannot_override_deterministic_state
+0.03s call     tests/test_autonomous_budget_v1.py::test_tampered_sealed_records_cannot_expand_limits_or_change_cached_results[work_autonomous_calls-maximum_cost_usd]
+0.03s setup    tests/test_canonicalizer_v15.py::test_default_langchain_invoker_maps_protocol_failure_to_bounded_invariant
+0.03s call     tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[ack]
+0.03s setup    tests/test_claim_workspace_v1.py::test_stale_revision_and_cross_route_key_fail_closed
+0.03s call     tests/test_claim_workspace_v1.py::test_public_corpus_is_closed_and_outcome_blind
+0.02s call     tests/test_agent_work_store_incremental.py::test_pause_at_final_checkpoint_retains_safe_interrupted_state
+0.02s setup    tests/test_autonomous_budget_v1.py::test_activation_requires_original_policy_exact_budget_and_no_pending_work
+0.02s call     tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[approval]
+0.02s call     tests/test_autonomous_budget_v1.py::test_old_provider_reservation_observes_new_global_pending_slot
+0.02s call     tests/test_canonicalizer_v15.py::test_missing_upstream_provider_fails_closed_when_metadata_is_incomplete
+0.02s call     tests/test_autonomous_budget_v1.py::test_provider_overrun_is_recorded_then_freezes_both_admission_paths
+0.02s call     tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[True]
+0.02s call     ::test_curated_static_build_has_exact_runtime_inventory
+0.02s call     tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_learning_noop_runs_once_per_process_and_busy_attempt_is_not_settled
+0.02s call     tests/test_claim_workspace_v1.py::test_read_only_replay_opens_without_initialization
+0.02s call     tests/test_autonomous_budget_v1.py::test_concurrent_policy_activation_is_exactly_once
+0.02s setup    tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__REFERENCE_CANDIDATE_NULL_KEY-False]
+0.02s call     tests/test_canonicalizer_v15.py::test_alternate_eligible_passage_from_related_artifact_is_materialized
+0.02s call     tests/test_original_nine_budget_v1.py::test_prior_epoch_approval_identity_cannot_be_reused
+0.02s call     tests/test_autonomous_budget_v1.py::test_activation_requires_original_policy_exact_budget_and_no_pending_work
+0.02s call     tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[preflight]
+0.02s call     tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[option]
+0.02s teardown tests/test_autonomous_knowledge_reads_v1.py::test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[conflicting_definition]
+0.02s call     tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[False]
+0.02s call     tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[actor]
+0.02s call     tests/test_autonomous_budget_v1.py::test_tampered_sealed_records_cannot_expand_limits_or_change_cached_results[work_autonomous_outcomes-result]
+0.02s call     tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[key]
+0.02s call     tests/test_agent_work_store_incremental.py::test_work_history_validates_only_new_events_and_detects_old_tamper
+0.01s call     tests/test_autonomous_budget_v1.py::test_two_store_instances_do_not_send_the_same_pending_intent_twice
+0.01s call     tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[UPDATE work_original_nine_grant SET record_sha256='changed']
+0.01s setup    tests/test_canonicalizer_v15.py::test_missing_structurally_related_artifact_is_rejected
+0.01s call     tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[DELETE FROM work_original_nine_grant]
+0.01s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[SELECT]
+0.01s call     tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[INSERT OR REPLACE INTO work_original_nine_grant SELECT * FROM work_original_nine_grant]
+0.01s setup    tests/test_claim_workspace_v1.py::test_corrupt_journal_never_becomes_queue_authority
+0.01s call     ::test_curated_asset_allowlist_is_the_recursive_runtime_closure
+0.01s call     tests/test_canonicalizer_v15.py::test_provider_cannot_author_contradictory_display_prose
+0.01s call     tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_queued_claim_is_rechecked_after_ownership
+0.01s call     tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[nullable_choice_error]
+0.01s call     tests/test_canonicalizer_v15.py::test_conflicting_selection_must_span_two_artifacts
+0.01s call     tests/test_canonicalizer_v15.py::test_canonicalizer_replays_sdk_schema_drift_through_real_langchain_once
+0.01s call     tests/test_canonicalizer_v15.py::test_all_canonicalizer_contract_versions_invalidate_success_cache
+0.01s call     tests/test_canonicalizer_v15.py::test_empty_eligible_pool_requires_and_accepts_empty_selection
+0.01s call     tests/test_claim_workspace_v1.py::test_recorded_v1_1_assessment_ignores_successor_default_aliases
+0.01s call     tests/test_canonicalizer_v15.py::test_foreign_response_model_is_hashed_and_rejected_as_invalid_provenance
+0.01s call     tests/test_canonicalizer_v15.py::test_missing_structurally_related_artifact_is_rejected
+0.01s call     tests/test_canonicalizer_v15.py::test_nonstop_canonical_response_cannot_be_accepted_or_cached
+0.01s call     tests/test_canonicalizer_v15.py::test_generation_metadata_eventual_consistency_uses_bounded_backoff
+0.01s call     tests/test_canonicalizer_v15.py::test_missing_sync_usage_polls_generation_metadata_without_retrying_inference
+0.01s call     tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_http_discovery_does_not_queue_duplicate_active_work
+0.01s call     tests/test_canonicalizer_v15.py::test_preflight_cost_guard_uses_persistent_committed_cost
+0.01s call     tests/test_canonicalizer_v15.py::test_openrouter_request_is_one_bounded_exact_model_structured_call
+0.01s call     tests/test_canonicalizer_v15.py::test_noncontrolling_normalized_proposal_is_rejected_as_deterministic_owned
+0.01s call     tests/test_canonicalizer_v15.py::test_model_cannot_invert_fixture_bound_decision_polarity
+0.01s call     tests/test_canonicalizer_v15.py::test_nonempty_eligible_pool_rejects_empty_selection
+0.01s call     tests/test_canonicalizer_v15.py::test_provider_admission_timeout_is_zero_call_noncacheable_ledger_record
+0.01s call     tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value2-generation_metadata_completeness-8-None]
+0.01s call     tests/test_canonicalizer_v15.py::test_process_owned_visual_enrichment_survives_model_merge
+0.01s setup    tests/test_claim_workspace_v1.py::test_every_workspace_mutation_requires_an_exact_integer_revision[-1]
+0.01s call     tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value0-generation_metadata_identity-1-None]
+0.01s call     tests/test_canonicalizer_v15.py::test_missing_upstream_provider_uses_metadata_before_persisting_success
+0.01s call     tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value1-invalid_provenance-1-0.0057]
+0.01s call     tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage2]
+0.01s call     tests/test_canonicalizer_v15.py::test_more_than_one_eligible_passage_per_artifact_is_rejected
+0.01s call     tests/test_canonicalizer_v15.py::test_generation_metadata_mismatch_missing_or_zero_fails_closed[metadata_value3-generation_metadata_usage-1-None]
+0.01s call     tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage0]
+0.01s call     tests/test_canonicalizer_v15.py::test_model_cannot_override_deterministic_process_control_metadata
+0.01s call     tests/test_canonicalizer_v15.py::test_semantic_rejection_retains_charged_provider_usage_and_identity
+0.01s call     tests/test_canonicalizer_v15.py::test_incomplete_sync_usage_fails_when_generation_metadata_remains_missing[invalid_usage1]
+0.01s setup    tests/test_claim_workspace_v1.py::test_legacy_reset_cannot_delete_system_workspace_journal
+0.01s call     tests/test_canonicalizer_v15.py::test_any_rejected_fact_fails_without_fallback_or_cache
+0.01s setup    tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[states-missing]
+
+(589 durations < 0.005s hidden.  Use -vv to show these durations.)
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_public_http_reads_and_restart_leave_saved_claim_passive
+1 failed, 285 passed, 5 warnings in 360.90s (0:06:00)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

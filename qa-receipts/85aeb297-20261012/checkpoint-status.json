@@ -1,12 +1,29 @@
 {
   "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
-  "status": "gate_in_progress_with_preserved_failures",
+  "status": "complete_failed_original_gate",
   "publication_hold": true,
   "native_checks_passed": 145,
   "mac_passed_attested": 127,
-  "cloud_assigned": 2388,
-  "full_collected": 2515,
-  "full_gate_terminal": false,
+  "cloud": {
+    "tests": 2388,
+    "passed": 2366,
+    "failed": 12,
+    "skipped": 10
+  },
+  "full_combined": {
+    "tests": 2515,
+    "passed": 2493,
+    "failed": 12,
+    "skipped": 10
+  },
+  "coverage": {
+    "missing": 0,
+    "duplicates": 0,
+    "extra": 0
+  },
+  "full_gate_terminal": true,
+  "original_runs": 6,
+  "reruns": 0,
   "source_changes": false,
-  "limits": "Final six-shard logs/JUnit/coverage will follow after all original runs terminate."
+  "limits": "Mac raw JUnit remains on Mac F3; combined result uses explicit exact-ID coordinator attestation."
 }

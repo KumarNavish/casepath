@@ -1,0 +1,48 @@
+{
+  "all_ids_exactly_one_report_per_phase": true,
+  "artifacts": {
+    "collected.json": "fcaeb105c1e3aab8c70031c0ca915e41736d99d6f2a4ff81dc989e9097923b40",
+    "command.json": "bdba4df3b002c1296c06299d81c42a32ee3cbf135d81959999d3d8f668956952",
+    "ids.txt": "a5d9cb845428dd0427d74a45b3e06d37ed06d9a4a8b078de9ccde723b57962aa",
+    "junit.xml": "7f767ee11a2f0c42b26d933c9e69888db62bb124006ed0ad2e53f995dd12ec8c",
+    "pytest-arguments.txt": "a5d9cb845428dd0427d74a45b3e06d37ed06d9a4a8b078de9ccde723b57962aa",
+    "pytest.log": "5feefac6e6ca1f40d4269348b63af3591cdb6b387e80ad998b51961418a58222",
+    "reports.jsonl": "a5b686d681ff392d2387fa03c29f563957b833400efa81a1f862bff12d3d199d",
+    "result.json": "0b04e42f5bf4cb36ec7c82e0105d6078bdd6c0e77272de7fdc7326dc7e61e65d"
+  },
+  "assigned_count": 356,
+  "assignment_collected_exact_order": true,
+  "assignment_junit_equal": true,
+  "assignment_observer_call_equal": true,
+  "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "collected_count": 356,
+  "duration_seconds": 479.90377163887024,
+  "exit_code": 0,
+  "failed_canonical_ids": [],
+  "head_after": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "host": "656813ef2295",
+  "junit_count": 356,
+  "junit_observer_outcomes_equal": true,
+  "mac_excluded_files_absent": true,
+  "no_k": true,
+  "outcomes": {
+    "passed": 355,
+    "skipped": 1
+  },
+  "pytest_duration_seconds": 476.592,
+  "seal_sha256_after": "29894bf8f4e70e88c6f5a5a54dea36c310099e23177e83fa67e861a0159603f6",
+  "seal_unchanged": true,
+  "shard": 1,
+  "skips": [
+    {
+      "duration": 0.00015236501349136233,
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+      "outcome": "skipped",
+      "skip_reason": "('/workspace/casepath-release-ae0-shard1/casepath-api/tests/test_document_lifecycle_shadow_v1.py', 605, 'Skipped: frozen independent-transition packet is not available')",
+      "utc_epoch": 1791838774.5529063,
+      "when": "call"
+    }
+  ],
+  "source_unchanged": true,
+  "status_after": ""
+}

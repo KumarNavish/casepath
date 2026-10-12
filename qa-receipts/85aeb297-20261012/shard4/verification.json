@@ -1,0 +1,72 @@
+{
+  "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "exit_code": 0,
+  "duration_seconds": 479.04836344718933,
+  "assigned_count": 452,
+  "collected_count": 452,
+  "executed_call_count": 452,
+  "junit_count": 452,
+  "assigned_unique": 452,
+  "collected_unique": 452,
+  "executed_unique": 452,
+  "junit_unique": 452,
+  "ordered_assigned_collected_equal": true,
+  "ordered_assigned_executed_equal": true,
+  "ordered_assigned_junit_equal": true,
+  "id_set_equality": true,
+  "unmapped_junit": [],
+  "phase_outcomes": {
+    "setup": {
+      "passed": 452,
+      "failed": 0,
+      "skipped": 0
+    },
+    "call": {
+      "passed": 452,
+      "failed": 0,
+      "skipped": 0
+    },
+    "teardown": {
+      "passed": 452,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "phase_ids_with_non_single_reports": {
+    "setup": 0,
+    "call": 0,
+    "teardown": 0
+  },
+  "failed_ids": [],
+  "skipped_ids": [],
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "452",
+      "time": "475.676",
+      "timestamp": "2026-10-12T20:58:08.471020+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "after_head": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "after_status": "",
+  "sealed_files_checked": 1680,
+  "seal_failures": [],
+  "artifact_sha256": {
+    "ids.txt": "739fffae15198659d92898a0384921f574641a7e51f8f6301a05ea2b9e5b205b",
+    "pytest-arguments.txt": "739fffae15198659d92898a0384921f574641a7e51f8f6301a05ea2b9e5b205b",
+    "collected.json": "88160be5fc400fc4e6ecf382d024f1bd83454da2b8d61cfa36f445f3a94f247b",
+    "reports.jsonl": "c1a43ea719f93554c79eb1d514664395d5ce0cc83850f3cb8c78a56424d552e1",
+    "junit.xml": "3faa43f6c28e73dab2ab80b413ecf85fe1371f1f41b890ddb7ba7c58f0c4ef6a",
+    "pytest.log": "cecbf3adafbe441dba7ccfde516df9b28840abc25b16a3f3518e2ec543ca3160",
+    "command.json": "2eb3ca0cee97efd8aba0d6d9565599cd5673ee8ee02e51fb3d4a5b3fae023e17",
+    "result.json": "08acb92eca354a53785a03985177b8fdca2be93f3c01f49894cfba0f5ff9561d"
+  },
+  "excluded_mac_file_matches": [],
+  "pytest_summary": [
+    "452 passed, 9 warnings in 475.69s (0:07:55)"
+  ]
+}

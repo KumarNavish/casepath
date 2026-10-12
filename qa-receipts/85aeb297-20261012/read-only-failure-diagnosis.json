@@ -18,5 +18,12 @@
     "consumer_source": "casepath-api/casepath_api/hosted_app_v1.py:49",
     "cause": "Constructor test double does not accept/forward the actual hosted composition intake-gate keyword.",
     "minimal_proposed_scope": "Match and assert the actual constructor argument while retaining public passive/read-only dispatch checks. Requires a new test candidate."
+  },
+  "sites_delivery": {
+    "observed_error": "Exact-output assertion expects API_CONFIGURATION before API_SCRIPT_MARKER; actual builder injects after <head>.",
+    "test_source": "casepath/tools/test_casepath_release.py:358",
+    "builder_source": "casepath/tools/build_sites_site.py:59",
+    "classification": "Test expectation mismatch against intentional early public-read-only configuration.",
+    "minimal_authorized_scope": "Update exact test to early <head> transform and assert public-read-only precedes entry selection; keep all streaming/proxy/source/inventory checks. Product builder stays unchanged."
   }
 }

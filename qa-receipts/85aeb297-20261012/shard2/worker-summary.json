@@ -1,0 +1,98 @@
+{
+  "shard": 2,
+  "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "host": "656813ef2295",
+  "outer_command": [
+    "python",
+    "/tmp/casepath-release-85a-20261012/harness/run_shard.py",
+    "run",
+    "2"
+  ],
+  "outer_cwd": "/workspace",
+  "harness_pid": 458893,
+  "pytest_pid": 458904,
+  "exec_session": 71992,
+  "executions": 1,
+  "exit_code": 1,
+  "duration_seconds": 466.19503021240234,
+  "pytest_duration_seconds": 462.42,
+  "junit_suite": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "10",
+    "skipped": "0",
+    "tests": "388",
+    "time": "462.407",
+    "timestamp": "2026-10-12T20:57:35.178283+00:00",
+    "hostname": "656813ef2295"
+  },
+  "assigned_count": 388,
+  "collected_count": 388,
+  "junit_count": 388,
+  "observer_call_count": 388,
+  "assigned_collected_junit_observer_equal": true,
+  "counts": {
+    "passed": 378,
+    "failed": 10,
+    "skipped": 0,
+    "errors": 0
+  },
+  "observer_phase_counts": {
+    "setup": 388,
+    "call": 388,
+    "teardown": 388
+  },
+  "after_head": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "after_status": "",
+  "post_run_seal_verified": true,
+  "prohibited_mac_files_executed": [],
+  "failed_ids": [
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[actor]",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[head]",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[key]",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[reason]",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[canonical]",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[hosted]",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[legacy]",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_control_plane_cache_only_route_keeps_existing_origin_guard_and_denials",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_failed_deterministic_application_preserves_failure_and_requires_new_command",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_rejected_document_is_preserved_but_never_reviewed_or_learned[bad_document]"
+  ],
+  "failure_summary": "Nine tracebacks raise AttributeError: '_SavedExecution' object has no attribute 'reference_adapter' at autonomous_controller_v1.py:290, wrapped as AutonomousStoreError at autonomous_reconciliation_v1.py:180. The cache-only route test asserts 409 == 200 with the same reconciliation failure detail.",
+  "source_tests_seal_changes": false,
+  "rerun": false,
+  "artifacts": {
+    "result.json": {
+      "path": "/tmp/casepath-release-85a-20261012/shard2/result.json",
+      "sha256": "f3e163f0740bc3ea61fe448d7b33a8dbbf2cf5bfe01fb4a922bae1799f95db75"
+    },
+    "command.json": {
+      "path": "/tmp/casepath-release-85a-20261012/shard2/command.json",
+      "sha256": "da8c7a6c8792bac7c03ce6eea4991ad52993ee5d2be9bd39094414bf9390ed2d"
+    },
+    "pytest.log": {
+      "path": "/tmp/casepath-release-85a-20261012/shard2/pytest.log",
+      "sha256": "97cefbdd4e38f19ae270572c0d62b3569042a7f111a569d70897a99a58180ecf"
+    },
+    "junit.xml": {
+      "path": "/tmp/casepath-release-85a-20261012/shard2/junit.xml",
+      "sha256": "658a1b2e231440489c6ad59d540c62d3b6f312ef415fcd84774ccb5043b3e25d"
+    },
+    "collected.json": {
+      "path": "/tmp/casepath-release-85a-20261012/shard2/collected.json",
+      "sha256": "6fefb3ebf6a5620673fd617a95287a7ebda1b3ddfe7468743f2cf24b2bc94ecd"
+    },
+    "reports.jsonl": {
+      "path": "/tmp/casepath-release-85a-20261012/shard2/reports.jsonl",
+      "sha256": "c5052f7375c84d4ea54e9f4928e9b86fd75b1a27731e687af5e0c24c1dc80bd8"
+    },
+    "ids.txt": {
+      "path": "/tmp/casepath-release-85a-20261012/shard2/ids.txt",
+      "sha256": "ca7a2a9c0e218b36a8138d7c658d5c304975d79300fdee1f552fe74db2267b31"
+    },
+    "pytest-arguments.txt": {
+      "path": "/tmp/casepath-release-85a-20261012/shard2/pytest-arguments.txt",
+      "sha256": "ca7a2a9c0e218b36a8138d7c658d5c304975d79300fdee1f552fe74db2267b31"
+    }
+  }
+}

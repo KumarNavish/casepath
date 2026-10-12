@@ -1,0 +1,48 @@
+{
+  "candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "canonical_branch": "codex/casepath-complete-public-integration-20261012",
+  "total": 2515,
+  "mac": 127,
+  "cloud": 2388,
+  "collected_sorted_sha256": "1e7210ef8e74b2a91423b647b450c1630737f53174f8aa062307f584d70ad75a",
+  "mac_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "cloud_sorted_sha256": "317bf5e0f372e6e3fdc05711964bccbddaae0e0e26ff7c4866124632fb2f8cc9",
+  "mac_file_counts": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6,
+    "casepath-api/tests/test_local_data_root.py": 52
+  },
+  "duration_basis_counts": {
+    "exact_prior_junit_id": 2322,
+    "prior_file_mean": 7,
+    "focused_module_mean": 56,
+    "global_mean_new_file": 3
+  },
+  "focused_module_timings": {
+    "reference_modules": {
+      "tests": 33,
+      "seconds": 174.81,
+      "basis": "/tmp/casepath-reference-lease-source-checkpoint-20261012/focused-test.log"
+    },
+    "intake": {
+      "tests": 23,
+      "seconds": 31.15,
+      "basis": "Coordinator exact29ef824 focused regression report"
+    }
+  },
+  "split_for_balance_files": [
+    "casepath-api/tests/test_agent_demo_launcher.py",
+    "casepath-api/tests/test_agent_desk_v1.py",
+    "casepath-api/tests/test_insurance_protocol_v1.py"
+  ],
+  "coverage": {
+    "missing": 0,
+    "duplicates": 0,
+    "extra": 0,
+    "mac_cloud_overlap": 0
+  },
+  "expected_known_frozen_fixture_skip_ids_present": 10,
+  "tests_executed": 0,
+  "launch_owner": "root will dispatch six gpt-6.1-sol/xhigh agents after native fixture worker finishes",
+  "limit": "Prior/focused timings are estimates, not measured final-candidate performance; no timeout/skip/audit change."
+}
