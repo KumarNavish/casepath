@@ -1,0 +1,254 @@
+{
+  "status": "reviewed_committed_pushed",
+  "host": "656813ef2295",
+  "repository": "/workspace/casepath-release-85a-reconciliation-repair",
+  "base": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "branch": "codex/casepath-saved-reconciliation-initialization-20261012",
+  "authored_file_sha256": {
+    "casepath-api/casepath_api/autonomous_reconciliation_v1.py": "b85fb036d0e6303ffcf9ceb22647cbfc1930044096e2ea1fc5ba1e99a0123472",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py": "5a79a2db385321ef08c017ddf2bc1e57d8d6d5431664fc399dcee11f4893e904",
+    "casepath-api/tests/test_hosted_recovery_v1.py": "573346dc7d6e72084c18688f077e1e6897de6fc6569c3241113be4f9499af354",
+    "casepath/tools/test_casepath_release.py": "e76dfede57a8f0ec6557fc8dcb5c71a4d7a352db45cc4569e917edd8618e25fb"
+  },
+  "combined_patch": "/tmp/casepath-reconciliation-repair-20261012/combined-repair-v2.patch",
+  "combined_patch_sha256": "f2fb5cf0cf8976a404f1d196560342da33b4e9f1aa5c134a90952347b0cbdf57",
+  "verification": [
+    {
+      "name": "verified_baseline",
+      "log": "logs/verified-baseline.log",
+      "exit": 1,
+      "passed": 21,
+      "failed": 11,
+      "seconds": 10.33,
+      "cwd": "/workspace/casepath-release-85a-reconciliation-repair",
+      "sanitized_environment": {
+        "HOME": "/tmp/casepath-reconciliation-repair-20261012/home",
+        "TMPDIR": "/tmp/casepath-reconciliation-repair-20261012/tmp",
+        "PATH": "/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/workspace/casepath-release-85a-reconciliation-repair/casepath-api"
+      },
+      "environment_was_empty_before_binding": true,
+      "argv": [
+        "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "casepath-api/tests/test_autonomous_reconciliation_v1.py",
+        "casepath-api/tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_public_http_reads_and_restart_leave_saved_claim_passive",
+        "--basetemp=/tmp/casepath-reconciliation-repair-20261012/verified-baseline"
+      ]
+    },
+    {
+      "name": "saved_reconciliation_and_hosted_startup",
+      "log": "logs/repaired.log",
+      "exit": 0,
+      "passed": 32,
+      "seconds": 29.56,
+      "cwd": "/workspace/casepath-release-85a-reconciliation-repair",
+      "sanitized_environment": {
+        "HOME": "/tmp/casepath-reconciliation-repair-20261012/home",
+        "TMPDIR": "/tmp/casepath-reconciliation-repair-20261012/tmp",
+        "PATH": "/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/workspace/casepath-release-85a-reconciliation-repair/casepath-api"
+      },
+      "environment_was_empty_before_binding": true,
+      "argv": [
+        "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "casepath-api/tests/test_autonomous_reconciliation_v1.py",
+        "casepath-api/tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_public_http_reads_and_restart_leave_saved_claim_passive",
+        "--basetemp=/tmp/casepath-reconciliation-repair-20261012/repaired"
+      ]
+    },
+    {
+      "name": "controller_public_passivity_learning",
+      "log": "logs/focused.log",
+      "exit": 0,
+      "passed": 6,
+      "seconds": 21.99,
+      "cwd": "/workspace/casepath-release-85a-reconciliation-repair",
+      "sanitized_environment": {
+        "HOME": "/tmp/casepath-reconciliation-repair-20261012/home",
+        "TMPDIR": "/tmp/casepath-reconciliation-repair-20261012/tmp",
+        "PATH": "/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/workspace/casepath-release-85a-reconciliation-repair/casepath-api"
+      },
+      "environment_was_empty_before_binding": true,
+      "argv": [
+        "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "casepath-api/tests/test_autonomous_controller_v1.py",
+        "casepath-api/tests/test_public_hosted_read_only_v1.py",
+        "casepath-api/tests/test_autonomous_knowledge_refinement_v1.py::test_second_claim_adds_immutable_recipe_version_and_unchanged_claim_publishes_nothing",
+        "casepath-api/tests/test_autonomous_knowledge_refinement_v1.py::test_unchanged_recipe_reuses_qualification_without_unobserved_work_claims",
+        "--basetemp=/tmp/casepath-reconciliation-repair-20261012/focused"
+      ]
+    },
+    {
+      "name": "sites_baseline",
+      "log": "logs/sites-baseline.log",
+      "exit": 1,
+      "failed": 1,
+      "seconds": 0.74,
+      "cwd": "/workspace/casepath-release-85a-reconciliation-repair",
+      "sanitized_environment": {
+        "HOME": "/tmp/casepath-reconciliation-repair-20261012/home",
+        "TMPDIR": "/tmp/casepath-reconciliation-repair-20261012/tmp",
+        "PATH": "/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/workspace/casepath-release-85a-reconciliation-repair/casepath-api"
+      },
+      "environment_was_empty_before_binding": true,
+      "argv": [
+        "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "casepath/tools/test_casepath_release.py::test_sites_delivery_is_same_origin_and_streaming_proxy_safe",
+        "--basetemp=/tmp/casepath-reconciliation-repair-20261012/sites-baseline"
+      ]
+    },
+    {
+      "name": "sites_builder_release_proxy",
+      "log": "logs/sites-final.log",
+      "exit": 0,
+      "passed": 9,
+      "seconds": 1.31,
+      "cwd": "/workspace/casepath-release-85a-reconciliation-repair",
+      "sanitized_environment": {
+        "HOME": "/tmp/casepath-reconciliation-repair-20261012/home",
+        "TMPDIR": "/tmp/casepath-reconciliation-repair-20261012/tmp",
+        "PATH": "/usr/bin:/bin",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONPATH": "/workspace/casepath-release-85a-reconciliation-repair/casepath-api"
+      },
+      "environment_was_empty_before_binding": true,
+      "argv": [
+        "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "casepath/tools/test_casepath_release.py::test_sites_delivery_is_same_origin_and_streaming_proxy_safe",
+        "casepath-api/tests/test_sites_public_read_only_v1.py",
+        "casepath-api/tests/test_hosted_proxy_v1.py",
+        "--basetemp=/tmp/casepath-reconciliation-repair-20261012/sites-final"
+      ]
+    },
+    {
+      "name": "sites_runtime_proxy_entry",
+      "log": "logs/sites-node.log",
+      "exit": 0,
+      "passed": 13,
+      "skipped": 0,
+      "seconds": 0.119535098,
+      "cwd": "/workspace/casepath-release-85a-reconciliation-repair",
+      "sanitized_environment": {
+        "HOME": "/tmp/casepath-reconciliation-repair-20261012/home",
+        "TMPDIR": "/tmp/casepath-reconciliation-repair-20261012/tmp",
+        "PATH": "/usr/bin:/bin"
+      },
+      "environment_was_empty_before_binding": true,
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "casepath-qa/sites-proxy.test.cjs",
+        "casepath-qa/sites-autonomous-entry.test.cjs"
+      ]
+    }
+  ],
+  "limits": [
+    "No full suite or source seal",
+    "No production or provider calls",
+    "No source edits outside four authorized paths",
+    "Frozen gate clones and integration unchanged"
+  ],
+  "setup": {
+    "tracked_changes": false,
+    "sanitized_environment": {
+      "HOME": "/tmp/casepath-reconciliation-repair-20261012/home",
+      "TMPDIR": "/tmp/casepath-reconciliation-repair-20261012/tmp",
+      "PATH": "/usr/bin:/bin",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "SOURCE_DATE_EPOCH": "1786406400"
+    },
+    "commands": [
+      [
+        "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/generate_artifacts.py"
+      ],
+      [
+        "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/replace_photographic_evidence.py",
+        "."
+      ]
+    ],
+    "cwd": "/workspace/casepath-release-85a-reconciliation-repair",
+    "log": "logs/artifacts.log",
+    "exit": 0,
+    "initial_missing_ignored_artifacts_result": {
+      "log": "logs/baseline.log",
+      "argv": [
+        "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "casepath-api/tests/test_autonomous_reconciliation_v1.py",
+        "casepath-api/tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_public_http_reads_and_restart_leave_saved_claim_passive",
+        "--basetemp=/tmp/casepath-reconciliation-repair-20261012/baseline"
+      ],
+      "passed": 2,
+      "failed": 2,
+      "errors": 26,
+      "exit": 1
+    }
+  },
+  "intermediate_sites_result": {
+    "log": "logs/sites-repaired.log",
+    "argv": [
+      "/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "casepath/tools/test_casepath_release.py::test_sites_delivery_is_same_origin_and_streaming_proxy_safe",
+      "casepath-api/tests/test_sites_public_read_only_v1.py",
+      "casepath-api/tests/test_hosted_proxy_v1.py",
+      "--basetemp=/tmp/casepath-reconciliation-repair-20261012/sites-repaired"
+    ],
+    "passed": 8,
+    "failed": 1,
+    "exit": 1,
+    "reason": "Early-head output now matched; obsolete request.body assertion exposed the existing GET/HEAD-only worker contract."
+  },
+  "head": "4ebaf64c927a892165a41daf0d44b66c54f42d09",
+  "remote": "https://github.com/KumarNavish/casepath.git",
+  "remote_ref_proof": {
+    "argv": [
+      "git",
+      "ls-remote",
+      "origin",
+      "refs/heads/codex/casepath-saved-reconciliation-initialization-20261012"
+    ],
+    "result": "4ebaf64c927a892165a41daf0d44b66c54f42d09\trefs/heads/codex/casepath-saved-reconciliation-initialization-20261012",
+    "artifact": "/tmp/casepath-reconciliation-repair-20261012/remote-ref.txt"
+  },
+  "clean_worktree": true,
+  "commit_diff_sha256": "f2fb5cf0cf8976a404f1d196560342da33b4e9f1aa5c134a90952347b0cbdf57",
+  "log_sha256": {
+    "logs/artifacts.log": "c4e2ad1eed354a04adc3e08641e099a9acbaeb7ff5f3fc6f6c1b55cecc01da57",
+    "logs/baseline.log": "9ae8131ad63e59a98e5f55201b71a507671e77cf90c4372ec06ca923ec31407a",
+    "logs/focused.log": "7f6f9dfdcac917d234d59a16fd7971137bc57fb876e560e6063fe2bbc9794a06",
+    "logs/repaired.log": "a5851171536a9057e8904b7a229b1f0f6b2d7373e01433294df65a3652e40f49",
+    "logs/sites-baseline.log": "aa8de72a234890159034dd069f2d2c20bcb27974dedadc8e5a5d9fbfaa3e519b",
+    "logs/sites-final.log": "ca9d17054c9f382b16c5f44a43934beba9e3053c74282a44364694555d2de34f",
+    "logs/sites-node.log": "80ace0123e8dfe041ee549e5e5fe796c6fae539cfb33a3b0a08a5e69fc4eb7ad",
+    "logs/sites-repaired.log": "1bc5566db3d012e56fb26053b8ab2e1490ccb85f270069311791b1913e5eb977",
+    "logs/verified-baseline.log": "d5fb656cd26cb43af71f39d998241d0e818a41d045c0fb82686073b5099512b2"
+  }
+}

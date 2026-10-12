@@ -1,0 +1,29 @@
+{
+  "base": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "reviewed_head": "4ebaf64c927a892165a41daf0d44b66c54f42d09",
+  "reviewed_patch_sha256": "f2fb5cf0cf8976a404f1d196560342da33b4e9f1aa5c134a90952347b0cbdf57",
+  "reviewer_agent": "/root/saved_reconciliation_review",
+  "reviewer_model": "gpt-6.1-sol",
+  "reviewer_reasoning": "xhigh",
+  "findings": [],
+  "checks": [
+    {
+      "passed": 9,
+      "exit_code": 0,
+      "seconds": 14.67,
+      "scope": "Saved replay/qualification legacy+canonical+hosted; closed refusal legacy+hosted; pause/new source; rejected document; passive public startup/restart."
+    },
+    {
+      "passed": 1,
+      "exit_code": 0,
+      "seconds": 0.77,
+      "scope": "Exact Sites delivery/streaming proxy safety test."
+    }
+  ],
+  "reviewed_bytes_stable_before_after": true,
+  "source_edits": false,
+  "limits": [
+    "No new lease-expiry/ownership-loss fault injection or browser run in independent bounded review.",
+    "Replacement exact sealed full gate remains Mac-authorized pending."
+  ]
+}

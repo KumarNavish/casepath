@@ -1,0 +1,1590 @@
+FFF..FFFF..................FFF.F                                         [100%]
+=================================== FAILURES ===================================
+_ test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[legacy] _
+
+execution = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a276d8590>
+args = ('auto_4fbd7bd82a9b5c1484c4f813', 'autonomy.1376399323f794b7f88f120a', {'claim_id': 'auto_4fbd7bd82a9b5c1484c4f813', '...lved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}, ...)
+@py_assert1 = []
+
+    def saved_apply(execution, *args):
+>       assert execution.reference_adapter is None and execution.policy_id == POLICY_ID
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:111: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a27f174d0>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7a29053a80>
+
+    @pytest.mark.parametrize('failed_runtime', ['legacy', 'canonical', 'hosted'], indirect=True)
+    def test_completed_saved_results_reconcile_twice_without_transport_or_budget_write(failed_runtime, monkeypatch):
+        from casepath_api.hosted_model_v1 import HostedModel
+        service, store, work, failed, command, calls = failed_runtime
+        before, budget = ledger_bytes(work), canonical(work.external_budget())
+        original_events = deepcopy(store.events(failed['claim_id']))
+        def no_transport(*args, **kwargs):
+            pytest.fail('cache-only reconciliation reached provider transport')
+        def no_construction(*args, **kwargs):
+            pytest.fail('cache-only reconciliation constructed a controller, provider or executor')
+        monkeypatch.setattr(AutonomousController, '__init__', no_construction)
+        monkeypatch.setattr(controller_module, 'ThreadPoolExecutor', no_construction)
+        monkeypatch.setattr(AutonomousModelV1, '__init__', no_construction)
+        monkeypatch.setattr(HostedModel, '__init__', no_construction)
+        monkeypatch.setattr(HostedModel, '_refresh', no_transport)
+        monkeypatch.setattr(service.model, 'interpret', no_transport)
+        monkeypatch.setattr(service.model, 'verify', no_transport)
+        apply, executions = AutonomousController._apply_verified, []
+        def saved_apply(execution, *args):
+            assert execution.reference_adapter is None and execution.policy_id == POLICY_ID
+            assert not execution._closed
+            assert all(not hasattr(execution, field) for field in ('model', '_executor', '_jobs', '_pending'))
+            executions.append(execution)
+            return apply(execution, *args)
+        monkeypatch.setattr(AutonomousController, '_apply_verified', saved_apply)
+>       completed = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a27f174d0>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+_ test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[canonical] _
+
+execution = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a275e0e10>
+args = ('clm_canonical_fixture_01', 'autonomy.c2b09602a8bbe26e8487a840', {'claim_id': 'clm_canonical_fixture_01', 'compatible...lved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}, ...)
+@py_assert1 = []
+
+    def saved_apply(execution, *args):
+>       assert execution.reference_adapter is None and execution.policy_id == POLICY_ID
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:111: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a275e0410>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7a276fc830>
+
+    @pytest.mark.parametrize('failed_runtime', ['legacy', 'canonical', 'hosted'], indirect=True)
+    def test_completed_saved_results_reconcile_twice_without_transport_or_budget_write(failed_runtime, monkeypatch):
+        from casepath_api.hosted_model_v1 import HostedModel
+        service, store, work, failed, command, calls = failed_runtime
+        before, budget = ledger_bytes(work), canonical(work.external_budget())
+        original_events = deepcopy(store.events(failed['claim_id']))
+        def no_transport(*args, **kwargs):
+            pytest.fail('cache-only reconciliation reached provider transport')
+        def no_construction(*args, **kwargs):
+            pytest.fail('cache-only reconciliation constructed a controller, provider or executor')
+        monkeypatch.setattr(AutonomousController, '__init__', no_construction)
+        monkeypatch.setattr(controller_module, 'ThreadPoolExecutor', no_construction)
+        monkeypatch.setattr(AutonomousModelV1, '__init__', no_construction)
+        monkeypatch.setattr(HostedModel, '__init__', no_construction)
+        monkeypatch.setattr(HostedModel, '_refresh', no_transport)
+        monkeypatch.setattr(service.model, 'interpret', no_transport)
+        monkeypatch.setattr(service.model, 'verify', no_transport)
+        apply, executions = AutonomousController._apply_verified, []
+        def saved_apply(execution, *args):
+            assert execution.reference_adapter is None and execution.policy_id == POLICY_ID
+            assert not execution._closed
+            assert all(not hasattr(execution, field) for field in ('model', '_executor', '_jobs', '_pending'))
+            executions.append(execution)
+            return apply(execution, *args)
+        monkeypatch.setattr(AutonomousController, '_apply_verified', saved_apply)
+>       completed = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a275e0410>
+claim_id = 'clm_canonical_fixture_01'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+_ test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[hosted] _
+
+execution = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a275e1d10>
+args = ('auto_4fbd7bd82a9b5c1484c4f813', 'autonomy.1376399323f794b7f88f120a', {'claim_id': 'auto_4fbd7bd82a9b5c1484c4f813', '...lved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}, ...)
+@py_assert1 = []
+
+    def saved_apply(execution, *args):
+>       assert execution.reference_adapter is None and execution.policy_id == POLICY_ID
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:111: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.hosted_lease_v1.HostedAutonomousController object at 0x7f7a276d9e80>, <casepath_api.hosted_storage_v1.H...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7a277e57b0>
+
+    @pytest.mark.parametrize('failed_runtime', ['legacy', 'canonical', 'hosted'], indirect=True)
+    def test_completed_saved_results_reconcile_twice_without_transport_or_budget_write(failed_runtime, monkeypatch):
+        from casepath_api.hosted_model_v1 import HostedModel
+        service, store, work, failed, command, calls = failed_runtime
+        before, budget = ledger_bytes(work), canonical(work.external_budget())
+        original_events = deepcopy(store.events(failed['claim_id']))
+        def no_transport(*args, **kwargs):
+            pytest.fail('cache-only reconciliation reached provider transport')
+        def no_construction(*args, **kwargs):
+            pytest.fail('cache-only reconciliation constructed a controller, provider or executor')
+        monkeypatch.setattr(AutonomousController, '__init__', no_construction)
+        monkeypatch.setattr(controller_module, 'ThreadPoolExecutor', no_construction)
+        monkeypatch.setattr(AutonomousModelV1, '__init__', no_construction)
+        monkeypatch.setattr(HostedModel, '__init__', no_construction)
+        monkeypatch.setattr(HostedModel, '_refresh', no_transport)
+        monkeypatch.setattr(service.model, 'interpret', no_transport)
+        monkeypatch.setattr(service.model, 'verify', no_transport)
+        apply, executions = AutonomousController._apply_verified, []
+        def saved_apply(execution, *args):
+            assert execution.reference_adapter is None and execution.policy_id == POLICY_ID
+            assert not execution._closed
+            assert all(not hasattr(execution, field) for field in ('model', '_executor', '_jobs', '_pending'))
+            executions.append(execution)
+            return apply(execution, *args)
+        monkeypatch.setattr(AutonomousController, '_apply_verified', saved_apply)
+>       completed = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.hosted_lease_v1.HostedAutonomousController object at 0x7f7a276d9e80>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+_______ test_completed_retry_conflicts_on_any_changed_command_input[key] _______
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a2749c9d0>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+>               execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a275e1950>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+workflow = 'autonomy.1376399323f794b7f88f120a'
+context = {'claim_id': 'auto_4fbd7bd82a9b5c1484c4f813', 'compatible_knowledge': [], 'condition_catalog': {'defect_mold_heating':..._received', 'reference_rate', 'renovation']}, 'document_review_policy': 'casepath.supplied-document-review/1.0.0', ...}
+proposal = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa... spouse Alex. Delivered 2026-10-01.'}], 'document_type': 'spouse_notice_copy', ...}], 'knowledge_candidates': [], ...}}
+verifier = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa...e, 'item_id': 'condition:extension_relevant', 'reason': 'Test fixture'}, ...], 'family_supported': True, 'issues': []}}
+verified = {'category': {'citations': [{'artifact_id': 'src_d20b6492d5ccbb42573a459f6854c3d4', 'end_char': 90, 'quote': 'I receiv...unresolved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}
+compilation = {'compiled_proposal_sha256': '29dd262aeda58194bf74f13302f469d3e8b85d4c669fb95ad7c6427a82074559', 'contract': 'casepath...4539459d4eedd488d9a'}], 'raw_proposal_sha256': '21ebe015d32f0206eb41dd97fbfb44c7eb1d9f7497a7b6e1994c35e6ccbf370f', ...}
+
+    def _apply_verified(self, claim_id, workflow, context, proposal, verifier, verified, compilation):
+        base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
+                        'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
+                        'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
+                        'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
+                        'knowledge_rejections': verified['knowledge_rejections'],
+                        'item_rejections': verified['item_rejections']}
+        if compilation is not None:
+            base_receipt['knowledge_recipe_compilation'] = compilation
+        if context.get('document_review_policy') is not None:
+            base_receipt['document_review_policy'] = context['document_review_policy']
+>       if self.reference_adapter is not None:
+           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/casepath_api/autonomous_controller_v1.py:290: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a2749c9d0>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+change = 'key'
+
+    @pytest.mark.parametrize('change', ['key', 'head', 'reason', 'actor'])
+    def test_completed_retry_conflicts_on_any_changed_command_input(failed_runtime, change):
+        service, store, work, failed, command, calls = failed_runtime
+>       completed = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a2749c9d0>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+______ test_completed_retry_conflicts_on_any_changed_command_input[head] _______
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a2749d0f0>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+>               execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a275e2210>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+workflow = 'autonomy.1376399323f794b7f88f120a'
+context = {'claim_id': 'auto_4fbd7bd82a9b5c1484c4f813', 'compatible_knowledge': [], 'condition_catalog': {'defect_mold_heating':..._received', 'reference_rate', 'renovation']}, 'document_review_policy': 'casepath.supplied-document-review/1.0.0', ...}
+proposal = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa... spouse Alex. Delivered 2026-10-01.'}], 'document_type': 'spouse_notice_copy', ...}], 'knowledge_candidates': [], ...}}
+verifier = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa...e, 'item_id': 'condition:extension_relevant', 'reason': 'Test fixture'}, ...], 'family_supported': True, 'issues': []}}
+verified = {'category': {'citations': [{'artifact_id': 'src_d20b6492d5ccbb42573a459f6854c3d4', 'end_char': 90, 'quote': 'I receiv...unresolved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}
+compilation = {'compiled_proposal_sha256': '29dd262aeda58194bf74f13302f469d3e8b85d4c669fb95ad7c6427a82074559', 'contract': 'casepath...4539459d4eedd488d9a'}], 'raw_proposal_sha256': '21ebe015d32f0206eb41dd97fbfb44c7eb1d9f7497a7b6e1994c35e6ccbf370f', ...}
+
+    def _apply_verified(self, claim_id, workflow, context, proposal, verifier, verified, compilation):
+        base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
+                        'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
+                        'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
+                        'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
+                        'knowledge_rejections': verified['knowledge_rejections'],
+                        'item_rejections': verified['item_rejections']}
+        if compilation is not None:
+            base_receipt['knowledge_recipe_compilation'] = compilation
+        if context.get('document_review_policy') is not None:
+            base_receipt['document_review_policy'] = context['document_review_policy']
+>       if self.reference_adapter is not None:
+           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/casepath_api/autonomous_controller_v1.py:290: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a2749d0f0>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+change = 'head'
+
+    @pytest.mark.parametrize('change', ['key', 'head', 'reason', 'actor'])
+    def test_completed_retry_conflicts_on_any_changed_command_input(failed_runtime, change):
+        service, store, work, failed, command, calls = failed_runtime
+>       completed = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a2749d0f0>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+_____ test_completed_retry_conflicts_on_any_changed_command_input[reason] ______
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a276ffd10>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+>               execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a275e2ad0>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+workflow = 'autonomy.1376399323f794b7f88f120a'
+context = {'claim_id': 'auto_4fbd7bd82a9b5c1484c4f813', 'compatible_knowledge': [], 'condition_catalog': {'defect_mold_heating':..._received', 'reference_rate', 'renovation']}, 'document_review_policy': 'casepath.supplied-document-review/1.0.0', ...}
+proposal = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa... spouse Alex. Delivered 2026-10-01.'}], 'document_type': 'spouse_notice_copy', ...}], 'knowledge_candidates': [], ...}}
+verifier = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa...e, 'item_id': 'condition:extension_relevant', 'reason': 'Test fixture'}, ...], 'family_supported': True, 'issues': []}}
+verified = {'category': {'citations': [{'artifact_id': 'src_d20b6492d5ccbb42573a459f6854c3d4', 'end_char': 90, 'quote': 'I receiv...unresolved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}
+compilation = {'compiled_proposal_sha256': '29dd262aeda58194bf74f13302f469d3e8b85d4c669fb95ad7c6427a82074559', 'contract': 'casepath...4539459d4eedd488d9a'}], 'raw_proposal_sha256': '21ebe015d32f0206eb41dd97fbfb44c7eb1d9f7497a7b6e1994c35e6ccbf370f', ...}
+
+    def _apply_verified(self, claim_id, workflow, context, proposal, verifier, verified, compilation):
+        base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
+                        'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
+                        'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
+                        'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
+                        'knowledge_rejections': verified['knowledge_rejections'],
+                        'item_rejections': verified['item_rejections']}
+        if compilation is not None:
+            base_receipt['knowledge_recipe_compilation'] = compilation
+        if context.get('document_review_policy') is not None:
+            base_receipt['document_review_policy'] = context['document_review_policy']
+>       if self.reference_adapter is not None:
+           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/casepath_api/autonomous_controller_v1.py:290: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a276ffd10>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+change = 'reason'
+
+    @pytest.mark.parametrize('change', ['key', 'head', 'reason', 'actor'])
+    def test_completed_retry_conflicts_on_any_changed_command_input(failed_runtime, change):
+        service, store, work, failed, command, calls = failed_runtime
+>       completed = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a276ffd10>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+______ test_completed_retry_conflicts_on_any_changed_command_input[actor] ______
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a277e7570>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+>               execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a275e2210>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+workflow = 'autonomy.1376399323f794b7f88f120a'
+context = {'claim_id': 'auto_4fbd7bd82a9b5c1484c4f813', 'compatible_knowledge': [], 'condition_catalog': {'defect_mold_heating':..._received', 'reference_rate', 'renovation']}, 'document_review_policy': 'casepath.supplied-document-review/1.0.0', ...}
+proposal = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa... spouse Alex. Delivered 2026-10-01.'}], 'document_type': 'spouse_notice_copy', ...}], 'knowledge_candidates': [], ...}}
+verifier = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa...e, 'item_id': 'condition:extension_relevant', 'reason': 'Test fixture'}, ...], 'family_supported': True, 'issues': []}}
+verified = {'category': {'citations': [{'artifact_id': 'src_d20b6492d5ccbb42573a459f6854c3d4', 'end_char': 90, 'quote': 'I receiv...unresolved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}
+compilation = {'compiled_proposal_sha256': '29dd262aeda58194bf74f13302f469d3e8b85d4c669fb95ad7c6427a82074559', 'contract': 'casepath...4539459d4eedd488d9a'}], 'raw_proposal_sha256': '21ebe015d32f0206eb41dd97fbfb44c7eb1d9f7497a7b6e1994c35e6ccbf370f', ...}
+
+    def _apply_verified(self, claim_id, workflow, context, proposal, verifier, verified, compilation):
+        base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
+                        'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
+                        'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
+                        'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
+                        'knowledge_rejections': verified['knowledge_rejections'],
+                        'item_rejections': verified['item_rejections']}
+        if compilation is not None:
+            base_receipt['knowledge_recipe_compilation'] = compilation
+        if context.get('document_review_policy') is not None:
+            base_receipt['document_review_policy'] = context['document_review_policy']
+>       if self.reference_adapter is not None:
+           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/casepath_api/autonomous_controller_v1.py:290: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a277e7570>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+change = 'actor'
+
+    @pytest.mark.parametrize('change', ['key', 'head', 'reason', 'actor'])
+    def test_completed_retry_conflicts_on_any_changed_command_input(failed_runtime, change):
+        service, store, work, failed, command, calls = failed_runtime
+>       completed = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a277e7570>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+_ test_failed_deterministic_application_preserves_failure_and_requires_new_command _
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a27572150>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+>               execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a275e2c10>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+workflow = 'autonomy.1376399323f794b7f88f120a'
+context = {'claim_id': 'auto_4fbd7bd82a9b5c1484c4f813', 'compatible_knowledge': [], 'condition_catalog': {'defect_mold_heating':..._received', 'reference_rate', 'renovation']}, 'document_review_policy': 'casepath.supplied-document-review/1.0.0', ...}
+proposal = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa... spouse Alex. Delivered 2026-10-01.'}], 'document_type': 'spouse_notice_copy', ...}], 'knowledge_candidates': [], ...}}
+verifier = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa...e, 'item_id': 'condition:extension_relevant', 'reason': 'Test fixture'}, ...], 'family_supported': True, 'issues': []}}
+verified = {'category': {'citations': [{'artifact_id': 'src_d20b6492d5ccbb42573a459f6854c3d4', 'end_char': 90, 'quote': 'I receiv...unresolved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}
+compilation = {'compiled_proposal_sha256': '29dd262aeda58194bf74f13302f469d3e8b85d4c669fb95ad7c6427a82074559', 'contract': 'casepath...4539459d4eedd488d9a'}], 'raw_proposal_sha256': '21ebe015d32f0206eb41dd97fbfb44c7eb1d9f7497a7b6e1994c35e6ccbf370f', ...}
+
+    def _apply_verified(self, claim_id, workflow, context, proposal, verifier, verified, compilation):
+        base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
+                        'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
+                        'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
+                        'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
+                        'knowledge_rejections': verified['knowledge_rejections'],
+                        'item_rejections': verified['item_rejections']}
+        if compilation is not None:
+            base_receipt['knowledge_recipe_compilation'] = compilation
+        if context.get('document_review_policy') is not None:
+            base_receipt['document_review_policy'] = context['document_review_policy']
+>       if self.reference_adapter is not None:
+           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/casepath_api/autonomous_controller_v1.py:290: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a27572150>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7a271fc9f0>
+
+    def test_failed_deterministic_application_preserves_failure_and_requires_new_command(failed_runtime, monkeypatch):
+        service, store, work, failed, command, calls = failed_runtime
+        with monkeypatch.context() as interruption:
+            interruption.setattr(AutonomousController, '_apply_verified',
+                                lambda *_: (_ for _ in ()).throw(ValueError('deterministic fixture stopped')))
+            with pytest.raises(AutonomousStoreError, match='did not complete'):
+                service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+        stopped = store.get(failed['claim_id'])
+        assert stopped['deferral'] == failed['deferral'] and stopped['reconciliations'][0]['status'] == 'failed'
+        with pytest.raises(AutonomousStoreError, match='incomplete or failed'):
+            service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+>       complete = service.reconcile_saved_results(failed['claim_id'], work_store=work, **{**command,
+            'idempotency_key': 'operator.saved-reconcile.02', 'expected_revision': stopped['revision'],
+            'expected_state_sha256': stopped['state_sha256']})
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:293: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a27572150>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+_ test_rejected_document_is_preserved_but_never_reviewed_or_learned[bad_document] _
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a27a6ba10>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+>               execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <casepath_api.autonomous_reconciliation_v1._SavedExecution object at 0x7f7a2905e490>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+workflow = 'autonomy.1376399323f794b7f88f120a'
+context = {'claim_id': 'auto_4fbd7bd82a9b5c1484c4f813', 'compatible_knowledge': [], 'condition_catalog': {'defect_mold_heating':..._received', 'reference_rate', 'renovation']}, 'document_review_policy': 'casepath.supplied-document-review/1.0.0', ...}
+proposal = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa... spouse Alex. Delivered 2026-10-01.'}], 'document_type': 'spouse_notice_copy', ...}], 'knowledge_candidates': [], ...}}
+verifier = {'receipt': {'context_sha256': '506dd05d83eaa06afc367cacf7401ab579ba67433db2f999058e1be168172259', 'contract': 'casepa...e, 'item_id': 'condition:extension_relevant', 'reason': 'Test fixture'}, ...], 'family_supported': True, 'issues': []}}
+verified = {'category': {'citations': [{'artifact_id': 'src_d20b6492d5ccbb42573a459f6854c3d4', 'end_char': 90, 'quote': 'I receiv...unresolved.'}, 'item_id': 'step:lt_type', 'reason': 'interpretation citation is not an exact claim source span'}], ...}
+compilation = {'compiled_proposal_sha256': 'cafdac08d5bd40e0a44c8703da6192c9eb7c808644500a4eaeb8d5996e5257b3', 'contract': 'casepath...', 'derived_items': [], 'raw_proposal_sha256': 'cafdac08d5bd40e0a44c8703da6192c9eb7c808644500a4eaeb8d5996e5257b3', ...}
+
+    def _apply_verified(self, claim_id, workflow, context, proposal, verifier, verified, compilation):
+        base_receipt = {'proposal_sha256': digest_value(proposal['result']), 'verifier_sha256': digest_value(verifier['result']),
+                        'rule_pack_sha256': verified['rule_pack_sha256'], 'workflow_id': workflow,
+                        'proposal_receipt': proposal['receipt'], 'verifier_receipt': verifier['receipt'],
+                        'checks': verifier['result']['checks'], 'knowledge_candidates': verified['knowledge_candidates'],
+                        'knowledge_rejections': verified['knowledge_rejections'],
+                        'item_rejections': verified['item_rejections']}
+        if compilation is not None:
+            base_receipt['knowledge_recipe_compilation'] = compilation
+        if context.get('document_review_policy') is not None:
+            base_receipt['document_review_policy'] = context['document_review_policy']
+>       if self.reference_adapter is not None:
+           ^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: '_SavedExecution' object has no attribute 'reference_adapter'
+
+casepath-api/casepath_api/autonomous_controller_v1.py:290: AttributeError
+
+The above exception was the direct cause of the following exception:
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a27a6ba10>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+
+    @pytest.mark.parametrize('failed_runtime', ['bad_document'], indirect=True)
+    def test_rejected_document_is_preserved_but_never_reviewed_or_learned(failed_runtime):
+        service, store, work, failed, command, calls = failed_runtime
+>       complete = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:303: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+casepath-api/casepath_api/autonomous_controller_v1.py:275: in reconcile_saved_results
+    return reconcile_saved_results(self, claim_id, work_store=work_store,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+controller = <casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a27a6ba10>
+claim_id = 'auto_4fbd7bd82a9b5c1484c4f813'
+
+    def reconcile_saved_results(controller, claim_id, *, work_store, expected_revision,
+                                expected_state_sha256, idempotency_key, actor, reason):
+        _identifier(claim_id, 'claim identity')
+        _identifier(idempotency_key, 'reconciliation identity')
+        _identifier(idempotency_key + '.completed', 'reconciliation completion identity')
+        _identifier(idempotency_key + '.failed', 'reconciliation failure identity')
+        _text(actor, 'reconciliation actor', 180)
+        _text(reason, 'reconciliation reason')
+        if (type(expected_revision) is not int or expected_revision < 1
+                or not isinstance(expected_state_sha256, str) or len(expected_state_sha256) != 64
+                or set(expected_state_sha256) - set('0123456789abcdef')):
+            raise AutonomousStoreError('reconciliation requires an exact failed claim revision and state hash')
+        request = {'claim_id': claim_id, 'expected_revision': expected_revision,
+                   'expected_state_sha256': expected_state_sha256, 'idempotency_key': idempotency_key,
+                   'actor': actor, 'reason': reason}
+        with controller._lock, _explicit_ownership(controller):
+            if controller._closed:
+                raise AutonomousStoreError('autonomous controller is closed')
+            state = controller.store.get(claim_id)  # Validate the full current journal and immutable bytes.
+            events = controller.store.events(claim_id)
+            prior = next((e for e in events if e['idempotency_key'] == idempotency_key), None)
+            if prior is not None:
+                if prior['kind'] != 'reconciliation.started' or prior['payload']['request'] != request:
+                    raise AutonomousStoreError('idempotency key binds different reconciliation input')
+                completed = next((e for e in events if e['kind'] == 'reconciliation.completed'
+                                  and e['payload']['reconciliation_id'] == idempotency_key), None)
+                if completed is None:
+                    raise AutonomousStoreError('saved reconciliation is incomplete or failed; use an explicit new current-head command')
+                pinned = controller.store.replay(claim_id, expected_revision)['state']
+                _, results, _, _ = _preflight(controller, work_store, pinned)
+                if results.admission != prior['payload']['admission']:
+                    raise AutonomousStoreError('saved reconciliation admission differs from its completed record')
+                return controller.store.replay(claim_id, completed['sequence'])['state']
+            if state['revision'] != expected_revision or state['state_sha256'] != expected_state_sha256:
+                raise AutonomousStoreError('stale claim revision or state hash')
+            context, results, verified, compilation = _preflight(controller, work_store, state)
+            failure = next((e for e in reversed(events) if e['kind'] == 'work.deferred'), None)
+            if failure is None or failure['payload'] != state['deferral']:
+                raise AutonomousStoreError('the active original failure has no matching journal event')
+            payload = {'reconciliation_id': idempotency_key, 'request': request,
+                       'original_deferral': state['deferral'], 'failure_event_sha256': failure['event_sha256'],
+                       'admission': results.admission}
+            controller.store.append(claim_id, 'reconciliation.started', payload,
+                expected_revision=expected_revision, expected_state_sha256=expected_state_sha256,
+                idempotency_key=idempotency_key)
+            execution = _SavedExecution(controller, state, results.admission)
+            try:
+                execution._apply_verified(claim_id, state['run_id'], context, results.proposal, results.verifier,
+                                          verified, compilation)
+                current = controller.store.get(claim_id)
+                execution._current(current, state['run_id'])
+                return controller.store.append(claim_id, 'reconciliation.completed',
+                    {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256']},
+                    expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                    idempotency_key=idempotency_key + '.completed')
+            except Exception as error:
+                current = controller.store.get(claim_id)
+                # A pause or new source owns its own head; never clear or overwrite it.
+                if current.get('deferral') == state['deferral'] and current.get('run_id') == state['run_id']:
+                    controller.store.append(claim_id, 'reconciliation.failed',
+                        {'reconciliation_id': idempotency_key, 'admission_sha256': results.admission['admission_sha256'],
+                         'reason': str(error)[:1000] if isinstance(error, (ValueError, SupersededWorkflow))
+                                   else 'Saved-result application stopped before deterministic completion.'},
+                        expected_revision=current['revision'], expected_state_sha256=current['state_sha256'],
+                        idempotency_key=idempotency_key + '.failed')
+>               raise AutonomousStoreError('saved-result reconciliation did not complete; the original failure remains recorded') from error
+E               casepath_api.autonomous_store_v1.AutonomousStoreError: saved-result reconciliation did not complete; the original failure remains recorded
+
+casepath-api/casepath_api/autonomous_reconciliation_v1.py:180: AutonomousStoreError
+_ test_control_plane_cache_only_route_keeps_existing_origin_guard_and_denials __
+
+failed_runtime = (<casepath_api.autonomous_controller_v1.AutonomousController object at 0x7f7a274a9910>, <casepath_api.autonomous_store...'https://openrouter.ai/api/v1/chat/completions')>, <Request('POST', 'https://openrouter.ai/api/v1/chat/completions')>])
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f7a274a5da0>
+
+    def test_control_plane_cache_only_route_keeps_existing_origin_guard_and_denials(failed_runtime, monkeypatch):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from casepath_api.autonomous_api_v1 import create_autonomous_router
+        from casepath_api.agent_work.store import ConflictError, WorkStoreError
+        from casepath_api.hosted_model_v1 import HostedModel
+        service, store, work, failed, command, calls = failed_runtime
+        service.model = None  # Saved-result repair remains usable with the paid profile disabled.
+        monkeypatch.setattr(HostedModel, '_refresh', lambda *_: pytest.fail('cache-only route refreshed provider catalogue'))
+        monkeypatch.setattr(service, 'submit', lambda *_: pytest.fail('cache-only route queued model work'))
+        app = FastAPI()
+        app.include_router(create_autonomous_router(lambda: service, saved_work_getter=lambda: work))
+        path = f"/api/claim-loops/v1/autonomous/claims/{failed['claim_id']}/reconcile-saved-results"
+        headers = {'X-CasePath-Agent-Work': '1'}
+        with TestClient(app) as client:
+            assert client.get(path).status_code == 405
+            assert client.post(path, json=command).status_code == 403
+            assert client.post(path, json=command, headers={**headers, 'Origin': 'https://external.test'}).status_code == 403
+            for error in (ConflictError('both completed saved stages are required'), WorkStoreError('autonomous provider ledger is invalid')):
+                with monkeypatch.context() as absent:
+                    absent.setattr(work, 'saved_completed_autonomous_workflow', lambda _, error=error: (_ for _ in ()).throw(error))
+                    denied = client.post(path, json=command, headers=headers)
+                    assert denied.status_code == 409, denied.text
+                    assert store.get(failed['claim_id']) == failed
+            completed = client.post(path, json=command, headers=headers)
+>           assert completed.status_code == 200, completed.text
+E           AssertionError: {"detail":"saved-result reconciliation did not complete; the original failure remains recorded"}
+E           assert 409 == 200
+E            +  where 409 = <Response [409 Conflict]>.status_code
+
+casepath-api/tests/test_autonomous_reconciliation_v1.py:343: AssertionError
+_ HostedRecoveryTests.test_public_http_reads_and_restart_leave_saved_claim_passive _
+
+self = <test_hosted_recovery_v1.HostedRecoveryTests testMethod=test_public_http_reads_and_restart_leave_saved_claim_passive>
+
+    def test_public_http_reads_and_restart_leave_saved_claim_passive(self):
+        from fastapi.testclient import TestClient
+        import casepath_api.hosted_app_v1 as hosted_app
+        live, calls = [], []
+        def construct(store, policy, model=None, *, lease):
+            controller = HostedAutonomousController(store, policy, model, lease=lease)
+            live.append(controller)
+            self.controllers.append(controller)
+            return controller
+        def run(instance, claim):
+            calls.append(claim)
+            instance.store.put(claim, status='deferred', deferral={'code': 'model_unavailable'})
+        env = {'CASEPATH_SITE_ORIGIN': 'https://casepath.example', 'CASEPATH_PROXY_TOKEN': 't'*48,
+               'CASEPATH_SOURCE_COMMIT': 'a'*40, 'CASEPATH_HOSTED_WRITABLE': '1',
+               'CASEPATH_AUTONOMOUS_ENABLED': '0'}
+        headers = {'X-CasePath-Proxy-Token': 't'*48, 'X-CasePath-Site-Origin': env['CASEPATH_SITE_ORIGIN'],
+                   'Origin': env['CASEPATH_SITE_ORIGIN'], 'X-CasePath-Agent-Work': '1'}
+        with TemporaryDirectory(prefix='casepath-hosted-recovery-') as runtime_directory, \
+             patch.object(hosted_app, 'HostedAutonomousController', side_effect=construct), \
+             patch.object(hosted_app, 'HostedAutonomousStore', return_value=self.store), \
+             patch.object(AutonomousController, 'run', run):
+            app = hosted_app.create_hosted_app(database=SimpleNamespace(connect=self.connect),
+                                               environment=env, runtime_directory=runtime_directory)
+>           with TestClient(app) as client:
+                 ^^^^^^^^^^^^^^^
+
+casepath-api/tests/test_hosted_recovery_v1.py:95: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:694: in __enter__
+    portal.call(self.wait_startup)
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:334: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:729: in wait_startup
+    await receive()
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:720: in receive
+    self.task.result()
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/anyio/from_thread.py:259: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/testclient.py:710: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/errors.py:151: in __call__
+    await self.app(scope, receive, send)
+casepath-api/casepath_api/hosted_proxy_v1.py:21: in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/middleware/exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:725: in app
+    await self.lifespan(scope, receive, send)
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:694: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/routing.py:134: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:571: in __aenter__
+    await self._router.startup()
+../casepath/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/starlette/routing.py:673: in startup
+    handler()
+casepath-api/casepath_api/hosted_app_v1.py:49: in startup
+    controller = HostedAutonomousController(store, policy, lease=lease, enforce_intake_gate=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/unittest/mock.py:1169: in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/unittest/mock.py:1173: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <MagicMock name='HostedAutonomousController' id='140162621541072'>
+args = (<test_hosted_recovery_v1.StateStore object at 0x7f7a273cb4d0>, {'case_activation_values_included': False, 'contract':... 'case_invariant_process_nodes_transitions_and_document_obligations_with_no_case_truth_values_or_selected_paths', ...})
+kwargs = {'enforce_intake_gate': True, 'lease': <casepath_api.hosted_lease_v1.HostedWorkflowLease object at 0x7f7a2744e650>}
+effect = <function HostedRecoveryTests.test_public_http_reads_and_restart_leave_saved_claim_passive.<locals>.construct at 0x7f7a274d77e0>
+
+    def _execute_mock_call(self, /, *args, **kwargs):
+        # separate from _increment_mock_call so that awaited functions are
+        # executed separately from their call, also AsyncMock overrides this method
+    
+        effect = self.side_effect
+        if effect is not None:
+            if _is_exception(effect):
+                raise effect
+            elif not _callable(effect):
+                result = next(effect)
+                if _is_exception(result):
+                    raise result
+            else:
+>               result = effect(*args, **kwargs)
+                         ^^^^^^^^^^^^^^^^^^^^^^^
+E               TypeError: HostedRecoveryTests.test_public_http_reads_and_restart_leave_saved_claim_passive.<locals>.construct() got an unexpected keyword argument 'enforce_intake_gate'
+
+../.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/unittest/mock.py:1234: TypeError
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[legacy]
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[canonical]
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_saved_results_reconcile_twice_without_transport_or_budget_write[hosted]
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[key]
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[head]
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[reason]
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_completed_retry_conflicts_on_any_changed_command_input[actor]
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_failed_deterministic_application_preserves_failure_and_requires_new_command
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_rejected_document_is_preserved_but_never_reviewed_or_learned[bad_document]
+FAILED casepath-api/tests/test_autonomous_reconciliation_v1.py::test_control_plane_cache_only_route_keeps_existing_origin_guard_and_denials
+FAILED casepath-api/tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_public_http_reads_and_restart_leave_saved_claim_passive
+11 failed, 21 passed in 10.33s
