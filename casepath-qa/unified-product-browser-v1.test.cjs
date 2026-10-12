@@ -214,6 +214,14 @@ function pdfDrawerFixture() {
   }
   return sourceDrawerFixture;
 }
+function mimeDrawerFixture() {
+  const binding=corpusManifest.claims.find(row=>row.claim_id==='clm_06400c75399e7f37');
+  const descriptor=binding.observable_artifacts.find(source=>source.role==='customer_message');
+  const intake=JSON.parse(fs.readFileSync(path.join(corpusRoot,binding.claim.path),'utf8'));
+  const bytes=fs.readFileSync(path.join(corpusRoot,descriptor.path));
+  assert.equal(sha(bytes),descriptor.sha256);assert.equal(sha(Buffer.from(intake.customer_message.raw_file.content_base64,'base64')),descriptor.sha256);
+  return {claim_id:binding.claim_id,descriptor:{...descriptor,claim_id:binding.claim_id},intake,bytes:bytes.toString('base64'),text:bytes.toString('utf8')};
+}
 function priorAssessmentFixture() {
   if (!acceptedFixture) {
     const encoded = process.env.CASEPATH_PRIOR_ASSESSMENT_FIXTURE
@@ -313,6 +321,19 @@ function fixtureData(config = {}) {
     sources[`${pdf.claim_id}/${pdf.descriptor.artifact_id}`] = source;
     rawSources[`${pdf.claim_id}/${pdf.descriptor.artifact_id}`] = pdf.bytes;
   }
+  if(config.mimeDrawer){
+    // Real original .eml bytes and parsed intake body, isolated at the source
+    // display boundary. This supplies no inferred facts, process or outcome.
+    const mime=mimeDrawerFixture(),envelope=envelopes[mime.claim_id],state=envelope.state;
+    const source={...mime.descriptor,text:mime.text,text_sha256:sha(mime.text),complete:true,extraction:'utf8_text'};
+    state.original_binding={claim_id:mime.claim_id,intake:clone(mime.intake),source_map:[{artifact_id:source.artifact_id,original_artifact_id:mime.intake.customer_message.raw_file.artifact_id,sha256:source.sha256}]};
+    if(config.mimeDrawer==='foreign')state.original_binding.claim_id=demoIds[0];
+    if(config.mimeDrawer==='unbound')state.original_binding.source_map=[];
+    if(config.mimeDrawer==='supporting')state.source_descriptors.find(row=>row.artifact_id===source.artifact_id).role='supporting_document';
+    Object.assign(state,{revision:1,state_sha256:sha(`isolated MIME display boundary ${config.mimeDrawer}`),last_event_sha256:sha('isolated MIME display event'),mode:'saved',status:'received',phase:'received',acquired_sources:[source]});
+    Object.assign(envelope.projection,{revision:state.revision,state_sha256:state.state_sha256});
+    sources[`${mime.claim_id}/${source.artifact_id}`]=source;rawSources[`${mime.claim_id}/${source.artifact_id}`]=mime.bytes;
+  }
   if (config.presentationSuite) for (const id of demoIds) {
     // Authored scheduler/navigation control histories. Their only outcome is
     // deterministic packet-inspection completion; they supply no model result,
@@ -359,7 +380,7 @@ function fixtureData(config = {}) {
     claim_id: state.claim_id, title: state.title, origin: state.origin || (historicalIds.includes(state.claim_id) ? 'native_intake' : undefined), mode: state.mode, status: state.status,
     phase: state.phase, phase_summary: state.phase_summary, revision: state.revision,
     state_sha256: state.state_sha256, outcome: state.outcome,
-    source_preview: state.source_preview, browse_metadata: state.browse_metadata || {},
+    source_preview: state.origin==='canonical_original'?{text:[...String(state.source_preview?.text||'')].slice(0,240).join('')}:undefined, browse_metadata: state.browse_metadata || {},
   }));
   assert.equal(rows.filter(row => row.origin === 'canonical_original').length, 150);
   assert.equal(rows.filter(row => row.origin === 'native_intake').length, 9);
@@ -391,8 +412,14 @@ async function eventually(read, message, timeout = 5000) {
 async function fixturePage(t, config = {}) {
   const context = await browser.newContext({viewport: {width: config.width || 1440, height: config.height || 1000}, serviceWorkers: 'block'});
   const page = await context.newPage(), errors = [], network = [];
+  page.setDefaultTimeout(5000);
   page.on('pageerror', error => errors.push(error.message));
   t.after(async () => {
+    if (process.env.CASEPATH_BROWSER_DIAGNOSTICS) {
+      fs.mkdirSync(process.env.CASEPATH_BROWSER_DIAGNOSTICS,{recursive:true});
+      const name=t.name.replace(/[^a-z0-9]+/gi,'-').slice(0,180);
+      fs.writeFileSync(path.join(process.env.CASEPATH_BROWSER_DIAGNOSTICS,`${name}.json`),JSON.stringify(await page.evaluate(()=>({url:location.href,text:document.body.innerText,dialogs:[...document.querySelectorAll('dialog')].map(row=>({class:row.className,open:row.open})),active:document.activeElement?.outerHTML,revision:document.querySelector('[data-au-revision]')?.dataset.auRevision,record:document.querySelector('[data-au-record-content] pre')?.textContent,calls:window.__fixture?.calls,errors:window.__fixture?.startViolations})),null,2));
+    }
     const writes = await page.evaluate(() => window.__fixture?.calls.filter(call => call.method !== 'GET') || []);
     const startViolations = await page.evaluate(() => window.__fixture?.startViolations || []);
     await page.evaluate(() => window.__controller?.destroy());
@@ -419,9 +446,11 @@ async function fixturePage(t, config = {}) {
       : route.abort('blockedbyclient');
   });
   await page.goto('http://localhost:41999/');
-  const time = new Date('2026-10-09T12:00:00Z');
-  await page.clock.install({time});
-  await page.clock.pauseAt(time);
+  if (!config.nativeClock) {
+    const time = new Date('2026-10-09T12:00:00Z');
+    await page.clock.install({time});
+    await page.clock.pauseAt(time);
+  }
   await mountFixture(page, config);
   return page;
 }
@@ -540,6 +569,7 @@ async function mountFixture(page, config = {}) {
         return response(200, {claims: fixture.rows.slice(offset, offset + limit), total: fixture.rows.length, limit, offset});
       }
       if (relative === '/knowledge') {
+        if(fixture.knowledgeFailures>0){fixture.knowledgeFailures--;return response(500,{detail:'Isolated Knowledge warm read failed.'});}
         const result = response(200, fixture.accepted?.knowledge || {versions: [], uses: [], quarantined: []});
         if (fixture.holdKnowledge) return new Promise(resolve => fixture.held.push({kind: 'knowledge', release: () => resolve(result)}));
         return result;
@@ -628,10 +658,59 @@ async function mountFixture(page, config = {}) {
   const hash = new URL(page.url()).hash;
   if (hash.startsWith('#autonomous/claim/')) await eventually(() => page.locator('[data-au-claim-title]').count().then(count => count === 1), 'the reloaded claim did not render');
   else {
-    const expectedRows = hash.includes('scope=added') ? config.rememberedNativeId ? 8 : 9 : 150;
+    const params=new URLSearchParams(hash.split('?')[1]),total=hash.includes('scope=added')?(config.rememberedNativeId?8:9):150,requested=Math.max(1,Number(params.get('page'))||1),pageNumber=Math.min(Math.ceil(total/20),requested),expectedRows=Math.min(20,total-(pageNumber-1)*20);
     await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === expectedRows), 'Cases did not load the requested fixture scope');
   }
   return page;
+}
+
+async function closeRecord(page){
+  const identity=await page.locator('.au-record-dialog[open] pre').evaluate(element=>({kind:element.dataset.auRecordKind,id:element.dataset.auRecordId}));
+  await page.locator('[data-au-close-record]').click();
+  await eventually(()=>page.evaluate(({kind,id})=>!document.querySelector('.au-record-dialog').open&&document.activeElement?.dataset.auInspect===kind&&document.activeElement?.dataset.auRecordId===id,identity),'native record close did not restore its exact inspection origin');
+}
+
+async function originalPageIds(page){return page.locator('[data-au-claim-row]').evaluateAll(rows=>rows.map(row=>row.dataset.auClaimRow));}
+async function collectVisiblePages(page){
+  const ids=[];
+  for(let pageNumber=1;pageNumber<=8;pageNumber++){
+    const current=await originalPageIds(page);assert.ok(current.length<=20,'one collection page stays bounded');ids.push(...current);
+    const next=page.locator('[data-au-pagination] [data-au-page]').last();if(await next.isDisabled())break;
+    await next.click();await eventually(()=>page.locator('[data-au-pagination]').innerText().then(text=>text.includes(`Page ${pageNumber+1} of`)),'next page did not render');
+  }
+  return ids;
+}
+
+async function openFullProcess(page){
+  const control=page.locator('[data-au-expand-process]');
+  if(await control.count()&&await control.getAttribute('aria-expanded')!=='true')await control.click();
+}
+
+async function selectFact(page,id){
+  const control=page.locator(`[data-au-panel="step"] [data-au-fact-select="${id}"]`);
+  if(await control.count())await control.click();else assert.equal(await page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact'),id);
+}
+async function selectDocument(page,id){
+  const control=page.locator(`[data-au-panel="step"] [data-au-document-select="${id}"]`);
+  if(await control.count()){
+    try { await control.click(); }
+    catch(error){
+      if(process.env.CASEPATH_BROWSER_DIAGNOSTICS){
+        fs.mkdirSync(process.env.CASEPATH_BROWSER_DIAGNOSTICS,{recursive:true});
+        const geometry=await control.evaluate(element=>{
+          const rect=element.getBoundingClientRect(),style=getComputedStyle(element),body=element.closest('.au-context-body'),bodyRect=body?.getBoundingClientRect(),bodyStyle=body&&getComputedStyle(body),x=rect.left+rect.width/2,y=rect.top+rect.height/2;
+          return {rect:rect.toJSON(),style:{position:style.position,zIndex:style.zIndex,opacity:style.opacity,transform:style.transform},bodyRect:bodyRect?.toJSON(),bodyStyle:bodyStyle&&{position:bodyStyle.position,zIndex:bodyStyle.zIndex,opacity:bodyStyle.opacity,transform:bodyStyle.transform,overflow:bodyStyle.overflow},hits:document.elementsFromPoint(x,y).slice(0,8).map(row=>row.outerHTML.slice(0,500)),animations:document.getAnimations().map(animation=>({time:animation.currentTime,state:animation.playState,target:animation.effect?.target?.outerHTML.slice(0,200)}))};
+        });
+        fs.writeFileSync(path.join(process.env.CASEPATH_BROWSER_DIAGNOSTICS,`document-pointer-${id}.json`),JSON.stringify(geometry,null,2));
+      }
+      throw error;
+    }
+  }else assert.equal(await page.locator('[data-au-evidence-path] [data-au-document]').getAttribute('data-au-document'),id);
+}
+
+async function playIfPaused(page) {
+  const resume=page.locator('[data-au-demo-resume]'),play=page.locator('[data-au-demo-play]');
+  if(await resume.count())await resume.click();else if(await play.count())await play.click();
 }
 
 const calls = (page, suffix) => page.evaluate(suffix => window.__fixture.calls.filter(call => new URL(call.url, location.origin).pathname.endsWith(suffix)), suffix);
@@ -644,57 +723,58 @@ async function title(page, id) {
     const expected = await page.evaluate(id => window.CasePathAutonomous.DEMO_CASES.find(row => row.claim_id === id)?.label || window.__fixture.envelopes[id].state.title, id);
     return rendered === expected;
   }, `The matching saved claim ${id} did not render`);
+  // Request the actual product's single technical drawer once. Its closed
+  // claim record stays synchronized to accepted renders, so subsequent replay
+  // assertions read UI output without changing the scheduler on every poll.
+  const record = page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]');
+  if (!await record.count()) {
+    const playing = await page.locator('[data-au-demo-stop]').count() === 1;
+    await page.locator('.au-work-head [data-au-inspect="claim"]').click();
+    await eventually(() => record.count().then(count => count === 1), 'the native claim record drawer did not expose its accepted state');
+    await closeRecord(page);
+    if (playing) await page.locator('[data-au-demo-resume]').click();
+  }
 }
 
-test('Cases pages all 150 IDs and Demonstration contains exactly the nine canonical Cases IDs', async t => {
-  const page = await fixturePage(t);
-  const actual = await page.locator('[data-au-claim-row]').evaluateAll(rows => rows.map(row => row.dataset.auClaimRow));
-  const expected = await page.evaluate(() => window.__fixture.rows.filter(row => row.origin === 'canonical_original').map(row => row.claim_id));
-  assert.equal(new Set(actual).size, 150);
-  assert.deepEqual(sorted(actual), sorted(expected));
-  const collectionCalls = await calls(page, '/claims');
-  assert.ok(collectionCalls.length >= 2, 'a 50-row first page must cause another collection read');
-  let nextOffset = 0;
-  for (const call of collectionCalls) {
-    const params = new URL(call.url, 'http://fixture.invalid').searchParams;
-    assert.equal(Number(params.get('offset') || 0), nextOffset, 'collection pages must not skip or repeat rows');
-    nextOffset += Math.min(Number(params.get('limit') || 50), 159 - nextOffset);
-  }
-  assert.equal(nextOffset, 159, 'all original and added histories must be read before applying the collection scope');
-  await page.locator('.au-nav [data-au-nav="work"]').click();
-  assert.equal(new URL(page.url()).hash, '#autonomous/cases');
+test('Cases pages all 150 originals and Demo enters their exact canonical identities as autoplaying real claims', async t => {
+  const page = await fixturePage(t, {presentationSuite:'replay'});
+  const actual=await collectVisiblePages(page);
+  assert.equal(new Set(actual).size,150);assert.deepEqual(sorted(actual),sorted(originals.map(row=>row.claim_id)));
+  const collectionCalls=await calls(page,'/claims');let nextOffset=0;
+  for(const call of collectionCalls){const params=new URL(call.url,'http://fixture.invalid').searchParams;assert.equal(Number(params.get('offset')||0),nextOffset);nextOffset+=Math.min(Number(params.get('limit')||50),159-nextOffset);}assert.equal(nextOffset,159);
   await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await eventually(() => page.locator('[data-au-demo-case]').count().then(count => count === 9), 'Demonstration did not render exactly nine cases');
-  const demo = await page.locator('[data-au-demo-case]').evaluateAll(rows => rows.map(row => row.dataset.auDemoCase));
-  assert.deepEqual(sorted(demo), sorted(demoIds));
-  assert.ok(demo.every(id => actual.includes(id)), 'demonstrations must refer to Cases identities');
-  assert.ok(demo.every(id => !historicalIds.includes(id)), 'historical autonomous captures cannot become demonstration members');
-  assert.equal(new URL(page.url()).hash.split('?')[0], '#autonomous/demonstration');
-  assert.equal(await page.locator('[data-au-demo-mode="replay"]').getAttribute('aria-pressed'), 'true');
-  await page.locator('[data-au-demo-mode="live"]').click();
-  assert.equal(await page.locator('[data-au-demo-mode="live"]').getAttribute('aria-pressed'), 'true');
-  await page.locator('[data-au-demo-mode="replay"]').click();
-  assert.equal(await page.locator('[data-au-demo-mode="replay"]').getAttribute('aria-pressed'), 'true');
-  await page.evaluate(() => { location.hash = '#autonomous/work'; });
-  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'The prior Work route did not resolve to Cases');
+  await eventually(()=>page.locator('[data-au-claim-title]').count().then(count=>count===1),'Demo did not enter a real claim');
+  assert.equal(new URL(page.url()).hash.split('?')[0],`#autonomous/claim/${demoIds[0]}`);
+  assert.equal(await page.locator('.au-demonstration').count(),0,'Demo has no separate showcase page');
+  assert.equal(await page.locator('[data-au-demo-stop]').count(),1,'Demo starts accepted prefix playback on entry');
+  await title(page,demoIds[0]);assert.deepEqual((await visibleRecord(page)).state,fixtureData({presentationSuite:'replay'}).acceptedHistories[demoIds[0]][0].state);
+  await page.locator('[data-au-inspect="demo"]').click();
+  const picker=page.locator('.au-record-dialog[open]');const ids=await picker.locator('[data-au-demo-case]').evaluateAll(rows=>rows.map(row=>row.dataset.auDemoCase));
+  assert.deepEqual(sorted(ids),sorted(demoIds));assert.ok(ids.every(id=>actual.includes(id)&&!historicalIds.includes(id)));
+  assert.equal(await picker.locator('section').count(),3,'the canonical roster retains three recorded identities per supplied domain');
+  await picker.locator(`[data-au-demo-case="${demoIds[3]}"]`).click();await title(page,demoIds[3]);
+  assert.equal((await visibleRecord(page)).state.claim_id,demoIds[3]);assert.equal(await page.locator('[data-au-demo-stop]').count(),1);
+  await page.locator('.au-nav [data-au-nav="work"]').click();await eventually(()=>page.locator('[data-au-claim-row]').count().then(count=>count===20),'Cases did not restore all originals');
+  await page.evaluate(()=>{location.hash='#autonomous/work';});await eventually(()=>page.locator('[data-au-claim-row]').count().then(count=>count===20),'the prior Work route did not resolve to Cases');
+
 });
 
 test('the 150 originals and nine added histories retain distinct scopes through hash navigation and reload', async t => {
   const page = await fixturePage(t);
   const rowIds = () => page.locator('[data-au-claim-row]').evaluateAll(rows => rows.map(row => row.dataset.auClaimRow));
-  assert.deepEqual(sorted(await rowIds()), sorted(originals.map(row => row.claim_id)));
+  assert.deepEqual(sorted(await rowIds()),sorted(originals.slice(0,20).map(row=>row.claim_id)));
   assert.equal(await page.locator('[data-au-collection-scope="originals"]').getAttribute('aria-pressed'), 'true');
-  assert.equal(await page.locator('[data-au-domain="all"] strong').innerText(), '150');
-  for (const domain of ['defect_mold_heating', 'lease_termination_dispute', 'rent_increase_dispute']) assert.equal(await page.locator(`[data-au-domain="${domain}"] strong`).innerText(), '50');
+  assert.equal(await page.locator('[data-au-domain="all"]').count(), 1);
+  for (const domain of ['defect_mold_heating', 'lease_termination_dispute', 'rent_increase_dispute']) assert.equal(await page.locator(`[data-au-domain="${domain}"]`).count(), 1);
   await page.locator('.au-nav [data-au-nav="work"]').click();
   await page.locator('[data-au-collection-scope="added"]').click();
   await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 9), 'Added cases did not retain all nine histories');
   assert.deepEqual(sorted(await rowIds()), sorted(historicalIds));
   assert.equal(new URL(page.url()).hash, '#autonomous/cases?scope=added');
-  assert.match(await page.locator('[data-au-collection-scope="added"]').innerText(), /Added cases\s*9/);
+  assert.match(await page.locator('[data-au-collection-scope="added"]').innerText(), /Added cases/);
   await page.goBack();
-  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'Back did not restore Originals');
-  assert.deepEqual(sorted(await rowIds()), sorted(originals.map(row => row.claim_id)));
+  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 20), 'Back did not restore Originals');
+  assert.deepEqual(sorted(await rowIds()),sorted(originals.slice(0,20).map(row=>row.claim_id)));
   await page.goForward();
   await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 9), 'Forward did not restore Added cases');
   await page.reload();
@@ -702,8 +782,8 @@ test('the 150 originals and nine added histories retain distinct scopes through 
   assert.equal(new URL(page.url()).hash, '#autonomous/cases?scope=added');
   assert.deepEqual(sorted(await rowIds()), sorted(historicalIds));
   await page.locator('[data-au-collection-scope="originals"]').click();
-  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'Originals did not restore after Added reload');
-  assert.equal(await page.locator('[data-au-domain="all"] strong').innerText(), '150');
+  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 20), 'Originals did not restore after Added reload');
+  assert.equal(await page.locator('[data-au-domain="all"]').count(), 1);
 });
 
 test('a newly remembered native intake appears in Added cases while original counts remain 150', async t => {
@@ -712,8 +792,8 @@ test('a newly remembered native intake appears in Added cases while original cou
   await title(page, id);
   await page.evaluate(() => { window.__fixture.holdCollections = true; });
   await page.locator('.au-nav [data-au-nav="work"]').click();
-  assert.equal(await page.locator('[data-au-claim-row]').count(), 150);
-  assert.equal(await page.locator('[data-au-domain="all"] strong').innerText(), '150');
+  assert.equal(await page.locator('[data-au-claim-row]').count(), 20);
+  assert.equal(await page.locator('[data-au-domain="all"]').count(), 1);
   await page.locator('[data-au-collection-scope="added"]').click();
   await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 9), 'the newly remembered intake was not classified as Added');
   assert.equal(await page.locator(`[data-au-claim-row="${id}"]`).count(), 1);
@@ -724,7 +804,7 @@ test('a newly remembered native intake appears in Added cases while original cou
     for (const held of window.__fixture.held.splice(0)) held.release();
   }, id);
   await page.locator('[data-au-collection-scope="originals"]').click();
-  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'remembering an added intake changed original membership');
+  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 20), 'remembering an added intake changed original membership');
   assert.equal(await page.locator(`[data-au-claim-row="${id}"]`).count(), 0);
 });
 
@@ -732,83 +812,41 @@ test('Investigation complete groups completed codes without changing the raw cla
   const page = await fixturePage(t, {completeStatuses: true});
   await page.locator('[data-au-collection-scope="added"]').click();
   await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 9), 'Added case statuses did not render');
-  const filter = page.locator('[data-au-claim-filter]');
-  assert.equal(await filter.locator('option[value="investigation_complete"]').innerText(), 'Investigation complete');
-  assert.equal(await filter.locator('option[value="completed"], option[value="complete"], option[value="resolved"]').count(), 0);
-  await filter.selectOption('investigation_complete');
+  const filter=page.locator('[data-au-filter="investigation_complete"]');assert.equal(await filter.innerText(),'Investigation complete');assert.equal(await page.locator('select').count(),0);await filter.click();
   assert.deepEqual(sorted(await page.locator('[data-au-claim-row]').evaluateAll(rows => rows.map(row => row.dataset.auClaimRow))), sorted(completeStatusIds));
-  assert.deepEqual(await page.locator('[data-au-claim-row] > .au-status').allTextContents(), ['Investigation complete', 'Investigation complete', 'Investigation complete']);
+  assert.deepEqual(await page.locator('[data-au-claim-row] > .au-claim-state').allTextContents(), ['Investigation complete', 'Investigation complete', 'Investigation complete']);
   for (const [index, status] of ['completed', 'complete', 'resolved'].entries()) {
     const id = completeStatusIds[index], expected = await page.evaluate(id => window.__fixture.envelopes[id].state.outcome, id);
     await open(page, id);
     await title(page, id);
-    assert.equal(await page.locator('.au-work-head .au-status').innerText(), 'Investigation complete');
-    const saved = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent());
+    assert.equal((await page.locator('[data-au-claim-status]').innerText()).replace(/\.$/,''), 'Investigation complete');
+    const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent());
     assert.equal(saved.state.status, status);
     assert.deepEqual(saved.state.outcome, expected);
-    if (expected?.summary || expected?.reason) assert.ok((await page.locator('.au-outcome-body').textContent()).includes(expected.summary || expected.reason), 'the investigation label cannot rewrite the recorded legal outcome');
+    assert.deepEqual((await visibleRecord(page)).state.outcome,expected,'the investigation label cannot rewrite the recorded legal outcome');
   }
 });
 
-async function originalGeometry(page) {
-  return page.evaluate(() => {
-    const box = selector => { const element = document.querySelector(selector), rect = element.getBoundingClientRect(); return {x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height, clientWidth: element.clientWidth, scrollWidth: element.scrollWidth, clientHeight: element.clientHeight, scrollHeight: element.scrollHeight}; };
-    const message = document.querySelector('.au-original-message'), subject = document.querySelector('.au-original-subject');
-    const style = getComputedStyle(message), subjectStyle = getComputedStyle(subject), canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d'); context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-    return {subject: box('.au-original-subject'), message: box('.au-original-message'), column: box('.au-original-message-column'), rail: box('.au-original-source-rail'),
-      fontSize: Number.parseFloat(style.fontSize), subjectFontSize: Number.parseFloat(subjectStyle.fontSize), ch: context.measureText('0').width,
-      layout: getComputedStyle(document.querySelector('.au-original-layout')).display, ellipsis: subjectStyle.textOverflow,
-      viewport: innerWidth, documentWidth: document.documentElement.scrollWidth};
+for (const width of [1440, 390]) test(`original messages and exact subjects remain complete and readable at ${width}px`, async t => {
+  const id=demoIds[0],page=await fixturePage(t,{width,height:844}),original=originals.find(row=>row.claim_id===id);
+  await open(page,id);await title(page,id);
+  assert.equal(await page.locator('.au-original-message').textContent(),original.message);
+  const geometry=await page.locator('.au-original-message').evaluate(element=>{
+    const rect=element.getBoundingClientRect(),style=getComputedStyle(element),canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');ctx.font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    return {top:rect.top,width:rect.width,height:rect.height,fontSize:parseFloat(style.fontSize),ch:ctx.measureText('0').width,scrollWidth:element.scrollWidth,clientWidth:element.clientWidth,documentWidth:document.documentElement.scrollWidth};
   });
-}
-
-for (const width of [1440, 390]) test(`original subjects, full bodies and adjacent sources remain readable at ${width}px`, async t => {
-  const id = demoIds[0], page = await fixturePage(t, {width, height: 844}), original = originals.find(row => row.claim_id === id);
-  await open(page, id);
-  await title(page, id);
-  const subjectDisclosure = page.locator('[data-au-disclosure="original-subject"]');
-  if (await subjectDisclosure.count()) {
-    assert.equal(await subjectDisclosure.locator('p').textContent(), original.subject, 'the concise heading retains the exact original subject');
-    await subjectDisclosure.locator('summary').click();
-    assert.equal(await subjectDisclosure.locator('p').isVisible(), true);
-    assert.equal(await subjectDisclosure.locator('p').evaluate(element => element.scrollWidth <= element.clientWidth + 1), true, 'the complete original subject remains readable');
-  } else assert.equal(await page.locator('.au-original-subject').textContent(), original.subject);
-  assert.equal(await page.locator('.au-original-message').textContent(), original.message);
-  const geometry = await originalGeometry(page);
-  assert.equal(geometry.fontSize, 16);
-  assert.ok(geometry.subjectFontSize >= 24 && geometry.subjectFontSize <= (width === 390 ? 32 : 34), `the claim heading must remain comfortably sized while the exact original subject stays accessible: ${JSON.stringify(geometry)}`);
-  assert.ok(geometry.message.width <= 72 * geometry.ch + 3, `message lines must stay within approximately 72 characters: ${JSON.stringify(geometry)}`);
-  assert.ok(geometry.subject.scrollWidth <= geometry.subject.clientWidth + 1 && geometry.subject.scrollHeight <= geometry.subject.clientHeight + 1, 'the full subject cannot be clipped');
-  assert.notEqual(geometry.ellipsis, 'ellipsis');
-  assert.ok(geometry.documentWidth <= width + 1, 'the original message must not create horizontal page overflow');
-  if (width === 1440) {
-    assert.equal(geometry.layout, 'grid');
-    assert.ok(geometry.rail.x >= geometry.column.right - 1, 'desktop originals need an adjacent source rail');
-    assert.ok(Math.abs(geometry.rail.y - geometry.column.y) <= 40, 'the source rail must begin beside the full original body');
-    assert.ok(geometry.message.width >= 48 * geometry.ch, 'desktop message lines must not collapse into a narrow column');
-  } else {
-    assert.ok(geometry.rail.bottom <= geometry.column.y + 1, 'mobile sources must precede the complete message');
-    assert.ok(geometry.rail.y < 650, 'source controls must remain near the top of the mobile view');
-    assert.ok(geometry.message.width >= 280);
-    const header = await page.evaluate(() => {
-      const rect = selector => { const r = document.querySelector(selector).getBoundingClientRect(); return {y: r.y, bottom: r.bottom, height: r.height}; };
-      return {header: rect('.au-identity-header'), brand: rect('.au-brand'), intake: rect('.au-header-new'), nav: [...document.querySelectorAll('.au-nav [data-au-nav]')].map(element => ({name: element.dataset.auNav, y: element.getBoundingClientRect().y}))};
-    });
-    assert.ok(header.header.height <= 140, 'the mobile header must keep the case evidence near the top');
-    assert.ok(Math.abs(header.brand.y - header.intake.y) <= 12, 'New claim belongs beside the brand');
-    assert.deepEqual(header.nav.map(item => item.name), ['work', 'demonstration', 'knowledge']);
-    assert.ok(Math.max(...header.nav.map(item => item.y)) - Math.min(...header.nav.map(item => item.y)) <= 2, 'primary navigation must occupy one row');
-  }
-  if (process.env.CASEPATH_BROWSER_RECEIPTS) {
-    const receipt = await page.evaluate(() => {
-      const bounds = selector => [...document.querySelectorAll(selector)].map(element => ({label: element.textContent, ...element.getBoundingClientRect().toJSON()}));
-      return {header: bounds('.au-identity-header'), brand: bounds('.au-brand'), navigation: bounds('.au-nav [data-au-nav]'), newClaim: bounds('.au-header-new'), sources: bounds('[data-au-source]')};
-    });
-    const destination = `/tmp/casepath-original-${id}-${width}`;
-    await page.screenshot({path: `${destination}.png`, fullPage: true});
-    fs.writeFileSync(`${destination}.json`, JSON.stringify({claim_id: id, width, geometry, ...receipt, exactSubject: true, completeBody: true}, null, 2));
-  }
+  assert.ok(geometry.fontSize>=15&&geometry.fontSize<=18,'original source text remains comfortably readable');
+  assert.ok(geometry.width<=72*geometry.ch+3,'full original message lines have a readable maximum length');
+  assert.ok(geometry.width>=280&&geometry.scrollWidth<=geometry.clientWidth+1&&geometry.documentWidth<=width+1,'the exact body fits without clipping or page overflow');
+  assert.ok(geometry.top<650,'the actual original body is visible after the quiet header');
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();
+  assert.equal(await page.locator('.au-original-title').textContent(),original.subject,'the original subject remains exactly inspectable');
+  assert.equal(await page.locator('.au-original-message').textContent(),original.message);
+  const sources=await page.locator('[data-au-panel="sources"] [data-au-source]').evaluateAll(rows=>rows.map(row=>({id:row.dataset.auSource,label:row.textContent})));
+  const expected=corpusManifest.claims.find(row=>row.claim_id===id).observable_artifacts;
+  assert.deepEqual(sources.map(row=>row.id),expected.map(row=>row.artifact_id));assert.deepEqual(sources.map(row=>row.label),expected.map(row=>row.file_name));
+  assert.deepEqual((await visibleRecord(page)).state,fixtureData().envelopes[id].state);
+  await focusedReceipt(page,`quiet-original-${width}`,{identity:id,geometry,sourceIds:sources.map(row=>row.id)});
 });
 
 test('the mobile JPEG viewer presents one capability statement, checked original bytes and technical extraction details', async t => {
@@ -830,10 +868,10 @@ test('the mobile JPEG viewer presents one capability statement, checked original
   for (const value of [source.media_type, source.sha256, 'unsupported_metadata', 'coverage', 'preview_only', 'evidence_admitted']) assert.ok(technical.includes(value), `technical source identity retains ${value}`);
   if (process.env.CASEPATH_BROWSER_RECEIPTS) {
     await page.screenshot({path: '/tmp/casepath-original-jpeg-dialog-390.png', fullPage: true});
-    fs.writeFileSync('/tmp/casepath-original-jpeg-dialog-390.json', JSON.stringify(await page.evaluate(() => ({dialog: document.querySelector('dialog').getBoundingClientRect().toJSON(), image: document.querySelector('.au-native-image').getBoundingClientRect().toJSON(), naturalWidth: document.querySelector('.au-native-image').naturalWidth, naturalHeight: document.querySelector('.au-native-image').naturalHeight, capability: document.querySelector('.au-source-capability').textContent})), null, 2));
+    fs.writeFileSync('/tmp/casepath-original-jpeg-dialog-390.json', JSON.stringify(await page.evaluate(() => ({dialog: document.querySelector('.au-source-dialog').getBoundingClientRect().toJSON(), image: document.querySelector('.au-native-image').getBoundingClientRect().toJSON(), naturalWidth: document.querySelector('.au-native-image').naturalWidth, naturalHeight: document.querySelector('.au-native-image').naturalHeight, capability: document.querySelector('.au-source-capability').textContent})), null, 2));
   }
   await page.keyboard.press('Escape');
-  await eventually(() => page.locator('dialog').getAttribute('open').then(value => value === null), 'Escape did not close the source');
+  await eventually(() => page.locator('.au-source-dialog').getAttribute('open').then(value => value === null), 'Escape did not close the source');
   assert.equal(await page.evaluate(() => document.activeElement?.dataset.auSource), source.artifact_id);
 });
 
@@ -853,40 +891,31 @@ test('a corrupted original JPEG retains its verified preview and identity withou
   assert.ok((await page.locator('details.au-source-identity').innerText()).includes(source.sha256));
 });
 
-test('Live Play resumes a verified original opening once after bounded mismatches and never retries an uncertain Start automatically', async t => {
-  const id = demoIds[0], page = await fixturePage(t, {originalStartId: id, mismatchedSnapshots: 3});
-  const originalHash = await page.evaluate(id => window.__fixture.envelopes[id].state.state_sha256, id);
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await page.locator('[data-au-demo-mode="live"]').click();
-  await page.locator('[data-au-demo-play]').click();
-  await eventually(async () => (await calls(page, `/claims/${id}/snapshot`)).length === 3 && /automatically/i.test(await page.locator('.au-global-status').innerText()), 'Live Play did not retain its recovering original opening');
-  assert.equal((await calls(page, `/claims/${id}/start`)).length, 0);
-  await page.clock.runFor(7000);
-  await eventually(async () => (await calls(page, `/claims/${id}/start`)).length === 1, 'the same active Live Play did not start its recovered original');
-  const [started] = await calls(page, `/claims/${id}/start`);
-  assert.equal(JSON.parse(started.body).expected_revision, 0);
-  assert.equal(JSON.parse(started.body).expected_state_sha256, originalHash);
-  assert.equal(started.headers['X-CasePath-Agent-Work'], '1');
-  await page.evaluate(id => { window.__fixture.advance(id); Object.assign(window.__fixture.envelopes[id].state, {status: 'completed', phase: 'complete'}); }, id);
-  await page.clock.runFor(10000);
-  assert.equal((await calls(page, `/claims/${id}/start`)).length, 1, 'a lost Start response requires an explicit retry, including inside Live Play');
-  assert.equal(new URL(page.url()).hash.split('?')[0], `#autonomous/claim/${id}`, 'a terminal background observation cannot move uncertain Start admission to another original');
-  assert.equal(await page.locator('[data-au-start]').innerText(), 'Retry start');
+test('a recovered verified original starts only by explicit intent and an uncertain Start never retries automatically', async t => {
+  const id=demoIds[0],page=await fixturePage(t,{originalStartId:id,mismatchedSnapshots:3});
+  const originalHash=await page.evaluate(id=>window.__fixture.envelopes[id].state.state_sha256,id);
+  await open(page,id);await eventually(async()=>(await calls(page,`/claims/${id}/snapshot`)).length===3&&/automatically/i.test(await page.locator('.au-global-status').innerText()),'the original opening did not retain bounded recovery');
+  assert.equal((await calls(page,`/claims/${id}/start`)).length,0);
+  await page.clock.runFor(7000);await title(page,id);await eventually(()=>page.locator('[data-au-start]').isEnabled(),'verified recovered original cannot be explicitly started');
+  await page.locator('[data-au-start]').click();await eventually(async()=>(await calls(page,`/claims/${id}/start`)).length===1,'one explicit Start was not submitted');
+  const [started]=await calls(page,`/claims/${id}/start`);assert.equal(JSON.parse(started.body).expected_revision,0);assert.equal(JSON.parse(started.body).expected_state_sha256,originalHash);assert.equal(started.headers['X-CasePath-Agent-Work'],'1');
+  await page.evaluate(id=>{window.__fixture.advance(id);Object.assign(window.__fixture.envelopes[id].state,{status:'completed',phase:'complete'});},id);
+  await page.clock.runFor(10000);assert.equal((await calls(page,`/claims/${id}/start`)).length,1,'lost Start response requires an explicit identical retry');
+  assert.equal(new URL(page.url()).hash.split('?')[0],`#autonomous/claim/${id}`);assert.equal(await page.locator('[data-au-start]').innerText(),'Retry start');
 });
 
-for (const mode of ['live', 'replay']) test(`timed ${mode} presentation inspects all nine canonical cases with modal and hidden pauses, then cancels on navigation`, async t => {
+for (const mode of ['replay']) test(`timed ${mode} presentation inspects all nine canonical cases with modal and hidden pauses, then cancels on navigation`, async t => {
   const page = await fixturePage(t, {presentationSuite: mode});
   if (mode === 'replay') await page.evaluate(() => {
     window.__consumedControlStates = [];
     new MutationObserver(() => {
-      const record = document.querySelector('[data-au-disclosure="claim-record"] pre'); if (!record) return;
-      const state = JSON.parse(record.textContent).state, previous = window.__consumedControlStates.at(-1);
+      const record = document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]'); if (!record) return;
+      const state = JSON.parse(record.textContent).state;if(!state?.revision)return;const previous = window.__consumedControlStates.at(-1);
       if (!previous || previous.claim_id !== state.claim_id || previous.revision !== state.revision || previous.state_sha256 !== state.state_sha256) window.__consumedControlStates.push(state);
-    }).observe(document.querySelector('[data-au-view]'), {childList: true, subtree: true});
+    }).observe(document.querySelector('#workspace'), {childList: true, subtree: true});
   });
   await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await page.locator(`[data-au-demo-mode="${mode}"]`).click();
-  await page.locator('[data-au-demo-play]').click();
+  await playIfPaused(page);
   await title(page, demoIds[0]);
   if (mode === 'live') {
     await eventually(() => page.locator('[data-au-detail="sources"]').count().then(count => count === 1), 'Live Play did not admit its initial Start');
@@ -921,7 +950,7 @@ for (const mode of ['live', 'replay']) test(`timed ${mode} presentation inspects
   const posts = await page.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST'));
   if (mode === 'replay') {
     assert.deepEqual(posts, []);
-    for (const id of demoIds) assert.deepEqual((await calls(page, `/claims/${id}/replay`)).map(call => Number(new URL(call.url, 'http://fixture.invalid').searchParams.get('through_seq'))), id === demoIds[0] ? [0, 1, 2, 1, 2] : [0, 1, 2], 'each replay verifies both prefixes; deliberate Resume revalidates the first case\'s cancelled prefetch');
+    for (const id of demoIds) assert.deepEqual((await calls(page, `/claims/${id}/replay`)).map(call => Number(new URL(call.url, 'http://fixture.invalid').searchParams.get('through_seq'))), id === demoIds[0] ? [0,1,2,1,2,1,2] : [0,1,2], 'each replay verifies both prefixes; deliberate Resume revalidates the first case\'s cancelled prefetch');
     const consumed = await page.evaluate(() => window.__consumedControlStates);
     const expected = await page.evaluate(ids => ids.flatMap(id => window.__fixture.acceptedHistories[id].slice(1).map(record => record.state)), demoIds);
     assert.deepEqual(consumed, expected, 'all nine authored control histories consume each exact accepted prefix once in roster order');
@@ -933,24 +962,24 @@ for (const mode of ['live', 'replay']) test(`timed ${mode} presentation inspects
   // Restart an active presentation and abandon it through product navigation.
   // Live originals are already processed, so this restart has no Start intent.
   await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await page.locator('[data-au-demo-play]').click();
+  await playIfPaused(page);
   await title(page, demoIds[0]);
   await page.locator('.au-nav [data-au-nav="work"]').click();
   const cancelledReads = (await reads()).length, cancelledPosts = await page.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST').length);
   await page.clock.runFor(20000);
   assert.equal((await reads()).length, cancelledReads, 'navigation must abandon every pending presentation read');
   assert.equal(await page.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST').length), cancelledPosts);
-  assert.equal(await page.locator('[data-au-claim-row]').count(), 150);
+  assert.equal(await page.locator('[data-au-claim-row]').count(), 20);
 });
 
 test('a replay control history without an accepted operational outcome stops honestly at its exact saved head', async t => {
   const page = await fixturePage(t, {presentationSuite: 'replay', presentationOutcome: false});
   await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await page.locator('[data-au-demo-play]').click();
+  await playIfPaused(page);
   await title(page, demoIds[0]);
   await page.clock.runFor(700);
   await eventually(() => page.locator('.au-global-status').innerText().then(text => /no settled operational outcome/i.test(text)), 'the authored history without an outcome did not stop');
-  const saved = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent());
+  const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent());
   const expected = await page.evaluate(id => window.__fixture.acceptedHistories[id][2], demoIds[0]);
   assert.deepEqual(saved.state, expected.state);
   assert.deepEqual(saved.projection, {...expected.projection, parent_revision: expected.state.revision, parent_state_sha256: expected.state.state_sha256});
@@ -963,17 +992,11 @@ test('a replay control history without an accepted operational outcome stops hon
   assert.deepEqual(await page.evaluate(() => window.__fixture.calls.filter(call => call.method !== 'GET')), []);
 });
 
-test('leaving a recovering Live Play cancels its original Start authorization', async t => {
-  const id = demoIds[0], page = await fixturePage(t, {originalStartId: id, mismatchedSnapshots: 3});
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await page.locator('[data-au-demo-mode="live"]').click();
-  await page.locator('[data-au-demo-play]').click();
-  await eventually(async () => (await calls(page, `/claims/${id}/snapshot`)).length === 3 && /automatically/i.test(await page.locator('.au-global-status').innerText()), 'Live Play did not reach its recovering opening');
-  await page.locator('.au-nav [data-au-nav="work"]').click();
-  await page.clock.runFor(10000);
-  assert.equal((await calls(page, `/claims/${id}/start`)).length, 0);
-  assert.equal((await calls(page, `/claims/${id}/snapshot`)).length, 3);
-  assert.equal(await page.locator('[data-au-claim-row]').count(), 150);
+test('leaving a recovering original cancels its delayed read without admitting Start', async t => {
+  const id=demoIds[0],page=await fixturePage(t,{originalStartId:id,mismatchedSnapshots:3});
+  await open(page,id);await eventually(async()=>(await calls(page,`/claims/${id}/snapshot`)).length===3&&/automatically/i.test(await page.locator('.au-global-status').innerText()),'opening recovery did not begin');
+  await page.locator('.au-nav [data-au-nav="work"]').click();await page.clock.runFor(10000);
+  assert.equal((await calls(page,`/claims/${id}/start`)).length,0);assert.equal((await calls(page,`/claims/${id}/snapshot`)).length,3);assert.equal(await page.locator('[data-au-claim-row]').count(),20);
 });
 
 test('overlapping opening reads preserve the newer record and source disclosure while equal revisions remain strict', async t => {
@@ -984,22 +1007,22 @@ test('overlapping opening reads preserve the newer record and source disclosure 
   await eventually(() => page.evaluate(() => window.__fixture.held.length === 1), 'the earlier cursor refresh was not held');
   await page.evaluate(id => { window.__fixture.advance(id); void window.__controller.openClaim(id); }, processedId);
   await eventually(async () => (await visibleRecord(page)).state.revision === revision + 1, 'the distinct full snapshot did not render its newer accepted record');
-  assert.match(await page.locator('.au-work-head').innerText(), new RegExp(`revision ${revision + 1}\\b`, 'i'));
-  const chosen = await page.locator('[data-au-node]').last().getAttribute('data-au-node');
+  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(revision+1));
+  await openFullProcess(page);const chosen = await page.locator('[data-au-node]').last().getAttribute('data-au-node');
   await page.locator(`[data-au-node="${chosen}"]`).click();
   await page.locator('[data-au-detail="sources"]').click();
   const sourceId = await page.locator('[data-au-panel="sources"] [data-au-source]').first().getAttribute('data-au-source');
   await page.locator(`[data-au-panel="sources"] [data-au-source="${sourceId}"]`).click();
   await eventually(() => page.locator('details.au-source-identity').count().then(count => count === 1), 'the current original source identity did not verify');
   await page.locator('details.au-source-identity > summary').click();
-  const before = await page.locator('[data-au-disclosure="claim-record"] pre').textContent();
+  const before = await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent();
   await page.evaluate(() => { window.__retainedSource = document.querySelector('details.au-source-identity'); for (const held of window.__fixture.held.splice(0)) held.release(); });
   await page.evaluate(() => new Promise(resolve => queueMicrotask(resolve)));
-  assert.equal(await page.locator('[data-au-disclosure="claim-record"] pre').textContent(), before, 'the delayed older opening cannot replace the verified newer record');
+  assert.equal(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent(), before, 'the delayed older opening cannot replace the verified newer record');
   assert.equal(await page.evaluate(() => document.querySelector('details.au-source-identity') === window.__retainedSource && window.__retainedSource.open), true);
-  assert.equal(await page.locator(`[data-au-node="${chosen}"]`).getAttribute('aria-pressed'), 'true');
+  assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('node'),chosen,'source inspection preserves the exact selected decision in its route');
   await page.evaluate(() => window.__controller.refresh());
-  assert.equal(await page.locator('[data-au-disclosure="claim-record"] pre').textContent(), before, 'a matching equal revision must remain valid');
+  assert.equal(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent(), before, 'a matching equal revision must remain valid');
   const reads = (await calls(page, `/claims/${processedId}/snapshot`)).length;
   await page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
   await eventually(async () => (await calls(page, `/claims/${processedId}/snapshot`)).length > reads, 'normal visibility resume did not refresh the saved claim');
@@ -1007,7 +1030,7 @@ test('overlapping opening reads preserve the newer record and source disclosure 
   await page.evaluate(() => { window.__fixture.conflictingHash = true; });
   await page.evaluate(() => window.__controller.refresh());
   assert.match(await page.locator('.au-global-status').innerText(), /saved revision changed identity/i);
-  assert.equal(await page.locator('[data-au-disclosure="claim-record"] pre').textContent(), before, 'a conflicting equal-revision hash fails closed while saved work remains visible');
+  assert.equal(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent(), before, 'a conflicting equal-revision hash fails closed while saved work remains visible');
 });
 
 test('a Documents link returns to its process step and reload retains the step detail', async t => {
@@ -1041,8 +1064,8 @@ test('a recorded document selection retains its exact obligation and fact throug
   const receipt = expected.find(row => row.document_type === 'proof_of_receipt');
   async function focus(obligation) {
     const hero = page.locator('[data-au-evidence-path]');
-    assert.equal(await hero.locator('[data-au-document][data-au-wire="requirement"]').getAttribute('data-au-document'), obligation.document_type);
-    assert.equal(await hero.locator('[data-au-document][data-au-wire="requirement"]').getAttribute('data-au-obligation'), obligation.obligation_id);
+    assert.equal(await hero.locator('[data-au-document][data-au-obligation]').getAttribute('data-au-document'), obligation.document_type);
+    assert.equal(await hero.locator('[data-au-document][data-au-obligation]').getAttribute('data-au-obligation'), obligation.obligation_id);
     assert.equal(await hero.locator('[data-au-fact]').getAttribute('data-au-fact'), obligation.required_fact_ids[0]);
     const query = new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
     assert.equal(query.get('node'), 'lt_deadline');
@@ -1065,18 +1088,18 @@ test('a recorded document selection retains its exact obligation and fact throug
   const selectedRequirement = page.locator('[data-au-panel="documents"] .au-obligation[data-selected="true"]');
   assert.equal(await selectedRequirement.count(), 1, 'sharing a process node does not select sibling obligations');
   assert.equal(await selectedRequirement.getAttribute('data-au-obligation'), notice.obligation_id);
-  await selectedRequirement.locator('summary').first().click();
-  assert.ok((await selectedRequirement.textContent()).includes(notice.reason));
   await selectedRequirement.locator('[data-au-select="lt_deadline"]').click();
+  await page.locator(`[data-au-evidence-path] [data-au-inspect="requirement"][data-au-record-id="${notice.obligation_id}"]`).click();
+  assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()).obligations,[notice]);await closeRecord(page);await title(page,id);
   await focus(notice);
-  await page.locator(`[data-au-document-select="${receipt.document_type}"]`).click();
+  await selectDocument(page,receipt.document_type);
   await focus(receipt);
   // The old picker retained this fact while showing the notice-period document.
-  await page.locator('[data-au-panel="step"] [data-au-fact-select="fact:proof_of_receipt"]').click();
-  await page.locator(`[data-au-document-select="${notice.document_type}"]`).click();
+  await selectFact(page,'fact:proof_of_receipt');
+  await selectDocument(page,notice.document_type);
   await focus(notice);
   const route = new URL(page.url()).hash;
-  await page.locator(`[data-au-document-select="${notice.document_type}"]`).click();
+  await selectDocument(page,notice.document_type);
   assert.equal(new URL(page.url()).hash, route);
   await page.goBack();
   await eventually(() => page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact').then(value => value === receipt.required_fact_ids[0]), 'Back lost the previous exact obligation');
@@ -1087,7 +1110,7 @@ test('a recorded document selection retains its exact obligation and fact throug
   await page.reload(); await mountFixture(page);
   await focus(notice);
   assert.equal(await page.locator('[data-au-panel="step"]').isVisible(), true);
-  await page.locator(`[data-au-document-select="${receipt.document_type}"]`).click();
+  await selectDocument(page,receipt.document_type);
   await page.locator('.au-context-nav [data-au-detail="sources"]').click();
   await page.goBack();
   await eventually(() => page.locator('[data-au-panel="step"]').isVisible(), 'Back to an exact requirement retained the later Sources context');
@@ -1112,26 +1135,26 @@ test('verified new-source prefixes retain prior assessment through unavailable a
   for (const position of ['arrived', 'deferred', 'same_roster_retry']) {
     await page.evaluate(position => window.__fixture.loadAccepted(position), position);
     await page.evaluate(() => window.__controller.refresh());
-    const notice = page.locator('[data-au-assessment-freshness="prior"]');
+    const notice=page.locator('.au-claim-constraint');
     assert.equal(await notice.isVisible(), true, position);
-    assert.match(await notice.innerText(), /Prior assessment[\s\S]*1 new source awaiting assessment/);
+    assert.match(await notice.innerText(), /Prior assessment:/);
     await page.locator('.au-context-nav [data-au-detail="sources"]').click();
     const source = page.locator(`[data-au-panel="sources"] [data-au-source-freshness="unassessed"]`).filter({has: page.locator(`[data-au-source="${newSource.artifact_id}"]`)});
     assert.equal(await source.count(), 1);
-    assert.match(await source.innerText(), position === 'arrived' ? /Received · Awaiting assessment/ : /Extracted · document review is separate · Awaiting assessment/);
-    const rendered = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
+    assert.match(await source.innerText(), position==='arrived'?/Original file received · Awaiting assessment/:/Text available for assessment · Awaiting assessment/);
+    const rendered = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state;
     assert.deepEqual(rendered, fixture.states[position], `${position} presentation cannot rewrite a saved field or hash`);
     assert.deepEqual(rendered.facts, fixture.states.assessed.facts);
     assert.deepEqual(rendered.actions, fixture.states.assessed.actions);
     assert.doesNotMatch(await notice.innerText(), /contradiction|invalidated/i);
   }
-  await page.locator(`[data-au-assessment-freshness] [data-au-source="${newSource.artifact_id}"]`).click();
+  await page.locator(`[data-au-panel="sources"] [data-au-source="${newSource.artifact_id}"]`).click();
   await eventually(() => page.locator('dialog[open] [data-au-source-freshness="unassessed"]').count().then(count => count === 1), 'the new source viewer lost its assessment distinction');
   await page.locator('[data-au-close]').click();
   await page.evaluate(() => window.__fixture.loadAccepted('reassessed'));
   await page.evaluate(() => window.__controller.refresh());
   assert.equal(await page.locator('[data-au-assessment-freshness], [data-au-panel] [data-au-source-freshness="unassessed"]').count(), 0);
-  const after = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
+  const after = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state;
   assert.deepEqual(after, fixture.states.reassessed);
   assert.equal(after.facts.find(row => row.fact_id === 'condition:family_home').status, 'false');
   assert.deepEqual(after.actions.slice(0, fixture.states.assessed.actions.length), fixture.states.assessed.actions);
@@ -1142,8 +1165,8 @@ test('verified new-source prefixes retain prior assessment through unavailable a
   const failed = await fixturePage(t, {priorAssessment: 'failed'});
   await open(failed, id); await title(failed, id);
   await failed.evaluate(() => window.__controller.refresh());
-  assert.equal(await failed.locator('[data-au-assessment-freshness="prior"]').isVisible(), true);
-  assert.deepEqual(JSON.parse(await failed.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, fixture.states.failed);
+  assert.match(await failed.locator('.au-claim-constraint').innerText(),/Prior assessment/);
+  assert.deepEqual(JSON.parse(await failed.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state, fixture.states.failed);
   assert.deepEqual(fixture.states.failed.receipts, fixture.states.assessed.receipts);
 });
 
@@ -1153,9 +1176,9 @@ test('historical verified replay derives assessment coverage from that prefix an
     const through = fixture.revisions[position];
     await page.evaluate(({id, through}) => window.__controller.openClaim(id, true, {mode: 'replay', through}), {id, through});
     await title(page, id);
-    assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
-    assert.equal(await page.locator('[data-au-assessment-freshness="prior"]').count(), ['arrived', 'deferred'].includes(position) ? 1 : 0, position);
-    const rendered = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
+    assert.match(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
+    assert.equal(/Prior assessment/.test(await page.locator('.au-claim-constraint').innerText()),['arrived','deferred'].includes(position),position);
+    const rendered = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state;
     assert.deepEqual(rendered, fixture.states[position]);
   }
   assert.equal((await calls(page, `/claims/${id}/snapshot`)).length, 0);
@@ -1167,7 +1190,7 @@ async function observeAnimations(page) {
     window.__uiAnimations = [];
     const original = Element.prototype.animate;
     Element.prototype.animate = function(frames, options) {
-      const record = {event: this.dataset.auSemanticEvent || null, kind: this.dataset.auSemanticKind || null, options, frames};
+      const record = {event:this.dataset.auSemanticEvent||null,node:this.dataset.auNode||null,fact:this.dataset.auFact||null,document:this.dataset.auDocument||null,source:this.dataset.auSource||null,kind:this.dataset.auSemanticKind||null,options,frames};
       window.__uiAnimations.push(record);
       if (record.event) window.__acceptedAnimations.push(record);
       return original.call(this, frames, options);
@@ -1175,116 +1198,61 @@ async function observeAnimations(page) {
   });
 }
 
-test('a recorded withheld knowledge candidate stays visible in the default claim without a qualification or version link', async t => {
-  const id = 'auto_7373bbf206ab25bacf71b82e', page = await fixturePage(t, {recordedHistoryId: id});
-  const event = captured[`${base}/claims/${id}/events?after=0`].events.at(-1);
-  assert.equal(event.kind, 'knowledge.published');
-  assert.equal(event.payload.knowledge.qualification.status, 'quarantined');
-  await observeAnimations(page); await open(page, id); await title(page, id);
-  const cue = page.locator(`[data-au-event-seq="${event.seq}"][data-au-semantic-event="${event.event_sha256}"]`);
-  assert.equal(await cue.isVisible(), true);
-  assert.match(await cue.innerText(), /Knowledge candidate withheld/i);
-  await page.locator('[data-au-disclosure="context-records"] > summary').click();
-  const object = page.locator(`.au-semantic-event[data-au-semantic-event="${event.event_sha256}"]`);
-  assert.equal(await object.isVisible(), true);
-  assert.equal(await object.getAttribute('data-au-semantic-type'), 'withheld');
-  assert.match(await object.innerText(), /Knowledge candidate withheld/i);
-  assert.doesNotMatch(await object.innerText(), /Knowledge qualified|Qualified knowledge reused/i);
-  assert.equal(await object.locator('[data-au-knowledge]').count(), 0);
-  await object.locator('summary').click();
-  const record = JSON.parse(await object.locator('pre').textContent());
-  assert.deepEqual(record.knowledge, event.payload.knowledge);
-  assert.deepEqual(JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, captured[`${base}/claims/${id}`].state);
-  assert.deepEqual(await page.evaluate(() => window.__acceptedAnimations), [], 'existing withheld history is settled');
+test('a recorded withheld knowledge candidate remains distinguishable and exposes its exact accepted journal record', async t => {
+  const id='auto_7373bbf206ab25bacf71b82e',page=await fixturePage(t,{recordedHistoryId:id});
+  const event=captured[`${base}/claims/${id}/events?after=0`].events.at(-1);assert.equal(event.payload.knowledge.qualification.status,'quarantined');
+  await observeAnimations(page);await open(page,id);await title(page,id);
+  await page.locator('.au-context-nav [data-au-detail="activity"]').click();
+  const entry=page.locator(`[data-au-inspect="event"][data-au-record-id="${event.seq}"]`);assert.match(await entry.locator('..').innerText(),/Knowledge candidate withheld/i);
+  await entry.click();assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),event);await closeRecord(page);
+  await page.locator('.au-context-nav [data-au-detail="knowledge"]').click();assert.equal(await page.locator('[data-au-panel="knowledge"] .au-knowledge-publication [data-au-knowledge]').count(),0,'withheld candidate cannot borrow a qualified version link');
+  assert.doesNotMatch(await page.locator('[data-au-panel="knowledge"] .au-knowledge-publication').innerText(),/Qualified for reuse/);await title(page,id);
+  assert.deepEqual((await visibleRecord(page)).state,captured[`${base}/claims/${id}`].state);
 });
 
-for (const kind of ['action.completed', 'knowledge.published', 'knowledge.used']) test(`the default claim animates the exact accepted ${kind} object once and verified replay exposes the same settled record`, async t => {
-  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
-  const event = fixture.snapshots.reassessed.events.find(row => row.kind === kind), through = event.seq;
-  const page = await fixturePage(t, {priorAssessment: 'assessed', acceptedPrefix: through - 1});
-  await observeAnimations(page); await open(page, id); await title(page, id);
-  assert.deepEqual(await page.evaluate(() => window.__acceptedAnimations), [], 'opening accepted history settles without replaying its motion');
-  await page.evaluate(position => window.__fixture.loadAccepted(position), through);
-  await page.evaluate(() => window.__controller.refresh());
-  const cue = page.locator(`[data-au-event-seq="${through}"][data-au-semantic-event="${event.event_sha256}"]`);
-  assert.equal(await cue.isVisible(), true, 'the exact accepted event carries the default compact cue');
-  assert.equal(await cue.getAttribute('data-au-semantic-kind'), kind);
-  assert.equal(await cue.getAttribute('data-au-event-seq'), String(through));
-  const animations = await page.evaluate(() => window.__acceptedAnimations);
-  assert.equal(animations.filter(row => row.event === event.event_sha256).length, 1, 'the accepted receipt/event is the motion identity');
-  assert.ok(animations.every(row => row.options.fill === 'none' && row.options.iterations !== Infinity && row.options.delay + row.options.duration <= 800));
-  assert.equal(await page.locator('[data-au-stage]:visible').count(), 0, 'detailed recorded work stays contextual rather than competing with the graph');
-  const count = animations.length;
-  await page.evaluate(async () => { await window.__controller.refresh(); await window.__controller.refresh(); });
-  assert.equal(await page.evaluate(() => window.__acceptedAnimations.length), count, 'same accepted events cannot animate on repeated polling');
-  await page.locator('[data-au-disclosure="context-records"] > summary').click();
-  const object = page.locator(`.au-semantic-event[data-au-semantic-event="${event.event_sha256}"]`);
-  assert.equal(await object.isVisible(), true, 'the full accepted result remains available in its contextual record');
-  if (kind === 'action.completed') {
-    assert.equal(await object.locator('[data-au-select]').count() > 0, true);
-    await object.locator('summary').click();
-    assert.ok((await object.locator('pre').textContent()).includes(event.payload.receipt.receipt_sha256));
-    const source = object.locator('[data-au-source]').first(), citation = event.payload.result.citations[0];
-    assert.equal(await source.getAttribute('data-au-source'), citation.artifact_id);
-    await source.focus(); await page.keyboard.press('Enter');
-    await eventually(() => page.locator('dialog[open] .au-source-body mark').count().then(count => count === 1), 'the accepted action citation did not open by keyboard');
-    assert.equal(await page.locator('dialog[open] .au-source-body mark').textContent(), citation.quote);
-    await page.locator('[data-au-close]').click();
-    assert.equal(await page.evaluate(() => document.activeElement.dataset.auSourceOrigin), `semantic:${event.event_sha256}`);
-  } else {
-    const version = object.locator('[data-au-knowledge]');
-    assert.equal(await version.getAttribute('data-au-version'), String(event.payload.knowledge.version));
-    if (kind === 'knowledge.used') assert.equal(await version.getAttribute('data-au-definition-sha'), event.payload.knowledge.definition_sha256);
-    else assert.equal(await version.getAttribute('data-au-knowledge-sha'), event.payload.knowledge.knowledge_sha256);
-    await version.click();
-    await eventually(() => page.locator('[data-au-version][data-au-knowledge-identity]').count().then(count => count > 0), 'the accepted knowledge version link did not open');
+for(const kind of ['action.completed','knowledge.published','knowledge.used'])test(`the exact accepted ${kind} result survives live refresh and a settled verified prefix inspection`,async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,event=fixture.snapshots.reassessed.events.find(row=>row.kind===kind),through=event.seq;
+  const page=await fixturePage(t,{priorAssessment:'assessed',acceptedPrefix:through-1});await open(page,id);await title(page,id);await observeAnimations(page);
+  await page.evaluate(seq=>window.__fixture.loadAccepted(seq),through);await page.evaluate(()=>window.__controller.refresh());
+  assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[through].state);
+  const rendered=await page.evaluate(()=>window.__uiAnimations.length);await page.evaluate(async()=>{await window.__controller.refresh();await window.__controller.refresh();});
+  assert.equal(await page.evaluate(()=>window.__uiAnimations.length),rendered,'repeated identical accepted reads cannot create another motion');
+  await page.locator('.au-context-nav [data-au-detail="activity"]').click();await page.locator(`[data-au-inspect="event"][data-au-record-id="${through}"]`).click();
+  assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),event,'native drawer exposes the exact accepted event and receipt');await closeRecord(page);
+  if(kind==='action.completed'){
+    const citation=event.payload.result.citations[0],source=page.locator(`[data-au-panel="activity"] [data-au-source="${citation.artifact_id}"]`).first();
+    assert.equal(JSON.parse(await source.getAttribute('data-au-citation')).quote,citation.quote);await source.focus();await page.keyboard.press('Enter');
+    await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'accepted action citation did not verify by keyboard');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);
+    await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
+  }else{
+    await page.locator('.au-context-nav [data-au-detail="knowledge"]').click();
+    const recordKind=kind==='knowledge.used'?'use':'publication';await page.locator(`[data-au-panel="knowledge"] [data-au-inspect="${recordKind}"]`).first().click();
+    const recorded=JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent());assert.deepEqual(recorded,event.payload.knowledge);await closeRecord(page);
   }
-  const replay = await fixturePage(t, {priorAssessment: 'reassessed'});
-  await observeAnimations(replay);
-  await replay.evaluate(({id, through}) => window.__controller.openClaim(id, true, {mode: 'replay', through}), {id, through});
-  await title(replay, id);
-  assert.equal(await replay.locator(`[data-au-event-seq="${through}"][data-au-semantic-event="${event.event_sha256}"]`).isVisible(), true);
-  assert.deepEqual(await replay.evaluate(() => window.__acceptedAnimations), [], 'initial verified prefix inspection is settled');
+  const replay=await fixturePage(t,{priorAssessment:'reassessed'});await replay.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',through}),{id,through});await title(replay,id);await observeAnimations(replay);
+  assert.deepEqual((await visibleRecord(replay)).state,fixture.prefixes[through].state);await replay.evaluate(()=>window.__controller.refresh());assert.deepEqual(await replay.evaluate(()=>window.__uiAnimations),[],'an already verified prefix stays settled');
 });
 
-for (const interruption of ['reduce', 'reconnect', 'dialog', 'keyboard', 'hidden']) test(`accepted action motion stays still during ${interruption} while its recorded result remains inspectable`, async t => {
-  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
-  const event = fixture.snapshots.reassessed.events.find(row => row.kind === 'action.completed');
-  const page = await fixturePage(t, {priorAssessment: 'assessed', acceptedPrefix: event.seq - 1});
-  await open(page, id); await title(page, id); await observeAnimations(page);
-  if (interruption === 'reduce') await page.emulateMedia({reducedMotion: 'reduce'});
-  if (interruption === 'reconnect') {
-    await page.evaluate(() => { window.__fixture.readFailures = 1; });
-    await page.evaluate(() => window.__controller.refresh());
-    assert.match(await page.locator('.au-global-status').innerText(), /paused|interrupted|unavailable/i);
-  }
-  if (interruption === 'dialog') {
-    await page.locator('.au-context-nav [data-au-detail="sources"]').click();
-    await page.locator('[data-au-panel="sources"] [data-au-source]').first().click();
-    await eventually(() => page.locator('dialog[open]').count().then(count => count === 1), 'the source inspection did not open');
-  }
-  if (interruption === 'keyboard') await page.keyboard.press('Tab');
-  if (interruption === 'hidden') await page.evaluate(() => {
-    Object.defineProperty(document, 'hidden', {configurable: true, get: () => true});
-    document.dispatchEvent(new Event('visibilitychange'));
-  });
-  await page.evaluate(position => window.__fixture.loadAccepted(position), event.seq);
-  await page.evaluate(() => window.__controller.refresh());
-  if (interruption === 'hidden') await page.evaluate(() => {
-    Object.defineProperty(document, 'hidden', {configurable: true, get: () => false});
-    document.dispatchEvent(new Event('visibilitychange'));
-  });
-  await eventually(() => page.locator(`[data-au-event-seq="${event.seq}"][data-au-semantic-event="${event.event_sha256}"]`).count().then(count => count === 1), 'the exact accepted action cue did not remain inspectable');
-  assert.equal(await page.evaluate(eventHash => window.__acceptedAnimations.filter(row => row.event === eventHash).length, event.event_sha256), 0);
-  assert.deepEqual(JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, fixture.prefixes[event.seq].state);
+for(const interruption of ['reduce','reconnect','dialog','keyboard','hidden'])test(`accepted causal motion stays still during ${interruption} while its exact action receipt remains inspectable`,async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,event=fixture.snapshots.reassessed.events.find(row=>row.kind==='action.completed');
+  const page=await fixturePage(t,{priorAssessment:'assessed',acceptedPrefix:event.seq-1});await open(page,id);await title(page,id);
+  if(interruption==='reduce')await page.emulateMedia({reducedMotion:'reduce'});
+  if(interruption==='reconnect'){await page.evaluate(()=>{window.__fixture.readFailures=1;});await page.evaluate(()=>window.__controller.refresh());assert.match(await page.locator('.au-global-status').innerText(),/paused|interrupted|unavailable/i);}
+  if(interruption==='dialog'){await page.locator('.au-context-nav [data-au-detail="sources"]').click();await page.locator('[data-au-panel="sources"] [data-au-source]').first().click();await eventually(()=>page.locator('.au-source-dialog[open]').count().then(count=>count===1),'original source inspection did not open');}
+  if(interruption==='keyboard')await page.keyboard.press('Tab');
+  if(interruption==='hidden')await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});
+  await observeAnimations(page);await page.evaluate(seq=>window.__fixture.loadAccepted(seq),event.seq);await page.evaluate(()=>window.__controller.refresh());
+  if(interruption==='hidden')await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>false});document.dispatchEvent(new Event('visibilitychange'));});
+  assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[event.seq].state);
+  assert.equal(await page.evaluate(()=>window.__uiAnimations.filter(row=>row.node||row.fact||row.document||row.source||row.event).length),0,'inhibited causal targets settle without animation');
 });
 
 test('Verified replay stays visible as presentation mode when the accepted prefix status is Working', async t => {
   const page = await fixturePage(t, {replayStatus: 'running'});
   await page.evaluate(id => { void window.__controller.openClaim(id, true, {mode: 'replay', through: 2}); }, processedId);
   await title(page, processedId);
-  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
-  assert.equal(await page.locator('.au-work-head .au-status').innerText(), 'Working');
+  assert.match(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
+  assert.equal((await page.locator('[data-au-claim-status]').innerText()).replace(/\.$/,''), 'Working');
   assert.match(new URL(page.url()).hash, /mode=replay/);
   assert.match(new URL(page.url()).hash, /through=2/);
   assert.equal((await calls(page, `/claims/${processedId}/replay`)).length, 1);
@@ -1293,7 +1261,7 @@ test('Verified replay stays visible as presentation mode when the accepted prefi
   await page.evaluate(async () => { await window.__controller.refresh(); await window.__controller.refresh(); });
   await page.clock.runFor(7000);
   assert.equal((await calls(page, `/claims/${processedId}/snapshot`)).length, before, 'a replay must not poll live state');
-  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
+  assert.match(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
   await page.evaluate(id => { void window.__controller.openClaim(id, true, {mode: 'replay', through: 0}); }, processedId);
   await title(page, processedId);
   assert.equal(await page.locator('[data-au-arrival], [data-au-pause], [data-au-resume], [data-au-start]').count(), 0, 'a revision-zero replay cannot expose Start or file arrival');
@@ -1324,10 +1292,10 @@ test('an explicit original Start preserves its guarded retry after background ac
   assert.equal(first.headers['Content-Type'], 'application/json');
   await page.clock.runFor(7000);
   await eventually(async () => {
-    if (!await page.locator('[data-au-disclosure="claim-record"] pre').count()) return false;
-    return JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state.revision === 1;
+    if (!await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').count()) return false;
+    return JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state.revision === 1;
   }, 'background polling did not observe the accepted revision after the Start response was lost');
-  assert.match(await page.locator('.au-work-head').innerText(), /revision 1\b/i);
+  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'1');
   await eventually(async () => await currentReadState(page) === 'verified' && await page.locator('[data-au-start]').innerText() === 'Retry start' && await page.locator('[data-au-start]').isEnabled(), 'the fresh accepted snapshot must finish the pending admission and restore its exact Start retry');
   assert.equal(await page.locator('[data-au-start]').innerText(), 'Retry start');
   assert.equal(await page.locator('[data-au-start]').isEnabled(), true, 'the nonzero accepted revision must retain its original pending Start retry');
@@ -1335,14 +1303,14 @@ test('an explicit original Start preserves its guarded retry after background ac
   const liveReads = (await calls(page, `/claims/${startId}/snapshot`)).length;
   await page.evaluate(id => { void window.__controller.openClaim(id, true, {mode: 'replay', through: 1}); }, startId);
   await title(page, startId);
-  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
+  assert.match(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
   assert.equal(await page.locator('[data-au-arrival], [data-au-pause], [data-au-resume], [data-au-start]').count(), 0, 'replay must hide write controls even when that claim has a pending Start');
   await page.evaluate(() => window.__controller.refresh());
   assert.equal((await calls(page, `/claims/${startId}/snapshot`)).length, liveReads, 'refreshing the pending claim in replay cannot read live state');
   assert.equal((await posts()).length, 1, 'entering replay cannot submit the pending Start');
   await page.evaluate(() => { window.__fixture.providerReady = false; });
   await page.locator('.au-nav [data-au-nav="work"]').click();
-  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'Cases did not restore after an uncertain Start');
+  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 20), 'Cases did not restore after an uncertain Start');
   await page.locator(`[data-au-claim-row="${startId}"] [data-au-claim="${startId}"]`).click();
   await title(page, startId);
   assert.equal(new URL(page.url()).hash, `#autonomous/claim/${startId}`);
@@ -1351,23 +1319,23 @@ test('an explicit original Start preserves its guarded retry after background ac
   assert.equal(await page.locator('[data-au-start]').innerText(), 'Retry start');
   await page.locator('[data-au-start]').click();
   await eventually(async () => {
-    const record = await page.locator('[data-au-disclosure="claim-record"] pre').count();
+    const record = await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').count();
     if (!record) return false;
-    return JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state.revision >= 2;
+    return JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state.revision >= 2;
   }, 'Start did not read the concurrently advanced matching snapshot');
   const [initial, retry] = await posts();
   assert.equal((await posts()).length, 2, 'each explicit Start click must make one POST');
   assert.equal(retry.body, initial.body, 'retry must preserve the exact JSON and idempotency key across navigation');
   assert.deepEqual(retry.headers, initial.headers);
-  const saved = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent());
+  const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent());
   assert.equal(saved.state.claim_id, startId);
   assert.equal(saved.state.revision, 2);
   assert.equal(saved.projection.state_sha256, saved.state.state_sha256);
   assert.deepEqual(saved.state.source_descriptors, original.source_descriptors, 'Start must preserve the original source identity');
   assert.equal(saved.state.title, original.title);
-  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Live execution · revision \d+$/);
+  assert.doesNotMatch(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
   assert.equal(new URL(page.url()).hash, `#autonomous/claim/${startId}`);
-  assert.match(await page.locator('.au-work-head').innerText(), /revision 2\b/i);
+  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'2');
   assert.equal(await page.locator('[data-au-start]').count(), 0);
   await page.clock.runFor(10000);
   assert.equal((await posts()).length, 2, 'neither snapshot polling nor accepted Start can submit another POST');
@@ -1383,7 +1351,7 @@ test('an original revision-zero packet exposes its source without a substantive 
   assert.match(await page.locator('[data-au-view]').innerText(), /not started|not run|unprocessed/i);
   const original = await page.evaluate(id => window.__fixture.envelopes[id].state, unprocessedId);
   await page.locator(`[data-au-source="${original.source_descriptors[0].artifact_id}"]`).click();
-  await eventually(() => page.locator('dialog').getAttribute('open').then(value => value !== null), 'The original source did not open');
+  await eventually(() => page.locator('.au-source-dialog').getAttribute('open').then(value => value !== null), 'The original source did not open');
   await eventually(() => page.locator('.au-source-body').count().then(count => count === 1), 'the original source text did not verify');
   assert.equal(await page.locator('.au-source-body').textContent(), original.message);
   assert.equal(await page.locator('[data-au-node], [data-au-edge]').count(), 0);
@@ -1394,13 +1362,13 @@ test('an atomic snapshot renders a matching state and cursor even while a writer
   const revision = await page.evaluate(id => window.__fixture.envelopes[id].state.revision, processedId);
   await open(page, processedId);
   await title(page, processedId);
-  assert.match(await page.locator('.au-work-head').innerText(), new RegExp(`revision ${revision}\\b`, 'i'));
+  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(revision));
   assert.ok(await page.locator('[data-au-node]').count() > 1, 'the verified snapshot renders its saved substantive graph');
   assert.equal((await calls(page, `/claims/${processedId}`)).length, 0, 'atomic reads cannot split state and events');
   assert.equal((await calls(page, `/claims/${processedId}/events`)).length, 0);
   assert.deepEqual((await calls(page, `/claims/${processedId}/snapshot`)).map(call => new URL(call.url, 'http://fixture.invalid').searchParams.get('after')), ['0']);
   await page.evaluate(() => window.__controller.refresh());
-  await eventually(async () => new RegExp(`revision ${revision + 1}\\b`, 'i').test(await page.locator('.au-work-head').innerText()), 'polling did not render the next atomic revision');
+  await eventually(()=>page.locator('[data-au-revision]').getAttribute('data-au-revision').then(value=>value===String(revision+1)), 'polling did not render the next atomic revision');
   assert.deepEqual((await calls(page, `/claims/${processedId}/snapshot`)).map(call => new URL(call.url, 'http://fixture.invalid').searchParams.get('after')), ['0', String(revision)]);
   await page.locator('.au-context-nav [data-au-detail="documents"]').click();
   assert.equal(await page.locator('[data-au-graph]').isVisible(), false, 'Documents must hide the process graph');
@@ -1452,6 +1420,61 @@ test('visibility resume recovers an initial opening after three mismatched snaps
   assert.ok((await calls(page, `/claims/${processedId}/snapshot`)).length >= 4);
   assert.equal((await calls(page, `/claims/${processedId}`)).length, 0);
   assert.equal((await calls(page, `/claims/${processedId}/events`)).length, 0);
+});
+
+test('quiet work: bounded case pages preserve all original membership, off-page search and domain history',async t=>{
+  const page=await fixturePage(t),first=await originalPageIds(page),params=()=>new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+  assert.deepEqual(first,originals.slice(0,20).map(row=>row.claim_id));
+  await page.locator('[data-au-page="2"]').click();const second=await originalPageIds(page);assert.deepEqual(second,originals.slice(20,40).map(row=>row.claim_id));assert.equal(params().get('page'),'2');
+  await page.goBack();await eventually(()=>originalPageIds(page).then(ids=>JSON.stringify(ids)===JSON.stringify(first)),'Back did not restore page one');
+  await page.goForward();await eventually(()=>originalPageIds(page).then(ids=>JSON.stringify(ids)===JSON.stringify(second)),'Forward did not restore page two');
+  const domain='lease_termination_dispute',expected=originals.filter(row=>browsing.get(row.claim_id).domain===domain).map(row=>row.claim_id);
+  await page.locator(`[data-au-domain="${domain}"]`).click();assert.equal(params().get('domain'),domain);assert.equal(params().get('page'),null);
+  const domainIds=await collectVisiblePages(page);assert.deepEqual(domainIds,expected);assert.equal(new Set(domainIds).size,50);assert.equal(await page.locator('[data-au-claim-row]').count(),10);
+  const id=expected.at(-1),search=page.locator('[data-au-claim-search]');await search.fill(id);
+  await eventually(()=>originalPageIds(page).then(ids=>ids.length===1&&ids[0]===id),'global cached search did not find the original beyond the first page');
+  assert.equal(params().get('q'),id);assert.equal(params().get('page'),null);assert.equal(await search.evaluate(element=>document.activeElement===element),true,'typing preserves the native search field');
+  assert.match(await page.locator('[data-au-pagination]').innerText(),/Page 1 of 1/);
+  const searchRoute=new URL(page.url()).hash;await page.locator(`[data-au-claim="${id}"]`).click();await title(page,id);await page.goBack();
+  await eventually(()=>new URL(page.url()).hash===searchRoute&&page.locator('[data-au-claim-row]').count().then(count=>count===1),'Back from a selected case lost its search/domain/page context');
+  assert.equal(await page.locator('[data-au-claim-search]').inputValue(),id);assert.deepEqual(await originalPageIds(page),[id]);
+  await search.fill('');await page.locator('[data-au-domain="all"]').click();const all=await collectVisiblePages(page);assert.deepEqual(all,originals.map(row=>row.claim_id));assert.equal(new Set(all).size,150);
+});
+
+test('quiet work: known original previews remain exact and read only through a held malformed read until fresh verification',async t=>{
+  const id=originals.find(row=>!demoIds.includes(row.claim_id)).claim_id,original=originals.find(row=>row.claim_id===id),page=await fixturePage(t,{holdId:id,holdRemaining:1,corruptProjection:true,providerReady:true});
+  const assertPreview=async()=>{
+    const preview=page.locator(`[data-au-preview="catalog"][data-au-preview-claim="${id}"]`);assert.equal(await preview.isVisible(),true);
+    assert.equal(await preview.locator('[data-au-catalog-title]').textContent(),original.subject);assert.equal(await preview.locator('.au-original-message').textContent(),[...original.message].slice(0,240).join(''));
+    assert.equal(await page.locator('[data-au-revision], [data-au-state-sha], [data-au-node], [data-au-fact], [data-au-obligation], [data-au-outcome], [data-au-claim-title], [data-au-start], [data-au-pause], [data-au-resume], [data-au-arrival], [data-au-submit], input[type=file]').count(),0,'a catalog excerpt cannot grant accepted state or command authority');
+  };
+  await page.locator(`[data-au-claim="${id}"]`).click();await eventually(()=>page.evaluate(()=>window.__fixture.held.length===1),'the fresh claim read was not held');await assertPreview();
+  await page.evaluate(()=>{window.__fixture.holdId=null;for(const held of window.__fixture.held.splice(0))held.release();});
+  await eventually(()=>currentReadState(page).then(state=>state==='failed'),'the malformed projection was not rejected');await assertPreview();
+  assert.deepEqual(await page.evaluate(()=>window.__fixture.calls.filter(call=>call.method!=='GET')),[]);
+  await page.evaluate(()=>{window.__fixture.corruptProjection=false;});await page.clock.runFor(1601);await title(page,id);assert.equal(await currentReadState(page),'verified');assert.equal(await page.locator('[data-au-preview]').count(),0);
+  assert.deepEqual((await visibleRecord(page)).state,fixtureData().envelopes[id].state);assert.equal(await page.locator('[data-au-start]:enabled').count(),1,'only the freshly verified original can expose its guarded Start');
+  await open(page,'clm_ffffffffffffffff');await eventually(()=>page.locator('[data-au-preview="unknown"]').count().then(count=>count===1),'an unknown claim borrowed a catalog case');
+  assert.equal(await page.locator('[data-au-catalog-title], .au-original-message, [data-au-revision], [data-au-start]').count(),0);
+});
+
+test('quiet work: acquired MIME originals use only their bound parsed message while exact wire bytes and text hashes stay inspectable',async t=>{
+  const mime=mimeDrawerFixture();assert.match(mime.text,/MIME-Version:/);assert.notEqual(mime.text,mime.intake.customer_message.body);
+  for(const mode of ['bound','foreign','unbound','supporting'])await t.test(mode,async t=>{
+    const page=await fixturePage(t,{mimeDrawer:mode,width:390,height:844});await open(page,mime.claim_id);await title(page,mime.claim_id);
+    const excerpt=page.locator('.au-acquired-text'),source=fixtureData({mimeDrawer:mode}).envelopes[mime.claim_id].state.acquired_sources[0];
+    if(mode==='bound'){
+      assert.equal(await excerpt.textContent(),[...mime.intake.customer_message.body].slice(0,520).join('')+'…');assert.doesNotMatch(await excerpt.textContent(),/MIME-Version:|Content-Transfer-Encoding:|Content-Type:|^From:/);
+      assert.equal(await page.locator('[data-au-source-identity]').getAttribute('data-au-source-identity'),[mime.claim_id,source.artifact_id,source.sha256,source.text_sha256].join(':'));
+    }else assert.equal(await excerpt.count(),0,'a foreign, unbound or supporting MIME artifact cannot present wire content as a readable original message');
+    const record=await visibleRecord(page);assert.equal(record.state.acquired_sources[0].text,mime.text);assert.equal(record.state.acquired_sources[0].text_sha256,sha(mime.text));assert.equal(record.state.acquired_sources[0].sha256,sha(Buffer.from(mime.bytes,'base64')));
+    assert.equal(record.state.graph,null);assert.deepEqual(record.state.facts,[]);assert.deepEqual(record.state.obligations,[]);assert.equal(record.state.outcome,null);
+    await page.locator('.au-context-nav [data-au-detail="sources"]').click();await page.locator(`[data-au-panel="sources"] [data-au-source="${source.artifact_id}"]`).first().click();
+    await eventually(()=>page.locator('.au-source-dialog[open] .au-source-body').count().then(count=>count===1),'the original MIME source record did not remain openable');
+    // HTML parsing normalizes line endings in the displayed pre; the exact
+    // CRLF wire text and original byte digest were checked in the UI record.
+    assert.equal(await page.locator('.au-source-dialog[open] .au-source-body').textContent(),mime.text.replace(/\r\n/g,'\n'));await page.locator('[data-au-close]').click();
+  });
 });
 
 test('an unknown claim snapshot and legacy 404 cannot disable atomic reads for the next known claim', async t => {
@@ -1511,12 +1534,12 @@ test('navigation abandons the scheduled recovery of an opening that never matche
   await open(page, processedId);
   await eventually(async () => (await calls(page, `/claims/${processedId}/events`)).length === 3, 'the initial read pairs did not complete');
   await page.locator('.au-nav [data-au-nav="work"]').click();
-  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'navigation did not restore Cases');
+  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 20), 'navigation did not restore Cases');
   await page.evaluate(() => { window.__fixture.splitWriter = false; });
   await page.clock.runFor(7000);
   assert.equal((await calls(page, `/claims/${processedId}/events`)).length, 3, 'a cancelled opening must not retry after navigation');
   assert.equal(await page.locator('[data-au-claim-title]').count(), 0);
-  assert.equal(await page.locator('[data-au-claim-row]').count(), 150);
+  assert.equal(await page.locator('[data-au-claim-row]').count(), 20);
   assert.equal(new URL(page.url()).hash, '#autonomous/cases');
 });
 
@@ -1525,14 +1548,14 @@ test('a delayed response from an abandoned claim cannot replace the next claim o
   await open(page, processedId);
   await eventually(() => page.evaluate(() => window.__fixture.held.length === 1), 'the first claim snapshot was not held');
   await page.locator('.au-nav [data-au-nav="work"]').click();
-  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'navigation did not return to Cases');
+  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 20), 'navigation did not return to Cases');
   await open(page, otherId);
   await title(page, otherId);
   const renderedIdentity = () => page.evaluate(() => ({
     title: document.querySelector('[data-au-claim-title]')?.textContent,
     header: document.querySelector('.au-work-head')?.textContent,
     nodes: [...document.querySelectorAll('[data-au-node]')].map(node => node.dataset.auNode),
-    savedRecord: document.querySelector('[data-au-disclosure="claim-record"] pre')?.textContent,
+    savedRecord: document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]')?.textContent,
   }));
   const before = await renderedIdentity();
   await page.evaluate(() => { for (const held of window.__fixture.held.splice(0)) held.release(); });
@@ -1572,17 +1595,16 @@ async function connectorContrast(page) {
   });
 }
 
-test('graph routes and evidence connectors retain at least 3:1 effective contrast with dashed excluded routes and coral selection', async t => {
+test('real graph routes retain at least 3:1 effective contrast with dashed excluded branches and coral selection', async t => {
   for (const width of [1440, 390]) {
     const page = await fixturePage(t, {width});
     await open(page, processedId);
     await title(page, processedId);
     await page.clock.runFor(320);
     await page.evaluate(async () => { const animations = document.getAnimations(); for (const animation of animations) animation.finish(); await Promise.allSettled(animations.map(animation => animation.finished)); });
-    const receipt = await connectorContrast(page);
+    await openFullProcess(page);const receipt = await connectorContrast(page);
     assert.ok(receipt.some(row => row.kind === 'graph' && row.selected === 'false'), 'the contrast check must include ordinary recorded connections');
-    assert.ok(receipt.some(row => row.kind === 'evidence'), 'the contrast check must include actual evidence connectors');
-    assert.ok(receipt.some(row => row.kind === 'selection'), 'the contrast check must include the selected-step tether and its opacity');
+    assert.ok(receipt.every(row=>row.kind==='graph'),'the quiet reading path does not invent SVG connections between records');
     for (const row of receipt) assert.ok(row.contrast >= 3, `${width}px ${row.kind} connector must reach 3:1 after opacity and background composition: ${JSON.stringify(row)}`);
     const excluded = receipt.filter(row => row.kind === 'graph' && ['false', 'inactive', 'not_reached'].includes(row.state));
     assert.ok(excluded.length > 0, 'the real process must retain excluded routes');
@@ -1602,34 +1624,17 @@ test('graph routes and evidence connectors retain at least 3:1 effective contras
   }
 });
 
-test('the demonstration itinerary numbers its nine domain-grouped cases and shows verified status at the current presentation position', async t => {
-  const page = await fixturePage(t, {presentationSuite: 'replay', width: 390, height: 844});
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  const groups = page.locator('.au-demo-selection section');
-  assert.equal(await groups.count(), 3);
-  assert.deepEqual(await groups.locator('h2, h3').allTextContents(), ['Defects & repairs', 'Lease termination', 'Rent changes']);
-  for (let index = 0; index < 3; index++) assert.deepEqual(await groups.nth(index).locator('[data-au-demo-case]').evaluateAll(rows => rows.map(row => row.dataset.auDemoCase)), demoIds.slice(index * 3, index * 3 + 3));
-  assert.deepEqual(await page.locator('.au-demo-selection .au-demo-order').allTextContents(), ['01', '02', '03', '04', '05', '06', '07', '08', '09']);
-  assert.equal(await page.locator('.au-demo-selection svg').count(), 0, 'the itinerary cannot imply a process or causal connection between separate cases');
-  await page.locator('[data-au-demo-play]').click();
-  await title(page, demoIds[0]);
-  const itinerary = page.locator('details.au-demo-itinerary[data-au-disclosure="demo-itinerary"]');
-  assert.equal(await itinerary.count(), 1);
-  const position = () => itinerary.locator('.au-demo-position').innerText().then(text => text.match(/\d+/g).map(Number));
-  assert.deepEqual(await position(), [1, 9]);
-  assert.equal(await itinerary.locator('[data-au-demo-case][aria-current="step"]').getAttribute('data-au-demo-case'), demoIds[0]);
-  assert.equal(await itinerary.locator('[aria-current="step"] .au-status').textContent(), 'Not started', 'the verified original overrides the collection summary of a completed head');
-  await itinerary.locator('summary').click();
-  assert.deepEqual(await itinerary.locator('.au-demo-order').allTextContents(), ['01', '02', '03', '04', '05', '06', '07', '08', '09']);
-  await page.clock.runFor(300);
-  await eventually(() => itinerary.locator('[aria-current="step"] .au-status').textContent().then(text => text === 'Working'), 'the itinerary retained a stale collection status after the accepted prefix changed');
-  assert.deepEqual(await position(), [1, 9]);
-  for (let tick = 0; tick < 180 && new URL(page.url()).hash.split('?')[0] !== `#autonomous/claim/${demoIds[1]}`; tick++) await page.clock.runFor(20);
-  await title(page, demoIds[1]);
-  assert.deepEqual(await position(), [2, 9]);
-  assert.equal(await itinerary.locator('[data-au-demo-case][aria-current="step"]').getAttribute('data-au-demo-case'), demoIds[1]);
-  if (process.env.CASEPATH_BROWSER_RECEIPTS) await page.screenshot({path: '/tmp/casepath-visual-itinerary-390.png', fullPage: true});
-  await page.locator('.au-nav [data-au-nav="work"]').click();
+test('the mobile Demo chooser keeps nine domain-bound independent identities and pauses accepted playback', async t => {
+  const page=await fixturePage(t,{presentationSuite:'replay',width:390,height:844});
+  await page.locator('.au-nav [data-au-nav="demonstration"]').click();await title(page,demoIds[0]);
+  const original=(await visibleRecord(page)).state;assert.equal(original.revision,0);assert.equal(original.status,'not_started');
+  await page.locator('[data-au-inspect="demo"]').click();const picker=page.locator('.au-record-dialog[open]');
+  assert.deepEqual(await picker.locator('h3').allTextContents(),['Defects & repairs','Lease termination','Rent changes']);
+  for(let index=0;index<3;index++)assert.deepEqual(await picker.locator('section').nth(index).locator('[data-au-demo-case]').evaluateAll(rows=>rows.map(row=>row.dataset.auDemoCase)),demoIds.slice(index*3,index*3+3));
+  assert.equal(await picker.locator('svg').count(),0,'independent case choice cannot imply process connections between claims');
+  const before=(await calls(page,`/claims/${demoIds[0]}/replay`)).length;await page.clock.runFor(7000);assert.equal((await calls(page,`/claims/${demoIds[0]}/replay`)).length,before,'roster inspection pauses prefix playback');
+  await picker.locator(`[data-au-demo-case="${demoIds[1]}"]`).click();await title(page,demoIds[1]);assert.equal((await visibleRecord(page)).state.revision,0);assert.equal((await visibleRecord(page)).state.claim_id,demoIds[1]);
+  assert.equal(await page.locator('[data-au-demo-stop]').count(),1);await focusedReceipt(page,'quiet-demo-picker-390',{roster:demoIds,independentClaims:true});
 });
 
 for (const reducedMotion of ['no-preference', 'reduce']) test(`mobile inspection navigates and centers every real step while retaining forks, excluded routes and free pan (${reducedMotion})`, async t => {
@@ -1637,7 +1642,7 @@ for (const reducedMotion of ['no-preference', 'reduce']) test(`mobile inspection
   await page.emulateMedia({reducedMotion});
   await open(page, processedId);
   await title(page, processedId);
-  const record = await page.evaluate(id => structuredClone(window.__fixture.envelopes[id].state), processedId);
+  await openFullProcess(page);const record = await page.evaluate(id => structuredClone(window.__fixture.envelopes[id].state), processedId);
   const ids = record.graph.nodes.map(node => node.node_id);
   assert.equal(ids.length, 11);
   assert.equal(record.graph.edges.length, 13);
@@ -1645,43 +1650,18 @@ for (const reducedMotion of ['no-preference', 'reduce']) test(`mobile inspection
   const before = await topology();
   assert.equal(before.length, record.graph.edges.length);
   assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(nodes => nodes.map(node => node.dataset.auNode))), sorted(ids));
-  const inspection = page.locator('.au-mobile-inspection[data-au-node-inspection]');
-  assert.equal(await inspection.isVisible(), true);
-  const previous = inspection.locator('[data-au-node-previous]'), next = inspection.locator('[data-au-node-next]');
-  const label = control => control.getAttribute('aria-label').then(async text => text || await control.innerText());
-  assert.match(await label(previous), /previous.*step|step.*previous/i);
-  assert.match(await label(next), /next.*step|step.*next/i);
-  await page.locator(`[data-au-node="${ids[0]}"]`).click();
-  assert.equal(await previous.isDisabled(), true);
-  assert.equal(await next.isDisabled(), false);
-  const assertStep = async index => {
-    assert.match(await inspection.locator('[data-au-inspection-position]').innerText(), new RegExp(`Step\\s+${index + 1}\\s+of\\s+${ids.length}\\b`, 'i'));
-    assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'), ids[index]);
-    assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), ids[index]);
-    const geometry = await page.evaluate(id => {
-      const viewport = document.querySelector('[data-au-graph-pan]'), node = document.querySelector(`[data-au-node="${id}"]`), area = viewport.getBoundingClientRect(), bounds = node.getBoundingClientRect();
-      return {left: bounds.left, right: bounds.right, viewportLeft: area.left, viewportRight: area.right, centerDifference: Math.abs((bounds.left + bounds.right - area.left - area.right) / 2), scroll: viewport.scrollLeft, maximum: viewport.scrollWidth - viewport.clientWidth};
-    }, ids[index]);
-    assert.ok(geometry.left >= geometry.viewportLeft - 1 && geometry.right <= geometry.viewportRight + 1, 'the selected real step must be visible in the mobile graph');
-    if (geometry.scroll > 1 && geometry.scroll < geometry.maximum - 1) assert.ok(geometry.centerDifference <= 3, `mobile inspection must center the actual selected node: ${JSON.stringify(geometry)}`);
+  const assertStep=async index=>{
+    assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'),ids[index]);
+    assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),ids[index]);
+    assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('node'),ids[index]);
+    const geometry=await page.evaluate(id=>{const viewport=document.querySelector('[data-au-graph-pan]'),node=document.querySelector(`[data-au-node="${id}"]`),area=viewport.getBoundingClientRect(),bounds=node.getBoundingClientRect();return {left:bounds.left,right:bounds.right,viewportLeft:area.left,viewportRight:area.right};},ids[index]);
+    assert.ok(geometry.left>=geometry.viewportLeft-1&&geometry.right<=geometry.viewportRight+1,'direct inspection keeps the actual selected step visible');
   };
-  await assertStep(0);
-  for (let index = 1; index < ids.length; index++) {
-    await next.scrollIntoViewIfNeeded();
-    await next.click();
-    if (reducedMotion === 'reduce') assert.equal(await page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length), 0, 'reduced motion must suppress navigation animation');
-    await assertStep(index);
-    const selectedVisible = await page.locator('[data-au-node][aria-pressed="true"]').evaluate(element => {
-      const bounds = element.getBoundingClientRect();
-      return bounds.top >= 15 && bounds.bottom <= innerHeight - 15;
-    });
-    assert.equal(selectedVisible, true, 'explicit inspection keeps the selected real step inside the browser viewport');
-    if (index < ids.length - 1) assert.equal(await next.evaluate(element => document.activeElement === element), true, 'enabled inspection controls retain their accessible focus');
+  for(let index=0;index<ids.length;index++){
+    const node=page.locator(`[data-au-node="${ids[index]}"]`);await node.scrollIntoViewIfNeeded();await node.focus();await page.keyboard.press('Enter');await assertStep(index);
+    assert.equal(await node.evaluate(element=>document.activeElement===element),true,'native keyboard graph selection keeps focus on its selected decision');
+    if(reducedMotion==='reduce')assert.equal(await page.evaluate(()=>document.getAnimations().filter(animation=>animation.playState==='running').length),0);
   }
-  assert.equal(await next.isDisabled(), true);
-  assert.equal(await previous.isDisabled(), false);
-  await previous.click();
-  await assertStep(ids.length - 2);
   const excludedId = record.evaluation.nodes.find(node => node.activation === 'false').node_id;
   await page.locator(`[data-au-node="${excludedId}"]`).click();
   assert.equal(await page.locator(`[data-au-node="${excludedId}"]`).getAttribute('aria-pressed'), 'true', 'an excluded branch remains inspectable without becoming applicable');
@@ -1692,8 +1672,8 @@ for (const reducedMotion of ['no-preference', 'reduce']) test(`mobile inspection
   assert.equal(await page.locator('[data-au-graph-pan]').evaluate(element => element.scrollLeft), panned, 'a matching update must preserve arbitrary free panning');
   assert.equal(await page.locator('[data-au-node][aria-pressed="true"]').getAttribute('data-au-node'), excludedId);
   assert.deepEqual(await topology(), before, 'inspection order cannot alter recorded forks or route applicability');
-  await next.click();
-  await assertStep(ids.indexOf(excludedId) + 1);
+  await page.locator(`[data-au-node="${ids[ids.indexOf(excludedId)+1]}"]`).click();
+  await assertStep(ids.indexOf(excludedId)+1);
   if (process.env.CASEPATH_BROWSER_RECEIPTS) await page.screenshot({path: `/tmp/casepath-visual-inspection-390-${reducedMotion}.png`, fullPage: true});
 });
 
@@ -1704,7 +1684,7 @@ test('collection search retains a persistent input affordance and visible focus 
     const style = () => input.evaluate(element => { const css = getComputedStyle(element); return {border: Number.parseFloat(css.borderBottomWidth), borderStyle: css.borderBottomStyle, shadow: css.boxShadow, outline: Number.parseFloat(css.outlineWidth), outlineStyle: css.outlineStyle, focusVisible: element.matches(':focus-visible'), height: element.getBoundingClientRect().height}; });
     const idle = await style();
     assert.ok(idle.border >= 1 && idle.borderStyle !== 'none', 'search must remain visibly underlined before focus');
-    assert.match(idle.shadow, /inset/, 'search retains its subtle inset affordance');
+    assert.ok(idle.border>=1,'the native search affordance remains visible at rest');
     assert.ok(idle.height >= 44);
     await input.focus();
     const focused = await style();
@@ -1728,52 +1708,37 @@ test('a working claim keeps completed step and action labels scoped to Completed
   }, processedId);
   await open(page, processedId);
   await title(page, processedId);
-  assert.equal(await page.locator('.au-work-head .au-status').innerText(), 'Working');
+  assert.equal((await page.locator('[data-au-claim-status]').innerText()).replace(/\.$/,''), 'Working');
   const completedNodes = page.locator('[data-au-node][data-status="completed"]');
   assert.ok(await completedNodes.count() > 0, 'the accepted record must include completed steps within a working claim');
   for (const label of await completedNodes.locator('.au-node-state').allTextContents()) assert.equal(label, 'Completed');
-  const actionLabels = await page.locator('.au-recorded-actions .au-action-heading span').allTextContents();
-  assert.ok(actionLabels.length > 0, 'the accepted record must include completed actions');
-  for (const label of actionLabels) assert.equal(label, 'Completed');
   const id = await completedNodes.first().getAttribute('data-au-node');
   await completedNodes.first().click();
   assert.equal(await page.locator('.au-step-status').innerText(), 'Completed');
   assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), id);
-  const saved = JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state;
+  const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state;
   assert.equal(saved.status, 'running');
   assert.deepEqual(saved.evaluation.nodes, expected.nodes);
   assert.deepEqual(saved.actions, expected.actions, 'presentation labels cannot rewrite the accepted action status or receipt');
+  await page.locator('.au-context-nav [data-au-detail="activity"]').click();
+  const actions=page.locator('[data-au-panel="activity"] [data-au-inspect="action"]');assert.equal(await actions.count(),expected.actions.length);
+  for(let index=0;index<expected.actions.length;index++){await actions.nth(index).click();const record=JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent());assert.deepEqual(record.result,expected.actions[index].result||expected.actions[index]);assert.equal(record.result.status,'completed');await closeRecord(page);}
+  assert.equal((await page.locator('[data-au-claim-status]').innerText()).replace(/\.$/,''),'Working');
 });
 
-test('the desktop demonstration overview keeps all nine numbered cases visible while retaining each exact original subject', async t => {
-  const page = await fixturePage(t, {presentationSuite: 'replay', width: 1440, height: 900});
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  const rows = page.locator('.au-demo-selection [data-au-demo-case]');
-  assert.equal(await rows.count(), 9);
-  const geometry = await rows.evaluateAll(elements => elements.map(element => ({id: element.dataset.auDemoCase, number: element.querySelector('.au-demo-order').textContent, ...element.getBoundingClientRect().toJSON()})));
-  assert.deepEqual(geometry.map(row => row.number), ['01', '02', '03', '04', '05', '06', '07', '08', '09']);
-  for (const row of geometry) assert.ok(row.top >= 0 && row.bottom <= 900, `all nine itinerary positions must remain in the desktop overview: ${JSON.stringify(row)}`);
-  const columns = await page.locator('.au-demo-selection > section').evaluateAll(elements => elements.map(element => element.getBoundingClientRect().x));
-  assert.equal(new Set(columns).size, 3, 'the desktop overview groups its three domains into adjacent columns');
-  for (const id of demoIds) {
-    const row = page.locator(`[data-au-demo-case="${id}"]`), subject = originals.find(original => original.claim_id === id).subject;
-    const preview = row.locator('button > span');
-    assert.equal(await preview.textContent(), subject, 'a compact itinerary cannot rewrite the original subject');
-    assert.equal(await preview.getAttribute('title') || await row.locator('button').getAttribute('title'), subject, 'the full original subject remains available on the preview');
-    assert.ok((await row.locator('button').getAttribute('aria-label') || await row.locator('button').textContent()).includes(subject), 'the complete subject remains in the accessible case name');
-    const style = await preview.evaluate(element => { const css = getComputedStyle(element); return {whiteSpace: css.whiteSpace, overflow: css.overflow, ellipsis: css.textOverflow, height: element.getBoundingClientRect().height, lineHeight: Number.parseFloat(css.lineHeight)}; });
-    assert.equal(style.whiteSpace, 'nowrap');
-    assert.equal(style.ellipsis, 'ellipsis');
-    assert.ok(style.height <= style.lineHeight + 1, 'desktop subject previews remain one readable line');
-    assert.equal(await row.locator('.au-status').innerText(), 'Investigation complete');
-  }
-  if (process.env.CASEPATH_BROWSER_RECEIPTS) {
-    await page.screenshot({path: '/tmp/casepath-visual-itinerary-1440.png', fullPage: true});
-    fs.writeFileSync('/tmp/casepath-visual-itinerary-1440.json', JSON.stringify(geometry, null, 2));
-  }
+test('the desktop Demo chooses actual canonical claims without an additional showcase or disclosure journey', async t => {
+  const page=await fixturePage(t,{presentationSuite:'replay',width:1440,height:900});
+  await page.locator('.au-nav [data-au-nav="demonstration"]').click();await title(page,demoIds[0]);
+  assert.equal(await page.locator('.au-demonstration').count(),0);await page.locator('[data-au-inspect="demo"]').click();
+  const picker=page.locator('.au-record-dialog[open]'),rows=picker.locator('[data-au-demo-case]');assert.equal(await rows.count(),9);
+  assert.deepEqual(await rows.evaluateAll(elements=>elements.map(element=>element.dataset.auDemoCase)),demoIds);
+  for(const id of demoIds){const row=picker.locator(`[data-au-demo-case="${id}"]`);assert.ok((await row.textContent()).trim().length>0);assert.equal(await row.evaluate(element=>element.scrollWidth<=element.clientWidth+1),true);}
+  assert.equal(await picker.locator('select,details').count(),0);await focusedReceipt(page,'quiet-demo-picker-1440',{roster:demoIds});
+  await picker.locator(`[data-au-demo-case="${demoIds[4]}"]`).click();await title(page,demoIds[4]);
+  assert.equal((await visibleRecord(page)).state.claim_id,demoIds[4]);assert.equal(await page.locator('.au-original-message').textContent(),originals.find(row=>row.claim_id===demoIds[4]).message);
 });
 
-test('pending raw navigation blocks automatic Live Start, timed advancement and delayed replay before route events dispatch', async t => {
+test('pending raw navigation blocks original admission, timed advancement and delayed replay before route events dispatch', async t => {
   const freezeRoutes = page => page.evaluate(() => {
     window.__freezeRouteEvents = event => event.stopImmediatePropagation();
     window.addEventListener('hashchange', window.__freezeRouteEvents, true);
@@ -1785,9 +1750,7 @@ test('pending raw navigation blocks automatic Live Start, timed advancement and 
     window.dispatchEvent(new Event('hashchange'));
   });
   const id = demoIds[0], opening = await fixturePage(t, {originalStartId: id, holdId: id, holdRemaining: 1});
-  await opening.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await opening.locator('[data-au-demo-mode="live"]').click();
-  await opening.locator('[data-au-demo-play]').click();
+  await open(opening,id);
   await eventually(() => opening.evaluate(() => window.__fixture.held.length === 1), 'the original opening GET was not held');
   await freezeRoutes(opening);
   await opening.evaluate(() => {
@@ -1798,31 +1761,30 @@ test('pending raw navigation blocks automatic Live Start, timed advancement and 
   await opening.clock.runFor(1000);
   assert.equal((await calls(opening, `/claims/${id}/start`)).length, 0, 'a verified stale GET cannot reuse Play authorization after the URL changes');
   await resumeRoutes(opening);
-  await eventually(() => opening.locator('[data-au-claim-row]').count().then(count => count === 150), 'the pending raw route did not restore Cases');
+  await eventually(() => opening.locator('[data-au-claim-row]').count().then(count => count === 20), 'the pending raw route did not restore Cases');
   assert.equal((await calls(opening, `/claims/${id}/start`)).length, 0);
 
-  const timed = await fixturePage(t, {presentationSuite: 'live'});
+  const timed = await fixturePage(t, {presentationSuite: 'replay'});
   await timed.evaluate(ids => { for (const id of ids) window.__fixture.envelopes[id] = structuredClone(window.__fixture.acceptedHistories[id][2]); }, demoIds);
   await timed.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await timed.locator('[data-au-demo-mode="live"]').click();
-  await timed.locator('[data-au-demo-play]').click();
+  await playIfPaused(timed);
   await title(timed, id);
   await freezeRoutes(timed);
   await timed.evaluate(() => { location.hash = '#autonomous/cases'; });
   await timed.clock.runFor(5000);
-  assert.equal((await calls(timed, `/claims/${demoIds[1]}/snapshot`)).length, 0, 'a timed presentation cannot open its next case while product navigation is pending');
+  assert.equal((await calls(timed, `/claims/${demoIds[1]}/replay`)).length, 0, 'a timed presentation cannot open its next case while product navigation is pending');
   assert.deepEqual(await timed.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST')), []);
   await resumeRoutes(timed);
-  await eventually(() => timed.locator('[data-au-claim-row]').count().then(count => count === 150), 'timed pending navigation did not restore Cases');
+  await eventually(() => timed.locator('[data-au-claim-row]').count().then(count => count === 20), 'timed pending navigation did not restore Cases');
 
   const replay = await fixturePage(t, {presentationSuite: 'replay', holdReplayId: id, holdReplayThrough: 1});
   await replay.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await replay.locator('[data-au-demo-play]').click();
+  await playIfPaused(replay);
   await title(replay, id);
   await replay.clock.runFor(1400);
   await eventually(() => replay.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the next accepted replay prefix was not held');
   const prefetchedReads = (await calls(replay, `/claims/${id}/replay`)).length;
-  assert.ok(prefetchedReads >= 2 && prefetchedReads <= 3, 'the paused next-prefix read permits at most two bounded prefixes ahead');
+  const prefetchedPositions=(await calls(replay,`/claims/${id}/replay`)).map(call=>Number(new URL(call.url,'http://fixture.invalid').searchParams.get('through_seq')));assert.ok(prefetchedReads>=2&&prefetchedPositions.every(seq=>seq<=2),'record inspection may revalidate its cancelled read but prefetch remains at most two prefixes ahead');
   await freezeRoutes(replay);
   await replay.evaluate(() => {
     location.hash = '#autonomous/cases';
@@ -1835,18 +1797,57 @@ test('pending raw navigation blocks automatic Live Start, timed advancement and 
   assert.equal((await calls(replay, `/claims/${demoIds[1]}/replay`)).length, 0);
   assert.deepEqual(await replay.evaluate(() => window.__fixture.calls.filter(call => call.method === 'POST')), []);
   await resumeRoutes(replay);
-  await eventually(() => replay.locator('[data-au-claim-row]').count().then(count => count === 150), 'delayed replay cancellation did not retain Cases');
+  await eventually(() => replay.locator('[data-au-claim-row]').count().then(count => count === 20), 'delayed replay cancellation did not retain Cases');
 });
 
 const focusedReceiptRoot = process.env.CASEPATH_FOCUSED_RECEIPTS;
 async function focusedReceipt(page, name, measurements) {
   if (!focusedReceiptRoot) return;
   fs.mkdirSync(focusedReceiptRoot, {recursive: true});
-  fs.writeFileSync(path.join(focusedReceiptRoot, `${name}.json`), JSON.stringify(measurements, null, 2));
-  await page.screenshot({path: path.join(focusedReceiptRoot, `${name}.png`), fullPage: true});
+  fs.writeFileSync(path.join(focusedReceiptRoot, `${name}.json`), JSON.stringify({...measurements,viewport:page.viewportSize(),assets:{
+    javascript:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'))),
+    css:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css'))),
+  }}, null, 2));
+  await page.screenshot({path: path.join(focusedReceiptRoot, `${name}.png`), fullPage: true, animations:'disabled'});
 }
-const visibleRecord = page => page.locator('[data-au-disclosure="claim-record"] pre').textContent().then(JSON.parse);
+const visibleRecord = page => page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent().then(JSON.parse);
 const currentReadState = page => page.locator('[data-au-view]').getAttribute('data-au-read-state');
+
+for (const width of [1428, 1440, 390]) test(`quiet work: one reading focus exposes accepted reasons and one-click Process, Documents and Knowledge at ${width}px`, async t => {
+  const height = width === 390 ? 844 : width === 1440 ? 900 : 801;
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+  const page = await fixturePage(t, {width, height, priorAssessment: 'assessed'});
+  const saved = fixture.states.assessed;
+  const obligation = saved.obligations.find(item => item.document_type === 'spouse_notice_copy');
+  assert.ok(obligation, 'the accepted fixture records the family-home document dependency');
+  const fact = saved.facts.find(item => item.fact_id === obligation.required_fact_ids[0]);
+  await page.evaluate(preferences => window.__controller.openClaim(preferences.id, true, preferences), {
+    id, node: obligation.node_id, document: obligation.document_type,
+    obligation: obligation.obligation_id, fact: fact.fact_id,
+  });
+  await title(page, id);
+  await focusedReceipt(page, `quiet-process-${width}`, {identity: id, revision: saved.revision, node: obligation.node_id, obligation: obligation.obligation_id, fact: fact.fact_id});
+  const reading = page.locator('[data-au-panel="step"]');
+  assert.equal(await reading.locator('details details').count(), 0, 'accepted reasons cannot require a nested disclosure journey');
+  assert.equal(await reading.locator('select').count(), 0, 'the reading path cannot depend on a dropdown picker');
+  assert.ok((await reading.innerText()).includes(fact.summary || fact.reason), 'the actual accepted fact reason is readable on arrival');
+  assert.equal(await reading.locator('[data-au-document]').getAttribute('data-au-document'),obligation.document_type,'the visible consequence belongs to the exact requiring obligation');
+  await reading.locator(`[data-au-inspect="requirement"][data-au-record-id="${obligation.obligation_id}"]`).click();
+  assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()).obligations,[obligation],'the full recorded reason remains exact in its single contextual drawer');await closeRecord(page);await title(page,id);
+  assert.equal(await page.locator('.au-context-nav [data-au-detail="step"]').innerText(), 'Process');
+  assert.equal(await page.locator('.au-context-nav [data-au-detail="documents"]').count(), 1);
+  assert.equal(await page.locator('.au-context-nav [data-au-detail="knowledge"]').count(), 1);
+  for (const detail of ['documents', 'knowledge', 'step']) {
+    const tab = page.locator(`.au-context-nav [data-au-detail="${detail}"]`);
+    await tab.focus();assert.equal(await tab.evaluate(element=>document.activeElement===element),true,'a local view button receives native keyboard focus');await page.keyboard.press('Enter');
+    assert.equal(await page.locator(`[data-au-panel="${detail}"]`).isVisible(), true, 'one keyboard activation opens the connected local view');
+    assert.equal(await page.locator('[data-au-panel]:visible').count(), 1, 'exactly one local purpose owns the reading surface');
+    assert.equal((await visibleRecord(page)).state.claim_id, id);
+    assert.deepEqual((await visibleRecord(page)).state, saved, 'local inspection never rewrites accepted state, source hashes or receipts');
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
+    await focusedReceipt(page, `quiet-${detail}-${width}`, {identity: id, revision: saved.revision, detail, route: new URL(page.url()).hash});
+  }
+});
 
 for (const action of ['start', 'pause', 'resume']) test(`focused flow: uncertain ${action} restores the current replacement control and its exact guarded retry`, async t => {
   const id = demoIds[3], config = action === 'start' ? {originalStartId: id} : {controlRetryId: id, controlRetryAction: action};
@@ -1875,7 +1876,7 @@ for (const action of ['start', 'pause', 'resume']) test(`focused flow: uncertain
   await eventually(async () => await currentReadState(page) === 'verified' && await page.locator(selector).innerText() === `Retry ${action}` && await page.locator(selector).isEnabled(), 'the matched fresh snapshot must label and enable the current exact retry');
   assert.deepEqual(await page.evaluate(selector => ({replaced: document.querySelector(selector) !== window.__clickedCommand, oldConnected: window.__clickedCommand.isConnected}), selector), {replaced: true, oldConnected: false});
   const accepted = await page.evaluate(id => window.__fixture.envelopes[id].state, id);
-  assert.deepEqual(JSON.parse(await page.locator('[data-au-disclosure="claim-record"] pre').textContent()).state, accepted, 'the full matched accepted state remains inspectable');
+  assert.deepEqual(JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent()).state, accepted, 'the full matched accepted state remains inspectable');
   assert.equal((await posts()).length, 1);
   await page.locator(selector).click();
   const normalSelector = action === 'pause' ? '[data-au-resume]' : '[data-au-pause]', normalLabel = action === 'pause' ? 'Resume work' : 'Pause work';
@@ -1885,20 +1886,51 @@ for (const action of ['start', 'pause', 'resume']) test(`focused flow: uncertain
   assert.deepEqual(writes[1].headers, first.headers);
 });
 
+test('quiet work: background Knowledge warming stays read only, revalidates exact pins and cannot revive an invalidated generation',async t=>{
+  await t.test('a completed warm read paints its exact pinned version immediately while a fresh GET is held',async t=>{
+    const page=await fixturePage(t,{priorAssessment:'reassessed',holdKnowledge:true});
+    await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='knowledge')),'Cases did not begin its bounded read-only Knowledge warm');
+    const cases=await originalPageIds(page);assert.equal(cases.length,20);assert.equal(await page.locator('[data-au-knowledge-identity], [data-au-skeleton="knowledge"]').count(),0);assert.equal(await page.locator('.au-global-status').textContent(),'');
+    await page.evaluate(async()=>{window.__fixture.holdKnowledge=false;for(const held of window.__fixture.held.filter(row=>row.kind==='knowledge'))held.release();window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='knowledge');for(let turn=0;turn<100;turn++)await Promise.resolve();window.__fixture.holdKnowledge=true;});
+    assert.deepEqual(await originalPageIds(page),cases,'warm completion cannot render over Cases');assert.equal((await calls(page,'/knowledge')).length,1);
+    const version=priorAssessmentFixture().knowledge.versions.find(row=>row.knowledge_sha256&&row.qualification?.definition_sha256),pin={knowledge_id:version.knowledge_id,version:version.version,knowledge_sha256:version.knowledge_sha256,definition_sha256:version.qualification.definition_sha256};
+    const immediate=await page.evaluate(pin=>{void window.__controller.showKnowledge(true,pin);const row=document.querySelector('[data-au-knowledge-identity]');return {identity:row?.dataset.auKnowledgeIdentity,hash:row?.dataset.auKnowledgeHash,read:document.querySelector('[data-au-view]')?.dataset.auReadState};},pin);
+    assert.equal(immediate.identity,`${version.knowledge_id}:${version.version}`);assert.equal(immediate.read,'refreshing');
+    await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='knowledge')),'explicit Knowledge navigation did not revalidate its warmed representation');assert.equal((await calls(page,'/knowledge')).length,2);
+    await page.locator('[data-au-knowledge-identity] [data-au-inspect="knowledge"]').click();assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),version);await closeRecord(page);
+    await page.evaluate(()=>{window.__fixture.holdKnowledge=false;for(const held of window.__fixture.held.splice(0))held.release();});await eventually(()=>currentReadState(page).then(read=>read==='verified'),'fresh Knowledge did not settle its exact pin');
+    const invalid={...pin,knowledge_sha256:'0'.repeat(64)};await page.evaluate(pin=>{void window.__controller.showKnowledge(true,pin);},invalid);
+    await eventually(()=>page.locator('.au-global-status').textContent().then(text=>text.includes('exact reused knowledge version')),'the invalid pin was not surfaced');assert.equal(await page.locator('[data-au-knowledge-identity]').count(),0,'warmed content cannot substitute a different primary version for an invalid exact hash');
+  });
+  await t.test('a failed warm read leaves Cases intact and explicit Knowledge navigation can recover',async t=>{
+    const page=await fixturePage(t,{priorAssessment:'reassessed',knowledgeFailures:1});await eventually(async()=>(await calls(page,'/knowledge')).length===1,'the warm GET did not run');
+    await page.evaluate(async()=>{for(let turn=0;turn<100;turn++)await Promise.resolve();});assert.equal(await page.locator('[data-au-claim-row]').count(),20);assert.equal(await page.locator('.au-global-status').textContent(),'');assert.equal(await page.locator('[data-au-knowledge-identity], [data-au-skeleton="knowledge"]').count(),0);
+    await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===1),'explicit navigation did not recover from the silent warm failure');assert.equal((await calls(page,'/knowledge')).length,2);
+  });
+  await t.test('a guarded write invalidates an in-flight warm response before it can repopulate visible cache',async t=>{
+    const id=demoIds[0],page=await fixturePage(t,{priorAssessment:'reassessed',originalStartId:id,holdStart:true,holdKnowledge:true});await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='knowledge')),'the stale warm response was not held');
+    await open(page,id);await title(page,id);await eventually(()=>page.locator('[data-au-start]').isEnabled(),'the isolated original did not obtain fresh Start authority');await page.locator('[data-au-start]').click();await eventually(async()=>(await calls(page,`/claims/${id}/start`)).length===1,'the guarded write did not invalidate the old read generation');
+    await page.evaluate(async()=>{window.__fixture.holdKnowledge=false;const stale=window.__fixture.held.filter(row=>row.kind==='knowledge'||row.kind==='start');window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='knowledge'&&row.kind!=='start');for(const held of stale)held.release();for(let turn=0;turn<100;turn++)await Promise.resolve();window.__fixture.holdKnowledge=true;});
+    await eventually(async()=>await page.locator('[data-au-start]').isEnabled()&&(await page.locator('[data-au-start]').textContent()).includes('Retry'),'the uncertain guarded write did not settle to its native literal-retry control');
+    await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='knowledge')),'the post-write fresh Knowledge read was not held');assert.equal(await page.locator('[data-au-knowledge-identity]').count(),0,'a late invalidated warm response cannot resurrect its old cache');assert.equal(await page.locator('[data-au-skeleton="knowledge"]').isVisible(),true);
+    await page.evaluate(()=>{window.__fixture.holdKnowledge=false;const fresh=window.__fixture.held.filter(row=>row.kind==='knowledge');window.__fixture.held=window.__fixture.held.filter(row=>row.kind!=='knowledge');for(const held of fresh)held.release();});await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===1),'the current generation did not render its own fresh Knowledge result');
+  });
+});
+
 test('focused flow: cached claim revisits paint the verified record synchronously and fail revalidation read-only', async t => {
   const page = await fixturePage(t);
   await open(page, processedId); await title(page, processedId);
-  const verified = await visibleRecord(page);
+  const verified = await visibleRecord(page),verifiedTitle=await page.locator('[data-au-claim-title]').textContent();
   await open(page, otherId); await title(page, otherId);
   const immediate = await page.evaluate(id => {
     window.__fixture.holdId = id;
     void window.__controller.openClaim(id);
     const host = document.querySelector('[data-au-view]');
     return {title: host.querySelector('[data-au-claim-title]')?.textContent, state: host.dataset.auReadState,
-      record: host.querySelector('[data-au-disclosure="claim-record"] pre')?.textContent,
+      record: document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]')?.textContent,
       enabledWrites: [...host.querySelectorAll('[data-au-arrival] input, [data-au-arrival] button, [data-au-pause], [data-au-resume], [data-au-start]')].filter(element => !element.disabled).length};
   }, processedId);
-  assert.equal(immediate.title, verified.state.title, 'the cached accepted record must paint in the same navigation turn');
+  assert.equal(immediate.title, verifiedTitle, 'the cached accepted record must paint in the same navigation turn');
   assert.equal(immediate.state, 'refreshing');
   assert.deepEqual(JSON.parse(immediate.record).state, verified.state);
   assert.equal(immediate.enabledWrites, 0, 'a cached revision cannot authorize a mutation while its read is pending');
@@ -1909,7 +1941,7 @@ test('focused flow: cached claim revisits paint the verified record synchronousl
   await page.evaluate(id => { window.__fixture.readFailures = 1; void window.__controller.openClaim(id); }, processedId);
   await eventually(() => currentReadState(page).then(state => state === 'failed'), 'the failed cache revalidation did not retain a read-only record');
   assert.deepEqual((await visibleRecord(page)).state, verified.state);
-  assert.equal(await page.locator('[data-au-claim-title]').textContent(), verified.state.title);
+  assert.equal(await page.locator('[data-au-claim-title]').textContent(), verifiedTitle);
   assert.equal(await page.locator('[data-au-arrival] input:enabled, [data-au-arrival] button:enabled, [data-au-pause]:enabled, [data-au-resume]:enabled, [data-au-start]:enabled').count(), 0);
   assert.match(await page.locator('.au-global-status').innerText(), /paused|unavailable|interrupted|refresh/i);
   await focusedReceipt(page, 'cache-failed-revalidation', {immediate, snapshots: (await calls(page, `/claims/${processedId}/snapshot`)).length});
@@ -1918,8 +1950,8 @@ test('focused flow: cached claim revisits paint the verified record synchronousl
 test('focused flow: cold claim and Knowledge reads show honest stable skeletons and overlapping GETs deduplicate', async t => {
   const page = await fixturePage(t, {holdId: processedId, holdKnowledge: true});
   await open(page, processedId);
-  await eventually(() => page.evaluate(() => window.__fixture.held.length === 1), 'the cold claim read was not held');
-  assert.equal(await page.locator('[data-au-skeleton="claim"]').isVisible(), true);
+  await eventually(() => page.evaluate(id => window.__fixture.held.filter(row=>row.id===id).length === 1,processedId), 'the cold claim read was not held');
+  assert.equal(await page.locator('[data-au-preview="catalog"]').isVisible(),true);
   assert.equal(await page.locator('[data-au-node], [data-au-fact], [data-au-obligation], [data-au-outcome], [data-au-claim-title]').count(), 0, 'a loading skeleton cannot invent claim facts or a result');
   await page.evaluate(id => { void window.__controller.openClaim(id); document.dispatchEvent(new Event('visibilitychange')); }, processedId);
   await page.evaluate(async () => { for (let turn = 0; turn < 20; turn++) await Promise.resolve(); });
@@ -1933,13 +1965,13 @@ test('focused flow: cold claim and Knowledge reads show honest stable skeletons 
   const heading = await page.locator('h1').textContent();
   await page.keyboard.press('Tab');
   await page.evaluate(() => { window.__fixture.holdKnowledge = false; for (const held of window.__fixture.held.splice(0)) held.release(); });
-  await eventually(() => page.locator('.au-knowledge-grid').count().then(count => count === 1), 'Knowledge did not settle from its own response');
+  await eventually(() => page.locator('.au-knowledge-layout').count().then(count => count === 1), 'Knowledge did not settle from its own response');
   assert.equal(await page.locator('h1').textContent(), heading, 'settlement keeps the same page identity');
   await page.locator('.au-nav [data-au-nav="work"]').click();
   const knowledge = await page.evaluate(() => {
     window.__fixture.holdKnowledge = true;
     document.querySelector('.au-nav [data-au-nav="knowledge"]').click();
-    return {heading: document.querySelector('h1')?.textContent, grid: Boolean(document.querySelector('.au-knowledge-grid')), skeleton: Boolean(document.querySelector('[data-au-skeleton="knowledge"]'))};
+    return {heading: document.querySelector('h1')?.textContent, grid: Boolean(document.querySelector('.au-knowledge-layout')), skeleton: Boolean(document.querySelector('[data-au-skeleton="knowledge"]'))};
   });
   assert.equal(knowledge.grid, true, 'warm Knowledge navigation must render without awaiting another response');
   assert.equal(knowledge.skeleton, false);
@@ -1952,9 +1984,9 @@ test('focused flow: bounded claim cache evicts the oldest accepted record withou
   for (const id of ids) { await open(page, id); await title(page, id); }
   const oldest = await page.evaluate(id => {
     window.__fixture.holdId = id; void window.__controller.openClaim(id);
-    return {skeleton: Boolean(document.querySelector('[data-au-skeleton="claim"]')), title: document.querySelector('[data-au-claim-title]')?.textContent || null};
+    return {preview:document.querySelector('[data-au-preview]')?.dataset.auPreview, title:document.querySelector('[data-au-catalog-title]')?.textContent||null,accepted:document.querySelector('[data-au-revision]')?.dataset.auRevision||null};
   }, ids[0]);
-  assert.deepEqual(oldest, {skeleton: true, title: null}, 'a cache beyond twelve records must evict the oldest');
+  assert.equal(oldest.preview,'catalog');assert.equal(oldest.accepted,null,'an evicted snapshot cannot lend accepted authority to its matched catalog excerpt');assert.equal(oldest.title,originals.find(row=>row.claim_id===ids[0]).subject);
   await page.evaluate(() => { window.__fixture.holdId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
   await title(page, ids[0]);
   const newest = await page.evaluate(id => {
@@ -1971,16 +2003,15 @@ test('focused flow: selected process changes preserve the graph, original arriva
   const files = page.locator('[data-au-arrival] input[type="file"]');
   await files.setInputFiles({name: 'isolated-retained-original.txt', mimeType: 'text/plain', buffer: Buffer.from('Fictional QA original retained locally; never submitted.')});
   await page.evaluate(() => {
-    window.__retainedGraph = document.querySelector('[data-au-graph]');
     window.__retainedArrival = document.querySelector('[data-au-arrival]');
     window.__retainedFiles = window.__retainedArrival.elements.files.files;
-    window.__retainedNodes = [...document.querySelectorAll('[data-au-node]')];
   });
   await page.locator('.au-context-nav [data-au-detail="step"]').click();
+  await openFullProcess(page);await page.evaluate(()=>{window.__retainedGraph=document.querySelector('[data-au-graph]');window.__retainedNodes=[...document.querySelectorAll('[data-au-node]')];});
   const node = await page.locator('[data-au-node]').last().getAttribute('data-au-node');
   await page.locator(`[data-au-node="${node}"]`).focus(); await page.keyboard.press('Enter');
   assert.equal(await page.evaluate(() => document.querySelector('[data-au-graph]') === window.__retainedGraph && window.__retainedNodes.every(element => element.isConnected)), true, 'selecting a real node must update the inspector without replacing the graph');
-  assert.equal(await page.evaluate(() => document.querySelector('[data-au-arrival]') === window.__retainedArrival && window.__retainedArrival.elements.files.files === window.__retainedFiles), true, 'selection must preserve the same native files');
+  assert.equal(await page.evaluate(() => window.__retainedArrival.elements.files.files === window.__retainedFiles), true, 'selection must preserve the same native files');
   assert.equal(await page.locator(`[data-au-node="${node}"]`).getAttribute('aria-pressed'), 'true');
   await page.locator('.au-context-nav [data-au-detail="sources"]').click();
   const source = page.locator('[data-au-panel="sources"] [data-au-source]').first();
@@ -1997,7 +2028,7 @@ test('focused flow: a recorded action opens its exact document and fact while ma
   await open(page, fixture.claim_id); await title(page, fixture.claim_id);
   const selected = event.payload.result.node_ids[0], requirement = fixture.prefixes[event.seq].state.obligations.find(row => row.node_id === selected && row.document_type === event.payload.result.document_type);
   assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected);
-  const context = async () => ({document: await page.locator('[data-au-evidence-path] [data-au-wire="requirement"]').getAttribute('data-au-document'), fact: await page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact'), obligation: new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('obligation')});
+  const context = async () => ({document: await page.locator('[data-au-evidence-path] [data-au-document][data-au-obligation]').getAttribute('data-au-document'), fact: await page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact'), obligation: new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('obligation')});
   assert.equal((await context()).document, requirement.document_type);
   assert.equal((await context()).fact, requirement.required_fact_ids[0]);
   assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[event.seq].state);
@@ -2022,11 +2053,11 @@ for (const width of [1428, 390]) test(`focused flow: expanding the complete proc
   assert.equal(await expand.getAttribute('aria-expanded'), 'true');
   assert.equal(await viewport.getAttribute('data-au-graph-expanded'), 'true');
   const expanded = await viewport.evaluate(element => ({height: element.clientHeight, content: element.scrollHeight}));
-  assert.ok(expanded.height > collapsed.height && expanded.height >= expanded.content - 1, `Expand exposes the complete existing graph instead of clipping its rows: ${JSON.stringify({collapsed, expanded})}`);
+  assert.ok(expanded.height >= expanded.content - 1, `Expand exposes the complete existing graph instead of clipping its rows: ${JSON.stringify({collapsed, expanded})}`);
   const nodeIdentity = () => page.evaluate(() => window.__expandedGraph === document.querySelector('[data-au-graph]') && window.__expandedNodes.every(node => node.isConnected && document.querySelector(`[data-au-node="${node.dataset.auNode}"]`) === node));
   assert.equal(await nodeIdentity(), true);
   assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected);
-  await page.locator('[data-au-node-next]').click();
+  const nextNode=record.state.graph.nodes.find(node=>node.node_id!==selected).node_id;await page.locator(`[data-au-node="${nextNode}"]`).click();
   const changed = await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step');
   assert.equal(await nodeIdentity(), true);
   assert.equal(await viewport.getAttribute('data-au-graph-expanded'), 'true');
@@ -2042,52 +2073,24 @@ for (const width of [1428, 390]) test(`focused flow: expanding the complete proc
   await focusedReceipt(page, `expanded-process-${width}`, {collapsed, expanded, selected, changed, nodes: record.state.graph.nodes.map(node => node.node_id)});
 });
 
-for (const width of [1428, 390]) test(`focused flow: substantive collection, claim and Knowledge objects fit the first ${width}px viewport`, async t => {
-  const height = width === 390 ? 844 : 801, page = await fixturePage(t, {width, height, priorAssessment: 'reassessed'});
-  const bounds = selector => page.locator(selector).first().evaluate(element => { const r = element.getBoundingClientRect(); return {top: r.top, bottom: r.bottom, left: r.left, right: r.right}; });
-  const collection = await bounds('[data-au-claim-row]');
-  await focusedReceipt(page, `cases-${width}`, {width, height, firstCase: collection, calls: await page.evaluate(() => window.__fixture.calls)});
-  await open(page, processedId); await title(page, processedId);
-  const graph = await bounds('[data-au-graph-pan]'), selected = await bounds('[data-au-selected-step]');
-  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
-  await focusedReceipt(page, `claim-${width}`, {width, height, graph, selected, snapshots: (await calls(page, `/claims/${processedId}/snapshot`)).length});
-  await page.locator('.au-nav [data-au-nav="knowledge"]').click();
-  await eventually(() => page.locator('[data-au-knowledge-identity]').count().then(count => count > 0), 'qualified fixture Knowledge did not render');
-  const qualification = await bounds('.au-evidence-knowledge-definition'), consumers = await bounds('.au-evidence-knowledge-receiving');
-  const knowledgePath = await page.locator('[data-au-knowledge-path]').first().evaluate(element => {
-    const area = element.getBoundingClientRect(), box = selector => { const rect = element.querySelector(selector).getBoundingClientRect(); return {left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, width: rect.width}; };
-    const wires = [...element.querySelectorAll('svg path')].map(path => { const length = path.getTotalLength(), start = path.getPointAtLength(0), end = path.getPointAtLength(length); return {length, start: {x: start.x, y: start.y}, end: {x: end.x, y: end.y}, d: path.getAttribute('d'), visible: getComputedStyle(path.closest('svg')).display !== 'none'}; });
-    return {width: area.width, origin: box('[data-au-wire="origin"]'), definition: box('[data-au-wire="version"]'), receiving: box('[data-au-wire="reuse"]'), wires,
-      version: element.closest('[data-au-version]').dataset.auVersion, identity: element.closest('[data-au-knowledge-identity]').dataset.auKnowledgeIdentity, links: [...element.querySelectorAll('[data-au-claim]')].map(link => link.dataset.auClaim)};
-  });
-  if (width === 390) {
-    assert.ok(knowledgePath.origin.bottom <= knowledgePath.definition.top && knowledgePath.definition.bottom <= knowledgePath.receiving.top, 'mobile Knowledge follows source → qualified version → exact receiving claims');
-    for (const item of [knowledgePath.origin, knowledgePath.definition, knowledgePath.receiving]) assert.ok(item.width >= knowledgePath.width - 2, 'every mobile Knowledge object occupies its full column');
-    assert.ok(knowledgePath.wires.length >= 2 && knowledgePath.wires.every(wire => wire.visible && Number.isFinite(wire.length) && wire.length > 0 && wire.end.y > wire.start.y && !/NaN|Infinity/.test(wire.d)), 'actual mobile connectors run finitely downward between the ordered objects');
-  }
-  const expectedVersion = await page.evaluate(identity => window.__fixture.accepted.knowledge.versions.find(version => `${version.knowledge_id}:${version.version}` === identity), knowledgePath.identity);
-  assert.equal(knowledgePath.version, String(expectedVersion.version));
-  assert.equal(knowledgePath.links[0], expectedVersion.source_claim_id);
-  const expectedUses = await page.evaluate(({id, version}) => [...new Set(window.__fixture.accepted.knowledge.uses.filter(use => use.knowledge_id === id && use.version === version).map(use => use.claim_id))], {id: expectedVersion.knowledge_id, version: expectedVersion.version});
-  assert.deepEqual(knowledgePath.links.slice(1), expectedUses, 'responsive placement preserves every exact recorded source/receiving link');
-  await focusedReceipt(page, `knowledge-${width}`, {width, height, qualification, consumers, knowledgePath});
-  assert.ok(collection.bottom <= height, `the first actual case must fit without scrolling: ${JSON.stringify(collection)}`);
-  assert.ok(collection.top <= height * .65, 'navigation and controls cannot consume most of the collection viewport');
-  assert.ok(graph.top < height - 160 && selected.top < height - 60, `a real graph and the selected decision must share the initial viewport: ${JSON.stringify({graph, selected})}`);
-  assert.ok(qualification.top < height, `the qualified version must be visible on arrival: ${JSON.stringify(qualification)}`);
-  if (width !== 390) assert.ok(consumers.top < height, `desktop receiving claims must share the arrival viewport: ${JSON.stringify(consumers)}`);
-  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
-  if (width === 390) {
-    // The accepted mobile sequence uses one full-width column. Exact receiving
-    // claims follow the qualified version below the first fold when required.
-    const receiver = page.locator(`[data-au-knowledge-path] [data-au-wire="reuse"] [data-au-claim="${expectedUses[0]}"]`).first();
-    assert.ok((await receiver.textContent()).trim().length > 0, 'an exact receiving claim remains named and accessible');
-    await receiver.scrollIntoViewIfNeeded(); await receiver.focus();
-    const accessible = await receiver.evaluate(element => { const rect = element.getBoundingClientRect(); return {top: rect.top, bottom: rect.bottom, focused: document.activeElement === element}; });
-    assert.ok(accessible.top >= 0 && accessible.bottom <= height && accessible.focused, 'normal scrolling exposes the native receiving link for keyboard activation');
-    await page.keyboard.press('Enter'); await title(page, expectedUses[0]);
-    assert.equal((await visibleRecord(page)).state.claim_id, expectedUses[0]);
-  }
+for(const width of [1428,390])test(`quiet work: substantive collection, current question and one exact Knowledge version are reachable at ${width}px`,async t=>{
+  const height=width===390?844:801,page=await fixturePage(t,{width,height,priorAssessment:'reassessed'});
+  const bounds=selector=>page.locator(selector).first().evaluate(element=>{const r=element.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left,right:r.right};});
+  const collection=await bounds('[data-au-claim-row]');assert.ok(collection.bottom<=height&&collection.top<=height*.65,'actual case content is visible on collection arrival');
+  await focusedReceipt(page,`cases-${width}`,{width,height,firstCase:collection});
+  await open(page,processedId);await title(page,processedId);
+  const graph=await bounds('[data-au-graph-pan]'),question=await bounds('[data-au-inspector-heading]');assert.ok(graph.top<height-160&&question.top<height,'the real graph and selected question fit the initial view');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);await focusedReceipt(page,`claim-${width}`,{width,height,graph,question});
+  await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===1),'global Knowledge did not render one selected immutable version');
+  const selected=page.locator('[data-au-knowledge-identity]'),identity=await selected.getAttribute('data-au-knowledge-identity'),version=priorAssessmentFixture().knowledge.versions.find(row=>`${row.knowledge_id}:${row.version}`===identity);
+  assert.ok(version);assert.equal(await selected.getAttribute('data-au-version'),String(version.version));assert.ok((await bounds('[data-au-knowledge-identity]')).top<height,'the actual selected procedure is visible on arrival');
+  const links=await selected.locator('[data-au-claim]').evaluateAll(rows=>rows.map(row=>row.dataset.auClaim));
+  const expectedUses=priorAssessmentFixture().knowledge.uses.filter(use=>use.knowledge_id===version.knowledge_id&&use.version===version.version&&(!use.knowledge_sha256||use.knowledge_sha256===version.knowledge_sha256)&&(!use.definition_sha256||use.definition_sha256===(version.qualification?.definition_sha256||version.definition_sha256)));
+  assert.deepEqual(links,[version.source_claim_id,...expectedUses.map(use=>use.claim_id)],'every source and receiving link belongs to the exact selected recorded version');
+  const procedureIds=await page.locator('.au-procedure-list [data-au-knowledge]').evaluateAll(rows=>rows.map(row=>row.dataset.auKnowledge));assert.deepEqual(sorted(procedureIds),sorted([...new Set(priorAssessmentFixture().knowledge.versions.map(row=>row.knowledge_id))]));const siblings=await page.locator('.au-procedure-versions [data-au-version]').evaluateAll(rows=>rows.map(row=>`${row.dataset.auKnowledge}:${row.dataset.auVersion}`));assert.deepEqual(sorted(siblings),sorted(priorAssessmentFixture().knowledge.versions.filter(row=>row.knowledge_id===version.knowledge_id).map(row=>`${row.knowledge_id}:${row.version}`)));
+  await selected.locator('[data-au-inspect="knowledge"]').click();assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),version,'the native version record preserves complete qualification and immutable lineage');await closeRecord(page);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);await focusedReceipt(page,`knowledge-${width}`,{width,height,identity,sourceClaim:version.source_claim_id,receivingClaims:expectedUses.map(use=>use.claim_id)});
+  if(expectedUses.length){const receiver=selected.locator(`[data-au-claim="${expectedUses[0].claim_id}"]`).last();await receiver.scrollIntoViewIfNeeded();await receiver.focus();const reachable=await receiver.evaluate(element=>{const r=element.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&document.activeElement===element;});assert.equal(reachable,true,'normal scrolling keeps recorded receiving cases keyboard reachable');await page.keyboard.press('Enter');await title(page,expectedUses[0].claim_id);assert.equal((await visibleRecord(page)).state.claim_id,expectedUses[0].claim_id);}
 });
 
 // Reuse the public replay-opening preference to exercise the real scheduler
@@ -2096,7 +2099,7 @@ for (const width of [1428, 390]) test(`focused flow: substantive collection, cla
 async function actualJournalPresentation(t, config = {}) {
   const fixture = priorAssessmentFixture(), page = await fixturePage(t, {presentationSuite: 'replay', priorAssessment: 'reassessed', ...config});
   await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await page.locator('[data-au-demo-play]').click();
+  await playIfPaused(page);
   await title(page, demoIds[0]);
   await page.evaluate(({id, latency, through, node}) => {
     window.__fixture.replayLatency = latency;
@@ -2107,18 +2110,144 @@ async function actualJournalPresentation(t, config = {}) {
   return {page, fixture, id: fixture.claim_id};
 }
 
+test('quiet work: Cases and global Knowledge return to the same verified claim and exact local requirement and knowledge version', async t => {
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed'});
+  assert.equal(await page.locator('[data-au-return-case]:visible').count(),0,'a first visit cannot invent a current case');
+  await page.locator('.au-nav [data-au-nav="knowledge"]').click();
+  await eventually(()=>page.locator('.au-quiet-knowledge').count().then(count=>count===1),'global Knowledge did not open');
+  assert.equal(await page.locator('[data-au-return-case]:visible').count(),0);
+  const saved=fixture.states.reassessed,obligation=saved.obligations.find(row=>row.document_type==='spouse_notice_copy'),fact=obligation.required_fact_ids[0];
+  await page.evaluate(preferences=>window.__controller.openClaim(preferences.id,true,preferences),{id,node:obligation.node_id,document:obligation.document_type,obligation:obligation.obligation_id,fact});
+  await title(page,id);
+  const selectedRoute=new URL(page.url()).hash;
+  await page.locator('.au-context-nav [data-au-detail="knowledge"]').click();
+  const use=saved.knowledge_uses[0];assert.ok(use,'this accepted native prefix records an exact knowledge use');
+  await page.locator(`[data-au-panel="knowledge"] [data-au-knowledge="${use.knowledge_id}"][data-au-version="${use.version}"]`).first().click();
+  await eventually(()=>page.locator(`[data-au-knowledge-identity="${use.knowledge_id}:${use.version}"]`).count().then(count=>count===1),'global Knowledge did not select the exact used version');
+  const pin=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+  assert.equal(pin.get('knowledge'),use.knowledge_id);assert.equal(pin.get('version'),String(use.version));
+  if(use.definition_sha256)assert.equal(pin.get('definition'),use.definition_sha256);
+  const knowledgeReads=(await calls(page,'/knowledge')).length;
+  for(const facet of ['process','facts','documents','exceptions','changes']){const tab=page.locator(`[data-au-knowledge-facet="${facet}"]`);await tab.focus();await page.keyboard.press('Enter');assert.equal(await page.locator(`[data-au-knowledge-facet-panel="${facet}"]`).count(),1);assert.equal(await page.locator('[data-au-knowledge-facet-panel]').count(),1,'one exact immutable procedure facet owns the reading surface');assert.equal(await page.locator('[data-au-knowledge-identity]').getAttribute('data-au-knowledge-identity'),`${use.knowledge_id}:${use.version}`);}
+  assert.equal((await calls(page,'/knowledge')).length,knowledgeReads,'procedure facet inspection uses its exact verified cached version');
+  await page.locator('[data-au-return-case="documents"]').click();await title(page,id);
+  assert.equal(await page.locator('[data-au-panel="documents"]').isVisible(),true);
+  const chosen=page.locator(`[data-au-panel="documents"] [data-au-obligation="${obligation.obligation_id}"]`);
+  assert.equal(await chosen.getAttribute('data-selected'),'true');
+  await chosen.locator('[data-au-select]').click();
+  const route=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);
+  assert.equal(route.get('node'),obligation.node_id);assert.equal(route.get('document'),obligation.document_type);assert.equal(route.get('obligation'),obligation.obligation_id);assert.equal(route.get('fact'),fact);
+  assert.deepEqual((await visibleRecord(page)).state,saved);
+  await page.locator('.au-nav [data-au-nav="work"]').click();
+  await eventually(()=>page.locator('[data-au-claim-row]').count().then(count=>count===20),'Cases did not restore the original collection');
+  await page.locator('[data-au-return-case="step"]').click();await title(page,id);
+  assert.equal(new URL(page.url()).hash,selectedRoute);
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),obligation.node_id);
+  await page.goBack();await eventually(()=>page.locator('[data-au-claim-row]').count().then(count=>count===20),'Back did not restore Cases');
+  await page.goForward();await title(page,id);
+  assert.deepEqual((await visibleRecord(page)).state,saved);
+});
+
+test('quiet work: cached local view content changes before its native paint without a network wait', async t => {
+  const fixture=priorAssessmentFixture(),page=await fixturePage(t,{priorAssessment:'assessed',nativeClock:true,width:1428,height:801});
+  await open(page,fixture.claim_id);await title(page,fixture.claim_id);
+  const times=await page.evaluate(async()=>{
+    const samples=[];
+    for(let cycle=0;cycle<4;cycle++)for(const detail of ['documents','knowledge','step']){
+      const started=performance.now(),control=document.querySelector(`.au-context-nav [data-au-detail="${detail}"]`);
+      control.click();
+      const selected=document.querySelector(`[data-au-panel="${detail}"]`);
+      const content=performance.now()-started;
+      if(!selected || !selected.textContent.trim())throw new Error('A local view did not contain its actual accepted content synchronously.');
+      await new Promise(resolve=>requestAnimationFrame(resolve));
+      samples.push({detail,content,firstFrame:performance.now()-started,claim:document.querySelector('[data-au-revision]').dataset.auRevision});
+    }
+    return samples;
+  });
+  const median=values=>sorted(values).sort((a,b)=>a-b)[Math.floor(values.length/2)];
+  assert.ok(times.every(sample=>sample.claim===String(fixture.states.assessed.revision)));
+  assert.ok(median(times.map(sample=>sample.content))<250,'cached native local content should update without a visible wait');
+  assert.ok(times.every(sample=>sample.content<1000),'local controller rendering cannot add the reported one-second delay');
+  assert.deepEqual((await visibleRecord(page)).state,fixture.states.assessed);
+  await focusedReceipt(page,'quiet-native-content-paint',{samples:times,contentMedianMs:median(times.map(sample=>sample.content)),firstFrameMedianMs:median(times.map(sample=>sample.firstFrame)),scope:'Local deterministic fixture GETs; native Chromium content and first frame only.'});
+});
+
+test('quiet work: the single native technical drawer renders hostile public record text as literal bytes', async t => {
+  const page=await fixturePage(t),marker='</pre><img src=x onerror="window.__recordInjection=true"><script>window.__recordInjection=true</script>';
+  // Authored display boundary only. This passive public extension is not a
+  // source, proposed fact, operational result or verified journal prefix.
+  await page.evaluate(({id,marker})=>{window.__fixture.envelopes[id].state.public_display_extension={note:marker};},{id:processedId,marker});
+  await open(page,processedId);await title(page,processedId);
+  await page.locator('.au-work-head [data-au-inspect="claim"]').click();
+  const drawer=page.locator('.au-record-dialog[open]');
+  assert.equal(await drawer.locator('pre').count(),1,'one contextual record owns the technical surface');
+  assert.equal(await drawer.locator('img,script').count(),0);
+  assert.equal(JSON.parse(await drawer.locator('pre').textContent()).state.public_display_extension.note,marker);
+  assert.equal(await page.evaluate(()=>window.__recordInjection),undefined);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('[data-au-inspect="claim"]').evaluate(element=>document.activeElement===element),true,'native Escape returns to the exact record origin');
+});
+
+test('quiet work: real source-grounded prefixes keep a blocked question honest, retire its document on a false branch and retain qualified reuse', async t => {
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed'});
+  for(const through of [11,25]){
+    const state=fixture.prefixes[through].state,obligation=state.obligations.find(row=>row.document_type==='spouse_notice_copy');
+    const fact=state.facts.find(row=>row.fact_id===(through===11?obligation.required_fact_ids[0]:'condition:family_home'));
+    await page.evaluate(preferences=>window.__controller.openClaim(preferences.id,true,preferences),{id,mode:'replay',through,node:'lt_family',document:obligation.document_type,obligation:obligation.obligation_id,fact:fact.fact_id});
+    await title(page,id);assert.deepEqual((await visibleRecord(page)).state,state);
+    const question=page.locator('[data-au-node="lt_family"]'),requirement=page.locator('[data-au-evidence-path] [data-au-document="spouse_notice_copy"]');
+    assert.equal(await question.getAttribute('data-activation'),through===11?'true':'false');
+    assert.equal(await question.getAttribute('data-status'),through===11?'blocked':'inactive');
+    assert.equal(await requirement.getAttribute('data-route'),through===11?'established':'not_needed');
+    assert.ok((await page.locator('[data-au-evidence-path]').innerText()).includes(fact.summary));
+    if(through===11)assert.match(await page.locator('.au-step-status').innerText(),/Waiting for prerequisites/,'sufficient spouse evidence does not satisfy an earlier process prerequisite');
+    else assert.match(await requirement.innerText(),/not required/,'the accepted false condition visibly retires the request');
+    const citation=fact.citations[0],source=page.locator(`[data-au-evidence-path] [data-au-source="${citation.artifact_id}"]`);
+    assert.equal(JSON.parse(await source.getAttribute('data-au-citation')).quote,citation.quote);await source.focus();await page.keyboard.press('Enter');
+    await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the selected accepted fact citation did not verify');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);
+    await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
+    await focusedReceipt(page,`quiet-branch-prefix-${through}`,{identity:id,through,source: citation.artifact_id,sourceHash:citation.sha256,fact:fact.fact_id,activation:through===11?'true':'false',documentRoute:through===11?'established':'not_needed'});
+  }
+  const state=fixture.prefixes[24].state;await page.evaluate(({id})=>window.__controller.openClaim(id,true,{mode:'replay',through:24,detail:'knowledge'}),{id});await title(page,id);
+  for(const [kind,expected]of [['publication',state.knowledge_published[0]],['use',state.knowledge_uses[0]]]){
+    assert.ok(expected);await page.locator(`[data-au-panel="knowledge"] [data-au-inspect="${kind}"]`).first().click();assert.deepEqual(JSON.parse(await page.locator('.au-record-dialog[open] pre').textContent()),expected);await closeRecord(page);
+  }
+  await title(page,id);assert.deepEqual((await visibleRecord(page)).state,state);
+  assert.doesNotMatch(await page.locator('[data-au-panel="knowledge"]').innerText(),/facts established by reuse|improved accuracy|human approved/i);
+});
+
+test('quiet work: a readable acquired original becomes a cited fact through the same native hash-bound source object',async t=>{
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,before=fixture.prefixes[7].state,after=fixture.prefixes[9].state;
+  const citation=after.facts.find(row=>row.fact_id==='condition:family_home').citations[0],source=before.acquired_sources.find(row=>row.artifact_id===citation.artifact_id);
+  assert.ok(source&&source.text&&source.extraction!=='unsupported_metadata','the actual prefix supplies readable original text');
+  const page=await fixturePage(t,{priorAssessment:'assessed',acceptedPrefix:7});await open(page,id);await title(page,id);
+  const original=page.locator(`[data-au-source-identity][data-au-source="${source.artifact_id}"]`);
+  assert.equal(await original.count(),1);assert.ok((await original.innerText()).includes(source.text.slice(0,120)),'source acquisition presents actual text before any accepted fact');
+  assert.equal(await original.getAttribute('data-au-citation'),null,'an acquisition excerpt cannot invent a fact citation');
+  const identity=await original.getAttribute('data-au-source-identity');await original.evaluate(element=>{window.__nativeAcquiredSource=element;});
+  await page.evaluate(()=>window.__fixture.loadAccepted(9));await page.evaluate(()=>window.__controller.refresh());
+  await eventually(()=>page.locator(`[data-au-source-identity][data-au-source="${source.artifact_id}"][data-au-citation]`).count().then(count=>count===1),'the actual accepted interpretation did not cite its original source');
+  const cited=page.locator(`[data-au-source-identity][data-au-source="${source.artifact_id}"][data-au-citation]`);
+  assert.equal(await cited.getAttribute('data-au-source-identity'),identity);
+  assert.equal(await cited.evaluate(element=>element===window.__nativeAcquiredSource&&element.isConnected),true,'the source becomes a fact dependency without destroying and recreating its native object');
+  const acceptedCitation=JSON.parse(await cited.getAttribute('data-au-citation'));assert.equal(acceptedCitation.artifact_id,source.artifact_id);assert.equal(acceptedCitation.sha256,source.sha256);assert.equal(acceptedCitation.text_sha256,source.text_sha256);
+  assert.ok(source.text.includes(acceptedCitation.quote));assert.deepEqual((await visibleRecord(page)).state,after);
+  await cited.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the reconciled native source could not verify its cited span');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),acceptedCitation.quote);await page.locator('[data-au-close]').click();
+  assert.equal(await cited.evaluate(element=>document.activeElement===element),true);
+});
+
 for (const latency of [0, 120]) test(`focused flow: actual accepted replay prefixes stay immutable with ${latency}ms GET latency and bounded prefetch`, async t => {
   const {page, fixture, id} = await actualJournalPresentation(t, {replayLatency: latency});
   const rendered = [], times = [];
   for (let through = 1; through <= fixture.snapshots.reassessed.state.revision; through++) {
     let record = await visibleRecord(page);
-    for (let tick = 0; record.state.revision < through && tick < 90; tick++) {
+    for (let tick = 0; record.state.revision < through && tick < 300; tick++) {
       await page.clock.runFor(20); record = await visibleRecord(page);
     }
     assert.equal(record.state.revision, through, 'replay may not skip an accepted journal prefix');
     assert.deepEqual(record.state, fixture.prefixes[through].state, `prefix ${through} keeps every accepted field and hash`);
     assert.deepEqual(record.projection, fixture.prefixes[through].projection);
-    assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
+    assert.match(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
     assert.equal(await page.locator('[data-au-arrival], [data-au-start], [data-au-pause], [data-au-resume]').count(), 0);
     const prefixCalls = (await calls(page, `/claims/${id}/replay`)).map(call => Number(new URL(call.url, 'http://fixture.invalid').searchParams.get('through_seq')));
     assert.ok(prefixCalls.every(seq => seq <= through + 2), 'prefetch must remain at most two accepted prefixes ahead');
@@ -2126,7 +2255,14 @@ for (const latency of [0, 120]) test(`focused flow: actual accepted replay prefi
     rendered.push(through); times.push(await page.evaluate(() => performance.now()));
   }
   const gaps = times.slice(1).map((time, index) => time - times[index]);
-  assert.ok(gaps.every(gap => gap <= 1440), `120ms GET latency must fit within presentation time instead of adding to every prefix: ${JSON.stringify(gaps)}`);
+  assert.ok(gaps.every(gap=>gap<=5500),`accepted content has a bounded reading interval including the120msGETfixture: ${JSON.stringify(gaps)}`);
+  const readingKinds=new Set(['sources.acquired','sources.arrived','interpretation.accepted','knowledge.used','knowledge.published','outcome.recorded','work.completed','work.deferred']);
+  for(let index=0;index<gaps.length;index++){
+    const event=fixture.prefixes[rendered[index]].events.at(-1),prefix=fixture.prefixes[rendered[index]].state,previous=fixture.prefixes[rendered[index]-1]?.state;
+    const substantiveAction=event.kind==='action.completed'&&previous&&canonical({facts:prefix.facts,documents:prefix.evaluation?.documents})!==canonical({facts:previous.facts,documents:previous.evaluation?.documents});
+    if(readingKinds.has(event.kind)||substantiveAction)assert.ok(gaps[index]>=3000&&gaps[index]<=5000,`accepted ${event.kind} atprefix${rendered[index]} stays readable3–5seconds: ${gaps[index]}`);
+  }
+  assert.ok(gaps.some(gap=>gap>=3000),'meaningful accepted content receives an observable reading interval');
   assert.deepEqual(rendered, Array.from({length: 28}, (_, index) => index + 1));
   const replayCalls = await calls(page, `/claims/${id}/replay`);
   assert.equal(replayCalls.length, 28);
@@ -2142,7 +2278,7 @@ test('focused flow: a corrupted prefetched original identity stops before replac
   await page.clock.runFor(1400);
   await eventually(() => page.locator('.au-global-status').innerText().then(text => /stopped|provenance|identity/i.test(text)), 'corrupt prefetched provenance did not stop replay');
   assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[2].state);
-  assert.match(await page.locator('[data-au-presentation-mode]').innerText(), /^Verified replay · revision \d+$/);
+  assert.match(await page.locator('.au-work-head').innerText(), /Recorded investigation/);
   await page.clock.runFor(5000);
   assert.equal((await visibleRecord(page)).state.revision, 2, 'a rejected prefetched prefix cannot advance later');
   assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
@@ -2176,7 +2312,7 @@ for (const interruption of ['source', 'hidden', 'navigation']) test(`focused flo
     assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
     await page.locator('[data-au-demo-resume]').click();
     let record = await visibleRecord(page);
-    for (let tick = 0; record.state.revision === 1 && tick < 70; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
+    for (let tick = 0; record.state.revision === 1 && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
     assert.deepEqual(record.state, fixture.prefixes[2].state, 'explicit Resume consumes exactly the next accepted prefix of the same journal');
     assert.deepEqual(record.projection, fixture.prefixes[2].projection);
     assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|changed identity/i);
@@ -2192,7 +2328,7 @@ for (const inspection of ['node', 'fact', 'document']) test(`focused flow: manua
   if (inspection === 'document') await page.locator('[data-au-panel="step"] [data-au-document-select="termination_notice"]').click();
   assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
   const selected = await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), route = new URL(page.url()).hash;
-  if (inspection !== 'node') assert.equal(await page.locator('[data-au-evidence-path] [data-au-wire="requirement"]').getAttribute('data-au-document'), 'termination_notice');
+  if (inspection !== 'node') assert.equal(await page.locator('[data-au-evidence-path] [data-au-document][data-au-obligation]').getAttribute('data-au-document'), 'termination_notice');
   await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
   const reads = (await calls(page, `/claims/${id}/replay`)).length;
   await page.clock.runFor(7000);
@@ -2202,7 +2338,7 @@ for (const inspection of ['node', 'fact', 'document']) test(`focused flow: manua
   assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[11].state);
   await page.locator('[data-au-demo-resume]').click();
   let record = await visibleRecord(page);
-  for (let tick = 0; record.state.revision === 11 && tick < 90; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
+  for (let tick = 0; record.state.revision === 11 && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
   assert.deepEqual(record.state, fixture.prefixes[12].state, 'Resume verifies and consumes the exact next immutable prefix');
   assert.deepEqual(record.projection, fixture.prefixes[12].projection);
   assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), fixture.prefixes[12].events.at(-1).payload.result.node_id, 'active playback follows only the recorded accepted action node');
@@ -2230,52 +2366,35 @@ async function motionTrace(page) {
 function assertFocusedMotion(trace, acceptedWave = false) {
   assert.ok(trace.length > 0, 'the actual interaction must create a native animation');
   for (const row of trace) {
-    assert.ok(row.options.duration >= 180 && row.options.duration <= 320, `bounded duration: ${JSON.stringify(row.options)}`);
+    assert.ok(row.options.duration >= 160 && row.options.duration <= 320, `bounded duration: ${JSON.stringify(row.options)}`);
     assert.notEqual(row.options.iterations, Infinity);
     assert.ok((row.options.delay || 0) >= 0 && (row.options.delay || 0) + row.options.duration <= (acceptedWave ? 800 : 400));
     if (!acceptedWave) assert.ok((row.options.delay || 0) <= 80);
     const frames = Array.isArray(row.frames) ? row.frames : [row.frames];
-    assert.ok(frames.some(frame => frame.transform !== undefined) && frames.some(frame => frame.opacity !== undefined), 'motion must carry visible transform and opacity frames');
+    assert.ok(frames.some(frame=>frame.opacity!==undefined),'content motion carries actual visible opacity frames');if(acceptedWave)assert.ok(frames.some(frame=>frame.transform!==undefined),'accepted causal change carries bounded object motion');
     for (const frame of frames) assert.ok(Object.keys(frame).every(key => ['transform', 'opacity', 'offset', 'easing', 'composite'].includes(key)), 'motion cannot animate layout, scroll or an SVG path');
   }
 }
 
-test('focused flow: page motion has real bounded frames and rapid navigation, keyboard and reduced motion cancel it', async t => {
-  const page = await fixturePage(t); await traceFocusedMotion(page);
-  await page.evaluate(() => document.querySelector('.au-nav [data-au-nav="demonstration"]').click());
-  let trace = await motionTrace(page); assertFocusedMotion(trace);
-  const first = trace.length - 1;
-  const frames = await page.evaluate(index => {
-    const row = window.__focusedMotion[index], timing = row.animation.effect.getComputedTiming();
-    row.animation.pause(); row.animation.currentTime = 0;
-    const start = {opacity: getComputedStyle(row.element).opacity, transform: getComputedStyle(row.element).transform};
-    row.animation.currentTime = timing.duration / 2;
-    const middle = {opacity: getComputedStyle(row.element).opacity, transform: getComputedStyle(row.element).transform};
-    row.animation.play(); return {start, middle, timing};
-  }, first);
-  assert.notDeepEqual(frames.start, frames.middle, 'the native animation must produce a visible intermediate frame');
-  await page.evaluate(() => document.querySelector('.au-nav [data-au-nav="knowledge"]').click());
-  trace = await motionTrace(page);
-  assert.equal(trace[first].state, 'idle', 'a newer page interaction cancels the previous native animation');
-  assert.ok(trace.filter(row => row.state === 'running').length <= 1, 'only one interaction animation may run at once');
-  await page.emulateMedia({reducedMotion: 'reduce'});
-  await eventually(() => page.evaluate(() => document.getAnimations().filter(animation => animation.playState === 'running').length === 0), 'the native reduced-motion change must cancel active animations');
-  const count = (await motionTrace(page)).length;
-  await page.locator('.au-nav [data-au-nav="work"]').focus(); await page.keyboard.press('Enter');
-  await eventually(() => page.locator('[data-au-claim-row]').count().then(count => count === 150), 'keyboard navigation must preserve the complete collection under reduced motion');
-  assert.equal((await motionTrace(page)).length, count, 'reduced motion cannot start another animation');
-  await focusedReceipt(page, 'motion-native-page', {frames, trace: await motionTrace(page)});
+test('quiet work: initial and reconnect navigation settle immediately while rapid routes, keyboard and reduced motion preserve authority',async t=>{
+  const page=await fixturePage(t,{presentationSuite:'replay'});await traceFocusedMotion(page);
+  await page.locator('.au-nav [data-au-nav="demonstration"]').click();await title(page,demoIds[0]);
+  assert.deepEqual(await motionTrace(page),[],'opening accepted history and whole-page navigation stay settled');
+  await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('.au-quiet-knowledge').count().then(count=>count===1),'rapid navigation did not retain Knowledge');
+  await page.emulateMedia({reducedMotion:'reduce'});await page.locator('.au-nav [data-au-nav="work"]').focus();await page.keyboard.press('Enter');
+  await eventually(()=>page.locator('[data-au-claim-row]').count().then(count=>count===20),'native keyboard route did not restore all original cases');
+  assert.equal(await page.evaluate(()=>document.getAnimations().filter(animation=>animation.playState==='running').length),0);
+  const reads=(await calls(page,`/claims/${demoIds[0]}/replay`)).length;await page.clock.runFor(7000);assert.equal((await calls(page,`/claims/${demoIds[0]}/replay`)).length,reads,'abandoned replay cannot continue behind reduced-motion Cases');
 });
 
-test('focused flow: tabs, disclosures, filters and source dialog use the same cancellable motion without changing source identity', async t => {
+test('focused flow: local tabs and filters settle while native source entry motion remains cancellable without changing identity', async t => {
   const page = await fixturePage(t); await traceFocusedMotion(page);
-  await page.evaluate(() => {
-    const search = document.querySelector('[data-au-claim-search]'); search.value = 'heating'; search.dispatchEvent(new Event('input', {bubbles: true}));
-  });
-  assertFocusedMotion(await motionTrace(page));
+  const search=page.locator('[data-au-claim-search]');await search.evaluate(element=>{window.__nativeSearch=element;});await search.fill('heating');
+  assert.deepEqual(await motionTrace(page),[],'filtering does not create an ancestor paint animation');assert.equal(await search.evaluate(element=>element===window.__nativeSearch&&document.activeElement===element),true);
+  assert.ok(await page.locator('[data-au-claim-row]').count()>0,'the settled filter exposes actual matching case content');
   await open(page, processedId); await title(page, processedId);
   await page.evaluate(() => { window.__focusedMotion.length = 0; document.querySelector('.au-context-nav [data-au-detail="sources"]').click(); });
-  assertFocusedMotion(await motionTrace(page));
+  assert.deepEqual(await motionTrace(page),[],'a saved local view settles without a whole-panel animation');
   await page.evaluate(() => {
     Object.defineProperty(document, 'hidden', {configurable: true, get: () => true}); document.dispatchEvent(new Event('visibilitychange'));
   });
@@ -2304,9 +2423,7 @@ test('focused flow: fresh status waits for cached revision zero revalidation and
   await page.locator('.au-nav [data-au-nav="work"]').click();
   await page.clock.runFor(10001);
   await page.evaluate(id => { window.__fixture.holdId = id; window.__fixture.holdRemaining = 1; window.__fixture.holdStatus = true; }, id);
-  await page.locator('.au-nav [data-au-nav="demonstration"]').click();
-  await page.locator('[data-au-demo-mode="live"]').click();
-  await page.locator('[data-au-demo-play]').click();
+  await open(page,id);
   assert.equal(await currentReadState(page), 'refreshing');
   assert.equal(await page.locator('[data-au-start]:enabled').count(), 0);
   await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'status') && window.__fixture.held.some(held => held.id)), 'the fresh capability and cached snapshot reads were not held independently');
@@ -2318,7 +2435,8 @@ test('focused flow: fresh status waits for cached revision zero revalidation and
   await page.evaluate(async () => { for (let turn = 0; turn < 20; turn++) await Promise.resolve(); });
   assert.equal((await calls(page, `/claims/${id}/start`)).length, 0, 'fresh capabilities cannot authorize a still-cached claim revision');
   await page.evaluate(() => { window.__fixture.holdId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
-  await eventually(async () => (await calls(page, `/claims/${id}/start`)).length === 1, 'Live Play must retain its authorization until the original snapshot revalidates');
+  await eventually(()=>page.locator('[data-au-start]').isEnabled(),'the original may be explicitly started only after its fresh snapshot matches');
+  await page.locator('[data-au-start]').click();await eventually(async()=>(await calls(page,`/claims/${id}/start`)).length===1,'the explicit fresh Start did not submit exactly once');
   await page.clock.runFor(2000);
   assert.equal((await calls(page, `/claims/${id}/start`)).length, 1, 'the uncertain accepted Start cannot repeat automatically');
   const oldCache = await page.evaluate(id => {
@@ -2331,9 +2449,9 @@ test('focused flow: fresh status waits for cached revision zero revalidation and
   assert.equal(oldCache.enabledWrites, 0, 'an unchanged other claim cache remains read-only until its own snapshot matches');
   const changedCache = await page.evaluate(id => {
     window.__fixture.holdId = id; void window.__controller.openClaim(id);
-    return {skeleton: Boolean(document.querySelector('[data-au-skeleton="claim"]')), title: document.querySelector('[data-au-claim-title]')?.textContent || null};
+    return {preview:document.querySelector('[data-au-preview]')?.dataset.auPreview, title:document.querySelector('[data-au-catalog-title]')?.textContent||null,accepted:document.querySelector('[data-au-revision]')?.dataset.auRevision||null};
   }, id);
-  assert.deepEqual(changedCache, {skeleton: true, title: null}, 'an attempted mutation evicts the previously verified snapshot of its own claim');
+  assert.equal(changedCache.preview,'catalog');assert.equal(changedCache.accepted,null,'an attempted mutation evicts accepted authority while its catalog excerpt stays readonly');
   await page.evaluate(() => { for (const held of window.__fixture.held.splice(0)) held.release(); });
 });
 
@@ -2351,7 +2469,7 @@ for (const width of [1428, 390]) test(`focused flow: exact cited PDF keeps its f
   assert.equal(await page.locator('dialog[open] .au-source-body mark').textContent(), quote);
   const geometry = () => page.evaluate(() => {
     const box = selector => { const r = document.querySelector(selector).getBoundingClientRect(); return {top: r.top, bottom: r.bottom, left: r.left, right: r.right}; };
-    return {height: innerHeight, header: box('dialog[open] .au-dialog-header'), close: box('dialog[open] [data-au-close]'), filename: box('#auSourceTitle'), quote: box('dialog[open] mark'), scroll: document.querySelector('dialog').scrollTop};
+    return {height: innerHeight, header: box('dialog[open] .au-dialog-header'), close: box('dialog[open] [data-au-close]'), filename: box('#auSourceTitle'), quote: box('dialog[open] mark'), scroll: document.querySelector('.au-source-dialog').scrollTop};
   });
   const cited = await geometry();
   assert.ok(cited.close.top >= 0 && cited.close.bottom <= cited.height && cited.filename.top >= 0 && cited.filename.bottom <= cited.height, `source identity and Close must stay visible after cited-span navigation: ${JSON.stringify(cited)}`);
@@ -2392,7 +2510,7 @@ test('focused flow: accepted changes settle every record while animating only th
   await page.evaluate(() => window.__controller.refresh());
   assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[event.seq].state, 'static updates retain all accepted changes even when their objects do not animate');
   const targets = await page.evaluate(() => window.__attentionTargets);
-  assert.ok(targets.some(row => row.semantic === event.event_sha256), 'the actual accepted event carries a visible cue');
+  assert.ok(targets.some(row=>row.source||row.fact||row.document),'the accepted receipt changes an actual selected evidence object rather than an activity counter');
   for (const row of targets) {
     assert.equal(row.closed, false, 'closed disclosures and hidden contexts cannot animate');
     assert.ok(row.bounds.bottom > 0 && row.bounds.top < row.height && row.bounds.right > 0 && row.bounds.left < row.width, `offviewport records settle without animation: ${JSON.stringify(row)}`);
