@@ -118,7 +118,7 @@ def reference_findings(policy, sources):
         predicate('outside_small_tenant_maintenance_and_no_tenant_cause', observation, ['259', '259a'])
         predicate('landlord_first_knowledge', knowledge, ['259d'])
         predicate('continuing_defect_without_remedy', responsibility, ['259a', '259d'])
-        summary = 'The fictional source packet supports defect removal and proportional reduction eligibility from documented landlord knowledge until remedy. Quantum, repair and any award remain undetermined.'
+        summary = 'The fictional source packet supports defect removal and proportional reduction eligibility from documented landlord knowledge until remedy. The reduction amount, repair itself and any award remain undetermined.'
     elif family == 'lease_termination_dispute':
         archive = _find(sources, r'Fictional issuance archive[^\n]+?receipt at that time\.')
         no_form = _find(sources, r'It was a plain letter, not a canton-approved termination form\.')
@@ -143,7 +143,7 @@ def reference_findings(policy, sources):
         predicate('issuer_authority_and_complete_packet', archive, ['269d'])
         predicate('contemporaneous_substantive_reasons', none, ['269d'], failed=True)
         predicate('later_email_is_not_original_reasons', later, ['269d'])
-        summary = 'The fictional complete original increase packet omitted substantive reasons, supporting the bounded nullity assessment under CO 269d(2)(b). The later market reply is contextual evidence. A mechanical signature is permitted at this historical date; excessive rent, quantum and filing deadlines remain undetermined.'
+        summary = 'The fictional complete original increase packet omitted substantive reasons, supporting the bounded nullity assessment under CO 269d(2)(b). The later market reply is contextual evidence. A mechanical signature is permitted at this historical date; whether the rent is excessive, the disputed amount and filing deadlines remain undetermined.'
     present = {d['document_type'] for d in docs}
     complete = all(p['status'] != 'unknown' for p in predicates) and present == {
         d['document_type'] for d in template['process_catalog']['documents']}
