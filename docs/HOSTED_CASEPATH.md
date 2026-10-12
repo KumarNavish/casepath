@@ -1,4 +1,4 @@
-# Hosted autonomous workspace
+# Public CasePath workspace
 
 The public hosted workspace lets anyone with the link inspect the synthetic
 claims, saved demonstrations, verified original sources, process graphs,
@@ -124,6 +124,30 @@ automatically restarts, and a newer source arrival or pause retains ownership.
 Do not restart the old local paid writer after cloud cutover. If rollback becomes
 necessary, first disable and drain the cloud writer, then reconcile and export
 the current cloud ledger. A stale pre-cutover copy is not a writable rollback.
+
+## Synthetic demonstration admission
+
+The `synthetic-nine-v1` profile binds nine original claim IDs to separately
+labelled synthetic supplements and historical review dates. Original files and
+journal prefixes remain intact. The profile enables a deterministic assessment
+through the existing process and knowledge engine; it grants no provider calls,
+spending allowance, external communication or court action. The public service
+only reads the resulting history.
+
+From the same clean, committed checkout, an authorized Mac operator prepares a
+private plan with `casepath-api/tools/admit_reference.py dry-run --plan PATH`.
+This reads the remote snapshot and executes in disposable local SQLite. Inspect
+the nine final heads and exact source additions before running the same command
+with `apply`. Apply checks the source/profile identities, unchanged snapshot and
+budget, then appends under the existing lease and exact-row comparison. Keep
+the plan and receipt outside Git. A source change requires a fresh plan. After
+an uncertain apply result, reconcile the committed heads before any retry.
+
+The intake gate derives its document requirements from the applicable process.
+Unverified or incomplete packets remain at intake, with missing requirements
+available in the projection. Historical reference completion is limited to its
+recorded assessment scope; it is not a current filing deadline or a completed
+real-world remedy.
 
 ## Release and verification
 
