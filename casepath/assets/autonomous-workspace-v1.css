@@ -609,3 +609,18 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-forming-process .au-graph-chrome { position:static; }
   .au-workspace .au-forming-process .au-process-question { padding-right:0; }
 }
+
+.au-workspace .au-reference-mode { color:var(--au-muted); font-size:13px; margin:10px 0 0; }
+.au-workspace .au-access-label { color:var(--au-muted); font-size:12px; }
+.au-workspace .au-assessment-conclusion { max-width:72ch; margin:0 0 24px; }
+.au-workspace .au-assessment-conclusion > p { margin:0 0 8px; font-size:15px; }
+.au-workspace .au-legal-basis { color:var(--au-muted); font-size:13px; }
+.au-workspace .au-legal-basis a { color:inherit; text-decoration:underline; text-underline-offset:3px; }
+.au-workspace .au-intake-inspection { margin:28px 0 0; max-width:72ch; }
+.au-workspace .au-intake-inspection h2 { font-size:19px; }
+.au-workspace .au-intake-checklist { list-style:none; padding:0; margin:14px 0 0; }
+.au-workspace .au-intake-checklist > li { padding:13px 0; border-top:1px solid var(--au-line); }
+.au-workspace .au-intake-checklist > li > div:first-child { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 20px; justify-content:space-between; }
+.au-workspace .au-intake-checklist strong { font-size:15px; font-weight:500; }
+.au-workspace .au-intake-checklist span { color:var(--au-muted); font-size:13px; }
+.au-workspace .au-demo-picker > details { margin-top:24px; border-top:1px solid var(--au-line); padding-top:18px; }
