@@ -1,0 +1,83 @@
+{
+  "contract": "casepath.original-completeness-audit-execution/1.0.0",
+  "base_commit": "ae0ec12de331898280bd9000fb6548c848ce48b1",
+  "host": "656813ef2295",
+  "agent_task": "/root/original_completeness_audit",
+  "date": "2026-10-12",
+  "commands_passed": [
+    "PYTHONDONTWRITEBYTECODE=1 python audits/original-completeness-20261012/extract_sources.py",
+    "PYTHONDONTWRITEBYTECODE=1 python audits/original-completeness-20261012/compile_audit.py"
+  ],
+  "native_render_method": "PyMuPDF Matrix(1,1), all73physicalpages inspected in25three-column contact sheets; all10JPEG original views inspected",
+  "versions": {
+    "python": "3.12.14",
+    "PyMuPDF": "1.26.6",
+    "Pillow": "12.3.0"
+  },
+  "provider_or_engine_calls": 0,
+  "production_access": false,
+  "original_source_edits": false,
+  "baseline_primary_law_complete": false,
+  "artifacts": [
+    {
+      "path": "audits/original-completeness-20261012/extract_sources.py",
+      "sha256": "76079b7d836a0dd6ca1a5f3a30e2ed2ce8b19fdc4703652ffa41a84c2587c5ce",
+      "size_bytes": 8131
+    },
+    {
+      "path": "audits/original-completeness-20261012/render_sources.py",
+      "sha256": "aff9eb7e5c60965f7eb3e132c24ab06a72122342d7020630f4a21f964b745652",
+      "size_bytes": 1424
+    },
+    {
+      "path": "audits/original-completeness-20261012/compile_audit.py",
+      "sha256": "ca81d7d3289f744ac51ad2337ac66b3fdc555b464000d65f0c302aaf09291984",
+      "size_bytes": 12800
+    },
+    {
+      "path": "audits/original-completeness-20261012/reviewed_paths.py",
+      "sha256": "58a50e4e7691aa4ab14cc53b689650981b7038c12010a6a0f130cdb401131979",
+      "size_bytes": 21301
+    },
+    {
+      "path": "audits/original-completeness-20261012/source_receipts.json",
+      "sha256": "7f9a3ee0f1e8c8e54c0ce8bf2b4341d5e054a464ec07f6e9bbfd4d437cc7870a",
+      "size_bytes": 981501
+    },
+    {
+      "path": "audits/original-completeness-20261012/inventory_receipt.json",
+      "sha256": "721423f8c01ad8a07b910e4acfaa694de303c564496e941e8053f6adcc590757",
+      "size_bytes": 145648
+    },
+    {
+      "path": "audits/original-completeness-20261012/audit_150.json",
+      "sha256": "2b1343a1a64183b8ad87418527984d787c87d0ec2e8cd59ec54ac23e5702acf8",
+      "size_bytes": 1273425
+    },
+    {
+      "path": "audits/original-completeness-20261012/audit_150.csv",
+      "sha256": "d7e57aecf6bcea92a09da9ae29046b0e68e6aa82010161c1e0177d983939660f",
+      "size_bytes": 149576
+    },
+    {
+      "path": "audits/original-completeness-20261012/baseline_counts.json",
+      "sha256": "2ba9279dc4ca37b54e23074f179759b587d22a593bb8b68fc3db10b6f4246735",
+      "size_bytes": 1215
+    },
+    {
+      "path": "audits/original-completeness-20261012/CRITERIA.md",
+      "sha256": "baae633b85a58b321e238979789b45d3f1ac659c50afd6ddd4c1af4e724b2dba",
+      "size_bytes": 12948
+    },
+    {
+      "path": "audits/original-completeness-20261012/criteria.json",
+      "sha256": "03abcf29c6553aaa854ca5b80fdddb745d2f5b31af70d3c80d165584b80a350c",
+      "size_bytes": 28286
+    },
+    {
+      "path": "audits/original-completeness-20261012/official_law_receipt.json",
+      "sha256": "4052ca4d7102ec470e221ed6c842249dcd8905c68398fb1ba60ba6814a363b6f",
+      "size_bytes": 8659
+    }
+  ]
+}
