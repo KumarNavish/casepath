@@ -15,7 +15,7 @@
   <meta name="casepath-review-workspace-script" content="assets/claims-workspace-v1.js?sha256=e91a20ec9eaea05b20e60d832443187ab10693445d1de9f4464654f482eb0e23">
   <meta name="casepath-review-desk-script" content="assets/agent-desk-v2.js?sha256=3db6bccb56c066bb22a61d8ebe902c804c056387a79d7dec76be050e85154621">
   <meta name="casepath-autonomous-demo-packets" content="assets/autonomous-demo-packets.json?sha256=0570e94ab2d32005c858359ea345a9dafd8c941733193da0d3575525cb81ce8a">
-  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=bb6fd7254ce5f539a2f3705a465e1dbb5733c8408fecd3275e59fd83bff4eb5a">
+  <meta name="casepath-autonomous-script" content="assets/autonomous-workspace-v1.js?sha256=d07ef3f44565ea446d81c6c514334e79b36142b3ba57b40a6fd917d239bb87b6">
   <link rel="icon" href="data:,">
   <link rel="license" href="assets/fonts/Merriweather-OFL.txt">
   <link rel="license" href="assets/fonts/Open_Sans-OFL.txt">
@@ -33,11 +33,12 @@
         // The product is a single-origin application. No URL parameter,
         // ambient global, or hosted fallback may redirect claim authority.
         window.CASEPATH_API = location.origin;
-        const foundationMode = bootParams.get('foundation') === 'live-v1';
-        const legacyJourney = ['legacy-v20', 'insurance-v1'].includes(bootParams.get('journey'));
+        const publicReadOnly = window.CASEPATH_PUBLIC_READ_ONLY === true;
+        const foundationMode = !publicReadOnly && bootParams.get('foundation') === 'live-v1';
+        const legacyJourney = !publicReadOnly && ['legacy-v20', 'insurance-v1'].includes(bootParams.get('journey'));
         const workspaceMode = !foundationMode && !legacyJourney;
-        if (workspaceMode && bootParams.get('journey') !== 'review') document.documentElement.dataset.autonomousWorkspace = 'true';
-        if (workspaceMode && bootParams.get('journey') === 'review') document.documentElement.dataset.claimsWorkspace = 'true';
+        if (workspaceMode && (publicReadOnly || bootParams.get('journey') !== 'review')) document.documentElement.dataset.autonomousWorkspace = 'true';
+        if (workspaceMode && !publicReadOnly && bootParams.get('journey') === 'review') document.documentElement.dataset.claimsWorkspace = 'true';
         if (!workspaceMode) {
           const paperScript=document.createElement('script');
           paperScript.src=document.querySelector('meta[name="casepath-paper-method-script"]').content;
@@ -312,6 +313,6 @@ Alex Morgan</div>
   </dialog>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script src="assets/autonomous-entry-v1.js?sha256=fe557d63bd1d5c927d79c726300ea0ec386c25ec5a545ee427c84c71323e3c51"></script>
+  <script src="assets/autonomous-entry-v1.js?sha256=e90bc731d25cff02c417e63b470df6eea78340855cc30ea960d002773881f098"></script>
 </body>
 </html>

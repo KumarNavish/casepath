@@ -849,8 +849,8 @@ test('reference native: exact nine actual accepted assessments retain graph docu
   await open(page,id);await title(page,id);const record=await visibleRecord(page),expected=fixture.snapshots[id];
   assert.deepEqual(record.state,expected.state);assert.deepEqual(record.projection,expected.projection);
   assert.equal(expected.state.status,'deferred');assert.equal(expected.state.outcome.status,'deferred');assert.equal(expected.state.outcome.assessment_status,'complete');
-  assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Synthetic reference assessment · as of ${expected.state.outcome.reference_provenance.as_of}`);
-  assert.match(await page.locator('[data-au-claim-status]').innerText(),/Reference assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/External handling deferred/);
+  assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based`);
+  assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/External handling deferred/);
   assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(rows=>rows.map(row=>row.dataset.auNode))),sorted(expected.state.graph.nodes.map(row=>row.node_id)));
   await page.locator('.au-context-nav [data-au-detail="documents"]').click();
   assert.deepEqual(sorted(await page.locator('[data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(expected.state.obligations.map(row=>row.obligation_id)));
@@ -884,7 +884,7 @@ for(const reduced of [false,true])test(`reference native: default playback shows
   let attempts=0;while(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<seq&&attempts++<250)await page.clock.runFor(20);
   assert.equal(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision')),seq);
   const expected=prefixes[seq].state,mode=await page.locator('[data-au-reference-mode]').allTextContents();
-  assert.deepEqual(mode,expected.policy_id==='casepath.bounded-reference-assessment/1.0.0'?[`Synthetic reference assessment${expected.semantic_contexts?.[expected.run_id]?.reference_provenance ? ` · as of ${expected.semantic_contexts[expected.run_id].reference_provenance.as_of}` : ''}`]:[]);
+  assert.deepEqual(mode,expected.policy_id==='casepath.bounded-reference-assessment/1.0.0'?[`Historical synthetic recording${expected.semantic_contexts?.[expected.run_id]?.reference_provenance ? ` · as of ${expected.semantic_contexts[expected.run_id].reference_provenance.as_of}` : ''} · rules-based`]:[]);
  }
  await page.locator('.au-work-head [data-au-detail="activity"]').focus();await page.keyboard.press('Enter');
  assert.equal(await page.locator('[data-au-demo-resume]').count(),1);const record=await caseDetails(page);assert.deepEqual(record.state,prefixes[contextSeq].state);assert.deepEqual(record.projection,prefixes[contextSeq].projection);

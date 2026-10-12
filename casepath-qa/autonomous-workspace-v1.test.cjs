@@ -19,7 +19,7 @@ const events = (s,after=0) => ({current_revision:s.revision,events:Array.from({l
 test('reference intake stays a source inspection and completed assessment retains external deferral',()=>{
  const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_sha256:hash('1')};
  const s=state({status:'deferred',outcome:{status:'deferred',assessment_status:'complete',assessment_scope:'heating_notice',reference_provenance:provenance},semantic_contexts:{workflow:{claim_id:'claim-a',execution_mode:'deterministic_reference',reference_provenance:provenance}},receipts:[{kind:'interpretation.accepted',receipt:{workflow_id:'workflow',receipt_sha256:hash('2'),reference_execution:{provenance}}}]});
- assert.equal(ui.claimStatusLabel(s.status,s),'Reference assessment complete');
+ assert.equal(ui.claimStatusLabel(s.status,s),'Assessment complete');
  assert.equal(ui.referenceExecution(s).as_of,'2025-02-21');
  assert.equal(ui.referenceExecution(state({semantic_contexts:{future:s.semantic_contexts.workflow}})).as_of,'2025-02-21','accepted work.context identifies the execution before outcome');
  assert.equal(ui.referenceExecution(state()),null,'a roster label does not imply reference execution');
@@ -31,7 +31,7 @@ test('reference intake stays a source inspection and completed assessment retain
  const view=ui.workMarkup(early,{intake:gate},null,[],'step',{}, {availability:{ready:true}});
  assert.match(view,/data-au-start disabled/);assert.match(view,/Notice record/);assert.doesNotMatch(view,/data-au-node=/);
  const completed=ui.workMarkup(s,{},'branch',[]);
- assert.equal((completed.match(/Synthetic reference assessment · as of 2025-02-21/g)||[]).length,1);assert.match(completed,/External handling deferred/);
+ assert.equal((completed.match(/Historical synthetic recording · as of 2025-02-21 · rules-based/g)||[]).length,1);assert.match(completed,/External handling deferred/);
 });
 
 test('reference demonstration has the exact new nine and legacy history remains separate',()=>{
@@ -45,9 +45,24 @@ test('reference demonstration has the exact new nine and legacy history remains 
 test('reference policy identifies the accepted execution before context supplies its historical date',()=>{
  const before=state(),started=state({policy_id:'casepath.bounded-reference-assessment/1.0.0'});
  assert.equal(ui.referenceExecution(before),null);assert.deepEqual(ui.referenceExecution(started),{mode:'deterministic_reference',synthetic:true});
- const html=ui.workMarkup(started,{},'branch',[]);assert.match(html,/data-au-reference-mode>Synthetic reference assessment<\/p>/);assert.doesNotMatch(html,/as of/);
+ const html=ui.workMarkup(started,{},'branch',[]);assert.match(html,/data-au-reference-mode>Historical synthetic recording · rules-based<\/p>/);assert.doesNotMatch(html,/as of/);
  const legacy=state({policy_id:'casepath.autonomous/1',run_id:'old-model',semantic_contexts:{'old-model':{execution_mode:'provider'}},outcome:{reference_provenance:{mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21'}}});
  assert.equal(ui.referenceExecution(legacy),null,'the current accepted model context wins over a retained reference outcome');
+});
+
+test('reference source labels require the exact recorded pin and later uploads retain prior assessment freshness',()=>{
+ const supplement={artifact_id:'synthetic-source',sha256:hash('5'),file_name:'01-clarification.txt',role:'supporting_document'},original={artifact_id:'original',sha256:hash('d'),role:'customer_message'};
+ const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',source_roster_sha256:hash('6')};
+ const s=state({run_id:'reference-run',source_roster_sha256:hash('6'),source_descriptors:[original,supplement],original_binding:{source_map:[original]},semantic_contexts:{'reference-run':{claim_id:'claim-a',execution_mode:'deterministic_reference',reference_provenance:provenance,sources:[original,supplement]}},receipts:[{kind:'interpretation.accepted',receipt:{workflow_id:'reference-run',receipt_sha256:hash('7'),reference_execution:{provenance}}}]});
+ assert.equal(ui.sourceKind(s,original),'Original source');assert.equal(ui.sourceKind(s,supplement),'Authored synthetic supplement');
+ const arrived=structuredClone(s),late={artifact_id:'unrelated-later-jpeg',sha256:hash('8'),file_name:supplement.file_name,media_type:'image/jpeg',role:'supporting_document'};
+ arrived.source_descriptors.push(late);arrived.source_roster_sha256=hash('9');
+ assert.equal(ui.sourceKind(arrived,late),'Supporting source');assert.equal(ui.sourceKind(arrived,{...late,media_type:'text/csv'}),'Supporting source');assert.equal(ui.sourceKind(arrived,{...supplement,sha256:hash('8')}),'Supporting source','filename and an old artifact ID cannot classify changed bytes');
+ const projection={intake:{contract:'casepath.source-backed-intake/1.0.0',gate_sha256:hash('3'),status:'complete',eligible:true,provenance}};
+ assert.equal(ui.sourceKind(arrived,late,projection),'Supporting source','a prior preflight roster cannot classify a later upload');
+ assert.equal(ui.referenceExecution(arrived).as_of,'2025-02-21');assert.equal(ui.assessmentFreshness(arrived).status,'prior');assert.deepEqual(ui.assessmentFreshness(arrived).sources,[late]);
+ const html=ui.workMarkup(arrived,{},'branch',[],'sources');assert.match(html,/Authored synthetic supplement/);assert.doesNotMatch(html,/unrelated-later-jpeg[^<]*Authored synthetic/);
+ assert.equal(JSON.stringify(s.source_descriptors),JSON.stringify([original,supplement]));
 });
 
 test('actual DAG topology determines rank and branches independently of input order',()=>{
@@ -524,6 +539,46 @@ function fakeApi(overrides={}) {
   return response(state());};
  return {fetch,calls};
 }
+
+test('public read-only capability blocks forged forms and removes work controls while preserving inspection',async t=>{
+ const f=dom(),api=fakeApi({handle:async(path)=>path.endsWith('/status')?response({enabled:true,provider_ready:true,read_only:true,writable:false,limits:{}}):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await newClaim(f);
+ await f.listeners.get('submit')({target:f.form,preventDefault(){}});
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.match(f.host.innerHTML,/public workspace is read-only/i);
+ const presentation={mode:'saved',readOnly:true,availability:{ready:true}};
+ for(const saved of [state(),state({status:'deferred',deferral:{code:'paused'}}),state({revision:0})]) {
+  const before=JSON.stringify(saved),html=ui.workMarkup(saved,{},'branch',[],'sources',{},presentation)+ui.workMarkup(saved,{},'branch',[],'documents',{},presentation);
+  assert.doesNotMatch(html,/data-au-start(?:[ >])|data-au-pause(?:[ >])|data-au-resume(?:[ >])|data-au-arrival(?:[ >])|data-au-add-files(?:[ >])/);
+  assert.match(html,/Original sources|History/);assert.equal(JSON.stringify(saved),before);
+ }
+ assert.equal(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).ready,false);
+ assert.match(ui.liveAvailability({enabled:true,provider_ready:true,read_only:true,writable:false}).reason,/read-only/i);
+ assert.doesNotMatch(ui.demonstrationMarkup([],{enabled:true,provider_ready:true,read_only:true,writable:false}),/data-au-demo-mode="live"/);
+});
+
+test('public entry capability prevents work before a status response arrives',async t=>{
+ const before=globalThis.CASEPATH_PUBLIC_READ_ONLY;globalThis.CASEPATH_PUBLIC_READ_ONLY=true;
+ const f=dom(),held=[],api=fakeApi({handle:async path=>path.endsWith('/status')?new Promise(resolve=>held.push(resolve)):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{for(const resolve of held)resolve(response({enabled:true,provider_ready:true,writable:true}));controller.destroy();if(before===undefined)delete globalThis.CASEPATH_PUBLIC_READ_ONLY;else globalThis.CASEPATH_PUBLIC_READ_ONLY=before;});
+ assert.match(f.container.innerHTML,/data-au-nav="intake" disabled/);await settle();await newClaim(f);
+ assert.match(f.host.innerHTML,/public workspace is read-only/i);
+ await f.listeners.get('submit')({target:f.form,preventDefault(){}});
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+});
+
+test('a read-only status arriving during file preparation is denied centrally without an uncertain write retry',async t=>{
+ const f=nativeFixture(),publicStatus={enabled:true,provider_ready:false,read_only:true,writable:false,limits:{}},bytes=Buffer.from('Original fixture bytes');let reads=0,finishStatus,finishBytes;
+ const api=fakeApi({handle:async(path)=>path.endsWith('/status')?++reads===2?new Promise(resolve=>{finishStatus=resolve;}):response({enabled:true,provider_ready:true,limits:{}}):null});
+ const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{finishStatus?.(response(publicStatus));finishBytes?.(bytes);controller.destroy();});await settle();await newClaim(f);
+ const form=f.intake;form.elements.title.value='Original fixture';form.elements.message.value='Supplied message';form.elements.files.files=[{...fileFixture(),arrayBuffer:()=>new Promise(resolve=>{finishBytes=resolve;})}];
+ const submission=f.listeners.get('submit')({target:form,preventDefault(){}});await waitFor(()=>Boolean(finishBytes));
+ finishStatus(response(publicStatus));await settle();finishBytes(bytes);await submission;
+ assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.match(form.querySelector('.au-form-status').textContent,/public workspace is read-only/i);
+ assert.doesNotMatch(form.querySelector('.au-form-status').textContent,/unconfirmed|Retry/i);
+ assert.equal(form.querySelector('button[type="submit"]').disabled,true);
+});
 
 test('uncertain intake retries the identical payload/key with required mutation header and never auto-retries',async t=>{
  const f=dom();let posts=0;const api=fakeApi({handle:async(path,init)=>{if(init.method==='POST'){posts++;if(posts===1)throw new Error('Connection lost');return response(state());}}});

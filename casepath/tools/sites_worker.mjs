@@ -23,13 +23,6 @@ function unavailable() {
 }
 
 async function proxyApi(request, env, url) {
-  const mutation = !["GET", "HEAD"].includes(request.method);
-  const agentWork = url.pathname.startsWith("/api/claim-loops/v1/autonomous") ||
-    url.pathname.startsWith("/api/agent-work/v1");
-  if (mutation && (request.headers.get("origin") !== url.origin ||
-      (agentWork && request.headers.get("X-CasePath-Agent-Work") !== "1"))) {
-    return Response.json({detail: "Explicit same-origin work request required."}, {status: 403});
-  }
   let upstream;
   try {
     upstream = new URL(env.CASEPATH_API_ORIGIN);
@@ -49,7 +42,6 @@ async function proxyApi(request, env, url) {
   try {
     const response = await fetch(new Request(new URL(`${url.pathname}${url.search}`, upstream), {
       method: request.method, headers,
-      body: mutation ? request.body : undefined,
       duplex: "half", redirect: "manual", signal: AbortSignal.timeout(14000),
     }));
     const responseHeaders = new Headers(response.headers);
@@ -83,13 +75,13 @@ async function serveStatic(request, env, url) {
 
   const marker = '<script src="assets/autonomous-entry-v1.js';
   const html = await response.text();
-  if (!html.includes(marker)) {
+  if (!html.includes(marker) || !html.includes('<head>')) {
     return new Response("CasePath entry point is invalid", { status: 500 });
   }
-  const configuration = '<script>window.CASEPATH_API = window.location.origin;window.CASEPATH_HOSTED_AUTONOMOUS = true;</script>';
+  const configuration = '<script>window.CASEPATH_API = window.location.origin;window.CASEPATH_HOSTED_AUTONOMOUS = true;window.CASEPATH_PUBLIC_READ_ONLY = true;</script>';
   const configured = html.includes(configuration)
     ? html
-    : html.replace(marker, configuration + '\n  ' + marker);
+    : html.replace('<head>', '<head>\n  ' + configuration);
   const headers = staticHeaders(response);
   headers.set("Content-Type", "text/html; charset=utf-8");
   return new Response(configured, { status: response.status, headers });
@@ -97,6 +89,12 @@ async function serveStatic(request, env, url) {
 
 export default {
   async fetch(request, env) {
+    // Public access is an inspection capability. Visitor headers, identities,
+    // and runtime flags never grant work authority through this server hop.
+    if (!["GET", "HEAD"].includes(request.method)) {
+      return Response.json({detail: "The public workspace is read-only. Saved cases, sources, replay and Knowledge remain available."},
+        {status: 403, headers: {"Cache-Control": "no-store"}});
+    }
     const url = new URL(request.url);
     if (isApiRequest(url.pathname)) {
       return proxyApi(request, env, url);

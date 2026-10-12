@@ -6,6 +6,8 @@
 })(typeof globalThis === 'object' ? globalThis : this, function (root) {
   'use strict';
   const BASE = '/api/claim-loops/v1/autonomous';
+  const PUBLIC_READ_ONLY_MESSAGE = 'The public workspace is read-only. Browse saved cases, original sources, verified replay and Knowledge.';
+  const readOnlyAccess = status => root.CASEPATH_PUBLIC_READ_ONLY === true || status?.read_only === true || status?.writable === false;
   const READ_CACHE_CONTRACT = 'casepath.read-cache/1';
   const READ_CACHE_BYTES = 2 * 1024 * 1024, READ_CACHE_AGE = 15 * 60 * 1000;
   const DOMAINS = Object.freeze([
@@ -61,7 +63,7 @@
       if (claim.deferral.code === 'paused') return 'Paused';
       return ['provider_deferred','verification_deferred','execution_deferred'].includes(claim.deferral.code) ? 'Execution failed' : 'Execution stopped';
     }
-    if (claim.outcome?.assessment_status === 'complete' && referenceExecution(claim)) return 'Reference assessment complete';
+    if (claim.outcome?.assessment_status === 'complete' && referenceExecution(claim)) return 'Assessment complete';
     if (complete(status)) return 'Investigation complete';
     return status === 'deferred' ? claim.outcome ? 'More evidence needed' : 'Execution stopped' : statusLabel(status);
   }
@@ -101,8 +103,10 @@
     const original = list(state.original_binding?.source_map).some(row => row.artifact_id === source.artifact_id && row.sha256 === source.sha256);
     if (original) return 'Original source';
     const acquired = list(state.acquired_sources).find(row => row.artifact_id === source.artifact_id && row.sha256 === source.sha256);
-    const provenance = referenceExecution(state) || intakeGate(projection)?.provenance;
-    return acquired?.text?.startsWith('SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\n') || provenance?.mode === 'deterministic_reference' && provenance.synthetic === true ? 'Authored synthetic supplement' : source.role === 'customer_message' ? 'Original source' : 'Supporting source';
+    const context = Object.values(state.semantic_contexts || {}).find(row => row.execution_mode === 'deterministic_reference' && row.reference_provenance?.synthetic === true && list(row.sources).some(pin => pin.artifact_id === source.artifact_id && pin.sha256 === source.sha256));
+    const gate = intakeGate(projection), provenance = gate?.provenance;
+    const inspectedRoster = gate?.status === 'complete' && gate.eligible === true && provenance?.mode === 'deterministic_reference' && provenance.synthetic === true && isHash(state.source_roster_sha256) && provenance.source_roster_sha256 === state.source_roster_sha256;
+    return acquired?.text?.startsWith('SYNTHETIC SUPPLEMENT — FICTIONAL DEMONSTRATION SOURCE\n') || context || inspectedRoster ? 'Authored synthetic supplement' : source.role === 'customer_message' ? 'Original source' : 'Supporting source';
   }
 
   function readState(response, claimId) {
@@ -788,7 +792,7 @@
 
   function workMarkup(state, projection, selected, events, detail = 'step', context = {}, presentation = {}) {
     const reference = referenceExecution(state), availability = claimAvailability(presentation.status || null,state,projection);
-    const canWrite = presentation.writable !== false && writable(presentation.status) && presentation.mode !== 'replay';
+    const canWrite = !presentation.readOnly && presentation.writable !== false && writable(presentation.status) && presentation.mode !== 'replay';
     presentation = {...presentation,availability:{...presentation.availability,...(!intakeEligible(projection) || REFERENCE_DEMO_CASES.some(row => row.claim_id === state.claim_id) || !canWrite ? {ready:false,reason:availability.reason} : {})}};
     const fact = evidenceRelationships(state,selected,context).fact;
     const freshness = assessmentFreshness(state);
@@ -798,7 +802,7 @@
     const panels = [['step','Process'],['documents','Documents'],['knowledge','Knowledge'],['sources','Original sources'],['activity','History']];
     const chosen = panels.some(([id]) => id === detail) ? detail : 'step', publicationFocus = presentation.attention && (!presentation.inspectionHold || presentation.attention.retained) && formingPublication(state,events,presentation.attention), forming = chosen === 'step' && (formingWork(state,presentation) || Boolean(publicationFocus));
     const body = chosen === 'step' ? !state.graph ? openingContentMarkup(state) + intakeMarkup(state,projection) : forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
-    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${featuredCase(state.claim_id) || state.origin === 'canonical_original' ? ' / Synthetic claim' : ''}${presentation.mode === 'replay' ? ' / Recorded investigation' : ''}</p>${claimHeadingMarkup(state)}${reference ? `<p class="au-reference-mode" data-au-reference-mode>Synthetic reference assessment${reference.as_of ? ` · as of ${h(reference.as_of)}` : ''}</p>` : ''}<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' External handling deferred.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>${presentation.pendingStart ? 'Retry start' : 'Start investigation'}</button>` : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' ? recordButton('Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}" aria-controls="auPanel-activity">History</button></div></header>${state.revision === 0 && presentation.mode !== 'replay' ? `<p class="au-meta" data-au-start-availability>${h(presentation.availability?.reason || 'Checking live execution availability…')}</p>` : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}" aria-controls="auPanel-${id}">${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${chosen === 'step' && !forming && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div></div></section></section>`;
+    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${featuredCase(state.claim_id) || state.origin === 'canonical_original' ? ' / Synthetic claim' : ''}${presentation.mode === 'replay' ? ' / Recorded investigation' : ''}</p>${claimHeadingMarkup(state)}${reference ? `<p class="au-reference-mode" data-au-reference-mode>Historical synthetic recording${reference.as_of ? ` · as of ${h(reference.as_of)}` : ''} · rules-based</p>` : ''}<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' External handling deferred.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>${presentation.pendingStart ? 'Retry start' : 'Start investigation'}</button>` : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' ? recordButton('Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}" aria-controls="auPanel-activity">History</button></div></header>${state.revision === 0 && presentation.mode !== 'replay' ? `<p class="au-meta" data-au-start-availability>${h(presentation.availability?.reason || 'Checking live execution availability…')}</p>` : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}" aria-controls="auPanel-${id}">${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${chosen === 'step' && !forming && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div></div></section></section>`;
   }
 
   function replayIdentityMarkup(record) {
@@ -940,8 +944,9 @@
   }
   function demonstrationMarkup(claims, status, mode = 'reference') {
     const availability = liveAvailability(status);
-    if (mode === 'reference') return `<section class="au-demonstration"><header class="au-collection-head"><div><p class="au-eyebrow">Nine original cases · three domains</p><h1 class="au-page-heading" tabindex="-1">Follow the evidence.</h1><p class="au-lead">Recorded synthetic reference assessments of the same cases and source files.</p></div></header><div class="au-demo-controls">${button('Play recorded work','data-au-demo-play',true)}<p class="au-meta" data-au-demo-availability>Verified recorded histories only. Unavailable assessments stop playback.</p>${recordButton('Earlier recordings','demo')}</div>${demoItineraryMarkup(claims)}</section>`;
-    return `<section class="au-demonstration"><header class="au-collection-head"><div><p class="au-eyebrow">Nine original cases · three domains</p><h1 class="au-page-heading" tabindex="-1">Follow the evidence.</h1><p class="au-lead">A selected route through the same cases, sources and recorded histories.</p></div></header><div class="au-demo-controls"><div class="au-mode-choice" role="group" aria-label="Demonstration mode"><button type="button" data-au-demo-mode="replay" aria-pressed="${mode === 'replay'}">Verified replay</button><button type="button" data-au-demo-mode="live" aria-pressed="${mode === 'live'}">Live execution</button></div>${button(mode === 'replay' ? 'Play recorded work' : 'Start live presentation','data-au-demo-play',true)}<p class="au-meta" data-au-demo-availability>${h(mode === 'live' ? availability.reason : 'Recorded executions only. Playback stops if no operational outcome was accepted.')}</p></div><p class="au-meta au-demo-order-note">01–09 · Presentation order across independent original cases.</p>${demoItineraryMarkup(claims,null,null,DEMO_CASES)}</section>`;
+    if (mode === 'reference') return `<section class="au-demonstration"><header class="au-collection-head"><div><p class="au-eyebrow">Nine original cases · three domains</p><h1 class="au-page-heading" tabindex="-1">Follow the evidence.</h1><p class="au-lead">Historical synthetic recordings of the same cases and source files.</p></div></header><div class="au-demo-controls">${button('Play recorded work','data-au-demo-play',true)}<p class="au-meta" data-au-demo-availability>Verified recorded histories only. Unavailable assessments stop playback.</p>${recordButton('Earlier recordings','demo')}</div>${demoItineraryMarkup(claims)}</section>`;
+    if (readOnlyAccess(status)) mode = 'replay';
+    return `<section class="au-demonstration"><header class="au-collection-head"><div><p class="au-eyebrow">Nine original cases · three domains</p><h1 class="au-page-heading" tabindex="-1">Follow the evidence.</h1><p class="au-lead">A selected route through the same cases, sources and recorded histories.</p></div></header><div class="au-demo-controls"><div class="au-mode-choice" role="group" aria-label="Demonstration mode"><button type="button" data-au-demo-mode="replay" aria-pressed="${mode === 'replay'}">Verified replay</button>${readOnlyAccess(status) ? '' : `<button type="button" data-au-demo-mode="live" aria-pressed="${mode === 'live'}">Live execution</button>`}</div>${button(mode === 'replay' ? 'Play recorded work' : 'Start live presentation','data-au-demo-play',true)}<p class="au-meta" data-au-demo-availability>${h(mode === 'live' ? availability.reason : 'Recorded executions only. Playback stops if no operational outcome was accepted.')}</p></div><p class="au-meta au-demo-order-note">01–09 · Presentation order across independent original cases.</p>${demoItineraryMarkup(claims,null,null,DEMO_CASES)}</section>`;
   }
   function mediaType(file) {
     if (text(file.type).trim()) return file.type;
@@ -1095,6 +1100,7 @@
     const doc = container.ownerDocument, fetcher = options.fetch || root.fetch?.bind(root), base = options.apiBase || BASE;
     const mainTag = container.tagName === 'MAIN' ? 'div' : 'main';
     if (!fetcher) throw new Error('The autonomous API is unavailable.');
+    let publicReadOnly = root.CASEPATH_PUBLIC_READ_ONLY === true;
     let publicationAttention = null, inspectionHold = false;
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, sourceEpoch = 0, polling = null, claimRead = 0;
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
@@ -1111,7 +1117,7 @@
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
     const collection = {search:'',filter:'all',domain:'all',scope:'originals',page:1};
     container.classList.add('au-workspace');
-    container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Evidence into action</span></a><button type="button" class="au-header-new" data-au-nav="intake"${root.CASEPATH_PUBLIC_READ_ONLY === true ? ' hidden' : ''}>New claim <span aria-hidden="true">↗</span></button><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main"><div class="au-global-status" role="status" aria-live="polite"></div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Record</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
+    container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Evidence into action</span></a><button type="button" class="au-header-new" data-au-nav="intake"${publicReadOnly ? ` disabled title="${h(PUBLIC_READ_ONLY_MESSAGE)}"` : ''}>New claim <span aria-hidden="true">↗</span></button><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main"><div class="au-global-status" role="status" aria-live="polite"></div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Record</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
     const host = container.querySelector('[data-au-view]'), globalStatus = container.querySelector('.au-global-status'), dialog = container.querySelector('.au-source-dialog'), recordDialog = container.querySelector('.au-record-dialog');
     function notice(message, error = false) { globalStatus.textContent = message; globalStatus.classList.toggle('au-error', error); }
     function route(fragment, writeHistory = true) {
@@ -1231,7 +1237,7 @@
       sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear();
       freshClaim = false; statusAuthority = null; synchronizeAuthority('refreshing');
     }
-    function canStartHere() { return statusAuthority?.epoch === epoch && statusAuthority?.generation === readGeneration && claimAvailability(status,current,projection).ready; }
+    function canStartHere() { return !publicReadOnly && statusAuthority?.epoch === epoch && statusAuthority?.generation === readGeneration && claimAvailability(status,current,projection).ready; }
     function synchronizeAuthority(readState = freshClaim ? 'verified' : 'refreshing') {
       if (view !== 'claim') return;
       host.setAttribute?.('data-au-read-state',presentationMode === 'replay' ? 'verified' : readState);
@@ -1243,11 +1249,11 @@
         const action = control.hasAttribute('data-au-start') ? 'start' : control.hasAttribute('data-au-pause') ? 'pause' : 'resume';
         const pending = action === 'start' ? pendingStart?.claimId === current?.claim_id : pendingControl?.claimId === current?.claim_id && pendingControl?.action === action;
         control.textContent = pending ? busy ? ({start:'Starting…',pause:'Pausing…',resume:'Resuming…'})[action] : `Retry ${action}` : action === 'start' ? 'Start investigation' : `${words(action)} work`;
-        control.disabled = busy || !freshClaim || !writable(status) || presentationMode === 'replay' || control.hasAttribute('data-au-resume') && !intakeEligible(projection) || control.hasAttribute('data-au-start') && !canStartHere() && !pendingStart;
+        control.disabled = publicReadOnly || busy || !freshClaim || !writable(status) || presentationMode === 'replay' || control.hasAttribute('data-au-resume') && !intakeEligible(projection) || control.hasAttribute('data-au-start') && !canStartHere() && !pendingStart;
       }
       const form = host.querySelector('[data-au-arrival]');
       if (form) {
-        const readonly = busy || !freshClaim || !status || !writable(status) || presentationMode === 'replay';
+        const readonly = publicReadOnly || busy || !freshClaim || !status || !writable(status) || presentationMode === 'replay';
         if (readonly) {
           for (const control of form.querySelectorAll('input,textarea,select,button[type="submit"]')) control.disabled = true;
         } else if (pendingArrival) lockForm(form,true,true);
@@ -1264,7 +1270,7 @@
     }
     function request(path, init = {}) {
       const readonly = !init.method || init.method === 'GET';
-      if (!readonly && (!status || !writable(status))) throw new Error('This workspace is read-only.');
+      if (!readonly && (publicReadOnly || !status || !writable(status))) { const error = new Error(PUBLIC_READ_ONLY_MESSAGE); error.status = 403; return Promise.reject(error); }
       const identity = `${readGeneration}:${path}`;
       if (readonly && inflightReads.has(identity)) return inflightReads.get(identity);
       const controller = new AbortController(); controllers.add(controller);
@@ -1496,7 +1502,7 @@
       const arrival = sameClaim && host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
       // Moving the original node keeps native FileList, entered text and retry state.
       arrival?.remove?.();
-      host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
+      host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,readOnly:publicReadOnly,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
       reuseSourceControls(host,sources);
       reuseFormingObjects(host,objects);
       if (arrival) host.querySelector('[data-au-arrival]')?.replaceWith(arrival);
@@ -1830,9 +1836,13 @@
       if (disposed || token !== epoch || generation !== readGeneration) return;
       if (!fromCache && JSON.stringify(data).length < 128 * 1024) statusCache = {at:Date.now(),value:data};
       if (!fromCache) statusAuthority = {epoch:token,generation};
-      status = data;
-      const newClaimControl = container.querySelector('.au-header-new'); if (newClaimControl) newClaimControl.hidden = !writable(status);
-      if (view === 'intake' && !writable(status)) { const form = host.querySelector('[data-au-intake]'); if (form) lockForm(form,true); }
+      const wasReadOnly = publicReadOnly;
+      publicReadOnly ||= readOnlyAccess(data);
+      status = publicReadOnly ? {...data,read_only:true,writable:false} : data;
+      const newClaimControl = container.querySelector('.au-header-new');
+      if (newClaimControl && publicReadOnly) { newClaimControl.disabled = true; newClaimControl.title = PUBLIC_READ_ONLY_MESSAGE; }
+      if (!wasReadOnly && publicReadOnly && view === 'claim') renderClaim();
+      if (view === 'intake' && publicReadOnly) { const form = host.querySelector('[data-au-intake]'); if (form) lockForm(form,true); }
       if (view === 'claim') {
         const start = host.querySelector('[data-au-start]'); if (start) start.disabled = busy || !freshClaim || !canStartHere() && !pendingStart;
         const availability = host.querySelector('[data-au-start-availability]'); if (availability) availability.textContent = claimAvailability(status,current,projection).reason;
@@ -2043,7 +2053,7 @@
       session.index++; openPresentationCase(session);
     }
     async function startOriginal(target) {
-      if (busy || pendingRoute() || !freshClaim || !status || !writable(status) || !current || !intakeEligible(projection) || REFERENCE_DEMO_CASES.some(row => row.claim_id === current.claim_id) || current.revision !== 0 && !pendingStart || presentationMode === 'replay' || !canStartHere() && !pendingStart) return;
+      if (publicReadOnly || busy || pendingRoute() || !freshClaim || !status || !writable(status) || !current || !intakeEligible(projection) || REFERENCE_DEMO_CASES.some(row => row.claim_id === current.claim_id) || current.revision !== 0 && !pendingStart || presentationMode === 'replay' || !canStartHere() && !pendingStart) return;
       const token = epoch, id = current.claim_id;
       pendingStart ||= {claimId:id,body:{expected_revision:current.revision,expected_state_sha256:current.state_sha256,idempotency_key:`browser.${root.crypto.randomUUID()}`}};
       starts.set(id,pendingStart); busy = true;
@@ -2068,6 +2078,12 @@
       if (!disposed && token === epoch) for (const result of results) if (result.status === 'rejected') notice(result.reason.message,true);
     }
     async function showIntake(writeHistory = true) {
+      if (publicReadOnly) {
+        stopPresentation(); leaveView(); route('#autonomous/new',writeHistory);
+        epoch++; cancelPoll(); setView('intake'); nav('intake'); current = null;
+        host.innerHTML = `<section><h1 class="au-page-heading" tabindex="-1">Public workspace</h1><p class="au-lead">${PUBLIC_READ_ONLY_MESSAGE}</p>${button('Browse cases','data-au-nav="work"')}</section>`;
+        return;
+      }
       if (view === 'intake' && host.querySelector('[data-au-intake]')) { route('#autonomous/new',writeHistory); return; }
       stopPresentation(); leaveView(); route('#autonomous/new',writeHistory);
       epoch++; const token = epoch; cancelPoll(); setView('intake'); nav('intake'); current = null; notice('');
@@ -2168,10 +2184,12 @@
     function idleIntakeSubmit(form) {
       const submit = form?.querySelector('button[type="submit"]');
       if (!submit) return;
+      if (publicReadOnly) { submit.disabled = true; submit.textContent = 'Public workspace · read-only'; return; }
       submit.textContent = status?.enabled === true && (status.provider_ready === false || status.limits?.autonomous_can_start === false) ? 'Save claim' : 'Start autonomous work ↗';
       submit.disabled = !status?.enabled || !writable(status);
     }
     function lockForm(form, lock, retry = false) {
+      if (publicReadOnly) { for (const control of form.querySelectorAll('input,textarea,select,button[type="submit"]')) control.disabled = true; const submit = form.querySelector('button[type="submit"]'); if (submit) submit.textContent = 'Public workspace · read-only'; return; }
       for (const control of form.querySelectorAll('input,textarea,select,button[type="submit"]')) control.disabled = lock;
       const submit = form.querySelector('button[type="submit"]');
       if (retry) { submit.disabled = !writable(status); submit.textContent = 'Retry same request'; }
@@ -2192,7 +2210,7 @@
     async function submit(event) {
       const form = event.target;
       if (!form.matches('[data-au-intake],[data-au-arrival]')) return;
-      event.preventDefault(); if (busy || !status || !writable(status)) return;
+      event.preventDefault(); if (publicReadOnly) { notice(PUBLIC_READ_ONLY_MESSAGE); return; } if (busy || !status || !writable(status)) return;
       const intake = form.matches('[data-au-intake]'), token = epoch, saved = current;
       if (!intake && (!saved || !freshClaim || presentationMode === 'replay')) return;
       let submitted = false;
@@ -2220,7 +2238,7 @@
       } finally { busy = false; synchronizeAuthority(); routeChanged(); }
     }
     async function controlWork(target, action) {
-      if (busy || !freshClaim || !status || !writable(status) || !current || presentationMode === 'replay' || action === 'resume' && !intakeEligible(projection) || (action === 'pause' ? current.status !== 'running' : current.status !== 'deferred' || current.deferral?.code !== 'paused')) return;
+      if (publicReadOnly || busy || !freshClaim || !status || !writable(status) || !current || presentationMode === 'replay' || action === 'resume' && !intakeEligible(projection) || (action === 'pause' ? current.status !== 'running' : current.status !== 'deferred' || current.deferral?.code !== 'paused')) return;
       if (pendingControl?.action !== action) pendingControl = null;
       const token = epoch, saved = current;
       pendingControl ||= {action,claimId:saved.claim_id,body:{expected_revision:saved.revision,expected_state_sha256:saved.state_sha256,idempotency_key:`browser.${root.crypto.randomUUID()}`}};
@@ -2286,7 +2304,7 @@
       const {kind,id} = recordSelection, body = recordDialog.querySelector('[data-au-record-content]');
       if (kind === 'demo') {
         const roster = (rows,collection) => DOMAINS.map(domain => `<section><h3>${h(domain.label)}</h3>${rows.filter(row => row.domain === domain.id).map(row => `<button type="button" class="au-demo-case-open" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="${collection}">${h(row.label)}</button>`).join('')}</section>`).join('');
-        body.innerHTML = `<div class="au-demo-picker"><h2>Synthetic reference assessments</h2>${roster(REFERENCE_DEMO_CASES,'reference')}<details data-au-disclosure="earlier-recordings"><summary>Earlier recordings</summary><p class="au-meta">Original recorded histories retain their execution modes and receipts.</p>${roster(DEMO_CASES,'legacy')}</details></div>`;
+        body.innerHTML = `<div class="au-demo-picker"><h2>Recorded assessments</h2>${roster(REFERENCE_DEMO_CASES,'reference')}<details data-au-disclosure="earlier-recordings"><summary>Earlier recordings</summary><p class="au-meta">Original recorded histories retain their execution modes and receipts.</p>${roster(DEMO_CASES,'legacy')}</details></div>`;
         return;
       }
       const record = contextualRecord(current,projection,history,kind,id,knowledgeCache?.value || {},replayRecord);
@@ -2323,7 +2341,7 @@
       else if (target.hasAttribute('data-au-page')) { if (view === 'work' && !target.disabled) { collection.page = Number(target.dataset.auPage); refreshCollection(); rememberCollectionRoute(true); host.querySelector('[data-au-claims]')?.scrollIntoView?.({block:'start',behavior:'instant'}); } }
       else if (target.hasAttribute('data-au-nav')) { if (busy) return; target.dataset.auNav === 'knowledge' ? showKnowledge() : target.dataset.auNav === 'intake' ? showIntake() : target.dataset.auNav === 'demonstration' ? showDemonstration() : showWork(); }
       else if (target.hasAttribute('data-au-claim')) { if (!busy) openClaim(target.dataset.auClaim); }
-      else if (target.hasAttribute('data-au-demo-mode')) { demoMode = target.dataset.auDemoMode === 'live' ? 'live' : 'replay'; refreshDemonstration(); route(`#autonomous/demonstration?mode=${demoMode}`); }
+      else if (target.hasAttribute('data-au-demo-mode')) { demoMode = !publicReadOnly && target.dataset.auDemoMode === 'live' ? 'live' : 'replay'; refreshDemonstration(); route(`#autonomous/demonstration?mode=${demoMode}`); }
       else if (target.hasAttribute('data-au-demo-play')) beginPresentation();
       else if (target.hasAttribute('data-au-demo-stop')) { pausePresentation(); renderClaim(); }
       else if (target.hasAttribute('data-au-demo-resume')) resumePresentation();

@@ -15,7 +15,7 @@ REPOSITORY = Path(__file__).resolve().parents[2]
 PUBLIC_ROOT = REPOSITORY / "casepath-public"
 OUTPUT_ROOT = REPOSITORY / "dist"
 WORKER_SOURCE = Path(__file__).with_name("sites_worker.mjs")
-API_CONFIGURATION = "<script>window.CASEPATH_API = window.location.origin;window.CASEPATH_HOSTED_AUTONOMOUS = true;</script>"
+API_CONFIGURATION = "<script>window.CASEPATH_API = window.location.origin;window.CASEPATH_HOSTED_AUTONOMOUS = true;window.CASEPATH_PUBLIC_READ_ONLY = true;</script>"
 API_SCRIPT_MARKER = '<script src="assets/autonomous-entry-v1.js'
 SITES_CORPUS_REDIRECT_HTML = """<!doctype html>
 <html lang="en">
@@ -53,12 +53,12 @@ def build() -> None:
         )
         index_path = staging / "client" / "index.html"
         index_html = index_path.read_text(encoding="utf-8")
-        if API_SCRIPT_MARKER not in index_html:
+        if API_SCRIPT_MARKER not in index_html or '<head>' not in index_html:
             raise SitesBuildError("CasePath entry point does not load autonomous-entry-v1.js")
         index_path.write_text(
             index_html.replace(
-                API_SCRIPT_MARKER,
-                f"{API_CONFIGURATION}\n  {API_SCRIPT_MARKER}",
+                '<head>',
+                f'<head>\n  {API_CONFIGURATION}',
                 1,
             ),
             encoding="utf-8",

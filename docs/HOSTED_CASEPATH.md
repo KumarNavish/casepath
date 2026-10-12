@@ -1,9 +1,12 @@
 # Hosted autonomous workspace
 
-The hosted workspace runs the same source-grounded autonomous controller,
-process graph, node-derived document checklist, and qualified knowledge store as
-the accepted local product. It exposes the autonomous workspace; the earlier
-Review workspace remains available in the local product.
+The public hosted workspace lets anyone with the link inspect the synthetic
+claims, saved demonstrations, verified original sources, process graphs,
+document checklists and qualified Knowledge. It is permanently read-only.
+New intake, file upload, starting or retrying work, pause, resume and saved-result
+reconciliation are unavailable through the public Site and hosted API.
+Authorized Mac work keeps the existing local product and operator paths; the
+earlier Review workspace remains available locally.
 
 ## Services and persistence
 
@@ -13,20 +16,32 @@ Review workspace remains available in the local product.
   `casepath-api`, entrypoint `hosted_main:app`.
 - Storage: Turso Free database `casepath-autonomous`, primary in Ireland.
 
-Compute is ephemeral and may sleep. There is no local database replica: original
-source chunks, claim events, knowledge, and model reservations commit directly to
-the remote primary. Replay and source validation run before the short write
-transaction, which compares the full journal snapshot before accepting an event.
+Compute is ephemeral and may sleep. There is no local database replica: the public
+service reads saved source chunks, claim events, knowledge and spending records
+from the remote primary. Journal replay and source identity checks remain in
+force. Browsing never admits evidence, changes a journal or dispatches work.
 A wake-up may briefly return an unavailable message. Free
 hosting is suitable for the bounded demo; it has no always-on guarantee. FastAPI
 Cloud is a public-beta service. No paid hosting, overages, or keep-alive jobs are
 part of this deployment.
 
-The Sites worker authenticates its server hop with a separate secret and forwards
-only allowlisted application headers. Browser login cookies never leave Sites.
-The API permits unauthenticated `/healthz` only. Every data route requires the
-server secret and the configured Site origin; mutations additionally require the
-browser Origin and existing autonomous-work header.
+The Sites worker rejects every method except GET and HEAD before upstream or
+asset access. The hosted API independently enforces the same permanent 403
+denial before reading a command body or entering a route. This policy covers
+current, legacy and unknown paths. Visitor Origin, work headers, user IDs and
+email addresses do not grant write authority.
+
+The worker authenticates its read hop with a separate secret and forwards only
+allowlisted application headers. Browser login cookies never leave Sites.
+The API permits unauthenticated `/healthz` only. Every data route still requires
+the server secret and configured Site origin. The secret authenticates the
+transport; it does not identify a visitor as an owner.
+
+The hosted status and health responses explicitly report `read_only: true` and
+`writable: false`. The hosted bundle declares that capability before entry
+selection, including when assets are served directly. Legacy Review and
+foundation entry URLs open autonomous inspection. Public controls retain source
+inspection and replay playback, with a central request guard against work calls.
 
 ## Runtime configuration
 
@@ -40,10 +55,16 @@ Keep runtime values out of source and the Sites manifest. Sites requires
 | `CASEPATH_TURSO_URL` | Remote libSQL database URL |
 | `TURSO_AUTH_TOKEN` | Database-scoped secret |
 | `CASEPATH_SOURCE_COMMIT` | Full Git commit used for this release |
-| `CASEPATH_HOSTED_WRITABLE` | `0` during migration; `1` after ownership transfers |
-| `CASEPATH_AUTONOMOUS_ENABLED` | `1` only with the existing imported allowance |
-| `CASEPATH_AGENT_WORK_MODEL` | Pinned model identifier |
-| `OPENROUTER_API_KEY` | Existing authorized demo credential, as a secret |
+| `CASEPATH_HOSTED_WRITABLE` | Legacy value; cannot enable writes in the public service |
+| `CASEPATH_AUTONOMOUS_ENABLED` | Legacy value; cannot enable inference in the public service |
+
+The public service never constructs a model adapter, refreshes a provider
+catalogue, resumes pending work or arms recovery timers. Model and provider
+credentials are not required by this composition. Startup retains existing
+schema and lease infrastructure initialization; this is distinct from passive
+GET handling, which performs no durable data writes. Its store also uses the
+existing read-only source-publication and journal-admission guards. Local and
+operator storage and workflow classes retain their existing behavior.
 
 FastAPI Cloud supports secret input over stdin:
 
@@ -66,11 +87,13 @@ backups and the migration receipt outside the source repository. Use
 original. Supply `--source-root`, `--snapshot`, an external `--receipt`, and
 `--writers-stopped` as appropriate. The script never changes an allowance.
 
-A remote database lease fences each workflow through knowledge publication.
-Deployment overlap cannot acquire two committed owners. Every owned write
-transaction checks its generation. The controller discovers accepted pending work at startup and explicit work
-commands. A bounded internal timer retries parked work independently of browser
-reads. GETs never dispatch work, and idle services generate no recovery traffic.
+Existing authorized operator workflows use a remote database lease to fence
+work through knowledge publication. Deployment overlap cannot acquire two
+committed owners, and every owned write transaction checks its generation.
+The public service closes dispatch before exposing projections. Pending work
+and completed outcomes awaiting Knowledge publication remain unchanged across
+public startup, restart, browser reads and callback races. Recovery behavior in
+the separate operator controller is preserved.
 
 The original spending ledger remains authoritative. Migration must preserve its
 base allowance, one-time grant, actual costs, unknown reservations, and provider
@@ -79,10 +102,12 @@ acknowledgement poisons that connection and prevents model dispatch. An uncertai
 provider call remains reserved and is never automatically resent. Restarting a
 service cannot replenish the allowance.
 
-A verification failure stays stopped across service restarts. An operator may
-explicitly apply an already completed, sealed interpretation and verification
-pair through `POST /api/claim-loops/v1/autonomous/claims/{claim_id}/reconcile-saved-results`.
-This authenticated command requires the failed claim's exact `expected_revision`
+A verification failure stays stopped across service restarts. An authorized
+operator may explicitly apply an already completed, sealed interpretation and
+verification pair through the existing local operator path
+`POST /api/claim-loops/v1/autonomous/claims/{claim_id}/reconcile-saved-results`.
+The public hosted route always returns 403. The local command requires the
+failed claim's exact `expected_revision`
 and `expected_state_sha256`, a unique `idempotency_key`, `actor`, and `reason`,
 with the existing `X-CasePath-Agent-Work: 1` header. It has no provider transport,
 model reservation, or retry queue. It verifies the saved requests, results,
@@ -131,9 +156,11 @@ and frontend `source_commit` both use the canonical product commit whose bytes
 were copied and verified. Record these two identities separately in release
 receipts; do not present the distribution commit as the canonical API source.
 
-Deploy the linked FastAPI Cloud app from the repository root. Start read-only,
-verify authenticated saved-state readback, then complete the single-writer
-cutover. Verify deployment status rather than treating submission as success.
+Deployment is a separate authorized operation after source review and the
+formation and legal-corpus workstream checkpoints. When authorized, deploy the
+linked FastAPI Cloud app from the repository root and verify authenticated
+saved-state readback. The public service remains read-only regardless of legacy
+environment flags. Verify deployment status rather than treating submission as success.
 The API `/healthz` and frontend `deployment.json` must identify the same commit.
 
 The deterministic hosted tests use isolated SQLite behind HTTP MockTransport and
@@ -141,3 +168,8 @@ mocked provider responses. They cover ambiguous commits, transaction fencing,
 no paid redispatch, interrupted source uploads, full-size original readback,
 authentication, and recovery. Cloud acceptance additionally requires remote
 readback and a fresh compute deployment preserving exact saved state and ledger.
+The focused public-policy tests additionally reject forged visitor authority and
+all work verbs without upstream or durable-service access. Pending and completed
+unpublished synthetic fixtures retain exact saved rows across reads, restarts and
+manual recovery-callback probes. These deterministic checks do not deploy or
+inspect production state.
