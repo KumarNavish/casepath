@@ -37,8 +37,8 @@
     },
     {
       "path": "audits/original-completeness-20261012/audit_150.csv",
-      "sha256": "31486fc9bf5a88120e69407a25b5f19f499f9def662bb9360ca6d729431b0605",
-      "size_bytes": 154556
+      "sha256": "d8c90b417a01d35b2e71e513c5e8f3bde1900e26e7645899430f7930874f7f98",
+      "size_bytes": 154405
     },
     {
       "path": "audits/original-completeness-20261012/audit_150.json",
@@ -212,8 +212,8 @@
     },
     {
       "path": "audits/original-completeness-20261012/compile_audit.py",
-      "sha256": "35903eb3aa869a666fe33f3adcc2c9d213eb852a23cf065c1c762765cbc6d711",
-      "size_bytes": 13828
+      "sha256": "fc80b3b6c8ea6608b93706e6a0b27216ec5469005efdf3d574733093e8fadb00",
+      "size_bytes": 13849
     },
     {
       "path": "audits/original-completeness-20261012/criteria.json",
@@ -253,5 +253,6 @@
   ],
   "deterministic_replay": "PASS: same hashes before/after rerunning extraction, compilation and candidate source builder; case count150; augmented candidates9 with3perdomain and21new sources",
   "source_scope": "audit artifacts only; original660 referenced corpus files, registry, raw bytes, manifest and existing journals unchanged",
-  "supplemental_candidates_status": "pending_fresh_independent_legal_review_not_final_designation"
+  "supplemental_candidates_status": "pending_fresh_independent_legal_review_not_final_designation",
+  "diff_check_note": "Initial git diff --check flagged csv.writer CRLF as trailing whitespace; emitter now uses LF. Corrected check passed."
 }

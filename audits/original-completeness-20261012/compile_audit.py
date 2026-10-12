@@ -131,7 +131,7 @@ def main():
     dump("audit_150.json", results)
     keys = ["number", "claim_id", "domain", "received_at", "path", "relevant_CO_articles", "complete_verdict", "foundation_verdict", "overall_verdict", "missing_or_unknown_facts", "required_documents_for_actual_path", "adverse_or_limiting_facts", "foundation_reason", "complete_and_founded_nomination"]
     with (OUT / "audit_150.csv").open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=keys)
+        writer = csv.DictWriter(f, fieldnames=keys, lineterminator="\n")
         writer.writeheader()
         for result in results:
             writer.writerow({k: "|".join(result[k]) if isinstance(result[k], list) else result[k] for k in keys})
