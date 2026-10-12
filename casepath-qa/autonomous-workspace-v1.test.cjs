@@ -16,6 +16,40 @@ function state(extra={}) {
 }
 const events = (s,after=0) => ({current_revision:s.revision,events:Array.from({length:s.revision-after},(_,i)=>({seq:after+i+1,kind:i?'work.phase':'intake',revision:after+i+1,state_sha256:after+i+1===s.revision?s.state_sha256:hash('e'),payload:{summary:'Recorded activity'}}))});
 
+test('reference intake stays a source inspection and completed assessment retains external deferral',()=>{
+ const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_sha256:hash('1')};
+ const s=state({status:'deferred',outcome:{status:'deferred',assessment_status:'complete',assessment_scope:'heating_notice',reference_provenance:provenance},semantic_contexts:{workflow:{claim_id:'claim-a',execution_mode:'deterministic_reference',reference_provenance:provenance}},receipts:[{kind:'interpretation.accepted',receipt:{workflow_id:'workflow',receipt_sha256:hash('2'),reference_execution:{provenance}}}]});
+ assert.equal(ui.claimStatusLabel(s.status,s),'Reference assessment complete');
+ assert.equal(ui.referenceExecution(s).as_of,'2025-02-21');
+ assert.equal(ui.referenceExecution(state({semantic_contexts:{future:s.semantic_contexts.workflow}})).as_of,'2025-02-21','accepted work.context identifies the execution before outcome');
+ assert.equal(ui.referenceExecution(state()),null,'a roster label does not imply reference execution');
+ const gate={contract:'casepath.source-backed-intake/1.0.0',status:'incomplete',eligible:false,gate_sha256:hash('3'),checklist:[{document_type:'notice',label:'Notice record',node_ids:['branch'],status:'insufficient',artifact_ids:['original']}],missing_documents:[{document_type:'notice',label:'Notice record',status:'insufficient'}],legal_predicates:[{predicate_id:'landlord_validity',status:'false',citations:[],rule_refs:[]}],provenance};
+ const before=JSON.stringify({s,gate}),html=ui.intakeMarkup(s,{intake:gate});
+ assert.match(html,/Source inspection/);assert.match(html,/Needs more support/);assert.match(html,/data-au-source="original"/);assert.doesNotMatch(html,/landlord_validity|Established|data-au-node=/);
+ assert.equal(JSON.stringify({s,gate}),before);
+ const early=state({revision:0,graph:null,evaluation:null,facts:[],obligations:[],actions:[],acquired_sources:[],mode:'unprocessed',status:'not_started',phase:'not_run'});
+ const view=ui.workMarkup(early,{intake:gate},null,[],'step',{}, {availability:{ready:true}});
+ assert.match(view,/data-au-start disabled/);assert.match(view,/Notice record/);assert.doesNotMatch(view,/data-au-node=/);
+ const completed=ui.workMarkup(s,{},'branch',[]);
+ assert.equal((completed.match(/Synthetic reference assessment · as of 2025-02-21/g)||[]).length,1);assert.match(completed,/External handling deferred/);
+});
+
+test('reference demonstration has the exact new nine and legacy history remains separate',()=>{
+ const ids=['clm_314f2d309fea25e6','clm_4a07dbbbd859a3ce','clm_95d08975bc575592','clm_0f4f13b1e3e1328c','clm_393285577dcb12c4','clm_4a53299cfe619303','clm_2c55cdd816b1d0e8','clm_543f08f2415b2a33','clm_7dbd7c7d1c4ddf90'];
+ assert.deepEqual(ui.REFERENCE_DEMO_CASES.map(row=>row.claim_id),ids);
+ for(const domain of ui.DOMAINS)assert.equal(ui.REFERENCE_DEMO_CASES.filter(row=>row.domain===domain.id).length,3);
+ assert.equal(ui.DEMO_CASES.length,9);assert.notDeepEqual(ui.DEMO_CASES.map(row=>row.claim_id),ids);
+ const html=ui.demonstrationMarkup([],null,'reference');assert.deepEqual([...html.matchAll(/data-au-demo-case="([^"]+)"/g)].map(row=>row[1]),ids);assert.doesNotMatch(html,/Live execution|Start live/);
+});
+
+test('reference policy identifies the accepted execution before context supplies its historical date',()=>{
+ const before=state(),started=state({policy_id:'casepath.bounded-reference-assessment/1.0.0'});
+ assert.equal(ui.referenceExecution(before),null);assert.deepEqual(ui.referenceExecution(started),{mode:'deterministic_reference',synthetic:true});
+ const html=ui.workMarkup(started,{},'branch',[]);assert.match(html,/data-au-reference-mode>Synthetic reference assessment<\/p>/);assert.doesNotMatch(html,/as of/);
+ const legacy=state({policy_id:'casepath.autonomous/1',run_id:'old-model',semantic_contexts:{'old-model':{execution_mode:'provider'}},outcome:{reference_provenance:{mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21'}}});
+ assert.equal(ui.referenceExecution(legacy),null,'the current accepted model context wins over a retained reference outcome');
+});
+
 test('actual DAG topology determines rank and branches independently of input order',()=>{
  const graph={nodes:[{node_id:'join'},{node_id:'right'},{node_id:'start'},{node_id:'left'}],edges:[{source_node_id:'start',target_node_id:'left'},{source_node_id:'start',target_node_id:'right'},{source_node_id:'left',target_node_id:'join'},{source_node_id:'right',target_node_id:'join'}]};
  const layout=ui.layoutGraph(graph);
@@ -878,7 +912,7 @@ for(const scenario of ['failed-only','partial-outcome-with-failure','failed-reco
  const controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
  await controller.openClaim(id,true,{mode:'replay',through:head,detail:'activity'});assert.match(f.host.innerHTML,/data-au-context="activity"/);f.listeners.get('click')({target:control(f,'data-au-inspect','claim')});assert.deepEqual(JSON.parse(f.recordPre.textContent).state,JSON.parse(JSON.stringify(saved(head))));f.recordDialog.close();
  const priorReads=api.calls.filter(call=>call.path.includes(`/claims/${id}/replay?`)).length;
- await controller.showDemonstration();
+ await controller.showDemonstration(true,'legacy');
  assert.match(f.host.innerHTML,/data-au-revision="0"/,'Demonstration opens the actual first canonical packet before playback');await settle();
  for(let seq=1;seq<=head;seq++){
   t.mock.timers.tick(4100);await settle();const prefix=saved(seq),html=f.host.innerHTML;assert.match(html,new RegExp(`data-au-revision="${seq}" data-au-state-sha="${prefix.state_sha256}"`));assert.match(html,/data-au-context="step"/);assert.match(html,/<section class="au-(?:forming-process|process-hero) au-evidence-process" aria-label="(?:Complete recorded process|Decision neighborhood)">/);
@@ -1467,9 +1501,9 @@ test('idle intake labels distinguish saving a claim from available or unknown au
  }
 });
 
-test('an unresolved service status keeps the default intake action until authoritative readiness arrives',async t=>{
+test('an unresolved service status keeps intake disabled until authoritative readiness arrives',async t=>{
  const f=nativeFixture(),held=[];const api=fakeApi({handle:async path=>path.endsWith('/status')?new Promise(resolve=>held.push(resolve)):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>{for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));controller.destroy();});await settle();await newClaim(f);
- assert.equal(held.length,1,'navigation shares the exact unresolved status GET');assert.equal(api.calls.filter(call=>call.path.endsWith('/status')).length,1);assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);assert.equal(f.intake.querySelector('button[type="submit"]').disabled,false);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
+ assert.equal(held.length,1,'navigation shares the exact unresolved status GET');assert.equal(api.calls.filter(call=>call.path.endsWith('/status')).length,1);assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);assert.equal(f.intake.querySelector('button[type="submit"]').disabled,true);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
  for(const resolve of held)resolve(response({enabled:true,provider_ready:true,limits:{}}));await settle();assert.match(f.intake.querySelector('button[type="submit"]').textContent,/^Start autonomous work/);
 });
 

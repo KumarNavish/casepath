@@ -184,6 +184,11 @@ const demoIds = [
   'clm_f69b1747447bc221', 'clm_0c5e7c7723a3c694', 'clm_2a9c260c26afaa34',
   'clm_c44ddc0914ba9298', 'clm_7dbd7c7d1c4ddf90', 'clm_9a179a4481767d43',
 ];
+const referenceIds = [
+  'clm_314f2d309fea25e6','clm_4a07dbbbd859a3ce','clm_95d08975bc575592',
+  'clm_0f4f13b1e3e1328c','clm_393285577dcb12c4','clm_4a53299cfe619303',
+  'clm_2c55cdd816b1d0e8','clm_543f08f2415b2a33','clm_7dbd7c7d1c4ddf90',
+];
 const processedId = historicalIds[3];
 const otherId = historicalIds[4];
 const unprocessedId = demoIds[3];
@@ -200,6 +205,56 @@ const canonical = value => Array.isArray(value)
 
 let acceptedFixture;
 let sourceDrawerFixture;
+let nativeReferenceFixture;
+function referenceFixture() {
+  if (!nativeReferenceFixture) {
+    // Run the native reference controller and GET router in a disposable DB.
+    // No authored assessment, model response, provider or public write is used.
+    const script = `
+import base64,json,sys,tempfile
+from pathlib import Path
+from unittest.mock import patch
+sys.path[:0]=[str(Path.cwd()/'casepath-api'),str(Path.cwd()/'casepath-api/tests'),str(Path.cwd()/'casepath-qa')]
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+from casepath_api.autonomous_api_v1 import create_autonomous_router
+from casepath_api.autonomous_corpus_v1 import CanonicalCorpus
+from casepath_api.autonomous_reference_v1 import ReferenceProfile
+from test_complete_reference_intake_v1 import service_at,admit
+from importlib.util import spec_from_file_location,module_from_spec
+spec=spec_from_file_location('existing_clock',Path.cwd()/'casepath-qa/build-prior-assessment-fixture-v1.py')
+clock=module_from_spec(spec);spec.loader.exec_module(clock)
+with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temporary,patch('casepath_api.autonomous_store_v1.datetime',clock.FixtureClock):
+ corpus=CanonicalCorpus();service=service_at(Path(temporary)/'claims.sqlite',corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus))
+ output={'snapshots':{},'prefixes':{},'unprocessed':{},'sources':{},'raw_sources':{},'knowledge':None,'profile_sha256':ReferenceProfile().sha256}
+ try:
+  with TestClient(app) as client:
+   base='/api/claim-loops/v1/autonomous'
+   def get(path):
+    response=client.get(base+path);response.raise_for_status();return response.json()
+   ids=json.loads(sys.argv[1])
+   for cid in ids:
+    output['unprocessed'][cid]=get('/claims/'+cid+'/snapshot')
+    admit(service,corpus,cid);state=service.run(cid)
+    assert state['outcome']['assessment_status']=='complete'
+    output['snapshots'][cid]=get('/claims/'+cid+'/snapshot')
+    output['prefixes'][cid]={str(seq):get('/claims/'+cid+'/replay?through_seq='+str(seq)) for seq in range(state['revision']+1)}
+    for descriptor in state['source_descriptors']:
+     identity=cid+'/'+descriptor['artifact_id'];output['sources'][identity]=get('/sources/'+identity+'/text')
+     response=client.get(base+'/sources/'+identity);response.raise_for_status();output['raw_sources'][identity]=base64.b64encode(response.content).decode()
+   output['knowledge']=get('/knowledge')
+  print(json.dumps(output,sort_keys=True))
+ finally:service.shutdown()
+`;
+    const encoded = process.env.CASEPATH_REFERENCE_FIXTURE
+      ? fs.readFileSync(process.env.CASEPATH_REFERENCE_FIXTURE,'utf8')
+      : execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python', ['-c',script,JSON.stringify(referenceIds)],
+        {cwd:root,encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:128*1024*1024});
+    nativeReferenceFixture = JSON.parse(encoded);
+    if (process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT) fs.writeFileSync(process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT,encoded);
+  }
+  return nativeReferenceFixture;
+}
 function pdfDrawerFixture() {
   if (!sourceDrawerFixture) {
     const binding = corpusManifest.claims.find(row => row.observable_artifacts.some(source => source.media_type === 'application/pdf'));
@@ -390,19 +445,28 @@ function fixtureData(config = {}) {
     envelopes[accepted.claim_id] = {state: snapshot.state, projection: snapshot.projection};
     Object.assign(sources, accepted.sources);
   }
+  const reference = config.referenceFixture ? referenceFixture() : null;
+  if (reference) {
+    for (const id of referenceIds) {
+      const snapshot = clone(config.referenceUnprocessed ? reference.unprocessed[id] : reference.snapshots[id]);
+      envelopes[id] = {state:snapshot.state,projection:snapshot.projection};
+      authoredEvents[id] = snapshot.events;
+    }
+    Object.assign(sources,reference.sources);Object.assign(rawSources,reference.raw_sources);
+  }
   const rows = Object.values(envelopes).map(({state}) => ({
-    claim_id: state.claim_id, title: state.title, origin: state.origin || (historicalIds.includes(state.claim_id) ? 'native_intake' : undefined), mode: state.mode, status: state.status,
+    claim_id: state.claim_id, title: state.title, origin: state.origin || (state.original_binding ? 'canonical_original' : historicalIds.includes(state.claim_id) ? 'native_intake' : undefined), mode: state.mode, status: state.status,
     phase: state.phase, phase_summary: state.phase_summary, revision: state.revision,
     state_sha256: state.state_sha256, outcome: state.outcome,
     source_preview: state.origin==='canonical_original'?{text:[...String(state.source_preview?.text||'')].slice(0,240).join('')}:undefined, browse_metadata: state.browse_metadata || {},
   }));
   assert.equal(rows.filter(row => row.origin === 'canonical_original').length, 150);
   assert.equal(rows.filter(row => row.origin === 'native_intake').length, 9);
-  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, controlHistories, accepted,
+  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, controlHistories, accepted,reference:reference ? {prefixes:Object.fromEntries((config.referenceReplayIds || [referenceIds[0]]).map(id=>[id,reference.prefixes[id]]))} : null,
     recordedHistory: config.recordedHistoryId ? clone(captured[`${base}/claims/${config.recordedHistoryId}/events?after=0`].events) : [],
     acceptedEvents: accepted ? clone((config.acceptedPrefix ? accepted.prefixes[config.acceptedPrefix] : accepted.snapshots[config.priorAssessment]).events) : [],
     acceptedPrefixes: accepted ? config.priorAssessment === 'failed' ? accepted.failure_prefixes : accepted.prefixes : {},
-    recordedKnowledgeData:config.recordedKnowledge?clone(captured[`${base}/knowledge`]):null,
+    recordedKnowledgeData:reference?.knowledge || (config.recordedKnowledge?clone(captured[`${base}/knowledge`]):null),
     rows: config.rememberedNativeId ? rows.filter(row => row.claim_id !== config.rememberedNativeId) : rows};
 }
 
@@ -590,7 +654,7 @@ async function mountFixture(page, config = {}) {
         return result;
       }
       if (relative === '/status') {
-        const result = response(200, {enabled: true, provider_ready: fixture.providerReady ?? Boolean(fixture.originalStartId || fixture.presentationSuite === 'live')});
+        const result = response(200, {enabled: true, provider_ready: fixture.providerReady ?? Boolean(fixture.originalStartId || fixture.presentationSuite === 'live'),...fixture.readOnlyStatus ? {read_only:true,writable:false} : {}});
         if (fixture.holdStatus) return new Promise(resolve => fixture.held.push({kind: 'status', release: () => resolve(result)}));
         return result;
       }
@@ -606,6 +670,7 @@ async function mountFixture(page, config = {}) {
       const [, id, kind] = read, after = Number(parsed.searchParams.get('after') || 0);
       if (kind === 'replay') {
         const live = fixture.envelopes[id], through = Number(parsed.searchParams.get('through_seq') || 0);
+        if (fixture.reference?.prefixes[id]?.[through] && !fixture.referenceUnprocessed) return response(200,fixture.reference.prefixes[id][through]);
         if (fixture.accepted?.claim_id === id && fixture.acceptedPrefixes[through]) {
           const prefix = structuredClone(fixture.acceptedPrefixes[through]);
           if (fixture.corruptReplayThrough === through) prefix.provenance.sources[0].sha256 = '0'.repeat(64);
@@ -671,6 +736,7 @@ async function mountFixture(page, config = {}) {
     };
     if(config.seedReadCache)sessionStorage.setItem('casepath.read-cache/1',JSON.stringify(config.seedReadCache));
     if(config.storageQuota){const set=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='casepath.read-cache/1')throw new DOMException('Isolated cache quota exceeded.','QuotaExceededError');return set.call(this,key,value);};}
+    if(config.publicReadOnly)window.CASEPATH_PUBLIC_READ_ONLY=true;
     window.__controller = window.CasePathAutonomous.mount(document.querySelector('#workspace'), {fetch});
   }, {data: fixtureData(config), config, base});
   const hash = new URL(page.url()).hash;
@@ -762,7 +828,7 @@ async function open(page, id) {
 async function title(page, id) {
   await eventually(async () => {
     const rendered = await page.locator('[data-au-claim-title]').count() ? await page.locator('[data-au-claim-title]').textContent() : null;
-    const expected = await page.evaluate(id => window.CasePathAutonomous.DEMO_CASES.find(row => row.claim_id === id)?.label || window.__fixture.envelopes[id].state.title, id);
+    const expected = await page.evaluate(id => window.CasePathAutonomous.REFERENCE_DEMO_CASES.find(row => row.claim_id === id)?.label || window.CasePathAutonomous.DEMO_CASES.find(row => row.claim_id === id)?.label || window.__fixture.envelopes[id].state.title, id);
     return rendered === expected;
   }, `The matching saved claim ${id} did not render`);
   // Request the actual product's single technical drawer once. Its closed
@@ -774,6 +840,67 @@ async function title(page, id) {
     await eventually(() => record.count().then(count => count === 1), 'History Case details did not expose the synchronized exact accepted state');
   }
 }
+
+test('reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes',async t=>{
+ const fixture=referenceFixture(),page=await fixturePage(t,{referenceFixture:true,readOnlyStatus:true});
+ assert.equal(fixture.profile_sha256,'15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7');
+ assert.deepEqual(await page.evaluate(()=>window.CasePathAutonomous.REFERENCE_DEMO_CASES.map(row=>row.claim_id)),referenceIds);
+ for(const id of referenceIds){
+  await open(page,id);await title(page,id);const record=await visibleRecord(page),expected=fixture.snapshots[id];
+  assert.deepEqual(record.state,expected.state);assert.deepEqual(record.projection,expected.projection);
+  assert.equal(expected.state.status,'deferred');assert.equal(expected.state.outcome.status,'deferred');assert.equal(expected.state.outcome.assessment_status,'complete');
+  assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Synthetic reference assessment · as of ${expected.state.outcome.reference_provenance.as_of}`);
+  assert.match(await page.locator('[data-au-claim-status]').innerText(),/Reference assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/External handling deferred/);
+  assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(rows=>rows.map(row=>row.dataset.auNode))),sorted(expected.state.graph.nodes.map(row=>row.node_id)));
+  await page.locator('.au-context-nav [data-au-detail="documents"]').click();
+  assert.deepEqual(sorted(await page.locator('[data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(expected.state.obligations.map(row=>row.obligation_id)));
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();
+  const originalIds=new Set(expected.state.original_binding.source_map.map(row=>row.artifact_id)),supplements=expected.state.source_descriptors.filter(row=>!originalIds.has(row.artifact_id));
+  for(const supplement of supplements){
+   assert.match(await page.locator(`li[data-au-source-arrival="${supplement.artifact_id}"]`).innerText(),/Authored synthetic supplement/);
+   await page.locator(`[data-au-source="${supplement.artifact_id}"]`).click();
+   await eventually(()=>page.locator('.au-source-body').count().then(count=>count===1),'the native synthetic supplement did not open');
+   assert.equal(await page.locator('.au-source-dialog .au-eyebrow').innerText(),'Authored synthetic supplement');
+   assert.equal(await page.locator('.au-source-body').textContent(),fixture.sources[`${id}/${supplement.artifact_id}`].source?.text || fixture.sources[`${id}/${supplement.artifact_id}`].text);
+   assert.equal(sha(Buffer.from(fixture.raw_sources[`${id}/${supplement.artifact_id}`],'base64')),supplement.sha256);
+   await page.keyboard.press('Escape');
+  }
+  assert.equal(await page.locator('[data-au-start],[data-au-pause],[data-au-resume],[data-au-arrival]').count(),0,'visitor permission cannot be inferred from engine capabilities');
+ }
+ assert.equal(fixture.knowledge.versions.length,3);assert.equal(fixture.knowledge.uses.length,6);
+ await page.locator('.au-nav [data-au-nav="knowledge"]').click();await eventually(()=>page.locator('[data-au-knowledge-identity]').count().then(count=>count===1),'native reference Knowledge did not open');
+ const version=await page.locator('[data-au-knowledge-identity]').getAttribute('data-au-knowledge-identity');assert.ok(fixture.knowledge.versions.some(row=>`${row.knowledge_id}:${row.version}`===version));
+ assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
+});
+
+for(const reduced of [false,true])test(`reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion ${reduced}`,async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,readOnlyStatus:true});
+ if(reduced)await page.emulateMedia({reducedMotion:'reduce'});
+ await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+ await eventually(()=>page.locator('[data-au-revision="0"]').count().then(count=>count===1),'default reference demonstration did not start at the actual original prefix');
+ assert.equal(await page.locator('[data-au-reference-mode]').count(),0,'head admission cannot leak its mode/as-of into prefix zero');assert.equal(await page.locator('[data-au-node]').count(),0);
+ const prefixes=fixture.prefixes[id],contextSeq=Object.values(prefixes).find(row=>row.events.at(-1)?.kind==='work.context').through_seq;
+ for(let seq=1;seq<=contextSeq;seq++){
+  let attempts=0;while(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<seq&&attempts++<250)await page.clock.runFor(20);
+  assert.equal(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision')),seq);
+  const expected=prefixes[seq].state,mode=await page.locator('[data-au-reference-mode]').allTextContents();
+  assert.deepEqual(mode,expected.policy_id==='casepath.bounded-reference-assessment/1.0.0'?[`Synthetic reference assessment${expected.semantic_contexts?.[expected.run_id]?.reference_provenance ? ` · as of ${expected.semantic_contexts[expected.run_id].reference_provenance.as_of}` : ''}`]:[]);
+ }
+ await page.locator('.au-work-head [data-au-detail="activity"]').focus();await page.keyboard.press('Enter');
+ assert.equal(await page.locator('[data-au-demo-resume]').count(),1);const record=await caseDetails(page);assert.deepEqual(record.state,prefixes[contextSeq].state);assert.deepEqual(record.projection,prefixes[contextSeq].projection);
+ const hashBefore=new URL(page.url()).hash;await page.clock.runFor(8000);assert.equal(new URL(page.url()).hash,hashBefore);assert.deepEqual((await visibleRecord(page)).state,record.state);
+ assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
+});
+
+test('reference native: unavailable recordings retain actual unprocessed intake and its source-backed missing list read-only',async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,referenceUnprocessed:true,providerReady:true,publicReadOnly:true});
+ await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+ await eventually(()=>page.locator('.au-global-status').innerText().then(value=>value.includes('no completed recorded history')),'unavailable reference recording did not stop honestly');
+ assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'0');assert.equal(await page.locator('[data-au-node]').count(),0);assert.equal(await page.locator('[data-au-reference-mode]').count(),0);
+ assert.deepEqual(await page.locator('[data-au-intake-document]').evaluateAll(rows=>rows.map(row=>({document_type:row.dataset.auIntakeDocument,status:row.dataset.status}))),fixture.unprocessed[id].projection.intake.checklist.map(row=>({document_type:row.document_type,status:row.status})));
+ await open(page,id);await title(page,id);assert.deepEqual((await visibleRecord(page)).state,fixture.unprocessed[id].state);assert.equal(await page.locator('[data-au-start],[data-au-pause],[data-au-resume],[data-au-arrival]').count(),0);
+ await page.locator('.au-context-nav [data-au-detail="documents"]').click();assert.match(await page.locator('[data-au-intake-gate]').innerText(),/Intake incomplete/);assert.doesNotMatch(await page.locator('[data-au-intake-gate]').innerText(),/Reference assessment complete|Established/);
+});
 
 for(const width of [1428,390])test(`quiet language: the saved insufficient reason owns the reading view while History retains every exact record at ${width}px`,async t=>{
   const id='auto_764f712d3833988ce6ff6cfd',saved=fixtureData().envelopes[id],fact=saved.state.facts.find(row=>row.fact_id==='fact:notice_period_evidence'),obligation=saved.state.obligations.find(row=>row.required_fact_ids.includes(fact.fact_id)),page=await fixturePage(t,{width,height:width===390?844:801});
