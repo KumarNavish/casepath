@@ -230,6 +230,8 @@ class HostedAutonomousController(AutonomousController):
         self._retry_until = {}
 
     def _remember(self, claim_id, job):
+        if self._closed:
+            return
         if self.enforce_intake_gate and self._recovery_job(self.store.get(claim_id)) is None:
             return
         with self._lock:
@@ -323,6 +325,8 @@ class HostedAutonomousController(AutonomousController):
                 self._hosted_lease.release(token)
 
     def _recovery_job(self, state):
+        if self._closed_without_owned_work():
+            return None
         if self.enforce_intake_gate and not self.intake_projection(state)['eligible']:
             return None
         if self.enforce_intake_gate and state.get('policy_id') not in (None, self.policy_id):
@@ -344,6 +348,8 @@ class HostedAutonomousController(AutonomousController):
 
 
     def run(self, claim_id):
+        if self._closed_without_owned_work():
+            return None
         if self.enforce_intake_gate:
             from .autonomous_intake_gate_v1 import require_complete
             state = self.store.get(claim_id)
@@ -407,14 +413,14 @@ class HostedAutonomousController(AutonomousController):
         future.add_done_callback(finished)
 
     def submit(self, claim_id):
-        if self.enforce_intake_gate:
-            from .autonomous_intake_gate_v1 import require_complete
-            state = self.store.get(claim_id)
-            self.assert_execution_policy(state)
-            require_complete(self.intake_projection(state))
         with self._lock:
             if self._closed:
                 return
+            if self.enforce_intake_gate:
+                from .autonomous_intake_gate_v1 import require_complete
+                state = self.store.get(claim_id)
+                self.assert_execution_policy(state)
+                require_complete(self.intake_projection(state))
             self._retry_until[claim_id] = monotonic() + RECOVERY_STALLED_SECONDS
             self._remember(claim_id, ("run", None))
             self._start(claim_id)

@@ -45,6 +45,11 @@ def test_all_nine_actual_sources_complete_compiled_graph_learn_reuse_and_restart
             assert state['original_binding'] == corpus.preview_state(cid)['original_binding']
             assert state['outcome']['reference_provenance']['synthetic'] is True
             assert state['outcome']['reference_provenance']['as_of'] == ReferenceProfile().value['claims'][cid]['as_of']
+            context = state['semantic_contexts'][state['run_id']]
+            for pack, template in zip(context['rule_packs'], service.policy['templates']):
+                assert pack['legal_authority'] == template['legal_authority']
+                assert pack['family'] == template['domain']
+            assert context['normative_sources'] == service.policy['normative_sources']
             assert {d['document_type'] for d in gate['checklist']} == {
                 d['document_type'] for d in state['evaluation']['documents'] if d['activation'] == 'true'}
             assert all(d['review_state'] == 'sufficient' for d in state['evaluation']['documents'])
