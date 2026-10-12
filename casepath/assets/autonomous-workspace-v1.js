@@ -1840,6 +1840,7 @@
       if (pausedPresentation) { resumePresentation(); return; }
       const index = DEMO_CASES.findIndex(row => row.claim_id === current.claim_id);
       if (index < 0) return;
+      inspectionHold = false;
       if (replayRecord.through_seq >= replayRecord.current_revision) {
         demoSession = {mode:'replay',index}; await openPresentationCase(demoSession); return;
       }
