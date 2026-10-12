@@ -10,7 +10,7 @@ from casepath_api.agent_work.contracts import canonical, digest
 from casepath_api.agent_work.store import WorkStore
 from casepath_api.autonomous_controller_v1 import AutonomousController
 from casepath_api.autonomous_model_v1 import AutonomousModelV1, SavedAutonomousResultsV1
-from casepath_api.autonomous_policy_v1 import INTERPRET_SCHEMA, VERIFY_SCHEMA
+from casepath_api.autonomous_policy_v1 import POLICY_ID, INTERPRET_SCHEMA, VERIFY_SCHEMA
 from casepath_api.autonomous_store_v1 import AutonomousStore, AutonomousStoreError
 from casepath_api.workspace_corpus import PublicCorpus, default_workspace_corpus_root
 from test_autonomous_controller_v1 import SemanticFixture, packet
@@ -91,13 +91,29 @@ def failed_runtime(tmp_path, monkeypatch, request):
 
 @pytest.mark.parametrize('failed_runtime', ['legacy', 'canonical', 'hosted'], indirect=True)
 def test_completed_saved_results_reconcile_twice_without_transport_or_budget_write(failed_runtime, monkeypatch):
+    from casepath_api.hosted_model_v1 import HostedModel
     service, store, work, failed, command, calls = failed_runtime
     before, budget = ledger_bytes(work), canonical(work.external_budget())
     original_events = deepcopy(store.events(failed['claim_id']))
     def no_transport(*args, **kwargs):
         pytest.fail('cache-only reconciliation reached provider transport')
+    def no_construction(*args, **kwargs):
+        pytest.fail('cache-only reconciliation constructed a controller, provider or executor')
+    monkeypatch.setattr(AutonomousController, '__init__', no_construction)
+    monkeypatch.setattr(controller_module, 'ThreadPoolExecutor', no_construction)
+    monkeypatch.setattr(AutonomousModelV1, '__init__', no_construction)
+    monkeypatch.setattr(HostedModel, '__init__', no_construction)
+    monkeypatch.setattr(HostedModel, '_refresh', no_transport)
     monkeypatch.setattr(service.model, 'interpret', no_transport)
     monkeypatch.setattr(service.model, 'verify', no_transport)
+    apply, executions = AutonomousController._apply_verified, []
+    def saved_apply(execution, *args):
+        assert execution.reference_adapter is None and execution.policy_id == POLICY_ID
+        assert not execution._closed
+        assert all(not hasattr(execution, field) for field in ('model', '_executor', '_jobs', '_pending'))
+        executions.append(execution)
+        return apply(execution, *args)
+    monkeypatch.setattr(AutonomousController, '_apply_verified', saved_apply)
     completed = service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
     assert completed['deferral'] is None and completed['outcome']['status'] == 'deferred'
     assert completed['run_id'] == failed['run_id']
@@ -105,6 +121,13 @@ def test_completed_saved_results_reconcile_twice_without_transport_or_budget_wri
     assert completed.get('original_binding') == failed.get('original_binding')
     assert store.events(failed['claim_id'])[:len(original_events)] == original_events
     assert service.reconcile_saved_results(failed['claim_id'], work_store=work, **command) == completed
+    assert len(executions) == 1
+    assert completed['outcome']['request_draft']['status'] == 'prepared_not_sent'
+    assert len(completed['knowledge_published']) == 1
+    knowledge = completed['knowledge_published'][0]
+    assert knowledge['policy_id'] == POLICY_ID and knowledge['qualification']['status'] == 'qualified'
+    assert knowledge['qualification']['regression_cases'] == 243
+    assert service.knowledge.latest('lease_termination_dispute') == knowledge
     kinds = [e['kind'] for e in store.events(failed['claim_id'])]
     assert kinds.count('reconciliation.started') == kinds.count('reconciliation.completed') == 1
     assert len(calls) == 2 and ledger_bytes(work) == before and canonical(work.external_budget()) == budget
@@ -112,9 +135,23 @@ def test_completed_saved_results_reconcile_twice_without_transport_or_budget_wri
     assert [row['item_id'] for row in receipt['item_rejections']] == ['step:lt_type']
     assert receipt['item_rejections'][0]['item']['citations'][0]['quote'] == 'separate termination'
     assert not any(r.get('node_id') == 'lt_type' for r in completed['results'])
-    assert store.replay(failed['claim_id'], completed['revision'])['state']['state_sha256'] == completed['state_sha256']
+    assert store.replay(failed['claim_id'], completed['revision'])['state'] == completed
     prefix = store.replay(failed['claim_id'], failed['revision'])['state']
     assert prefix == failed and 'reconciliations' not in prefix
+
+
+@pytest.mark.parametrize('failed_runtime', ['legacy', 'hosted'], indirect=True)
+def test_closed_controller_refuses_saved_reconciliation_without_writes(failed_runtime, monkeypatch):
+    service, store, work, failed, command, calls = failed_runtime
+    before, budget = ledger_bytes(work), canonical(work.external_budget())
+    original_events = deepcopy(store.events(failed['claim_id']))
+    service.shutdown()
+    monkeypatch.setattr(work, 'saved_completed_autonomous_workflow',
+                        lambda _: pytest.fail('closed controller admitted saved work'))
+    with pytest.raises(AutonomousStoreError, match='controller is closed'):
+        service.reconcile_saved_results(failed['claim_id'], work_store=work, **command)
+    assert store.get(failed['claim_id']) == failed and store.events(failed['claim_id']) == original_events
+    assert len(calls) == 2 and ledger_bytes(work) == before and canonical(work.external_budget()) == budget
 
 
 @pytest.mark.parametrize('change', ['key', 'head', 'reason', 'actor'])

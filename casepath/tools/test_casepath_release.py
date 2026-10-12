@@ -311,6 +311,10 @@ def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, 
     assert (tmp_path / "dist/server/index.js").read_text() == worker
     index_html = (tmp_path / "dist/client/index.html").read_text()
     assert index_html.count(sites.API_CONFIGURATION) == 1
+    assert "window.CASEPATH_PUBLIC_READ_ONLY = true;" in sites.API_CONFIGURATION
+    # Public capability must be established before the first boot script
+    # selects an entry mode, as well as before the external entry script.
+    assert index_html.index(sites.API_CONFIGURATION) == index_html.index("<script")
     assert index_html.index(sites.API_CONFIGURATION) < index_html.index(
         '<script src="assets/autonomous-entry-v1.js'
     )
@@ -356,8 +360,8 @@ def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, 
             assert (client / name).read_bytes() == content
     assert (static.SOURCE_ROOT / "corpus.html").read_bytes() == original_corpus
     assert index_html == public_before["index.html"].decode("utf-8").replace(
-        sites.API_SCRIPT_MARKER,
-        f"{sites.API_CONFIGURATION}\n  {sites.API_SCRIPT_MARKER}",
+        "<head>",
+        f"<head>\n  {sites.API_CONFIGURATION}",
         1,
     )
     assert not (tmp_path / ".openai").exists()
@@ -367,7 +371,8 @@ def test_sites_delivery_is_same_origin_and_streaming_proxy_safe(tmp_path: Path, 
     assert '"/healthz"' in worker and '"/readyz"' in worker
     assert "await fetch(new Request" in worker
     assert "AbortSignal.timeout(14000)" in worker
-    assert "request.body" in worker
+    assert 'if (!["GET", "HEAD"].includes(request.method))' in worker
+    assert 'new Response(response.body, {status: response.status, headers: responseHeaders})' in worker
     assert "window.CASEPATH_API = window.location.origin" in worker
     assert "API_CONFIGURATION" in builder
     assert "API_SCRIPT_MARKER" in builder

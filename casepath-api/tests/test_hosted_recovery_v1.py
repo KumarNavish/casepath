@@ -73,8 +73,10 @@ class HostedRecoveryTests(unittest.TestCase):
         from fastapi.testclient import TestClient
         import casepath_api.hosted_app_v1 as hosted_app
         live, calls = [], []
-        def construct(store, policy, model=None, *, lease):
-            controller = HostedAutonomousController(store, policy, model, lease=lease)
+        def construct(store, policy, model=None, *, lease, enforce_intake_gate=False):
+            self.assertIs(enforce_intake_gate, True)
+            controller = HostedAutonomousController(store, policy, model, lease=lease,
+                                                    enforce_intake_gate=enforce_intake_gate)
             live.append(controller)
             self.controllers.append(controller)
             return controller

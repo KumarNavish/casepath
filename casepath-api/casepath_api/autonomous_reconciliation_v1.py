@@ -100,6 +100,10 @@ class _SavedExecution(AutonomousController):
     """Command-local deterministic writer. No model, executor or scheduler exists."""
     def __init__(self, controller, state, admission):
         self.store, self.policy, self.knowledge = controller.store, controller.policy, controller.knowledge
+        # Preflight pins this saved provider workflow to the original policy;
+        # reference execution and dispatch resources have no role here.
+        self.reference_adapter, self.policy_id = None, POLICY_ID
+        self._closed = False
         self._lock = controller._lock
         self._contexts = {state['run_id']: digest_value(state['source_descriptors'])}
         self._failure = deepcopy(state['deferral'])
