@@ -612,15 +612,30 @@
     return `<section class="au-forming-work" data-au-forming="${!settled}"${settled ? ' data-au-settled="true"' : ''} data-au-forming-revision="${h(state.revision)}" data-au-forming-sha="${h(state.state_sha256)}"><div class="au-forming-layout"><div class="au-forming-reading">${!state.graph ? formingKnowledgeMarkup(state,knowledge,false,true) : ''}${evidencePathMarkup(state,selected,projection,context,true)}${settled && evaluated ? `<div class="au-reading-decision"><p class="au-step-status">${h(statusLabel(evaluated.execution_state || evaluated.state))}</p>${capability?.authorized === false ? `<p class="au-reading-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}</div>` : ''}</div>${state.graph ? `<section class="au-forming-process au-evidence-process" aria-label="Complete recorded process">${publication ? `<div class="au-forming-publication-focus" data-au-publication-focus="${h(publication.id)}">${formingKnowledgeMarkup(state,knowledge,true,false,publication.knowledge,list(state.knowledge_uses))}</div>` : `${formingKnowledgeMarkup(state,knowledge,false,!settled)}${node ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h2>` : ''}`}${graphMarkup(state,selected,projection,{overview:true})}</section>` : ''}${state.graph?.family !== 'incoming_packet' && list(state.obligations).length ? `<aside class="au-forming-documents" data-au-evidence-path aria-label="Recorded document requirements"><h2>Document requirements</h2>${activeRows.length ? obligationMarkup(state,selected,activeRows,context,true) : '<p>Requirements appear when their process step is reached.</p>'}${button('All recorded requirements','data-au-detail="documents"')}</aside>` : ''}<svg class="au-forming-connections" aria-hidden="true"${binding}>${relation ? `<path data-au-forming-wire="source-process"${binding}></path>${relation.obligation ? `<path data-au-forming-wire="process-document"${binding}></path>` : ''}` : ''}</svg></div></section>`;
   }
   function conditionLabel(state, expression) {
-    if (!expression || typeof expression !== 'object' || Object.prototype.hasOwnProperty.call(expression,'const')) return '';
-    if (expression.flag) {
-      const fact = list(state.facts).find(item => item.fact_id === `condition:${expression.flag}` || item.flag === expression.flag);
-      return name(fact) || words(expression.flag);
-    }
-    if (expression.not) return `Not (${conditionLabel(state,expression.not)})`;
-    if (expression.all) return list(expression.all).map(item => conditionLabel(state,item)).filter(Boolean).join(' and ');
-    if (expression.any) return list(expression.any).map(item => conditionLabel(state,item)).filter(Boolean).join(' or ');
-    return '';
+    const positive = {arrears:'Rent arrears',family_home:'Family home',extension_relevant:'Tenancy extension'};
+    const negative = {arrears:'No rent arrears',family_home:'Not a family home',extension_relevant:'No tenancy extension'};
+    const constant = value => value === true || value === 'true' ? 'Always' : value === false || value === 'false' ? 'Never' : 'Unresolved condition';
+    const render = (value, nested = false) => {
+      if (!value || typeof value !== 'object') return '';
+      if (Object.prototype.hasOwnProperty.call(value,'const')) return nested ? constant(value.const) : '';
+      if (value.flag) {
+        const fact = list(state.facts).find(item => item.fact_id === `condition:${value.flag}` || item.flag === value.flag);
+        return positive[value.flag] || name(fact) || words(value.flag);
+      }
+      if (value.not) {
+        if (value.not.flag) return negative[value.not.flag] || `Not (${render(value.not,true)})`;
+        if (value.not.not) return render(value.not.not,nested);
+        if (Object.prototype.hasOwnProperty.call(value.not,'const')) { const label=constant(value.not.const);return label==='Always'?'Never':label==='Never'?'Always':label; }
+        return `Not (${render(value.not,true)})`;
+      }
+      const children = value.all || value.any;
+      if (!children) return '';
+      return list(children).map(child => {
+        const label=render(child,true);
+        return child.all || child.any ? `(${label})` : label;
+      }).map((label,index) => index && /^(No |Not a )/.test(label) ? label[0].toLocaleLowerCase()+label.slice(1) : label).join(value.all ? ' and ' : ' or ');
+    };
+    return render(expression);
   }
   const routeLabel = value => ['true','applied','active'].includes(value) ? 'Applies' : ['false','excluded','inactive'].includes(value) ? 'Excluded' : 'Unresolved';
   function graphMarkup(state, selected, projection = {}, options = {}) {

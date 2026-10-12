@@ -548,8 +548,12 @@ async function fixturePage(t, config = {}) {
 }
 
 async function mountFixture(page, config = {}) {
-  await page.addStyleTag({path: process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root, 'casepath/assets/autonomous-workspace-v1.css')});
-  await page.addScriptTag({path: process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root, 'casepath/assets/autonomous-workspace-v1.js')});
+  const cssBytes=fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css'));
+  const javascriptBytes=fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'));
+  const style=await page.addStyleTag({content:cssBytes.toString('utf8')}),script=await page.addScriptTag({content:javascriptBytes.toString('utf8')});
+  const injectedAssets={javascript:sha(await script.evaluate(element=>element.textContent)),css:sha(await style.evaluate(element=>element.textContent))};
+  assert.deepEqual(injectedAssets,{javascript:sha(javascriptBytes),css:sha(cssBytes)},'the actual native DOM contains exactly the selected working asset bytes');
+  await page.evaluate(assets=>window.__injectedAssets=assets,injectedAssets);
   await page.evaluate(({data, config, base}) => {
     window.__fixture = {...data, ...config, calls: [], held: [], splitRevision: {}, startPosts: 0, startViolations: [], suitePosts: {}, suiteReads: {},activeSnapshotReads:0,peakSnapshotReads:0};
     const fixture = window.__fixture;
@@ -905,6 +909,7 @@ for(const height of [900,1000])test(`causal formation native: the existing eleve
  assert.deepEqual(sorted(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.map(row=>row.dataset.auEdge))),sorted(layout.edges.map(row=>row.edge_id)));
  assert.equal(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.every(row=>row.getAttribute('marker-end')&&row.getTotalLength()>3)),true);
  const labels=await page.locator('[data-au-edge-label]').evaluateAll(rows=>rows.map(row=>({id:row.dataset.auEdgeLabel,state:row.dataset.state,text:row.textContent,font:parseFloat(getComputedStyle(row).fontSize),width:row.clientWidth,scroll:row.scrollWidth})));
+ const expectedLabels={lt_e04:'Rent arrears',lt_e05:'Family home',lt_e06:'No rent arrears and not a family home',lt_e09:'Tenancy extension',lt_e10:'No tenancy extension'};for(const [edge,label]of Object.entries(expectedLabels))assert.ok(labels.find(row=>row.id===edge)?.text.startsWith(label),`the actual ${edge} keeps readable case language`);
  assert.ok(labels.length>=5);for(const label of labels){const edge=layout.edges.find(row=>row.edge_id===label.id),evaluated=saved.evaluation.edges.find(row=>row.edge_id===label.id);assert.ok(edge?.condition);assert.equal(label.state,evaluated.activation);assert.ok(label.font>=12&&label.scroll<=label.width+1);assert.match(label.text,/Applies|Excluded|Unresolved/);}
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
  const connectors=await junctionConnections(page);
@@ -2170,7 +2175,8 @@ const focusedReceiptRoot = process.env.CASEPATH_FOCUSED_RECEIPTS;
 async function focusedReceipt(page, name, measurements) {
   if (!focusedReceiptRoot) return;
   fs.mkdirSync(focusedReceiptRoot, {recursive: true});
-  fs.writeFileSync(path.join(focusedReceiptRoot, `${name}.json`), JSON.stringify({...measurements,viewport:page.viewportSize(),assets:{
+  const injectedAssets=await page.evaluate(()=>window.__injectedAssets);assert.deepEqual(injectedAssets,{javascript:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'))),css:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css')))},'the receipt binds the actually injected current assets');
+  fs.writeFileSync(path.join(focusedReceiptRoot, `${name}.json`), JSON.stringify({...measurements,viewport:page.viewportSize(),injectedAssets,assets:{
     javascript:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'))),
     css:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css'))),
   }}, null, 2));
@@ -2587,11 +2593,14 @@ test('focused flow: a recorded action opens its exact document and fact while ma
   await open(page, fixture.claim_id); await title(page, fixture.claim_id);
   const selected = event.payload.result.node_ids[0], requirement = fixture.prefixes[event.seq].state.obligations.find(row => row.node_id === selected && row.document_type === event.payload.result.document_type);
   assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected);
-  const context = async () => ({document: await page.locator('[data-au-evidence-path] [data-au-document][data-au-obligation]').getAttribute('data-au-document'), fact: await page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact'), obligation: new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('obligation')});
+  const context = async () => ({document: new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('document'), fact: await page.locator('[data-au-evidence-path] [data-au-fact]').getAttribute('data-au-fact'), obligation: new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('obligation')});
   assert.equal((await context()).document, requirement.document_type);
   assert.equal((await context()).fact, requirement.required_fact_ids[0]);
+  assert.equal(await page.locator(`.au-forming-documents [data-au-obligation="${requirement.obligation_id}"]`).count(),0,'early review cannot promote a future requirement');
   assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[event.seq].state);
-  await page.locator('[data-au-detail="documents"]').click();
+  const source=page.locator('.au-reading-passages [data-au-source][data-au-citation]').first(),citation=JSON.parse(await source.getAttribute('data-au-citation'));await source.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the recorded future requirement retains its exact source passage');assert.equal(await page.locator('mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);
+  await page.locator('.au-forming-documents [data-au-detail="documents"]').click();
+  const recorded=page.locator(`[data-au-panel="documents"] [data-au-obligation="${requirement.obligation_id}"]`);assert.equal(await recorded.count(),1);assert.equal(await recorded.locator('[data-au-review]').getAttribute('data-au-review'),'sufficient');
   const manual = fixture.prefixes[event.seq].state.obligations.find(row => row.node_id === 'lt_form' && row.document_type === 'termination_notice');
   await page.locator(`[data-au-panel="documents"] [data-au-select-obligation="${manual.obligation_id}"]`).click();
   assert.deepEqual(await context(), {document: manual.document_type, fact: manual.required_fact_ids[0], obligation: manual.obligation_id});
@@ -2929,10 +2938,10 @@ for (const inspection of ['node', 'fact', 'document']) test(`focused flow: manua
   await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the exact next accepted prefix was not held');
   if (inspection === 'node') await page.locator('[data-au-node="lt_deadline"]').click();
   if (inspection === 'fact') await page.locator('[data-au-panel="step"] [data-au-fact-select="fact:termination_notice"]').click();
-  if (inspection === 'document') await page.locator('.au-forming-documents [data-au-select-document="termination_notice"]').click();
+  if (inspection === 'document') {assert.equal(await page.locator('.au-forming-documents [data-au-select-document="termination_notice"]').count(),0);await page.locator('.au-forming-documents [data-au-detail="documents"]').click();await page.locator('[data-au-panel="documents"] [data-au-select-document="termination_notice"]').click();}
   assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
   const selected = await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), route = new URL(page.url()).hash;
-  if (inspection !== 'node') assert.equal(await page.locator('.au-forming-documents [data-au-document][data-au-obligation][data-selected="true"]').getAttribute('data-au-document'), 'termination_notice');
+  if (inspection !== 'node') {const context=new URLSearchParams(new URL(page.url()).hash.split('?')[1]),requirement=fixture.prefixes[11].state.obligations.find(row=>row.node_id===selected&&row.document_type==='termination_notice');assert.equal(context.get('document'),'termination_notice');assert.equal(context.get('obligation'),requirement.obligation_id);assert.ok(requirement.required_fact_ids.includes(context.get('fact')));assert.equal(await page.locator('.au-forming-documents [data-au-document="termination_notice"]').count(),0,'the contextual future requirement remains outside the active rail');assert.equal(await page.locator('.au-reading-fact').getAttribute('data-au-fact'),context.get('fact'));}
   await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
   const reads = (await calls(page, `/claims/${id}/replay`)).length;
   await page.clock.runFor(7000);
@@ -2945,7 +2954,7 @@ for (const inspection of ['node', 'fact', 'document']) test(`focused flow: manua
   for (let tick = 0; record.state.revision === 11 && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
   assert.deepEqual(record.state, fixture.prefixes[12].state, 'Resume verifies and consumes the exact next immutable prefix');
   assert.deepEqual(record.projection, fixture.prefixes[12].projection);
-  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'), selected, 'a recorded intake action with no changed fact or requirement preserves the selected evidence question');
+  assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),'lt_deadline','Resume follows the actual newly reached requiring step after intake completes');const reached=fixture.prefixes[12].state.obligations.find(row=>row.node_id==='lt_deadline'&&row.document_type==='proof_of_receipt'),resumed=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);assert.equal(resumed.get('obligation'),reached.obligation_id);assert.equal(resumed.get('document'),reached.document_type);assert.equal(await page.locator(`.au-forming-documents [data-au-obligation="${reached.obligation_id}"]`).getAttribute('data-status'),'needed_now');
   assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|changed identity/i);
   await page.locator('.au-nav [data-au-nav="work"]').click();
 });
