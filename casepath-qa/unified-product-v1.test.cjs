@@ -131,7 +131,7 @@ test('execution failure remains separate from an accepted evidence deferral in c
  for(const [claim,label]of [[failed,'Execution failed'],[evidence,'More evidence needed']]) {
   assert.match(ui.workMarkup(claim,{},null,[]),new RegExp(`data-au-claim-status>${label}\\.<\\/span>`));
   assert.match(ui.claimsMarkup([claim]),new RegExp(`>${label}</span>`));
-  assert.match(ui.demoItineraryMarkup([claim]),new RegExp(`>${label}</span>`));
+  assert.match(ui.demoItineraryMarkup([claim],null,null,ui.DEMO_CASES),new RegExp(`>${label}</span>`),'the explicit legacy itinerary retains the recorded execution label');
  }
  assert.match(ui.workMarkup(failed,{},null,[]),/interpretation citation is not an exact claim source span/);
  assert.match(ui.claimsMarkup([{...failed,deferral:undefined}]),/>Execution stopped<\/span>/,'queue summaries do not infer the failure code they omit');
@@ -148,7 +148,7 @@ test('execution failure remains separate from an accepted evidence deferral in c
  assert.equal(ui.replayCanAdvance({...evidence,reconciliations:[{status:'started'}]}),false);
  assert.equal(ui.replayCanAdvance({...evidence,reconciliations:[{status:'failed'},{status:'completed'}]}),true);
  assert.equal(JSON.stringify([failed,evidence]),before);
- const demo=ui.demonstrationMarkup([failed,evidence],null);
+ const demo=ui.demonstrationMarkup([failed,evidence],null,'replay');
  assert.match(demo,/sources and recorded histories/);assert.match(demo,/Playback stops if no operational outcome was accepted/);assert.doesNotMatch(demo,/accepted histories/);
 });
 test('completed steps and actions remain local to a running investigation',()=>{
@@ -160,7 +160,7 @@ test('completed steps and actions remain local to a running investigation',()=>{
 test('one contextual record resolves exact accepted objects without expanding a competing copy into every view',()=>{
  const s={...original(),revision:3,mode:'saved',status:'running',
   graph:{claim_id:'clm_original',nodes:[{node_id:'decision',label:'Check recorded notice'}],edges:[]},
-  evaluation:{nodes:[{node_id:'decision',execution_state:'blocked'}],documents:[{document_type:'notice',route_state:'held_behind_question',review_state:'unreviewed'}]},
+  evaluation:{nodes:[{node_id:'decision',activation:'unresolved',execution_state:'blocked'}],documents:[{document_type:'notice',activation:'true',route_state:'held_behind_question',review_state:'unreviewed'}]},
   facts:[{fact_id:'fact:notice',status:'unresolved',summary:'The recorded notice date remains unknown.'}],
   obligations:[{obligation_id:'need:notice',node_id:'decision',document_type:'notice',required_fact_ids:['fact:notice'],reason:'The recorded question must be decided first.'}],
   actions:[{result:{action_id:'review',node_ids:['decision'],document_type:'notice',status:'completed'},receipt:{receipt_sha256:hash('c'),checks:[{accepted:true,reason:'Original receipt retained.'}]}}],
@@ -182,11 +182,28 @@ test('one contextual record resolves exact accepted objects without expanding a 
  const html=ui.workMarkup(s,projection,'decision',[event]);
  assert.match(html,/data-au-detail="activity"[^>]*>History/);assert.match(html,new RegExp(`data-au-revision="${s.revision}" data-au-state-sha="${s.state_sha256}"`));assert.doesNotMatch(html,/data-au-inspect="(?:claim|fact|step|requirement|use)"/);assert.match(ui.workMarkup(s,projection,'decision',[event],'activity'),/data-au-inspect="claim"[^>]*>Case details/);
  assert.doesNotMatch(html,/<details[\s\S]*<details/,'primary reading does not replicate nested technical records');
- assert.ok(html.includes(s.facts[0].summary));assert.equal(ui.contextualRecord(s,projection,[event],'requirement','need:notice').obligations[0].reason,s.obligations[0].reason);assert.match(html,/May be needed/);assert.doesNotMatch(html,/Not yet supported/);assert.equal(ui.contextualRecord(s,projection,[event],'requirement','need:notice').evaluation[0].route_state,'held_behind_question');
+ assert.ok(html.includes(s.facts[0].summary));assert.equal(ui.contextualRecord(s,projection,[event],'requirement','need:notice').obligations[0].reason,s.obligations[0].reason);assert.doesNotMatch(html,/Not yet supported/);assert.equal(ui.contextualRecord(s,projection,[event],'requirement','need:notice').evaluation[0].route_state,'held_behind_question');
+ assert.deepEqual(ui.formingRequirements(s),[]);assert.doesNotMatch(html,/<li[^>]*data-au-obligation="need:notice"/,'an unreached held requirement remains in its exact record rather than the forming rail');
+ const checklist=ui.workMarkup(s,projection,'decision',[event],'documents');assert.match(checklist,/Document checklist/);assert.match(checklist,/<li[^>]*data-au-obligation="need:notice"[^>]*data-au-document="notice"[^>]*data-status="held_behind_question"/);assert.match(checklist,/May be needed/,'the full checklist retains the recorded held route');
+ const held=structuredClone(s);Object.assign(held.evaluation.nodes[0],{activation:'true',execution_state:'ready'});assert.deepEqual(ui.formingRequirements(held),[],'a ready node cannot expose a document still held behind a question');
+ const unreached=structuredClone(s);unreached.evaluation.documents[0].route_state='needed_now';assert.deepEqual(ui.formingRequirements(unreached),[],'a needed document cannot expose a step whose activation remains unresolved');
+ const reached=structuredClone(s),quote='The recorded notice is dated 21 February 2025.',text=`😀\n${quote}\nOriginal closing.`,source={...reached.source_descriptors[0],text,text_sha256:sha(text),complete:true},citation={artifact_id:source.artifact_id,sha256:source.sha256,text_sha256:source.text_sha256,start_char:2,end_char:2+Array.from(quote).length,quote},context={document:'notice',obligation:'need:notice',fact:'fact:notice'};
+ Object.assign(reached.evaluation.nodes[0],{activation:'true',execution_state:'ready'});Object.assign(reached.evaluation.documents[0],{route_state:'needed_now',review_state:'sufficient'});Object.assign(reached.facts[0],{status:'true',summary:quote,citations:[citation]});reached.acquired_sources=[source];
+ const ownMissing=structuredClone(reached);Object.assign(ownMissing.evaluation.nodes[0],{execution_state:'blocked',blocked_by:[],unresolved_dependencies:[],missing_document_types:['notice']});ownMissing.evaluation.documents[0].review_state='missing';
+ const variantsBefore=JSON.stringify({held,unreached,reached,ownMissing});
+ for(const variant of [reached,ownMissing]){
+  assert.deepEqual(ui.formingRequirements(variant),variant.obligations,'ready and own-missing-evidence steps expose their exact recorded requirement');
+  assert.deepEqual(ui.formingRelations(variant,'decision',context),{fact:context.fact,source:source.artifact_id,node:'decision',obligation:context.obligation,citation});
+  const forming=ui.workMarkup(variant,projection,'decision',[event],'step',context),rows=[...forming.matchAll(/<li[^>]*data-au-obligation="([^"]+)"/g)],paths=[...forming.matchAll(/<path data-au-forming-wire="([^"]+)"([^>]*)>/g)];assert.deepEqual(rows.map(row=>row[1]),['need:notice']);assert.match(forming,/data-au-select="decision" data-au-select-document="notice" data-au-select-obligation="need:notice" data-au-select-fact="fact:notice"/);assert.deepEqual(paths.map(path=>path[1]),['source-process','process-document']);
+  for(const [, ,attributes] of paths)for(const [field,value] of Object.entries({fact:context.fact,source:source.artifact_id,node:'decision',obligation:context.obligation}))assert.ok(attributes.includes(`data-au-wire-${field}="${value}"`));
+  assert.deepEqual(ui.contextualRecord(variant,projection,[event],'claim'),{state:variant,projection});assert.deepEqual(ui.contextualRecord(variant,projection,[event],'requirement',context.obligation),{obligations:variant.obligations,evaluation:variant.evaluation.documents});assert.deepEqual(ui.contextualRecord(variant,projection,[event],'fact',context.fact),variant.facts[0]);
+ }
+ const reachedRow=ui.obligationMarkup(reached,'decision',ui.formingRequirements(reached),context,true);assert.match(reachedRow,/data-au-source="message" data-au-source-origin="requirement:need:notice"/);assert.match(reachedRow,/Supplied evidence is sufficient\./);assert.equal(Array.from(text).slice(citation.start_char,citation.end_char).join(''),quote);
+ assert.equal(JSON.stringify({held,unreached,reached,ownMissing}),variantsBefore,'forming joins and full inspection cannot modify accepted fixture objects');assert.equal(JSON.stringify({s,projection,event,data}),before,'the original held state and exact records remain immutable after every view');
 });
 
 test('History owns Case details event action and playback controls while purpose views retain exact selections',()=>{
- const s={...original(),revision:3,mode:'saved',status:'running',graph:{claim_id:'clm_original',nodes:[{node_id:'decision',label:'Check the supplied notice'}],edges:[]},evaluation:{nodes:[{node_id:'decision',execution_state:'ready'}],documents:[{document_type:'notice',route_state:'needed_now',review_state:'insufficient'}]},facts:[{fact_id:'fact:notice',summary:'The supplied notice has one addressee.',reason:'Its envelope names Alex.',verdict:'insufficient'}],obligations:[{obligation_id:'need:notice',node_id:'decision',document_type:'notice',required_fact_ids:['fact:notice']}],actions:[{result:{action_id:'review:notice',node_id:'decision',status:'completed'},receipt:{receipt_sha256:hash('c')}}],knowledge_uses:[{knowledge_id:'procedure.notice',version:2,knowledge_sha256:hash('d'),definition_sha256:hash('e'),applicability:'same_verified_family_and_rule_version'}],knowledge_published:[{knowledge_id:'procedure.notice',version:3,knowledge_sha256:hash('f'),qualification:{status:'qualified',definition_sha256:hash('1')}}]},projection={claim_id:s.claim_id,revision:3,state_sha256:s.state_sha256},event={claim_id:s.claim_id,seq:3,revision:3,state_sha256:s.state_sha256,event_sha256:hash('2'),kind:'action.completed',payload:s.actions[0]},replay={state:s,projection,events:[event],through_seq:3,current_revision:8,current_state_sha256:hash('3'),current_event_sha256:hash('4'),provenance:{source_roster_sha256:hash('5')}},before=JSON.stringify({s,projection,event,replay});
+ const s={...original(),revision:3,mode:'saved',status:'running',graph:{claim_id:'clm_original',nodes:[{node_id:'decision',label:'Check the supplied notice'}],edges:[]},evaluation:{nodes:[{node_id:'decision',activation:'true',execution_state:'ready'}],documents:[{document_type:'notice',activation:'true',route_state:'needed_now',review_state:'insufficient'}]},facts:[{fact_id:'fact:notice',summary:'The supplied notice has one addressee.',reason:'Its envelope names Alex.',verdict:'insufficient'}],obligations:[{obligation_id:'need:notice',node_id:'decision',document_type:'notice',required_fact_ids:['fact:notice']}],actions:[{result:{action_id:'review:notice',node_id:'decision',status:'completed'},receipt:{receipt_sha256:hash('c')}}],knowledge_uses:[{knowledge_id:'procedure.notice',version:2,knowledge_sha256:hash('d'),definition_sha256:hash('e'),applicability:'same_verified_family_and_rule_version'}],knowledge_published:[{knowledge_id:'procedure.notice',version:3,knowledge_sha256:hash('f'),qualification:{status:'qualified',definition_sha256:hash('1')}}]},projection={claim_id:s.claim_id,revision:3,state_sha256:s.state_sha256},event={claim_id:s.claim_id,seq:3,revision:3,state_sha256:s.state_sha256,event_sha256:hash('2'),kind:'action.completed',payload:s.actions[0]},replay={state:s,projection,events:[event],through_seq:3,current_revision:8,current_state_sha256:hash('3'),current_event_sha256:hash('4'),provenance:{source_roster_sha256:hash('5')}},before=JSON.stringify({s,projection,event,replay});
  for(const detail of ['step','documents','knowledge','sources']) {
   const html=ui.workMarkup(s,projection,'decision',[event],detail,{}, {mode:'replay',replay}),header=html.match(/<header[\s\S]*?<\/header>/)[0],nav=html.match(/<nav class="au-context-nav"[\s\S]*?<\/nav>/)[0];
   assert.equal([...header.matchAll(/data-au-detail="activity"/g)].length,1);assert.match(header,/>History<\/button>/);assert.doesNotMatch(header,/data-au-refresh-claim|>Record<\/button>/);assert.doesNotMatch(nav,/data-au-detail="activity"/);
@@ -198,9 +215,11 @@ test('History owns Case details event action and playback controls while purpose
 });
 
 test('unstarted Cases and canonical demo rows show original identity and message without generic state badges',()=>{
- const rows=ui.DEMO_CASES.map((demo,index)=>({...original(),claim_id:demo.claim_id,title:`Exact original title ${index}`,source_preview:{text:`Exact original message ${index}`}})),before=JSON.stringify(rows),cases=ui.claimsMarkup(rows),demo=ui.demoItineraryMarkup(rows);
+ for(const roster of [ui.REFERENCE_DEMO_CASES,ui.DEMO_CASES]){
+ const rows=roster.map((demo,index)=>({...original(),claim_id:demo.claim_id,title:`Exact original title ${index}`,source_preview:{text:`Exact original message ${index}`}})),before=JSON.stringify(rows),cases=ui.claimsMarkup(rows),demo=ui.demoItineraryMarkup(rows,null,null,roster);
  for(const [index,row] of rows.entries()){assert.ok(cases.includes(`data-au-claim="${row.claim_id}"`));assert.ok(cases.includes(row.source_preview.text));assert.ok(demo.includes(`data-au-claim="${row.claim_id}"`));assert.ok(demo.includes(row.title));}
  assert.doesNotMatch(cases,/class="au-claim-state"|>Not started<|>Not run<|>Received</);assert.doesNotMatch(demo,/class="au-status"|>Not started<|>Not run<|>Status not loaded</);assert.equal(JSON.stringify(rows),before);assert.equal(ui.matchingClaims(rows,{filter:'not_started'}).length,9,'the recorded status remains available for exact filtering');
+ }
 });
 
 test('forming knowledge preserves accepted version use and origin without borrowing a later version or establishing current facts',()=>{
