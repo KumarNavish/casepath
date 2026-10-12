@@ -1,0 +1,36 @@
+{
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "failed_id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication",
+  "unchanged_source": [
+    {
+      "path": "casepath-api/casepath_api/autonomous_controller_v1.py",
+      "sha256": "80fafc3090643da1183f9081ecccea2a58fd9c40f91c71436b9dbe207d8d16ef",
+      "byte_identical_to_85a": true
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_adversarial_v1.py",
+      "sha256": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b",
+      "byte_identical_to_85a": true
+    }
+  ],
+  "post_deadline_export": "shard4/failure-6c53cf8a20275bf5-journal-after-teardown.json",
+  "observed_events": 27,
+  "timeline": {
+    "first_outcome": "2026-10-12 21:24:10.070413",
+    "source_arrival": "2026-10-12 21:24:10.198760",
+    "second_work_started": "2026-10-12 21:24:11.121732",
+    "new_source_acquired": "2026-10-12 21:24:12.585303",
+    "second_outcome": "2026-10-12 21:24:23.217007",
+    "knowledge_published": "2026-10-12 21:24:26.977938",
+    "failed_call_report_after_shutdown": "2026-10-12 21:24:27.2475905"
+  },
+  "interpretation": "Automatic reassessment completed after the15-second wait expired; isolated unchanged rerun needed to discriminate resource contention.",
+  "rerun_authorized": "Mac authorized exact failed test once after all heavy original shards end, followed by full unchanged401-item shard4 serially.",
+  "source_edits": false,
+  "deadline_changes": false,
+  "skips_added": false,
+  "post_failure_environment_observation": {
+    "/sys/fs/cgroup/cpu.max": "400000 100000\n",
+    "/sys/fs/cgroup/cpu.stat": "usage_usec 26860468359\nuser_usec 23272126191\nsystem_usec 3588342168\nnice_usec 0\nnr_periods 619183\nnr_throttled 18035\nthrottled_usec 1466270307\nnr_bursts 0\nburst_usec 0\n"
+  }
+}

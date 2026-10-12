@@ -1,0 +1,24 @@
+{
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "prior_candidate": "85aeb29751fef01d353ee5552fc82e38ad978cd8",
+  "prior_evidence_commit": "a1096816991a155d6ad60cee235738d1b5f0cfe2",
+  "module_checks": 133,
+  "native_reference_checks": 7,
+  "legacy_replay_checks": 5,
+  "new_browser_execution": false,
+  "assets": [
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "sha256": "b05a0aa61c5edad6a5768f33fbf78a42e17d17ab2f57cb3346a69802a98da3cd",
+      "byte_identical_to_85a": true
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.css",
+      "sha256": "9d0edebe5c52e396e29b02d22a6c36d2394fa5bbca73b2c29cf2a3c272a9ec48",
+      "byte_identical_to_85a": true
+    }
+  ],
+  "reference_profile_tree": "007d80dae84e1356e82ba61f5e718ff3f347f0bc",
+  "profiles_byte_identical_to_85a": true,
+  "basis": "Mac authorized reuse of unchangedUI/profile checks; all backend tests freshly collected for32b."
+}

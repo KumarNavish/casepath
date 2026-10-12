@@ -1,0 +1,70 @@
+{
+  "shard": 6,
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "host": "656813ef2295",
+  "harness_pid": 468012,
+  "pytest_pid": 468023,
+  "exec_session": 13588,
+  "assigned": 401,
+  "collected": 401,
+  "observer_unique_ids": 401,
+  "observer_reports": 1201,
+  "junit_testcases": 401,
+  "all_id_multisets_exact": true,
+  "duplicate_ids": 0,
+  "duplicate_observer_phases": 0,
+  "junit_key_ambiguities": 0,
+  "outcomes": {
+    "passed": 399,
+    "skipped": 2
+  },
+  "failures": 0,
+  "errors": 0,
+  "skips": [
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text",
+      "when": "setup",
+      "outcome": "skipped",
+      "duration": 0.0001533360336907208,
+      "utc_epoch": 1791840415.1779954,
+      "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 579, 'Skipped: saved native source-binding run is unavailable')"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected",
+      "when": "setup",
+      "outcome": "skipped",
+      "duration": 5.973799852654338e-05,
+      "utc_epoch": 1791840415.1785076,
+      "skip_reason": "('/workspace/casepath-release-ae0-shard6/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 592, 'Skipped: saved native source-binding run is unavailable')"
+    }
+  ],
+  "exit_code": 0,
+  "harness_duration_seconds": 538.1431183815002,
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "2",
+      "tests": "401",
+      "time": "532.679",
+      "timestamp": "2026-10-12T21:21:21.119958+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "head": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "status": "",
+  "sealed_files_verified": 1680,
+  "manifest_sha256": "3af7d34be0189b83f35ef3b0a479fa09ae2d73e3249c13b8e6e1d02667e9061e",
+  "observer_mocked_clock_reports": 8,
+  "observer_clock_note": "Eight setup/call reports inherit the existing test_agent_work_reconciliation.py interrupted fixture clock (time.time=1002.0); use harness start/finish and JUnit for wall-clock timing.",
+  "artifacts": {
+    "ids.txt": "8428e04f499587c84d4424defbe8693e74e1280e8b045a79bd0ba320f10dbaa5",
+    "collected.json": "07abbec00b4540080b550e946a140b5d983f7668a5ebf0fc562c597e627a2974",
+    "command.json": "87e8b4b68c60605fc0447788b9637cab1d5f6b8aa721b07d3878176a14aba394",
+    "reports.jsonl": "a5bfdee2bc72fb690ba7f07e3f9d98a7256411aa80572f8ae8f129a058f22c18",
+    "junit.xml": "c018d8b1b4dcb75c365b0d8acb0e47122f4a12b57403b374dcc0b48b31b920fd",
+    "pytest.log": "fc50797bfff95a58aeb13b68bd76b282911b5172c8570f20122c72f9fc5b8643",
+    "result.json": "7050e1e2fc4dc4bc8994f28474a1fbe9633e84c6f825a9f7c0f207fc315c4fbc"
+  }
+}

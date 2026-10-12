@@ -1,0 +1,53 @@
+{
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "host": "656813ef2295",
+  "full_tests": 2517,
+  "cloud_tests": 2390,
+  "mac_tests": 127,
+  "full_sorted_sha256": "fe1b76d2b0ddc097709d2f9e6915ea594469959e95ce33a505790263b9060112",
+  "mac_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "cloud_sorted_sha256": "84c63d756a1ad8b7a1163b2b096e3967024e21e5f642b6a541aaebe54136956e",
+  "added_ids": [
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_closed_controller_refuses_saved_reconciliation_without_writes[hosted]",
+    "casepath-api/tests/test_autonomous_reconciliation_v1.py::test_closed_controller_refuses_saved_reconciliation_without_writes[legacy]"
+  ],
+  "removed_ids": [],
+  "missing": 0,
+  "duplicates": 0,
+  "extra": 0,
+  "method": "Per-test longest-duration-first assignment using actual85a setup/call/teardown totals; sorted canonical execution order within each shard.",
+  "new_test_weight_seconds": 2.0,
+  "timing_limits": "Prior duration measures resource contention and failures; forecasts are balancing weights, not guaranteed runtime.",
+  "shards": {
+    "1": {
+      "tests": 391,
+      "estimated_seconds": 477.55958630243316,
+      "sorted_sha256": "c308144ee12ebe7c04a5bf6fd4e56013ebe82ec2e51442036ebf2c259c32d3fc"
+    },
+    "2": {
+      "tests": 395,
+      "estimated_seconds": 477.54967615189497,
+      "sorted_sha256": "bcb689988c4197190c39850bfa1de3481e45fa92c2bd0a986843fdbe7891d761"
+    },
+    "3": {
+      "tests": 401,
+      "estimated_seconds": 477.5596494511096,
+      "sorted_sha256": "809892e4ced5114d4c4c774c65e26e5ccebe0b5327e96f9321943851703761a9"
+    },
+    "4": {
+      "tests": 401,
+      "estimated_seconds": 477.55962818261236,
+      "sorted_sha256": "3d33342d8918641a1084fde578aa5773bc91993faca40e687894ebeeed331273"
+    },
+    "5": {
+      "tests": 401,
+      "estimated_seconds": 477.55963881977135,
+      "sorted_sha256": "fec1d159e38f4a40f9a7526e6c070ecc0fb3c5bbaba6aec1c7d670cb5d527c28"
+    },
+    "6": {
+      "tests": 401,
+      "estimated_seconds": 477.55963606154313,
+      "sorted_sha256": "8428e04f499587c84d4424defbe8693e74e1280e8b045a79bd0ba320f10dbaa5"
+    }
+  }
+}

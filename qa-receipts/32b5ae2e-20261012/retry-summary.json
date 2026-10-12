@@ -1,0 +1,22 @@
+{
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "classification": "Contention-supported deadline failure; expected reassessment completed afterward, unchanged test passed in isolation, then whole unchanged shard passed serially.",
+  "original_attempt": "shard4",
+  "original_exit_code": 1,
+  "original_failure_ids": [
+    "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication"
+  ],
+  "post_deadline_evidence": "shard4/failure-6c53cf8a20275bf5-journal-after-teardown.json",
+  "isolated_attempt": "isolated-failed-node",
+  "isolated_exit_code": 0,
+  "isolated_seconds": 12.907330513000488,
+  "selected_full_attempt": "shard4-serial",
+  "selected_exit_code": 0,
+  "selected_tests": 401,
+  "selected_seconds": 373.4076132774353,
+  "original_artifacts_preserved": true,
+  "source_changes": false,
+  "deadline_changes": false,
+  "new_skips": false,
+  "coverage_selection": "Five original passing full shards plus entire401-item passing serial shard4; isolated result excluded from coverage."
+}

@@ -1,0 +1,91 @@
+{
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "hostname": "656813ef2295",
+  "artifacts": "/tmp/casepath-release-32b-20261012/shard4",
+  "counts": {
+    "assigned": 401,
+    "collected": 401,
+    "observer_unique_ids": 401,
+    "observer_phase_reports": 1202,
+    "observer_phase_outcomes": {
+      "setup": {
+        "passed": 400,
+        "skipped": 1
+      },
+      "call": {
+        "passed": 399,
+        "failed": 1
+      },
+      "teardown": {
+        "passed": 401
+      }
+    },
+    "junit_cases": 401,
+    "junit_outcomes": {
+      "passed": 399,
+      "failed": 1,
+      "skipped": 1
+    }
+  },
+  "exit_code": 1,
+  "duration_seconds": 572.2377560138702,
+  "started_utc": "2026-10-12T21:20:57.533381+00:00",
+  "finished_utc": "2026-10-12T21:30:29.771137+00:00",
+  "head": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "git_status_porcelain": "",
+  "manifest_sha256": "3af7d34be0189b83f35ef3b0a479fa09ae2d73e3249c13b8e6e1d02667e9061e",
+  "sealed_file_count": 1680,
+  "manifest_mismatches": [],
+  "failures": [
+    {
+      "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication",
+      "when": "call",
+      "duration": 17.915211991989054,
+      "utc_epoch": 1791840267.2475905,
+      "trace_artifact": "failure-6c53cf8a20275bf5.txt"
+    }
+  ],
+  "skips": [
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected",
+      "when": "setup",
+      "outcome": "skipped",
+      "duration": 0.00015382800484076142,
+      "utc_epoch": 1791840399.8026888,
+      "skip_reason": "('/workspace/casepath-release-ae0-shard4/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 548, 'Skipped: saved native source-binding run is unavailable')"
+    }
+  ],
+  "unmatched_junit": [],
+  "checks": {
+    "assigned_count_401": true,
+    "assigned_unique": true,
+    "assigned_exact_shard_map": true,
+    "arguments_exact_assignment": true,
+    "collected_unique": true,
+    "collected_exact_membership": true,
+    "collected_exact_count": true,
+    "observer_exact_union": true,
+    "observer_setup_unique": true,
+    "observer_setup_membership": true,
+    "observer_call_unique": true,
+    "observer_call_membership": true,
+    "observer_teardown_unique": true,
+    "observer_teardown_membership": true,
+    "observer_setup_exact_membership": true,
+    "observer_teardown_exact_membership": true,
+    "observer_call_exact_non_skipped_membership": true,
+    "junit_address_map_unambiguous": true,
+    "junit_all_addresses_resolved": true,
+    "junit_unique": true,
+    "junit_exact_count": true,
+    "junit_exact_membership": true,
+    "junit_observer_outcomes_agree": true,
+    "head_exact": true,
+    "git_clean": true,
+    "sealed_source_rows_match": true,
+    "sealed_manifest_unchanged": true,
+    "host_exact": true,
+    "exit_matches_failed_outcomes": true
+  },
+  "all_integrity_checks_passed": true
+}

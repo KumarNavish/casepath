@@ -1,0 +1,62 @@
+{
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "host": "656813ef2295",
+  "shard": 3,
+  "harness_pid": 467697,
+  "pytest_pid": 467709,
+  "exec_session": 44952,
+  "tests": 401,
+  "passed": 398,
+  "failed": 0,
+  "skipped": 3,
+  "exit_code": 0,
+  "duration_seconds": 515.7306070327759,
+  "junit_duration_seconds": 502.789,
+  "membership_counts": {
+    "assigned": 401,
+    "collected": 401,
+    "observer": 401,
+    "junit": 401
+  },
+  "all_memberships_equal": true,
+  "missing": 0,
+  "extra": 0,
+  "duplicate_ids": 0,
+  "duplicate_observer_phases": 0,
+  "observer_report_count": 1201,
+  "observer_phase_counts": {
+    "('setup', 'passed')": 399,
+    "('call', 'passed')": 398,
+    "('teardown', 'passed')": 401,
+    "('call', 'skipped')": 1,
+    "('setup', 'skipped')": 2
+  },
+  "assigned_sorted_sha256": "809892e4ced5114d4c4c774c65e26e5ccebe0b5327e96f9321943851703761a9",
+  "collected_sorted_sha256": "809892e4ced5114d4c4c774c65e26e5ccebe0b5327e96f9321943851703761a9",
+  "observer_sorted_sha256": "809892e4ced5114d4c4c774c65e26e5ccebe0b5327e96f9321943851703761a9",
+  "junit_sorted_sha256": "809892e4ced5114d4c4c774c65e26e5ccebe0b5327e96f9321943851703761a9",
+  "known_skip_ids_and_reasons_unchanged": true,
+  "skips": [
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+      "reason": "Skipped: frozen independent-transition packet is not available"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected",
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality",
+      "reason": "Skipped: saved native source-binding run is unavailable"
+    }
+  ],
+  "after_head": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "after_status": "",
+  "sealed_files_verified": 1680,
+  "source_manifest_sha256": "3af7d34be0189b83f35ef3b0a479fa09ae2d73e3249c13b8e6e1d02667e9061e",
+  "started_epoch": 1791840044.5847807,
+  "finished_epoch": 1791840560.3153877,
+  "verified_epoch": 1791840593.0818667,
+  "source_edits": false,
+  "reruns": 0
+}

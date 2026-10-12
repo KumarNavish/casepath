@@ -1,0 +1,48 @@
+{
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "host": "656813ef2295",
+  "assigned": 391,
+  "collected": 391,
+  "observer_unique_ids": 391,
+  "observer_report_count": 1172,
+  "junit_tests": 391,
+  "counts": {
+    "passed": 390,
+    "skipped": 1
+  },
+  "exit_code": 0,
+  "runner_duration_seconds": 610.0048007965088,
+  "junit_duration_seconds": 606.126,
+  "pytest_summary": "390 passed, 1 skipped, 9 warnings in 606.14s (0:10:06)",
+  "exact_identity_reconciliation": true,
+  "all_required_test_calls_executed": false,
+  "skip_limit": [
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete",
+      "outcome": "skipped",
+      "duration_seconds": 0.0,
+      "junit_classname": "tests.test_document_lifecycle_shadow_v2",
+      "junit_name": "test_model_reported_complete_does_not_become_accepted_complete",
+      "message": "saved native source-binding run is unavailable",
+      "detail": "/workspace/casepath-release-ae0-shard1/casepath-api/tests/test_document_lifecycle_shadow_v2.py:646: saved native source-binding run is unavailable"
+    }
+  ],
+  "head": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "git_status_porcelain": "",
+  "seal_files_verified": 1680,
+  "manifest_sha256": "3af7d34be0189b83f35ef3b0a479fa09ae2d73e3249c13b8e6e1d02667e9061e",
+  "assigned_collected_same_order": true,
+  "artifacts": {
+    "command": "command.json",
+    "result": "result.json",
+    "assigned": "ids.txt",
+    "collected": "collected.json",
+    "observer": "reports.jsonl",
+    "junit": "junit.xml",
+    "pytest": "pytest.log",
+    "canonical_junit": "junit-canonical.json"
+  },
+  "exec_session": 44859,
+  "harness_pid": 467620,
+  "pytest_pid": 467631
+}

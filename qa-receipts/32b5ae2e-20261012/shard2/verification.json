@@ -1,0 +1,74 @@
+{
+  "candidate": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "shard": 2,
+  "session_id": 73638,
+  "harness_pid": 467636,
+  "pytest_pid": 467647,
+  "exit_code": 0,
+  "duration_seconds": 634.8278439044952,
+  "assigned": 395,
+  "collected": 395,
+  "observer_setup": 395,
+  "observer_call": 394,
+  "observer_teardown": 395,
+  "junit_cases": 395,
+  "junit_outcomes": {
+    "passed": 394,
+    "skipped": 1
+  },
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "1",
+      "tests": "395",
+      "time": "631.142",
+      "timestamp": "2026-10-12T21:20:35.297870+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "skipped_reports": [
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request",
+      "when": "setup",
+      "outcome": "skipped",
+      "duration": 0.0002642699982970953,
+      "utc_epoch": 1791840251.6049256,
+      "skip_reason": "('/workspace/casepath-release-ae0-shard2/casepath-api/tests/test_document_lifecycle_shadow_v2.py', 696, 'Skipped: saved native source-binding run is unavailable')"
+    }
+  ],
+  "failed_reports": [],
+  "checks": {
+    "assigned_unique_395": true,
+    "assigned_equals_shard_map": true,
+    "arguments_equal_assigned": true,
+    "collection_order_equals_assigned": true,
+    "collected_exact_canonical_ids": true,
+    "observer_setup_exact_canonical_ids": true,
+    "observer_teardown_exact_canonical_ids": true,
+    "observer_passed_or_skipped_exact_canonical_ids": true,
+    "observer_no_duplicate_call_ids": true,
+    "junit_exact_canonical_ids": true,
+    "junit_skips_equal_observer": true,
+    "junit_passes_equal_observer": true,
+    "no_failure_reports": true,
+    "exit_zero": true,
+    "head_exact_and_clean": true,
+    "sealed_1680_files_intact": true,
+    "manifest_hash_matches_run": true
+  },
+  "after_head": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "after_status": "",
+  "seal_files": 1680,
+  "artifact_sha256": {
+    "ids.txt": "bcb689988c4197190c39850bfa1de3481e45fa92c2bd0a986843fdbe7891d761",
+    "pytest-arguments.txt": "bcb689988c4197190c39850bfa1de3481e45fa92c2bd0a986843fdbe7891d761",
+    "collected.json": "6d7c8408aa5c6448084e38babbf25ddc80d2aea042daf009c140f7d66fdde927",
+    "reports.jsonl": "63c536f363bab25b1edf7195450951d6c2c68df6692e8363c2565336bdd8d645",
+    "junit.xml": "8aac5a44b13c7363e164a48f3463b67696a6e54f4fea84dcb0eb945a4441b0b0",
+    "pytest.log": "a496bf2a7f795f417737fc0e9e6f2e865a2e47b8e49356e71a4f50fa9086d494",
+    "command.json": "b973e5b59f84ac7d2e08a7298d97ea6071ffdc1f00033b1ef3a203d70f24e861",
+    "result.json": "d3f6f9fd03474a2672ee4c628b21b12a7dfb139e8397ea9f6990fa16d6702bcb"
+  }
+}
