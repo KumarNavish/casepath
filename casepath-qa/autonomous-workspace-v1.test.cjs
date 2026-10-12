@@ -8,7 +8,7 @@ const hash = char => char.repeat(64);
 function state(extra={}) {
   return {claim_id:'claim-a',title:'Original incoming claim',revision:3,state_sha256:hash('a'),status:'running',
     graph:{claim_id:'claim-a',graph_sha256:hash('b'),nodes:[{node_id:'start',label:'Inspect message',entry:true},{node_id:'branch',label:'Check separate service',condition:{flag:'family_home'}}],edges:[{edge_id:'next',source_node_id:'start',target_node_id:'branch'}]},
-    evaluation:{nodes:[{node_id:'start',execution_state:'completed'},{node_id:'branch',execution_state:'ready'}],documents:[{document_type:'notice',route_state:'needed_now',review_state:'unreviewed'}]},
+    evaluation:{nodes:[{node_id:'start',activation:'true',execution_state:'completed'},{node_id:'branch',activation:'true',execution_state:'ready'}],documents:[{document_type:'notice',activation:'true',route_state:'needed_now',review_state:'unreviewed'}]},
     facts:[{fact_id:'condition:family_home',label:'Family home',status:'true',summary:'The customer reports a family home.',citations:[]},{fact_id:'fact:notice',label:'Separate notice',status:'unresolved',summary:'A separate notice is required.'}],
     obligations:[{obligation_id:'obligation:branch:notice',node_id:'branch',decision_node_id:'branch',required_fact_ids:['fact:notice'],document_type:'notice',label:'Separate notice',reason:'Service depends on the family-home condition.',rule_refs:['tenancy.v1'],capability_id:'local_inbox.read'}],
     actions:[{result:{action_id:'review:notice:original',type:'document_review',node_ids:['branch'],status:'completed',summary:'Original notice inspected.'},receipt:{receipt_sha256:hash('c')}}],
@@ -273,6 +273,21 @@ test('document focus follows its exact obligation and required fact when a node 
  assert.equal(JSON.stringify(s),before,'document focus is a read-only join over accepted state');
 });
 
+test('forming requirements wait for their actual requiring step, preserve own missing evidence and retire false routes',()=>{
+ const saved=state();saved.evaluation.nodes.forEach(node=>node.activation='true');saved.evaluation.documents[0].activation='true';
+ const ids=copy=>[...ui.formingMarkup(copy,{},'branch').matchAll(/<li[^>]*data-au-obligation="([^"]+)"/g)].map(match=>match[1]);
+ assert.deepEqual(ids(saved),['obligation:branch:notice']);
+ const future=structuredClone(saved);future.evaluation.nodes[1]={node_id:'branch',activation:'true',execution_state:'blocked',blocked_by:['start'],missing_document_types:['notice']};future.evaluation.documents[0].route_state='established';future.evaluation.documents[0].review_state='sufficient';
+ assert.deepEqual(ids(future),[],'early sufficient source review cannot expose an unreached requiring step');
+ const ownMissing=structuredClone(saved);ownMissing.evaluation.nodes[1]={node_id:'branch',activation:'true',execution_state:'blocked',blocked_by:[],unresolved_dependencies:[],missing_document_types:['notice']};
+ assert.deepEqual(ids(ownMissing),['obligation:branch:notice'],'missing evidence at the active step cannot hide its own requirement');
+ const ownLater=structuredClone(ownMissing);ownLater.evaluation.documents[0].route_state='needed_later';assert.deepEqual(ids(ownLater),['obligation:branch:notice']);
+ for(const route of ['needed_later','held_behind_question','not_needed','optional']){const copy=structuredClone(saved);copy.evaluation.documents[0].route_state=route;assert.deepEqual(ids(copy),[],route);}
+ for(const activation of ['false','unresolved',undefined]){const copy=structuredClone(future);copy.evaluation.nodes[1]={node_id:'branch',activation,execution_state:'completed'};assert.deepEqual(ids(copy),[],String(activation));}
+ const retired=structuredClone(saved);retired.evaluation.nodes[1].activation='false';retired.evaluation.documents[0]={document_type:'notice',activation:'false',route_state:'not_needed',review_state:'sufficient'};assert.deepEqual(ids(retired),[]);assert.match(ui.obligationMarkup(retired,'branch'),/obligation:branch:notice/,'settled checklist retains the exact retired obligation');
+ const incoming=structuredClone(saved);incoming.graph.family='incoming_packet';assert.deepEqual(ids(incoming),[],'acquisition requirements are not a final handling checklist');
+});
+
 function formingUnitStates() {
  const use={knowledge_id:'procedure.unit',version:2,definition_sha256:hash('2'),rule_pack_sha256:hash('3'),applicability:'same_verified_family_and_rule_version'},packet=state({claim_id:'unit-forming-case',revision:10,state_sha256:hash('1'),last_event_sha256:hash('a'),graph:{claim_id:'unit-forming-case',family:'incoming_packet',nodes:[{node_id:'incoming',label:'Read the original unit packet',entry:true}],edges:[]},evaluation:{nodes:[{node_id:'incoming',execution_state:'ready',activation:'true'}],edges:[],documents:[]},facts:[],obligations:[],actions:[],knowledge_uses:[use],knowledge_published:[]});
  packet.source_descriptors[0].claim_id=packet.claim_id;const body='Exact original unit source sentence.';packet.acquired_sources=[{claim_id:packet.claim_id,artifact_id:'original',sha256:hash('d'),text:body,text_sha256:sha(body),complete:true}];
@@ -280,7 +295,7 @@ function formingUnitStates() {
  interpreted.graph={claim_id:packet.claim_id,family:'unit_process',graph_sha256:hash('5'),nodes:Array.from({length:11},(_,index)=>({node_id:index===0?'intake':`question-${index}`,label:index===0?'Read the original unit packet':`Recorded question ${index}`,entry:index===0,condition:{flag:index===0?'intake':`question-${index}`}})),edges:Array.from({length:10},(_,index)=>({edge_id:`edge-${index}`,source_node_id:index===0?'intake':`question-${index}`,target_node_id:`question-${index+1}`}))};
  interpreted.facts=interpreted.graph.nodes.map((node,index)=>({fact_id:`condition:${node.node_id}`,status:index===0?'true':'unresolved',summary:index===0?'The original unit packet is recorded.':`Recorded question ${index} remains unestablished.`,citations:index===0?[{artifact_id:'original',sha256:hash('d'),text_sha256:sha(body),start_char:0,end_char:Array.from(body).length,quote:body}]:[]}));
  interpreted.obligations=interpreted.graph.nodes.map((node,index)=>({obligation_id:`unit-requirement-${index}`,document_type:`unit_document_${index}`,label:`Recorded document ${index}`,node_id:node.node_id,required_fact_ids:[`condition:${node.node_id}`]}));
- interpreted.evaluation={nodes:interpreted.graph.nodes.map((node,index)=>({node_id:node.node_id,activation:index===0?'true':'unresolved',execution_state:index===0?'ready':'unresolved'})),edges:interpreted.graph.edges.map(edge=>({edge_id:edge.edge_id,activation:'unresolved'})),documents:interpreted.obligations.map(obligation=>({document_type:obligation.document_type,route_state:'held_behind_question',review_state:'unreviewed'}))};
+ interpreted.evaluation={nodes:interpreted.graph.nodes.map((node,index)=>({node_id:node.node_id,activation:index===0?'true':'unresolved',execution_state:index===0?'ready':'unresolved'})),edges:interpreted.graph.edges.map(edge=>({edge_id:edge.edge_id,activation:'unresolved'})),documents:interpreted.obligations.map((obligation,index)=>({document_type:obligation.document_type,activation:index===0?'true':'unresolved',route_state:index===0?'needed_now':'held_behind_question',review_state:'unreviewed'}))};
  const reviewed=structuredClone(interpreted);reviewed.revision=13;reviewed.state_sha256=hash('6');reviewed.last_event_sha256=hash('c');reviewed.evaluation.documents[4].review_state='sufficient';reviewed.facts.push({fact_id:'document:unit_document_4',document_type:'unit_document_4',status:'sufficient',summary:'The source supports this particular unit document review.',citations:interpreted.facts[0].citations});
  const settled=structuredClone(reviewed);settled.revision=15;settled.state_sha256=hash('7');settled.last_event_sha256=hash('e');settled.status='deferred';settled.outcome={status:'deferred',summary:'The recorded questions remain unresolved.',unresolved_facts:interpreted.facts.slice(1)};settled.knowledge_published=[{knowledge_id:'procedure.unit',version:3,source_claim_id:settled.claim_id,knowledge_sha256:hash('8'),qualification:{status:'qualified',definition_sha256:hash('9')},added_document_types:['unit_document_4'],evidence_recipes:[{document_type:'unit_document_4',required_fields:['recorded_sender','recorded_date']}],obligations:[reviewed.obligations[4]]}];
  return {packet,interpreted,reviewed,settled};
@@ -292,36 +307,38 @@ test('forming work keeps the whole accepted graph obligations and pinned knowled
  const early=ui.workMarkup(packet,{},'incoming',[],'step',{}, {mode:'replay',replay:formingUnitReplay(packet)});assert.match(early,/data-au-forming/);assert.deepEqual([...early.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),['incoming']);assert.doesNotMatch(early,/data-au-obligation="unit-requirement-|data-au-node="question-/);assert.match(early,/data-au-version="2"[^>]*data-au-definition-sha="2{64}"/);assert.deepEqual(ui.contextualRecord(packet,{},[],'claim').state.facts,[],'reuse cannot establish a current-case fact');
  for(const state of [interpreted,reviewed]) {
   const html=ui.workMarkup(state,{},'question-4',[],'step',{}, {mode:'replay',replay:formingUnitReplay(state),paused:true});assert.match(html,/data-au-forming/);assert.match(html,/au-forming-process/);assert.match(html,/au-forming-documents/);assert.match(html,/au-forming-knowledge/);
-  assert.deepEqual(new Set([...html.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1])),new Set(state.graph.nodes.map(node=>node.node_id)));assert.deepEqual(new Set([...html.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(state.obligations.map(obligation=>obligation.obligation_id)));
-  for(const obligation of state.obligations){assert.ok(html.includes(`data-au-select-obligation="${obligation.obligation_id}"`));assert.ok(html.includes(`data-au-select="${obligation.node_id}"`));}
+  assert.deepEqual(new Set([...html.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1])),new Set(state.graph.nodes.map(node=>node.node_id)));assert.deepEqual(new Set([...html.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(['unit-requirement-0']));
+  for(const obligation of state.obligations.slice(0,1)){assert.ok(html.includes(`data-au-select-obligation="${obligation.obligation_id}"`));assert.ok(html.includes(`data-au-select="${obligation.node_id}"`));}
   assert.match(html,/data-au-version="2"[^>]*data-au-definition-sha="2{64}"/);assert.deepEqual(ui.contextualRecord(state,{},[],'claim'),{state,projection:{}});
  }
  assert.equal(ui.formingWork(interpreted,{mode:'saved'}),true);assert.equal(ui.formingWork(settled,{mode:'saved'}),false);assert.equal(ui.formingWork(reviewed,{mode:'replay',replay:formingUnitReplay(reviewed),paused:true}),true);assert.equal(ui.formingWork(settled,{mode:'replay',replay:formingUnitReplay(settled)}),false);assert.equal(ui.formingWork(settled,{mode:'replay',replay:formingUnitReplay(settled),playing:true}),true,'the actual final publication remains visible during its accepted presentation before settling');assert.equal(ui.formingWork(reviewed,{mode:'replay',replay:{...formingUnitReplay(reviewed),state:{...reviewed,state_sha256:hash('0')}},playing:true}),false,'playing cannot bypass replay identity');assert.equal(JSON.stringify({packet,interpreted,reviewed,settled}),before);
 });
 
-test('a sufficient source review in forming work leaves unresolved decisions and conditional requirement applicability exact',()=>{
- const {interpreted,reviewed}=formingUnitStates(),before=JSON.stringify(reviewed),html=ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'replay',replay:formingUnitReplay(reviewed)});
- assert.match(html,/data-au-forming/);assert.doesNotMatch(html,/May be needed\s*·\s*Sufficient/);assert.match(html,/Supplied evidence is sufficient\./);assert.match(html,/May be needed/);assert.match(html,/data-au-review="sufficient"/);assert.deepEqual(reviewed.evaluation.nodes,interpreted.evaluation.nodes);assert.deepEqual(reviewed.evaluation.edges,interpreted.evaluation.edges);
- assert.equal(reviewed.evaluation.nodes[0].execution_state,'ready');assert.ok(reviewed.evaluation.nodes.slice(1).every(node=>node.execution_state==='unresolved'));assert.ok(reviewed.evaluation.edges.every(edge=>edge.activation==='unresolved'));assert.ok(reviewed.evaluation.documents.every(document=>document.route_state==='held_behind_question'));assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].review_state,'sufficient');assert.equal(ui.contextualRecord(reviewed,{},[],'fact','document:unit_document_4').status,'sufficient');assert.equal(JSON.stringify(reviewed),before);
- const checkmark=/<span aria-hidden="true">✓<\/span>/,reviewedRow=html.match(/<li[^>]*data-au-obligation="unit-requirement-4"[\s\S]*?<\/li>/)[0];assert.match(reviewedRow,checkmark);assert.match(ui.documentReviewMarkup('sufficient'),checkmark);
- for(const review of [undefined,'received','unreviewed','missing','unresolved','insufficient','satisfied']){assert.doesNotMatch(ui.documentReviewMarkup(review),checkmark);const copy=structuredClone(reviewed);copy.evaluation.documents[4].review_state=review;copy.evaluation.nodes[4].execution_state='completed';const copyBefore=JSON.stringify(copy),rendered=ui.workMarkup(copy,{},'question-4',[],'step',{}, {mode:'saved'}),row=rendered.match(/<li[^>]*data-au-obligation="unit-requirement-4"[\s\S]*?<\/li>/)[0];assert.doesNotMatch(row,checkmark,`review ${review} cannot inherit sufficiency from a completed node or sufficient document fact`);assert.equal(copy.facts.at(-1).status,'sufficient');assert.equal(copy.evaluation.documents[4].route_state,'held_behind_question');assert.deepEqual(copy.acquired_sources,reviewed.acquired_sources);assert.equal(JSON.stringify(copy),copyBefore);}
+test('sufficient future source review stays inspectable without appearing as an active requirement',()=>{
+ const {reviewed}=formingUnitStates(),before=JSON.stringify(reviewed),html=ui.formingMarkup(reviewed,{},'question-4');
+ assert.doesNotMatch(html,/data-au-obligation="unit-requirement-4"|data-au-review="sufficient"|May be needed/);
+ assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].review_state,'sufficient');
+ assert.match(ui.obligationMarkup(reviewed,'question-4'),/data-au-review="sufficient"/,'the complete checklist preserves early review separately from activation');
+ assert.equal(JSON.stringify(reviewed),before);
 });
 
-test('forming documents use one collective conditional label while keeping an assessed source separate from unresolved routing',()=>{
- const {reviewed}=formingUnitStates(),before=JSON.stringify(reviewed),html=ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'replay',replay:formingUnitReplay(reviewed)});
- assert.equal((html.match(/May be needed/g)||[]).length,1);assert.match(html,/au-forming-document-scope/);assert.doesNotMatch(html,/Source evidence is not yet established\.|au-reading-decision|au-reading-relations/);assert.match(html,/data-au-review="sufficient"[^>]*>Supplied evidence is sufficient\./);assert.doesNotMatch(html,/May be needed\s*·\s*Sufficient/);
- for(const obligation of reviewed.obligations)assert.ok(html.includes(`data-au-obligation="${obligation.obligation_id}"`));assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].route_state,'held_behind_question');assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-5').evaluation[0].review_state,'unreviewed');assert.match(ui.inspectorMarkup(reviewed,'question-4'),/au-reading-decision/);assert.deepEqual(ui.contextualRecord(reviewed,{},[],'step','question-4').edges,reviewed.graph.edges.filter(edge=>edge.source_node_id==='question-4'||edge.target_node_id==='question-4'));assert.equal(JSON.stringify(reviewed),before);
+test('forming mixed routes expose only reached requirements and never inherit checks from received sources or completed nodes',()=>{
+ const {reviewed}=formingUnitStates();reachFormingRequirement(reviewed,2);reviewed.evaluation.documents[2].route_state='needed_now';
+ const before=JSON.stringify(reviewed),html=ui.formingMarkup(reviewed,{},'question-4');
+ assert.match(html,/data-au-obligation="unit-requirement-2"/);assert.doesNotMatch(html,/data-au-obligation="unit-requirement-(?:4|5)"|May be needed/);
+ for(const review of [undefined,'received','unreviewed','missing','unresolved','insufficient','satisfied']){
+  const copy=structuredClone(reviewed);reachFormingRequirement(copy,4);copy.evaluation.nodes[4].execution_state='completed';copy.evaluation.documents[4].review_state=review;
+  const row=ui.formingMarkup(copy,{},'question-4').match(/<li[^>]*data-au-obligation="unit-requirement-4"[\s\S]*?<\/li>/)[0];
+  assert.doesNotMatch(row,/<span aria-hidden="true">✓<\/span>/,String(review));
+ }
+ assert.match(ui.documentReviewMarkup('sufficient'),/<span aria-hidden="true">✓<\/span>/);assert.equal(JSON.stringify(reviewed),before);
 });
 
-test('forming mixed routes expose a recorded requirement needed now without promoting sufficient source review or repeating held statuses',()=>{
- const {reviewed}=formingUnitStates();reviewed.evaluation.documents[2].route_state='needed_now';const before=JSON.stringify(reviewed),html=ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'saved'}),row=index=>html.match(new RegExp(`<li[^>]*data-au-obligation="unit-requirement-${index}"[\\s\\S]*?<\\/li>`))[0];
- assert.equal((html.match(/May be needed/g)||[]).length,1);assert.match(row(2),/data-status="needed_now"/);assert.match(row(2),/>Needed now</);assert.doesNotMatch(row(2),/data-au-review="unreviewed"|Source evidence is not yet established/);
- assert.match(row(4),/data-status="held_behind_question"/);assert.match(row(4),/Supplied evidence is sufficient\./);assert.doesNotMatch(row(4),/Needed now|May be needed/);assert.doesNotMatch(row(5),/May be needed|Source evidence is not yet established|data-au-review="unreviewed"/);
- assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-2').evaluation[0].route_state,'needed_now');assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].route_state,'held_behind_question');assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].review_state,'sufficient');assert.equal(JSON.stringify(reviewed),before);
-});
+function reachFormingRequirement(saved,index){Object.assign(saved.evaluation.nodes[index],{activation:'true',execution_state:'ready',blocked_by:[],unresolved_dependencies:[]});Object.assign(saved.evaluation.documents[index],{activation:'true',route_state:saved.evaluation.documents[index].review_state==='sufficient'?'established':'needed_now'});}
 
 test('forming assessed requirements list a source file once while all three exact cited passages remain inspectable',()=>{
  const {reviewed}=formingUnitStates(),context={fact:'document:unit_document_4',document:'unit_document_4',obligation:'unit-requirement-4'},fact=reviewed.facts.find(item=>item.fact_id===context.fact),body=reviewed.acquired_sources[0].text;
+ reachFormingRequirement(reviewed,4);
  fact.citations=['Exact','original','unit'].map(quote=>({...fact.citations[0],quote,start_char:Array.from(body.slice(0,body.indexOf(quote))).length,end_char:Array.from(body.slice(0,body.indexOf(quote)+quote.length)).length}));reviewed.obligations[4].required_fact_ids.push(context.fact);
  const before=JSON.stringify(reviewed),html=ui.workMarkup(reviewed,{},'question-4',[],'step',context,{mode:'saved'}),row=html.match(/<li[^>]*data-au-obligation="unit-requirement-4"[\s\S]*?<\/li>/)[0],passages=html.match(/<section class="au-reading-passages">[\s\S]*?<\/section>/)[0];
  assert.equal((row.match(/class="au-link au-document-source"/g)||[]).length,1);assert.equal((row.match(/data-au-source="original"/g)||[]).length,1);assert.match(row,/data-au-source-origin="requirement:unit-requirement-4"/);assert.match(row,/Supplied evidence is sufficient\./);
@@ -331,7 +348,7 @@ test('forming assessed requirements list a source file once while all three exac
 
 test('forming connections join only the selected accepted fact exact source span and its requiring node and obligation',()=>{
  const {reviewed}=formingUnitStates(),context={fact:'document:unit_document_4',document:'unit_document_4',obligation:'unit-requirement-4'};
- reviewed.obligations[4].required_fact_ids.push(context.fact);
+ reachFormingRequirement(reviewed,4);reviewed.obligations[4].required_fact_ids.push(context.fact);
  const fact=reviewed.facts.find(item=>item.fact_id===context.fact),before=JSON.stringify(reviewed),relation=ui.formingRelations(reviewed,'question-4',context);
  assert.deepEqual(relation,{fact:context.fact,source:'original',node:'question-4',obligation:context.obligation,citation:fact.citations[0]});
  const html=ui.workMarkup(reviewed,{},'question-4',[],'step',context,{mode:'saved'}),paths=[...html.matchAll(/<path data-au-forming-wire="([^"]+)"([^>]*)>/g)];
@@ -353,7 +370,7 @@ test('forming publication remains central for a deferred live accepted publicati
  const focused=ui.formingPublication(head,history,attention);assert.equal(focused.seq,15);assert.equal(focused.id,published.event_sha256);assert.deepEqual(focused.knowledge,publication);
  const live=ui.workMarkup(head,{},'question-4',history,'step',{}, {mode:'saved',attention});assert.match(live,/data-au-forming-revision="16"/);assert.doesNotMatch(live,/data-au-forming-revision="15"/);assert.match(live,/data-au-publication-focus="e{64}"/);assert.match(live,/data-au-knowledge-publication="8{64}"/);assert.match(live,/Added for reuse · Version 3/);assert.match(live,/data-au-version="3"[^>]*data-au-knowledge-sha="8{64}"[^>]*data-au-definition-sha="9{64}"/);assert.match(live,/recorded sender, recorded date/);
  const compact=live.match(/<div class="au-forming-publication-focus"[^>]*>([\s\S]*?)<\/div>/)[1];assert.match(compact,/class="au-forming-used-version" data-au-knowledge-use="procedure\.unit"/);assert.match(compact,/data-au-knowledge="procedure\.unit" data-au-version="2" data-au-knowledge-sha="" data-au-definition-sha="2{64}"[^>]*>Used version 2<\/button>/);assert.equal((live.match(/data-au-knowledge="procedure\.unit" data-au-version="2"/g)||[]).length,1,'compact publication focus keeps one exact link to the actually used version');assert.doesNotMatch(live,/data-au-inspector-heading="question-4"|class="au-knowledge-use"/,'the selected question and reused procedure are not repeated as extra headings during accepted publication focus');assert.match(live,/data-au-node="question-4"[^>]*aria-pressed="true"/);
- assert.deepEqual([...live.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),head.graph.nodes.map(node=>node.node_id));assert.deepEqual([...live.matchAll(/data-au-edge="([^"]+)"/g)].map(match=>match[1]),head.graph.edges.map(edge=>edge.edge_id));assert.deepEqual(new Set([...live.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(head.obligations.map(item=>item.obligation_id)));assert.deepEqual(ui.contextualRecord(head,{},history,'claim'),{state:head,projection:{}});assert.deepEqual(ui.contextualRecord(head,{},history,'use','0'),head.knowledge_uses[0]);
+ assert.deepEqual([...live.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),head.graph.nodes.map(node=>node.node_id));assert.deepEqual([...live.matchAll(/data-au-edge="([^"]+)"/g)].map(match=>match[1]),head.graph.edges.map(edge=>edge.edge_id));assert.deepEqual(new Set([...live.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(['unit-requirement-0']));assert.deepEqual(ui.contextualRecord(head,{},history,'claim'),{state:head,projection:{}});assert.deepEqual(ui.contextualRecord(head,{},history,'use','0'),head.knowledge_uses[0]);
  assert.match(ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'saved'}),/data-au-inspector-heading="question-4"/,'ordinary prepublication prefixes retain the selected-question heading');
  const replay={state:head,mode:'replay',replay_only:true,through_seq:16,current_revision:16,current_state_sha256:head.state_sha256,current_event_sha256:head.last_event_sha256};assert.match(ui.workMarkup(head,{},'question-4',history,'step',{}, {mode:'replay',replay,attention}),/data-au-publication-focus="e{64}"/);
  for(const invalid of [{},{...attention,previousRevision:15},{...attention,knowledgePublications:[]},{...attention,knowledgePublications:[{id:hash('0')}]},{...attention,acceptedEvents:[{...published,event_sha256:hash('0')},phase]}]){assert.equal(ui.formingPublication(head,history,invalid),null);assert.doesNotMatch(ui.workMarkup(head,{},'question-4',history,'step',{}, {mode:'saved',attention:invalid}),/data-au-forming="true"|data-au-publication-focus=/);}
@@ -363,9 +380,24 @@ test('forming publication remains central for a deferred live accepted publicati
  assert.equal(JSON.stringify({prior,head,history,attention}),before,'live and replay presentation must retain the actual revision and raw publication unchanged');
 });
 
+test('shared document types keep each obligation attached to its own reached requiring node',()=>{
+ const saved=state();saved.graph.nodes.push({node_id:'future',label:'Later service'});saved.evaluation.nodes.push({node_id:'future',activation:'true',execution_state:'blocked',blocked_by:['branch']});saved.obligations.push({...saved.obligations[0],obligation_id:'obligation:future:notice',node_id:'future',decision_node_id:'future'});saved.evaluation.documents[0].required_at_node_ids=['branch','future'];
+ assert.deepEqual(ui.formingRequirements(saved).map(ui.requirementIdentity),['obligation:branch:notice']);
+ const before=structuredClone(saved);saved.revision=4;saved.state_sha256=hash('f');saved.evaluation.nodes[2].execution_state='ready';saved.evaluation.nodes[2].blocked_by=[];
+ const event={claim_id:saved.claim_id,seq:4,revision:4,state_sha256:saved.state_sha256,event_sha256:hash('9'),kind:'graph.advanced'},plan=ui.transitionPlan(before,saved,{ready:true,cursor:4,animate:[event]});
+ assert.ok(plan.documents.some(row=>row.id==='notice'),'the accepted readiness change introduces an already-reviewed document');
+});
+
+test('real conditional split and join labels preserve applied excluded and unresolved edge states without labelling a linear unconditional dependency',()=>{
+ const saved=state();saved.graph.nodes.push({node_id:'other',label:'Other route'},{node_id:'join',label:'Join the recorded routes'});saved.graph.edges=[{edge_id:'selected',source_node_id:'start',target_node_id:'branch',condition:{flag:'family_home'}},{edge_id:'other',source_node_id:'start',target_node_id:'other',condition:{not:{flag:'family_home'}}},{edge_id:'join-left',source_node_id:'branch',target_node_id:'join',condition:{const:true}},{edge_id:'join-right',source_node_id:'other',target_node_id:'join',condition:{flag:'unresolved_guard'}}];saved.evaluation.edges=[{edge_id:'selected',activation:'true'},{edge_id:'other',activation:'false'},{edge_id:'join-left',activation:'true'},{edge_id:'join-right',activation:'unresolved'}];
+ const before=JSON.stringify(saved),html=ui.graphMarkup(saved,'branch',{}, {overview:true});assert.deepEqual(ui.layoutGraph(saved.graph).rows.map(row=>row.map(node=>node.node_id)),[['start'],['branch','other'],['join']]);
+ for(const [id,label,status]of [['selected','Family home','Applies'],['other','Not (Family home)','Excluded'],['join-right','Unresolved guard','Unresolved']])assert.match(html,new RegExp(`data-au-edge-label="${id}"[^>]*>${label.replace(/[()]/g,'\\$&')}<span>${status}</span>`));
+ assert.doesNotMatch(html,/data-au-edge-label="join-left"/);assert.equal((html.match(/marker-end="url/g)||[]).length,4);assert.equal(JSON.stringify(saved),before);
+});
+
 test('forming requirements retire only on recorded route exclusion while History and Documents retain exact earlier obligations',()=>{
  const {interpreted}=formingUnitStates();interpreted.evaluation.documents[2].route_state='not_needed';interpreted.evaluation.documents[3].route_state='excluded';interpreted.evaluation.nodes[4].activation='false';const before=JSON.stringify(interpreted),html=ui.workMarkup(interpreted,{},'question-4',[],'step',{}, {mode:'saved'}),documents=ui.workMarkup(interpreted,{},'question-4',[],'documents');
- assert.match(html,/data-au-forming/);assert.doesNotMatch(html,/data-au-obligation="unit-requirement-(?:2|3)"/);assert.match(html,/data-au-obligation="unit-requirement-4"/,'a node activation alone cannot fabricate document retirement');
+ assert.match(html,/data-au-forming/);assert.doesNotMatch(html,/data-au-obligation="unit-requirement-(?:2|3)"/);assert.doesNotMatch(html,/data-au-obligation="unit-requirement-4"/,'an inapplicable requiring node removes its row without rewriting the checklist');
  for(const obligation of interpreted.obligations)assert.ok(documents.includes(`data-au-obligation="${obligation.obligation_id}"`));assert.deepEqual(ui.contextualRecord(interpreted,{},[],'claim').state.obligations,interpreted.obligations);assert.equal(ui.contextualRecord(interpreted,{},[],'requirement','unit-requirement-2').evaluation[0].route_state,'not_needed');assert.equal(ui.contextualRecord(interpreted,{},[],'requirement','unit-requirement-3').evaluation[0].route_state,'excluded');assert.equal(JSON.stringify(interpreted),before);
 });
 
@@ -1062,6 +1094,17 @@ test('a focused claim title allows saved revisions to render during polling',asy
  saved=state({revision:4,state_sha256:hash('f'),phase:'interpreting',phase_summary:'Reading the original agreement.'});
  await controller.refresh();
  assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.deepEqual(ui.contextualRecord(saved,{},[],'claim').state.phase_summary,'Reading the original agreement.');assert.doesNotMatch(f.status.textContent,/Updates paused/);
+});
+
+test('an accepted live requiring-step advance focuses its actual new requirement while manual inspection keeps its focus',async t=>{
+ for(const held of [false,true])await t.test(String(held),async t=>{
+  const f=dom(),before=state();before.evaluation.nodes[1].execution_state='blocked';before.evaluation.nodes[1].blocked_by=['start'];before.evaluation.documents[0].route_state='established';before.evaluation.documents[0].review_state='sufficient';let saved=before;
+  const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
+  if(held)f.listeners.get('click')({target:control(f,'data-au-node','start')});
+  saved=structuredClone(before);saved.revision=4;saved.state_sha256=hash('f');saved.evaluation.nodes[1].execution_state='ready';saved.evaluation.nodes[1].blocked_by=[];await controller.refresh();await settle();
+  assert.match(f.host.innerHTML,/data-au-obligation="obligation:branch:notice"/);assert.match(f.host.innerHTML,new RegExp(`data-au-selected-step="${held?'start':'branch'}"`));
+  assert.equal(api.calls.some(call=>call.init.method==='POST'),false);
+ });
 });
 
 test('unchanged verified polling and reconnect keep existing claim nodes while changed capabilities and revisions still render',async t=>{

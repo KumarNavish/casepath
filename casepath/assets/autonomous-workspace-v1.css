@@ -187,15 +187,22 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-graph { display:flex; align-items:stretch; gap:44px; position:relative; width:max-content; min-width:100%; min-height:100%; padding:8px 18px 12px; }
 .au-workspace .au-graph-rank { display:flex; flex-direction:column; justify-content:center; gap:22px; flex:0 0 210px; z-index:1; }
 .au-workspace .au-graph-lines { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
-.au-workspace .au-graph-lines path { fill:none; stroke:#657c6e; stroke-width:1.35; }
+.au-workspace .au-graph-lines [data-au-edge] { fill:none; stroke:#657c6e; stroke-width:1.8; }
+.au-workspace .au-graph-lines .au-process-arrow { fill:#657c6e; stroke:none; }
+.au-workspace .au-graph-lines .au-process-arrow[data-route=false] { fill:#85877d; }
+.au-workspace .au-graph-lines .au-process-arrow[data-route=unresolved] { fill:#8e7650; }
 .au-workspace .au-graph-lines path:is([data-state=excluded],[data-state=false]) { stroke-dasharray:5 5; }
-.au-workspace .au-graph-lines path[data-state=unresolved] { stroke-dasharray:2 4; }
+.au-workspace .au-graph-lines path[data-state=unresolved] { stroke:#8e7650; stroke-width:1.8; }
 .au-workspace .au-graph-lines path[data-selected=true] { stroke:var(--au-accent); stroke-width:1.6; }
 .au-workspace .au-node { display:flex; align-items:start; gap:10px; min-width:0; width:210px; min-height:72px; border:0; padding:8px 6px; background:var(--au-field); text-align:left; }
 .au-workspace .au-node:hover { background:var(--au-wash); }
 .au-workspace .au-node[aria-pressed=true] { color:var(--au-accent); }
 .au-workspace .au-node:is([data-activation=excluded],[data-activation=false]) { color:var(--au-muted); }
 .au-workspace .au-node-copy { display:block; min-width:0; }
+.au-workspace .au-node-condition { display:block; margin-bottom:5px; color:#405c4a; font-size:12px; line-height:1.35; overflow-wrap:anywhere; }
+.au-workspace .au-node-condition > span { display:block; color:var(--au-muted); font-size:11px; }
+.au-workspace .au-node-condition:is([data-state=false],[data-state=excluded]) { color:#73766d; }
+.au-workspace .au-node-condition[data-state=unresolved] { color:#806838; }
 .au-workspace .au-node-relation { display:block; margin-bottom:3px; color:var(--au-muted); font-size:11px; font-weight:400; }
 .au-workspace .au-node-title { display:block; font-size:15px; font-weight:450; line-height:1.45; }
 .au-workspace .au-node-state { display:block; margin-top:4px; color:var(--au-muted); font-size:11px; line-height:1.4; }
@@ -278,19 +285,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-forming-process .au-graph-chrome { min-height:26px; }
 .au-workspace .au-forming-process .au-graph-chrome button { min-height:26px; padding:3px 0; font-size:11px; }
 .au-workspace .au-forming-process .au-graph-viewport { max-height:660px; overflow:auto; overscroll-behavior:contain; scroll-padding:12px; }
-.au-workspace .au-forming-process .au-graph { flex-direction:column; align-items:stretch; gap:8px; width:100%; max-width:660px; min-width:0; margin:0 auto; padding:8px 24px 10px 4px; }
+.au-workspace .au-forming-process .au-graph { flex-direction:column; align-items:stretch; gap:14px; width:100%; max-width:660px; min-width:0; margin:0 auto; padding:8px 24px 10px 4px; }
 .au-workspace .au-forming-process .au-graph-rank { flex:0 0 auto; flex-direction:row; align-items:stretch; justify-content:center; gap:8px; width:100%; min-width:0; }
 .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] :is(.au-graph-rank,.au-node)[data-au-neighborhood=false] { display:flex; }
 .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-graph-lines [data-au-neighborhood=false] { display:block; }
-.au-workspace .au-forming-process .au-node { flex:1 1 0; width:auto; max-width:100%; min-height:44px; gap:5px; padding:3px 1px; background:var(--au-field); }
+.au-workspace .au-forming-process .au-node { flex:1 1 0; width:auto; max-width:100%; min-height:36px; gap:5px; padding:3px 1px; background:var(--au-field); }
 .au-workspace .au-forming-process .au-node:hover { background:var(--au-wash); }
 .au-workspace .au-forming-process .au-node-copy { flex:1; }
 .au-workspace .au-forming-process .au-node-relation { display:none; }
 .au-workspace .au-forming-process .au-node-title { font-size:14px; line-height:1.35; font-weight:450; text-wrap:pretty; }
 .au-workspace .au-forming-process .au-node-state { margin-top:3px; font-size:11px; line-height:1.3; }
 .au-workspace .au-forming-process .au-evidence-junction { flex-basis:14px; width:14px; height:14px; margin-top:2px; font-size:9px; }
-.au-workspace .au-forming-process .au-graph-lines path { stroke:#657c6e; stroke-width:1.15; }
-.au-workspace .au-forming-process .au-graph-lines path[data-selected=true] { stroke:var(--au-accent); stroke-width:1.45; }
+.au-workspace .au-forming-process .au-graph-lines [data-au-edge] { stroke-width:1.8; }
+.au-workspace .au-forming-process .au-graph-lines [data-au-edge][data-selected=true] { stroke:var(--au-accent); stroke-width:2; }
 .au-workspace .au-forming-process .au-process-question { max-width:none; margin:6px 0 10px; padding:0; font-size:24px; line-height:1.3; letter-spacing:-.4px; }
 .au-workspace .au-forming-publication-focus { min-width:0; margin:8px 0 12px; padding:8px 12px; border-left:2px solid var(--au-accent); background:var(--au-paper); }
 .au-workspace .au-forming-publication-focus .au-forming-knowledge { margin:0; padding:0; border:0; }
@@ -491,7 +498,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace summary > span { margin-left:8px; }
 .au-workspace details > :is(p,dl,pre,ul) { margin-top:12px; }
 @media (min-width:1001px) and (max-height:850px) {
-  .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:5px; padding-top:4px; padding-bottom:6px; }
+  .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:12px; padding-top:4px; padding-bottom:6px; }
   .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-node { min-height:36px; padding-top:0; padding-bottom:0; }
   .au-workspace .au-forming-publication-focus { margin:0 0 6px; padding:4px 12px; }
 }

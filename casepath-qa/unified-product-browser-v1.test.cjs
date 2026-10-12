@@ -461,7 +461,7 @@ function fixtureData(config = {}) {
   const reference = config.referenceFixture ? referenceFixture() : null;
   if (reference) {
     for (const id of referenceIds) {
-      const snapshot = clone(config.referenceUnprocessed ? reference.unprocessed[id] : reference.snapshots[id]);
+      const snapshot = clone(config.referenceUnprocessed || config.referenceUnprocessedIds?.includes(id) ? reference.unprocessed[id] : reference.snapshots[id]);
       envelopes[id] = {state:snapshot.state,projection:snapshot.projection};
       authoredEvents[id] = snapshot.events;
     }
@@ -475,7 +475,7 @@ function fixtureData(config = {}) {
   }));
   assert.equal(rows.filter(row => row.origin === 'canonical_original').length, 150);
   assert.equal(rows.filter(row => row.origin === 'native_intake').length, 9);
-  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, controlHistories, accepted,reference:reference ? {prefixes:Object.fromEntries((config.referenceReplayIds || [referenceIds[0]]).map(id=>[id,reference.prefixes[id]]))} : null,
+  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, controlHistories, accepted,reference:reference ? {prefixes:Object.fromEntries((config.referenceReplayIds || referenceIds).map(id=>[id,reference.prefixes[id]]))} : null,
     recordedHistory: config.recordedHistoryId ? clone(captured[`${base}/claims/${config.recordedHistoryId}/events?after=0`].events) : [],
     acceptedEvents: accepted ? clone((config.acceptedPrefix ? accepted.prefixes[config.acceptedPrefix] : accepted.snapshots[config.priorAssessment]).events) : [],
     acceptedPrefixes: accepted ? config.priorAssessment === 'failed' ? accepted.failure_prefixes : accepted.prefixes : {},
@@ -683,7 +683,14 @@ async function mountFixture(page, config = {}) {
       const [, id, kind] = read, after = Number(parsed.searchParams.get('after') || 0);
       if (kind === 'replay') {
         const live = fixture.envelopes[id], through = Number(parsed.searchParams.get('through_seq') || 0);
-        if (fixture.reference?.prefixes[id]?.[through] && !fixture.referenceUnprocessed) return response(200,fixture.reference.prefixes[id][through]);
+        if (fixture.reference?.prefixes[id]?.[through] && !fixture.referenceUnprocessed && !fixture.referenceUnprocessedIds?.includes(id)) {
+          const prefix=structuredClone(fixture.reference.prefixes[id][through]);
+          if(fixture.referenceReplayMissingId===id)return response(404,{detail:'No recorded replay for this original case.'});
+          if(fixture.referenceChangedHeadId===id&&through===prefix.current_revision){prefix.current_revision++;prefix.current_head.revision++;}
+
+          if(fixture.holdReplayId===id && through===fixture.holdReplayThrough)return new Promise(resolve=>fixture.held.push({id,kind:'replay',through,release:()=>resolve(response(200,prefix))}));
+          return response(200,prefix);
+        }
         if (fixture.accepted?.claim_id === id && fixture.acceptedPrefixes[through]) {
           const prefix = structuredClone(fixture.acceptedPrefixes[through]);
           if (fixture.corruptReplayThrough === through) prefix.provenance.sources[0].sha256 = '0'.repeat(64);
@@ -853,6 +860,84 @@ async function title(page, id) {
     await eventually(() => record.count().then(count => count === 1), 'History Case details did not expose the synchronized exact accepted state');
   }
 }
+
+for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,false]])test(`causal formation native: heating requirements enter at their actual steps and final content stays visible at ${width}x${height}`,async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});
+ if(reduced)await page.emulateMedia({reducedMotion:'reduce'});
+ const timeline=[[13,[]],[15,[]],[16,[]],[17,[]],[18,['tenancy_terms_evidence']],[19,['tenancy_terms_evidence','landlord_knowledge_evidence']],[21,['tenancy_terms_evidence','landlord_knowledge_evidence','objective_defect_observation']],[23,['tenancy_terms_evidence','landlord_knowledge_evidence','objective_defect_observation']]];
+ for(const [through,types]of timeline){
+  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through});
+  const prefix=fixture.prefixes[id][through];await title(page,id);
+  assert.deepEqual(sorted(await page.locator('.au-forming-documents [data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auDocument))),sorted(types),`native prefix ${through} has exactly the reached requirements`);
+  assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(rows=>rows.map(row=>row.dataset.auNode))),sorted(prefix.state.graph.nodes.map(row=>row.node_id)));
+  assert.equal(await page.locator('[data-au-node-condition],[data-au-edge-label]').count(),0,'the actual unconditional linear reference graph gains no invented branch labels');
+  assert.equal(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.every(row=>row.getAttribute('marker-end')?.startsWith('url(')&&row.getTotalLength()>3)),true,'real dependencies have visible directional paths');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
+  assert.equal(await page.locator('.au-forming-documents .au-document-review[data-au-review="sufficient"]').count(),types.length);
+  if(through<18)assert.equal(await page.locator('[data-au-forming-wire="process-document"]').count(),0,'hidden future requirements cannot leave a document connector');
+  assert.equal(await page.locator('[data-au-knowledge-publication]').count(),0,'the saved head cannot lend future knowledge to a displayed prefix');
+  if(through===18){
+   const row=page.locator('.au-forming-documents [data-au-obligation]').first(),origin=row.locator('[data-au-source][data-au-citation]').first();assert.equal(await origin.count(),1);
+   const citation=JSON.parse(await origin.getAttribute('data-au-citation'));await origin.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'exact native requirement source did not open');assert.equal(await page.locator('.au-source-dialog mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await origin.evaluate(element=>element===document.activeElement),true);
+  }
+ }
+ const head=fixture.snapshots[id];await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
+ assert.equal(await page.locator('[data-au-settled="true"]').count(),1);assert.ok((await page.locator('.au-assessment-conclusion').innerText()).includes(head.state.outcome.summary));
+ assert.deepEqual(sorted(await page.locator('.au-forming-documents [data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(head.state.obligations.map(row=>row.obligation_id)));
+ assert.equal(await page.locator('.au-forming-documents .au-document-review[data-au-review="sufficient"]').count(),3);assert.equal(await page.locator('.au-forming-documents [data-au-source][data-au-citation]').count(),3);
+ const publication=head.state.knowledge_published[0];assert.equal(await page.locator(`[data-au-knowledge-publication="${publication.knowledge_sha256}"]`).count(),1);assert.equal(await page.locator(`[data-au-knowledge-sha="${publication.knowledge_sha256}"]`).getAttribute('data-au-version'),String(publication.version));
+ await focusedReceipt(page,`causal-native-heating-settled-${width}x${height}`,{claimId:id,revision:head.state.revision,state_sha256:head.state.state_sha256,documents:head.state.obligations.map(row=>row.obligation_id),reduced});
+});
+
+test('causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes',async t=>{
+ const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed',acceptedPrefix:9,publicReadOnly:true,width:1440,height:900});
+ await open(page,id);await title(page,id);const saved=fixture.prefixes[9].state,layout=require('../casepath/assets/autonomous-workspace-v1.js').layoutGraph(saved.graph);
+ assert.equal(layout.nodes.length,11);assert.equal(layout.edges.length,13);assert.equal(layout.children.get('lt_type').length,3);assert.equal(layout.children.get('lt_abuse').length,2);assert.ok([...layout.parents.values()].some(rows=>rows.length>1));
+ assert.deepEqual(sorted(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.map(row=>row.dataset.auEdge))),sorted(layout.edges.map(row=>row.edge_id)));
+ assert.equal(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.every(row=>row.getAttribute('marker-end')&&row.getTotalLength()>3)),true);
+ const labels=await page.locator('[data-au-edge-label]').evaluateAll(rows=>rows.map(row=>({id:row.dataset.auEdgeLabel,state:row.dataset.state,text:row.textContent,font:parseFloat(getComputedStyle(row).fontSize),width:row.clientWidth,scroll:row.scrollWidth})));
+ assert.ok(labels.length>=5);for(const label of labels){const edge=layout.edges.find(row=>row.edge_id===label.id),evaluated=saved.evaluation.edges.find(row=>row.edge_id===label.id);assert.ok(edge?.condition);assert.equal(label.state,evaluated.activation);assert.ok(label.font>=12&&label.scroll<=label.width+1);assert.match(label.text,/Applies|Excluded|Unresolved/);}
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
+ const bounds=await page.locator('[data-au-graph-pan]').evaluate(graph=>{const frame=graph.getBoundingClientRect();return {frame:frame.toJSON(),height:innerHeight,scrollHeight:graph.scrollHeight,clientHeight:graph.clientHeight,nodes:[...graph.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,rect:node.getBoundingClientRect().toJSON()}))};});
+ await focusedReceipt(page,'causal-native-termination-forks-bounds',{bounds});
+ assert.ok(bounds.nodes.every(row=>row.rect.left>=bounds.frame.left-1&&row.rect.right<=bounds.frame.right+1&&row.rect.top>=bounds.frame.top-1&&row.rect.bottom<=bounds.frame.bottom+1),'the compact native overview exposes all eleven actual nodes in its graph viewport');
+ assert.ok(bounds.frame.bottom<=bounds.height+1,'the compact graph viewport stays in the initial desktop viewport');
+ await focusedReceipt(page,'causal-native-termination-forks',{claimId:id,fixture:'build-prior-assessment-fixture-v1.py',revision:saved.revision,state_sha256:saved.state_sha256,labels,bounds,nodes:layout.nodes.map(row=>row.node_id),edges:layout.edges.map(row=>row.edge_id)});
+});
+
+test('causal formation native: autoplay introduces early-reviewed requirements at the exact newly reached steps',async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0];
+ for(const [before,through,node,type]of [[17,18,'dh_scope','tenancy_terms_evidence'],[18,19,'dh_notice','landlord_knowledge_evidence'],[20,21,'dh_evidence','objective_defect_observation']])await t.test(String(through),async t=>{
+  const page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true});await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:before});await page.locator('[data-au-demo-play]').click();
+  for(let step=0;step<250&&Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<through;step++)await page.clock.runFor(50);
+  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(through));assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),node);
+  const obligation=fixture.prefixes[id][through].state.obligations.find(row=>row.document_type===type);
+  assert.equal(await page.locator(`.au-forming-documents [data-au-obligation="${obligation.obligation_id}"][data-selected="true"]`).count(),1);
+  const wire=page.locator('[data-au-forming-wire="process-document"]');assert.equal(await wire.getAttribute('data-au-wire-node'),node);assert.equal(await wire.getAttribute('data-au-wire-obligation'),obligation.obligation_id);assert.ok(await wire.getAttribute('d'));
+  const row=page.locator(`.au-forming-documents [data-au-obligation="${obligation.obligation_id}"]`),source=row.locator('[data-au-source][data-au-citation]').first(),citation=JSON.parse(await source.getAttribute('data-au-citation'));
+  await source.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'exact newly reached source did not open');assert.equal(await page.locator('mark').textContent(),citation.quote);
+  await page.clock.runFor(8000);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(through));await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);assert.equal(await page.locator('[data-au-demo-resume]').count(),1);
+  await focusedReceipt(page,`causal-native-autoplay-${through}`,{id,before,through,node,obligation:obligation.obligation_id,source:citation.artifact_id,source_sha256:citation.sha256});
+ });
+});
+
+for(const interruption of ['none','pause','navigation','unstarted','pause-head','navigation-head','changed-head','missing'])test(`causal formation native: next case handoff retains verified content through ${interruption}`,async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],next=referenceIds[1],head=fixture.snapshots[id].state,page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,holdReplayId:next,holdReplayThrough:interruption.endsWith('-head')?fixture.snapshots[next].state.revision:0,...(interruption==='unstarted'?{referenceUnprocessedIds:[next]}:{}),...(interruption==='changed-head'?{referenceChangedHeadId:next}:{}),...(interruption==='missing'?{referenceReplayMissingId:next}:{})});
+ await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.revision-1});await page.locator('[data-au-demo-play]').click();
+ for(let step=0;step<200&&Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<head.revision;step++)await page.clock.runFor(50);
+ assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision));
+ await page.evaluate(()=>{window.__handoffPaints=[];window.__handoffObserver=new MutationObserver(()=>window.__handoffPaints.push({claim:document.querySelector('[data-au-claim-title]')?.textContent,revision:document.querySelector('[data-au-revision]')?.dataset.auRevision,empty:!!document.querySelector('.au-catalog-preview')}));window.__handoffObserver.observe(document.querySelector('[data-au-view]'),{childList:true,subtree:true});});
+ await page.clock.runFor(4500);
+ assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision),'the last verified case survives a pending next-case read');assert.equal(await page.locator('.au-catalog-preview').count(),0);
+ if(interruption.startsWith('navigation')){await page.locator('.au-nav [data-au-nav="work"]').click();}
+ else if(interruption.startsWith('pause')){await page.locator('[data-au-demo-stop]').click();const held=await page.locator('[data-au-claim-title]').innerText();await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});await page.clock.runFor(6000);assert.equal(await page.locator('[data-au-claim-title]').innerText(),held);assert.equal(await page.locator('[data-au-demo-resume]').count(),1);await page.locator('[data-au-demo-resume]').click();}
+ await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});
+ if(interruption.startsWith('navigation')){await page.clock.runFor(6000);assert.equal(await page.locator('[data-au-claim-row]').count(),20);assert.equal(await page.locator('[data-au-revision]').count(),0);}
+ else if(['unstarted','changed-head','missing'].includes(interruption)){await eventually(()=>page.locator('.au-global-status').innerText().then(text=>text.includes('Next case')&&/No recorded execution|head changed|No recorded replay/.test(text)),'an unstarted next case did not fail truthfully');assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision));assert.ok((await page.locator('.au-global-status').innerText()).includes(next)|| (await page.locator('.au-global-status').innerText()).includes('Heating resets'));}
+ else {await page.clock.runFor(4100);await eventually(()=>page.evaluate(()=>window.__handoffPaints.some(row=>row.revision==='0')),'verified next prefix zero did not paint directly');assert.ok(new URL(page.url()).hash.includes(next));assert.equal(await page.locator('[data-au-node]').count(),0,'the next verified head never lends its process to intake prefix zero');}
+ assert.equal(await page.evaluate(()=>window.__handoffPaints.some(row=>row.empty)),false,'no empty Choose a case interstitial is painted');assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
+ await focusedReceipt(page,`causal-native-handoff-${interruption}`,{prior:id,next,interruption,paints:await page.evaluate(()=>window.__handoffPaints)});
+});
 
 test('reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes',async t=>{
  const fixture=referenceFixture(),page=await fixturePage(t,{referenceFixture:true,readOnlyStatus:true});
@@ -2088,10 +2173,10 @@ async function formingSnapshot(page,state){
   assert.equal(await scene.locator('[data-au-edge]').evaluateAll(rows=>rows.every(row=>Boolean(row.getAttribute('d'))&&row.getTotalLength()>0)),true,'every actual edge has a drawn native SVG path');
   for(const node of nodes){const control=scene.locator(`[data-au-node="${node.node_id}"]`),evaluation=evaluations.get(node.node_id)||{};assert.equal(await control.getAttribute('data-activation'),evaluation.activation||'unresolved');assert.equal(await control.getAttribute('data-status'),evaluation.execution_state||evaluation.state||'pending');}
   const documents=new Map((state.evaluation?.documents||[]).map(row=>[row.document_type,row])),obligations=state.obligations||[];
-  const rows=obligations.concat((state.evaluation?.documents||[]).filter(row=>!obligations.some(item=>item.document_type===row.document_type))).filter(row=>!['not_needed','inactive','excluded'].includes(documents.get(row.document_type)?.route_state||row.status));
+  const rows=obligations.concat((state.evaluation?.documents||[]).filter(row=>!obligations.some(item=>item.document_type===row.document_type))).filter(row=>state.graph?.family!=='incoming_packet' && documents.get(row.document_type)?.activation==='true' && !['not_needed','inactive','excluded','held_behind_question','needed_later','optional'].includes(documents.get(row.document_type)?.route_state||row.status) && [row.node_id,row.decision_node_id,...(row.node_ids||[])].filter(Boolean).some(id=>evaluations.get(id)?.activation==='true' && ['ready','completed'].includes(evaluations.get(id)?.execution_state)));
   const expected=rows.map(row=>({id:row.obligation_id||`document:${row.document_type}`,type:row.document_type,status:documents.get(row.document_type)?.route_state||row.status||'pending'})).sort((a,b)=>a.id.localeCompare(b.id));
   const actual=await scene.locator('.au-forming-documents .au-obligation').evaluateAll(rows=>rows.map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status})));
-  assert.deepEqual(actual.sort((a,b)=>a.id.localeCompare(b.id)),expected,'only an accepted inactive or not-needed route removes a document from the active rail');
+  assert.deepEqual(actual.sort((a,b)=>a.id.localeCompare(b.id)),expected,'only a genuinely reached applicable requiring step puts its obligation in the active rail');
   for(const review of await scene.locator('.au-forming-documents .au-document-review').evaluateAll(rows=>rows.map(row=>({type:row.closest('[data-au-document]').dataset.auDocument,state:row.dataset.auReview,marks:[...row.querySelectorAll('[aria-hidden="true"]')].map(mark=>mark.textContent)})))){
     assert.equal(review.state,documents.get(review.type)?.review_state,'review wording follows its independent accepted document review');assert.deepEqual(review.marks,review.state==='sufficient'?['✓']:[],'a checkmark certifies sufficient source review only');
   }
