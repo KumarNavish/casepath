@@ -286,23 +286,52 @@
     return `<section class="au-reconciliation-history"><h3>Saved-result reconciliation</h3><p class="au-meta">This history records checks of saved results. The original execution failure remains in the journal.</p><ol class="au-event-list">${rows.map(row => `<li><div><strong>${h(({started:'Saved-result reconciliation started',completed:'Saved-result reconciliation completed',failed:'Saved-result reconciliation failed'})[row.status] || 'Saved-result reconciliation status not recorded')}</strong><p>${h(row.reconciliation_id)}</p>${row.original_deferral?.reason ? `<p>Original execution failure: ${h(row.original_deferral.reason)}</p>` : ''}${row.failure_reason ? `<p>${h(row.failure_reason)}</p>` : ''}${row.status === 'completed' ? '<p>The saved results were reconciled. The recorded operational outcome determines which evidence remains unresolved.</p>' : row.status === 'started' ? '<p>No completed reconciliation is recorded for this attempt.</p>' : ''}<details class="au-technical-record" data-au-disclosure="reconciliation:${h(row.reconciliation_id)}"><summary>Full reconciliation record</summary><pre class="au-record-body">${h(JSON.stringify(row,null,2))}</pre></details></div></li>`).join('')}</ol></section>`;
   }
   function acceptedEventNode(state, event) {
-    if (event?.kind === 'interpretation.accepted') { const cited = list(state.graph?.nodes).find(node => evidenceRelationships(state,node.node_id).facts.some(fact => citationRows(fact).length)); if (cited) return cited.node_id; }
-    const semantic = semanticEventRecord(state,event), known = new Set(list(state.graph?.nodes).map(node => node.node_id));
-    if (semantic?.nodes?.length) return semantic.nodes.find(id => known.has(id)) || null;
-    if (!event || event.claim_id !== state.claim_id || !['action.completed','graph.advanced','interpretation.accepted'].includes(event.kind) || !Number.isSafeInteger(event.seq) || event.seq > state.revision || eventIdentity(event).revision !== event.seq || !isHash(event.event_sha256) || !isHash(eventIdentity(event).state_sha256)) return null;
+    if (!event || event.claim_id !== state.claim_id || !['action.completed','graph.advanced','interpretation.accepted'].includes(event.kind) || !Number.isSafeInteger(event.seq) || event.seq < 1 || event.seq > state.revision || eventIdentity(event).revision !== event.seq || !isHash(event.event_sha256) || !isHash(eventIdentity(event).state_sha256)) return null;
     if (event.seq === state.revision && (eventIdentity(event).state_sha256 !== state.state_sha256 || state.last_event_sha256 && event.event_sha256 !== state.last_event_sha256)) return null;
+    const known = new Set(list(state.graph?.nodes).map(node => node.node_id));
+    const semantic = semanticEventRecord(state,event);
+    if (semantic?.nodes?.length) return semantic.nodes.find(id => known.has(id)) || null;
+    if (event.kind === 'interpretation.accepted') {
+      const cited = list(state.graph?.nodes).find(node => evidenceRelationships(state,node.node_id).facts.some(fact => citationRows(fact).length));
+      if (cited) return cited.node_id;
+    }
     const payload = event.payload || {};
     return [payload.node_id,...list(payload.node_ids)].find(id => known.has(id)) || null;
   }
   function preferredNode(state, remembered = null, events = []) {
     const nodes = list(state.graph?.nodes), has = id => nodes.some(node => node.node_id === id);
     if (has(remembered)) return remembered;
-    for (const event of [...events].reverse()) { const node = acceptedEventNode(state,event); if (node) return node; }
+    let eventFallback = null;
+    for (const event of [...events].reverse()) {
+      const node = acceptedEventNode(state,event);
+      if (!node) continue;
+      eventFallback ||= node;
+      if (evidenceRelationships(state,node).facts.some(fact => citationRows(fact).length)) return node;
+    }
     if (has(state.evaluation?.focus_node_id)) return state.evaluation.focus_node_id;
     const cited = nodes.find(node => evidenceRelationships(state,node.node_id).facts.some(fact => citationRows(fact).length));
     if (cited) return cited.node_id;
+    if (eventFallback) return eventFallback;
     const relevant = list(state.evaluation?.nodes).find(node => has(node.node_id) && (node.execution_state === 'ready' || node.activation === 'unresolved') && evidenceRelationships(state,node.node_id).documents.length);
     return relevant?.node_id || list(state.evaluation?.nodes).find(node => node.execution_state === 'ready' && has(node.node_id))?.node_id || nodes[0]?.node_id || null;
+  }
+  function consequentialEventNode(before, state, event) {
+    const id = acceptedEventNode(state,event);
+    if (!id) return null;
+    const relations = evidenceRelationships(state,id), old = evidenceRelationships(before || {},id);
+    if (!relations.facts.length && !relations.documents.length) return null;
+    const same = (a,b) => canonicalJSON(a) === canonicalJSON(b);
+    if (!old.node) return id;
+    if (relations.facts.some(fact => !same(fact,old.facts.find(item => item.fact_id === fact.fact_id)))) return id;
+    if (relations.documents.some(document => !same(document,old.documents.find(item => requirementIdentity(item) === requirementIdentity(document))))) return id;
+    if (!same([relations.evaluation.activation,relations.evaluation.condition_verdict], [old.evaluation.activation,old.evaluation.condition_verdict])) return id;
+    return null;
+  }
+  function replayContentPacing(event, changes = null) {
+    if (!event) return 300;
+    if (['sources.acquired','sources.arrived','interpretation.accepted','knowledge.used','knowledge.published','outcome.recorded','work.completed','work.deferred'].includes(event.kind)) return 4000;
+    if (changes && ['facts','documents','nodes','edges','sources','knowledgeUses','knowledgePublications'].some(field => list(changes[field]).length)) return 3500;
+    return 300;
   }
   function acceptedEventContext(state, event, selected) {
     const semantic = semanticEventRecord(state,event);
@@ -342,29 +371,55 @@
     if (kind === 'fact') return list(state?.facts).find(row => row.fact_id === id);
     if (kind === 'requirement') return {obligations:list(state?.obligations).filter(row => requirementIdentity(row) === id),evaluation:list(state?.evaluation?.documents).filter(row => `document:${row.document_type}` === id || list(state?.obligations).some(item => requirementIdentity(item) === id && item.document_type === row.document_type))};
     if (kind === 'event') return list(events).find(row => String(row.seq) === String(id));
-    if (kind === 'action') return actionRows(state,events)[Number(id)];
+    if (kind === 'action') { const rows = actionRows(state,events); return rows.find(row => row.instanceId === id) || (/^\d+$/.test(String(id)) ? rows[Number(id)] : undefined); }
     if (kind === 'outcome') return {outcome:state?.outcome,deferral:state?.deferral};
     if (kind === 'reconciliation') return list(state?.reconciliations).find(row => row.reconciliation_id === id);
     if (kind === 'knowledge-index') return data;
+    if (kind === 'withheld-index') return list(data.quarantined);
     if (kind === 'knowledge') return list(data.versions).find(row => `${row.knowledge_id || row.version_id}:${row.version || row.version_id}` === id);
     if (kind === 'use') return list(state?.knowledge_uses).concat(list(data.uses))[Number(id)];
     if (kind === 'publication') return list(state?.knowledge_published)[Number(id)];
     if (kind === 'quarantine') return list(data.quarantined)[Number(id)];
     return null;
   }
-  function openingContentMarkup(state) {
-    return `<div class="au-reading-column au-opening-content">${originalText(state) ? `<h2>Original message</h2><pre class="au-original-message">${h(originalText(state))}</pre>` : ''}${sourceListMarkup(state)}${list(state.knowledge_uses).length ? claimKnowledgeMarkup(state) : ''}</div>`;
+  function sourceObjectIdentity(state, id) {
+    const descriptor = list(state.source_descriptors).find(item => item.artifact_id === id), acquired = list(state.acquired_sources).find(item => item.artifact_id === id);
+    return descriptor ? `${state.claim_id}:${id}:${descriptor.sha256}:${acquired?.text_sha256 || ''}` : '';
   }
-  function claimKnowledgeMarkup(state) {
-    return `<section class="au-claim-knowledge"><h2>Knowledge in this case</h2>${list(state.knowledge_uses).map((use,index) => `<article class="au-knowledge-use" data-au-knowledge-use="${h(use.knowledge_sha256 || use.knowledge_id || use.version_id)}"><h3>${h(use.name || use.knowledge_id || use.version_id)}</h3><p>Version ${h(use.version || use.version_id)}</p>${use.reason || use.applicability?.summary ? `<p>${h(use.reason || use.applicability.summary)}</p>` : ''}<p class="au-meta">This procedure is reused. The case still requires its own source evidence.</p>${knowledgeLink(use)} ${recordButton('Applicability and reuse record','use',index)}</article>`).join('')}${list(state.knowledge_published).map((item,index) => `<article class="au-knowledge-publication" data-au-knowledge-publication="${h(item.knowledge_sha256 || item.knowledge_id || item.candidate_id)}"><h3>${h(name(item))}</h3><p>${h(item.qualification?.status === 'qualified' ? 'Qualified for reuse' : 'Withheld from reuse')}</p>${item.qualification?.reason || item.qualification?.summary ? `<p>${h(item.qualification.reason || item.qualification.summary)}</p>` : ''}${recordButton('Publication and qualification record','publication',index)}</article>`).join('')}${!list(state.knowledge_uses).length && !list(state.knowledge_published).length ? '<p>No reusable procedure has been recorded for this case.</p>' : ''}</section>`;
+  function acquiredContentMarkup(state) {
+    const acquired = list(state.acquired_sources).filter(source => source.extraction !== 'unsupported_metadata' && typeof source.text === 'string' && source.text.length);
+    if (!acquired.length) return '';
+    return `<section class="au-reading-passages au-reading-acquisition"><h3 class="au-reading-label">Readable original sources</h3>${acquired.map(source => `<button type="button" class="au-source-link au-evidence-source" data-au-source-identity="${h(sourceObjectIdentity(state,source.artifact_id))}" data-au-source="${h(source.artifact_id)}" data-au-source-arrival="${h(source.artifact_id)}" data-au-source-origin="acquisition:${h(source.artifact_id)}"><span class="au-evidence-source-label">${h(source.file_name || sourceLabel(state,source.artifact_id))}<span aria-hidden="true">↗</span></span><pre class="au-original-message au-source-excerpt au-acquired-text">${h(Array.from(source.text).slice(0,520).join(''))}${Array.from(source.text).length > 520 ? '…' : ''}</pre><span class="au-meta">${source.complete ? 'Readable text' : 'Partly readable text'} · Assessment is separate</span></button>`).join('')}</section>`;
+  }
+  function openingContentMarkup(state) {
+    return `<div class="au-reading-column au-opening-content">${originalText(state) ? `<h2>Original message</h2><pre class="au-original-message">${h(originalText(state))}</pre>` : ''}${acquiredContentMarkup(state) || sourceListMarkup(state)}${list(state.knowledge_uses).length ? claimKnowledgeMarkup(state) : ''}</div>`;
+  }
+  function procedureLabel(item) {
+    if (item.name || item.title) return item.name || item.title;
+    const id = item.knowledge_id || item.version_id || '';
+    const domain = DOMAINS.find(row => id === `procedure.${row.id}`);
+    return domain ? `${domain.label} procedure` : words(id) || 'Recorded procedure';
+  }
+  function claimKnowledgeMarkup(state, events = []) {
+    const uses = list(state.knowledge_uses), publications = list(state.knowledge_published);
+    const latest = [...events].reverse().filter(event => ['knowledge.used','knowledge.published'].includes(event.kind)).map(event => semanticEventRecord(state,event)).find(Boolean);
+    const focus = latest ? {kind:latest.type === 'reused' ? 'use' : 'publication',item:latest.knowledge} : publications.length ? {kind:'publication',item:publications.at(-1)} : uses.length ? {kind:'use',item:uses.at(-1)} : null;
+    if (!focus) return '<section class="au-claim-knowledge"><h2>Knowledge in this case</h2><p>No reusable procedure has been recorded for this case.</p></section>';
+    const item = focus.item, index = (focus.kind === 'use' ? uses : publications).findIndex(row => canonicalJSON(row) === canonicalJSON(item));
+    const qualified = item.qualification?.status === 'qualified';
+    const identity = item.knowledge_sha256 || item.knowledge_id || item.version_id || item.candidate_id;
+    const applicability = item.reason || item.applicability?.summary || (item.applicability === 'same_verified_family_and_rule_version' ? 'The saved family and rule version match.' : '');
+    const body = focus.kind === 'use' ? `<article class="au-knowledge-use" data-au-knowledge-use="${h(identity)}"><h3>${h(procedureLabel(item))}</h3><p>Version ${h(item.version || item.version_id)}</p>${applicability ? `<p>${h(applicability)}</p>` : ''}<p>The case still requires its own source evidence.</p>${knowledgeLink(item)} ${recordButton('Applicability and reuse record','use',index)}</article>` : `<article class="au-knowledge-publication" data-au-knowledge-publication="${h(identity)}"><h3>${h(procedureLabel(item.candidate || item))}</h3><p>${qualified ? 'Qualified for reuse' : 'Withheld from reuse'}${item.version ? ` · version ${h(item.version)}` : ''}</p>${qualified ? `<p>${h(procedureScope(item))}</p>${list(item.added_document_types).length ? `<h4>What changed</h4>${item.added_document_types.map(type => { const recipe = list(item.evidence_recipes).find(row => row.document_type === type), requirement = list(item.obligations).find(row => row.document_type === type); return `<article class="au-knowledge-change"><strong>${h(name(requirement) || words(type))}</strong>${list(recipe?.required_fields).length ? `<p>${h(recipe.required_fields.map(field => words(field)).join('; '))}</p>` : ''}</article>`; }).join('')}` : list(item.obligations).length ? `<h4>Reusable document requirements</h4><ul class="au-definition-list">${item.obligations.map(obligation => `<li>${h(name(obligation))}</li>`).join('')}</ul>` : ''}${knowledgeLink(item)}` : item.candidate?.summary ? `<h4>Proposed content</h4><p>${h(item.candidate.summary)}</p>` : ''}${recordButton('Publication and qualification record','publication',index)}</article>`;
+    const related = uses.filter(use => focus.kind !== 'use' || canonicalJSON(use) !== canonicalJSON(item)).map(use => `<div>${h(procedureLabel(use))} · version ${h(use.version || use.version_id)} ${knowledgeLink(use)} ${recordButton('Reuse record','use',uses.indexOf(use))}</div>`).concat(publications.filter(publication => focus.kind !== 'publication' || canonicalJSON(publication) !== canonicalJSON(item)).map(publication => `<div>${h(procedureLabel(publication.candidate || publication))} ${recordButton('Publication record','publication',publications.indexOf(publication))}</div>`));
+    return `<section class="au-claim-knowledge"><h2>Knowledge in this case</h2>${body}${related.length ? `<nav class="au-reading-objects" aria-label="Other knowledge recorded in this case">${related.join('')}</nav>` : ''}</section>`;
   }
   function graphMarkup(state, selected, projection = {}) {
     if (!state.graph) return '';
-    const layout = layoutGraph(state.graph), evaluation = new Map(list(state.evaluation?.nodes).map(node => [node.node_id,node]));
-    return `<div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">Open full process</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-expanded="false" tabindex="0" role="region" aria-label="Complete process; use arrow keys or scroll to explore"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true">${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-state="${h(edgeState(state,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || edge.relation || 'Process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row,rank) => `<div class="au-graph-rank" data-rank="${rank}">${row.map(node => {
+    const layout = layoutGraph(state.graph), neighborhood = new Set([selected,...(layout.parents.get(selected) || []),...(layout.children.get(selected) || [])]), evaluation = new Map(list(state.evaluation?.nodes).map(node => [node.node_id,node]));
+    return `<div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">Open full process</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-expanded="false" tabindex="0" role="region" aria-label="Selected decision, its prerequisites and following decisions; open full process to explore the complete graph"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="horizontal" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true">${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-au-neighborhood="${neighborhood.has(edge.source_node_id) && neighborhood.has(edge.target_node_id)}" data-state="${h(edgeState(state,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || edge.relation || 'Process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row,rank) => `<div class="au-graph-rank" data-rank="${rank}" data-au-neighborhood="${row.some(node => neighborhood.has(node.node_id))}">${row.map(node => {
       const evaluated = evaluation.get(node.node_id) || {}, status = evaluated.execution_state || evaluated.state || 'pending';
       const parents = layout.parents.get(node.node_id).map(id => name(layout.byId.get(id)));
-      return `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(statusLabel(status))}${parents.length ? `. After ${h(parents.join(' + '))}` : ''}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${status === 'completed' ? '✓' : evaluated.activation === 'false' ? '−' : '·'}</span><span class="au-node-copy"><strong class="au-node-title">${h(name(node))}</strong><span class="au-node-state">${h(statusLabel(status))}</span></span></button>`;
+      return `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}" data-au-neighborhood="${neighborhood.has(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(statusLabel(status))}${parents.length ? `. After ${h(parents.join(' + '))}` : ''}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${status === 'completed' ? '✓' : evaluated.activation === 'false' ? '−' : '·'}</span><span class="au-node-copy"><strong class="au-node-title">${h(name(node))}</strong><span class="au-node-state">${h(statusLabel(status))}</span></span></button>`;
     }).join('')}</div>`).join('')}</div></div>`;
   }
 
@@ -377,7 +432,7 @@
       const requiring = nodes.find(id => list(state.graph?.nodes).some(node => node.node_id === id)), fact = list(obligation.required_fact_ids).find(id => list(state.facts).some(row => row.fact_id === id));
       const status = doc.route_state || obligation.status || 'pending', identity = requirementIdentity(obligation);
       const selection = requiring ? `data-au-select="${h(requiring)}" data-au-select-document="${h(obligation.document_type)}" data-au-select-obligation="${h(identity)}" data-au-select-fact="${h(fact || '')}"` : `data-au-inspect="requirement" data-au-record-id="${h(identity)}"`;
-      return `<li class="au-obligation" data-au-obligation="${h(identity)}" data-au-document="${h(obligation.document_type)}" data-status="${h(status)}"${context.obligation === identity ? ' data-selected="true"' : ''}><button type="button" class="au-document-open" ${selection}><strong>${h(name(obligation) || name(doc))}</strong><span>${h(statusLabel(status))}${doc.review_state && doc.review_state !== 'unreviewed' ? ` · ${h(statusLabel(doc.review_state))}` : ''}</span>${requiring ? `<span class="au-meta">${h(name(list(state.graph?.nodes).find(node => node.node_id === requiring)))}</span>` : ''}</button>${recordButton('Requirement record','requirement',identity)}</li>`;
+      return `<li class="au-obligation" data-au-obligation="${h(identity)}" data-au-document="${h(obligation.document_type)}" data-status="${h(status)}"${context.obligation === identity ? ' data-selected="true"' : ''}><button type="button" class="au-document-open au-document-choice" ${selection}><strong>${h(name(obligation) || name(doc))}</strong><span class="au-document-state">${h(statusLabel(status))}${doc.review_state && doc.review_state !== 'unreviewed' ? ` · ${h(statusLabel(doc.review_state))}` : ''}</span>${requiring ? `<span class="au-document-decision">${h(name(list(state.graph?.nodes).find(node => node.node_id === requiring)))}</span>` : ''}</button></li>`;
     }).join('')}</ul>`;
   }
 
@@ -517,12 +572,12 @@
     const r = evidenceRelationships(state,selected,context), {node,fact,document:requirement,evaluation} = r;
     if (!node) return openingContentMarkup(state);
     const citations = citationRows(fact), capability = projection.node_capabilities?.[selected];
-    const sources = citations.map(citation => `<button type="button" class="au-source-link au-evidence-source" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="path:${h(selected)}:${h(fact.fact_id)}"><span class="au-evidence-source-label">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true">↗</span></span>${citation.quote ? `<q>${h(citation.quote)}</q>` : '<span>Open cited source</span>'}</button>`).join('');
+    const sources = citations.map(citation => `<button type="button" class="au-source-link au-evidence-source" data-au-source-identity="${h(sourceObjectIdentity(state,citation.artifact_id))}" data-au-source="${h(citation.artifact_id)}" data-au-citation="${h(JSON.stringify(citation))}" data-au-source-origin="path:${h(selected)}:${h(fact.fact_id)}"><span class="au-evidence-source-label">${h(sourceLabel(state,citation.artifact_id))}<span aria-hidden="true">↗</span></span>${citation.quote ? `<q>${h(citation.quote)}</q>` : '<span>Open cited source</span>'}</button>`).join('');
     const route = requirement?.route_state || requirement?.status || 'pending', review = requirement?.review_state;
-    const timing = {needed_later:'Required after this step is reached.',needed_now:'Required now.',held_behind_question:'The requirement depends on this unresolved question.',held_not_reviewed:'The file is available; its evidence remains unestablished.',not_needed:'This document is not required on the recorded route.'}[route] || statusLabel(route);
+    const timing = {needed_later:'Required after a requiring step is reached.',needed_now:'Required now in the recorded process.',held_behind_question:'The requirement depends on this unresolved question.',held_not_reviewed:'The file is available; its evidence remains unestablished.',not_needed:'This document is not required on the recorded route.'}[route] || statusLabel(route);
     const blocked = list(evaluation.blocked_by || evaluation.unresolved_dependencies);
     const branches = list(state.graph?.edges).filter(edge => edge.source_node_id === selected || edge.target_node_id === selected);
-    return `<div class="au-reading-column" data-au-evidence-path data-au-selected-step="${h(selected)}"><h2 class="au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h2>${sources ? `<section class="au-reading-passages"><h3 class="au-reading-label">In the original sources</h3>${sources}</section>` : ''}${fact ? `<section class="au-reading-fact" data-au-fact="${h(fact.fact_id)}"><h3 class="au-reading-label">${fact.fact_id?.startsWith('condition:') ? 'Condition assessment' : 'Fact assessment'}</h3><p class="au-fact-summary">${h(fact.summary || fact.reason || name(fact))}</p><p class="au-meta">${h(name(fact))} · ${h(statusLabel(fact.verdict || fact.status))}</p>${recordButton('Fact record','fact',fact.fact_id)}${r.facts.length > 1 ? `<div class="au-reading-objects" aria-label="Facts for this decision">${r.facts.filter(item => item.fact_id !== fact.fact_id).map(item => `<button type="button" class="au-link" data-au-fact-select="${h(item.fact_id)}">${h(name(item))}</button>`).join('')}</div>` : ''}</section>` : ''}<section class="au-reading-decision"><h3 class="au-reading-label">Question and decision</h3><p class="au-step-status">${h(statusLabel(evaluation.execution_state || evaluation.state))}${evaluation.activation === 'false' ? ' · This branch does not apply.' : evaluation.activation === 'unresolved' ? ' · Applicability is unresolved.' : ''}</p>${blocked.length ? `<p>Requires ${blocked.map(id => `<button type="button" class="au-link" data-au-select="${h(id)}">${h(name(list(state.graph?.nodes).find(item => item.node_id === id)) || words(id))}</button>`).join(', ')}.</p>` : ''}${recordButton('Decision record','step',selected)}</section>${requirement ? `<section class="au-reading-requirement" data-au-document="${h(requirement.document_type)}" data-au-obligation="${h(requirementIdentity(requirement))}" data-route="${h(route)}"><h3 class="au-reading-label">Document consequence</h3><h3>${h(name(requirement))}</h3><p>${h(timing)}${review && review !== 'unreviewed' ? ` ${h(statusLabel(review))}.` : ''}</p>${recordButton('Requirement record','requirement',requirementIdentity(requirement))}${r.documents.length > 1 ? `<div class="au-reading-objects" aria-label="Documents for this decision">${r.documents.filter(item => requirementIdentity(item) !== requirementIdentity(requirement)).map(item => `<button type="button" class="au-link" data-au-document-select="${h(item.document_type)}" data-au-obligation-select="${h(requirementIdentity(item))}">${h(name(item))}</button>`).join('')}</div>` : ''}</section>` : ''}${list(state.knowledge_uses).length || node.authority ? `<section class="au-reading-procedure"><h3 class="au-reading-label">Procedure</h3>${list(state.knowledge_uses).map(use => `<p data-au-knowledge-use="${h(use.knowledge_sha256 || use.knowledge_id || use.version_id)}">${h(use.name || use.knowledge_id || use.version_id)} · version ${h(use.version || use.version_id)} ${knowledgeLink(use)}</p>`).join('')}${node.authority?.title ? `<p>${h(node.authority.title)}</p>` : ''}</section>` : ''}${branches.length ? `<nav class="au-reading-relations" aria-label="Connected decisions">${branches.map(edge => { const other = edge.source_node_id === selected ? edge.target_node_id : edge.source_node_id; return `<button type="button" class="au-link" data-au-select="${h(other)}">${edge.target_node_id === selected ? 'Requires' : 'Leads to'} ${h(name(list(state.graph?.nodes).find(item => item.node_id === other)) || words(other))}<span class="au-meta">${h(statusLabel(edgeState(state,edge.edge_id)))}</span></button>`; }).join('')}</nav>` : ''}${capability?.authorized === false ? `<p class="au-reading-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}</div>`;
+    return `<div class="au-reading-column" data-au-evidence-path data-au-selected-step="${h(selected)}">${sources ? `<section class="au-reading-passages"><h3 class="au-reading-label">In the original sources</h3>${sources}</section>` : !list(state.facts).some(item => citationRows(item).length) ? acquiredContentMarkup(state) : ''}${fact ? `<section class="au-reading-fact" data-au-fact="${h(fact.fact_id)}"><h3 class="au-reading-label">${fact.fact_id?.startsWith('condition:') ? 'Condition assessment' : 'Fact assessment'}</h3><p class="au-fact-summary">${h(fact.summary || fact.reason || name(fact))}</p><p class="au-meta">${h(name(fact))} · ${h(statusLabel(fact.verdict || fact.status))}</p>${recordButton('Fact record','fact',fact.fact_id)}${r.facts.length > 1 ? `<div class="au-reading-objects" aria-label="Facts for this decision">${r.facts.filter(item => item.fact_id !== fact.fact_id).map(item => `<button type="button" class="au-link" data-au-fact-select="${h(item.fact_id)}">${h(name(item))}</button>`).join('')}</div>` : ''}</section>` : ''}<section class="au-reading-decision"><h3 class="au-reading-label">What this shows</h3><p class="au-step-status">${h(statusLabel(evaluation.execution_state || evaluation.state))}</p>${blocked.length ? `<p>Requires ${blocked.map(id => `<button type="button" class="au-link" data-au-select="${h(id)}">${h(name(list(state.graph?.nodes).find(item => item.node_id === id)) || words(id))}</button>`).join(', ')}.</p>` : ''}${recordButton('Decision record','step',selected)}</section>${requirement ? `<section class="au-reading-requirement" data-au-document="${h(requirement.document_type)}" data-au-obligation="${h(requirementIdentity(requirement))}" data-route="${h(route)}"><h3 class="au-reading-label">Document consequence</h3><h3>${h(name(requirement))}</h3><p>${h(timing)}${review && review !== 'unreviewed' ? ` ${h(statusLabel(review))}.` : ''}</p>${recordButton('Requirement record','requirement',requirementIdentity(requirement))}${r.documents.length > 1 ? `<div class="au-reading-objects" aria-label="Documents for this decision">${r.documents.filter(item => requirementIdentity(item) !== requirementIdentity(requirement)).map(item => `<button type="button" class="au-link" data-au-document-select="${h(item.document_type)}" data-au-obligation-select="${h(requirementIdentity(item))}">${h(name(item))}</button>`).join('')}</div>` : ''}</section>` : ''}${list(state.knowledge_uses).length || node.authority ? `<section class="au-reading-procedure"><h3 class="au-reading-label">Procedure</h3>${list(state.knowledge_uses).map(use => `<p data-au-knowledge-use="${h(use.knowledge_sha256 || use.knowledge_id || use.version_id)}">${h(procedureLabel(use))} · version ${h(use.version || use.version_id)} ${knowledgeLink(use)}</p>`).join('')}${node.authority?.title ? `<p>${h(node.authority.title)}</p>` : ''}</section>` : ''}${branches.length ? `<nav class="au-reading-relations" aria-label="Connected decisions">${branches.map(edge => { const other = edge.source_node_id === selected ? edge.target_node_id : edge.source_node_id; return `<button type="button" class="au-link" data-au-select="${h(other)}">${edge.target_node_id === selected ? 'Requires' : 'Leads to'} ${h(name(list(state.graph?.nodes).find(item => item.node_id === other)) || words(other))}<span class="au-meta">${h(statusLabel(edgeState(state,edge.edge_id)))}</span></button>`; }).join('')}</nav>` : ''}${capability?.authorized === false ? `<p class="au-reading-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}</div>`;
   }
 
   function inspectorMarkup(state, selected, projection = {}, events = [], context = {}) {
@@ -562,8 +617,20 @@
     return `<section class="au-supporting au-originals"><h2>Original sources</h2><p class="au-original-title">${h(state.title || 'Untitled claim')}</p>${originalText(state) ? `<pre class="au-original-message">${h(originalText(state))}</pre>` : ''}${sourceListMarkup(state)}${recordButton('Original intake and complete claim record','claim')}${state.revision > 0 && !readOnly ? '<form data-au-arrival class="au-arrival"><label for="auAdditionalFiles">Add supporting files</label><input id="auAdditionalFiles" name="files" type="file" multiple required><button class="au-secondary" type="submit">Add files</button><p class="au-form-status" role="status"></p></form>' : ''}</section>`;
   }
 
+  function historyLabel(event) {
+    const labels = {'intake':'Case received','intake.received':'Case received','sources.arrived':'Supporting files added','sources.acquired':'Original source read','process.prepared':'Investigation opened','work.started':'Investigation started','interpretation.accepted':'Evidence assessment saved','graph.advanced':'Document requirements updated','action.completed':'Action result saved','outcome.recorded':'Investigation result saved','work.completed':'Investigation result saved','work.deferred':'Investigation stopped','knowledge.used':'Procedure reused','reconciliation.started':'Saved result review started','reconciliation.completed':'Saved result review finished','reconciliation.failed':'Saved result review failed'};
+    if (event.kind === 'knowledge.published') return event.payload?.knowledge?.qualification?.status === 'qualified' ? 'Procedure qualified for reuse' : 'Procedure withheld from reuse';
+    if (event.kind === 'work.phase') return ({acquiring:'Read original files',interpreting:'Assess the original evidence',verifying:'Check source support',progressing:'Apply the process'})[event.payload?.phase] || 'Recorded work';
+    return labels[event.kind] || event.payload?.summary || 'Recorded work';
+  }
+  function actionLabel(state, result) {
+    if (result.label || result.title || result.summary) return result.label || result.title || result.summary;
+    if (result.type === 'document_review') return `Reviewed ${name(list(state.obligations).find(item => item.document_type === result.document_type)) || words(result.document_type)}`;
+    if (result.type === 'assessment_record') return 'Evidence assessment saved';
+    return 'Recorded action';
+  }
   function activityMarkup(state, events, projection = {}) {
-    return `<section class="au-activity"><h2>History</h2>${recordButton('Complete claim record','claim')}${state.outcome || state.deferral ? `<section class="au-history-outcome"><h3>${h(claimStatusLabel(state.status,state))}</h3><p>${h(state.deferral?.reason || state.outcome?.summary || state.outcome?.reason || '')}</p>${recordButton('Outcome and deferral records','outcome')}</section>` : ''}${list(state.reconciliations).map(row => `<article class="au-history-record"><h3>${h(words(row.status))} reconciliation</h3>${row.original_deferral?.reason ? `<p>Original execution failure: ${h(row.original_deferral.reason)}</p>` : ''}${row.failure_reason ? `<p>${h(row.failure_reason)}</p>` : ''}${recordButton('Reconciliation record','reconciliation',row.reconciliation_id)}</article>`).join('')}<ol class="au-event-list">${events.slice().reverse().map(event => `<li><div><strong>${h(eventLabel(event))}</strong><time datetime="${h(event.timestamp || '')}">${h(dateLabel(event.timestamp))}</time>${recordButton('Journal entry','event',event.seq)}</div></li>`).join('') || '<li>No accepted work recorded.</li>'}</ol>${actionRows(state,events).length ? `<section><h3>Recorded actions</h3>${actionRows(state,events).map((row,index) => `<article class="au-history-record"><strong>${h(name(row.result))}</strong>${row.result.summary || row.result.reason ? `<p>${h(row.result.summary || row.result.reason)}</p>` : ''}${sourceButtons(state,row.result)}${recordButton('Action and receipt','action',index)}</article>`).join('')}</section>` : ''}</section>`;
+    return `<section class="au-activity"><h2>History</h2>${recordButton('Complete claim record','claim')}${state.outcome || state.deferral ? `<section class="au-history-outcome"><h3>${h(claimStatusLabel(state.status,state))}</h3><p>${h(state.deferral?.reason || state.outcome?.summary || state.outcome?.reason || '')}</p>${recordButton('Outcome and deferral records','outcome')}</section>` : ''}${list(state.reconciliations).map(row => `<article class="au-history-record"><h3>${h(({started:'Saved result review started',completed:'Saved result review finished',failed:'Saved result review failed'})[row.status] || 'Saved result review')}</h3>${row.original_deferral?.reason ? `<p>Original execution failure: ${h(row.original_deferral.reason)}</p>` : ''}${row.failure_reason ? `<p>${h(row.failure_reason)}</p>` : ''}${recordButton('Reconciliation record','reconciliation',row.reconciliation_id)}</article>`).join('')}<ol class="au-event-list">${events.slice().reverse().map(event => `<li><div><strong>${h(historyLabel(event))}</strong><time datetime="${h(event.timestamp || '')}">${h(dateLabel(event.timestamp))}</time>${recordButton('Journal entry','event',event.seq)}</div></li>`).join('') || '<li>No accepted work recorded.</li>'}</ol>${actionRows(state,events).length ? `<section><h3>Recorded actions</h3>${actionRows(state,events).map((row,index) => `<article class="au-history-record" data-au-action-scope="${h(row.scope)}" data-au-action-instance="${h(row.instanceId)}"><strong>${h(actionLabel(state,row.result))}</strong><p class="au-meta">${row.scope === 'historical' ? 'Recorded in an earlier run' : row.scope === 'current' ? 'Recorded in this run' : 'Run association is not recorded'}</p>${row.result.reason ? `<p>${h(row.result.reason)}</p>` : ''}${sourceButtons(state,row.result,`action:${row.instanceId}`)}${recordButton('Action and receipt','action',row.instanceId)}</article>`).join('')}</section>` : ''}</section>`;
   }
 
   function eventCueMarkup(state, events) {
@@ -587,12 +654,13 @@
     const outcome = state.deferral?.reason || state.outcome?.summary || state.outcome?.reason;
     const fact = evidenceRelationships(state,selected,context).fact;
     const freshness = assessmentFreshness(state);
-    const constraint = freshness.status === 'prior' ? `Prior assessment: ${outcome || fact?.summary || fact?.reason || 'new sources await assessment.'}` : outcome || fact?.summary || fact?.reason || (state.revision === 0 ? 'No investigation has started.' : state.graph ? '' : 'The original packet is available. No process has been accepted.');
+    const specific = fact && citationRows(fact).length ? fact.summary || fact.reason : '';
+    const constraint = freshness.status === 'prior' ? `Prior assessment: ${state.deferral?.reason || specific || claimConstraint(state) || outcome || fact?.summary || fact?.reason || 'new sources await assessment.'}` : state.deferral?.reason || specific || claimConstraint(state) || outcome || fact?.summary || fact?.reason || (state.revision === 0 ? 'No investigation has started.' : state.graph ? '' : 'The original packet is available. No process has been accepted.');
     const playControls = presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Resume','data-au-demo-resume') : presentation.mode === 'replay' ? button('Play','data-au-demo-play') : '';
     const panels = [['step','Process'],['documents','Documents'],['knowledge','Knowledge'],['sources','Original sources'],['activity','History']];
     const chosen = panels.some(([id]) => id === detail) ? detail : 'step';
-    const body = chosen === 'step' ? inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Documents</h2>${obligationMarkup(state,selected,undefined,context)}${unassignedSourcesMarkup(state)}${presentation.mode !== 'replay' ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state) : chosen === 'sources' ? sourcesMarkup(state,presentation.mode === 'replay') : activityMarkup(state,events,projection);
-    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${presentation.mode === 'replay' ? ' / Recorded investigation' : ''}</p>${claimHeadingMarkup(state)}<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}</p><span class="au-read-state au-sr-only" data-au-read-state-label></span></div><div class="au-work-controls">${presentation.mode !== 'replay' ? state.revision === 0 || presentation.pendingStart ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>${presentation.pendingStart ? 'Retry start' : 'Start investigation'}</button>` : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' ? recordButton('Choose case','demo') : ''}${recordButton('Record','claim')}<button type="button" class="au-link au-refresh-claim" data-au-refresh-claim aria-label="Refresh saved state" title="Refresh saved state">↻</button></div></header>${state.revision === 0 && presentation.mode !== 'replay' ? `<p class="au-meta" data-au-start-availability>${h(presentation.availability?.reason || 'Checking live execution availability…')}</p>` : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}" aria-controls="auPanel-${id}">${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${chosen === 'step' && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Complete process">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div></div></section>${presentation.replay ? `<div class="au-replay-record-link">${recordButton('Replay provenance','replay')}</div>` : ''}</section>`;
+    const body = chosen === 'step' ? inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Documents</h2>${obligationMarkup(state,selected,undefined,context)}${unassignedSourcesMarkup(state)}${presentation.mode !== 'replay' ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events) : chosen === 'sources' ? sourcesMarkup(state,presentation.mode === 'replay') : activityMarkup(state,events,projection);
+    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${DEMO_CASES.some(row => row.claim_id === state.claim_id) || state.origin === 'canonical_original' ? ' / Synthetic claim' : ''}${presentation.mode === 'replay' ? ' / Recorded investigation' : ''}</p>${claimHeadingMarkup(state)}<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}</p><span class="au-read-state au-sr-only" data-au-read-state-label></span></div><div class="au-work-controls">${presentation.mode !== 'replay' ? state.revision === 0 || presentation.pendingStart ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>${presentation.pendingStart ? 'Retry start' : 'Start investigation'}</button>` : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' ? recordButton('Choose case','demo') : ''}${recordButton('Record','claim')}<button type="button" class="au-link au-refresh-claim" data-au-refresh-claim aria-label="Refresh saved state" title="Refresh saved state">↻</button></div></header>${state.revision === 0 && presentation.mode !== 'replay' ? `<p class="au-meta" data-au-start-availability>${h(presentation.availability?.reason || 'Checking live execution availability…')}</p>` : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}" aria-controls="auPanel-${id}">${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${chosen === 'step' && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div></div></section>${presentation.replay ? `<div class="au-replay-record-link">${recordButton('Replay provenance','replay')}</div>` : ''}</section>`;
   }
 
   function replayIdentityMarkup(record) {
@@ -600,7 +668,7 @@
   }
   function knowledgeLink(use) {
     const id = use.knowledge_id || use.version_id, version = use.version || use.version_id;
-    return id && version ? button('Inspect reused version',`data-au-knowledge="${h(id)}" data-au-version="${h(version)}" data-au-knowledge-sha="${h(use.knowledge_sha256 || '')}" data-au-definition-sha="${h(use.definition_sha256 || '')}"`) : '';
+    return id && version ? button('Inspect reused version',`data-au-knowledge="${h(id)}" data-au-version="${h(version)}" data-au-knowledge-sha="${h(use.knowledge_sha256 || '')}" data-au-definition-sha="${h(use.definition_sha256 || use.qualification?.definition_sha256 || '')}"`) : '';
   }
   function reuseDetails(use) {
     const applicability = typeof use.applicability === 'string' ? words(use.applicability) : use.applicability?.summary;
@@ -626,22 +694,41 @@
   function knowledgeUses(version, uses = []) {
     return list(uses).filter(use => {
       if ((use.knowledge_id || use.version_id) !== (version.knowledge_id || version.version_id) || String(use.version ?? use.version_id) !== String(version.version ?? version.version_id)) return false;
-      if (Object.prototype.hasOwnProperty.call(use,'knowledge_sha256') && use.knowledge_sha256 != null) return Boolean(use.knowledge_sha256) && use.knowledge_sha256 === version.knowledge_sha256;
-      if (use.definition_sha256) return use.definition_sha256 === (version.qualification?.definition_sha256 || version.definition_sha256);
+      if (Object.prototype.hasOwnProperty.call(use,'knowledge_sha256') && use.knowledge_sha256 != null && (!use.knowledge_sha256 || use.knowledge_sha256 !== version.knowledge_sha256)) return false;
+      if (use.definition_sha256 && use.definition_sha256 !== (version.qualification?.definition_sha256 || version.definition_sha256)) return false;
       return true;
     });
   }
-  function knowledgeMarkup(data, claims = [], pin = null) {
-    const versions = [...list(data?.versions)].sort((a,b) => String(name(a)).localeCompare(String(name(b))) || Number(b.version) - Number(a.version)), groups = new Map();
-    for (const version of versions) { const category = words(version.category || version.family || 'Procedures'); if (!groups.has(category)) groups.set(category,[]); groups.get(category).push(version); }
-    const selected = versions.find(item => pin && String(item.knowledge_id || item.version_id) === String(pin.knowledge_id) && String(item.version || item.version_id) === String(pin.version) && (!pin.knowledge_sha256 || item.knowledge_sha256 === pin.knowledge_sha256) && (!pin.definition_sha256 || (item.qualification?.definition_sha256 || item.definition_sha256) === pin.definition_sha256)) || versions[0];
-    const claimLink = (id,label) => button(DEMO_CASES.find(row => row.claim_id === id)?.label || claims.find(row => row.claim_id === id)?.title || label,`data-au-claim="${h(id)}"`);
-    const procedureLink = (version,label) => `<button type="button" class="au-procedure-open" data-au-knowledge="${h(version.knowledge_id || version.version_id)}" data-au-version="${h(version.version || version.version_id)}" data-au-knowledge-sha="${h(version.knowledge_sha256 || '')}" data-au-definition-sha="${h(version.qualification?.definition_sha256 || version.definition_sha256 || '')}" aria-pressed="${selected === version}">${h(label || name(version))}</button>`;
-    const receiving = selected ? knowledgeUses(selected,list(data?.uses)) : [];
-    const identity = selected ? `${selected.knowledge_id || selected.version_id}:${selected.version || selected.version_id}` : '';
-    return `<section class="au-quiet-knowledge"><header class="au-work-head"><h1 class="au-page-heading" tabindex="-1">Knowledge</h1>${recordButton('Knowledge records','knowledge-index')}</header><div class="au-knowledge-layout"><nav class="au-procedure-list" aria-label="Reusable procedures">${[...groups].map(([category,rows]) => `<section><h2>${h(category)}</h2>${rows.map(version => procedureLink(version,`${name(version)} · version ${version.version || version.version_id}`)).join('')}</section>`).join('') || '<p>No reusable procedure is recorded.</p>'}${list(data?.quarantined).length ? `<section class="au-withheld-procedures"><h2>Withheld from reuse</h2>${list(data.quarantined).map((item,index) => `<article><strong>${h(name(item) || item.candidate_id)}</strong><p>${h(item.qualification?.reason || item.reason || item.summary || 'Qualification is not recorded.')}</p>${recordButton('Candidate record','quarantine',index)}</article>`).join('')}</section>` : ''}</nav>${selected ? `<article class="au-procedure-reading au-knowledge-version" data-au-version="${h(selected.version || selected.version_id)}" data-au-knowledge-identity="${h(identity)}"><p class="au-eyebrow">${h(words(selected.family || selected.category || 'Reusable procedure'))}</p><h2>${h(name(selected))}</h2>${selected.summary || selected.description ? `<p>${h(selected.summary || selected.description)}</p>` : ''}<p class="au-meta">Version ${h(selected.version || selected.version_id)} · ${h(statusLabel(selected.qualification?.status || selected.status))}${selected.policy_id ? ` · ${h(selected.policy_id)}` : ''}</p>${recordButton('Exact version, qualification and provenance','knowledge',identity)}${definitionMarkup(selected)}<section class="au-procedure-provenance"><h3>Source and receiving cases</h3>${selected.source_claim_id ? claimLink(selected.source_claim_id,'Open source case') : ''}${selected.change_reason ? `<p>${h(selected.change_reason)}</p>` : ''}${receiving.map(use => `<article>${use.claim_id ? claimLink(use.claim_id,'Open receiving case') : ''}${use.reason ? `<p>${h(use.reason)}</p>` : ''}${recordButton('Exact reuse record','use',list(data.uses).indexOf(use))}</article>`).join('')}${!receiving.length ? '<p class="au-meta">No receiving case is recorded for this version.</p>' : ''}</section></article>` : ''}</div></section>`;
+  function procedureScope(version) {
+    return DOMAINS.find(domain => domain.id === version.family)?.label || words(version.family || version.category || 'Reusable procedure');
   }
-
+  function knowledgeFacetMarkup(version, facet = 'process', versions = []) {
+    const graph = version.graph || {nodes:[],edges:[]}, layout = layoutGraph(graph), facts = new Map(list(version.facts).map(fact => [fact.fact_id,fact]));
+    if (facet === 'facts') return `<div class="au-procedure-facts"><h3>Facts to establish in each case</h3>${[...facts.values()].map(fact => `<p>${h(name(fact))}</p>`).join('') || '<p>No required facts are recorded.</p>'}</div>`;
+    if (facet === 'documents') return `<div class="au-procedure-documents"><h3>Document requirements</h3>${list(version.obligations).map(item => `<article><h4>${h(name(item))}</h4>${list(item.required_fact_ids).length ? `<p>${h(item.required_fact_ids.map(id => name(facts.get(id)) || words(id)).join('; '))}</p>` : ''}</article>`).join('') || '<p>No document requirements are recorded.</p>'}</div>`;
+    if (facet === 'exceptions') {
+      const conditional = list(graph.document_catalog).filter(item => item.condition || item.condition_flag), conditions = Object.keys(graph.conditions || {});
+      const conditionalEdges = list(graph.edges).filter(edge => edge.condition && conditionFlags(edge.condition).length);
+      return `<div class="au-procedure-exceptions"><h3>Conditions and exceptions</h3>${conditions.map(flag => `<p>${h(name(facts.get(`condition:${flag}`)) || words(flag))}</p>`).join('')}${conditional.map(item => `<article><h4>${h(name(item))}</h4>${item.condition_flag ? `<p>${h(name(facts.get(`condition:${item.condition_flag}`)) || words(item.condition_flag))}</p>` : ''}</article>`).join('')}${conditionalEdges.map(edge => `<p>${h(name(layout.byId.get(edge.source_node_id)))} → ${h(name(layout.byId.get(edge.target_node_id)))} · ${h(conditionFlags(edge.condition).map(flag => name(facts.get(`condition:${flag}`)) || words(flag)).join('; '))}</p>`).join('')}${!conditions.length && !conditional.length && !conditionalEdges.length ? '<p>No conditional exception is recorded in this version.</p>' : ''}</div>`;
+    }
+    if (facet === 'changes') {
+      const added = list(version.added_document_types), parent = list(versions).find(item => item.knowledge_sha256 === version.parent_knowledge_sha256);
+      return `<div class="au-procedure-changes"><h3>What changed</h3>${parent ? `<p>From version ${h(parent.version || parent.version_id)} to version ${h(version.version || version.version_id)}.</p>` : '<p>First recorded version.</p>'}${added.map(type => { const recipe = list(version.evidence_recipes).find(item => item.document_type === type), requirement = list(version.obligations).find(item => item.document_type === type); return `<article><h4>${h(name(requirement) || words(type))}</h4>${recipe?.summary ? `<p>${h(recipe.summary)}</p>` : ''}${list(recipe?.required_fields).length ? `<p>${h(recipe.required_fields.map(field => words(field)).join('; '))}</p>` : ''}</article>`; }).join('')}${!added.length && parent ? '<p>No added document requirement is recorded for this version.</p>' : ''}</div>`;
+    }
+    return `<div class="au-procedure-process" aria-label="Reusable process">${layout.rows.map((row,rank) => `<div class="au-procedure-rank" data-au-procedure-rank="${rank}">${row.map(node => `<article class="au-procedure-stage" data-au-procedure-node="${h(node.node_id)}"><h3>${h(name(node))}</h3>${layout.parents.get(node.node_id).length ? `<p>${h(layout.parents.get(node.node_id).map(id => name(layout.byId.get(id))).join(' + '))}</p>` : ''}</article>`).join('')}</div>`).join('') || '<p>No process definition is recorded.</p>'}</div>`;
+  }
+  function knowledgeMarkup(data, claims = [], pin = null, facet = 'process') {
+    const versions = [...list(data?.versions)].sort((a,b) => String(name(a)).localeCompare(String(name(b))) || Number(b.version) - Number(a.version)), groups = new Map();
+    for (const version of versions) { const category = procedureScope(version); if (!groups.has(category)) groups.set(category,[]); groups.get(category).push(version); }
+    const selected = pin ? versions.find(item => String(item.knowledge_id || item.version_id) === String(pin.knowledge_id) && String(item.version || item.version_id) === String(pin.version) && (!pin.knowledge_sha256 || item.knowledge_sha256 === pin.knowledge_sha256) && (!pin.definition_sha256 || (item.qualification?.definition_sha256 || item.definition_sha256) === pin.definition_sha256)) : versions[0];
+    const claimLink = (id,label) => button(DEMO_CASES.find(row => row.claim_id === id)?.label || claims.find(row => row.claim_id === id)?.title || label,`data-au-claim="${h(id)}"`);
+    const procedureLink = (version,label) => `<button type="button" class="au-procedure-open" data-au-knowledge="${h(version.knowledge_id || version.version_id)}" data-au-version="${h(version.version || version.version_id)}" data-au-knowledge-sha="${h(version.knowledge_sha256 || '')}" data-au-definition-sha="${h(version.qualification?.definition_sha256 || version.definition_sha256 || '')}" aria-pressed="${selected === version}">${h(label || procedureLabel(version))}</button>`;
+    const receiving = selected ? knowledgeUses(selected,list(data?.uses)) : [], identity = selected ? `${selected.knowledge_id || selected.version_id}:${selected.version || selected.version_id}` : '';
+    const facets = [['process','Process'],['facts','Facts'],['documents','Documents'],['exceptions','Exceptions'],['changes','Changes']];
+    const chosen = facets.some(([id]) => id === facet) ? facet : 'process';
+    const siblings = selected ? versions.filter(version => (version.knowledge_id || version.version_id) === (selected.knowledge_id || selected.version_id)) : [];
+    return `<section class="au-quiet-knowledge"><header class="au-work-head"><h1 class="au-page-heading" tabindex="-1">Knowledge</h1><div>${recordButton('Knowledge records','knowledge-index')}${list(data?.quarantined).length ? recordButton('Withheld procedures','withheld-index') : ''}</div></header><div class="au-knowledge-layout"><nav class="au-procedure-list" aria-label="Reusable procedures">${[...groups].map(([category,rows]) => `<section><h2>${h(category)}</h2>${rows.filter((version,index) => rows.findIndex(item => (item.knowledge_id || item.version_id) === (version.knowledge_id || version.version_id)) === index).map(version => procedureLink(version,procedureLabel(version))).join('')}</section>`).join('') || '<p>No reusable procedure is recorded.</p>'}</nav>${selected ? `<article class="au-procedure-reading au-knowledge-version" data-au-version="${h(selected.version || selected.version_id)}" data-au-knowledge-identity="${h(identity)}"><p class="au-eyebrow">${h(procedureScope(selected))}</p><h2>${h(procedureLabel(selected))}</h2>${selected.summary || selected.description ? `<p>${h(selected.summary || selected.description)}</p>` : ''}<nav class="au-procedure-versions" aria-label="Recorded versions">${siblings.map(version => procedureLink(version,`Version ${version.version || version.version_id}`)).join('')}</nav>${recordButton('Exact version and provenance','knowledge',identity)}<nav class="au-procedure-facets" aria-label="Procedure details">${facets.map(([id,label]) => `<button type="button" data-au-knowledge-facet="${id}" aria-pressed="${chosen === id}">${label}</button>`).join('')}</nav><section class="au-procedure-facet" data-au-knowledge-facet-panel="${chosen}">${knowledgeFacetMarkup(selected,chosen,versions)}</section><section class="au-procedure-provenance"><h3>Source and receiving cases</h3>${selected.source_claim_id ? claimLink(selected.source_claim_id,'Open source case') : ''}${receiving.map(use => `<article>${use.claim_id ? claimLink(use.claim_id,'Open receiving case') : ''}${recordButton('Exact reuse record','use',list(data.uses).indexOf(use))}</article>`).join('')}${!receiving.length ? '<p class="au-meta">No receiving case is recorded for this version.</p>' : ''}</section></article>` : ''}</div></section>`;
+  }
   function collectionRows(claims, scope = 'all') {
     return list(claims).filter(claim => scope === 'all' || (scope === 'originals' ? claim.origin === 'canonical_original' : claim.origin !== 'canonical_original'));
   }
@@ -662,7 +749,7 @@
   }
   function claimsMarkup(claims, options = {}) {
     return matchingClaims(claims,options).map(claim => {
-      const constraint = claim.deferral?.reason || claimConstraint(claim) || claim.outcome?.summary || originalText(claim).slice(0,240);
+      const constraint = originalText(claim).slice(0,240) || list(claim.outcome?.unresolved_facts).find(fact => fact.summary)?.summary || claimConstraint(claim) || claim.deferral?.reason || claim.outcome?.summary;
       return `<article class="au-claim-row au-identity-claim-row" data-au-claim-row="${h(claim.claim_id)}"><button type="button" class="au-claim-open" data-au-claim="${h(claim.claim_id)}" title="${h(claim.title || 'Untitled claim')}"><strong>${h(DEMO_CASES.find(row => row.claim_id === claim.claim_id)?.label || claim.title || 'Untitled claim')}</strong>${constraint ? `<span class="au-claim-constraint">${h(constraint)}</span>` : ''}</button><span class="au-claim-state">${h(claimStatusLabel(claim.status,claim))}</span></article>`;
     }).join('') || '<p class="au-empty">No cases match this search.</p>';
   }
@@ -673,7 +760,7 @@
 
   function collectionMarkup(claims, options = {}) {
     const {search = '',domain = 'all',scope = 'originals'} = options, filter = statusFilter(options.filter || 'all'), rows = collectionRows(claims,scope);
-    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><h1 class="au-page-heading" tabindex="-1">Cases</h1><p class="au-lead">${scope === 'added' ? 'Added cases' : 'The original case collection'}</p></div></header><nav class="au-collection-scope" aria-label="Case collection"><button type="button" data-au-collection-scope="originals" aria-pressed="${scope === 'originals'}">Original cases</button><button type="button" data-au-collection-scope="added" aria-pressed="${scope === 'added'}">Added cases</button></nav>${scope === 'originals' ? domainMarkup(rows,domain) : ''}<div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Message, title or case ID" autocomplete="off"></label><button type="button" class="au-link" data-au-refresh-claims>Refresh</button></div><nav class="au-case-filter" aria-label="Case status">${['all','not_started','working','deferred','investigation_complete'].map(value => `<button type="button" data-au-filter="${value}" aria-pressed="${filter === value}">${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</button>`).join('')}</nav><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,{...options,scope,filter})}</div></section>`;
+    return `<section class="au-collection au-identity-collection"><header class="au-collection-head"><div><h1 class="au-page-heading" tabindex="-1">Cases</h1><p class="au-lead">${scope === 'added' ? 'Added cases' : '150 synthetic claims'}</p></div></header><nav class="au-collection-scope" aria-label="Case collection"><button type="button" data-au-collection-scope="originals" aria-pressed="${scope === 'originals'}">Original cases</button><button type="button" data-au-collection-scope="added" aria-pressed="${scope === 'added'}">Added cases</button></nav>${scope === 'originals' ? domainMarkup(rows,domain) : ''}<div class="au-collection-tools"><label for="auClaimSearch">Search cases<input id="auClaimSearch" type="search" data-au-claim-search value="${h(search)}" placeholder="Message, title or case ID" autocomplete="off"></label><button type="button" class="au-link" data-au-refresh-claims>Refresh</button></div><nav class="au-case-filter" aria-label="Case status">${['all','not_started','working','deferred','investigation_complete'].map(value => `<button type="button" data-au-filter="${value}" aria-pressed="${filter === value}">${h(value === 'all' ? 'All statuses' : value === 'working' ? 'In progress' : statusLabel(value))}</button>`).join('')}</nav><div class="au-claim-list" data-au-claims>${claimsMarkup(rows,{...options,scope,filter})}</div></section>`;
   }
 
   function liveAvailability(status) {
@@ -796,7 +883,7 @@
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, sourceEpoch = 0, polling = null, claimRead = 0;
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'replay', demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
-    let lastCaseContext = null, collectionCache = null, knowledgeCache = null, statusCache = null, knowledgeRead = 0, renderedKnowledge = null;
+    let knowledgeFacet = 'process', knowledgePin = null, lastCaseContext = null, collectionCache = null, knowledgeCache = null, statusCache = null, knowledgeRead = 0, renderedKnowledge = null;
     const snapshots = new Map(), sourcePreviews = new Map(), nativeBytes = new Map(), replayPrefixes = new Map(), inflightReads = new Map();
     const controllers = new Set();
     const reduced = root.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -810,7 +897,7 @@
     function route(fragment, writeHistory = true) {
       if (writeHistory && root.location && root.location.hash !== fragment && root.history?.pushState) root.history.pushState(null,'',root.location.pathname + root.location.search + fragment);
       routedFragment = writeHistory ? fragment : root.location?.hash || fragment;
-      if (dialog.open) { dialogReturn = null; sourceEpoch++; dialog.close(); }
+      if (dialog.open) { dialogReturn = null; sourceEpoch++; clearNativeSource(); dialog.close(); }
       if (recordDialog.open) { recordReturn = null; recordDialog.close(); }
     }
     function pendingRoute() { return Boolean(root.location && root.location.hash !== routedFragment); }
@@ -880,8 +967,8 @@
     }
     function interact(element, direction = 1) {
       interactionMotion?.cancel(); interactionMotion = null;
-      if (!element?.animate || disposed || doc.hidden || dialog.open && !dialog.contains?.(element) || reduced?.matches || keyboard || element === doc.activeElement || element.contains?.(doc.activeElement)) return;
-      const animation = element.animate([{opacity:.7,transform:`translateY(${direction * 5}px)`},{opacity:1,transform:'translateY(0)'}],{duration:220,easing:'cubic-bezier(.2,.65,.3,1)',fill:'none'});
+      if (element === host || !element?.animate || disposed || doc.hidden || dialog.open && !dialog.contains?.(element) || reduced?.matches || keyboard || element === doc.activeElement || element.contains?.(doc.activeElement)) return;
+      const animation = element.animate([{opacity:.7},{opacity:1}],{duration:220,easing:'cubic-bezier(.2,.65,.3,1)',fill:'none'});
       interactionMotion = animation;
       animation.finished?.then(() => { if (interactionMotion === animation) interactionMotion = null; },() => { if (interactionMotion === animation) interactionMotion = null; });
     }
@@ -976,7 +1063,7 @@
           return [element.dataset.auNode,{bounds:junction.getBoundingClientRect(),rank:Number(element.parentElement.dataset.rank)}];
         }));
         graphPaths = list(current.graph.edges).map((edge,index) => {
-          const from = nodes.get(edge.source_node_id), to = nodes.get(edge.target_node_id); if (!from || !to) return null;
+          const from = nodes.get(edge.source_node_id), to = nodes.get(edge.target_node_id); if (!from || !to || !from.bounds.width || !from.bounds.height || !to.bounds.width || !to.bounds.height) return null;
           const x1=from.bounds.right-frame.left,y1=from.bounds.top+from.bounds.height/2-frame.top,x2=to.bounds.left-frame.left,y2=to.bounds.top+to.bounds.height/2-frame.top,lane=frame.height-14-(index%3)*9;
           const path=to.rank-from.rank>1 ? `M${x1} ${y1} C${x1+18} ${y1},${x1+18} ${lane},${x1+34} ${lane} L${x2-34} ${lane} C${x2-18} ${lane},${x2-18} ${y2},${x2} ${y2}` : `M${x1} ${y1} C${(x1+x2)/2} ${y1},${(x1+x2)/2} ${y2},${x2} ${y2}`;
           return {id:edge.edge_id,d:path,state:edgeState(current,edge.edge_id),selected:edge.source_node_id === selected || edge.target_node_id === selected};
@@ -1042,12 +1129,31 @@
       if (center || bounds.left < area.left+8 || bounds.right > area.right-8) viewport.scrollLeft += bounds.left-area.left-(area.width-bounds.width)/2;
       if (center || bounds.top < area.top+8 || bounds.bottom > area.bottom-8) viewport.scrollTop += bounds.top-area.top-(area.height-bounds.height)/2;
     }
+    function sourceControls(surface) {
+      const controls = new Map();
+      for (const control of surface?.querySelectorAll?.('.au-evidence-source[data-au-source-identity]') || []) {
+        const identity = control.dataset.auSourceIdentity;
+        if (identity && !controls.has(identity)) controls.set(identity,control);
+      }
+      return controls;
+    }
+    function reuseSourceControls(surface, controls) {
+      for (const replacement of surface?.querySelectorAll?.('.au-evidence-source[data-au-source-identity]') || []) {
+        const original = controls.get(replacement.dataset.auSourceIdentity);
+        if (!original || original === replacement || !original.attributes || !replacement.attributes || typeof original.replaceChildren !== 'function') continue;
+        controls.delete(replacement.dataset.auSourceIdentity);
+        for (const attribute of [...original.attributes]) if (!replacement.hasAttribute(attribute.name)) original.removeAttribute(attribute.name);
+        for (const attribute of [...replacement.attributes]) original.setAttribute(attribute.name,attribute.value);
+        original.replaceChildren(...replacement.childNodes);
+        replacement.replaceWith(original);
+      }
+    }
     function renderClaim(changes = null, navigation = false) {
       if (!current || view !== 'claim') return;
       evidenceContext = evidenceSelection(current,selected,evidenceContext);
       claimRenderComplete = false;
       motion?.cancel(); selectionMotion?.cancel();
-      const focused = doc.activeElement, focusKey = focusToken(focused);
+      const focused = doc.activeElement, focusKey = focusToken(focused), sources = sourceControls(host);
       const previous = claimViews.get(current.claim_id);
       const sameClaim = renderedClaimId === current.claim_id;
       const open = new Set(sameClaim ? [...host.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure) : previous?.open || []);
@@ -1058,6 +1164,7 @@
       // Moving the original node keeps native FileList, entered text and retry state.
       arrival?.remove?.();
       host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,replay:replayRecord,pendingStart:Boolean(pendingStart),playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : liveAvailability(status)});
+      reuseSourceControls(host,sources);
       if (arrival) host.querySelector('[data-au-arrival]')?.replaceWith(arrival);
       const presentArrival = host.querySelector('[data-au-arrival]');
       if (presentArrival) arrivalForms.set(current.claim_id,presentArrival);
@@ -1078,6 +1185,8 @@
       viewport.dataset.auGraphExpanded = String(expanded);
       control.setAttribute('aria-expanded',String(expanded));
       control.textContent = expanded ? 'Close full process' : 'Open full process';
+      viewport.setAttribute('aria-label',expanded ? 'Complete process; use arrow keys or scroll to explore' : 'Selected decision, its prerequisites and following decisions; open full process to explore the complete graph');
+      host.querySelector('.au-evidence-process')?.setAttribute('aria-label',expanded ? 'Complete process' : 'Decision neighborhood');
     }
     function renderSelection(navigation = false) {
       if (!current || view !== 'claim') return;
@@ -1085,11 +1194,16 @@
       motion?.cancel(); selectionMotion?.cancel();
       const panel = host.querySelector('[data-au-panel="step"]');
       if (!panel) { renderClaim(null,navigation); return; }
-      const focused = doc.activeElement, focusKey = focusToken(focused);
+      const focused = doc.activeElement, focusKey = focusToken(focused), sources = sourceControls(panel);
       const open = new Set([...panel.querySelectorAll('details[open][data-au-disclosure]')].map(el => el.dataset.auDisclosure));
       panel.innerHTML = inspectorMarkup(current,selected,projection,history,evidenceContext);
+      reuseSourceControls(panel,sources);
+      const question = host.querySelector('.au-process-question'); if (question) { question.textContent = name(list(current.graph?.nodes).find(node => node.node_id === selected)); question.dataset.auInspectorHeading = selected; }
       for (const disclosure of panel.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
-      for (const node of host.querySelectorAll('[data-au-node]')) node.setAttribute('aria-pressed',String(node.dataset.auNode === selected));
+      const topology = layoutGraph(current.graph), neighborhood = new Set([selected,...(topology.parents.get(selected) || []),...(topology.children.get(selected) || [])]);
+      for (const node of host.querySelectorAll('[data-au-node]')) { node.setAttribute('aria-pressed',String(node.dataset.auNode === selected)); node.dataset.auNeighborhood = String(neighborhood.has(node.dataset.auNode)); }
+      for (const rank of host.querySelectorAll('.au-graph-rank')) rank.dataset.auNeighborhood = String([...rank.querySelectorAll('[data-au-node]')].some(node => neighborhood.has(node.dataset.auNode)));
+      for (const edge of host.querySelectorAll('[data-au-edge]')) { const record = list(current.graph.edges).find(item => item.edge_id === edge.dataset.auEdge); edge.dataset.auNeighborhood = String(Boolean(record && neighborhood.has(record.source_node_id) && neighborhood.has(record.target_node_id))); }
       for (const row of host.querySelectorAll('.au-obligation[data-au-document]')) {
         const item = list(current.obligations).find(item => (item.obligation_id || item.document_type) === row.dataset.auObligation);
         const focused = item && (evidenceContext.obligation ? requirementIdentity(item) === evidenceContext.obligation : evidenceContext.document === item.document_type);
@@ -1146,13 +1260,14 @@
         if (!accepted.ready) return;
         verifiedAdvance(incoming);
         const changed = !claimRenderComplete || !current || current.state_sha256 !== incoming.state.state_sha256 || cursor !== accepted.cursor || JSON.stringify(projection) !== JSON.stringify(incoming.projection);
-        const changes = transitionPlan(current,incoming.state,accepted,history);
+        const previousState = current, changes = transitionPlan(current,incoming.state,accepted,history);
         current = incoming.state; projection = incoming.projection; cursor = accepted.cursor; freshClaim = true;
         const existing = new Map(history.map(event => [event.seq,event])); for (const event of accepted.events) existing.set(event.seq,event);
         history = [...existing.values()].sort((a,b) => a.seq-b.seq);
-        const followed = demoSession && [...accepted.events].reverse().find(event => acceptedEventNode(current,event));
-        selected = preferredNode(current,followed ? acceptedEventNode(current,followed) : selected,history);
-        if (followed) evidenceContext = acceptedEventContext(current,followed,selected);
+        const followed = demoSession && [...accepted.events].reverse().find(event => consequentialEventNode(previousState,current,event));
+        selected = preferredNode(current,followed ? consequentialEventNode(previousState,current,followed) : selected,history);
+        if (followed) { evidenceContext = acceptedEventContext(current,followed,selected); detail = 'step'; }
+        const newest = accepted.events.at(-1); if (demoSession && ['knowledge.used','knowledge.published'].includes(newest?.kind) && semanticEventRecord(current,newest)) detail = 'knowledge';
         if (changed) { renderClaim(changes); rememberClaim(current); } else synchronizeAuthority();
         snapshotCache();
         if (connectionFailed) notice('Connection restored. Showing saved work.'); else notice('');
@@ -1342,6 +1457,9 @@
     async function showDemonstration(writeHistory = true) {
       if (busy) return;
       stopPresentation(); demoMode = 'replay';
+      const chosen = claimFragment(DEMO_CASES[0].claim_id,{mode:'replay',through:0,detail:'step'});
+      route(chosen,writeHistory);
+      if (!writeHistory && root.history?.replaceState && root.location?.hash !== chosen) { root.history.replaceState(null,'',root.location.pathname + root.location.search + chosen); routedFragment = chosen; }
       demoSession = {mode:'replay',index:0};
       await openPresentationCase(demoSession,writeHistory);
     }
@@ -1383,7 +1501,7 @@
     }
     async function openPresentationCase(session, writeHistory = true) {
       if (demoSession !== session || disposed || pendingRoute()) return;
-      if (session.index >= DEMO_CASES.length) { stopPresentation(); notice('The selected recorded histories have been inspected.'); renderClaim(); return; }
+      if (session.index >= DEMO_CASES.length) { stopPresentation(); detail = 'step'; selected = preferredNode(current,selected,history); evidenceContext = evidenceSelection(current,selected,evidenceContext); notice('Recorded playback finished.'); renderClaim(); return; }
       const id = DEMO_CASES[session.index].claim_id; session.claimId = id; session.startAttempted = false;
       await openClaim(id,writeHistory,{mode:session.mode,through:0,detail:'step',demo:true});
       if (demoSession !== session || !current || disposed || pendingRoute()) return;
@@ -1414,8 +1532,8 @@
       if (demoSession !== session || disposed || doc.hidden || dialog.open || !replayRecord || session.replayHead?.claimId !== current?.claim_id) return;
       for (let through = replayRecord.through_seq + 1; through <= Math.min(replayRecord.current_revision,replayRecord.through_seq + 2); through++) replayPrefix(current.claim_id,through,session);
     }
-    function replayPacing(event) {
-      return event?.kind === 'outcome.recorded' || event?.kind === 'work.completed' || event?.kind === 'work.deferred' ? 1100 : event && semanticEventRecord(current,event) ? 850 : event?.kind === 'interpretation.accepted' || event?.kind === 'graph.advanced' ? 700 : 300;
+    function replayPacing(event, session) {
+      return replayContentPacing(event,session?.contentChanges);
     }
     function replayActive(session, token) {
       return demoSession === session && !disposed && token === epoch && !pendingRoute() && presentationMode === 'replay' && view === 'claim' && current && replayRecord;
@@ -1431,16 +1549,17 @@
         const accepted = acceptEvents(cursor,{...incoming.replay,current_revision:incoming.state.revision,current_state_sha256:incoming.state.state_sha256,events:incoming.accepted.events.filter(event => event.seq > cursor)},incoming.state);
         const newest = accepted.events.at(-1), previousHash = current.last_event_sha256;
         if (newest && Object.prototype.hasOwnProperty.call(newest,'previous_event_sha256') && newest.previous_event_sha256 !== previousHash || newest && Object.prototype.hasOwnProperty.call(newest,'prev_event_sha256') && newest.prev_event_sha256 !== previousHash) throw new Error('The replay journal chain no longer follows the accepted prefix.');
-        const changes = transitionPlan(current,incoming.state,accepted,history);
+        const previousState = current, changes = transitionPlan(current,incoming.state,accepted,history);
         replayPrefixes.delete(`${current.claim_id}:${through}:${session.replayHead.state_sha256}`);
         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
-        const followed = demoSession && [...accepted.events].reverse().find(event => acceptedEventNode(current,event));
-        selected = preferredNode(current,followed ? acceptedEventNode(current,followed) : selected,history);
-        if (followed) evidenceContext = acceptedEventContext(current,followed,selected);
+        const followed = demoSession && [...accepted.events].reverse().find(event => consequentialEventNode(previousState,current,event));
+        selected = preferredNode(current,followed ? consequentialEventNode(previousState,current,followed) : selected,history);
+        if (followed) { evidenceContext = acceptedEventContext(current,followed,selected); detail = 'step'; }
+        if (demoSession && ['knowledge.used','knowledge.published'].includes(newest?.kind) && semanticEventRecord(current,newest)) detail = 'knowledge';
         evidenceContext = evidenceSelection(current,selected,evidenceContext);
         const fragment = selectedClaimFragment();
         if (root.history?.replaceState) { root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); routedFragment = fragment; }
-        renderClaim(changes); session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0; prefetchReplay(session); replayTick(session,token);
+        renderClaim(changes); session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0; session.contentChanges = changes; prefetchReplay(session); replayTick(session,token);
       } catch (error) { if (replayActive(session,token)) { stopPresentation(); renderClaim(); notice(`Verified replay stopped: ${error.message}`,true); } }
     }
     async function replayTick(session, token) {
@@ -1448,7 +1567,7 @@
       if (!replayActive(session,token) || doc.hidden || dialog.open || session.preparing === token) return;
       if (replayRecord.through_seq >= replayRecord.current_revision) {
         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
-        const remaining = Math.max(0,1100 - (Date.now() - session.displayedAt));
+        const remaining = Math.max(0,4000 - (Date.now() - session.displayedAt));
         demoTimer = root.setTimeout(() => { demoTimer = null; if (!replayActive(session,token) || doc.hidden || dialog.open) return; session.index++; openPresentationCase(session); },remaining);
         return;
       }
@@ -1457,7 +1576,7 @@
       try {
         const response = await replayPrefix(id,through,session);
         if (!replayActive(session,token) || doc.hidden || dialog.open) return;
-        const remaining = Math.max(0,Math.max(replayPacing(history.at(-1)),session.motionDuration || 0) - (Date.now() - session.displayedAt));
+        const remaining = Math.max(0,Math.max(replayPacing(history.at(-1),session),session.motionDuration || 0) - (Date.now() - session.displayedAt));
         demoTimer = root.setTimeout(() => consumeReplay(session,token,through,response),remaining);
       } catch (error) { if (replayActive(session,token)) { stopPresentation(); renderClaim(); notice(`Verified replay stopped: ${error.message}`,true); } }
       finally { if (session.preparing === token) session.preparing = null; }
@@ -1556,9 +1675,9 @@
     function renderKnowledge(data, pin, initial = false) {
       const open = new Set([...host.querySelectorAll('details[open][data-au-disclosure]')].map(element => element.dataset.auDisclosure));
       const previous = host.querySelector('[data-au-knowledge-identity]');
-      if (initial || !previous || renderedKnowledge !== canonicalJSON([data,pin])) {
-        host.innerHTML = knowledgeMarkup(data,claims,pin);
-        renderedKnowledge = canonicalJSON([data,pin]);
+      if (initial || !previous || renderedKnowledge !== canonicalJSON([data,pin,knowledgeFacet])) {
+        host.innerHTML = knowledgeMarkup(data,claims,pin,knowledgeFacet);
+        renderedKnowledge = canonicalJSON([data,pin,knowledgeFacet]); knowledgePin = pin;
         for (const disclosure of host.querySelectorAll('[data-au-disclosure]')) disclosure.open = open.has(disclosure.dataset.auDisclosure);
         drawEdges(); interact(host);
         if (initial) focusTitle();
@@ -1572,6 +1691,7 @@
       return true;
     }
     async function showKnowledge(writeHistory = true, pin = null) {
+      knowledgeFacet = 'process'; knowledgePin = pin;
       stopPresentation(); leaveView();
       const fragment = pin ? `#autonomous/knowledge?knowledge=${key(pin.knowledge_id)}&version=${key(pin.version)}&sha256=${key(pin.knowledge_sha256 || '')}${pin.definition_sha256 ? `&definition=${key(pin.definition_sha256)}` : ''}` : '#autonomous/knowledge';
       route(fragment,writeHistory);
@@ -1724,16 +1844,25 @@
       recordDialog.querySelector('#auRecordTitle').textContent = recordSelection.kind === 'demo' ? 'Recorded investigations' : target.textContent.trim() || 'Record';
       synchronizeRecord(); recordDialog.showModal();
     }
+    function restoreRecordFocus(returning) {
+      if (!returning) return;
+      (returning.element?.isConnected && focusEligible(returning.element,returning.token) ? returning.element : focusTarget(returning.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true});
+    }
+    function closeRecord() {
+      if (!recordDialog.open) return;
+      const returning = recordReturn; recordReturn = null; recordDialog.close(); restoreRecordFocus(returning);
+    }
     function closedRecord() {
-      (recordReturn?.element?.isConnected && focusEligible(recordReturn.element,recordReturn.token) ? recordReturn.element : focusTarget(recordReturn?.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true});
-      recordReturn = null;
+      if (recordDialog.open) return;
+      const returning = recordReturn; recordReturn = null; restoreRecordFocus(returning);
     }
     function click(event) {
       const target = event.target.closest('button,[data-au-nav]'); if (!target || !container.contains(target)) return;
-      if (target.hasAttribute('data-au-close-record')) recordDialog.close();
+      if (target.hasAttribute('data-au-close-record')) closeRecord();
       else if (target.hasAttribute('data-au-return-case')) { if (!busy && lastCaseContext) openClaim(lastCaseContext.claim_id,true,{...lastCaseContext,detail:target.dataset.auReturnCase}); }
+      else if (target.hasAttribute('data-au-knowledge-facet')) { if (view === 'knowledge' && ['process','facts','documents','exceptions','changes'].includes(target.dataset.auKnowledgeFacet) && knowledgeCache) { knowledgeFacet = target.dataset.auKnowledgeFacet; renderKnowledge(knowledgeCache.value,knowledgePin); host.querySelector(`[data-au-knowledge-facet="${knowledgeFacet}"]`)?.focus({preventScroll:true}); } }
       else if (target.hasAttribute('data-au-inspect')) openRecord(target);
-      else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const index = DEMO_CASES.findIndex(row => row.claim_id === id); if (index >= 0) { demoSession = {mode:'replay',index}; openPresentationCase(demoSession); } }
+      else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const index = DEMO_CASES.findIndex(row => row.claim_id === id); if (index >= 0) { demoSession = {mode:'replay',index}; openPresentationCase(demoSession); } }
       else if (target.hasAttribute('data-au-filter')) { collection.filter = target.dataset.auFilter; refreshCollection(); rememberCollectionRoute(); for (const control of host.querySelectorAll('[data-au-filter]')) control.setAttribute('aria-pressed',String(control.dataset.auFilter === collection.filter)); }
       else if (target.hasAttribute('data-au-nav')) { if (busy) return; target.dataset.auNav === 'knowledge' ? showKnowledge() : target.dataset.auNav === 'intake' ? showIntake() : target.dataset.auNav === 'demonstration' ? showDemonstration() : showWork(); }
       else if (target.hasAttribute('data-au-claim')) { if (!busy) openClaim(target.dataset.auClaim); }
@@ -1804,12 +1933,23 @@
       } else if (target.hasAttribute('data-au-source')) {
         let citation; try { citation = target.dataset.auCitation ? JSON.parse(target.dataset.auCitation) : null; } catch (_) { notice('The source reference is invalid.',true); return; }
         openSource(target.dataset.auSource,citation,target);
-      } else if (target.hasAttribute('data-au-close')) dialog.close();
+      } else if (target.hasAttribute('data-au-close')) closeSource();
     }
     function input(event) {
       if (view === 'work' && event.target.matches?.('[data-au-claim-search]')) { collection.search = event.target.value; refreshCollection(); rememberCollectionRoute(); }
     }
-    function closed() { (dialogReturn?.element?.isConnected && focusEligible(dialogReturn.element,dialogReturn.token) ? dialogReturn.element : focusTarget(dialogReturn?.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true}); dialogReturn = null; sourceEpoch++; clearNativeSource(); }
+    function restoreSourceFocus(returning) {
+      if (!returning) return;
+      (returning.element?.isConnected && focusEligible(returning.element,returning.token) ? returning.element : focusTarget(returning.token) || host.querySelector('[data-au-claim-title]'))?.focus({preventScroll:true});
+    }
+    function closeSource() {
+      if (!dialog.open) return;
+      const returning = dialogReturn; dialogReturn = null; sourceEpoch++; clearNativeSource(); dialog.close(); restoreSourceFocus(returning);
+    }
+    function closed() {
+      if (dialog.open || !dialogReturn) return;
+      const returning = dialogReturn; dialogReturn = null; sourceEpoch++; clearNativeSource(); restoreSourceFocus(returning);
+    }
     function visibility() {
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
       if (doc.hidden) { pauseInspection(); cancelPoll(); freshClaim = false; statusAuthority = null; synchronizeAuthority('refreshing'); return; }
@@ -1838,5 +1978,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
