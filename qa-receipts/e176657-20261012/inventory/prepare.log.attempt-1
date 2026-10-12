@@ -1,0 +1,6 @@
+Using Python 3.13.9 environment at: .runtime/casepath-dev-v2/venv
+error: Request failed after 3 retries in 29.4s
+  cause: Failed to fetch: `https://pypi.org/simple/anyio/`
+  cause: error sending request for url (https://pypi.org/simple/anyio/)
+  cause: client error (Connect)
+  cause: operation timed out

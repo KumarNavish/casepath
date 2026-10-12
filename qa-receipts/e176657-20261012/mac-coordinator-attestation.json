@@ -1,0 +1,18 @@
+{
+  "candidate": "e176657b9307ad657fd895e57e83ce88e140bcf5",
+  "tests": 127,
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "duration_seconds": 313.199,
+  "assigned_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "file_counts": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_local_data_root.py": 52,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6
+  },
+  "exact_assigned_executed_id_equality": "Coordinator attested exact127 assigned canonical IDs, missing0/duplicates0",
+  "status": "passed",
+  "basis": "Mac coordinator report relayed by root; Mac JUnit/receipt/coverage retained on Mac F2. Cloud has not parsed or independently hashed those Mac artifacts.",
+  "received_epoch": 1791819109.4071186
+}

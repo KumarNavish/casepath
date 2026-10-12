@@ -1,0 +1,48 @@
+{
+  "sample_epoch": 1791819202.5125275,
+  "prior_junit": {
+    "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication",
+    "junit_seconds": 9.643,
+    "prior_shard": 1
+  },
+  "logical_cpus": 5,
+  "affinity_cpu_count": 5,
+  "loadavg": [
+    5.8486328125,
+    3.685546875,
+    1.73828125
+  ],
+  "cgroup_cpu_max": "400000 100000",
+  "cgroup_memory_max": "34359738368",
+  "cgroup_memory_current": "16779980800",
+  "fixture_tables": [
+    {
+      "name": "claim_loop_events",
+      "schema": "CREATE TABLE claim_loop_events (\n                    session_id TEXT NOT NULL,\n                    loop_id TEXT NOT NULL,\n                    sequence INTEGER NOT NULL,\n                    idempotency_key TEXT NOT NULL,\n                    command_sha256 TEXT NOT NULL,\n                    event_sha256 TEXT NOT NULL,\n                    event_json TEXT NOT NULL,\n                    created_at TEXT NOT NULL,\n                    PRIMARY KEY(session_id, loop_id, sequence),\n                    UNIQUE(session_id, loop_id, idempotency_key),\n                    UNIQUE(session_id, loop_id, event_sha256)\n                )"
+    },
+    {
+      "name": "claim_loop_checkpoints",
+      "schema": "CREATE TABLE claim_loop_checkpoints (\n                    session_id TEXT NOT NULL,\n                    loop_id TEXT NOT NULL,\n                    revision INTEGER NOT NULL,\n                    last_event_sha256 TEXT NOT NULL,\n                    state_sha256 TEXT NOT NULL,\n                    state_json TEXT NOT NULL,\n                    created_at TEXT NOT NULL,\n                    updated_at TEXT NOT NULL,\n                    PRIMARY KEY(session_id, loop_id)\n                )"
+    },
+    {
+      "name": "claim_loop_corrections",
+      "schema": "CREATE TABLE claim_loop_corrections (\n                    correction_id TEXT PRIMARY KEY,\n                    correction_sha256 TEXT NOT NULL UNIQUE,\n                    source_session_id TEXT NOT NULL,\n                    source_loop_id TEXT NOT NULL,\n                    correction_json TEXT NOT NULL,\n                    created_at TEXT NOT NULL\n                )"
+    },
+    {
+      "name": "claim_loop_correction_artifacts",
+      "schema": "CREATE TABLE claim_loop_correction_artifacts (\n                    receipt_sha256 TEXT PRIMARY KEY,\n                    session_id TEXT NOT NULL,\n                    loop_id TEXT NOT NULL,\n                    parent_state_sha256 TEXT NOT NULL,\n                    artifact_json TEXT NOT NULL,\n                    created_at TEXT NOT NULL\n                )"
+    },
+    {
+      "name": "claim_loop_tool_artifacts",
+      "schema": "CREATE TABLE claim_loop_tool_artifacts (\n                    receipt_sha256 TEXT PRIMARY KEY,\n                    session_id TEXT NOT NULL,\n                    loop_id TEXT NOT NULL,\n                    action_id TEXT NOT NULL,\n                    dispatch_sha256 TEXT NOT NULL,\n                    artifact_json TEXT NOT NULL,\n                    created_at TEXT NOT NULL,\n                    UNIQUE(session_id, loop_id, dispatch_sha256)\n                )"
+    },
+    {
+      "name": "claim_loop_acquisitions",
+      "schema": "CREATE TABLE claim_loop_acquisitions (\n                    receipt_sha256 TEXT PRIMARY KEY,\n                    session_id TEXT NOT NULL,\n                    loop_id TEXT NOT NULL,\n                    action_id TEXT NOT NULL,\n                    dispatch_sha256 TEXT NOT NULL,\n                    status TEXT NOT NULL,\n                    acquisition_json TEXT NOT NULL,\n                    raw_payload BLOB,\n                    created_at TEXT NOT NULL,\n                    UNIQUE(session_id, loop_id, dispatch_sha256)\n                )"
+    },
+    {
+      "name": "claim_loop_client_requests",
+      "schema": "CREATE TABLE claim_loop_client_requests (\n                    session_id TEXT NOT NULL,\n                    loop_id TEXT NOT NULL,\n                    idempotency_key TEXT NOT NULL,\n                    request_type TEXT NOT NULL,\n                    request_sha256 TEXT NOT NULL,\n                    request_json TEXT NOT NULL,\n                    created_at TEXT NOT NULL,\n                    status TEXT NOT NULL DEFAULT 'RESERVED',\n                    result_event_idempotency_key TEXT,\n                    result_event_sha256 TEXT,\n                    result_revision INTEGER,\n                    result_state_sha256 TEXT,\n                    response_sha256 TEXT,\n                    response_json TEXT,\n                    completed_at TEXT,\n                    dispatch_started_at TEXT,\n                    dispatch_expires_at TEXT,\n                    dispatch_generation INTEGER NOT NULL DEFAULT 0,\n                    reserved_event_idempotency_key TEXT,\n                    reserved_event_sha256 TEXT,\n                    reserved_revision INTEGER,\n                    reserved_state_sha256 TEXT,\n                    PRIMARY KEY(session_id, loop_id, idempotency_key)\n                )"
+    }
+  ]
+}

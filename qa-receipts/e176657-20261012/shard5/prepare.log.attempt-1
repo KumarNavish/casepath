@@ -1,0 +1,7 @@
+Using Python 3.13.9 environment at: .runtime/casepath-dev-v2/venv
+error: Request failed after 3 retries in 41.6s
+  cause: Failed to fetch: `https://pypi.org/simple/langchain-protocol/`
+  cause: error sending request for url (https://pypi.org/simple/langchain-protocol/)
+  cause: client error (Connect)
+  cause: dns error
+  cause: failed to lookup address information: Temporary failure in name resolution
