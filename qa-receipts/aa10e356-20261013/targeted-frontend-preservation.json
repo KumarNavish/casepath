@@ -1,0 +1,1374 @@
+{
+  "implementation_commit": "0c7be31294a9a60088e7c3a75809cbe21991454e",
+  "sealed_candidate": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "module": {
+    "passed": 146,
+    "failed": 0,
+    "skipped": 0,
+    "duration_ms": 403.225375,
+    "log": "targeted-frontend/module-final-language.log"
+  },
+  "browser": {
+    "passed": 26,
+    "failed": 0,
+    "skipped": 0,
+    "duration_ms": 245351.081678,
+    "log": "targeted-frontend/native-final-all.log"
+  },
+  "actual_dom_receipt_count": 20,
+  "javascript_sha256": "ea87b7cbd8f86d8dc4cad1005f505b3defe8bf795c49d0fb759d7276ff7b6445",
+  "css_sha256": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f",
+  "earlier_attempt_logs_preserved": true,
+  "copied_files": [
+    {
+      "source_relative_path": "checkpoint-1.patch",
+      "evidence_path": "targeted-frontend/checkpoint-1.patch",
+      "size_bytes": 106660,
+      "sha256": "47c7af0bed918fa7089fcd0e1446b02aa893ccd7c47881714f5bf781b92e788c"
+    },
+    {
+      "source_relative_path": "diagnostics/18.json",
+      "evidence_path": "targeted-frontend/diagnostics/18.json",
+      "size_bytes": 5037,
+      "sha256": "fcf9311811c2dfbb815de2c973a87e6d98dfb7732d8e4fa307508f47c92f755c"
+    },
+    {
+      "source_relative_path": "diagnostics/19.json",
+      "evidence_path": "targeted-frontend/diagnostics/19.json",
+      "size_bytes": 5131,
+      "sha256": "11ffb980d914473b06f7646c8422d6344e743838661da49e281605e4d21238e1"
+    },
+    {
+      "source_relative_path": "diagnostics/21.json",
+      "evidence_path": "targeted-frontend/diagnostics/21.json",
+      "size_bytes": 5840,
+      "sha256": "dd324b5ddfdd66efe280bc98af615811ec5fd2cd2300cc9da3fd9b1cc2a28039"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json",
+      "size_bytes": 475872,
+      "sha256": "554e8d6099f0762a74931c24e2bf7e53fd470e30774be9b0ede14dbe18bb1748"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+      "size_bytes": 475872,
+      "sha256": "554e8d6099f0762a74931c24e2bf7e53fd470e30774be9b0ede14dbe18bb1748"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json",
+      "size_bytes": 475850,
+      "sha256": "35da70a0b9dc7ae638f1e61b1e39504777efa3996123bc474e5a0d7157341adf"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-changed-head.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-changed-head.json",
+      "size_bytes": 28506,
+      "sha256": "0f86d226c2c94610bb2395e46474a918012fe68013c88c1721b23489a1d63fb6"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-missing.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-missing.json",
+      "size_bytes": 28233,
+      "sha256": "89a4741dfc51527832c433a32a51ba359e48b2b4759a33299651c9b90b463cce"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation-head.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation-head.json",
+      "size_bytes": 11306,
+      "sha256": "64e233b04d25820cc417efd8b0ec171955b1328713021311346b1855ab69dffe"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation.json",
+      "size_bytes": 11306,
+      "sha256": "015673f6c0795f8c0a766130ba8cbe8c680b1e395505faf3f15fd907b77aeb0f"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-none.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-none.json",
+      "size_bytes": 5329,
+      "sha256": "308f7b03227df67ed865803ac8276d89b6d50c194c9a228632239165d5a404d7"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-pause-head.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-pause-head.json",
+      "size_bytes": 4977,
+      "sha256": "eeee3a17f5e711abb85f82fcdb5b069edb36637aff0107c64f76144523e4cd3d"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-pause.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-pause.json",
+      "size_bytes": 4977,
+      "sha256": "43cb81956fac73ebb63c51eb24e474aa461ba0003c57a1c1666df2e52ba69de6"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-unstarted.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-next-case-handoff-retains-verified-content-through-unstarted.json",
+      "size_bytes": 28265,
+      "sha256": "52cc74c97d12fbdc37ee7c41739db39516659f1f34acdbc609ef2ebfe4196da5"
+    },
+    {
+      "source_relative_path": "diagnostics/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes.json",
+      "evidence_path": "targeted-frontend/diagnostics/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes.json",
+      "size_bytes": 258860,
+      "sha256": "201fb2d5fe95b11d9a860f3e5bb52118e86f335f1659f7dfb9cbf0573ad4154a"
+    },
+    {
+      "source_relative_path": "diagnostics/reference-native-exact-nine-actual-accepted-assessments-retain-graph-documents-Knowledge-and-source-bytes.json",
+      "evidence_path": "targeted-frontend/diagnostics/reference-native-exact-nine-actual-accepted-assessments-retain-graph-documents-Knowledge-and-source-bytes.json",
+      "size_bytes": 406873,
+      "sha256": "b5eb15535e896edb8bc5d0efde5003447f639411d6a51cf6a32e5235ffcaf5d3"
+    },
+    {
+      "source_relative_path": "diagnostics-final/18.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/18.json",
+      "size_bytes": 5037,
+      "sha256": "fcf9311811c2dfbb815de2c973a87e6d98dfb7732d8e4fa307508f47c92f755c"
+    },
+    {
+      "source_relative_path": "diagnostics-final/19.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/19.json",
+      "size_bytes": 5131,
+      "sha256": "11ffb980d914473b06f7646c8422d6344e743838661da49e281605e4d21238e1"
+    },
+    {
+      "source_relative_path": "diagnostics-final/21.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/21.json",
+      "size_bytes": 5840,
+      "sha256": "dd324b5ddfdd66efe280bc98af615811ec5fd2cd2300cc9da3fd9b1cc2a28039"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json",
+      "size_bytes": 475872,
+      "sha256": "554e8d6099f0762a74931c24e2bf7e53fd470e30774be9b0ede14dbe18bb1748"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+      "size_bytes": 475872,
+      "sha256": "554e8d6099f0762a74931c24e2bf7e53fd470e30774be9b0ede14dbe18bb1748"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json",
+      "size_bytes": 475850,
+      "sha256": "35da70a0b9dc7ae638f1e61b1e39504777efa3996123bc474e5a0d7157341adf"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-changed-head.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-changed-head.json",
+      "size_bytes": 28551,
+      "sha256": "753af810359c0087131943130edeae32094e53686c4965b98e4630a83c3df144"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-missing.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-missing.json",
+      "size_bytes": 28278,
+      "sha256": "a0859c22fab024f711ae5a8709bdd67203ed2585881e5564d4119e4b8e2b8554"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation-head.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation-head.json",
+      "size_bytes": 11306,
+      "sha256": "64e233b04d25820cc417efd8b0ec171955b1328713021311346b1855ab69dffe"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation.json",
+      "size_bytes": 11306,
+      "sha256": "015673f6c0795f8c0a766130ba8cbe8c680b1e395505faf3f15fd907b77aeb0f"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-none.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-none.json",
+      "size_bytes": 5329,
+      "sha256": "308f7b03227df67ed865803ac8276d89b6d50c194c9a228632239165d5a404d7"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-pause-head.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-pause-head.json",
+      "size_bytes": 4977,
+      "sha256": "eeee3a17f5e711abb85f82fcdb5b069edb36637aff0107c64f76144523e4cd3d"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-pause.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-pause.json",
+      "size_bytes": 4977,
+      "sha256": "43cb81956fac73ebb63c51eb24e474aa461ba0003c57a1c1666df2e52ba69de6"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-unstarted.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-next-case-handoff-retains-verified-content-through-unstarted.json",
+      "size_bytes": 28310,
+      "sha256": "e5e87d4457d1eefcd594ff1d6a2199f4d9693143a62489e2af384d31f97ef8cf"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x1000.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x1000.json",
+      "size_bytes": 258860,
+      "sha256": "201fb2d5fe95b11d9a860f3e5bb52118e86f335f1659f7dfb9cbf0573ad4154a"
+    },
+    {
+      "source_relative_path": "diagnostics-final/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x900.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x900.json",
+      "size_bytes": 258860,
+      "sha256": "201fb2d5fe95b11d9a860f3e5bb52118e86f335f1659f7dfb9cbf0573ad4154a"
+    },
+    {
+      "source_relative_path": "diagnostics-final/focused-flow-a-corrupted-prefetched-original-identity-stops-before-replacing-the-accepted-replay-prefix.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/focused-flow-a-corrupted-prefetched-original-identity-stops-before-replacing-the-accepted-replay-prefix.json",
+      "size_bytes": 8375,
+      "sha256": "5cc6e69339168565b438a2b07ce8a4c9f03eca7ef21175a97331f43dd7940cab"
+    },
+    {
+      "source_relative_path": "diagnostics-final/focused-flow-a-recorded-action-opens-its-exact-document-and-fact-while-manual-inspection-retains-its-chosen-context.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/focused-flow-a-recorded-action-opens-its-exact-document-and-fact-while-manual-inspection-retains-its-chosen-context.json",
+      "size_bytes": 273208,
+      "sha256": "64ea04debb3f3e4265378fcfede0a4f93ba796689d79ba1ee51af7f0226e1e60"
+    },
+    {
+      "source_relative_path": "diagnostics-final/focused-flow-expanding-the-complete-process-retains-its-native-nodes-and-chosen-inspection-at-1428px.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/focused-flow-expanding-the-complete-process-retains-its-native-nodes-and-chosen-inspection-at-1428px.json",
+      "size_bytes": 614737,
+      "sha256": "17b35f392e7e4ba2aa58d4174142e667488b50bfa5a03fb7add9f9230a9d2e8f"
+    },
+    {
+      "source_relative_path": "diagnostics-final/focused-flow-expanding-the-complete-process-retains-its-native-nodes-and-chosen-inspection-at-390px.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/focused-flow-expanding-the-complete-process-retains-its-native-nodes-and-chosen-inspection-at-390px.json",
+      "size_bytes": 614715,
+      "sha256": "fbafc5e05c91c93dbb248b8759a3ca44cf2a8e0c2ba0b844a3da59c2348055cd"
+    },
+    {
+      "source_relative_path": "diagnostics-final/focused-flow-manual-document-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/focused-flow-manual-document-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 274470,
+      "sha256": "b0bfa6d702ec5532828637e6bc8908a04f5d51d0df772ace83aa2199b4e0df50"
+    },
+    {
+      "source_relative_path": "diagnostics-final/focused-flow-manual-fact-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/focused-flow-manual-fact-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 564581,
+      "sha256": "fa9b8d045de73cfda33bd80a78bf05940e40c9e5b411d128ad0069b26c865f26"
+    },
+    {
+      "source_relative_path": "diagnostics-final/focused-flow-manual-node-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/focused-flow-manual-node-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 288755,
+      "sha256": "744451dbe072f51fe0622b4d9222cc39af5f0172612fd068970b6cbbb186b70f"
+    },
+    {
+      "source_relative_path": "diagnostics-final/focused-flow-selected-process-changes-preserve-the-graph-original-arrival-FileList-and-source-origin-focus.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/focused-flow-selected-process-changes-preserve-the-graph-original-arrival-FileList-and-source-origin-focus.json",
+      "size_bytes": 614466,
+      "sha256": "6ecbed8ec26d1ae7187856376f5f7c2ae082f4991426f8ddecf7e3333455b2bb"
+    },
+    {
+      "source_relative_path": "diagnostics-final/reference-native-exact-nine-actual-accepted-assessments-retain-graph-documents-Knowledge-and-source-bytes.json",
+      "evidence_path": "targeted-frontend/diagnostics-final/reference-native-exact-nine-actual-accepted-assessments-retain-graph-documents-Knowledge-and-source-bytes.json",
+      "size_bytes": 406873,
+      "sha256": "b5eb15535e896edb8bc5d0efde5003447f639411d6a51cf6a32e5235ffcaf5d3"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/18.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/18.json",
+      "size_bytes": 5037,
+      "sha256": "fcf9311811c2dfbb815de2c973a87e6d98dfb7732d8e4fa307508f47c92f755c"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/19.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/19.json",
+      "size_bytes": 5131,
+      "sha256": "11ffb980d914473b06f7646c8422d6344e743838661da49e281605e4d21238e1"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/21.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/21.json",
+      "size_bytes": 5840,
+      "sha256": "dd324b5ddfdd66efe280bc98af615811ec5fd2cd2300cc9da3fd9b1cc2a28039"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1280x800.json",
+      "size_bytes": 475872,
+      "sha256": "554e8d6099f0762a74931c24e2bf7e53fd470e30774be9b0ede14dbe18bb1748"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+      "size_bytes": 475872,
+      "sha256": "554e8d6099f0762a74931c24e2bf7e53fd470e30774be9b0ede14dbe18bb1748"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-390x844.json",
+      "size_bytes": 475850,
+      "sha256": "35da70a0b9dc7ae638f1e61b1e39504777efa3996123bc474e5a0d7157341adf"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-changed-head.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-changed-head.json",
+      "size_bytes": 28551,
+      "sha256": "753af810359c0087131943130edeae32094e53686c4965b98e4630a83c3df144"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-missing.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-missing.json",
+      "size_bytes": 28278,
+      "sha256": "a0859c22fab024f711ae5a8709bdd67203ed2585881e5564d4119e4b8e2b8554"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation-head.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation-head.json",
+      "size_bytes": 11306,
+      "sha256": "64e233b04d25820cc417efd8b0ec171955b1328713021311346b1855ab69dffe"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-navigation.json",
+      "size_bytes": 11306,
+      "sha256": "015673f6c0795f8c0a766130ba8cbe8c680b1e395505faf3f15fd907b77aeb0f"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-none.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-none.json",
+      "size_bytes": 5329,
+      "sha256": "308f7b03227df67ed865803ac8276d89b6d50c194c9a228632239165d5a404d7"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-pause-head.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-pause-head.json",
+      "size_bytes": 4977,
+      "sha256": "eeee3a17f5e711abb85f82fcdb5b069edb36637aff0107c64f76144523e4cd3d"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-pause.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-pause.json",
+      "size_bytes": 4977,
+      "sha256": "43cb81956fac73ebb63c51eb24e474aa461ba0003c57a1c1666df2e52ba69de6"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-unstarted.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-next-case-handoff-retains-verified-content-through-unstarted.json",
+      "size_bytes": 28310,
+      "sha256": "e5e87d4457d1eefcd594ff1d6a2199f4d9693143a62489e2af384d31f97ef8cf"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x1000.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x1000.json",
+      "size_bytes": 258862,
+      "sha256": "6259fa33d56653240b2fc41b4849a6ca4712ddfb1a0af953c1267e448a4ee661"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x900.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x900.json",
+      "size_bytes": 258862,
+      "sha256": "6259fa33d56653240b2fc41b4849a6ca4712ddfb1a0af953c1267e448a4ee661"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/focused-flow-a-corrupted-prefetched-original-identity-stops-before-replacing-the-accepted-replay-prefix.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/focused-flow-a-corrupted-prefetched-original-identity-stops-before-replacing-the-accepted-replay-prefix.json",
+      "size_bytes": 8375,
+      "sha256": "5cc6e69339168565b438a2b07ce8a4c9f03eca7ef21175a97331f43dd7940cab"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/focused-flow-a-recorded-action-opens-its-exact-document-and-fact-while-manual-inspection-retains-its-chosen-context.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/focused-flow-a-recorded-action-opens-its-exact-document-and-fact-while-manual-inspection-retains-its-chosen-context.json",
+      "size_bytes": 274141,
+      "sha256": "62c92716584b513d08e84e5478b1a822254aef887958f2b30937c7aa364b78b0"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/focused-flow-expanding-the-complete-process-retains-its-native-nodes-and-chosen-inspection-at-1428px.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/focused-flow-expanding-the-complete-process-retains-its-native-nodes-and-chosen-inspection-at-1428px.json",
+      "size_bytes": 614737,
+      "sha256": "17b35f392e7e4ba2aa58d4174142e667488b50bfa5a03fb7add9f9230a9d2e8f"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/focused-flow-expanding-the-complete-process-retains-its-native-nodes-and-chosen-inspection-at-390px.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/focused-flow-expanding-the-complete-process-retains-its-native-nodes-and-chosen-inspection-at-390px.json",
+      "size_bytes": 614715,
+      "sha256": "fbafc5e05c91c93dbb248b8759a3ca44cf2a8e0c2ba0b844a3da59c2348055cd"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/focused-flow-manual-document-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/focused-flow-manual-document-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 288755,
+      "sha256": "744451dbe072f51fe0622b4d9222cc39af5f0172612fd068970b6cbbb186b70f"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/focused-flow-manual-fact-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/focused-flow-manual-fact-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 288755,
+      "sha256": "744451dbe072f51fe0622b4d9222cc39af5f0172612fd068970b6cbbb186b70f"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/focused-flow-manual-node-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/focused-flow-manual-node-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 288755,
+      "sha256": "744451dbe072f51fe0622b4d9222cc39af5f0172612fd068970b6cbbb186b70f"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/focused-flow-selected-process-changes-preserve-the-graph-original-arrival-FileList-and-source-origin-focus.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/focused-flow-selected-process-changes-preserve-the-graph-original-arrival-FileList-and-source-origin-focus.json",
+      "size_bytes": 614466,
+      "sha256": "6ecbed8ec26d1ae7187856376f5f7c2ae082f4991426f8ddecf7e3333455b2bb"
+    },
+    {
+      "source_relative_path": "diagnostics-final-all/reference-native-exact-nine-actual-accepted-assessments-retain-graph-documents-Knowledge-and-source-bytes.json",
+      "evidence_path": "targeted-frontend/diagnostics-final-all/reference-native-exact-nine-actual-accepted-assessments-retain-graph-documents-Knowledge-and-source-bytes.json",
+      "size_bytes": 406873,
+      "sha256": "b5eb15535e896edb8bc5d0efde5003447f639411d6a51cf6a32e5235ffcaf5d3"
+    },
+    {
+      "source_relative_path": "diagnostics-injected/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+      "evidence_path": "targeted-frontend/diagnostics-injected/causal-formation-native-heating-requirements-enter-at-their-actual-steps-and-final-content-stays-visible-at-1440x900.json",
+      "size_bytes": 475872,
+      "sha256": "554e8d6099f0762a74931c24e2bf7e53fd470e30774be9b0ede14dbe18bb1748"
+    },
+    {
+      "source_relative_path": "diagnostics-injected/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x1000.json",
+      "evidence_path": "targeted-frontend/diagnostics-injected/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x1000.json",
+      "size_bytes": 258860,
+      "sha256": "201fb2d5fe95b11d9a860f3e5bb52118e86f335f1659f7dfb9cbf0573ad4154a"
+    },
+    {
+      "source_relative_path": "diagnostics-injected/focused-flow-selected-process-changes-preserve-the-graph-original-arrival-FileList-and-source-origin-focus.json",
+      "evidence_path": "targeted-frontend/diagnostics-injected/focused-flow-selected-process-changes-preserve-the-graph-original-arrival-FileList-and-source-origin-focus.json",
+      "size_bytes": 614466,
+      "sha256": "6ecbed8ec26d1ae7187856376f5f7c2ae082f4991426f8ddecf7e3333455b2bb"
+    },
+    {
+      "source_relative_path": "diagnostics-language-context/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x1000.json",
+      "evidence_path": "targeted-frontend/diagnostics-language-context/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x1000.json",
+      "size_bytes": 258862,
+      "sha256": "6259fa33d56653240b2fc41b4849a6ca4712ddfb1a0af953c1267e448a4ee661"
+    },
+    {
+      "source_relative_path": "diagnostics-language-context/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x900.json",
+      "evidence_path": "targeted-frontend/diagnostics-language-context/causal-formation-native-the-existing-eleven-step-termination-fixture-exposes-real-forks-joins-and-exact-conditional-routes-at-1440x900.json",
+      "size_bytes": 258862,
+      "sha256": "6259fa33d56653240b2fc41b4849a6ca4712ddfb1a0af953c1267e448a4ee661"
+    },
+    {
+      "source_relative_path": "diagnostics-language-context/focused-flow-a-recorded-action-opens-its-exact-document-and-fact-while-manual-inspection-retains-its-chosen-context.json",
+      "evidence_path": "targeted-frontend/diagnostics-language-context/focused-flow-a-recorded-action-opens-its-exact-document-and-fact-while-manual-inspection-retains-its-chosen-context.json",
+      "size_bytes": 273210,
+      "sha256": "f51cd47274f5b4acc12ae5d4c14b87dec89b582ac88a75324238a3041b0a52d0"
+    },
+    {
+      "source_relative_path": "diagnostics-language-context/focused-flow-manual-document-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-language-context/focused-flow-manual-document-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 288755,
+      "sha256": "744451dbe072f51fe0622b4d9222cc39af5f0172612fd068970b6cbbb186b70f"
+    },
+    {
+      "source_relative_path": "diagnostics-language-context/focused-flow-manual-fact-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-language-context/focused-flow-manual-fact-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 288755,
+      "sha256": "744451dbe072f51fe0622b4d9222cc39af5f0172612fd068970b6cbbb186b70f"
+    },
+    {
+      "source_relative_path": "diagnostics-language-context/focused-flow-manual-node-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "evidence_path": "targeted-frontend/diagnostics-language-context/focused-flow-manual-node-inspection-pauses-the-same-accepted-journal-until-deliberate-Resume.json",
+      "size_bytes": 288755,
+      "sha256": "744451dbe072f51fe0622b4d9222cc39af5f0172612fd068970b6cbbb186b70f"
+    },
+    {
+      "source_relative_path": "final-candidate.patch",
+      "evidence_path": "targeted-frontend/final-candidate.patch",
+      "size_bytes": 113524,
+      "sha256": "6d60e40858b5a37906905a68b337f27fb2d10d5fb5d8ed48758ed066cbf55da6"
+    },
+    {
+      "source_relative_path": "final-ready.patch",
+      "evidence_path": "targeted-frontend/final-ready.patch",
+      "size_bytes": 134923,
+      "sha256": "5a71d8dea58521061b0d7ba4f7ab912e87d56d90bab9c3a5b9bd214c798eaec1"
+    },
+    {
+      "source_relative_path": "final-review-v2.patch",
+      "evidence_path": "targeted-frontend/final-review-v2.patch",
+      "size_bytes": 121530,
+      "sha256": "17bb2f4739842ea0b0a177940273e49223cea2e2a1be32b918e80396042b20c8"
+    },
+    {
+      "source_relative_path": "final-review.patch",
+      "evidence_path": "targeted-frontend/final-review.patch",
+      "size_bytes": 121466,
+      "sha256": "f09f9f2cda751af570499ef0b0a03e333d6b861a28128f8dd5c9806dfc0730e5"
+    },
+    {
+      "source_relative_path": "module-anchors.log",
+      "evidence_path": "targeted-frontend/module-anchors.log",
+      "size_bytes": 16403,
+      "sha256": "d859a9554599e5bee344b67e12c1875bddf366db893817973a23a1072aeaecbf"
+    },
+    {
+      "source_relative_path": "module-final-language.log",
+      "evidence_path": "targeted-frontend/module-final-language.log",
+      "size_bytes": 16657,
+      "sha256": "eb2159fcdeaccd91ee61abe2c6e08f45eeae92fcbc1b89a4964a9189d05c4ec0"
+    },
+    {
+      "source_relative_path": "module-final.log",
+      "evidence_path": "targeted-frontend/module-final.log",
+      "size_bytes": 16530,
+      "sha256": "8ce3f40b41e98ac48e7369945a59b46a9dd5ea494da1a01df05f7a5cb879590e"
+    },
+    {
+      "source_relative_path": "module-initial.log",
+      "evidence_path": "targeted-frontend/module-initial.log",
+      "size_bytes": 67111,
+      "sha256": "a8173c8e216524b982960358fa213695918d7032bbbcea790dbd3146fc93b736"
+    },
+    {
+      "source_relative_path": "module-live.log",
+      "evidence_path": "targeted-frontend/module-live.log",
+      "size_bytes": 15924,
+      "sha256": "aa0f28164a29bf5eb079aefdcdca528708a62e0628d06c209564b7f96e7d0bd2"
+    },
+    {
+      "source_relative_path": "module-panel-hold.log",
+      "evidence_path": "targeted-frontend/module-panel-hold.log",
+      "size_bytes": 16408,
+      "sha256": "dccfb0586434d0d4d6dfb8a4a502e1bf505df5c94ba958cd5dab3aae0843df48"
+    },
+    {
+      "source_relative_path": "module-second.log",
+      "evidence_path": "targeted-frontend/module-second.log",
+      "size_bytes": 15625,
+      "sha256": "2c551a80d78c39be6c5be9d154693367fa4c722af7aa702a901db13e94b585d1"
+    },
+    {
+      "source_relative_path": "module-shared-predicate.log",
+      "evidence_path": "targeted-frontend/module-shared-predicate.log",
+      "size_bytes": 16037,
+      "sha256": "2cfab059080dbfbe2ec0b3519bdc3de098fba65deb9e5bd3d38a74318dc473cd"
+    },
+    {
+      "source_relative_path": "module-third.log",
+      "evidence_path": "targeted-frontend/module-third.log",
+      "size_bytes": 15625,
+      "sha256": "829cfce4fe46349b7d3d81152f757817336e9a25448b59612cd3b0f4df53cd54"
+    },
+    {
+      "source_relative_path": "native/causal-native-autoplay-18.json",
+      "evidence_path": "targeted-frontend/native/causal-native-autoplay-18.json",
+      "size_bytes": 532,
+      "sha256": "e872ffe7e4a9f31ccc8c8f20c8fcfb58df90168f08d6d96603b150f581f97059"
+    },
+    {
+      "source_relative_path": "native/causal-native-autoplay-18.png",
+      "evidence_path": "targeted-frontend/native/causal-native-autoplay-18.png",
+      "size_bytes": 144370,
+      "sha256": "2d756bc7d282c55f35cad68adaf9a69579145af0def3287680ee93d6e4e60b4e"
+    },
+    {
+      "source_relative_path": "native/causal-native-autoplay-19.json",
+      "evidence_path": "targeted-frontend/native/causal-native-autoplay-19.json",
+      "size_bytes": 539,
+      "sha256": "5ab59db5f9b8f36d36b41e0054a09f9a6e6731c68622b59e40397071ce849fea"
+    },
+    {
+      "source_relative_path": "native/causal-native-autoplay-19.png",
+      "evidence_path": "targeted-frontend/native/causal-native-autoplay-19.png",
+      "size_bytes": 150234,
+      "sha256": "25bbc6a584dc13fb0b9b310869b4919b72b3d3bc896820a07035227573fc7211"
+    },
+    {
+      "source_relative_path": "native/causal-native-autoplay-21.json",
+      "evidence_path": "targeted-frontend/native/causal-native-autoplay-21.json",
+      "size_bytes": 544,
+      "sha256": "73feb8476e25cbc925b7ebed4e457f287d2644a953501a62a103489a426da5f4"
+    },
+    {
+      "source_relative_path": "native/causal-native-autoplay-21.png",
+      "evidence_path": "targeted-frontend/native/causal-native-autoplay-21.png",
+      "size_bytes": 188608,
+      "sha256": "c15ce33b36e58651c9e59ad9ee6548ed9e9150c240125f70e29546d2f7440b43"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-changed-head.json",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-changed-head.json",
+      "size_bytes": 840,
+      "sha256": "a4c0c7cd10584b4f26e9876d6c7a2de512c9402ad54a1f11cfd4b9ade303eba1"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-changed-head.png",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-changed-head.png",
+      "size_bytes": 235106,
+      "sha256": "a3f1121e315dd51ecb8443b78bc617151b66b5b44b6e40056142f1226f1cd107"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-missing.json",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-missing.json",
+      "size_bytes": 835,
+      "sha256": "cfb205e6a4c994ff6aa708b6b61ed3b96db04aea76c3b5c5c02f543dd9370c69"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-missing.png",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-missing.png",
+      "size_bytes": 233347,
+      "sha256": "ef44474caa55fda72b47837bb9a8be9b90c5d3fc8f23c4921d8661b0fea93cfc"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-navigation-head.json",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-navigation-head.json",
+      "size_bytes": 444,
+      "sha256": "489460a1c56e229abf7c649380b80eabd43169b10220a15c7f0785734ebf3eed"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-navigation-head.png",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-navigation-head.png",
+      "size_bytes": 490918,
+      "sha256": "1f0cd353e1f4ca478737695ff992e48ce81645797ebcc845364c237ddeffad78"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-navigation.json",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-navigation.json",
+      "size_bytes": 439,
+      "sha256": "22b7578b12bd52506e6aaa471ee92a8aff716485fb125b6cc65f9d117d127fa3"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-navigation.png",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-navigation.png",
+      "size_bytes": 490918,
+      "sha256": "1f0cd353e1f4ca478737695ff992e48ce81645797ebcc845364c237ddeffad78"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-none.json",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-none.json",
+      "size_bytes": 1107,
+      "sha256": "fa78c8ab5dbc8d6526c41cc42c5719044ae234c835212825d7c2de714a6f5900"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-none.png",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-none.png",
+      "size_bytes": 232572,
+      "sha256": "a2697a4db4ef4a69783981551ed6a684578d8d5fe4960e5e6a323c583d448688"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-pause-head.json",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-pause-head.json",
+      "size_bytes": 1563,
+      "sha256": "401a907b4a7ba5897d93dfcd809c06d21ed110fd644aef0b8d3e040623f7068e"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-pause-head.png",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-pause-head.png",
+      "size_bytes": 195841,
+      "sha256": "2e389f801e490067f0e15ad55900415f1a768b56e38c4be494c22231b54f0fa0"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-pause.json",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-pause.json",
+      "size_bytes": 1558,
+      "sha256": "7227ad1ff8e763c61dbb98c2006501ca390526c93f99795f0ca114639f2ea92f"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-pause.png",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-pause.png",
+      "size_bytes": 195841,
+      "sha256": "2e389f801e490067f0e15ad55900415f1a768b56e38c4be494c22231b54f0fa0"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-unstarted.json",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-unstarted.json",
+      "size_bytes": 837,
+      "sha256": "1fa1e3f119217809b7c53d17999d6da05df365a365ab81316101c3ba94c16b72"
+    },
+    {
+      "source_relative_path": "native/causal-native-handoff-unstarted.png",
+      "evidence_path": "targeted-frontend/native/causal-native-handoff-unstarted.png",
+      "size_bytes": 233563,
+      "sha256": "ca1058b0ff745d3994aa7004c71e4befc19f33113327daec22a74a38a65f72a2"
+    },
+    {
+      "source_relative_path": "native/causal-native-heating-settled-1280x800.json",
+      "evidence_path": "targeted-frontend/native/causal-native-heating-settled-1280x800.json",
+      "size_bytes": 589,
+      "sha256": "b7335733dc50f139edb1d6486199636c8cbe44f0bb2ccb49f215a32f0fd98bca"
+    },
+    {
+      "source_relative_path": "native/causal-native-heating-settled-1280x800.png",
+      "evidence_path": "targeted-frontend/native/causal-native-heating-settled-1280x800.png",
+      "size_bytes": 150441,
+      "sha256": "e9f4e89a1a9dc7bf74552b439a6e0e8af6df1c6778397a60b4dee235dbb66ac5"
+    },
+    {
+      "source_relative_path": "native/causal-native-heating-settled-1440x900.json",
+      "evidence_path": "targeted-frontend/native/causal-native-heating-settled-1440x900.json",
+      "size_bytes": 590,
+      "sha256": "af0bc74f4b3bf53afead728a6c583ad36415578102e475e3214541f9740bf55d"
+    },
+    {
+      "source_relative_path": "native/causal-native-heating-settled-1440x900.png",
+      "evidence_path": "targeted-frontend/native/causal-native-heating-settled-1440x900.png",
+      "size_bytes": 151142,
+      "sha256": "a65374293e7c8e2fc2bbd740cac241319d2ebcd3b779ba65d85e2c715fd5676d"
+    },
+    {
+      "source_relative_path": "native/causal-native-heating-settled-390x844.json",
+      "evidence_path": "targeted-frontend/native/causal-native-heating-settled-390x844.json",
+      "size_bytes": 589,
+      "sha256": "bb51681474bec377a75905efd6f8b324a157e35ab5eff203ab679b5248dbc93d"
+    },
+    {
+      "source_relative_path": "native/causal-native-heating-settled-390x844.png",
+      "evidence_path": "targeted-frontend/native/causal-native-heating-settled-390x844.png",
+      "size_bytes": 140052,
+      "sha256": "a9a3950b157a6e9293e4bae19608a25e52dbb89658fa9cc53f626b77e346bdbd"
+    },
+    {
+      "source_relative_path": "native/causal-native-termination-forks-bounds.json",
+      "evidence_path": "targeted-frontend/native/causal-native-termination-forks-bounds.json",
+      "size_bytes": 3608,
+      "sha256": "732007634666f1b5aa64024feeb6b91432762877a7b3ab01cd410bd5c2cd0db8"
+    },
+    {
+      "source_relative_path": "native/causal-native-termination-forks-bounds.png",
+      "evidence_path": "targeted-frontend/native/causal-native-termination-forks-bounds.png",
+      "size_bytes": 128310,
+      "sha256": "a91d5a181676a3a0523e57e1cfd98395fe3db59c73f4245224947c3586819dff"
+    },
+    {
+      "source_relative_path": "native/causal-native-termination-forks.json",
+      "evidence_path": "targeted-frontend/native/causal-native-termination-forks.json",
+      "size_bytes": 5204,
+      "sha256": "f2b824df24a925f0480a7a2e33d38e27413363d41019d5388e72a9b5f4eee829"
+    },
+    {
+      "source_relative_path": "native/causal-native-termination-forks.png",
+      "evidence_path": "targeted-frontend/native/causal-native-termination-forks.png",
+      "size_bytes": 128310,
+      "sha256": "a91d5a181676a3a0523e57e1cfd98395fe3db59c73f4245224947c3586819dff"
+    },
+    {
+      "source_relative_path": "native-branch-bounds.log",
+      "evidence_path": "targeted-frontend/native-branch-bounds.log",
+      "size_bytes": 1035,
+      "sha256": "6e0b5504776751f890ab7e071f6cd7dfd7708c2153fda157501517be80455c49"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-autoplay-18.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-autoplay-18.json",
+      "size_bytes": 532,
+      "sha256": "2ecddf9be5f610728aabbca58c9bd180087e96f8a3cf6529cad8d2050e590e12"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-autoplay-18.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-autoplay-18.png",
+      "size_bytes": 144640,
+      "sha256": "75a510be15dd0c87860c1a23cbff74f9ed68ff6443e7f0af1f85fabd9e35ab22"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-autoplay-19.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-autoplay-19.json",
+      "size_bytes": 539,
+      "sha256": "e0a794b70960a661125fa30c542a9b95c4044abb2a5d32ace105d60461d0c099"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-autoplay-19.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-autoplay-19.png",
+      "size_bytes": 150564,
+      "sha256": "7bd2a59b4c571ce640a9c5b7b1c8b18e5c94c9d6ab41d9ecd883e49561e7f900"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-autoplay-21.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-autoplay-21.json",
+      "size_bytes": 544,
+      "sha256": "d36c4ecd730d886bd85b354886db5157a8794584c07fdd81001c76786eb9da72"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-autoplay-21.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-autoplay-21.png",
+      "size_bytes": 188842,
+      "sha256": "60a93d65159c2e5e5d175fd8413aee37f893e2f6292b52ecc86404eb8bd098c9"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-changed-head.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-changed-head.json",
+      "size_bytes": 840,
+      "sha256": "7dbf304a6740c3484b994d69213cdd454a349459e7a37483d2a8c2bfc3158132"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-changed-head.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-changed-head.png",
+      "size_bytes": 235284,
+      "sha256": "26be34e0fe3f1c4d6d7080ae19a27910943a5258edccb0fd7d9fd37929c19c8d"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-missing.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-missing.json",
+      "size_bytes": 835,
+      "sha256": "dc7746f39d793e1135bb6f8e6d0916ca3b0a7ef140c37e1e37229db61ee4085b"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-missing.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-missing.png",
+      "size_bytes": 233524,
+      "sha256": "d28377e7e29dcb970ffe5312d46317cb95a743d2eb75c0f4fe3205c650db217a"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-navigation-head.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-navigation-head.json",
+      "size_bytes": 444,
+      "sha256": "e3d9fdc207bf803b8fa9287236554bb6b0b332be893722d925e9101adb3fbd36"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-navigation-head.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-navigation-head.png",
+      "size_bytes": 490918,
+      "sha256": "1f0cd353e1f4ca478737695ff992e48ce81645797ebcc845364c237ddeffad78"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-navigation.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-navigation.json",
+      "size_bytes": 439,
+      "sha256": "4babf693dec42b3d9b42b3ebe8a3962771ad89b7c59cb9f8b96de69e316c530f"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-navigation.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-navigation.png",
+      "size_bytes": 490918,
+      "sha256": "1f0cd353e1f4ca478737695ff992e48ce81645797ebcc845364c237ddeffad78"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-none.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-none.json",
+      "size_bytes": 1107,
+      "sha256": "367616ee7d61e13ec55a25df7aed7c4ae4c3d97858565d5f0cc47c6be351e68d"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-none.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-none.png",
+      "size_bytes": 232572,
+      "sha256": "a2697a4db4ef4a69783981551ed6a684578d8d5fe4960e5e6a323c583d448688"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-pause-head.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-pause-head.json",
+      "size_bytes": 1563,
+      "sha256": "36c33d8d0266f9606a8c69e44d8328ab928e28f7b1e5d8a3707f4796143f1d45"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-pause-head.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-pause-head.png",
+      "size_bytes": 195841,
+      "sha256": "2e389f801e490067f0e15ad55900415f1a768b56e38c4be494c22231b54f0fa0"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-pause.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-pause.json",
+      "size_bytes": 1558,
+      "sha256": "9ad0b4349747326eeffbe83bdcfcbfe8f74c8fde329dc55fe8075d010b9f7fbb"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-pause.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-pause.png",
+      "size_bytes": 195841,
+      "sha256": "2e389f801e490067f0e15ad55900415f1a768b56e38c4be494c22231b54f0fa0"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-unstarted.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-unstarted.json",
+      "size_bytes": 837,
+      "sha256": "01e8a324f4283b56645a3e5fe1bdb0ae3427cd586f4e443dc4758538de5d15f5"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-handoff-unstarted.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-handoff-unstarted.png",
+      "size_bytes": 233739,
+      "sha256": "53b75cece6b8f20c4aa5c41cf4b4d982c414f25aba7bef025f05a601e7e046f6"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-heating-settled-1280x800.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-heating-settled-1280x800.json",
+      "size_bytes": 66293,
+      "sha256": "0ac155c92636ac1e644334550fa9a254b2b191c20cf1bc78880a9421040a015e"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-heating-settled-1280x800.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-heating-settled-1280x800.png",
+      "size_bytes": 150628,
+      "sha256": "47472df843d5923ed1e4a3208a883e18b79bddda911d2777fd431516d363b958"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-heating-settled-1440x900.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-heating-settled-1440x900.json",
+      "size_bytes": 66328,
+      "sha256": "4ba4c765bcf3c6369c736e75b117508b1f585612b23df5dc6ab672341e9f11bb"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-heating-settled-1440x900.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-heating-settled-1440x900.png",
+      "size_bytes": 151310,
+      "sha256": "5431c37e5685e8213ca459b6d9c20d06ef988696b4d81eef4234e7e9979daa13"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-heating-settled-390x844.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-heating-settled-390x844.json",
+      "size_bytes": 66441,
+      "sha256": "596a6118d7cb1b9ee07394a162ccd4aed11f570a58c4270df19ca9c81572f3ce"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-heating-settled-390x844.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-heating-settled-390x844.png",
+      "size_bytes": 138749,
+      "sha256": "d34236118da42b49a46ca8bd0d942e72cc457dd43dec8ae07dfd40e45672080a"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-termination-forks-1000.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-termination-forks-1000.json",
+      "size_bytes": 211644,
+      "sha256": "84e93a10d65fd98d7dc006118cc3c38435804fc7241b9b0bae00202505819e25"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-termination-forks-1000.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-termination-forks-1000.png",
+      "size_bytes": 124193,
+      "sha256": "6ddc7ce0ff7acd01410a43716a14791c0c4ea8471ef7b4233e8fa0d829c82d04"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-termination-forks-900.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-termination-forks-900.json",
+      "size_bytes": 211642,
+      "sha256": "844d28679401abd058f13748145ad788f50bb771fa9600fb31c9ab4dd3636073"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-termination-forks-900.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-termination-forks-900.png",
+      "size_bytes": 123684,
+      "sha256": "73f3c7fa00ab8f14786b5f474740ad331302f6c7f9845c5f3354ce34e32eb7da"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-termination-forks-bounds-1000.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-termination-forks-bounds-1000.json",
+      "size_bytes": 3610,
+      "sha256": "04b5d8cc0a3e854b29a0b3dbdd8f988b99ea1c6b16889ec0274e7898507fbcc7"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-termination-forks-bounds-1000.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-termination-forks-bounds-1000.png",
+      "size_bytes": 124193,
+      "sha256": "6ddc7ce0ff7acd01410a43716a14791c0c4ea8471ef7b4233e8fa0d829c82d04"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-termination-forks-bounds-900.json",
+      "evidence_path": "targeted-frontend/native-final/causal-native-termination-forks-bounds-900.json",
+      "size_bytes": 3608,
+      "sha256": "1cd1c795ecc9aad83ed859e3484eda76ca0e16197aac6655777ad46fab1106c7"
+    },
+    {
+      "source_relative_path": "native-final/causal-native-termination-forks-bounds-900.png",
+      "evidence_path": "targeted-frontend/native-final/causal-native-termination-forks-bounds-900.png",
+      "size_bytes": 123684,
+      "sha256": "73f3c7fa00ab8f14786b5f474740ad331302f6c7f9845c5f3354ce34e32eb7da"
+    },
+    {
+      "source_relative_path": "native-final/expanded-process-1428.json",
+      "evidence_path": "targeted-frontend/native-final/expanded-process-1428.json",
+      "size_bytes": 627,
+      "sha256": "141fb24d53daa615008f1d88da0cea7158fc8eba8509246acebb197248e506f4"
+    },
+    {
+      "source_relative_path": "native-final/expanded-process-1428.png",
+      "evidence_path": "targeted-frontend/native-final/expanded-process-1428.png",
+      "size_bytes": 84235,
+      "sha256": "5f9951567267fe4c204cddf8bc7d6b02adc04300047a5a335343de53728dcb9c"
+    },
+    {
+      "source_relative_path": "native-final/expanded-process-390.json",
+      "evidence_path": "targeted-frontend/native-final/expanded-process-390.json",
+      "size_bytes": 626,
+      "sha256": "1dc9ef28482feaea71ca9bce6d86bb5948e1f48f626e861c6a26d49ea052d1a8"
+    },
+    {
+      "source_relative_path": "native-final/expanded-process-390.png",
+      "evidence_path": "targeted-frontend/native-final/expanded-process-390.png",
+      "size_bytes": 72851,
+      "sha256": "2695713dfc5a081acf5a405310c6d6e4be576f2e01d68ac351461c9586ee2d42"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-autoplay-18.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-autoplay-18.json",
+      "size_bytes": 723,
+      "sha256": "ed66a1bd3ed7edf3ff7ac441e10652098f974ed3bc9e405e6bb126f3284ae163"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-autoplay-18.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-autoplay-18.png",
+      "size_bytes": 144640,
+      "sha256": "75a510be15dd0c87860c1a23cbff74f9ed68ff6443e7f0af1f85fabd9e35ab22"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-autoplay-19.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-autoplay-19.json",
+      "size_bytes": 730,
+      "sha256": "c6997a4ec3c0031e3a3e3f74dc00b0fe6780dc7c1ae8a502cca1d11200b07878"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-autoplay-19.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-autoplay-19.png",
+      "size_bytes": 150564,
+      "sha256": "7bd2a59b4c571ce640a9c5b7b1c8b18e5c94c9d6ab41d9ecd883e49561e7f900"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-autoplay-21.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-autoplay-21.json",
+      "size_bytes": 735,
+      "sha256": "c54b5bd5c404aebf9a5031d33ebd3c54563f9d85b0ed7d5ce840322ff2dc7224"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-autoplay-21.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-autoplay-21.png",
+      "size_bytes": 188842,
+      "sha256": "60a93d65159c2e5e5d175fd8413aee37f893e2f6292b52ecc86404eb8bd098c9"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-changed-head.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-changed-head.json",
+      "size_bytes": 1031,
+      "sha256": "96623e15135fe5faf38ef48b018efe66401f3f946ada57c7abf1c5fd03499e27"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-changed-head.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-changed-head.png",
+      "size_bytes": 235284,
+      "sha256": "26be34e0fe3f1c4d6d7080ae19a27910943a5258edccb0fd7d9fd37929c19c8d"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-missing.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-missing.json",
+      "size_bytes": 1026,
+      "sha256": "772056cf68e06cbb8021202e93366611723a8504b601b14ecc778c47cc8970db"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-missing.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-missing.png",
+      "size_bytes": 233524,
+      "sha256": "d28377e7e29dcb970ffe5312d46317cb95a743d2eb75c0f4fe3205c650db217a"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-navigation-head.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-navigation-head.json",
+      "size_bytes": 635,
+      "sha256": "a7ed64c75b83308d698c3ae05626a309401355436bbef7445f8ab0c24db8f76a"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-navigation-head.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-navigation-head.png",
+      "size_bytes": 490918,
+      "sha256": "1f0cd353e1f4ca478737695ff992e48ce81645797ebcc845364c237ddeffad78"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-navigation.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-navigation.json",
+      "size_bytes": 630,
+      "sha256": "1c3b51ed437b2dcddbc61a1ede3eaace8dc583c02dc10a959d24fd73dac9cc89"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-navigation.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-navigation.png",
+      "size_bytes": 490918,
+      "sha256": "1f0cd353e1f4ca478737695ff992e48ce81645797ebcc845364c237ddeffad78"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-none.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-none.json",
+      "size_bytes": 1298,
+      "sha256": "2f67e3e21287e11a4ade1287c2c9238f5c208bfbcee44063cef4985c650b67d8"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-none.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-none.png",
+      "size_bytes": 232572,
+      "sha256": "a2697a4db4ef4a69783981551ed6a684578d8d5fe4960e5e6a323c583d448688"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-pause-head.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-pause-head.json",
+      "size_bytes": 1754,
+      "sha256": "aa57d3e0c4b8d6630cfc44dbd36a1e4d37181690b1dc2d6ff035417731a1ca8b"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-pause-head.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-pause-head.png",
+      "size_bytes": 195841,
+      "sha256": "2e389f801e490067f0e15ad55900415f1a768b56e38c4be494c22231b54f0fa0"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-pause.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-pause.json",
+      "size_bytes": 1749,
+      "sha256": "6dfdbd0acd06238573885910407a0aed449a47f6139d5f42e549a63832e77472"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-pause.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-pause.png",
+      "size_bytes": 195841,
+      "sha256": "2e389f801e490067f0e15ad55900415f1a768b56e38c4be494c22231b54f0fa0"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-unstarted.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-unstarted.json",
+      "size_bytes": 1028,
+      "sha256": "fe8d096c9b35ec2ba21b913ae01509345bdeec579beb09e0195b5f324c14781d"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-handoff-unstarted.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-handoff-unstarted.png",
+      "size_bytes": 233739,
+      "sha256": "53b75cece6b8f20c4aa5c41cf4b4d982c414f25aba7bef025f05a601e7e046f6"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-heating-settled-1280x800.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-heating-settled-1280x800.json",
+      "size_bytes": 66484,
+      "sha256": "f13aa06222f75e0dbe9d40c5cc3c01b4a386eba970126414ec26884a4e32abff"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-heating-settled-1280x800.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-heating-settled-1280x800.png",
+      "size_bytes": 150628,
+      "sha256": "47472df843d5923ed1e4a3208a883e18b79bddda911d2777fd431516d363b958"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-heating-settled-1440x900.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-heating-settled-1440x900.json",
+      "size_bytes": 66519,
+      "sha256": "08fa5aa61f526b9d3f01dbde93c34650959c037863d23dd4046c90be80b4de6c"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-heating-settled-1440x900.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-heating-settled-1440x900.png",
+      "size_bytes": 151310,
+      "sha256": "5431c37e5685e8213ca459b6d9c20d06ef988696b4d81eef4234e7e9979daa13"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-heating-settled-390x844.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-heating-settled-390x844.json",
+      "size_bytes": 66632,
+      "sha256": "1cf0390d8bcf1989d9dafdf3bac391ecaba291f4dd33e0a0b8fdf279538a6ae1"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-heating-settled-390x844.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-heating-settled-390x844.png",
+      "size_bytes": 138749,
+      "sha256": "d34236118da42b49a46ca8bd0d942e72cc457dd43dec8ae07dfd40e45672080a"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-termination-forks-1000.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-termination-forks-1000.json",
+      "size_bytes": 211837,
+      "sha256": "3da06f997d1c1f0838bffaa7fc0cadafaa8b7ca3d2ee2c63f6ce234524c6fa11"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-termination-forks-1000.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-termination-forks-1000.png",
+      "size_bytes": 123934,
+      "sha256": "197e8000cb68c495e7ec68864eb60570af7ea3d808f5c429ce0904b1b51f5f17"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-termination-forks-900.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-termination-forks-900.json",
+      "size_bytes": 211835,
+      "sha256": "2ea47462de986bfb89cf23912e63988ab925838ab6170079519ea4cfcf47f7fe"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-termination-forks-900.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-termination-forks-900.png",
+      "size_bytes": 123425,
+      "sha256": "4c38e5426d60f996bb95c3fde81e9bfafd1d88058a8e29cfd2d5e528d8784b06"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-termination-forks-bounds-1000.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-termination-forks-bounds-1000.json",
+      "size_bytes": 3801,
+      "sha256": "7620862d2d4850eed05dcf17241993e48bf98430a130003f503870891ed0042f"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-termination-forks-bounds-1000.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-termination-forks-bounds-1000.png",
+      "size_bytes": 123934,
+      "sha256": "197e8000cb68c495e7ec68864eb60570af7ea3d808f5c429ce0904b1b51f5f17"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-termination-forks-bounds-900.json",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-termination-forks-bounds-900.json",
+      "size_bytes": 3799,
+      "sha256": "ccecc1f7045b283f4f6fedaf4e18784cd205f2e018b42b73390e7021d0b0ab23"
+    },
+    {
+      "source_relative_path": "native-final-all/causal-native-termination-forks-bounds-900.png",
+      "evidence_path": "targeted-frontend/native-final-all/causal-native-termination-forks-bounds-900.png",
+      "size_bytes": 123425,
+      "sha256": "4c38e5426d60f996bb95c3fde81e9bfafd1d88058a8e29cfd2d5e528d8784b06"
+    },
+    {
+      "source_relative_path": "native-final-all/expanded-process-1428.json",
+      "evidence_path": "targeted-frontend/native-final-all/expanded-process-1428.json",
+      "size_bytes": 818,
+      "sha256": "6055e05a6b5a93b75950e5f8b3f60642d17dd12536968e3dcb5020d261abead8"
+    },
+    {
+      "source_relative_path": "native-final-all/expanded-process-1428.png",
+      "evidence_path": "targeted-frontend/native-final-all/expanded-process-1428.png",
+      "size_bytes": 84235,
+      "sha256": "5f9951567267fe4c204cddf8bc7d6b02adc04300047a5a335343de53728dcb9c"
+    },
+    {
+      "source_relative_path": "native-final-all/expanded-process-390.json",
+      "evidence_path": "targeted-frontend/native-final-all/expanded-process-390.json",
+      "size_bytes": 817,
+      "sha256": "8e0777b9cde916663cbb1a1013c49cd404061363b668ebcce8a40a4e45d5890b"
+    },
+    {
+      "source_relative_path": "native-final-all/expanded-process-390.png",
+      "evidence_path": "targeted-frontend/native-final-all/expanded-process-390.png",
+      "size_bytes": 72851,
+      "sha256": "2695713dfc5a081acf5a405310c6d6e4be576f2e01d68ac351461c9586ee2d42"
+    },
+    {
+      "source_relative_path": "native-final-all.log",
+      "evidence_path": "targeted-frontend/native-final-all.log",
+      "size_bytes": 3125,
+      "sha256": "d6e31f0acbdb3dd84085a92be351e60c99de4c50c6bcdf369062721bf63412c3"
+    },
+    {
+      "source_relative_path": "native-final-byte-recheck.log",
+      "evidence_path": "targeted-frontend/native-final-byte-recheck.log",
+      "size_bytes": 689,
+      "sha256": "7dc248a4d33abf0ad3f4ad3d446701c8b3c0a0b3b48dcc60f74e430425dce77f"
+    },
+    {
+      "source_relative_path": "native-final-candidate.log",
+      "evidence_path": "targeted-frontend/native-final-candidate.log",
+      "size_bytes": 1973,
+      "sha256": "8ec67c63e9ec5b73f31392c8a43606a9bd7432b352ed6a73f417a4b2a21b6de4"
+    },
+    {
+      "source_relative_path": "native-final.log",
+      "evidence_path": "targeted-frontend/native-final.log",
+      "size_bytes": 5238,
+      "sha256": "62afaba80de9176c50d37924272fb7f8e4914c7543ed04a2521608f9737056de"
+    },
+    {
+      "source_relative_path": "native-initial.log",
+      "evidence_path": "targeted-frontend/native-initial.log",
+      "size_bytes": 16743,
+      "sha256": "ef7bf99da69cdc1fad36bc0704b8675174c08e4354a779322ae13044d98696c3"
+    },
+    {
+      "source_relative_path": "native-injected/causal-native-heating-settled-1440x900.json",
+      "evidence_path": "targeted-frontend/native-injected/causal-native-heating-settled-1440x900.json",
+      "size_bytes": 66519,
+      "sha256": "d27f0e8e62f0bbb1fffe2515f07500554471050b06860497be15ad5c12671627"
+    },
+    {
+      "source_relative_path": "native-injected/causal-native-heating-settled-1440x900.png",
+      "evidence_path": "targeted-frontend/native-injected/causal-native-heating-settled-1440x900.png",
+      "size_bytes": 151310,
+      "sha256": "5431c37e5685e8213ca459b6d9c20d06ef988696b4d81eef4234e7e9979daa13"
+    },
+    {
+      "source_relative_path": "native-injected/causal-native-termination-forks-1000.json",
+      "evidence_path": "targeted-frontend/native-injected/causal-native-termination-forks-1000.json",
+      "size_bytes": 211835,
+      "sha256": "0d662cdf628fdce3238a89ca70ce308761244b7b8b55fbad5e06d51217306a09"
+    },
+    {
+      "source_relative_path": "native-injected/causal-native-termination-forks-1000.png",
+      "evidence_path": "targeted-frontend/native-injected/causal-native-termination-forks-1000.png",
+      "size_bytes": 124193,
+      "sha256": "6ddc7ce0ff7acd01410a43716a14791c0c4ea8471ef7b4233e8fa0d829c82d04"
+    },
+    {
+      "source_relative_path": "native-injected/causal-native-termination-forks-bounds-1000.json",
+      "evidence_path": "targeted-frontend/native-injected/causal-native-termination-forks-bounds-1000.json",
+      "size_bytes": 3801,
+      "sha256": "fce31ba0db9f5347726b8b6997e4873793b0cb1177e65c71609893b697d93251"
+    },
+    {
+      "source_relative_path": "native-injected/causal-native-termination-forks-bounds-1000.png",
+      "evidence_path": "targeted-frontend/native-injected/causal-native-termination-forks-bounds-1000.png",
+      "size_bytes": 124193,
+      "sha256": "6ddc7ce0ff7acd01410a43716a14791c0c4ea8471ef7b4233e8fa0d829c82d04"
+    },
+    {
+      "source_relative_path": "native-injected.log",
+      "evidence_path": "targeted-frontend/native-injected.log",
+      "size_bytes": 541,
+      "sha256": "513a37dd5c3bb0e451972f0d6feb7f666cb9fec56b77ea4cc2f6bb92c8aa0a47"
+    },
+    {
+      "source_relative_path": "native-language-context/causal-native-termination-forks-1000.json",
+      "evidence_path": "targeted-frontend/native-language-context/causal-native-termination-forks-1000.json",
+      "size_bytes": 211837,
+      "sha256": "3da06f997d1c1f0838bffaa7fc0cadafaa8b7ca3d2ee2c63f6ce234524c6fa11"
+    },
+    {
+      "source_relative_path": "native-language-context/causal-native-termination-forks-1000.png",
+      "evidence_path": "targeted-frontend/native-language-context/causal-native-termination-forks-1000.png",
+      "size_bytes": 123934,
+      "sha256": "197e8000cb68c495e7ec68864eb60570af7ea3d808f5c429ce0904b1b51f5f17"
+    },
+    {
+      "source_relative_path": "native-language-context/causal-native-termination-forks-900.json",
+      "evidence_path": "targeted-frontend/native-language-context/causal-native-termination-forks-900.json",
+      "size_bytes": 211835,
+      "sha256": "2ea47462de986bfb89cf23912e63988ab925838ab6170079519ea4cfcf47f7fe"
+    },
+    {
+      "source_relative_path": "native-language-context/causal-native-termination-forks-900.png",
+      "evidence_path": "targeted-frontend/native-language-context/causal-native-termination-forks-900.png",
+      "size_bytes": 123425,
+      "sha256": "4c38e5426d60f996bb95c3fde81e9bfafd1d88058a8e29cfd2d5e528d8784b06"
+    },
+    {
+      "source_relative_path": "native-language-context/causal-native-termination-forks-bounds-1000.json",
+      "evidence_path": "targeted-frontend/native-language-context/causal-native-termination-forks-bounds-1000.json",
+      "size_bytes": 3801,
+      "sha256": "7620862d2d4850eed05dcf17241993e48bf98430a130003f503870891ed0042f"
+    },
+    {
+      "source_relative_path": "native-language-context/causal-native-termination-forks-bounds-1000.png",
+      "evidence_path": "targeted-frontend/native-language-context/causal-native-termination-forks-bounds-1000.png",
+      "size_bytes": 123934,
+      "sha256": "197e8000cb68c495e7ec68864eb60570af7ea3d808f5c429ce0904b1b51f5f17"
+    },
+    {
+      "source_relative_path": "native-language-context/causal-native-termination-forks-bounds-900.json",
+      "evidence_path": "targeted-frontend/native-language-context/causal-native-termination-forks-bounds-900.json",
+      "size_bytes": 3799,
+      "sha256": "ccecc1f7045b283f4f6fedaf4e18784cd205f2e018b42b73390e7021d0b0ab23"
+    },
+    {
+      "source_relative_path": "native-language-context/causal-native-termination-forks-bounds-900.png",
+      "evidence_path": "targeted-frontend/native-language-context/causal-native-termination-forks-bounds-900.png",
+      "size_bytes": 123425,
+      "sha256": "4c38e5426d60f996bb95c3fde81e9bfafd1d88058a8e29cfd2d5e528d8784b06"
+    },
+    {
+      "source_relative_path": "native-language-context.log",
+      "evidence_path": "targeted-frontend/native-language-context.log",
+      "size_bytes": 1906,
+      "sha256": "b970114e6370a5d9648e878a7c2e25d5034b36d33d634bc694cf54b4fa7856ea"
+    },
+    {
+      "source_relative_path": "native-second.log",
+      "evidence_path": "targeted-frontend/native-second.log",
+      "size_bytes": 1943,
+      "sha256": "e8c964b527f2a1e3274845b2ab9b6f8b5faa3657411d9ba47a12215e2c013c8d"
+    },
+    {
+      "source_relative_path": "native-third.log",
+      "evidence_path": "targeted-frontend/native-third.log",
+      "size_bytes": 1453,
+      "sha256": "b591c7773897b4e553186a203fda088e09a5b31b35d3c8ff4853f584b804c399"
+    }
+  ]
+}

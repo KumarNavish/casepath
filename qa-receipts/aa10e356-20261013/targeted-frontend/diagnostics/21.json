@@ -1,0 +1,99 @@
+{
+  "url": "http://localhost:41999/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=21&detail=step&node=dh_evidence&document=objective_defect_observation&obligation=obligation%3Adh_evidence%3Aobjective_defect_observation&fact=fact%3Aobjective_defect_observation",
+  "text": "CasePath\nEvidence into action\nRead-only\nCases\nDemonstration\nKnowledge\n\nCases / Synthetic claim / Recorded investigation\n\nRepeated heating failure and reported repair calls\n\nHistorical synthetic recording · as of 2025-02-21 · rules-based\n\nWorking.\n\nResume\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\n\nLegal basis · CO 259 · CO 259a · CO 259d · Recorded 2024-01-01 comparison\n\nFrom the sources\n02-heating-service-observation.txt\n↗\nOn 2025-02-21 at07:30, a calibrated digital instrument (fictional calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.\nWhat this shows\n\nThe dated calibrated observation identifies the fixed-pump fault and its causal limits.\n\nEstablished\n\nAssess objective defect evidence\nOpen larger process\n✓\nCapture the reported defect\n✓\nEstablish relevant tenancy terms\n✓\nEstablish landlord knowledge\n✓\nAssess supported cause\n·\nAssess objective defect evidence\nReady to check\n·\nRecord repair and rent reduction eligibility\nDocument requirements\nRelevant tenancy terms\nEstablished\nSupplied evidence is sufficient. ✓\nEstablish relevant tenancy terms\nSource evidence · 01-customer-and-tenancy-clarification.txt\nLandlord knowledge and continuing repair status\nEstablished\nSupplied evidence is sufficient. ✓\nEstablish landlord knowledge\nSource evidence · 03-landlord-knowledge-and-repair-status.txt\nDated technical defect observation\nEstablished\nSupplied evidence is sufficient. ✓\nAssess objective defect evidence\nSource evidence · 02-heating-service-observation.txt\nAll recorded requirements",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<button type=\"button\" class=\"au-link au-document-source\" data-au-source=\"src_3fa6e00ca8e24d41c3af7915f43a21bd\" data-au-source-origin=\"requirement:obligation:dh_evidence:objective_defect_observation\" data-au-citation=\"{&quot;artifact_id&quot;:&quot;src_3fa6e00ca8e24d41c3af7915f43a21bd&quot;,&quot;end_char&quot;:1309,&quot;quote&quot;:&quot;On 2025-02-21 at07:30, a calibrated digital instrument (fictional calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.&quot;,&quot;sha256&quot;:&quot;ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3&quot;,&quot;start_char&quot;:734,&quot;text_sha256&quot;:&quot;ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3&quot;}\">Source evidence · 02-heating-service-observation.txt</button>",
+  "revision": "21",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=20",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=21",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=22",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=23",
+      "method": "GET",
+      "time": 300,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/sources/clm_314f2d309fea25e6/src_3fa6e00ca8e24d41c3af7915f43a21bd/text",
+      "method": "GET",
+      "time": 300,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

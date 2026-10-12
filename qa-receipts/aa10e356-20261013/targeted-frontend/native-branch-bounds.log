@@ -1,0 +1,25 @@
+✖ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes (8465.672566ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8907.432307
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:892:1
+✖ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes (8465.672566ms)
+  AssertionError [ERR_ASSERTION]: the compact native overview exposes all eleven actual nodes in its graph viewport
+      at TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:903:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

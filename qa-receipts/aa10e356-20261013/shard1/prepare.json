@@ -1,0 +1,43 @@
+{
+  "repo": "/workspace/casepath-release-ae0-shard1",
+  "old_head": "32b5ae2eb4eb84885c875b89c0de091f98a30897",
+  "before_status": "",
+  "canonical_url": "https://github.com/KumarNavish/casepath.git",
+  "branch": "codex/casepath-causal-experience-integration-20261009",
+  "started_epoch": 1791845771.305964,
+  "host": "656813ef2295",
+  "canonical_fetched_head": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/tmp/casepath-release-aa10-20261013/shard1/home",
+    "TMPDIR": "/tmp/casepath-release-aa10-20261013/shard1/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/tmp/casepath-release-aa10-20261013/shard1/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "PYTHONHASHSEED": "0",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "aa10e356bef06f6b657a4e0797523d1ef0392b73"
+  },
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "exit_code": 0,
+  "finished_epoch": 1791845786.5568633,
+  "after_head": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "after_status": "",
+  "api_tree": "3570309d8b23f0786d1be8b3b7947cd032882a61",
+  "duration_seconds": 15.250899314880371
+}

@@ -1,0 +1,157 @@
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900 (5824.234656ms)
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800 (4842.827809ms)
+Traceback (most recent call last):
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 166, in <module>
+    encoded = json.dumps(build_fixture(), indent=2, sort_keys=True) + '\n'
+                         ~~~~~~~~~~~~~^^
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 60, in build_fixture
+    return _build_fixture()
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 65, in _build_fixture
+    store = AutonomousStore(Path(temporary) / 'synthetic.sqlite3')
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/autonomous_store_v1.py", line 103, in __init__
+    from .claim_loop_store import ClaimLoopStore
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop_store.py", line 11, in <module>
+    from .claim_loop import (
+    ...<7 lines>...
+    )
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop.py", line 40, in <module>
+    from .claim_loop_cycle import (
+    ...<5 lines>...
+    )
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop_cycle.py", line 13, in <module>
+    from .multi_agent import (
+    ...<3 lines>...
+    )
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/multi_agent.py", line 62, in <module>
+    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/playbook_template.py", line 7, in <module>
+    from .data import CLAIMS
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/data.py", line 87, in <module>
+    artifact(
+    ~~~~~~~~^
+        "art_lease", "lease-agreement.pdf", "Residential lease agreement", "pdf", "2026-08-01T09:03:00Z",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "lease_contract", ["fact_tenancy", "fact_address"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "Six-page lease agreement, including maintenance, defect-notification, access and house-rule clauses; the signature fields are blank.",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ),
+    ^
+  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/data.py", line 69, in artifact
+    "size_bytes": path.stat().st_size,
+                  ~~~~~~~~~^^
+  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 515, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-causal-document-formation-20261013/casepath-api/artifacts/lease-agreement.pdf'
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844 (4700.23719ms)
+✖ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes (1261.509938ms)
+✖ causal formation native: next case handoff retains verified content through none (9418.535159ms)
+✖ causal formation native: next case handoff retains verified content through pause (9510.891923ms)
+✔ causal formation native: next case handoff retains verified content through navigation (4702.525433ms)
+✔ causal formation native: next case handoff retains verified content through unstarted (4015.136924ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 5
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44795.751885
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:889:1
+✖ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes (1261.509938ms)
+  Error: Command failed: /workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python /workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py
+  Traceback (most recent call last):
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 166, in <module>
+      encoded = json.dumps(build_fixture(), indent=2, sort_keys=True) + '\n'
+                           ~~~~~~~~~~~~~^^
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 60, in build_fixture
+      return _build_fixture()
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 65, in _build_fixture
+      store = AutonomousStore(Path(temporary) / 'synthetic.sqlite3')
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/autonomous_store_v1.py", line 103, in __init__
+      from .claim_loop_store import ClaimLoopStore
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop_store.py", line 11, in <module>
+      from .claim_loop import (
+      ...<7 lines>...
+      )
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop.py", line 40, in <module>
+      from .claim_loop_cycle import (
+      ...<5 lines>...
+      )
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop_cycle.py", line 13, in <module>
+      from .multi_agent import (
+      ...<3 lines>...
+      )
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/multi_agent.py", line 62, in <module>
+      from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/playbook_template.py", line 7, in <module>
+      from .data import CLAIMS
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/data.py", line 87, in <module>
+      artifact(
+      ~~~~~~~~^
+          "art_lease", "lease-agreement.pdf", "Residential lease agreement", "pdf", "2026-08-01T09:03:00Z",
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          "lease_contract", ["fact_tenancy", "fact_address"],
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          "Six-page lease agreement, including maintenance, defect-notification, access and house-rule clauses; the signature fields are blank.",
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      ),
+      ^
+    File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/data.py", line 69, in artifact
+      "size_bytes": path.stat().st_size,
+                    ~~~~~~~~~^^
+    File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 515, in stat
+      return os.stat(self, follow_symlinks=follow_symlinks)
+             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-causal-document-formation-20261013/casepath-api/artifacts/lease-agreement.pdf'
+  
+      at genericNodeError (node:internal/errors:985:15)
+      at wrappedFn (node:internal/errors:539:14)
+      at checkExecSyncError (node:child_process:942:11)
+      at execFileSync (node:child_process:978:15)
+      at priorAssessmentFixture (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:297:9)
+      at TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:890:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    status: 1,
+    signal: null,
+    output: [ null, '', `Traceback (most recent call last):\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 166, in <module>\n    encoded = json.dumps(build_fixture(), indent=2, sort_keys=True) + '\\n'\n                         ~~~~~~~~~~~~~^^\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 60, in build_fixture\n    return _build_fixture()\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 65, in _build_fixture\n    store = AutonomousStore(Path(temporary) / 'synthetic.sqlite3')\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/autonomous_store_v1.py", line 103, in __init__\n    from .claim_loop_store import ClaimLoopStore\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop_store.py", line 11, in <module>\n    from .claim_loop import (\n    ...<7 lines>...\n    )\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop.py", line 40, in <module>\n    from .claim_loop_cycle import (\n    ...<5 lines>...\n    )\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop_cycle.py", line 13, in <module>\n    from .multi_agent import (\n    ...<3 lines>...\n    )\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/multi_agent.py", line 62, in <module>\n    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/playbook_template.py", line 7, in <module>\n    from .data import CLAIMS\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/data.py", line 87, in <module>\n    artifact(\n    ~~~~~~~~^\n        "art_lease", "lease-agreement.pdf", "Residential lease agreement", "pdf", "2026-08-01T09:03:00Z",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        "lease_contract", ["fact_tenancy", "fact_address"],\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        "Six-page lease agreement, including maintenance, defect-notification, access and house-rule clauses; the signature fields are blank.",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ),\n    ^\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/data.py", line 69, in artifact\n    "size_bytes": path.stat().st_size,\n                  ~~~~~~~~~^^\n  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 515, in stat\n    return os.stat(self, follow_symlinks=follow_symlinks)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-causal-document-formation-20261013/casepath-api/artifacts/lease-agreement.pdf'\n` ],
+    pid: 477977,
+    stdout: '',
+    stderr: `Traceback (most recent call last):\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 166, in <module>\n    encoded = json.dumps(build_fixture(), indent=2, sort_keys=True) + '\\n'\n                         ~~~~~~~~~~~~~^^\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 60, in build_fixture\n    return _build_fixture()\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-qa/build-prior-assessment-fixture-v1.py", line 65, in _build_fixture\n    store = AutonomousStore(Path(temporary) / 'synthetic.sqlite3')\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/autonomous_store_v1.py", line 103, in __init__\n    from .claim_loop_store import ClaimLoopStore\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop_store.py", line 11, in <module>\n    from .claim_loop import (\n    ...<7 lines>...\n    )\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop.py", line 40, in <module>\n    from .claim_loop_cycle import (\n    ...<5 lines>...\n    )\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/claim_loop_cycle.py", line 13, in <module>\n    from .multi_agent import (\n    ...<3 lines>...\n    )\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/multi_agent.py", line 62, in <module>\n    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/playbook_template.py", line 7, in <module>\n    from .data import CLAIMS\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/data.py", line 87, in <module>\n    artifact(\n    ~~~~~~~~^\n        "art_lease", "lease-agreement.pdf", "Residential lease agreement", "pdf", "2026-08-01T09:03:00Z",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        "lease_contract", ["fact_tenancy", "fact_address"],\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        "Six-page lease agreement, including maintenance, defect-notification, access and house-rule clauses; the signature fields are blank.",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ),\n    ^\n  File "/workspace/casepath-causal-document-formation-20261013/casepath-api/casepath_api/data.py", line 69, in artifact\n    "size_bytes": path.stat().st_size,\n                  ~~~~~~~~~^^\n  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 515, in stat\n    return os.stat(self, follow_symlinks=follow_symlinks)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-causal-document-formation-20261013/casepath-api/artifacts/lease-agreement.pdf'\n`
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:900:69
+✖ causal formation native: next case handoff retains verified content through none (9418.535159ms)
+  AssertionError [ERR_ASSERTION]: verified next prefix zero did not open directly
+      at eventually (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:501:10)
+      at async TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:913:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:900:69
+✖ causal formation native: next case handoff retains verified content through pause (9510.891923ms)
+  AssertionError [ERR_ASSERTION]: verified next prefix zero did not open directly
+      at eventually (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:501:10)
+      at async TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:913:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }

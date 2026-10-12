@@ -1,0 +1,144 @@
+{
+  "shard": 2,
+  "host": "656813ef2295",
+  "exec_session": 10876,
+  "wrapper_pid": 487902,
+  "pytest_pid": 487913,
+  "candidate": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "after_head": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "after_status": "",
+  "exit_code": 0,
+  "started_utc": "2026-10-12T22:58:34.245290+00:00",
+  "finished_utc": "2026-10-12T23:07:23.835616+00:00",
+  "duration_seconds": 529.5903265476227,
+  "assigned_count": 554,
+  "collected_count": 554,
+  "collected_exact_order_match": true,
+  "call_count": 554,
+  "call_ids_exact_order_match": true,
+  "teardown_count": 554,
+  "teardown_ids_exact_order_match": true,
+  "report_phase_outcomes": {
+    "setup": {
+      "passed": 554
+    },
+    "call": {
+      "passed": 554
+    },
+    "teardown": {
+      "passed": 554
+    }
+  },
+  "failed_exact_ids": [],
+  "failure_reports": [],
+  "skipped_exact_ids": [],
+  "skip_reports": [],
+  "unrun_call_ids": [],
+  "unexpected_call_ids": [],
+  "junit_testcase_count": 554,
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "554",
+      "time": "526.212",
+      "timestamp": "2026-10-12T22:58:36.073427+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "junit_failure_count": 0,
+  "junit_error_count": 0,
+  "junit_skip_count": 0,
+  "slowest_call_tests": [
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_ecab_registry_adapter_contract_conformance",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 22.92567202897044,
+      "utc_epoch": 1791846035.4036489
+    },
+    {
+      "id": "casepath-api/tests/test_agent_live_projection.py::test_live_projection_is_sealed_with_actual_completed_reference_work",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 18.910484399995767,
+      "utc_epoch": 1791845940.9616811
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-duplicate]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 18.00919247895945,
+      "utc_epoch": 1791846302.0718005
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_crash_after_observation_completes_exactly_one_v2_receipt",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 17.215286214021035,
+      "utc_epoch": 1791846001.9110096
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_fault_14_commit_claim_unknown_reconciles_without_execute_retry",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 15.35758915898623,
+      "utc_epoch": 1791846119.0760074
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_concurrent_same_key_registration_never_cancels_winner",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 14.783956998027861,
+      "utc_epoch": 1791845984.6944437
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_concurrent_callers_before_execution_marker_share_one_lineage",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 14.760938647959847,
+      "utc_epoch": 1791845969.9093275
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-explicit_reconciler]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 13.781938745989464,
+      "utc_epoch": 1791846355.5599146
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-duplicate]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 13.629797909001354,
+      "utc_epoch": 1791846341.7763102
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-startup_reconciler]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 13.314364864025265,
+      "utc_epoch": 1791846328.120096
+    }
+  ],
+  "first_failure": null,
+  "pytest_log_summary": "554 passed, 9 warnings in 526.22s (0:08:46)",
+  "warnings": {
+    "count": 9,
+    "categories": [
+      "SWIG types lack __module__ attributes",
+      "FastAPI on_event startup/shutdown deprecation"
+    ]
+  },
+  "artifact_hashes": {
+    "pytest.log": "ff34246fe77cc784464dd996f20a21570ad24b0e4942cf38d99a7c0df66ee596",
+    "junit.xml": "a625732dda397b54b55b6d0c6c75d8f813a5a54e7426332b68cdc9be297cffe5",
+    "reports.jsonl": "7195512c01b6a196890f312c5bcafebebc7f44e2c98b2054787b7608308161d0",
+    "collected.json": "abbf71fc33e95dac5ba8aaeb4b2650e6b5fc240efded409fa51e2b981522e14c",
+    "command.json": "29082019dc4ac1e76c5262a71c55bd7a66be647002244faa6b0d83d92eb139da",
+    "result.json": "960e118acc640455886081947c337ba98ddba0bbd819f9601c9f08bc7e380638",
+    "pytest-arguments.txt": "f18bac7d2e14699a87c9021453966166a0ab57f9f7c4b69f941f1a9c918366a0"
+  }
+}

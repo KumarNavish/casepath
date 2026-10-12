@@ -1,0 +1,29 @@
+✔ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes at 1440x900 (8347.973524ms)
+✔ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes at 1440x1000 (7348.87333ms)
+✖ focused flow: a recorded action opens its exact document and fact while manual inspection retains its chosen context (7288.042699ms)
+✔ focused flow: manual node inspection pauses the same accepted journal until deliberate Resume (7769.85107ms)
+✔ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (8019.485622ms)
+✔ focused flow: manual document inspection pauses the same accepted journal until deliberate Resume (8172.373227ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 47446.73238
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2590:1
+✖ focused flow: a recorded action opens its exact document and fact while manual inspection retains its chosen context (7288.042699ms)
+  locator.click: Error: strict mode violation: locator('[data-au-detail="documents"]') resolved to 2 elements:
+      1) <button type="button" aria-pressed="false" data-au-detail="documents" aria-controls="auPanel-documents">Documents</button> aka getByRole('button', { name: 'Documents' })
+      2) <button type="button" class="au-secondary" data-au-detail="documents">All recorded requirements</button> aka getByRole('button', { name: 'All recorded requirements' })
+  
+  Call log:
+  [2m  - waiting for locator('[data-au-detail="documents"]')[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2601:54) {
+    log: [ `  - waiting for locator('[data-au-detail="documents"]')` ]
+  }

@@ -1,0 +1,105 @@
+{
+  "shard": 1,
+  "host": "656813ef2295",
+  "candidate": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "session": 57917,
+  "wrapper_pid": 487843,
+  "pytest_pid": 487854,
+  "exit_code": 0,
+  "wrapper_duration_seconds": 509.3066563606262,
+  "started_utc": "2026-10-12T22:58:25.038780+00:00",
+  "finished_utc": "2026-10-12T23:06:54.345437+00:00",
+  "assigned_count": 242,
+  "collected_count": 242,
+  "assigned_collected_same_order": true,
+  "assigned_not_collected": [],
+  "unexpected_collected": [],
+  "report_id_count": 242,
+  "assigned_not_reported": [],
+  "unexpected_reported": [],
+  "phase_counts": {
+    "call:passed": 242,
+    "setup:passed": 242,
+    "teardown:passed": 242
+  },
+  "missing_phases": {},
+  "duplicate_phase_counts": {},
+  "passed": 242,
+  "failed": 0,
+  "failed_ids": [],
+  "skipped": 0,
+  "skip_ids_reasons": [],
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "242",
+      "time": "506.128",
+      "timestamp": "2026-10-12T22:58:26.695700+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "junit_case_count": 242,
+  "junit_failure_count": 0,
+  "junit_error_count": 0,
+  "junit_skipped_count": 0,
+  "warnings_text": "warnings summary ===============================\ntests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause\ntests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause\n  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute\n\ntests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause\ntests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause\n  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute\n\ntests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause\n  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute\n\n",
+  "slowest_call_reports": [
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[process]",
+      "duration_seconds": 33.581991970015224
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[owner]",
+      "duration_seconds": 32.99658760998864
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[False]",
+      "duration_seconds": 32.00885424099397
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_desk_arrival_is_persistently_idempotent_and_prepares_real_not_sent_draft",
+      "duration_seconds": 31.420764287002385
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_native_reopen_clears_inconsistent_completion_and_replays_one_real_continuation",
+      "duration_seconds": 31.332739103003405
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_resume_recovers_an_expired_running_executor_through_existing_service",
+      "duration_seconds": 29.12069385900395
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[process]",
+      "duration_seconds": 27.740833537012804
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[manual_draft]",
+      "duration_seconds": 25.972438627039082
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_reference_pause_then_resume_preserves_the_run_and_completed_calls",
+      "duration_seconds": 24.33904984901892
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_active_reference_pause_persists_checkpoint_and_resumes_real_source_work",
+      "duration_seconds": 16.130430184013676
+    }
+  ],
+  "after_head": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "after_status": "",
+  "sealed_file_count": 1680,
+  "sealed_manifest_mismatches": [],
+  "artifact_sha256": {
+    "command.json": "a9eb280438175fdda520f96b99d895a75200c26a7ebd0dc947cf5a129b611ff3",
+    "result.json": "4f82642d96170a5a7692ce2b4c6733197dda25bde55b7ab6b00eb812af6d6570",
+    "collected.json": "08e52a57b1201a69ea0c7f339a2d53be8ff0293f0d147a6abacbb73c85dfff79",
+    "reports.jsonl": "87b35e0b9ee912807ffdfeeff45da9ae84b825f96509d884193f1d3a22f6631f",
+    "pytest-arguments.txt": "fa3059976308e9e82ef0e520f106a4e0f29ac45529d7ebd4018c110a765e09e0",
+    "pytest.log": "a5ff5dd2e0d92935f107604137153e0b9513118dca991a2cd448be0c2e6ebb4d",
+    "junit.xml": "0916556d879f646316563650212bac03c249a49decfafe04637e09fdf6186e4d"
+  },
+  "junit_assigned_same_order": true
+}

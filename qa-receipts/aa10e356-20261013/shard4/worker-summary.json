@@ -1,0 +1,115 @@
+{
+  "shard": 4,
+  "host": "656813ef2295",
+  "candidate": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "after_head": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "after_status": "",
+  "exit_code": 0,
+  "assigned_count": 324,
+  "collected_count": 324,
+  "assigned_collected_exact_order": true,
+  "call_count": 324,
+  "call_outcomes": {
+    "passed": 324
+  },
+  "failed_reports": [],
+  "skipped_reports": [],
+  "duplicate_call_ids": [],
+  "unrun_ids": [],
+  "duration_seconds": 529.5224366188049,
+  "started_utc": "2026-10-12T22:58:43.274431+00:00",
+  "finished_utc": "2026-10-12T23:07:32.796867+00:00",
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "324",
+      "time": "526.231",
+      "timestamp": "2026-10-12T22:58:45.225729+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "slowest_call_reports": [
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 242.25775347003946,
+      "utc_epoch": 1791846321.774133
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 13.072931566974148,
+      "utc_epoch": 1791846004.6603053
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_changed_rule_pack_reassesses_instead_of_accepting_old_terminal_workflow",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 12.007581276004203,
+      "utc_epoch": 1791845978.9173791
+    },
+    {
+      "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_flagship_unresolved_end_date_is_not_sufficient_evidence",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 10.014955858991016,
+      "utc_epoch": 1791846385.4242864
+    },
+    {
+      "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_durable_acquisition_recovers_after_browser_storage_and_intent_expiry",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 8.340885528014041,
+      "utc_epoch": 1791846371.8067217
+    },
+    {
+      "id": "casepath-api/tests/test_workspace_evidence_authority_v1.py::test_decisive_health_source_pair_has_distinct_authorized_business_effects",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 7.983130509965122,
+      "utc_epoch": 1791846359.7874904
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py::test_omitted_recipe_produces_verified_v2_then_reuse_without_rewriting_v1",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 7.406858877977356,
+      "utc_epoch": 1791846018.4688995
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_automatically_resumes_new_evidence_arriving_during_inference",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 6.439934532041661,
+      "utc_epoch": 1791845991.5860047
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_live_control.py::test_reference_stop_remains_resumable_local_pause",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 6.251900497998577,
+      "utc_epoch": 1791845959.9255593
+    },
+    {
+      "id": "casepath-api/tests/test_public_hosted_read_only_v1.py::test_public_restarts_reads_commands_and_callback_races_preserve_all_saved_rows[flags1]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 5.400463108031545,
+      "utc_epoch": 1791846078.8502872
+    }
+  ],
+  "artifact_sha256": {
+    "command.json": "a198202a0ab77727ca648cf691083b7dbba83a28380d3da6fabf22c12794204b",
+    "result.json": "a67bb09fe2407976233e1df38254ab79d6a1f00f23e9addb512ef6a2a27efc12",
+    "collected.json": "efb18752d040efe12071c7ca0b180195036544b342166a48cb6e175bcdd6ffad",
+    "reports.jsonl": "4100fadd947f9a488fc1751af8d0e167a1f0510ebd11e6dd055c0afa0cac02b7",
+    "pytest.log": "a86385770785fd7d36cfe1707db6355176b12123179740697eb6df8b8a98d8a7",
+    "junit.xml": "4bfd564296df62129b8c2d424a93c7b580ac71fb167f6f5664c38d86a8c44ae9",
+    "pytest-arguments.txt": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6"
+  }
+}

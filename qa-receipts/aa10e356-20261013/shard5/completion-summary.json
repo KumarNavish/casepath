@@ -1,0 +1,106 @@
+{
+  "shard": 5,
+  "host": "656813ef2295",
+  "session_id": 26763,
+  "wrapper_pid": 488161,
+  "pytest_pid": 488172,
+  "candidate": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "after_head": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "after_status": "",
+  "exit_code": 0,
+  "duration_seconds": 521.9394183158875,
+  "started_epoch": 1791845943.956932,
+  "finished_epoch": 1791846465.8963504,
+  "assigned_count": 563,
+  "assigned_unique_count": 563,
+  "collected_count": 563,
+  "collected_unique_count": 563,
+  "assigned_collected_sets_equal": true,
+  "assigned_collected_order_equal": true,
+  "missing_ids": [],
+  "extra_ids": [],
+  "phase_outcomes": {
+    "setup:passed": 563,
+    "call:passed": 563,
+    "teardown:passed": 563
+  },
+  "report_count": 1689,
+  "reported_id_count": 563,
+  "all_ids_have_exactly_three_passed_phases": true,
+  "failed_ids": [],
+  "skipped_ids": [],
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "563",
+      "time": "518.739",
+      "timestamp": "2026-10-12T22:59:05.999010+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "manifest_sha256": "ac1f05156820f24e1b89cb896f0369345f1adc40af49718b9fc3ba39909cb8a7",
+  "manifest_sha256_matches_start": true,
+  "seal_mismatches_after": [],
+  "call_duration_sum_seconds": 507.9078760537086,
+  "top_10_call_durations": [
+    {
+      "id": "casepath-api/tests/test_complete_reference_intake_v1.py::test_all_nine_actual_sources_complete_compiled_graph_learn_reuse_and_restart",
+      "duration_seconds": 32.69468143302947
+    },
+    {
+      "id": "casepath-api/tests/test_pace_core_v1.py::test_m0_ready_path_requires_the_externally_bound_packet_anchor",
+      "duration_seconds": 31.164950599952135
+    },
+    {
+      "id": "casepath-api/tests/test_pace_core_v1.py::test_m0_v1_never_promotes_a_caller_supplied_external_tree_to_empirical_ready",
+      "duration_seconds": 24.053367545013316
+    },
+    {
+      "id": "casepath-api/tests/test_pace_core_v1.py::test_m0_packet_span_must_match_the_external_source_roster",
+      "duration_seconds": 23.612765951955225
+    },
+    {
+      "id": "casepath-api/tests/test_claim_loop_v1.py::test_fastapi_raw_replays_are_stable_after_tail_and_restart",
+      "duration_seconds": 23.46500016003847
+    },
+    {
+      "id": "casepath-api/tests/test_pace_core_v1.py::test_m0_build_packet_readiness_is_separate_from_split",
+      "duration_seconds": 15.611449225980323
+    },
+    {
+      "id": "casepath-api/tests/test_claim_loop_v1.py::test_safe_correction_reuse_requires_matching_same_session_state",
+      "duration_seconds": 15.45830575603759
+    },
+    {
+      "id": "casepath-api/tests/test_claim_loop_v1.py::test_full_generated_mould_loop_reaches_decision_ready_packet",
+      "duration_seconds": 12.468287986994255
+    },
+    {
+      "id": "casepath-api/tests/test_claim_loop_v1.py::test_correction_and_reuse_terminalize_during_active_dispatch",
+      "duration_seconds": 11.848930096952245
+    },
+    {
+      "id": "casepath-api/tests/test_complete_reference_intake_v1.py::test_existing_qualified_old_policy_knowledge_is_preserved_and_new_reference_lineage_reuses",
+      "duration_seconds": 9.223553055955563
+    }
+  ],
+  "exact_launcher_command": "python /tmp/casepath-release-aa10-20261013/harness/run_shard.py run 5",
+  "actual_pytest_command": [
+    "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "--junitxml=/tmp/casepath-release-aa10-20261013/shard5/junit.xml",
+    "--durations=0",
+    "--basetemp=/tmp/casepath-release-aa10-20261013/shard5/pytest-tmp",
+    "@/tmp/casepath-release-aa10-20261013/shard5/pytest-arguments.txt"
+  ]
+}

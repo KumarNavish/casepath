@@ -1,0 +1,85 @@
+{
+  "candidate": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "verified_epoch": 1791846002.9958293,
+  "all_six_started": true,
+  "shards": [
+    {
+      "shard": 1,
+      "session_id": 57917,
+      "wrapper_pid": 487843,
+      "pytest_pid": 487854,
+      "assigned": 242,
+      "collected": 242,
+      "started_epoch": 1791845905.0387802,
+      "requested_model": "gpt-6.1-sol",
+      "requested_reasoning": "xhigh",
+      "agent": "/root/aa10_shard1",
+      "reused_prior_agent": false
+    },
+    {
+      "shard": 2,
+      "session_id": 10876,
+      "wrapper_pid": 487902,
+      "pytest_pid": 487913,
+      "assigned": 554,
+      "collected": 554,
+      "started_epoch": 1791845914.2452896,
+      "requested_model": "gpt-6.1-sol",
+      "requested_reasoning": "xhigh",
+      "agent": "/root/aa10_shard2",
+      "reused_prior_agent": false
+    },
+    {
+      "shard": 3,
+      "session_id": 60507,
+      "wrapper_pid": 488145,
+      "pytest_pid": 488156,
+      "assigned": 229,
+      "collected": 229,
+      "started_epoch": 1791845943.1274638,
+      "requested_model": "gpt-6.1-sol",
+      "requested_reasoning": "xhigh",
+      "agent": "/root/aa10_shard3",
+      "reused_prior_agent": false
+    },
+    {
+      "shard": 4,
+      "session_id": 5136,
+      "wrapper_pid": 487997,
+      "pytest_pid": 488008,
+      "assigned": 324,
+      "collected": 324,
+      "started_epoch": 1791845923.2744305,
+      "requested_model": "gpt-6.1-sol",
+      "requested_reasoning": "xhigh",
+      "agent": "/root/aa10_shard4",
+      "reused_prior_agent": false
+    },
+    {
+      "shard": 5,
+      "session_id": 26763,
+      "wrapper_pid": 488161,
+      "pytest_pid": 488172,
+      "assigned": 563,
+      "collected": 563,
+      "started_epoch": 1791845943.956932,
+      "requested_model": "gpt-6.1-sol",
+      "requested_reasoning": "xhigh",
+      "agent": "/root/aa10_shard5",
+      "reused_prior_agent": false
+    },
+    {
+      "shard": 6,
+      "session_id": 71448,
+      "wrapper_pid": 488238,
+      "pytest_pid": 488255,
+      "assigned": 478,
+      "collected": 478,
+      "started_epoch": 1791845952.0054379,
+      "requested_model": "gpt-6.1-sol",
+      "requested_reasoning": "xhigh",
+      "agent": "/root/release32_shard4",
+      "reused_prior_agent": true
+    }
+  ]
+}

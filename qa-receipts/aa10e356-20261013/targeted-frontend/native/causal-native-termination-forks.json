@@ -1,0 +1,252 @@
+{
+  "claimId": "auto_a489b283495e7b03b5aab860",
+  "fixture": "build-prior-assessment-fixture-v1.py",
+  "revision": 9,
+  "state_sha256": "1b27ee563e2b863857e66191d5655d99f342345ff80754ea0a85ae4d3c4655f1",
+  "labels": [
+    {
+      "id": "lt_e01",
+      "state": "true",
+      "text": "termination receivedApplies",
+      "font": 12,
+      "width": 611,
+      "scroll": 611
+    },
+    {
+      "id": "lt_e04",
+      "state": "false",
+      "text": "arrearsExcluded",
+      "font": 12,
+      "width": 291,
+      "scroll": 291
+    },
+    {
+      "id": "lt_e05",
+      "state": "true",
+      "text": "family homeApplies",
+      "font": 12,
+      "width": 291,
+      "scroll": 291
+    },
+    {
+      "id": "lt_e06",
+      "state": "false",
+      "text": "Not (arrears) and Not (family home)Excluded",
+      "font": 12,
+      "width": 611,
+      "scroll": 611
+    },
+    {
+      "id": "lt_e09",
+      "state": "false",
+      "text": "extension relevantExcluded",
+      "font": 12,
+      "width": 611,
+      "scroll": 611
+    },
+    {
+      "id": "lt_e10",
+      "state": "true",
+      "text": "Not (extension relevant)Applies",
+      "font": 12,
+      "width": 611,
+      "scroll": 611
+    }
+  ],
+  "bounds": {
+    "frame": {
+      "x": 348,
+      "y": 335.484375,
+      "width": 764,
+      "height": 553.6875,
+      "top": 335.484375,
+      "right": 1112,
+      "bottom": 889.171875,
+      "left": 348
+    },
+    "height": 900,
+    "scrollHeight": 554,
+    "clientHeight": 554,
+    "nodes": [
+      {
+        "id": "lt_intake",
+        "rect": {
+          "x": 404,
+          "y": 343.484375,
+          "width": 632,
+          "height": 36,
+          "top": 343.484375,
+          "right": 1036,
+          "bottom": 379.484375,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_deadline",
+        "rect": {
+          "x": 404,
+          "y": 391.484375,
+          "width": 632,
+          "height": 63.375,
+          "top": 391.484375,
+          "right": 1036,
+          "bottom": 454.859375,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_form",
+        "rect": {
+          "x": 404,
+          "y": 466.859375,
+          "width": 632,
+          "height": 36,
+          "top": 466.859375,
+          "right": 1036,
+          "bottom": 502.859375,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_type",
+        "rect": {
+          "x": 404,
+          "y": 514.859375,
+          "width": 632,
+          "height": 36,
+          "top": 514.859375,
+          "right": 1036,
+          "bottom": 550.859375,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_arrears",
+        "rect": {
+          "x": 404,
+          "y": 562.859375,
+          "width": 312,
+          "height": 46.078125,
+          "top": 562.859375,
+          "right": 716,
+          "bottom": 608.9375,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_family",
+        "rect": {
+          "x": 724,
+          "y": 562.859375,
+          "width": 312,
+          "height": 46.078125,
+          "top": 562.859375,
+          "right": 1036,
+          "bottom": 608.9375,
+          "left": 724
+        }
+      },
+      {
+        "id": "lt_abuse",
+        "rect": {
+          "x": 404,
+          "y": 620.9375,
+          "width": 632,
+          "height": 46.078125,
+          "top": 620.9375,
+          "right": 1036,
+          "bottom": 667.015625,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_extension",
+        "rect": {
+          "x": 404,
+          "y": 679.015625,
+          "width": 632,
+          "height": 46.078125,
+          "top": 679.015625,
+          "right": 1036,
+          "bottom": 725.09375,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_evidence",
+        "rect": {
+          "x": 404,
+          "y": 737.09375,
+          "width": 632,
+          "height": 46.078125,
+          "top": 737.09375,
+          "right": 1036,
+          "bottom": 783.171875,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_resolution",
+        "rect": {
+          "x": 404,
+          "y": 795.171875,
+          "width": 632,
+          "height": 36,
+          "top": 795.171875,
+          "right": 1036,
+          "bottom": 831.171875,
+          "left": 404
+        }
+      },
+      {
+        "id": "lt_close",
+        "rect": {
+          "x": 404,
+          "y": 843.171875,
+          "width": 632,
+          "height": 36,
+          "top": 843.171875,
+          "right": 1036,
+          "bottom": 879.171875,
+          "left": 404
+        }
+      }
+    ]
+  },
+  "nodes": [
+    "lt_intake",
+    "lt_deadline",
+    "lt_form",
+    "lt_type",
+    "lt_arrears",
+    "lt_family",
+    "lt_abuse",
+    "lt_extension",
+    "lt_evidence",
+    "lt_resolution",
+    "lt_close"
+  ],
+  "edges": [
+    "lt_e01",
+    "lt_e02",
+    "lt_e03",
+    "lt_e04",
+    "lt_e05",
+    "lt_e06",
+    "lt_e07",
+    "lt_e08",
+    "lt_e09",
+    "lt_e10",
+    "lt_e11",
+    "lt_e12",
+    "lt_e13"
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "assets": {
+    "javascript": "bbd3260f3bb0ac08e01a79c6dd10e8f85e263bb07bef0a146a4cc165d4c5629c",
+    "css": "21f7536432da3f2928f6f93dc01aa2f6838b4b7c963748e09e21f2fd56d60bd0"
+  }
+}

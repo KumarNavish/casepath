@@ -1,0 +1,71 @@
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900 (13346.164582ms)
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800 (12275.612298ms)
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844 (12290.680656ms)
+✔ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes at 1440x900 (7110.599431ms)
+✔ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes at 1440x1000 (7055.477577ms)
+▶ causal formation native: autoplay introduces early-reviewed requirements at the exact newly reached steps
+  ✔ 18 (11757.763376ms)
+  ✔ 19 (12416.298872ms)
+  ✔ 21 (14980.687419ms)
+✔ causal formation native: autoplay introduces early-reviewed requirements at the exact newly reached steps (39156.19441ms)
+✔ causal formation native: next case handoff retains verified content through none (13584.668194ms)
+✔ causal formation native: next case handoff retains verified content through pause (13189.016101ms)
+✔ causal formation native: next case handoff retains verified content through navigation (14246.409346ms)
+✔ causal formation native: next case handoff retains verified content through unstarted (13037.047366ms)
+✔ causal formation native: next case handoff retains verified content through pause-head (12664.099904ms)
+✔ causal formation native: next case handoff retains verified content through navigation-head (12124.342831ms)
+✔ causal formation native: next case handoff retains verified content through changed-head (13660.328339ms)
+✔ causal formation native: next case handoff retains verified content through missing (12167.254655ms)
+✔ reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes (15613.274679ms)
+✔ focused flow: selected process changes preserve the graph, original arrival FileList and source-origin focus (1863.365543ms)
+✖ focused flow: a recorded action opens its exact document and fact while manual inspection retains its chosen context (12577.545593ms)
+✔ focused flow: expanding the complete process retains its native nodes and chosen inspection at 1428px (2086.774804ms)
+✔ focused flow: expanding the complete process retains its native nodes and chosen inspection at 390px (2129.605078ms)
+✔ focused flow: a corrupted prefetched original identity stops before replacing the accepted replay prefix (7275.073554ms)
+✔ focused flow: manual node inspection pauses the same accepted journal until deliberate Resume (7591.355487ms)
+✖ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (12551.779172ms)
+✖ focused flow: manual document inspection pauses the same accepted journal until deliberate Resume (12336.620017ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 23
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 270747.849687
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2584:1
+✖ focused flow: a recorded action opens its exact document and fact while manual inspection retains its chosen context (12577.545593ms)
+  locator.getAttribute: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('[data-au-evidence-path] [data-au-document][data-au-obligation]')[22m
+  
+      at context (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2590:128)
+      at TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2591:23) {
+    name: 'TimeoutError',
+    log: [ "  - waiting for locator('[data-au-evidence-path] [data-au-document][data-au-obligation]')" ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2926:56
+✖ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (12551.779172ms)
+  locator.getAttribute: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-documents [data-au-document][data-au-obligation][data-selected="true"]')[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2935:148) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('.au-forming-documents [data-au-document][data-au-obligation][data-selected="true"]')` ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2926:56
+✖ focused flow: manual document inspection pauses the same accepted journal until deliberate Resume (12336.620017ms)
+  locator.click: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-documents [data-au-select-document="termination_notice"]')[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2932:125) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('.au-forming-documents [data-au-select-document="termination_notice"]')` ]
+  }

@@ -1,0 +1,33 @@
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1440x900 (13961.227254ms)
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 1280x800 (12940.096671ms)
+✔ causal formation native: heating requirements enter at their actual steps and final content stays visible at 390x844 (12203.476408ms)
+✔ causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes (7168.338197ms)
+✖ causal formation native: next case handoff retains verified content through none (16979.94576ms)
+✔ causal formation native: next case handoff retains verified content through pause (12887.51166ms)
+✔ causal formation native: next case handoff retains verified content through navigation (12380.761337ms)
+✔ causal formation native: next case handoff retains verified content through unstarted (11679.099099ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 100706.632664
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:900:69
+✖ causal formation native: next case handoff retains verified content through none (16979.94576ms)
+  AssertionError [ERR_ASSERTION]: verified next prefix zero did not open directly
+      at eventually (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:501:10)
+      at async TestContext.<anonymous> (/workspace/casepath-causal-document-formation-20261013/casepath-qa/unified-product-browser-v1.test.cjs:913:38)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }

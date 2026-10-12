@@ -1,0 +1,708 @@
+diff --git a/casepath-qa/autonomous-workspace-v1.test.cjs b/casepath-qa/autonomous-workspace-v1.test.cjs
+index 258688d..60122a2 100644
+--- a/casepath-qa/autonomous-workspace-v1.test.cjs
++++ b/casepath-qa/autonomous-workspace-v1.test.cjs
+@@ -8,7 +8,7 @@ const hash = char => char.repeat(64);
+ function state(extra={}) {
+   return {claim_id:'claim-a',title:'Original incoming claim',revision:3,state_sha256:hash('a'),status:'running',
+     graph:{claim_id:'claim-a',graph_sha256:hash('b'),nodes:[{node_id:'start',label:'Inspect message',entry:true},{node_id:'branch',label:'Check separate service',condition:{flag:'family_home'}}],edges:[{edge_id:'next',source_node_id:'start',target_node_id:'branch'}]},
+-    evaluation:{nodes:[{node_id:'start',execution_state:'completed'},{node_id:'branch',execution_state:'ready'}],documents:[{document_type:'notice',route_state:'needed_now',review_state:'unreviewed'}]},
++    evaluation:{nodes:[{node_id:'start',activation:'true',execution_state:'completed'},{node_id:'branch',activation:'true',execution_state:'ready'}],documents:[{document_type:'notice',activation:'true',route_state:'needed_now',review_state:'unreviewed'}]},
+     facts:[{fact_id:'condition:family_home',label:'Family home',status:'true',summary:'The customer reports a family home.',citations:[]},{fact_id:'fact:notice',label:'Separate notice',status:'unresolved',summary:'A separate notice is required.'}],
+     obligations:[{obligation_id:'obligation:branch:notice',node_id:'branch',decision_node_id:'branch',required_fact_ids:['fact:notice'],document_type:'notice',label:'Separate notice',reason:'Service depends on the family-home condition.',rule_refs:['tenancy.v1'],capability_id:'local_inbox.read'}],
+     actions:[{result:{action_id:'review:notice:original',type:'document_review',node_ids:['branch'],status:'completed',summary:'Original notice inspected.'},receipt:{receipt_sha256:hash('c')}}],
+@@ -273,6 +273,21 @@ test('document focus follows its exact obligation and required fact when a node
+  assert.equal(JSON.stringify(s),before,'document focus is a read-only join over accepted state');
+ });
+ 
++test('forming requirements wait for their actual requiring step, preserve own missing evidence and retire false routes',()=>{
++ const saved=state();saved.evaluation.nodes.forEach(node=>node.activation='true');saved.evaluation.documents[0].activation='true';
++ const ids=copy=>[...ui.formingMarkup(copy,{},'branch').matchAll(/<li[^>]*data-au-obligation="([^"]+)"/g)].map(match=>match[1]);
++ assert.deepEqual(ids(saved),['obligation:branch:notice']);
++ const future=structuredClone(saved);future.evaluation.nodes[1]={node_id:'branch',activation:'true',execution_state:'blocked',blocked_by:['start'],missing_document_types:['notice']};future.evaluation.documents[0].route_state='established';future.evaluation.documents[0].review_state='sufficient';
++ assert.deepEqual(ids(future),[],'early sufficient source review cannot expose an unreached requiring step');
++ const ownMissing=structuredClone(saved);ownMissing.evaluation.nodes[1]={node_id:'branch',activation:'true',execution_state:'blocked',blocked_by:[],unresolved_dependencies:[],missing_document_types:['notice']};
++ assert.deepEqual(ids(ownMissing),['obligation:branch:notice'],'missing evidence at the active step cannot hide its own requirement');
++ const ownLater=structuredClone(ownMissing);ownLater.evaluation.documents[0].route_state='needed_later';assert.deepEqual(ids(ownLater),['obligation:branch:notice']);
++ for(const route of ['needed_later','held_behind_question','not_needed','optional']){const copy=structuredClone(saved);copy.evaluation.documents[0].route_state=route;assert.deepEqual(ids(copy),[],route);}
++ for(const activation of ['false','unresolved',undefined]){const copy=structuredClone(future);copy.evaluation.nodes[1]={node_id:'branch',activation,execution_state:'completed'};assert.deepEqual(ids(copy),[],String(activation));}
++ const retired=structuredClone(saved);retired.evaluation.nodes[1].activation='false';retired.evaluation.documents[0]={document_type:'notice',activation:'false',route_state:'not_needed',review_state:'sufficient'};assert.deepEqual(ids(retired),[]);assert.match(ui.obligationMarkup(retired,'branch'),/obligation:branch:notice/,'settled checklist retains the exact retired obligation');
++ const incoming=structuredClone(saved);incoming.graph.family='incoming_packet';assert.deepEqual(ids(incoming),[],'acquisition requirements are not a final handling checklist');
++});
++
+ function formingUnitStates() {
+  const use={knowledge_id:'procedure.unit',version:2,definition_sha256:hash('2'),rule_pack_sha256:hash('3'),applicability:'same_verified_family_and_rule_version'},packet=state({claim_id:'unit-forming-case',revision:10,state_sha256:hash('1'),last_event_sha256:hash('a'),graph:{claim_id:'unit-forming-case',family:'incoming_packet',nodes:[{node_id:'incoming',label:'Read the original unit packet',entry:true}],edges:[]},evaluation:{nodes:[{node_id:'incoming',execution_state:'ready',activation:'true'}],edges:[],documents:[]},facts:[],obligations:[],actions:[],knowledge_uses:[use],knowledge_published:[]});
+  packet.source_descriptors[0].claim_id=packet.claim_id;const body='Exact original unit source sentence.';packet.acquired_sources=[{claim_id:packet.claim_id,artifact_id:'original',sha256:hash('d'),text:body,text_sha256:sha(body),complete:true}];
+@@ -280,7 +295,7 @@ function formingUnitStates() {
+  interpreted.graph={claim_id:packet.claim_id,family:'unit_process',graph_sha256:hash('5'),nodes:Array.from({length:11},(_,index)=>({node_id:index===0?'intake':`question-${index}`,label:index===0?'Read the original unit packet':`Recorded question ${index}`,entry:index===0,condition:{flag:index===0?'intake':`question-${index}`}})),edges:Array.from({length:10},(_,index)=>({edge_id:`edge-${index}`,source_node_id:index===0?'intake':`question-${index}`,target_node_id:`question-${index+1}`}))};
+  interpreted.facts=interpreted.graph.nodes.map((node,index)=>({fact_id:`condition:${node.node_id}`,status:index===0?'true':'unresolved',summary:index===0?'The original unit packet is recorded.':`Recorded question ${index} remains unestablished.`,citations:index===0?[{artifact_id:'original',sha256:hash('d'),text_sha256:sha(body),start_char:0,end_char:Array.from(body).length,quote:body}]:[]}));
+  interpreted.obligations=interpreted.graph.nodes.map((node,index)=>({obligation_id:`unit-requirement-${index}`,document_type:`unit_document_${index}`,label:`Recorded document ${index}`,node_id:node.node_id,required_fact_ids:[`condition:${node.node_id}`]}));
+- interpreted.evaluation={nodes:interpreted.graph.nodes.map((node,index)=>({node_id:node.node_id,activation:index===0?'true':'unresolved',execution_state:index===0?'ready':'unresolved'})),edges:interpreted.graph.edges.map(edge=>({edge_id:edge.edge_id,activation:'unresolved'})),documents:interpreted.obligations.map(obligation=>({document_type:obligation.document_type,route_state:'held_behind_question',review_state:'unreviewed'}))};
++ interpreted.evaluation={nodes:interpreted.graph.nodes.map((node,index)=>({node_id:node.node_id,activation:index===0?'true':'unresolved',execution_state:index===0?'ready':'unresolved'})),edges:interpreted.graph.edges.map(edge=>({edge_id:edge.edge_id,activation:'unresolved'})),documents:interpreted.obligations.map((obligation,index)=>({document_type:obligation.document_type,activation:index===0?'true':'unresolved',route_state:index===0?'needed_now':'held_behind_question',review_state:'unreviewed'}))};
+  const reviewed=structuredClone(interpreted);reviewed.revision=13;reviewed.state_sha256=hash('6');reviewed.last_event_sha256=hash('c');reviewed.evaluation.documents[4].review_state='sufficient';reviewed.facts.push({fact_id:'document:unit_document_4',document_type:'unit_document_4',status:'sufficient',summary:'The source supports this particular unit document review.',citations:interpreted.facts[0].citations});
+  const settled=structuredClone(reviewed);settled.revision=15;settled.state_sha256=hash('7');settled.last_event_sha256=hash('e');settled.status='deferred';settled.outcome={status:'deferred',summary:'The recorded questions remain unresolved.',unresolved_facts:interpreted.facts.slice(1)};settled.knowledge_published=[{knowledge_id:'procedure.unit',version:3,source_claim_id:settled.claim_id,knowledge_sha256:hash('8'),qualification:{status:'qualified',definition_sha256:hash('9')},added_document_types:['unit_document_4'],evidence_recipes:[{document_type:'unit_document_4',required_fields:['recorded_sender','recorded_date']}],obligations:[reviewed.obligations[4]]}];
+  return {packet,interpreted,reviewed,settled};
+@@ -292,36 +307,38 @@ test('forming work keeps the whole accepted graph obligations and pinned knowled
+  const early=ui.workMarkup(packet,{},'incoming',[],'step',{}, {mode:'replay',replay:formingUnitReplay(packet)});assert.match(early,/data-au-forming/);assert.deepEqual([...early.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),['incoming']);assert.doesNotMatch(early,/data-au-obligation="unit-requirement-|data-au-node="question-/);assert.match(early,/data-au-version="2"[^>]*data-au-definition-sha="2{64}"/);assert.deepEqual(ui.contextualRecord(packet,{},[],'claim').state.facts,[],'reuse cannot establish a current-case fact');
+  for(const state of [interpreted,reviewed]) {
+   const html=ui.workMarkup(state,{},'question-4',[],'step',{}, {mode:'replay',replay:formingUnitReplay(state),paused:true});assert.match(html,/data-au-forming/);assert.match(html,/au-forming-process/);assert.match(html,/au-forming-documents/);assert.match(html,/au-forming-knowledge/);
+-  assert.deepEqual(new Set([...html.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1])),new Set(state.graph.nodes.map(node=>node.node_id)));assert.deepEqual(new Set([...html.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(state.obligations.map(obligation=>obligation.obligation_id)));
+-  for(const obligation of state.obligations){assert.ok(html.includes(`data-au-select-obligation="${obligation.obligation_id}"`));assert.ok(html.includes(`data-au-select="${obligation.node_id}"`));}
++  assert.deepEqual(new Set([...html.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1])),new Set(state.graph.nodes.map(node=>node.node_id)));assert.deepEqual(new Set([...html.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(['unit-requirement-0']));
++  for(const obligation of state.obligations.slice(0,1)){assert.ok(html.includes(`data-au-select-obligation="${obligation.obligation_id}"`));assert.ok(html.includes(`data-au-select="${obligation.node_id}"`));}
+   assert.match(html,/data-au-version="2"[^>]*data-au-definition-sha="2{64}"/);assert.deepEqual(ui.contextualRecord(state,{},[],'claim'),{state,projection:{}});
+  }
+  assert.equal(ui.formingWork(interpreted,{mode:'saved'}),true);assert.equal(ui.formingWork(settled,{mode:'saved'}),false);assert.equal(ui.formingWork(reviewed,{mode:'replay',replay:formingUnitReplay(reviewed),paused:true}),true);assert.equal(ui.formingWork(settled,{mode:'replay',replay:formingUnitReplay(settled)}),false);assert.equal(ui.formingWork(settled,{mode:'replay',replay:formingUnitReplay(settled),playing:true}),true,'the actual final publication remains visible during its accepted presentation before settling');assert.equal(ui.formingWork(reviewed,{mode:'replay',replay:{...formingUnitReplay(reviewed),state:{...reviewed,state_sha256:hash('0')}},playing:true}),false,'playing cannot bypass replay identity');assert.equal(JSON.stringify({packet,interpreted,reviewed,settled}),before);
+ });
+ 
+-test('a sufficient source review in forming work leaves unresolved decisions and conditional requirement applicability exact',()=>{
+- const {interpreted,reviewed}=formingUnitStates(),before=JSON.stringify(reviewed),html=ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'replay',replay:formingUnitReplay(reviewed)});
+- assert.match(html,/data-au-forming/);assert.doesNotMatch(html,/May be needed\s*·\s*Sufficient/);assert.match(html,/Supplied evidence is sufficient\./);assert.match(html,/May be needed/);assert.match(html,/data-au-review="sufficient"/);assert.deepEqual(reviewed.evaluation.nodes,interpreted.evaluation.nodes);assert.deepEqual(reviewed.evaluation.edges,interpreted.evaluation.edges);
+- assert.equal(reviewed.evaluation.nodes[0].execution_state,'ready');assert.ok(reviewed.evaluation.nodes.slice(1).every(node=>node.execution_state==='unresolved'));assert.ok(reviewed.evaluation.edges.every(edge=>edge.activation==='unresolved'));assert.ok(reviewed.evaluation.documents.every(document=>document.route_state==='held_behind_question'));assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].review_state,'sufficient');assert.equal(ui.contextualRecord(reviewed,{},[],'fact','document:unit_document_4').status,'sufficient');assert.equal(JSON.stringify(reviewed),before);
+- const checkmark=/<span aria-hidden="true">✓<\/span>/,reviewedRow=html.match(/<li[^>]*data-au-obligation="unit-requirement-4"[\s\S]*?<\/li>/)[0];assert.match(reviewedRow,checkmark);assert.match(ui.documentReviewMarkup('sufficient'),checkmark);
+- for(const review of [undefined,'received','unreviewed','missing','unresolved','insufficient','satisfied']){assert.doesNotMatch(ui.documentReviewMarkup(review),checkmark);const copy=structuredClone(reviewed);copy.evaluation.documents[4].review_state=review;copy.evaluation.nodes[4].execution_state='completed';const copyBefore=JSON.stringify(copy),rendered=ui.workMarkup(copy,{},'question-4',[],'step',{}, {mode:'saved'}),row=rendered.match(/<li[^>]*data-au-obligation="unit-requirement-4"[\s\S]*?<\/li>/)[0];assert.doesNotMatch(row,checkmark,`review ${review} cannot inherit sufficiency from a completed node or sufficient document fact`);assert.equal(copy.facts.at(-1).status,'sufficient');assert.equal(copy.evaluation.documents[4].route_state,'held_behind_question');assert.deepEqual(copy.acquired_sources,reviewed.acquired_sources);assert.equal(JSON.stringify(copy),copyBefore);}
++test('sufficient future source review stays inspectable without appearing as an active requirement',()=>{
++ const {reviewed}=formingUnitStates(),before=JSON.stringify(reviewed),html=ui.formingMarkup(reviewed,{},'question-4');
++ assert.doesNotMatch(html,/data-au-obligation="unit-requirement-4"|data-au-review="sufficient"|May be needed/);
++ assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].review_state,'sufficient');
++ assert.match(ui.obligationMarkup(reviewed,'question-4'),/data-au-review="sufficient"/,'the complete checklist preserves early review separately from activation');
++ assert.equal(JSON.stringify(reviewed),before);
+ });
+ 
+-test('forming documents use one collective conditional label while keeping an assessed source separate from unresolved routing',()=>{
+- const {reviewed}=formingUnitStates(),before=JSON.stringify(reviewed),html=ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'replay',replay:formingUnitReplay(reviewed)});
+- assert.equal((html.match(/May be needed/g)||[]).length,1);assert.match(html,/au-forming-document-scope/);assert.doesNotMatch(html,/Source evidence is not yet established\.|au-reading-decision|au-reading-relations/);assert.match(html,/data-au-review="sufficient"[^>]*>Supplied evidence is sufficient\./);assert.doesNotMatch(html,/May be needed\s*·\s*Sufficient/);
+- for(const obligation of reviewed.obligations)assert.ok(html.includes(`data-au-obligation="${obligation.obligation_id}"`));assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].route_state,'held_behind_question');assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-5').evaluation[0].review_state,'unreviewed');assert.match(ui.inspectorMarkup(reviewed,'question-4'),/au-reading-decision/);assert.deepEqual(ui.contextualRecord(reviewed,{},[],'step','question-4').edges,reviewed.graph.edges.filter(edge=>edge.source_node_id==='question-4'||edge.target_node_id==='question-4'));assert.equal(JSON.stringify(reviewed),before);
++test('forming mixed routes expose only reached requirements and never inherit checks from received sources or completed nodes',()=>{
++ const {reviewed}=formingUnitStates();reachFormingRequirement(reviewed,2);reviewed.evaluation.documents[2].route_state='needed_now';
++ const before=JSON.stringify(reviewed),html=ui.formingMarkup(reviewed,{},'question-4');
++ assert.match(html,/data-au-obligation="unit-requirement-2"/);assert.doesNotMatch(html,/data-au-obligation="unit-requirement-(?:4|5)"|May be needed/);
++ for(const review of [undefined,'received','unreviewed','missing','unresolved','insufficient','satisfied']){
++  const copy=structuredClone(reviewed);reachFormingRequirement(copy,4);copy.evaluation.nodes[4].execution_state='completed';copy.evaluation.documents[4].review_state=review;
++  const row=ui.formingMarkup(copy,{},'question-4').match(/<li[^>]*data-au-obligation="unit-requirement-4"[\s\S]*?<\/li>/)[0];
++  assert.doesNotMatch(row,/<span aria-hidden="true">✓<\/span>/,String(review));
++ }
++ assert.match(ui.documentReviewMarkup('sufficient'),/<span aria-hidden="true">✓<\/span>/);assert.equal(JSON.stringify(reviewed),before);
+ });
+ 
+-test('forming mixed routes expose a recorded requirement needed now without promoting sufficient source review or repeating held statuses',()=>{
+- const {reviewed}=formingUnitStates();reviewed.evaluation.documents[2].route_state='needed_now';const before=JSON.stringify(reviewed),html=ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'saved'}),row=index=>html.match(new RegExp(`<li[^>]*data-au-obligation="unit-requirement-${index}"[\\s\\S]*?<\\/li>`))[0];
+- assert.equal((html.match(/May be needed/g)||[]).length,1);assert.match(row(2),/data-status="needed_now"/);assert.match(row(2),/>Needed now</);assert.doesNotMatch(row(2),/data-au-review="unreviewed"|Source evidence is not yet established/);
+- assert.match(row(4),/data-status="held_behind_question"/);assert.match(row(4),/Supplied evidence is sufficient\./);assert.doesNotMatch(row(4),/Needed now|May be needed/);assert.doesNotMatch(row(5),/May be needed|Source evidence is not yet established|data-au-review="unreviewed"/);
+- assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-2').evaluation[0].route_state,'needed_now');assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].route_state,'held_behind_question');assert.equal(ui.contextualRecord(reviewed,{},[],'requirement','unit-requirement-4').evaluation[0].review_state,'sufficient');assert.equal(JSON.stringify(reviewed),before);
+-});
++function reachFormingRequirement(saved,index){Object.assign(saved.evaluation.nodes[index],{activation:'true',execution_state:'ready',blocked_by:[],unresolved_dependencies:[]});Object.assign(saved.evaluation.documents[index],{activation:'true',route_state:saved.evaluation.documents[index].review_state==='sufficient'?'established':'needed_now'});}
+ 
+ test('forming assessed requirements list a source file once while all three exact cited passages remain inspectable',()=>{
+  const {reviewed}=formingUnitStates(),context={fact:'document:unit_document_4',document:'unit_document_4',obligation:'unit-requirement-4'},fact=reviewed.facts.find(item=>item.fact_id===context.fact),body=reviewed.acquired_sources[0].text;
++ reachFormingRequirement(reviewed,4);
+  fact.citations=['Exact','original','unit'].map(quote=>({...fact.citations[0],quote,start_char:Array.from(body.slice(0,body.indexOf(quote))).length,end_char:Array.from(body.slice(0,body.indexOf(quote)+quote.length)).length}));reviewed.obligations[4].required_fact_ids.push(context.fact);
+  const before=JSON.stringify(reviewed),html=ui.workMarkup(reviewed,{},'question-4',[],'step',context,{mode:'saved'}),row=html.match(/<li[^>]*data-au-obligation="unit-requirement-4"[\s\S]*?<\/li>/)[0],passages=html.match(/<section class="au-reading-passages">[\s\S]*?<\/section>/)[0];
+  assert.equal((row.match(/class="au-link au-document-source"/g)||[]).length,1);assert.equal((row.match(/data-au-source="original"/g)||[]).length,1);assert.match(row,/data-au-source-origin="requirement:unit-requirement-4"/);assert.match(row,/Supplied evidence is sufficient\./);
+@@ -331,7 +348,7 @@ test('forming assessed requirements list a source file once while all three exac
+ 
+ test('forming connections join only the selected accepted fact exact source span and its requiring node and obligation',()=>{
+  const {reviewed}=formingUnitStates(),context={fact:'document:unit_document_4',document:'unit_document_4',obligation:'unit-requirement-4'};
+- reviewed.obligations[4].required_fact_ids.push(context.fact);
++ reachFormingRequirement(reviewed,4);reviewed.obligations[4].required_fact_ids.push(context.fact);
+  const fact=reviewed.facts.find(item=>item.fact_id===context.fact),before=JSON.stringify(reviewed),relation=ui.formingRelations(reviewed,'question-4',context);
+  assert.deepEqual(relation,{fact:context.fact,source:'original',node:'question-4',obligation:context.obligation,citation:fact.citations[0]});
+  const html=ui.workMarkup(reviewed,{},'question-4',[],'step',context,{mode:'saved'}),paths=[...html.matchAll(/<path data-au-forming-wire="([^"]+)"([^>]*)>/g)];
+@@ -353,7 +370,7 @@ test('forming publication remains central for a deferred live accepted publicati
+  const focused=ui.formingPublication(head,history,attention);assert.equal(focused.seq,15);assert.equal(focused.id,published.event_sha256);assert.deepEqual(focused.knowledge,publication);
+  const live=ui.workMarkup(head,{},'question-4',history,'step',{}, {mode:'saved',attention});assert.match(live,/data-au-forming-revision="16"/);assert.doesNotMatch(live,/data-au-forming-revision="15"/);assert.match(live,/data-au-publication-focus="e{64}"/);assert.match(live,/data-au-knowledge-publication="8{64}"/);assert.match(live,/Added for reuse · Version 3/);assert.match(live,/data-au-version="3"[^>]*data-au-knowledge-sha="8{64}"[^>]*data-au-definition-sha="9{64}"/);assert.match(live,/recorded sender, recorded date/);
+  const compact=live.match(/<div class="au-forming-publication-focus"[^>]*>([\s\S]*?)<\/div>/)[1];assert.match(compact,/class="au-forming-used-version" data-au-knowledge-use="procedure\.unit"/);assert.match(compact,/data-au-knowledge="procedure\.unit" data-au-version="2" data-au-knowledge-sha="" data-au-definition-sha="2{64}"[^>]*>Used version 2<\/button>/);assert.equal((live.match(/data-au-knowledge="procedure\.unit" data-au-version="2"/g)||[]).length,1,'compact publication focus keeps one exact link to the actually used version');assert.doesNotMatch(live,/data-au-inspector-heading="question-4"|class="au-knowledge-use"/,'the selected question and reused procedure are not repeated as extra headings during accepted publication focus');assert.match(live,/data-au-node="question-4"[^>]*aria-pressed="true"/);
+- assert.deepEqual([...live.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),head.graph.nodes.map(node=>node.node_id));assert.deepEqual([...live.matchAll(/data-au-edge="([^"]+)"/g)].map(match=>match[1]),head.graph.edges.map(edge=>edge.edge_id));assert.deepEqual(new Set([...live.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(head.obligations.map(item=>item.obligation_id)));assert.deepEqual(ui.contextualRecord(head,{},history,'claim'),{state:head,projection:{}});assert.deepEqual(ui.contextualRecord(head,{},history,'use','0'),head.knowledge_uses[0]);
++ assert.deepEqual([...live.matchAll(/data-au-node="([^"]+)"/g)].map(match=>match[1]),head.graph.nodes.map(node=>node.node_id));assert.deepEqual([...live.matchAll(/data-au-edge="([^"]+)"/g)].map(match=>match[1]),head.graph.edges.map(edge=>edge.edge_id));assert.deepEqual(new Set([...live.matchAll(/data-au-obligation="([^"]+)"/g)].map(match=>match[1])),new Set(['unit-requirement-0']));assert.deepEqual(ui.contextualRecord(head,{},history,'claim'),{state:head,projection:{}});assert.deepEqual(ui.contextualRecord(head,{},history,'use','0'),head.knowledge_uses[0]);
+  assert.match(ui.workMarkup(reviewed,{},'question-4',[],'step',{}, {mode:'saved'}),/data-au-inspector-heading="question-4"/,'ordinary prepublication prefixes retain the selected-question heading');
+  const replay={state:head,mode:'replay',replay_only:true,through_seq:16,current_revision:16,current_state_sha256:head.state_sha256,current_event_sha256:head.last_event_sha256};assert.match(ui.workMarkup(head,{},'question-4',history,'step',{}, {mode:'replay',replay,attention}),/data-au-publication-focus="e{64}"/);
+  for(const invalid of [{},{...attention,previousRevision:15},{...attention,knowledgePublications:[]},{...attention,knowledgePublications:[{id:hash('0')}]},{...attention,acceptedEvents:[{...published,event_sha256:hash('0')},phase]}]){assert.equal(ui.formingPublication(head,history,invalid),null);assert.doesNotMatch(ui.workMarkup(head,{},'question-4',history,'step',{}, {mode:'saved',attention:invalid}),/data-au-forming="true"|data-au-publication-focus=/);}
+@@ -363,9 +380,38 @@ test('forming publication remains central for a deferred live accepted publicati
+  assert.equal(JSON.stringify({prior,head,history,attention}),before,'live and replay presentation must retain the actual revision and raw publication unchanged');
+ });
+ 
++test('a multi-node requirement selects its genuinely reached node after an upstream-blocked sibling',()=>{
++ const after=state();after.graph.nodes.unshift({node_id:'future',label:'A later prerequisite'});after.evaluation.nodes.unshift({node_id:'future',activation:'true',execution_state:'blocked',blocked_by:['start']});after.obligations[0].node_id='future';after.obligations[0].decision_node_id='future';after.obligations[0].node_ids=['branch'];
++ const before=structuredClone(after);before.evaluation.nodes.find(row=>row.node_id==='branch').execution_state='blocked';before.evaluation.nodes.find(row=>row.node_id==='branch').blocked_by=['start'];
++ assert.deepEqual(ui.enteredRequirementContext(before,after),{node:'branch',document:'notice',obligation:'obligation:branch:notice',fact:'fact:notice'});
++ assert.match(ui.obligationMarkup(after,'branch',ui.formingRequirements(after),{},true),/data-au-select="branch"/);assert.doesNotMatch(ui.obligationMarkup(after,'branch',ui.formingRequirements(after),{},true),/data-au-select="future"/);
++ const reached=after.evaluation.nodes.find(row=>row.node_id==='branch');Object.assign(reached,{execution_state:'blocked',blocked_by:[],unresolved_dependencies:[],missing_document_types:['notice']});assert.equal(ui.enteredRequirementContext(before,after).node,'branch','own missing evidence stays a reached requiring node');
++});
++
++test('shared document types keep each obligation attached to its own reached requiring node',()=>{
++ const saved=state();saved.graph.nodes.push({node_id:'future',label:'Later service'});saved.evaluation.nodes.push({node_id:'future',activation:'true',execution_state:'blocked',blocked_by:['branch']});saved.obligations.push({...saved.obligations[0],obligation_id:'obligation:future:notice',node_id:'future',decision_node_id:'future'});saved.evaluation.documents[0].required_at_node_ids=['branch','future'];
++ assert.deepEqual(ui.formingRequirements(saved).map(ui.requirementIdentity),['obligation:branch:notice']);
++ const before=structuredClone(saved);saved.revision=4;saved.state_sha256=hash('f');saved.evaluation.nodes[2].execution_state='ready';saved.evaluation.nodes[2].blocked_by=[];
++ const event={claim_id:saved.claim_id,seq:4,revision:4,state_sha256:saved.state_sha256,event_sha256:hash('9'),kind:'graph.advanced'},plan=ui.transitionPlan(before,saved,{ready:true,cursor:4,animate:[event]});
++ assert.ok(plan.documents.some(row=>row.id==='notice'),'the accepted readiness change introduces an already-reviewed document');
++});
++
++test('a reached obligation entrance animates only its exact identity when another visible obligation shares the document type',()=>{
++ const before=state();before.graph.nodes.push({node_id:'future',label:'Next requiring step'});before.evaluation.nodes.push({node_id:'future',activation:'true',execution_state:'blocked',blocked_by:['branch']});before.obligations.push({...before.obligations[0],node_id:'future',decision_node_id:'future',obligation_id:'obligation:future:notice'});
++ const after=structuredClone(before);after.revision=4;after.state_sha256=hash('f');after.evaluation.nodes[2].execution_state='ready';after.evaluation.nodes[2].blocked_by=[];after.evaluation.documents[0].active_node_ids=['branch','future'];const event={claim_id:after.claim_id,seq:4,revision:4,state_sha256:after.state_sha256,event_sha256:hash('9'),kind:'graph.advanced'},plan=ui.transitionPlan(before,after,{ready:true,cursor:4,animate:[event]});
++ assert.deepEqual(plan.documents[0].obligationIds,['obligation:future:notice']);const calls=[],path={};const rows=['obligation:branch:notice','obligation:future:notice'].map(id=>({dataset:{auDocument:'notice',auObligation:id},closest:selector=>selector==='[data-au-evidence-path]'?path:null,animate:(frames,options)=>{calls.push(id);return {cancel(){}};}}));const host={querySelector(){return null;},querySelectorAll:selector=>selector==='[data-au-document]'?rows:[]};ui.animateTransition(host,plan,{selected:'future'});assert.deepEqual(calls,['obligation:future:notice']);
++});
++
++test('real conditional split and join labels preserve applied excluded and unresolved edge states without labelling a linear unconditional dependency',()=>{
++ const saved=state();saved.graph.nodes.push({node_id:'other',label:'Other route'},{node_id:'join',label:'Join the recorded routes'});saved.graph.edges=[{edge_id:'selected',source_node_id:'start',target_node_id:'branch',condition:{flag:'family_home'}},{edge_id:'other',source_node_id:'start',target_node_id:'other',condition:{not:{flag:'family_home'}}},{edge_id:'join-left',source_node_id:'branch',target_node_id:'join',condition:{const:true}},{edge_id:'join-right',source_node_id:'other',target_node_id:'join',condition:{flag:'unresolved_guard'}}];saved.evaluation.edges=[{edge_id:'selected',activation:'true'},{edge_id:'other',activation:'false'},{edge_id:'join-left',activation:'true'},{edge_id:'join-right',activation:'unresolved'}];
++ const before=JSON.stringify(saved),html=ui.graphMarkup(saved,'branch',{}, {overview:true});assert.deepEqual(ui.layoutGraph(saved.graph).rows.map(row=>row.map(node=>node.node_id)),[['start'],['branch','other'],['join']]);
++ for(const [id,label,status]of [['selected','Family home','Applies'],['other','Not (Family home)','Excluded'],['join-right','Unresolved guard','Unresolved']])assert.match(html,new RegExp(`data-au-edge-label="${id}"[^>]*>${label.replace(/[()]/g,'\\$&')}<span>${status}</span>`));
++ assert.doesNotMatch(html,/data-au-edge-label="join-left"/);assert.equal((html.match(/marker-end="url/g)||[]).length,4);assert.equal(JSON.stringify(saved),before);
++});
++
+ test('forming requirements retire only on recorded route exclusion while History and Documents retain exact earlier obligations',()=>{
+  const {interpreted}=formingUnitStates();interpreted.evaluation.documents[2].route_state='not_needed';interpreted.evaluation.documents[3].route_state='excluded';interpreted.evaluation.nodes[4].activation='false';const before=JSON.stringify(interpreted),html=ui.workMarkup(interpreted,{},'question-4',[],'step',{}, {mode:'saved'}),documents=ui.workMarkup(interpreted,{},'question-4',[],'documents');
+- assert.match(html,/data-au-forming/);assert.doesNotMatch(html,/data-au-obligation="unit-requirement-(?:2|3)"/);assert.match(html,/data-au-obligation="unit-requirement-4"/,'a node activation alone cannot fabricate document retirement');
++ assert.match(html,/data-au-forming/);assert.doesNotMatch(html,/data-au-obligation="unit-requirement-(?:2|3)"/);assert.doesNotMatch(html,/data-au-obligation="unit-requirement-4"/,'an inapplicable requiring node removes its row without rewriting the checklist');
+  for(const obligation of interpreted.obligations)assert.ok(documents.includes(`data-au-obligation="${obligation.obligation_id}"`));assert.deepEqual(ui.contextualRecord(interpreted,{},[],'claim').state.obligations,interpreted.obligations);assert.equal(ui.contextualRecord(interpreted,{},[],'requirement','unit-requirement-2').evaluation[0].route_state,'not_needed');assert.equal(ui.contextualRecord(interpreted,{},[],'requirement','unit-requirement-3').evaluation[0].route_state,'excluded');assert.equal(JSON.stringify(interpreted),before);
+ });
+ 
+@@ -1064,6 +1110,26 @@ test('a focused claim title allows saved revisions to render during polling',asy
+  assert.match(f.host.innerHTML,/data-au-revision="4"/);assert.deepEqual(ui.contextualRecord(saved,{},[],'claim').state.phase_summary,'Reading the original agreement.');assert.doesNotMatch(f.status.textContent,/Updates paused/);
+ });
+ 
++test('direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance',async t=>{
++ for(const panel of ['sources','documents','knowledge','activity'])await t.test(panel,async t=>{
++  const f=dom(),before=state();before.evaluation.nodes[1].execution_state='blocked';before.evaluation.nodes[1].blocked_by=['start'];let saved=before;
++  const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a',true,{detail:panel});
++  assert.match(f.host.innerHTML,new RegExp(`data-au-context="${panel}"`));saved=structuredClone(before);saved.revision=4;saved.state_sha256=hash('f');saved.evaluation.nodes[1].execution_state='ready';saved.evaluation.nodes[1].blocked_by=[];await controller.refresh();await settle();
++  assert.match(f.host.innerHTML,new RegExp(`data-au-context="${panel}"`));assert.equal(api.calls.some(call=>call.init.method==='POST'),false);
++ });
++});
++
++test('an accepted live requiring-step advance focuses its actual new requirement while manual inspection keeps its focus',async t=>{
++ for(const held of [false,true])await t.test(String(held),async t=>{
++  const f=dom(),before=state();before.evaluation.nodes[1].execution_state='blocked';before.evaluation.nodes[1].blocked_by=['start'];before.evaluation.documents[0].route_state='established';before.evaluation.documents[0].review_state='sufficient';let saved=before;
++  const api=fakeApi({handle:async path=>path.endsWith('/claims/claim-a')?response({state:saved,projection:{claim_id:saved.claim_id,revision:saved.revision,state_sha256:saved.state_sha256}}):path.includes('/claim-a/events?')?response(events(saved,Number(path.split('after=')[1]))):null}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();await controller.openClaim('claim-a');
++  if(held)f.listeners.get('click')({target:control(f,'data-au-node','start')});
++  saved=structuredClone(before);saved.revision=4;saved.state_sha256=hash('f');saved.evaluation.nodes[1].execution_state='ready';saved.evaluation.nodes[1].blocked_by=[];await controller.refresh();await settle();
++  assert.match(f.host.innerHTML,/data-au-obligation="obligation:branch:notice"/);assert.match(f.host.innerHTML,new RegExp(`data-au-selected-step="${held?'start':'branch'}"`));
++  assert.equal(api.calls.some(call=>call.init.method==='POST'),false);
++ });
++});
++
+ test('unchanged verified polling and reconnect keep existing claim nodes while changed capabilities and revisions still render',async t=>{
+  const f=dom(),visibility=new Map(),viewport={scrollLeft:0,scrollTop:0},query=f.host.querySelector;
+  f.container.ownerDocument.addEventListener=(type,fn)=>visibility.set(type,fn);f.container.ownerDocument.removeEventListener=type=>visibility.delete(type);
+diff --git a/casepath-qa/unified-product-browser-v1.test.cjs b/casepath-qa/unified-product-browser-v1.test.cjs
+index a4630be..823dd5f 100644
+--- a/casepath-qa/unified-product-browser-v1.test.cjs
++++ b/casepath-qa/unified-product-browser-v1.test.cjs
+@@ -461,7 +461,7 @@ function fixtureData(config = {}) {
+   const reference = config.referenceFixture ? referenceFixture() : null;
+   if (reference) {
+     for (const id of referenceIds) {
+-      const snapshot = clone(config.referenceUnprocessed ? reference.unprocessed[id] : reference.snapshots[id]);
++      const snapshot = clone(config.referenceUnprocessed || config.referenceUnprocessedIds?.includes(id) ? reference.unprocessed[id] : reference.snapshots[id]);
+       envelopes[id] = {state:snapshot.state,projection:snapshot.projection};
+       authoredEvents[id] = snapshot.events;
+     }
+@@ -475,7 +475,7 @@ function fixtureData(config = {}) {
+   }));
+   assert.equal(rows.filter(row => row.origin === 'canonical_original').length, 150);
+   assert.equal(rows.filter(row => row.origin === 'native_intake').length, 9);
+-  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, controlHistories, accepted,reference:reference ? {prefixes:Object.fromEntries((config.referenceReplayIds || [referenceIds[0]]).map(id=>[id,reference.prefixes[id]]))} : null,
++  return {envelopes, sources, rawSources, acceptedHistories, authoredEvents, controlHistories, accepted,reference:reference ? {prefixes:Object.fromEntries((config.referenceReplayIds || referenceIds).map(id=>[id,reference.prefixes[id]]))} : null,
+     recordedHistory: config.recordedHistoryId ? clone(captured[`${base}/claims/${config.recordedHistoryId}/events?after=0`].events) : [],
+     acceptedEvents: accepted ? clone((config.acceptedPrefix ? accepted.prefixes[config.acceptedPrefix] : accepted.snapshots[config.priorAssessment]).events) : [],
+     acceptedPrefixes: accepted ? config.priorAssessment === 'failed' ? accepted.failure_prefixes : accepted.prefixes : {},
+@@ -683,7 +683,14 @@ async function mountFixture(page, config = {}) {
+       const [, id, kind] = read, after = Number(parsed.searchParams.get('after') || 0);
+       if (kind === 'replay') {
+         const live = fixture.envelopes[id], through = Number(parsed.searchParams.get('through_seq') || 0);
+-        if (fixture.reference?.prefixes[id]?.[through] && !fixture.referenceUnprocessed) return response(200,fixture.reference.prefixes[id][through]);
++        if (fixture.reference?.prefixes[id]?.[through] && !fixture.referenceUnprocessed && !fixture.referenceUnprocessedIds?.includes(id)) {
++          const prefix=structuredClone(fixture.reference.prefixes[id][through]);
++          if(fixture.referenceReplayMissingId===id)return response(404,{detail:'No recorded replay for this original case.'});
++          if(fixture.referenceChangedHeadId===id&&through===prefix.current_revision){prefix.current_revision++;prefix.current_head.revision++;}
++
++          if(fixture.holdReplayId===id && through===fixture.holdReplayThrough)return new Promise(resolve=>fixture.held.push({id,kind:'replay',through,release:()=>resolve(response(200,prefix))}));
++          return response(200,prefix);
++        }
+         if (fixture.accepted?.claim_id === id && fixture.acceptedPrefixes[through]) {
+           const prefix = structuredClone(fixture.acceptedPrefixes[through]);
+           if (fixture.corruptReplayThrough === through) prefix.provenance.sources[0].sha256 = '0'.repeat(64);
+@@ -854,6 +861,94 @@ async function title(page, id) {
+   }
+ }
+ 
++async function junctionConnections(page){
++ const geometry=await page.locator('[data-au-graph]').evaluate(graph=>{const rectangle=element=>element.getBoundingClientRect().toJSON(),junction=id=>[...graph.querySelectorAll('[data-au-junction]')].find(row=>row.dataset.auJunction===id);return [...graph.querySelectorAll('[data-au-edge]')].map(path=>{const length=path.getTotalLength(),matrix=path.getScreenCTM(),screen=point=>new DOMPoint(point.x,point.y).matrixTransform(matrix).toJSON();return {id:path.dataset.auEdge,source:rectangle(junction(path.dataset.auEdgeSource)),target:rectangle(junction(path.dataset.auEdgeTarget)),start:screen(path.getPointAtLength(0)),end:screen(path.getPointAtLength(length)),length,samples:Array.from({length:101},(_,index)=>screen(path.getPointAtLength(length*index/100))),titles:[...graph.querySelectorAll('.au-node-title,.au-node-condition')].map(rectangle)};});});
++ for(const edge of geometry){assert.ok(edge.length>20,'a real dependency has a continuous visible route beyond its arrow');assert.ok(Math.abs(edge.start.x-(edge.source.left+edge.source.width/2))<1&&Math.abs(edge.start.y-edge.source.bottom)<1,'the source is its actual junction');assert.ok(Math.abs(edge.end.x-(edge.target.left+edge.target.width/2))<1&&Math.abs(edge.end.y-edge.target.top)<1,'the target is its actual junction');assert.equal(edge.samples.some(point=>edge.titles.some(title=>point.x>title.left+.5&&point.x<title.right-.5&&point.y>title.top+.5&&point.y<title.bottom-.5)),false,'dependencies route through clear margins and row gaps');}
++ return geometry;
++}
++
++for(const [width,height,reduced]of [[1440,900,false],[1280,800,true],[390,844,false]])test(`causal formation native: heating requirements enter at their actual steps and final content stays visible at ${width}x${height}`,async t=>{
++ const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,width,height});
++ if(reduced)await page.emulateMedia({reducedMotion:'reduce'});
++ const timeline=[[13,[]],[15,[]],[16,[]],[17,[]],[18,['tenancy_terms_evidence']],[19,['tenancy_terms_evidence','landlord_knowledge_evidence']],[21,['tenancy_terms_evidence','landlord_knowledge_evidence','objective_defect_observation']],[23,['tenancy_terms_evidence','landlord_knowledge_evidence','objective_defect_observation']]];
++ for(const [through,types]of timeline){
++  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through});
++  const prefix=fixture.prefixes[id][through];await title(page,id);
++  assert.deepEqual(sorted(await page.locator('.au-forming-documents [data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auDocument))),sorted(types),`native prefix ${through} has exactly the reached requirements`);
++  assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(rows=>rows.map(row=>row.dataset.auNode))),sorted(prefix.state.graph.nodes.map(row=>row.node_id)));
++  assert.equal(await page.locator('[data-au-node-condition],[data-au-edge-label]').count(),0,'the actual unconditional linear reference graph gains no invented branch labels');
++  assert.equal(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.every(row=>row.getAttribute('marker-end')?.startsWith('url(')&&row.getTotalLength()>3)),true,'real dependencies have visible directional paths');
++  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
++  assert.equal(await page.locator('.au-forming-documents .au-document-review[data-au-review="sufficient"]').count(),types.length);
++  if(through<18)assert.equal(await page.locator('[data-au-forming-wire="process-document"]').count(),0,'hidden future requirements cannot leave a document connector');
++  assert.equal(await page.locator('[data-au-knowledge-publication]').count(),0,'the saved head cannot lend future knowledge to a displayed prefix');
++  if(through===18){
++   const probe=await page.evaluate(state=>{const copy=structuredClone(state),row=copy.obligations.find(item=>item.document_type==='tenancy_terms_evidence');row.node_id='dh_notice';row.decision_node_id='dh_notice';row.node_ids=['dh_notice','dh_scope'];const prior=structuredClone(copy);prior.evaluation.nodes.find(item=>item.node_id==='dh_scope').execution_state='blocked';prior.evaluation.nodes.find(item=>item.node_id==='dh_scope').blocked_by=['dh_intake'];return {context:window.CasePathAutonomous.enteredRequirementContext(prior,copy),html:window.CasePathAutonomous.obligationMarkup(copy,'dh_scope',[row],{},true)};},prefix.state);
++   assert.equal(probe.context.node,'dh_scope');assert.match(probe.html,/data-au-select="dh_scope"/);assert.doesNotMatch(probe.html,/data-au-select="dh_notice"/);
++   const row=page.locator('.au-forming-documents [data-au-obligation]').first(),origin=row.locator('[data-au-source][data-au-citation]').first();assert.equal(await origin.count(),1);
++   const citation=JSON.parse(await origin.getAttribute('data-au-citation'));await origin.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'exact native requirement source did not open');assert.equal(await page.locator('.au-source-dialog mark').textContent(),citation.quote);await page.locator('[data-au-close]').click();assert.equal(await origin.evaluate(element=>element===document.activeElement),true);
++  }
++ }
++ const head=fixture.snapshots[id];await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.state.revision});await title(page,id);
++ assert.equal(await page.locator('[data-au-settled="true"]').count(),1);assert.ok((await page.locator('.au-assessment-conclusion').innerText()).includes(head.state.outcome.summary));
++ assert.deepEqual(sorted(await page.locator('.au-forming-documents [data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(head.state.obligations.map(row=>row.obligation_id)));
++ assert.equal(await page.locator('.au-forming-documents .au-document-review[data-au-review="sufficient"]').count(),3);assert.equal(await page.locator('.au-forming-documents [data-au-source][data-au-citation]').count(),3);
++ const publication=head.state.knowledge_published[0];assert.equal(await page.locator(`[data-au-knowledge-publication="${publication.knowledge_sha256}"]`).count(),1);assert.equal(await page.locator(`[data-au-knowledge-sha="${publication.knowledge_sha256}"]`).getAttribute('data-au-version'),String(publication.version));
++ const connectors=await junctionConnections(page);
++ await focusedReceipt(page,`causal-native-heating-settled-${width}x${height}`,{connectors,claimId:id,revision:head.state.revision,state_sha256:head.state.state_sha256,documents:head.state.obligations.map(row=>row.obligation_id),reduced});
++});
++
++for(const height of [900,1000])test(`causal formation native: the existing eleven-step termination fixture exposes real forks joins and exact conditional routes at 1440x${height}`,async t=>{
++ const fixture=priorAssessmentFixture(),id=fixture.claim_id,page=await fixturePage(t,{priorAssessment:'reassessed',acceptedPrefix:9,publicReadOnly:true,width:1440,height});
++ await open(page,id);await title(page,id);const saved=fixture.prefixes[9].state,layout=require('../casepath/assets/autonomous-workspace-v1.js').layoutGraph(saved.graph);
++ assert.equal(layout.nodes.length,11);assert.equal(layout.edges.length,13);assert.equal(layout.children.get('lt_type').length,3);assert.equal(layout.children.get('lt_abuse').length,2);assert.ok([...layout.parents.values()].some(rows=>rows.length>1));
++ assert.deepEqual(sorted(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.map(row=>row.dataset.auEdge))),sorted(layout.edges.map(row=>row.edge_id)));
++ assert.equal(await page.locator('[data-au-edge]').evaluateAll(rows=>rows.every(row=>row.getAttribute('marker-end')&&row.getTotalLength()>3)),true);
++ const labels=await page.locator('[data-au-edge-label]').evaluateAll(rows=>rows.map(row=>({id:row.dataset.auEdgeLabel,state:row.dataset.state,text:row.textContent,font:parseFloat(getComputedStyle(row).fontSize),width:row.clientWidth,scroll:row.scrollWidth})));
++ assert.ok(labels.length>=5);for(const label of labels){const edge=layout.edges.find(row=>row.edge_id===label.id),evaluated=saved.evaluation.edges.find(row=>row.edge_id===label.id);assert.ok(edge?.condition);assert.equal(label.state,evaluated.activation);assert.ok(label.font>=12&&label.scroll<=label.width+1);assert.match(label.text,/Applies|Excluded|Unresolved/);}
++ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
++ const connectors=await junctionConnections(page);
++ const bounds=await page.locator('[data-au-graph-pan]').evaluate(graph=>{const frame=graph.getBoundingClientRect();return {frame:frame.toJSON(),height:innerHeight,scrollHeight:graph.scrollHeight,clientHeight:graph.clientHeight,nodes:[...graph.querySelectorAll('[data-au-node]')].map(node=>({id:node.dataset.auNode,rect:node.getBoundingClientRect().toJSON()}))};});
++ await focusedReceipt(page,`causal-native-termination-forks-bounds-${height}`,{bounds});
++ assert.ok(bounds.nodes.every(row=>row.rect.left>=bounds.frame.left-1&&row.rect.right<=bounds.frame.right+1&&row.rect.top>=bounds.frame.top-1&&row.rect.bottom<=bounds.frame.bottom+1),'the compact native overview exposes all eleven actual nodes in its graph viewport');
++ assert.ok(bounds.frame.bottom<=bounds.height+1,'the compact graph viewport stays in the initial desktop viewport');
++ await focusedReceipt(page,`causal-native-termination-forks-${height}`,{claimId:id,fixture:'build-prior-assessment-fixture-v1.py',revision:saved.revision,state_sha256:saved.state_sha256,labels,bounds,connectors,nodes:layout.nodes.map(row=>row.node_id),edges:layout.edges.map(row=>row.edge_id)});
++});
++
++test('causal formation native: autoplay introduces early-reviewed requirements at the exact newly reached steps',async t=>{
++ const fixture=referenceFixture(),id=referenceIds[0];
++ for(const [before,through,node,type]of [[17,18,'dh_scope','tenancy_terms_evidence'],[18,19,'dh_notice','landlord_knowledge_evidence'],[20,21,'dh_evidence','objective_defect_observation']])await t.test(String(through),async t=>{
++  const page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true});await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:before});await page.locator('[data-au-demo-play]').click();
++  for(let step=0;step<250&&Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<through;step++)await page.clock.runFor(50);
++  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(through));assert.equal(await page.locator('[data-au-selected-step]').getAttribute('data-au-selected-step'),node);
++  const obligation=fixture.prefixes[id][through].state.obligations.find(row=>row.document_type===type);
++  assert.equal(await page.locator(`.au-forming-documents [data-au-obligation="${obligation.obligation_id}"][data-selected="true"]`).count(),1);
++  const wire=page.locator('[data-au-forming-wire="process-document"]');assert.equal(await wire.getAttribute('data-au-wire-node'),node);assert.equal(await wire.getAttribute('data-au-wire-obligation'),obligation.obligation_id);assert.ok(await wire.getAttribute('d'));
++  const row=page.locator(`.au-forming-documents [data-au-obligation="${obligation.obligation_id}"]`),source=row.locator('[data-au-source][data-au-citation]').first(),citation=JSON.parse(await source.getAttribute('data-au-citation'));
++  await source.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'exact newly reached source did not open');assert.equal(await page.locator('mark').textContent(),citation.quote);
++  await page.clock.runFor(8000);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(through));await page.locator('[data-au-close]').click();assert.equal(await source.evaluate(element=>document.activeElement===element),true);assert.equal(await page.locator('[data-au-demo-resume]').count(),1);
++  await focusedReceipt(page,`causal-native-autoplay-${through}`,{id,before,through,node,obligation:obligation.obligation_id,source:citation.artifact_id,source_sha256:citation.sha256});
++ });
++});
++
++for(const interruption of ['none','pause','navigation','unstarted','pause-head','navigation-head','changed-head','missing'])test(`causal formation native: next case handoff retains verified content through ${interruption}`,async t=>{
++ const fixture=referenceFixture(),id=referenceIds[0],next=referenceIds[1],head=fixture.snapshots[id].state,page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,holdReplayId:next,holdReplayThrough:interruption.endsWith('-head')?fixture.snapshots[next].state.revision:0,...(interruption==='unstarted'?{referenceUnprocessedIds:[next]}:{}),...(interruption==='changed-head'?{referenceChangedHeadId:next}:{}),...(interruption==='missing'?{referenceReplayMissingId:next}:{})});
++ await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.revision-1});await page.locator('[data-au-demo-play]').click();
++ for(let step=0;step<200&&Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<head.revision;step++)await page.clock.runFor(50);
++ assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision));
++ await page.evaluate(()=>{window.__handoffPaints=[];window.__handoffObserver=new MutationObserver(()=>window.__handoffPaints.push({claim:document.querySelector('[data-au-claim-title]')?.textContent,revision:document.querySelector('[data-au-revision]')?.dataset.auRevision,state_sha256:document.querySelector('[data-au-revision]')?.dataset.auStateSha,nodes:[...document.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),knowledge:[...document.querySelectorAll('[data-au-knowledge-publication],[data-au-knowledge-use]')].map(row=>row.dataset.auKnowledgePublication||row.dataset.auKnowledgeUse),empty:!!document.querySelector('.au-catalog-preview,[data-au-preview=unknown],[data-au-skeleton]')}));window.__handoffObserver.observe(document.querySelector('[data-au-view]'),{childList:true,subtree:true});});
++ await page.clock.runFor(4500);
++ assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision),'the last verified case survives a pending next-case read');assert.equal(await page.locator('.au-catalog-preview').count(),0);
++ if(interruption.startsWith('navigation')){await page.locator('.au-nav [data-au-nav="work"]').click();}
++ else if(interruption.startsWith('pause')){await page.locator('[data-au-demo-stop]').click();const held=await page.locator('[data-au-claim-title]').innerText();await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});await page.clock.runFor(6000);assert.equal(await page.locator('[data-au-claim-title]').innerText(),held);assert.equal(await page.locator('[data-au-demo-resume]').count(),1);await page.locator('[data-au-demo-resume]').click();}
++ await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});
++ if(interruption.startsWith('navigation')){await page.clock.runFor(6000);assert.equal(await page.locator('[data-au-claim-row]').count(),20);assert.equal(await page.locator('[data-au-revision]').count(),0);}
++ else if(['unstarted','changed-head','missing'].includes(interruption)){await eventually(()=>page.locator('.au-global-status').innerText().then(text=>text.includes('Next case')&&/No recorded execution|head changed|No recorded replay/.test(text)),'an unstarted next case did not fail truthfully');assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision));assert.ok((await page.locator('.au-global-status').innerText()).includes(next)|| (await page.locator('.au-global-status').innerText()).includes('Heating resets'));}
++ else {await page.clock.runFor(4100);await eventually(()=>page.evaluate(()=>window.__handoffPaints.some(row=>row.revision==='0')),'verified next prefix zero did not paint directly');assert.ok(new URL(page.url()).hash.includes(next));const opening=await page.evaluate(()=>window.__handoffPaints.find(row=>row.revision==='0'));assert.equal(opening.state_sha256,fixture.prefixes[next][0].state.state_sha256);assert.deepEqual(opening.nodes,[]);assert.deepEqual(opening.knowledge,[]);assert.equal(await page.locator('[data-au-node]').count(),0,'the next verified head never lends its process to intake prefix zero');}
++ assert.equal(await page.evaluate(()=>window.__handoffPaints.some(row=>row.empty)),false,'no empty Choose a case interstitial is painted');assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
++ await focusedReceipt(page,`causal-native-handoff-${interruption}`,{prior:id,next,interruption,paints:await page.evaluate(()=>window.__handoffPaints)});
++});
++
+ test('reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes',async t=>{
+  const fixture=referenceFixture(),page=await fixturePage(t,{referenceFixture:true,readOnlyStatus:true});
+  assert.equal(fixture.profile_sha256,'15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7');
+@@ -866,6 +961,13 @@ test('reference native: exact nine actual accepted assessments retain graph docu
+  for(const id of referenceIds){
+   await open(page,id);await title(page,id);const record=await visibleRecord(page),expected=fixture.snapshots[id];
+   assert.deepEqual(record.state,expected.state);assert.deepEqual(record.projection,expected.projection);
++  assert.equal(await page.locator('[data-au-settled="true"]').count(),1);
++  assert.deepEqual(sorted(await page.locator('.au-forming-documents [data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(expected.state.obligations.map(row=>row.obligation_id)));
++  assert.equal(await page.locator('.au-forming-documents [data-au-review="sufficient"]').count(),expected.state.obligations.length);
++  assert.equal(await page.locator('.au-forming-documents [data-au-source][data-au-citation]').count(),expected.state.obligations.length);
++  for(const use of expected.state.knowledge_uses)assert.equal(await page.locator(`[data-au-knowledge-use="${use.knowledge_sha256||use.knowledge_id||use.version_id}"] [data-au-version="${use.version}"]`).count(),1);
++  for(const publication of expected.state.knowledge_published)assert.equal(await page.locator(`[data-au-knowledge-publication="${publication.knowledge_sha256}"] [data-au-version="${publication.version}"]`).count(),1);
++
+   assert.equal(expected.state.status,'deferred');assert.equal(expected.state.outcome.status,'deferred');assert.equal(expected.state.outcome.assessment_status,'complete');
+   assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based`);
+   assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/Assessment only; no external action taken/);
+@@ -2088,10 +2190,10 @@ async function formingSnapshot(page,state){
+   assert.equal(await scene.locator('[data-au-edge]').evaluateAll(rows=>rows.every(row=>Boolean(row.getAttribute('d'))&&row.getTotalLength()>0)),true,'every actual edge has a drawn native SVG path');
+   for(const node of nodes){const control=scene.locator(`[data-au-node="${node.node_id}"]`),evaluation=evaluations.get(node.node_id)||{};assert.equal(await control.getAttribute('data-activation'),evaluation.activation||'unresolved');assert.equal(await control.getAttribute('data-status'),evaluation.execution_state||evaluation.state||'pending');}
+   const documents=new Map((state.evaluation?.documents||[]).map(row=>[row.document_type,row])),obligations=state.obligations||[];
+-  const rows=obligations.concat((state.evaluation?.documents||[]).filter(row=>!obligations.some(item=>item.document_type===row.document_type))).filter(row=>!['not_needed','inactive','excluded'].includes(documents.get(row.document_type)?.route_state||row.status));
++  const rows=obligations.concat((state.evaluation?.documents||[]).filter(row=>!obligations.some(item=>item.document_type===row.document_type))).filter(row=>state.graph?.family!=='incoming_packet' && documents.get(row.document_type)?.activation==='true' && !['not_needed','inactive','excluded','held_behind_question','needed_later','optional'].includes(documents.get(row.document_type)?.route_state||row.status) && [row.node_id,row.decision_node_id,...(row.node_ids||[])].filter(Boolean).some(id=>evaluations.get(id)?.activation==='true' && ['ready','completed'].includes(evaluations.get(id)?.execution_state)));
+   const expected=rows.map(row=>({id:row.obligation_id||`document:${row.document_type}`,type:row.document_type,status:documents.get(row.document_type)?.route_state||row.status||'pending'})).sort((a,b)=>a.id.localeCompare(b.id));
+   const actual=await scene.locator('.au-forming-documents .au-obligation').evaluateAll(rows=>rows.map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status})));
+-  assert.deepEqual(actual.sort((a,b)=>a.id.localeCompare(b.id)),expected,'only an accepted inactive or not-needed route removes a document from the active rail');
++  assert.deepEqual(actual.sort((a,b)=>a.id.localeCompare(b.id)),expected,'only a genuinely reached applicable requiring step puts its obligation in the active rail');
+   for(const review of await scene.locator('.au-forming-documents .au-document-review').evaluateAll(rows=>rows.map(row=>({type:row.closest('[data-au-document]').dataset.auDocument,state:row.dataset.auReview,marks:[...row.querySelectorAll('[aria-hidden="true"]')].map(mark=>mark.textContent)})))){
+     assert.equal(review.state,documents.get(review.type)?.review_state,'review wording follows its independent accepted document review');assert.deepEqual(review.marks,review.state==='sufficient'?['✓']:[],'a checkmark certifies sufficient source review only');
+   }
+diff --git a/casepath/assets/autonomous-workspace-v1.css b/casepath/assets/autonomous-workspace-v1.css
+index e4579a7..6569ebe 100644
+--- a/casepath/assets/autonomous-workspace-v1.css
++++ b/casepath/assets/autonomous-workspace-v1.css
+@@ -187,15 +187,22 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ .au-workspace .au-graph { display:flex; align-items:stretch; gap:44px; position:relative; width:max-content; min-width:100%; min-height:100%; padding:8px 18px 12px; }
+ .au-workspace .au-graph-rank { display:flex; flex-direction:column; justify-content:center; gap:22px; flex:0 0 210px; z-index:1; }
+ .au-workspace .au-graph-lines { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; }
+-.au-workspace .au-graph-lines path { fill:none; stroke:#657c6e; stroke-width:1.35; }
++.au-workspace .au-graph-lines [data-au-edge] { fill:none; stroke:#657c6e; stroke-width:1.8; }
++.au-workspace .au-graph-lines .au-process-arrow { fill:#657c6e; stroke:none; }
++.au-workspace .au-graph-lines .au-process-arrow[data-route=false] { fill:#85877d; }
++.au-workspace .au-graph-lines .au-process-arrow[data-route=unresolved] { fill:#8e7650; }
+ .au-workspace .au-graph-lines path:is([data-state=excluded],[data-state=false]) { stroke-dasharray:5 5; }
+-.au-workspace .au-graph-lines path[data-state=unresolved] { stroke-dasharray:2 4; }
++.au-workspace .au-graph-lines path[data-state=unresolved] { stroke:#8e7650; stroke-width:1.8; }
+ .au-workspace .au-graph-lines path[data-selected=true] { stroke:var(--au-accent); stroke-width:1.6; }
+ .au-workspace .au-node { display:flex; align-items:start; gap:10px; min-width:0; width:210px; min-height:72px; border:0; padding:8px 6px; background:var(--au-field); text-align:left; }
+ .au-workspace .au-node:hover { background:var(--au-wash); }
+ .au-workspace .au-node[aria-pressed=true] { color:var(--au-accent); }
+ .au-workspace .au-node:is([data-activation=excluded],[data-activation=false]) { color:var(--au-muted); }
+ .au-workspace .au-node-copy { display:block; min-width:0; }
++.au-workspace .au-node-condition { display:block; margin-bottom:5px; color:#405c4a; font-size:12px; line-height:1.35; overflow-wrap:anywhere; }
++.au-workspace .au-node-condition > span { margin-left:8px; color:var(--au-muted); font-size:11px; }
++.au-workspace .au-node-condition:is([data-state=false],[data-state=excluded]) { color:#73766d; }
++.au-workspace .au-node-condition[data-state=unresolved] { color:#806838; }
+ .au-workspace .au-node-relation { display:block; margin-bottom:3px; color:var(--au-muted); font-size:11px; font-weight:400; }
+ .au-workspace .au-node-title { display:block; font-size:15px; font-weight:450; line-height:1.45; }
+ .au-workspace .au-node-state { display:block; margin-top:4px; color:var(--au-muted); font-size:11px; line-height:1.4; }
+@@ -278,19 +285,19 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ .au-workspace .au-forming-process .au-graph-chrome { min-height:26px; }
+ .au-workspace .au-forming-process .au-graph-chrome button { min-height:26px; padding:3px 0; font-size:11px; }
+ .au-workspace .au-forming-process .au-graph-viewport { max-height:660px; overflow:auto; overscroll-behavior:contain; scroll-padding:12px; }
+-.au-workspace .au-forming-process .au-graph { flex-direction:column; align-items:stretch; gap:8px; width:100%; max-width:660px; min-width:0; margin:0 auto; padding:8px 24px 10px 4px; }
++.au-workspace .au-forming-process .au-graph { flex-direction:column; align-items:stretch; gap:12px; width:100%; max-width:660px; min-width:0; margin:0 auto; padding:8px 24px 10px 32px; }
+ .au-workspace .au-forming-process .au-graph-rank { flex:0 0 auto; flex-direction:row; align-items:stretch; justify-content:center; gap:8px; width:100%; min-width:0; }
+ .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] :is(.au-graph-rank,.au-node)[data-au-neighborhood=false] { display:flex; }
+ .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-graph-lines [data-au-neighborhood=false] { display:block; }
+-.au-workspace .au-forming-process .au-node { flex:1 1 0; width:auto; max-width:100%; min-height:44px; gap:5px; padding:3px 1px; background:var(--au-field); }
++.au-workspace .au-forming-process .au-node { flex:1 1 0; width:auto; max-width:100%; min-height:36px; gap:5px; padding:3px 1px; background:transparent; }
+ .au-workspace .au-forming-process .au-node:hover { background:var(--au-wash); }
+ .au-workspace .au-forming-process .au-node-copy { flex:1; }
+ .au-workspace .au-forming-process .au-node-relation { display:none; }
+ .au-workspace .au-forming-process .au-node-title { font-size:14px; line-height:1.35; font-weight:450; text-wrap:pretty; }
+ .au-workspace .au-forming-process .au-node-state { margin-top:3px; font-size:11px; line-height:1.3; }
+ .au-workspace .au-forming-process .au-evidence-junction { flex-basis:14px; width:14px; height:14px; margin-top:2px; font-size:9px; }
+-.au-workspace .au-forming-process .au-graph-lines path { stroke:#657c6e; stroke-width:1.15; }
+-.au-workspace .au-forming-process .au-graph-lines path[data-selected=true] { stroke:var(--au-accent); stroke-width:1.45; }
++.au-workspace .au-forming-process .au-graph-lines [data-au-edge] { stroke-width:1.8; }
++.au-workspace .au-forming-process .au-graph-lines [data-au-edge][data-selected=true] { stroke:var(--au-accent); stroke-width:2; }
+ .au-workspace .au-forming-process .au-process-question { max-width:none; margin:6px 0 10px; padding:0; font-size:24px; line-height:1.3; letter-spacing:-.4px; }
+ .au-workspace .au-forming-publication-focus { min-width:0; margin:8px 0 12px; padding:8px 12px; border-left:2px solid var(--au-accent); background:var(--au-paper); }
+ .au-workspace .au-forming-publication-focus .au-forming-knowledge { margin:0; padding:0; border:0; }
+@@ -491,7 +498,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ .au-workspace summary > span { margin-left:8px; }
+ .au-workspace details > :is(p,dl,pre,ul) { margin-top:12px; }
+ @media (min-width:1001px) and (max-height:850px) {
+-  .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:5px; padding-top:4px; padding-bottom:6px; }
++  .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:12px; padding-top:4px; padding-bottom:6px; }
+   .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-node { min-height:36px; padding-top:0; padding-bottom:0; }
+   .au-workspace .au-forming-publication-focus { margin:0 0 6px; padding:4px 12px; }
+ }
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index 45c8267..7a089f4 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -269,7 +269,13 @@
+     const nodes=changes.nodes.map(id=>({id,created:!list(before.graph?.nodes).some(node=>node.node_id===id),delay:360,duration:180}));
+     const facts=changedFacts.map(fact=>({id:fact.fact_id,delay:180,duration:180}));
+     const sources=[...sourceIds].filter(Boolean).map(id=>({id,delay:0,duration:180}));
+-    const documents=changes.documents.map(id=>({id,delay:540,duration:180}));
++    const beforeRequirements = new Set(formingRequirements(before).map(requirementIdentity));
++    const enteredDocuments = formingRequirements(after).filter(item => !beforeRequirements.has(requirementIdentity(item))).map(item => item.document_type);
++    const documents=[...new Set([...changes.documents,...enteredDocuments])].map(id => {
++      const reviewed = list(before.evaluation?.documents).find(row => row.document_type === id)?.review_state !== list(after.evaluation?.documents).find(row => row.document_type === id)?.review_state;
++      const obligationIds = formingRequirements(after).filter(item => item.document_type === id && (!beforeRequirements.has(requirementIdentity(item)) || canonicalJSON(item) !== canonicalJSON(list(before.obligations).find(row => requirementIdentity(row) === requirementIdentity(item))))).map(requirementIdentity);
++      return {id,delay:540,duration:180,...(!reviewed && obligationIds.length ? {obligationIds} : {})};
++    });
+     const semantic = semanticEventRecord(after,newest);
+     const knowledgeUses=list(after.knowledge_uses).filter(item=>!list(before.knowledge_uses).some(previous=>canonicalJSON(previous)===canonicalJSON(item))).map(item=>({id:item.knowledge_sha256 || item.knowledge_id || item.version_id,delay:360,duration:180}));
+     const knowledgePublications=list(after.knowledge_published).filter(item=>!list(before.knowledge_published).some(previous=>canonicalJSON(previous)===canonicalJSON(item))).map(item=>({id:item.knowledge_sha256 || item.knowledge_id || item.candidate_id,delay:360,duration:180}));
+@@ -294,7 +300,9 @@
+         if (field === 'auNode' && selected && element.dataset.auNode !== selected && !rows.some(row=>row.id===element.dataset.auNode && row.created)) continue;
+         if (['auSource','auFact','auDocument'].includes(field) && element.closest && !element.closest('[data-au-evidence-path]')) continue;
+         if (field === 'auSemanticEvent' && element.matches && !element.matches('.au-event-cue')) continue;
+-        add(element,rows.find(row => row.id === element.dataset[field]),false,stage);
++        const timing = rows.find(row => row.id === element.dataset[field]);
++        if (field === 'auDocument' && timing?.obligationIds && !timing.obligationIds.includes(element.dataset.auObligation || element.closest?.('.au-obligation')?.dataset.auObligation)) continue;
++        add(element,timing,false,stage);
+       }
+     }
+     if (formingGraph) add(forming.querySelector('[data-au-graph-pan]'),{delay:0,duration:160},false,'process');
+@@ -564,22 +572,70 @@
+     });
+     if (!citation) return null;
+     const obligation = relations.obligations.find(item => requirementIdentity(item) === requirementIdentity(relations.document) && list(item.required_fact_ids).includes(relations.fact.fact_id));
+-    return {fact:relations.fact.fact_id,source:citation.artifact_id,node:relations.node.node_id,obligation:obligation ? requirementIdentity(obligation) : null,citation};
++    return {fact:relations.fact.fact_id,source:citation.artifact_id,node:relations.node.node_id,obligation:obligation && formingRequirements(state).some(item => requirementIdentity(item) === requirementIdentity(obligation)) && requiringNodeReached(relations.evaluation,obligation,list(state.evaluation?.documents).find(row => row.document_type === obligation.document_type)) ? requirementIdentity(obligation) : null,citation};
++  }
++  function requiringNodeIds(item, document = {}) {
++    const explicit = [...new Set([item.node_id,item.decision_node_id,...list(item.node_ids),...list(item.required_at_node_ids)].filter(Boolean))];
++    return explicit.length ? explicit : list(document.required_at_node_ids).length ? document.required_at_node_ids : [item.decision_node_id].filter(Boolean);
++  }
++  function requiringNodeReached(node, item, document = {}) {
++    if (node?.activation !== 'true') return false;
++    const execution = node.execution_state || node.state;
++    if (['ready','completed','complete','resolved','running','working'].includes(execution)) return (document.route_state || item.status) !== 'needed_later';
++    // The active step may wait on its own missing evidence; upstream blocking
++    // and unresolved dependencies still mean it has not been reached.
++    return execution === 'blocked' && !list(node.blocked_by).length && !list(node.unresolved_dependencies).length && list(node.missing_document_types).includes(item.document_type);
++  }
++  function formingRequirements(state) {
++    if (!state.graph || state.graph.family === 'incoming_packet') return [];
++    const nodes = new Map(list(state.evaluation?.nodes).map(node => [node.node_id,node]));
++    const documents = new Map(list(state.evaluation?.documents).map(doc => [doc.document_type,doc]));
++    return list(state.obligations).filter(item => {
++      const document = documents.get(item.document_type), route = document?.route_state || item.status;
++      if (!document || document.activation !== 'true' || ['not_needed','inactive','excluded','held_behind_question','optional'].includes(route)) return false;
++      return requiringNodeIds(item,document).some(id => requiringNodeReached(nodes.get(id),item,document));
++    });
+   }
+-  function formingMarkup(state, projection, selected, events = [], context = {}, knowledge = {}, attention) {
+-    const activeRows = list(state.obligations).filter(item => !['not_needed','inactive','excluded'].includes(list(state.evaluation?.documents).find(row => row.document_type === item.document_type)?.route_state || item.status));
++  function enteredRequirementContext(before, after) {
++    const previous = new Set(formingRequirements(before).map(requirementIdentity));
++    const item = formingRequirements(after).find(row => !previous.has(requirementIdentity(row)));
++    if (!item) return null;
++    const document = list(after.evaluation?.documents).find(row => row.document_type === item.document_type);
++    const node = requiringNodeIds(item,document).find(id => requiringNodeReached(list(after.evaluation?.nodes).find(row => row.node_id === id),item,document));
++    return node ? {node,document:item.document_type,obligation:requirementIdentity(item),fact:list(item.required_fact_ids)[0]} : null;
++  }
++  function formingMarkup(state, projection, selected, events = [], context = {}, knowledge = {}, attention, settled = false) {
++    const activeRows = formingRequirements(state);
+     const publication = formingPublication(state,events,attention), node = list(state.graph?.nodes).find(item => item.node_id === selected), relation = formingRelations(state,selected,context);
++    const evaluated = list(state.evaluation?.nodes).find(item => item.node_id === selected), capability = projection.node_capabilities?.[selected];
+     const binding = relation ? ` data-au-wire-fact="${h(relation.fact)}" data-au-wire-source="${h(relation.source)}" data-au-wire-node="${h(relation.node)}"${relation.obligation ? ` data-au-wire-obligation="${h(relation.obligation)}"` : ''}` : '';
+-    return `<section class="au-forming-work" data-au-forming="true" data-au-forming-revision="${h(state.revision)}" data-au-forming-sha="${h(state.state_sha256)}"><div class="au-forming-layout"><div class="au-forming-reading">${!state.graph ? formingKnowledgeMarkup(state,knowledge,false,true) : ''}${evidencePathMarkup(state,selected,projection,context,true)}</div>${state.graph ? `<section class="au-forming-process au-evidence-process" aria-label="Complete recorded process">${publication ? `<div class="au-forming-publication-focus" data-au-publication-focus="${h(publication.id)}">${formingKnowledgeMarkup(state,knowledge,true,false,publication.knowledge,list(state.knowledge_uses))}</div>` : `${formingKnowledgeMarkup(state,knowledge,false,true)}${node ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h2>` : ''}`}${graphMarkup(state,selected,projection,{overview:true})}</section>` : ''}${list(state.obligations).length ? `<aside class="au-forming-documents" data-au-evidence-path aria-label="Recorded document requirements"><h2>Document requirements</h2>${activeRows.some(item => ['held_behind_question','needed_later','optional'].includes(list(state.evaluation?.documents).find(row => row.document_type === item.document_type)?.route_state || item.status)) ? '<p class="au-forming-document-scope">May be needed, depending on the recorded decisions.</p>' : ''}${activeRows.length ? obligationMarkup(state,selected,activeRows,context,true) : ''}${button('All recorded requirements','data-au-detail="documents"')}</aside>` : ''}<svg class="au-forming-connections" aria-hidden="true"${binding}>${relation ? `<path data-au-forming-wire="source-process"${binding}></path>${relation.obligation ? `<path data-au-forming-wire="process-document"${binding}></path>` : ''}` : ''}</svg></div></section>`;
++    return `<section class="au-forming-work" data-au-forming="${!settled}"${settled ? ' data-au-settled="true"' : ''} data-au-forming-revision="${h(state.revision)}" data-au-forming-sha="${h(state.state_sha256)}"><div class="au-forming-layout"><div class="au-forming-reading">${!state.graph ? formingKnowledgeMarkup(state,knowledge,false,true) : ''}${evidencePathMarkup(state,selected,projection,context,true)}${settled && evaluated ? `<div class="au-reading-decision"><p class="au-step-status">${h(statusLabel(evaluated.execution_state || evaluated.state))}</p>${capability?.authorized === false ? `<p class="au-reading-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}</div>` : ''}</div>${state.graph ? `<section class="au-forming-process au-evidence-process" aria-label="Complete recorded process">${publication ? `<div class="au-forming-publication-focus" data-au-publication-focus="${h(publication.id)}">${formingKnowledgeMarkup(state,knowledge,true,false,publication.knowledge,list(state.knowledge_uses))}</div>` : `${formingKnowledgeMarkup(state,knowledge,false,!settled)}${node ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h2>` : ''}`}${graphMarkup(state,selected,projection,{overview:true})}</section>` : ''}${state.graph?.family !== 'incoming_packet' && list(state.obligations).length ? `<aside class="au-forming-documents" data-au-evidence-path aria-label="Recorded document requirements"><h2>Document requirements</h2>${activeRows.length ? obligationMarkup(state,selected,activeRows,context,true) : '<p>Requirements appear when their process step is reached.</p>'}${button('All recorded requirements','data-au-detail="documents"')}</aside>` : ''}<svg class="au-forming-connections" aria-hidden="true"${binding}>${relation ? `<path data-au-forming-wire="source-process"${binding}></path>${relation.obligation ? `<path data-au-forming-wire="process-document"${binding}></path>` : ''}` : ''}</svg></div></section>`;
++  }
++  function conditionLabel(state, expression) {
++    if (!expression || typeof expression !== 'object' || Object.prototype.hasOwnProperty.call(expression,'const')) return '';
++    if (expression.flag) {
++      const fact = list(state.facts).find(item => item.fact_id === `condition:${expression.flag}` || item.flag === expression.flag);
++      return name(fact) || words(expression.flag);
++    }
++    if (expression.not) return `Not (${conditionLabel(state,expression.not)})`;
++    if (expression.all) return list(expression.all).map(item => conditionLabel(state,item)).filter(Boolean).join(' and ');
++    if (expression.any) return list(expression.any).map(item => conditionLabel(state,item)).filter(Boolean).join(' or ');
++    return '';
+   }
++  const routeLabel = value => ['true','applied','active'].includes(value) ? 'Applies' : ['false','excluded','inactive'].includes(value) ? 'Excluded' : 'Unresolved';
+   function graphMarkup(state, selected, projection = {}, options = {}) {
+     if (!state.graph) return '';
+     const layout = layoutGraph(state.graph), neighborhood = new Set([selected,...(layout.parents.get(selected) || []),...(layout.children.get(selected) || [])]), evaluation = new Map(list(state.evaluation?.nodes).map(node => [node.node_id,node]));
+-    return `<div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">${options.overview ? 'Open larger process' : 'Open full process'}</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-overview="${Boolean(options.overview)}" data-au-graph-expanded="false" tabindex="0" role="region" aria-label="${options.overview ? 'Complete process; use arrow keys or scroll to explore' : 'Selected decision, its prerequisites and following decisions; open full process to explore the complete graph'}"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="${options.overview ? 'vertical' : 'horizontal'}" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true">${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-au-edge-source="${h(edge.source_node_id)}" data-au-edge-target="${h(edge.target_node_id)}" data-au-neighborhood="${neighborhood.has(edge.source_node_id) && neighborhood.has(edge.target_node_id)}" data-state="${h(edgeState(state,edge.edge_id))}" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || edge.relation || 'Process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row,rank) => `<div class="au-graph-rank" data-rank="${rank}" data-au-neighborhood="${row.some(node => neighborhood.has(node.node_id))}">${row.map(node => {
++    return `<div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">${options.overview ? 'Open larger process' : 'Open full process'}</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-overview="${Boolean(options.overview)}" data-au-graph-expanded="false" tabindex="0" role="region" aria-label="${options.overview ? 'Complete process; use arrow keys or scroll to explore' : 'Selected decision, its prerequisites and following decisions; open full process to explore the complete graph'}"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="${options.overview ? 'vertical' : 'horizontal'}" style="--au-ranks:${Math.max(1,layout.rows.length)}"><svg class="au-graph-lines" aria-hidden="true"><defs>${['true','false','unresolved'].map(value => `<marker id="au-process-arrow-${value}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="${value}" d="M1 1 L9 5 L1 9 Z" /></marker>`).join('')}</defs>${layout.edges.map(edge => `<path data-au-edge="${h(edge.edge_id)}" data-au-edge-source="${h(edge.source_node_id)}" data-au-edge-target="${h(edge.target_node_id)}" data-au-neighborhood="${neighborhood.has(edge.source_node_id) && neighborhood.has(edge.target_node_id)}" data-state="${h(edgeState(state,edge.edge_id))}" marker-end="url(#au-process-arrow-${edgeState(state,edge.edge_id) === 'true' ? 'true' : ['false','excluded'].includes(edgeState(state,edge.edge_id)) ? 'false' : 'unresolved'})" data-selected="${edge.source_node_id === selected || edge.target_node_id === selected}"><title>${h(edge.label || edge.relation || 'Process connection')} · ${h(statusLabel(edgeState(state,edge.edge_id)))}</title></path>`).join('')}</svg>${layout.rows.map((row,rank) => `<div class="au-graph-rank" data-rank="${rank}" data-au-neighborhood="${row.some(node => neighborhood.has(node.node_id))}">${row.map(node => {
+       const evaluated = evaluation.get(node.node_id) || {}, status = evaluated.execution_state || evaluated.state || 'pending';
+       const parents = layout.parents.get(node.node_id).map(id => name(layout.byId.get(id)));
+-      const visibleStatus = ['false','excluded'].includes(evaluated.activation) ? 'Does not apply' : (options.overview || selected === node.node_id) && ['completed','complete','resolved','ready','blocked','running','working','queued','paused','failed','deferred'].includes(status) ? statusLabel(status) : '';
+-      return `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}" data-au-neighborhood="${neighborhood.has(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(statusLabel(status))}${parents.length ? `. After ${h(parents.join(' + '))}` : ''}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${status === 'completed' ? '✓' : evaluated.activation === 'false' ? '−' : '·'}</span><span class="au-node-copy"><span class="au-node-relation"${neighborhood.has(node.node_id) ? '' : ' hidden'}>${neighborhood.has(node.node_id) ? node.node_id === selected ? 'This decision' : layout.parents.get(selected)?.includes(node.node_id) ? 'Before' : 'Then' : ''}</span><strong class="au-node-title">${h(name(node))}</strong>${visibleStatus ? `<span class="au-node-state">${h(visibleStatus)}</span>` : ''}</span></button>`;
++      const incoming = layout.edges.filter(edge => edge.target_node_id === node.node_id);
++      const conditional = incoming.filter(edge => conditionLabel(state,edge.condition) || ['blocks','invalidates','supersedes'].includes(edge.relation));
++      const labels = conditional.map(edge => `<span class="au-node-condition" data-au-edge-label="${h(edge.edge_id)}" data-state="${h(edgeState(state,edge.edge_id))}">${h(conditionLabel(state,edge.condition) || edge.label || words(edge.relation))}<span>${h(routeLabel(edgeState(state,edge.edge_id)))}</span></span>`).join('');
++      const ownCondition = !conditional.length && !incoming.length && conditionLabel(state,node.condition);
++
++      const visibleStatus = ['false','excluded'].includes(evaluated.activation) && !conditional.length ? 'Does not apply' : selected === node.node_id && ['completed','complete','resolved','ready','blocked','running','working','queued','paused','failed','deferred'].includes(status) ? statusLabel(status) : '';
++      return `<button type="button" class="au-node au-evidence-node" data-au-node="${h(node.node_id)}" data-au-neighborhood="${neighborhood.has(node.node_id)}" data-status="${h(status)}" data-activation="${h(evaluated.activation || 'unresolved')}" aria-pressed="${selected === node.node_id}" aria-label="${h(name(node))}. ${h(statusLabel(status))}${parents.length ? `. After ${h(parents.join(' + '))}` : ''}"><span class="au-node-index au-evidence-junction" data-au-junction="${h(node.node_id)}" aria-hidden="true">${status === 'completed' ? '✓' : evaluated.activation === 'false' ? '−' : '·'}</span><span class="au-node-copy"><span class="au-node-relation"${neighborhood.has(node.node_id) ? '' : ' hidden'}>${neighborhood.has(node.node_id) ? node.node_id === selected ? 'This decision' : layout.parents.get(selected)?.includes(node.node_id) ? 'Before' : 'Then' : ''}</span>${labels}${ownCondition ? `<span class="au-node-condition" data-au-node-condition="${h(node.node_id)}">${h(ownCondition)}<span>${h(routeLabel(evaluated.activation))}</span></span>` : ''}<strong class="au-node-title">${h(name(node))}</strong>${visibleStatus ? `<span class="au-node-state">${h(visibleStatus)}</span>` : ''}</span></button>`;
+     }).join('')}</div>`).join('')}</div></div>`;
+   }
+ 
+@@ -588,8 +644,8 @@
+     const rows = suppliedRows || list(state.obligations).concat(list(state.evaluation?.documents).filter(doc => !list(state.obligations).some(item => item.document_type === doc.document_type)));
+     if (!rows.length) return '<p class="au-empty">No document requirements have been recorded.</p>';
+     return `<ul class="au-obligations">${rows.map(obligation => {
+-      const doc = documents.get(obligation.document_type) || {}, nodes = [...new Set([obligation.node_id,obligation.decision_node_id,...list(obligation.required_at_node_ids),...list(obligation.node_ids)].filter(Boolean))];
+-      const requiring = nodes.find(id => list(state.graph?.nodes).some(node => node.node_id === id)), fact = list(obligation.required_fact_ids).find(id => list(state.facts).some(row => row.fact_id === id));
++      const doc = documents.get(obligation.document_type) || {}, nodes = requiringNodeIds(obligation,doc);
++      const requiring = nodes.find(id => list(state.graph?.nodes).some(node => node.node_id === id) && (!forming || requiringNodeReached(list(state.evaluation?.nodes).find(node => node.node_id === id),obligation,doc))), fact = list(obligation.required_fact_ids).find(id => list(state.facts).some(row => row.fact_id === id));
+       const status = doc.route_state || obligation.status || 'pending', identity = requirementIdentity(obligation);
+       const selection = requiring ? `data-au-select="${h(requiring)}" data-au-select-document="${h(obligation.document_type)}" data-au-select-obligation="${h(identity)}" data-au-select-fact="${h(fact || '')}"` : `data-au-inspect="requirement" data-au-record-id="${h(identity)}"`;
+       const citations = list(obligation.required_fact_ids).flatMap(id => citationRows(list(state.facts).find(row => row.fact_id === id)));
+@@ -826,8 +882,8 @@
+     const playControls = presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Resume','data-au-demo-resume') : presentation.mode === 'replay' ? button('Play','data-au-demo-play') : '';
+     const panels = [['step','Process'],['documents','Documents'],['knowledge','Knowledge'],['sources','Sources'],['activity','History']];
+     const chosen = panels.some(([id]) => id === detail) ? detail : 'step', publicationFocus = presentation.attention && (!presentation.inspectionHold || presentation.attention.retained) && formingPublication(state,events,presentation.attention), forming = chosen === 'step' && (formingWork(state,presentation) || Boolean(publicationFocus));
+-    const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention) + (!state.graph ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
+-    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${featuredCase(state.claim_id) || state.origin === 'canonical_original' ? ' / Synthetic claim' : ''}${presentation.mode === 'replay' ? ' / Recorded investigation' : ''}</p>${claimHeadingMarkup(state)}${reference ? `<p class="au-reference-mode" data-au-reference-mode>Historical synthetic recording${reference.as_of ? ` · as of ${h(reference.as_of)}` : ''} · rules-based</p>` : ''}<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>${presentation.pendingStart ? 'Retry start' : 'Start investigation'}</button>` : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' ? recordButton('Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}" aria-controls="auPanel-activity">History</button></div></header>${state.revision === 0 && canWrite ? `<p class="au-meta" data-au-start-availability>${h(presentation.availability?.reason || 'Checking live execution availability…')}</p>` : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}" aria-controls="auPanel-${id}">${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${chosen === 'step' && referenceAssessmentComplete(state) && state.outcome.summary ? `<div class="au-assessment-conclusion"><p>${h(state.outcome.summary)}</p>${legalBasisMarkup(state)}</div>` : chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div></div></section></section>`;
++    const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention) + (!state.graph ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : referenceAssessmentComplete(state) ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,undefined,true) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
++    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${featuredCase(state.claim_id) || state.origin === 'canonical_original' ? ' / Synthetic claim' : ''}${presentation.mode === 'replay' ? ' / Recorded investigation' : ''}</p>${claimHeadingMarkup(state)}${reference ? `<p class="au-reference-mode" data-au-reference-mode>Historical synthetic recording${reference.as_of ? ` · as of ${h(reference.as_of)}` : ''} · rules-based</p>` : ''}<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>${presentation.pendingStart ? 'Retry start' : 'Start investigation'}</button>` : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' ? recordButton('Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}" aria-controls="auPanel-activity">History</button></div></header>${state.revision === 0 && canWrite ? `<p class="au-meta" data-au-start-availability>${h(presentation.availability?.reason || 'Checking live execution availability…')}</p>` : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}" aria-controls="auPanel-${id}">${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion"><p>${h(state.outcome.summary)}</p>${legalBasisMarkup(state)}</div>` : chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div></div></section></section>`;
+   }
+ 
+   function replayIdentityMarkup(record) {
+@@ -1386,14 +1442,26 @@
+       let graphPaths = null;
+       if (graphSvg && frame?.width && frame.height && current?.graph) {
+         const nodes = new Map([...graph.querySelectorAll('[data-au-node]')].map(element => {
+-          const junction = element.querySelector?.('[data-au-junction]') || element;
++          const junction = element.querySelector('[data-au-junction]') || element;
+           return [element.dataset.auNode,{bounds:junction.getBoundingClientRect(),rank:Number(element.parentElement.dataset.rank)}];
+         }));
++        const ranks = new Map([...graph.querySelectorAll('.au-graph-rank')].map(element => [Number(element.dataset.rank),element.getBoundingClientRect()]));
+         graphPaths = list(current.graph.edges).map((edge,index) => {
+           const from = nodes.get(edge.source_node_id), to = nodes.get(edge.target_node_id); if (!from || !to || !from.bounds.width || !from.bounds.height || !to.bounds.width || !to.bounds.height) return null;
+           const vertical = graph.dataset.orientation === 'vertical';
+-          const x1=(vertical ? from.bounds.left+from.bounds.width/2 : from.bounds.right)-frame.left,y1=(vertical ? from.bounds.bottom : from.bounds.top+from.bounds.height/2)-frame.top,x2=(vertical ? to.bounds.left+to.bounds.width/2 : to.bounds.left)-frame.left,y2=(vertical ? to.bounds.top : to.bounds.top+to.bounds.height/2)-frame.top,lane=vertical ? frame.width-8-(index%3)*6 : frame.height-14-(index%3)*9;
+-          const path=vertical ? to.rank-from.rank>1 ? `M${x1} ${y1} C${x1} ${y1+10},${lane} ${y1+10},${lane} ${y1+22} L${lane} ${y2-22} C${lane} ${y2-10},${x2} ${y2-10},${x2} ${y2}` : `M${x1} ${y1} C${x1} ${(y1+y2)/2},${x2} ${(y1+y2)/2},${x2} ${y2}` : to.rank-from.rank>1 ? `M${x1} ${y1} C${x1+18} ${y1},${x1+18} ${lane},${x1+34} ${lane} L${x2-34} ${lane} C${x2-18} ${lane},${x2-18} ${y2},${x2} ${y2}` : `M${x1} ${y1} C${(x1+x2)/2} ${y1},${(x1+x2)/2} ${y2},${x2} ${y2}`;
++          const x1=(vertical ? from.bounds.left+from.bounds.width/2 : from.bounds.right)-frame.left,y1=(vertical ? from.bounds.bottom : from.bounds.top+from.bounds.height/2)-frame.top,x2=(vertical ? to.bounds.left+to.bounds.width/2 : to.bounds.left)-frame.left,y2=(vertical ? to.bounds.top : to.bounds.top+to.bounds.height/2)-frame.top;
++          let path;
++          if (vertical) {
++            const sourceRank=ranks.get(from.rank), nextRank=ranks.get(from.rank+1), targetRank=ranks.get(to.rank), previousRank=ranks.get(to.rank-1);
++            const departure=(sourceRank.bottom+nextRank.top)/2-frame.top, arrival=(previousRank.bottom+targetRank.top)/2-frame.top;
++            // Vertical runs stay on the actual junction's clear margin. Edges
++            // skipping a rank use the outside gutter and cross only row gaps.
++            const lane=8+(index%3)*6;
++            path=to.rank-from.rank>1 ? `M${x1} ${y1} L${x1} ${departure} L${lane} ${departure} L${lane} ${arrival} L${x2} ${arrival} L${x2} ${y2}` : `M${x1} ${y1} L${x1} ${departure} C${x1} ${departure},${x2} ${departure},${x2} ${departure} L${x2} ${y2}`;
++          } else {
++            const lane=frame.height-14-(index%3)*9;
++            path=to.rank-from.rank>1 ? `M${x1} ${y1} C${x1+18} ${y1},${x1+18} ${lane},${x1+34} ${lane} L${x2-34} ${lane} C${x2-18} ${lane},${x2-18} ${y2},${x2} ${y2}` : `M${x1} ${y1} C${(x1+x2)/2} ${y1},${(x1+x2)/2} ${y2},${x2} ${y2}`;
++          }
+           return {id:edge.edge_id,d:path,state:edgeState(current,edge.edge_id),selected:edge.source_node_id === selected || edge.target_node_id === selected};
+         }).filter(Boolean);
+       }
+@@ -1638,9 +1706,11 @@
+         current = incoming.state; projection = incoming.projection; cursor = accepted.cursor; freshClaim = true;
+         const existing = new Map(history.map(event => [event.seq,event])); for (const event of accepted.events) existing.set(event.seq,event);
+         history = [...existing.values()].sort((a,b) => a.seq-b.seq);
++        const entered = !inspectionHold && changes && enteredRequirementContext(previousState,current);
+         const followed = demoSession && [...accepted.events].reverse().find(event => consequentialEventNode(previousState,current,event));
+-        selected = preferredNode(current,followed ? consequentialEventNode(previousState,current,followed) : selected,history);
+-        if (followed) { evidenceContext = acceptedEventContext(current,followed,selected); detail = 'step'; }
++        selected = preferredNode(current,entered?.node || (followed ? consequentialEventNode(previousState,current,followed) : selected),history);
++        if (entered) { evidenceContext = evidenceSelection(current,selected,entered); detail = 'step'; }
++        else if (followed) { evidenceContext = acceptedEventContext(current,followed,selected); detail = 'step'; }
+         const newest = accepted.events.at(-1); // Knowledge changes stay in the accepted investigation composition.
+         if (changed) { renderClaim(changes); rememberClaim(current); } else synchronizeAuthority();
+         snapshotCache();
+@@ -1709,11 +1779,13 @@
+       if (!preferences.demo) stopPresentation();
+       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
+       leaveView(); route(claimFragment(id,preferences),writeHistory);
+-      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = false; current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo ? 'demonstration' : 'work'); notice('');
++      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo ? 'demonstration' : 'work'); notice('');
+       claimRenderComplete = false;
+       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
++      const opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
++      if (demoSession) demoSession.verifiedOpening = null;
+       const cached = presentationMode !== 'replay' && paintSavedClaim(id,preferences);
+-      if (!cached) { host.innerHTML = catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); }
++      if (!cached && !opening) { host.innerHTML = catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); }
+       interact(host);
+       if (presentationMode !== 'replay') {
+         sessionRestore?.then(() => { if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && !current && id === openingId) paintSavedClaim(id,preferences); });
+@@ -1721,15 +1793,16 @@
+       }
+       try {
+         const through = preferences.through ?? 0;
+-        const incoming = readReplay(await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
++        const incoming = readReplay(opening?.response || await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
+         if (disposed || token !== epoch || pendingRoute() || view !== 'claim') return;
++        if (opening) checkedReplayHead(incoming,{replayHead:opening.head});
+         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
+         const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = preferences.detail || previous?.detail || 'step';
+         renderClaim(); notice(''); focusTitle();
+         if (preferences.demo && demoSession?.mode === 'replay') {
+           const session = demoSession;
+           session.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256};
+-          if (session.collection !== 'legacy' && !await verifyReferenceHead(session)) {
++          if (session.collection !== 'legacy' && !(opening?.referenceReady || await verifyReferenceHead(session))) {
+             if (disposed || token !== epoch || demoSession !== session || pendingRoute()) return;
+             stopPresentation(); renderClaim(); notice('This synthetic reference assessment has no completed recorded history available. Its original intake remains inspectable.'); return current;
+           }
+@@ -1965,16 +2038,45 @@
+       openingPreferences = {...openingPreferences,demo:true};
+       renderClaim(); prefetchReplay(demoSession); replayTick(demoSession,epoch);
+     }
+-    async function openPresentationCase(session, writeHistory = true) {
++    async function openPresentationCase(session, writeHistory = true, index = session.index) {
+       if (demoSession !== session || disposed || pendingRoute()) return;
+-      if (session.index >= demoCases(session.collection).length) { stopPresentation(); detail = 'step'; selected = preferredNode(current,selected,history); evidenceContext = evidenceSelection(current,selected,evidenceContext); notice('Recorded playback finished.'); renderClaim(); return; }
+-      const id = demoCases(session.collection)[session.index].claim_id; session.claimId = id; session.startAttempted = false;
++      if (index >= demoCases(session.collection).length) { stopPresentation(); detail = 'step'; selected = preferredNode(current,selected,history); evidenceContext = evidenceSelection(current,selected,evidenceContext); notice('Recorded playback finished.'); renderClaim(); return; }
++      const id = demoCases(session.collection)[index].claim_id;
++      if (session.mode === 'replay' && current && replayRecord && id !== current.claim_id) {
++        const token = epoch, generation = readGeneration, priorId = current.claim_id, priorHash = current.state_sha256;
++        try {
++          const opening = await presentationOpening(session,id);
++          if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
++          session.verifiedOpening = opening;
++        } catch (error) {
++          if (demoSession === session && token === epoch && !disposed && !pendingRoute()) { stopPresentation(); renderClaim(); notice(`Next case ${featuredCase(id)?.label || id} is unavailable: ${error.message} The last verified case remains visible.`,true); }
++          return;
++        }
++      }
++      session.index = index; session.claimId = id; session.startAttempted = false;
+       await openClaim(id,writeHistory,{mode:session.mode,collection:session.collection || 'reference',through:0,detail:'step',demo:true});
+       if (demoSession !== session || !current || disposed || pendingRoute()) return;
+       if (session.mode === 'replay') {
+         if (!replayRecord.current_revision) { stopPresentation(); renderClaim(); notice('This original case has no recorded execution to replay. Its original sources remain available.'); return; }
+       } else { resumeLivePresentation(); advanceLivePresentation(); }
+     }
++    function presentationOpening(session,id) {
++      const token = epoch, generation = readGeneration, identity = `opening:${id}:0`;
++      if (replayPrefixes.has(identity)) return replayPrefixes.get(identity);
++      const promise = (async () => {
++        const response = await request(`/claims/${key(id)}/replay?through_seq=0`), incoming = readReplay(response,id,0);
++        const head = {claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256};
++        if (!head.revision) throw new Error('No recorded execution is available for this original case.');
++        const referenceReady = session.collection !== 'legacy' && await verifyReferenceHead({replayHead:head});
++        if (session.collection !== 'legacy' && !referenceReady) throw new Error('No completed recorded reference assessment is available.');
++        if (disposed || token !== epoch || generation !== readGeneration || demoSession !== session || pendingRoute()) throw new Error('The presentation changed while verifying the next case.');
++        return {claimId:id,generation,response,head,referenceReady};
++      })();
++      replayPrefixes.set(identity,promise);
++      while (replayPrefixes.size > 2) replayPrefixes.delete(replayPrefixes.keys().next().value);
++      promise.catch(() => {});
++      return promise;
++    }
+     function checkedReplayHead(incoming, session) {
+       const head = session.replayHead, record = incoming.replay;
+       if (!head || incoming.state.claim_id !== head.claimId || record.current_revision !== head.revision || record.current_state_sha256 !== head.state_sha256 || record.current_event_sha256 !== head.event_sha256) throw new Error('The recorded replay head changed. Reopen to verify its newest history.');
+@@ -2028,9 +2130,11 @@
+         acceptPublicationAttention(previousState,incoming.state,accepted,changes);
+         replayPrefixes.delete(`${current.claim_id}:${through}:${session.replayHead.state_sha256}`);
+         current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
++        const entered = demoSession && enteredRequirementContext(previousState,current);
+         const followed = demoSession && [...accepted.events].reverse().find(event => consequentialEventNode(previousState,current,event));
+-        selected = preferredNode(current,followed ? consequentialEventNode(previousState,current,followed) : selected,history);
+-        if (followed) { evidenceContext = acceptedEventContext(current,followed,selected); detail = 'step'; }
++        selected = preferredNode(current,entered?.node || (followed ? consequentialEventNode(previousState,current,followed) : selected),history);
++        if (entered) { evidenceContext = evidenceSelection(current,selected,entered); detail = 'step'; }
++        else if (followed) { evidenceContext = acceptedEventContext(current,followed,selected); detail = 'step'; }
+         // Knowledge changes stay in the accepted investigation composition.
+         evidenceContext = evidenceSelection(current,selected,evidenceContext);
+         const fragment = selectedClaimFragment();
+@@ -2043,8 +2147,10 @@
+       if (!replayActive(session,token) || doc.hidden || dialog.open || session.preparing === token) return;
+       if (replayRecord.through_seq >= replayRecord.current_revision) {
+         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
++        const next = demoCases(session.collection)[session.index+1];
++        if (next) presentationOpening(session,next.claim_id);
+         const remaining = Math.max(0,4000 - (Date.now() - session.displayedAt));
+-        demoTimer = root.setTimeout(() => { demoTimer = null; if (!replayActive(session,token) || doc.hidden || dialog.open) return; session.index++; openPresentationCase(session); },remaining);
++        demoTimer = root.setTimeout(() => { demoTimer = null; if (!replayActive(session,token) || doc.hidden || dialog.open) return; openPresentationCase(session,true,session.index+1); },remaining);
+         return;
+       }
+       const id = current.claim_id, through = replayRecord.through_seq + 1;
+@@ -2076,7 +2182,7 @@
+       demoTimer = null;
+       if (demoSession !== session || disposed || token !== epoch || pendingRoute() || session.epoch !== token || view !== 'claim' || presentationMode !== 'live' || current?.claim_id !== id || session.claimId !== id || demoCases(session.collection)[session.index]?.claim_id !== id || busy || pendingStart || active(current.status)) return;
+       if (doc.hidden || dialog.open) { demoTimer = root.setTimeout(() => livePresentationTick(session,token,id),1600); return; }
+-      session.index++; openPresentationCase(session);
++      openPresentationCase(session,true,session.index+1);
+     }
+     async function startOriginal(target) {
+       if (publicReadOnly || busy || pendingRoute() || !freshClaim || !status || !writable(status) || !current || !intakeEligible(projection) || REFERENCE_DEMO_CASES.some(row => row.claim_id === current.claim_id) || current.revision !== 0 && !pendingStart || presentationMode === 'replay' || !canStartHere() && !pendingStart) return;
+@@ -2475,5 +2581,5 @@
+     return controller;
+   }
+   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
+-  return {legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
++  return {enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+ });
