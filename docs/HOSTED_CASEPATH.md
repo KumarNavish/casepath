@@ -127,12 +127,16 @@ the current cloud ledger. A stale pre-cutover copy is not a writable rollback.
 
 ## Synthetic demonstration admission
 
-The `synthetic-nine-v1` profile binds nine original claim IDs to separately
-labelled synthetic supplements and historical review dates. Original files and
-journal prefixes remain intact. The profile enables a deterministic assessment
-through the existing process and knowledge engine; it grants no provider calls,
-spending allowance, external communication or court action. The public service
-only reads the resulting history.
+The `synthetic-nine-v2` profile binds nine original claim IDs to separately
+labelled synthetic supplements and historical review dates. It regenerates the
+v1 documents with concise fictional-document labels and verifies each cleanup
+against its immutable v1 source. Original files, earlier supplements and journal
+prefixes remain intact. Reassessment appends a new recorded investigation; the
+default demonstration starts at its verified preparation event, while History
+retains the earlier documents and explicit replay positions. The profile enables
+a deterministic assessment through the existing process and knowledge engine;
+it grants no provider calls, spending allowance, external communication or court
+action. The public service only reads the resulting history.
 
 From the same clean, committed checkout, an authorized Mac operator prepares a
 private plan with `casepath-api/tools/admit_reference.py dry-run --plan PATH`.
