@@ -1800,3 +1800,11 @@ test('operation reading uses current case labels and source summaries without ex
  trace.current={...raw,kind:'document.require',object:{type:'document',id:'notice'},result:{route_state:'needed_now'}};assert.match(ui.operationReadingMarkup(trace),/Separate notice/);assert.doesNotMatch(ui.operationReadingMarkup(trace),/needed_now/);
  trace.current={...raw,result:{summary:'The actual source describes an uncertain service date.',verdict:'unresolved'}};assert.match(ui.operationReadingMarkup(trace),/The actual source describes an uncertain service date/);
 });
+
+test('restarting Demonstration opens its own first case after inspection of another case',async t=>{
+ const f=dom(),first=ui.DEMO_CASES[0].claim_id,second=ui.DEMO_CASES[1].claim_id;
+ const envelope=id=>{const saved=state({claim_id:id,title:id===first?'First original packet':'Earlier inspected packet',revision:0,state_sha256:sha(id),last_event_sha256:null,graph:null,evaluation:null,facts:[],obligations:[],actions:[],status:'not_started',mode:'unprocessed',phase:'not_run'});return {state:saved,projection:{revision:0,state_sha256:saved.state_sha256},events:[],cursor_sha256:null,mode:'replay',replay_only:true,through_seq:0,current_revision:0,current_state_sha256:saved.state_sha256,current_event_sha256:null,provenance:{event_sha256:null}};};
+ const api=fakeApi({handle:async path=>{const match=path.match(/\/claims\/([^/]+)\/replay\?through_seq=0$/);return match?response(envelope(match[1])):null;}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ await controller.openClaim(second,true,{mode:'replay',collection:'legacy',through:0,detail:'activity'});assert.ok(f.host.innerHTML.includes(sha(second)));
+ await controller.showDemonstration(true,'legacy');assert.ok(f.host.innerHTML.includes(sha(first)));assert.ok(!f.host.innerHTML.includes(sha(second)));assert.equal(api.calls.filter(row=>row.init.method==='POST').length,0);
+});
