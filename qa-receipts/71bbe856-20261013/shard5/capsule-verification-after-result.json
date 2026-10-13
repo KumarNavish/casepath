@@ -1,0 +1,34 @@
+{
+  "command": [
+    "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "/workspace/casepath-operation-gate-71bbe856-20261013/harness/verify_prepared_capsules.py",
+    "shard5",
+    "after"
+  ],
+  "env": {
+    "HOME": "/workspace/casepath-operation-gate-71bbe856-20261013/shard5/home",
+    "TMPDIR": "/workspace/casepath-operation-gate-71bbe856-20261013/shard5/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-operation-gate-71bbe856-20261013/shard5/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "PYTHONHASHSEED": "0",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-operation-gate-71bbe856-20261013/shard5/pycache",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1"
+  },
+  "started_epoch": 1791899896.0255365,
+  "finished_epoch": 1791899896.6557739,
+  "exit_code": 0,
+  "attempts": 1,
+  "no_inherited_environment": true
+}

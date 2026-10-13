@@ -1,0 +1,90 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "verifier": "root independent raw JUnit+observer reconciliation",
+  "full_collected": 2571,
+  "cloud_executed": 2444,
+  "mac_assigned": 127,
+  "mac_execution_status": "pending exact candidate; previous candidate results not reused",
+  "cloud_outcomes": {
+    "passed": 2434,
+    "skipped": 10
+  },
+  "exact_disjoint_assignment_union": true,
+  "missing_cloud_ids": [],
+  "duplicates": [],
+  "new_skips": [],
+  "skip_id_lines_reasons_equal_known": true,
+  "shards": [
+    {
+      "shard": 1,
+      "items": 307,
+      "outcomes": {
+        "passed": 307
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true,
+      "duration_seconds": 744.2469601631165
+    },
+    {
+      "shard": 2,
+      "items": 347,
+      "outcomes": {
+        "passed": 347
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true,
+      "duration_seconds": 743.0024366378784
+    },
+    {
+      "shard": 3,
+      "items": 347,
+      "outcomes": {
+        "passed": 347
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true,
+      "duration_seconds": 781.403608083725
+    },
+    {
+      "shard": 4,
+      "items": 740,
+      "outcomes": {
+        "passed": 730,
+        "skipped": 10
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true,
+      "duration_seconds": 530.6423904895782
+    },
+    {
+      "shard": 5,
+      "items": 352,
+      "outcomes": {
+        "passed": 352
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true,
+      "duration_seconds": 692.0089721679688
+    },
+    {
+      "shard": 6,
+      "items": 351,
+      "outcomes": {
+        "passed": 351
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true,
+      "duration_seconds": 703.3682413101196
+    }
+  ],
+  "attempts_per_shard": 1,
+  "retries": 0,
+  "all_frozen_source_after_proofs_valid": true,
+  "cloud_sorted_id_sha256": "b3852753031b295c88a0059048233f8600d3e45dc0ace5f9a83b3127dc5a0467"
+}

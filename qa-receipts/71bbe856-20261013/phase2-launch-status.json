@@ -1,0 +1,56 @@
+{
+  "epoch": 1791899294.6194382,
+  "phase2_shards": [
+    {
+      "shard": 1,
+      "started": true,
+      "started_epoch": 1791899194.8168044,
+      "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+      "retry_allowed": false,
+      "call_passed": 118,
+      "failed_phases": 0,
+      "current_id": "casepath-api/tests/test_causal_workspace_v1.py::test_process_routes_reject_extra_authority_and_bind_preview"
+    },
+    {
+      "shard": 2,
+      "started": true,
+      "started_epoch": 1791899199.1466937,
+      "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+      "retry_allowed": false,
+      "call_passed": 27,
+      "failed_phases": 0,
+      "current_id": "casepath-api/tests/test_agent_desk_v1.py::test_pause_idempotency_stale_revision_and_restart"
+    },
+    {
+      "shard": 3,
+      "started": true,
+      "started_epoch": 1791899257.3730001,
+      "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+      "retry_allowed": false,
+      "call_passed": 18,
+      "failed_phases": 0,
+      "current_id": "casepath-api/tests/test_agent_desk_question_priority.py::test_pending_question_priority_preserves_source_questions_and_previews"
+    },
+    {
+      "shard": 5,
+      "started": true,
+      "started_epoch": 1791899203.8365188,
+      "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+      "retry_allowed": false,
+      "call_passed": 26,
+      "failed_phases": 0,
+      "current_id": "casepath-api/tests/test_agent_live_projection.py::test_live_projection_is_sealed_with_actual_completed_reference_work"
+    },
+    {
+      "shard": 6,
+      "started": true,
+      "started_epoch": 1791899222.707467,
+      "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+      "retry_allowed": false,
+      "call_passed": 19,
+      "failed_phases": 0,
+      "current_id": "casepath-api/tests/test_agent_desk_v1.py::test_desk_arrival_is_persistently_idempotent_and_prepares_real_not_sent_draft"
+    }
+  ],
+  "free_bytes": 1502486528
+}

@@ -1,0 +1,80 @@
+{
+  "authorization": "Root explicit exact six completed green ce0a pytest-tmp paths only; no other cleanup",
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "started_epoch": 1791898546.795411,
+  "capacity_before": {
+    "total": 33770192896,
+    "used": 31518990336,
+    "free": 516440064
+  },
+  "paths": [
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/pytest-tmp",
+      "bytes_before": 290303640,
+      "original_exit_code": 0,
+      "junit_sha256": "dfb65aed6ede889eb335fffc210a3455130bc2807b0c61d07736888aa16d1e90",
+      "testcases": 274,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard2/pytest-tmp",
+      "bytes_before": 391559822,
+      "original_exit_code": 0,
+      "junit_sha256": "1a70fde9017ba9a929371e1ed9f45588638840f085facfdf74c3351bb161f229",
+      "testcases": 289,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/pytest-tmp",
+      "bytes_before": 238878259,
+      "original_exit_code": 0,
+      "junit_sha256": "f7b0e9dee48490a266f84f8477fff435959202608a227b04f33d66e3c26a9a2a",
+      "testcases": 293,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard4/pytest-tmp",
+      "bytes_before": 282267925,
+      "original_exit_code": 0,
+      "junit_sha256": "ddff80f48c5b52aa3623ceffeba3dfad2610643e01a5b1e4438b52193f95e9e1",
+      "testcases": 595,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/pytest-tmp",
+      "bytes_before": 229473381,
+      "original_exit_code": 0,
+      "junit_sha256": "ef6d6f917974f46ca3b47339e89d6b14c643fdd790f6572f541c1d1252084638",
+      "testcases": 667,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 10
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/pytest-tmp",
+      "bytes_before": 175280664,
+      "original_exit_code": 0,
+      "junit_sha256": "ec37e32402f5995b4509bfcd79fd861d8c47fa59bba545c8554af10c169de8ba",
+      "testcases": 293,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "scope_excludes": "ALL ce0 raw evidence/caches/capsules and ALL683 evidence/failed fixtures/caches/capsules preserved",
+  "status": "COMPLETED exact authorized six paths",
+  "capacity_after": {
+    "total": 33770192896,
+    "used": 29861249024,
+    "free": 2174181376
+  },
+  "finished_epoch": 1791898547.1336198
+}

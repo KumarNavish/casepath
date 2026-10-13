@@ -1,0 +1,25 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "full_gate_test_file": {
+    "file": "casepath-api/tests/test_hosted_source_batch_v1.py",
+    "tests": 16,
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "observer_seconds": 16.185878506163135,
+    "junit_seconds": 16.186999999999998
+  },
+  "previously_failing_ids": [
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_digest_group_boundary_keeps_one_shared_connection",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[True]"
+  ],
+  "all_eight_previous_failure_ids_passed": true,
+  "source": "Six original exact71 raw phase/JUnit reports; no extra focused execution by planner",
+  "retries": 0
+}

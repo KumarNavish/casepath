@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cp",
+    "--reflink=always",
+    "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/source-capsules/142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a/AGENTS.md",
+    "/workspace/casepath-operation-gate-71bbe856-20261013/reflink-probe"
+  ],
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "cp: failed to clone '/workspace/casepath-operation-gate-71bbe856-20261013/reflink-probe' from '/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/source-capsules/142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a/AGENTS.md': Operation not supported\n",
+  "before_free_bytes": 649445376,
+  "source_inode": 1223586,
+  "source_links": 1
+}

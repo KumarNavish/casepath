@@ -1,0 +1,47 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "shard4_alone_first": true,
+  "shard4_finished_epoch": 1791899092.3513548,
+  "shard4_after_verified_epoch": 1791899140.3560128,
+  "remaining_five_concurrency_overlap": true,
+  "overlap_started_epoch": 1791899257.3730001,
+  "overlap_finished_epoch": 1791899895.845491,
+  "shards": [
+    {
+      "shard": 1,
+      "started_epoch": 1791899194.8168044,
+      "finished_epoch": 1791899939.0637646,
+      "duration_seconds": 744.2469601631165
+    },
+    {
+      "shard": 2,
+      "started_epoch": 1791899199.1466937,
+      "finished_epoch": 1791899942.1491303,
+      "duration_seconds": 743.0024366378784
+    },
+    {
+      "shard": 3,
+      "started_epoch": 1791899257.3730001,
+      "finished_epoch": 1791900038.7766082,
+      "duration_seconds": 781.403608083725
+    },
+    {
+      "shard": 4,
+      "started_epoch": 1791898561.7089643,
+      "finished_epoch": 1791899092.3513548,
+      "duration_seconds": 530.6423904895782
+    },
+    {
+      "shard": 5,
+      "started_epoch": 1791899203.8365188,
+      "finished_epoch": 1791899895.845491,
+      "duration_seconds": 692.0089721679688
+    },
+    {
+      "shard": 6,
+      "started_epoch": 1791899222.707467,
+      "finished_epoch": 1791899926.0757084,
+      "duration_seconds": 703.3682413101196
+    }
+  ]
+}

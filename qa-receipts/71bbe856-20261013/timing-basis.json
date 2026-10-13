@@ -1,0 +1,20 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "source": "/workspace/casepath-operation-gate-68383faf-20261013/per-test-durations.json",
+  "source_sha256": "39aede0088b38614984ab927de6fcaf1eaba859836261e87b98d92e665611528",
+  "timed_cloud_ids": 2444,
+  "source_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "measurement": "Sum actual observer setup/call/teardown durations per ID",
+  "partition_rebalanced": false,
+  "same_assignments_requested": true,
+  "source_failed_cases": 8,
+  "failure_timing_limitation": "These8actual measurements end at old counter assertions; repaired later assertions may add runtime",
+  "predicted_shard_seconds": {
+    "1": 728.5556070079911,
+    "2": 712.9735403533559,
+    "3": 766.2915830283891,
+    "4": 483.5883541726507,
+    "5": 670.9541609776206,
+    "6": 690.2157376702526
+  }
+}

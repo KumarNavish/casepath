@@ -1,0 +1,144 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "shard": 3,
+  "exit_code": 0,
+  "duration_seconds": 781.403608083725,
+  "assigned_count": 347,
+  "collected_count": 347,
+  "assigned_collected_exact_ids_match": true,
+  "assigned_collected_order_match": true,
+  "terminal_unique_ids": 347,
+  "passed": 347,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "phase_counts": {
+    "setup": {
+      "passed": 347,
+      "failed": 0,
+      "skipped": 0
+    },
+    "call": {
+      "passed": 347,
+      "failed": 0,
+      "skipped": 0
+    },
+    "teardown": {
+      "passed": 347,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "failed_ids": [],
+  "failure_reports": [],
+  "attempts": 1,
+  "retries": 0,
+  "no_unrun_ids": true,
+  "after_head": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "after_status": "",
+  "after_verifier_exit_code": 0,
+  "after_verifier_duration_seconds": 0.4514479637145996,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "manifest_sha256": "5ec9f17f59a9c655184832dcc8d58f8b5b4a8da0c36117c15676b0c92eee9024",
+  "capsule_receipt_file_sha256": "32972665f703f25fac75d349c5b35deaedc90891dda1a3d2ab76799230b409f1",
+  "before_after_bindings_unchanged": true,
+  "failed_fixture_retention_policy": "failed",
+  "prior_source_batch_failures_now_passed": [
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 2.698608107981272,
+      "utc_epoch": 1791899594.8727708
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 2.6805455569992773,
+      "utc_epoch": 1791899597.5591455
+    }
+  ],
+  "prior_gate_preserved": "/workspace/casepath-operation-gate-68383faf-20261013/shard3",
+  "artifacts": {
+    "command.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/command.json",
+      "sha256": "2589c462190ea844d4f3558311c7be977f38e258bc55a5f766ffa9002177a9a2",
+      "bytes": 2436
+    },
+    "runner-launch.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/runner-launch.json",
+      "sha256": "866248bd24486ecc743cbaa674d7d4701640d60f9086b96b28e2baea5a887f4c",
+      "bytes": 1473
+    },
+    "runner-terminal.log": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/runner-terminal.log",
+      "sha256": "314977f165111346ea2f2648bf82744a842d0eaaf551a31d326da0d6f0769970",
+      "bytes": 113
+    },
+    "pytest.log": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/pytest.log",
+      "sha256": "f35743c24974a0d4772d021b26408238f1cd41c159f41aab26658628975add1e",
+      "bytes": 44552
+    },
+    "junit.xml": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/junit.xml",
+      "sha256": "4b0264307564f321d731263841612ec5825e05998cc3671416d251473d649b27",
+      "bytes": 50938
+    },
+    "reports.jsonl": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/reports.jsonl",
+      "sha256": "594fa30380054544b6540a7ce8cb826638ba8d24701bc1681597d42ec6abc801",
+      "bytes": 246670
+    },
+    "collected.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/collected.json",
+      "sha256": "2361262db5bb95c1304ab4341d962fb58d7fbe33448127e5b5053ec5d0d9fe5e",
+      "bytes": 116029
+    },
+    "ids.txt": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/ids.txt",
+      "sha256": "fa157d7c6f391d81eadf8810e490c27da2ae8e572ed85add3d8ce6083ee7d471",
+      "bytes": 42004
+    },
+    "result.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/result.json",
+      "sha256": "301b7c5eb56bab4c133e589515264b04306ca48abd355f4a03d35736a38ead36",
+      "bytes": 2616
+    },
+    "ATTEMPT_STARTED.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/ATTEMPT_STARTED.json",
+      "sha256": "2bcdd465d7a3f7cf365da0d5026cbc10ff4e4856d204710271dfe68ff146fc8c",
+      "bytes": 688
+    },
+    "capsule-after-command.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/capsule-after-command.json",
+      "sha256": "c9589ae2eee1d0ca4e072458d3fcb9f95e6193c941b384ec4e1654db540d1ab7",
+      "bytes": 1417
+    },
+    "capsule-after-result.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/capsule-after-result.json",
+      "sha256": "8fa7be0f40f9161992816048b23cfb71a282cc82cb81a4917ef584496139e250",
+      "bytes": 1517
+    },
+    "capsule-verification-after.log": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/capsule-verification-after.log",
+      "sha256": "c354ccd221af902117563e8a7f8f3a9118a26242d2dd8823eaef87e36069af27",
+      "bytes": 160
+    },
+    "source-before/capsule-verification.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/source-before/capsule-verification.json",
+      "sha256": "8a206e9a83fbc2d59519fa820b4e3131d0c2228333a3758fce0dc8322b440027",
+      "bytes": 1759
+    },
+    "source-after/capsule-verification.json": {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/source-after/capsule-verification.json",
+      "sha256": "0a34fdb749ee4044c8eb3b31c6233d570c6ad52ed0a7772c2f736fc4ac690803",
+      "bytes": 1758
+    }
+  }
+}

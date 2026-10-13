@@ -1,0 +1,23 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "signal": "PHASE2_CLEARANCE",
+  "shard4_finished_epoch": 1791899092.3513548,
+  "shard4_after_verified_epoch": 1791899140.3560128,
+  "cleared_epoch": 1791899140.3763728,
+  "ready_shards": [
+    1,
+    2,
+    3,
+    5,
+    6
+  ],
+  "all_six_normal_prepare_beforeproofs_complete": true,
+  "dispatch_owner_by_shard": {
+    "1": "operation_runtime",
+    "2": "operation_frontend",
+    "3": "operation_review",
+    "5": "ce0a_shard5",
+    "6": "ce0a_shard6"
+  },
+  "attempts_allowed_per_shard": 1
+}

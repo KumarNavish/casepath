@@ -1,0 +1,29 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "host": "656813ef2295",
+  "normal_clone_paths": [
+    "/workspace/casepath-release-ae0-shard1",
+    "/workspace/casepath-release-ae0-shard2",
+    "/workspace/casepath-release-ae0-shard3",
+    "/workspace/casepath-release-ae0-shard4",
+    "/workspace/casepath-release-ae0-shard5",
+    "/workspace/casepath-release-ae0-shard6"
+  ],
+  "manifest_sha256": "5ec9f17f59a9c655184832dcc8d58f8b5b4a8da0c36117c15676b0c92eee9024",
+  "instruction_files_read": [
+    "AGENTS.md",
+    "CONTRIBUTING.md",
+    "docs/HYBRID_DEVELOPMENT.md"
+  ],
+  "skills_applied": [
+    "cloud-environment-onboarding:setup",
+    "cloud-environment:cloud-environment-runtime"
+  ],
+  "network_policy_snapshot": "/etc/codex/network-policy.json",
+  "environment_status_current": true,
+  "environment_status_network_state": "unknown",
+  "required_native_git_fetch_observed_exit_code": 0,
+  "credential_values_recorded": false,
+  "test_env_policy": "Closed deterministic environment, empty provider credentials, per-shard /workspace HOME/TMP/DB/artifacts/locks",
+  "capacity_after_cleanup_free_bytes": 1569128448
+}

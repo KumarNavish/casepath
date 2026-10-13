@@ -1,0 +1,107 @@
+{
+  "shard": 6,
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "attempts": 1,
+  "retries": 0,
+  "runner_exit_code": 0,
+  "wrapper_exit_code": 0,
+  "duration_seconds": 703.3682413101196,
+  "pytest_duration_seconds": 699.567,
+  "pytest_terminal_summary": "351 passed, 9 warnings in 699.58s (0:11:39)",
+  "counts": {
+    "assigned": 351,
+    "collected": 351,
+    "passed": 351,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "failed_phases": 0,
+    "skipped_phases": 0,
+    "junit_tests": 351
+  },
+  "phase_counts": {
+    "setup:passed": 351,
+    "call:passed": 351,
+    "teardown:passed": 351
+  },
+  "failed_phases": [],
+  "skipped_phases": [],
+  "assigned_vs_collected": {
+    "same_order": true,
+    "same_ids": true,
+    "missing_ids": [],
+    "unexpected_ids": [],
+    "duplicate_collected_ids": []
+  },
+  "completed_call_vs_collected": {
+    "same_ids": true,
+    "missing_ids": [],
+    "duplicate_call_ids": []
+  },
+  "passed_vs_collected": {
+    "same_ids": true,
+    "missing_passed_ids": []
+  },
+  "prior_68383_failed_test_call_outcomes": [
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 1.2329959209891967,
+      "utc_epoch": 1791899696.6010382
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.18955328303854913,
+      "utc_epoch": 1791899696.7994032
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_digest_group_boundary_keeps_one_shared_connection",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.4864880780223757,
+      "utc_epoch": 1791899697.2922971
+    }
+  ],
+  "source_capsule_before_after": {
+    "before_verified": true,
+    "after_verified": true,
+    "after_verifier_exit_code": 0,
+    "after_verifier_attempts": 1,
+    "automatically_invoked_immediately_after_terminal": true,
+    "head_unchanged": true,
+    "clean_after": true,
+    "manifest_sha256": "5ec9f17f59a9c655184832dcc8d58f8b5b4a8da0c36117c15676b0c92eee9024",
+    "manifest_matches_expected_before_after": true,
+    "capsule_receipt_file_sha256": "32972665f703f25fac75d349c5b35deaedc90891dda1a3d2ab76799230b409f1",
+    "receipt_matches_expected_before_after": true,
+    "capsule_receipt_equal": true,
+    "source_artifact_static_counts": [
+      1706,
+      25,
+      37
+    ]
+  },
+  "artifacts": {
+    "ATTEMPT_STARTED.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/ATTEMPT_STARTED.json",
+    "prepare.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/prepare.json",
+    "command.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/command.json",
+    "ids.txt": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/ids.txt",
+    "pytest-arguments.txt": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/pytest-arguments.txt",
+    "collected.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/collected.json",
+    "reports.jsonl": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/reports.jsonl",
+    "junit.xml": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/junit.xml",
+    "pytest.log": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/pytest.log",
+    "runner-terminal.log": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/runner-terminal.log",
+    "result.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/result.json",
+    "runner-wrapper-result.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/runner-wrapper-result.json",
+    "source-before/capsule-verification.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/source-before/capsule-verification.json",
+    "source-before/CAPSULE_RECEIPT.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/source-before/CAPSULE_RECEIPT.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/source-after/capsule-verification.json",
+    "source-after/CAPSULE_RECEIPT.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/source-after/CAPSULE_RECEIPT.json",
+    "capsule-verification-after.log": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/capsule-verification-after.log",
+    "capsule-verification-after-result.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/capsule-verification-after-result.json"
+  }
+}

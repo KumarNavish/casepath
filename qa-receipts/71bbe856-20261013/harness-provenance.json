@@ -1,0 +1,23 @@
+[
+  {
+    "source": "/workspace/casepath-operation-gate-68383faf-20261013/harness/run_shard.py",
+    "source_sha256": "816a1ff96b29924356a7ebd1e38113cf82aa5877d14608074193eae2e769e689",
+    "destination": "/workspace/casepath-operation-gate-71bbe856-20261013/harness/run_shard.py",
+    "destination_sha256": "87dd1c0e8d555773178996d0d65f14876967aed69bcd32bc2f89e0145ee0337b",
+    "adaptation": "Only frozen SHA, manifest SHA, output root; existing observer/runner/verifier semantics unchanged"
+  },
+  {
+    "source": "/workspace/casepath-operation-gate-68383faf-20261013/harness/casepath_shard_observer.py",
+    "source_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "destination": "/workspace/casepath-operation-gate-71bbe856-20261013/harness/casepath_shard_observer.py",
+    "destination_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "adaptation": "Only frozen SHA, manifest SHA, output root; existing observer/runner/verifier semantics unchanged"
+  },
+  {
+    "source": "/workspace/casepath-operation-gate-68383faf-20261013/harness/verify_prepared_capsules.py",
+    "source_sha256": "791d0768e5b73c5cab568b5197754b747c173cf0ccdc39605526c9b0f23b0211",
+    "destination": "/workspace/casepath-operation-gate-71bbe856-20261013/harness/verify_prepared_capsules.py",
+    "destination_sha256": "b47b79333de3780435a5b4c28ae5bf4082e9052f506ce4641d4a3e1f946dfdb6",
+    "adaptation": "Only frozen SHA, manifest SHA, output root; existing observer/runner/verifier semantics unchanged"
+  }
+]

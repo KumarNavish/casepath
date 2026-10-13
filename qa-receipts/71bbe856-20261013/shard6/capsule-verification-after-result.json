@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "/workspace/casepath-operation-gate-71bbe856-20261013/harness/verify_prepared_capsules.py",
+    "shard6",
+    "after"
+  ],
+  "exit_code": 0,
+  "started_epoch": 1791899926.1053462,
+  "finished_epoch": 1791899926.6294281,
+  "env_from_prepare_only": true,
+  "attempts": 1
+}

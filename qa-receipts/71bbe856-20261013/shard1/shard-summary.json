@@ -1,0 +1,57 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "shard": 1,
+  "assigned_count": 307,
+  "collected_count": 307,
+  "assigned_ids_exactly_collected": true,
+  "all_assigned_ids_have_reports": true,
+  "exit_code": 0,
+  "duration_seconds": 744.2469601631165,
+  "passed": 307,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "phase_counts": {
+    "setup": {
+      "passed": 307
+    },
+    "call": {
+      "passed": 307
+    },
+    "teardown": {
+      "passed": 307
+    }
+  },
+  "junit": {
+    "tests": 307,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "attempts": 1,
+  "retries": 0,
+  "failed_ids": [],
+  "source_clean_after": true,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "source_manifest_sha256": "5ec9f17f59a9c655184832dcc8d58f8b5b4a8da0c36117c15676b0c92eee9024",
+  "capsule_receipt_file_sha256": "32972665f703f25fac75d349c5b35deaedc90891dda1a3d2ab76799230b409f1",
+  "after_verifier_exit_code": 0,
+  "prior_gate_683_assets_untouched": true,
+  "evidence": {
+    "command.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/command.json",
+    "result.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/result.json",
+    "ATTEMPT_STARTED.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/ATTEMPT_STARTED.json",
+    "collected.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/collected.json",
+    "reports.jsonl": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/reports.jsonl",
+    "junit.xml": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/junit.xml",
+    "pytest.log": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/pytest.log",
+    "runner-terminal.log": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/runner-terminal.log",
+    "capsule-verification-after.log": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/capsule-verification-after.log",
+    "source-before/capsule-verification.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/source-before/capsule-verification.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/source-after/capsule-verification.json"
+  }
+}

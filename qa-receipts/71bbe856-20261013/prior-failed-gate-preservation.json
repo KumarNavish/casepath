@@ -1,0 +1,54 @@
+{
+  "candidate": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "prior_failed_sha": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "prior_raw_bundle_manifest_sha256": "0cf524d934aa93f10c381d32d51a93bd81f15f531a3fd24e1cdabe1d8fc279c2",
+  "all_prior_checksummed_raw_artifacts_unchanged": true,
+  "prior_checksummed_files": 188,
+  "all_eight_failed_fixture_directories_preserved": true,
+  "all_prior_retained_fixture_files_present_and_sizes_unchanged": true,
+  "paths": [
+    {
+      "shard": 1,
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/pytest-tmp/test_chunk_page_boundaries_and0",
+      "total_bytes": 2129920
+    },
+    {
+      "shard": 3,
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/pytest-tmp/test_real_31_source_collection0",
+      "total_bytes": 1867776
+    },
+    {
+      "shard": 3,
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/pytest-tmp/test_real_31_source_collection1",
+      "total_bytes": 1867776
+    },
+    {
+      "shard": 5,
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/pytest-tmp/test_real_three_source_snapsho0",
+      "total_bytes": 1867776
+    },
+    {
+      "shard": 5,
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/pytest-tmp/test_real_three_source_snapsho1",
+      "total_bytes": 1867776
+    },
+    {
+      "shard": 6,
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest-tmp/test_chunk_page_boundaries_and0",
+      "total_bytes": 16850944
+    },
+    {
+      "shard": 6,
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest-tmp/test_chunk_page_boundaries_and1",
+      "total_bytes": 2129920
+    },
+    {
+      "shard": 6,
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest-tmp/test_digest_group_boundary_kee0",
+      "total_bytes": 57344
+    }
+  ],
+  "cleanup_only_completed_green_ce0_tmp": "See capacity-cleanup-receipt.json",
+  "new_gate_retries": 0,
+  "verified_epoch": 1791900200.6644619
+}
