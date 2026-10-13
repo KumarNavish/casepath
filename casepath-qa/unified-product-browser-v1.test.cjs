@@ -1194,6 +1194,9 @@ test('reference native: exact nine actual accepted assessments retain graph docu
    await eventually(()=>page.locator('.au-source-body').count().then(count=>count===1),'the native synthetic supplement did not open');
    assert.equal(await page.locator('.au-source-dialog .au-eyebrow').innerText(),'Synthetic demonstration document');
    assert.equal(await page.locator('.au-source-body').textContent(),fixture.sources[`${id}/${supplement.artifact_id}`].source?.text || fixture.sources[`${id}/${supplement.artifact_id}`].text);
+   const shownSource=await page.locator('.au-source-body').textContent();
+   assert.ok(shownSource.startsWith('Synthetic demonstration document (fictional)\n'));
+   assert.doesNotMatch(shownSource,/Original corpus manifest SHA256|Fixture author:|Authored for a synthetic CasePath candidate/);
    assert.equal(sha(Buffer.from(fixture.raw_sources[`${id}/${supplement.artifact_id}`],'base64')),supplement.sha256);
    await page.keyboard.press('Escape');
   }
@@ -1267,11 +1270,11 @@ test('reference native: public entry omits creation and forged flag status and c
 });
 
 test('reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access',async t=>{
- const fixture=referenceFixture(),id=referenceIds[0],prefix=Object.values(fixture.prefixes[id]).find(row=>row.events.at(-1)?.kind==='sources.acquired' && row.events.at(-1).payload.sources.some(source=>source.text.startsWith('SYNTHETIC SUPPLEMENT —'))),page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true});
+ const fixture=referenceFixture(),id=referenceIds[0],prefix=Object.values(fixture.prefixes[id]).find(row=>row.events.at(-1)?.kind==='sources.acquired' && row.events.at(-1).payload.sources.some(source=>source.text.startsWith('Synthetic demonstration document (fictional)\n'))),page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true});
  assert.ok(!prefix.state.semantic_contexts?.[prefix.state.run_id]);
  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',through,detail:'step'}),{id,through:prefix.through_seq});await title(page,id);
  assert.deepEqual((await visibleRecord(page)).state,prefix.state);assert.equal(await page.locator('[data-au-legal-basis]').count(),0);
- const supplement=prefix.events.at(-1).payload.sources.find(source=>source.text.startsWith('SYNTHETIC SUPPLEMENT —')),button=page.locator(`.au-reading-acquisition [data-au-source="${supplement.artifact_id}"]`),excerpt=await button.locator('.au-acquired-text').textContent();
+ const supplement=prefix.events.at(-1).payload.sources.find(source=>source.text.startsWith('Synthetic demonstration document (fictional)\n')),button=page.locator(`.au-reading-acquisition [data-au-source="${supplement.artifact_id}"]`),excerpt=await button.locator('.au-acquired-text').textContent();
  assert.ok(excerpt.startsWith(supplement.text.slice(supplement.text.indexOf('\n\n')+2, supplement.text.indexOf('\n\n')+62)));assert.doesNotMatch(excerpt,/Original corpus manifest SHA256|Fixture author:|SYNTHETIC SUPPLEMENT —/);assert.equal(await button.getAttribute('data-au-citation'),null);
  await button.click();await eventually(()=>page.locator('.au-source-body').count().then(count=>count===1),'the exact pre-context source did not open');assert.equal(await page.locator('.au-source-body').textContent(),supplement.text);await page.keyboard.press('Escape');
  assert.deepEqual((await visibleRecord(page)).state,prefix.state);assert.equal(await page.evaluate(()=>window.__fixture.calls.some(row=>row.method!=='GET')),false);

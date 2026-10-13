@@ -1097,6 +1097,27 @@
     const prefix = {...response,current_revision:state.revision,current_state_sha256:state.state_sha256};
     return {...readSnapshot(prefix,claimId,null,true),replay:response};
   }
+  function checkedReferenceReplayStart(start, incoming) {
+    if (start == null) return null;
+    const state = incoming.state, reference = referenceExecution(state), event = incoming.accepted.events.find(row => row.seq === start.from_seq);
+    const context = state.semantic_contexts?.[state.run_id];
+    const sources = list(start.source_artifact_ids), expected = list(context?.sources).map(row => row.artifact_id);
+    if (!Number.isSafeInteger(start.from_seq) || start.from_seq < 1 || start.from_seq >= state.revision ||
+        !isHash(start.state_sha256) || !isHash(start.event_sha256) || !isHash(start.profile_sha256) ||
+        start.run_id !== state.run_id || start.profile_id !== 'synthetic-nine-v2' ||
+        start.profile_id !== reference?.profile_id || start.profile_sha256 !== reference?.profile_sha256 ||
+        state.outcome?.assessment_status !== 'complete' || event?.kind !== 'process.prepared' ||
+        event.state_sha256 !== start.state_sha256 || event.event_sha256 !== start.event_sha256 ||
+        !sources.length || new Set(sources).size !== sources.length ||
+        canonicalJSON([...sources].sort()) !== canonicalJSON(expected.sort())) throw new Error('The current recording start differs from its accepted investigation.');
+    return start;
+  }
+  function checkedReferenceReplayOpening(response, start, claimId) {
+    const incoming = readReplay(response,claimId,start.from_seq), state = incoming.state, event = incoming.accepted.events.at(-1);
+    if (state.state_sha256 !== start.state_sha256 || state.last_event_sha256 !== start.event_sha256 ||
+        state.run_id !== start.run_id || state.outcome || event?.kind !== 'process.prepared') throw new Error('The current recording opening differs from its saved prefix.');
+    return incoming;
+  }
   function demoAssetURL(value, location) {
     const url = new URL(value, location.href);
     if (url.origin !== location.origin || url.username || url.password || !/^[a-f0-9]{64}$/i.test(url.searchParams.get('sha256') || '')) throw new Error('The fictional packet asset has no local content identity.');
@@ -1828,6 +1849,8 @@
           const session = demoSession;
           session.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256};
           session.referenceReady = Boolean(opening?.referenceReady);
+          session.replayStart = through === 0 && session.collection !== 'legacy' ? incoming.replay.replay_start : null;
+          session.verifiedReplayStart = opening?.verifiedReplayStart || null;
           session.preparing = null; session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0;
           await startReplay(session,token);
         }
@@ -2092,6 +2115,21 @@
         finally { if (session.preparing === token) session.preparing = null; }
       }
       if (!replayActive(session,token) || doc.hidden || inspectionHold || dialog.open || recordDialog.open) return;
+      if (session.replayStart && current.revision === 0) {
+        session.preparing = token;
+        try {
+          const start = session.verifiedReplayStart;
+          if (!start) throw new Error('The current recording start was not verified.');
+          const response = await request(`/claims/${key(current.claim_id)}/replay?through_seq=${start.from_seq}`);
+          const incoming = checkedReferenceReplayOpening(response,start,current.claim_id); checkedReplayHead(incoming,session);
+          if (!replayActive(session,token) || doc.hidden || inspectionHold || dialog.open || recordDialog.open) return;
+          session.verifiedOpening = {claimId:current.claim_id,generation:readGeneration,response,head:session.replayHead,referenceReady:true};
+          session.preparing = null;
+          await openClaim(current.claim_id,false,{mode:'replay',collection:session.collection,through:start.from_seq,detail:'step',demo:true});
+        } catch (error) { if (replayActive(session,token)) presentationFailed(session,`Verified replay unavailable: ${error.message}`); }
+        finally { if (session.preparing === token) session.preparing = null; }
+        return;
+      }
       prefetchReplay(session); replayTick(session,token);
     }
     async function openPresentationCase(session, writeHistory = true, index = session.index) {
@@ -2105,7 +2143,9 @@
           const opening = await presentationOpening(session,id);
           if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
           if (session.collection !== 'legacy' && !opening.referenceReady) {
-            if (!await verifyReferenceHead({replayHead:opening.head})) throw new Error('No completed recorded reference assessment is available.');
+            const verification = {replayHead:opening.head,replayStart:opening.response.replay_start};
+            if (!await verifyReferenceHead(verification)) throw new Error('No completed recorded reference assessment is available.');
+            opening.referenceReady = true; opening.verifiedReplayStart = verification.verifiedReplayStart;
             opening.referenceReady = true;
             if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
           }
@@ -2132,10 +2172,11 @@
         const response = await request(`/claims/${key(id)}/replay?through_seq=0`), incoming = readReplay(response,id,0);
         const head = {claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256};
         if (!head.revision) throw new Error('No recorded execution is available for this original case.');
-        const referenceReady = session.collection !== 'legacy' && !doc.hidden && await verifyReferenceHead({replayHead:head});
+        const verification = {replayHead:head,replayStart:response.replay_start};
+        const referenceReady = session.collection !== 'legacy' && !doc.hidden && await verifyReferenceHead(verification);
         if (session.collection !== 'legacy' && !doc.hidden && !referenceReady) throw new Error('No completed recorded reference assessment is available.');
         if (disposed || token !== epoch || generation !== readGeneration || demoSession !== session || pendingRoute()) throw new Error('The presentation changed while verifying the next case.');
-        return {claimId:id,generation,response,head,referenceReady};
+        return {claimId:id,generation,response,head,referenceReady,verifiedReplayStart:verification.verifiedReplayStart};
       })();
       replayPrefixes.set(identity,promise);
       while (replayPrefixes.size > 2) replayPrefixes.delete(replayPrefixes.keys().next().value);
@@ -2153,6 +2194,7 @@
       checkedReplayHead(incoming,session);
       // Admission of playback does not paint the head or borrow its context
       // for an earlier prefix. The displayed prefix keeps its own identity.
+      session.verifiedReplayStart = checkedReferenceReplayStart(session.replayStart,incoming);
       return Boolean(referenceExecution(incoming.state) && incoming.state.outcome?.assessment_status === 'complete' && replayCanAdvance(incoming.state));
     }
     function replayPrefix(id, through, session) {
@@ -2666,5 +2708,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });

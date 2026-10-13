@@ -83,6 +83,20 @@ test('pinned synthetic source excerpts show the actual body while the full acqui
  }
 });
 
+test('a reassessment replay start must bind to the accepted run, source selection and prepared prefix',()=>{
+ const start={from_seq:4,state_sha256:hash('4'),event_sha256:hash('5'),run_id:'current-run',profile_id:'synthetic-nine-v2',profile_sha256:hash('6'),source_artifact_ids:['original','cleaned']};
+ const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_id:start.profile_id,profile_sha256:start.profile_sha256};
+ const head={state:state({revision:20,run_id:start.run_id,outcome:{assessment_status:'complete'},semantic_contexts:{'current-run':{execution_mode:'deterministic_reference',reference_provenance:provenance,sources:[{artifact_id:'cleaned'},{artifact_id:'original'}]}}}),accepted:{events:[{seq:4,kind:'process.prepared',state_sha256:start.state_sha256,event_sha256:start.event_sha256}]}};
+ const before=JSON.stringify({start,head});assert.equal(ui.checkedReferenceReplayStart(null,head),null);assert.equal(ui.checkedReferenceReplayStart(start,head),start);
+ for(const changed of [{from_seq:0},{from_seq:20},{run_id:'old-run'},{profile_id:'synthetic-nine-v1'},{profile_sha256:hash('7')},{state_sha256:hash('7')},{event_sha256:hash('7')},{source_artifact_ids:['original','unreviewed']},{source_artifact_ids:['original','original','cleaned']}])assert.throws(()=>ui.checkedReferenceReplayStart({...start,...changed},head),/recording start/);
+ assert.throws(()=>ui.checkedReferenceReplayStart(start,{...head,accepted:{events:[{...head.accepted.events[0],kind:'outcome.recorded'}]}}),/recording start/);
+ const prepared=state({revision:4,state_sha256:start.state_sha256,last_event_sha256:start.event_sha256,run_id:start.run_id,outcome:null});
+ const envelope={state:prepared,projection:{revision:prepared.revision,state_sha256:prepared.state_sha256},events:events(prepared).events.map((event,index)=>({...event,event_sha256:index===3?start.event_sha256:hash('8'),kind:index===3?'process.prepared':event.kind})),cursor_sha256:start.event_sha256,mode:'replay',replay_only:true,through_seq:4,current_revision:20,current_state_sha256:hash('9'),current_event_sha256:hash('a'),provenance:{run_id:start.run_id,event_sha256:start.event_sha256}};
+ assert.equal(ui.checkedReferenceReplayOpening(envelope,start,prepared.claim_id).state,prepared);
+ assert.throws(()=>ui.checkedReferenceReplayOpening({...envelope,state:{...prepared,outcome:{summary:'Old completed finding'}}},start,prepared.claim_id),/recording opening/);
+ assert.equal(JSON.stringify({start,head}),before);
+});
+
 test('actual DAG topology determines rank and branches independently of input order',()=>{
  const graph={nodes:[{node_id:'join'},{node_id:'right'},{node_id:'start'},{node_id:'left'}],edges:[{source_node_id:'start',target_node_id:'left'},{source_node_id:'start',target_node_id:'right'},{source_node_id:'left',target_node_id:'join'},{source_node_id:'right',target_node_id:'join'}]};
  const layout=ui.layoutGraph(graph);
