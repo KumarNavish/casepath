@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/tmp/casepath-release-2af5-20261013/harness/verify_prepared_capsules.py", line 97, in <module>
+    verify_one(sys.argv[1])
+    ~~~~~~~~~~^^^^^^^^^^^^^
+  File "/tmp/casepath-release-2af5-20261013/harness/verify_prepared_capsules.py", line 83, in verify_one
+    shutil.copy2(receipt_path, out / 'CAPSULE_RECEIPT.json')
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/shutil.py", line 468, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/shutil.py", line 262, in copyfile
+    with open(dst, 'wb') as fdst:
+         ~~~~^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '/tmp/casepath-release-2af5-20261013/shard3/CAPSULE_RECEIPT.json'

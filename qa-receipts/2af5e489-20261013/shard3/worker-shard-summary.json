@@ -1,0 +1,29 @@
+{
+  "tests": 229,
+  "passed": 228,
+  "failed": 0,
+  "skipped": 1,
+  "exit_code": 0,
+  "duration_seconds": 425.685909986496,
+  "junit_duration_seconds": 418.289,
+  "assigned_collected_executed_junit_equal": true,
+  "assigned_sorted_sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1",
+  "executed_sorted_sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1",
+  "after_head": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "after_status": "",
+  "sealed_files_verified": 1680,
+  "source_manifest_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+  "started_epoch": 1791861598.7470412,
+  "finished_epoch": 1791862024.4329512,
+  "attempt_directory": "shard3",
+  "status": "passed",
+  "known_skip_exact_id_phase_path_line_reason": true,
+  "failed_ids": [],
+  "skipped_ids": [
+    "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows"
+  ],
+  "test_run_count": 1,
+  "source_after_clean_receipt": "source-after-clean-receipt.json",
+  "post_run_standard_verifier_exit_code": 1,
+  "post_run_standard_verifier_failure_after_assertions": true
+}

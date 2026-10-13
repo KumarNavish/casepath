@@ -1,0 +1,107 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "host": "656813ef2295",
+  "cloud": {
+    "tests": 2390,
+    "passed": 2380,
+    "skipped": 10,
+    "failed": 0
+  },
+  "mac_attested": {
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "pytest_seconds": 123.21
+  },
+  "combined": {
+    "tests": 2517,
+    "passed": 2507,
+    "skipped": 10,
+    "failed": 0
+  },
+  "full_ids_sha256": "fe1b76d2b0ddc097709d2f9e6915ea594469959e95ce33a505790263b9060112",
+  "cloud_ids_sha256": "84c63d756a1ad8b7a1163b2b096e3967024e21e5f642b6a541aaebe54136956e",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "missing": [],
+  "duplicates": [],
+  "extra": [],
+  "deselected": [],
+  "retry_count": 0,
+  "shards": [
+    {
+      "shard": 1,
+      "tests": 242,
+      "passed": 242,
+      "skipped": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "duration_seconds": 460.445946931839,
+      "assigned_collected_phase_junit_equal": true,
+      "ids_sha256": "fa3059976308e9e82ef0e520f106a4e0f29ac45529d7ebd4018c110a765e09e0",
+      "junit_sha256": "e5c71c37f86de40eaf52d6183ca51cee18e6cd7ad07b9c947379880336ed1f17"
+    },
+    {
+      "shard": 2,
+      "tests": 554,
+      "passed": 554,
+      "skipped": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "duration_seconds": 450.3628993034363,
+      "assigned_collected_phase_junit_equal": true,
+      "ids_sha256": "f18bac7d2e14699a87c9021453966166a0ab57f9f7c4b69f941f1a9c918366a0",
+      "junit_sha256": "4a556bd2db811a129f9bef408d53cdac879143010b18a06b65754ae4f130cb92"
+    },
+    {
+      "shard": 3,
+      "tests": 229,
+      "passed": 228,
+      "skipped": 1,
+      "failed": 0,
+      "exit_code": 0,
+      "duration_seconds": 425.685909986496,
+      "assigned_collected_phase_junit_equal": true,
+      "ids_sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1",
+      "junit_sha256": "39107fc0c7515993c6910b4b37fccc4cdbf708922ba0759c3f6941b923c526b4"
+    },
+    {
+      "shard": 4,
+      "tests": 324,
+      "passed": 324,
+      "skipped": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "duration_seconds": 360.568115234375,
+      "assigned_collected_phase_junit_equal": true,
+      "ids_sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
+      "junit_sha256": "47557893e4a7cbac1d762692810b33e21e998c0f3c6b0a80b1a2e995c95ab56d"
+    },
+    {
+      "shard": 5,
+      "tests": 563,
+      "passed": 563,
+      "skipped": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "duration_seconds": 423.82518577575684,
+      "assigned_collected_phase_junit_equal": true,
+      "ids_sha256": "4ca305835c130bf99a19b4c572170684572f0c381deeca9066ca6f515cb3d86f",
+      "junit_sha256": "c0151b773c266f96b43cb31a72493b92937ccaa9b0037a39069283ef1e1be088"
+    },
+    {
+      "shard": 6,
+      "tests": 478,
+      "passed": 469,
+      "skipped": 9,
+      "failed": 0,
+      "exit_code": 0,
+      "duration_seconds": 352.53449988365173,
+      "assigned_collected_phase_junit_equal": true,
+      "ids_sha256": "35058f63e53bf0a25935e442fd0820c6c15107233414f42dec1ec20dcbbe593d",
+      "junit_sha256": "143e71ccbe7351dd0f54a5967aeee778dea2b3654092266515180e4b201b61b5"
+    }
+  ],
+  "source_capsules_post_verified": true,
+  "verified_epoch": 1791862454.7864575,
+  "mac_basis": "Explicit integration-owner attestation, raw Mac JUnit not Cloud-parsed"
+}

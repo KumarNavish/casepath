@@ -1,0 +1,143 @@
+........................................................................ [ 29%]
+........................................................................ [ 59%]
+........................................................................ [ 89%]
+..........................                                               [100%]
+=============================== warnings summary ===============================
+tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+--- generated xml file: /tmp/casepath-release-2af5-20261013/shard1/junit.xml ---
+============================== slowest durations ===============================
+35.62s teardown tests/test_agent_desk_v1.py::test_exact_arrival_replay_uses_one_verified_batch_without_full_work_views
+30.33s call     tests/test_agent_desk_v1.py::test_native_reopen_clears_inconsistent_completion_and_replays_one_real_continuation
+30.17s call     tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[owner]
+29.96s call     tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[process]
+29.48s call     tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[manual_draft]
+26.00s call     tests/test_agent_desk_v1.py::test_desk_arrival_is_persistently_idempotent_and_prepares_real_not_sent_draft
+25.74s call     tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[process]
+25.35s call     tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[False]
+19.23s call     tests/test_agent_desk_v1.py::test_resume_recovers_an_expired_running_executor_through_existing_service
+18.41s call     tests/test_agent_desk_v1.py::test_active_reference_pause_persists_checkpoint_and_resumes_real_source_work
+17.40s teardown tests/test_agent_desk_v1.py::test_replaying_superseded_pause_does_not_stop_a_resumed_delegate
+17.27s call     tests/test_agent_desk_v1.py::test_reference_pause_then_resume_preserves_the_run_and_completed_calls
+13.09s teardown tests/test_agent_desk_v1.py::test_pause_idempotency_stale_revision_and_restart
+7.07s call     tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[draft_approval-approve]
+6.32s call     tests/test_agent_desk_v1.py::test_lesson_preview_requires_validated_scope_and_approval_is_replayable
+6.22s call     tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[source_conflict-keep_open]
+5.85s call     tests/test_agent_desk_v1.py::test_decision_preview_override_reason_and_exact_replay
+5.74s call     tests/test_agent_desk_v1.py::test_delegate_continuation_rechecks_workspace_after_context_and_preserves_receipt
+5.48s call     tests/test_agent_desk_v1.py::test_conflict_decision_exact_retry_retains_unknown_truth_and_citations
+5.45s call     tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[True]
+5.15s call     tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+4.70s call     tests/test_agent_desk_v1.py::test_disputed_answer_uses_the_engine_rejected_status_in_preview_and_apply[relationship_validation]
+4.54s call     tests/test_agent_desk_v1.py::test_desk_cache_does_not_hide_altered_prefix_or_expose_mutable_cached_rows
+4.45s call     tests/test_agent_desk_v1.py::test_disputed_answer_uses_the_engine_rejected_status_in_preview_and_apply[step_validation]
+4.20s call     tests/test_agent_desk_v1.py::test_one_delegate_change_rebuilds_only_its_row_and_other_prefix_tamper_still_fails
+4.17s call     tests/test_agent_desk_v1.py::test_pause_idempotency_stale_revision_and_restart
+4.13s call     tests/test_agent_desk_v1.py::test_exact_arrival_replay_uses_one_verified_batch_without_full_work_views
+4.09s call     tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+4.01s call     tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_pending]
+3.94s call     tests/test_agent_desk_v1.py::test_replaying_superseded_pause_does_not_stop_a_resumed_delegate
+3.86s call     tests/test_agent_desk_v1.py::test_desk_reads_are_side_effect_free_and_unknown_is_not_completed
+3.80s call     tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_safe]
+3.71s call     tests/test_agent_desk_v1.py::test_desk_fingerprints_work_tables_in_one_snapshot_during_run_creation
+3.66s call     tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[interrupted]
+2.78s call     tests/test_autonomous_controller_v1.py::test_two_incoming_claims_execute_acquire_learn_reuse_and_restart
+2.60s call     tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency
+1.99s call     tests/test_agent_desk_v1.py::test_queued_supersession_survives_restart_gap_and_exact_latest_retry
+1.48s call     tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[documents]
+1.44s call     tests/test_agent_demo_launcher.py::test_capacity_command_and_preservation_replay_real_disposable_store[complete-18]
+0.96s call     tests/test_agent_desk_v1.py::test_process_hook_rechecks_latest_edit_after_draft_preparation
+0.82s call     tests/test_agent_desk_v1.py::test_supersession_reconciles_finish_between_snapshot_and_cancel
+0.79s setup    tests/test_agent_desk_v1.py::test_lesson_preview_requires_validated_scope_and_approval_is_replayable
+0.71s setup    tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[process]
+0.67s call     tests/test_agent_desk_v1.py::test_continuation_and_terminal_callback_do_not_retry_unfinished_effect
+0.65s setup    tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[owner]
+0.63s setup    tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[manual_draft]
+0.61s setup    tests/test_agent_desk_v1.py::test_desk_cache_does_not_hide_altered_prefix_or_expose_mutable_cached_rows
+0.60s setup    tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_pending]
+0.60s setup    tests/test_agent_desk_v1.py::test_queued_supersession_survives_restart_gap_and_exact_latest_retry
+0.58s setup    tests/test_agent_desk_v1.py::test_disputed_answer_uses_the_engine_rejected_status_in_preview_and_apply[step_validation]
+0.58s setup    tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+0.57s setup    tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[draft_approval-approve]
+0.57s setup    tests/test_agent_desk_v1.py::test_delegate_continuation_rechecks_workspace_after_context_and_preserves_receipt
+0.56s setup    tests/test_agent_desk_v1.py::test_continuation_and_terminal_callback_do_not_retry_unfinished_effect
+0.56s setup    tests/test_agent_desk_v1.py::test_exact_arrival_replay_uses_one_verified_batch_without_full_work_views
+0.55s setup    tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[source_conflict-keep_open]
+0.55s setup    tests/test_agent_desk_v1.py::test_desk_arrival_is_persistently_idempotent_and_prepares_real_not_sent_draft
+0.54s setup    tests/test_agent_desk_v1.py::test_desk_fingerprints_work_tables_in_one_snapshot_during_run_creation
+0.53s setup    tests/test_agent_desk_v1.py::test_disputed_answer_uses_the_engine_rejected_status_in_preview_and_apply[relationship_validation]
+0.53s setup    tests/test_agent_desk_v1.py::test_process_hook_rechecks_latest_edit_after_draft_preparation
+0.53s setup    tests/test_agent_desk_v1.py::test_native_reopen_clears_inconsistent_completion_and_replays_one_real_continuation
+0.53s setup    tests/test_agent_desk_v1.py::test_pause_idempotency_stale_revision_and_restart
+0.53s setup    tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[interrupted]
+0.52s setup    tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[process]
+0.52s setup    tests/test_agent_desk_v1.py::test_conflict_decision_exact_retry_retains_unknown_truth_and_citations
+0.51s setup    tests/test_agent_desk_v1.py::test_direct_causal_apply_hook_prepares_current_draft_and_is_exactly_replayable[documents]
+0.51s setup    tests/test_agent_desk_v1.py::test_one_delegate_change_rebuilds_only_its_row_and_other_prefix_tamper_still_fails
+0.51s setup    tests/test_agent_desk_v1.py::test_approved_draft_is_not_sent_and_exact_retry_is_accepted
+0.50s setup    tests/test_agent_desk_v1.py::test_decision_preview_override_reason_and_exact_replay
+0.49s setup    tests/test_agent_desk_v1.py::test_desk_reads_are_side_effect_free_and_unknown_is_not_completed
+0.49s setup    tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_safe]
+0.47s setup    tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[True]
+0.46s setup    tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[False]
+0.45s setup    tests/test_agent_desk_v1.py::test_replaying_superseded_pause_does_not_stop_a_resumed_delegate
+0.41s setup    tests/test_agent_desk_v1.py::test_resume_recovers_an_expired_running_executor_through_existing_service
+0.40s setup    tests/test_agent_desk_v1.py::test_supersession_reconciles_finish_between_snapshot_and_cancel
+0.39s setup    tests/test_agent_desk_v1.py::test_active_reference_pause_persists_checkpoint_and_resumes_real_source_work
+0.39s setup    tests/test_agent_desk_v1.py::test_reference_pause_then_resume_preserves_the_run_and_completed_calls
+0.38s setup    tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency
+0.27s call     tests/test_study_runtime_v1.py::test_3732_token_boundary_passes_and_3733_fails_hard_cap
+0.22s call     tests/test_agent_work_store_incremental.py::test_workforce_reads_run_table_and_stream_replays_terminal_events
+0.21s call     tests/test_study_runtime_v1.py::test_authority_bundle_rejects_self_consistent_cross_object_forgery[cap]
+0.20s call     tests/test_study_runtime_v1.py::test_authority_bundle_rejects_self_consistent_cross_object_forgery[proof_row]
+0.20s call     tests/test_study_runtime_v1.py::test_authority_bundle_accepts_exact_builder_outputs
+0.20s call     tests/test_obligation_study_v1.py::StudyTests::test_complete150_engineering_render_is_not_measurement
+0.19s call     tests/test_study_runtime_v1.py::test_authority_bundle_rejects_self_consistent_cross_object_forgery[total]
+0.19s call     tests/test_study_runtime_v1.py::test_authority_bundle_rejects_self_consistent_cross_object_forgery[tokenizer]
+0.16s call     tests/test_study_runtime_v1.py::test_missing_extra_retry_or_second_cycle_cannot_enter_schedule
+0.15s call     tests/test_agent_demo_launcher.py::test_prior_ready_or_stopped_usage_cannot_roll_back[runs_used]
+0.15s call     tests/test_autonomous_api_v1.py::test_intake_api_headers_idempotency_saved_events_and_source_readback
+0.15s call     tests/test_study_runtime_v1.py::test_authority_bundle_revalidates_model_copy_instances
+0.15s call     tests/test_study_runtime_v1.py::test_exact_1476_call_schedule_and_integer_cost_proof
+0.14s call     tests/test_autonomous_controller_v1.py::test_no_provider_is_explicit_deferral_never_fake_review
+0.13s call     tests/test_autonomous_policy_v1.py::test_quotes_are_not_semantic_acceptance_and_absence_stays_unknown
+0.12s call     tests/test_autonomous_policy_v1.py::test_verifier_must_cover_every_proposition_and_exact_source
+0.12s call     tests/test_autonomous_policy_v1.py::test_invalid_optional_knowledge_does_not_discard_valid_claim_interpretation
+0.11s call     tests/test_autonomous_policy_v1.py::test_message_cannot_stand_in_for_a_required_original_document
+0.09s call     tests/test_obligation_control_increment.py::NativeSchemaCompatibility::test_export_validates_with_supplied_native_schema
+0.09s call     tests/test_obligation_study_v1.py::StudyTests::test_compilation_is_not_protected_scoring
+0.06s call     tests/test_obligation_study_v1.py::StudyTests::test_completed_runner_resume_does_not_regenerate
+0.05s call     tests/test_obligation_study_v1.py::StudyTests::test_fixture_submissions_cannot_look_like_model_submissions
+0.05s call     tests/test_obligation_study_v1.py::StudyTests::test_full_product_and_comparator_fixture_path
+0.03s call     tests/test_obligation_study_v1.py::StudyTests::test_product_http_rejects_client_supplied_graph
+0.03s call     tests/test_obligation_control_increment.py::AdditionalSafety::test_compiled_control_matches_complete_outputs_on_81_assignments
+0.02s call     tests/test_obligation_study_v1.py::StudyTests::test_product_invokes_same_inference_core_and_replays_same_request_only
+0.02s call     tests/test_study_runtime_v1.py::test_prompt_token_overflow_fails_before_any_runtime_path
+0.02s call     tests/test_study_runtime_v1.py::test_prompt_token_count_must_be_positive
+0.01s call     tests/test_agent_work_store_incremental.py::test_stop_is_journaled_and_survives_reload
+0.01s call     tests/test_agent_work_store_incremental.py::test_pause_at_final_checkpoint_retains_safe_interrupted_state
+0.01s call     tests/test_agent_work_store_incremental.py::test_cached_work_product_rejects_changed_persisted_bytes
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_corrupt_recovered_output_is_rejected
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_repeat_request_never_resends
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_lost_ack_is_uncertain_not_retry
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_explicit_completed_request_recovery_sends_nothing
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_terminal_observation_not_overwritten
+0.01s call     tests/test_agent_work_store_incremental.py::test_work_history_validates_only_new_events_and_detects_old_tamper
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_unknown_cost_remains_unknown
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_no_implicit_preparation_from_product
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_journal_events_are_append_only
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_wrong_provider_recorded_as_failure
+
+(606 durations < 0.005s hidden.  Use -vv to show these durations.)
+242 passed, 5 warnings in 457.52s (0:07:37)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

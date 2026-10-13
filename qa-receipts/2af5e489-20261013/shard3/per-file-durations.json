@@ -1,0 +1,324 @@
+[
+  {
+    "file": "casepath-api/tests/test_agent_delegate_journal_validation.py",
+    "tests": 16,
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 35.57258645602269,
+    "junit_duration_seconds": 35.574,
+    "phase_durations_seconds": {
+      "setup": 32.207876726053655,
+      "call": 3.334197275049519,
+      "teardown": 0.03051245491951704
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_agent_demo_launcher.py",
+    "tests": 13,
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.36916872387519106,
+    "junit_duration_seconds": 0.37,
+    "phase_durations_seconds": {
+      "setup": 0.01308878290001303,
+      "call": 0.35435409704223275,
+      "teardown": 0.0017258439329452813
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_agent_desk_question_priority.py",
+    "tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 16.2664809760754,
+    "junit_duration_seconds": 16.266,
+    "phase_durations_seconds": {
+      "setup": 1.0242092370172031,
+      "call": 15.24160505499458,
+      "teardown": 0.0006666840636171401
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_agent_desk_reconciliation.py",
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 68.48063921794528,
+    "junit_duration_seconds": 68.48,
+    "phase_durations_seconds": {
+      "setup": 38.193931226967834,
+      "call": 30.283465025946498,
+      "teardown": 0.003242965030949563
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_agent_work_reconciliation.py",
+    "tests": 20,
+    "passed": 20,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.26782645913772285,
+    "junit_duration_seconds": 0.267,
+    "phase_durations_seconds": {
+      "setup": 0.1725717760855332,
+      "call": 0.08923858712660149,
+      "teardown": 0.006016095925588161
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_autonomous_supplied_review_v1.py",
+    "tests": 6,
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 20.080536896828562,
+    "junit_duration_seconds": 20.081,
+    "phase_durations_seconds": {
+      "setup": 0.00203095591859892,
+      "call": 20.077752028941177,
+      "teardown": 0.0007539119687862694
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_case_interpreter_v4.py",
+    "tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.006795876135583967,
+    "junit_duration_seconds": 0.007,
+    "phase_durations_seconds": {
+      "setup": 0.00028086506063118577,
+      "call": 0.006274557032156736,
+      "teardown": 0.00024045404279604554
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_causal_workspace_v1.py",
+    "tests": 15,
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 70.50385474227369,
+    "junit_duration_seconds": 70.504,
+    "phase_durations_seconds": {
+      "setup": 7.452757061168086,
+      "call": 63.048854342952836,
+      "teardown": 0.0022433381527662277
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_claim_queue_snapshot_evaluator_v1.py",
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.06160406500566751,
+    "junit_duration_seconds": 0.062,
+    "phase_durations_seconds": {
+      "setup": 0.00010166002903133631,
+      "call": 0.0613940850016661,
+      "teardown": 0.00010831997497007251
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_claim_workspace_assessment_v2.py",
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 4.869324324012268,
+    "junit_duration_seconds": 4.87,
+    "phase_durations_seconds": {
+      "setup": 0.0003141229972243309,
+      "call": 4.868611462996341,
+      "teardown": 0.00039873801870271564
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_confirmatory_tools.py",
+    "tests": 14,
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.0037013290566392243,
+    "junit_duration_seconds": 0.001,
+    "phase_durations_seconds": {
+      "setup": 0.0012151431292295456,
+      "call": 0.0015976179856806993,
+      "teardown": 0.0008885679417289793
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_document_lifecycle_shadow_v1.py",
+    "tests": 10,
+    "passed": 9,
+    "failed": 0,
+    "skipped": 1,
+    "observer_duration_seconds": 0.010364474903326482,
+    "junit_duration_seconds": 0.011,
+    "phase_durations_seconds": {
+      "setup": 0.0007603419944643974,
+      "call": 0.009108810860197991,
+      "teardown": 0.000495322048664093
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_foundation_live_v1.py",
+    "tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.3812963218661025,
+    "junit_duration_seconds": 0.381,
+    "phase_durations_seconds": {
+      "setup": 0.002196230925619602,
+      "call": 0.37851097295060754,
+      "teardown": 0.0005891179898753762
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_grounding_integration_v15.py",
+    "tests": 22,
+    "passed": 22,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 1.8848162884241901,
+    "junit_duration_seconds": 1.884,
+    "phase_durations_seconds": {
+      "setup": 0.03351422009291127,
+      "call": 1.8483887781039812,
+      "teardown": 0.0029132902272976935
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_hosted_pending_recovery_v1.py",
+    "tests": 29,
+    "passed": 29,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 17.684525233868044,
+    "junit_duration_seconds": 17.684,
+    "phase_durations_seconds": {
+      "setup": 4.734843723999802,
+      "call": 12.922920504875947,
+      "teardown": 0.026761004992295057
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_hosted_recovery_v1.py",
+    "tests": 7,
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 3.860375542077236,
+    "junit_duration_seconds": 3.861,
+    "phase_durations_seconds": {
+      "setup": 0.0007602020632475615,
+      "call": 3.8588937550084665,
+      "teardown": 0.0007215850055217743
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_native_asset_write_concurrency.py",
+    "tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.18946820183191448,
+    "junit_duration_seconds": 0.191,
+    "phase_durations_seconds": {
+      "setup": 0.004037126840557903,
+      "call": 0.18453022692119703,
+      "teardown": 0.0009008480701595545
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_native_live_knowledge_v1.py",
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.12716234201798216,
+    "junit_duration_seconds": 0.127,
+    "phase_durations_seconds": {
+      "setup": 0.0004159330273978412,
+      "call": 0.1266132720047608,
+      "teardown": 0.00013313698582351208
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_native_live_workspace_v1.py",
+    "tests": 4,
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.6365819428465329,
+    "junit_duration_seconds": 0.636,
+    "phase_durations_seconds": {
+      "setup": 0.00195275095757097,
+      "call": 0.634107552934438,
+      "teardown": 0.0005216389545239508
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_obligation_study_resources.py",
+    "tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.002904666995164007,
+    "junit_duration_seconds": 0.003,
+    "phase_durations_seconds": {
+      "setup": 0.0008793779998086393,
+      "call": 0.0018267759587615728,
+      "teardown": 0.00019851303659379482
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_reference_read_performance_v1.py",
+    "tests": 30,
+    "passed": 30,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 2.2760185349034145,
+    "junit_duration_seconds": 2.275,
+    "phase_durations_seconds": {
+      "setup": 0.055662019876763225,
+      "call": 2.216068977082614,
+      "teardown": 0.004287537944037467
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_source_preserving_shadow_v1.py",
+    "tests": 10,
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 0.026896883791778237,
+    "junit_duration_seconds": 0.025,
+    "phase_durations_seconds": {
+      "setup": 0.0008550129132345319,
+      "call": 0.025372542848344892,
+      "teardown": 0.0006693280301988125
+    }
+  },
+  {
+    "file": "casepath-api/tests/test_workspace_corpus_150.py",
+    "tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "observer_duration_seconds": 174.72846488497453,
+    "junit_duration_seconds": 174.729,
+    "phase_durations_seconds": {
+      "setup": 0.0005361710209399462,
+      "call": 174.7268269569613,
+      "teardown": 0.0011017569922842085
+    }
+  }
+]

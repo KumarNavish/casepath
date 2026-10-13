@@ -1,0 +1,118 @@
+{
+  "id": "auto_a489b283495e7b03b5aab860",
+  "reduced": false,
+  "rendered": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "virtualTimes": [
+    8100,
+    8300,
+    8600,
+    12100,
+    20400,
+    24400,
+    24700,
+    25000
+  ],
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=1",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=2",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=3",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=4",
+      "method": "GET",
+      "time": 8300,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=5",
+      "method": "GET",
+      "time": 8600,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=6",
+      "method": "GET",
+      "time": 12100,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=7",
+      "method": "GET",
+      "time": 20400,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=8",
+      "method": "GET",
+      "time": 24400,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=9",
+      "method": "GET",
+      "time": 24700,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=10",
+      "method": "GET",
+      "time": 25000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "injectedAssets": {
+    "javascript": "e6bb3704cbffeb1f710c7f754b4459b9af059d61c13f4b4ede091508d03bcec8",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "assets": {
+    "javascript": "e6bb3704cbffeb1f710c7f754b4459b9af059d61c13f4b4ede091508d03bcec8",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  }
+}

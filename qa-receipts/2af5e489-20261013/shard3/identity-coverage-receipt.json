@@ -1,0 +1,31 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "shard": 3,
+  "assigned_count": 229,
+  "collected_count": 229,
+  "executed_count": 229,
+  "junit_count": 229,
+  "phase_report_count": 687,
+  "assigned_collected_executed_junit_equal": true,
+  "phase_identity_complete": true,
+  "missing_ids": [],
+  "extra_ids": [],
+  "duplicate_ids": [],
+  "assigned_sorted_sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1",
+  "collected_sorted_sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1",
+  "executed_sorted_sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1",
+  "junit_sorted_sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1",
+  "known_skip_exact_id_phase_path_line_reason": true,
+  "known_skips": [
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+      "when": "call",
+      "outcome": "skipped",
+      "duration": 0.0001497910125181079,
+      "utc_epoch": 1791861821.0961294,
+      "skip_reason": "('/workspace/casepath-release-ae0-shard3/casepath-api/tests/test_document_lifecycle_shadow_v1.py', 605, 'Skipped: frozen independent-transition packet is not available')"
+    }
+  ],
+  "failed_ids": [],
+  "original_single_test_run": true
+}

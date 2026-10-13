@@ -1,0 +1,48 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "files": [
+    {
+      "file": "casepath_shard_observer.py",
+      "source": "/tmp/casepath-release-bc0-20261013/harness/casepath_shard_observer.py",
+      "source_sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+      "new_sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+      "adaptation": "artifact ROOT and frozen candidate SHA parameters only"
+    },
+    {
+      "file": "prepare_checkouts.py",
+      "source": "/tmp/casepath-release-bc0-20261013/harness/prepare_checkouts.py",
+      "source_sha256": "1781c31d93fe2fd3b1be8558a57256e3a02432f6c458d7785279d82edb6dc450",
+      "new_sha256": "cf155db91f318bb49243458b34f659b72030f6895751f2c30c1fe0db7186076c",
+      "adaptation": "artifact ROOT and frozen candidate SHA parameters only"
+    },
+    {
+      "file": "run_shard.py",
+      "source": "/tmp/casepath-release-bc0-20261013/harness/run_shard.py",
+      "source_sha256": "fd2e68a254dd211d66f1a29926dd6bfcf4960b3ffe387197dac7105bd60fcf65",
+      "new_sha256": "dba07189d2e1ef395f0b137b9fa351423b553888d68c456ae1cbd38276d08206",
+      "adaptation": "artifact ROOT and frozen candidate SHA parameters only"
+    },
+    {
+      "file": "run_shard_serial.py",
+      "source": "/tmp/casepath-release-bc0-20261013/harness/run_shard_serial.py",
+      "source_sha256": "ab4a795a16e0fe9d8d8342112a71f6b87f7eeef842934acc84ba11b4e3ef63ae",
+      "new_sha256": "e8217e690f8e47be6b7fa3192ebfe788b6db3d3d9faf689a675529560bb4dffa",
+      "adaptation": "artifact ROOT and frozen candidate SHA parameters only"
+    },
+    {
+      "file": "summarize_gate.py",
+      "source": "/tmp/casepath-release-bc0-20261013/harness/summarize_gate.py",
+      "source_sha256": "3575c419778a9ab9490e532adf1449aa61f628f2bc1a6192c408afcc7743315f",
+      "new_sha256": "7d18ec4c79554a37025458e259ee97025bb6dbc7db1da8c90d41d5907a8debcc",
+      "adaptation": "artifact ROOT and frozen candidate SHA parameters only"
+    },
+    {
+      "file": "verify_prepared_capsules.py",
+      "source": "/tmp/casepath-release-bc0-20261013/harness/verify_prepared_capsules.py",
+      "source_sha256": "a1ac2b8394cdef5781a96540f5525bcf59774e231d2fb98e9f5dc9d8bf2d2979",
+      "new_sha256": "4b84196b5a51f42cd825d39c39fd6b430a8ad0d3f247ca80b97aa39d98f91fd1",
+      "adaptation": "artifact ROOT, frozen candidate SHA, and exact candidate MANIFEST_SHA parameters only; all verification logic preserved"
+    }
+  ],
+  "created_epoch": 1791860847.958242
+}

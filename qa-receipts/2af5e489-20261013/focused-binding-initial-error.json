@@ -1,0 +1,7 @@
+{
+  "phase": "focused source binding metadata; not a test attempt",
+  "exit_code": 1,
+  "operation": "git show 0da0b9f784ddc662990035ba52a97834609075ac:casepath/assets/autonomous-workspace-v1.js from inventory clone",
+  "stderr": "fatal: path 'casepath/assets/autonomous-workspace-v1.js' exists on disk, but not in '0da0b9f784ddc662990035ba52a97834609075ac'",
+  "diagnosis": "Reviewed Cloud implementation commit object is not in canonical clone history after Mac Conventional Commit integration. git cat-file confirmed object unavailable; corrected comparison reads original implementation clone at exact clean commit. No release/test/source failure or source change."
+}

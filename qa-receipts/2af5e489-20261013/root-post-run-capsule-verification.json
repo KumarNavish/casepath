@@ -1,0 +1,63 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "checks": [
+    {
+      "name": "inventory",
+      "source_files": 1680,
+      "artifacts": 25,
+      "static_files": 37,
+      "capsule_receipt_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "read_only_post_run_bytes_equal": true
+    },
+    {
+      "name": "shard1",
+      "source_files": 1680,
+      "artifacts": 25,
+      "static_files": 37,
+      "capsule_receipt_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "read_only_post_run_bytes_equal": true
+    },
+    {
+      "name": "shard2",
+      "source_files": 1680,
+      "artifacts": 25,
+      "static_files": 37,
+      "capsule_receipt_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "read_only_post_run_bytes_equal": true
+    },
+    {
+      "name": "shard3",
+      "source_files": 1680,
+      "artifacts": 25,
+      "static_files": 37,
+      "capsule_receipt_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "read_only_post_run_bytes_equal": true
+    },
+    {
+      "name": "shard4",
+      "source_files": 1680,
+      "artifacts": 25,
+      "static_files": 37,
+      "capsule_receipt_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "read_only_post_run_bytes_equal": true
+    },
+    {
+      "name": "shard5",
+      "source_files": 1680,
+      "artifacts": 25,
+      "static_files": 37,
+      "capsule_receipt_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "read_only_post_run_bytes_equal": true
+    },
+    {
+      "name": "shard6",
+      "source_files": 1680,
+      "artifacts": 25,
+      "static_files": 37,
+      "capsule_receipt_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "read_only_post_run_bytes_equal": true
+    }
+  ],
+  "no_copy_or_permissions_changed": true,
+  "ancillary_error": "shard3 post-run standard verifier passed integrity assertions then failed shutil.copy2 over existing read-only evidence receipt; original exit1/log retained; independent read-only checks passed."
+}

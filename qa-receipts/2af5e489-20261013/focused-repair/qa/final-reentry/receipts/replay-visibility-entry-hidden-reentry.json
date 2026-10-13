@@ -1,0 +1,62 @@
+{
+  "id": "clm_314f2d309fea25e6",
+  "interruption": "hidden reentry",
+  "prior": {
+    "state_sha256": "34cb6397ffbd77b995ba438e17de9d64bc9b6954f473ab73d1a1061d139ef111",
+    "title": "Heating resets and an uncertain onset date"
+  },
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 8000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=1",
+      "method": "GET",
+      "time": 8000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=2",
+      "method": "GET",
+      "time": 8000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=3",
+      "method": "GET",
+      "time": 8300,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "injectedAssets": {
+    "javascript": "8818482c2a05aee88ea36a5dc387d1629653cd0dad7e06686d16d37638e95ca3",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "assets": {
+    "javascript": "8818482c2a05aee88ea36a5dc387d1629653cd0dad7e06686d16d37638e95ca3",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  }
+}

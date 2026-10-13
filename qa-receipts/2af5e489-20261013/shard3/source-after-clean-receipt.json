@@ -1,0 +1,23 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "repo": "/workspace/casepath-release-ae0-shard3",
+  "head": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "status": "",
+  "normal_clone": true,
+  "manifest_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+  "source_artifact_static_counts": [
+    1680,
+    25,
+    37
+  ],
+  "source_and_capsule_sealed_files_verified": true,
+  "source_artifact_static_bytes_unchanged": true,
+  "capsule_receipt_file_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+  "capsule_receipt_unchanged": true,
+  "published_static_inventory_matches_preverified_receipt": true,
+  "standard_verifier_command_exit_code": 1,
+  "standard_verifier_output_copy_failure": "PermissionError copying to existing read-only shard3/CAPSULE_RECEIPT.json after integrity assertions",
+  "standard_verifier_command_retried": false,
+  "existing_output_receipt_mode": "0o444",
+  "verified_epoch": 1791862192.3691294
+}

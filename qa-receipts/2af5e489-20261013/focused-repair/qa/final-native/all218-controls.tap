@@ -1,0 +1,69 @@
+✔ replay entry: a legacy link without collection plays its exact roster and highlights Demonstration (2322.528608ms)
+✔ replay entry: fresh owner consumes all 218 reference prefixes and eight native handoffs (21973.670446ms)
+✔ replay entry: fresh public visitor consumes all 218 reference prefixes and eight native handoffs with visibility and programmatic focus interruptions (17791.252292ms)
+▶ replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play
+  ✔ reference (13305.191513ms)
+  ✔ legacy (12878.453801ms)
+✔ replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play (26184.595406ms)
+✔ replay lifecycle: actual index restores native back-forward autoplay and keeps manual inspected prefixes held (2422.382403ms)
+✔ timed replay presentation inspects all nine canonical cases with modal and hidden pauses, then cancels on navigation (2500.524383ms)
+✔ focused flow: actual accepted replay prefixes stay immutable with 0ms GET latency and bounded prefetch (44754.159293ms)
+✔ focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch (35106.67526ms)
+✖ focused flow: manual node inspection pauses the same accepted journal until deliberate Resume (12376.97352ms)
+✖ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (12277.358344ms)
+✖ focused flow: manual document inspection pauses the same accepted journal until deliberate Resume (12689.101473ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 10
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 190969.029912
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3278:56
+✖ focused flow: manual node inspection pauses the same accepted journal until deliberate Resume (12376.97352ms)
+  AssertionError [ERR_ASSERTION]: the exact next accepted prefix was not held
+      at eventually (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:501:10)
+      at async TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3281:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3278:56
+✖ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (12277.358344ms)
+  AssertionError [ERR_ASSERTION]: the exact next accepted prefix was not held
+      at eventually (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:501:10)
+      at async TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3281:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3278:56
+✖ focused flow: manual document inspection pauses the same accepted journal until deliberate Resume (12689.101473ms)
+  AssertionError [ERR_ASSERTION]: the exact next accepted prefix was not held
+      at eventually (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:501:10)
+      at async TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3281:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }

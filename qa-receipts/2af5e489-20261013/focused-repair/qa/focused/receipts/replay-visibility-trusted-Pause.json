@@ -1,0 +1,69 @@
+{
+  "id": "auto_a489b283495e7b03b5aab860",
+  "intent": "Pause",
+  "route": "#autonomous/claim/auto_a489b283495e7b03b5aab860?collection=reference&mode=replay&through=1",
+  "prefix": 1,
+  "resumed": 2,
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=1",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=2",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=3",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=2",
+      "method": "GET",
+      "time": 15000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=3",
+      "method": "GET",
+      "time": 15000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=4",
+      "method": "GET",
+      "time": 15300,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "injectedAssets": {
+    "javascript": "e6bb3704cbffeb1f710c7f754b4459b9af059d61c13f4b4ede091508d03bcec8",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "assets": {
+    "javascript": "e6bb3704cbffeb1f710c7f754b4459b9af059d61c13f4b4ede091508d03bcec8",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  }
+}

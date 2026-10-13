@@ -1,0 +1,16 @@
+{
+  "classification": "evidence-copy failure after successful integrity assertions; not a test failure",
+  "command_receipt": "capsule-verification-after-command.json",
+  "command_exit_code": 1,
+  "raw_log": "capsule-verification-after.log",
+  "permission_changed": false,
+  "test_rerun": false,
+  "verifier_command_rerun": false,
+  "prior_prepared_capsule_verification_receipt_intact": true,
+  "prior_prepared_verification_sha256": "b95771f78321975fe621b1a929c62a18261fcd10c71ca98bfd492b0f28b5ec64",
+  "capsule_receipt_unchanged": true,
+  "capsule_receipt_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+  "independent_post_run_integrity_receipt": "source-after-clean-receipt.json",
+  "coverage_receipt": "identity-coverage-receipt.json",
+  "single_run_summary": "worker-shard-summary.json"
+}

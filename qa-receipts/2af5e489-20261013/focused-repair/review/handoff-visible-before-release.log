@@ -1,0 +1,164 @@
+Traceback (most recent call last):
+  File "<string>", line 17, in <module>
+    corpus=CanonicalCorpus();service=service_at(Path(temporary)/'claims.sqlite',corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus))
+                                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/tests/test_complete_reference_intake_v1.py", line 20, in service_at
+    store = AutonomousStore(path)
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/autonomous_store_v1.py", line 103, in __init__
+    from .claim_loop_store import ClaimLoopStore
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop_store.py", line 11, in <module>
+    from .claim_loop import (
+    ...<7 lines>...
+    )
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop.py", line 40, in <module>
+    from .claim_loop_cycle import (
+    ...<5 lines>...
+    )
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop_cycle.py", line 13, in <module>
+    from .multi_agent import (
+    ...<3 lines>...
+    )
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/multi_agent.py", line 62, in <module>
+    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/playbook_template.py", line 7, in <module>
+    from .data import CLAIMS
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/data.py", line 87, in <module>
+    artifact(
+    ~~~~~~~~^
+        "art_lease", "lease-agreement.pdf", "Residential lease agreement", "pdf", "2026-08-01T09:03:00Z",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "lease_contract", ["fact_tenancy", "fact_address"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "Six-page lease agreement, including maintenance, defect-notification, access and house-rule clauses; the signature fields are blank.",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ),
+    ^
+  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/data.py", line 69, in artifact
+    "size_bytes": path.stat().st_size,
+                  ~~~~~~~~~^^
+  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 515, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-replay-visibility-20261013/casepath-api/artifacts/lease-agreement.pdf'
+✖ independent visibility review: held handoff shown before release respects fresh dwell (2210.379744ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2657.352401
+
+✖ failing tests:
+
+test at ../../tmp/casepath-replay-visibility-20261013/review/independent-probes.cjs:3448:1
+✖ independent visibility review: held handoff shown before release respects fresh dwell (2210.379744ms)
+  Error: Command failed: /workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python -c 
+  import base64,json,sys,tempfile
+  from pathlib import Path
+  from unittest.mock import patch
+  sys.path[:0]=[str(Path.cwd()/'casepath-api'),str(Path.cwd()/'casepath-api/tests'),str(Path.cwd()/'casepath-qa')]
+  from fastapi import FastAPI
+  from fastapi.testclient import TestClient
+  from casepath_api.autonomous_api_v1 import create_autonomous_router
+  from casepath_api.autonomous_corpus_v1 import CanonicalCorpus
+  from casepath_api.autonomous_reference_v1 import ReferenceProfile
+  from casepath_api.autonomous_controller_v1 import AutonomousController
+  from test_complete_reference_intake_v1 import service_at,admit
+  from importlib.util import spec_from_file_location,module_from_spec
+  spec=spec_from_file_location('existing_clock',Path.cwd()/'casepath-qa/build-prior-assessment-fixture-v1.py')
+  clock=module_from_spec(spec);spec.loader.exec_module(clock)
+  with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temporary,patch('casepath_api.autonomous_store_v1.datetime',clock.FixtureClock):
+   corpus=CanonicalCorpus();service=service_at(Path(temporary)/'claims.sqlite',corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus))
+   output={'snapshots':{},'prefixes':{},'unprocessed':{},'sources':{},'raw_sources':{},'knowledge':None,'profile_sha256':ReferenceProfile().sha256,'earlier_context':None}
+   try:
+    with TestClient(app) as client:
+     base='/api/claim-loops/v1/autonomous'
+     def get(path):
+      response=client.get(base+path);response.raise_for_status();return response.json()
+     ids=json.loads(sys.argv[1])
+     for cid in ids:
+      output['unprocessed'][cid]=get('/claims/'+cid+'/snapshot')
+      if cid=='clm_7dbd7c7d1c4ddf90':
+       # An actual earlier ordinary engine context, stopped before any authored
+       # model result. Reference admission must append and preserve its prefix.
+       packet=corpus.packet(cid);service.store.admit_original(cid,packet,expected_revision=0,expected_state_sha256=packet['initial_state_sha256'],idempotency_key='qa-earlier-original')
+       class NoTransport:
+        def interpret(self,context,identity):raise ValueError('Isolated ordinary context boundary; no provider transport or interpretation result.')
+       previous=AutonomousController(service.store,corpus._corpus.static_policy(),NoTransport())
+       try:
+        earlier=previous.run(cid);output['earlier_context']={'claim_id':cid,'revision':earlier['revision'],'state_sha256':earlier['state_sha256']}
+       finally:previous.shutdown()
+       service.store.add_sources(cid,ReferenceProfile().files(cid),expected_revision=earlier['revision'],expected_state_sha256=earlier['state_sha256'],idempotency_key='qa-reference-after-earlier')
+      else:admit(service,corpus,cid)
+      state=service.run(cid)
+      assert state['outcome']['assessment_status']=='complete'
+      output['snapshots'][cid]=get('/claims/'+cid+'/snapshot')
+      output['prefixes'][cid]={str(seq):get('/claims/'+cid+'/replay?through_seq='+str(seq)) for seq in range(state['revision']+1)}
+      for descriptor in state['source_descriptors']:
+       identity=cid+'/'+descriptor['artifact_id'];output['sources'][identity]=get('/sources/'+identity+'/text')
+       response=client.get(base+'/sources/'+identity);response.raise_for_status();output['raw_sources'][identity]=base64.b64encode(response.content).decode()
+     output['knowledge']=get('/knowledge')
+    print(json.dumps(output,sort_keys=True))
+   finally:service.shutdown()
+   ["clm_314f2d309fea25e6","clm_4a07dbbbd859a3ce","clm_95d08975bc575592","clm_0f4f13b1e3e1328c","clm_393285577dcb12c4","clm_4a53299cfe619303","clm_2c55cdd816b1d0e8","clm_543f08f2415b2a33","clm_7dbd7c7d1c4ddf90"]
+  Traceback (most recent call last):
+    File "<string>", line 17, in <module>
+      corpus=CanonicalCorpus();service=service_at(Path(temporary)/'claims.sqlite',corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus))
+                                       ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/tests/test_complete_reference_intake_v1.py", line 20, in service_at
+      store = AutonomousStore(path)
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/autonomous_store_v1.py", line 103, in __init__
+      from .claim_loop_store import ClaimLoopStore
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop_store.py", line 11, in <module>
+      from .claim_loop import (
+      ...<7 lines>...
+      )
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop.py", line 40, in <module>
+      from .claim_loop_cycle import (
+      ...<5 lines>...
+      )
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop_cycle.py", line 13, in <module>
+      from .multi_agent import (
+      ...<3 lines>...
+      )
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/multi_agent.py", line 62, in <module>
+      from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/playbook_template.py", line 7, in <module>
+      from .data import CLAIMS
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/data.py", line 87, in <module>
+      artifact(
+      ~~~~~~~~^
+          "art_lease", "lease-agreement.pdf", "Residential lease agreement", "pdf", "2026-08-01T09:03:00Z",
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          "lease_contract", ["fact_tenancy", "fact_address"],
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          "Six-page lease agreement, including maintenance, defect-notification, access and house-rule clauses; the signature fields are blank.",
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      ),
+      ^
+    File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/data.py", line 69, in artifact
+      "size_bytes": path.stat().st_size,
+                    ~~~~~~~~~^^
+    File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 515, in stat
+      return os.stat(self, follow_symlinks=follow_symlinks)
+             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  FileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-replay-visibility-20261013/casepath-api/artifacts/lease-agreement.pdf'
+  
+      at genericNodeError (node:internal/errors:985:15)
+      at wrappedFn (node:internal/errors:539:14)
+      at checkExecSyncError (node:child_process:942:11)
+      at execFileSync (node:child_process:978:15)
+      at referenceFixture (/tmp/casepath-replay-visibility-20261013/review/independent-probes.cjs:264:9)
+      at TestContext.<anonymous> (/tmp/casepath-replay-visibility-20261013/review/independent-probes.cjs:3449:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    status: 1,
+    signal: null,
+    output: [ null, '', `Traceback (most recent call last):\n  File "<string>", line 17, in <module>\n    corpus=CanonicalCorpus();service=service_at(Path(temporary)/'claims.sqlite',corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus))\n                                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/tests/test_complete_reference_intake_v1.py", line 20, in service_at\n    store = AutonomousStore(path)\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/autonomous_store_v1.py", line 103, in __init__\n    from .claim_loop_store import ClaimLoopStore\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop_store.py", line 11, in <module>\n    from .claim_loop import (\n    ...<7 lines>...\n    )\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop.py", line 40, in <module>\n    from .claim_loop_cycle import (\n    ...<5 lines>...\n    )\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop_cycle.py", line 13, in <module>\n    from .multi_agent import (\n    ...<3 lines>...\n    )\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/multi_agent.py", line 62, in <module>\n    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/playbook_template.py", line 7, in <module>\n    from .data import CLAIMS\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/data.py", line 87, in <module>\n    artifact(\n    ~~~~~~~~^\n        "art_lease", "lease-agreement.pdf", "Residential lease agreement", "pdf", "2026-08-01T09:03:00Z",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        "lease_contract", ["fact_tenancy", "fact_address"],\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        "Six-page lease agreement, including maintenance, defect-notification, access and house-rule clauses; the signature fields are blank.",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ),\n    ^\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/data.py", line 69, in artifact\n    "size_bytes": path.stat().st_size,\n                  ~~~~~~~~~^^\n  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 515, in stat\n    return os.stat(self, follow_symlinks=follow_symlinks)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-replay-visibility-20261013/casepath-api/artifacts/lease-agreement.pdf'\n` ],
+    pid: 532762,
+    stdout: '',
+    stderr: `Traceback (most recent call last):\n  File "<string>", line 17, in <module>\n    corpus=CanonicalCorpus();service=service_at(Path(temporary)/'claims.sqlite',corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus))\n                                     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/tests/test_complete_reference_intake_v1.py", line 20, in service_at\n    store = AutonomousStore(path)\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/autonomous_store_v1.py", line 103, in __init__\n    from .claim_loop_store import ClaimLoopStore\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop_store.py", line 11, in <module>\n    from .claim_loop import (\n    ...<7 lines>...\n    )\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop.py", line 40, in <module>\n    from .claim_loop_cycle import (\n    ...<5 lines>...\n    )\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/claim_loop_cycle.py", line 13, in <module>\n    from .multi_agent import (\n    ...<3 lines>...\n    )\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/multi_agent.py", line 62, in <module>\n    from .playbook_template import MOULD_PLAYBOOK_TEMPLATE, PlaybookTemplate\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/playbook_template.py", line 7, in <module>\n    from .data import CLAIMS\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/data.py", line 87, in <module>\n    artifact(\n    ~~~~~~~~^\n        "art_lease", "lease-agreement.pdf", "Residential lease agreement", "pdf", "2026-08-01T09:03:00Z",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        "lease_contract", ["fact_tenancy", "fact_address"],\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        "Six-page lease agreement, including maintenance, defect-notification, access and house-rule clauses; the signature fields are blank.",\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ),\n    ^\n  File "/workspace/casepath-replay-visibility-20261013/casepath-api/casepath_api/data.py", line 69, in artifact\n    "size_bytes": path.stat().st_size,\n                  ~~~~~~~~~^^\n  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 515, in stat\n    return os.stat(self, follow_symlinks=follow_symlinks)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace/casepath-replay-visibility-20261013/casepath-api/artifacts/lease-agreement.pdf'\n`
+  }

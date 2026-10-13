@@ -1,0 +1,24 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "timing_candidate": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "source": "/tmp/casepath-release-bc0-20261013/per-test-durations.json",
+  "source_sha256": "d1cd6e9369108c84b079be7818c2a3f37e865266d7c49aa120defdfa3995008c",
+  "per_test_records": 2390,
+  "actual_junit_seconds_by_shard": {
+    "1": 449.429,
+    "2": 431.535,
+    "3": 417.965,
+    "4": 359.383,
+    "5": 411.885,
+    "6": 341.454
+  },
+  "actual_wall_seconds_by_shard": {
+    "1": 454.8833255767822,
+    "2": 439.659823179245,
+    "3": 425.56852316856384,
+    "4": 367.2897298336029,
+    "5": 418.58620262145996,
+    "6": 352.2612020969391
+  },
+  "basis": "bc0 actual testcase JUnit durations and command wall times; estimates only, no performance guarantee"
+}

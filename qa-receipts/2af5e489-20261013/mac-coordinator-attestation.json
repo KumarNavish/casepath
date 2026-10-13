@@ -1,0 +1,18 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "tests": 127,
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "pytest_duration_seconds": 123.21,
+  "assigned_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "by_file": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_local_data_root.py": 52,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6
+  },
+  "basis": "Explicit Mac integration-owner attestation received in this thread: same agreed three-file 127-item inventory, sterile deterministic environment, 127 passed. ID hash is the assigned agreed inventory, not a newly supplied Mac JUnit digest. Raw Mac JUnit was not parsed on Cloud.",
+  "raw_mac_evidence": ".work/casepath-unattended-replay-20261013/gate",
+  "junit_sha256": null,
+  "received_epoch": 1791860949.0446143
+}

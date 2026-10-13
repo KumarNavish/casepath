@@ -1,0 +1,76 @@
+{
+  "after_head": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "after_status": "",
+  "argument_order_matches_assignment": true,
+  "assigned_collected_executed_junit_equal": true,
+  "assigned_count": 563,
+  "assigned_sorted_sha256": "4ca305835c130bf99a19b4c572170684572f0c381deeca9066ca6f515cb3d86f",
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "collected_count": 563,
+  "collected_sorted_sha256": "4ca305835c130bf99a19b4c572170684572f0c381deeca9066ca6f515cb3d86f",
+  "duplicate_ids": [],
+  "duration_seconds": 423.82518577575684,
+  "environment_receipt": "command.json",
+  "executed_count": 563,
+  "executed_sorted_sha256": "4ca305835c130bf99a19b4c572170684572f0c381deeca9066ca6f515cb3d86f",
+  "exit_code": 0,
+  "extra_ids": [],
+  "failed": 0,
+  "failed_ids": [],
+  "finished_epoch": 1791862025.3914096,
+  "finished_utc": "2026-10-13T03:27:05.391410+00:00",
+  "junit_count": 563,
+  "junit_duration_seconds": 417.216,
+  "junit_sorted_sha256": "4ca305835c130bf99a19b4c572170684572f0c381deeca9066ca6f515cb3d86f",
+  "launches": 1,
+  "observer_duration_seconds": 417.2290504933917,
+  "passed": 563,
+  "phase_count": 1689,
+  "phase_counts": {
+    "call": 563,
+    "setup": 563,
+    "teardown": 563
+  },
+  "raw_artifacts": {
+    "collected.json": {
+      "sha256": "3da0e366e681ac54ad3505d905c86e4025a60ebae8f3f585b2cbf8549f088604",
+      "size_bytes": 2282812
+    },
+    "command.json": {
+      "sha256": "aa185bf564a6f597f6e5460104bdb5d5e3d43bf9dad1d82e286e23f25cd52259",
+      "size_bytes": 2199
+    },
+    "junit.xml": {
+      "sha256": "c0151b773c266f96b43cb31a72493b92937ccaa9b0037a39069283ef1e1be088",
+      "size_bytes": 1134222
+    },
+    "pytest-arguments.txt": {
+      "sha256": "4ca305835c130bf99a19b4c572170684572f0c381deeca9066ca6f515cb3d86f",
+      "size_bytes": 1114603
+    },
+    "pytest.log": {
+      "sha256": "3e647878daa264b40a96cca62890518f3e3aeaa8a64664649681cfd2758a045a",
+      "size_bytes": 51408
+    },
+    "reports.jsonl": {
+      "sha256": "95d25c31aa80ceb2b3d47f51d48cf24f8aa095e25cfa621b2a382cb1232cbe32",
+      "size_bytes": 3542420
+    },
+    "result.json": {
+      "sha256": "47348dc22deae627a8cd9e11a1e3e06c36858d07df153975a6cb438966fdcdff",
+      "size_bytes": 2381
+    }
+  },
+  "reruns": 0,
+  "sealed_files_verified": 1680,
+  "shard": 5,
+  "skipped": 0,
+  "skipped_ids": [],
+  "source_manifest_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+  "source_receipt": "source-after-verification.json",
+  "started_epoch": 1791861601.5662239,
+  "started_utc": "2026-10-13T03:20:01.566224+00:00",
+  "status": "passed",
+  "tests": 563,
+  "unrun_ids": []
+}

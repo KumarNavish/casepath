@@ -1,0 +1,110 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "host": "656813ef2295",
+  "shard": "2",
+  "actual_started_utc": "2026-10-13T03:19:49.208327+00:00",
+  "finished_utc": "2026-10-13T03:27:19.571226+00:00",
+  "wall_seconds": 450.3628993034363,
+  "exit_code": 0,
+  "assigned": 554,
+  "collected": 554,
+  "executed": 554,
+  "completed": 554,
+  "junit_testcases": 554,
+  "passed": 554,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "xfailed": 0,
+  "xpassed": 0,
+  "unrun_ids": [],
+  "deselected_ids": [],
+  "failed_ids": [],
+  "skipped_ids": [],
+  "phase_counts": {
+    "setup": {
+      "passed": 554
+    },
+    "call": {
+      "passed": 554
+    },
+    "teardown": {
+      "passed": 554
+    }
+  },
+  "all_identity_sets_equal": true,
+  "junit_mapping_verified": true,
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "554",
+      "time": "446.827",
+      "timestamp": "2026-10-13T03:19:51.081967+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "source_after_verified": true,
+  "retry_count": 0,
+  "duration_artifacts": [
+    "per-test-durations.json",
+    "per-test-durations.csv",
+    "per-file-durations.json",
+    "per-file-durations.csv"
+  ],
+  "slowest_tests": [
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_ecab_registry_adapter_contract_conformance",
+      "total_phase_seconds": 21.81374793802388,
+      "call_seconds": 21.813187439984176
+    },
+    {
+      "id": "casepath-api/tests/test_agent_live_projection.py::test_live_projection_is_sealed_with_actual_completed_reference_work",
+      "total_phase_seconds": 20.204256762983277,
+      "call_seconds": 20.20390458300244
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-duplicate]",
+      "total_phase_seconds": 13.41356325999368,
+      "call_seconds": 13.412826171028428
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-explicit_reconciler]",
+      "total_phase_seconds": 11.886156473017763,
+      "call_seconds": 11.885233298991807
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_concurrent_callers_before_execution_marker_share_one_lineage",
+      "total_phase_seconds": 11.528346894949209,
+      "call_seconds": 11.52770719997352
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-startup_reconciler]",
+      "total_phase_seconds": 11.431444228976034,
+      "call_seconds": 11.430710464017466
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-explicit_reconciler]",
+      "total_phase_seconds": 11.205210646090563,
+      "call_seconds": 11.204288803040981
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMITTED-AFTER_ARTIFACT_BEFORE_EFFECT_RECEIPT-committed-0-startup_reconciler]",
+      "total_phase_seconds": 10.84953374194447,
+      "call_seconds": 10.848837864003144
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-duplicate]",
+      "total_phase_seconds": 10.689255331875756,
+      "call_seconds": 10.688537462963723
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMITTED-AFTER_ARTIFACT_BEFORE_EFFECT_RECEIPT-committed-0-duplicate]",
+      "total_phase_seconds": 10.021274349943269,
+      "call_seconds": 10.020568166975863
+    }
+  ],
+  "warnings": 9
+}

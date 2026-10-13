@@ -1,0 +1,12 @@
+{
+  "kind": "evidence assembly; no test execution",
+  "exit_code": 1,
+  "failed_check": "assert not bad",
+  "initial_manifest_files": 178,
+  "changed_files": [
+    "shard2/evidence-artifacts.json",
+    "shard2/validation-summary.json"
+  ],
+  "diagnosis": "First aggregate manifest was created while shard2 finalized its own receipt metadata. Raw tests/logs/JUnit were unchanged. All workers have now completed; final snapshot checksums regenerated from their final bytes. Original manifest retained.",
+  "raw_trace": "Traceback (most recent call last):\n  File \"<stdin>\", line 8, in <module>\nAssertionError\n"
+}

@@ -1,0 +1,55 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "host": "656813ef2295",
+  "worker_models": "gpt-6.1-sol/xhigh",
+  "suite_status": "all six original test attempts passed, zero test retries",
+  "inventory": 2517,
+  "cloud": {
+    "tests": 2390,
+    "passed": 2380,
+    "failed": 0,
+    "skipped": 10
+  },
+  "mac_attested": {
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "pytest_seconds": 123.21
+  },
+  "combined": {
+    "passed": 2507,
+    "failed": 0,
+    "skipped": 10
+  },
+  "source_and_capsule_post_run_verified": true,
+  "skip_ids_phases_lines_reasons_equal": true,
+  "verification_packaging_errors_preserved": [
+    {
+      "artifact": "shard3/capsule-verification-after.log",
+      "classification": "standard verifier passed all source/artifact/static/capsule integrity assertions, then shutil.copy2 failed overwriting an already read-only evidence receipt",
+      "fresh_destination_supported": false,
+      "independent_integrity_artifact": "root-post-run-capsule-verification.json",
+      "test_rerun": false,
+      "permissions_changed": false
+    },
+    {
+      "artifact": "root-independent-original-failure.json",
+      "classification": "root evidence parser initially required a call phase for nine known setup skips; corrected parser requires exact known skip phase/path/line/reason and expected setup/teardown"
+    },
+    {
+      "artifact": "aggregate-manifest-initial-mismatch.json",
+      "classification": "two worker receipt metadata files finalized after first aggregate checksum pass; final snapshot hashes regenerated"
+    }
+  ],
+  "no_source_edits": true,
+  "no_paid_calls": true,
+  "no_production_operations_on_cloud": true,
+  "browser_recording": "User-required genuine Ego recording remains Mac-owned and blocked awaiting explicit browser continue; isolated fixture receipts do not substitute.",
+  "focused_repair_evidence_binding": "focused-repair-binding.json",
+  "tests_retried": 0,
+  "commands_and_per_file_durations_included": true,
+  "evidence_omissions": [
+    "Successful disposable fixture SQLite databases, pytest temp trees, caches, HOME/runtime environments are not copied; all raw commands/results/logs/JUnits/IDs/phase reports retained."
+  ],
+  "created_epoch": 1791862562.4071906
+}

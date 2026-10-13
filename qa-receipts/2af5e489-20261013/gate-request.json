@@ -1,0 +1,26 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "host": "656813ef2295",
+  "cloud_provider": "cloud",
+  "observed_phase": "running",
+  "source_url": "https://github.com/KumarNavish/casepath.git",
+  "canonical_branch": "codex/casepath-causal-experience-integration-20261009",
+  "canonical_fetched_head": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "targets": [
+    "casepath-api/tests",
+    "casepath/tools/test_build_deployment_identity.py",
+    "casepath/tools/test_casepath_release.py"
+  ],
+  "launch_order": "shard4 alone first; remaining five concurrently after its terminal result and serial normal preparation",
+  "provider_credentials": false,
+  "paid_inference": false,
+  "production_operations": false,
+  "product_edits": false,
+  "automatic_reruns_allowed": false,
+  "mac_partition": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_local_data_root.py": 52,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6
+  },
+  "requested_epoch": 1791860949.0447729
+}

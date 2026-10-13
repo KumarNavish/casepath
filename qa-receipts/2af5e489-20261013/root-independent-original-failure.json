@@ -1,0 +1,9 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "command_kind": "post-run evidence-only independent parsing via python stdin; no tests executed",
+  "exit_code": 1,
+  "failed_assertion": "assert {r['when'] for r in actual} == {'setup','call','teardown'}",
+  "diagnosis": "Evidence parser incorrectly required a call phase for the nine known setup skips in shard6. Actual observer rows contain setup=skipped and teardown=passed, as expected. All six raw JUnits and the reused gate summarizer already passed.",
+  "correction": "Require all three phases for passing tests/call skips; require exactly setup+teardown only for the exact reference setup-skip identities, with unchanged source line/reason. No product, test, timeout, environment, source capsule or permissions changed.",
+  "raw_trace": "root-independent-original-failure.log"
+}

@@ -1,0 +1,19 @@
+{
+  "started_epoch": 1791861594.5585043,
+  "started_utc": "2026-10-13T03:19:54.558504+00:00",
+  "processes": [
+    {
+      "pid": 543079,
+      "ppid": 543078,
+      "os_start_utc": "Tue Oct 13 03:19:53 2026",
+      "command": "python /tmp/casepath-release-2af5-20261013/harness/run_shard.py run 1"
+    },
+    {
+      "pid": 543090,
+      "ppid": 543079,
+      "os_start_utc": "Tue Oct 13 03:19:53 2026",
+      "command": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv/bin/python -P -m pytest -q -p no:cacheprovider -p casepath_shard_observer --junitxml=/tmp/casepath-release-2af5-20261013/shard1/junit.xml --durations=0 --basetemp=/tmp/casepath-release-2af5-20261013/shard1/pytest-tmp @/tmp/casepath-release-2af5-20261013/shard1/pytest-arguments.txt"
+    }
+  ],
+  "exec_session_id": 75930
+}

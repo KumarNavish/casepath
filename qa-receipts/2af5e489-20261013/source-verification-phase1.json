@@ -1,0 +1,91 @@
+{
+  "candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "prepared_clones": 2,
+  "expected_total_clones": 7,
+  "phase": "phase1 inventory and isolated shard4 ready; other5 deferred until shard4 terminal",
+  "sealed_files": 1680,
+  "manifest_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+  "canonical_source_url": "https://github.com/KumarNavish/casepath.git",
+  "canonical_fetched_heads": [
+    "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+    "2af5e4897284b0b1eab7a82a4e98273ae481b77b"
+  ],
+  "checks": [
+    {
+      "name": "inventory",
+      "repo": "/workspace/casepath-release-ae0-inventory",
+      "head": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+      "status": "",
+      "normal_clone": true,
+      "manifest_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+      "sealed_files_verified": 1680,
+      "capsule_root": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/source-capsules/1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+      "capsule_receipt_path": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/source-capsules/1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06/CAPSULE_RECEIPT.json",
+      "capsule_receipt_file_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "capsule_receipt": {
+        "artifact_file_count": 25,
+        "artifact_manifest_file_sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2",
+        "contract": "casepath.sealed-source-capsule/1.0.0",
+        "receipt_sha256": "d70dfbebdde3bb660a4591d05d035319bedd254fdda56786438a26e4889337ab",
+        "source_file_count": 1680,
+        "source_manifest_file_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+        "source_roster_sha256": "8c59c516d18838fd039773d1ed0b2a322deae00c44713481525ec7b7d9f0eff8",
+        "static_file_count": 37,
+        "static_inventory_sha256": "9c15629f90e70cb2309407d8c31b43322f46d335acc314f6e87b2cb75e057012"
+      },
+      "source_artifact_static_bindings_verified": true,
+      "existing_cli_prepare_verifies_repository_and_capsule_release": true,
+      "static_helper": "build_static_site.verify_inventory and build_deployment_identity.build_payload",
+      "prepare_exit_code": 0,
+      "prepare_duration_seconds": 7.1672961711883545,
+      "verified_epoch": 1791860900.705016
+    },
+    {
+      "name": "shard4",
+      "repo": "/workspace/casepath-release-ae0-shard4",
+      "head": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+      "status": "",
+      "normal_clone": true,
+      "manifest_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+      "sealed_files_verified": 1680,
+      "capsule_root": "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/source-capsules/1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+      "capsule_receipt_path": "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/source-capsules/1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06/CAPSULE_RECEIPT.json",
+      "capsule_receipt_file_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+      "capsule_receipt": {
+        "artifact_file_count": 25,
+        "artifact_manifest_file_sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2",
+        "contract": "casepath.sealed-source-capsule/1.0.0",
+        "receipt_sha256": "d70dfbebdde3bb660a4591d05d035319bedd254fdda56786438a26e4889337ab",
+        "source_file_count": 1680,
+        "source_manifest_file_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+        "source_roster_sha256": "8c59c516d18838fd039773d1ed0b2a322deae00c44713481525ec7b7d9f0eff8",
+        "static_file_count": 37,
+        "static_inventory_sha256": "9c15629f90e70cb2309407d8c31b43322f46d335acc314f6e87b2cb75e057012"
+      },
+      "source_artifact_static_bindings_verified": true,
+      "existing_cli_prepare_verifies_repository_and_capsule_release": true,
+      "static_helper": "build_static_site.verify_inventory and build_deployment_identity.build_payload",
+      "prepare_exit_code": 0,
+      "prepare_duration_seconds": 7.150122880935669,
+      "verified_epoch": 1791860900.977417
+    }
+  ],
+  "capsule_source_artifact_static_counts": [
+    1680,
+    25,
+    37
+  ],
+  "all_capsule_receipts_equal": true,
+  "capsule_receipt_file_sha256": "e25c9aa97ba2894d11572329f11b2567d4d78d5356bd069d7347b39cf5810b98",
+  "known_skip_source_unchanged": true,
+  "full_shard_tests_launched_by_preparation_agent": false,
+  "provider_credentials_in_test_environment": false,
+  "production_calls": false,
+  "source_edits": false,
+  "limits": [
+    "/proc/1/maps legacy migration audit remains fail-closed on Cloud; exact Mac127 excluded for isolated supported-host validation.",
+    "Ten known unavailable-fixture skips preserved exactly as reference; current execution comparison pending."
+  ],
+  "js_sha256": "e91a20ec9eaea05b20e60d832443187ab10693445d1de9f4464654f482eb0e23",
+  "css_sha256": "4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+}

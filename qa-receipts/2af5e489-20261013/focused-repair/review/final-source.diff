@@ -1,0 +1,227 @@
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index 824f8ef..1c33c7c 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -1404,7 +1404,7 @@
+       clearNativeSource(); nativeSourceURL = root.URL.createObjectURL(new root.Blob([bytes],{type:descriptor.media_type})); return nativeSourceURL;
+     }
+     function schedule() { cancelPoll(); if (!disposed && !doc.hidden && view === 'claim' && openingId && presentationMode !== 'replay') timer = root.setTimeout(current ? poll : () => loadOpenedClaim(openingId,epoch), current && !active(current.status) && !pendingStart && !pendingArrival && !pendingControl && !connectionFailed ? 20000 : 1600); }
+-    function focusTitle() { host.querySelector('h1')?.focus({preventScroll:true}); }
++    function focusTitle() { if (!doc.hidden) host.querySelector('h1')?.focus({preventScroll:true}); }
+     function focusPanel(element) {
+       const panel = element?.closest?.('[data-au-panel]');
+       return panel?.dataset?.auPanel ? panel : null;
+@@ -1599,6 +1599,7 @@
+     }
+     function renderClaim(changes = null, navigation = false) {
+       if (!current || view !== 'claim') return;
++      if (doc.hidden) { claimRenderComplete = false; return; }
+       evidenceContext = evidenceSelection(current,selected,evidenceContext);
+       claimRenderComplete = false;
+       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); interactionMotion = null;
+@@ -1806,12 +1807,14 @@
+       const opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
+       if (demoSession) demoSession.verifiedOpening = null;
+       const cached = presentationMode !== 'replay' && paintSavedClaim(id,preferences);
+-      if (!cached && !opening) { host.innerHTML = catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); }
++      if (!doc.hidden && !cached && !opening) { host.innerHTML = catalogPreviewMarkup(claims.find(claim => claim.claim_id === id),id) || unknownClaimMarkup(id); focusTitle(); }
+       interact(host);
+       if (presentationMode !== 'replay') {
+         sessionRestore?.then(() => { if (!disposed && token === epoch && !pendingRoute() && view === 'claim' && !current && id === openingId) paintSavedClaim(id,preferences); });
+         return loadOpenedClaim(id,token,preferences);
+       }
++      const session = preferences.demo ? demoSession : null;
++      if (session) session.preparing = token;
+       try {
+         const through = preferences.through ?? 0;
+         const incoming = readReplay(opening?.response || await request(`/claims/${key(id)}/replay?through_seq=${through}`),id,through);
+@@ -1824,15 +1827,13 @@
+         if (preferences.demo && demoSession?.mode === 'replay') {
+           const session = demoSession;
+           session.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256};
+-          if (session.collection !== 'legacy' && !(opening?.referenceReady || await verifyReferenceHead(session))) {
+-            if (disposed || token !== epoch || demoSession !== session || pendingRoute()) return;
+-            stopPresentation(); renderClaim(); notice('This synthetic reference assessment has no completed recorded history available. Its original intake remains inspectable.'); return current;
+-          }
+-          if (disposed || token !== epoch || demoSession !== session || pendingRoute()) return;
+-          session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0; prefetchReplay(session); if (replayRecord.current_revision > replayRecord.through_seq) replayTick(session,token);
++          session.referenceReady = Boolean(opening?.referenceReady);
++          session.preparing = null; session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0;
++          await startReplay(session,token);
+         }
+         return current;
+-      } catch (error) { if (!disposed && token === epoch) { notice(`Verified replay unavailable: ${error.message}`,true); host.innerHTML = button('Return to demonstration','data-au-nav="demonstration"'); stopPresentation(); } }
++      } catch (error) { if (!disposed && token === epoch) { if (session) presentationFailed(session,`Verified replay unavailable: ${error.message}`); else { notice(`Verified replay unavailable: ${error.message}`,true); host.innerHTML = button('Return to demonstration','data-au-nav="demonstration"'); stopPresentation(); } } }
++      finally { if (session?.preparing === token) session.preparing = null; }
+     }
+     function railClaims() {
+       const queue = container.querySelector('[data-au-recent-claims]');
+@@ -2035,8 +2036,14 @@
+     function stopPresentation() {
+       if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; demoSession = null; pausedPresentation = null; replayPrefixes.clear();
+     }
++    function presentationFailed(session, message) {
++      if (demoSession !== session) return;
++      if (doc.hidden) { session.failure = message; return; }
++      stopPresentation(); renderClaim(); notice(message,true);
++    }
+     function pausePresentation() {
+       if (!demoSession) return false;
++      if (demoSession.mode === 'replay' && !demoSession.replayHead) { inspectionHold = true; return false; }
+       pausedPresentation = {...demoSession,preparing:null};
+       if (demoTimer) root.clearTimeout(demoTimer);
+       demoTimer = null; demoSession = null; replayPrefixes.clear();
+@@ -2054,7 +2061,7 @@
+       const session = pausedPresentation;
+       if (!session || disposed || pendingRoute() || doc.hidden || dialog.open || recordDialog.open || view !== 'claim' || !current || (session.mode === 'replay' ? session.replayHead?.claimId : session.claimId) !== current.claim_id) return;
+       inspectionHold = false; pausedPresentation = null; demoSession = session; session.epoch = epoch; session.displayedAt = Date.now(); renderClaim();
+-      if (session.mode === 'replay') { prefetchReplay(session); replayTick(session,epoch); }
++      if (session.mode === 'replay') startReplay(session,epoch);
+       else { resumeLivePresentation(); advanceLivePresentation(); }
+     }
+     async function beginPresentation() {
+@@ -2068,30 +2075,48 @@
+         demoSession = {mode:'replay',collection,index}; await openPresentationCase(demoSession); return;
+       }
+       demoSession = {mode:'replay',collection,index,claimId:current.claim_id,epoch,replayHead:{claimId:current.claim_id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256},displayedAt:Date.now(),motionDuration:0};
+-      const session = demoSession, token = epoch;
+-      if (collection !== 'legacy') {
++      openingPreferences = {...openingPreferences,demo:true};
++      renderClaim(); await startReplay(demoSession,epoch);
++    }
++    async function startReplay(session, token) {
++      if (!replayActive(session,token) || doc.hidden || session.preparing) return;
++      if (session.failure) { presentationFailed(session,session.failure); return; }
++      if (inspectionHold) { pausePresentation(); renderClaim(); return; }
++      if (dialog.open || recordDialog.open) return;
++      if (session.collection !== 'legacy' && !session.referenceReady) {
++        session.preparing = token;
+         try {
+-          if (!await verifyReferenceHead(session)) { if (demoSession === session && token === epoch) { stopPresentation(); renderClaim(); notice('This synthetic reference assessment has no completed recorded history available.'); } return; }
+-        } catch (error) { if (demoSession === session && token === epoch) { stopPresentation(); renderClaim(); notice(`Verified replay unavailable: ${error.message}`,true); } return; }
+-        if (demoSession !== session || token !== epoch || disposed || pendingRoute()) return;
++          if (!await verifyReferenceHead(session)) { if (replayActive(session,token)) presentationFailed(session,'This synthetic reference assessment has no completed recorded history available.'); return; }
++          session.referenceReady = true;
++        } catch (error) { if (replayActive(session,token)) presentationFailed(session,`Verified replay unavailable: ${error.message}`); return; }
++        finally { if (session.preparing === token) session.preparing = null; }
+       }
+-      openingPreferences = {...openingPreferences,demo:true};
+-      renderClaim(); prefetchReplay(demoSession); replayTick(demoSession,epoch);
++      if (!replayActive(session,token) || doc.hidden || inspectionHold || dialog.open || recordDialog.open) return;
++      prefetchReplay(session); replayTick(session,token);
+     }
+     async function openPresentationCase(session, writeHistory = true, index = session.index) {
+-      if (demoSession !== session || disposed || pendingRoute()) return;
++      if (demoSession !== session || disposed || pendingRoute() || doc.hidden && session.replayHead || session.preparing) return;
+       if (index >= demoCases(session.collection).length) { stopPresentation(); detail = 'step'; selected = preferredNode(current,selected,history); evidenceContext = evidenceSelection(current,selected,evidenceContext); notice('Recorded playback finished.'); renderClaim(); return; }
+       const id = demoCases(session.collection)[index].claim_id;
+       if (session.mode === 'replay' && current && replayRecord && id !== current.claim_id) {
+         const token = epoch, generation = readGeneration, priorId = current.claim_id, priorHash = current.state_sha256;
++        session.preparing = token;
+         try {
+           const opening = await presentationOpening(session,id);
+           if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
++          if (session.collection !== 'legacy' && !opening.referenceReady) {
++            if (!await verifyReferenceHead({replayHead:opening.head})) throw new Error('No completed recorded reference assessment is available.');
++            opening.referenceReady = true;
++            if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
++          }
+           session.verifiedOpening = opening;
++          const remaining = Math.max(0,4000 - (Date.now() - session.displayedAt));
++          if (remaining) { demoTimer = root.setTimeout(() => { demoTimer = null; openPresentationCase(session,writeHistory,index); },remaining); return; }
+         } catch (error) {
+-          if (demoSession === session && token === epoch && !disposed && !pendingRoute()) { stopPresentation(); renderClaim(); notice(`Next case ${featuredCase(id)?.label || id} is unavailable: ${error.message} The last verified case remains visible.`,true); }
++          if (demoSession === session && token === epoch && !disposed && !pendingRoute()) presentationFailed(session,`Next case ${featuredCase(id)?.label || id} is unavailable: ${error.message} The last verified case remains visible.`);
+           return;
+         }
++        finally { if (session.preparing === token) session.preparing = null; }
+       }
+       session.index = index; session.claimId = id; session.startAttempted = false;
+       await openClaim(id,writeHistory,{mode:session.mode,collection:session.collection || 'reference',through:0,detail:'step',demo:true});
+@@ -2107,8 +2132,8 @@
+         const response = await request(`/claims/${key(id)}/replay?through_seq=0`), incoming = readReplay(response,id,0);
+         const head = {claimId:id,revision:incoming.replay.current_revision,state_sha256:incoming.replay.current_state_sha256,event_sha256:incoming.replay.current_event_sha256};
+         if (!head.revision) throw new Error('No recorded execution is available for this original case.');
+-        const referenceReady = session.collection !== 'legacy' && await verifyReferenceHead({replayHead:head});
+-        if (session.collection !== 'legacy' && !referenceReady) throw new Error('No completed recorded reference assessment is available.');
++        const referenceReady = session.collection !== 'legacy' && !doc.hidden && await verifyReferenceHead({replayHead:head});
++        if (session.collection !== 'legacy' && !doc.hidden && !referenceReady) throw new Error('No completed recorded reference assessment is available.');
+         if (disposed || token !== epoch || generation !== readGeneration || demoSession !== session || pendingRoute()) throw new Error('The presentation changed while verifying the next case.');
+         return {claimId:id,generation,response,head,referenceReady};
+       })();
+@@ -2146,7 +2171,7 @@
+       return promise;
+     }
+     function prefetchReplay(session) {
+-      if (demoSession !== session || disposed || doc.hidden || dialog.open || !replayRecord || session.replayHead?.claimId !== current?.claim_id) return;
++      if (demoSession !== session || session.failure || session.preparing || disposed || doc.hidden || dialog.open || recordDialog.open || inspectionHold || !replayRecord || session.replayHead?.claimId !== current?.claim_id) return;
+       for (let through = replayRecord.through_seq + 1; through <= Math.min(replayRecord.current_revision,replayRecord.through_seq + 2); through++) replayPrefix(current.claim_id,through,session);
+     }
+     function replayPacing(event, session) {
+@@ -2157,7 +2182,7 @@
+     }
+     function consumeReplay(session, token, through, response) {
+       demoTimer = null;
+-      if (!replayActive(session,token) || doc.hidden || dialog.open) return;
++      if (!replayActive(session,token) || doc.hidden || dialog.open || recordDialog.open || inspectionHold) return;
+       try {
+         // Verify again on consumption, including every retained earlier event.
+         const incoming = readReplay(response,current.claim_id,through); checkedReplayHead(incoming,session);
+@@ -2184,7 +2209,8 @@
+     }
+     async function replayTick(session, token) {
+       if (demoTimer) return;
+-      if (!replayActive(session,token) || doc.hidden || dialog.open || session.preparing === token) return;
++      if (!replayActive(session,token) || doc.hidden || dialog.open || recordDialog.open || inspectionHold || session.preparing) return;
++      if (session.failure) { presentationFailed(session,session.failure); return; }
+       if (replayRecord.through_seq >= replayRecord.current_revision) {
+         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
+         const next = demoCases(session.collection)[session.index+1];
+@@ -2197,10 +2223,10 @@
+       session.preparing = token;
+       try {
+         const response = await replayPrefix(id,through,session);
+-        if (!replayActive(session,token) || doc.hidden || dialog.open) return;
++        if (!replayActive(session,token) || doc.hidden || dialog.open || recordDialog.open || inspectionHold) return;
+         const remaining = Math.max(0,Math.max(replayPacing(history.at(-1),session),session.motionDuration || 0) - (Date.now() - session.displayedAt));
+         demoTimer = root.setTimeout(() => consumeReplay(session,token,through,response),remaining);
+-      } catch (error) { if (replayActive(session,token)) { stopPresentation(); renderClaim(); notice(`Verified replay stopped: ${error.message}`,true); } }
++      } catch (error) { if (replayActive(session,token)) presentationFailed(session,`Verified replay stopped: ${error.message}`); }
+       finally { if (session.preparing === token) session.preparing = null; }
+     }
+     function resumeLivePresentation() {
+@@ -2594,12 +2620,31 @@
+     }
+     function visibility() {
+       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
+-      if (doc.hidden) { cancelWarmReads(); pauseInspection(); cancelPoll(); freshClaim = false; statusAuthority = null; synchronizeAuthority('refreshing'); return; }
++      if (doc.hidden) {
++        cancelWarmReads();
++        if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null;
++        // Backgrounding suspends verified replay, not the user's inspection.
++        // A live presentation cannot dispatch a new case on visibility restore.
++        if (demoSession?.mode === 'live') stopPresentation();
++        cancelPoll(); freshClaim = false; statusAuthority = null;
++        if (presentationMode !== 'replay') synchronizeAuthority('refreshing');
++        return;
++      }
++      if (demoSession?.mode === 'replay' && !demoSession.replayHead && !demoSession.preparing && !pendingRoute()) { openPresentationCase(demoSession); return; }
+       if (view === 'claim') {
+-        if (presentationMode !== 'replay') { disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); }
++        if (presentationMode === 'replay') {
++          if (pendingRoute()) return;
++          const session = demoSession;
++          if (!claimRenderComplete && current) renderClaim();
++          if (session) {
++            if (session.failure) { presentationFailed(session,session.failure); return; }
++            // Resume one full reading interval; hidden time never causes catch-up.
++            session.displayedAt = Date.now(); startReplay(session,epoch);
++          }
++        } else { disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); }
+       }
+     }
+-    function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;container.setAttribute('data-au-keyboard','true');pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
++    function keyboardInput(event) { if (event.isTrusted && (event.key === 'Tab' || event.key?.startsWith('Arrow'))) { keyboard=true;container.setAttribute('data-au-keyboard','true');pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
+     function pointerInput() { keyboard=false;container.removeAttribute('data-au-keyboard'); }
+     function motionPreference() { if (reduced?.matches) { motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
+     doc.addEventListener('keydown',keyboardInput);container.addEventListener('pointerdown',pointerInput);reduced?.addEventListener?.('change',motionPreference);
