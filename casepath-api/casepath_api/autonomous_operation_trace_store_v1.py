@@ -23,11 +23,11 @@ SCHEMA = """
 CREATE TABLE IF NOT EXISTS autonomous_operation_traces (
  sidecar_sha256 TEXT PRIMARY KEY, claim_id TEXT NOT NULL, run_id TEXT NOT NULL,
  head_state_sha256 TEXT NOT NULL, head_event_sha256 TEXT NOT NULL,
- profile_sha256 TEXT NOT NULL, input_sha256 TEXT NOT NULL,
+ profile_sha256 TEXT NOT NULL, instrumentation_id TEXT NOT NULL, input_sha256 TEXT NOT NULL,
  content_sha256 TEXT NOT NULL, compressed_sha256 TEXT NOT NULL,
  content_bytes INTEGER NOT NULL, compressed_bytes INTEGER NOT NULL,
  chunk_count INTEGER NOT NULL,
- UNIQUE(claim_id,run_id,head_state_sha256,head_event_sha256,profile_sha256)
+ UNIQUE(claim_id,run_id,head_state_sha256,head_event_sha256,profile_sha256,instrumentation_id)
 );
 CREATE TABLE IF NOT EXISTS autonomous_operation_trace_chunks (
  sidecar_sha256 TEXT NOT NULL, chunk_index INTEGER NOT NULL, content BLOB NOT NULL,
@@ -43,7 +43,7 @@ CREATE TRIGGER IF NOT EXISTS {_table}_no_delete BEFORE DELETE ON {_table}
 """
     _key = ('sidecar_sha256=NEW.sidecar_sha256 OR (claim_id=NEW.claim_id AND run_id=NEW.run_id '
             'AND head_state_sha256=NEW.head_state_sha256 AND head_event_sha256=NEW.head_event_sha256 '
-            'AND profile_sha256=NEW.profile_sha256)' if _table.endswith('traces') else
+            'AND profile_sha256=NEW.profile_sha256 AND instrumentation_id=NEW.instrumentation_id)' if _table.endswith('traces') else
             'sidecar_sha256=NEW.sidecar_sha256 AND chunk_index=NEW.chunk_index')
     SCHEMA += f"""
 CREATE TRIGGER IF NOT EXISTS {_table}_no_replace BEFORE INSERT ON {_table}
@@ -88,6 +88,9 @@ def _sealed(sidecar):
             raise OperationTraceError('Operation sidecar authority is invalid.')
     if not all(isinstance(binding.get(key), str) and binding[key] for key in ('claim_id', 'run_id')):
         raise OperationTraceError('Operation sidecar claim/run identity is invalid.')
+    if (not isinstance(binding.get('instrumentation_id'), str)
+            or not re.fullmatch(r'casepath\.reference-operations/[1-9][0-9]*\.[0-9]+\.[0-9]+', binding['instrumentation_id'])):
+        raise OperationTraceError('Operation instrumentation revision is invalid.')
     encoded = canonical_json_bytes(sidecar)
     if len(encoded) > MAX_TRACE_BYTES:
         raise OperationTraceError('Operation sidecar exceeds its byte bound.')
@@ -98,9 +101,13 @@ class OperationTraceStore:
     def __init__(self, connection_factory):
         self.connect = connection_factory
 
-    def read(self, claim_id, *, head_state_sha256, head_event_sha256, run_id, profile_sha256, check=lambda: None):
+    def read(self, claim_id, *, head_state_sha256, head_event_sha256, run_id, profile_sha256,
+             instrumentation_id=None, check=lambda: None):
         """Read one exact admitted trace, refusing damaged or oversized chunks."""
-        identity = (claim_id, run_id, head_state_sha256, head_event_sha256, profile_sha256)
+        if instrumentation_id is None:
+            from .autonomous_operations_v1 import INSTRUMENTATION_ID
+            instrumentation_id = INSTRUMENTATION_ID
+        identity = (claim_id, run_id, head_state_sha256, head_event_sha256, profile_sha256, instrumentation_id)
         check()
         with self.connect() as connection:
             check()
@@ -109,7 +116,8 @@ class OperationTraceStore:
                 return None
             check()
             row = connection.execute('SELECT * FROM autonomous_operation_traces WHERE claim_id=? AND run_id=? '
-                                     'AND head_state_sha256=? AND head_event_sha256=? AND profile_sha256=?', identity).fetchone()
+                                     'AND head_state_sha256=? AND head_event_sha256=? AND profile_sha256=? '
+                                     'AND instrumentation_id=?', identity).fetchone()
             if row is None:
                 return None
             if (type(row['content_bytes']) is not int or not 0 < row['content_bytes'] <= MAX_TRACE_BYTES
@@ -156,7 +164,7 @@ class OperationTraceStore:
         if (canonical != encoded or sidecar['sidecar_sha256'] != row['sidecar_sha256']
                 or sidecar['input_sha256'] != row['input_sha256']
                 or (binding['claim_id'], binding['run_id'], binding['current_state_sha256'],
-                    binding['current_event_sha256'], binding['profile_sha256']) != identity):
+                    binding['current_event_sha256'], binding['profile_sha256'], binding['instrumentation_id']) != identity):
             raise OperationTraceError('Persisted operation trace identity differs.')
         return sidecar
 
@@ -179,7 +187,7 @@ def admit_operation_trace(connection_factory, bundle, sidecar):
     reader = OperationTraceStore(connection_factory)
     existing = reader.read(binding['claim_id'], head_state_sha256=binding['current_state_sha256'],
                            head_event_sha256=binding['current_event_sha256'], run_id=binding['run_id'],
-                           profile_sha256=binding['profile_sha256'])
+                           profile_sha256=binding['profile_sha256'], instrumentation_id=binding['instrumentation_id'])
     if existing is not None and existing != sidecar:
         raise OperationTraceError('An exact run already has another immutable operation trace.')
     with connection_factory() as connection:
@@ -190,16 +198,16 @@ def admit_operation_trace(connection_factory, bundle, sidecar):
         if [{key: row[key] for key in _COLUMNS} for row in rows] != expected:
             raise OperationTraceError('Saved journal changed before operation trace admission.')
         prior = connection.execute('SELECT sidecar_sha256 FROM autonomous_operation_traces WHERE claim_id=? AND run_id=? '
-                                   'AND head_state_sha256=? AND head_event_sha256=? AND profile_sha256=?',
+                                   'AND head_state_sha256=? AND head_event_sha256=? AND profile_sha256=? AND instrumentation_id=?',
                                    (binding['claim_id'], binding['run_id'], binding['current_state_sha256'],
-                                    binding['current_event_sha256'], binding['profile_sha256'])).fetchone()
+                                    binding['current_event_sha256'], binding['profile_sha256'], binding['instrumentation_id'])).fetchone()
         if prior is not None:
             if prior['sidecar_sha256'] != sidecar['sidecar_sha256']:
                 raise OperationTraceError('Another immutable trace was admitted for this run.')
             return {'sidecar_sha256': sidecar['sidecar_sha256'], 'admitted': False, 'idempotent': True}
         chunks = [compressed[start:start + CHUNK_BYTES] for start in range(0, len(compressed), CHUNK_BYTES)]
         values = (sidecar['sidecar_sha256'], binding['claim_id'], binding['run_id'], binding['current_state_sha256'],
-                  binding['current_event_sha256'], binding['profile_sha256'], sidecar['input_sha256'],
+                  binding['current_event_sha256'], binding['profile_sha256'], binding['instrumentation_id'], sidecar['input_sha256'],
                   sha256(encoded).hexdigest(), sha256(compressed).hexdigest(), len(encoded), len(compressed), len(chunks))
         connection.execute('INSERT INTO autonomous_operation_traces VALUES (' + ','.join('?' for _ in values) + ')', values)
         for index, chunk in enumerate(chunks):

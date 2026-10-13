@@ -61,7 +61,8 @@ class OperationTraceStorageTests(unittest.TestCase):
         binding = self.sidecar['frames'][0]
         self.identity = {'head_state_sha256': binding['current_state_sha256'],
                          'head_event_sha256': binding['current_event_sha256'],
-                         'run_id': binding['run_id'], 'profile_sha256': binding['profile_sha256']}
+                         'run_id': binding['run_id'], 'profile_sha256': binding['profile_sha256'],
+                         'instrumentation_id': binding['instrumentation_id']}
 
     def tearDown(self):
         self.db.close()
@@ -115,6 +116,22 @@ class OperationTraceStorageTests(unittest.TestCase):
         self.assertIsNone(self.read(head_event_sha256='1' * 64))
         self.assertIsNone(self.read(profile_sha256='2' * 64))
         self.assertIsNone(self.read(run_id='another-run'))
+
+    def test_new_instrumentation_revision_appends_without_replacing_the_old_trace(self):
+        self.initialize()
+        admit_operation_trace(self.connect, self.bundle, self.sidecar)
+        earlier = tuple(self.db.execute('SELECT * FROM autonomous_operation_traces').fetchone())
+        with patch('casepath_api.autonomous_operations_v1.INSTRUMENTATION_ID', 'casepath.reference-operations/2.0.0'):
+            newer = build_operation_sidecar(self.bundle)
+            self.assertTrue(admit_operation_trace(self.connect, self.bundle, newer)['admitted'])
+            self.assertTrue(admit_operation_trace(self.connect, self.bundle, newer)['idempotent'])
+            self.assertEqual(self.reader.read(self.bundle['claim_id'], **{key: value for key, value in self.identity.items()
+                                                                          if key != 'instrumentation_id'}), newer)
+        self.assertEqual(self.read(), self.sidecar)
+        self.assertEqual(self.read(instrumentation_id='casepath.reference-operations/2.0.0'), newer)
+        self.assertEqual(tuple(self.db.execute('SELECT * FROM autonomous_operation_traces WHERE sidecar_sha256=?',
+                                              (self.sidecar['sidecar_sha256'],)).fetchone()), earlier)
+        self.assertEqual(self.db.execute('SELECT count(*) FROM autonomous_operation_traces').fetchone()[0], 2)
 
     def test_changed_source_fails_native_verification_before_any_write(self):
         self.initialize()
