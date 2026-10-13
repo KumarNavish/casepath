@@ -1,0 +1,41 @@
+TAP version 13
+# Subtest: causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes
+    # Subtest: 1280x800
+    ok 1 - 1280x800
+      ---
+      duration_ms: 13046.163327
+      type: 'test'
+      ...
+    # Subtest: 1428x771
+    ok 2 - 1428x771
+      ---
+      duration_ms: 13065.239708
+      type: 'test'
+      ...
+    # Subtest: 1360x900
+    ok 3 - 1360x900
+      ---
+      duration_ms: 15245.506154
+      type: 'test'
+      ...
+    # Subtest: 390x844
+    ok 4 - 390x844
+      ---
+      duration_ms: 12107.912313
+      type: 'test'
+      ...
+    1..4
+ok 1 - causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes
+  ---
+  duration_ms: 53885.065293
+  type: 'test'
+  ...
+1..1
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 54483.125425

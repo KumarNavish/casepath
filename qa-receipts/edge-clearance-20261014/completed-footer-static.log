@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(measurement.transport.bottom<=800)
+
+    at /workspace/casepath-edge-clearance-20261014-evidence/check-footer.cjs:3:2504 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

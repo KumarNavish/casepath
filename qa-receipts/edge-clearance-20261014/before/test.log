@@ -1,0 +1,81 @@
+TAP version 13
+# Subtest: causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes
+    # Subtest: 1280x800
+    not ok 1 - 1280x800
+      ---
+      duration_ms: 14171.343668
+      type: 'test'
+      location: '/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:913:82'
+      failureType: 'testCodeFailure'
+      error: |-
+        reference_defect_mold_heating_0 dependency stroke paints inside the actual overflow clipping viewport; first clipped point {"x":64.63609313964844,"y":223.4375}; arrowheads alone cannot satisfy this check
+        
+        712 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 712
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:937:11)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:913:74)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: 1428x771
+    not ok 2 - 1428x771
+      ---
+      duration_ms: 13121.88577
+      type: 'test'
+      location: '/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:913:82'
+      failureType: 'testCodeFailure'
+      error: |-
+        reference_defect_mold_heating_0 dependency stroke paints inside the actual overflow clipping viewport; first clipped point {"x":64.76640319824219,"y":223.4375}; arrowheads alone cannot satisfy this check
+        
+        720 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 720
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:937:11)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:913:74)
+        async Test.run (node:internal/test_runner/test:1389:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+      ...
+    # Subtest: 1360x900
+    ok 3 - 1360x900
+      ---
+      duration_ms: 13145.082427
+      type: 'test'
+      ...
+    # Subtest: 390x844
+    ok 4 - 390x844
+      ---
+      duration_ms: 12412.611848
+      type: 'test'
+      ...
+    1..4
+not ok 1 - causal formation native: settled stage dependency strokes stay inside the clipping viewport at short desktop and mobile sizes
+  ---
+  duration_ms: 53696.832878
+  type: 'test'
+  location: '/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:911:1'
+  failureType: 'subtestsFailed'
+  error: '2 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 5
+# suites 0
+# pass 2
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 54375.174846

@@ -1,0 +1,11 @@
+Retained tool output from the first optional footer-check launch.
+Command: env HOME=/workspace/ec-fh TMPDIR=/workspace/ec-ft TMP=/workspace/ec-ft TEMP=/workspace/ec-ft node /workspace/casepath-edge-clearance-20261014-evidence/check-footer.cjs
+Exit status: 1
+The dedicated TMP directory had not yet been created. No browser launched.
+
+browserType.launch: ENOENT: no such file or directory, mkdtemp '/workspace/ec-ft/playwright-artifacts-p1XIxl'
+    at /workspace/casepath-edge-clearance-20261014-evidence/check-footer.cjs:3:41
+    at Object.<anonymous> (/workspace/casepath-edge-clearance-20261014-evidence/check-footer.cjs:3:3498) {
+  log: [],
+  name: 'Error'
+}

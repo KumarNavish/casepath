@@ -1,0 +1,86 @@
+{
+  "base": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "candidate": "86c75014aa608639a58648329734707f9c677ad6",
+  "changed_files": [
+    "casepath-qa/unified-product-browser-v1.test.cjs",
+    "casepath/assets/autonomous-workspace-v1.css"
+  ],
+  "clean_candidate": true,
+  "host": "656813ef2295",
+  "assets": {
+    "casepath/assets/autonomous-workspace-v1.js": {
+      "base_sha256": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+      "candidate_sha256": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+      "unchanged": true
+    },
+    "casepath/assets/autonomous-workspace-v1.css": {
+      "base_sha256": "ef5772e708fa5913edfb917610e0dd6da9842b92e40d1ca491083552be88d41d",
+      "candidate_sha256": "92ebb98aa5ac364d57680db9be2321efdc73c7684e4e14c097657d4284631f40",
+      "unchanged": false
+    },
+    "casepath-qa/unified-product-browser-v1.test.cjs": {
+      "base_sha256": "92ca22cdf7c366c082fb964dd2f056a141468dd2fb51d059942bd56e9a00c472",
+      "candidate_sha256": "e90be164cde7d312c51e9d218d9530b0aeeac7e4e1f0e5fefa6d081a03c973a2",
+      "unchanged": false
+    }
+  },
+  "independent_coordinate_reconciliation": [
+    {
+      "viewport": "1280x800",
+      "claim_id": "clm_314f2d309fea25e6",
+      "native_fixture_revision": 25,
+      "native_fixture_state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "before": {
+        "all_sampled_points_clipped": 1875,
+        "minimum_clearance_px": -10.900000000000006
+      },
+      "after": {
+        "all_sampled_points_clipped": 0,
+        "minimum_clearance_px": 5.099999999999994
+      }
+    },
+    {
+      "viewport": "1428x771",
+      "claim_id": "clm_314f2d309fea25e6",
+      "native_fixture_revision": 25,
+      "native_fixture_state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "before": {
+        "all_sampled_points_clipped": 1885,
+        "minimum_clearance_px": -10.900000000000006
+      },
+      "after": {
+        "all_sampled_points_clipped": 0,
+        "minimum_clearance_px": 5.099999999999994
+      }
+    },
+    {
+      "viewport": "1360x900",
+      "claim_id": "clm_314f2d309fea25e6",
+      "native_fixture_revision": 25,
+      "native_fixture_state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "before": {
+        "all_sampled_points_clipped": 0,
+        "minimum_clearance_px": 5.099999999999994
+      },
+      "after": {
+        "all_sampled_points_clipped": 0,
+        "minimum_clearance_px": 5.099999999999994
+      }
+    },
+    {
+      "viewport": "390x844",
+      "claim_id": "clm_314f2d309fea25e6",
+      "native_fixture_revision": 25,
+      "native_fixture_state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "before": {
+        "all_sampled_points_clipped": 0,
+        "minimum_clearance_px": 13.5
+      },
+      "after": {
+        "all_sampled_points_clipped": 0,
+        "minimum_clearance_px": 13.5
+      }
+    }
+  ],
+  "disclosure": "Browser evidence uses isolated synthetic native fixture heads, not hosted production journals. Receipts taken before commit are bound by identical authored asset and test hashes. No full gate, source seal or deployment performed."
+}

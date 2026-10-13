@@ -1,0 +1,8 @@
+Approve `86c75014aa608639a58648329734707f9c677ad6` against base `3a02880abc3f824e06e5e31a888dc91edf1bcb9d`. No reachable issue found.
+
+- Two CSS exclusions preserve legacy compact selectors, stage targets ≥44px, 18px titles, and completed footer `position:static`. JS, routing, engine, data, and motion are unchanged.
+- Independently checked all eight receipts: baseline short desktop strokes extend 10.9px above clipping; candidate has zero clipped sampled points across all four viewports, with ≥5.1px desktop clearance.
+- Independently inspected 1428×771 screenshots: continuous dependency lanes now attach above labels. Tall desktop and mobile screenshots remain byte-identical.
+- Regression binds actual injected assets and accepted claim/revision/hash, samples real path strokes via screen CTM, and weakens no existing assertion. Before exit 1; after exit 0, 5/5 passed.
+
+Clean checkout; final CSS and test hashes match candidate evidence. No edits or tests run by reviewer. Legacy runtime check remains writer-owned; broader gate remains held.

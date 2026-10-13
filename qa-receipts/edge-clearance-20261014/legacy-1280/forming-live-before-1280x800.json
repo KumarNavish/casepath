@@ -1,0 +1,158 @@
+{
+  "identity": "auto_a489b283495e7b03b5aab860",
+  "through": 7,
+  "nodes": [
+    "investigate_packet"
+  ],
+  "edges": [],
+  "documents": [],
+  "geometry": {
+    "process": {
+      "x": 348,
+      "y": 262.296875,
+      "width": 604,
+      "height": 119.375,
+      "top": 262.296875,
+      "right": 952,
+      "bottom": 381.671875,
+      "left": 348
+    },
+    "reading": {
+      "x": 44,
+      "y": 262.296875,
+      "width": 280,
+      "height": 472.15625,
+      "top": 262.296875,
+      "right": 324,
+      "bottom": 734.453125,
+      "left": 44
+    },
+    "graph": {
+      "rect": {
+        "x": 348,
+        "y": 335.484375,
+        "width": 604,
+        "height": 46.1875,
+        "top": 335.484375,
+        "right": 952,
+        "bottom": 381.671875,
+        "left": 348
+      },
+      "scrollTop": 0,
+      "scrollHeight": 46,
+      "clientHeight": 46,
+      "scrollWidth": 604,
+      "clientWidth": 604
+    },
+    "nodes": [
+      {
+        "id": "investigate_packet",
+        "rect": {
+          "x": 380,
+          "y": 339.484375,
+          "width": 548,
+          "height": 36.1875,
+          "top": 339.484375,
+          "right": 928,
+          "bottom": 375.671875,
+          "left": 380
+        },
+        "rank": {
+          "x": 380,
+          "y": 339.484375,
+          "width": 548,
+          "height": 36.1875,
+          "top": 339.484375,
+          "right": 928,
+          "bottom": 375.671875,
+          "left": 380
+        },
+        "title": {
+          "x": 400,
+          "y": 339.484375,
+          "width": 527,
+          "height": 18.890625,
+          "top": 339.484375,
+          "right": 927,
+          "bottom": 358.375,
+          "left": 400
+        },
+        "titleFontSize": 14,
+        "titleClientWidth": 527,
+        "titleScrollWidth": 527
+      }
+    ]
+  },
+  "checkoutCommit": "86c75014aa608639a58648329734707f9c677ad6",
+  "testSha256": "e90be164cde7d312c51e9d218d9530b0aeeac7e4e1f0e5fefa6d081a03c973a2",
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/snapshot?after=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "prefixTransfers": [],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [],
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "injectedAssets": {
+    "javascript": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+    "css": "92ebb98aa5ac364d57680db9be2321efdc73c7684e4e14c097657d4284631f40"
+  },
+  "assets": {
+    "javascript": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+    "css": "92ebb98aa5ac364d57680db9be2321efdc73c7684e4e14c097657d4284631f40"
+  }
+}

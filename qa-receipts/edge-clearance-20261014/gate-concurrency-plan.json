@@ -1,0 +1,28 @@
+{
+  "status": "Plan only; no full-suite launch before Mac sends new exact sealed SHA and GO.",
+  "base": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "observed_cpu_quota_cores": 4,
+  "max_active_heavy_shards": 3,
+  "cloud_shards": 6,
+  "queue_order": [
+    3,
+    2,
+    4,
+    5,
+    1,
+    6
+  ],
+  "scheduler": "Launch first3; dispatch next only after an existing shard testprocess is terminal. Maintain peak<=3; no overlapping browser/profiling workloads. Preserve original attempts, no automatic retries.",
+  "partition": "Fresh final inventory; exact Mac127 excluded from Cloud, ten baseline fixture skips unchanged. Existing map reused only if fresh IDs prove equality.",
+  "prior_selected_shard_seconds": {
+    "1": 751.2747497558594,
+    "2": 844.7860727310181,
+    "3": 850.8225667476654,
+    "4": 804.0701792240143,
+    "5": 753.5040912628174,
+    "6": 449.7714374065399
+  },
+  "prior_duration_source_sha256": "b14c25a8322c4245f5c97e263224005a1571d3f7a99260bf2e1a4e32e0c22397",
+  "tmp_policy": "Every outer Python/Node/browser launch sets isolated HOME/TMPDIR/TMP/TEMP under short /workspace paths before startup. Preflight /workspace and separate /tmp; target>=3GiB after prepare.",
+  "source_changes": false
+}

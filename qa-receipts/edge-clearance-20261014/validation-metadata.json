@@ -1,0 +1,284 @@
+{
+  "base": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "commit": "86c75014aa608639a58648329734707f9c677ad6",
+  "branch": "codex/casepath-stage-edge-clearance-20261014",
+  "remoteRef": "86c75014aa608639a58648329734707f9c677ad6\trefs/heads/codex/casepath-stage-edge-clearance-20261014",
+  "host": "656813ef2295",
+  "node": {
+    "version": "v24.19.0",
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "playwright": "1.62.1",
+    "module": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.js"
+  },
+  "chromium": {
+    "executable": "/usr/bin/chromium",
+    "version": "Chromium 151.0.7922.173 built on Debian GNU/Linux 13 (trixie)"
+  },
+  "cleanCheckout": true,
+  "changedFiles": [
+    "casepath-qa/unified-product-browser-v1.test.cjs",
+    "casepath/assets/autonomous-workspace-v1.css"
+  ],
+  "hashes": {
+    "casepath-qa/unified-product-browser-v1.test.cjs": {
+      "baseSha256": "92ca22cdf7c366c082fb964dd2f056a141468dd2fb51d059942bd56e9a00c472",
+      "candidateSha256": "e90be164cde7d312c51e9d218d9530b0aeeac7e4e1f0e5fefa6d081a03c973a2",
+      "workingFileSha256": "e90be164cde7d312c51e9d218d9530b0aeeac7e4e1f0e5fefa6d081a03c973a2"
+    },
+    "casepath/assets/autonomous-workspace-v1.css": {
+      "baseSha256": "ef5772e708fa5913edfb917610e0dd6da9842b92e40d1ca491083552be88d41d",
+      "candidateSha256": "92ebb98aa5ac364d57680db9be2321efdc73c7684e4e14c097657d4284631f40",
+      "workingFileSha256": "92ebb98aa5ac364d57680db9be2321efdc73c7684e4e14c097657d4284631f40"
+    },
+    "casepath/assets/autonomous-workspace-v1.js": {
+      "baseSha256": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+      "candidateSha256": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+      "workingFileSha256": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+    },
+    "casepath/index.html": {
+      "baseSha256": "dbf9faa6759ed7caca08eb00b51d953a0062c234c553a415e3c3c657cad50772",
+      "candidateSha256": "dbf9faa6759ed7caca08eb00b51d953a0062c234c553a415e3c3c657cad50772",
+      "workingFileSha256": "dbf9faa6759ed7caca08eb00b51d953a0062c234c553a415e3c3c657cad50772"
+    },
+    "casepath/source-manifest.json": {
+      "baseSha256": "ead2ad3ddd10000737985f7db5d704b5e7366da72b54e371624f1a0709ac5c39",
+      "candidateSha256": "ead2ad3ddd10000737985f7db5d704b5e7366da72b54e371624f1a0709ac5c39",
+      "workingFileSha256": "ead2ad3ddd10000737985f7db5d704b5e7366da72b54e371624f1a0709ac5c39"
+    }
+  },
+  "fixtureHashes": {
+    "/workspace/casepath-reference-polish-native-qa-evidence-20261013/native-fresh-reference.json": "77c432ada8005142c06bf32730e654de0844bf7668784cb97d6dea5da937ab68",
+    "/workspace/casepath-reference-polish-evidence-20261013/native-v1-v2-reference.json": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+    "/workspace/casepath-smooth-layout-20261013-evidence/layout/current-prior-fixture.json": "ac2caaeb0bdd1c4dbaf4bbd7edbf1b716a457d8cde2728a871902682281634b5",
+    "/workspace/operation-runtime-evidence/native-sidecars/clm_314f2d309fea25e6.json": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5"
+  },
+  "environment": {
+    "focused": {
+      "HOME": "/workspace/ec-h",
+      "TMPDIR": "/workspace/ec-t",
+      "TMP": "/workspace/ec-t",
+      "TEMP": "/workspace/ec-t"
+    },
+    "optionalFooter": {
+      "HOME": "/workspace/ec-fh",
+      "TMPDIR": "/workspace/ec-ft",
+      "TMP": "/workspace/ec-ft",
+      "TEMP": "/workspace/ec-ft"
+    },
+    "metadata": {
+      "HOME": "/workspace/ec-mh",
+      "TMPDIR": "/workspace/ec-mt",
+      "TMP": "/workspace/ec-mt",
+      "TEMP": "/workspace/ec-mt"
+    },
+    "fixtureVariableNames": [
+      "CASEPATH_REFERENCE_FIXTURE",
+      "CASEPATH_REFERENCE_MIGRATION_FIXTURE",
+      "CASEPATH_PRIOR_ASSESSMENT_FIXTURE"
+    ],
+    "assetVariableNames": [
+      "CASEPATH_BROWSER_CSS_ASSET"
+    ],
+    "receiptVariableNames": [
+      "CASEPATH_FOCUSED_RECEIPTS"
+    ]
+  },
+  "commands": {
+    "before": "bash /workspace/casepath-edge-clearance-20261014-evidence/run-focused.sh before /workspace/casepath-edge-clearance-20261014-evidence/assets/base.css",
+    "after": "bash /workspace/casepath-edge-clearance-20261014-evidence/run-focused.sh after /workspace/casepath-operations-review-20261013/casepath/assets/autonomous-workspace-v1.css",
+    "legacy": "bash /workspace/casepath-edge-clearance-20261014-evidence/run-focused.sh legacy-1280 /workspace/casepath-operations-review-20261013/casepath/assets/autonomous-workspace-v1.css '^forming work: live accepted sources, graph and conditional documents form one exact composition at 1280x800$'",
+    "footer": "env HOME=/workspace/ec-fh TMPDIR=/workspace/ec-ft TMP=/workspace/ec-ft TEMP=/workspace/ec-ft node /workspace/casepath-edge-clearance-20261014-evidence/check-footer.cjs",
+    "commit": "git add casepath/assets/autonomous-workspace-v1.css casepath-qa/unified-product-browser-v1.test.cjs && git commit -m 'fix(ui): keep stage dependency lines inside compact viewport'",
+    "push": "git push -u origin codex/casepath-stage-edge-clearance-20261014"
+  },
+  "results": {
+    "before": {
+      "exitStatus": 1,
+      "passedViewportSubtests": [
+        "1360x900",
+        "390x844"
+      ],
+      "failedViewportSubtests": [
+        "1280x800",
+        "1428x771"
+      ],
+      "failure": "Actual horizontal stroke is outside overflow:auto clipping viewport; parent test fails because two subtests fail.",
+      "log": "/workspace/casepath-edge-clearance-20261014-evidence/before/test.log"
+    },
+    "after": {
+      "exitStatus": 0,
+      "tests": 5,
+      "pass": 5,
+      "fail": 0,
+      "durationMs": 54483.125425,
+      "log": "/workspace/casepath-edge-clearance-20261014-evidence/after/test.log"
+    },
+    "legacy": {
+      "exitStatus": 0,
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "durationMs": 19026.263306,
+      "thresholdsUnchanged": "36px node height / 14px title size and complete eleven-node compact viewport before and after qualification",
+      "log": "/workspace/casepath-edge-clearance-20261014-evidence/legacy-1280/test.log"
+    },
+    "footer": {
+      "exitStatus": 1,
+      "status": "Optional check added an unsupported requirement that the full static footer fit in the first 800px without natural scrolling. The check passed exact native result/head, completed verification, computed position=static and footer below outcome/Knowledge before failing footer.bottom<=800. No existing threshold was changed. Further capture stopped at coordinator request.",
+      "initialLaunchFailure": "ENOENT for new /workspace/ec-ft before directory creation; directory created before the second browser startup.",
+      "log": "/workspace/casepath-edge-clearance-20261014-evidence/completed-footer-static.log",
+      "unchangedStaticSelector": ".au-workspace [data-au-operation-presentation=completed] .au-stage-transport { position:static; }"
+    }
+  },
+  "viewports": [
+    {
+      "width": 1280,
+      "height": 800,
+      "claim_id": "clm_314f2d309fea25e6",
+      "revision": 25,
+      "state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "clip": {
+        "left": 44,
+        "top": 227.4375,
+        "right": 1236,
+        "bottom": 507.4375
+      },
+      "nodes": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "edges": [
+        "reference_defect_mold_heating_0",
+        "reference_defect_mold_heating_1",
+        "reference_defect_mold_heating_2",
+        "reference_defect_mold_heating_3",
+        "reference_defect_mold_heating_4"
+      ],
+      "pathPointCount": 2005,
+      "baseMinimumStrokeClearancePx": -10.9,
+      "candidateMinimumStrokeClearancePx": 5.1,
+      "beforeReceipt": "/workspace/casepath-edge-clearance-20261014-evidence/before/stage-dependency-clearance-1280x800.json",
+      "afterReceipt": "/workspace/casepath-edge-clearance-20261014-evidence/after/stage-dependency-clearance-1280x800.json",
+      "beforeScreenshot": "/workspace/casepath-edge-clearance-20261014-evidence/before/stage-dependency-clearance-1280x800.png",
+      "afterScreenshot": "/workspace/casepath-edge-clearance-20261014-evidence/after/stage-dependency-clearance-1280x800.png",
+      "screenshotBytesUnchanged": false
+    },
+    {
+      "width": 1428,
+      "height": 771,
+      "claim_id": "clm_314f2d309fea25e6",
+      "revision": 25,
+      "state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "clip": {
+        "left": 44,
+        "top": 227.4375,
+        "right": 1384,
+        "bottom": 507.4375
+      },
+      "nodes": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "edges": [
+        "reference_defect_mold_heating_0",
+        "reference_defect_mold_heating_1",
+        "reference_defect_mold_heating_2",
+        "reference_defect_mold_heating_3",
+        "reference_defect_mold_heating_4"
+      ],
+      "pathPointCount": 2005,
+      "baseMinimumStrokeClearancePx": -10.9,
+      "candidateMinimumStrokeClearancePx": 5.1,
+      "beforeReceipt": "/workspace/casepath-edge-clearance-20261014-evidence/before/stage-dependency-clearance-1428x771.json",
+      "afterReceipt": "/workspace/casepath-edge-clearance-20261014-evidence/after/stage-dependency-clearance-1428x771.json",
+      "beforeScreenshot": "/workspace/casepath-edge-clearance-20261014-evidence/before/stage-dependency-clearance-1428x771.png",
+      "afterScreenshot": "/workspace/casepath-edge-clearance-20261014-evidence/after/stage-dependency-clearance-1428x771.png",
+      "screenshotBytesUnchanged": false
+    },
+    {
+      "width": 1360,
+      "height": 900,
+      "claim_id": "clm_314f2d309fea25e6",
+      "revision": 25,
+      "state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "clip": {
+        "left": 44,
+        "top": 227.4375,
+        "right": 1316,
+        "bottom": 507.4375
+      },
+      "nodes": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "edges": [
+        "reference_defect_mold_heating_0",
+        "reference_defect_mold_heating_1",
+        "reference_defect_mold_heating_2",
+        "reference_defect_mold_heating_3",
+        "reference_defect_mold_heating_4"
+      ],
+      "pathPointCount": 2005,
+      "baseMinimumStrokeClearancePx": 5.1,
+      "candidateMinimumStrokeClearancePx": 5.1,
+      "beforeReceipt": "/workspace/casepath-edge-clearance-20261014-evidence/before/stage-dependency-clearance-1360x900.json",
+      "afterReceipt": "/workspace/casepath-edge-clearance-20261014-evidence/after/stage-dependency-clearance-1360x900.json",
+      "beforeScreenshot": "/workspace/casepath-edge-clearance-20261014-evidence/before/stage-dependency-clearance-1360x900.png",
+      "afterScreenshot": "/workspace/casepath-edge-clearance-20261014-evidence/after/stage-dependency-clearance-1360x900.png",
+      "screenshotBytesUnchanged": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "claim_id": "clm_314f2d309fea25e6",
+      "revision": 25,
+      "state_sha256": "b0f8c7082cbf45440ce79f9cfc2c0db0cf931b190dac009fab5057b96ee47ff9",
+      "clip": {
+        "left": 26,
+        "top": 383.375,
+        "right": 364,
+        "bottom": 1116.375
+      },
+      "nodes": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "edges": [
+        "reference_defect_mold_heating_0",
+        "reference_defect_mold_heating_1",
+        "reference_defect_mold_heating_2",
+        "reference_defect_mold_heating_3",
+        "reference_defect_mold_heating_4"
+      ],
+      "pathPointCount": 2005,
+      "baseMinimumStrokeClearancePx": 13.5,
+      "candidateMinimumStrokeClearancePx": 13.5,
+      "beforeReceipt": "/workspace/casepath-edge-clearance-20261014-evidence/before/stage-dependency-clearance-390x844.json",
+      "afterReceipt": "/workspace/casepath-edge-clearance-20261014-evidence/after/stage-dependency-clearance-390x844.json",
+      "beforeScreenshot": "/workspace/casepath-edge-clearance-20261014-evidence/before/stage-dependency-clearance-390x844.png",
+      "afterScreenshot": "/workspace/casepath-edge-clearance-20261014-evidence/after/stage-dependency-clearance-390x844.png",
+      "screenshotBytesUnchanged": true
+    }
+  ],
+  "receiptCommitDisclosure": "Before and after regression receipts were generated before commit while checkout HEAD was exact3a. The receipts bind actual injected JS/CSS and test-file SHA256; those candidate bytes match immutable commit86c75014. Legacy receipt was generated after commit86c75014.",
+  "limits": [
+    "Focused Chromium checks only; no full suite, seal, Mac verification, new profiles, paid inference, provider access or deployment.",
+    "No gate plan or evidence Git edits by this worker."
+  ]
+}
