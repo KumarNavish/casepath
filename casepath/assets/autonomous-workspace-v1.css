@@ -640,4 +640,5 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-operation-attention { position:absolute; left:0; top:0; z-index:5; width:8px; height:8px; pointer-events:none; border-radius:50%; background:#4c796f; box-shadow:0 0 0 4px rgb(76 121 111 / 12%); }
 .au-operation-fact-token { position:absolute; left:0; top:0; z-index:6; max-width:210px; padding:5px 8px; border-radius:4px; background:#eff4e8; color:#234e43; box-shadow:0 2px 12px rgb(35 78 67 / 10%); font-size:12px; line-height:1.4; pointer-events:none; }
 .au-operation-history { margin-bottom: 2rem; }
+.au-workspace [data-au-working-scope] .au-node[data-au-inspect] { text-decoration:none; }
 @media (prefers-reduced-motion: reduce) { .au-operation-attention { display: none; } }
