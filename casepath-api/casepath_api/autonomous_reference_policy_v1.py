@@ -11,6 +11,7 @@ from .workspace_corpus import digest_value
 
 REFERENCE_POLICY_ID = 'casepath.bounded-reference-assessment/1.0.0'
 PROFILE_ROOT = Path(__file__).parent / 'reference_profiles' / 'synthetic-nine-v1'
+V2_PROFILE_ROOT = PROFILE_ROOT.parent / 'synthetic-nine-v2'
 REFERENCE_FIELDS = {
     'tenancy_terms_evidence': ['contracting_parties', 'property', 'tenancy_terms'],
     'original_notification_context': ['issuer_authority', 'packet_completeness', 'contemporaneous_contents'],
