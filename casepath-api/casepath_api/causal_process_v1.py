@@ -365,7 +365,7 @@ def refresh_document(graph: Mapping[str, Any], document_type: str, receipt: Mapp
 def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = None) -> dict[str, Any]:
     """Derive applicability, execution readiness, questions and document routes."""
     graph = seal_graph(graph)
-    from .autonomous_operations_v1 import observe
+    from .autonomous_operations_v1 import observe, observing
     flags = deepcopy(graph["conditions"])
     if conditions is not None:
         if set(conditions) - set(flags):
@@ -376,6 +376,17 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
                 raise ValueError("invalid condition override")
             flags[key] = {"verdict": verdict, "worker": "handler_sandbox", "quote": None,
                           "candidate_quote": None, "source_id": None}
+    graph_sha256 = graph['graph_sha256']
+    evaluation_sha256 = (digest_value({'graph_sha256': graph_sha256, 'conditions_override': conditions, 'effective_conditions': flags})
+                         if observing() else None)
+    inspected = None
+    if observing():
+        definition = {key: graph[key] for key in ('contract', 'family', 'claim_id', 'revision', 'graph_sha256',
+                                                   'conditions', 'nodes', 'edges', 'document_catalog')}
+        inspected = observe('process.inspect', 'process', graph['claim_id'],
+                            {'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'conditions_override': conditions},
+                            {'phase': 'provisional', 'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'graph': definition,
+                             'effective_conditions': flags})
     nodes = {row["node_id"]: deepcopy(row) for row in graph["nodes"]}
     edges = deepcopy(graph["edges"])
     flow_counts = {}
@@ -384,8 +395,9 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
         if edge['relation'] in FLOW:
             flow_counts[edge['source_node_id']] = flow_counts.get(edge['source_node_id'], 0) + 1
         edge["condition_verdict"] = _verdict(edge["condition"], flags)
-        observe('condition.evaluate', 'edge', edge['edge_id'], {'expression': edge['condition'], 'conditions': flags},
-                {'verdict': edge['condition_verdict']})
+        observe('condition.evaluate', 'edge', edge['edge_id'],
+                {'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'expression': edge['condition'], 'conditions': flags},
+                {'phase': 'provisional', 'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'verdict': edge['condition_verdict']}, causes=[inspected])
         incoming[edge["target_node_id"]].append(edge)
     for key in _topological(graph):
         node, path, ready_paths = nodes[key], "false", []
@@ -407,9 +419,11 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
             branching = relation in FLOW and (bool(_expression(edge['condition'], flags)) or flow_counts.get(source['node_id'], 0) > 1)
             operation = ('branch.drop' if active == 'false' else 'branch.activate' if active == 'true' else 'branch.evaluate') if branching else 'dependency.evaluate'
             observe(operation, 'edge', edge['edge_id'],
-                    {'source_node_id': source['node_id'], 'source_activation': source['activation'],
+                    {'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'source_node_id': source['node_id'], 'source_activation': source['activation'],
                      'condition_verdict': edge['condition_verdict'], 'relation': relation, 'rejected': rejected},
-                    {'activation': active, 'target_node_id': key})
+                    {'phase': 'provisional', 'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'activation': active, 'target_node_id': key,
+                     'source_execution_state': source['execution_state'], 'source_effective_completed': source['effective_completed'],
+                     'source_inconsistent_completion': source['inconsistent_completion']}, causes=[inspected])
             if relation in FLOW:
                 path = _or(path, active)
                 if active == "true":
@@ -427,7 +441,8 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
                 unresolved.append(source["node_id"])
         verdict = _verdict(node["condition"], flags)
         condition_operation = observe('condition.evaluate', 'node', key,
-                                      {'expression': node['condition'], 'conditions': flags}, {'verdict': verdict})
+                                      {'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'expression': node['condition'], 'conditions': flags},
+                                      {'phase': 'provisional', 'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'verdict': verdict}, causes=[inspected])
         activation = _and(path, verdict)
         if node["validation"]["status"] == "rejected":
             activation = "false"
@@ -457,15 +472,17 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
                     inconsistent_completion=inconsistent, blocked_by=list(dict.fromkeys(blocked)),
                     unresolved_dependencies=list(dict.fromkeys(unresolved)), condition_flags=sorted(dependencies),
                     missing_document_types=missing_documents)
-        observe('node.evaluate', 'node', key,
-                {'path': path, 'condition_verdict': verdict, 'blocked_by': blocked,
-                 'suppressing_edge_ids': [edge['edge_id'] for edge in suppressors]},
-                {'activation': activation, 'execution_state': state, 'missing_document_types': missing_documents},
-                causes=[condition_operation])
         if state == "blocked" and not blocked:
             node["blocked_by"] = [edge["source_node_id"] for edge in incoming[key]
                                   if edge["relation"] in FLOW and edge["activation"] != "false"
                                   and not nodes[edge["source_node_id"]]["effective_completed"]]
+        observe('node.evaluate', 'node', key,
+                {'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'path': path, 'condition_verdict': verdict,
+                 'suppressing_edge_ids': [edge['edge_id'] for edge in suppressors]},
+                {'phase': 'provisional', 'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'activation': activation, 'execution_state': state,
+                 'effective_completed': completed, 'inconsistent_completion': inconsistent,
+                 'blocked_by': node['blocked_by'], 'unresolved_dependencies': node['unresolved_dependencies'],
+                 'missing_document_types': missing_documents}, causes=[inspected, condition_operation])
     ordered = [nodes[row["node_id"]] for row in graph["nodes"]]
     ready = [row for row in ordered if row["execution_state"] == "ready"]
     focus = ready[0]["node_id"] if ready else None
@@ -502,10 +519,12 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
                           "The process condition is unresolved." if applicability == "unresolved" else
                           "No applicable process step requires this document."})
         observe('document.require', 'document', definition['document_type'],
-                {'condition': definition['condition'], 'required_at_node_ids': [node['node_id'] for node in linked],
+                {'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'condition': definition['condition'], 'required_at_node_ids': [node['node_id'] for node in linked],
                  'node_activations': {node['node_id']: node['activation'] for node in linked}},
-                {'activation': applicability, 'route_state': route, 'request': route in {'needed_now', 'needed_later'},
-                 'review_state': review_state})
+                {'phase': 'provisional', 'graph_sha256': graph_sha256, 'evaluation_sha256': evaluation_sha256, 'activation': applicability,
+                 'route_state': route, 'request': route in {'needed_now', 'needed_later'}, 'review_state': review_state,
+                 'required_at_node_ids': [node['node_id'] for node in linked],
+                 'active_node_ids': [node['node_id'] for node in linked if node['activation'] == 'true']}, causes=[inspected])
     unresolved_flags = set()
     for row in ordered + edges + documents:
         if row.get("activation") == "unresolved":

@@ -16,7 +16,7 @@ from time import monotonic
 from .workspace_corpus import canonical_json_bytes, digest_value
 
 CONTRACT = 'casepath.operations-stream/1.0.0'
-INSTRUMENTATION_ID = 'casepath.reference-operations/1.0.0'
+INSTRUMENTATION_ID = 'casepath.reference-operations/1.1.0'
 BUNDLE_CONTRACT = 'casepath.operation-inputs/1.0.0'
 SIDECAR_CONTRACT = 'casepath.operation-sidecar/1.0.0'
 MAX_SECONDS = 10.0
@@ -80,7 +80,7 @@ class OperationSink:
         self.frames, self.frame_hashes, self.previous, self.sequence, self.bytes = [], [], None, 0, 0
         self.retain = send is None
         self.stage, self.journal_seq = 'validation', None
-        self.latest, self.opened, self.occurrences = {}, {}, {}
+        self.latest, self.opened, self.inspected, self.occurrences = {}, {}, {}, {}
 
     def check(self):
         if self.cancel.is_set() or monotonic() >= self.deadline:
@@ -112,6 +112,9 @@ class OperationSink:
 
     def emit(self, kind, object_type, object_id, inputs, result, *, source=None, causes=()):
         self.check()
+        inspection_key = (self.stage, inputs.get('graph_sha256'), result.get('evaluation_sha256'))
+        if kind == 'process.inspect' and inspection_key in self.inspected:
+            return self.inspected[inspection_key]
         if kind == 'source.open':
             identity = (self.stage, object_id)
             if identity in self.opened:
@@ -140,6 +143,8 @@ class OperationSink:
         material['operation_sha256'] = digest_value(material)
         self.previous = material['operation_sha256']
         self.latest[(object_type, object_id)] = material['id']
+        if kind == 'process.inspect':
+            self.inspected[inspection_key] = material['id']
         if kind == 'source.open':
             self.opened[(self.stage, object_id)] = material['id']
         if source and kind in {'span.read', 'phrase.match'}:
@@ -204,25 +209,46 @@ def capture_operation_inputs(store, claim_id, policy, *, check=lambda: None):
     if claim_id not in ReferenceProfile().ids:
         raise OperationsUnavailable('This claim is outside the nine reference profiles.')
     collected = [len(canonical_json_bytes(policy))]
+    pending_blobs, all_descriptors = [], {}
     def reserve(size):
         collected[0] += size
         if collected[0] > MAX_INPUT_BYTES:
             raise OperationsUnavailable('Snapshot exceeds the input bound.')
-    def bounded_rows(connection, cid):
+    def bounded_journals(connection, claim_ids):
         from .autonomous_store_v1 import SESSION_ID
+        from .hosted_sql_v1 import MAX_BYTES
         check()
-        metadata = connection.execute('SELECT COUNT(*) AS n,COALESCE(SUM(length(CAST(event_json AS BLOB))),0) AS bytes '
-                                      'FROM claim_loop_events WHERE session_id=? AND loop_id=?',
-                                      (SESSION_ID, 'autonomous.' + cid)).fetchone()
-        if metadata['n'] > MAX_EVENTS or metadata['bytes'] > MAX_INPUT_BYTES - collected[0]:
-            raise OperationsUnavailable('Snapshot journal exceeds the input bound.')
+        columns = ('session_id', 'loop_id', 'sequence', 'idempotency_key', 'command_sha256', 'event_sha256', 'event_json', 'created_at')
+        encoded_size = '+'.join('COALESCE(length(CAST(json_quote(' + key + ') AS BLOB)),0)' for key in columns) + '+1024'
+        # Hrana wraps text values in another JSON layer. Reserve the maximum
+        # JSON escape expansion, including non-ASCII and row/protocol overhead.
+        wire_size = '6*(' + '+'.join('COALESCE(length(CAST(' + key + ' AS BLOB)),0)' for key in columns) + ')+2048'
+        guarded = ','.join('CASE WHEN __max_count<=? AND __bytes<=? AND __wire<=? THEN ' + key + ' END AS ' + key for key in columns)
+        query = ('SELECT ' + guarded + ',__count,__bytes,__wire,__tail,__max_count FROM ('
+                 'SELECT *,sum(__size) OVER () AS __bytes,sum(__wire_size) OVER () AS __wire,'
+                 'max(__count) OVER () AS __max_count FROM ('
+                 'SELECT *,count(*) OVER (PARTITION BY loop_id) AS __count,'
+                 'max(sequence) OVER (PARTITION BY loop_id) AS __tail,' + encoded_size + ' AS __size,'
+                 + wire_size + ' AS __wire_size FROM claim_loop_events WHERE session_id=? AND loop_id IN ('
+                 + ','.join('?' for _ in claim_ids) + ')) ORDER BY loop_id,sequence LIMIT ?) ORDER BY loop_id,sequence')
+        budget, wire_budget = MAX_INPUT_BYTES - collected[0], MAX_BYTES - 65536
+        execute = getattr(connection, 'execute_read_once', connection.execute)
+        page = execute(query, tuple(value for _ in columns for value in (MAX_EVENTS, budget, wire_budget))
+                       + (SESSION_ID, *('autonomous.' + cid for cid in claim_ids), MAX_EVENTS * len(claim_ids) + 1)).fetchall()
         check()
-        rows = [dict(row) for row in connection.execute(
-            'SELECT * FROM claim_loop_events WHERE session_id=? AND loop_id=? ORDER BY sequence LIMIT ?',
-            (SESSION_ID, 'autonomous.' + cid, MAX_EVENTS + 1)).fetchall()]
-        if len(rows) > MAX_EVENTS:
-            raise OperationsUnavailable('Snapshot journal exceeds the event bound.')
-        return rows
+        if page and (page[0]['__max_count'] > MAX_EVENTS or page[0]['__bytes'] > budget or page[0]['__wire'] > wire_budget):
+            raise OperationsUnavailable('Snapshot journal exceeds the input or wire bound.')
+        grouped = {cid: [] for cid in claim_ids}
+        for row in page:
+            cid = row['loop_id'].removeprefix('autonomous.')
+            if cid not in grouped:
+                raise OperationsUnavailable('Snapshot contains another journal.')
+            grouped[cid].append({key: row[key] for key in columns})
+        for cid, rows in grouped.items():
+            metadata = next((row for row in page if row['loop_id'] == 'autonomous.' + cid), None)
+            if not rows or len(rows) != metadata['__count'] or rows[-1]['sequence'] != metadata['__tail']:
+                raise OperationsUnavailable('Snapshot journal head or row count differs.')
+        return grouped
     def capture_blobs(source_rows, cid):
         descriptors = {}
         for row in source_rows:
@@ -237,26 +263,13 @@ def capture_operation_inputs(store, claim_id, policy, *, check=lambda: None):
                     if digest not in descriptors:
                         reserve(4 * ((descriptor['size_bytes'] + 2) // 3) + 80)
                         descriptors[digest] = descriptor
-        persistent = getattr(store, '_source_store', None)
-        if persistent is not None and hasattr(persistent, 'verify_many'):
-            # Preserve the native fresh persistent-roster check; an extraction
-            # or hosted byte cache cannot mask missing/tampered remote chunks.
-            check()
-            from .hosted_storage_v1 import HostedSources
-            if isinstance(persistent, HostedSources):
-                persistent.verify_many(descriptors, check=check)
-            else:
-                persistent.verify_many(descriptors)
         result = {}
-        for digest in descriptors:
-            check()
-            result[digest] = base64.b64encode(store._blob(digest)).decode()
+        all_descriptors.update(descriptors)
+        pending_blobs.append((result, tuple(descriptors)))
         return result
     check()
     with store.journal.connect() as connection:
-        connection.execute('BEGIN')
-        rows = bounded_rows(connection, claim_id)
-        connection.commit()
+        rows = bounded_journals(connection, (claim_id,))[claim_id]
     if not rows or len(rows) > MAX_EVENTS:
         raise OperationsUnavailable('A bounded saved reference history is required.')
     reserve(len(canonical_json_bytes(rows)))
@@ -278,39 +291,90 @@ def capture_operation_inputs(store, claim_id, policy, *, check=lambda: None):
                  for event in decoded if event['kind'] == 'knowledge.published'}
 
     missing = _missing_knowledge_lineage(required, available)
-    # Resolve only exact pinned definitions; peer journals are frozen too and
-    # natively replayed, never replaced with today's latest knowledge version.
-    captured = {claim_id}
-    while missing:
+    if missing:
+        # Scalar publication metadata is an untrusted I/O index. It identifies
+        # the exact hash closure in one read; only native replay below grants
+        # authority to the full publisher histories and their definitions.
+        from .autonomous_store_v1 import SESSION_ID
         check()
         with store.journal.connect() as connection:
-            from .autonomous_store_v1 import SESSION_ID
-            remaining = MAX_KNOWLEDGE_HISTORIES - len(bundle['knowledge_histories'])
-            if remaining <= 0:
-                raise OperationsUnavailable('Exact historical knowledge version is unavailable.')
-            publishers = connection.execute(
-                'SELECT DISTINCT loop_id FROM claim_loop_events WHERE session_id=? '
+            execute = getattr(connection, 'execute_read_once', connection.execute)
+            hints = execute(
+                "SELECT CASE WHEN __count<=? THEN loop_id END AS loop_id,"
+                "CASE WHEN __count<=? THEN json_extract(event_json,'$.payload.knowledge.knowledge_sha256') END AS knowledge_sha256,"
+                "CASE WHEN __count<=? THEN json_extract(event_json,'$.payload.knowledge.parent_knowledge_sha256') END AS parent_knowledge_sha256,"
+                "CASE WHEN __count<=? THEN json_extract(event_json,'$.payload.knowledge.version') END AS version,__count FROM ("
+                "SELECT loop_id,event_json,count(*) OVER () AS __count FROM claim_loop_events WHERE session_id=? "
                 "AND (loop_id GLOB 'autonomous.auto_*' OR loop_id GLOB 'autonomous.clm_*') AND json_valid(event_json) "
                 "AND json_extract(event_json,'$.kind')='knowledge.published' "
-                "AND json_extract(event_json,'$.payload.knowledge.knowledge_sha256') IN ("
-                + ','.join('?' for _ in missing) + ') ORDER BY loop_id LIMIT ?',
-                (SESSION_ID, *sorted(missing), remaining + 1)).fetchall()
-        if not publishers or len(publishers) > remaining:
+                "AND json_extract(event_json,'$.payload.knowledge.family')=? "
+                "AND length(loop_id)<=64 AND length(json_extract(event_json,'$.payload.knowledge.knowledge_sha256'))=64 "
+                "AND coalesce(length(json_extract(event_json,'$.payload.knowledge.parent_knowledge_sha256')),0)<=64 "
+                "AND json_type(event_json,'$.payload.knowledge.version')='integer' ORDER BY loop_id,sequence LIMIT ?)",
+                (MAX_EVENTS, MAX_EVENTS, MAX_EVENTS, MAX_EVENTS, SESSION_ID, family, MAX_EVENTS + 1)).fetchall()
+        check()
+        if hints and hints[0]['__count'] > MAX_EVENTS:
+            raise OperationsUnavailable('Historical knowledge index exceeds its bound.')
+        indexed = {}
+        for hint in hints:
+            cid = hint['loop_id'].removeprefix('autonomous.')
+            digest, parent = hint['knowledge_sha256'], hint['parent_knowledge_sha256']
+            if not _knowledge_origin(cid) or re.fullmatch('[a-f0-9]{64}', digest) is None or type(hint['version']) is not int or hint['version'] < 1:
+                raise OperationsUnavailable('Historical knowledge index metadata is invalid.')
+            if parent is not None and re.fullmatch('[a-f0-9]{64}', parent) is None:
+                raise OperationsUnavailable('Historical knowledge parent metadata is invalid.')
+            indexed.setdefault(digest, []).append((cid, dict(hint)))
+        closure_available = dict(available)
+        for digest, candidates in indexed.items():
+            if digest not in available and len(candidates) == 1:
+                closure_available[digest] = candidates[0][1]
+        if _missing_knowledge_lineage(required, closure_available):
             raise OperationsUnavailable('Exact historical knowledge version is unavailable.')
-        for publisher in publishers:
-            peer = publisher['loop_id'].removeprefix('autonomous.')
-            if not _knowledge_origin(peer) or peer in captured:
-                raise OperationsUnavailable('Historical knowledge publisher is outside the admitted namespace.')
-            check()
-            with store.journal.connect() as connection:
-                peer_rows = bounded_rows(connection, peer)
+        origins = set()
+        for digest in required - available.keys():
+            candidates = indexed.get(digest, [])
+            if len(candidates) != 1:
+                raise OperationsUnavailable('Exact historical knowledge publisher is ambiguous or unavailable.')
+            origins.add(candidates[0][0])
+        if claim_id in origins or len(origins) > MAX_KNOWLEDGE_HISTORIES:
+            raise OperationsUnavailable('Historical knowledge publishers exceed their bound.')
+        with store.journal.connect() as connection:
+            histories = bounded_journals(connection, tuple(sorted(origins)))
+        for peer, peer_rows in histories.items():
             reserve(len(canonical_json_bytes(peer_rows)))
             peer_blobs = capture_blobs(peer_rows, peer)
             bundle['knowledge_histories'].append({'claim_id': peer, 'rows': peer_rows, 'sources_base64': peer_blobs})
-            captured.add(peer)
             available.update({event['payload']['knowledge'].get('knowledge_sha256'): event['payload']['knowledge']
                               for row in peer_rows if (event := json.loads(row['event_json']))['kind'] == 'knowledge.published'})
-        missing = _missing_knowledge_lineage(required, available)
+        # A changed/false metadata hint can only fail closed, never substitute
+        # another version or admit unrelated publisher journals.
+        if _missing_knowledge_lineage(required, available):
+            raise OperationsUnavailable('Exact historical knowledge lineage differs from its index.')
+        for digest in required:
+            if digest in indexed:
+                candidate = next((hint for cid, hint in indexed[digest] if cid == available[digest].get('source_claim_id')), None)
+                actual = available[digest]
+                if candidate is None or candidate['version'] != actual['version'] or candidate['parent_knowledge_sha256'] != actual.get('parent_knowledge_sha256'):
+                    raise OperationsUnavailable('Historical knowledge publication differs from its index.')
+    persistent = getattr(store, '_source_store', None)
+    if persistent is not None and hasattr(persistent, 'verify_many'):
+        # A fresh request-wide check preserves persistent source authority,
+        # while exact shared ancestor bytes are fetched only once.
+        check()
+        from .hosted_storage_v1 import HostedSources
+        if isinstance(persistent, HostedSources):
+            persistent.verify_many(all_descriptors, check=check)
+        else:
+            persistent.verify_many(all_descriptors)
+    encoded = {}
+    for digest, descriptor in all_descriptors.items():
+        check()
+        raw = store._blob(digest)
+        if len(raw) != descriptor['size_bytes']:
+            raise OperationsUnavailable('Snapshot source size differs from its descriptor.')
+        encoded[digest] = base64.b64encode(raw).decode()
+    for target, digests in pending_blobs:
+        target.update((digest, encoded[digest]) for digest in digests)
     if len(canonical_json_bytes(bundle)) > MAX_INPUT_BYTES:
         raise OperationsUnavailable('Snapshot exceeds the input bound.')
     return bundle

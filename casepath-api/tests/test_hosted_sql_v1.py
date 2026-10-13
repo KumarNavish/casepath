@@ -316,3 +316,28 @@ def test_turso_unpadded_blob_encoding_preserves_exact_bytes(raw):
     assert sql._decode({'type': 'blob', 'base64': encoded.rstrip('=')}) == raw
     with pytest.raises(ValueError):
         sql._decode({'type': 'blob', 'base64': encoded + '!'})
+
+
+def test_one_shot_read_decodes_and_closes_in_single_pipeline(server):
+    before = len(server.requests)
+    with server.connection() as db:
+        row = db.execute_read_once('SELECT ? AS exact, ? AS text, ? AS raw', (2**53+1, 'Réception 😀', b'\x00\xff')).fetchone()
+        assert tuple(row) == (2**53+1, 'Réception 😀', b'\x00\xff')
+        assert server.open_streams == 0
+        assert len(server.requests) == before + 1
+        assert [item['type'] for item in server.requests[-1]['requests']] == ['execute', 'close']
+    assert len(server.requests) == before + 1
+
+
+def test_one_shot_read_rejects_writes_and_existing_stream_before_transport(server):
+    with server.connection() as db:
+        before = len(server.requests)
+        with pytest.raises(sql.HostedStorageError, match='one SELECT'):
+            db.execute_read_once('CREATE TABLE forbidden(value TEXT)')
+        assert len(server.requests) == before
+        db.execute('SELECT 1')
+        before = len(server.requests)
+        with pytest.raises(sql.HostedStorageError, match='fresh connection'):
+            db.execute_read_once('SELECT 2')
+        assert len(server.requests) == before
+    assert server.open_streams == 0
