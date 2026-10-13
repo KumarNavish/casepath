@@ -1,0 +1,104 @@
+{
+  "after_head": "343393922df82a3dbd337e6895981ef4736f1344",
+  "after_status": "",
+  "artifacts": {
+    "attempt_latch": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/ATTEMPT_STARTED.json",
+    "capsule_after_log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/capsule-verification-after.log",
+    "capsule_after_result": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/capsule-verification-after-result.json",
+    "capsule_before_log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/capsule-verification-before.log",
+    "collected_ids": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/collected.json",
+    "command_and_env": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/command.json",
+    "junit": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/junit.xml",
+    "pytest_arguments": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/pytest-arguments.txt",
+    "pytest_log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/pytest.log",
+    "pytest_temporary_root": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/pytest-tmp",
+    "raw_phase_reports": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/reports.jsonl",
+    "runner_result": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/result.json",
+    "runner_terminal_log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/runner-terminal.log",
+    "runner_wrapper_result": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/runner-wrapper-result.json"
+  },
+  "assigned_vs_collected": {
+    "all_collected_have_passed_teardown": true,
+    "assigned_count": 335,
+    "assigned_unique_count": 335,
+    "collected_count": 335,
+    "collected_unique_count": 335,
+    "missing_assigned_ids": [],
+    "missing_report_ids": [],
+    "report_unique_ids": 335,
+    "same_ids_and_order": true,
+    "unexpected_collected_ids": [],
+    "unexpected_report_ids": []
+  },
+  "attempts": 1,
+  "candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+  "counts": {
+    "failed": 0,
+    "passed": 335,
+    "skipped": 0,
+    "unresolved": 0,
+    "unrun_assigned": 0
+  },
+  "duration_seconds": 786.2175524234772,
+  "exit_code": 0,
+  "expected_counts": {
+    "failed": 0,
+    "passed": 335,
+    "skipped": 0,
+    "unresolved": 0,
+    "unrun_assigned": 0
+  },
+  "expected_counts_match": true,
+  "failed_phases": [],
+  "finished_epoch": 1791914206.2807841,
+  "junit_counts": {
+    "duration_seconds": 781.521,
+    "errors": 0,
+    "failures": 0,
+    "passed": 335,
+    "skipped": 0,
+    "tests": 335
+  },
+  "known_skip_comparison": {
+    "assigned_known_skip_ids": [],
+    "exact_expected_ids": true,
+    "global_known_skip_count": 10,
+    "missing_known_skipped_ids": [],
+    "observed_count": 0,
+    "observed_skipped_ids": [],
+    "records": [],
+    "reference_known_skips_path": "/workspace/casepath-operation-stage-gate-34339392-20261013/known-skips.json",
+    "unexpected_skipped_ids": []
+  },
+  "phase_counts": {
+    "call:passed": 335,
+    "setup:passed": 335,
+    "teardown:passed": 335
+  },
+  "phase_record_count": 1005,
+  "reports_match_junit": true,
+  "retries": 0,
+  "retry_allowed": false,
+  "shard": 5,
+  "source_capsule_before_after": {
+    "after_path": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/source-after/capsule-verification.json",
+    "after_verifier_attempts": 1,
+    "after_verifier_exit_code": 0,
+    "before_after_identity_equal": true,
+    "before_path": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/source-before/capsule-verification.json",
+    "capsule_receipt_file_sha256": "35b8e307c14e6f4df94de34d88486026aa4e5d73916b7a531c9cdc11ea659ab0",
+    "head": "343393922df82a3dbd337e6895981ef4736f1344",
+    "manifest_sha256": "f439063d18dfbfd3bf091a482fe31d7c2ad004eb39dc994bd63d64bfdfa632a4",
+    "source_artifact_static_bindings_verified_after": true,
+    "source_artifact_static_bindings_verified_before": true,
+    "source_artifact_static_counts": [
+      1706,
+      25,
+      37
+    ],
+    "status": ""
+  },
+  "started_epoch": 1791913420.0632317,
+  "tmp_path_retention_policy": "failed",
+  "wrapper_exit_code": 0
+}

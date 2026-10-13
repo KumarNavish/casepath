@@ -1,0 +1,77 @@
+{
+  "candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+  "cloud_hostname": "656813ef2295",
+  "source_sha256": "88c4fae87429252edd0221664d21858dcc42b5726874f446b5ef2bce838841a4",
+  "scope": "Read-only source-path review; no new profiling, tests or source edits",
+  "reviewer": "gpt-6.1-sol xhigh independent existing operation_review worker",
+  "findings": [
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "lines": [
+        928,
+        1382
+      ],
+      "finding": "operationHistoryMarkup is only called in selected activity/History branch. It is not eagerly constructed while Process is selected."
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "lines": [
+        2030,
+        3114,
+        3138,
+        3142
+      ],
+      "finding": "After History/Claim details is closed, recordSelection remains set. Later meaningful renderClaim calls still synchronizeRecord and serialize state/projection into the closed modal. Choose case similarly rebuilds its hidden roster. Initial unattended playback with null recordSelection does not take this path.",
+      "smallest_future_candidate": "Guard synchronizeRecord at renderClaim callsite when dialog is not open. Preserve openRecord pre-showModal initial population. No fix applied."
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "lines": [
+        1295,
+        2010
+      ],
+      "finding": "Full stage markup is reconstructed per meaningful paint; stageNodeContents reverses/scans received trace rows per node and searches requirements/checks repeatedly. Existing DOM child reuse reduces replacement but does not avoid all markup construction. No new measurements establish this as the long-task cause."
+    }
+  ],
+  "retained_cloud_quiet_native": {
+    "fixture_only": true,
+    "headless_linux_chromium": true,
+    "cdp_screencast": false,
+    "playing_raf_samples": 2911,
+    "playing_median_ms": 16.7,
+    "playing_p95_ms": 16.7,
+    "long_tasks_ms": [
+      101,
+      94
+    ],
+    "static_raf_samples": 181,
+    "static_median_ms": 16.7,
+    "static_p95_ms": 16.8,
+    "static_long_tasks": 0,
+    "host_load": [
+      0.26,
+      0.21,
+      0.16
+    ],
+    "existing_raw_evidence": "qa-receipts/operation-stage-20261013, commit b590aafe320a353e84dc90a2afc98a49337351a0"
+  },
+  "mac_owner_report": {
+    "screencast_raf_median_ms": 16.8,
+    "screencast_raf_p95_ms": 65.9,
+    "screencast_long_tasks": 100,
+    "screencast_max_long_task_ms": 873,
+    "quiet_raf_median_ms": 33.3,
+    "quiet_raf_p95_ms": 117.5,
+    "quiet_long_tasks": 45,
+    "quiet_max_long_task_ms": 822,
+    "blank_raf_median_ms": 16.7,
+    "blank_raf_p95_ms": 33.3,
+    "host_load_range": [
+      20,
+      34
+    ],
+    "unrelated_python_cpu_percent": 329,
+    "raw_mac_receipts_not_cloud": true
+  },
+  "limits": "Known avoidable work is confirmed by reachable call paths. Its timing impact and the cause of Mac delays are unmeasured. These observations do not establish universal 60fps or justify changing the frozen source."
+}

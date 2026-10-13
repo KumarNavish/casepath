@@ -1,0 +1,65 @@
+{
+  "repo": "/workspace/casepath-release-ae0-shard5",
+  "normal_clone": true,
+  "old_head": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "before_status": "",
+  "candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+  "canonical_url": "https://github.com/KumarNavish/casepath.git",
+  "branch": "codex/casepath-causal-experience-integration-20261009",
+  "started_epoch": 1791913185.151409,
+  "host": "656813ef2295",
+  "capacity_before_bytes": 1260388352,
+  "fetch_command": [
+    "git",
+    "-c",
+    "credential.helper=!gh auth git-credential",
+    "fetch",
+    "https://github.com/KumarNavish/casepath.git",
+    "codex/casepath-causal-experience-integration-20261009"
+  ],
+  "checkout_command": [
+    "git",
+    "checkout",
+    "--detach",
+    "343393922df82a3dbd337e6895981ef4736f1344"
+  ],
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/home",
+    "TMPDIR": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "PYTHONHASHSEED": "0",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "343393922df82a3dbd337e6895981ef4736f1344",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard5/pycache"
+  },
+  "capsule_strategy": "Distinct normally generated immutable files, st_nlink1; prior capsules preserved",
+  "fetch_exit_code": 0,
+  "canonical_fetched_head": "343393922df82a3dbd337e6895981ef4736f1344",
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "exit_code": 0,
+  "after_head": "343393922df82a3dbd337e6895981ef4736f1344",
+  "after_status": "",
+  "finished_epoch": 1791913193.6484091,
+  "source_manifest_sha256": "f439063d18dfbfd3bf091a482fe31d7c2ad004eb39dc994bd63d64bfdfa632a4",
+  "capacity_after_bytes": 1139380224,
+  "duration_seconds": 8.497000217437744
+}

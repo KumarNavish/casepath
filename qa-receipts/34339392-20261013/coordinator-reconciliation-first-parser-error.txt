@@ -1,0 +1,5 @@
+Coordinator read-only raw-evidence parser failures, not test failures:
+1. AssertionError: (1, 'collection differs'). Actual collected.json is a list of records with id fields, not a list of strings; corrected temporary parser extraction.
+2. AssertionError: (1, ('HostedAppendTests', 'test_second_snapshot_race_stops_after_one_reprepare')). JUnit includes class-based test namespace; corrected temporary parser to retain class segments and map each testcase to exactly one assigned ID.
+No tests rerun, no source/assertions/timeouts changed, no raw receipts modified.
+3. AssertionError: empty JUnit classname for tool test test_curated_asset_allowlist_is_the_recursive_runtime_closure. Empty namespace requires unique test-name matching within that shard; parser now asserts exactly one assigned match. This is evidence schema parsing only, not another test attempt.

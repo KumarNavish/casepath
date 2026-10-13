@@ -1,0 +1,17 @@
+{
+  "candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+  "attestation_source_thread_id": "01a115f5-6dce-7700-9751-e1dc804e9a1b",
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "reported_duration_seconds": 180.93,
+  "partition": {
+    "test_cli_v1.py": 69,
+    "test_local_data_root.py": 52,
+    "test_journal_corpus_restart.py": 6
+  },
+  "source_verified_files": 1706,
+  "source_manifest_sha256": "f439063d18dfbfd3bf091a482fe31d7c2ad004eb39dc994bd63d64bfdfa632a4",
+  "status": "Mac-attested; raw Mac JUnit and phase logs retained by integration owner, not copied into Cloud"
+}

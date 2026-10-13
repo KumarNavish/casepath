@@ -1,0 +1,13 @@
+AssertionError [ERR_ASSERTION]: opening and browsing product views must not write
+
+[]
+
+    at /workspace/casepath-operations-frontend-20261013/casepath-qa/unified-product-browser-v1.test.cjs:546:19
+    at async /workspace/op-browser/legacy-geometry-measure.cjs:6:1199 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

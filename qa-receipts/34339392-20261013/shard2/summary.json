@@ -1,0 +1,43 @@
+{
+  "candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+  "shard": 2,
+  "assigned_ids": 330,
+  "executed_ids": 330,
+  "exact_assigned_id_coverage": true,
+  "attempts": 1,
+  "exit_code": 0,
+  "passed": 330,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 866.5552260875702,
+  "junit_seconds": 862.792,
+  "phase_counts": {
+    "setup:passed": 330,
+    "call:passed": 330,
+    "teardown:passed": 330
+  },
+  "phase_duration_seconds": {
+    "setup": 112.22909149545012,
+    "call": 723.0737839083886,
+    "teardown": 18.203244909003843
+  },
+  "after_verifier_exit_code": 0,
+  "clean_after": true,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "manifest_sha256": "f439063d18dfbfd3bf091a482fe31d7c2ad004eb39dc994bd63d64bfdfa632a4",
+  "capsule_receipt_file_sha256": "35b8e307c14e6f4df94de34d88486026aa4e5d73916b7a531c9cdc11ea659ab0",
+  "before_after_capsule_identity_equal": true,
+  "command_json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/command.json",
+  "result_json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/result.json",
+  "junit_xml": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/junit.xml",
+  "phase_reports_jsonl": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/reports.jsonl",
+  "pytest_log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/pytest.log",
+  "runner_terminal_log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/runner-terminal.log",
+  "before_proof": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/source-before/capsule-verification.json",
+  "after_proof": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard2/source-after/capsule-verification.json"
+}

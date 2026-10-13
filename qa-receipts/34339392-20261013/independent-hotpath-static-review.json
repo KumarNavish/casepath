@@ -1,0 +1,58 @@
+{
+  "commit": "343393922df82a3dbd337e6895981ef4736f1344",
+  "timestamp_utc": "2026-10-13T18:02:16.139187+00:00",
+  "source_path": "casepath/assets/autonomous-workspace-v1.js",
+  "source_snapshot": "/workspace/op-stage-review-20261013/34339392-autonomous-workspace-v1.js",
+  "source_sha256": "88c4fae87429252edd0221664d21858dcc42b5726874f446b5ef2bce838841a4",
+  "scope": "Bounded source-only verification requested after original shard3 terminal and after-capsule proof. No tests/profiling/provider/production/source edits or freeze changes.",
+  "findings": [
+    {
+      "topic": "operation_history_markup",
+      "conclusion": "Not eager during Process/stage playback.",
+      "evidence": [
+        "Only callsite workMarkup:928 is in the chosen activity/History branch. JavaScript conditional branches are evaluated lazily.",
+        "Function operationHistoryMarkup:1382 constructs reverse rows/previous attempts only when that branch is selected."
+      ]
+    },
+    {
+      "topic": "closed_record_modal_refresh",
+      "conclusion": "Definite reachable avoidable work after any record dialog selection is retained.",
+      "evidence": [
+        "renderClaim:2030 invokes synchronizeRecord on each actual meaningful render.",
+        "synchronizeRecord:3114 guards only recordSelection, with no recordDialog.open guard.",
+        "closeRecord:3137 and closedRecord:3142 clear recordReturn but do not clear recordSelection.",
+        "contextualRecord:483 returns entire {state,projection} for kind claim; synchronizeRecord:3125 serializes it with pretty JSON into the hidden pre."
+      ],
+      "actual_user_path": [
+        "History",
+        "Case details (kind claim)",
+        "Close",
+        "Process / Play or a later current-state render"
+      ],
+      "qualification": "A closed demo selection also rebuilds its roster; operation selection serializes the selected operation only. This is avoidable hidden work, but its frame-time contribution has not been measured.",
+      "minimal_safe_direction": "Guard the periodic synchronizeRecord call in renderClaim by recordDialog.open. Keep openRecord initial synchronization before showModal intact; a naive open guard inside synchronizeRecord would suppress initial population."
+    },
+    {
+      "topic": "per_node_trace_scans",
+      "conclusion": "Repeated history scans/copies occur during actual stage markup.",
+      "evidence": [
+        "graphMarkup:674 invokes stageNodeContents separately for each rendered node.",
+        "stageNodeContents:1295 copies/reverses trace rows, filters document.require and performs findIndex for same-type latest entries per node.",
+        "Each requirement searches another reverse copy for document.check; other facts/doc/obligation lookups are also per node."
+      ],
+      "qualification": "The dedup findIndex can make the requirement pass superlinear as row count grows. Current graphs/rows are bounded and no independent profiling was run; this does not establish a measured bottleneck."
+    },
+    {
+      "topic": "full_scene_render",
+      "conclusion": "renderClaim assigns the complete generated workMarkup string to host.innerHTML, then restores retained controls/source nodes.",
+      "evidence": [
+        "renderClaim:2010 replaces the host scene.",
+        "reuseSourceControls / retainOperationSource / reuseFormingObjects restore selected original nodes after replacement.",
+        "Native stream:2594 renders meaningful attention operations;2599\u20132605 renders checkpoints only when stage identity changes. Quiet coalesced operations retire ink directly without full scene paint; Skip/reduced paths omit intermediate attention renders."
+      ],
+      "qualification": "This is actual recurring render work, not an every-operation repaint. Source reading alone cannot attribute the reported long tasks or FPS to it."
+    }
+  ],
+  "measurement_limit": "No independent performance measurements taken. Parent reports quiet Cloud median/p95 16.7ms and two long tasks; Mac measurements were confounded by load/occlusion. Static avoidable work must not be presented as a measured bottleneck or a new gate failure.",
+  "gate_evidence": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard3/shard-summary.json"
+}

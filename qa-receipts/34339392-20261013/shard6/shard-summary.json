@@ -1,0 +1,85 @@
+{
+  "shard": 6,
+  "candidate": "343393922df82a3dbd337e6895981ef4736f1344",
+  "attempts": 1,
+  "retries": 0,
+  "runner_exit_code": 0,
+  "wrapper_exit_code": 0,
+  "duration_seconds": 808.9480154514313,
+  "pytest_duration_seconds": 804.524,
+  "pytest_terminal_summary": "338 passed, 9 warnings in 804.53s (0:13:24)",
+  "counts": {
+    "assigned": 338,
+    "collected": 338,
+    "passed": 338,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "failed_phases": 0,
+    "skipped_phases": 0,
+    "junit_tests": 338
+  },
+  "phase_counts": {
+    "setup:passed": 338,
+    "call:passed": 338,
+    "teardown:passed": 338
+  },
+  "failed_phases": [],
+  "skipped_phases": [],
+  "assigned_vs_collected": {
+    "same_order": true,
+    "same_ids": true,
+    "missing_ids": [],
+    "unexpected_ids": [],
+    "duplicate_collected_ids": []
+  },
+  "completed_call_vs_collected": {
+    "same_ids": true,
+    "missing_ids": [],
+    "duplicate_call_ids": []
+  },
+  "passed_vs_collected": {
+    "same_ids": true,
+    "missing_passed_ids": []
+  },
+  "source_capsule_before_after": {
+    "before_verified": true,
+    "after_verified": true,
+    "after_verifier_exit_code": 0,
+    "after_verifier_attempts": 1,
+    "automatically_invoked_immediately_after_terminal": true,
+    "head_unchanged": true,
+    "clean_after": true,
+    "normal_clone_before_after": true,
+    "manifest_sha256": "f439063d18dfbfd3bf091a482fe31d7c2ad004eb39dc994bd63d64bfdfa632a4",
+    "manifest_matches_before": true,
+    "capsule_receipt_file_sha256": "35b8e307c14e6f4df94de34d88486026aa4e5d73916b7a531c9cdc11ea659ab0",
+    "receipt_matches_before": true,
+    "capsule_receipt_equal": true,
+    "source_artifact_static_counts": [
+      1706,
+      25,
+      37
+    ]
+  },
+  "artifacts": {
+    "ATTEMPT_STARTED.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/ATTEMPT_STARTED.json",
+    "prepare.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/prepare.json",
+    "command.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/command.json",
+    "ids.txt": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/ids.txt",
+    "pytest-arguments.txt": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/pytest-arguments.txt",
+    "collected.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/collected.json",
+    "reports.jsonl": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/reports.jsonl",
+    "junit.xml": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/junit.xml",
+    "pytest.log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/pytest.log",
+    "runner-terminal.log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/runner-terminal.log",
+    "result.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/result.json",
+    "runner-wrapper-result.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/runner-wrapper-result.json",
+    "source-before/capsule-verification.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/source-before/capsule-verification.json",
+    "source-before/CAPSULE_RECEIPT.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/source-before/CAPSULE_RECEIPT.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/source-after/capsule-verification.json",
+    "source-after/CAPSULE_RECEIPT.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/source-after/CAPSULE_RECEIPT.json",
+    "capsule-verification-after.log": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/capsule-verification-after.log",
+    "capsule-verification-after-result.json": "/workspace/casepath-operation-stage-gate-34339392-20261013/shard6/capsule-verification-after-result.json"
+  }
+}
