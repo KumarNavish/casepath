@@ -1,8 +1,10 @@
+import base64
 import json
 from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
 import runpy
+import sqlite3
 
 import pytest
 
@@ -10,11 +12,225 @@ from hosted_hrana_fixture import MockHrana
 from casepath_api.agent_work.store import WorkStore
 from casepath_api.autonomous_controller_v1 import AutonomousController
 from casepath_api.autonomous_corpus_v1 import CanonicalCorpus
+from casepath_api.autonomous_reference_policy_v1 import bounded_reference_policy
+from casepath_api.autonomous_reference_v1 import DeterministicReferenceAdapter, ReferenceProfile
+from casepath_api.autonomous_store_v1 import AutonomousStore, AutonomousStoreError
 from casepath_api.hosted_lease_v1 import HostedWorkflowLease, HostedOwnershipLost, LEASE_SECONDS, _CURRENT_OWNER
 from casepath_api.hosted_storage_v1 import HostedAutonomousStore, HostedJournal, HostedSources
 
 operator = runpy.run_path(str(Path(__file__).resolve().parents[1] / 'tools/admit_reference.py'))
 COMMIT = 'e176657b9307ad657fd895e57e83ce88e140bcf5'
+
+
+def test_operator_pins_current_profile_and_both_immutable_source_histories():
+    profile = operator['_current_profile']()
+    assert profile.value['profile_id'] == 'synthetic-nine-v2'
+    identity = operator['source_identity'](COMMIT)
+    for name in ('synthetic-nine-v1', 'synthetic-nine-v2'):
+        root = operator['ROOT'] / 'casepath-api/casepath_api/reference_profiles' / name
+        files = {str(path.relative_to(operator['ROOT'])): sha256(path.read_bytes()).hexdigest()
+                 for path in root.rglob('*') if path.is_file()}
+        assert files and files.items() <= identity['files'].items()
+
+
+def _copy_native_to_hosted(store, connect):
+    sources = HostedSources(connect)
+    for path in store.source_root.iterdir():
+        assert sources.publish(path.read_bytes()) == path.name
+    with store.journal.connect() as local, connect() as remote:
+        rows = local.execute('SELECT * FROM claim_loop_events ORDER BY session_id,loop_id,sequence').fetchall()
+        if rows:
+            columns = list(rows[0].keys())
+            for row in rows:
+                remote.execute(*operator['insert_sql']('claim_loop_events', columns, [tuple(row)]))
+
+
+def _native_from_inventory(path, values):
+    with sqlite3.connect(path) as db:
+        db.executescript(operator['JOURNAL_SCHEMA'])
+        for wire in values['claim_loop_events']['rows']:
+            db.execute(*operator['insert_sql']('claim_loop_events', values['claim_loop_events']['columns'],
+                                               [operator['_unwire'](wire)]))
+    store = AutonomousStore(path, source_root=path.with_suffix('.sources'))
+    chunks = {}
+    for wire in values['autonomous_source_chunks']['rows']:
+        digest, index, raw = operator['_unwire'](wire)
+        chunks.setdefault(digest, {})[index] = raw
+    for digest, parts in chunks.items():
+        assert sorted(parts) == list(range(len(parts)))
+        assert store._publish(b''.join(parts[i] for i in range(len(parts)))) == digest
+    return store
+
+
+def test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix(tmp_path):
+    server = MockHrana(tmp_path / 'readmission.sqlite')
+    work = None
+    try:
+        connect = server.connection
+        HostedWorkflowLease(connect).initialize()
+        journal = HostedJournal(tmp_path / 'unused', connect)
+        work = WorkStore(tmp_path / 'unused-work', connection_factory=connect)
+        from test_autonomous_budget_v1 import legacy_run, legacy_call, POLICY
+        work.configure_external_budget(POLICY)
+        legacy = legacy_run(work, 0)
+        legacy_call(work, legacy, 0, None)
+        work.finish(legacy, 'legacy-owner', 'completed', 'Historic unknown cost remains reserved')
+        corpus = CanonicalCorpus()
+        old_profile = ReferenceProfile.for_profile('synthetic-nine-v1')
+        current_profile = operator['_current_profile']()
+        assert old_profile.ids == current_profile.ids
+        policy = bounded_reference_policy(corpus._corpus.static_policy())
+        old_store = AutonomousStore(tmp_path / 'legacy.sqlite')
+        old_controller = AutonomousController(old_store, policy,
+            reference_adapter=DeterministicReferenceAdapter(policy, old_profile))
+        old_states, old_events, old_history = {}, {}, {}
+        try:
+            for cid in old_profile.ids:
+                packet = corpus.packet(cid)
+                old_store.admit_original(cid, packet, expected_revision=0,
+                    expected_state_sha256=packet['initial_state_sha256'], idempotency_key='reference.original.' + cid)
+                state = old_store.get(cid)
+                old_store.add_sources(cid, old_profile.files(cid), expected_revision=state['revision'],
+                    expected_state_sha256=state['state_sha256'],
+                    idempotency_key='reference.sources.' + old_profile.sha256[:16] + '.' + cid)
+                old_states[cid] = old_controller.run(cid)
+                assert old_states[cid]['outcome']['assessment_status'] == 'complete'
+                assert old_states[cid]['policy_id'] == policy['policy_id']
+                with old_store.journal.connect() as db:
+                    _, old_events[cid], old_history[cid] = old_store._replay(old_store._rows(db, cid), with_history=True)
+        finally:
+            old_controller.shutdown()
+        _copy_native_to_hosted(old_store, connect)
+        before, baseline = operator['inventory'](connect)
+        assert before['budget']['unknown_calls'] == 1 and not before['budget']['in_flight']
+        plan = operator['prepare'](connect, source_commit=COMMIT, corpus=corpus)
+        assert operator['inventory'](connect) == (before, baseline)
+        v2_hashes = {row['sha256'] for entry in current_profile.value['claims'].values() for row in entry['sources']}
+        assert len(v2_hashes) == len(plan['source_chunks']) == 21
+        assert {row[0] for row in plan['source_chunks']} == v2_hashes
+        assert plan['profile_sha256'] == current_profile.sha256
+        assert plan['provider_calls'] == plan['budget_writes'] == 0
+        assert set(plan['final_heads']) == set(old_profile.ids)
+        for cid in old_profile.ids:
+            events = [json.loads(dict(zip(plan['event_columns'], operator['_unwire'](row)))['event_json'])
+                      for row in plan['append_rows'] if row[1] == 'autonomous.' + cid]
+            assert sum(event['kind'] == 'sources.arrived' for event in events) == 1
+            reset = [event for event in events if event['kind'] == 'process.prepared']
+            assert len(reset) == 1 and reset[0]['payload']['graph']['family'] == 'incoming_packet'
+            assert events[0]['kind'] == 'sources.arrived' and events[0]['idempotency_key'] != (
+                'reference.sources.' + old_profile.sha256[:16] + '.' + cid)
+
+        # New v2 bytes cannot replace a missing legacy source in an accepted prefix.
+        broken = deepcopy(baseline)
+        missing = old_profile.value['claims'][old_profile.ids[0]]['sources'][0]['sha256']
+        broken['autonomous_source_chunks']['rows'] = [row for row in broken['autonomous_source_chunks']['rows'] if row[0] != missing]
+        with pytest.raises(AutonomousStoreError, match='source bytes'):
+            operator['_verify_plan'](broken, plan)
+
+        receipt = operator['apply'](connect, plan, source_commit=COMMIT)
+        assert receipt['replayed'] is False and receipt['provider_calls'] == receipt['budget_writes'] == 0
+        after, values = operator['inventory'](connect)
+        assert after['budget'] == before['budget']
+        for table, data in baseline.items():
+            if table in {'claim_loop_events', 'autonomous_source_chunks'}:
+                assert {tuple(operator['_unwire'](row)) for row in data['rows']} <= {
+                    tuple(operator['_unwire'](row)) for row in values[table]['rows']}
+            else:
+                assert values[table] == data
+        restarted = HostedAutonomousStore(journal.path, tmp_path / 'restart-sources', journal=journal,
+                                           source_store=HostedSources(connect))
+        local = _native_from_inventory(tmp_path / 'prefixes.sqlite', values)
+        for cid in current_profile.ids:
+            snapshot = restarted.snapshot(cid)
+            state = snapshot['state']
+            assert state['state_sha256'] == plan['final_heads'][cid]['state_sha256']
+            assert state['outcome']['assessment_status'] == state['evaluation']['process_status'] == 'complete'
+            assert state['policy_id'] == old_states[cid]['policy_id']
+            assert restarted.events(cid)[:len(old_events[cid])] == old_events[cid]
+            assert restarted.replay(cid, old_states[cid]['revision'])['state'] == old_states[cid]
+            assert old_states[cid]['semantic_contexts'].items() <= state['semantic_contexts'].items()
+            current_sources = state['semantic_contexts'][state['run_id']]['sources']
+            originals = {row['sha256'] for row in state['original_binding']['source_map']}
+            active = originals | {row['sha256'] for row in current_profile.value['claims'][cid]['sources']}
+            assert {row['sha256'] for row in current_sources} == active
+            retired = {row['sha256'] for row in old_profile.value['claims'][cid]['sources']}
+            assert {row['sha256'] for row in state['source_descriptors']} == active | retired
+            v2_ids = {row['artifact_id'] for row in state['source_descriptors'] if row['sha256'] in v2_hashes}
+            citations = {citation['artifact_id'] for fact in state['facts'] for citation in fact['citations']}
+            assert v2_ids <= citations
+            assert not citations & {row['artifact_id'] for row in state['source_descriptors'] if row['sha256'] in retired}
+            with local.journal.connect() as db:
+                head, events, history = local._replay(local._rows(db, cid), with_history=True)
+            assert head == state and history[:len(old_history[cid])] == old_history[cid]
+            reset = next(event for event in events if event['kind'] == 'process.prepared'
+                         and event['sequence'] > old_states[cid]['revision'])
+            reset_state = history[reset['sequence'] - 1]
+            assert reset_state['graph']['family'] == 'incoming_packet'
+            assert all(fact['status'] == 'pending' and not fact['citations'] for fact in reset_state['facts'])
+            assert all(node['execution_state'] != 'completed' for node in reset_state['evaluation']['nodes'])
+            start = snapshot['replay_start']
+            assert start['from_seq'] == reset['sequence'] and start['run_id'] == state['run_id']
+            assert start['state_sha256'] == reset_state['state_sha256']
+            assert start['event_sha256'] == reset['event_sha256'] and start['profile_sha256'] == current_profile.sha256
+            assert start['source_artifact_ids'] == [row['artifact_id'] for row in current_sources]
+            assert start['source_artifact_ids'] == state['outcome']['reference_provenance']['source_artifact_ids']
+            assert restarted.replay(cid, start['from_seq'])['state'] == reset_state
+            for event, prefix in zip(events, history):
+                local._validate_state_sources(prefix)
+                assert prefix['revision'] == event['sequence']
+                assert prefix['state_sha256'] == event['resulting_state_sha256']
+        assert operator['apply'](connect, plan, source_commit=COMMIT)['replayed'] is True
+        assert operator['inventory'](connect) == (after, values)
+        settled = operator['prepare'](connect, source_commit=COMMIT, corpus=corpus)
+        assert not settled['append_rows'] and not settled['source_chunks']
+        assert settled['final_heads'] == plan['final_heads']
+        assert operator['apply'](connect, settled, source_commit=COMMIT)['replayed'] is True
+        assert operator['inventory'](connect) == (after, values)
+    finally:
+        if work is not None:
+            work.close()
+        server.close()
+
+
+@pytest.mark.parametrize('extra', ['unknown', 'adverse', 'partial_legacy', 'foreign_policy'])
+def test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only(tmp_path, extra):
+    server = MockHrana(tmp_path / 'unsafe-roster.sqlite')
+    work = None
+    try:
+        connect = server.connection
+        HostedWorkflowLease(connect).initialize()
+        HostedJournal(tmp_path / 'unused', connect)
+        work = WorkStore(tmp_path / 'unused-work', connection_factory=connect)
+        from test_autonomous_budget_v1 import POLICY
+        work.configure_external_budget(POLICY)
+        corpus = CanonicalCorpus()
+        cid = operator['_current_profile']().ids[0]
+        packet = corpus.packet(cid)
+        store = AutonomousStore(tmp_path / 'unsafe-local.sqlite')
+        store.admit_original(cid, packet, expected_revision=0,
+            expected_state_sha256=packet['initial_state_sha256'], idempotency_key='unsafe-original')
+        state = store.get(cid)
+        if extra == 'foreign_policy':
+            store.append(cid, 'work.started', {'run_id': 'foreign.fixture', 'policy_id': 'foreign.fixture-policy/1.0.0'},
+                expected_revision=state['revision'], expected_state_sha256=state['state_sha256'], idempotency_key='foreign-policy')
+        else:
+            files = ReferenceProfile.for_profile('synthetic-nine-v1').files(cid)[:1] if extra == 'partial_legacy' else [{
+                'file_name': 'additional-account.txt', 'media_type': 'text/plain',
+                'content_base64': base64.b64encode((
+                    'An unreviewed additional account.' if extra == 'unknown' else
+                    'The supplied supplement is disputed. The landlord never received notice and the defect was repaired.'
+                ).encode()).decode()}]
+            store.add_sources(cid, files, expected_revision=state['revision'],
+                expected_state_sha256=state['state_sha256'], idempotency_key='unsafe-extra')
+        _copy_native_to_hosted(store, connect)
+        before = operator['inventory'](connect)
+        with pytest.raises(AutonomousStoreError, match='different explicit execution policy' if extra == 'foreign_policy' else 'intake incomplete'):
+            operator['prepare'](connect, source_commit=COMMIT, corpus=corpus)
+        assert operator['inventory'](connect) == before
+    finally:
+        if work is not None:
+            work.close()
+        server.close()
 
 
 def test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry(tmp_path, monkeypatch):
