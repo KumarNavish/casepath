@@ -1,0 +1,65 @@
+{
+  "task": "published browser availability only",
+  "source_commit": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "url": "https://casepath-autonomous.kumarnavish.chatgpt.site",
+  "started_at": "2026-10-13T15:22:59.369Z",
+  "native_chromium": "/usr/bin/chromium",
+  "fresh_anonymous_context": true,
+  "ignore_https_errors": false,
+  "virtual_timers": false,
+  "request_guard": "GET/HEAD only",
+  "requests": [
+    {
+      "at": "2026-10-13T15:23:00.088Z",
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/",
+      "resource_type": "document"
+    }
+  ],
+  "responses": [],
+  "failed_requests": [
+    {
+      "at": "2026-10-13T15:23:00.100Z",
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/",
+      "failure": {
+        "errorText": "net::ERR_TUNNEL_CONNECTION_FAILED"
+      }
+    }
+  ],
+  "console": [],
+  "page_errors": [],
+  "blocked_mutations": [],
+  "autonomous-workspace-v1.js": {
+    "expected_local_sha256": "7b8ed58ee5aac3b354e87d8c062e9ed0d8ba8d4ba2da07185c9a7b8c1def0887"
+  },
+  "autonomous-workspace-v1.css": {
+    "expected_local_sha256": "8aa1ffec12e2ece0fbfc277c6eedffc47f760336b26e77e28e6aac87f5da0320"
+  },
+  "network_policy": {
+    "version": 1,
+    "type": "restricted",
+    "hostname_in_startup_allowed_hosts": false,
+    "vpn_configured": false,
+    "tcp_domain_grants": 0,
+    "tcp_ip_grants": 0
+  },
+  "configured_proxy_used": true,
+  "navigation_error": "Error: page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://casepath-autonomous.kumarnavish.chatgpt.site/\nCall log:\n\u001b[2m  - navigating to \"https://casepath-autonomous.kumarnavish.chatgpt.site/\", waiting until \"domcontentloaded\"\u001b[22m\n",
+  "cookie_count": 0,
+  "final_page_url": "about:blank",
+  "screenshot": "availability.png",
+  "finished_at": "2026-10-13T15:23:00.742Z",
+  "available": false,
+  "local_source_verification": {
+    "cwd": "/workspace/casepath-release-ae0-shard2",
+    "head": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+    "status_short": ""
+  },
+  "limitations": [
+    "No HTTP response was obtained through the configured Cloud proxy. This does not establish that the published site is down.",
+    "Published release identity and asset bytes were not readable. Recorded hashes are local exact71 source expectations only.",
+    "No published demonstration, operation stream, inspection, Skip, reduced-motion, or retained-highlight acceptance could be executed.",
+    "No local fixture was used as substitute published evidence."
+  ]
+}

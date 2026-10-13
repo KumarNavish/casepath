@@ -1,0 +1,11 @@
+{
+  "cwd": "/workspace",
+  "command": "NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node /workspace/op-published-71-acceptance-20261013/availability.cjs > /workspace/op-published-71-acceptance-20261013/availability.log 2>&1",
+  "environment": "Inherited managed environment retained; configured HTTPS_PROXY or HTTP_PROXY supplied to Chromium; no proxy bypass, credential extraction, or TLS override.",
+  "native_chromium": "/usr/bin/chromium",
+  "viewport": {
+    "width": 1360,
+    "height": 900
+  },
+  "request_guard": "All unexpected methods other than GET/HEAD abort before network."
+}
