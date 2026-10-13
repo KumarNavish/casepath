@@ -37,6 +37,7 @@ _migration = runpy.run_path(str(Path(__file__).with_name('migrate_hosted.py')))
 q, schema_objects, table_info, table_digest, insert_sql = (
     _migration[k] for k in ('q', 'schema_objects', 'table_info', 'table_digest', 'insert_sql'))
 CONTRACT = 'casepath.reference-admission-plan/1.0.0'
+CURRENT_PROFILE_ID = 'synthetic-nine-v2'
 
 
 class Refused(RuntimeError):
@@ -138,6 +139,10 @@ def _unwire(row):
     return tuple(base64.b64decode(cell['blob_base64'], validate=True) if isinstance(cell, dict) else cell for cell in row)
 
 
+def _current_profile():
+    return ReferenceProfile.for_profile(CURRENT_PROFILE_ID)
+
+
 def source_identity(commit):
     if not re.fullmatch('[0-9a-f]{40}', commit):
         raise Refused('An exact source commit is required.')
@@ -145,7 +150,8 @@ def source_identity(commit):
         'autonomous_controller_v1.py', 'autonomous_store_v1.py', 'autonomous_policy_v1.py',
         'autonomous_knowledge_v1.py', 'autonomous_intake_gate_v1.py', 'autonomous_reference_v1.py',
         'autonomous_reference_policy_v1.py', 'causal_process_v1.py')]
-    paths += sorted((ROOT / 'casepath-api/casepath_api/reference_profiles/synthetic-nine-v1').rglob('*'))
+    for name in ('synthetic-nine-v1', CURRENT_PROFILE_ID):
+        paths += sorted((ROOT / 'casepath-api/casepath_api/reference_profiles' / name).rglob('*'))
     paths.append(Path(__file__))
     return {'source_commit': commit, 'files': {str(p.relative_to(ROOT)): sha256(p.read_bytes()).hexdigest()
                                                for p in paths if p.is_file()}}
@@ -180,7 +186,7 @@ def inventory(connect, *, owner=None):
             raise Refused('Missing or unknown physical provider outcomes require explicit reconciliation.')
         if budget and budget.get('autonomous_policy'):
             usage = work._autonomous_usage(db, budget['autonomous_policy'])
-            selected = set(ReferenceProfile().ids)
+            selected = set(_current_profile().ids)
             for workflow in usage['workflows'].values():
                 if workflow['record']['identity']['claim_id'] not in selected:
                     continue
@@ -231,9 +237,31 @@ def _reference_source_bytes(corpus, profile):
     return result
 
 
+def _stage_claim(store, controller, corpus, profile, cid, before_heads):
+    """The same current-profile operation sequence in prepare and verification."""
+    if cid not in before_heads:
+        packet = corpus.packet(cid)
+        store.admit_original(cid, packet, expected_revision=0,
+            expected_state_sha256=packet['initial_state_sha256'], idempotency_key='reference.original.' + cid)
+    state = store.get(cid)
+    if state.get('original_binding') != corpus.preview_state(cid)['original_binding']:
+        raise Refused('An existing canonical claim has a different original binding.')
+    if (state.get('deferral') or {}).get('code') not in (None, 'model_unavailable'):
+        raise Refused('A paused or failed claim must be inspected before reference admission.')
+    known = {d['sha256'] for d in state['source_descriptors']}
+    missing = [file for file, source in zip(profile.files(cid), profile.value['claims'][cid]['sources'])
+               if source['sha256'] not in known]
+    if missing:
+        store.add_sources(cid, missing, expected_revision=state['revision'],
+            expected_state_sha256=state['state_sha256'], idempotency_key='reference.sources.' + profile.sha256[:16] + '.' + cid)
+    final = controller.run(cid)
+    if (final.get('outcome') or {}).get('assessment_status') != 'complete':
+        raise Refused('Staged bounded execution did not complete: ' + cid)
+
+
 def prepare(connect, *, source_commit, corpus=None):
     identity = source_identity(source_commit)
-    corpus, profile = corpus or CanonicalCorpus(), ReferenceProfile()
+    corpus, profile = corpus or CanonicalCorpus(), _current_profile()
     before, rows = inventory(connect)
     sources = HostedSources(connect)
     source_hashes = {row[0] for row in rows['autonomous_source_chunks']['rows']}
@@ -254,27 +282,11 @@ def prepare(connect, *, source_commit, corpus=None):
         controller = AutonomousController(store, policy, reference_adapter=DeterministicReferenceAdapter(policy, profile))
         try:
             # Validate every pre-existing accepted stream before staging any new one.
-            for cid in _head_rows(rows):
+            before_heads = _head_rows(rows)
+            for cid in before_heads:
                 store.get(cid)
             for cid in profile.ids:
-                if cid not in _head_rows(rows):
-                    packet = corpus.packet(cid)
-                    store.admit_original(cid, packet, expected_revision=0,
-                        expected_state_sha256=packet['initial_state_sha256'], idempotency_key='reference.original.' + cid)
-                state = store.get(cid)
-                if state.get('original_binding') != corpus.preview_state(cid)['original_binding']:
-                    raise Refused('An existing canonical claim has a different original binding.')
-                if (state.get('deferral') or {}).get('code') not in (None, 'model_unavailable'):
-                    raise Refused('A paused or failed claim must be inspected before reference admission.')
-                known = {d['sha256'] for d in state['source_descriptors']}
-                missing = [f for f, source in zip(profile.files(cid), profile.value['claims'][cid]['sources'])
-                           if source['sha256'] not in known]
-                if missing:
-                    store.add_sources(cid, missing, expected_revision=state['revision'],
-                        expected_state_sha256=state['state_sha256'], idempotency_key='reference.sources.' + profile.sha256[:16] + '.' + cid)
-                final = controller.run(cid)
-                if (final.get('outcome') or {}).get('assessment_status') != 'complete':
-                    raise Refused('Staged bounded execution did not complete: ' + cid)
+                _stage_claim(store, controller, corpus, profile, cid, before_heads)
             with sqlite3.connect(path) as db:
                 db.row_factory = sqlite3.Row
                 original_keys = {tuple(_unwire(r)[:3]) for r in rows['claim_loop_events']['rows']}
@@ -311,7 +323,7 @@ def apply(connect, plan, *, source_commit):
     if (plan.get('contract') != CONTRACT or plan.get('plan_sha256') != digest_value({k: v for k, v in plan.items() if k != 'plan_sha256'})
             or plan['source_identity'] != source_identity(source_commit)):
         raise Refused('Plan or executing source identity changed.')
-    corpus, profile = CanonicalCorpus(), ReferenceProfile()
+    corpus, profile = CanonicalCorpus(), _current_profile()
     policy = bounded_reference_policy(corpus._corpus.static_policy())
     if (set(plan['final_heads']) != set(profile.ids) or plan['corpus_sha256'] != corpus._corpus.identity['manifest_sha256']
             or plan['profile_sha256'] != profile.sha256 or plan['rule_set_sha256'] != digest_value(policy)
@@ -444,7 +456,7 @@ def _verify_plan(values, plan):
             db.executescript(JOURNAL_SCHEMA)
             for row in values['claim_loop_events']['rows']:
                 db.execute(*insert_sql('claim_loop_events', plan['event_columns'], [_unwire(row)]))
-        corpus, profile = CanonicalCorpus(), ReferenceProfile()
+        corpus, profile = CanonicalCorpus(), _current_profile()
         if (plan['event_columns'] != values['claim_loop_events']['columns']
                 or plan['source_columns'] != values['autonomous_source_chunks']['columns']):
             raise Refused('Plan column roster differs from the existing admission surfaces.')
@@ -504,21 +516,10 @@ def _verify_plan(values, plan):
             if store._publish(reference_bytes[digest]) != digest:
                 raise Refused('Selected source byte publication differs.')
         policy = bounded_reference_policy(corpus._corpus.static_policy())
-        controller = AutonomousController(store, policy, reference_adapter=DeterministicReferenceAdapter(policy))
+        controller = AutonomousController(store, policy, reference_adapter=DeterministicReferenceAdapter(policy, profile))
         try:
             for cid in profile.ids:
-                if cid not in before_heads:
-                    packet = corpus.packet(cid)
-                    store.admit_original(cid, packet, expected_revision=0,
-                        expected_state_sha256=packet['initial_state_sha256'], idempotency_key='reference.original.' + cid)
-                state = store.get(cid)
-                known = {d['sha256'] for d in state['source_descriptors']}
-                missing = [f for f, source in zip(profile.files(cid), profile.value['claims'][cid]['sources'])
-                           if source['sha256'] not in known]
-                if missing:
-                    store.add_sources(cid, missing, expected_revision=state['revision'], expected_state_sha256=state['state_sha256'],
-                        idempotency_key='reference.sources.' + profile.sha256[:16] + '.' + cid)
-                controller.run(cid)
+                _stage_claim(store, controller, corpus, profile, cid, before_heads)
             if consumed != set(expected):
                 raise Refused('Plan contains extra journal steps absent from actual execution.')
             for cid, expected in plan['final_heads'].items():
