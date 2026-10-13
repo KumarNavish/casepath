@@ -280,7 +280,7 @@ with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temp
     const encoded = input
       ? fs.readFileSync(input,'utf8')
       : execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python', ['-c',script,JSON.stringify(referenceIds),migrated?'migration':'fresh'],
-        {cwd:root,encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:128*1024*1024});
+        {cwd:root,encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:(migrated?256:128)*1024*1024});
     fixture = JSON.parse(encoded);
     if (migrated) nativeMigrationReferenceFixture = fixture; else nativeReferenceFixture = fixture;
     if (output) fs.writeFileSync(output,encoded);
