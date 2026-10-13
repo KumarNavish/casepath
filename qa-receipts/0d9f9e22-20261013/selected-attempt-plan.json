@@ -1,0 +1,65 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "original_attempt_status": "FAILED:2428Cloudpass6setupERROR10knownskip;127Macseparatelyattested",
+  "original_archive_commit": "d8c72308e4d861b7887c80e5e94ba39624b78c7e",
+  "original_archive_path": "qa-receipts/0d9f9e22-20261013/original",
+  "original_bundle_manifest_sha256": "407e1717815ee07c73907ec77816148c7fd06acb65fd6478b2a063e2aa41d0af",
+  "selected_layout": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/selected",
+  "selected_attempt_plan": {
+    "1": {
+      "attempt": 1,
+      "raw_source": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1",
+      "ids": 293
+    },
+    "2": {
+      "attempt": 1,
+      "raw_source": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2",
+      "ids": 330
+    },
+    "3": {
+      "attempt": 2,
+      "raw_source": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3",
+      "ids": 334
+    },
+    "4": {
+      "attempt": 1,
+      "raw_source": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard4",
+      "ids": 814
+    },
+    "5": {
+      "attempt": 1,
+      "raw_source": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard5",
+      "ids": 335
+    },
+    "6": {
+      "attempt": 2,
+      "raw_source": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6",
+      "ids": 338
+    }
+  },
+  "authorized_additional_full_shard_attempts": 2,
+  "each_affected_shard_additional_attempts": 1,
+  "original_phase_files_and_manifest_never_overwritten": true,
+  "all_source_assertions_tests_deadlines_deterministic_credentials_unchanged": true,
+  "selected_reconciliation_status": "COMPLETE PASSED SELECTED ATTEMPTS; ORIGINAL FAILED SNAPSHOT PRESERVED",
+  "original_underlying_mkdir_cause": "unconfirmed: errno not retained; pressure observed",
+  "resource_correction": "Authorized disposable package/compiled caches then completed runtime retirement; minimum1GiBfree beforelaunch",
+  "created_epoch": 1791920796.1046407,
+  "selected_cloud_counts": {
+    "tests": 2444,
+    "passed": 2434,
+    "failed": 0,
+    "skipped": 10,
+    "errors": 0
+  },
+  "combined_with_separately_attested_mac": {
+    "tests": 2571,
+    "passed": 2561,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 10,
+    "pending": 0
+  },
+  "selected_full_id_sha256": "4ab5398dd5969ac3267ca0c5146d9f2bc5b3bb90125236161db59467abcb6761",
+  "terminal_epoch": 1791921958.4259953
+}

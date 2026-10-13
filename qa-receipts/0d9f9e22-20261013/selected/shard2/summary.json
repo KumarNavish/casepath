@@ -1,0 +1,47 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "shard": 2,
+  "assigned_ids": 330,
+  "executed_ids": 330,
+  "exact_assigned_id_coverage": true,
+  "attempts": 1,
+  "exit_code": 0,
+  "passed": 330,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "duration_seconds": 833.5296056270599,
+  "junit_seconds": 829.775,
+  "phase_counts": {
+    "setup:passed": 330,
+    "call:passed": 330,
+    "teardown:passed": 330
+  },
+  "phase_duration_seconds": {
+    "setup": 122.11423438362544,
+    "call": 684.2125152788358,
+    "teardown": 14.834491843241267
+  },
+  "after_verifier_exit_code": 0,
+  "clean_after": true,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+  "capsule_receipt_file_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+  "before_after_capsule_identity_equal": true,
+  "artifacts": {
+    "command.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/command.json",
+    "result.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/result.json",
+    "junit.xml": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/junit.xml",
+    "reports.jsonl": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/reports.jsonl",
+    "runner-terminal.log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/runner-terminal.log",
+    "capsule-verification-after.log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/capsule-verification-after.log",
+    "capsule-verification-after-result.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/capsule-verification-after-result.json",
+    "source-before/capsule-verification.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/source-before/capsule-verification.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/source-after/capsule-verification.json",
+    "ATTEMPT_STARTED.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard2/ATTEMPT_STARTED.json"
+  }
+}

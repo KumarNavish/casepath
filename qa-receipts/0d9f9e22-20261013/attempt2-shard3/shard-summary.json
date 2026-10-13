@@ -1,0 +1,244 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "shard": 3,
+  "status": "passed",
+  "attempt_number": 2,
+  "explicit_environment_repaired_recheck": true,
+  "attempt_count_in_this_directory": 1,
+  "further_retry_count": 0,
+  "prior_original_attempt": {
+    "summary_path": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard3/shard-summary.json",
+    "summary_sha256": "94780d5cf44a6e7ec0e1e36d4db3cd044c95c6450dc4cb0c829b02a1d135fe9f",
+    "status": "failed",
+    "counts": {
+      "passed": 333,
+      "failed": 0,
+      "errors": 1,
+      "skipped": 0,
+      "warnings": 9
+    },
+    "raw_and_failed_fixtures_preserved": true,
+    "durable_evidence_commit_reported_by_parent": "d8c72308e4d861b7887c80e5e94ba39624b78c7e"
+  },
+  "assigned_ids": 334,
+  "executed_ids": 334,
+  "missing_ids": [],
+  "unexpected_ids": [],
+  "duplicate_call_ids": [],
+  "previously_setup_blocked_id_now_passed": "casepath-api/tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[True]",
+  "counts": {
+    "passed": 334,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "warnings": 9
+  },
+  "phase_counts": {
+    "setup": {
+      "passed": 334
+    },
+    "call": {
+      "passed": 334
+    },
+    "teardown": {
+      "passed": 334
+    }
+  },
+  "phase_report_count": 1002,
+  "junit_counts": {
+    "tests": 334,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "exit_code": 0,
+  "duration_seconds": 555.3833169937134,
+  "pytest_reported_duration_seconds": 551.52,
+  "source_after": {
+    "head": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+    "status": "",
+    "normal_clone": true,
+    "manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+    "capsule_receipt_file_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+    "source_artifact_static_counts": [
+      1706,
+      25,
+      37
+    ],
+    "source_artifact_static_bindings_verified": true,
+    "same_before_after_receipt": true,
+    "after_verifier_exit_code": 0,
+    "after_verifier_duration_seconds": 0.436800479888916
+  },
+  "command": [
+    "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "--junitxml=/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/junit.xml",
+    "--durations=0",
+    "--basetemp=/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/pytest-tmp",
+    "@/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/pytest-arguments.txt"
+  ],
+  "env": {
+    "HOME": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/home",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/pycache",
+    "PYTHONPATH": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/harness:/workspace/casepath-release-ae0-shard3/casepath-api",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "TMPDIR": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/tmp",
+    "TZ": "UTC",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+    "CASEPATH_DB_PATH": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/casepath.db",
+    "CASEPATH_ARTIFACT_REGISTRY_PATH": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/artifact-registry",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "CASEPATH_ENV_LOCK_HELD": "",
+    "CASEPATH_ENV_READY": "",
+    "UV_CACHE_DIR": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "CASEPATH_QA_REPOSITORY": "/workspace/casepath-release-ae0-shard3",
+    "CASEPATH_QA_ARTIFACTS": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3"
+  },
+  "raw": {
+    "ids.txt": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/ids.txt",
+      "bytes": 40487,
+      "sha256": "2333743da8628ffb9ef3b4355f1427255bfc38109accca51f3bb5cfdd198ca0f"
+    },
+    "ATTEMPT_STARTED.json": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/ATTEMPT_STARTED.json",
+      "bytes": 877,
+      "sha256": "e571cb922c6362005e7caeb8da4a69f1bf9bdb703afafba74dd31caf53c66e47"
+    },
+    "command.json": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/command.json",
+      "bytes": 2635,
+      "sha256": "1a9a3753b21c8d9989bac0894f8af2ddfcf0d5c3eaddcc413cad4cad20665e15"
+    },
+    "result.json": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/result.json",
+      "bytes": 2814,
+      "sha256": "e623cbdeb568d2f38bcc9f1827e25d890a2e9301371c5c08dd979f0e0d8a0ae1"
+    },
+    "junit.xml": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/junit.xml",
+      "bytes": 49065,
+      "sha256": "eacf062b5d9fe949ca521a7577e55f70544e895732c3a80d818d6534d7fa7f4e"
+    },
+    "reports.jsonl": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/reports.jsonl",
+      "bytes": 237645,
+      "sha256": "e83660a72577765a812cffb7e054885c194e167d089e38a9149bd2ad3976ccf6"
+    },
+    "pytest.log": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/pytest.log",
+      "bytes": 43076,
+      "sha256": "75faedf80b2f8cd554e7d2deebee04b0a205700843b1549c70651395925fc65c"
+    },
+    "runner-terminal.log": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/runner-terminal.log",
+      "bytes": 114,
+      "sha256": "4c94f7ce8065ba936c3b09bdb1b83c06ae218f65e6b10113eef14dc0ff53fa02"
+    },
+    "worker-launch-wrapper.json": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/worker-launch-wrapper.json",
+      "bytes": 1771,
+      "sha256": "5f669c1c07a4441e1011b3f7ba8c6a4f0dad2bb41d0e3aa4806f54d3b5798775"
+    },
+    "capsule-verification-after.log": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/capsule-verification-after.log",
+      "bytes": 160,
+      "sha256": "5c5e0c7c4843c5c947e3b6ad570b281e73d777ac6b8af8021833438ddf9bc568"
+    },
+    "capsule-verification-after-result.json": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/capsule-verification-after-result.json",
+      "bytes": 1718,
+      "sha256": "1a42620b749bdf2a054427ab3b1e3e775ba1db4ba8b8825b07626a78c625eba9"
+    },
+    "source-before/capsule-verification.json": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/source-before/capsule-verification.json",
+      "bytes": 1759,
+      "sha256": "c6cadfa8198543e21609ecee9142aea79c51b17ba798073a990b31c3d883cc94"
+    },
+    "source-after/capsule-verification.json": {
+      "path": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard3/source-after/capsule-verification.json",
+      "bytes": 1759,
+      "sha256": "e68b33c3cd1eb5ac91299f215bb0305010b3a87d20240c03ec4b7fbaeabb1bce"
+    }
+  },
+  "longest_call_phases": [
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 178.24396944395266,
+      "utc_epoch": 1791921136.8562758
+    },
+    {
+      "id": "casepath-api/tests/test_pace_core_v1.py::test_m0_v1_never_promotes_a_caller_supplied_external_tree_to_empirical_ready",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 22.76805797999259,
+      "utc_epoch": 1791920951.791942
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[owner]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 19.618939417996444,
+      "utc_epoch": 1791920677.6910741
+    },
+    {
+      "id": "casepath-api/tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_7dbd7c7d1c4ddf90]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 15.458803955989424,
+      "utc_epoch": 1791920832.1265492
+    },
+    {
+      "id": "casepath-api/tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_2c55cdd816b1d0e8]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 14.438207751023583,
+      "utc_epoch": 1791920804.0990133
+    },
+    {
+      "id": "casepath-api/tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_393285577dcb12c4]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 12.564760153996758,
+      "utc_epoch": 1791920816.6658306
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-startup_reconciler]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 9.269708695006557,
+      "utc_epoch": 1791920888.2178855
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_handler_selects_hash_bound_correction_and_can_restore_exact_source",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 7.334607117983978,
+      "utc_epoch": 1791920870.876048
+    }
+  ],
+  "completed_at_utc": "2026-10-13T19:54:27.693517+00:00",
+  "scope_note": "Explicitly authorized full334-ID environment-repaired attempt2 run once, shard3alone before6. Source/tests/assertions/deadlines/skip policy unchanged. No further retry, extra tests, provider/production/browser/profile calls, manual cleanup or source work. Original failed attempt retains independent status and raw evidence."
+}

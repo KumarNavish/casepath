@@ -1,0 +1,86 @@
+{
+  "authorization": "Explicit Mac/root disposable prepared venv retirement for completed1/2/4/5 only; source/Git/capsules/receipts/failedfixtures/journals retained",
+  "original_archive_commit": "d8c72308e4d861b7887c80e5e94ba39624b78c7e",
+  "original_manifest_sha256": "407e1717815ee07c73907ec77816148c7fd06acb65fd6478b2a063e2aa41d0af",
+  "started_epoch": 1791920487.307756,
+  "before_free_bytes": 427651072,
+  "minimum_required_headroom_bytes": 1073741824,
+  "retired": [
+    {
+      "shard": 1,
+      "path": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv",
+      "real_path": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv",
+      "device": 27,
+      "inode": 1991441,
+      "size_bytes": 440230217,
+      "allocated_bytes": 458043392,
+      "entries": 8326,
+      "original_result_exit": 0,
+      "source_manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+      "capsule_receipt_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+      "source_capsule_proofs_archived": true
+    },
+    {
+      "shard": 2,
+      "path": "/workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv",
+      "real_path": "/workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv",
+      "device": 27,
+      "inode": 135411,
+      "size_bytes": 176193844,
+      "allocated_bytes": 185143296,
+      "entries": 4181,
+      "original_result_exit": 0,
+      "source_manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+      "capsule_receipt_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+      "source_capsule_proofs_archived": true
+    },
+    {
+      "shard": 4,
+      "path": "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv",
+      "real_path": "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv",
+      "device": 27,
+      "inode": 264113,
+      "size_bytes": 176193844,
+      "allocated_bytes": 185143296,
+      "entries": 4181,
+      "original_result_exit": 0,
+      "source_manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+      "capsule_receipt_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+      "source_capsule_proofs_archived": true
+    },
+    {
+      "shard": 5,
+      "path": "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/venv",
+      "real_path": "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/venv",
+      "device": 27,
+      "inode": 269623,
+      "size_bytes": 176193844,
+      "allocated_bytes": 185143296,
+      "entries": 4181,
+      "original_result_exit": 0,
+      "source_manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+      "capsule_receipt_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+      "source_capsule_proofs_archived": true
+    }
+  ],
+  "complete": true,
+  "source_capsules_normal_git_sources_journals_and_all_fixtures_retained": true,
+  "retained3_6_reference_checks": [
+    {
+      "shard": 3,
+      "real_venv": "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv",
+      "no_links_or_pth_to_retirement_venvs": true
+    },
+    {
+      "shard": 6,
+      "real_venv": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv",
+      "no_links_or_pth_to_retirement_venvs": true
+    }
+  ],
+  "after_free_bytes": 1199128576,
+  "finished_epoch": 1791920487.544482,
+  "retired_total_size_bytes": 968811749,
+  "retired_total_allocated_bytes": 1013473280,
+  "adequate_headroom": true,
+  "not_retired_shards": []
+}

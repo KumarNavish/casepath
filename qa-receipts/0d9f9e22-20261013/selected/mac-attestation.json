@@ -1,0 +1,21 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "attestation_source_thread_id": "01a115f5-6dce-7700-9751-e1dc804e9a1b",
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "exit_code": 0,
+  "attempts": 1,
+  "reported_test_duration_seconds": 112.13,
+  "reported_prepare_duration_seconds": 44.27,
+  "partition": {
+    "test_cli_v1.py": 69,
+    "test_local_data_root.py": 52,
+    "test_journal_corpus_restart.py": 6
+  },
+  "source_verified_files": 1706,
+  "source_manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+  "source_clean_before_after": true,
+  "initial_setup_error": "Checkout-before-fetch setup error retained by Mac; no test execution occurred before successful fetch/prepare. Not a test retry.",
+  "status": "Mac-attested. Raw Mac JUnit/phases/setup error retained by integration owner, not copied into Cloud; no independent Cloud verification of Mac raw IDs claimed."
+}

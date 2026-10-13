@@ -1,0 +1,20 @@
+{
+  "signal": "FINAL_GATE_AUTHORIZED",
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "affected_complete_shards": [
+    3,
+    6
+  ],
+  "attempt_number": 2,
+  "one_additional_attempt_per_affected_shard": true,
+  "serial_order": [
+    3,
+    6
+  ],
+  "original_attempt_all_terminal": true,
+  "original_archive_commit": "d8c72308e4d861b7887c80e5e94ba39624b78c7e",
+  "original_bundle_manifest_sha256": "407e1717815ee07c73907ec77816148c7fd06acb65fd6478b2a063e2aa41d0af",
+  "authorization": "User/Mac/root explicitly authorized resource diagnosis, disposable cache/runtime retirement and full unchanged affected-shard rechecks after originals finish",
+  "no_other_shards_repeated": true,
+  "no_source_tests_assertions_deadlines_or_deterministic_env_weakening": true
+}

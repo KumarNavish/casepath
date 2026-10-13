@@ -1,0 +1,286 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "original_failed_snapshot_commit": "d8c72308e4d861b7887c80e5e94ba39624b78c7e",
+  "original_manifest_sha256": "407e1717815ee07c73907ec77816148c7fd06acb65fd6478b2a063e2aa41d0af",
+  "recheck_full_shards": [
+    3,
+    6
+  ],
+  "full_unchanged_ids": [
+    334,
+    338
+  ],
+  "authorized_additional_attempts": 2,
+  "additional_attempts_each": 1,
+  "affected_error_count": 6,
+  "all_previously_unrun_bodies_now_passed": true,
+  "source_assertions_tests_deadlines_and_deterministic_env_unchanged": true,
+  "original_mkdir_cause": "Unproven: pytest suppressed underlying mkdir errno; disk pressure observed",
+  "resource_correction": "Authorized reproducible cache cleanup and retirement of completed disposablevenvs; >=1GiB free before each serialrecheck",
+  "records": [
+    {
+      "id": "casepath-api/tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[True]",
+      "shard": 3,
+      "original_attempt": 1,
+      "original_failed_phase": "setup",
+      "original_body_executed": false,
+      "original_failure": {
+        "shard": 3,
+        "id": "casepath-api/tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[True]",
+        "when": "setup",
+        "outcome": "failed",
+        "duration": 0.0016940149944275618,
+        "utc_epoch": 1791919604.5012217,
+        "failure": "cls = <class '_pytest.runner.CallInfo'>\nfunc = <function call_and_report.<locals>.<lambda> at 0x7f1f4ebfccc0>\nwhen = 'setup'\nreraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)\n\n    @classmethod\n    def from_call(\n        cls,\n        func: Callable[[], TResult],\n        when: Literal[\"collect\", \"setup\", \"call\", \"teardown\"],\n        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,\n    ) -> CallInfo[TResult]:\n        \"\"\"Call func, wrapping the result in a CallInfo.\n    \n        :param func:\n            The function to call. Called without arguments.\n        :type func: Callable[[], _pytest.runner.TResult]\n        :param when:\n            The phase in which the function is called.\n        :param reraise:\n            Exception or exceptions that shall propagate if raised by the\n            function, instead of being wrapped in the CallInfo.\n        \"\"\"\n        excinfo = None\n        instant = timing.Instant()\n        try:\n>           result: TResult | None = func()\n                                     ^^^^^^\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:344: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:246: in <lambda>\n    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/logging.py:843: in pytest_runtest_setup\n    yield\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/capture.py:895: in pytest_runtest_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:164: in pytest_runtest_setup\n    item.session._setupstate.setup(item)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:514: in setup\n    col.setup()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/python.py:1674: in setup\n    self._request._fillfixtures()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:720: in _fillfixtures\n    item.funcargs[argname] = self.getfixturevalue(argname)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:549: in getfixturevalue\n    fixturedef = self._get_active_fixturedef(argname)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef\n    fixturedef.execute(request=subrequest)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1128: in execute\n    result = ihook.pytest_fixture_setup(fixturedef=self, request=request)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:53: in run_old_style_hookwrapper\n    return result.get_result()\n           ^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:38: in run_old_style_hookwrapper\n    res = yield\n          ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/setuponly.py:36: in pytest_fixture_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1196: in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:923: in call_fixture_func\n    fixture_result = next(generator)\n                     ^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:264: in tmp_path\n    path = _mk_tmp(request, tmp_path_factory)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:251: in _mk_tmp\n    return factory.mktemp(name, numbered=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:135: in mktemp\n    p = make_numbered_dir(root=self.getbasetemp(), prefix=basename, mode=0o700)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard3/pytest-tmp')\nprefix = 'test_oversized_row_or_primary_', mode = 448\n\n    def make_numbered_dir(root: Path, prefix: str, mode: int = 0o700) -> Path:\n        \"\"\"Create a directory with an increased number as suffix for the given prefix.\"\"\"\n        for i in range(10):\n            # try up to 10 times to create the folder\n            max_existing = max(map(parse_num, find_suffixes(root, prefix)), default=-1)\n            new_number = max_existing + 1\n            new_path = root.joinpath(f\"{prefix}{new_number}\")\n            try:\n                new_path.mkdir(mode=mode)\n            except Exception:\n                pass\n            else:\n                _force_symlink(root, prefix + \"current\", new_path)\n                return new_path\n        else:\n>           raise OSError(\n                \"could not create numbered dir with prefix \"\n                f\"{prefix} in {root} after 10 tries\"\n            )\nE           OSError: could not create numbered dir with prefix test_oversized_row_or_primary_ in /workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard3/pytest-tmp after 10 tries\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/pathlib.py:240: OSError"
+      },
+      "original_raw_reports_sha256": "648fd0d98de7a1115a20a2da56930bba4312bbbef2a6a8e9925aa721852330fa",
+      "recheck_attempt": 2,
+      "recheck_body_executed": true,
+      "recheck_all_phases_passed": true,
+      "recheck_phases": [
+        {
+          "id": "casepath-api/tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[True]",
+          "when": "setup",
+          "outcome": "passed",
+          "duration": 0.0005309739499352872,
+          "utc_epoch": 1791921136.998251
+        },
+        {
+          "id": "casepath-api/tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[True]",
+          "when": "call",
+          "outcome": "passed",
+          "duration": 0.05775352200726047,
+          "utc_epoch": 1791921137.0563204
+        },
+        {
+          "id": "casepath-api/tests/test_reference_read_performance_v1.py::test_oversized_row_or_primary_key_refuses_before_payload_transport[True]",
+          "when": "teardown",
+          "outcome": "passed",
+          "duration": 0.00026472099125385284,
+          "utc_epoch": 1791921137.0568917
+        }
+      ],
+      "recheck_raw_reports_sha256": "e83660a72577765a812cffb7e054885c194e167d089e38a9149bd2ad3976ccf6"
+    },
+    {
+      "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[created_at-raw metadata changed-False]",
+      "shard": 6,
+      "original_attempt": 1,
+      "original_failed_phase": "setup",
+      "original_body_executed": false,
+      "original_failure": {
+        "shard": 6,
+        "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[created_at-raw metadata changed-False]",
+        "when": "setup",
+        "outcome": "failed",
+        "duration": 0.0019370740046724677,
+        "utc_epoch": 1791919606.2395916,
+        "failure": "cls = <class '_pytest.runner.CallInfo'>\nfunc = <function call_and_report.<locals>.<lambda> at 0x7f90d995bec0>\nwhen = 'setup'\nreraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)\n\n    @classmethod\n    def from_call(\n        cls,\n        func: Callable[[], TResult],\n        when: Literal[\"collect\", \"setup\", \"call\", \"teardown\"],\n        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,\n    ) -> CallInfo[TResult]:\n        \"\"\"Call func, wrapping the result in a CallInfo.\n    \n        :param func:\n            The function to call. Called without arguments.\n        :type func: Callable[[], _pytest.runner.TResult]\n        :param when:\n            The phase in which the function is called.\n        :param reraise:\n            Exception or exceptions that shall propagate if raised by the\n            function, instead of being wrapped in the CallInfo.\n        \"\"\"\n        excinfo = None\n        instant = timing.Instant()\n        try:\n>           result: TResult | None = func()\n                                     ^^^^^^\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:344: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:246: in <lambda>\n    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/logging.py:843: in pytest_runtest_setup\n    yield\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/capture.py:895: in pytest_runtest_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:164: in pytest_runtest_setup\n    item.session._setupstate.setup(item)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:514: in setup\n    col.setup()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/python.py:1674: in setup\n    self._request._fillfixtures()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:720: in _fillfixtures\n    item.funcargs[argname] = self.getfixturevalue(argname)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:549: in getfixturevalue\n    fixturedef = self._get_active_fixturedef(argname)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef\n    fixturedef.execute(request=subrequest)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1084: in execute\n    fixturedef = request._get_active_fixturedef(argname)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef\n    fixturedef.execute(request=subrequest)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1128: in execute\n    result = ihook.pytest_fixture_setup(fixturedef=self, request=request)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:53: in run_old_style_hookwrapper\n    return result.get_result()\n           ^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:38: in run_old_style_hookwrapper\n    res = yield\n          ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/setuponly.py:36: in pytest_fixture_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1196: in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:923: in call_fixture_func\n    fixture_result = next(generator)\n                     ^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:264: in tmp_path\n    path = _mk_tmp(request, tmp_path_factory)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:251: in _mk_tmp\n    return factory.mktemp(name, numbered=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:135: in mktemp\n    p = make_numbered_dir(root=self.getbasetemp(), prefix=basename, mode=0o700)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp')\nprefix = 'test_cache_rechecks_every_pers', mode = 448\n\n    def make_numbered_dir(root: Path, prefix: str, mode: int = 0o700) -> Path:\n        \"\"\"Create a directory with an increased number as suffix for the given prefix.\"\"\"\n        for i in range(10):\n            # try up to 10 times to create the folder\n            max_existing = max(map(parse_num, find_suffixes(root, prefix)), default=-1)\n            new_number = max_existing + 1\n            new_path = root.joinpath(f\"{prefix}{new_number}\")\n            try:\n                new_path.mkdir(mode=mode)\n            except Exception:\n                pass\n            else:\n                _force_symlink(root, prefix + \"current\", new_path)\n                return new_path\n        else:\n>           raise OSError(\n                \"could not create numbered dir with prefix \"\n                f\"{prefix} in {root} after 10 tries\"\n            )\nE           OSError: could not create numbered dir with prefix test_cache_rechecks_every_pers in /workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp after 10 tries\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/pathlib.py:240: OSError"
+      },
+      "original_raw_reports_sha256": "3d285b8cb58100151453256771addae06a80eb4a6f0e31aeb6094c11735f6034",
+      "recheck_attempt": 2,
+      "recheck_body_executed": true,
+      "recheck_all_phases_passed": true,
+      "recheck_phases": [
+        {
+          "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[created_at-raw metadata changed-False]",
+          "when": "setup",
+          "outcome": "passed",
+          "duration": 0.7786240159766749,
+          "utc_epoch": 1791921751.511114
+        },
+        {
+          "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[created_at-raw metadata changed-False]",
+          "when": "call",
+          "outcome": "passed",
+          "duration": 0.05140396603383124,
+          "utc_epoch": 1791921751.562939
+        },
+        {
+          "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[created_at-raw metadata changed-False]",
+          "when": "teardown",
+          "outcome": "passed",
+          "duration": 0.04797551303636283,
+          "utc_epoch": 1791921751.611373
+        }
+      ],
+      "recheck_raw_reports_sha256": "caca4da70e1665b35d4acee3436a58fe702b2f3562f419bfaff59c44a2d06c58"
+    },
+    {
+      "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
+      "shard": 6,
+      "original_attempt": 1,
+      "original_failed_phase": "setup",
+      "original_body_executed": false,
+      "original_failure": {
+        "shard": 6,
+        "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
+        "when": "setup",
+        "outcome": "failed",
+        "duration": 0.001668777025770396,
+        "utc_epoch": 1791919606.4199102,
+        "failure": "cls = <class '_pytest.runner.CallInfo'>\nfunc = <function call_and_report.<locals>.<lambda> at 0x7f90d82deb60>\nwhen = 'setup'\nreraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)\n\n    @classmethod\n    def from_call(\n        cls,\n        func: Callable[[], TResult],\n        when: Literal[\"collect\", \"setup\", \"call\", \"teardown\"],\n        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,\n    ) -> CallInfo[TResult]:\n        \"\"\"Call func, wrapping the result in a CallInfo.\n    \n        :param func:\n            The function to call. Called without arguments.\n        :type func: Callable[[], _pytest.runner.TResult]\n        :param when:\n            The phase in which the function is called.\n        :param reraise:\n            Exception or exceptions that shall propagate if raised by the\n            function, instead of being wrapped in the CallInfo.\n        \"\"\"\n        excinfo = None\n        instant = timing.Instant()\n        try:\n>           result: TResult | None = func()\n                                     ^^^^^^\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:344: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:246: in <lambda>\n    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/logging.py:843: in pytest_runtest_setup\n    yield\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/capture.py:895: in pytest_runtest_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:164: in pytest_runtest_setup\n    item.session._setupstate.setup(item)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:514: in setup\n    col.setup()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/python.py:1674: in setup\n    self._request._fillfixtures()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:720: in _fillfixtures\n    item.funcargs[argname] = self.getfixturevalue(argname)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:549: in getfixturevalue\n    fixturedef = self._get_active_fixturedef(argname)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef\n    fixturedef.execute(request=subrequest)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1084: in execute\n    fixturedef = request._get_active_fixturedef(argname)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef\n    fixturedef.execute(request=subrequest)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1128: in execute\n    result = ihook.pytest_fixture_setup(fixturedef=self, request=request)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:53: in run_old_style_hookwrapper\n    return result.get_result()\n           ^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:38: in run_old_style_hookwrapper\n    res = yield\n          ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/setuponly.py:36: in pytest_fixture_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1196: in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:923: in call_fixture_func\n    fixture_result = next(generator)\n                     ^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:264: in tmp_path\n    path = _mk_tmp(request, tmp_path_factory)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:251: in _mk_tmp\n    return factory.mktemp(name, numbered=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:135: in mktemp\n    p = make_numbered_dir(root=self.getbasetemp(), prefix=basename, mode=0o700)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp')\nprefix = 'test_cache_rechecks_every_pers', mode = 448\n\n    def make_numbered_dir(root: Path, prefix: str, mode: int = 0o700) -> Path:\n        \"\"\"Create a directory with an increased number as suffix for the given prefix.\"\"\"\n        for i in range(10):\n            # try up to 10 times to create the folder\n            max_existing = max(map(parse_num, find_suffixes(root, prefix)), default=-1)\n            new_number = max_existing + 1\n            new_path = root.joinpath(f\"{prefix}{new_number}\")\n            try:\n                new_path.mkdir(mode=mode)\n            except Exception:\n                pass\n            else:\n                _force_symlink(root, prefix + \"current\", new_path)\n                return new_path\n        else:\n>           raise OSError(\n                \"could not create numbered dir with prefix \"\n                f\"{prefix} in {root} after 10 tries\"\n            )\nE           OSError: could not create numbered dir with prefix test_cache_rechecks_every_pers in /workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp after 10 tries\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/pathlib.py:240: OSError"
+      },
+      "original_raw_reports_sha256": "3d285b8cb58100151453256771addae06a80eb4a6f0e31aeb6094c11735f6034",
+      "recheck_attempt": 2,
+      "recheck_body_executed": true,
+      "recheck_all_phases_passed": true,
+      "recheck_phases": [
+        {
+          "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
+          "when": "setup",
+          "outcome": "passed",
+          "duration": 0.775264908967074,
+          "utc_epoch": 1791921752.389766
+        },
+        {
+          "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
+          "when": "call",
+          "outcome": "passed",
+          "duration": 0.00251155998557806,
+          "utc_epoch": 1791921752.3925304
+        },
+        {
+          "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
+          "when": "teardown",
+          "outcome": "passed",
+          "duration": 0.0010065169772133231,
+          "utc_epoch": 1791921752.3937695
+        }
+      ],
+      "recheck_raw_reports_sha256": "caca4da70e1665b35d4acee3436a58fe702b2f3562f419bfaff59c44a2d06c58"
+    },
+    {
+      "id": "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_refuses_symlink_output",
+      "shard": 6,
+      "original_attempt": 1,
+      "original_failed_phase": "setup",
+      "original_body_executed": false,
+      "original_failure": {
+        "shard": 6,
+        "id": "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_refuses_symlink_output",
+        "when": "setup",
+        "outcome": "failed",
+        "duration": 0.0012500780285336077,
+        "utc_epoch": 1791919606.7862525,
+        "failure": "cls = <class '_pytest.runner.CallInfo'>\nfunc = <function call_and_report.<locals>.<lambda> at 0x7f90dc32a160>\nwhen = 'setup'\nreraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)\n\n    @classmethod\n    def from_call(\n        cls,\n        func: Callable[[], TResult],\n        when: Literal[\"collect\", \"setup\", \"call\", \"teardown\"],\n        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,\n    ) -> CallInfo[TResult]:\n        \"\"\"Call func, wrapping the result in a CallInfo.\n    \n        :param func:\n            The function to call. Called without arguments.\n        :type func: Callable[[], _pytest.runner.TResult]\n        :param when:\n            The phase in which the function is called.\n        :param reraise:\n            Exception or exceptions that shall propagate if raised by the\n            function, instead of being wrapped in the CallInfo.\n        \"\"\"\n        excinfo = None\n        instant = timing.Instant()\n        try:\n>           result: TResult | None = func()\n                                     ^^^^^^\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:344: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:246: in <lambda>\n    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/logging.py:843: in pytest_runtest_setup\n    yield\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/capture.py:895: in pytest_runtest_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:164: in pytest_runtest_setup\n    item.session._setupstate.setup(item)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:514: in setup\n    col.setup()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/python.py:1674: in setup\n    self._request._fillfixtures()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:720: in _fillfixtures\n    item.funcargs[argname] = self.getfixturevalue(argname)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:549: in getfixturevalue\n    fixturedef = self._get_active_fixturedef(argname)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef\n    fixturedef.execute(request=subrequest)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1128: in execute\n    result = ihook.pytest_fixture_setup(fixturedef=self, request=request)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:53: in run_old_style_hookwrapper\n    return result.get_result()\n           ^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:38: in run_old_style_hookwrapper\n    res = yield\n          ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/setuponly.py:36: in pytest_fixture_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1196: in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:923: in call_fixture_func\n    fixture_result = next(generator)\n                     ^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:264: in tmp_path\n    path = _mk_tmp(request, tmp_path_factory)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:251: in _mk_tmp\n    return factory.mktemp(name, numbered=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:135: in mktemp\n    p = make_numbered_dir(root=self.getbasetemp(), prefix=basename, mode=0o700)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp')\nprefix = 'test_curated_static_build_refu', mode = 448\n\n    def make_numbered_dir(root: Path, prefix: str, mode: int = 0o700) -> Path:\n        \"\"\"Create a directory with an increased number as suffix for the given prefix.\"\"\"\n        for i in range(10):\n            # try up to 10 times to create the folder\n            max_existing = max(map(parse_num, find_suffixes(root, prefix)), default=-1)\n            new_number = max_existing + 1\n            new_path = root.joinpath(f\"{prefix}{new_number}\")\n            try:\n                new_path.mkdir(mode=mode)\n            except Exception:\n                pass\n            else:\n                _force_symlink(root, prefix + \"current\", new_path)\n                return new_path\n        else:\n>           raise OSError(\n                \"could not create numbered dir with prefix \"\n                f\"{prefix} in {root} after 10 tries\"\n            )\nE           OSError: could not create numbered dir with prefix test_curated_static_build_refu in /workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp after 10 tries\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/pathlib.py:240: OSError"
+      },
+      "original_raw_reports_sha256": "3d285b8cb58100151453256771addae06a80eb4a6f0e31aeb6094c11735f6034",
+      "recheck_attempt": 2,
+      "recheck_body_executed": true,
+      "recheck_all_phases_passed": true,
+      "recheck_phases": [
+        {
+          "id": "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_refuses_symlink_output",
+          "when": "setup",
+          "outcome": "passed",
+          "duration": 0.000681437028106302,
+          "utc_epoch": 1791921752.3955524
+        },
+        {
+          "id": "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_refuses_symlink_output",
+          "when": "call",
+          "outcome": "passed",
+          "duration": 0.00033685803646221757,
+          "utc_epoch": 1791921752.3960545
+        },
+        {
+          "id": "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_refuses_symlink_output",
+          "when": "teardown",
+          "outcome": "passed",
+          "duration": 0.00016958103515207767,
+          "utc_epoch": 1791921752.3963878
+        }
+      ],
+      "recheck_raw_reports_sha256": "caca4da70e1665b35d4acee3436a58fe702b2f3562f419bfaff59c44a2d06c58"
+    },
+    {
+      "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]",
+      "shard": 6,
+      "original_attempt": 1,
+      "original_failed_phase": "setup",
+      "original_body_executed": false,
+      "original_failure": {
+        "shard": 6,
+        "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]",
+        "when": "setup",
+        "outcome": "failed",
+        "duration": 0.0012350649922154844,
+        "utc_epoch": 1791919607.5786922,
+        "failure": "cls = <class '_pytest.runner.CallInfo'>\nfunc = <function call_and_report.<locals>.<lambda> at 0x7f90d980ac00>\nwhen = 'setup'\nreraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)\n\n    @classmethod\n    def from_call(\n        cls,\n        func: Callable[[], TResult],\n        when: Literal[\"collect\", \"setup\", \"call\", \"teardown\"],\n        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,\n    ) -> CallInfo[TResult]:\n        \"\"\"Call func, wrapping the result in a CallInfo.\n    \n        :param func:\n            The function to call. Called without arguments.\n        :type func: Callable[[], _pytest.runner.TResult]\n        :param when:\n            The phase in which the function is called.\n        :param reraise:\n            Exception or exceptions that shall propagate if raised by the\n            function, instead of being wrapped in the CallInfo.\n        \"\"\"\n        excinfo = None\n        instant = timing.Instant()\n        try:\n>           result: TResult | None = func()\n                                     ^^^^^^\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:344: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:246: in <lambda>\n    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/logging.py:843: in pytest_runtest_setup\n    yield\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/capture.py:895: in pytest_runtest_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:164: in pytest_runtest_setup\n    item.session._setupstate.setup(item)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:514: in setup\n    col.setup()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/python.py:1674: in setup\n    self._request._fillfixtures()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:720: in _fillfixtures\n    item.funcargs[argname] = self.getfixturevalue(argname)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:549: in getfixturevalue\n    fixturedef = self._get_active_fixturedef(argname)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef\n    fixturedef.execute(request=subrequest)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1128: in execute\n    result = ihook.pytest_fixture_setup(fixturedef=self, request=request)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:53: in run_old_style_hookwrapper\n    return result.get_result()\n           ^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:38: in run_old_style_hookwrapper\n    res = yield\n          ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/setuponly.py:36: in pytest_fixture_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1196: in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:923: in call_fixture_func\n    fixture_result = next(generator)\n                     ^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:264: in tmp_path\n    path = _mk_tmp(request, tmp_path_factory)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:251: in _mk_tmp\n    return factory.mktemp(name, numbered=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:135: in mktemp\n    p = make_numbered_dir(root=self.getbasetemp(), prefix=basename, mode=0o700)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp')\nprefix = 'test_dynamic_runtime_evidence_', mode = 448\n\n    def make_numbered_dir(root: Path, prefix: str, mode: int = 0o700) -> Path:\n        \"\"\"Create a directory with an increased number as suffix for the given prefix.\"\"\"\n        for i in range(10):\n            # try up to 10 times to create the folder\n            max_existing = max(map(parse_num, find_suffixes(root, prefix)), default=-1)\n            new_number = max_existing + 1\n            new_path = root.joinpath(f\"{prefix}{new_number}\")\n            try:\n                new_path.mkdir(mode=mode)\n            except Exception:\n                pass\n            else:\n                _force_symlink(root, prefix + \"current\", new_path)\n                return new_path\n        else:\n>           raise OSError(\n                \"could not create numbered dir with prefix \"\n                f\"{prefix} in {root} after 10 tries\"\n            )\nE           OSError: could not create numbered dir with prefix test_dynamic_runtime_evidence_ in /workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp after 10 tries\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/pathlib.py:240: OSError"
+      },
+      "original_raw_reports_sha256": "3d285b8cb58100151453256771addae06a80eb4a6f0e31aeb6094c11735f6034",
+      "recheck_attempt": 2,
+      "recheck_body_executed": true,
+      "recheck_all_phases_passed": true,
+      "recheck_phases": [
+        {
+          "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]",
+          "when": "setup",
+          "outcome": "passed",
+          "duration": 0.0006905699847266078,
+          "utc_epoch": 1791921752.981857
+        },
+        {
+          "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]",
+          "when": "call",
+          "outcome": "passed",
+          "duration": 0.08584610203979537,
+          "utc_epoch": 1791921753.0679564
+        },
+        {
+          "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]",
+          "when": "teardown",
+          "outcome": "passed",
+          "duration": 0.0007369390223175287,
+          "utc_epoch": 1791921753.0690122
+        }
+      ],
+      "recheck_raw_reports_sha256": "caca4da70e1665b35d4acee3436a58fe702b2f3562f419bfaff59c44a2d06c58"
+    },
+    {
+      "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]",
+      "shard": 6,
+      "original_attempt": 1,
+      "original_failed_phase": "setup",
+      "original_body_executed": false,
+      "original_failure": {
+        "shard": 6,
+        "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]",
+        "when": "setup",
+        "outcome": "failed",
+        "duration": 0.0013456580345518887,
+        "utc_epoch": 1791919607.7478416,
+        "failure": "cls = <class '_pytest.runner.CallInfo'>\nfunc = <function call_and_report.<locals>.<lambda> at 0x7f90d980b060>\nwhen = 'setup'\nreraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)\n\n    @classmethod\n    def from_call(\n        cls,\n        func: Callable[[], TResult],\n        when: Literal[\"collect\", \"setup\", \"call\", \"teardown\"],\n        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,\n    ) -> CallInfo[TResult]:\n        \"\"\"Call func, wrapping the result in a CallInfo.\n    \n        :param func:\n            The function to call. Called without arguments.\n        :type func: Callable[[], _pytest.runner.TResult]\n        :param when:\n            The phase in which the function is called.\n        :param reraise:\n            Exception or exceptions that shall propagate if raised by the\n            function, instead of being wrapped in the CallInfo.\n        \"\"\"\n        excinfo = None\n        instant = timing.Instant()\n        try:\n>           result: TResult | None = func()\n                                     ^^^^^^\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:344: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:246: in <lambda>\n    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/logging.py:843: in pytest_runtest_setup\n    yield\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/capture.py:895: in pytest_runtest_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:164: in pytest_runtest_setup\n    item.session._setupstate.setup(item)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/runner.py:514: in setup\n    col.setup()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/python.py:1674: in setup\n    self._request._fillfixtures()\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:720: in _fillfixtures\n    item.funcargs[argname] = self.getfixturevalue(argname)\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:549: in getfixturevalue\n    fixturedef = self._get_active_fixturedef(argname)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:640: in _get_active_fixturedef\n    fixturedef.execute(request=subrequest)\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1128: in execute\n    result = ihook.pytest_fixture_setup(fixturedef=self, request=request)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_hooks.py:512: in __call__\n    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_manager.py:120: in _hookexec\n    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:53: in run_old_style_hookwrapper\n    return result.get_result()\n           ^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/pluggy/_callers.py:38: in run_old_style_hookwrapper\n    res = yield\n          ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/setuponly.py:36: in pytest_fixture_setup\n    return (yield)\n            ^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:1196: in pytest_fixture_setup\n    result = call_fixture_func(fixturefunc, request, kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/fixtures.py:923: in call_fixture_func\n    fixture_result = next(generator)\n                     ^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:264: in tmp_path\n    path = _mk_tmp(request, tmp_path_factory)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:251: in _mk_tmp\n    return factory.mktemp(name, numbered=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/tmpdir.py:135: in mktemp\n    p = make_numbered_dir(root=self.getbasetemp(), prefix=basename, mode=0o700)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nroot = PosixPath('/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp')\nprefix = 'test_dynamic_runtime_evidence_', mode = 448\n\n    def make_numbered_dir(root: Path, prefix: str, mode: int = 0o700) -> Path:\n        \"\"\"Create a directory with an increased number as suffix for the given prefix.\"\"\"\n        for i in range(10):\n            # try up to 10 times to create the folder\n            max_existing = max(map(parse_num, find_suffixes(root, prefix)), default=-1)\n            new_number = max_existing + 1\n            new_path = root.joinpath(f\"{prefix}{new_number}\")\n            try:\n                new_path.mkdir(mode=mode)\n            except Exception:\n                pass\n            else:\n                _force_symlink(root, prefix + \"current\", new_path)\n                return new_path\n        else:\n>           raise OSError(\n                \"could not create numbered dir with prefix \"\n                f\"{prefix} in {root} after 10 tries\"\n            )\nE           OSError: could not create numbered dir with prefix test_dynamic_runtime_evidence_ in /workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6/pytest-tmp after 10 tries\n\n.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/_pytest/pathlib.py:240: OSError"
+      },
+      "original_raw_reports_sha256": "3d285b8cb58100151453256771addae06a80eb4a6f0e31aeb6094c11735f6034",
+      "recheck_attempt": 2,
+      "recheck_body_executed": true,
+      "recheck_all_phases_passed": true,
+      "recheck_phases": [
+        {
+          "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]",
+          "when": "setup",
+          "outcome": "passed",
+          "duration": 0.0006433599628508091,
+          "utc_epoch": 1791921753.0700731
+        },
+        {
+          "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]",
+          "when": "call",
+          "outcome": "passed",
+          "duration": 0.07104933296795934,
+          "utc_epoch": 1791921753.1413758
+        },
+        {
+          "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]",
+          "when": "teardown",
+          "outcome": "passed",
+          "duration": 0.0005968919722363353,
+          "utc_epoch": 1791921753.142258
+        }
+      ],
+      "recheck_raw_reports_sha256": "caca4da70e1665b35d4acee3436a58fe702b2f3562f419bfaff59c44a2d06c58"
+    }
+  ]
+}

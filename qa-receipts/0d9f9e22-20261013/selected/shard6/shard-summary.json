@@ -1,0 +1,129 @@
+{
+  "shard": 6,
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "attempt_number": 2,
+  "this_attempt_invocations": 1,
+  "further_retries": 0,
+  "one_environment_repaired_recheck_explicitly_authorized": true,
+  "prior_original_attempt_preserved": true,
+  "runner_exit_code": 0,
+  "wrapper_exit_code": 0,
+  "duration_seconds": 469.8866853713989,
+  "pytest_duration_seconds": 466.125,
+  "pytest_terminal_summary": "338 passed, 9 warnings in 466.14s (0:07:46)",
+  "counts": {
+    "assigned": 338,
+    "collected": 338,
+    "passed": 338,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "failed_phases": 0,
+    "skipped_phases": 0,
+    "junit_tests": 338
+  },
+  "phase_counts": {
+    "setup:passed": 338,
+    "call:passed": 338,
+    "teardown:passed": 338
+  },
+  "failed_phases": [],
+  "skipped_phases": [],
+  "assigned_vs_collected": {
+    "same_order": true,
+    "same_ids": true,
+    "missing_ids": [],
+    "unexpected_ids": [],
+    "duplicate_collected_ids": []
+  },
+  "completed_call_vs_collected": {
+    "same_ids": true,
+    "missing_ids": [],
+    "duplicate_call_ids": []
+  },
+  "passed_vs_collected": {
+    "same_ids": true,
+    "missing_passed_ids": []
+  },
+  "all_five_original_setup_error_ids_call_outcomes": [
+    {
+      "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[created_at-raw metadata changed-False]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.05140396603383124,
+      "utc_epoch": 1791921751.562939
+    },
+    {
+      "id": "casepath-api/tests/test_workspace_verified_prefix_cache.py::test_cache_rechecks_every_persisted_row_column[event_sha256-0000000000000000000000000000000000000000000000000000000000000000-True]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.00251155998557806,
+      "utc_epoch": 1791921752.3925304
+    },
+    {
+      "id": "casepath/tools/test_build_deployment_identity.py::test_curated_static_build_refuses_symlink_output",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.00033685803646221757,
+      "utc_epoch": 1791921752.3960545
+    },
+    {
+      "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.08584610203979537,
+      "utc_epoch": 1791921753.0679564
+    },
+    {
+      "id": "casepath/tools/test_casepath_release.py::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]",
+      "when": "call",
+      "outcome": "passed",
+      "duration": 0.07104933296795934,
+      "utc_epoch": 1791921753.1413758
+    }
+  ],
+  "all_five_original_setup_error_ids_called_and_passed": true,
+  "wrapper_env_matches_prepare_plus_only_two_flags": true,
+  "source_capsule_before_after": {
+    "before_verified": true,
+    "after_verified": true,
+    "after_verifier_exit_code": 0,
+    "after_verifier_invocations": 1,
+    "automatically_invoked_immediately_after_terminal": true,
+    "head_unchanged": true,
+    "clean_after": true,
+    "normal_clone_before_after": true,
+    "manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+    "manifest_matches_expected_before_after": true,
+    "capsule_receipt_file_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+    "receipt_matches_expected_before_after": true,
+    "capsule_receipt_equal": true,
+    "source_artifact_static_counts": [
+      1706,
+      25,
+      37
+    ]
+  },
+  "original_failed_attempt_artifacts": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard6",
+  "artifacts": {
+    "ATTEMPT_STARTED.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/ATTEMPT_STARTED.json",
+    "prepare.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/prepare.json",
+    "command.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/command.json",
+    "runner-wrapper-command.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/runner-wrapper-command.json",
+    "ids.txt": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/ids.txt",
+    "pytest-arguments.txt": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/pytest-arguments.txt",
+    "collected.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/collected.json",
+    "reports.jsonl": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/reports.jsonl",
+    "junit.xml": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/junit.xml",
+    "pytest.log": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/pytest.log",
+    "runner-terminal.log": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/runner-terminal.log",
+    "result.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/result.json",
+    "runner-wrapper-result.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/runner-wrapper-result.json",
+    "source-before/capsule-verification.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/source-before/capsule-verification.json",
+    "source-before/CAPSULE_RECEIPT.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/source-before/CAPSULE_RECEIPT.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/source-after/capsule-verification.json",
+    "source-after/CAPSULE_RECEIPT.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/source-after/CAPSULE_RECEIPT.json",
+    "capsule-verification-after.log": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/capsule-verification-after.log",
+    "capsule-verification-after-result.json": "/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/capsule-verification-after-result.json"
+  }
+}

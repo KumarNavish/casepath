@@ -1,0 +1,33 @@
+{
+  "cloud_status_first_error": "The environment configuration changed. Try again.",
+  "retry_read_only_result": {
+    "provider": "cloud",
+    "connectivity": "connected",
+    "observations_current": true,
+    "observed_phase": "running",
+    "capabilities": [],
+    "network_state": "unknown"
+  },
+  "available_storage_management_tools": "Environment status and configuration draft tools only; no callable provision, resize, attach or new filesystem tools",
+  "readonly_volume_observations": [
+    {
+      "path": "/workspace",
+      "device": 27,
+      "free_bytes": 427667456
+    },
+    {
+      "path": "/tmp",
+      "device": 34,
+      "free_bytes": 218419200
+    },
+    {
+      "path": "/dev/shm",
+      "device": 76,
+      "free_bytes": 17871892480
+    }
+  ],
+  "independent_scratch_candidate": "/dev/shm/casepath-quiet-completion-recheck-0d9f9e22-20261013",
+  "scratch_not_created": true,
+  "requires_supported_exact_path_write_grant": true,
+  "tests_started": false
+}

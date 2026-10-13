@@ -1,0 +1,51 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "status": "PASSED SELECTED ATTEMPTS; ORIGINAL GATE FAILED AND PRESERVED",
+  "source_manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+  "capsule_receipt_file_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+  "original_failed_archive_commit": "d8c72308e4d861b7887c80e5e94ba39624b78c7e",
+  "original_failed_manifest_sha256": "407e1717815ee07c73907ec77816148c7fd06acb65fd6478b2a063e2aa41d0af",
+  "original_failure_history_preserved": true,
+  "original_counts": {
+    "cloud_passed": 2428,
+    "cloud_errors": 6,
+    "cloud_skipped": 10,
+    "cloud_failed": 0,
+    "mac_attested_passed": 127
+  },
+  "authorized_rechecked_complete_shards": [
+    3,
+    6
+  ],
+  "each_recheck_ids": [
+    334,
+    338
+  ],
+  "additional_attempts": 2,
+  "no_other_shards_repeated": true,
+  "new_full_suite_attempts": 0,
+  "selected_standard_layout": "selected/shard1..6",
+  "selected_cloud": {
+    "tests": 2444,
+    "passed": 2434,
+    "failed": 0,
+    "skipped": 10,
+    "errors": 0
+  },
+  "selected_combined_mac_attested": {
+    "tests": 2571,
+    "passed": 2561,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 10,
+    "pending": 0
+  },
+  "all_six_previously_unrun_bodies_now_passed": true,
+  "source_assertions_tests_deadlines_deterministic_env_and_known_skip_roster_unchanged": true,
+  "original_mkdir_errno": "Not captured; underlying cause unconfirmed",
+  "disk_pressure_observed": true,
+  "cache_and_completed_runtime_retirement_authorized": true,
+  "serial_3_then_6": true,
+  "workspace_free_bytes": 1149669376,
+  "completed_epoch": 1791921958.5009499
+}

@@ -1,0 +1,25 @@
+{
+  "observed_epoch": 1791920270.9568305,
+  "bounded_scope": "/workspace/casepath-* roots; pruned Git/source, source-capsules, all fixtures/journals/artifact stores/public build/source trees and node_modules",
+  "candidates": [
+    {
+      "path": "/workspace/casepath-original-completeness-audit/audits/original-completeness-20261012/__pycache__",
+      "size_bytes": 21451,
+      "files": 1,
+      "kind": "compiled-python",
+      "eligible_pending_ownership": true,
+      "unexpected_files": []
+    },
+    {
+      "path": "/workspace/casepath-operations-frontend-20261013/casepath-qa/__pycache__",
+      "size_bytes": 11624,
+      "files": 1,
+      "kind": "compiled-python",
+      "eligible_pending_ownership": true,
+      "unexpected_files": []
+    }
+  ],
+  "total_possible_bytes": 33075,
+  "workspace_free_bytes": 427671552,
+  "deletions_performed": false
+}

@@ -1,0 +1,25 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "started_epoch": 1791921285.5409787,
+  "command": [
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "--junitxml=/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/junit.xml",
+    "--durations=0",
+    "--basetemp=/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/pytest-tmp",
+    "@/workspace/casepath-quiet-completion-recheck-0d9f9e22-20261013/attempt2-shard6/pytest-arguments.txt"
+  ],
+  "retry_allowed": false,
+  "attempt_number": 2,
+  "prior_original_attempt_preserved": true,
+  "one_environment_repaired_recheck_explicitly_authorized": true
+}

@@ -1,0 +1,57 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "shard": 1,
+  "assigned_count": 293,
+  "collected_count": 293,
+  "assigned_ids_exactly_collected": true,
+  "all_assigned_ids_have_reports": true,
+  "exit_code": 0,
+  "duration_seconds": 775.357586145401,
+  "passed": 293,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "phase_counts": {
+    "setup": {
+      "passed": 293
+    },
+    "call": {
+      "passed": 293
+    },
+    "teardown": {
+      "passed": 293
+    }
+  },
+  "junit": {
+    "tests": 293,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "attempts": 1,
+  "retries": 0,
+  "failed_ids": [],
+  "source_clean_after": true,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "source_manifest_sha256": "a91a6ec3d947d82953fa7a07e35e394c6b444ff8901b99ea3084d5f56238302c",
+  "capsule_receipt_file_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+  "after_verifier_exit_code": 0,
+  "all_prior_gate_assets_untouched": true,
+  "evidence": {
+    "command.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/command.json",
+    "result.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/result.json",
+    "ATTEMPT_STARTED.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/ATTEMPT_STARTED.json",
+    "collected.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/collected.json",
+    "reports.jsonl": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/reports.jsonl",
+    "junit.xml": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/junit.xml",
+    "pytest.log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/pytest.log",
+    "runner-terminal.log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/runner-terminal.log",
+    "capsule-verification-after.log": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/capsule-verification-after.log",
+    "source-before/capsule-verification.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/source-before/capsule-verification.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/shard1/source-after/capsule-verification.json"
+  }
+}

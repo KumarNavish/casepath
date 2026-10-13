@@ -1,0 +1,43 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "source_before_checks": [
+    {
+      "shard": 3,
+      "assigned_ids": 334,
+      "before_exit": 0,
+      "receipt_file_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+      "source_artifact_static": [
+        1706,
+        25,
+        37
+      ]
+    },
+    {
+      "shard": 6,
+      "assigned_ids": 338,
+      "before_exit": 0,
+      "receipt_file_sha256": "b1116708810377b1e1edc58de2939d7edb444f60cc02e0c9b1f88319b4789848",
+      "source_artifact_static": [
+        1706,
+        25,
+        37
+      ]
+    }
+  ],
+  "workspace_free_bytes": 1197502464,
+  "workspace_free_inodes": 1724691,
+  "file_descriptor_limit": [
+    16384,
+    16384
+  ],
+  "file_size_limit": [
+    -1,
+    -1
+  ],
+  "minimum_headroom_bytes": 1073741824,
+  "observed_epoch": 1791920582.6197433,
+  "mode": "Serial full3 then full6, one authorized recheck each",
+  "prior_mkdir_errno": "Not captured: original pytest swallowed mkdir exceptions; pressure observed, cause unproven",
+  "prepared": true,
+  "tests_started": false
+}
