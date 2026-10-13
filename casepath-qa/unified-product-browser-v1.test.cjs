@@ -937,8 +937,8 @@ test('causal formation native: autoplay introduces early-reviewed requirements a
  });
 });
 
-for(const interruption of ['none','pause','navigation','unstarted','pause-head','navigation-head','changed-head','missing'])test(`causal formation native: next case handoff retains verified content through ${interruption}`,async t=>{
- const fixture=referenceFixture(),id=referenceIds[0],next=referenceIds[1],head=fixture.snapshots[id].state,page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,holdReplayId:next,holdReplayThrough:interruption.endsWith('-head')?fixture.snapshots[next].state.revision:0,...(interruption==='unstarted'?{referenceUnprocessedIds:[next]}:{}),...(interruption==='changed-head'?{referenceChangedHeadId:next}:{}),...(interruption==='missing'?{referenceReplayMissingId:next}:{})});
+for(const interruption of ['none','visibility','visibility-head','visibility-late','visibility-head-late','pause','navigation','unstarted','pause-head','navigation-head','changed-head','missing'])test(`causal formation native: next case handoff retains verified content through ${interruption}`,async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],next=referenceIds[1],head=fixture.snapshots[id].state,page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,holdReplayId:next,holdReplayThrough:interruption.includes('-head')?fixture.snapshots[next].state.revision:0,...(interruption==='unstarted'?{referenceUnprocessedIds:[next]}:{}),...(interruption==='changed-head'?{referenceChangedHeadId:next}:{}),...(interruption==='missing'?{referenceReplayMissingId:next}:{})});
  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through}),{id,through:head.revision-1});await page.locator('[data-au-demo-play]').click();
  for(let step=0;step<200&&Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<head.revision;step++)await page.clock.runFor(50);
  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision));
@@ -947,10 +947,26 @@ for(const interruption of ['none','pause','navigation','unstarted','pause-head',
  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision),'the last verified case survives a pending next-case read');assert.equal(await page.locator('.au-catalog-preview').count(),0);
  if(interruption.startsWith('navigation')){await page.locator('.au-nav [data-au-nav="work"]').click();}
  else if(interruption.startsWith('pause')){await page.locator('[data-au-demo-stop]').click();const held=await page.locator('[data-au-claim-title]').innerText();await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});await page.clock.runFor(6000);assert.equal(await page.locator('[data-au-claim-title]').innerText(),held);assert.equal(await page.locator('[data-au-demo-resume]').count(),1);await page.locator('[data-au-demo-resume]').click();}
+ else if(interruption.startsWith('visibility')){
+  await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='replay')),'the next-case opening or verified head was not held in flight');
+  const visible=()=>page.evaluate(()=>({revision:document.querySelector('[data-au-revision]')?.dataset.auRevision,state_sha256:document.querySelector('[data-au-revision]')?.dataset.auStateSha,route:location.hash,title:document.querySelector('[data-au-claim-title]')?.textContent,nodes:[...document.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),obligations:[...document.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation)})),prior=await visible();
+  assert.equal(prior.state_sha256,fixture.prefixes[id][head.revision].state.state_sha256);
+  await page.evaluate(()=>{window.__fixture.hidden=true;Object.defineProperty(document,'hidden',{configurable:true,get:()=>window.__fixture.hidden});document.dispatchEvent(new Event('visibilitychange'));});
+  if(!interruption.endsWith('-late'))await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});
+  const reads=(await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/replay?')))).length;
+  await page.clock.runFor(8000);assert.deepEqual(await visible(),prior,'a hidden next-case response cannot replace the settled prior case');
+  assert.equal((await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/replay?')))).length,reads,'hidden handoff cannot request another recorded prefix');
+  await page.evaluate(()=>{window.__fixture.hidden=false;document.dispatchEvent(new Event('visibilitychange'));document.querySelector('h1').focus();});
+  assert.equal(await page.locator('[data-au-demo-resume]').count(),0);await page.clock.runFor(100);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision),'visible handoff restores the prior reading interval');
+  if(interruption.endsWith('-late')){
+   await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});
+   await page.clock.runFor(3800);assert.deepEqual(await visible(),prior,'a response released after show must preserve the fresh four-second prior-head reading interval');
+  }
+ }
  await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});
  if(interruption.startsWith('navigation')){await page.clock.runFor(6000);assert.equal(await page.locator('[data-au-claim-row]').count(),20);assert.equal(await page.locator('[data-au-revision]').count(),0);}
  else if(['unstarted','changed-head','missing'].includes(interruption)){await eventually(()=>page.locator('.au-global-status').innerText().then(text=>text.includes('Next case')&&/No recorded execution|head changed|No recorded replay/.test(text)),'an unstarted next case did not fail truthfully');assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),String(head.revision));assert.ok((await page.locator('.au-global-status').innerText()).includes(next)|| (await page.locator('.au-global-status').innerText()).includes('Heating resets'));}
- else {await page.clock.runFor(4100);await eventually(()=>page.evaluate(()=>window.__handoffPaints.some(row=>row.revision==='0')),'verified next prefix zero did not paint directly');assert.ok(new URL(page.url()).hash.includes(next));const opening=await page.evaluate(()=>window.__handoffPaints.find(row=>row.revision==='0'));assert.equal(opening.state_sha256,fixture.prefixes[next][0].state.state_sha256);assert.deepEqual(opening.nodes,[]);assert.deepEqual(opening.knowledge,[]);assert.equal(await page.locator('[data-au-node]').count(),0,'the next verified head never lends its process to intake prefix zero');}
+ else {await page.clock.runFor(interruption.endsWith('-late')?300:4100);await eventually(()=>page.evaluate(()=>window.__handoffPaints.some(row=>row.revision==='0')),'verified next prefix zero did not paint directly');assert.ok(new URL(page.url()).hash.includes(next));const opening=await page.evaluate(()=>window.__handoffPaints.find(row=>row.revision==='0'));assert.equal(opening.state_sha256,fixture.prefixes[next][0].state.state_sha256);assert.deepEqual(opening.nodes,[]);assert.deepEqual(opening.knowledge,[]);assert.equal(await page.locator('[data-au-node]').count(),0,'the next verified head never lends its process to intake prefix zero');}
  assert.equal(await page.evaluate(()=>window.__handoffPaints.some(row=>row.empty)),false,'no empty Choose a case interstitial is painted');assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
  await focusedReceipt(page,`causal-native-handoff-${interruption}`,{prior:id,next,interruption,paints:await page.evaluate(()=>window.__handoffPaints)});
 });
@@ -977,39 +993,62 @@ test('replay entry: programmatic titles stay quiet while native keyboard focus r
  await heading.focus();assert.equal(await heading.evaluate(element=>getComputedStyle(element).outlineStyle),'solid','keyboard modality retains heading focus indication');
 });
 
-for(const publicReadOnly of [false,true])test(`replay entry: fresh ${publicReadOnly?'public visitor':'owner'} consumes all 218 reference prefixes and eight native handoffs`,async t=>{
+for(const publicReadOnly of [false,true])test(`replay entry: fresh ${publicReadOnly?'public visitor':'owner'} consumes all 218 reference prefixes and eight native handoffs${publicReadOnly?' with visibility and programmatic focus interruptions':''}`,async t=>{
  const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly,providerReady:!publicReadOnly,initialFragment:publicReadOnly?'#autonomous/demonstration?mode=replay':'#autonomous'});
  if(!publicReadOnly)await page.locator('.au-nav [data-au-nav="demonstration"]').click();
  await eventually(()=>page.locator('[data-au-revision="0"]').count().then(count=>count===1),'fresh Demonstration must begin at reference intake prefix zero');
  assert.ok(new URL(page.url()).hash.startsWith(`#autonomous/claim/${id}?collection=reference&mode=replay&through=0`));
  assert.equal(await page.locator('[data-au-node],[data-au-reference-mode]').count(),0,'the verified head cannot paint into prefix zero');
- await title(page,id);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});
- await page.evaluate(()=>{
-  window.__referencePaints=[];
+ if(!publicReadOnly){await title(page,id);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});}
+ await page.evaluate(publicReadOnly=>{
+  window.__referencePaints=[];window.__referenceTrustedInputs=[];
+  for(const type of ['click','pointerdown','keydown'])document.addEventListener(type,event=>{if(event.isTrusted)window.__referenceTrustedInputs.push(type);},true);
   const capture=()=>{
    const pre=document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]'),surface=document.querySelector('[data-au-revision]');
-   if(!pre||!surface)return;const record=JSON.parse(pre.textContent);if(!record?.state)return;
-   const identity=`${record.state.claim_id}:${record.state.revision}:${record.state.state_sha256}`;
+   if(!surface||!publicReadOnly&&!pre)return;const record=pre?JSON.parse(pre.textContent):null,claim_id=decodeURIComponent(location.hash.split('?')[0].slice('#autonomous/claim/'.length));
+   const identity=`${claim_id}:${surface.dataset.auRevision}:${surface.dataset.auStateSha}`;
    if(window.__referencePaints.at(-1)?.identity===identity)return;
-   window.__referencePaints.push({identity,record,revision:surface.dataset.auRevision,state_sha256:surface.dataset.auStateSha,route:location.hash,nav:document.querySelector('.au-nav [aria-current="page"]')?.dataset.auNav,nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),requirements:[...surface.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation)});
+   window.__referencePaints.push({identity,claim_id,...record?{record}:{},revision:surface.dataset.auRevision,state_sha256:surface.dataset.auStateSha,route:location.hash,nav:document.querySelector('.au-nav [aria-current="page"]')?.dataset.auNav,nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),requirements:[...surface.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation),forming:[...surface.querySelectorAll('[data-au-forming-revision]')].map(row=>({revision:row.dataset.auFormingRevision,state_sha256:row.dataset.auFormingSha})),documents:[...surface.querySelectorAll('.au-forming-documents .au-obligation')].map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status,review:row.querySelector('[data-au-review]')?.dataset.auReview||null,checks:[...row.querySelectorAll('.au-document-review [aria-hidden="true"]')].map(mark=>mark.textContent)})),sources:[...surface.querySelectorAll('[data-au-source-identity]')].map(row=>row.dataset.auSourceIdentity),citations:[...surface.querySelectorAll('[data-au-citation]')].map(row=>JSON.parse(row.dataset.auCitation)),knowledge:[...surface.querySelectorAll('[data-au-knowledge][data-au-version]')].map(row=>({id:row.dataset.auKnowledge,version:row.dataset.auVersion,sha256:row.dataset.auKnowledgeSha})),outcome:surface.querySelector('.au-assessment-conclusion > p')?.textContent||null});
   };
   capture();window.__referenceObserver=new MutationObserver(capture);window.__referenceObserver.observe(document.querySelector('#workspace'),{subtree:true,childList:true});
- });
- for(let tick=0;tick<1000&&await page.locator('[data-au-demo-stop]').count();tick++)await page.clock.runFor(1600);
+ },publicReadOnly);
+ const interruptions=[];
+ for(let tick=0;tick<1000&&await page.locator('[data-au-demo-stop]').count();tick++){
+  if(publicReadOnly&&interruptions.length<4&&(await page.evaluate(()=>window.__referencePaints.length))>=[5,35,100,180][interruptions.length]){
+   const paint=await page.evaluate(()=>window.__referencePaints.at(-1)),paints=await page.evaluate(()=>window.__referencePaints.length);
+   await page.evaluate(()=>{window.__fixture.hidden=true;Object.defineProperty(document,'hidden',{configurable:true,get:()=>window.__fixture.hidden});document.dispatchEvent(new Event('visibilitychange'));});
+   const reads=(await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/replay?')))).length;
+   await page.clock.runFor(8000);assert.deepEqual(await page.evaluate(()=>window.__referencePaints.at(-1)),paint);assert.equal(await page.evaluate(()=>window.__referencePaints.length),paints,'hidden reference prefixes cannot paint');
+   assert.equal((await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/replay?')))).length,reads);
+   await page.evaluate(()=>{window.__fixture.hidden=false;document.dispatchEvent(new Event('visibilitychange'));const heading=document.querySelector('h1');heading.focus();heading.blur();heading.focus();window.dispatchEvent(new Event('blur'));window.dispatchEvent(new Event('focus'));window.dispatchEvent(new Event('resize'));document.fonts.dispatchEvent(new Event('loadingdone'));document.dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',bubbles:true}));document.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));});
+   assert.equal(await page.locator('[data-au-demo-resume]').count(),0);await page.clock.runFor(100);assert.deepEqual(await page.evaluate(()=>window.__referencePaints.at(-1)),paint,'show cannot consume a burst of missed recorded prefixes');
+   interruptions.push({claim_id:paint.claim_id,revision:paint.revision,state_sha256:paint.state_sha256,paints,reads});
+  }
+  await page.clock.runFor(1600);
+ }
+ assert.equal(interruptions.length,publicReadOnly?4:0);
  assert.match(await page.locator('.au-global-status').innerText(),/Recorded playback finished/);
  const paints=await page.evaluate(()=>{window.__referenceObserver.disconnect();return window.__referencePaints;});
  const expected=referenceIds.flatMap(claim=>Object.values(fixture.prefixes[claim]));assert.equal(expected.length,218);assert.equal(paints.length,218,'no real accepted prefix may disappear during playback or case handoff');
  for(let index=0;index<expected.length;index++){
-  const paint=paints[index],prefix=expected[index];assert.deepEqual(paint.record,{state:prefix.state,projection:prefix.projection},`native paint ${index} retains the complete accepted prefix`);
+  const paint=paints[index],prefix=expected[index];if(!publicReadOnly)assert.deepEqual(paint.record,{state:prefix.state,projection:prefix.projection},`native paint ${index} retains the complete accepted prefix`);
+  assert.equal(paint.claim_id,prefix.state.claim_id);
   assert.equal(paint.revision,String(prefix.through_seq));assert.equal(paint.state_sha256,prefix.state.state_sha256);assert.equal(paint.nav,'demonstration');
   assert.ok(paint.route.startsWith(`#autonomous/claim/${prefix.state.claim_id}?collection=reference&mode=replay&through=${prefix.through_seq}`));
   assert.deepEqual(sorted(paint.nodes),sorted((prefix.state.graph?.nodes||[]).map(row=>row.node_id)),`native paint ${index} keeps its own recorded graph`);
   assert.ok(paint.requirements.every(identity=>prefix.state.obligations.some(row=>row.obligation_id===identity)),`native paint ${index} requirements belong to this accepted prefix`);
+  for(const forming of paint.forming){assert.equal(forming.revision,String(prefix.through_seq));assert.equal(forming.state_sha256,prefix.state.state_sha256);}
+  for(const row of paint.documents){const obligation=prefix.state.obligations.find(item=>item.obligation_id===row.id),document=prefix.state.evaluation?.documents.find(item=>item.document_type===row.type);assert.ok(obligation);assert.equal(row.status,document?.route_state||obligation.status||'pending');if(row.review)assert.equal(row.review,document?.review_state);assert.deepEqual(row.checks,row.review==='sufficient'?['✓']:[],'only actual sufficient document review paints a checkmark');}
+  for(const identity of paint.sources){const descriptor=prefix.state.source_descriptors.find(row=>identity===`${prefix.state.claim_id}:${row.artifact_id}:${row.sha256}:${prefix.state.acquired_sources.find(source=>source.artifact_id===row.artifact_id)?.text_sha256||''}`);assert.ok(descriptor,'visible source identity keeps original bytes and accepted text hashes');}
+  const citations=prefix.state.facts.flatMap(row=>row.citations||[]).concat(prefix.state.actions.flatMap(row=>(row.result||row).citations||[]));for(const citation of paint.citations){assert.ok(citations.some(row=>canonical(row)===canonical(citation)),'visible citations retain exact accepted source passages');assert.equal(citation.sha256,prefix.state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id)?.sha256);}
+  for(const pin of paint.knowledge)assert.ok([...prefix.state.knowledge_uses,...prefix.state.knowledge_published].some(row=>(row.knowledge_id||row.version_id)===pin.id&&String(row.version||row.version_id)===pin.version&&(row.knowledge_sha256||'')===pin.sha256),'visible procedure pins retain their own accepted immutable version');
+  assert.equal(paint.outcome,prefix.state.outcome?.summary||null,'only the accepted outcome appears in the conclusion');
  }
- assert.deepEqual([...new Set(paints.map(row=>row.record.state.claim_id))],referenceIds);assert.equal(paints.filter((row,index)=>index&&row.record.state.claim_id!==paints[index-1].record.state.claim_id).length,8);
- assert.deepEqual(await visibleRecord(page),{state:fixture.snapshots[referenceIds.at(-1)].state,projection:fixture.snapshots[referenceIds.at(-1)].projection});
+ assert.deepEqual([...new Set(paints.map(row=>row.claim_id))],referenceIds);assert.equal(paints.filter((row,index)=>index&&row.claim_id!==paints[index-1].claim_id).length,8);
+ if(!publicReadOnly)assert.deepEqual(await visibleRecord(page),{state:fixture.snapshots[referenceIds.at(-1)].state,projection:fixture.snapshots[referenceIds.at(-1)].projection});
+ if(publicReadOnly){assert.deepEqual(await page.evaluate(()=>window.__referenceTrustedInputs),[],'fresh public playback finishes without any trusted user input');assert.equal(await page.locator('[data-au-record-content] pre').count(),0,'the zero-input public run never opens History or Resume');}
  assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
- await focusedReceipt(page,`replay-entry-all218-${publicReadOnly?'visitor':'owner'}`,{prefixes:paints.map(({record,...paint})=>({...paint,claim_id:record.state.claim_id})),handoffs:8,requests:await page.evaluate(()=>window.__fixture.calls)});
+ await focusedReceipt(page,`replay-entry-all218-${publicReadOnly?'visitor':'owner'}`,{prefixes:paints.map(({record,...paint})=>paint),handoffs:8,interruptions,trustedInputs:await page.evaluate(()=>window.__referenceTrustedInputs),scope:publicReadOnly?'Fresh public entry without trusted input; native DOM identities and accepted visible content.':'Existing History drawer instrumentation; complete accepted state and projection for all prefixes.',requests:await page.evaluate(()=>window.__fixture.calls)});
 });
 
 test('replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play',async t=>{
@@ -1024,7 +1063,38 @@ test('replay entry: shared reference identity and explicit legacy links keep man
  });
 });
 
-test('replay lifecycle: actual index retains a native back-forward cached prefix and resumes only by intent',async()=>{
+for(const interruption of ['initial hidden','trusted initial Tab','hidden reentry'])test(`replay visibility: ${interruption} preserves the first accepted reference prefix before exact continuation`,async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],priorId=referenceIds[1],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,holdReplayId:id,holdReplayThrough:0,...interruption==='hidden reentry'?{initialFragment:`#autonomous/claim/${priorId}?collection=reference&mode=replay&through=0`}:{}});
+ const prior=interruption==='hidden reentry'?{state_sha256:await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'),title:await page.locator('[data-au-claim-title]').textContent()}:null;
+ if(prior)assert.equal(prior.state_sha256,fixture.prefixes[priorId][0].state.state_sha256);
+ if(interruption!=='trusted initial Tab')await page.evaluate(()=>{window.__fixture.hidden=true;Object.defineProperty(document,'hidden',{configurable:true,get:()=>window.__fixture.hidden});document.dispatchEvent(new Event('visibilitychange'));location.hash='#autonomous/demonstration?mode=replay';});
+ else await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+ await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='replay'&&row.through===0)),'initial reference prefix zero was not held in flight');
+ if(interruption==='trusted initial Tab')await page.keyboard.press('Tab');
+ await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});
+ if(interruption!=='trusted initial Tab'){
+  await page.clock.runFor(8000);
+  if(prior){assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'),prior.state_sha256,'hidden reentry retains the different prior visible prefix');assert.equal(await page.locator('[data-au-claim-title]').textContent(),prior.title);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'0');}
+  else assert.equal(await page.locator('[data-au-revision]').count(),0,'an initially hidden response cannot paint a claim');
+  assert.deepEqual((await calls(page,`/claims/${id}/replay`)).map(row=>Number(new URL(row.url,'http://fixture.invalid').searchParams.get('through_seq'))),[0],'hidden opening cannot qualify the head or drain prefixes');
+  await page.evaluate(()=>{window.__fixture.hidden=false;document.dispatchEvent(new Event('visibilitychange'));});
+ }else await eventually(()=>page.locator('[data-au-revision="0"]').count().then(count=>count===1),'trusted initial inspection lost its accepted prefix zero');
+ await eventually(async()=>await page.locator('[data-au-revision="0"]').count()===1&&await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha')===fixture.prefixes[id][0].state.state_sha256,'visible entry did not admit the exact new reference prefix zero');
+ assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'),fixture.prefixes[id][0].state.state_sha256);assert.equal(await page.locator('[data-au-node]').count(),0);
+ if(interruption==='trusted initial Tab'){
+  assert.equal(await page.locator('[data-au-demo-resume]').count(),1);
+  await page.evaluate(()=>{window.__fixture.hidden=true;Object.defineProperty(document,'hidden',{configurable:true,get:()=>window.__fixture.hidden});document.dispatchEvent(new Event('visibilitychange'));});await page.clock.runFor(8000);
+  await page.evaluate(()=>{window.__fixture.hidden=false;document.dispatchEvent(new Event('visibilitychange'));});await page.clock.runFor(8000);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'0');
+  await page.locator('[data-au-demo-resume]').click();
+ }else assert.equal(await page.locator('[data-au-demo-resume]').count(),0);
+ await page.clock.runFor(100);assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'0','entry retains a reading interval before continuation');
+ for(let tick=0;await page.locator('[data-au-revision]').getAttribute('data-au-revision')==='0'&&tick<300;tick++)await page.clock.runFor(20);
+ assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'1');assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'),fixture.prefixes[id][1].state.state_sha256);
+ await focusedReceipt(page,`replay-visibility-entry-${interruption.replaceAll(' ','-')}`,{id,interruption,prior,calls:await calls(page,`/claims/${id}/replay`)});
+ await page.locator('.au-nav [data-au-nav="work"]').click();
+});
+
+test('replay lifecycle: actual index restores native back-forward autoplay and keeps manual inspected prefixes held',async()=>{
  const fixture=referenceFixture(),id=referenceIds[0],assets=new Map([
   ['casepath/index.html',fs.readFileSync(path.join(root,'casepath/index.html'))],
   ['casepath/assets/autonomous-entry-v1.js',fs.readFileSync(process.env.CASEPATH_BROWSER_ENTRY_ASSET || path.join(root,'casepath/assets/autonomous-entry-v1.js'))],
@@ -1067,12 +1137,13 @@ test('replay lifecycle: actual index retains a native back-forward cached prefix
    await eventually(()=>shows.some(row=>row.path==='/'&&row.persisted===true),'Back did not restore a genuine native cached page');
    const restored=await sample();for(const field of ['revision','state_sha256','hash','nav','panel'])assert.equal(restored[field],before[field],`native cached Back must retain its exact ${field}`);assert.ok(restored.workspaceLength>0);
    const persistedHide=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('casepath-qa-lifecycle')));assert.equal(persistedHide.persisted,true);
-   await page.clock.runFor(9000);const held=await sample();assert.equal(held.revision,before.revision,'native visibility restoration must hold the inspected recorded prefix');
+   let held;
    if(autoplay){
-    assert.equal(restored.resume,true);await page.locator('[data-au-demo-resume]').click();
-    for(let tick=0;(await sample()).revision===held.revision&&tick<300;tick++)await page.clock.runFor(20);
-    const resumed=await sample();assert.equal(resumed.revision,held.revision+1);assert.equal(resumed.state_sha256,fixture.prefixes[id][resumed.revision].state.state_sha256);
-   }
+    assert.equal(restored.resume,false,'native cached autoplay resumes without an inspection control');
+    await page.clock.runFor(100);assert.equal((await sample()).revision,before.revision,'cached restoration resets its reading interval');
+    for(let tick=0;(await sample()).revision===before.revision&&tick<300;tick++)await page.clock.runFor(20);
+    held=await sample();assert.equal(held.revision,before.revision+1);assert.equal(held.state_sha256,fixture.prefixes[id][held.revision].state.state_sha256);
+   }else{await page.clock.runFor(9000);held=await sample();assert.equal(held.revision,before.revision,'native restoration keeps a manually opened prefix held until Play');assert.equal(held.play,true);}
    await page.reload();await page.locator('[data-au-revision]').waitFor();
    const departure=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('casepath-qa-lifecycle'))),reloaded=await sample();assert.equal(departure.persisted,false);assert.equal(departure.workspaceLength,0);assert.equal(reloaded.nav,'demonstration');assert.equal(reloaded.play,true,'a normal reload preserves the recorded route for deliberate Play');
    for(const [file,hash]of Object.entries(evidence.assets))assert.equal(served[file],hash,'the actual native loader serves the current selected asset bytes');
@@ -2871,6 +2942,7 @@ async function actualJournalPresentation(t, config = {}) {
   }, {id: fixture.claim_id, latency: config.replayLatency || 0, through: config.startThrough || 1, node: config.startNode});
   if (config.replayLatency) await page.clock.runFor(config.replayLatency);
   await title(page, fixture.claim_id);
+  if (config.startNode) await playIfPaused(page);
   return {page, fixture, id: fixture.claim_id};
 }
 
@@ -2885,10 +2957,10 @@ for(const interruption of ['visibility','context'])test(`forming work: trusted P
 });
 
 for(const inspection of ['source','document','node','knowledge'])test(`forming work: native ${inspection} inspection preserves its exact replay composition`,async t=>{
-  const fixture=priorAssessmentFixture(),id=fixture.claim_id,through=inspection==='knowledge'?24:11,{page}=await actualJournalPresentation(t,{startThrough:through,startNode:'lt_form',holdReplayId:id,holdReplayThrough:through+1});
+  const fixture=priorAssessmentFixture(),id=fixture.claim_id,through=inspection==='knowledge'?24:11,{page}=await actualJournalPresentation(t,{startThrough:through,startNode:inspection==='source'?'lt_family':'lt_form',holdReplayId:id,holdReplayThrough:through+1});
   await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='replay')),'the exact next immutable prefix was not held');const before=new URL(page.url()).hash;let origin;
-  if(inspection==='source'){origin=page.locator('.au-forming-documents [data-au-source][data-au-citation]').first();await origin.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the actual inline document source did not verify');}
-  if(inspection==='document'){const row=fixture.prefixes[through].state.obligations.find(item=>item.node_id==='lt_form'&&item.document_type==='termination_notice');await page.locator(`.au-forming-documents [data-au-select-obligation="${row.obligation_id}"]`).click();}
+  if(inspection==='source'){origin=page.locator('.au-forming-reading [data-au-source][data-au-citation]').first();const citation=JSON.parse(await origin.getAttribute('data-au-citation'));await origin.focus();await page.keyboard.press('Enter');await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the actual current-question source did not verify');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);}
+  if(inspection==='document'){const row=fixture.prefixes[through].state.obligations.find(item=>item.node_id==='lt_form'&&item.document_type==='termination_notice');assert.equal(await page.locator(`.au-forming-documents [data-au-select-obligation="${row.obligation_id}"]`).count(),0,'a future contextual requirement stays outside the active rail');await page.locator('.au-forming-documents [data-au-detail="documents"]').click();await page.locator(`[data-au-panel="documents"] [data-au-select-obligation="${row.obligation_id}"]`).click();const context=new URLSearchParams(new URL(page.url()).hash.split('?')[1]);assert.equal(context.get('obligation'),row.obligation_id);assert.equal(context.get('document'),row.document_type);assert.equal(context.get('node'),row.node_id);}
   if(inspection==='node'){await page.locator('[data-au-node="lt_deadline"]').focus();await page.keyboard.press('Enter');}
   if(inspection==='knowledge'){const use=fixture.prefixes[through].state.knowledge_uses[0];await page.locator(`.au-forming-process [data-au-knowledge="${use.knowledge_id}"][data-au-version="${use.version}"]`).focus();await page.keyboard.press('Enter');await eventually(()=>page.locator(`[data-au-knowledge-identity="${use.knowledge_id}:${use.version}"]`).count().then(count=>count===1),'the graph origin did not open its exact qualified version');}
   await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});const reads=(await calls(page,`/claims/${id}/replay`)).length;await page.clock.runFor(7000);assert.equal((await calls(page,`/claims/${id}/replay`)).length,reads,'inspection cannot advance or read another prefix');
@@ -3093,7 +3165,81 @@ test('focused flow: a corrupted prefetched original identity stops before replac
   assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
 });
 
-for (const interruption of ['source', 'hidden', 'navigation']) test(`focused flow: ${interruption} cancels replay with a prefetched accepted response in flight`, async t => {
+for (const reduced of [false, true]) test(`replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion ${reduced}`, async t => {
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+  const {page} = await actualJournalPresentation(t, {holdReplayId: id, holdReplayThrough: 9});
+  await page.emulateMedia({reducedMotion: reduced ? 'reduce' : 'no-preference'});
+  await page.evaluate(() => {
+    window.__visibilityPaints = [];
+    const capture = () => {
+      const pre = document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]');
+      if (!pre) return; const record = JSON.parse(pre.textContent);
+      if (record.state && window.__visibilityPaints.at(-1)?.state.revision !== record.state.revision) window.__visibilityPaints.push(record);
+    };
+    capture(); window.__visibilityObserver = new MutationObserver(capture);
+    window.__visibilityObserver.observe(document.querySelector('#workspace'), {childList: true, subtree: true});
+  });
+  const rendered = [], times = [];
+  for (let through = 1; through <= 8; through++) {
+    let record = await visibleRecord(page);
+    for (let tick = 0; record.state.revision < through && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
+    assert.deepEqual(record, {state: fixture.prefixes[through].state, projection: fixture.prefixes[through].projection}, `automatic playback consumes exact accepted prefix ${through} before visibility interruption`);
+    rendered.push(through); times.push(await page.evaluate(() => performance.now()));
+  }
+  await eventually(() => page.evaluate(() => window.__fixture.held.some(row => row.kind === 'replay' && row.through === 9)), 'prefix nine was not in flight at the accepted prefix eight');
+  await page.evaluate(() => { window.__fixture.hidden = true; Object.defineProperty(document, 'hidden', {configurable: true, get: () => window.__fixture.hidden}); document.dispatchEvent(new Event('visibilitychange')); });
+  const hiddenReads = (await calls(page, `/claims/${id}/replay`)).length;
+  await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const row of window.__fixture.held.splice(0)) row.release(); });
+  await page.clock.runFor(8000);
+  assert.deepEqual(await visibleRecord(page), {state: fixture.prefixes[8].state, projection: fixture.prefixes[8].projection}, 'a late next-prefix response cannot paint while hidden');
+  assert.equal((await calls(page, `/claims/${id}/replay`)).length, hiddenReads, 'hidden playback cannot drain a replay queue');
+  assert.equal(await page.evaluate(() => document.getAnimations().filter(row => row.playState === 'running').length), 0, 'hidden playback cancels native visual motion');
+  await page.evaluate(() => {
+    window.__fixture.hidden = false; document.dispatchEvent(new Event('visibilitychange'));
+    const heading = document.querySelector('h1'); heading.focus(); heading.blur(); heading.focus();
+    window.dispatchEvent(new Event('blur')); window.dispatchEvent(new Event('focus')); window.dispatchEvent(new Event('resize'));
+    document.fonts.dispatchEvent(new Event('loadingdone'));
+    for (const key of ['Tab', 'ArrowDown', 'ArrowRight']) document.dispatchEvent(new KeyboardEvent('keydown', {key, bubbles: true}));
+  });
+  assert.equal(await page.locator('[data-au-demo-resume]').count(), 0, 'visibility and untrusted focus or keyboard events cannot create an inspection hold');
+  await page.clock.runFor(100);
+  assert.equal((await visibleRecord(page)).state.revision, 8, 'restoration gives the held prefix a reading interval before its exact next prefix');
+  let record = await visibleRecord(page);
+  for (let tick = 0; record.state.revision === 8 && tick < 300; tick++) { await page.clock.runFor(20); record = await visibleRecord(page); }
+  assert.deepEqual(record, {state: fixture.prefixes[9].state, projection: fixture.prefixes[9].projection}, 'automatic restoration consumes only accepted prefix nine after prefix eight');
+  assert.equal(await page.locator('[data-au-demo-resume]').count(), 0);
+  assert.ok(new URL(page.url()).hash.includes('through=9'));
+  rendered.push(9); times.push(await page.evaluate(() => performance.now()));
+  const paints = await page.evaluate(() => { window.__visibilityObserver.disconnect(); return window.__visibilityPaints; });
+  assert.deepEqual(paints, rendered.map(through => ({state: fixture.prefixes[through].state, projection: fixture.prefixes[through].projection})), 'every native paint remains in exact accepted journal order');
+  assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
+  assert.doesNotMatch(await page.locator('.au-global-status').innerText(), /out of sequence|changed identity|stopped/i);
+  await focusedReceipt(page, `replay-visibility-at8-next9-${reduced}`, {id, reduced, rendered, virtualTimes: times, calls: await calls(page, `/claims/${id}/replay`)});
+  await page.locator('.au-nav [data-au-nav="work"]').click();
+});
+
+for (const intent of ['keyboard', 'Pause']) test(`replay visibility: trusted ${intent} retains an inspection hold through hide show until exact next-prefix Resume`, async t => {
+  const fixture = priorAssessmentFixture(), id = fixture.claim_id;
+  const {page} = await actualJournalPresentation(t, {holdReplayId: id, holdReplayThrough: 2});
+  await eventually(() => page.evaluate(() => window.__fixture.held.some(row => row.kind === 'replay')), 'the accepted next prefix was not held in flight');
+  if (intent === 'keyboard') await page.keyboard.press('Tab'); else await page.locator('[data-au-demo-stop]').click();
+  assert.equal(await page.locator('[data-au-demo-resume]').count(), 1, 'trusted inspection intent creates the explicit hold');
+  const record = await visibleRecord(page), route = new URL(page.url()).hash;
+  await page.evaluate(() => { window.__fixture.hidden = true; Object.defineProperty(document, 'hidden', {configurable: true, get: () => window.__fixture.hidden}); document.dispatchEvent(new Event('visibilitychange')); window.__fixture.holdReplayId = null; for (const row of window.__fixture.held.splice(0)) row.release(); });
+  await page.clock.runFor(8000);assert.deepEqual(await visibleRecord(page), record);
+  await page.evaluate(() => { window.__fixture.hidden = false; document.dispatchEvent(new Event('visibilitychange')); document.querySelector('h1').focus(); });
+  const reads = (await calls(page, `/claims/${id}/replay`)).length;
+  await page.clock.runFor(7000);assert.deepEqual(await visibleRecord(page), record);assert.equal(new URL(page.url()).hash, route);
+  assert.equal((await calls(page, `/claims/${id}/replay`)).length, reads);assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
+  await page.locator('[data-au-demo-resume]').click();
+  let resumed = await visibleRecord(page);
+  for (let tick = 0; resumed.state.revision === record.state.revision && tick < 300; tick++) { await page.clock.runFor(20); resumed = await visibleRecord(page); }
+  assert.deepEqual(resumed, {state: fixture.prefixes[2].state, projection: fixture.prefixes[2].projection}, 'deliberate Resume consumes only the exact next immutable prefix');
+  await focusedReceipt(page, `replay-visibility-trusted-${intent}`, {id, intent, route, prefix: record.state.revision, resumed: resumed.state.revision, calls: await calls(page, `/claims/${id}/replay`)});
+  await page.locator('.au-nav [data-au-nav="work"]').click();
+});
+
+for (const interruption of ['source', 'navigation']) test(`focused flow: ${interruption} cancels replay with a prefetched accepted response in flight`, async t => {
   const fixture = priorAssessmentFixture(), id = fixture.claim_id;
   const {page} = await actualJournalPresentation(t, {holdReplayId: id, holdReplayThrough: 2});
   await eventually(() => page.evaluate(() => window.__fixture.held.some(held => held.kind === 'replay')), 'the next accepted prefix was not prefetched');
@@ -3101,21 +3247,20 @@ for (const interruption of ['source', 'hidden', 'navigation']) test(`focused flo
     await page.locator('.au-context-nav [data-au-detail="sources"]').click();
     await page.locator('[data-au-panel="sources"] [data-au-source]').first().click();
     await eventually(() => page.locator('dialog[open] details.au-source-identity').count().then(count => count === 1), 'original inspection did not open');
-  } else if (interruption === 'hidden') await page.evaluate(() => {
-    Object.defineProperty(document, 'hidden', {configurable: true, get: () => true}); document.dispatchEvent(new Event('visibilitychange'));
-  });
+    await page.evaluate(() => { window.__fixture.hidden = true; Object.defineProperty(document, 'hidden', {configurable: true, get: () => window.__fixture.hidden}); document.dispatchEvent(new Event('visibilitychange')); });
+  }
   else await page.locator('.au-nav [data-au-nav="knowledge"]').click();
   await page.evaluate(() => { window.__fixture.holdReplayId = null; for (const held of window.__fixture.held.splice(0)) held.release(); });
   await page.clock.runFor(7000);
   if (interruption === 'navigation') assert.equal(new URL(page.url()).hash, '#autonomous/knowledge');
-  else assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[1].state, 'inspection or hiding must leave the current accepted prefix stable');
+  else assert.deepEqual((await visibleRecord(page)).state, fixture.prefixes[1].state, 'trusted inspection must leave the current accepted prefix stable through hiding');
   const before = (await calls(page, `/claims/${id}/replay`)).length;
-  if (interruption === 'source') await page.locator('[data-au-close]').click();
-  if (interruption === 'hidden') await page.evaluate(() => {
-    Object.defineProperty(document, 'hidden', {configurable: true, get: () => false}); document.dispatchEvent(new Event('visibilitychange'));
-  });
+  if (interruption === 'source') {
+    await page.evaluate(() => { window.__fixture.hidden = false; document.dispatchEvent(new Event('visibilitychange')); });
+    await page.locator('[data-au-close]').click();
+  }
   await page.clock.runFor(5000);
-  assert.equal((await calls(page, `/claims/${id}/replay`)).length, before, 'a cancelled replay cannot restart on close or visibility resume');
+  assert.equal((await calls(page, `/claims/${id}/replay`)).length, before, 'a trusted inspection hold cannot restart on close or visibility restoration');
   assert.equal((await calls(page, `/claims/${demoIds[1]}/replay`)).length, 0);
   if (interruption !== 'navigation') {
     assert.equal(await page.locator('[data-au-demo-resume]').count(), 1);
