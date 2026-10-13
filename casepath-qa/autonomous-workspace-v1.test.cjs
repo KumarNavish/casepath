@@ -83,6 +83,18 @@ test('pinned synthetic source excerpts show the actual body while the full acqui
  }
 });
 
+test('current regenerated documents stay in Sources and exact earlier documents remain in History',()=>{
+ const sources=['original','earlier','cleaned'].map((artifact_id,index)=>({artifact_id,sha256:hash(String(index+1)),file_name:artifact_id+'.txt',role:index?'supporting_document':'customer_message'}));
+ const provenance={mode:'deterministic_reference',synthetic:true,profile_id:'synthetic-nine-v2',source_roster_sha256:hash('4'),source_artifact_ids:['original','cleaned']};
+ const s=state({run_id:'current',source_roster_sha256:hash('4'),source_descriptors:sources,original_binding:{source_map:[sources[0]]},semantic_contexts:{current:{reference_provenance:provenance}}}),before=JSON.stringify(s);
+ assert.deepEqual(ui.currentSourceSelection(s).map(row=>row.artifact_id),['original','cleaned']);
+ const files=ui.workMarkup(s,{},'branch',[],'sources');assert.match(files,/data-au-source="cleaned"/);assert.doesNotMatch(files,/data-au-source="earlier"/);
+ const history=ui.workMarkup(s,{},'branch',[],'activity');assert.match(history,/Earlier documents/);assert.match(history,/data-au-source="earlier"/);
+ assert.deepEqual(ui.currentSourceSelection({...s,source_roster_sha256:hash('5')}),sources,'a later or unreviewed source roster cannot be hidden by an older selection');
+ for(const ids of [['cleaned'],['original','unknown'],['original','cleaned','cleaned']])assert.deepEqual(ui.currentSourceSelection({...s,semantic_contexts:{current:{reference_provenance:{...provenance,source_artifact_ids:ids}}}}),sources);
+ assert.equal(JSON.stringify(s),before);
+});
+
 test('a reassessment replay start must bind to the accepted run, source selection and prepared prefix',()=>{
  const start={from_seq:4,state_sha256:hash('4'),event_sha256:hash('5'),run_id:'current-run',profile_id:'synthetic-nine-v2',profile_sha256:hash('6'),source_artifact_ids:['original','cleaned']};
  const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_id:start.profile_id,profile_sha256:start.profile_sha256};
