@@ -1,0 +1,94 @@
+{
+  "candidate": "e2e222c3d53749c876bda71970eb21f52298a318",
+  "host": "656813ef2295",
+  "same_host_for_six_clones": true,
+  "analysis_only_no_launches": true,
+  "production_fixed_origin": "127.0.0.1:4173",
+  "production_fixed_origin_path": "casepath/tools/run_agent_demo.py:107",
+  "real_fixed_port_python_launcher_tests_in_mac_partition": true,
+  "cloud_demo_module_docstring": "Demo startup boundaries; no Keychain access, HTTP request or server is real.",
+  "cloud_demo_source_sha256": "4b5b1173884acf84d32847c4920c2588f8f44c7d2ed715152075e0a3c6741810",
+  "cloud_serving_or_grant_calls_checked": [
+    {
+      "test": "test_known_demo_history_refuses_missing_ledger_without_creating_it",
+      "line": 178,
+      "reserve_origin_mock_lines": [
+        186
+      ]
+    },
+    {
+      "test": "test_extra_allowance_is_explicit_and_uses_no_credential_or_server",
+      "line": 522,
+      "reserve_origin_mock_lines": [
+        530
+      ]
+    },
+    {
+      "test": "test_port_busy_fails_before_keychain_or_product_verification",
+      "line": 561,
+      "reserve_origin_mock_lines": [
+        564
+      ]
+    },
+    {
+      "test": "test_serve_passes_shared_leases_and_socket_without_persisting_secret",
+      "line": 571,
+      "reserve_origin_mock_lines": [
+        578
+      ]
+    },
+    {
+      "test": "test_incompatible_endpoint_stops_before_credential_or_child",
+      "line": 606,
+      "reserve_origin_mock_lines": [
+        611
+      ]
+    },
+    {
+      "test": "test_capacity_offline_operation_uses_pinned_child_leases_and_readback",
+      "line": 733,
+      "reserve_origin_mock_lines": [
+        740
+      ]
+    },
+    {
+      "test": "test_capacity_command_and_preservation_replay_real_disposable_store",
+      "line": 776,
+      "reserve_origin_mock_lines": [
+        787
+      ]
+    },
+    {
+      "test": "test_capacity_operation_refuses_unconfirmed_readback",
+      "line": 811,
+      "reserve_origin_mock_lines": [
+        816
+      ]
+    },
+    {
+      "test": "test_autonomous_serve_keeps_preflight_leases_and_records_resume_scope",
+      "line": 893,
+      "reserve_origin_mock_lines": [
+        904
+      ]
+    }
+  ],
+  "all_checked_fixed_origin_calls_mocked": true,
+  "real_cloud_lock_fixture": "test_agent_demo_launcher.py:319 uses tmp_path/environment.lock",
+  "production_locks": [
+    ".runtime/casepath-dev-v2/environment.lock",
+    ".runtime/casepath-dev-v2/launcher.lock",
+    ".runtime/casepath-data-v1.lock"
+  ],
+  "production_lock_scope": "Distinct normal clone directories; port4173 remains host-global",
+  "conflicting_cloud_launcher_group": [],
+  "serialize_conflicting_group_required": false,
+  "future_isolation": [
+    "Distinct normal clone perworker",
+    "Distinct HOME/TMP/pytestbasetemp/DB/artifactregistry/UVcache",
+    "Actual dev/seed/replay/browser4173 ownership separated from parallel testworkers",
+    "Separate finalNode/native/browser phases; no actualfixedport server implied by Python map"
+  ],
+  "source_fixture_changes": false,
+  "prior_ce0_schedule": "Shard4alone thenfiveparallel; staticport/lock isolation does not claim newperformance behavior"
+}

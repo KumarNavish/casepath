@@ -1,0 +1,63 @@
+{
+  "candidate": "e2e222c3d53749c876bda71970eb21f52298a318",
+  "status": "PROVISIONAL_COLLECTION_AND_SIX_MAP_READY",
+  "source_sealed": false,
+  "collection_exit_code": 0,
+  "collected": 2571,
+  "cloud": 2444,
+  "mac": 127,
+  "new_vs_ce0a": 33,
+  "removed_vs_ce0a": 0,
+  "known_skip_roster": 10,
+  "test_bodies_executed": false,
+  "normal_prepare_or_seal": false,
+  "source_writes": false,
+  "new_permanent_tools_or_docs": false,
+  "shards": {
+    "1": {
+      "count": 307,
+      "predicted_seconds": 552.8670909090896,
+      "ids_sha256": "fbaeda664f762ff91feb683b19922162b685748c78cf73a26f04cefc7429bfd1",
+      "new_ids": 6
+    },
+    "2": {
+      "count": 347,
+      "predicted_seconds": 552.8670909090906,
+      "ids_sha256": "fe6ef39b4fbcfcb0897001dd0abc0e666e5c043ab9567257fca08f64f9688216",
+      "new_ids": 5
+    },
+    "3": {
+      "count": 347,
+      "predicted_seconds": 552.8670909090889,
+      "ids_sha256": "fa157d7c6f391d81eadf8810e490c27da2ae8e572ed85add3d8ce6083ee7d471",
+      "new_ids": 7
+    },
+    "4": {
+      "count": 740,
+      "predicted_seconds": 552.8668181818166,
+      "ids_sha256": "62da7be4560e3068a8998160a71bd7430bd266bf9a51aa13a8a5a189c8a2679d",
+      "new_ids": 5
+    },
+    "5": {
+      "count": 352,
+      "predicted_seconds": 552.8670909090891,
+      "ids_sha256": "9b35246aa57d172a57c795181c6a0f4ef6bb787624bbf91d1a457bf219f6d629",
+      "new_ids": 5
+    },
+    "6": {
+      "count": 351,
+      "predicted_seconds": 552.8668181818169,
+      "ids_sha256": "1bd596538cfd7f334a8c6b2d37200aad8e3c49a5354bf2940d289bc6fc2a1986",
+      "new_ids": 5
+    }
+  },
+  "native_files_verified_before_after": 1544,
+  "launcher_conflicting_group": [],
+  "launcher_serialization_required": false,
+  "canonical_proxy_node_tests": 9,
+  "pending_final_proxy_node_tests": 10,
+  "final_frozen_sha_fresh_collection_required": true,
+  "execution_authorized": false,
+  "capacity_recheck_required": true,
+  "created_epoch": 1791893702.140214
+}

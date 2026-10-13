@@ -1,0 +1,27 @@
+{
+  "candidate": "e2e222c3d53749c876bda71970eb21f52298a318",
+  "python_collected": 2571,
+  "new_runtime_storage_sql_ids": 33,
+  "canonical_sites_proxy_tests": 9,
+  "canonical_sites_proxy_test_names": [
+    "public Sites refuses visitor-forged work authority before any upstream request",
+    "public Sites rejects every work verb across current generic aliased and unknown paths without reading bodies",
+    "public Sites keeps GET and HEAD inspection transport available on every public API shape",
+    "Sites sends native and normalized legacy collection entries to Cases without fetching data",
+    "Sites authenticates its upstream request without leaking browser credentials",
+    "Sites refuses cross-origin mutations before calling the backend",
+    "Sites requires configured HTTPS upstream and a server secret",
+    "Sites reports an unavailable backend without exposing upstream details",
+    "Sites preserves allowlisted Review read headers without requiring an agent-work header"
+  ],
+  "canonical_sites_proxy_source_sha256": "28108de933efa4cdac3decb2e0e56bd018896639e76d10a0b73384726a32101a",
+  "pending_root_mac_proxy_expected_tests": 10,
+  "pending_new_node_test_canonical_at_e2e": false,
+  "node_tests_counted_in_python_inventory": false,
+  "node_execution": false,
+  "required_later": [
+    "Root-ownedpendingproxychangesmergedandfinalsealedSHA",
+    "Fresh finalSHA Python collection/rebind",
+    "Separate final-source Nodeproxy/frontend/native/browser evidence phases"
+  ]
+}

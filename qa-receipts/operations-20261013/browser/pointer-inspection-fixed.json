@@ -1,0 +1,105 @@
+{
+  "before": {
+    "id": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+    "op": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+    "x": 36,
+    "y": 324.640625,
+    "width": 104.4375,
+    "height": 34
+  },
+  "during": {
+    "connected": true,
+    "op": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+    "presentation": "paused"
+  },
+  "after": {
+    "open": true,
+    "record": {
+      "cause_ids": [
+        "op_e76f03a89a4e79fc04557a5037485cb5",
+        "op_de8cbd2b31c193ff1bcb18c10dabf1aa"
+      ],
+      "contract": "casepath.operations-stream/1.0.0",
+      "id": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+      "input": {
+        "condition_verdict": "true",
+        "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+        "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+        "path": "true",
+        "suppressing_edge_ids": []
+      },
+      "input_sha256": "82510959a009dea3143744117d2db081ca5e2f823c7780c95f859fa218745dac",
+      "journal_seq": 28,
+      "kind": "node.evaluate",
+      "object": {
+        "id": "investigate_packet",
+        "type": "node"
+      },
+      "operation_sha256": "1190021309ee5df7ac41b65b3d64cfe91acc61d5ba2fe7e6764cf238aab73a05",
+      "previous_operation_sha256": "f5e87ad6d758df58f3b3d185ff3be458e233d26a7e4ef8fc0387da20f6437abf",
+      "result": {
+        "activation": "true",
+        "blocked_by": [],
+        "effective_completed": false,
+        "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+        "execution_state": "ready",
+        "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+        "inconsistent_completion": false,
+        "missing_document_types": [
+          "incoming_0",
+          "incoming_1",
+          "incoming_2"
+        ],
+        "phase": "provisional",
+        "unresolved_dependencies": []
+      },
+      "result_sha256": "793cd1086550053dafa98e53949f5e0426af3bd7220eadd3a6b5d472df396b29",
+      "seq": 3,
+      "stage": "native_reducer",
+      "type": "operation"
+    },
+    "events": [
+      {
+        "type": "pointerdown",
+        "trusted": false,
+        "at": 767.6999999880791,
+        "target": "operation",
+        "record_id": "op_de8cbd2b31c193ff1bcb18c10dabf1aa",
+        "current": "op_de8cbd2b31c193ff1bcb18c10dabf1aa"
+      },
+      {
+        "type": "pointerdown",
+        "trusted": true,
+        "at": 795.4000000357628,
+        "target": "operation",
+        "record_id": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+        "current": "op_bef6a6a6351ed04b39fa6bfd466ce260"
+      },
+      {
+        "type": "pointerup",
+        "trusted": true,
+        "at": 1351.9000000357628,
+        "target": "operation",
+        "record_id": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+        "current": "op_bef6a6a6351ed04b39fa6bfd466ce260"
+      },
+      {
+        "type": "click",
+        "trusted": true,
+        "at": 1352,
+        "target": "operation",
+        "record_id": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+        "current": "op_bef6a6a6351ed04b39fa6bfd466ce260"
+      }
+    ],
+    "current": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+    "presentation": "paused"
+  },
+  "boundaries": {
+    "programmatic_focus": "playing",
+    "hover": "playing",
+    "synthetic_pointerdown": "playing"
+  },
+  "errors": [],
+  "writes": []
+}

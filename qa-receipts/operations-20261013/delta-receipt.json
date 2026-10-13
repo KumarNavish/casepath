@@ -1,0 +1,76 @@
+{
+  "source_commit": "4ddf4f46f0f8d34b3c971f0249245bd7d10b325d",
+  "base_commit": "e2e222c3d53749c876bda71970eb21f52298a318",
+  "worker_commit": "ef2029ccb6a5ec9b60c8cb8b34833538527856ca",
+  "host": "656813ef2295",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "xhigh",
+  "changed_files": [
+    {
+      "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "bytes": 275309,
+      "sha256": "a1c0bf91b847b474a9a6e8064eda6e3747e4cbe310201a07d44e1195a45ae690",
+      "equals_worker_commit": "ef2029ccb6a5ec9b60c8cb8b34833538527856ca"
+    },
+    {
+      "path": "casepath/assets/autonomous-workspace-v1.js",
+      "bytes": 363497,
+      "sha256": "24524034183be898b402a30f0c78ca49c537c6efa278af6bf26dd311b946ec62",
+      "equals_worker_commit": "ef2029ccb6a5ec9b60c8cb8b34833538527856ca"
+    }
+  ],
+  "css_unchanged": true,
+  "backend_unchanged": true,
+  "focused_results": {
+    "checks": 191,
+    "failed": 0,
+    "skipped": 0,
+    "log": "frontend/op-frontend-pointer-copy-focused.log"
+  },
+  "native_pointer": {
+    "before": "browser/pointer-inspection-before.json",
+    "fixed": "browser/pointer-inspection-fixed.json",
+    "original_failure": "pressed inspection control disconnected during 550ms trusted down/up; operation advanced; click/modal absent",
+    "setup_failure": "browser/pointer-inspection-setup-first.log is an earlier stale bounding-box test setup failure, separate from the reproduced product failure",
+    "fixed_result": "same connected control and exact original operation opened after delayed mouseup; synthetic pointerdown/hover/programmatic focus remained playing; zero JS errors or non-GET requests"
+  },
+  "quiet_cloud_profile": {
+    "source_commit": "e2e222c3d53749c876bda71970eb21f52298a318",
+    "source_sha256": "cb801471353d671675e0e37747c75d7e2e09fa7170a2d37e319f4c08b6d4f9dd",
+    "raw": "browser/profile-ui-result.json",
+    "playing_median_ms": 16.7,
+    "paused_median_ms": 16.7,
+    "playing_p95_ms": 16.8,
+    "paused_p95_ms": 16.7,
+    "playing_longtasks": 1,
+    "playing_longtask_ms": 101,
+    "paused_longtasks": 0,
+    "conditions": "headless isolated Chromium 1360x900; native synthetic fixture; no virtual clock; ephemeral local timing wrappers and CDP sampling2000us; same-page paused baseline; source unmodified on disk",
+    "limits": "instrumentation overhead included; initial buffered parse excluded from timed playing phase; displayed-operation MutationObserver missed async mount, zero counter is unavailable rather than absence of playback; sampled DOM has 30 playing operation IDs and 1 paused ID; not a hosted/Mac foreground performance verdict"
+  },
+  "gate_preparation": {
+    "source_commit": "e2e222c3d53749c876bda71970eb21f52298a318",
+    "full_python_inventory": 2571,
+    "cloud": 2444,
+    "mac": 127,
+    "shard_counts": [
+      307,
+      347,
+      347,
+      740,
+      352,
+      351
+    ],
+    "suite_executed": false,
+    "final_frozen_collection_required": true
+  },
+  "full_suite_run": false,
+  "deployment": false,
+  "production_access": false,
+  "independent_review": "Pointer mechanism approved, four independent focused checks passed; reachable recorded-stream saved-result fallback label precedence requires minimal correction before final freeze.",
+  "review_logs": [
+    "review/pointer-copy-ef2029-review.log",
+    "review/recorded-stream-saved-fallback-copy-ef2029.log"
+  ],
+  "mac_owned_addition": "Mac adds .au-operation-passage to the same trusted-only mounted-target selector; no concurrent Cloud edit."
+}

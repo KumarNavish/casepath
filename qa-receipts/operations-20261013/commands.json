@@ -84,5 +84,26 @@
     "result": "passed: partial failure preserves exact prior operations",
     "log": "browser/partial-fallback-working.log",
     "browser_scope": "isolated Chromium with native synthetic fixtures, not hosted production"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "node --test casepath-qa/autonomous-workspace-v1.test.cjs casepath-qa/autonomous-evidence-identity-v2.test.cjs casepath-qa/sites-autonomous-entry.test.cjs > /workspace/op-frontend-pointer-copy-focused.log 2>&1",
+    "result": "191 passed,0skipped",
+    "log": "frontend/op-frontend-pointer-copy-focused.log",
+    "source_commit": "4ddf4f46f0f8d34b3c971f0249245bd7d10b325d"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "CASEPATH_POINTER_REPRO=1 CASEPATH_POINTER_EXPECT_FIX=1 NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/working-graph.cjs > /workspace/op-browser/pointer-inspection-fixed-boundaries.log 2>&1",
+    "result": "passed: trusted delayed press exact operation; synthetic/hover/focus keep playing",
+    "log": "browser/pointer-inspection-fixed-boundaries.log",
+    "source_commit": "4ddf4f46f0f8d34b3c971f0249245bd7d10b325d"
+  },
+  {
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "command": "CASEPATH_WORKING_PROFILE=1 NODE_PATH=/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules node /workspace/op-browser/working-graph.cjs > /workspace/op-browser/profile-ui.log 2>&1",
+    "result": "30s real-time playing then30s paused baseline, raw timings retained",
+    "log": "browser/profile-ui.log",
+    "source_commit": "e2e222c3d53749c876bda71970eb21f52298a318"
   }
 ]
