@@ -117,6 +117,27 @@ class OperationTraceStorageTests(unittest.TestCase):
         self.assertIsNone(self.read(profile_sha256='2' * 64))
         self.assertIsNone(self.read(run_id='another-run'))
 
+    def test_recorded_reads_use_terminal_selects_without_a_read_transaction(self):
+        self.initialize()
+        admit_operation_trace(self.connect, self.bundle, self.sidecar)
+        calls, fixture = [], self
+        @contextmanager
+        def closed_reads():
+            class Connection:
+                def execute(self, *_):
+                    raise AssertionError('recorded read retained a remote stream')
+                def execute_read_once(self, sql, args=()):
+                    fixture.assertTrue(sql.startswith('SELECT'))
+                    fixture.assertFalse(fixture.db.in_transaction)
+                    calls.append(sql)
+                    return fixture.db.execute(sql, args)
+            yield Connection()
+        self.sql.clear()
+        reader = OperationTraceStore(closed_reads)
+        self.assertEqual(reader.read(self.bundle['claim_id'], **self.identity), self.sidecar)
+        self.assertGreaterEqual(len(calls), 3)
+        self.assertTrue(all(sql.startswith('SELECT') for sql in self.sql))
+
     def test_new_instrumentation_revision_appends_without_replacing_the_old_trace(self):
         self.initialize()
         admit_operation_trace(self.connect, self.bundle, self.sidecar)

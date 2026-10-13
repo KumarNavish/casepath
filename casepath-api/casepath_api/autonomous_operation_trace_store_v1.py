@@ -110,14 +110,17 @@ class OperationTraceStore:
         identity = (claim_id, run_id, head_state_sha256, head_event_sha256, profile_sha256, instrumentation_id)
         check()
         with self.connect() as connection:
+            # Each immutable lookup can finish its Hrana stream in the same
+            # request. Local DB-API connections retain their ordinary SELECT.
+            execute = getattr(connection, 'execute_read_once', connection.execute)
             check()
-            if connection.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?",
-                                  ('autonomous_operation_traces',)).fetchone() is None:
+            if execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?",
+                       ('autonomous_operation_traces',)).fetchone() is None:
                 return None
             check()
-            row = connection.execute('SELECT * FROM autonomous_operation_traces WHERE claim_id=? AND run_id=? '
-                                     'AND head_state_sha256=? AND head_event_sha256=? AND profile_sha256=? '
-                                     'AND instrumentation_id=?', identity).fetchone()
+            row = execute('SELECT * FROM autonomous_operation_traces WHERE claim_id=? AND run_id=? '
+                          'AND head_state_sha256=? AND head_event_sha256=? AND profile_sha256=? '
+                          'AND instrumentation_id=?', identity).fetchone()
             if row is None:
                 return None
             if (type(row['content_bytes']) is not int or not 0 < row['content_bytes'] <= MAX_TRACE_BYTES
@@ -128,11 +131,11 @@ class OperationTraceStore:
             compressed, after = bytearray(), -1
             while True:
                 check()
-                page = connection.execute('SELECT chunk_index,length(content) AS size_bytes, '
-                                          "CASE WHEN typeof(content)='blob' AND length(content)<=? THEN content ELSE NULL END AS content "
-                                          'FROM autonomous_operation_trace_chunks WHERE sidecar_sha256=? AND chunk_index>? '
-                                          'ORDER BY chunk_index LIMIT ?',
-                                          (CHUNK_BYTES, row['sidecar_sha256'], after, PAGE_CHUNKS)).fetchall()
+                page = execute('SELECT chunk_index,length(content) AS size_bytes, '
+                               "CASE WHEN typeof(content)='blob' AND length(content)<=? THEN content ELSE NULL END AS content "
+                               'FROM autonomous_operation_trace_chunks WHERE sidecar_sha256=? AND chunk_index>? '
+                               'ORDER BY chunk_index LIMIT ?',
+                               (CHUNK_BYTES, row['sidecar_sha256'], after, PAGE_CHUNKS)).fetchall()
                 for chunk in page:
                     content, index = chunk['content'], chunk['chunk_index']
                     if (type(index) is not int or index != after + 1 or index >= row['chunk_count']
