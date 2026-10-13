@@ -1,0 +1,40 @@
+{
+  "candidate": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "manifest_sha256": "ecbbab9927a2ba6b4e238f3f5666884dbb4c501ba0c9861de2338bd04c474057",
+  "host": "656813ef2295",
+  "targets": [
+    "casepath-api/tests",
+    "casepath/tools/test_build_deployment_identity.py",
+    "casepath/tools/test_casepath_release.py"
+  ],
+  "collection": 2538,
+  "cloud": 2411,
+  "mac": 127,
+  "mac_owned_by": "Mac integration coordinator",
+  "skip_ids": 10,
+  "retry_count_allowed": 0,
+  "source_edits_allowed": false,
+  "provider_calls_allowed": false,
+  "production_operations_allowed": false,
+  "seal_generation_allowed": false,
+  "suite_execution_status": "HOLD_PENDING_NEW_SEALED_SHA_AND_EXPLICIT_GREEN",
+  "launch_order": [
+    {
+      "alone": [
+        4
+      ]
+    },
+    {
+      "concurrent": [
+        1,
+        2,
+        3,
+        5,
+        6
+      ]
+    }
+  ],
+  "evidence_branch_writer": "root only: codex/casepath-reference-polish-native-evidence-20261013",
+  "created_epoch": 1791867918.7561927,
+  "suite_execution_attempts": 0
+}

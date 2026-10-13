@@ -1,0 +1,79 @@
+{
+  "candidate": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "provisional": false,
+  "sealed_sha": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "collected": 2538,
+  "cloud": 2411,
+  "mac": 127,
+  "mac_by_file": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6,
+    "casepath-api/tests/test_local_data_root.py": 52
+  },
+  "full_sorted_sha256": "2a3e5b4f3d419c7041a5dac8979ed99a1db3bd189d0ad73e51ba804f49d0804e",
+  "cloud_sorted_sha256": "133ce41dcb59f264a0c6bc77fd23362ec54662f0ab3d86c360d3334e8440c2eb",
+  "mac_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "assignment_basis": "Original shard4 IDs pinned for alone-first polling isolation; remaining Cloud IDs use deterministic longest-duration-first assignment over six shards. 2af5 actual per-case JUnit durations overlaid with admission focused JUnit; complete-reference additions estimated from 183.92s focused log aggregate.",
+  "duration_basis": "Observed historical/focused timings plus explicit estimates; estimates are not executions or performance guarantees",
+  "shards": {
+    "1": {
+      "count": 274,
+      "predicted_seconds": 485.2115130666405,
+      "ids_sha256": "4fd94e67aaf71882be2e53f95c6a68185f4fca6cd7c2bc95c41460f6090e3d86",
+      "sorted_ids_sha256": "4fd94e67aaf71882be2e53f95c6a68185f4fca6cd7c2bc95c41460f6090e3d86",
+      "new_ids": 4
+    },
+    "2": {
+      "count": 289,
+      "predicted_seconds": 485.2115955700597,
+      "ids_sha256": "778ad81dba34e816fa15c0c3ff7dd9635a9bc25c8c220bf6dbc9deb2b3cccdc3",
+      "sorted_ids_sha256": "778ad81dba34e816fa15c0c3ff7dd9635a9bc25c8c220bf6dbc9deb2b3cccdc3",
+      "new_ids": 4
+    },
+    "3": {
+      "count": 293,
+      "predicted_seconds": 485.21142785150295,
+      "ids_sha256": "ebd7b203f965f6a53004255047e48b5a8715bfa92ce59ace6b7eaf80a449e0db",
+      "sorted_ids_sha256": "ebd7b203f965f6a53004255047e48b5a8715bfa92ce59ace6b7eaf80a449e0db",
+      "new_ids": 5
+    },
+    "4": {
+      "count": 595,
+      "predicted_seconds": 485.2120256533312,
+      "ids_sha256": "9dba69cd7ab01598743b79bc94cc9e7c2669b66609c7980f72fcf522773ac584",
+      "sorted_ids_sha256": "9dba69cd7ab01598743b79bc94cc9e7c2669b66609c7980f72fcf522773ac584",
+      "new_ids": 1
+    },
+    "5": {
+      "count": 667,
+      "predicted_seconds": 485.2110829833688,
+      "ids_sha256": "97234ba2fcbdc5f50f2a1a73bdd5e9b5bb43f17a59556d0f2d9b0deaba5d4eb3",
+      "sorted_ids_sha256": "97234ba2fcbdc5f50f2a1a73bdd5e9b5bb43f17a59556d0f2d9b0deaba5d4eb3",
+      "new_ids": 3
+    },
+    "6": {
+      "count": 293,
+      "predicted_seconds": 485.21135487509224,
+      "ids_sha256": "1c74e467a3120f07c652862b0689edcd034f560254069027349010349007e18e",
+      "sorted_ids_sha256": "1c74e467a3120f07c652862b0689edcd034f560254069027349010349007e18e",
+      "new_ids": 4
+    }
+  },
+  "missing": 0,
+  "overlap": 0,
+  "duplicates": 0,
+  "extra": 0,
+  "new_ids_vs_2af5": 21,
+  "removed_ids_vs_2af5": 0,
+  "exact_union": true,
+  "launch_order": "DO NOT LAUNCH b3e93: root/Mac explicit HOLD pending new seal. Future frozen candidate needs new exact source/capsule preparation and explicit green signal. Preserve eventual shard4 alone then remaining five concurrent.",
+  "launch_performed": false,
+  "original_shard4_ids_preserved": 324,
+  "slow_admission_test_shards": {
+    "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix": "1",
+    "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry": "4"
+  },
+  "created_epoch": 1791866727.222165,
+  "prepared_inventory_source": "Exact frozen candidate fresh --collect-only full inventory; canonical IDs equal c52",
+  "rebound_epoch": 1791867918.7301493
+}

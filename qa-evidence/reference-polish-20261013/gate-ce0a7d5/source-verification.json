@@ -1,0 +1,585 @@
+{
+  "candidate": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "manifest_sha256": "90f610eefbb63a6a42acaf3b0c11c56791694e56fea565d138e814d82291a45f",
+  "head": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "status": "",
+  "normal_clone": true,
+  "source_seal_generated_here": false,
+  "instructions": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "44b8b4833d25bdf153d3978bb7c9fa6d920daec3caffa8d9fc5434e0b40c49a1"
+    },
+    {
+      "path": "docs/HYBRID_DEVELOPMENT.md",
+      "sha256": "0190e252e3958670bc76886cea78ef76dd48dae404a855abaebd66b12b0edd67"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "cbac312085c0d90537e0b68a23c5373f2d2817282bde7278fa897ad53cb41076"
+    },
+    {
+      "path": "README.md",
+      "sha256": "6680935297ee1f180df592bd95fe195deb66dea14deedbef8928f1e760d55fcd"
+    },
+    {
+      "path": "docs/PRO_HANDOFF.md",
+      "sha256": "ae061cc8ed93883c8b0af13320f23b16803abb2cff5251a554a718dd5b64e7ae"
+    }
+  ],
+  "collected_files": [
+    {
+      "path": "casepath-api/tests/test_agent_delegate_journal_validation.py",
+      "sha256": "607d6dc3f0c6c21a1ac0777a24678b49af9f8ca4981b5f84f0d536b713c86f58"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_demo_launcher.py",
+      "sha256": "4b5b1173884acf84d32847c4920c2588f8f44c7d2ed715152075e0a3c6741810"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_desk_live_control.py",
+      "sha256": "871d603d81ad945eaf0d89b8e11661781d4bb877a466a6ebc762017aee2edbdd"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_desk_question_priority.py",
+      "sha256": "d4a9d8aa70603aeb89d49d13d1343979834945b38727a8c2c25ebade5943d148"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_desk_reconciliation.py",
+      "sha256": "547fcd3c36951caa1d8bfa232ba2a641fe9cedb0197fcd493176bae8eb13206c"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_desk_v1.py",
+      "sha256": "752cbb8d317327689310e178715fd333a75b8a4083d1d7323265f557ffa6cb93"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_live_projection.py",
+      "sha256": "7c93d2620d487fac0e5c85cd3d3d6be257ab9c111efedc03a2de980903df50f4"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_work_budget_grant.py",
+      "sha256": "2a0509ca92855830aceb0029bcd260ee6f75fc24b025dd79dce1599a52b0c235"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_work_openrouter_demo.py",
+      "sha256": "57d58741cc87d26da27abd4c54795c4a4d6188aff417eb8a783ff59caaf7b079"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_work_packet_identity.py",
+      "sha256": "c67128d5905c5b84ae84bfc7c1958eaaadcf2ef429ac4fc4e309d4850a6c05a7"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_work_reconciliation.py",
+      "sha256": "872ed6bb420a50f7f7be0d0b5336866315644951bc5853f778cbdf5a024e6d9f"
+    },
+    {
+      "path": "casepath-api/tests/test_agent_work_store_incremental.py",
+      "sha256": "c5e416ab694aa73d7cfaca50c54cf968242f47b43b11689aa60066005970565a"
+    },
+    {
+      "path": "casepath-api/tests/test_app_v15.py",
+      "sha256": "17a39e35142fca6bff3c189324492e7b22f8010bc606da10d4933dd782b54ee9"
+    },
+    {
+      "path": "casepath-api/tests/test_arena_v1.py",
+      "sha256": "ad4f52296e3cbc3879ce1842bdc131a534bcb444d22f1163ca2049da721be41e"
+    },
+    {
+      "path": "casepath-api/tests/test_artifact_gate_v1.py",
+      "sha256": "fd72bfa311f030a8b4adcab7ebe464b07b0d9c3c90a28eed5ddeef88b959d5e9"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_adversarial_v1.py",
+      "sha256": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_api_v1.py",
+      "sha256": "5fa5b4eff2d1e5571c2d86b48dd54c380fd9fb26417b8310fa177737d51c6b62"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_budget_grant_v1.py",
+      "sha256": "dbe2d4a18fa4f3a977ace41e7c0d98bee052007f851114b95274e09490e11953"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_budget_v1.py",
+      "sha256": "2efbd93eda71035351e27ac90a711ffd370ceae26910a422f8795ea01481a9aa"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_canonical_api_v1.py",
+      "sha256": "70825f6b2b2d1af6ee832aa34e8a1ec537554f9c38c541b5fee1541d389aba0f"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_canonical_store_v1.py",
+      "sha256": "38b54e3e21b038b050bed0bc4ab1720a0a54ff75cfc149d6855016dedc9e6a0c"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_controller_v1.py",
+      "sha256": "dcb20393a833e6a7c6c48be3d6b31c4f88a48031d3d5e698908d7a9015b027a7"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_corpus_v1.py",
+      "sha256": "2bedb2e196f901dc1216ebddf040ff72e9681fa148445b40fdf6f87396f8aa70"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_item_rejection_v1.py",
+      "sha256": "e92b0531c97d3580b0c3978b9664ab4e54893dc4b31ea153893537a5589222ac"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_journal_validation_v1.py",
+      "sha256": "56cafb5eb67f2bd3c7a1e28a9734d6c2043829a9ab1dbac04c33d221e9c8bd30"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py",
+      "sha256": "562a3a709953a848edea2a560723f440991fb1479bd2023563303484e51a3137"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_knowledge_refinement_v1.py",
+      "sha256": "e17f180ea853e1fdf6dc9499d96638fac344af571b9239c9eb2852b6d6597066"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_model_v1.py",
+      "sha256": "f12b450c9bbb10d7cb18a87d82a62c089d3b95a1d9afce1fc2c372dbf657bffc"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_policy_v1.py",
+      "sha256": "fa7210c4faa624d2a1f7b6287ef163bc627205935b1f1d6f15a45016e8611979"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_recipe_compiler_v1.py",
+      "sha256": "038b5d0c3f862db12e2a397edeef6b3a6b6bf97ae1393f2ec18ab7762138a657"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_reconciliation_v1.py",
+      "sha256": "5a79a2db385321ef08c017ddf2bc1e57d8d6d5431664fc399dcee11f4893e904"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_store_v1.py",
+      "sha256": "ae8e6a527f76fd97a4f73917d04e6b428c0aae62935a6c1bfaf79e230dc44ce3"
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_supplied_review_v1.py",
+      "sha256": "2b3ba0b1fee9f6cf973aeafd77ce85d9155b8184fa692e28d0e443710a8723e6"
+    },
+    {
+      "path": "casepath-api/tests/test_build_paper_method_pack_v5.py",
+      "sha256": "6d38700764a87c68fa3a9c6c646a857629de5a26a460119f7fc50a3df50520c3"
+    },
+    {
+      "path": "casepath-api/tests/test_canonicalizer_v15.py",
+      "sha256": "5508fe8c9802aa060979a682f88e91c818e0d99d2dd429f5f883886a87b5a8b8"
+    },
+    {
+      "path": "casepath-api/tests/test_case_interpreter_v3.py",
+      "sha256": "4da9bcb213de105a94e2bed4dbf3679b70a261067ded49b07d948d5204a24a5a"
+    },
+    {
+      "path": "casepath-api/tests/test_case_interpreter_v4.py",
+      "sha256": "85a6fa41746fa41ce0f2c98dc270b1d0b43a6313a219e1eed2ae90cdc33eb650"
+    },
+    {
+      "path": "casepath-api/tests/test_casepath_process_router_v2.py",
+      "sha256": "bb43050994a4a03b72311988ba883df24b3026db671b12ba10cdfff8cf6b711e"
+    },
+    {
+      "path": "casepath-api/tests/test_casepath_process_service_v2.py",
+      "sha256": "089c5e7587c333805fb5983de641f454592a60848788f84412897bb518ef39a9"
+    },
+    {
+      "path": "casepath-api/tests/test_casepath_process_service_v3.py",
+      "sha256": "1f34ff946c8e7493e937a311c5dd5e4774476776939d03b442d554c1ac9fcb8b"
+    },
+    {
+      "path": "casepath-api/tests/test_causal_confirmatory_analysis_v1.py",
+      "sha256": "fd34e9c9388478c73f23af2a4a4294b24ea5a26cc9e0fded9ada554e32417348"
+    },
+    {
+      "path": "casepath-api/tests/test_causal_process_v1.py",
+      "sha256": "8aabc86593c8b42ba4574825c8208c6384d7c55edb7cd03102c082d21435d55a"
+    },
+    {
+      "path": "casepath-api/tests/test_causal_workspace_v1.py",
+      "sha256": "82f821b1f765a82ebb822404f02790e6bfacf1785a36a4051034ecea94830890"
+    },
+    {
+      "path": "casepath-api/tests/test_claim_loop_v1.py",
+      "sha256": "e8e1af74b17a2d877717f74e9f183759e7acf85d81c5165cfdbc5b770b988d3f"
+    },
+    {
+      "path": "casepath-api/tests/test_claim_queue_snapshot_evaluator_v1.py",
+      "sha256": "3c8ee3865ad4bbf5e0ed2127892552f76c7fd88766a137ffdcc4648186a436ad"
+    },
+    {
+      "path": "casepath-api/tests/test_claim_workspace_assessment_v2.py",
+      "sha256": "f7ef4e3cda2ed3752b67c13112087327302f22a7c906e336e5c68f5e6f6c65b2"
+    },
+    {
+      "path": "casepath-api/tests/test_claim_workspace_triage_v1.py",
+      "sha256": "9d34378c9b5234500cbfd976bb64660b4123965f5d151f7a7326b9afa1dedfc1"
+    },
+    {
+      "path": "casepath-api/tests/test_claim_workspace_v1.py",
+      "sha256": "f81f7bcf902c336e293995cfd67faaa4a8703356a19f13d970eba7a36d13e5cc"
+    },
+    {
+      "path": "casepath-api/tests/test_cli_v1.py",
+      "sha256": "47f728e0521b3a6870f66f2f95be76d4ee587237a3fc00a767c7f9b4e96e786c"
+    },
+    {
+      "path": "casepath-api/tests/test_complete_reference_intake_v1.py",
+      "sha256": "e4f4b041893f8c49b78b3060337ee9d75d9c8b52d09554c1777aacc6eb90219f"
+    },
+    {
+      "path": "casepath-api/tests/test_confirmatory_tools.py",
+      "sha256": "b9aa7920e3de129cd53e159ebeaf5f5c8629dc8970bd38ab23ecb8f99dd872c7"
+    },
+    {
+      "path": "casepath-api/tests/test_document_lifecycle_shadow_v1.py",
+      "sha256": "4028bb2f83e673173793c07be4205c284799c34bff641e72d28f412225714105"
+    },
+    {
+      "path": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "path": "casepath-api/tests/test_draft_request_v1.py",
+      "sha256": "fd7ca75b5029e796f2362d3376a9461afd318cbd8b902c0c6e88559140763394"
+    },
+    {
+      "path": "casepath-api/tests/test_evidence_document_mapper_v2.py",
+      "sha256": "36a60feda257cec5eb2ea6fcf7e61b587d5b57beb00c57c14d5da3f8e30e37c4"
+    },
+    {
+      "path": "casepath-api/tests/test_evidence_overlay_v1.py",
+      "sha256": "3c61eab3ac1c42ea3495d5375dfcd764a8f376622c2bdc3f52f4ff2c7c494019"
+    },
+    {
+      "path": "casepath-api/tests/test_evidence_overlay_v3.py",
+      "sha256": "1c9aa5937de63abceb41aa2f90e566ddaa07c7b9619d188b590a810c99d05f9d"
+    },
+    {
+      "path": "casepath-api/tests/test_evidence_refinement_v1.py",
+      "sha256": "3b99c177450f2d7cf63c8f6ea08ac752da809a50b6ddf7c070993f24f484c0c8"
+    },
+    {
+      "path": "casepath-api/tests/test_evidence_refinement_v2.py",
+      "sha256": "f24d88b770143b962cb65ad64c60a1c72e6fd0bb65016c4f8ab8c2700be8aa45"
+    },
+    {
+      "path": "casepath-api/tests/test_evidence_refinement_v2_batched.py",
+      "sha256": "49fa96d2ca1f7f5bb4a288d880d1edb69ea997116072c5da071d38f86e443dda"
+    },
+    {
+      "path": "casepath-api/tests/test_evidence_refinement_v2_normalize.py",
+      "sha256": "dd5ddb8c8b8a421eb79e2b018b3e7bb4dc333ea8bf9a9a87884bafb5b9269880"
+    },
+    {
+      "path": "casepath-api/tests/test_evidence_relations_v15.py",
+      "sha256": "c9f937dc4d7100d0e37ff172e42d63462871607309f54553a7b68b618a3fb2b2"
+    },
+    {
+      "path": "casepath-api/tests/test_evidential_channel_agent_work.py",
+      "sha256": "a5b75e8d7492982c6d5adb636f1df343c815788656589c6f5c67ab6aef6b6298"
+    },
+    {
+      "path": "casepath-api/tests/test_evidential_channel_gate_v1.py",
+      "sha256": "cb451ad3799c20757b2ca3cc9e9bae879cc798a2a437d533a29166e2ad80abab"
+    },
+    {
+      "path": "casepath-api/tests/test_evidential_channel_requirement_scope.py",
+      "sha256": "0c200776961dfd0689af8331e817327073f92daf8ec4050164e63f172cf9989f"
+    },
+    {
+      "path": "casepath-api/tests/test_evidential_channel_v1.py",
+      "sha256": "7e51299e05c0593819fe4c317a667ff8446f6d508e011c8261e97a728eb7d16a"
+    },
+    {
+      "path": "casepath-api/tests/test_foundation_live_v1.py",
+      "sha256": "9728a4a5b1702e0f9d77de7c9a4f0a9c4e960148be4d07d2ff6076a93ca899e6"
+    },
+    {
+      "path": "casepath-api/tests/test_foundation_v1.py",
+      "sha256": "a5950b0e51c9686ed107102cfd0b61bd125ff0aefc9d6a7984386bcc6bc3f44b"
+    },
+    {
+      "path": "casepath-api/tests/test_grounding_integration_v15.py",
+      "sha256": "ebdc9b0a06682aef3bb23dfaea710262087fb57c8715749ec7a726e77cbf9d0b"
+    },
+    {
+      "path": "casepath-api/tests/test_guard_complete_v2.py",
+      "sha256": "376f8305ff0442efb041b0e50e8a281ae0aa1998384977e402ad8dddde70a47a"
+    },
+    {
+      "path": "casepath-api/tests/test_guard_materialization_v1.py",
+      "sha256": "292d8397817f899e7c1e8705ea1e3109f9be73152cc44d902692d789c1e00617"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_app_v1.py",
+      "sha256": "57cd96a26c4cf80b6fe10c35a801baf064980eb399753fa1016ad77b77a3ecb1"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_append_v1.py",
+      "sha256": "414ff7aeee658233d542d0d4ed424b0062748e8c103776509d05912dd2ff6463"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_lease_v1.py",
+      "sha256": "2173932871446077bd29f680a9da13cd367f0f7c88aee2651346ac4c1a1e9962"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_migration_v1.py",
+      "sha256": "fe29c8dab03402c22b793cdbf0a3231de54a93f0c7e211e4442282aff626a2ac"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_pending_recovery_v1.py",
+      "sha256": "711c3bc90127da4c8bc0b14fd49766dc6be375e5ecdde11ffe3f916094730a85"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_proxy_v1.py",
+      "sha256": "a807b60cc9344aa7cd16bcaf846564d7736f9d00476ecb19428d8a97b9e9ce7f"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_recovery_v1.py",
+      "sha256": "573346dc7d6e72084c18688f077e1e6897de6fc6569c3241113be4f9499af354"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_source_batch_v1.py",
+      "sha256": "44848bda146e836c7d9d7169f083a2bbda1386c88dee3dc23338778bdcdcc45a"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_sql_v1.py",
+      "sha256": "47f57087cfae7302a38917c51f1793539bcad605ef374bb5efa1e86d6edef433"
+    },
+    {
+      "path": "casepath-api/tests/test_hosted_storage_v1.py",
+      "sha256": "168ee2b09336f26fcfd70a2c64b16c6187d8de8d3b74fb7649d48df006663e82"
+    },
+    {
+      "path": "casepath-api/tests/test_insurance_protocol_v1.py",
+      "sha256": "b6b57f5da8d9461de4c8edcb010e56b568e07db3b9406315c39d3c540c2c8235"
+    },
+    {
+      "path": "casepath-api/tests/test_interrupted_review_setup.py",
+      "sha256": "8a1b21ce12770476c7993eec8f1adc1633cfce1863c1f20a1eafa61135d1bf38"
+    },
+    {
+      "path": "casepath-api/tests/test_journal_corpus_restart.py",
+      "sha256": "93cd1df865e62917968d974ecd45bc737f082211692f22a9802f25962c83ec40"
+    },
+    {
+      "path": "casepath-api/tests/test_law_registry_v15.py",
+      "sha256": "285e6644cd71bacedad7df4adcbeb48f3e3b6763ab1690df99a4db6699068ad4"
+    },
+    {
+      "path": "casepath-api/tests/test_live_events_v15.py",
+      "sha256": "e128314f2ad68af6a7d409e64ac2629d46f71d05764c6802164d3f7695f2c047"
+    },
+    {
+      "path": "casepath-api/tests/test_local_data_root.py",
+      "sha256": "25a28743798307ceae39a8361d8e3b0808dd6e616c689e65f27bd5106ea462d9"
+    },
+    {
+      "path": "casepath-api/tests/test_multi_agent_v15.py",
+      "sha256": "b365886b11a18a8bbadee3c0f593cfb8444b803322ce94e2f50d534e2ca44c06"
+    },
+    {
+      "path": "casepath-api/tests/test_native_asset_write_concurrency.py",
+      "sha256": "56c7e537c4e2c085c77ba6fd644fb782e3d3cb1f935ba96461304c2b5bdbef86"
+    },
+    {
+      "path": "casepath-api/tests/test_native_claim_loop_bridge_v1.py",
+      "sha256": "892497edae0bf150fe45f416a4501370ec6e278d66aa04cf1b87cd01e4bbd69b"
+    },
+    {
+      "path": "casepath-api/tests/test_native_live_export_v1.py",
+      "sha256": "d1dc91eea371eb4950e30c4341f146e4f535beb0d55560d85b628865e4568e89"
+    },
+    {
+      "path": "casepath-api/tests/test_native_live_knowledge_v1.py",
+      "sha256": "8d6dcdd7bdaa25ca900ef347f8b484ec42a4f352737f982b7aeb642f15c837d0"
+    },
+    {
+      "path": "casepath-api/tests/test_native_live_workspace_v1.py",
+      "sha256": "f3f9571b5253d51d83b4abe21dcee1194c514178b0bb652751c39d06d47f5bea"
+    },
+    {
+      "path": "casepath-api/tests/test_native_openrouter_transport_v1.py",
+      "sha256": "23ff9a11ce04a28cd50e2781bb2af5babf2c8370514f66e7d80ec1d9bab695be"
+    },
+    {
+      "path": "casepath-api/tests/test_native_workspace_inquiry_v1.py",
+      "sha256": "8e612f617b9a7a0826a42d7a8062982fa68c5dad7f398acd2eecbb329d265abd"
+    },
+    {
+      "path": "casepath-api/tests/test_obligation_compact_v3.py",
+      "sha256": "8136014683ec8a5aadc5c5eaf0d0c241577ddded4a29a5856b45a592b488d936"
+    },
+    {
+      "path": "casepath-api/tests/test_obligation_control_increment.py",
+      "sha256": "a6582860751101ece1ab417bba287b9651a56bb2ad27bf2da506a2f01a7c8a34"
+    },
+    {
+      "path": "casepath-api/tests/test_obligation_credit_bounds_v2.py",
+      "sha256": "9ca421d918d744b7daf461d7601d708782835c45297acddddb8a197232c87ce1"
+    },
+    {
+      "path": "casepath-api/tests/test_obligation_release_binding.py",
+      "sha256": "82057de416148d2352c5aece7afef03455f49c1587d941032ddf683a7b1084bd"
+    },
+    {
+      "path": "casepath-api/tests/test_obligation_study_resources.py",
+      "sha256": "a4f48a1680fc5b5a416967ad9e78432641057e2e9edc65aefed17a34b15b147c"
+    },
+    {
+      "path": "casepath-api/tests/test_obligation_study_v1.py",
+      "sha256": "cbf5d63d2342faec70c8316c1b861f9753b928d2cf1625e423a487d322685a7d"
+    },
+    {
+      "path": "casepath-api/tests/test_original_nine_budget_v1.py",
+      "sha256": "181114e665fa37bf3b4e0d0bdb443e039e761b202cc391a5741bed768b36b820"
+    },
+    {
+      "path": "casepath-api/tests/test_original_nine_hosted_v1.py",
+      "sha256": "1ccd2a7cbc2e92a6a001c7cb793dfdf173ba39b1a617967568ab500637b7f9e8"
+    },
+    {
+      "path": "casepath-api/tests/test_original_nine_preflight_v1.py",
+      "sha256": "a0e59fcd5f39c79ef7e09ebc9f5722ed3f58e7d96000e95c62ea347e52c0291a"
+    },
+    {
+      "path": "casepath-api/tests/test_pace_core_v1.py",
+      "sha256": "eb6e496d8516a0a3afa7813c82d113149d3d579521111a94bb914989e384e568"
+    },
+    {
+      "path": "casepath-api/tests/test_paper_method_runtime_v2.py",
+      "sha256": "795dc68a16d6841b401ae31ff47a19474a2741d6e6ba4960a1dbfecfd717b526"
+    },
+    {
+      "path": "casepath-api/tests/test_paper_method_runtime_v3.py",
+      "sha256": "6f3f6a870970de8ae7b86b5bf7f04436f687f65f978a3839c11a6362ea1fc291"
+    },
+    {
+      "path": "casepath-api/tests/test_pipeline.py",
+      "sha256": "7a187053ab2e6ba99e2728f939c7c6282a7745e468af56b4826d0e2380160bcf"
+    },
+    {
+      "path": "casepath-api/tests/test_playbook_template_v1.py",
+      "sha256": "49c2bad20707f3d477d0cb30e664cbf295f3f2bc964f49ee715b7633109868a9"
+    },
+    {
+      "path": "casepath-api/tests/test_precedent_ranking_v15.py",
+      "sha256": "c902c70a1c4b93bac02edd76e66cab325653aba7cd492ba2aa156ab80faabd82"
+    },
+    {
+      "path": "casepath-api/tests/test_process_induction_v3.py",
+      "sha256": "7b97fb040fc7719efdaa39bc1325fdbd4830a18e5798769dc504980416700244"
+    },
+    {
+      "path": "casepath-api/tests/test_provisional_inquiry_v1.py",
+      "sha256": "b99a023842c8bdd2d678a76208f851b805d4ac12bf19f12700ca9bfdc4bbf199"
+    },
+    {
+      "path": "casepath-api/tests/test_public_hosted_read_only_v1.py",
+      "sha256": "1b643f7ed06e78ea792bbe899ef79372f01602a023a558d2098f795c670c1c2c"
+    },
+    {
+      "path": "casepath-api/tests/test_reference_admission_v1.py",
+      "sha256": "2babec7e2e79d9a5b53b150bd1751945b48a3ec3b9aa633d3f71ca2c9aca61c9"
+    },
+    {
+      "path": "casepath-api/tests/test_reference_read_performance_v1.py",
+      "sha256": "bef509c2f86444e4f696380c57c0139a9dc1842a37610e6ef670f97f7a58c4fb"
+    },
+    {
+      "path": "casepath-api/tests/test_refinement_repairs_v1.py",
+      "sha256": "d238fdf049d281c0171f2d5d5885fafb0d6e89b6641a8084e6e4ff2d4fac8eda"
+    },
+    {
+      "path": "casepath-api/tests/test_reviewed_memory_v1.py",
+      "sha256": "932361567c69409f90636c460f538b900aa383e9e0002a8436360254736f3e27"
+    },
+    {
+      "path": "casepath-api/tests/test_sites_public_read_only_v1.py",
+      "sha256": "5b8c4c4ed84db4ecfed06ea2beca1ef31eb67990029bf47fc23543e7476143b5"
+    },
+    {
+      "path": "casepath-api/tests/test_source_preserving_shadow_v1.py",
+      "sha256": "5ef3518d425f8c1612191d291da2e7cec659a25eb898484c19fe75d8fa29e88f"
+    },
+    {
+      "path": "casepath-api/tests/test_state_refinement_v1.py",
+      "sha256": "f4a67f452eb3b276444be1cddf2df233d9e6be627d6ca67afba32f7e679a2d0a"
+    },
+    {
+      "path": "casepath-api/tests/test_study_journal_projection.py",
+      "sha256": "59e0744e57072f44652339469b76b3dbeb33ea03488aa9b652d270c1b6582236"
+    },
+    {
+      "path": "casepath-api/tests/test_study_runtime_v1.py",
+      "sha256": "00db23dc1caae7646624e986c6fb244ecdaa25d2a8678cffa5f8005d8da1c094"
+    },
+    {
+      "path": "casepath-api/tests/test_theft_benchmark_v2.py",
+      "sha256": "8cff806d729a6e31882200c0d747a953ad7351af5d3d9c65f1067b67ecaed67a"
+    },
+    {
+      "path": "casepath-api/tests/test_theft_benchmark_v3.py",
+      "sha256": "932ff33049c63637290b99b3a3cd8ce45dbc66e0f193127b9f4ab1eb00ca6388"
+    },
+    {
+      "path": "casepath-api/tests/test_theft_confirmatory_analysis_v3.py",
+      "sha256": "03294576d60e62b8af352421311b4f62beb8de48864895688086678a0b0e52a7"
+    },
+    {
+      "path": "casepath-api/tests/test_theft_confirmatory_analysis_v4.py",
+      "sha256": "efdaa9284351454b598418b42375f37a4c64adb164dc4ec5e97dc788bab9bf6d"
+    },
+    {
+      "path": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py",
+      "sha256": "cd510afc33b09e2977330ff27d1ac47fd59ae737d8e846b313b0f9a810a21be6"
+    },
+    {
+      "path": "casepath-api/tests/test_two_tier_planner_v1.py",
+      "sha256": "376cd98901fe50022f47c127f26914cf916ceaaf1b7ad2c2e3a9263bac8794df"
+    },
+    {
+      "path": "casepath-api/tests/test_visual_annotations_v15.py",
+      "sha256": "6bb13da31737a9fb36943ca73c76696a27b38848077184da46414a4ca2d19369"
+    },
+    {
+      "path": "casepath-api/tests/test_workspace_claim_loop_v1.py",
+      "sha256": "1714e7bcc21de04ffbfea77a4ff15f44a731799ba2888cb3ea10f7fa494b1822"
+    },
+    {
+      "path": "casepath-api/tests/test_workspace_corpus_150.py",
+      "sha256": "89696e6bdefba05e96695d0ac2bbc02b31cb97df2804909a79b06b2dc4733545"
+    },
+    {
+      "path": "casepath-api/tests/test_workspace_evidence_authority_v1.py",
+      "sha256": "a2e83a8ac663b7ea976fed4353eadd8ea4fb219a7b06c9225b3fe20994ab6a07"
+    },
+    {
+      "path": "casepath-api/tests/test_workspace_packet_preview.py",
+      "sha256": "445a6d3212706b7670d32eed31c8060d72e3d893ef45951a4ca094afba8948aa"
+    },
+    {
+      "path": "casepath-api/tests/test_workspace_verified_prefix_cache.py",
+      "sha256": "d8d9fef7b8baefe24bb9aad60705acf0a8bfff8052ea45df40b4e5b3a17e3b7a"
+    },
+    {
+      "path": "casepath/tools/test_build_deployment_identity.py",
+      "sha256": "428aae449bf0bd8edea9a598cf3ffe8c98221fc3da495ca0f565d97a43e8c088"
+    },
+    {
+      "path": "casepath/tools/test_casepath_release.py",
+      "sha256": "e76dfede57a8f0ec6557fc8dcb5c71a4d7a352db45cc4569e917edd8618e25fb"
+    }
+  ],
+  "full_ids_sha256": "2a3e5b4f3d419c7041a5dac8979ed99a1db3bd189d0ad73e51ba804f49d0804e",
+  "cloud_ids_sha256": "133ce41dcb59f264a0c6bc77fd23362ec54662f0ab3d86c360d3334e8440c2eb",
+  "mac_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "canonical_ids_match_provisional_c52": true,
+  "known_skip_source_records_verified": 10,
+  "prepared_clones": 6,
+  "capsule_receipts_equal": true,
+  "capsule_receipt_file_sha256": "25a832ab4ecb42966cda493af22ce095b0cd54c927a9d750f4f14b3328cc1a35",
+  "created_epoch": 1791869054.7513819
+}

@@ -1,0 +1,185 @@
+{
+  "after_head": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "after_status": "",
+  "artifacts": {
+    "attempt_latch": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/ATTEMPT_STARTED.json",
+    "capsule_after_log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/capsule-verification-after.log",
+    "capsule_after_result": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/capsule-verification-after-result.json",
+    "capsule_before_log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/capsule-verification-before.log",
+    "collected_ids": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/collected.json",
+    "command_and_env": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/command.json",
+    "junit": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/junit.xml",
+    "pytest_arguments": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/pytest-arguments.txt",
+    "pytest_log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/pytest.log",
+    "raw_phase_reports": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/reports.jsonl",
+    "runner_result": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/result.json",
+    "runner_terminal_log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/runner-terminal.log",
+    "runner_wrapper_result": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/runner-wrapper-result.json"
+  },
+  "assigned_vs_collected": {
+    "all_collected_have_passed_teardown": true,
+    "assigned_count": 667,
+    "assigned_unique_count": 667,
+    "collected_count": 667,
+    "collected_unique_count": 667,
+    "missing_assigned_ids": [],
+    "missing_report_ids": [],
+    "report_unique_ids": 667,
+    "same_ids_and_order": true,
+    "unexpected_collected_ids": [],
+    "unexpected_report_ids": []
+  },
+  "attempts": 1,
+  "candidate": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "counts": {
+    "failed": 0,
+    "passed": 657,
+    "skipped": 10,
+    "unresolved": 0,
+    "unrun_assigned": 0
+  },
+  "duration_seconds": 520.5181655883789,
+  "exit_code": 0,
+  "failed_phases": [],
+  "finished_epoch": 1791870252.0488775,
+  "junit_counts": {
+    "duration_seconds": 516.789,
+    "errors": 0,
+    "failures": 0,
+    "passed": 657,
+    "skipped": 10,
+    "tests": 667
+  },
+  "known_skip_comparison": {
+    "all_phase_line_reason_source_hashes_match": true,
+    "exact_expected_ids": true,
+    "expected_count": 10,
+    "missing_known_skipped_ids": [],
+    "observed_count": 10,
+    "records": [
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+        "line": 605,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "call",
+        "reason": "Skipped: frozen independent-transition packet is not available",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v1.py",
+        "source_sha256": "4028bb2f83e673173793c07be4205c284799c34bff641e72d28f412225714105"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text",
+        "line": 579,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected",
+        "line": 559,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected",
+        "line": 636,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request",
+        "line": 696,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete",
+        "line": 646,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected",
+        "line": 548,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected",
+        "line": 592,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected",
+        "line": 610,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      },
+      {
+        "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality",
+        "line": 457,
+        "matches_known_id_phase_source_line_reason_hash": true,
+        "phase": "setup",
+        "reason": "Skipped: saved native source-binding run is unavailable",
+        "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+        "source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+      }
+    ],
+    "reference_known_skips_path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/known-skips.json",
+    "reference_source_comparison_path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/known-skip-source-comparison.json",
+    "unexpected_skipped_ids": []
+  },
+  "phase_counts": {
+    "call:passed": 657,
+    "call:skipped": 1,
+    "setup:passed": 658,
+    "setup:skipped": 9,
+    "teardown:passed": 667
+  },
+  "reports_match_junit": true,
+  "retries": 0,
+  "retry_allowed": false,
+  "shard": 5,
+  "source_capsule_before_after": {
+    "after_path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/source-after/capsule-verification.json",
+    "after_verifier_exit_code": 0,
+    "before_after_identity_equal": true,
+    "before_path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/source-before/capsule-verification.json",
+    "capsule_receipt_file_sha256": "25a832ab4ecb42966cda493af22ce095b0cd54c927a9d750f4f14b3328cc1a35",
+    "head": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+    "manifest_sha256": "90f610eefbb63a6a42acaf3b0c11c56791694e56fea565d138e814d82291a45f",
+    "source_artifact_static_bindings_verified_after": true,
+    "source_artifact_static_bindings_verified_before": true,
+    "source_artifact_static_counts": [
+      1702,
+      25,
+      37
+    ],
+    "status": ""
+  },
+  "started_epoch": 1791869731.530712,
+  "wrapper_exit_code": 0
+}

@@ -1,0 +1,121 @@
+{
+  "shard": 3,
+  "candidate": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "exit_code": 0,
+  "wrapper_exit_code": 0,
+  "duration_seconds": 539.2026102542877,
+  "started_epoch": 1791869708.1622405,
+  "finished_epoch": 1791870247.3648508,
+  "attempts": 1,
+  "retries": 0,
+  "retry_allowed": false,
+  "counts": {
+    "passed": 293,
+    "failed_tests": 0,
+    "failed_phases": 0,
+    "skipped_tests": 0,
+    "skipped_phases": 0
+  },
+  "phase_counts": {
+    "setup": {
+      "passed": 293
+    },
+    "call": {
+      "passed": 293
+    },
+    "teardown": {
+      "passed": 293
+    }
+  },
+  "junit": {
+    "tests": 293,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "testcases": 293,
+    "duration_seconds": 534.87
+  },
+  "assigned_vs_collected": {
+    "assigned_count": 293,
+    "collected_count": 293,
+    "exact_order_match": true,
+    "missing_ids": [],
+    "unexpected_ids": [],
+    "duplicate_count": 0,
+    "arguments_match": true
+  },
+  "reported_phase_coverage": {
+    "setup": {
+      "count": 293,
+      "exact_order_match": true,
+      "missing_ids": [],
+      "unexpected_ids": [],
+      "duplicate_count": 0
+    },
+    "call": {
+      "count": 293,
+      "exact_order_match": true,
+      "missing_ids": [],
+      "unexpected_ids": [],
+      "duplicate_count": 0
+    },
+    "teardown": {
+      "count": 293,
+      "exact_order_match": true,
+      "missing_ids": [],
+      "unexpected_ids": [],
+      "duplicate_count": 0
+    }
+  },
+  "failures": [],
+  "skips": [],
+  "source_capsule_before_after": {
+    "after_verification_exit_code": 0,
+    "before_head": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+    "after_head": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+    "after_run_head": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+    "before_status": "",
+    "after_status": "",
+    "after_run_status": "",
+    "normal_clones": true,
+    "manifest_sha256_before": "90f610eefbb63a6a42acaf3b0c11c56791694e56fea565d138e814d82291a45f",
+    "manifest_sha256_after": "90f610eefbb63a6a42acaf3b0c11c56791694e56fea565d138e814d82291a45f",
+    "manifest_matches_expected": true,
+    "capsule_receipt_file_sha256_before": "25a832ab4ecb42966cda493af22ce095b0cd54c927a9d750f4f14b3328cc1a35",
+    "capsule_receipt_file_sha256_after": "25a832ab4ecb42966cda493af22ce095b0cd54c927a9d750f4f14b3328cc1a35",
+    "capsule_receipt_matches_expected": true,
+    "copied_receipt_bytes_equal": true,
+    "source_artifact_static_counts_before": [
+      1702,
+      25,
+      37
+    ],
+    "source_artifact_static_counts_after": [
+      1702,
+      25,
+      37
+    ],
+    "source_artifact_static_bindings_verified_before": true,
+    "source_artifact_static_bindings_verified_after": true
+  },
+  "artifacts": {
+    "ATTEMPT_STARTED.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/ATTEMPT_STARTED.json",
+    "command.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/command.json",
+    "collected.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/collected.json",
+    "pytest-arguments.txt": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/pytest-arguments.txt",
+    "reports.jsonl": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/reports.jsonl",
+    "junit.xml": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/junit.xml",
+    "pytest.log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/pytest.log",
+    "result.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/result.json",
+    "runner-terminal.log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/runner-terminal.log",
+    "runner-wrapper-result.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/runner-wrapper-result.json",
+    "prepare.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/prepare.json",
+    "capsule-verification-before.log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/capsule-verification-before.log",
+    "capsule-verification-after.log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/capsule-verification-after.log",
+    "capsule-verification-after-result.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/capsule-verification-after-result.json",
+    "source-before/capsule-verification.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/source-before/capsule-verification.json",
+    "source-before/CAPSULE_RECEIPT.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/source-before/CAPSULE_RECEIPT.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/source-after/capsule-verification.json",
+    "source-after/CAPSULE_RECEIPT.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/source-after/CAPSULE_RECEIPT.json"
+  }
+}

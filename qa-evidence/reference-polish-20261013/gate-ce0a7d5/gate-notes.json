@@ -1,0 +1,36 @@
+{
+  "candidate": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "suite_status": "All six original Cloud attempts completed successfully once; final Mac127 separately attested",
+  "cloud": {
+    "tests": 2411,
+    "passed": 2401,
+    "failed": 0,
+    "skipped": 10
+  },
+  "mac_attested": {
+    "tests": 127,
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "pytest_seconds": 289.5,
+    "wall_seconds": 312.775,
+    "provenance": "Mac FINALce0a attestation relayed by root; raw Mac evidence remains Mac-local; no Cloud Mac JUnit"
+  },
+  "combined": {
+    "tests": 2538,
+    "passed": 2528,
+    "failed": 0,
+    "skipped": 10
+  },
+  "tests_retried": 0,
+  "no_source_edits": true,
+  "source_seal_generated_here": false,
+  "credentialempty_deterministic_test_environments_verified": true,
+  "source_capsule_before_after_verified": true,
+  "known_skip_comparison_equal": true,
+  "worker_models": "gpt-6.1-sol/xhigh for five concurrent workers",
+  "execution_order": "shard4 alone first, then1/2/3/5/6 concurrent",
+  "durable_bundle_excludes": "Fixtures, HOME/temp/cache trees, artifact registries, SQLite/DB files; all remain on disk unchanged",
+  "evidence_branch_owner": "root only: codex/casepath-reference-polish-native-evidence-20261013",
+  "created_epoch": 1791870593.6396646
+}

@@ -1,0 +1,6 @@
+{
+  "phase": "Independent evidence parsing only; no test rerun",
+  "error": "AssertionError on blank classname for external tools test_all_local_browser_gates_bind_the_installed_runtime_identity",
+  "diagnosis": "pytest rootdir casepath-api emits blank external tools classname; canonical file IDs remain in explicit assignment and observer records.",
+  "correction": "For blank classname only, resolve exact testcase name among assigned casepath/tools IDs, still require unique match."
+}

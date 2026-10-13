@@ -1,0 +1,75 @@
+{
+  "shard": 6,
+  "candidate": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "attempts": 1,
+  "retries": 0,
+  "runner_exit_code": 0,
+  "wrapper_exit_code": 0,
+  "duration_seconds": 583.5374562740326,
+  "pytest_duration_seconds": 579.871,
+  "counts": {
+    "assigned": 293,
+    "collected": 293,
+    "passed": 293,
+    "failed_phases": 0,
+    "skipped_phases": 0,
+    "junit_tests": 293,
+    "junit_failures": 0,
+    "junit_errors": 0,
+    "junit_skipped": 0
+  },
+  "phase_counts": {
+    "setup:passed": 293,
+    "call:passed": 293,
+    "teardown:passed": 293
+  },
+  "failed_phases": [],
+  "skipped_phases": [],
+  "assigned_vs_collected": {
+    "same_order": true,
+    "same_ids": true,
+    "missing_ids": [],
+    "unexpected_ids": [],
+    "duplicate_collected_ids": []
+  },
+  "passed_vs_collected": {
+    "same_ids": true,
+    "missing_passed_ids": []
+  },
+  "source_capsule_before_after": {
+    "before_verified": true,
+    "after_verified": true,
+    "after_verifier_exit_code": 0,
+    "head_unchanged": true,
+    "clean_after": true,
+    "manifest_sha256": "90f610eefbb63a6a42acaf3b0c11c56791694e56fea565d138e814d82291a45f",
+    "manifest_matches_expected_before_after": true,
+    "capsule_receipt_file_sha256": "25a832ab4ecb42966cda493af22ce095b0cd54c927a9d750f4f14b3328cc1a35",
+    "receipt_matches_expected_before_after": true,
+    "capsule_receipt_equal": true,
+    "source_artifact_static_counts": [
+      1702,
+      25,
+      37
+    ]
+  },
+  "artifacts": {
+    "ATTEMPT_STARTED.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/ATTEMPT_STARTED.json",
+    "prepare.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/prepare.json",
+    "command.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/command.json",
+    "pytest-arguments.txt": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/pytest-arguments.txt",
+    "collected.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/collected.json",
+    "reports.jsonl": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/reports.jsonl",
+    "junit.xml": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/junit.xml",
+    "pytest.log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/pytest.log",
+    "runner-terminal.log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/runner-terminal.log",
+    "result.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/result.json",
+    "runner-wrapper-result.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/runner-wrapper-result.json",
+    "source-before/capsule-verification.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/source-before/capsule-verification.json",
+    "source-before/CAPSULE_RECEIPT.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/source-before/CAPSULE_RECEIPT.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/source-after/capsule-verification.json",
+    "source-after/CAPSULE_RECEIPT.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/source-after/CAPSULE_RECEIPT.json",
+    "capsule-verification-after.log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/capsule-verification-after.log",
+    "capsule-verification-after-result.json": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/capsule-verification-after-result.json"
+  }
+}

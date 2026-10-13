@@ -1,0 +1,54 @@
+{
+  "repo": "/workspace/casepath-release-ae0-shard2",
+  "old_head": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "before_status": "",
+  "candidate": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "canonical_url": "https://github.com/KumarNavish/casepath.git",
+  "branch": "codex/casepath-causal-experience-integration-20261009",
+  "started_epoch": 1791867838.3130043,
+  "host": "656813ef2295",
+  "fetch_command": [
+    "git",
+    "-c",
+    "credential.helper=!gh auth git-credential",
+    "fetch",
+    "https://github.com/KumarNavish/casepath.git",
+    "codex/casepath-causal-experience-integration-20261009"
+  ],
+  "fetch_exit_code": 0,
+  "canonical_fetched_head": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard2/home",
+    "TMPDIR": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard2/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard2/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "PYTHONHASHSEED": "0",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard2/pycache"
+  },
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "exit_code": 0,
+  "after_head": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "after_status": "",
+  "finished_epoch": 1791867846.1002471,
+  "duration_seconds": 7.787242889404297
+}

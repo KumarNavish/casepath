@@ -1,0 +1,347 @@
+........................................................................ [ 24%]
+........................................................................ [ 49%]
+........................................................................ [ 74%]
+........................................................................ [ 99%]
+.                                                                        [100%]
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+casepath-api/casepath_api/app.py:424
+  /workspace/casepath-release-ae0-shard2/casepath-api/casepath_api/app.py:424: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+  /workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+casepath-api/casepath_api/app.py:444
+  /workspace/casepath-release-ae0-shard2/casepath-api/casepath_api/app.py:444: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /workspace/casepath-reference-polish-gate-ce0a-20261013/shard2/junit.xml -
+============================== slowest durations ===============================
+193.33s call     tests/test_workspace_corpus_150.py::test_all_150_original_claims_enter_the_same_workflow_without_accepting_evidence
+30.03s setup    tests/test_autonomous_knowledge_reads_v1.py::test_compatible_selects_from_the_supplied_validated_view_without_another_read
+18.70s call     tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_2c55cdd816b1d0e8]
+16.56s call     tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_4a53299cfe619303]
+15.68s call     tests/test_agent_desk_v1.py::test_active_reference_pause_persists_checkpoint_and_resumes_real_source_work
+13.69s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-duplicate]
+13.13s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-explicit_reconciler]
+11.62s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-explicit_reconciler]
+10.78s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMITTED-AFTER_ARTIFACT_BEFORE_EFFECT_RECEIPT-committed-0-explicit_reconciler]
+10.16s call     tests/test_claim_loop_v1.py::test_correction_and_reuse_terminalize_during_active_dispatch
+9.76s call     tests/test_insurance_protocol_v1.py::test_handler_selects_hash_bound_correction_and_can_restore_exact_source
+9.09s call     tests/test_insurance_protocol_v1.py::test_live_registration_and_reconcile_never_cancel_shared_effect
+7.81s call     tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[release-error]
+7.56s call     tests/test_pace_core_v1.py::test_m0_positive_path_reauthenticates_external_census_bytes
+7.10s call     tests/test_insurance_protocol_v1.py::test_distinct_valid_documents_are_server_admitted_and_unresolved_is_not_ready
+7.03s setup    tests/test_agent_desk_reconciliation.py::test_verified_local_reconciliation_is_visible_and_preserves_a_paused_mandate
+6.99s call     tests/test_insurance_protocol_v1.py::test_fault_02_duplicate_registration_replays_exact_result
+6.70s call     tests/test_autonomous_supplied_review_v1.py::test_held_or_inactive_original_reviews_qualify_v2_without_activating_process[false]
+6.52s call     tests/test_insurance_protocol_v1.py::test_journal_rebuilds_deleted_evidence_indexes_exactly
+5.39s call     tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[success]
+5.10s call     tests/test_insurance_protocol_v1.py::test_epistemic_stage_rehashed_tamper_rejected_before_journal_growth[BEFORE_INTERPRETATION-PROTOCOL_INTERPRETATION_RECORDED-interpretation]
+4.82s call     tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[draft_approval-approve]
+4.79s call     tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[source_conflict-keep_open]
+4.78s call     tests/test_autonomous_corpus_v1.py::test_all_original_artifact_bytes_media_and_relationships_survive
+4.72s call     tests/test_insurance_protocol_v1.py::test_epistemic_stage_rehashed_tamper_rejected_before_journal_growth[BEFORE_NORMALIZED_ASSERTION-PROTOCOL_ASSERTION_NORMALIZED-normalized-assertion]
+3.96s call     tests/test_hosted_pending_recovery_v1.py::test_other_process_completion_replaces_stale_run_with_learning_only
+3.88s call     tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+3.66s call     tests/test_claim_loop_v1.py::test_completed_advance_replay_is_exact_after_later_tail
+3.58s call     tests/test_complete_reference_intake_v1.py::test_verifier_rejects_wrong_quote_source_and_changed_field_roster
+3.40s call     tests/test_agent_desk_v1.py::test_disputed_answer_uses_the_engine_rejected_status_in_preview_and_apply[step_validation]
+3.23s call     tests/test_autonomous_knowledge_reads_v1.py::test_controller_reads_one_view_for_all_families_before_interpretation
+3.21s setup    tests/test_autonomous_knowledge_refinement_v1.py::test_conflicting_version_identity_is_quarantined_in_projection
+3.11s call     tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency
+3.03s call     tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_safe]
+2.87s call     tests/test_native_claim_loop_bridge_v1.py::test_scoped_native_correction_preserves_neighbor_and_old_source_bytes
+2.74s setup    tests/test_agent_delegate_journal_validation.py::test_global_validator_rejects_invalid_delegate_chain_schema_parent_and_scope[extra_authority]
+2.68s call     tests/test_workspace_claim_loop_v1.py::test_operational_rebuild_discards_derived_cache_and_binds_both_journals
+2.58s call     tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]
+2.53s call     tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]
+2.34s call     tests/test_claim_loop_v1.py::test_abandoned_tool_unavailable_request_terminalizes_after_tail_drift
+2.34s call     tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]
+2.32s call     tests/test_agent_desk_reconciliation.py::test_verified_local_reconciliation_is_visible_and_preserves_a_paused_mandate
+2.14s call     tests/test_claim_loop_v1.py::test_observed_acquisition_recovers_after_preinterpretation_crash_without_redispatch
+1.93s setup    tests/test_original_nine_hosted_v1.py::test_remote_midpoint_restart_blocks_another_workflow_and_changed_source
+1.92s call     tests/test_claim_loop_v1.py::test_store_revalidates_correction_instances_before_writing[artifact_hash]
+1.86s call     tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[session_id]
+1.60s call     tests/test_autonomous_knowledge_reads_v1.py::test_compatible_selects_from_the_supplied_validated_view_without_another_read
+1.58s call     tests/test_draft_request_v1.py::test_saved_prior_graph_draft_replays_before_corrected_draft[sealed_1_2]
+1.52s call     tests/test_autonomous_knowledge_reads_v1.py::test_hosted_warm_knowledge_rechecks_cached_source_bytes[missing]
+1.49s call     tests/test_claim_loop_v1.py::test_abandoned_mutating_reservation_never_masquerades_as_noop
+1.47s call     tests/test_autonomous_knowledge_reads_v1.py::test_earlier_row_tampering_is_rejected_with_an_unchanged_head[created_at]
+1.42s setup    tests/test_original_nine_budget_v1.py::test_prior_epoch_approval_identity_cannot_be_reused
+1.34s call     tests/test_autonomous_knowledge_refinement_v1.py::test_conflicting_version_identity_is_quarantined_in_projection
+1.30s call     tests/test_claim_loop_v1.py::test_store_append_rejects_forged_observation_events[action]
+1.29s call     tests/test_agent_demo_launcher.py::test_capacity_command_and_preservation_replay_real_disposable_store[complete-18]
+1.25s call     tests/test_claim_loop_v1.py::test_store_rejects_forged_tool_artifact_authority[value]
+1.24s call     tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[replace]
+1.21s call     tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[adverse]
+1.14s call     tests/test_claim_loop_v1.py::test_ecab_replay_seam_rejects_privilege_and_binding_forgery[outcome]
+1.13s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[preflight]
+1.10s call     tests/test_claim_loop_v1.py::test_store_append_rejects_forged_observation_events[result_key]
+1.01s call     tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[in_place]
+1.01s call     tests/test_claim_loop_v1.py::test_store_rejects_forged_tool_artifact_authority[version]
+0.92s setup    tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[release-error]
+0.86s call     tests/test_claim_loop_v1.py::test_ecab_replay_seam_maps_only_sanitized_outcome_free_spans
+0.85s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[budget]
+0.81s call     tests/test_claim_loop_v1.py::test_replay_cache_never_exposes_mutable_authority
+0.76s setup    tests/test_original_nine_budget_v1.py::test_same_approval_concurrent_application_is_one_immutable_receipt
+0.75s setup    tests/test_causal_workspace_v1.py::test_process_routes_reject_extra_authority_and_bind_preview
+0.75s setup    tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[key]
+0.74s setup    tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[success]
+0.70s setup    tests/test_agent_desk_v1.py::test_accepted_process_hook_cannot_revive_superseded_edit_or_saved_pause
+0.67s call     tests/test_native_claim_loop_bridge_v1.py::test_native_pending_revision_is_durable_source_bound_and_idempotent[explicit-deadline]
+0.64s setup    tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[source_conflict-keep_open]
+0.62s call     tests/test_claim_workspace_v1.py::test_corrupt_journal_never_becomes_queue_authority
+0.61s setup    tests/test_agent_desk_v1.py::test_historical_delegate_retry_preserves_pause_and_cannot_revive_effects[draft_approval-approve]
+0.60s setup    tests/test_agent_desk_v1.py::test_active_reference_pause_persists_checkpoint_and_resumes_real_source_work
+0.60s setup    tests/test_agent_desk_v1.py::test_interrupted_and_unconfirmed_work_needs_handler_recovery_without_blind_retry[unconfirmed_safe]
+0.59s setup    tests/test_agent_desk_v1.py::test_disputed_answer_uses_the_engine_rejected_status_in_preview_and_apply[step_validation]
+0.58s setup    tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_2c55cdd816b1d0e8]
+0.57s setup    tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency
+0.57s setup    tests/test_autonomous_corpus_v1.py::test_all_original_artifact_bytes_media_and_relationships_survive
+0.55s call     tests/test_causal_workspace_v1.py::test_process_routes_reject_extra_authority_and_bind_preview
+0.55s setup    tests/test_original_nine_preflight_v1.py::test_summary_readback_cannot_be_labeled_current_budget_cas_ready
+0.53s call     tests/test_hosted_app_v1.py::test_cloud_import_does_not_require_generated_legacy_artifacts
+0.53s setup    tests/test_autonomous_canonical_api_v1.py::test_domain_browsing_is_exact_metadata_without_operational_labels
+0.53s call     tests/test_claim_loop_v1.py::test_cycle_receipt_activity_is_rederived_from_bound_graph_audit
+0.51s call     tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[None-canonical]
+0.49s call     tests/test_original_nine_preflight_v1.py::test_summary_readback_cannot_be_labeled_current_budget_cas_ready
+0.48s call     tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[unknown-legacy]
+0.47s call     tests/test_original_nine_hosted_v1.py::test_remote_midpoint_restart_blocks_another_workflow_and_changed_source
+0.46s call     tests/test_study_runtime_v1.py::test_exact_1476_call_schedule_and_integer_cost_proof
+0.45s call     tests/test_pipeline.py::test_learning_proof_rejects_current_run_started_before_baseline_completed
+0.45s call     tests/test_pipeline.py::test_learning_proof_recomputes_candidate_governance_reports
+0.44s call     tests/test_reference_read_performance_v1.py::test_work_calls_candidate_prefixes_dense_sparse_composite_keys_and_escaped_json[True]
+0.42s call     tests/test_multi_agent_v15.py::test_final_audit_payload_ignores_applied_answers_but_tracks_prior_contributions
+0.35s call     tests/test_canonicalizer_v15.py::test_canonicalizer_uses_synchronous_sdk_provider_without_generation_poll
+0.35s call     tests/test_pipeline.py::test_learning_proof_binds_full_before_hashes_to_pre_transform_boundary
+0.33s call     tests/test_app_v15.py::test_two_sessions_are_isolated_and_reset_preserves_other_session_and_global_ledger
+0.31s call     tests/test_multi_agent_v15.py::test_final_specialist_accepts_three_of_five_independent_audit_units
+0.30s call     tests/test_multi_agent_v15.py::test_process_specialist_three_of_six_fails_without_cache_or_raw_diagnostics
+0.29s setup    tests/test_original_nine_budget_v1.py::test_empty_preflight_cannot_apply_an_allowance
+0.28s call     tests/test_hosted_pending_recovery_v1.py::test_lost_ownership_after_saved_start_resumes_same_work[canonical]
+0.28s call     tests/test_grounding_integration_v15.py::test_governed_extension_fact_is_independently_claim_bound[DEMO-MOULD-002]
+0.27s setup    tests/test_claim_workspace_v1.py::test_corrupt_journal_never_becomes_queue_authority
+0.26s call     tests/test_draft_request_v1.py::test_graph_draft_omits_empty_document_sections_when_prerequisites_block[en]
+0.26s call     tests/test_multi_agent_v15.py::test_specialist_upstream_rejection_receipt_exposes_only_bounded_status
+0.25s call     tests/test_hosted_pending_recovery_v1.py::test_startup_busy_work_recovers_only_saved_claims[canonical]
+0.25s call     tests/test_foundation_live_v1.py::test_authenticated_review_rejects_tamper_wrong_role_replay_mismatch_and_revocation
+0.24s call     tests/test_agent_delegate_journal_validation.py::test_global_validator_rejects_invalid_delegate_chain_schema_parent_and_scope[extra_authority]
+0.24s call     tests/test_pipeline.py::test_forged_memory_fails_current_run_closed
+0.24s call     tests/test_multi_agent_v15.py::test_specialist_concurrency_block_emits_truthful_zero_call_receipt
+0.23s call     tests/test_pipeline.py::test_rehashed_memory_result_hashes_are_origin_bound[reviewed_result_hash]
+0.22s call     tests/test_reference_read_performance_v1.py::test_inventory_large_escaped_unicode_and_blob_rows_keep_wire_bounds_and_exact_bytes
+0.20s setup    tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[None-canonical]
+0.19s call     tests/test_build_paper_method_pack_v5.py::test_builder_emits_v5_runtime_contract_and_current_pointer
+0.19s call     tests/test_native_workspace_inquiry_v1.py::test_duplicate_dispatch_is_idempotent_only_for_same_transport_key
+0.16s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[nonexact_quote-documents]
+0.16s setup    tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[paused-legacy]
+0.16s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_category_remains_fatal[nonexact_quote]
+0.16s setup    tests/test_hosted_pending_recovery_v1.py::test_other_process_completion_replaces_stale_run_with_learning_only
+0.16s call     tests/test_draft_request_v1.py::test_graph_draft_omits_empty_document_sections_when_prerequisites_block[de-CH]
+0.15s setup    tests/test_hosted_pending_recovery_v1.py::test_startup_busy_work_recovers_only_saved_claims[canonical]
+0.15s setup    tests/test_hosted_pending_recovery_v1.py::test_lost_ownership_after_saved_start_resumes_same_work[canonical]
+0.15s setup    tests/test_autonomous_item_rejection_v1.py::test_document_source_binding_rejects_entire_assessment[unknown_document_source]
+0.15s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[missing_required-documents]
+0.15s setup    tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[verification_deferred-legacy]
+0.15s setup    tests/test_autonomous_item_rejection_v1.py::test_one_invalid_span_discards_all_citations_for_the_item[True]
+0.14s call     tests/test_autonomous_policy_v1.py::test_message_cannot_stand_in_for_a_required_original_document
+0.14s setup    tests/test_hosted_pending_recovery_v1.py::test_unknown_provider_reservation_survives_loss_without_second_attempt[unknown-legacy]
+0.14s call     ::test_root_knowledge_transfer_is_inventoried_as_release_source
+0.14s call     tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[recurrence-unverified-recurrence_unverified-defect-defect]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_one_invalid_span_discards_all_citations_for_the_item[False]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_rejected_document_cannot_support_recipe_but_other_source_can[False]
+0.13s call     tests/test_grounding_integration_v15.py::test_terminal_verifier_rejects_self_consistent_grounding_forgery[process_fact_reorder]
+0.12s call     tests/test_autonomous_canonical_api_v1.py::test_verified_prefix_replay_is_read_only_and_keeps_live_head
+0.11s call     tests/test_obligation_control_increment.py::NativeSchemaCompatibility::test_export_validates_with_supplied_native_schema
+0.11s setup    tests/test_agent_work_budget_grant.py::test_grant_rejects_invalid_command_without_mutation[reason-None]
+0.11s call     tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[changed_later_chunk]
+0.10s call     tests/test_pipeline.py::test_model_final_result_consumes_only_matching_final_brief_route
+0.10s call     tests/test_agent_work_budget_grant.py::test_grant_does_not_relax_provider_or_cost_caps[calls]
+0.10s call     tests/test_pipeline.py::test_verifier_rejects_unknown_source_and_precedent_provenance
+0.10s call     tests/test_grounding_integration_v15.py::test_terminal_verifier_rejects_self_consistent_grounding_forgery[process_fact_swap]
+0.10s call     tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[nullable_choice_error]
+0.10s call     tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[urgency-urgent-urgent-urgency-urgent_escalation]
+0.09s call     tests/test_pipeline.py::test_verifier_rejects_unknown_fact_and_evidence_ids
+0.09s call     tests/test_grounding_integration_v15.py::test_learning_semantic_hashes_ignore_only_run_specific_agent_attribution
+0.09s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__wire_bound-True]
+0.09s call     tests/test_reference_read_performance_v1.py::test_inventory_wal_snapshot_keeps_sparse_keyset_consistent_when_writer_commits_after_bound
+0.09s call     tests/test_causal_confirmatory_analysis_v1.py::test_wrong_pairing_is_deterministic_for_equal_family_sizes
+0.09s call     ::test_dynamic_runtime_acceptance_allows_integral_fact_float_round_trip
+0.09s call     ::test_dynamic_runtime_acceptance_allows_alternate_bounded_evidence_end_to_end
+0.09s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[demo-review.json]
+0.09s setup    tests/test_agent_work_budget_grant.py::test_grant_does_not_allow_a_larger_per_run_cost
+0.09s call     tests/test_autonomous_model_v1.py::test_budget_denials_are_named_without_creating_an_intent_or_sending[policy1-True]
+0.09s call     tests/test_pipeline.py::test_canonical_paid_failure_emits_joinable_safe_agent_receipt
+0.09s call     tests/test_obligation_study_v1.py::StudyTests::test_product_invokes_same_inference_core_and_replays_same_request_only
+0.09s call     ::test_dynamic_runtime_acceptance_enforces_claim_specific_checklist_order[flagship-run.json-DEF-027-E0-DEMO-result\\.checklist\\.items]
+0.08s setup    tests/test_agent_work_budget_grant.py::test_grant_denies_active_run_or_terminal_run_with_pending_call[False]
+0.08s call     tests/test_reference_read_performance_v1.py::test_candidate_aliases_cannot_shadow_real_primary_key_order_and_oversize_tail[__REFERENCE_CANDIDATE_NULL_KEY-False]
+0.08s call     tests/test_complete_reference_intake_v1.py::test_original_issue_language_routes_only_unassessed_template_evidence[clm_37909940906c3d22-defect_mold_heating]
+0.08s call     ::test_dynamic_runtime_acceptance_allows_parallel_warm_completion_order_swap[permuted_surfaces1]
+0.08s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-run.json]
+0.08s call     tests/test_autonomous_budget_v1.py::test_abandon_releases_only_unsent_remainder_and_prevents_late_verification
+0.07s call     tests/test_autonomous_model_v1.py::test_catalogue_requires_structured_output_and_prices_extended_tiers
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[model-ledger.json]
+0.07s call     tests/test_autonomous_canonical_api_v1.py::test_domain_browsing_is_exact_metadata_without_operational_labels
+0.07s call     tests/test_autonomous_model_v1.py::test_invalid_results_are_accounted_but_never_retried_or_published[not JSON]
+0.07s setup    tests/test_agent_demo_launcher.py::test_tampered_prior_demo_receipt_is_not_silently_ignored
+0.07s setup    tests/test_agent_work_budget_grant.py::test_grant_does_not_relax_provider_or_cost_caps[calls]
+0.06s call     ::test_dynamic_runtime_rejects_stale_top_level_accepted_siblings[understanding-run\\.understanding]
+0.06s call     tests/test_autonomous_budget_v1.py::test_provider_overrun_is_recorded_then_freezes_both_admission_paths
+0.06s call     tests/test_autonomous_budget_v1.py::test_two_store_instances_do_not_send_the_same_pending_intent_twice
+0.06s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[forged_id-canonicalization\\.assertion_selections]
+0.06s call     tests/test_autonomous_model_v1.py::test_budget_denials_are_named_without_creating_an_intent_or_sending[policy2-False]
+0.06s call     tests/test_complete_reference_intake_v1.py::test_subject_only_and_ambiguous_intake_never_establish_eligibility[Wasserleck in der Wohnung-Bitte pr\xfcfen Sie meine Unterlagen.-incomplete]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_forged_final_field[audit_check_ids-forged_value4]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[foreign-cache_lineage]
+0.06s call     tests/test_complete_reference_intake_v1.py::test_original_issue_language_routes_only_unassessed_template_evidence[clm_0c373e693a363f9e-rent_increase_dispute]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_later_model_activity[canonicalizer]
+0.06s setup    tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[different_event]
+0.06s call     tests/test_native_asset_write_concurrency.py::test_concurrent_writers_of_the_same_bytes_all_succeed[workspace_runtime_file]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_thirteenth_final_ledger_row
+0.06s call     tests/test_autonomous_corpus_v1.py::test_native_email_headers_previewed_without_an_evidence_receipt
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_snapshot[current_node]
+0.06s setup    tests/test_autonomous_journal_validation_v1.py::test_both_restart_validators_accept_real_autonomous_bytes_without_initialization
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_proof[before_hash]
+0.05s call     tests/test_complete_reference_intake_v1.py::test_original_issue_language_routes_only_unassessed_template_evidence[clm_de7ddb30509c2358-rent_increase_dispute]
+0.05s call     tests/test_autonomous_budget_v1.py::test_tampered_sealed_records_cannot_expand_limits_or_change_cached_results[work_autonomous_calls-maximum_cost_usd]
+0.05s call     tests/test_playbook_template_v1.py::test_non_mould_full_source_run_remains_fail_closed
+0.05s setup    tests/test_agent_work_reconciliation.py::test_reconcile_never_releases_an_effectful_or_still_owned_call[scheduled_here]
+0.05s setup    tests/test_agent_work_budget_grant.py::test_grant_tampering_fails_closed_on_read_and_admission[snapshot]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forbidden_retained_run_field
+0.05s setup    tests/test_agent_work_reconciliation.py::test_reconcile_rejects_unproven_identity_without_journal_change[active_lease]
+0.05s call     tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[verification_deferred-legacy]
+0.05s setup    tests/test_obligation_compact_v3.py::CompactTests::test_case_source_rejected_in_preparation
+0.05s call     tests/test_hosted_pending_recovery_v1.py::test_lost_job_with_recorded_deferral_is_never_resent[paused-legacy]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_semantic_fact_rebind
+0.05s call     ::test_public_ledger_accepts_warm_shape_but_cold_artifact_rejects_it
+0.05s call     ::test_dynamic_runtime_requires_six_clean_model_calls[agent_rejection]
+0.05s call     ::test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[brief-whole_playbook_gate\\.final_brief_artifact_hash]
+0.05s call     tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[key]
+0.04s call     ::test_dynamic_causal_evidence_paths_reject_invalid_file_records[duplicate]
+0.04s setup    tests/test_autonomous_journal_validation_v1.py::test_history_validator_rejects_resealed_autonomous_contract_and_parent_changes[wrong_parent_state]
+0.04s call     tests/test_autonomous_journal_validation_v1.py::test_both_validators_reject_namespace_mixups[casepath-autonomous-local-v1-foreign.{claim}]
+0.04s call     ::test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[bundle-whole_playbook_gate\\.output_artifact_hash]
+0.04s call     tests/test_pace_core_v1.py::test_compiler_and_verifier_have_disjoint_pure_closures
+0.04s call     ::test_evidence_verifier_accepts_alternate_bounded_status
+0.04s call     tests/test_complete_reference_intake_v1.py::test_original_issue_language_routes_only_unassessed_template_evidence[clm_fc970e956872f431-rent_increase_dispute]
+0.04s call     tests/test_original_nine_budget_v1.py::test_same_approval_concurrent_application_is_one_immutable_receipt
+0.04s call     ::test_evidence_verifier_rejects_contradictory_bounded_fields[derived]
+0.03s call     tests/test_autonomous_canonical_store_v1.py::test_collection_cache_reuses_reducer_and_validates_entire_journal_and_sources
+0.03s call     tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[changed_chunk-head]
+0.03s setup    tests/test_autonomous_journal_validation_v1.py::test_both_validators_reject_namespace_mixups[casepath-autonomous-local-v1-foreign.{claim}]
+0.03s call     tests/test_canonicalizer_v15.py::test_canonical_upstream_rejection_retains_only_safe_unknown_cost_evidence
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[warm_audit]
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[cold_ledger]
+0.03s setup    tests/test_pipeline.py::test_learning_proof_recomputes_candidate_governance_reports
+0.03s call     tests/test_multi_agent_v15.py::test_each_specialist_length_at_new_ceiling_is_billed_and_never_cached[evidence_checklist-8192]
+0.03s call     tests/test_agent_work_budget_grant.py::test_grant_denies_active_run_or_terminal_run_with_pending_call[False]
+0.03s call     tests/test_autonomous_journal_validation_v1.py::test_history_validator_rejects_resealed_autonomous_contract_and_parent_changes[wrong_parent_state]
+0.03s call     tests/test_canonicalizer_v15.py::test_conflicting_selection_spans_two_related_artifacts
+0.03s setup    tests/test_pipeline.py::test_verifier_rejects_unknown_source_and_precedent_provenance
+0.03s call     tests/test_autonomous_journal_validation_v1.py::test_both_restart_validators_accept_real_autonomous_bytes_without_initialization
+0.03s call     tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[preflight]
+0.02s setup    tests/test_causal_process_v1.py::test_known_completed_route_wins_over_an_unresolved_alternative_at_a_merge
+0.02s call     ::test_generated_artifact_timeline_and_metadata_are_temporally_coherent
+0.02s call     tests/test_agent_work_budget_grant.py::test_grant_does_not_allow_a_larger_per_run_cost
+0.02s call     tests/test_agent_work_budget_grant.py::test_grant_tampering_fails_closed_on_read_and_admission[snapshot]
+0.02s call     tests/test_agent_work_budget_grant.py::test_grant_rejects_invalid_command_without_mutation[reason-None]
+0.02s call     tests/test_obligation_study_v1.py::StudyTests::test_lost_ack_is_uncertain_not_retry
+0.02s call     tests/test_canonicalizer_v15.py::test_any_rejected_fact_fails_without_fallback_or_cache
+0.02s call     tests/test_study_runtime_v1.py::test_prompt_token_overflow_fails_before_any_runtime_path
+0.02s call     tests/test_obligation_study_v1.py::StudyTests::test_reconcile_unknown_same_request
+0.02s call     tests/test_complete_reference_intake_v1.py::test_subject_only_and_ambiguous_intake_never_establish_eligibility[Please update my address-I moved; correct my postal address.-unsupported]
+0.02s setup    tests/test_autonomous_canonical_api_v1.py::test_verified_prefix_replay_is_read_only_and_keeps_live_head
+0.02s call     tests/test_live_events_v15.py::test_outbox_wakes_waiters_and_terminal_is_idempotent
+0.02s call     ::test_release_assertion_id_matches_backend_versioned_algorithm
+0.02s call     tests/test_obligation_compact_v3.py::CompactTests::test_case_source_rejected_in_preparation
+0.02s call     tests/test_original_nine_budget_v1.py::test_prior_epoch_approval_identity_cannot_be_reused
+0.02s call     tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[extra_chunk-head]
+0.02s setup    tests/test_pipeline.py::test_forged_memory_fails_current_run_closed
+0.02s call     tests/test_obligation_study_v1.py::StudyTests::test_wrong_provider_recorded_as_failure
+0.02s call     tests/test_pace_core_v1.py::test_standalone_fixture_receipt_is_complete_and_self_hashed
+0.02s call     tests/test_native_asset_write_concurrency.py::test_writing_identical_bytes_twice_is_a_no_op[workspace_runtime_file]
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_unknown_registry_role_rejected
+0.01s setup    tests/test_pipeline.py::test_verifier_rejects_unknown_fact_and_evidence_ids
+0.01s call     tests/test_multi_agent_v15.py::test_specialist_admission_timeout_is_zero_call_noncacheable_ledger_record
+0.01s call     tests/test_canonicalizer_v15.py::test_missing_sync_usage_polls_generation_metadata_without_retrying_inference
+0.01s call     tests/test_canonicalizer_v15.py::test_missing_upstream_provider_uses_metadata_before_persisting_success
+0.01s call     tests/test_autonomous_corpus_v1.py::test_browsing_taxonomy_must_cover_exact_canonical_binding_ids
+0.01s call     tests/test_pace_core_v1.py::test_capability_operator_roster_and_or_path_are_sealed
+0.01s call     tests/test_multi_agent_v15.py::test_specialist_provider_provenance_is_bounded_before_ledger_and_failure_context[envelope_overrides1]
+0.01s call     tests/test_canonicalizer_v15.py::test_canonicalizer_rejects_duplicate_source_reference_ids
+0.01s call     tests/test_canonicalizer_v15.py::test_missing_credential_is_fail_closed_and_never_calls_network
+0.01s call     tests/test_canonicalizer_v15.py::test_provider_cannot_author_contradictory_display_prose
+0.01s call     tests/test_native_asset_write_concurrency.py::test_different_bytes_at_the_same_path_are_still_rejected[native_asset]
+0.01s call     tests/test_pace_core_v1.py::test_non_exact_locator_capability_accepts_only_a_declared_source_locator
+0.01s call     tests/test_obligation_compact_v3.py::CompactTests::test_context_bound_includes_worst_future_draft
+0.01s call     ::test_later_scenario_precedes_release_and_has_no_stale_active_markers
+0.01s call     tests/test_multi_agent_v15.py::test_specialist_generation_metadata_eventual_consistency_uses_bounded_backoff
+0.01s call     tests/test_obligation_compact_v3.py::CompactTests::test_no_preparation_requests
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_outside_liabilities_respected
+0.01s call     tests/test_pace_core_v1.py::test_unauthorized_observation_does_not_constrain_worlds_or_authorize_action
+0.01s setup    tests/test_grounding_integration_v15.py::test_learning_semantic_hashes_ignore_only_run_specific_agent_attribution
+0.01s setup    tests/test_grounding_integration_v15.py::test_terminal_verifier_rejects_self_consistent_grounding_forgery[process_fact_swap]
+0.01s call     tests/test_pace_core_v1.py::test_observation_polarity_reliability_and_conflict_are_not_blind_intersections[supports-999-2]
+0.01s setup    tests/test_pipeline.py::test_learning_proof_rejects_current_run_started_before_baseline_completed
+0.01s setup    tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[recurrence-unverified-recurrence_unverified-defect-defect]
+0.01s setup    tests/test_grounding_integration_v15.py::test_terminal_verifier_rejects_self_consistent_grounding_forgery[process_fact_reorder]
+0.01s call     tests/test_pace_core_v1.py::test_request_rejects_impossible_obligation_target_value
+0.01s call     tests/test_obligation_study_resources.py::test_failed_journal_transaction_rolls_back_and_closes
+0.01s setup    tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]
+0.01s setup    tests/test_grounding_integration_v15.py::test_governed_extension_fact_is_independently_claim_bound[DEMO-MOULD-002]
+0.01s setup    tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[urgency-urgent-urgent-urgency-urgent_escalation]
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_missing_admission_hash_rejected
+0.01s setup    tests/test_pipeline.py::test_rehashed_memory_result_hashes_are_origin_bound[reviewed_result_hash]
+0.01s setup    tests/test_pipeline.py::test_learning_proof_binds_full_before_hashes_to_pre_transform_boundary
+0.01s setup    tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]
+0.01s call     tests/test_original_nine_budget_v1.py::test_empty_preflight_cannot_apply_an_allowance
+0.01s setup    tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]
+0.01s call     tests/test_obligation_study_v1.py::StudyTests::test_source_pack_never_loads_hidden_files
+0.01s call     tests/test_pace_core_v1.py::test_deadline_obligation_rejects_untyped_informational_action
+0.01s setup    tests/test_app_v15.py::test_model_ready_rejects_every_external_trace_alias[LANGCHAIN_TRACING]
+0.01s call     ::test_render_definitive_qa_contract_rejects_tampering[envVars-value3-environment must exactly pin]
+0.01s call     tests/test_obligation_compact_v3.py::CompactTests::test_empty_provenance_preserved
+0.01s call     tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[stale_revision]
+0.01s call     tests/test_obligation_compact_v3.py::CompactTests::test_document_state_change_roundtrip
+0.01s setup    tests/test_app_v15.py::test_two_sessions_are_isolated_and_reset_preserves_other_session_and_global_ledger
+0.01s call     tests/test_obligation_compact_v3.py::CompactTests::test_whitespace_dedup_preserves_json
+0.01s teardown tests/test_agent_work_budget_grant.py::test_grant_denies_active_run_or_terminal_run_with_pending_call[False]
+0.01s teardown tests/test_autonomous_canonical_api_v1.py::test_domain_browsing_is_exact_metadata_without_operational_labels
+0.01s call     tests/test_pace_core_v1.py::test_closed_schema_rejects_hidden_oracle_field
+0.01s call     tests/test_autonomous_item_rejection_v1.py::test_one_invalid_span_discards_all_citations_for_the_item[True]
+0.01s call     tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[bad_attachments]
+
+(572 durations < 0.005s hidden.  Use -vv to show these durations.)
+289 passed, 9 warnings in 555.83s (0:09:15)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

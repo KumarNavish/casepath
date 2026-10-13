@@ -1,0 +1,99 @@
+{
+  "candidate": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "reference_candidate": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "old_observed_count": 2390,
+  "old_observed_total_seconds": 2426.835,
+  "admission_junit_observed_tests": 9,
+  "admission_junit_observed_total_seconds": 510.649,
+  "admission_junit_rows": [
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_operator_pins_current_profile_and_both_immutable_source_histories",
+      "seconds": 0.006
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix",
+      "seconds": 340.581
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[unknown]",
+      "seconds": 0.737
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[adverse]",
+      "seconds": 0.728
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[partial_legacy]",
+      "seconds": 0.732
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[foreign_policy]",
+      "seconds": 0.738
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry",
+      "seconds": 166.407
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_selected_rejected_provider_stage_and_global_unknown_outcome_refuse_read_only",
+      "seconds": 0.221
+    },
+    {
+      "id": "casepath-api/tests/test_reference_admission_v1.py::test_hosted_canonical_draft_submit_run_startup_recovery_never_calls_model_or_writes",
+      "seconds": 0.499
+    }
+  ],
+  "complete_reference": {
+    "current_collected_count": 38,
+    "observed_log_count": 37,
+    "observed_module_seconds": 183.92,
+    "per_case_junit_present": false,
+    "retained_old_case_observations": 23,
+    "old_case_seconds": 46.085,
+    "new_estimated_case_count": 15,
+    "new_estimated_seconds": 137.83499999999998,
+    "estimate_method": "Preserve existing 2af5 testcase durations; allocate remaining module aggregate over additions using 12.78s single migration log as relative weight, 9.373s old lineage case weight for unfinished legacy, 0.2s read-only roster case weight, and 0.01s profile checks. Allocation represents current38 IDs conservatively; 37-run membership was not recorded."
+  },
+  "source_hashes": [
+    {
+      "path": "/tmp/casepath-release-2af5-20261013/per-test-durations.json",
+      "sha256": "129968616c4b4fcbe024fc6e2ba98a71c0b00fa2ff4953c1b3cf14544e7bd059"
+    },
+    {
+      "path": "/tmp/casepath-release-2af5-20261013/shard-map.json",
+      "sha256": "32a0fa1c2174885a8c6e3b14821c4d740fb14c41a493ee726d830984031d5218"
+    },
+    {
+      "path": "/tmp/casepath-release-2af5-20261013/known-skips.json",
+      "sha256": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7"
+    },
+    {
+      "path": "/tmp/casepath-release-2af5-20261013/known-skip-observed-comparison.json",
+      "sha256": "f48ec83452d9e7bf387a1f88da84ef9b88d283772deb7266b2f2766115352cff"
+    },
+    {
+      "path": "/tmp/casepath-release-2af5-20261013/known-skip-source-comparison.json",
+      "sha256": "e19d1100910c9a6c909ffd9d46c08cf105bf784b00a27a3cfc53229746114f9d"
+    },
+    {
+      "path": "/tmp/casepath-reference-polish-admission-20261013/junit.xml",
+      "sha256": "c42b64f5d7c4ff8032a99b4079b5d3d2c86026ddcb0c6c19dc11e87b22ed6af6"
+    },
+    {
+      "path": "/tmp/casepath-reference-polish-20261013/runtime-focused.log",
+      "sha256": "9d8f911b9fdb3d4527dad39f6c8972c4b7427775f5fd49dc70c1128d2372734a"
+    },
+    {
+      "path": "/tmp/casepath-reference-polish-20261013/metadata.log",
+      "sha256": "11583049fc29db33dcf145cd3492a682e8706cba40a27d45047a219703b07048"
+    },
+    {
+      "path": "/tmp/casepath-reference-polish-20261013/runtime-final-smoke.log",
+      "sha256": "32be211b532c39158ad64768eae95dee64f4f06106fe1ef08b4ab657bd885bec"
+    }
+  ],
+  "provisional": false,
+  "sealed_sha": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "prepared_inventory_source": "Exact frozen candidate fresh --collect-only full inventory; canonical IDs equal c52",
+  "rebound_epoch": 1791867918.7304695
+}

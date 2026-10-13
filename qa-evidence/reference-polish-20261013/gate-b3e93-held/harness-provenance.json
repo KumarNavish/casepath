@@ -1,0 +1,23 @@
+[
+  {
+    "source": "/tmp/casepath-release-2af5-20261013/harness/casepath_shard_observer.py",
+    "source_sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+    "destination": "/workspace/casepath-reference-polish-gate-b3e93-20261013/harness/casepath_shard_observer.py",
+    "destination_sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+    "adaptation": "Candidate/output identities, source roster1702, fresh before/after destinations; runner adds explicit root green-signal guard. Observer exact unchanged."
+  },
+  {
+    "source": "/tmp/casepath-release-2af5-20261013/harness/run_shard.py",
+    "source_sha256": "dba07189d2e1ef395f0b137b9fa351423b553888d68c456ae1cbd38276d08206",
+    "destination": "/workspace/casepath-reference-polish-gate-b3e93-20261013/harness/run_shard.py",
+    "destination_sha256": "a41058631de4ac2de5e4abdc8b66fe0b96435cb02f2429374454a68c803755a5",
+    "adaptation": "Candidate/output identities, source roster1702, fresh before/after destinations; runner adds explicit root green-signal guard. Observer exact unchanged. Explicit Mac/root b3e93 HOLD blocks all execution modes."
+  },
+  {
+    "source": "/tmp/casepath-release-2af5-20261013/harness/verify_prepared_capsules.py",
+    "source_sha256": "4b84196b5a51f42cd825d39c39fd6b430a8ad0d3f247ca80b97aa39d98f91fd1",
+    "destination": "/workspace/casepath-reference-polish-gate-b3e93-20261013/harness/verify_prepared_capsules.py",
+    "destination_sha256": "3a947a4500c3d8b643b09df1b8421e4062164c91efdf99f4fc665c9b53e15850",
+    "adaptation": "Candidate/output identities, source roster1702, fresh before/after destinations; runner adds explicit root green-signal guard. Observer exact unchanged."
+  }
+]

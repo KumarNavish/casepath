@@ -1,0 +1,82 @@
+{
+  "candidate": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "cloud_passed": 2401,
+  "cloud_known_skipped": 10,
+  "mac_passed_attested": 127,
+  "combined_passed": 2528,
+  "collected": 2538,
+  "no_missing_or_overlap_or_duplicate_ids": true,
+  "all_original_attempts_exit0": true,
+  "known_skip_ids_phases_source_lines_reasons_exactly_unchanged": true,
+  "mac_junit": "Mac independently verified; Cloud uses explicit attested127IDs, not a fabricated local JUnit",
+  "full_sorted_ids_sha256": "2a3e5b4f3d419c7041a5dac8979ed99a1db3bd189d0ad73e51ba804f49d0804e",
+  "mac_sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "shards": [
+    {
+      "shard": 1,
+      "executed": 274,
+      "passed": 274,
+      "skipped": 0,
+      "exit_code": 0,
+      "seconds": 643.2439649105072,
+      "all_junit_ids_equal_assignment": true,
+      "all_phases_present_once": true,
+      "junit_sha256": "dfb65aed6ede889eb335fffc210a3455130bc2807b0c61d07736888aa16d1e90"
+    },
+    {
+      "shard": 2,
+      "executed": 289,
+      "passed": 289,
+      "skipped": 0,
+      "exit_code": 0,
+      "seconds": 559.5210964679718,
+      "all_junit_ids_equal_assignment": true,
+      "all_phases_present_once": true,
+      "junit_sha256": "1a70fde9017ba9a929371e1ed9f45588638840f085facfdf74c3351bb161f229"
+    },
+    {
+      "shard": 3,
+      "executed": 293,
+      "passed": 293,
+      "skipped": 0,
+      "exit_code": 0,
+      "seconds": 539.2026102542877,
+      "all_junit_ids_equal_assignment": true,
+      "all_phases_present_once": true,
+      "junit_sha256": "f7b0e9dee48490a266f84f8477fff435959202608a227b04f33d66e3c26a9a2a"
+    },
+    {
+      "shard": 4,
+      "executed": 595,
+      "passed": 595,
+      "skipped": 0,
+      "exit_code": 0,
+      "seconds": 504.4691333770752,
+      "all_junit_ids_equal_assignment": true,
+      "all_phases_present_once": true,
+      "junit_sha256": "ddff80f48c5b52aa3623ceffeba3dfad2610643e01a5b1e4438b52193f95e9e1"
+    },
+    {
+      "shard": 5,
+      "executed": 667,
+      "passed": 657,
+      "skipped": 10,
+      "exit_code": 0,
+      "seconds": 520.5181655883789,
+      "all_junit_ids_equal_assignment": true,
+      "all_phases_present_once": true,
+      "junit_sha256": "ef6d6f917974f46ca3b47339e89d6b14c643fdd790f6572f541c1d1252084638"
+    },
+    {
+      "shard": 6,
+      "executed": 293,
+      "passed": 293,
+      "skipped": 0,
+      "exit_code": 0,
+      "seconds": 583.5374562740326,
+      "all_junit_ids_equal_assignment": true,
+      "all_phases_present_once": true,
+      "junit_sha256": "ec37e32402f5995b4509bfcd79fd861d8c47fa59bba545c8554af10c169de8ba"
+    }
+  ]
+}

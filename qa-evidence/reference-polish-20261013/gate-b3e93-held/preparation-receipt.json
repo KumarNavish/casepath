@@ -1,0 +1,40 @@
+{
+  "candidate": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "status": "PREPARED_BUT_EXPLICITLY_HELD_PENDING_NEW_SEAL",
+  "manifest_sha256": "ecbbab9927a2ba6b4e238f3f5666884dbb4c501ba0c9861de2338bd04c474057",
+  "capsule_receipt_file_sha256": "bbad4cb74031d794e685699d2fd69f6a78cb473bc8796e1ade4f7745dc7897e8",
+  "normal_clones_prepared": 6,
+  "source_artifact_static_verified_counts": [
+    1702,
+    25,
+    37
+  ],
+  "canonical_collected": 2538,
+  "cloud_assigned": 2411,
+  "mac_assigned": 127,
+  "known_skip_records_preserved": 10,
+  "new_ids_vs_2af5": 21,
+  "removed_ids_vs_2af5": 0,
+  "full_sorted_ids_sha256": "2a3e5b4f3d419c7041a5dac8979ed99a1db3bd189d0ad73e51ba804f49d0804e",
+  "cloud_sorted_ids_sha256": "133ce41dcb59f264a0c6bc77fd23362ec54662f0ab3d86c360d3334e8440c2eb",
+  "mac_sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "shard_counts": {
+    "1": 274,
+    "2": 289,
+    "3": 293,
+    "4": 595,
+    "5": 667,
+    "6": 293
+  },
+  "test_execution_attempts": 0,
+  "test_bodies_executed": false,
+  "workers_dispatched": 0,
+  "source_edits": false,
+  "source_seal_generated_here": false,
+  "evidence_push": false,
+  "all_new_scratch_under_workspace": true,
+  "hold_receipt": "HOLD_REQUEST.json",
+  "root_evidence_branch": "codex/casepath-reference-polish-native-evidence-20261013",
+  "created_epoch": 1791868108.999831,
+  "workspace_free_bytes": 6668955648
+}

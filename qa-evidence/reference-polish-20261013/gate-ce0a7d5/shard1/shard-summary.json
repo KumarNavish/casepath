@@ -1,0 +1,73 @@
+{
+  "shard": 1,
+  "candidate": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "counts": {
+    "passed": 274,
+    "failed": 0,
+    "skipped": 0
+  },
+  "junit_counts": {
+    "tests": 274,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "phase_counts": {
+    "setup": {
+      "passed": 274
+    },
+    "call": {
+      "passed": 274
+    },
+    "teardown": {
+      "passed": 274
+    }
+  },
+  "duration_seconds": 643.2439649105072,
+  "exit_code": 0,
+  "attempts": 1,
+  "retries": 0,
+  "attempt_latch_retry_allowed": false,
+  "assigned_vs_collected": {
+    "ordered_ids_match": true,
+    "assigned_count": 274,
+    "collected_count": 274,
+    "missing_ids": [],
+    "extra_ids": [],
+    "assigned_unique": true,
+    "collected_unique": true,
+    "call_ids_match_collection": true,
+    "call_count": 274
+  },
+  "source_and_capsule_before_after": {
+    "verified": true,
+    "head_unchanged": true,
+    "clean_before_after": true,
+    "manifest_sha256": "90f610eefbb63a6a42acaf3b0c11c56791694e56fea565d138e814d82291a45f",
+    "capsule_receipt_file_sha256": "25a832ab4ecb42966cda493af22ce095b0cd54c927a9d750f4f14b3328cc1a35",
+    "receipt_bytes_unchanged": true,
+    "source_artifact_static_counts": [
+      1702,
+      25,
+      37
+    ],
+    "before_verification": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/source-before/capsule-verification.json",
+    "after_verification": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/source-after/capsule-verification.json",
+    "after_verification_exit_code": 0
+  },
+  "failures": [],
+  "skips": [],
+  "artifacts": {
+    "directory": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1",
+    "attempt": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/ATTEMPT_STARTED.json",
+    "command": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/command.json",
+    "result": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/result.json",
+    "arguments": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/pytest-arguments.txt",
+    "collected": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/collected.json",
+    "reports": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/reports.jsonl",
+    "junit": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/junit.xml",
+    "pytest_log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/pytest.log",
+    "runner_terminal_log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/runner-terminal.log",
+    "capsule_verification_after_log": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/capsule-verification-after.log"
+  }
+}
