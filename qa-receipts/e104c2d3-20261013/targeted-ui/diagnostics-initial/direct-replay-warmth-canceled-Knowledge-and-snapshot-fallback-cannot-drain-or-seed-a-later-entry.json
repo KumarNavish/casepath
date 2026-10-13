@@ -1,0 +1,75 @@
+{
+  "url": "http://localhost:41999/#autonomous/knowledge",
+  "text": "CasePath\nEvidence into action\nNew claim ↗\nCases\nDemonstration\nKnowledge\nRepeated heating failure and reported repair calls\nProcess\nDocuments\nKnowledge\nHistory\nDefects and repairs\nLease termination\nRent increases\nDefects and repairs\nVersion 1\nProcess\nFacts\nDocuments\nExceptions\nChanges\nCapture the reported defect\nEstablish relevant tenancy terms\n\nCapture the reported defect\n\nEstablish landlord knowledge\n\nEstablish relevant tenancy terms\n\nAssess supported cause\n\nEstablish landlord knowledge\n\nAssess objective defect evidence\n\nAssess supported cause\n\nRecord repair and rent reduction eligibility\n\nAssess objective defect evidence\n\nSource and receiving cases\nRepeated heating failure and reported repair calls\nHeating resets and an uncertain onset date\nCold mornings and a requested service assessment",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<h1 class=\"au-page-heading\" tabindex=\"-1\">Knowledge</h1>",
+  "record": "{\n  \"state\": {\n    \"acquired_sources\": [],\n    \"actions\": [],\n    \"claim_id\": \"clm_314f2d309fea25e6\",\n    \"contract\": \"casepath.autonomous-claim/1.0.0\",\n    \"corpus_id\": \"synthetic-150\",\n    \"deferral\": null,\n    \"evaluation\": null,\n    \"events\": [],\n    \"facts\": [],\n    \"graph\": null,\n    \"intake_receipt\": null,\n    \"knowledge_published\": [],\n    \"knowledge_uses\": [],\n    \"last_event_sha256\": null,\n    \"message\": \"Good afternoon\\n\\nAs I understand it: The living room is around 16 degrees in the morning; After a reset the heating works briefly and stops again; I have called three times; this is how I recorded it.\\n\\nRegarding “repeated heating failure”, my notes show: the calibrated temperature remains unresolved; for the request “lasting repair and review of possible remedies”: I have included everything currently available to me; on “repeated heating failure”, I want clarity before acting; also unresolved: the service cause; I cannot currently support anything further.\\n\\nI am specifically asking for: lasting repair and review of possible remedies; in particular, I need clarity about the service cause and whether the records support an initial assessment.\\n\\nMy first note about it is dated 01 February 2025.\\n\\nThank you for clarifying; Before acting I need to know the calibrated temperature; I want to base what I do on that.\\n\\nBest regards\",\n    \"mode\": \"unprocessed\",\n    \"obligations\": [],\n    \"original_binding\": {\n      \"claim_binding_sha256\": \"c121e223860d7509a29fa96c0955dbe06a752699c47d6d3a193fc6fd43ab5a13\",\n      \"claim_id\": \"clm_314f2d309fea25e6\",\n      \"contract\": \"casepath.autonomous-original-binding/1.0.0\",\n      \"corpus_id\": \"synthetic-150\",\n      \"corpus_manifest_sha256\": \"921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e\",\n      \"intake\": {\n        \"attachments\": [],\n        \"customer_message\": {\n          \"attachment_ids\": [],\n          \"body\": \"Good afternoon\\n\\nAs I understand it: The living room is around 16 degrees in the morning; After a reset the heating works briefly and stops again; I have called three times; this is how I recorded it.\\n\\nRegarding “repeated heating failure”, my notes show: the calibrated temperature remains unresolved; for the request “lasting repair and review of possible remedies”: I have included everything currently available to me; on “repeated heating failure”, I want clarity before acting; also unresolved: the service cause; I cannot currently support anything further.\\n\\nI am specifically asking for: lasting repair and review of possible remedies; in particular, I need clarity about the service cause and whether the records support an initial assessment.\\n\\nMy first note about it is dated 01 February 2025.\\n\\nThank you for clarifying; Before acting I need to know the calibrated temperature; I want to base what I do on that.\\n\\nBest regards\",\n          \"from_role\": \"customer\",\n          \"message_id\": \"com_df83feba0e9e4428\",\n          \"raw_file\": {\n            \"artifact_id\": \"com_df83feba0e9e4428\",\n            \"file_name\": \"Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt\",\n            \"media_type\": \"text/plain; charset=utf-8\",\n            \"sha256\": \"491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2\",\n            \"size_bytes\": 1092\n          },\n          \"sent_at\": \"2025-02-20T13:00:00+01:00\",\n          \"subject\": \"Question about my documents: repeated heating failure\",\n          \"to_role\": \"claims_inbox\"\n        },\n        \"submission\": {\n          \"canton\": \"ZH\",\n          \"channel\": \"phone_note\",\n          \"claim_id\": \"clm_314f2d309fea25e6\",\n          \"language\": \"en\",\n          \"received_at\": \"2025-02-20T13:00:00+01:00\"\n        }\n      },\n      \"original_binding_sha256\": \"4349cce39dba44f65fa58fe396659b04f9e8082986abfb92cbb918b59e935a67\",\n      \"source_map\": [\n        {\n          \"artifact_id\": \"src_c8b880d7429b1879b9ae483029facd97\",\n          \"original_artifact_id\": \"com_df83feba0e9e4428\",\n          \"sha256\": \"491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2\"\n        }\n      ],\n      \"static_template_sha256\": \"84f576cc7f8f2bcb6e638d02e0549fd32e4bb183e4957f2b4a4ab7dcf2beb232\"\n    },\n    \"outcome\": null,\n    \"phase\": \"not_run\",\n    \"policy_id\": null,\n    \"receipts\": [],\n    \"results\": [],\n    \"revision\": 0,\n    \"run_id\": null,\n    \"source_descriptors\": [\n      {\n        \"artifact_id\": \"src_c8b880d7429b1879b9ae483029facd97\",\n        \"claim_id\": \"clm_314f2d309fea25e6\",\n        \"contract\": \"casepath.autonomous-source/1.0.0\",\n        \"descriptor_sha256\": \"ed346a9d1ec0b886b069a06ad5ded16fee432162f7fe84e15c9713325ff64ae8\",\n        \"file_name\": \"Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt\",\n        \"media_type\": \"text/plain; charset=utf-8\",\n        \"role\": \"customer_message\",\n        \"sha256\": \"491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2\",\n        \"size_bytes\": 1092\n      }\n    ],\n    \"source_roster_sha256\": \"ece4a19d05cbac82e3cc20848c06997f6c9f7f567728deef220a32c6f8e40f8c\",\n    \"state_sha256\": \"d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0\",\n    \"status\": \"not_started\",\n    \"title\": \"Question about my documents: repeated heating failure\",\n    \"updated_at\": null\n  },\n  \"projection\": {\n    \"intake\": {\n      \"active_node_ids\": [\n        \"dh_intake\",\n        \"dh_scope\",\n        \"dh_notice\",\n        \"dh_cause\",\n        \"dh_evidence\",\n        \"dh_response\"\n      ],\n      \"assessment_scope\": null,\n      \"checklist\": [\n        {\n          \"artifact_ids\": [],\n          \"document_type\": \"tenancy_terms_evidence\",\n          \"investigation_only\": true,\n          \"label\": \"Relevant tenancy terms\",\n          \"node_ids\": [\n            \"dh_scope\"\n          ],\n          \"status\": \"unassessed\"\n        },\n        {\n          \"artifact_ids\": [],\n          \"document_type\": \"landlord_knowledge_evidence\",\n          \"investigation_only\": true,\n          \"label\": \"Landlord knowledge and continuing repair status\",\n          \"node_ids\": [\n            \"dh_notice\"\n          ],\n          \"status\": \"unassessed\"\n        },\n        {\n          \"artifact_ids\": [],\n          \"document_type\": \"objective_defect_observation\",\n          \"investigation_only\": true,\n          \"label\": \"Dated technical defect observation\",\n          \"node_ids\": [\n            \"dh_evidence\"\n          ],\n          \"status\": \"unassessed\"\n        }\n      ],\n      \"contract\": \"casepath.source-backed-intake/1.0.0\",\n      \"eligible\": false,\n      \"gate_sha256\": \"edc887f372c89dfd1cf142189150f1df5006c5c5eb3174c457d6b25cb769410f\",\n      \"legal_predicates\": [\n        {\n          \"citations\": [],\n          \"predicate_id\": \"source_backed_assessment_scope\",\n          \"rule_refs\": [],\n          \"status\": \"unknown\"\n        }\n      ],\n      \"missing_documents\": [\n        {\n          \"artifact_ids\": [],\n          \"document_type\": \"tenancy_terms_evidence\",\n          \"investigation_only\": true,\n          \"label\": \"Relevant tenancy terms\",\n          \"node_ids\": [\n            \"dh_scope\"\n          ],\n          \"status\": \"unassessed\"\n        },\n        {\n          \"artifact_ids\": [],\n          \"document_type\": \"landlord_knowledge_evidence\",\n          \"investigation_only\": true,\n          \"label\": \"Landlord knowledge and continuing repair status\",\n          \"node_ids\": [\n            \"dh_notice\"\n          ],\n          \"status\": \"unassessed\"\n        },\n        {\n          \"artifact_ids\": [],\n          \"document_type\": \"objective_defect_observation\",\n          \"investigation_only\": true,\n          \"label\": \"Dated technical defect observation\",\n          \"node_ids\": [\n            \"dh_evidence\"\n          ],\n          \"status\": \"unassessed\"\n        }\n      ],\n      \"provenance\": null,\n      \"status\": \"incomplete\"\n    },\n    \"node_capabilities\": {},\n    \"revision\": 0,\n    \"state_sha256\": \"d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0\"\n  }\n}",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "time": 10690,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 11568.5,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 11569.300000011921,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 11571.100000023842,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "method": "GET",
+      "time": 11572.400000035763,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0",
+      "method": "GET",
+      "time": 11576.100000023842,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 11878,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

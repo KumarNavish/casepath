@@ -1,0 +1,51 @@
+{
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "collected": 2517,
+  "cloud": 2390,
+  "mac": 127,
+  "mac_by_file": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6,
+    "casepath-api/tests/test_local_data_root.py": 52
+  },
+  "full_sorted_sha256": "fe1b76d2b0ddc097709d2f9e6915ea594469959e95ce33a505790263b9060112",
+  "cloud_sorted_sha256": "84c63d756a1ad8b7a1163b2b096e3967024e21e5f642b6a541aaebe54136956e",
+  "mac_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "assignment_basis": "Exact same six balanced partitions as aa10 gate, inventory unchanged; actual aa10 JUnit timings supplied",
+  "shards": {
+    "1": {
+      "count": 242,
+      "prior_aa10_junit_seconds": 503.656,
+      "ids_sha256": "fa3059976308e9e82ef0e520f106a4e0f29ac45529d7ebd4018c110a765e09e0"
+    },
+    "2": {
+      "count": 554,
+      "prior_aa10_junit_seconds": 521.467,
+      "ids_sha256": "f18bac7d2e14699a87c9021453966166a0ab57f9f7c4b69f941f1a9c918366a0"
+    },
+    "3": {
+      "count": 229,
+      "prior_aa10_junit_seconds": 505.974,
+      "ids_sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1"
+    },
+    "4": {
+      "count": 324,
+      "prior_aa10_junit_seconds": 520.554,
+      "ids_sha256": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6"
+    },
+    "5": {
+      "count": 563,
+      "prior_aa10_junit_seconds": 514.432,
+      "ids_sha256": "4ca305835c130bf99a19b4c572170684572f0c381deeca9066ca6f515cb3d86f"
+    },
+    "6": {
+      "count": 478,
+      "prior_aa10_junit_seconds": 424.011,
+      "ids_sha256": "35058f63e53bf0a25935e442fd0820c6c15107233414f42dec1ec20dcbbe593d"
+    }
+  },
+  "missing": 0,
+  "overlap": 0,
+  "duplicates": 0,
+  "new_ids_vs_aa10": 0
+}

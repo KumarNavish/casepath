@@ -1,0 +1,264 @@
+{
+  "observed_utc": "2026-10-13T00:04:25.099523+00:00",
+  "mode": "SELECT-only mode=ro, PRAGMA query_only=ON, verified AutonomousStore.open_read_only replay; no controller instantiated or dispatched",
+  "db_path": "/tmp/casepath-release-e104-20261013/shard4/pytest-tmp/test_submit_reassesses_arrival0/claims.sqlite3",
+  "failure_report_utc": "2026-10-13T00:02:40.257668+00:00",
+  "failure_call_duration_seconds": 22.61212904402055,
+  "failure_assertion_snapshot": {
+    "revision": 26,
+    "updated_at": "2026-10-13T00:02:34.806424+00:00",
+    "status": "deferred",
+    "outcome_present": true,
+    "acquired_source_ids": [
+      "src_fd0c4d93c00db07f904b5603ac2c4308",
+      "src_998deb5cdc35ef761fdb427dc9325bd6",
+      "src_8892bed03fe115ef313a2af183b26877"
+    ],
+    "late_source_acquired": true,
+    "knowledge_count": 0,
+    "knowledge_qualification_statuses": [],
+    "state_sha256": "527323412885bd459f14651652a75b7b86def1efd9b9f156341e5e7d6ad8a466"
+  },
+  "postdeadline_verified_snapshot": {
+    "revision": 27,
+    "updated_at": "2026-10-13T00:02:39.775791+00:00",
+    "status": "deferred",
+    "outcome_present": true,
+    "acquired_source_ids": [
+      "src_fd0c4d93c00db07f904b5603ac2c4308",
+      "src_998deb5cdc35ef761fdb427dc9325bd6",
+      "src_8892bed03fe115ef313a2af183b26877"
+    ],
+    "late_source_acquired": true,
+    "knowledge_count": 1,
+    "knowledge_qualification_statuses": [
+      "qualified"
+    ],
+    "state_sha256": "bb2fdeb219bf148b9bfd0e1a957b0458e2140d92be092bbf5dd3d277dcf07eae"
+  },
+  "late_source_id": "src_8892bed03fe115ef313a2af183b26877",
+  "events": [
+    {
+      "sequence": 1,
+      "kind": "intake",
+      "created_at": "2026-10-13T00:02:17.823003+00:00",
+      "idempotency_key": "outcome-arrival-race",
+      "seconds_since_late_arrival": -2.169608,
+      "seconds_before_failure_report": 22.434664
+    },
+    {
+      "sequence": 2,
+      "kind": "work.started",
+      "created_at": "2026-10-13T00:02:17.851955+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.start",
+      "seconds_since_late_arrival": -2.140656,
+      "seconds_before_failure_report": 22.405713
+    },
+    {
+      "sequence": 3,
+      "kind": "process.prepared",
+      "created_at": "2026-10-13T00:02:17.863351+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.prepare",
+      "seconds_since_late_arrival": -2.12926,
+      "seconds_before_failure_report": 22.394316
+    },
+    {
+      "sequence": 4,
+      "kind": "work.phase",
+      "created_at": "2026-10-13T00:02:17.878104+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.acquiring",
+      "seconds_since_late_arrival": -2.114507,
+      "seconds_before_failure_report": 22.379564
+    },
+    {
+      "sequence": 5,
+      "kind": "sources.acquired",
+      "created_at": "2026-10-13T00:02:17.911476+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.acquire.src_998deb5cdc35ef761fdb427dc9325bd6",
+      "seconds_since_late_arrival": -2.081135,
+      "seconds_before_failure_report": 22.346192
+    },
+    {
+      "sequence": 6,
+      "kind": "work.phase",
+      "created_at": "2026-10-13T00:02:17.952199+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.interpreting",
+      "seconds_since_late_arrival": -2.040412,
+      "seconds_before_failure_report": 22.305469
+    },
+    {
+      "sequence": 7,
+      "kind": "work.context",
+      "created_at": "2026-10-13T00:02:17.984335+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.context",
+      "seconds_since_late_arrival": -2.008276,
+      "seconds_before_failure_report": 22.273333
+    },
+    {
+      "sequence": 8,
+      "kind": "work.phase",
+      "created_at": "2026-10-13T00:02:18.055006+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.verifying",
+      "seconds_since_late_arrival": -1.937605,
+      "seconds_before_failure_report": 22.202662
+    },
+    {
+      "sequence": 9,
+      "kind": "interpretation.accepted",
+      "created_at": "2026-10-13T00:02:18.158923+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.interpretation",
+      "seconds_since_late_arrival": -1.833688,
+      "seconds_before_failure_report": 22.098745
+    },
+    {
+      "sequence": 10,
+      "kind": "work.phase",
+      "created_at": "2026-10-13T00:02:18.287650+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.progressing",
+      "seconds_since_late_arrival": -1.704961,
+      "seconds_before_failure_report": 21.970017
+    },
+    {
+      "sequence": 11,
+      "kind": "action.completed",
+      "created_at": "2026-10-13T00:02:18.613978+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.document.spouse_notice_copy.src_998deb5cdc35ef761fdb427dc9325bd6",
+      "seconds_since_late_arrival": -1.378633,
+      "seconds_before_failure_report": 21.64369
+    },
+    {
+      "sequence": 12,
+      "kind": "action.completed",
+      "created_at": "2026-10-13T00:02:19.050832+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.step.lt_intake",
+      "seconds_since_late_arrival": -0.941779,
+      "seconds_before_failure_report": 21.206836
+    },
+    {
+      "sequence": 13,
+      "kind": "outcome.recorded",
+      "created_at": "2026-10-13T00:02:19.663051+00:00",
+      "idempotency_key": "autonomy.ded12fbf80871f19af16916c.outcome",
+      "seconds_since_late_arrival": -0.32956,
+      "seconds_before_failure_report": 20.594617
+    },
+    {
+      "sequence": 14,
+      "kind": "sources.arrived",
+      "created_at": "2026-10-13T00:02:19.992611+00:00",
+      "idempotency_key": "after-outcome",
+      "seconds_since_late_arrival": 0.0,
+      "seconds_before_failure_report": 20.265057
+    },
+    {
+      "sequence": 15,
+      "kind": "work.started",
+      "created_at": "2026-10-13T00:02:21.947469+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.start",
+      "seconds_since_late_arrival": 1.954858,
+      "seconds_before_failure_report": 18.310199
+    },
+    {
+      "sequence": 16,
+      "kind": "work.phase",
+      "created_at": "2026-10-13T00:02:22.906775+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.acquiring",
+      "seconds_since_late_arrival": 2.914164,
+      "seconds_before_failure_report": 17.350893
+    },
+    {
+      "sequence": 17,
+      "kind": "sources.acquired",
+      "created_at": "2026-10-13T00:02:24.199328+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.acquire.src_8892bed03fe115ef313a2af183b26877",
+      "seconds_since_late_arrival": 4.206717,
+      "seconds_before_failure_report": 16.05834
+    },
+    {
+      "sequence": 18,
+      "kind": "work.phase",
+      "created_at": "2026-10-13T00:02:24.895782+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.interpreting",
+      "seconds_since_late_arrival": 4.903171,
+      "seconds_before_failure_report": 15.361886
+    },
+    {
+      "sequence": 19,
+      "kind": "work.context",
+      "created_at": "2026-10-13T00:02:25.673000+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.context",
+      "seconds_since_late_arrival": 5.680389,
+      "seconds_before_failure_report": 14.584667
+    },
+    {
+      "sequence": 20,
+      "kind": "work.phase",
+      "created_at": "2026-10-13T00:02:26.592527+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.verifying",
+      "seconds_since_late_arrival": 6.599916,
+      "seconds_before_failure_report": 13.665141
+    },
+    {
+      "sequence": 21,
+      "kind": "interpretation.accepted",
+      "created_at": "2026-10-13T00:02:28.208471+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.interpretation",
+      "seconds_since_late_arrival": 8.21586,
+      "seconds_before_failure_report": 12.049196
+    },
+    {
+      "sequence": 22,
+      "kind": "work.phase",
+      "created_at": "2026-10-13T00:02:28.880452+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.progressing",
+      "seconds_since_late_arrival": 8.887841,
+      "seconds_before_failure_report": 11.377216
+    },
+    {
+      "sequence": 23,
+      "kind": "action.completed",
+      "created_at": "2026-10-13T00:02:30.418075+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.document.spouse_notice_copy.src_998deb5cdc35ef761fdb427dc9325bd6",
+      "seconds_since_late_arrival": 10.425464,
+      "seconds_before_failure_report": 9.839592
+    },
+    {
+      "sequence": 24,
+      "kind": "action.completed",
+      "created_at": "2026-10-13T00:02:31.417874+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.document.spouse_notice_copy.src_8892bed03fe115ef313a2af183b26877",
+      "seconds_since_late_arrival": 11.425263,
+      "seconds_before_failure_report": 8.839793
+    },
+    {
+      "sequence": 25,
+      "kind": "action.completed",
+      "created_at": "2026-10-13T00:02:33.206942+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.step.lt_intake",
+      "seconds_since_late_arrival": 13.214331,
+      "seconds_before_failure_report": 7.050725
+    },
+    {
+      "sequence": 26,
+      "kind": "outcome.recorded",
+      "created_at": "2026-10-13T00:02:34.806424+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.outcome",
+      "seconds_since_late_arrival": 14.813813,
+      "seconds_before_failure_report": 5.451244
+    },
+    {
+      "sequence": 27,
+      "kind": "knowledge.published",
+      "created_at": "2026-10-13T00:02:39.775791+00:00",
+      "idempotency_key": "autonomy.f281fe90af8c1f3cf33555ae.knowledge",
+      "seconds_since_late_arrival": 19.78318,
+      "seconds_before_failure_report": 0.481877
+    }
+  ],
+  "knowledge_expected_count_one": true,
+  "knowledge_published_matches_last_workflow": true,
+  "database_sha256_before": "8ce9ef365a052f968f516fc278fccf3b7a0b51835980085c0c48e7c2530b8932",
+  "database_sha256_after": "8ce9ef365a052f968f516fc278fccf3b7a0b51835980085c0c48e7c2530b8932",
+  "limit": "Persisted final state verifies expected source/outcome/knowledge behavior; model.calls and transient future.done()/pending membership are unavailable post-process, and exact monotonic await deadline was not instrumented.",
+  "timestamp_semantics": "Journal created_at is stamped when constructing the event before _reduce/source verification/SQLite INSERT, so it is not an instrumented commit or job-idle timestamp. Failure utc_epoch is pytest call-report creation after the test finally block has called service.shutdown(wait=True). The failed assertion itself contains revision26, whereas read-only final replay contains revision27."
+}

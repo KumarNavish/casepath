@@ -1,0 +1,29 @@
+✔ public read-only capability blocks forged forms and removes work controls while preserving inspection (10.230322ms)
+✔ public entry capability prevents work before a status response arrives (2.41955ms)
+✔ destroy aborts outstanding reads and stale responses cannot resurrect the view (0.682778ms)
+✔ initial deep links and duplicate browser history events read saved state once without adding entries (7.467607ms)
+✔ internal Work, Knowledge and claim navigation adds only changed fragments and supports Back/Forward (4.059489ms)
+▶ direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance
+  ✔ sources (2.564153ms)
+  ✔ documents (1.662012ms)
+  ✔ knowledge (1.452323ms)
+  ✔ activity (1.510899ms)
+✔ direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance (7.819044ms)
+✔ present projection identities must bind to the same claim, revision and saved state (0.561919ms)
+✔ source inspection verifies exact identity, preserves claim context and returns focus after close (6.519478ms)
+✔ an invalid source text never becomes cited evidence and a late source response cannot reopen another claim (2.950733ms)
+✔ actual reuse provenance remains exact in one contextual record without asserting current facts (1.038402ms)
+▶ delayed claim collections preserve verified revisions without rejecting genuinely newer rows
+  ✔ a delayed older current row (3.234512ms)
+  ✔ a missing current row (3.596956ms)
+  ✔ a conflicting identity at the verified revision (3.548705ms)
+  ✔ a genuinely newer collection row (2.88088ms)
+✔ delayed claim collections preserve verified revisions without rejecting genuinely newer rows (13.779879ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 124.580966

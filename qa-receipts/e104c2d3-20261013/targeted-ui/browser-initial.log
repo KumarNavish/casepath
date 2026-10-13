@@ -1,0 +1,78 @@
+TAP version 13
+# Subtest: direct replay warmth: cold accepted entry primes real Cases and Knowledge without replacing its prefix or source inspection
+not ok 1 - direct replay warmth: cold accepted entry primes real Cases and Knowledge without replacing its prefix or source inspection
+  ---
+  duration_ms: 13409.743248
+  type: 'test'
+  location: '/workspace/casepath-direct-replay-warmth-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2392:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=6&detail=sources&node=investigate_packet'
+    - '#autonomous/claim/clm_314f2d309fea25e6?mode=replay&collection=reference&through=6&detail=sources'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '#autonomous/claim/clm_314f2d309fea25e6?mode=replay&collection=reference&through=6&detail=sources'
+  actual: '#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=6&detail=sources&node=investigate_packet'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-direct-replay-warmth-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2406:61)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission
+    # Subtest: hidden
+    ok 1 - hidden
+      ---
+      duration_ms: 12509.545224
+      type: 'test'
+      ...
+    # Subtest: navigation
+    ok 2 - navigation
+      ---
+      duration_ms: 12117.274307
+      type: 'test'
+      ...
+    1..2
+ok 2 - direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission
+  ---
+  duration_ms: 24627.742653
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: canceled Knowledge and snapshot fallback cannot drain or seed a later entry
+ok 3 - direct replay warmth: canceled Knowledge and snapshot fallback cannot drain or seed a later entry
+  ---
+  duration_ms: 12126.666445
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: metadata failures stay silent and explicit navigation recovers
+    # Subtest: collection
+    ok 1 - collection
+      ---
+      duration_ms: 14411.294665
+      type: 'test'
+      ...
+    # Subtest: knowledge
+    ok 2 - knowledge
+      ---
+      duration_ms: 17922.860632
+      type: 'test'
+      ...
+    1..2
+ok 4 - direct replay warmth: metadata failures stay silent and explicit navigation recovers
+  ---
+  duration_ms: 32334.967486
+  type: 'test'
+  ...
+1..4
+# tests 8
+# suites 0
+# pass 7
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 82953.853501

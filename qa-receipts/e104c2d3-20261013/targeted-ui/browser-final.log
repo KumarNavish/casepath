@@ -1,0 +1,60 @@
+TAP version 13
+# Subtest: direct replay warmth: cold accepted entry primes real Cases and Knowledge without replacing its prefix or source inspection
+ok 1 - direct replay warmth: cold accepted entry primes real Cases and Knowledge without replacing its prefix or source inspection
+  ---
+  duration_ms: 13848.736527
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission
+    # Subtest: hidden
+    ok 1 - hidden
+      ---
+      duration_ms: 12987.970332
+      type: 'test'
+      ...
+    # Subtest: navigation
+    ok 2 - navigation
+      ---
+      duration_ms: 15306.18796
+      type: 'test'
+      ...
+    1..2
+ok 2 - direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission
+  ---
+  duration_ms: 28294.981407
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: canceled Knowledge and snapshot fallback cannot drain or seed a later entry
+ok 3 - direct replay warmth: canceled Knowledge and snapshot fallback cannot drain or seed a later entry
+  ---
+  duration_ms: 13224.602365
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: metadata failures stay silent and explicit navigation recovers
+    # Subtest: collection
+    ok 1 - collection
+      ---
+      duration_ms: 12838.11988
+      type: 'test'
+      ...
+    # Subtest: knowledge
+    ok 2 - knowledge
+      ---
+      duration_ms: 12974.028528
+      type: 'test'
+      ...
+    1..2
+ok 4 - direct replay warmth: metadata failures stay silent and explicit navigation recovers
+  ---
+  duration_ms: 25812.97448
+  type: 'test'
+  ...
+1..4
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 81733.729267

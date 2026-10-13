@@ -1,0 +1,70 @@
+{
+  "shard": 4,
+  "host": "656813ef2295",
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "repository": "/workspace/casepath-release-ae0-shard4",
+  "output_path": "/tmp/casepath-release-e104-20261013/shard4",
+  "verified_utc": "2026-10-13T00:10:50.061597+00:00",
+  "runner_exit_code": 1,
+  "duration_seconds": 524.3861050605774,
+  "pytest_duration_seconds": 521.578,
+  "counts": {
+    "assigned": 324,
+    "collected": 324,
+    "observer_unique": 324,
+    "observer_reports": 972,
+    "junit_unique": 324,
+    "passed": 323,
+    "failed": 1,
+    "skipped": 0,
+    "errors": 0,
+    "xfail": 0,
+    "xpass": 0
+  },
+  "failure_ids": [
+    "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication"
+  ],
+  "skip_reasons": [],
+  "verification": {
+    "assigned_arguments_collected_exact_order": true,
+    "assigned_collected_observer_junit_exact_unique_ids": true,
+    "observer_junit_exact_outcomes": true,
+    "all_setup_teardown_passed": true,
+    "head_exact": true,
+    "git_status_clean": true,
+    "postseal_files_verified": 1680,
+    "postseal_errors": [],
+    "manifest_sha256_unchanged": true
+  },
+  "head": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "status": "",
+  "manifest_sha256": "58b29232c94fd72df65010a83c1a73bd6386433e3c94a2a3c67fd6be5943ae9a",
+  "junit_suite_attributes": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "1",
+    "skipped": "0",
+    "tests": "324",
+    "time": "521.578",
+    "timestamp": "2026-10-13T00:01:08.823774+00:00",
+    "hostname": "656813ef2295"
+  },
+  "artifact_sha256": {
+    "command.json": "04dcb7e3941dac7f02fe7e2c327d06e1fadca9afaaea6f3e8537764e40c420e3",
+    "result.json": "e6160efff56da53a0a6f0c5b85e9c191f3af8e025dc2bb7794557d941a79ef5c",
+    "pytest-arguments.txt": "10be43c63764a5e0ab77f60d5c82c97eea9449bf4493a8f18690eb25b2b6e2a6",
+    "collected.json": "efb18752d040efe12071c7ca0b180195036544b342166a48cb6e175bcdd6ffad",
+    "reports.jsonl": "5e3530bbd0477ecd253948caab0e8c0ea7be600a6282b5d51aa883364735b657",
+    "junit.xml": "5bab6c11dc5a572f351f1bb0b0e4ce3235d5b858fa01967ba41521027d8b7590",
+    "pytest.log": "b74f6f5412cc422040c919fe77f1ee1eace02393b2f2f6f32e945f022e8db2dd",
+    "runner.log": "a28a2bd202ee128e0544ab4769663ac10ada3a1daa8abf779d9905419e35e787",
+    "initialfailure-call.txt": "716693444a4a4dab82f289fb40ef77ca55104fd0b89d80925446449233182454",
+    "postdeadline-timing-evidence.json": "5781123e3a9d4309aa003cf4830df940e97ec75c5ea399c0f17e3ba19461cf33"
+  },
+  "assignment_map_sha256": "27d06af1e057bbb42dbde94df5c46e68a73ffafc8ec9c7a7262073cd4779acaa",
+  "postdeadline_evidence": "postdeadline-timing-evidence.json",
+  "initial_failure_trace": "initialfailure-call.txt",
+  "retry_count": 0,
+  "source_writes": false,
+  "provider_production_access_or_spend": false
+}

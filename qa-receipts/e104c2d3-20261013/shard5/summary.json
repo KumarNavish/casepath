@@ -1,0 +1,126 @@
+{
+  "shard": 5,
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "host": "656813ef2295",
+  "repository": "/workspace/casepath-release-ae0-shard5",
+  "started_utc": "2026-10-13T00:01:13.923446+00:00",
+  "finished_utc": "2026-10-13T00:09:45.532346+00:00",
+  "duration_seconds": 511.6088993549347,
+  "exit_code": 0,
+  "counts": {
+    "assigned": 563,
+    "collected": 563,
+    "observer_unique_ids": 563,
+    "observer_reports": 1689,
+    "observer_phase_outcomes": {
+      "passed": 1689
+    },
+    "observer_call_outcomes": {
+      "passed": 563
+    },
+    "junit_testcases": 563,
+    "junit_outcomes": {
+      "passed": 563
+    }
+  },
+  "verification_passed": true,
+  "checks": {
+    "candidate_matches": true,
+    "assigned_unique": true,
+    "arguments_exact_order": true,
+    "collected_exact_order": true,
+    "collected_unique": true,
+    "observer_exact_ids": true,
+    "observer_exact_unique_phases": true,
+    "observer_all_phases_passed": true,
+    "junit_mapping_unique": true,
+    "junit_exact_ids": true,
+    "junit_exact_order": true,
+    "junit_unique": true,
+    "junit_all_passed": true,
+    "exit_zero": true,
+    "git_clean": true,
+    "source_seal_verified": true,
+    "source_manifest_unchanged": true,
+    "excluded_mac_files_absent": true,
+    "no_selection_or_skip_flags": true,
+    "durations_requested": true,
+    "observer_enabled": true
+  },
+  "first_failure": null,
+  "failed_ids": [],
+  "skip_details": [],
+  "source_seal": {
+    "files": 1680,
+    "manifest_sha256": "58b29232c94fd72df65010a83c1a73bd6386433e3c94a2a3c67fd6be5943ae9a",
+    "errors": []
+  },
+  "after_head": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "after_status": "",
+  "preserved_all_phase_durations": 1689,
+  "junit_suites": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "563",
+      "time": "508.243",
+      "timestamp": "2026-10-13T00:01:16.084272+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "artifacts": {
+    "command.json": {
+      "path": "/tmp/casepath-release-e104-20261013/shard5/command.json",
+      "size_bytes": 2199,
+      "sha256": "a62c7ab647d0d4faaced4f601112033c40db12ff3594b667de622c817670d4a0"
+    },
+    "collected.json": {
+      "path": "/tmp/casepath-release-e104-20261013/shard5/collected.json",
+      "size_bytes": 2282812,
+      "sha256": "3da0e366e681ac54ad3505d905c86e4025a60ebae8f3f585b2cbf8549f088604"
+    },
+    "reports.jsonl": {
+      "path": "/tmp/casepath-release-e104-20261013/shard5/reports.jsonl",
+      "size_bytes": 3542454,
+      "sha256": "b5837b9a0c73bf7d1f62530a9feed954c0361b150cc5339707b9d95c4a1efae7"
+    },
+    "junit.xml": {
+      "path": "/tmp/casepath-release-e104-20261013/shard5/junit.xml",
+      "size_bytes": 1134223,
+      "sha256": "cbdf5f73918abd93439de063b0e17806a9d9adc37fe477d099d06df9d302cf36"
+    },
+    "pytest.log": {
+      "path": "/tmp/casepath-release-e104-20261013/shard5/pytest.log",
+      "size_bytes": 53560,
+      "sha256": "2667306edc18c14a9c254f6612299dd79636889414a321a3f218144cdd78cbf0"
+    },
+    "result.json": {
+      "path": "/tmp/casepath-release-e104-20261013/shard5/result.json",
+      "size_bytes": 2380,
+      "sha256": "2da11912409fd8cf5fd31220918664f15f765cff63f7cd254c86580f4f643886"
+    },
+    "runner.log": {
+      "path": "/tmp/casepath-release-e104-20261013/shard5/runner.log",
+      "size_bytes": 114,
+      "sha256": "8a1c53a94ae44e469621690212542b4d3e8b4421a982df320e1f9505d56ed186"
+    },
+    "pytest-arguments.txt": {
+      "path": "/tmp/casepath-release-e104-20261013/shard5/pytest-arguments.txt",
+      "size_bytes": 1114603,
+      "sha256": "4ca305835c130bf99a19b4c572170684572f0c381deeca9066ca6f515cb3d86f"
+    }
+  },
+  "pytest_arguments_verified": [
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "--junitxml=/tmp/casepath-release-e104-20261013/shard5/junit.xml",
+    "--durations=0",
+    "--basetemp=/tmp/casepath-release-e104-20261013/shard5/pytest-tmp",
+    "@/tmp/casepath-release-e104-20261013/shard5/pytest-arguments.txt"
+  ]
+}

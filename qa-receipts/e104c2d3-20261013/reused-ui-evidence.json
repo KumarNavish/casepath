@@ -1,0 +1,41 @@
+{
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "implementation_commit": "c0a79ba7e9a3ae211421d051986d3cf25a560af3",
+  "final_qa_commit": "0410e61edc0776403d5d234893aa35343dcd370c",
+  "module": {
+    "passed": 146,
+    "log": "targeted-ui/module-final-frozen.log",
+    "exit_code": 0
+  },
+  "browser": {
+    "new_direct_replay": 8,
+    "existing_cache_warming": 25,
+    "logs": [
+      "targeted-ui/browser-final.log",
+      "targeted-ui/browser-existing.log"
+    ],
+    "exit_codes": [
+      0,
+      0
+    ]
+  },
+  "product_module": {
+    "passed": 21,
+    "log": "targeted-ui/unified-test-only-final.log",
+    "exit_code": 0
+  },
+  "independent_checks": 27,
+  "independent_review": "independent-review/final-review.json",
+  "baseline_correction": "targeted-ui/unified-test-only-receipt.json",
+  "preserved_original_failures": true,
+  "no_further_standalone_ui_tests": "Original focused tests executed on identical final product/QA byte hashes; final frozen candidate adds source seal and asset SHA references. No extra browser/module round executed during gate.",
+  "final_file_hashes": {
+    "casepath/assets/autonomous-workspace-v1.js": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+    "casepath/assets/autonomous-workspace-v1.css": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "f44cf9af7df6bbdbecad88438469de1bf0a74af8f491e1e742e12c6f438db4bb",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "a36455dc7ff8900523ba87cc130967c6f7f56ed9b2d5f27501eb33d139317a9a",
+    "casepath-qa/unified-product-v1.test.cjs": "f9987eb13705834196eaab9f25c3187df83cda60b35d1bc5bc0f012bc40c9c67"
+  },
+  "native_final_receipts": 3,
+  "native_actual_injected_assets_match_final_candidate": true
+}

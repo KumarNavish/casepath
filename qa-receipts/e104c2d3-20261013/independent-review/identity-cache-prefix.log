@@ -1,0 +1,16 @@
+✔ atomic snapshots bind state, projection, events and journal cursor before display (1.906182ms)
+✔ the read cache retains at most three exact saved heads and the complete Knowledge DTO without altering source authority (11.093235ms)
+✔ read cache checksums API contract age and complete entry identities fail closed independently (4.542501ms)
+✔ read cache rejects duplicate or excess saved heads oversized storage and stale malformed Knowledge (17.553045ms)
+✔ read-only previews check original and derived hashes without admitting evidence (1.940132ms)
+✔ later supporting files do not inherit the canonical original binding, while original previews must match it (1.455707ms)
+✔ replay binds prefix provenance and same-revision heads without confusing a legitimate later head (1.109917ms)
+✔ forming knowledge preserves accepted version use and origin without borrowing a later version or establishing current facts (1.479522ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 109.118275

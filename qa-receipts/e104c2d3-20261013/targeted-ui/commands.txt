@@ -1,0 +1,32 @@
+Working directory: /workspace/casepath-direct-replay-warmth-20261013
+Base: aa10e356bef06f6b657a4e0797523d1ef0392b73
+
+Module checks:
+node --test casepath-qa/autonomous-workspace-v1.test.cjs
+node --test --test-reporter=tap casepath-qa/autonomous-workspace-v1.test.cjs
+
+Native browser checks used these per-command environment assignments:
+XDG_CONFIG_HOME=/tmp/casepath-direct-replay-warmth-20261013/config
+XDG_CACHE_HOME=/tmp/casepath-direct-replay-warmth-20261013/cache
+TMPDIR=/tmp/casepath-direct-replay-warmth-20261013/tmp
+CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json
+CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json
+CASEPATH_BROWSER_JS_ASSET=/workspace/casepath-direct-replay-warmth-20261013/casepath/assets/autonomous-workspace-v1.js
+CASEPATH_FOCUSED_RECEIPTS=/tmp/casepath-direct-replay-warmth-20261013/evidence/native-final
+CASEPATH_BROWSER_DIAGNOSTICS=/tmp/casepath-direct-replay-warmth-20261013/evidence/diagnostics-final
+node --test --test-reporter=tap --test-name-pattern='^direct replay warmth:' casepath-qa/unified-product-browser-v1.test.cjs
+
+Existing focused group used the same environment except:
+CASEPATH_FOCUSED_RECEIPTS=/tmp/casepath-direct-replay-warmth-20261013/evidence/native-existing
+CASEPATH_BROWSER_DIAGNOSTICS=/tmp/casepath-direct-replay-warmth-20261013/evidence/diagnostics-existing
+node --test --test-reporter=tap --test-name-pattern='^quiet work: background Knowledge warming|^read cache:' casepath-qa/unified-product-browser-v1.test.cjs
+
+Initial direct group used the same environment except native-initial and diagnostics-initial output directories. Its first test incorrectly compared the input fragment with the application's canonical selected-node route; that harness assertion was corrected and rerun without production edits.
+
+Exact-base failing regression used the same fixture/runtime assignments, omitted receipt/diagnostic assignments, and changed the asset assignment to:
+CASEPATH_BROWSER_JS_ASSET=/tmp/casepath-direct-replay-warmth-20261013/evidence/base-autonomous-workspace-v1.js
+node --test --test-reporter=tap --test-name-pattern='^direct replay warmth: cold accepted entry' casepath-qa/unified-product-browser-v1.test.cjs
+Base asset was captured with:
+git show aa10e356bef06f6b657a4e0797523d1ef0392b73:casepath/assets/autonomous-workspace-v1.js
+
+Each run redirected stdout/stderr to its named evidence/*.log, then captured the underlying Node exit code in evidence/*.exit. Source and full diff hashes were checked with sha256sum; git diff --check passed.

@@ -1,0 +1,1039 @@
+{
+  "claim_id": "clm_314f2d309fea25e6",
+  "through_seq": 6,
+  "record": {
+    "state": {
+      "acquired_sources": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97",
+          "claim_id": "clm_314f2d309fea25e6",
+          "complete": true,
+          "contract": "casepath.autonomous-source/1.0.0",
+          "coverage": {
+            "characters_read": 1092,
+            "characters_total": 1092,
+            "full_text_sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2",
+            "visual_interpretation_performed": false
+          },
+          "descriptor_sha256": "ed346a9d1ec0b886b069a06ad5ded16fee432162f7fe84e15c9713325ff64ae8",
+          "extraction": "utf8",
+          "file_name": "Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt",
+          "media_type": "text/plain; charset=utf-8",
+          "reader_id": "casepath.operational-source-reader/1.0.0",
+          "receipt_sha256": "7823feaffc34a8669af1ffa275605f52e64ed0a080055b4fa0eab624d1cb2482",
+          "role": "customer_message",
+          "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2",
+          "size_bytes": 1092,
+          "text": "Channel: phone_note\nTimestamp: 2025-02-20T13:00:00+01:00\nFrom: Riley Foster <riley.foster@mailbox.ch>\nTo: Protekta Rechtsberatung <fallaufnahme@protekta.ch>\n\nGood afternoon\n\nAs I understand it: The living room is around 16 degrees in the morning; After a reset the heating works briefly and stops again; I have called three times; this is how I recorded it.\n\nRegarding \"repeated heating failure\", my notes show: the calibrated temperature remains unresolved; for the request \"lasting repair and review of possible remedies\": I have included everything currently available to me; on \"repeated heating failure\", I want clarity before acting; also unresolved: the service cause; I cannot currently support anything further.\n\nI am specifically asking for: lasting repair and review of possible remedies; in particular, I need clarity about the service cause and whether the records support an initial assessment.\n\nMy first note about it is dated 01 February 2025.\n\nThank you for clarifying; Before acting I need to know the calibrated temperature; I want to base what I do on that.\n\nBest regards\n",
+          "text_sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2"
+        }
+      ],
+      "actions": [],
+      "claim_id": "clm_314f2d309fea25e6",
+      "contract": "casepath.autonomous-claim/1.0.0",
+      "corpus_id": "synthetic-150",
+      "deferral": null,
+      "evaluation": {
+        "assessment_context": {
+          "facts": [
+            {
+              "citations": [],
+              "fact_id": "source:src_75472589f7c0e2b444f884f3000845b2",
+              "label": "Contents and extraction coverage of 01-customer-and-tenancy-clarification.txt",
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ],
+              "status": "pending",
+              "summary": "The original bytes must be acquired before interpretation."
+            },
+            {
+              "citations": [],
+              "fact_id": "source:src_3fa6e00ca8e24d41c3af7915f43a21bd",
+              "label": "Contents and extraction coverage of 02-heating-service-observation.txt",
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ],
+              "status": "pending",
+              "summary": "The original bytes must be acquired before interpretation."
+            },
+            {
+              "citations": [],
+              "fact_id": "source:src_6c895ee56c7a6b33aaeebe06d530eb4b",
+              "label": "Contents and extraction coverage of 03-landlord-knowledge-and-repair-status.txt",
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ],
+              "status": "pending",
+              "summary": "The original bytes must be acquired before interpretation."
+            }
+          ],
+          "obligations": [
+            {
+              "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+              "capability_id": "local_inbox.read",
+              "decision_node_id": "investigate_packet",
+              "document_type": "incoming_0",
+              "label": "01-customer-and-tenancy-clarification.txt",
+              "node_id": "investigate_packet",
+              "obligation_id": "incoming:src_75472589f7c0e2b444f884f3000845b2",
+              "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+              "required_fact_ids": [
+                "source:src_75472589f7c0e2b444f884f3000845b2"
+              ],
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ]
+            },
+            {
+              "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+              "capability_id": "local_inbox.read",
+              "decision_node_id": "investigate_packet",
+              "document_type": "incoming_1",
+              "label": "02-heating-service-observation.txt",
+              "node_id": "investigate_packet",
+              "obligation_id": "incoming:src_3fa6e00ca8e24d41c3af7915f43a21bd",
+              "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+              "required_fact_ids": [
+                "source:src_3fa6e00ca8e24d41c3af7915f43a21bd"
+              ],
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ]
+            },
+            {
+              "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+              "capability_id": "local_inbox.read",
+              "decision_node_id": "investigate_packet",
+              "document_type": "incoming_2",
+              "label": "03-landlord-knowledge-and-repair-status.txt",
+              "node_id": "investigate_packet",
+              "obligation_id": "incoming:src_6c895ee56c7a6b33aaeebe06d530eb4b",
+              "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+              "required_fact_ids": [
+                "source:src_6c895ee56c7a6b33aaeebe06d530eb4b"
+              ],
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ]
+            }
+          ]
+        },
+        "assessment_sha256": "c4cfe0d63cd2ed39ae9fb976f85a1767a5efba3dfe6f7d94e8031d78454622e7",
+        "claim_id": "clm_314f2d309fea25e6",
+        "conditions": {},
+        "contract": "casepath.causal-process/1.0.0",
+        "document_catalog": [
+          {
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "incoming_0",
+            "held_files": [],
+            "label": "01-customer-and-tenancy-clarification.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "requirement_class": "mandatory"
+          },
+          {
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "incoming_1",
+            "held_files": [],
+            "label": "02-heating-service-observation.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "requirement_class": "mandatory"
+          },
+          {
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "incoming_2",
+            "held_files": [],
+            "label": "03-landlord-knowledge-and-repair-status.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "requirement_class": "mandatory"
+          }
+        ],
+        "documents": [
+          {
+            "activation": "true",
+            "active_node_ids": [
+              "investigate_packet"
+            ],
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "condition_flags": [],
+            "document_type": "incoming_0",
+            "held_files": [],
+            "label": "01-customer-and-tenancy-clarification.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "request": true,
+            "required_at_node_ids": [
+              "investigate_packet"
+            ],
+            "requirement_class": "mandatory",
+            "review_scope": "document_requirement",
+            "review_state": "missing",
+            "route_state": "needed_now"
+          },
+          {
+            "activation": "true",
+            "active_node_ids": [
+              "investigate_packet"
+            ],
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "condition_flags": [],
+            "document_type": "incoming_1",
+            "held_files": [],
+            "label": "02-heating-service-observation.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "request": true,
+            "required_at_node_ids": [
+              "investigate_packet"
+            ],
+            "requirement_class": "mandatory",
+            "review_scope": "document_requirement",
+            "review_state": "missing",
+            "route_state": "needed_now"
+          },
+          {
+            "activation": "true",
+            "active_node_ids": [
+              "investigate_packet"
+            ],
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "condition_flags": [],
+            "document_type": "incoming_2",
+            "held_files": [],
+            "label": "03-landlord-knowledge-and-repair-status.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "request": true,
+            "required_at_node_ids": [
+              "investigate_packet"
+            ],
+            "requirement_class": "mandatory",
+            "review_scope": "document_requirement",
+            "review_state": "missing",
+            "route_state": "needed_now"
+          }
+        ],
+        "edges": [],
+        "facts": [
+          {
+            "citations": [],
+            "fact_id": "source:src_75472589f7c0e2b444f884f3000845b2",
+            "label": "Contents and extraction coverage of 01-customer-and-tenancy-clarification.txt",
+            "rule_refs": [
+              "casepath.autonomous-local/1.0.0"
+            ],
+            "status": "pending",
+            "summary": "The original bytes must be acquired before interpretation."
+          },
+          {
+            "citations": [],
+            "fact_id": "source:src_3fa6e00ca8e24d41c3af7915f43a21bd",
+            "label": "Contents and extraction coverage of 02-heating-service-observation.txt",
+            "rule_refs": [
+              "casepath.autonomous-local/1.0.0"
+            ],
+            "status": "pending",
+            "summary": "The original bytes must be acquired before interpretation."
+          },
+          {
+            "citations": [],
+            "fact_id": "source:src_6c895ee56c7a6b33aaeebe06d530eb4b",
+            "label": "Contents and extraction coverage of 03-landlord-knowledge-and-repair-status.txt",
+            "rule_refs": [
+              "casepath.autonomous-local/1.0.0"
+            ],
+            "status": "pending",
+            "summary": "The original bytes must be acquired before interpretation."
+          }
+        ],
+        "family": "incoming_packet",
+        "focus_node_id": "investigate_packet",
+        "graph_sha256": "402e7d7e930b09c1f801cdb2b0ebb6947afe025449c9986eafcb8ad94dd339b5",
+        "history": [],
+        "inconsistent_completed_node_ids": [],
+        "next_step": "Investigate incoming evidence",
+        "nodes": [
+          {
+            "activation": "true",
+            "authority": null,
+            "blocked_by": [],
+            "completed": false,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flags": [],
+            "document_types": [
+              "incoming_0",
+              "incoming_1",
+              "incoming_2"
+            ],
+            "effective_completed": false,
+            "entry": true,
+            "execution_state": "ready",
+            "inconsistent_completion": false,
+            "kind": "action",
+            "label": "Investigate incoming evidence",
+            "meaning": "Investigate incoming evidence",
+            "missing_document_types": [
+              "incoming_0",
+              "incoming_1",
+              "incoming_2"
+            ],
+            "node_id": "investigate_packet",
+            "provenance": {
+              "kind": "operational_policy",
+              "source": "casepath.autonomous-local/1.0.0"
+            },
+            "responsibility": "source_agent",
+            "terminal": false,
+            "unresolved_dependencies": [],
+            "validation": {
+              "status": "unvalidated"
+            }
+          }
+        ],
+        "obligations": [
+          {
+            "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "investigate_packet",
+            "document_type": "incoming_0",
+            "label": "01-customer-and-tenancy-clarification.txt",
+            "node_id": "investigate_packet",
+            "obligation_id": "incoming:src_75472589f7c0e2b444f884f3000845b2",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "required_fact_ids": [
+              "source:src_75472589f7c0e2b444f884f3000845b2"
+            ],
+            "rule_refs": [
+              "casepath.autonomous-local/1.0.0"
+            ]
+          },
+          {
+            "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "investigate_packet",
+            "document_type": "incoming_1",
+            "label": "02-heating-service-observation.txt",
+            "node_id": "investigate_packet",
+            "obligation_id": "incoming:src_3fa6e00ca8e24d41c3af7915f43a21bd",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "required_fact_ids": [
+              "source:src_3fa6e00ca8e24d41c3af7915f43a21bd"
+            ],
+            "rule_refs": [
+              "casepath.autonomous-local/1.0.0"
+            ]
+          },
+          {
+            "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "investigate_packet",
+            "document_type": "incoming_2",
+            "label": "03-landlord-knowledge-and-repair-status.txt",
+            "node_id": "investigate_packet",
+            "obligation_id": "incoming:src_6c895ee56c7a6b33aaeebe06d530eb4b",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "required_fact_ids": [
+              "source:src_6c895ee56c7a6b33aaeebe06d530eb4b"
+            ],
+            "rule_refs": [
+              "casepath.autonomous-local/1.0.0"
+            ]
+          }
+        ],
+        "process_graph_sha256": "402e7d7e930b09c1f801cdb2b0ebb6947afe025449c9986eafcb8ad94dd339b5",
+        "process_status": "in_progress",
+        "question_cards": [],
+        "revision": 0,
+        "steps": [
+          {
+            "activation": "true",
+            "authority": null,
+            "condition_chips": [],
+            "execution_state": "ready",
+            "label": "Investigate incoming evidence",
+            "node_id": "investigate_packet",
+            "state": "active"
+          }
+        ]
+      },
+      "events": [
+        {
+          "created_at": "2026-10-11T12:00:00+00:00",
+          "event_sha256": "0cf7f654839ce3b91102623b38a1f3146df3962d2915c227f2d1f126bb2dd0ec",
+          "kind": "intake",
+          "sequence": 1
+        },
+        {
+          "created_at": "2026-10-11T12:00:00+00:00",
+          "event_sha256": "b576c6e9026e2d33c409058ac03de8afcdca10023eabfa533e5ff0bba49d3e28",
+          "kind": "sources.arrived",
+          "sequence": 2
+        },
+        {
+          "created_at": "2026-10-11T12:00:00+00:00",
+          "event_sha256": "13b741fecd677e0b4c437b46ae85d581f724c18fddc4bf02db82ba574780653b",
+          "kind": "work.started",
+          "sequence": 3
+        },
+        {
+          "created_at": "2026-10-11T12:00:00+00:00",
+          "event_sha256": "8904c3a8a438e9b15833383111155b4892075e2a5f6f26e3d2ffa9302aab9c67",
+          "kind": "process.prepared",
+          "sequence": 4
+        },
+        {
+          "created_at": "2026-10-11T12:00:00+00:00",
+          "event_sha256": "8ad4c162113bc793f4105119019d9d46b07e5ec12c7d6fc7ad1272903f75b369",
+          "kind": "work.phase",
+          "sequence": 5
+        },
+        {
+          "created_at": "2026-10-11T12:00:00+00:00",
+          "event_sha256": "25a1cddd7818e640355e60ae1d57c0823a8dbf91e8b27af950bcc77622509a7d",
+          "kind": "sources.acquired",
+          "sequence": 6
+        }
+      ],
+      "facts": [
+        {
+          "citations": [],
+          "fact_id": "source:src_75472589f7c0e2b444f884f3000845b2",
+          "label": "Contents and extraction coverage of 01-customer-and-tenancy-clarification.txt",
+          "rule_refs": [
+            "casepath.autonomous-local/1.0.0"
+          ],
+          "status": "pending",
+          "summary": "The original bytes must be acquired before interpretation."
+        },
+        {
+          "citations": [],
+          "fact_id": "source:src_3fa6e00ca8e24d41c3af7915f43a21bd",
+          "label": "Contents and extraction coverage of 02-heating-service-observation.txt",
+          "rule_refs": [
+            "casepath.autonomous-local/1.0.0"
+          ],
+          "status": "pending",
+          "summary": "The original bytes must be acquired before interpretation."
+        },
+        {
+          "citations": [],
+          "fact_id": "source:src_6c895ee56c7a6b33aaeebe06d530eb4b",
+          "label": "Contents and extraction coverage of 03-landlord-knowledge-and-repair-status.txt",
+          "rule_refs": [
+            "casepath.autonomous-local/1.0.0"
+          ],
+          "status": "pending",
+          "summary": "The original bytes must be acquired before interpretation."
+        }
+      ],
+      "graph": {
+        "assessment_context": {
+          "facts": [
+            {
+              "citations": [],
+              "fact_id": "source:src_75472589f7c0e2b444f884f3000845b2",
+              "label": "Contents and extraction coverage of 01-customer-and-tenancy-clarification.txt",
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ],
+              "status": "pending",
+              "summary": "The original bytes must be acquired before interpretation."
+            },
+            {
+              "citations": [],
+              "fact_id": "source:src_3fa6e00ca8e24d41c3af7915f43a21bd",
+              "label": "Contents and extraction coverage of 02-heating-service-observation.txt",
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ],
+              "status": "pending",
+              "summary": "The original bytes must be acquired before interpretation."
+            },
+            {
+              "citations": [],
+              "fact_id": "source:src_6c895ee56c7a6b33aaeebe06d530eb4b",
+              "label": "Contents and extraction coverage of 03-landlord-knowledge-and-repair-status.txt",
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ],
+              "status": "pending",
+              "summary": "The original bytes must be acquired before interpretation."
+            }
+          ],
+          "obligations": [
+            {
+              "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+              "capability_id": "local_inbox.read",
+              "decision_node_id": "investigate_packet",
+              "document_type": "incoming_0",
+              "label": "01-customer-and-tenancy-clarification.txt",
+              "node_id": "investigate_packet",
+              "obligation_id": "incoming:src_75472589f7c0e2b444f884f3000845b2",
+              "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+              "required_fact_ids": [
+                "source:src_75472589f7c0e2b444f884f3000845b2"
+              ],
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ]
+            },
+            {
+              "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+              "capability_id": "local_inbox.read",
+              "decision_node_id": "investigate_packet",
+              "document_type": "incoming_1",
+              "label": "02-heating-service-observation.txt",
+              "node_id": "investigate_packet",
+              "obligation_id": "incoming:src_3fa6e00ca8e24d41c3af7915f43a21bd",
+              "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+              "required_fact_ids": [
+                "source:src_3fa6e00ca8e24d41c3af7915f43a21bd"
+              ],
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ]
+            },
+            {
+              "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+              "capability_id": "local_inbox.read",
+              "decision_node_id": "investigate_packet",
+              "document_type": "incoming_2",
+              "label": "03-landlord-knowledge-and-repair-status.txt",
+              "node_id": "investigate_packet",
+              "obligation_id": "incoming:src_6c895ee56c7a6b33aaeebe06d530eb4b",
+              "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+              "required_fact_ids": [
+                "source:src_6c895ee56c7a6b33aaeebe06d530eb4b"
+              ],
+              "rule_refs": [
+                "casepath.autonomous-local/1.0.0"
+              ]
+            }
+          ]
+        },
+        "claim_id": "clm_314f2d309fea25e6",
+        "conditions": {},
+        "contract": "casepath.causal-process/1.0.0",
+        "document_catalog": [
+          {
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "incoming_0",
+            "held_files": [],
+            "label": "01-customer-and-tenancy-clarification.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "requirement_class": "mandatory"
+          },
+          {
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "incoming_1",
+            "held_files": [],
+            "label": "02-heating-service-observation.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "requirement_class": "mandatory"
+          },
+          {
+            "authority": null,
+            "condition": {
+              "const": "true"
+            },
+            "condition_flag": null,
+            "document_type": "incoming_2",
+            "held_files": [],
+            "label": "03-landlord-knowledge-and-repair-status.txt",
+            "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+            "requirement_class": "mandatory"
+          }
+        ],
+        "edges": [],
+        "family": "incoming_packet",
+        "graph_sha256": "402e7d7e930b09c1f801cdb2b0ebb6947afe025449c9986eafcb8ad94dd339b5",
+        "history": [],
+        "nodes": [
+          {
+            "authority": null,
+            "completed": false,
+            "condition": {
+              "const": "true"
+            },
+            "document_types": [
+              "incoming_0",
+              "incoming_1",
+              "incoming_2"
+            ],
+            "entry": true,
+            "kind": "action",
+            "label": "Investigate incoming evidence",
+            "meaning": "Investigate incoming evidence",
+            "node_id": "investigate_packet",
+            "provenance": {
+              "kind": "operational_policy",
+              "source": "casepath.autonomous-local/1.0.0"
+            },
+            "responsibility": "source_agent",
+            "terminal": false,
+            "validation": {
+              "status": "unvalidated"
+            }
+          }
+        ],
+        "revision": 0
+      },
+      "initial_state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+      "intake_receipt": {
+        "claim_id": "clm_314f2d309fea25e6",
+        "packet_sha256": "32c49246529526411513eade3fb2892a1d720d5f795c300653342a9d02d84003",
+        "receipt_sha256": "05adaf2d76c6bf0a67e4493d068df7a4630d00b153240c81f05396229c06bf67",
+        "source_roster_sha256": "ece4a19d05cbac82e3cc20848c06997f6c9f7f567728deef220a32c6f8e40f8c"
+      },
+      "knowledge_published": [],
+      "knowledge_uses": [],
+      "last_event_sha256": "25a1cddd7818e640355e60ae1d57c0823a8dbf91e8b27af950bcc77622509a7d",
+      "message": "Good afternoon\n\nAs I understand it: The living room is around 16 degrees in the morning; After a reset the heating works briefly and stops again; I have called three times; this is how I recorded it.\n\nRegarding “repeated heating failure”, my notes show: the calibrated temperature remains unresolved; for the request “lasting repair and review of possible remedies”: I have included everything currently available to me; on “repeated heating failure”, I want clarity before acting; also unresolved: the service cause; I cannot currently support anything further.\n\nI am specifically asking for: lasting repair and review of possible remedies; in particular, I need clarity about the service cause and whether the records support an initial assessment.\n\nMy first note about it is dated 01 February 2025.\n\nThank you for clarifying; Before acting I need to know the calibrated temperature; I want to base what I do on that.\n\nBest regards",
+      "obligations": [
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+          "capability_id": "local_inbox.read",
+          "decision_node_id": "investigate_packet",
+          "document_type": "incoming_0",
+          "label": "01-customer-and-tenancy-clarification.txt",
+          "node_id": "investigate_packet",
+          "obligation_id": "incoming:src_75472589f7c0e2b444f884f3000845b2",
+          "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+          "required_fact_ids": [
+            "source:src_75472589f7c0e2b444f884f3000845b2"
+          ],
+          "rule_refs": [
+            "casepath.autonomous-local/1.0.0"
+          ]
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+          "capability_id": "local_inbox.read",
+          "decision_node_id": "investigate_packet",
+          "document_type": "incoming_1",
+          "label": "02-heating-service-observation.txt",
+          "node_id": "investigate_packet",
+          "obligation_id": "incoming:src_3fa6e00ca8e24d41c3af7915f43a21bd",
+          "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+          "required_fact_ids": [
+            "source:src_3fa6e00ca8e24d41c3af7915f43a21bd"
+          ],
+          "rule_refs": [
+            "casepath.autonomous-local/1.0.0"
+          ]
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+          "capability_id": "local_inbox.read",
+          "decision_node_id": "investigate_packet",
+          "document_type": "incoming_2",
+          "label": "03-landlord-knowledge-and-repair-status.txt",
+          "node_id": "investigate_packet",
+          "obligation_id": "incoming:src_6c895ee56c7a6b33aaeebe06d530eb4b",
+          "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+          "required_fact_ids": [
+            "source:src_6c895ee56c7a6b33aaeebe06d530eb4b"
+          ],
+          "rule_refs": [
+            "casepath.autonomous-local/1.0.0"
+          ]
+        }
+      ],
+      "original_binding": {
+        "claim_binding_sha256": "c121e223860d7509a29fa96c0955dbe06a752699c47d6d3a193fc6fd43ab5a13",
+        "claim_id": "clm_314f2d309fea25e6",
+        "contract": "casepath.autonomous-original-binding/1.0.0",
+        "corpus_id": "synthetic-150",
+        "corpus_manifest_sha256": "921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e",
+        "intake": {
+          "attachments": [],
+          "customer_message": {
+            "attachment_ids": [],
+            "body": "Good afternoon\n\nAs I understand it: The living room is around 16 degrees in the morning; After a reset the heating works briefly and stops again; I have called three times; this is how I recorded it.\n\nRegarding “repeated heating failure”, my notes show: the calibrated temperature remains unresolved; for the request “lasting repair and review of possible remedies”: I have included everything currently available to me; on “repeated heating failure”, I want clarity before acting; also unresolved: the service cause; I cannot currently support anything further.\n\nI am specifically asking for: lasting repair and review of possible remedies; in particular, I need clarity about the service cause and whether the records support an initial assessment.\n\nMy first note about it is dated 01 February 2025.\n\nThank you for clarifying; Before acting I need to know the calibrated temperature; I want to base what I do on that.\n\nBest regards",
+            "from_role": "customer",
+            "message_id": "com_df83feba0e9e4428",
+            "raw_file": {
+              "artifact_id": "com_df83feba0e9e4428",
+              "file_name": "Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt",
+              "media_type": "text/plain; charset=utf-8",
+              "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2",
+              "size_bytes": 1092
+            },
+            "sent_at": "2025-02-20T13:00:00+01:00",
+            "subject": "Question about my documents: repeated heating failure",
+            "to_role": "claims_inbox"
+          },
+          "submission": {
+            "canton": "ZH",
+            "channel": "phone_note",
+            "claim_id": "clm_314f2d309fea25e6",
+            "language": "en",
+            "received_at": "2025-02-20T13:00:00+01:00"
+          }
+        },
+        "original_binding_sha256": "4349cce39dba44f65fa58fe396659b04f9e8082986abfb92cbb918b59e935a67",
+        "source_map": [
+          {
+            "artifact_id": "src_c8b880d7429b1879b9ae483029facd97",
+            "original_artifact_id": "com_df83feba0e9e4428",
+            "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2"
+          }
+        ],
+        "static_template_sha256": "84f576cc7f8f2bcb6e638d02e0549fd32e4bb183e4957f2b4a4ab7dcf2beb232"
+      },
+      "outcome": null,
+      "phase": "acquiring",
+      "phase_summary": "Opening the supplied supporting files and verifying their original bytes.",
+      "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+      "receipts": [
+        {
+          "kind": "process.prepared",
+          "receipt": {
+            "after_graph_sha256": "402e7d7e930b09c1f801cdb2b0ebb6947afe025449c9986eafcb8ad94dd339b5",
+            "before_graph_sha256": null,
+            "gate_sha256": "5de8717104ff2fffa4bbfba27d6981178fe758999913775991a9686e886677fd",
+            "operation": "prepare_source_investigation",
+            "parent_revision": 3,
+            "parent_state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+            "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+            "receipt_sha256": "636fa7e8804484948e2172b4317f47e7e99da57073edcfccc19f3ce73dff8a2e"
+          }
+        }
+      ],
+      "results": [],
+      "revision": 6,
+      "run_id": "autonomy.edaf7784232097715c29a351",
+      "source_descriptors": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "ed346a9d1ec0b886b069a06ad5ded16fee432162f7fe84e15c9713325ff64ae8",
+          "file_name": "Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt",
+          "media_type": "text/plain; charset=utf-8",
+          "role": "customer_message",
+          "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2",
+          "size_bytes": 1092
+        },
+        {
+          "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "c102e87c9234833df3a89195404fb15f5bb3d4d68097578c39250e8be06483f2",
+          "file_name": "01-customer-and-tenancy-clarification.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615",
+          "size_bytes": 1353
+        },
+        {
+          "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "e4b1db71fc006e3f95ed3cbaf09fd6469474b5f712bd52901fe7ca02bdc6f9da",
+          "file_name": "02-heating-service-observation.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3",
+          "size_bytes": 1744
+        },
+        {
+          "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "9743b8a0b14ed991f2f37d769925d89ef5694359687e67b4795cc925fa167ebf",
+          "file_name": "03-landlord-knowledge-and-repair-status.txt",
+          "media_type": "text/plain",
+          "role": "supporting_document",
+          "sha256": "ae66233b1e2853056ced10f26ebe615adef8fb17bf18293a94b93a984825576c",
+          "size_bytes": 1334
+        }
+      ],
+      "source_roster_sha256": "6960ba3cded89b5634c6219f1509002bc96892d7596d6a3c7768dfb72cee9e17",
+      "state_sha256": "62a5cf65d392adb5cda404cc6e6ea3eade19763335069b97410f6bd86bc6be07",
+      "status": "running",
+      "title": "Question about my documents: repeated heating failure",
+      "updated_at": "2026-10-11T12:00:00+00:00"
+    },
+    "projection": {
+      "intake": {
+        "active_node_ids": [
+          "dh_intake",
+          "dh_scope",
+          "dh_notice",
+          "dh_cause",
+          "dh_evidence",
+          "dh_response"
+        ],
+        "assessment_scope": "defect_removal_and_reduction_eligibility",
+        "checklist": [
+          {
+            "artifact_ids": [
+              "src_75472589f7c0e2b444f884f3000845b2"
+            ],
+            "document_type": "tenancy_terms_evidence",
+            "label": "Relevant tenancy terms",
+            "node_ids": [
+              "dh_scope"
+            ],
+            "status": "sufficient"
+          },
+          {
+            "artifact_ids": [
+              "src_6c895ee56c7a6b33aaeebe06d530eb4b"
+            ],
+            "document_type": "landlord_knowledge_evidence",
+            "label": "Landlord knowledge and continuing repair status",
+            "node_ids": [
+              "dh_notice"
+            ],
+            "status": "sufficient"
+          },
+          {
+            "artifact_ids": [
+              "src_3fa6e00ca8e24d41c3af7915f43a21bd"
+            ],
+            "document_type": "objective_defect_observation",
+            "label": "Dated technical defect observation",
+            "node_ids": [
+              "dh_evidence"
+            ],
+            "status": "sufficient"
+          }
+        ],
+        "contract": "casepath.source-backed-intake/1.0.0",
+        "eligible": true,
+        "gate_sha256": "aac34af36b316ec5ba80c153d0ed9dbe93e5524ecefb3f6d51b8f59384a60f4a",
+        "legal_predicates": [
+          {
+            "citations": [
+              {
+                "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+                "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter."
+              }
+            ],
+            "predicate_id": "residential_tenancy_scope",
+            "rule_refs": [
+              "CO:259",
+              "CO:259a",
+              "CO:259d"
+            ],
+            "status": "supported"
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+                "quote": "The defect persists at this report's as-of time; no lasting pump repair or replacement has been completed. Heating is inadequate for the contracted winter residential use of the principal living rooms."
+              }
+            ],
+            "predicate_id": "objective_use_impairment",
+            "rule_refs": [
+              "CO:259a",
+              "CO:259d"
+            ],
+            "status": "supported"
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+                "quote": "On 2025-02-21 at07:30, a calibrated digital instrument (fictional calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure."
+              }
+            ],
+            "predicate_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+            "rule_refs": [
+              "CO:259",
+              "CO:259a"
+            ],
+            "status": "supported"
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+                "quote": "Our fictional call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect."
+              }
+            ],
+            "predicate_id": "landlord_first_knowledge",
+            "rule_refs": [
+              "CO:259d"
+            ],
+            "status": "supported"
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+                "quote": "We confirm the tenant was using the heating normally and did not cause this pump failure. Repeated resets did not remove the continuing defect. We acknowledge the dated service observation and remain responsible for arranging pump repair; no lasting repair has yet occurred as of this acknowledgment."
+              }
+            ],
+            "predicate_id": "continuing_defect_without_remedy",
+            "rule_refs": [
+              "CO:259a",
+              "CO:259d"
+            ],
+            "status": "supported"
+          }
+        ],
+        "missing_documents": [],
+        "provenance": {
+          "as_of": "2025-02-21",
+          "contract": "casepath.deterministic-reference/1.0.0",
+          "mode": "deterministic_reference",
+          "profile_id": "synthetic-nine-v1",
+          "profile_sha256": "15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7",
+          "rule_set_sha256": "919645ab51b74ccc4ad01ba9d06148af08b28ccd6c9a3f67b19284feb9646056",
+          "source_roster_sha256": "6960ba3cded89b5634c6219f1509002bc96892d7596d6a3c7768dfb72cee9e17",
+          "synthetic": true
+        },
+        "status": "complete"
+      },
+      "node_capabilities": {
+        "investigate_packet": {
+          "authorized": true,
+          "id": "local_inbox.read",
+          "reason": "Acquire supplied bytes and record their extraction coverage."
+        }
+      },
+      "revision": 6,
+      "state_sha256": "62a5cf65d392adb5cda404cc6e6ea3eade19763335069b97410f6bd86bc6be07"
+    }
+  },
+  "snapshotReads": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "method": "GET",
+      "time": 12727.199999988079,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0",
+      "method": "GET",
+      "time": 12731,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/snapshot?after=0",
+      "method": "GET",
+      "time": 12818,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/snapshot?after=0",
+      "method": "GET",
+      "time": 12824,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/snapshot?after=0",
+      "method": "GET",
+      "time": 12833.900000035763,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/snapshot?after=0",
+      "method": "GET",
+      "time": 12837.600000023842,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/snapshot?after=0",
+      "method": "GET",
+      "time": 12852,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0",
+      "method": "GET",
+      "time": 12855.300000011921,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0",
+      "method": "GET",
+      "time": 12862.600000023842,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "collectionReads": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 12440.699999988079,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 12724.100000023842,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "peakSnapshotReads": 2,
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "injectedAssets": {
+    "javascript": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+    "css": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f"
+  },
+  "assets": {
+    "javascript": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+    "css": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f"
+  }
+}

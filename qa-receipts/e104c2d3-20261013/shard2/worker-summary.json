@@ -1,0 +1,91 @@
+{
+  "shard": 2,
+  "host": "656813ef2295",
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "repository": "/workspace/casepath-release-ae0-shard2",
+  "artifacts": "/tmp/casepath-release-e104-20261013/shard2",
+  "launch_count": 1,
+  "runner_session_id": 78440,
+  "started_utc": "2026-10-13T00:00:45.157167+00:00",
+  "finished_utc": "2026-10-13T00:09:35.677554+00:00",
+  "duration_seconds": 530.5203864574432,
+  "exit_code": 0,
+  "pytest_summary_lines": [
+    "554 passed, 9 warnings in 527.26s (0:08:47)"
+  ],
+  "counts": {
+    "assigned": 554,
+    "collected": 554,
+    "executed": 554,
+    "terminal": 554,
+    "junit": 554
+  },
+  "report_count": 1662,
+  "call_outcomes": {
+    "passed": 554
+  },
+  "junit_outcomes": {
+    "passed": 554
+  },
+  "failed_ids": [],
+  "failed_reports": [],
+  "skipped_ids": [],
+  "skipped_reports": [],
+  "identity_reconciliation": {
+    "assigned": {
+      "count": 554,
+      "missing": [],
+      "extra": []
+    },
+    "collected": {
+      "count": 554,
+      "missing": [],
+      "extra": []
+    },
+    "executed": {
+      "count": 554,
+      "missing": [],
+      "extra": []
+    },
+    "terminal": {
+      "count": 554,
+      "missing": [],
+      "extra": []
+    },
+    "junit": {
+      "count": 554,
+      "missing": [],
+      "extra": []
+    }
+  },
+  "duplicate_ids": {
+    "assigned": [],
+    "collected": [],
+    "terminal": [],
+    "junit": []
+  },
+  "phase_anomalies": {},
+  "id_set_sha256": "f18bac7d2e14699a87c9021453966166a0ab57f9f7c4b69f941f1a9c918366a0",
+  "source_seal": {
+    "manifest_sha256": "58b29232c94fd72df65010a83c1a73bd6386433e3c94a2a3c67fd6be5943ae9a",
+    "file_count": 1680,
+    "verified_file_count": 1680,
+    "mismatches": []
+  },
+  "after_head": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "after_status": "",
+  "checks": {
+    "identity_sets_equal": true,
+    "unique_single_terminal_and_junit": true,
+    "all_assigned_have_setup_call_teardown_once": true,
+    "assigned_count_554": true,
+    "exit_zero": true,
+    "all_554_junit_passed": true,
+    "no_failed_or_skipped_reports": true,
+    "exact_head_unchanged": true,
+    "clean_git_status": true,
+    "seal_1680_files_verified": true,
+    "manifest_hash_unchanged": true
+  },
+  "verified": true
+}

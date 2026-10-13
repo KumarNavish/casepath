@@ -1,0 +1,53 @@
+{
+  "actual_hostname": "656813ef2295",
+  "artifact_directory": "/tmp/casepath-release-e104-20261013/shard1",
+  "artifact_sha256": {
+    "collected.json": "08e52a57b1201a69ea0c7f339a2d53be8ff0293f0d147a6abacbb73c85dfff79",
+    "command.json": "6dfbe5b025945995fe4eda6edd474b8af00abe3d66b5471372e64974534581aa",
+    "junit.xml": "1b31ad1b12c30924d3b0dd5c5fbb4c041e72a396dcce9bf4ec36dd33a2912c36",
+    "pytest-arguments.txt": "fa3059976308e9e82ef0e520f106a4e0f29ac45529d7ebd4018c110a765e09e0",
+    "pytest.log": "f4b8f0e51c6acda5e3d7294780ed1f6e52b36316f4af6bd49f72bbdfdd6708b8",
+    "reports.jsonl": "55f4e1285deb20a50badc164f93d9cca493b2322c2baf0252def707638de9141",
+    "result.json": "bdf1366f350e27ce0c7c703b2f0aa8fc54defedf314e763e19ffdcf17e6289bb",
+    "runner.log": "80f2124a4e2e69166b76cd1ee8f5c58fc100fe9fc6c54e9818a5482b7afd0613"
+  },
+  "assigned_count": 242,
+  "canonical_sha": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "checks": {
+    "assigned_unique": true,
+    "canonical_sha_equal": true,
+    "clean_head": true,
+    "collection_exact_unique_equality": true,
+    "junit_declared_counts_equal": true,
+    "junit_exact_unique_id_equality": true,
+    "mac_files_excluded": true,
+    "manifest_hash_unchanged": true,
+    "observer_junit_outcomes_equal": true,
+    "report_complete": true,
+    "report_exact_unique_id_equality": true,
+    "report_stages_valid": true,
+    "runner_exit_zero": true,
+    "sealed_files_unchanged": true
+  },
+  "collected_count": 242,
+  "exit_code": 0,
+  "failure_nodeids": [],
+  "git_status": "",
+  "head": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "junit_count": 242,
+  "manifest_sha256": "58b29232c94fd72df65010a83c1a73bd6386433e3c94a2a3c67fd6be5943ae9a",
+  "observer_sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+  "outcomes": {
+    "passed": 242
+  },
+  "pytest_seconds": 514.05,
+  "report_count": 726,
+  "retries": 0,
+  "runner_seconds": 517.2271025180817,
+  "runner_sha256": "6b6b0e64979f0fe6c7afa1533cf4aa9882efa00cf4e5b3497e1e5cdb9b4095b7",
+  "sealed_file_count": 1680,
+  "shard": 1,
+  "shard_map_sha256": "27d06af1e057bbb42dbde94df5c46e68a73ffafc8ec9c7a7262073cd4779acaa",
+  "skips": [],
+  "warnings": 5
+}

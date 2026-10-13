@@ -1,0 +1,164 @@
+TAP version 13
+# Subtest: quiet work: background Knowledge warming stays read only, revalidates exact pins and cannot revive an invalidated generation
+    # Subtest: a completed warm read paints its exact pinned version immediately while a fresh GET is held
+    ok 1 - a completed warm read paints its exact pinned version immediately while a fresh GET is held
+      ---
+      duration_ms: 9837.085637
+      type: 'test'
+      ...
+    # Subtest: a failed warm read leaves Cases intact and explicit Knowledge navigation can recover
+    ok 2 - a failed warm read leaves Cases intact and explicit Knowledge navigation can recover
+      ---
+      duration_ms: 6925.003163
+      type: 'test'
+      ...
+    # Subtest: a guarded write invalidates an in-flight warm response before it can repopulate visible cache
+    ok 3 - a guarded write invalidates an in-flight warm response before it can repopulate visible cache
+      ---
+      duration_ms: 7984.322222
+      type: 'test'
+      ...
+    1..3
+ok 1 - quiet work: background Knowledge warming stays read only, revalidates exact pins and cannot revive an invalidated generation
+  ---
+  duration_ms: 25254.505255
+  type: 'test'
+  ...
+# Subtest: read cache: visible and native hover warming bounds GET concurrency and shares the exact source-bound foreground read
+ok 2 - read cache: visible and native hover warming bounds GET concurrency and shares the exact source-bound foreground read
+  ---
+  duration_ms: 1459.583978
+  type: 'test'
+  ...
+# Subtest: read cache: a validated saved head paints read only before held fresh reads and History and original source inspection retain its exact bytes
+ok 3 - read cache: a validated saved head paints read only before held fresh reads and History and original source inspection retain its exact bytes
+  ---
+  duration_ms: 8327.279336
+  type: 'test'
+  ...
+# Subtest: read cache: an actual foreground head persists across reload and keeps its exact read-only return context while fresh GETs are held
+ok 4 - read cache: an actual foreground head persists across reload and keeps its exact read-only return context while fresh GETs are held
+  ---
+  duration_ms: 15630.256333
+  type: 'test'
+  ...
+# Subtest: read cache: a newer manual node and exact requirement survive the held initial deep-link read and Back
+ok 5 - read cache: a newer manual node and exact requirement survive the held initial deep-link read and Back
+  ---
+  duration_ms: 11703.530789
+  type: 'test'
+  ...
+# Subtest: read cache: corrupt, expired and mismatched saved representations cannot paint accepted content before fresh verification
+    # Subtest: checksum
+    ok 1 - checksum
+      ---
+      duration_ms: 8115.953153
+      type: 'test'
+      ...
+    # Subtest: expired
+    ok 2 - expired
+      ---
+      duration_ms: 7844.372266
+      type: 'test'
+      ...
+    # Subtest: api
+    ok 3 - api
+      ---
+      duration_ms: 7769.605274
+      type: 'test'
+      ...
+    # Subtest: contract
+    ok 4 - contract
+      ---
+      duration_ms: 7847.433924
+      type: 'test'
+      ...
+    # Subtest: claim
+    ok 5 - claim
+      ---
+      duration_ms: 7839.838301
+      type: 'test'
+      ...
+    # Subtest: hash
+    ok 6 - hash
+      ---
+      duration_ms: 7783.066471
+      type: 'test'
+      ...
+    # Subtest: cursor
+    ok 7 - cursor
+      ---
+      duration_ms: 7413.464523
+      type: 'test'
+      ...
+    # Subtest: source
+    ok 8 - source
+      ---
+      duration_ms: 7409.951092
+      type: 'test'
+      ...
+    # Subtest: span
+    ok 9 - span
+      ---
+      duration_ms: 8570.972458
+      type: 'test'
+      ...
+    1..9
+ok 6 - read cache: corrupt, expired and mismatched saved representations cannot paint accepted content before fresh verification
+  ---
+  duration_ms: 70627.438456
+  type: 'test'
+  ...
+# Subtest: read cache: saved final heads never replace the actual Demo prefix zero and quota failure leaves fresh source reads intact
+    # Subtest: stored head separation
+    ok 1 - stored head separation
+      ---
+      duration_ms: 2143.828484
+      type: 'test'
+      ...
+    # Subtest: quota fallback
+    ok 2 - quota fallback
+      ---
+      duration_ms: 14471.264649
+      type: 'test'
+      ...
+    1..2
+ok 7 - read cache: saved final heads never replace the actual Demo prefix zero and quota failure leaves fresh source reads intact
+  ---
+  duration_ms: 16615.957981
+  type: 'test'
+  ...
+# Subtest: read cache: hidden and abandoned Cases cancel queued warming and late results cannot seed the next opening
+    # Subtest: hidden
+    ok 1 - hidden
+      ---
+      duration_ms: 1173.424804
+      type: 'test'
+      ...
+    # Subtest: navigation
+    ok 2 - navigation
+      ---
+      duration_ms: 1218.600792
+      type: 'test'
+      ...
+    1..2
+ok 8 - read cache: hidden and abandoned Cases cancel queued warming and late results cannot seed the next opening
+  ---
+  duration_ms: 2392.804036
+  type: 'test'
+  ...
+# Subtest: read cache: idle pressure keeps the inspected foreground head and oversize persistence falls back to ordinary fresh reading
+ok 9 - read cache: idle pressure keeps the inspected foreground head and oversize persistence falls back to ordinary fresh reading
+  ---
+  duration_ms: 16238.150576
+  type: 'test'
+  ...
+1..9
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 169342.800507

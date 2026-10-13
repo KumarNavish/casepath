@@ -1,0 +1,258 @@
+{
+  "before": 6,
+  "immediate": {
+    "identities": 0,
+    "skeleton": 1
+  },
+  "record": {
+    "state": {
+      "acquired_sources": [],
+      "actions": [],
+      "claim_id": "clm_314f2d309fea25e6",
+      "contract": "casepath.autonomous-claim/1.0.0",
+      "corpus_id": "synthetic-150",
+      "deferral": null,
+      "evaluation": null,
+      "events": [],
+      "facts": [],
+      "graph": null,
+      "intake_receipt": null,
+      "knowledge_published": [],
+      "knowledge_uses": [],
+      "last_event_sha256": null,
+      "message": "Good afternoon\n\nAs I understand it: The living room is around 16 degrees in the morning; After a reset the heating works briefly and stops again; I have called three times; this is how I recorded it.\n\nRegarding “repeated heating failure”, my notes show: the calibrated temperature remains unresolved; for the request “lasting repair and review of possible remedies”: I have included everything currently available to me; on “repeated heating failure”, I want clarity before acting; also unresolved: the service cause; I cannot currently support anything further.\n\nI am specifically asking for: lasting repair and review of possible remedies; in particular, I need clarity about the service cause and whether the records support an initial assessment.\n\nMy first note about it is dated 01 February 2025.\n\nThank you for clarifying; Before acting I need to know the calibrated temperature; I want to base what I do on that.\n\nBest regards",
+      "mode": "unprocessed",
+      "obligations": [],
+      "original_binding": {
+        "claim_binding_sha256": "c121e223860d7509a29fa96c0955dbe06a752699c47d6d3a193fc6fd43ab5a13",
+        "claim_id": "clm_314f2d309fea25e6",
+        "contract": "casepath.autonomous-original-binding/1.0.0",
+        "corpus_id": "synthetic-150",
+        "corpus_manifest_sha256": "921e7ce79ecb3ee7811b6ee2530b4f6dc5c302da3ade6afbdae0b92fd822790e",
+        "intake": {
+          "attachments": [],
+          "customer_message": {
+            "attachment_ids": [],
+            "body": "Good afternoon\n\nAs I understand it: The living room is around 16 degrees in the morning; After a reset the heating works briefly and stops again; I have called three times; this is how I recorded it.\n\nRegarding “repeated heating failure”, my notes show: the calibrated temperature remains unresolved; for the request “lasting repair and review of possible remedies”: I have included everything currently available to me; on “repeated heating failure”, I want clarity before acting; also unresolved: the service cause; I cannot currently support anything further.\n\nI am specifically asking for: lasting repair and review of possible remedies; in particular, I need clarity about the service cause and whether the records support an initial assessment.\n\nMy first note about it is dated 01 February 2025.\n\nThank you for clarifying; Before acting I need to know the calibrated temperature; I want to base what I do on that.\n\nBest regards",
+            "from_role": "customer",
+            "message_id": "com_df83feba0e9e4428",
+            "raw_file": {
+              "artifact_id": "com_df83feba0e9e4428",
+              "file_name": "Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt",
+              "media_type": "text/plain; charset=utf-8",
+              "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2",
+              "size_bytes": 1092
+            },
+            "sent_at": "2025-02-20T13:00:00+01:00",
+            "subject": "Question about my documents: repeated heating failure",
+            "to_role": "claims_inbox"
+          },
+          "submission": {
+            "canton": "ZH",
+            "channel": "phone_note",
+            "claim_id": "clm_314f2d309fea25e6",
+            "language": "en",
+            "received_at": "2025-02-20T13:00:00+01:00"
+          }
+        },
+        "original_binding_sha256": "4349cce39dba44f65fa58fe396659b04f9e8082986abfb92cbb918b59e935a67",
+        "source_map": [
+          {
+            "artifact_id": "src_c8b880d7429b1879b9ae483029facd97",
+            "original_artifact_id": "com_df83feba0e9e4428",
+            "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2"
+          }
+        ],
+        "static_template_sha256": "84f576cc7f8f2bcb6e638d02e0549fd32e4bb183e4957f2b4a4ab7dcf2beb232"
+      },
+      "outcome": null,
+      "phase": "not_run",
+      "policy_id": null,
+      "receipts": [],
+      "results": [],
+      "revision": 0,
+      "run_id": null,
+      "source_descriptors": [
+        {
+          "artifact_id": "src_c8b880d7429b1879b9ae483029facd97",
+          "claim_id": "clm_314f2d309fea25e6",
+          "contract": "casepath.autonomous-source/1.0.0",
+          "descriptor_sha256": "ed346a9d1ec0b886b069a06ad5ded16fee432162f7fe84e15c9713325ff64ae8",
+          "file_name": "Question-about-my-documents-repeated-heating-failure_2025-02-20_1300_7c593c.txt",
+          "media_type": "text/plain; charset=utf-8",
+          "role": "customer_message",
+          "sha256": "491d9f53bdcb591157fb9d4b5a8b2c2be794a19dd3f673c89dacb0d469fe6ca2",
+          "size_bytes": 1092
+        }
+      ],
+      "source_roster_sha256": "ece4a19d05cbac82e3cc20848c06997f6c9f7f567728deef220a32c6f8e40f8c",
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+      "status": "not_started",
+      "title": "Question about my documents: repeated heating failure",
+      "updated_at": null
+    },
+    "projection": {
+      "intake": {
+        "active_node_ids": [
+          "dh_intake",
+          "dh_scope",
+          "dh_notice",
+          "dh_cause",
+          "dh_evidence",
+          "dh_response"
+        ],
+        "assessment_scope": null,
+        "checklist": [
+          {
+            "artifact_ids": [],
+            "document_type": "tenancy_terms_evidence",
+            "investigation_only": true,
+            "label": "Relevant tenancy terms",
+            "node_ids": [
+              "dh_scope"
+            ],
+            "status": "unassessed"
+          },
+          {
+            "artifact_ids": [],
+            "document_type": "landlord_knowledge_evidence",
+            "investigation_only": true,
+            "label": "Landlord knowledge and continuing repair status",
+            "node_ids": [
+              "dh_notice"
+            ],
+            "status": "unassessed"
+          },
+          {
+            "artifact_ids": [],
+            "document_type": "objective_defect_observation",
+            "investigation_only": true,
+            "label": "Dated technical defect observation",
+            "node_ids": [
+              "dh_evidence"
+            ],
+            "status": "unassessed"
+          }
+        ],
+        "contract": "casepath.source-backed-intake/1.0.0",
+        "eligible": false,
+        "gate_sha256": "edc887f372c89dfd1cf142189150f1df5006c5c5eb3174c457d6b25cb769410f",
+        "legal_predicates": [
+          {
+            "citations": [],
+            "predicate_id": "source_backed_assessment_scope",
+            "rule_refs": [],
+            "status": "unknown"
+          }
+        ],
+        "missing_documents": [
+          {
+            "artifact_ids": [],
+            "document_type": "tenancy_terms_evidence",
+            "investigation_only": true,
+            "label": "Relevant tenancy terms",
+            "node_ids": [
+              "dh_scope"
+            ],
+            "status": "unassessed"
+          },
+          {
+            "artifact_ids": [],
+            "document_type": "landlord_knowledge_evidence",
+            "investigation_only": true,
+            "label": "Landlord knowledge and continuing repair status",
+            "node_ids": [
+              "dh_notice"
+            ],
+            "status": "unassessed"
+          },
+          {
+            "artifact_ids": [],
+            "document_type": "objective_defect_observation",
+            "investigation_only": true,
+            "label": "Dated technical defect observation",
+            "node_ids": [
+              "dh_evidence"
+            ],
+            "status": "unassessed"
+          }
+        ],
+        "provenance": null,
+        "status": "incomplete"
+      },
+      "node_capabilities": {},
+      "revision": 0,
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    }
+  },
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "time": 11591.5,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 12638.700000047684,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 12639.200000047684,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 12640.600000023842,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0",
+      "method": "GET",
+      "time": 12656.5,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0",
+      "method": "GET",
+      "time": 12660,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 12983.700000047684,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "injectedAssets": {
+    "javascript": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+    "css": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f"
+  },
+  "assets": {
+    "javascript": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+    "css": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f"
+  }
+}

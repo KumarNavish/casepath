@@ -1,0 +1,136 @@
+TAP version 13
+# Subtest: revision zero requires an explicit source-bound unprocessed state and has no invented process
+ok 1 - revision zero requires an explicit source-bound unprocessed state and has no invented process
+  ---
+  duration_ms: 3.664089
+  type: 'test'
+  ...
+# Subtest: atomic snapshots bind state, projection, events and journal cursor before display
+ok 2 - atomic snapshots bind state, projection, events and journal cursor before display
+  ---
+  duration_ms: 0.581628
+  type: 'test'
+  ...
+# Subtest: the read cache retains at most three exact saved heads and the complete Knowledge DTO without altering source authority
+ok 3 - the read cache retains at most three exact saved heads and the complete Knowledge DTO without altering source authority
+  ---
+  duration_ms: 8.363476
+  type: 'test'
+  ...
+# Subtest: read cache checksums API contract age and complete entry identities fail closed independently
+ok 4 - read cache checksums API contract age and complete entry identities fail closed independently
+  ---
+  duration_ms: 4.263293
+  type: 'test'
+  ...
+# Subtest: read cache rejects duplicate or excess saved heads oversized storage and stale malformed Knowledge
+ok 5 - read cache rejects duplicate or excess saved heads oversized storage and stale malformed Knowledge
+  ---
+  duration_ms: 23.725425
+  type: 'test'
+  ...
+# Subtest: full collection search and domain browsing use supplied presentation metadata only
+ok 6 - full collection search and domain browsing use supplied presentation metadata only
+  ---
+  duration_ms: 2.713075
+  type: 'test'
+  ...
+# Subtest: collection pagination bounds each reading view while searching every original and resetting changed scopes
+ok 7 - collection pagination bounds each reading view while searching every original and resetting changed scopes
+  ---
+  duration_ms: 2.081283
+  type: 'test'
+  ...
+# Subtest: catalog previews expose only the exact known original message before accepted state is available
+ok 8 - catalog previews expose only the exact known original message before accepted state is available
+  ---
+  duration_ms: 0.433369
+  type: 'test'
+  ...
+# Subtest: preview boundaries keep whole original words and the complete source searchable and unchanged
+ok 9 - preview boundaries keep whole original words and the complete source searchable and unchanged
+  ---
+  duration_ms: 0.835574
+  type: 'test'
+  ...
+# Subtest: demonstration selection is exactly nine canonical identities with three per domain
+ok 10 - demonstration selection is exactly nine canonical identities with three per domain
+  ---
+  duration_ms: 0.614647
+  type: 'test'
+  ...
+# Subtest: read-only previews check original and derived hashes without admitting evidence
+ok 11 - read-only previews check original and derived hashes without admitting evidence
+  ---
+  duration_ms: 2.667508
+  type: 'test'
+  ...
+# Subtest: later supporting files do not inherit the canonical original binding, while original previews must match it
+ok 12 - later supporting files do not inherit the canonical original binding, while original previews must match it
+  ---
+  duration_ms: 1.783824
+  type: 'test'
+  ...
+# Subtest: replay binds prefix provenance and same-revision heads without confusing a legitimate later head
+ok 13 - replay binds prefix provenance and same-revision heads without confusing a legitimate later head
+  ---
+  duration_ms: 1.133443
+  type: 'test'
+  ...
+# Subtest: original collection and added intakes retain separate explicit identities
+ok 14 - original collection and added intakes retain separate explicit identities
+  ---
+  duration_ms: 0.483924
+  type: 'test'
+  ...
+# Subtest: handling completion labels do not rewrite lifecycle codes or recorded legal outcomes
+ok 15 - handling completion labels do not rewrite lifecycle codes or recorded legal outcomes
+  ---
+  duration_ms: 0.58931
+  type: 'test'
+  ...
+# Subtest: execution failure remains separate from an accepted evidence deferral in claim and itinerary labels
+ok 16 - execution failure remains separate from an accepted evidence deferral in claim and itinerary labels
+  ---
+  duration_ms: 1.911222
+  type: 'test'
+  ...
+# Subtest: completed steps and actions remain local to a running investigation
+ok 17 - completed steps and actions remain local to a running investigation
+  ---
+  duration_ms: 1.859906
+  type: 'test'
+  ...
+# Subtest: one contextual record resolves exact accepted objects without expanding a competing copy into every view
+ok 18 - one contextual record resolves exact accepted objects without expanding a competing copy into every view
+  ---
+  duration_ms: 4.495006
+  type: 'test'
+  ...
+# Subtest: History owns Case details event action and playback controls while purpose views retain exact selections
+ok 19 - History owns Case details event action and playback controls while purpose views retain exact selections
+  ---
+  duration_ms: 1.679669
+  type: 'test'
+  ...
+# Subtest: unstarted Cases and canonical demo rows show original identity and message without generic state badges
+ok 20 - unstarted Cases and canonical demo rows show original identity and message without generic state badges
+  ---
+  duration_ms: 0.617151
+  type: 'test'
+  ...
+# Subtest: forming knowledge preserves accepted version use and origin without borrowing a later version or establishing current facts
+ok 21 - forming knowledge preserves accepted version use and origin without borrowing a later version or establishing current facts
+  ---
+  duration_ms: 0.547007
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 21
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 136.843315

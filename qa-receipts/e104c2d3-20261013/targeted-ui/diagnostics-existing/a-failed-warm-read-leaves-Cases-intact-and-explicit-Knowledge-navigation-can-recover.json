@@ -1,0 +1,58 @@
+{
+  "url": "http://localhost:41999/#autonomous/knowledge",
+  "text": "CasePath\nEvidence into action\nNew claim ↗\nCases\nDemonstration\nKnowledge\nKnowledge\nHistory\nLease termination\nLease termination\nVersion 1\nProcess\nFacts\nDocuments\nExceptions\nChanges\nCapture issuer, receipt and end date\nPreserve challenge or extension deadline\n\nCapture issuer, receipt and end date\n\nCheck form and service\n\nPreserve challenge or extension deadline\n\nClassify termination type\n\nCheck form and service\n\nCheck arrears cure preconditions\n\nClassify termination type\n\nCheck separate family-home service\n\nClassify termination type\n\nScreen stated reason and good-faith concerns\n\nClassify termination type + Check arrears cure preconditions + Check separate family-home service\n\nAssess extension evidence\n\nScreen stated reason and good-faith concerns\n\nCollect type-specific evidence\n\nScreen stated reason and good-faith concerns + Assess extension evidence\n\nPrepare challenge, extension or settlement\n\nCollect type-specific evidence\n\nRecord termination outcome\n\nPrepare challenge, extension or settlement\n\nSource and receiving cases\nNew incoming termination\nNew incoming termination",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<h1 class=\"au-page-heading\" tabindex=\"-1\">Knowledge</h1>",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

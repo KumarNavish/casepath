@@ -1,0 +1,29 @@
+{
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "comparison_candidate": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "api_tree_identity": {
+    "aa10": "3570309d8b23f0786d1be8b3b7947cd032882a61",
+    "e104": "3570309d8b23f0786d1be8b3b7947cd032882a61"
+  },
+  "failed_test_file_sha256": {
+    "aa10": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b",
+    "e104": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b"
+  },
+  "api_and_test_identical": true,
+  "observation_epoch": 1791849998.9137905,
+  "load_average": [
+    5.63427734375,
+    3.732421875,
+    1.87548828125
+  ],
+  "resource_metrics": {
+    "/sys/fs/cgroup/cpu.max": "400000 100000",
+    "/sys/fs/cgroup/cpu.stat": "usage_usec 33342431983\nuser_usec 29057059908\nsystem_usec 4285372075\nnice_usec 0\nnr_periods 661334\nnr_throttled 27742\nthrottled_usec 2352711658\nnr_bursts 0\nburst_usec 0",
+    "/sys/fs/cgroup/memory.current": "31433494528"
+  },
+  "root_diagnosis": "Expected qualified publication reached after unchanged15-second deadline; no lost reassessment. Independent classification pending before authorized wholefailed-shard recheck after original runs finish.",
+  "limitations": [
+    "Resource snapshot is observed after the failure, not a historical sample at the exact deadline.",
+    "Exact monotonic deadline, model call count and transient future/pending map cannot be reconstructed from postdeadline journal alone."
+  ]
+}

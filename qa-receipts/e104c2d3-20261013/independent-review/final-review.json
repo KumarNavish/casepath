@@ -1,0 +1,88 @@
+{
+  "verdict": "APPROVE",
+  "remaining_findings": [],
+  "base_sha": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "source_commit": "c0a79ba7e9a3ae211421d051986d3cf25a560af3",
+  "branch": "codex/casepath-direct-replay-warmth-20261013",
+  "frozen_patch": "/tmp/casepath-direct-replay-warmth-20261013/evidence/final-review.patch",
+  "diff_sha256": "9b0dff42262b566352ed0aea4bc87c7bff7143bd326a4cd0a8bf28a7ea039d6a",
+  "files_sha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "f44cf9af7df6bbdbecad88438469de1bf0a74af8f491e1e742e12c6f438db4bb",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "a36455dc7ff8900523ba87cc130967c6f7f56ed9b2d5f27501eb33d139317a9a"
+  },
+  "independent_checks_receipt": "/tmp/casepath-direct-replay-warmth-independent-review-20261013/focused-final-checks.json",
+  "independent_results": "8/8 identity-cache-prefix and 19/19 authority-navigation-inspection; no skips; exact final JS and autonomous unit-test bytes",
+  "writer_results_inspected": {
+    "module-final-frozen": {
+      "exit_code": 0,
+      "summary": [
+        "# tests 146",
+        "# pass 146",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/module-final-frozen.log"
+    },
+    "browser-final": {
+      "exit_code": 0,
+      "summary": [
+        "# tests 8",
+        "# pass 8",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/browser-final.log"
+    },
+    "browser-existing": {
+      "exit_code": 0,
+      "summary": [
+        "# tests 25",
+        "# pass 25",
+        "# fail 0",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/browser-existing.log"
+    },
+    "browser-base-red": {
+      "exit_code": 1,
+      "summary": [
+        "# tests 1",
+        "# pass 0",
+        "# fail 1",
+        "# cancelled 0",
+        "# skipped 0"
+      ],
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/browser-base-red.log"
+    }
+  },
+  "native_injected_js_sha256_verified": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+  "baseline_failure": {
+    "receipt": "/tmp/casepath-direct-replay-warmth-independent-review-20261013/baseline-assertion-comparison-final.json",
+    "node": "casepath-qa/unified-product-v1.test.cjs:160:1",
+    "assertion_line": 185,
+    "reason": "existing /May be needed/ expectation fails identically on exact base and final reviewed production source; unchanged test and rendering code"
+  },
+  "reviewed_invariants": [
+    "epoch/generation/ticket/read-order cache admission",
+    "bounded queue at most 12 and snapshot concurrency at most 2",
+    "quiet failures with existing foreground recovery",
+    "logical cancellation of idle/queue/admission/fallback after hidden/navigation/dispose",
+    "no cache lookahead replacing exact replay prefix",
+    "global Knowledge not rendered as prefix-owned content",
+    "fresh authoritative command gates and public read-only preserved",
+    "exact source inspection and focus preserved",
+    "no CSS/backend/corpus/docs/tooling changes"
+  ],
+  "resolved_findings": [
+    "No-requestIdleCallback direct saved entry collection regression fixed and existing delayed-collection tests passed",
+    "Successful Knowledge cache prevents extra quiet GETs; canceled next-ticket attempts can retry"
+  ],
+  "limits": [
+    "No full suite, providers, production, or legacy migration audit executed by reviewer",
+    "Reviewer did not rerun native browser groups; inspected writer final logs/exit statuses and source-bound native receipts"
+  ]
+}

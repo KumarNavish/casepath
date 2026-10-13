@@ -1,0 +1,161 @@
+{
+  "after_head": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "after_status": "",
+  "artifacts": {
+    "collected.json": {
+      "bytes": 81541,
+      "path": "/tmp/casepath-release-e104-20261013/shard3/collected.json",
+      "sha256": "ad9b7dc9472b77d68a716647a7f5063790077e1c296ea241e9371c8a17633d05"
+    },
+    "command.json": {
+      "bytes": 2198,
+      "path": "/tmp/casepath-release-e104-20261013/shard3/command.json",
+      "sha256": "e34a5d58e971bf44269b3bffa8b4f7414d373428adeb7382dfb7c0429a1c8608"
+    },
+    "junit.xml": {
+      "bytes": 36002,
+      "path": "/tmp/casepath-release-e104-20261013/shard3/junit.xml",
+      "sha256": "2387e9d6883b70ba824706f04e2db73203bc6ca3b5b9a4bcd0c217c5870c1c74"
+    },
+    "pytest-arguments.txt": {
+      "bytes": 29302,
+      "path": "/tmp/casepath-release-e104-20261013/shard3/pytest-arguments.txt",
+      "sha256": "28d98fe8b8e4682a66760dee85487013419f7dcd9a8ff1b467efd15c4619d8d1"
+    },
+    "pytest.log": {
+      "bytes": 37415,
+      "path": "/tmp/casepath-release-e104-20261013/shard3/pytest.log",
+      "sha256": "86bdd90cd7f21f0b2bf9051a558c0d298537858c75c74e6cae586701d0374afd"
+    },
+    "reports.jsonl": {
+      "bytes": 167104,
+      "path": "/tmp/casepath-release-e104-20261013/shard3/reports.jsonl",
+      "sha256": "322fe4be46d069f3b9ae09f789a4f7820e7ecf6ba1cd761084d7371b377f08cb"
+    },
+    "result.json": {
+      "bytes": 2379,
+      "path": "/tmp/casepath-release-e104-20261013/shard3/result.json",
+      "sha256": "48f553499dba054cbd27bfdc355f12ae89fc175ebaaf765b2b6366dbee4afb4e"
+    },
+    "runner.log": {
+      "bytes": 114,
+      "path": "/tmp/casepath-release-e104-20261013/shard3/runner.log",
+      "sha256": "7cc5b46280c0f6385cb3219d1b2cb8facc233eea800f38eb06fcb1fca82bb66d"
+    }
+  },
+  "assigned": 229,
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "checks": {
+    "assigned_collection_arguments_order_exact": true,
+    "canonical_inventory_membership": true,
+    "current_run_artifacts": true,
+    "explicit_command_unchanged": true,
+    "isolated_credential_free_whitelist": true,
+    "junit_ids_outcomes_exact_unique": true,
+    "mac_ids_excluded": true,
+    "observer_phases_exact_unique": true,
+    "post_run_clean_frozen_head": true,
+    "post_run_source_seal": true
+  },
+  "collected": 229,
+  "errors": 0,
+  "executions": 1,
+  "exit_code": 0,
+  "fail_ids": [],
+  "failed": 0,
+  "finished_utc": "2026-10-13T00:09:26.978658+00:00",
+  "harness_duration_seconds": 505.5854756832123,
+  "host": "656813ef2295",
+  "junit_skip_details": [
+    {
+      "attributes": {
+        "message": "frozen independent-transition packet is not available",
+        "type": "pytest.skip"
+      },
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+      "text": "/workspace/casepath-release-ae0-shard3/casepath-api/tests/test_document_lifecycle_shadow_v1.py:605: frozen independent-transition packet is not available"
+    }
+  ],
+  "junit_suite_duration_seconds": 502.229,
+  "junit_test_duration_seconds": 498.132,
+  "junit_unique": 229,
+  "observer_phase_duration_seconds": 498.1319796346943,
+  "passed": 228,
+  "phase_counts": {
+    "call:passed": 228,
+    "call:skipped": 1,
+    "setup:passed": 229,
+    "teardown:passed": 229
+  },
+  "pytest_duration_seconds": 502.23,
+  "reruns": 0,
+  "sealed_files_verified": 1680,
+  "session_id": 39165,
+  "shard": 3,
+  "skip_details": [
+    {
+      "duration": 0.0001330259838141501,
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+      "outcome": "skipped",
+      "skip_reason": "('/workspace/casepath-release-ae0-shard3/casepath-api/tests/test_document_lifecycle_shadow_v1.py', 605, 'Skipped: frozen independent-transition packet is not available')",
+      "utc_epoch": 1791849898.9041376,
+      "when": "call"
+    }
+  ],
+  "skipped": 1,
+  "source_manifest_sha256": "58b29232c94fd72df65010a83c1a73bd6386433e3c94a2a3c67fd6be5943ae9a",
+  "started_utc": "2026-10-13T00:01:01.393182+00:00",
+  "top_call_durations": [
+    {
+      "id": "casepath-api/tests/test_workspace_corpus_150.py::test_all_150_original_claims_enter_the_same_workflow_without_accepting_evidence",
+      "outcome": "passed",
+      "seconds": 227.76416735904058
+    },
+    {
+      "id": "casepath-api/tests/test_causal_workspace_v1.py::test_agent_snapshot_and_source_acquisition_follow_current_process",
+      "outcome": "passed",
+      "seconds": 27.4333581670071
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_reconciliation.py::test_control_plane_reconciliation_preserves_authority_and_resumes_exact_calls",
+      "outcome": "passed",
+      "seconds": 23.888164726027753
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_question_priority.py::test_draft_precedes_unknown_conditions_in_claim_and_desk_until_reviewed",
+      "outcome": "passed",
+      "seconds": 10.551824849040713
+    },
+    {
+      "id": "casepath-api/tests/test_causal_workspace_v1.py::test_process_completion_is_distinct_from_claim_decision",
+      "outcome": "passed",
+      "seconds": 8.325015181035269
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_supplied_review_v1.py::test_held_or_inactive_original_reviews_qualify_v2_without_activating_process[unresolved]",
+      "outcome": "passed",
+      "seconds": 7.703384077001829
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_supplied_review_v1.py::test_held_or_inactive_original_reviews_qualify_v2_without_activating_process[false]",
+      "outcome": "passed",
+      "seconds": 7.218798864982091
+    },
+    {
+      "id": "casepath-api/tests/test_causal_workspace_v1.py::test_scoped_undo_preserves_source_reviews_handler_notes_owner_and_draft_history",
+      "outcome": "passed",
+      "seconds": 5.38231093401555
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_question_priority.py::test_pending_question_priority_preserves_source_questions_and_previews",
+      "outcome": "passed",
+      "seconds": 5.0906481459969655
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_recovery_v1.py::HostedRecoveryTests::test_finished_real_engine_work_never_redispatches_model_on_poll_or_restart",
+      "outcome": "passed",
+      "seconds": 4.6523550460115075
+    }
+  ],
+  "warnings": 9
+}

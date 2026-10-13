@@ -1,0 +1,54 @@
+{
+  "base_sha": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "diff_sha256": "20d4911e33f545bb2e3c17be302df6edb01ff11e90db0dfad73d360a05ff9107",
+  "files_sha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "f44cf9af7df6bbdbecad88438469de1bf0a74af8f491e1e742e12c6f438db4bb",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "b2de4bcc98808a9a65f17ca20889d0737eec43da36e5cb3afac3d6600d083c81"
+  },
+  "source_unchanged_through_checks": true,
+  "checks": [
+    {
+      "name": "identity-cache-prefix",
+      "argv": [
+        "node",
+        "--test",
+        "--test-name-pattern=atomic snapshots|the read cache|read cache checksums|read cache rejects|read-only previews|later supporting|replay binds|forming knowledge",
+        "casepath-qa/unified-product-v1.test.cjs"
+      ],
+      "exit_code": 0,
+      "log": "/tmp/casepath-direct-replay-warmth-independent-review-20261013/identity-cache-prefix.log",
+      "summary": [
+        "\u2139 tests 8",
+        "\u2139 suites 0",
+        "\u2139 pass 8",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 109.118275"
+      ]
+    },
+    {
+      "name": "authority-navigation-inspection",
+      "argv": [
+        "node",
+        "--test",
+        "--test-name-pattern=public read-only capability|public entry capability|destroy aborts|initial deep links|internal Work|direct panel inspection|present projection identities|source inspection verifies|invalid source text|actual reuse provenance|delayed claim collections",
+        "casepath-qa/autonomous-workspace-v1.test.cjs"
+      ],
+      "exit_code": 0,
+      "log": "/tmp/casepath-direct-replay-warmth-independent-review-20261013/authority-navigation-inspection.log",
+      "summary": [
+        "\u2139 tests 19",
+        "\u2139 suites 0",
+        "\u2139 pass 19",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 124.580966"
+      ]
+    }
+  ]
+}

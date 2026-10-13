@@ -1,0 +1,76 @@
+{
+  "url": "http://localhost:41999/#autonomous/claim/clm_06400c75399e7f37",
+  "text": "CasePath\nEvidence into action\nNew claim ↗\nCases\nDemonstration\nKnowledge\n\nCases / Synthetic claim\n\nQuestion about my documents: mold and possible moisture in a bedroom\n\nNot started.\n\nStart investigation\nHistory\n\nLive inference is unavailable.\n\nProcess\nDocuments\nKnowledge\nSources\nOriginal message\nDear Sir or Madam\n\nAs I understand it: For weeks the corner of the child's bedroom has been turning black; The manager says we ventilate badly, but the wall is wet after rain; My son is coughing more; I cannot safely say more.\n\nRegarding “mold and possible moisture in a bedroom”, for today's submission: the technical cause remains unresolved; for the request “urgent assessment, repair and possible rent reduction”: I have included everything currently available to me; on “mold and possible moisture in a bedroom”, my records may be out of order; also unresolved: the health link; this defines the scope of my report.\n\nThis leaves me requesting: urgent assessment, repair and possible rent reduction; in particular, I need clarity about the health link and whether the records support an initial assessment.\n\nAs far as I remember, it started around 11 September 2025.\n\nThank you for clarifying; What matters most is the technical cause; I need that answer before proceeding.\n\nYours sincerely\nQuestion-about-my-documents-mold-and-possible-moisture-in-a-bedroom_2025-10-22_1200_6988b7.eml",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<button type=\"button\" data-au-detail=\"step\" aria-pressed=\"true\" aria-controls=\"auPanel-step\">Process</button>",
+  "revision": "0",
+  "record": "{\n  \"state\": {\n    \"contract\": \"casepath.autonomous-claim/1.0.0\",\n    \"claim_id\": \"clm_06400c75399e7f37\",\n    \"title\": \"Question about my documents: mold and possible moisture in a bedroom\",\n    \"origin\": \"canonical_original\",\n    \"browse_metadata\": {\n      \"domain\": \"defect_mold_heating\",\n      \"family_id\": \"ndg_dad4a5d6a4f7b52bc8e7\",\n      \"browsing_only\": true\n    },\n    \"mode\": \"unprocessed\",\n    \"status\": \"not_started\",\n    \"phase\": \"not_run\",\n    \"phase_summary\": \"\",\n    \"revision\": 0,\n    \"state_sha256\": \"318d7e664f16bf21504a5e9bb01e0d2ab59c7b90b5c14819c62c1e1c7195af01\",\n    \"message\": \"Dear Sir or Madam\\n\\nAs I understand it: For weeks the corner of the child's bedroom has been turning black; The manager says we ventilate badly, but the wall is wet after rain; My son is coughing more; I cannot safely say more.\\n\\nRegarding “mold and possible moisture in a bedroom”, for today's submission: the technical cause remains unresolved; for the request “urgent assessment, repair and possible rent reduction”: I have included everything currently available to me; on “mold and possible moisture in a bedroom”, my records may be out of order; also unresolved: the health link; this defines the scope of my report.\\n\\nThis leaves me requesting: urgent assessment, repair and possible rent reduction; in particular, I need clarity about the health link and whether the records support an initial assessment.\\n\\nAs far as I remember, it started around 11 September 2025.\\n\\nThank you for clarifying; What matters most is the technical cause; I need that answer before proceeding.\\n\\nYours sincerely\",\n    \"source_preview\": {\n      \"text\": \"Dear Sir or Madam\\n\\nAs I understand it: For weeks the corner of the child's bedroom has been turning black; The manager says we ventilate badly, but the wall is wet after rain; My son is coughing more; I cannot safely say more.\\n\\nRegarding “mold and possible moisture in a bedroom”, for today's submission: the technical cause remains unresolved; for the request “urgent assessment, repair and possible rent reduction”: I have included everything currently available to me; on “mold and possible moisture in a bedroom”, my records may be out of order; also unresolved: the health link; this defines the scope of my report.\\n\\nThis leaves me requesting: urgent assessment, repair and possible rent reduction; in particular, I need clarity about the health link and whether the records support an initial assessment.\\n\\nAs far as I remember, it started around 11 September 2025.\\n\\nThank you for clarifying; What matters most is the technical cause; I need that answer before proceeding.\\n\\nYours sincerely\"\n    },\n    \"graph\": null,\n    \"evaluation\": null,\n    \"facts\": [],\n    \"obligations\": [],\n    \"actions\": [],\n    \"results\": [],\n    \"outcome\": null,\n    \"deferral\": null,\n    \"acquired_sources\": [],\n    \"knowledge_uses\": [],\n    \"knowledge_published\": [],\n    \"source_descriptors\": [\n      {\n        \"artifact_id\": \"com_ed33fa6eff83d50b\",\n        \"file_name\": \"Question-about-my-documents-mold-and-possible-moisture-in-a-bedroom_2025-10-22_1200_6988b7.eml\",\n        \"media_type\": \"message/rfc822\",\n        \"path\": \"artifacts/clm_06400c75399e7f37/00-6ff41f120d86-00-Question-about-my-documents-mold-and-possible-moisture-in-a-bedroom_2025-10-22_1200_6988b7.eml\",\n        \"role\": \"customer_message\",\n        \"sha256\": \"6ff41f120d86d090fd083959f3d842f036c8fd4054697825a0a973755534a5a3\",\n        \"size_bytes\": 1416,\n        \"claim_id\": \"clm_06400c75399e7f37\"\n      }\n    ]\n  },\n  \"projection\": {\n    \"claim_id\": \"clm_06400c75399e7f37\",\n    \"revision\": 0,\n    \"state_sha256\": \"318d7e664f16bf21504a5e9bb01e0d2ab59c7b90b5c14819c62c1e1c7195af01\"\n  }\n}",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_06400c75399e7f37/snapshot?after=0",
+      "method": "GET",
+      "time": 50,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_0b431bbf8391ce3e/snapshot?after=0",
+      "method": "GET",
+      "time": 50,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 100,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

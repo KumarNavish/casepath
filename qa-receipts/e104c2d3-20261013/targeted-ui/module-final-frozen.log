@@ -1,0 +1,889 @@
+TAP version 13
+# Subtest: reference intake stays a source inspection and completed assessment retains external deferral
+ok 1 - reference intake stays a source inspection and completed assessment retains external deferral
+  ---
+  duration_ms: 11.460937
+  type: 'test'
+  ...
+# Subtest: reference demonstration has the exact new nine and legacy history remains separate
+ok 2 - reference demonstration has the exact new nine and legacy history remains separate
+  ---
+  duration_ms: 2.518797
+  type: 'test'
+  ...
+# Subtest: reference policy identifies the accepted execution before context supplies its historical date
+ok 3 - reference policy identifies the accepted execution before context supplies its historical date
+  ---
+  duration_ms: 1.522696
+  type: 'test'
+  ...
+# Subtest: reference source labels require the exact recorded pin and later uploads retain prior assessment freshness
+ok 4 - reference source labels require the exact recorded pin and later uploads retain prior assessment freshness
+  ---
+  duration_ms: 2.252633
+  type: 'test'
+  ...
+# Subtest: completed reference assessments filter with completed assessments while external and ordinary deferred states stay exact
+ok 5 - completed reference assessments filter with completed assessments while external and ordinary deferred states stay exact
+  ---
+  duration_ms: 1.994173
+  type: 'test'
+  ...
+# Subtest: pinned synthetic source excerpts show the actual body while the full acquired bytes remain exact
+ok 6 - pinned synthetic source excerpts show the actual body while the full acquired bytes remain exact
+  ---
+  duration_ms: 1.34863
+  type: 'test'
+  ...
+# Subtest: actual DAG topology determines rank and branches independently of input order
+ok 7 - actual DAG topology determines rank and branches independently of input order
+  ---
+  duration_ms: 1.86323
+  type: 'test'
+  ...
+# Subtest: claim identity fails closed across claims, invalid revision and graph ownership
+ok 8 - claim identity fails closed across claims, invalid revision and graph ownership
+  ---
+  duration_ms: 1.194873
+  type: 'test'
+  ...
+# Subtest: initial and reconnect history settle without animation; a fresh matching saved event can animate
+ok 9 - initial and reconnect history settle without animation; a fresh matching saved event can animate
+  ---
+  duration_ms: 1.13192
+  type: 'test'
+  ...
+# Subtest: event cursors cannot hide missing/duplicate sequences or a different resulting saved state
+ok 10 - event cursors cannot hide missing/duplicate sequences or a different resulting saved state
+  ---
+  duration_ms: 1.414182
+  type: 'test'
+  ...
+# Subtest: saved read copies retain exact accepted source spans receipts and rejected historical provider quotes without admitting them as facts
+ok 11 - saved read copies retain exact accepted source spans receipts and rejected historical provider quotes without admitting them as facts
+  ---
+  duration_ms: 47.0533
+  type: 'test'
+  ...
+# Subtest: saved read validation rejects unbound cursors projections sources text and accepted citations even with otherwise intact records
+ok 12 - saved read validation rejects unbound cursors projections sources text and accepted citations even with otherwise intact records
+  ---
+  duration_ms: 14.002211
+  type: 'test'
+  ...
+# Subtest: motion targets describe actual persisted node/document changes only
+ok 13 - motion targets describe actual persisted node/document changes only
+  ---
+  duration_ms: 0.484715
+  type: 'test'
+  ...
+# Subtest: a matching accepted atomic interpretation may focus its cited process while remembered inspection wins
+ok 14 - a matching accepted atomic interpretation may focus its cited process while remembered inspection wins
+  ---
+  duration_ms: 1.560532
+  type: 'test'
+  ...
+# Subtest: unbound interpretation events cannot direct accepted-event or preferred process focus
+ok 15 - unbound interpretation events cannot direct accepted-event or preferred process focus
+  ---
+  duration_ms: 0.719101
+  type: 'test'
+  ...
+# Subtest: consequential focus requires a same-claim accepted event and an actual changed fact or requirement
+ok 16 - consequential focus requires a same-claim accepted event and an actual changed fact or requirement
+  ---
+  duration_ms: 1.214242
+  type: 'test'
+  ...
+# Subtest: replay gives readable dwell to accepted content changes while routine prefixes remain brief
+ok 17 - replay gives readable dwell to accepted content changes while routine prefixes remain brief
+  ---
+  duration_ms: 0.449674
+  type: 'test'
+  ...
+# Subtest: selected decision joins its own facts and exact contextual authority and action records
+ok 18 - selected decision joins its own facts and exact contextual authority and action records
+  ---
+  duration_ms: 0.909467
+  type: 'test'
+  ...
+# Subtest: case facts show the accepted account and unique reason once while keeping raw verdicts and unknown step states exact
+ok 19 - case facts show the accepted account and unique reason once while keeping raw verdicts and unknown step states exact
+  ---
+  duration_ms: 1.699768
+  type: 'test'
+  ...
+# Subtest: alternate facts expose their recorded states as Other questions beside an established main fact without borrowing its verdict
+ok 20 - alternate facts expose their recorded states as Other questions beside an established main fact without borrowing its verdict
+  ---
+  duration_ms: 1.206951
+  type: 'test'
+  ...
+# Subtest: document focus follows its exact obligation and required fact when a node has multiple requirements
+ok 21 - document focus follows its exact obligation and required fact when a node has multiple requirements
+  ---
+  duration_ms: 1.112642
+  type: 'test'
+  ...
+# Subtest: forming requirements wait for their actual requiring step, preserve own missing evidence and retire false routes
+ok 22 - forming requirements wait for their actual requiring step, preserve own missing evidence and retire false routes
+  ---
+  duration_ms: 3.471913
+  type: 'test'
+  ...
+# Subtest: forming work keeps the whole accepted graph obligations and pinned knowledge together without an intermediate process
+ok 23 - forming work keeps the whole accepted graph obligations and pinned knowledge together without an intermediate process
+  ---
+  duration_ms: 4.292654
+  type: 'test'
+  ...
+# Subtest: sufficient future source review stays inspectable without appearing as an active requirement
+ok 24 - sufficient future source review stays inspectable without appearing as an active requirement
+  ---
+  duration_ms: 1.224086
+  type: 'test'
+  ...
+# Subtest: forming mixed routes expose only reached requirements and never inherit checks from received sources or completed nodes
+ok 25 - forming mixed routes expose only reached requirements and never inherit checks from received sources or completed nodes
+  ---
+  duration_ms: 5.04859
+  type: 'test'
+  ...
+# Subtest: forming assessed requirements list a source file once while all three exact cited passages remain inspectable
+ok 26 - forming assessed requirements list a source file once while all three exact cited passages remain inspectable
+  ---
+  duration_ms: 2.050145
+  type: 'test'
+  ...
+# Subtest: forming connections join only the selected accepted fact exact source span and its requiring node and obligation
+ok 27 - forming connections join only the selected accepted fact exact source span and its requiring node and obligation
+  ---
+  duration_ms: 6.88572
+  type: 'test'
+  ...
+# Subtest: forming publication remains central for a deferred live accepted publication followed by a phase without inventing an intermediate revision
+ok 28 - forming publication remains central for a deferred live accepted publication followed by a phase without inventing an intermediate revision
+  ---
+  duration_ms: 12.326518
+  type: 'test'
+  ...
+# Subtest: a multi-node requirement selects its genuinely reached node after an upstream-blocked sibling
+ok 29 - a multi-node requirement selects its genuinely reached node after an upstream-blocked sibling
+  ---
+  duration_ms: 0.815013
+  type: 'test'
+  ...
+# Subtest: shared document types keep each obligation attached to its own reached requiring node
+ok 30 - shared document types keep each obligation attached to its own reached requiring node
+  ---
+  duration_ms: 0.704309
+  type: 'test'
+  ...
+# Subtest: a reached obligation entrance animates only its exact identity when another visible obligation shares the document type
+ok 31 - a reached obligation entrance animates only its exact identity when another visible obligation shares the document type
+  ---
+  duration_ms: 1.610827
+  type: 'test'
+  ...
+# Subtest: case-language conditions retain nested all any and not scope and the recorded three-valued route truth
+ok 32 - case-language conditions retain nested all any and not scope and the recorded three-valued route truth
+  ---
+  duration_ms: 1.168785
+  type: 'test'
+  ...
+# Subtest: real conditional split and join labels preserve applied excluded and unresolved edge states without labelling a linear unconditional dependency
+ok 33 - real conditional split and join labels preserve applied excluded and unresolved edge states without labelling a linear unconditional dependency
+  ---
+  duration_ms: 0.961159
+  type: 'test'
+  ...
+# Subtest: forming requirements retire only on recorded route exclusion while History and Documents retain exact earlier obligations
+ok 34 - forming requirements retire only on recorded route exclusion while History and Documents retain exact earlier obligations
+  ---
+  duration_ms: 1.552861
+  type: 'test'
+  ...
+# Subtest: forming motion maps atomic interpretation and source review to exact changed objects without completing an unresolved decision
+ok 35 - forming motion maps atomic interpretation and source review to exact changed objects without completing an unresolved decision
+  ---
+  duration_ms: 2.138907
+  type: 'test'
+  ...
+# Subtest: prior assessment labels survive new source acquisition and failed rereading without rewriting valid evidence
+ok 36 - prior assessment labels survive new source acquisition and failed rereading without rewriting valid evidence
+  ---
+  duration_ms: 3.670997
+  type: 'test'
+  ...
+# Subtest: an accepted reassessment clears freshness only when its bound roster matches; historical prefixes use their own sources
+ok 37 - an accepted reassessment clears freshness only when its bound roster matches; historical prefixes use their own sources
+  ---
+  duration_ms: 4.040132
+  type: 'test'
+  ...
+# Subtest: deferral and prepared request retain missing evidence and external authority boundary
+ok 38 - deferral and prepared request retain missing evidence and external authority boundary
+  ---
+  duration_ms: 1.890049
+  type: 'test'
+  ...
+# Subtest: missing reviews do not hide received unassigned originals or infer their document type
+ok 39 - missing reviews do not hide received unassigned originals or infer their document type
+  ---
+  duration_ms: 1.663775
+  type: 'test'
+  ...
+# Subtest: source extraction labels do not contradict a sufficient review for one document requirement
+ok 40 - source extraction labels do not contradict a sufficient review for one document requirement
+  ---
+  duration_ms: 1.719136
+  type: 'test'
+  ...
+# Subtest: zero active gaps can leave requirements held by unresolved questions without rewriting the outcome or draft
+ok 41 - zero active gaps can leave requirements held by unresolved questions without rewriting the outcome or draft
+  ---
+  duration_ms: 0.94208
+  type: 'test'
+  ...
+# Subtest: all displayed untrusted title, fact, source, outcome and knowledge text is escaped
+ok 42 - all displayed untrusted title, fact, source, outcome and knowledge text is escaped
+  ---
+  duration_ms: 2.237141
+  type: 'test'
+  ...
+# Subtest: exact citations use Python Unicode codepoint offsets, source hash and entire text hash
+ok 43 - exact citations use Python Unicode codepoint offsets, source hash and entire text hash
+  ---
+  duration_ms: 18.418027
+  type: 'test'
+  ...
+# Subtest: knowledge qualification and quarantine render recorded proofs rather than inferred learning quality
+ok 44 - knowledge qualification and quarantine render recorded proofs rather than inferred learning quality
+  ---
+  duration_ms: 0.827811
+  type: 'test'
+  ...
+# Subtest: reconciliation and item rejection history preserve rejected provenance without presenting proposed quotes as accepted evidence
+ok 45 - reconciliation and item rejection history preserve rejected provenance without presenting proposed quotes as accepted evidence
+  ---
+  duration_ms: 2.31096
+  type: 'test'
+  ...
+# Subtest: activity keeps one record entry while preserving repeated rejection provenance and distinct runs in exact receipts
+ok 46 - activity keeps one record entry while preserving repeated rejection provenance and distinct runs in exact receipts
+  ---
+  duration_ms: 0.46073
+  type: 'test'
+  ...
+# Subtest: public read-only capability blocks forged forms and removes work controls while preserving inspection
+ok 47 - public read-only capability blocks forged forms and removes work controls while preserving inspection
+  ---
+  duration_ms: 8.529126
+  type: 'test'
+  ...
+# Subtest: public entry capability prevents work before a status response arrives
+ok 48 - public entry capability prevents work before a status response arrives
+  ---
+  duration_ms: 1.234322
+  type: 'test'
+  ...
+# Subtest: a read-only status arriving during file preparation is denied centrally without an uncertain write retry
+ok 49 - a read-only status arriving during file preparation is denied centrally without an uncertain write retry
+  ---
+  duration_ms: 3.471753
+  type: 'test'
+  ...
+# Subtest: uncertain intake retries the identical payload/key with required mutation header and never auto-retries
+ok 50 - uncertain intake retries the identical payload/key with required mutation header and never auto-retries
+  ---
+  duration_ms: 5.11019
+  type: 'test'
+  ...
+# Subtest: destroy aborts outstanding reads and stale responses cannot resurrect the view
+ok 51 - destroy aborts outstanding reads and stale responses cannot resurrect the view
+  ---
+  duration_ms: 1.040786
+  type: 'test'
+  ...
+# Subtest: a late claim response cannot replace a more recently selected claim
+ok 52 - a late claim response cannot replace a more recently selected claim
+  ---
+  duration_ms: 1.743172
+  type: 'test'
+  ...
+# Subtest: a known catalog claim paints its original preview immediately while its authoritative snapshot is held
+ok 53 - a known catalog claim paints its original preview immediately while its authoritative snapshot is held
+  ---
+  duration_ms: 2.277771
+  type: 'test'
+  ...
+# Subtest: local file validation sends nothing and leaves the intake editable
+ok 54 - local file validation sends nothing and leaves the intake editable
+  ---
+  duration_ms: 1.952982
+  type: 'test'
+  ...
+# Subtest: pause is an explicit guarded action and an uncertain response retains its exact key
+ok 55 - pause is an explicit guarded action and an uncertain response retains its exact key
+  ---
+  duration_ms: 6.978447
+  type: 'test'
+  ...
+# Subtest: module destroy without a container supports the pagehide integration contract
+ok 56 - module destroy without a container supports the pagehide integration contract
+  ---
+  duration_ms: 1.278676
+  type: 'test'
+  ...
+# Subtest: ready execution limits come only from the backend capability projection without changing sealed state
+ok 57 - ready execution limits come only from the backend capability projection without changing sealed state
+  ---
+  duration_ms: 1.488216
+  type: 'test'
+  ...
+# Subtest: reuse exposes recorded applicability and avoided mechanical work without estimating savings
+ok 58 - reuse exposes recorded applicability and avoided mechanical work without estimating savings
+  ---
+  duration_ms: 1.223785
+  type: 'test'
+  ...
+# Subtest: knowledge inspection connects reusable steps, required facts, obligations and recipe rules to immutable lineage
+ok 59 - knowledge inspection connects reusable steps, required facts, obligations and recipe rules to immutable lineage
+  ---
+  duration_ms: 7.416764
+  type: 'test'
+  ...
+# Subtest: MIME fallbacks affect only blank types and never rewrite submitted bytes
+ok 60 - MIME fallbacks affect only blank types and never rewrite submitted bytes
+  ---
+  duration_ms: 6.831641
+  type: 'test'
+  ...
+# Subtest: readable MIME previews use the body of the same bound original while preserving wire bytes and PDF extraction
+ok 61 - readable MIME previews use the body of the same bound original while preserving wire bytes and PDF extraction
+  ---
+  duration_ms: 1.584898
+  type: 'test'
+  ...
+# Subtest: published procedure changes and an exact reused version remain distinct with stable ordinary names
+ok 62 - published procedure changes and an exact reused version remain distinct with stable ordinary names
+  ---
+  duration_ms: 2.342186
+  type: 'test'
+  ...
+# Subtest: the claim envelope renders capability projection separately from the preserved state
+ok 63 - the claim envelope renders capability projection separately from the preserved state
+  ---
+  duration_ms: 6.837219
+  type: 'test'
+  ...
+# Subtest: a claim renders one selected real process and keeps exact outcome authority in one contextual record
+ok 64 - a claim renders one selected real process and keeps exact outcome authority in one contextual record
+  ---
+  duration_ms: 0.617681
+  type: 'test'
+  ...
+# Subtest: complete graph labels and operational rule text remain inspectable
+ok 65 - complete graph labels and operational rule text remain inspectable
+  ---
+  duration_ms: 0.193105
+  type: 'test'
+  ...
+# Subtest: only an explicitly paused deferral offers guarded resume with one retained request identity
+ok 66 - only an explicitly paused deferral offers guarded resume with one retained request identity
+  ---
+  duration_ms: 2.444707
+  type: 'test'
+  ...
+# Subtest: work progress uses persisted phases, admitted interpretation and actual action/knowledge counts
+ok 67 - work progress uses persisted phases, admitted interpretation and actual action/knowledge counts
+  ---
+  duration_ms: 1.105622
+  type: 'test'
+  ...
+# Subtest: a new evidence workflow does not inherit the earlier pass completed interpretation
+ok 68 - a new evidence workflow does not inherit the earlier pass completed interpretation
+  ---
+  duration_ms: 0.178433
+  type: 'test'
+  ...
+# Subtest: causal choreography requires a fresh matching accepted event and targets only actual changed dependencies
+ok 69 - causal choreography requires a fresh matching accepted event and targets only actual changed dependencies
+  ---
+  duration_ms: 0.713172
+  type: 'test'
+  ...
+# Subtest: forming attention transfers from one accepted whole graph frame to its document list without competing node entrances
+ok 70 - forming attention transfers from one accepted whole graph frame to its document list without competing node entrances
+  ---
+  duration_ms: 3.074196
+  type: 'test'
+  ...
+# Subtest: forming source review and qualification move only their exact new content and preserve active inspection
+ok 71 - forming source review and qualification move only their exact new content and preserve active inspection
+  ---
+  duration_ms: 1.707951
+  type: 'test'
+  ...
+# Subtest: accepted action context selects its exact shared-step requirement and fact while explicit inspection retains authority
+ok 72 - accepted action context selects its exact shared-step requirement and fact while explicit inspection retains authority
+  ---
+  duration_ms: 0.899087
+  type: 'test'
+  ...
+# Subtest: reduced motion, hidden views, modal inspection and keyboard mode consume changes without running animations
+ok 73 - reduced motion, hidden views, modal inspection and keyboard mode consume changes without running animations
+  ---
+  duration_ms: 0.689818
+  type: 'test'
+  ...
+# Subtest: action and knowledge motion uses exact accepted event objects, settles after consumption, and retains qualification distinctions
+ok 74 - action and knowledge motion uses exact accepted event objects, settles after consumption, and retains qualification distinctions
+  ---
+  duration_ms: 2.946027
+  type: 'test'
+  ...
+# Subtest: knowledge reuse and quarantine cannot be presented as newly learned qualified knowledge
+ok 75 - knowledge reuse and quarantine cannot be presented as newly learned qualified knowledge
+  ---
+  duration_ms: 0.398978
+  type: 'test'
+  ...
+# Subtest: recorded knowledge reuse has a readable marker without implying new qualification
+ok 76 - recorded knowledge reuse has a readable marker without implying new qualification
+  ---
+  duration_ms: 0.614026
+  type: 'test'
+  ...
+# Subtest: fictional assets require a same-origin hash-bound URL and exact bytes before use
+ok 77 - fictional assets require a same-origin hash-bound URL and exact bytes before use
+  ---
+  duration_ms: 11.994839
+  type: 'test'
+  ...
+# Subtest: explicit fictional selection fills native files without submitting and cannot change uncertain intake
+ok 78 - explicit fictional selection fills native files without submitting and cannot change uncertain intake
+  ---
+  duration_ms: 4.683841
+  type: 'test'
+  ...
+# Subtest: Cases page, domain and search navigation retains URL state and Back while resetting changed refinements
+ok 79 - Cases page, domain and search navigation retains URL state and Back while resetting changed refinements
+  ---
+  duration_ms: 5.168637
+  type: 'test'
+  ...
+# Subtest: recorded presentation retains failed-only history and advances only after an accepted outcome
+ok 80 - recorded presentation retains failed-only history and advances only after an accepted outcome
+  ---
+  duration_ms: 21.115367
+  type: 'test'
+  ...
+# Subtest: recorded presentation retains partial-outcome-with-failure history and advances only after an accepted outcome
+ok 81 - recorded presentation retains partial-outcome-with-failure history and advances only after an accepted outcome
+  ---
+  duration_ms: 17.784171
+  type: 'test'
+  ...
+# Subtest: recorded presentation retains failed-reconciliation history and advances only after an accepted outcome
+ok 82 - recorded presentation retains failed-reconciliation history and advances only after an accepted outcome
+  ---
+  duration_ms: 12.287271
+  type: 'test'
+  ...
+# Subtest: recorded presentation retains evidence-deferred history and advances only after an accepted outcome
+ok 83 - recorded presentation retains evidence-deferred history and advances only after an accepted outcome
+  ---
+  duration_ms: 11.512618
+  type: 'test'
+  ...
+# Subtest: recorded presentation retains failed-then-reconciled history and advances only after an accepted outcome
+ok 84 - recorded presentation retains failed-then-reconciled history and advances only after an accepted outcome
+  ---
+  duration_ms: 13.827333
+  type: 'test'
+  ...
+# Subtest: initial deep links and duplicate browser history events read saved state once without adding entries
+ok 85 - initial deep links and duplicate browser history events read saved state once without adding entries
+  ---
+  duration_ms: 2.875874
+  type: 'test'
+  ...
+# Subtest: internal Work, Knowledge and claim navigation adds only changed fragments and supports Back/Forward
+ok 86 - internal Work, Knowledge and claim navigation adds only changed fragments and supports Back/Forward
+  ---
+  duration_ms: 2.07384
+  type: 'test'
+  ...
+# Subtest: a browser route change during an uncertain intake waits for its result and preserves the exact retry request
+ok 87 - a browser route change during an uncertain intake waits for its result and preserves the exact retry request
+  ---
+  duration_ms: 1.691035
+  type: 'test'
+  ...
+# Subtest: graph selection and return keep focus on its junction without moving the page at either width
+ok 88 - graph selection and return keep focus on its junction without moving the page at either width
+  ---
+  duration_ms: 3.424253
+  type: 'test'
+  ...
+# Subtest: a focused claim title allows saved revisions to render during polling
+ok 89 - a focused claim title allows saved revisions to render during polling
+  ---
+  duration_ms: 1.557829
+  type: 'test'
+  ...
+# Subtest: direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance
+    # Subtest: sources
+    ok 1 - sources
+      ---
+      duration_ms: 1.522246
+      type: 'test'
+      ...
+    # Subtest: documents
+    ok 2 - documents
+      ---
+      duration_ms: 0.945966
+      type: 'test'
+      ...
+    # Subtest: knowledge
+    ok 3 - knowledge
+      ---
+      duration_ms: 0.967508
+      type: 'test'
+      ...
+    # Subtest: activity
+    ok 4 - activity
+      ---
+      duration_ms: 7.77357
+      type: 'test'
+      ...
+    1..4
+ok 90 - direct panel inspection retains Sources Documents Knowledge and History through an accepted requiring-step advance
+  ---
+  duration_ms: 11.875843
+  type: 'test'
+  ...
+# Subtest: an accepted live requiring-step advance focuses its actual new requirement while manual inspection keeps its focus
+    # Subtest: false
+    ok 1 - false
+      ---
+      duration_ms: 2.024968
+      type: 'test'
+      ...
+    # Subtest: true
+    ok 2 - true
+      ---
+      duration_ms: 2.131124
+      type: 'test'
+      ...
+    1..2
+ok 91 - an accepted live requiring-step advance focuses its actual new requirement while manual inspection keeps its focus
+  ---
+  duration_ms: 4.600007
+  type: 'test'
+  ...
+# Subtest: unchanged verified polling and reconnect keep existing claim nodes while changed capabilities and revisions still render
+ok 92 - unchanged verified polling and reconnect keep existing claim nodes while changed capabilities and revisions still render
+  ---
+  duration_ms: 3.239309
+  type: 'test'
+  ...
+# Subtest: a failed render is retried from saved state even if the next poll has the same revision
+ok 93 - a failed render is retried from saved state even if the next poll has the same revision
+  ---
+  duration_ms: 2.041863
+  type: 'test'
+  ...
+# Subtest: present projection identities must bind to the same claim, revision and saved state
+ok 94 - present projection identities must bind to the same claim, revision and saved state
+  ---
+  duration_ms: 0.452968
+  type: 'test'
+  ...
+# Subtest: an initial event/state revision mismatch keeps the claim private until a matching read arrives
+ok 95 - an initial event/state revision mismatch keeps the claim private until a matching read arrives
+  ---
+  duration_ms: 2.397438
+  type: 'test'
+  ...
+# Subtest: initial revision mismatch bounds immediate reads and retains automatic recovery plus explicit retry
+ok 96 - initial revision mismatch bounds immediate reads and retains automatic recovery plus explicit retry
+  ---
+  duration_ms: 2.403306
+  type: 'test'
+  ...
+# Subtest: a mismatched refresh projection and a stale saved revision retain the last verified claim
+ok 97 - a mismatched refresh projection and a stale saved revision retain the last verified claim
+  ---
+  duration_ms: 1.487985
+  type: 'test'
+  ...
+# Subtest: source inspection verifies exact identity, preserves claim context and returns focus after close
+ok 98 - source inspection verifies exact identity, preserves claim context and returns focus after close
+  ---
+  duration_ms: 7.336014
+  type: 'test'
+  ...
+# Subtest: a rejected citation opens its verified original without highlighting the invalid proposed quote
+ok 99 - a rejected citation opens its verified original without highlighting the invalid proposed quote
+  ---
+  duration_ms: 3.129748
+  type: 'test'
+  ...
+# Subtest: an invalid source text never becomes cited evidence and a late source response cannot reopen another claim
+ok 100 - an invalid source text never becomes cited evidence and a late source response cannot reopen another claim
+  ---
+  duration_ms: 4.589742
+  type: 'test'
+  ...
+# Subtest: the default Work collection uses saved statuses and explicit New claim navigation
+ok 101 - the default Work collection uses saved statuses and explicit New claim navigation
+  ---
+  duration_ms: 1.221742
+  type: 'test'
+  ...
+# Subtest: search and filters select only matching saved claims and preserve original statuses
+ok 102 - search and filters select only matching saved claims and preserve original statuses
+  ---
+  duration_ms: 0.632944
+  type: 'test'
+  ...
+# Subtest: typing a collection search updates results without replacing the focused native search input
+ok 103 - typing a collection search updates results without replacing the focused native search input
+  ---
+  duration_ms: 1.6265
+  type: 'test'
+  ...
+# Subtest: each local view renders only its current purpose while retaining the same immutable selected claim
+ok 104 - each local view renders only its current purpose while retaining the same immutable selected claim
+  ---
+  duration_ms: 0.986315
+  type: 'test'
+  ...
+# Subtest: supported document routes stay distinct and evidence intake is reachable from current needs
+ok 105 - supported document routes stay distinct and evidence intake is reachable from current needs
+  ---
+  duration_ms: 0.608237
+  type: 'test'
+  ...
+# Subtest: an editable New claim draft retains the native form, FileList and typed values through Work and Knowledge
+ok 106 - an editable New claim draft retains the native form, FileList and typed values through Work and Knowledge
+  ---
+  duration_ms: 1.758645
+  type: 'test'
+  ...
+# Subtest: an uncertain New claim keeps its native files and exact retry payload through Work navigation
+ok 107 - an uncertain New claim keeps its native files and exact retry payload through Work navigation
+  ---
+  duration_ms: 1.668131
+  type: 'test'
+  ...
+# Subtest: claim refresh preserves the selected Process scroll and native Sources FileList through separate focused views
+ok 108 - claim refresh preserves the selected Process scroll and native Sources FileList through separate focused views
+  ---
+  duration_ms: 3.650477
+  type: 'test'
+  ...
+# Subtest: uncertain file arrivals retain their claim guard and retry key across details and other claims
+ok 109 - uncertain file arrivals retain their claim guard and retry key across details and other claims
+  ---
+  duration_ms: 6.933831
+  type: 'test'
+  ...
+# Subtest: recorded actions distinguish the current accepted run from historical and unassociated results
+ok 110 - recorded actions distinguish the current accepted run from historical and unassociated results
+  ---
+  duration_ms: 0.988489
+  type: 'test'
+  ...
+# Subtest: a branch inspector joins its own condition, evidence need, document and capability without borrowing sibling facts
+ok 111 - a branch inspector joins its own condition, evidence need, document and capability without borrowing sibling facts
+  ---
+  duration_ms: 2.483014
+  type: 'test'
+  ...
+# Subtest: knowledge reuse retains the exact historical version, originating claim and applicability without proving current facts
+ok 112 - knowledge reuse retains the exact historical version, originating claim and applicability without proving current facts
+  ---
+  duration_ms: 2.342837
+  type: 'test'
+  ...
+# Subtest: full public provenance, receipt checks and quarantine reasons remain inspectable and escaped
+ok 113 - full public provenance, receipt checks and quarantine reasons remain inspectable and escaped
+  ---
+  duration_ms: 0.660395
+  type: 'test'
+  ...
+# Subtest: Inspect reused knowledge navigates to and reveals the exact historical version and hash
+ok 114 - Inspect reused knowledge navigates to and reveals the exact historical version and hash
+  ---
+  duration_ms: 8.815157
+  type: 'test'
+  ...
+# Subtest: an unavailable pinned knowledge version or hash never selects the latest version as its replacement
+ok 115 - an unavailable pinned knowledge version or hash never selects the latest version as its replacement
+  ---
+  duration_ms: 4.549203
+  type: 'test'
+  ...
+# Subtest: Cancel returns to the same Work search, status filter and scroll position without writing intake
+ok 116 - Cancel returns to the same Work search, status filter and scroll position without writing intake
+  ---
+  duration_ms: 4.548742
+  type: 'test'
+  ...
+# Subtest: a mismatched polling event cursor never advances the displayed state or consumes the pending event
+ok 117 - a mismatched polling event cursor never advances the displayed state or consumes the pending event
+  ---
+  duration_ms: 5.574936
+  type: 'test'
+  ...
+# Subtest: closing a source after a saved refresh focuses the replacement citation control in the same claim
+ok 118 - closing a source after a saved refresh focuses the replacement citation control in the same claim
+  ---
+  duration_ms: 6.85193
+  type: 'test'
+  ...
+# Subtest: missing or empty run identities never associate recorded actions with a current run
+ok 119 - missing or empty run identities never associate recorded actions with a current run
+  ---
+  duration_ms: 0.793751
+  type: 'test'
+  ...
+# Subtest: a source dialog returns to its visible All documents origin after polling duplicates its citation in hidden This step
+ok 120 - a source dialog returns to its visible All documents origin after polling duplicates its citation in hidden This step
+  ---
+  duration_ms: 15.523366
+  type: 'test'
+  ...
+# Subtest: a refreshed Why required summary retains its visible All documents focus despite a duplicated hidden disclosure
+ok 121 - a refreshed Why required summary retains its visible All documents focus despite a duplicated hidden disclosure
+  ---
+  duration_ms: 2.467841
+  type: 'test'
+  ...
+# Subtest: actual reuse provenance remains exact in one contextual record without asserting current facts
+ok 122 - actual reuse provenance remains exact in one contextual record without asserting current facts
+  ---
+  duration_ms: 0.730157
+  type: 'test'
+  ...
+# Subtest: one outcome record preserves all verifier issues and deferral details without accepting their text as markup
+ok 123 - one outcome record preserves all verifier issues and deferral details without accepting their text as markup
+  ---
+  duration_ms: 0.582739
+  type: 'test'
+  ...
+# Subtest: accepted changes leave hidden document contexts still
+ok 124 - accepted changes leave hidden document contexts still
+  ---
+  duration_ms: 0.313112
+  type: 'test'
+  ...
+# Subtest: paused interpretation describes an unaccepted result instead of active reading
+ok 125 - paused interpretation describes an unaccepted result instead of active reading
+  ---
+  duration_ms: 0.340543
+  type: 'test'
+  ...
+# Subtest: an exhausted authoritative call allowance is visible before intake while packet saving remains available
+ok 126 - an exhausted authoritative call allowance is visible before intake while packet saving remains available
+  ---
+  duration_ms: 2.01286
+  type: 'test'
+  ...
+# Subtest: cost, pending and unknown allowance statuses keep distinct honest intake messages without disabling saving
+ok 127 - cost, pending and unknown allowance statuses keep distinct honest intake messages without disabling saving
+  ---
+  duration_ms: 4.279805
+  type: 'test'
+  ...
+# Subtest: disabled service and unavailable provider keep precedence over allowance messages
+ok 128 - disabled service and unavailable provider keep precedence over allowance messages
+  ---
+  duration_ms: 1.10527
+  type: 'test'
+  ...
+# Subtest: accepted refresh keeps History Case details exact and closing its drawer returns to the replacement inspection control
+ok 129 - accepted refresh keeps History Case details exact and closing its drawer returns to the replacement inspection control
+  ---
+  duration_ms: 3.333318
+  type: 'test'
+  ...
+# Subtest: global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions
+ok 130 - global Knowledge History opens the full exact DTO including versions uses quarantine and public extensions
+  ---
+  duration_ms: 1.15897
+  type: 'test'
+  ...
+# Subtest: delayed claim collections preserve verified revisions without rejecting genuinely newer rows
+    # Subtest: a delayed older current row
+    ok 1 - a delayed older current row
+      ---
+      duration_ms: 3.282283
+      type: 'test'
+      ...
+    # Subtest: a missing current row
+    ok 2 - a missing current row
+      ---
+      duration_ms: 3.502709
+      type: 'test'
+      ...
+    # Subtest: a conflicting identity at the verified revision
+    ok 3 - a conflicting identity at the verified revision
+      ---
+      duration_ms: 4.066241
+      type: 'test'
+      ...
+    # Subtest: a genuinely newer collection row
+    ok 4 - a genuinely newer collection row
+      ---
+      duration_ms: 4.968201
+      type: 'test'
+      ...
+    1..4
+ok 131 - delayed claim collections preserve verified revisions without rejecting genuinely newer rows
+  ---
+  duration_ms: 16.610721
+  type: 'test'
+  ...
+# Subtest: idle intake labels distinguish saving a claim from available or unknown autonomous work
+ok 132 - idle intake labels distinguish saving a claim from available or unknown autonomous work
+  ---
+  duration_ms: 4.526249
+  type: 'test'
+  ...
+# Subtest: an unresolved service status keeps intake disabled until authoritative readiness arrives
+ok 133 - an unresolved service status keeps intake disabled until authoritative readiness arrives
+  ---
+  duration_ms: 1.191288
+  type: 'test'
+  ...
+# Subtest: late status reads preserve Saving and exact Retry labels while retaining the same intake files and draft
+ok 134 - late status reads preserve Saving and exact Retry labels while retaining the same intake files and draft
+  ---
+  duration_ms: 4.354686
+  type: 'test'
+  ...
+# Subtest: a late unavailable status cannot replace Saving while native source bytes are still being prepared
+ok 135 - a late unavailable status cannot replace Saving while native source bytes are still being prepared
+  ---
+  duration_ms: 4.552257
+  type: 'test'
+  ...
+# Subtest: returning to intake updates its idle label and local validation restores that label without replacing draft files
+ok 136 - returning to intake updates its idle label and local validation restores that label without replacing draft files
+  ---
+  duration_ms: 6.684143
+  type: 'test'
+  ...
+1..136
+# tests 146
+# suites 0
+# pass 146
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 793.288107

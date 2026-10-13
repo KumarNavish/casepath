@@ -1,0 +1,90 @@
+{
+  "url": "http://localhost:41999/#autonomous/claim/clm_06400c75399e7f37",
+  "text": "CasePath\nEvidence into action\nNew claim ↗\nCases\nDemonstration\nKnowledge\n\nCases / Synthetic claim\n\nQuestion about my documents: mold and possible moisture in a bedroom\nOriginal message excerpt\nDear Sir or Madam\n\nAs I understand it: For weeks the corner of the child's bedroom has been turning black; The manager says we ventilate badly, but the wall is wet after rain; My son is coughing more; I cannot safely say more.\n\nRegarding…",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<h1 class=\"au-page-heading\" data-au-catalog-title=\"\" tabindex=\"-1\">Question about my documents: mold and possible moisture in a bedroom</h1>",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_06400c75399e7f37/snapshot?after=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_0b431bbf8391ce3e/snapshot?after=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 100,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_06400c75399e7f37/snapshot?after=0",
+      "method": "GET",
+      "time": 100,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

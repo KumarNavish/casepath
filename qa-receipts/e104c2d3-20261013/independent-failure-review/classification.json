@@ -1,0 +1,39 @@
+{
+  "reviewer": "e104_timeout_classification",
+  "candidate": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "observed_utc": "2026-10-13T00:12:14.500486+00:00",
+  "classification": "Confirmed polling-deadline failure with verified eventual expected journal outcome; contention is strongly supported but not independently conclusive.",
+  "strict_conclusive_contention_condition_met": false,
+  "serial_full_shard_is_useful_diagnostic": true,
+  "serial_rerun_launched": false,
+  "verified": {
+    "failed_test_line": 165,
+    "failed_assertion_line": 113,
+    "timeout_seconds": 15,
+    "assertion_revision": 26,
+    "late_source_acquired_at_failure": true,
+    "second_outcome_at_failure": true,
+    "knowledge_count_at_failure": 0,
+    "final_readonly_revision": 27,
+    "final_knowledge_count": 1,
+    "final_qualification": "qualified",
+    "publication_matches_last_workflow": "autonomy.f281fe90af8c1f3cf33555ae",
+    "database_sha256_before_and_after": "8ce9ef365a052f968f516fc278fccf3b7a0b51835980085c0c48e7c2530b8932",
+    "api_tree_equal_to_aa10": "3570309d8b23f0786d1be8b3b7947cd032882a61",
+    "test_sha256_equal_to_aa10": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b",
+    "aa10_exact_node_pass_seconds": 13.073,
+    "prior_32b_serial_exact_node_pass_seconds": 10.436,
+    "original_six_process_intervals_overlap_failure": true,
+    "all_original_process_result_files_finished": true
+  },
+  "limits": [
+    "Journal created_at precedes reduction/commit; it is not a monotonic deadline or idle timestamp.",
+    "Pytest failed call report occurs after shutdown(wait=True); 22.612 s is whole call duration.",
+    "model.calls and transient future/pending state are not recovered.",
+    "Cgroup/load observations are post-failure and do not measure CPU throttling or scheduler delay during this exact failure.",
+    "Passing identical source elsewhere and concurrent CPU-heavy work support contention but do not exclude an intermittent internal scheduling/performance defect."
+  ],
+  "next_readonly_check": "Completed preserved reports.jsonl overlap check: other shards were executing desk equivalence, ECAB adapter, desk reconciliation, claim-loop replay tests, and canonical admission during the failed call. No historical per-process CPU/wait/deadline telemetry found in the observer (which records only report outcome/duration/UTC). Such pre-existing telemetry, if available elsewhere, is the remaining read-only causal discriminator.",
+  "recommendation": "Do not label contention conclusive or claim the strict conditional rerun authorized solely from these artifacts. Preserve original failure. If the user condition permits a strongly-supported contention diagnostic, one unchanged whole 324-item serial shard is the appropriate experiment; no isolated retry or edits.",
+  "source_test_backend_provider_mutations": false
+}

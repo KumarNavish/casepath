@@ -1,0 +1,155 @@
+{
+  "host": "656813ef2295",
+  "branch": "codex/casepath-direct-replay-warmth-20261013",
+  "commit": "c0a79ba7e9a3ae211421d051986d3cf25a560af3",
+  "base": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "files": {
+    "casepath/assets/autonomous-workspace-v1.js": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "f44cf9af7df6bbdbecad88438469de1bf0a74af8f491e1e742e12c6f438db4bb",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "a36455dc7ff8900523ba87cc130967c6f7f56ed9b2d5f27501eb33d139317a9a"
+  },
+  "review": {
+    "approved": true,
+    "task": "/root/direct_replay_warmth_review",
+    "patch_sha256": "9b0dff42262b566352ed0aea4bc87c7bff7143bd326a4cd0a8bf28a7ea039d6a",
+    "independent_selected_checks_reported_pass": 27
+  },
+  "commands": "/tmp/casepath-direct-replay-warmth-20261013/evidence/commands.txt",
+  "runs": {
+    "module-initial": {
+      "exit": 1,
+      "counts": {
+        "tests": 146,
+        "pass": 144,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/module-initial.log"
+    },
+    "module-final": {
+      "exit": 0,
+      "counts": {
+        "tests": 146,
+        "pass": 146,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/module-final.log"
+    },
+    "module-final-frozen": {
+      "exit": 0,
+      "counts": {
+        "tests": 146,
+        "pass": 146,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/module-final-frozen.log"
+    },
+    "browser-initial": {
+      "exit": 1,
+      "counts": {
+        "tests": 8,
+        "pass": 7,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/browser-initial.log"
+    },
+    "browser-base-red": {
+      "exit": 1,
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/browser-base-red.log"
+    },
+    "browser-final": {
+      "exit": 0,
+      "counts": {
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/browser-final.log"
+    },
+    "browser-existing": {
+      "exit": 0,
+      "counts": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/browser-existing.log"
+    }
+  },
+  "native_receipts": {
+    "/tmp/casepath-direct-replay-warmth-20261013/evidence/native-final/direct-replay-hidden-cancellation.json": {
+      "sha256": "5ed9f0b2f185822ed37481c8395c1e9c50f7143f681a9d2ff4874c322ea81a52",
+      "assets": {
+        "javascript": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+        "css": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f"
+      },
+      "screenshot": "/tmp/casepath-direct-replay-warmth-20261013/evidence/native-final/direct-replay-hidden-cancellation.png"
+    },
+    "/tmp/casepath-direct-replay-warmth-20261013/evidence/native-final/direct-replay-warm-knowledge.json": {
+      "sha256": "a82d654a639062c982637ea56c693e5e4cca50c11189515fd10155b3ee936bd4",
+      "assets": {
+        "javascript": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+        "css": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f"
+      },
+      "screenshot": "/tmp/casepath-direct-replay-warmth-20261013/evidence/native-final/direct-replay-warm-knowledge.png"
+    },
+    "/tmp/casepath-direct-replay-warmth-20261013/evidence/native-final/direct-replay-warm-prefix-source.json": {
+      "sha256": "8cb1de401aafa62792f9c1f7f933cd689bd597cbabc9f68fb41ee09b6a08c243",
+      "assets": {
+        "javascript": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+        "css": "1ce1b6d11d74c212675f9735af2ccc98ba2135aec03c41491a096f55714da33f"
+      },
+      "screenshot": "/tmp/casepath-direct-replay-warmth-20261013/evidence/native-final/direct-replay-warm-prefix-source.png"
+    }
+  },
+  "fixtures": {
+    "/tmp/casepath-reference-native-85a-fixture.json": "a66971bd77e81be67be1815e2d46ee97d4e18c18dce657816f01b9bd7aa38b6b",
+    "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json": "b6ec3a3630b332d49bbf62323483cfb5c2a06627268f87beb67aff472b36aeb3"
+  },
+  "verification": {
+    "case_rows_immediately_available": 20,
+    "actual_total_collection": 159,
+    "collection_gets": 2,
+    "reference_heads_warmed": 9,
+    "peak_snapshot_warm_reads": 2,
+    "global_knowledge_quiet_gets_after_reentry": 1,
+    "write_calls": 0,
+    "prefix_and_source_focus_preserved": true
+  },
+  "initial_failure_disposition": {
+    "module-initial": "2 failures corrected: preserve foreground fallback timing; assert intentional silent warm followed by explicit Knowledge revalidation.",
+    "browser-initial": "1 harness assumption corrected: compare the accepted canonical selected-node route before/after warm, rather than the input fragment.",
+    "browser-base-red": "Expected regression failure at exact base: direct replay did not quietly begin its first real collection read."
+  },
+  "limits": [
+    "Native Chromium frontend tests use existing exported deterministic reference and prior-assessment GET fixtures; no live provider/backend or hosted performance claim.",
+    "No broad suite or cloud legacy migration audit; existing /proc/1/maps cloud limit preserved.",
+    "Only the frontend asset and two existing test files changed. Mac integration owner retains index asset hash, source manifest sealing, integration and publish responsibility.",
+    "Persistent verified caches, source authority, replay state and mutation admission semantics remain unchanged."
+  ]
+}

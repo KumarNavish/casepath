@@ -1,0 +1,382 @@
+........................................................................ [ 12%]
+........................................................................ [ 25%]
+........................................................................ [ 38%]
+........................................................................ [ 51%]
+........................................................................ [ 64%]
+........................................................................ [ 77%]
+........................................................................ [ 90%]
+..................................................                       [100%]
+=============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+casepath-api/casepath_api/app.py:424
+  /workspace/casepath-release-ae0-shard2/casepath-api/casepath_api/app.py:424: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("startup")
+
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495
+  /workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv/lib/python3.13/site-packages/fastapi/applications.py:4495: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    return self.router.on_event(event_type)
+
+casepath-api/casepath_api/app.py:444
+  /workspace/casepath-release-ae0-shard2/casepath-api/casepath_api/app.py:444: DeprecationWarning: 
+          on_event is deprecated, use lifespan event handlers instead.
+  
+          Read more about it in the
+          [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+          
+    @app.on_event("shutdown")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+--- generated xml file: /tmp/casepath-release-e104-20261013/shard2/junit.xml ---
+============================== slowest durations ===============================
+22.38s call     tests/test_insurance_protocol_v1.py::test_ecab_registry_adapter_contract_conformance
+18.77s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-duplicate]
+18.23s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMITTED-AFTER_ARTIFACT_BEFORE_EFFECT_RECEIPT-committed-0-startup_reconciler]
+18.20s call     tests/test_agent_live_projection.py::test_live_projection_is_sealed_with_actual_completed_reference_work
+16.42s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-explicit_reconciler]
+15.78s call     tests/test_insurance_protocol_v1.py::test_crash_after_observation_completes_exactly_one_v2_receipt
+15.73s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-startup_reconciler]
+15.13s call     tests/test_insurance_protocol_v1.py::test_handler_selects_hash_bound_correction_and_can_restore_exact_source
+14.22s call     tests/test_insurance_protocol_v1.py::test_concurrent_callers_before_execution_marker_share_one_lineage
+13.70s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-startup_reconciler]
+13.39s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-explicit_reconciler]
+12.92s call     tests/test_insurance_protocol_v1.py::test_fault_02_duplicate_registration_replays_exact_result
+12.80s call     tests/test_insurance_protocol_v1.py::test_concurrent_same_key_registration_never_cancels_winner
+11.68s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMITTED-AFTER_ARTIFACT_BEFORE_EFFECT_RECEIPT-committed-0-explicit_reconciler]
+11.34s call     tests/test_insurance_protocol_v1.py::test_journal_repairs_corrupt_correction_and_evidence_indexes
+11.34s call     tests/test_insurance_protocol_v1.py::test_live_registration_and_reconcile_never_cancel_shared_effect
+10.47s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMITTED-AFTER_ARTIFACT_BEFORE_EFFECT_RECEIPT-committed-0-duplicate]
+10.15s call     tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[COMMIT_CLAIMED-AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-unknown-1-duplicate]
+9.70s call     tests/test_insurance_protocol_v1.py::test_distinct_valid_documents_are_server_admitted_and_unresolved_is_not_ready
+9.59s call     tests/test_insurance_protocol_v1.py::test_fault_20_tampered_action_receipt_locator_fails_without_journal_drift
+9.33s call     tests/test_insurance_protocol_v1.py::test_fault_14_commit_claim_unknown_reconciles_without_execute_retry
+9.26s call     tests/test_insurance_protocol_v1.py::test_protocol_clean_registration_replans_same_graph
+8.76s call     tests/test_insurance_protocol_v1.py::test_epistemic_stage_rehashed_tamper_rejected_before_journal_growth[BEFORE_INTERPRETATION-PROTOCOL_INTERPRETATION_RECORDED-interpretation]
+8.53s call     tests/test_insurance_protocol_v1.py::test_process_death_after_commit_resumes_from_registry_authority[AFTER_COMMIT_CLAIM_BEFORE_ARTIFACT-1]
+8.51s call     tests/test_insurance_protocol_v1.py::test_fault_19_case_local_correction_replans_and_reloads
+8.44s call     tests/test_insurance_protocol_v1.py::test_fault_12_response_loss_replays_completed_journal_result
+8.43s call     tests/test_insurance_protocol_v1.py::test_protocol_actual_plural_api_replays_exact_bytes
+8.40s call     tests/test_insurance_protocol_v1.py::test_stale_protocol_caller_returns_canonical_newer_prefix
+8.32s call     tests/test_insurance_protocol_v1.py::test_unknown_response_cannot_mix_with_concurrent_terminal_projection
+8.11s call     tests/test_insurance_protocol_v1.py::test_fault_03_duplicate_execute_after_receipt_has_one_effect
+8.04s call     tests/test_insurance_protocol_v1.py::test_terminal_response_uses_one_prefix_during_concurrent_correction
+8.00s call     tests/test_insurance_protocol_v1.py::test_fault_09_unauthorized_capability_fails_adapter_boundary
+7.49s call     tests/test_insurance_protocol_v1.py::test_journal_rebuilds_deleted_evidence_indexes_exactly
+7.33s call     tests/test_insurance_protocol_v1.py::test_process_death_after_commit_resumes_from_registry_authority[AFTER_ARTIFACT_BEFORE_EFFECT_RECEIPT-0]
+7.19s call     tests/test_insurance_protocol_v1.py::test_fault_18_cancel_after_commit_preserves_committed_result
+6.66s call     tests/test_insurance_protocol_v1.py::test_startup_reconciler_completes_v2_terminal_lineage_without_retry
+6.49s call     tests/test_insurance_protocol_v1.py::test_fault_13_crash_after_intent_before_execution_resumes_once
+6.25s call     tests/test_insurance_protocol_v1.py::test_fault_16_corrupt_checkpoint_rebuilds_exact_protocol_projection
+6.24s call     tests/test_insurance_protocol_v1.py::test_protocol_adapters_and_deterministic_graph_never_touch_provider_or_key
+5.92s call     tests/test_insurance_protocol_v1.py::test_epistemic_stage_rehashed_tamper_rejected_before_journal_growth[BEFORE_SOURCE_OBSERVATION-PROTOCOL_SOURCE_OBSERVATION_RECORDED-source-observation]
+5.92s call     tests/test_insurance_protocol_v1.py::test_fault_15_crash_after_receipt_resumes_epistemic_chain
+5.35s call     tests/test_insurance_protocol_v1.py::test_fault_11_timeout_before_commit_cancels_on_same_intent
+4.95s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[decision_proposal-session_id-forged-session-0001]
+4.94s call     tests/test_claim_workspace_triage_v1.py::test_triage_queue_distinguishes_claims_and_filters_matching_profiles
+4.71s call     tests/test_insurance_protocol_v1.py::test_epistemic_stage_rehashed_tamper_rejected_before_journal_growth[BEFORE_NORMALIZED_ASSERTION-PROTOCOL_ASSERTION_NORMALIZED-normalized-assertion]
+4.05s call     tests/test_insurance_protocol_v1.py::test_pace_request_is_exactly_claim_derived_without_invariant_fixture_ids
+3.91s call     tests/test_insurance_protocol_v1.py::test_fault_10_adapter_unavailable_before_effect_is_safe_block
+3.71s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[normalized_assertion-extraction_method-forged.extractor/9]
+3.67s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[interpretation-status-disputed]
+3.67s call     tests/test_insurance_protocol_v1.py::test_v2_rehashed_semantic_tamper_rejected_before_append[interpretation-policy_version-forged.policy/9]
+3.51s call     tests/test_insurance_protocol_v1.py::test_startup_reconciler_preserves_expired_protocol_partial_lineage
+2.86s call     tests/test_insurance_protocol_v1.py::test_fault_17_cancel_before_execute_claims_zero_effects
+2.38s call     tests/test_insurance_protocol_v1.py::test_typed_evidence_admission_is_closed_and_terminal_before_quarantine
+1.90s call     tests/test_insurance_protocol_v1.py::test_faults_07_08_stale_revision_and_proposal_have_no_effect
+1.84s call     tests/test_native_claim_loop_bridge_v1.py::test_scoped_native_correction_preserves_neighbor_and_old_source_bytes
+1.70s call     tests/test_native_claim_loop_bridge_v1.py::test_workspace_view_reads_the_same_native_loop_with_provisional_provenance
+1.20s call     tests/test_agent_demo_launcher.py::test_capacity_command_and_preservation_replay_real_disposable_store[rejected-17]
+0.82s call     tests/test_insurance_protocol_v1.py::test_fault_04_same_bytes_new_filename_deduplicates_content
+0.82s call     tests/test_hosted_app_v1.py::test_legacy_writable_flag_never_wakes_or_starts_public_work
+0.70s call     tests/test_playbook_template_v1.py::test_factual_history_action_observation_replan_reaches_terminal_packet
+0.60s call     tests/test_hosted_app_v1.py::test_public_hosted_intake_stays_readonly_with_legacy_writable_flag
+0.59s call     tests/test_hosted_app_v1.py::test_readonly_cloud_boot_health_and_intake_boundary
+0.57s call     tests/test_hosted_app_v1.py::test_cloud_import_does_not_require_generated_legacy_artifacts
+0.57s call     tests/test_canonicalizer_v15.py::test_canonicalizer_uses_synchronous_sdk_provider_without_generation_poll
+0.54s call     tests/test_native_claim_loop_bridge_v1.py::test_contested_native_answer_remains_conflicting_and_actionable
+0.51s call     tests/test_native_claim_loop_bridge_v1.py::test_native_revision_retires_unreached_actions_and_replays_after_restart
+0.50s call     ::test_release_contract_and_manifests_are_current
+0.49s call     tests/test_autonomous_item_rejection_v1.py::test_original_five_observable_quote_is_case_exact_in_deterministic_fixture
+0.47s call     tests/test_native_claim_loop_bridge_v1.py::test_r56_joint_arrival_runs_real_six_role_cycle_and_preserves_each_source
+0.47s call     ::test_every_observable_claim_artifact_is_model_visible_and_scanned
+0.42s call     tests/test_insurance_protocol_v1.py::test_faults_05_06_invalid_type_and_hash_fail_before_quarantine
+0.39s call     tests/test_native_claim_loop_bridge_v1.py::test_native_initial_pending_need_preserves_null_deadline_without_action
+0.37s call     tests/test_native_claim_loop_bridge_v1.py::test_native_pending_revision_is_durable_source_bound_and_idempotent[unspecified-deadline]
+0.34s call     tests/test_native_claim_loop_bridge_v1.py::test_native_pending_revision_is_durable_source_bound_and_idempotent[explicit-deadline]
+0.28s call     tests/test_agent_demo_launcher.py::test_legacy_ledger_additive_schema_is_only_created_in_memory
+0.26s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[demo-review.json]
+0.24s call     tests/test_native_claim_loop_bridge_v1.py::test_native_legacy_revision_and_state_hashes_rehydrate_without_until
+0.23s call     tests/test_causal_process_v1.py::test_actual_product_catalogs_seed_without_validating_process_or_evidence
+0.19s call     tests/test_native_claim_loop_bridge_v1.py::test_native_ensure_uses_the_workspace_loop_identity
+0.18s setup    tests/test_autonomous_item_rejection_v1.py::test_valid_items_keep_exact_source_spans_and_no_rejections
+0.18s call     ::test_dynamic_runtime_acceptance_rejects_weak_or_unbound_proof
+0.17s call     tests/test_evidential_channel_gate_v1.py::test_live_workflow_invokes_gate_before_and_after_a_return
+0.17s call     tests/test_hosted_proxy_v1.py::test_authenticated_public_sites_hop_refuses_all_intake_and_preserves_originals
+0.16s call     tests/test_native_claim_loop_bridge_v1.py::test_browser_native_investigation_controls_keep_provider_and_plan_boundaries
+0.15s setup    tests/test_autonomous_item_rejection_v1.py::test_unresolved_step_still_rejects_nonexact_quote_without_normalizing[Gru\u0308n blieb die Tu\u0308r.]
+0.14s setup    tests/test_autonomous_item_rejection_v1.py::test_unknown_policy_item_is_fatal_even_after_an_invalid_citation[steps-node_id]
+0.14s call     tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[length]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_structural_roster_errors_remain_fatal[unknown_check]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_one_invalid_span_discards_all_citations_for_the_item[True]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_structural_roster_errors_remain_fatal[duplicate_item]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_unresolved_step_still_rejects_nonexact_quote_without_normalizing[die Verwaltung sagte telefonisch, eines sei eine Korrektur;]
+0.13s call     ::test_root_knowledge_transfer_is_inventoried_as_release_source
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_structural_roster_errors_remain_fatal[missing_check]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_unknown_policy_item_is_fatal_even_after_an_invalid_citation[conditions-flag]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_unresolved_step_still_rejects_nonexact_quote_without_normalizing[First line Second line]
+0.13s setup    tests/test_autonomous_item_rejection_v1.py::test_structural_roster_errors_remain_fatal[duplicate_check]
+0.12s setup    tests/test_autonomous_item_rejection_v1.py::test_unresolved_step_still_rejects_nonexact_quote_without_normalizing[Die Verwaltung sagte telefonisch, eines sei eine Korrektur:]
+0.12s call     ::test_source_manifest_keeps_runtime_commit_outside_self_excluded_bytes
+0.12s setup    tests/test_autonomous_item_rejection_v1.py::test_unknown_policy_item_is_fatal_even_after_an_invalid_citation[documents-document_type]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_mixed_document_recipes_keep_valid_candidate_and_compiler_support[False]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_document_source_binding_rejects_entire_assessment[wrong_source]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_document_source_binding_rejects_entire_assessment[unknown_document_source]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[missing_required-documents]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_one_invalid_span_discards_all_citations_for_the_item[False]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[unknown_source-steps]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_category_remains_fatal[family]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[nonexact_quote-documents]
+0.11s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[unknown_source-documents]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_mixed_document_recipes_keep_valid_candidate_and_compiler_support[True]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_rejected_document_cannot_support_recipe_but_other_source_can[True]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[unknown_source-conditions]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_category_remains_fatal[missing_required]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[nonexact_quote-conditions]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_category_remains_fatal[nonexact_quote]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[missing_required-steps]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[missing_required-conditions]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_category_remains_fatal[unknown_source]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_category_remains_fatal[verifier_rejected]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_rejected_document_cannot_support_recipe_but_other_source_can[False]
+0.10s setup    tests/test_autonomous_item_rejection_v1.py::test_invalid_known_item_citations_reject_only_the_whole_item[nonexact_quote-steps]
+0.10s call     ::test_dynamic_runtime_acceptance_requires_exact_retained_media_inventory
+0.09s call     ::test_dynamic_runtime_acceptance_allows_integral_fact_float_round_trip
+0.09s call     ::test_dynamic_runtime_evidence_paths_verify_the_atomic_artifact_pair
+0.09s call     ::test_dynamic_runtime_requires_visible_returned_action_replay_checks
+0.09s call     ::test_dynamic_runtime_acceptance_allows_alternate_bounded_evidence_end_to_end
+0.08s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_snapshot[edge_pair]
+0.08s call     ::test_dynamic_runtime_acceptance_rejects_forged_evidence_source_ref
+0.08s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[flagship-cache-lineage.json]
+0.08s call     ::test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[cache_lineage]
+0.08s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_evidence_forgery[artifact_append]
+0.07s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_proof[canonical_baseline]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[runtime-versions.json]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[model-ledger.json]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-model-ledger.json]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[deployment-identity.json]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[readiness-receipt.json]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[release-contract.json]
+0.07s call     tests/test_playbook_template_v1.py::test_non_mould_template_traverses_same_six_role_three_gate_graph
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[isolation-run.json]
+0.07s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[duplicate-cache_lineage]
+0.07s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_proof[before_hash]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[learning-proof.json]
+0.07s call     ::test_dynamic_runtime_acceptance_rejects_result_and_boundary_forgery_not_in_event
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[post-review-run.json]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[later-after-memory-run.json]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[later-baseline-run.json]
+0.07s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[flagship-cold-model-ledger.json]
+0.07s call     ::test_dynamic_runtime_acceptance_allows_parallel_warm_completion_order_swap[permuted_surfaces0]
+0.07s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_snapshot[missing_field]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_forged_field_unit
+0.06s call     ::test_dynamic_causal_evidence_paths_verify_exact_preflight_inventory
+0.06s call     ::test_dynamic_runtime_acceptance_passes_without_source_promotion
+0.06s call     ::test_dynamic_runtime_acceptance_allows_parallel_warm_completion_order_swap[permuted_surfaces2]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_evidence_forgery[status_promotion]
+0.06s call     ::test_dynamic_runtime_evidence_paths_reject_extra_manifest_file
+0.06s call     ::test_dynamic_runtime_acceptance_allows_parallel_warm_completion_order_swap[permuted_surfaces1]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_later_model_activity[canonicalizer]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_proof[check_status]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_later_model_activity[model_mode]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[foreign-cache_lineage]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_law_registry_forgery[snapshot_scope]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_evidence_forgery[same_fact_source_swap]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_later_model_activity[executed_dag]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[missing-cache_lineage]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_proof[check_order]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_forged_visual_annotation[producer]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_later_model_activity[model_event]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_evidence_forgery[fact_unbound_capability]
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_cache_lineage_tamper
+0.06s call     ::test_dynamic_runtime_acceptance_rejects_forged_projection_lineage
+0.05s call     tests/test_canonicalizer_v15.py::test_concurrent_identical_cold_cache_calls_are_single_flight
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_thirteenth_final_ledger_row
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_rehashed_non_replay_learning_change
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_duplicate_memory_application_event
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_proof[replay_exact]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_learning_snapshot[current_node]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_rehashed_memory_boundary_forgery[before]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_rehashed_memory_boundary_forgery[target]
+0.05s call     ::test_dynamic_runtime_evidence_paths_reject_empty_required_json_object[flagship-run.json]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_rehashed_memory_boundary_forgery[source_memory]
+0.05s call     ::test_dynamic_runtime_evidence_paths_reject_wrong_media_magic[01-start-desktop.png-is not PNG]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_semantic_fact_rebind
+0.05s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[missing_receipt-assertion_selections\\.fact_membership]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_final_field[supporting_fact_ids-forged_value2]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_learned_evidence_topology
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_final_field[upstream_contribution_ids-forged_value3]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_law_registry_forgery[node_join]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_final_field[audit_check_ids-forged_value4]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_required_now_reusable_authority_forgery
+0.05s setup    tests/test_native_claim_loop_bridge_v1.py::test_native_ensure_uses_the_workspace_loop_identity
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_inherited_process_field
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_orchestrator_unit
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_final_field[current_node_id-scope]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_reciprocal_evidence_path[node_ids]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_final_field[next_action_node_id-scope]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_reciprocal_evidence_path[current_path]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_non_allowlisted_ledger_field
+0.05s call     ::test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[report-whole_playbook_gate\\.verification_report_hash]
+0.05s call     ::test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[brief-whole_playbook_gate\\.final_brief_artifact_hash]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_self_consistent_law_registry_forgery[passage_hashes]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_specialist_artifact
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_process_gate_input
+0.05s call     ::test_dynamic_runtime_acceptance_hash_binds_json_normalized_facts[explanation-FORGED EXPLANATION]
+0.05s call     ::test_dynamic_runtime_acceptance_hash_binds_json_normalized_facts[label-FORGED LABEL]
+0.05s call     ::test_dynamic_runtime_acceptance_hash_binds_json_normalized_facts[confidence-0.123456]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forbidden_retained_run_field
+0.05s call     ::test_dynamic_runtime_acceptance_enforces_claim_specific_checklist_order[later-baseline-run.json-DEMO-MOULD-002-learning\\.baseline\\.checklist\\.items]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_specialist_hash
+0.05s call     ::test_public_ledger_accepts_warm_shape_but_cold_artifact_rejects_it
+0.05s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[fallback-canonicalization\\.assertion_selections]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_forged_evidence_fact_binding
+0.05s call     ::test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[gate_whole-whole_playbook_gate\\.verification_whole_playbook_hash]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_nonexact_origin_usage_schema
+0.05s call     ::test_dynamic_runtime_evidence_paths_reject_wrong_media_magic[uninterrupted-focused-demo.webm-video is not WebM]
+0.05s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[materialized_fields-canonicalization\\.assertion_selections]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_unbound_plan_source_handoff
+0.05s call     ::test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[whole-result\\.verification\\.whole_playbook_hash]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_ledger_only_provenance
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_extra_flagship_cold_row
+0.05s call     ::test_dynamic_runtime_requires_six_clean_model_calls[ledger_outcome]
+0.05s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[noncontrolling_fields-canonicalization\\.assertion_selections]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[cold_audit]
+0.05s call     ::test_dynamic_runtime_acceptance_enforces_claim_specific_checklist_order[flagship-run.json-DEF-027-E0-DEMO-result\\.checklist\\.items]
+0.05s call     ::test_dynamic_runtime_acceptance_rejects_unbound_final_next_action
+0.05s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[forged_id-canonicalization\\.assertion_selections]
+0.04s call     ::test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[projection-whole_playbook_gate\\.output_projection_contract]
+0.04s call     ::test_dynamic_runtime_evidence_paths_reject_malformed_required_json
+0.04s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[duplicate_receipt-assertion_selections]
+0.04s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[diagnostics-canonicalization\\.diagnostics\\.fact_membership]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_forged_visual_annotation[image_sha256]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_forged_canonical_fact
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_rehashed_precedent_ranking_forgery
+0.04s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[controlling_fields-canonicalization\\.assertion_selections]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[upstream_provider-PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
+0.04s call     ::test_dynamic_runtime_rejects_forged_assertion_selection_receipt[attribution-canonicalization\\.assertion_selections]
+0.04s call     ::test_dynamic_runtime_rejects_conflated_whole_playbook_hashes[bundle-whole_playbook_gate\\.output_artifact_hash]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_valid_but_unpinned_upstream
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_id-api_key_unit_test_placeholder]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[finish_reason-tenant stopped payment]
+0.04s call     ::test_dynamic_causal_evidence_paths_reject_invalid_file_records[duplicate]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_id-sk-or-unit-test-placeholder]
+0.04s call     ::test_dynamic_runtime_rejects_stale_top_level_accepted_siblings[precedent_ranking-run\\.precedent_ranking]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[upstream_provider-landlord-claim]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_model-nvidia/another-model]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_id-tenant-moisture-claim-42]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_relabelled_runtime_roles[gate-Dynamic flagship gate deterministic_process_gate\\.role]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_relabelled_runtime_roles[agent-Dynamic flagship agent orchestrator_plan role]
+0.04s call     ::test_dynamic_causal_evidence_paths_reject_invalid_file_records[zero_bytes]
+0.04s call     ::test_dynamic_runtime_acceptance_rejects_unsafe_successful_provenance[response_id-rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr]
+0.04s call     ::test_dynamic_runtime_rejects_stale_top_level_accepted_siblings[understanding-run\\.understanding]
+0.04s call     ::test_dynamic_runtime_requires_six_clean_model_calls[source_projection]
+0.04s call     ::test_dynamic_runtime_rejects_stale_top_level_accepted_siblings[precedents-run\\.precedents]
+0.04s call     ::test_dynamic_runtime_requires_six_clean_model_calls[agent_outcome]
+0.04s call     tests/test_playbook_template_v1.py::test_non_mould_full_source_run_remains_fail_closed
+0.04s call     ::test_dynamic_runtime_requires_six_clean_model_calls[agent_fallback]
+0.04s call     ::test_dynamic_runtime_requires_six_clean_model_calls[agent_rejection]
+0.04s call     ::test_evidence_verifier_rejects_contradictory_bounded_fields[status]
+0.04s call     ::test_evidence_verifier_rejects_contradictory_bounded_fields[branch]
+0.04s call     ::test_evidence_verifier_rejects_contradictory_bounded_fields[derived]
+0.04s call     ::test_evidence_verifier_accepts_alternate_bounded_status
+0.03s call     ::test_process_verifier_accepts_key_specific_conservative_route
+0.03s call     ::test_process_verifier_rejects_contradictory_bounded_route
+0.03s call     ::test_cold_warm_pair_rejects_cross_agent_lineage_bindings[ledger_call]
+0.03s call     ::test_evidence_verifier_rejects_contradictory_bounded_fields[artifact]
+0.03s call     tests/test_casepath_process_router_v2.py::test_diff_runs_same_planner_on_both_states
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[cold_ledger]
+0.03s call     tests/test_causal_process_v1.py::test_c_new_prerequisite_blocks_until_completed_and_exposes_requirements
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[missing-warm_ledger]
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[missing-warm_audit]
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[foreign-warm_audit]
+0.03s call     ::test_cold_warm_pair_rejects_cross_agent_lineage_bindings[ledger_origin]
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[duplicate-warm_audit]
+0.03s call     ::test_cold_warm_pair_rejects_changed_cached_artifact[accepted_ids-forged_value2]
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[duplicate-warm_ledger]
+0.03s call     ::test_cold_warm_pair_rejects_changed_cached_artifact[output_artifact_hash-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]
+0.03s call     ::test_cold_warm_pair_rejects_cross_agent_lineage_bindings[audit_origin]
+0.03s call     ::test_whole_playbook_gate_keeps_four_exact_distinct_hash_domains
+0.03s call     ::test_cold_warm_pair_rejects_changed_cached_artifact[input_artifact_hash-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_exact_warm_agent_membership[foreign-warm_ledger]
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[warm_audit]
+0.03s call     tests/test_canonicalizer_v15.py::test_openrouter_request_is_one_bounded_exact_model_structured_call
+0.03s call     ::test_successful_dynamic_evidence_fixture_matches_production_bundle_shape
+0.03s call     ::test_dynamic_runtime_acceptance_rejects_non_topological_agent_order[warm_ledger]
+0.03s call     ::test_model_truth_is_scoped_and_failed_attempt_history_is_not_accepted
+0.03s call     tests/test_causal_process_v1.py::test_complex_conditions_and_graph_size_are_bounded
+0.03s call     tests/test_canonicalizer_v15.py::test_missing_credential_is_fail_closed_and_never_calls_network
+0.03s call     tests/test_causal_process_v1.py::test_causes_blocks_invalidates_completes_and_supersedes_have_distinct_effects
+0.03s call     tests/test_causal_process_v1.py::test_undo_document_definition_preserves_the_latest_checked_source_receipt
+0.03s setup    tests/test_causal_process_v1.py::test_invalid_operations_are_rejected_atomically[operation5]
+0.02s setup    tests/test_insurance_protocol_v1.py::test_fault_09_unauthorized_capability_fails_adapter_boundary
+0.02s call     ::test_generated_artifact_timeline_and_metadata_are_temporally_coherent
+0.02s call     ::test_curated_static_build_has_exact_runtime_inventory
+0.02s call     tests/test_canonicalizer_v15.py::test_flagship_wire_schema_binds_every_fact_and_artifact_slot
+0.02s call     tests/test_canonicalizer_v15.py::test_canonical_sdk_drift_nonstop_retains_billing_before_rejection[nullable_choice_error]
+0.02s call     ::test_sites_delivery_is_same_origin_and_streaming_proxy_safe
+0.02s call     tests/test_canonicalizer_v15.py::test_dated_canonical_nemotron_response_identity_is_accepted
+0.01s call     ::test_release_assertion_id_matches_backend_versioned_algorithm
+0.01s call     ::test_later_scenario_precedes_release_and_has_no_stale_active_markers
+0.01s call     tests/test_canonicalizer_v15.py::test_all_canonicalizer_contract_versions_invalidate_success_cache
+0.01s call     tests/test_canonicalizer_v15.py::test_canonicalizer_replays_sdk_schema_drift_through_real_langchain_once
+0.01s call     ::test_curated_asset_allowlist_is_the_recursive_runtime_closure
+0.01s call     tests/test_causal_process_v1.py::test_checked_document_reviews_support_completion_and_reopen_when_insufficient
+0.01s call     tests/test_canonicalizer_v15.py::test_prior_one_of_eighteen_state_collapse_cannot_override_deterministic_state
+0.01s call     tests/test_causal_process_v1.py::test_consecutive_undo_keeps_the_compensating_history_and_import_boundary
+0.01s call     tests/test_autonomous_item_rejection_v1.py::test_one_invalid_span_discards_all_citations_for_the_item[True]
+0.01s call     tests/test_canonicalizer_v15.py::test_any_rejected_fact_fails_without_fallback_or_cache
+0.01s call     tests/test_canonicalizer_v15.py::test_semantic_rejection_retains_charged_provider_usage_and_identity
+0.01s setup    tests/test_canonicalizer_v15.py::test_missing_structurally_related_artifact_is_rejected
+0.01s call     ::test_known_commit_requirement_fails_before_replacing_output
+0.01s call     tests/test_causal_process_v1.py::test_document_definition_change_requires_a_new_source_review
+0.01s call     tests/test_casepath_process_router_v2.py::test_status_binds_runtime_freeze_identity
+0.01s call     ::test_render_curated_frontend_contract_rejects_tampering[buildCommand-echo unsafe-curated static builder]
+0.01s call     ::test_render_definitive_qa_contract_rejects_tampering[buildCommand-node paid-first.mjs-deterministic browser preflight]
+0.01s call     ::test_render_curated_frontend_contract_rejects_tampering[staticPublishPath-casepath-curated static output]
+0.01s call     ::test_render_definitive_qa_contract_rejects_tampering[autoDeployTrigger-commit-manual release gate]
+0.01s call     tests/test_causal_process_v1.py::test_known_completed_route_wins_over_an_unresolved_alternative_at_a_merge
+0.01s call     ::test_render_definitive_qa_contract_rejects_tampering[startCommand-python3 -m http.server-hash-bound evidence]
+0.01s call     tests/test_causal_process_v1.py::test_empty_graph_accepts_a_new_explicit_entry_node
+0.01s call     ::test_render_definitive_qa_contract_rejects_tampering[envVars-value3-environment must exactly pin]
+0.01s call     tests/test_causal_process_v1.py::test_e_modifying_validated_node_keeps_history_and_flags_inconsistent_completion
+0.01s call     tests/test_causal_process_v1.py::test_changed_action_meaning_or_kind_reopens_its_recorded_completion[changes0]
+0.01s call     tests/test_casepath_process_router_v2.py::test_plan_accepts_only_case_material_and_held_documents
+0.01s call     tests/test_causal_process_v1.py::test_changed_action_meaning_or_kind_reopens_its_recorded_completion[changes1]
+0.01s call     tests/test_causal_process_v1.py::test_b_change_branch_changes_downstream_documents_action_and_questions
+0.01s call     tests/test_canonicalizer_v15.py::test_canonical_equal_accept_reject_minority_fails_and_never_caches
+0.01s call     tests/test_causal_process_v1.py::test_completed_step_reopens_when_a_document_is_added
+0.01s call     tests/test_autonomous_item_rejection_v1.py::test_one_invalid_span_discards_all_citations_for_the_item[False]
+
+(1335 durations < 0.005s hidden.  Use -vv to show these durations.)
+554 passed, 9 warnings in 527.26s (0:08:47)
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

@@ -1,0 +1,196 @@
+TAP version 13
+# Subtest: revision zero requires an explicit source-bound unprocessed state and has no invented process
+ok 1 - revision zero requires an explicit source-bound unprocessed state and has no invented process
+  ---
+  duration_ms: 3.674037
+  type: 'test'
+  ...
+# Subtest: atomic snapshots bind state, projection, events and journal cursor before display
+ok 2 - atomic snapshots bind state, projection, events and journal cursor before display
+  ---
+  duration_ms: 0.518426
+  type: 'test'
+  ...
+# Subtest: the read cache retains at most three exact saved heads and the complete Knowledge DTO without altering source authority
+ok 3 - the read cache retains at most three exact saved heads and the complete Knowledge DTO without altering source authority
+  ---
+  duration_ms: 7.924905
+  type: 'test'
+  ...
+# Subtest: read cache checksums API contract age and complete entry identities fail closed independently
+ok 4 - read cache checksums API contract age and complete entry identities fail closed independently
+  ---
+  duration_ms: 3.968401
+  type: 'test'
+  ...
+# Subtest: read cache rejects duplicate or excess saved heads oversized storage and stale malformed Knowledge
+ok 5 - read cache rejects duplicate or excess saved heads oversized storage and stale malformed Knowledge
+  ---
+  duration_ms: 33.823789
+  type: 'test'
+  ...
+# Subtest: full collection search and domain browsing use supplied presentation metadata only
+ok 6 - full collection search and domain browsing use supplied presentation metadata only
+  ---
+  duration_ms: 2.470539
+  type: 'test'
+  ...
+# Subtest: collection pagination bounds each reading view while searching every original and resetting changed scopes
+ok 7 - collection pagination bounds each reading view while searching every original and resetting changed scopes
+  ---
+  duration_ms: 1.482058
+  type: 'test'
+  ...
+# Subtest: catalog previews expose only the exact known original message before accepted state is available
+ok 8 - catalog previews expose only the exact known original message before accepted state is available
+  ---
+  duration_ms: 0.371258
+  type: 'test'
+  ...
+# Subtest: preview boundaries keep whole original words and the complete source searchable and unchanged
+ok 9 - preview boundaries keep whole original words and the complete source searchable and unchanged
+  ---
+  duration_ms: 0.65035
+  type: 'test'
+  ...
+# Subtest: demonstration selection is exactly nine canonical identities with three per domain
+ok 10 - demonstration selection is exactly nine canonical identities with three per domain
+  ---
+  duration_ms: 0.590041
+  type: 'test'
+  ...
+# Subtest: read-only previews check original and derived hashes without admitting evidence
+ok 11 - read-only previews check original and derived hashes without admitting evidence
+  ---
+  duration_ms: 2.460655
+  type: 'test'
+  ...
+# Subtest: later supporting files do not inherit the canonical original binding, while original previews must match it
+ok 12 - later supporting files do not inherit the canonical original binding, while original previews must match it
+  ---
+  duration_ms: 1.292028
+  type: 'test'
+  ...
+# Subtest: replay binds prefix provenance and same-revision heads without confusing a legitimate later head
+ok 13 - replay binds prefix provenance and same-revision heads without confusing a legitimate later head
+  ---
+  duration_ms: 1.138622
+  type: 'test'
+  ...
+# Subtest: original collection and added intakes retain separate explicit identities
+ok 14 - original collection and added intakes retain separate explicit identities
+  ---
+  duration_ms: 0.517905
+  type: 'test'
+  ...
+# Subtest: handling completion labels do not rewrite lifecycle codes or recorded legal outcomes
+ok 15 - handling completion labels do not rewrite lifecycle codes or recorded legal outcomes
+  ---
+  duration_ms: 0.534299
+  type: 'test'
+  ...
+# Subtest: execution failure remains separate from an accepted evidence deferral in claim and itinerary labels
+not ok 16 - execution failure remains separate from an accepted evidence deferral in claim and itinerary labels
+  ---
+  duration_ms: 1.041909
+  type: 'test'
+  location: '/workspace/casepath-direct-replay-warmth-20261013/casepath-qa/unified-product-v1.test.cjs:127:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression />Execution failed<\/span>/. Input:
+    
+    '<div class="au-demo-selection" aria-label="Presentation order of independent cases"><section data-au-demo-domain="defect_mold_heating"><div class="au-section-heading"><h2>Defects &amp; repairs</h2><span>3 original cases</span></div><ol start="1"><li data-au-demo-case="clm_314f2d309fea25e6"><span class="au-demo-order" aria-hidden="true">01</span><button type="button" data-au-claim="clm_314f2d309fea25e6" title="Original record" aria-label="Presentation case 01. Repeated heating failure and reported repair calls. Original record"><strong>Repeated heating failure and reported repair calls</strong><span>Original record</span></button></li><li data-au-demo-case="clm_4a07dbbbd859a3ce"><span class="au-demo-order" aria-hidden="true">02</span><button type="button" data-au-claim="clm_4a07dbbbd859a3ce" title="Original record" aria-label="Presentation case 02. Heating resets and an uncertain onset date. Original record"><strong>Heating resets and an uncertain onset date</strong><span>Original record</span></button></li><li data-au-demo-case="clm_95d08975bc575592"><span class="au-demo-order" aria-hidden="true">03</span><button type="button" data-au-claim="clm_95d08975bc575592" title="Original record" aria-label="Presentation case 03. Cold mornings and a requested service assessment. Original record"><strong>Cold mornings and a requested service assessment</strong><span>Original record</span></button></li></ol></section><section data-au-demo-domain="lease_termination_dispute"><div class="au-section-heading"><h2>Lease termination</h2><span>3 original cases</span></div><ol start="4"><li data-au-demo-case="clm_0f4f13b1e3e1328c"><span class="au-demo-order" aria-hidden="true">04</span><button type="button" data-au-claim="clm_0f4f13b1e3e1328c" title="Original record" aria-label="Presentation case 04. An emailed termination and uncertain paper service. Original record"><strong>An emailed termination and uncertain paper service</strong><span>Original record</span></button></li><li data-au-demo-case="clm_393285577dcb12c4"><span class="au-demo-order" aria-hidden="true">05</span><button type="button" data-au-claim="clm_393285577dcb12c4" title="Original record" aria-label="Presentation case 05. An unsigned notice and the issuer question. Original record"><strong>An unsigned notice and the issuer question</strong><span>Original record</span></button></li><li data-au-demo-case="clm_4a53299cfe619303"><span class="au-demo-order" aria-hidden="true">06</span><button type="button" data-au-claim="clm_4a53299cfe619303" title="Original record" aria-label="Presentation case 06. Email notice and the complete service record. Original record"><strong>Email notice and the complete service record</strong><span>Original record</span></button></li></ol></section><section data-au-demo-domain="rent_increase_dispute"><div class="au-section-heading"><h2>Rent changes</h2><span>3 original cases</span></div><ol start="7"><li data-au-demo-case="clm_2c55cdd816b1d0e8"><span class="au-demo-order" aria-hidden="true">07</span><button type="button" data-au-claim="clm_2c55cdd816b1d0e8" title="Original record" aria-label="Presentation case 07. A blank reason field and a later market email. Original record"><strong>A blank reason field and a later market email</strong><span>Original record</span></button></li><li data-au-demo-case="clm_543f08f2415b2a33"><span class="au-demo-order" aria-hidden="true">08</span><button type="button" data-au-claim="clm_543f08f2415b2a33" title="Original record" aria-label="Presentation case 08. Rent amounts with an uncertain notification date. Original record"><strong>Rent amounts with an uncertain notification date</strong><span>Original record</span></button></li><li data-au-demo-case="clm_7dbd7c7d1c4ddf90"><span class="au-demo-order" aria-hidden="true">09</span><button type="button" data-au-claim="clm_7dbd7c7d1c4ddf90" title="Original record" aria-label="Presentation case 09. An increase form and the later email chronology. Original record"><strong>An increase form and the later email chronology</strong><span>Original record</span></button></li></ol></section></div>'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '<div class="au-demo-selection" aria-label="Presentation order of independent cases"><section data-au-demo-domain="defect_mold_heating"><div class="au-section-heading"><h2>Defects &amp; repairs</h2><span>3 original cases</span></div><ol start="1"><li data-au-demo-case="clm_314f2d309fea25e6"><span class="au-demo-order" aria-hidden="true">01</span><button type="button" data-au-claim="clm_314f2d309fea25e6" title="Original record" aria-label="Presentation case 01. Repeated heating failure and reported repair calls. Original record"><strong>Repeated heating failure and reported repair calls</strong><span>Original record</span></button></li><li data-au-demo-case="clm_4a07dbbbd859a3ce"><span class="au-demo-order" aria-hidden="true">02</span><button type="button" data-au-claim="clm_4a07dbbbd859a3ce" title="Original record" aria-label="Presentation case 02. Heating resets and an uncertain onset date. Original record"><strong>Heating resets and an uncertain onset date</strong><span>Original record</span></button></li><li data-au-demo-case="clm_95d08975bc575592"><span class="au-demo-order" aria-hidden="true">03</span><button type="button" data-au-claim="clm_95d08975bc575592" title="Original record" aria-label="Presentation case 03. Cold mornings and a requested service assessment. Original record"><strong>Cold mornings and a requested service assessment</strong><span>Original record</span></button></li></ol></section><section data-au-demo-domain="lease_termination_dispute"><div class="au-section-heading"><h2>Lease termination</h2><span>3 original cases</span></div><ol start="4"><li data-au-demo-case="clm_0f4f13b1e3e1328c"><span class="au-demo-order" aria-hidden="true">04</span><button type="button" data-au-claim="clm_0f4f13b1e3e1328c" title="Original record" aria-label="Presentation case 04. An emailed termination and uncertain paper service. Original record"><strong>An emailed termination and uncertain paper service</strong><span>Original record</span></button></li><li data-au-demo-case="clm_393285577dcb12c4"><span class="au-demo-order" aria-hidden="true">05</span><button type="button" data-au-claim="clm_393285577dcb12c4" title="Original record" aria-label="Presentation case 05. An unsigned notice and the issuer question. Original record"><strong>An unsigned notice and the issuer question</strong><span>Original record</span></button></li><li data-au-demo-case="clm_4a53299cfe619303"><span class="au-demo-order" aria-hidden="true">06</span><button type="button" data-au-claim="clm_4a53299cfe619303" title="Original record" aria-label="Presentation case 06. Email notice and the complete service record. Original record"><strong>Email notice and the complete service record</strong><span>Original record</span></button></li></ol></section><section data-au-demo-domain="rent_increase_dispute"><div class="au-section-heading"><h2>Rent changes</h2><span>3 original cases</span></div><ol start="7"><li data-au-demo-case="clm_2c55cdd816b1d0e8"><span class="au-demo-order" aria-hidden="true">07</span><button type="button" data-au-claim="clm_2c55cdd816b1d0e8" title="Original record" aria-label="Presentation case 07. A blank reason field and a later market email. Original record"><strong>A blank reason field and a later market email</strong><span>Original record</span></button></li><li data-au-demo-case="clm_543f08f2415b2a33"><span class="au-demo-order" aria-hidden="true">08</span><button type="button" data-au-claim="clm_543f08f2415b2a33" title="Original record" aria-label="Presentation case 08. Rent amounts with an uncertain notification date. Original record"><strong>Rent amounts with an uncertain notification date</strong><span>Original record</span></button></li><li data-au-demo-case="clm_7dbd7c7d1c4ddf90"><span class="au-demo-order" aria-hidden="true">09</span><button type="button" data-au-claim="clm_7dbd7c7d1c4ddf90" title="Original record" aria-label="Presentation case 09. An increase form and the later email chronology. Original record"><strong>An increase form and the later email chronology</strong><span>Original record</span></button></li></ol></section></div>'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-direct-replay-warmth-20261013/casepath-qa/unified-product-v1.test.cjs:134:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: completed steps and actions remain local to a running investigation
+ok 17 - completed steps and actions remain local to a running investigation
+  ---
+  duration_ms: 1.838701
+  type: 'test'
+  ...
+# Subtest: one contextual record resolves exact accepted objects without expanding a competing copy into every view
+ok 18 - one contextual record resolves exact accepted objects without expanding a competing copy into every view
+  ---
+  duration_ms: 3.6157
+  type: 'test'
+  ...
+# Subtest: History owns Case details event action and playback controls while purpose views retain exact selections
+not ok 19 - History owns Case details event action and playback controls while purpose views retain exact selections
+  ---
+  duration_ms: 0.832189
+  type: 'test'
+  location: '/workspace/casepath-direct-replay-warmth-20261013/casepath-qa/unified-product-v1.test.cjs:205:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /data-au-select="decision" data-au-select-document="notice" data-au-select-obligation="need:notice"/. Input:
+    
+    '<section class="au-quiet-claim" data-au-revision="3" data-au-state-sha="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button> / Synthetic claim / Recorded investigation</p><h1 class="au-page-heading " id="auClaimTitle" data-au-claim-title tabindex="-1">Original intake</h1><p class="au-claim-constraint"><span data-au-claim-status>Working.</span> <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls"><button type="button" class="au-secondary" data-au-demo-play>Play</button><button type="button" class="au-link au-record-link" data-au-inspect="demo" data-au-record-id="">Choose case</button><button type="button" class="au-link" data-au-detail="activity" aria-pressed="false" aria-controls="auPanel-activity">History</button></div></header><section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views"><button type="button" data-au-detail="step" aria-pressed="true" aria-controls="auPanel-step">Process</button><button type="button" data-au-detail="documents" aria-pressed="false" aria-controls="auPanel-documents">Documents</button><button type="button" data-au-detail="knowledge" aria-pressed="false" aria-controls="auPanel-knowledge">Knowledge</button><button type="button" class="au-context-utility" data-au-detail="sources" aria-pressed="false" aria-controls="auPanel-sources">Sources</button></nav><div class="au-evidence-stage" data-au-evidence-stage><div class="au-context-body" data-au-context="step"><section class="au-context-view" id="auPanel-step" data-au-panel="step"><section class="au-forming-work" data-au-forming="true" data-au-forming-revision="3" data-au-forming-sha="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"><div class="au-forming-layout"><div class="au-forming-reading"><div class="au-reading-column" data-au-evidence-path data-au-selected-step="decision"><section class="au-reading-fact" data-au-fact="fact:notice"><h3 class="au-reading-label">What this shows</h3><p class="au-fact-summary">The supplied notice has one addressee. Its envelope names Alex.</p><p class="au-fact-state">Not established</p></section></div></div><section class="au-forming-process au-evidence-process" aria-label="Complete recorded process"><section class="au-forming-knowledge" aria-label="Procedure use and additions"><article class="au-knowledge-use" data-au-knowledge-use="dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"><h3>Procedure notice</h3><p>Procedure used for this case · Version 2</p><button type="button" class="au-secondary" data-au-knowledge="procedure.notice" data-au-version="2" data-au-knowledge-sha="dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" data-au-definition-sha="eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee">Open procedure</button></article></section><h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="decision">Check the supplied notice</h2><div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">Open larger process</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-overview="true" data-au-graph-expanded="false" tabindex="0" role="region" aria-label="Complete process; use arrow keys or scroll to explore"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="vertical" style="--au-ranks:1"><svg class="au-graph-lines" aria-hidden="true"><defs><marker id="au-process-arrow-true" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="true" d="M1 1 L9 5 L1 9 Z" /></marker><marker id="au-process-arrow-false" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="false" d="M1 1 L9 5 L1 9 Z" /></marker><marker id="au-process-arrow-unresolved" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="unresolved" d="M1 1 L9 5 L1 9 Z" /></marker></defs></svg><div class="au-graph-rank" data-rank="0" data-au-neighborhood="true"><button type="button" class="au-node au-evidence-node" data-au-node="decision" data-au-neighborhood="true" data-status="ready" data-activation="unresolved" aria-pressed="true" aria-label="Check the supplied notice. Ready to check"><span class="au-node-index au-evidence-junction" data-au-junction="decision" aria-hidden="true">·</span><span class="au-node-copy"><span class="au-node-relation">This decision</span><strong class="au-node-title">Check the supplied notice</strong><span class="au-node-state">Ready to check</span></span></button></div></div></div></section><aside class="au-forming-documents" data-au-evidence-path aria-label="Recorded document requirements"><h2>Document requirements</h2><p>Requirements appear when their process step is reached.</p><button type="button" class="au-secondary" data-au-detail="documents">All recorded requirements</button></aside><svg class="au-forming-connections" aria-hidden="true"></svg></div></section></section></div></div></section></section>'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: '<section class="au-quiet-claim" data-au-revision="3" data-au-state-sha="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button> / Synthetic claim / Recorded investigation</p><h1 class="au-page-heading " id="auClaimTitle" data-au-claim-title tabindex="-1">Original intake</h1><p class="au-claim-constraint"><span data-au-claim-status>Working.</span> <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls"><button type="button" class="au-secondary" data-au-demo-play>Play</button><button type="button" class="au-link au-record-link" data-au-inspect="demo" data-au-record-id="">Choose case</button><button type="button" class="au-link" data-au-detail="activity" aria-pressed="false" aria-controls="auPanel-activity">History</button></div></header><section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views"><button type="button" data-au-detail="step" aria-pressed="true" aria-controls="auPanel-step">Process</button><button type="button" data-au-detail="documents" aria-pressed="false" aria-controls="auPanel-documents">Documents</button><button type="button" data-au-detail="knowledge" aria-pressed="false" aria-controls="auPanel-knowledge">Knowledge</button><button type="button" class="au-context-utility" data-au-detail="sources" aria-pressed="false" aria-controls="auPanel-sources">Sources</button></nav><div class="au-evidence-stage" data-au-evidence-stage><div class="au-context-body" data-au-context="step"><section class="au-context-view" id="auPanel-step" data-au-panel="step"><section class="au-forming-work" data-au-forming="true" data-au-forming-revision="3" data-au-forming-sha="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"><div class="au-forming-layout"><div class="au-forming-reading"><div class="au-reading-column" data-au-evidence-path data-au-selected-step="decision"><section class="au-reading-fact" data-au-fact="fact:notice"><h3 class="au-reading-label">What this shows</h3><p class="au-fact-summary">The supplied notice has one addressee. Its envelope names Alex.</p><p class="au-fact-state">Not established</p></section></div></div><section class="au-forming-process au-evidence-process" aria-label="Complete recorded process"><section class="au-forming-knowledge" aria-label="Procedure use and additions"><article class="au-knowledge-use" data-au-knowledge-use="dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"><h3>Procedure notice</h3><p>Procedure used for this case · Version 2</p><button type="button" class="au-secondary" data-au-knowledge="procedure.notice" data-au-version="2" data-au-knowledge-sha="dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" data-au-definition-sha="eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee">Open procedure</button></article></section><h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="decision">Check the supplied notice</h2><div class="au-graph-chrome"><button type="button" class="au-link" data-au-expand-process aria-expanded="false" aria-controls="auProcessGraphViewport">Open larger process</button></div><div id="auProcessGraphViewport" class="au-graph-viewport au-evidence-graph-scroll" data-au-graph-pan data-au-graph-overview="true" data-au-graph-expanded="false" tabindex="0" role="region" aria-label="Complete process; use arrow keys or scroll to explore"><div class="au-graph au-evidence-graph" data-au-graph data-orientation="vertical" style="--au-ranks:1"><svg class="au-graph-lines" aria-hidden="true"><defs><marker id="au-process-arrow-true" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="true" d="M1 1 L9 5 L1 9 Z" /></marker><marker id="au-process-arrow-false" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="false" d="M1 1 L9 5 L1 9 Z" /></marker><marker id="au-process-arrow-unresolved" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="au-process-arrow" data-route="unresolved" d="M1 1 L9 5 L1 9 Z" /></marker></defs></svg><div class="au-graph-rank" data-rank="0" data-au-neighborhood="true"><button type="button" class="au-node au-evidence-node" data-au-node="decision" data-au-neighborhood="true" data-status="ready" data-activation="unresolved" aria-pressed="true" aria-label="Check the supplied notice. Ready to check"><span class="au-node-index au-evidence-junction" data-au-junction="decision" aria-hidden="true">·</span><span class="au-node-copy"><span class="au-node-relation">This decision</span><strong class="au-node-title">Check the supplied notice</strong><span class="au-node-state">Ready to check</span></span></button></div></div></div></section><aside class="au-forming-documents" data-au-evidence-path aria-label="Recorded document requirements"><h2>Document requirements</h2><p>Requirements appear when their process step is reached.</p><button type="button" class="au-secondary" data-au-detail="documents">All recorded requirements</button></aside><svg class="au-forming-connections" aria-hidden="true"></svg></div></section></section></div></div></section></section>'
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-direct-replay-warmth-20261013/casepath-qa/unified-product-v1.test.cjs:211:163)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: unstarted Cases and canonical demo rows show original identity and message without generic state badges
+not ok 20 - unstarted Cases and canonical demo rows show original identity and message without generic state badges
+  ---
+  duration_ms: 4.157791
+  type: 'test'
+  location: '/workspace/casepath-direct-replay-warmth-20261013/casepath-qa/unified-product-v1.test.cjs:217:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(demo.includes(`data-au-claim="${row.claim_id}"`))
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-direct-replay-warmth-20261013/casepath-qa/unified-product-v1.test.cjs:219:162)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: forming knowledge preserves accepted version use and origin without borrowing a later version or establishing current facts
+ok 21 - forming knowledge preserves accepted version use and origin without borrowing a later version or establishing current facts
+  ---
+  duration_ms: 0.546177
+  type: 'test'
+  ...
+1..21
+# tests 21
+# suites 0
+# pass 18
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 169.523471

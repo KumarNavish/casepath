@@ -1,0 +1,31 @@
+{
+  "branch": "codex/casepath-direct-replay-warmth-20261013",
+  "commit": "0410e61edc0776403d5d234893aa35343dcd370c",
+  "parent": "c0a79ba7e9a3ae211421d051986d3cf25a560af3",
+  "original_base": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "file": "casepath-qa/unified-product-v1.test.cjs",
+  "file_sha256": "f9987eb13705834196eaab9f25c3187df83cda60b35d1bc5bc0f012bc40c9c67",
+  "review_approved": true,
+  "review_patch_sha256": "06bbe47c1c0d5cb04822c8e4ebc099a8b926d6364e575bc01f72d4d567679f0d",
+  "production_js_sha256": "98d51360742c1e66bfeeda1bcac5600e33b9ebb685f12c29433db44cf89263fe",
+  "production_and_api_trees_unchanged": true,
+  "command": "node --test --test-reporter=tap casepath-qa/unified-product-v1.test.cjs",
+  "final_result": {
+    "tests": 21,
+    "pass": 21,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "exit": 0,
+    "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/unified-test-only-final.log"
+  },
+  "initial_result": {
+    "tests": 21,
+    "pass": 18,
+    "fail": 3,
+    "exit": 1,
+    "log": "/tmp/casepath-direct-replay-warmth-20261013/evidence/unified-contextual-record-final.log",
+    "disposition": "Initial contextual-record correction passed. Same-file stale legacy/reference roster assumptions and omitted History fixture activations were corrected; all existing assertions retained."
+  },
+  "scope": "Test-only follow-up; no application, API, source sealing, configuration or publishing changes. Previously passing unrelated checks were not rerun."
+}

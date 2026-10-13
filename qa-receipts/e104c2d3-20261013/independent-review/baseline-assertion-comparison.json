@@ -1,0 +1,36 @@
+{
+  "base_sha": "aa10e356bef06f6b657a4e0797523d1ef0392b73",
+  "current_js_sha256": "cf1514c0be5ce1d1b00c033ba730f18080bba0d2d0d0ec7fe31b4d1a5818c3fa",
+  "results": [
+    {
+      "name": "patched-baseline-assertion",
+      "argv": [
+        "node",
+        "--test",
+        "--test-name-pattern=one contextual record resolves exact accepted objects",
+        "casepath-qa/unified-product-v1.test.cjs"
+      ],
+      "stdin": null,
+      "exit_code": 1,
+      "log": "/tmp/casepath-direct-replay-warmth-independent-review-20261013/patched-baseline-assertion.log",
+      "failure_node": "casepath-qa/unified-product-v1.test.cjs:160:1",
+      "assertion_line": 185,
+      "expected": "/May be needed/",
+      "classification": "unchanged baseline assertion; reproduces exact base and patched source"
+    },
+    {
+      "name": "exact-base-assertion",
+      "argv": [
+        "node",
+        "--test-name-pattern=one contextual record resolves exact accepted objects"
+      ],
+      "stdin": "const {execFileSync} = require('node:child_process');\nconst Module = require('node:module');\nconst filename = require.resolve('./casepath/assets/autonomous-workspace-v1.js');\nconst base = execFileSync('git',['show','aa10e356bef06f6b657a4e0797523d1ef0392b73:casepath/assets/autonomous-workspace-v1.js'],{encoding:'utf8'});\nconst isolated = new Module(filename,module); isolated.filename = filename; isolated.paths = module.paths; isolated._compile(base,filename); require.cache[filename] = isolated;\nrequire('./casepath-qa/unified-product-v1.test.cjs');\n",
+      "exit_code": 1,
+      "log": "/tmp/casepath-direct-replay-warmth-independent-review-20261013/exact-base-assertion.log",
+      "failure_node": "casepath-qa/unified-product-v1.test.cjs:160:1",
+      "assertion_line": 185,
+      "expected": "/May be needed/",
+      "classification": "unchanged baseline assertion; reproduces exact base and patched source"
+    }
+  ]
+}
