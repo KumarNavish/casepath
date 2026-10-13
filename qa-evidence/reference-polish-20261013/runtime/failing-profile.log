@@ -1,0 +1,13 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____________ test_v2_profile_is_exact_cleanup_of_immutable_legacy _____________
+
+    def test_v2_profile_is_exact_cleanup_of_immutable_legacy():
+        from hashlib import sha256
+>       from casepath_api.autonomous_reference_v1 import clean_reference_source
+E       ImportError: cannot import name 'clean_reference_source' from 'casepath_api.autonomous_reference_v1' (/workspace/casepath-reference-polish-20261013/casepath-api/casepath_api/autonomous_reference_v1.py)
+
+casepath-api/tests/test_complete_reference_intake_v1.py:348: ImportError
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_complete_reference_intake_v1.py::test_v2_profile_is_exact_cleanup_of_immutable_legacy
+1 failed, 23 deselected in 0.17s

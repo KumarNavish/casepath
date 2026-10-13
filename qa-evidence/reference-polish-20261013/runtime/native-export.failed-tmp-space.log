@@ -1,0 +1,26 @@
+legacy completed clm_0f4f13b1e3e1328c
+legacy completed clm_2c55cdd816b1d0e8
+legacy completed clm_314f2d309fea25e6
+legacy completed clm_393285577dcb12c4
+legacy completed clm_4a07dbbbd859a3ce
+legacy completed clm_4a53299cfe619303
+legacy completed clm_543f08f2415b2a33
+legacy completed clm_7dbd7c7d1c4ddf90
+legacy completed clm_95d08975bc575592
+v2 exported clm_0f4f13b1e3e1328c prefixes=40
+v2 exported clm_2c55cdd816b1d0e8 prefixes=42
+v2 exported clm_314f2d309fea25e6 prefixes=49
+v2 exported clm_393285577dcb12c4 prefixes=40
+v2 exported clm_4a07dbbbd859a3ce prefixes=49
+v2 exported clm_4a53299cfe619303 prefixes=40
+v2 exported clm_543f08f2415b2a33 prefixes=42
+v2 exported clm_7dbd7c7d1c4ddf90 prefixes=42
+v2 exported clm_95d08975bc575592 prefixes=49
+Traceback (most recent call last):
+  File "/tmp/casepath-reference-polish-20261013/export-native-v1-v2-fixture.py", line 72, in <module>
+    target = Path(sys.argv[1]); target.write_bytes(raw)
+                                ~~~~~~~~~~~~~~~~~~^^^^^
+  File "/workspace/.local/share/uv/python/cpython-3.13.9-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py", line 642, in write_bytes
+    return f.write(view)
+           ~~~~~~~^^^^^^
+OSError: [Errno 28] No space left on device

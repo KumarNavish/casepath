@@ -1,0 +1,14 @@
+Runtime branch codex/casepath-reference-polish-20261013; base 2af5e4897284b0b1eab7a82a4e98273ae481b77b.
+All focused pytest commands use:
+HOME=/tmp/casepath-reference-polish-20261013/runtime-home TMPDIR=/tmp/casepath-reference-polish-20261013/runtime-tmp PYTHONPATH=$PWD/casepath-api PYTHONDONTWRITEBYTECODE=1 /workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python -m pytest
+Initial profile invariant: casepath-api/tests/test_complete_reference_intake_v1.py -q -k v2_profile_is_exact_cleanup -> failing-profile.log (1 failed, import absent), profile.log (1 passed).
+Ignored setup generated with standard repository scripts:
+SOURCE_DATE_EPOCH=1786406400 CASEPATH_SOURCE_COMMIT=2af5e4897284b0b1eab7a82a4e98273ae481b77b HOME=/tmp/casepath-reference-polish-20261013/runtime-home TMPDIR=/tmp/casepath-reference-polish-20261013/runtime-tmp PYTHONDONTWRITEBYTECODE=1 /workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python casepath-api/generate_artifacts.py
+Same prefix with casepath-api/replace_photographic_evidence.py .
+Metadata invariant: casepath-api/tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_0f4f13b1e3e1328c] -q -> failing-metadata.log (None descriptor), metadata.log (1 passed).
+Focused runtime group: casepath-api/tests/test_complete_reference_intake_v1.py -q -> runtime-focused.log
+No full suite, source seal, paid/provider calls, credential reads, production access, or frontend writes.
+Focused runtime outcome: 37 passed, 5 existing PyMuPDF deprecation warnings, 183.92s, exit 0. All nine fresh v2 completed; all nine real complete-v1 -> v2 completed, every reconstructed prefix checked against physical source hashes/exact citation offsets, legacy prefix state hashes unchanged, idempotent reruns unchanged.
+Final changed-code smoke: casepath-api/tests/test_complete_reference_intake_v1.py -q -k 'profile or clm_0f4f13b1e3e1328c' -> runtime-final-smoke.log; 3 passed, 35 deselected, 5 existing PyMuPDF deprecation warnings, 12.01s, exit 0.
+Setup-only failures before generating both ignored artifacts: initial complete_reference invocation had 12 missing lease-agreement.pdf import failures / 12 passes; second had 12 missing bedroom-corner JPEG import failures / 12 passes. Both resolved by standard repository artifact scripts. No product tests were weakened.
+Git commit 56ca8f1a183dd073e1ee1061d70fac1913355a6b, exact base 2af5e4897284b0b1eab7a82a4e98273ae481b77b. Source manifest left for Mac integration owner per explicit authorized work scope.

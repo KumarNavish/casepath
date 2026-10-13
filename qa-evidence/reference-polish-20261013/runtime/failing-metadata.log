@@ -1,0 +1,83 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_ test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_0f4f13b1e3e1328c] _
+
+tmp_path = PosixPath('/tmp/casepath-reference-polish-20261013/runtime-tmp/pytest-of-agent/pytest-2/test_completed_v1_reassesses_v0')
+corpus = <casepath_api.autonomous_corpus_v1.CanonicalCorpus object at 0x7ff1e3f12900>
+cid = 'clm_0f4f13b1e3e1328c'
+
+    @pytest.mark.parametrize('cid', ReferenceProfile().ids)
+    def test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes(tmp_path, corpus, cid):
+        from fastapi import FastAPI
+        from fastapi.testclient import TestClient
+        from casepath_api.autonomous_api_v1 import create_autonomous_router
+        legacy = ReferenceProfile.for_profile('synthetic-nine-v1')
+        old = service_at(tmp_path / 'migration.sqlite', corpus, legacy)
+        try:
+            admit(old, corpus, cid)
+            previous = old.run(cid)
+            assert previous['outcome']['assessment_status'] == 'complete'
+            assert old.store.snapshot(cid)['replay_start'] is None
+            old_rows = old.store.events(cid)
+            old_prefixes = assert_exact_prefixes(old.store, cid)
+            original_policy = deepcopy(old.policy)
+        finally:
+            old.shutdown()
+        service = service_at(tmp_path / 'migration.sqlite', corpus)
+        try:
+            assert service.policy == original_policy
+            # A read can show the valid legacy assessment, while v2 execution needs
+            # the real v2 source arrival before any accepted work is appended.
+            assert service.intake_projection(previous, historical=True)['eligible']
+            assert not service.intake_projection(previous)['eligible']
+            with pytest.raises(AutonomousStoreError, match='intake incomplete'):
+                service.run(cid)
+            assert service.store.events(cid) == old_rows
+            state = service.store.add_sources(cid, service.reference_adapter.profile.files(cid),
+                expected_revision=previous['revision'], expected_state_sha256=previous['state_sha256'],
+                idempotency_key='cleaned-v2-' + cid)
+            state = service.run(cid)
+            assert state['outcome']['assessment_status'] == 'complete', state.get('deferral')
+            assert state['evaluation']['process_status'] == 'complete'
+            assert state['acquired_sources'][:len(previous['acquired_sources'])] == previous['acquired_sources']
+            assert state['actions'][:len(previous['actions'])] == previous['actions']
+            assert state['semantic_contexts'][previous['run_id']] == previous['semantic_contexts'][previous['run_id']]
+            assert service.store.events(cid)[:len(old_rows)] == old_rows
+            prefixes = assert_exact_prefixes(service.store, cid)
+            assert prefixes[:len(old_prefixes)] == old_prefixes
+            context = state['semantic_contexts'][state['run_id']]
+            provenance = context['reference_provenance']
+            active = [s['artifact_id'] for s in context['sources']]
+            assert active == provenance['source_artifact_ids'] and len(active) == len(set(active))
+            retired = {s['sha256'] for s in legacy.value['claims'][cid]['sources']}
+            assert not retired & {s['sha256'] for s in context['sources']}
+            assert len(provenance['superseded_sources']) == len(retired)
+            assert set(provenance['superseded_source_artifact_ids']) == {
+                s['artifact_id'] for s in state['acquired_sources'] if s['sha256'] in retired}
+            descriptor = service.store.snapshot(cid)['replay_start']
+            assert descriptor == {'contract': 'casepath.reference-replay-start/1.0.0', 'claim_id': cid,
+>               'from_seq': descriptor['from_seq'], 'state_sha256': prefixes[descriptor['from_seq'] - 1]['state_sha256'],
+                            ^^^^^^^^^^^^^^^^^^^^^^
+                'event_sha256': prefixes[descriptor['from_seq'] - 1]['last_event_sha256'],
+                'run_id': state['run_id'], 'profile_id': 'synthetic-nine-v2',
+                'profile_sha256': service.reference_adapter.profile.sha256, 'source_artifact_ids': active}
+E               TypeError: 'NoneType' object is not subscriptable
+
+casepath-api/tests/test_complete_reference_intake_v1.py:445: TypeError
+=============================== warnings summary ===============================
+tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_0f4f13b1e3e1328c]
+tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_0f4f13b1e3e1328c]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_0f4f13b1e3e1328c]
+tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_0f4f13b1e3e1328c]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_0f4f13b1e3e1328c]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_0f4f13b1e3e1328c]
+1 failed, 5 warnings in 10.52s
+<sys>:0: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
