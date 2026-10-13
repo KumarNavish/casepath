@@ -617,12 +617,12 @@
     const node = requiringNodeIds(item,document).find(id => requiringNodeReached(list(after.evaluation?.nodes).find(row => row.node_id === id),item,document));
     return node ? {node,document:item.document_type,obligation:requirementIdentity(item),fact:list(item.required_fact_ids)[0]} : null;
   }
-  function formingMarkup(state, projection, selected, events = [], context = {}, knowledge = {}, attention, settled = false) {
+  function formingMarkup(state, projection, selected, events = [], context = {}, knowledge = {}, attention, settled = false, operations = null) {
     const activeRows = formingRequirements(state);
     const publication = formingPublication(state,events,attention), node = list(state.graph?.nodes).find(item => item.node_id === selected), relation = formingRelations(state,selected,context);
     const evaluated = list(state.evaluation?.nodes).find(item => item.node_id === selected), capability = projection.node_capabilities?.[selected];
     const binding = relation ? ` data-au-wire-fact="${h(relation.fact)}" data-au-wire-source="${h(relation.source)}" data-au-wire-node="${h(relation.node)}"${relation.obligation ? ` data-au-wire-obligation="${h(relation.obligation)}"` : ''}` : '';
-    return `<section class="au-forming-work" data-au-forming="${!settled}"${settled ? ' data-au-settled="true"' : ''} data-au-forming-revision="${h(state.revision)}" data-au-forming-sha="${h(state.state_sha256)}"><div class="au-forming-layout"><div class="au-forming-reading">${!state.graph ? formingKnowledgeMarkup(state,knowledge,false,true) : ''}${evidencePathMarkup(state,selected,projection,context,true)}${settled && evaluated ? `<div class="au-reading-decision"><p class="au-step-status">${h(statusLabel(evaluated.execution_state || evaluated.state))}</p>${capability?.authorized === false ? `<p class="au-reading-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}</div>` : ''}</div>${state.graph ? `<section class="au-forming-process au-evidence-process" aria-label="Complete recorded process">${publication ? `<div class="au-forming-publication-focus" data-au-publication-focus="${h(publication.id)}">${formingKnowledgeMarkup(state,knowledge,true,false,publication.knowledge,list(state.knowledge_uses))}</div>` : `${formingKnowledgeMarkup(state,knowledge,false,!settled)}${node ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h2>` : ''}`}${graphMarkup(state,selected,projection,{overview:true})}</section>` : ''}${state.graph?.family !== 'incoming_packet' && list(state.obligations).length ? `<aside class="au-forming-documents" data-au-evidence-path aria-label="Recorded document requirements"><h2>Document requirements</h2>${activeRows.length ? obligationMarkup(state,selected,activeRows,context,true) : '<p>Requirements appear when their process step is reached.</p>'}${button('All recorded requirements','data-au-detail="documents"')}</aside>` : ''}<svg class="au-forming-connections" aria-hidden="true"${binding}>${relation ? `<path data-au-forming-wire="source-process"${binding}></path>${relation.obligation ? `<path data-au-forming-wire="process-document"${binding}></path>` : ''}` : ''}</svg></div></section>`;
+    return `<section class="au-forming-work" data-au-forming="${!settled}"${settled ? ' data-au-settled="true"' : ''} data-au-forming-revision="${h(state.revision)}" data-au-forming-sha="${h(state.state_sha256)}"><div class="au-forming-layout"><div class="au-forming-reading">${!state.graph ? formingKnowledgeMarkup(state,knowledge,false,true) : ''}${operationReadingMarkup(operations) || evidencePathMarkup(state,selected,projection,context,true)}${settled && evaluated ? `<div class="au-reading-decision"><p class="au-step-status">${h(statusLabel(evaluated.execution_state || evaluated.state))}</p>${capability?.authorized === false ? `<p class="au-reading-limit">${h(capability.reason || 'Execution is unavailable for this step.')}</p>` : ''}</div>` : ''}</div>${state.graph ? `<section class="au-forming-process au-evidence-process" aria-label="Complete recorded process">${publication ? `<div class="au-forming-publication-focus" data-au-publication-focus="${h(publication.id)}">${formingKnowledgeMarkup(state,knowledge,true,false,publication.knowledge,list(state.knowledge_uses))}</div>` : `${formingKnowledgeMarkup(state,knowledge,false,!settled)}${node ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(node))}</h2>` : ''}`}${graphMarkup(state,selected,projection,{overview:true})}</section>` : ''}${state.graph?.family !== 'incoming_packet' && list(state.obligations).length ? `<aside class="au-forming-documents" data-au-evidence-path aria-label="Recorded document requirements"><h2>Document requirements</h2>${activeRows.length ? obligationMarkup(state,selected,activeRows,context,true) : '<p>Requirements appear when their process step is reached.</p>'}${button('All recorded requirements','data-au-detail="documents"')}</aside>` : ''}<svg class="au-forming-connections" aria-hidden="true"${binding}>${relation ? `<path data-au-forming-wire="source-process"${binding}></path>${relation.obligation ? `<path data-au-forming-wire="process-document"${binding}></path>` : ''}` : ''}</svg></div></section>`;
   }
   function conditionLabel(state, expression) {
     const positive = {arrears:'Rent arrears',family_home:'Family home',extension_relevant:'Tenancy extension'};
@@ -909,11 +909,11 @@
     const freshness = assessmentFreshness(state);
     const failure = state.deferral?.reason;
     const constraint = freshness.status === 'prior' ? 'Earlier findings · new sources await review.' : failure && failure !== factCaseText(fact) ? failure : '';
-    const playControls = presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Resume','data-au-demo-resume') : presentation.mode === 'replay' ? button('Play','data-au-demo-play') : '';
+    const playControls = (presentation.operations ? button('Skip to result','data-au-operation-skip') : '') + (presentation.playing ? button('Pause','data-au-demo-stop') : presentation.paused ? button('Resume','data-au-demo-resume') : presentation.mode === 'replay' ? button(presentation.operations?.finished ? 'Play saved history' : 'Play','data-au-demo-play') : '');
     const panels = [['step','Process'],['documents','Documents'],['knowledge','Knowledge'],['sources','Sources'],['activity','History']];
-    const chosen = panels.some(([id]) => id === detail) ? detail : 'step', publicationFocus = presentation.attention && (!presentation.inspectionHold || presentation.attention.retained) && formingPublication(state,events,presentation.attention), forming = chosen === 'step' && (formingWork(state,presentation) || Boolean(publicationFocus));
-    const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention) + (!state.graph ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : referenceAssessmentComplete(state) ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,undefined,true) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
-    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${featuredCase(state.claim_id) || state.origin === 'canonical_original' ? ' / Synthetic claim' : ''}${presentation.mode === 'replay' ? ' / Recorded investigation' : ''}</p>${claimHeadingMarkup(state)}${reference ? `<p class="au-reference-mode" data-au-reference-mode>Historical synthetic recording${reference.as_of ? ` · as of ${h(reference.as_of)}` : ''} · rules-based</p>` : ''}<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>${presentation.pendingStart ? 'Retry start' : 'Start investigation'}</button>` : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' ? recordButton('Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}" aria-controls="auPanel-activity">History</button></div></header>${state.revision === 0 && canWrite ? `<p class="au-meta" data-au-start-availability>${h(presentation.availability?.reason || 'Checking live execution availability…')}</p>` : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}" aria-controls="auPanel-${id}">${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion"><p>${h(state.outcome.summary)}</p>${legalBasisMarkup(state)}</div>` : chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div></div></section></section>`;
+    const chosen = panels.some(([id]) => id === detail) ? detail : 'step', publicationFocus = presentation.attention && (!presentation.inspectionHold || presentation.attention.retained) && formingPublication(state,events,presentation.attention), forming = chosen === 'step' && (formingWork(state,presentation) || Boolean(publicationFocus) || Boolean(presentation.operations));
+    const body = chosen === 'step' ? forming ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,presentation.attention,false,presentation.operations) + (!state.graph ? intakeMarkup(state,projection) : '') : !state.graph ? openingContentMarkup(state,projection) + intakeMarkup(state,projection) : referenceAssessmentComplete(state) ? formingMarkup(state,projection,selected,events,context,presentation.knowledge,undefined,true) : formingKnowledgeMarkup(state,presentation.knowledge,true) + inspectorMarkup(state,selected,projection,events,context) : chosen === 'documents' ? `<section class="au-documents"><h2>Document checklist</h2>${state.graph ? obligationMarkup(state,selected,undefined,context) + unassignedSourcesMarkup(state) : intakeMarkup(state,projection)}${canWrite && state.revision > 0 ? button('Add supporting files','data-au-add-files') : ''}</section>` : chosen === 'knowledge' ? claimKnowledgeMarkup(state,events) : chosen === 'sources' ? sourcesMarkup(state,!canWrite,projection) : `${operationHistoryMarkup(presentation.operations)}${activityMarkup(state,events,projection)}${presentation.replay ? recordButton('Playback details','replay') : ''}`;
+    return `<section class="au-quiet-claim" data-au-revision="${h(state.revision)}" data-au-state-sha="${h(state.state_sha256)}"><header class="au-work-head au-focused-claim-head"><div><p class="au-eyebrow"><button type="button" class="au-back-work" data-au-nav="work">Cases</button>${featuredCase(state.claim_id) || state.origin === 'canonical_original' ? ' / Synthetic claim' : ''}${presentation.mode === 'replay' ? ' / Recorded investigation' : ''}</p>${claimHeadingMarkup(state)}${presentation.operations ? `<p class="au-reference-mode" data-au-operation-mode>${presentation.operations.recorded || presentation.operations.binding?.mode === 'recorded_operations' ? 'Recorded operation trace' : presentation.operations.savedFallback ? 'Saved result' : 'Live rules-based check'} · historical synthetic packet${presentation.operations.asOf || reference?.as_of ? ` · as of ${h(presentation.operations.asOf || reference?.as_of)}` : ''}</p>` : reference ? `<p class="au-reference-mode" data-au-reference-mode>Historical synthetic recording${reference.as_of ? ` · as of ${h(reference.as_of)}` : ''} · rules-based</p>` : ''}<p class="au-claim-constraint"><span data-au-claim-status>${h(claimStatusLabel(state.status,state))}.</span>${constraint ? ` ${h(constraint)}` : ''}${state.outcome?.assessment_status === 'complete' && reference && state.outcome.status === 'deferred' ? ' Assessment only; no external action taken.' : ''} <span class="au-read-state" data-au-read-state-label></span></p></div><div class="au-work-controls">${canWrite ? state.revision === 0 || presentation.pendingStart ? `<button type="button" class="au-primary" data-au-start${presentation.availability?.ready ? '' : ' disabled'}>${presentation.pendingStart ? 'Retry start' : 'Start investigation'}</button>` : state.status === 'running' ? button('Pause work','data-au-pause') : state.deferral?.code === 'paused' ? button('Resume work','data-au-resume') : '' : ''}${playControls}${presentation.mode === 'replay' ? recordButton('Choose case','demo') : ''}<button type="button" class="au-link" data-au-detail="activity" aria-pressed="${chosen === 'activity'}" aria-controls="auPanel-activity">History</button></div></header>${state.revision === 0 && canWrite ? `<p class="au-meta" data-au-start-availability>${h(presentation.availability?.reason || 'Checking live execution availability…')}</p>` : ''}<section class="au-evidence-canvas" data-au-canvas><nav class="au-context-nav" aria-label="Case views">${panels.filter(([id]) => id !== 'activity').map(([id,label],index) => `<button type="button"${index > 2 ? ' class="au-context-utility"' : ''} data-au-detail="${id}" aria-pressed="${chosen === id}" aria-controls="auPanel-${id}">${label}</button>`).join('')}</nav><div class="au-evidence-stage" data-au-evidence-stage>${chosen === 'step' && !active(state.status) && state.outcome?.summary ? `<div class="au-assessment-conclusion"><p>${h(state.outcome.summary)}</p>${legalBasisMarkup(state)}</div>` : chosen === 'step' && !state.outcome ? legalBasisMarkup(state) : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && list(state.graph?.nodes).some(node => node.node_id === selected) ? `<h2 class="au-process-question au-reading-question" tabindex="-1" data-au-inspector-heading="${h(selected)}">${h(name(list(state.graph.nodes).find(node => node.node_id === selected)))}</h2>` : ''}${chosen === 'step' && !forming && !referenceAssessmentComplete(state) && state.graph ? `<section class="au-process-hero au-evidence-process" aria-label="Decision neighborhood">${graphMarkup(state,selected,projection)}</section>` : ''}<div class="au-context-body" data-au-context="${h(chosen)}"><section class="au-context-view" id="auPanel-${chosen}" data-au-panel="${chosen}">${body}</section></div></div></section></section>`;
   }
 
   function replayIdentityMarkup(record) {
@@ -1073,6 +1073,140 @@
     if (Array.isArray(value)) return '[' + value.map(canonicalJSON).join(',') + ']';
     if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonicalJSON(value[key])).join(',') + '}';
     return JSON.stringify(value);
+  }
+  const OPERATIONS_CONTRACT = 'casepath.operations-stream/1.0.0';
+  const OPERATION_FRAME_BYTES = 2 * 1024 * 1024, OPERATION_HISTORY_BYTES = 8 * 1024 * 1024;
+  async function* operationFrames(response) {
+    if (!response?.body?.getReader) throw new Error('Operation streaming is unavailable.');
+    const reader = response.body.getReader(), decoder = new TextDecoder('utf-8',{fatal:true});
+    let pending = '';
+    try {
+      while (true) {
+        const chunk = await reader.read();
+        pending += decoder.decode(chunk.value || new Uint8Array(),{stream:!chunk.done});
+        let newline;
+        while ((newline = pending.indexOf('\n')) >= 0) {
+          const line = pending.slice(0,newline); pending = pending.slice(newline+1);
+          if (line.length * 2 > OPERATION_FRAME_BYTES) throw new Error('An operation frame exceeds its bound.');
+          if (line.trim()) yield JSON.parse(line);
+        }
+        if (pending.length * 2 > OPERATION_FRAME_BYTES) throw new Error('An operation frame exceeds its bound.');
+        if (chunk.done) { if (pending.trim()) yield JSON.parse(pending); break; }
+      }
+    } finally { try { await reader.cancel(); } catch (_) {} reader.releaseLock?.(); }
+  }
+  function bufferedOperations(response, signal, resultAvailable = null) {
+    // Drain the HTTP response at compute speed. Only application consumption
+    // is paced or paused; the engine and proxy never wait for presentation.
+    const queue = [], buffer = {result:null};
+    let bytes = 0, ended = false, failure = null, wake = null;
+    const release = () => { const resolve = wake; wake = null; resolve?.(); };
+    signal.addEventListener('abort',release,{once:true});
+    const producer = (async () => {
+      try {
+        for await (const frame of operationFrames(response)) {
+          if (signal.aborted) break;
+          const size = new TextEncoder().encode(canonicalJSON(frame)).byteLength;
+          if (bytes + size > 24 * 1024 * 1024 || queue.length >= 10002) throw new Error('The buffered operation stream exceeds its bound.');
+          queue.push({frame,size}); bytes += size; if (frame.type === 'result') { buffer.result = frame; resultAvailable?.(frame); } release();
+        }
+      } catch (error) { failure = error; }
+      finally { ended = true; release(); signal.removeEventListener('abort',release); }
+    })();
+    return Object.assign(buffer,{producer,[Symbol.asyncIterator]() { return this; },async next() {
+      while (!queue.length && !ended && !signal.aborted) await new Promise(resolve => { wake = resolve; });
+      if (signal.aborted) return {done:true};
+      if (failure) throw failure;
+      const row = queue.shift(); if (!row) return {done:true}; bytes -= row.size;
+      return {done:false,value:row.frame};
+    }});
+  }
+  function checkedOperationBinding(frame, head, start) {
+    if (frame?.contract !== OPERATIONS_CONTRACT || frame.type !== 'binding' || !start ||
+        frame.claim_id !== head.claimId || frame.run_id !== start.run_id || frame.from_seq !== start.from_seq ||
+        frame.profile_id !== start.profile_id || frame.profile_sha256 !== start.profile_sha256 ||
+        frame.current_revision !== head.revision || frame.current_state_sha256 !== head.state_sha256 ||
+        frame.current_event_sha256 !== head.event_sha256 || !['historical_recomputed','recorded_operations'].includes(frame.mode) ||
+        head.source_roster_sha256 && frame.source_roster_sha256 !== head.source_roster_sha256 ||
+        head.rule_set_sha256 && frame.rule_set_sha256 !== head.rule_set_sha256 ||
+        frame.mode === 'historical_recomputed' && frame.newly_recomputed !== true ||
+        ![frame.source_roster_sha256,frame.rule_set_sha256,frame.input_sha256].every(isHash)) throw new Error('The operation binding differs from the selected saved assessment.');
+    return frame;
+  }
+  async function checkedOperation(frame, trace, state) {
+    if (frame?.contract !== OPERATIONS_CONTRACT || frame.type !== 'operation' || !trace.binding ||
+        frame.seq !== trace.rows.length+1 || !frame.id || trace.rows.some(row => row.id === frame.id) ||
+        !frame.kind || !frame.object?.id || !Array.isArray(frame.cause_ids) ||
+        frame.cause_ids.some(id => !trace.rows.some(row => row.id === id)) ||
+        frame.previous_operation_sha256 !== (trace.rows.at(-1)?.operation_sha256 || null) ||
+        ![frame.input_sha256,frame.result_sha256,frame.operation_sha256].every(isHash)) throw new Error('The operation chain is incomplete or out of sequence.');
+    const material = {...frame}; delete material.operation_sha256; delete material.contract; delete material.type;
+    if (await digest(canonicalJSON(material)) !== frame.operation_sha256 || await digest(canonicalJSON(frame.input)) !== frame.input_sha256 || await digest(canonicalJSON(frame.result)) !== frame.result_sha256) throw new Error('The operation failed its identity check.');
+    if (frame.kind === 'source.open' && !frame.source) {
+      const opened = frame.result, id = opened?.artifact_id || frame.object.id, descriptor = list(state.source_descriptors).find(item => item.artifact_id === id);
+      if (!descriptor || (opened.sha256 || frame.input.sha256) !== descriptor.sha256 || typeof opened.text !== 'string' || !isHash(opened.text_sha256) || await digest(opened.text) !== opened.text_sha256) throw new Error('The opened operation source failed its original identity check.');
+      trace.sources.set(id,{...descriptor,...opened,sha256:descriptor.sha256});
+    }
+    let source = null;
+    if (frame.source) {
+      const pin = frame.source, descriptor = list(state.source_descriptors).find(item => item.artifact_id === pin.artifact_id);
+      source = trace.sources.get(pin.artifact_id) || list(state.acquired_sources).find(item => item.artifact_id === pin.artifact_id);
+      if (frame.kind === 'source.open' && typeof frame.result?.text === 'string') source = {...pin,text:frame.result.text};
+      if (!descriptor || descriptor.sha256 !== pin.sha256 || !source || source.sha256 !== pin.sha256 || source.text_sha256 !== pin.text_sha256 ||
+          !isHash(pin.text_sha256) || await digest(source.text) !== pin.text_sha256 || pin.offset_unit !== 'unicode_code_point') throw new Error('The operation source differs from the saved source packet.');
+      const chars = Array.from(source.text);
+      if (!Number.isSafeInteger(pin.start_char) || !Number.isSafeInteger(pin.end_char) || pin.start_char < 0 || pin.end_char < pin.start_char || pin.end_char > chars.length || chars.slice(pin.start_char,pin.end_char).join('') !== pin.quote) throw new Error('The operation passage is not the exact Unicode source span.');
+      trace.sources.set(pin.artifact_id,source);
+    }
+    const bytes = canonicalJSON(frame).length * 2;
+    if (trace.rows.length >= 4096 || trace.bytes + bytes > OPERATION_HISTORY_BYTES) throw new Error('The operation history exceeds its inspection bound.');
+    trace.bytes += bytes; trace.rows.push(frame);
+    return frame;
+  }
+  function operationLabel(operation) {
+    if (operation?.kind === 'fact.extract' && operation.result?.verification_required === false) return 'Inspect verified finding';
+    if (operation?.kind === 'branch.activate' && operation.result?.activation === 'unresolved') return 'Evaluate unresolved branch';
+    return ({'source.open':'Open source','span.read':'Read passage','phrase.match':'Check source phrase','fact.extract':'Extract provisional finding','verification.check':'Verify source support','condition.evaluate':'Evaluate condition','branch.activate':'Activate branch','branch.drop':'Exclude branch','document.require':'Derive document requirement','document.check':'Check document source','decision':'Derive assessment','knowledge.reuse':'Reuse recorded procedure','knowledge.add':'Inspect historical addition','step.complete':'Complete recorded step'})[operation?.kind] || words(operation?.kind);
+  }
+  function operationReadingMarkup(trace) {
+    const operation = trace?.current;
+    if (!operation) return '';
+    const cause = trace.rows.find(row => row.id === operation.cause_ids?.at(-1)), pin = operation.source || (operation.kind === 'phrase.match' ? cause?.source : null), source = trace.sources.get(pin?.artifact_id || (operation.kind === 'source.open' ? operation.object.id : '')), chars = source && Array.from(source.text);
+    const objectLabel = operation.object.label || name(list(trace.state?.graph?.nodes).find(row => row.node_id === operation.object.id)) || name(list(trace.state?.facts).find(row => row.fact_id === operation.object.id)) || name(list(trace.state?.obligations).find(row => row.obligation_id === operation.object.id || row.document_type === operation.object.id)) || words(operation.object.id.replace(/^(fact|condition):/,''));
+    const summary = operation.result?.summary || operation.result?.reason || operation.result?.verdict || operation.result?.route_state || operation.result?.activation || operation.result?.status || (typeof operation.result?.matched === 'boolean' ? operation.result.matched ? 'Phrase found' : 'Phrase absent' : '');
+    const passage = chars ? pin ? `${h(chars.slice(Math.max(0,pin.start_char-60),pin.start_char).join(''))}<mark data-au-operation-span="${h(operation.id)}">${h(pin.quote)}</mark>${h(chars.slice(pin.end_char,pin.end_char+120).join(''))}` : h(chars.slice(0,800).join('')) : '';
+    return `<section class="au-operation-reading" data-au-operation-object="${h(operation.object.id)}" data-au-object-type="${h(operation.object.type)}" data-au-object-id="${h(operation.object.id)}"><p class="au-reading-label">${h(operationLabel(operation))}</p>${source ? `<button type="button" class="au-link" data-au-source="${h(source.artifact_id)}" data-au-source-origin="operation:${h(operation.id)}">${h(source.file_name || 'Original source')} ↗</button><pre class="au-operation-passage">${passage}</pre>` : ''}${operation.object.type !== 'source' || summary ? `<p class="au-operation-summary">${operation.object.type === 'source' ? '' : h(objectLabel)}${summary ? `${operation.object.type === 'source' ? '' : ' · '}${h(summary)}` : ''}</p>` : ''}${operation.kind === 'fact.extract' && operation.result?.verification_required !== false ? '<p class="au-meta">Provisional finding · the saved process changes after verification.</p>' : operation.kind === 'knowledge.add' ? '<p class="au-meta">Historical addition · this demonstration saves no knowledge.</p>' : ''}<button type="button" class="au-link" data-au-inspect="operation" data-au-record-id="${h(operation.id)}">Inspect operation</button></section>`;
+  }
+  function operationHistoryMarkup(trace) {
+    if (!trace?.binding) return '';
+    return `<section class="au-operation-history"><h3>Assessment operations</h3><p class="au-meta">${!trace.recorded && trace.binding.mode === 'historical_recomputed' ? 'Recomputed from the saved source packet.' : 'Recorded operation trace.'} Saved case history remains below.</p><ol class="au-event-list">${trace.rows.slice().reverse().map(operation => `<li><button type="button" class="au-link" data-au-inspect="operation" data-au-record-id="${h(operation.id)}">${h(operationLabel(operation))} · ${h(operation.object.label || words(operation.object.id))}</button></li>`).join('')}</ol></section>`;
+  }
+  async function checkedOperationCheckpoint(frame, trace) {
+    const previous = trace.transportState;
+    if (frame?.contract !== OPERATIONS_CONTRACT || frame.type !== 'checkpoint' || frame.verified !== true ||
+        !trace.binding || !Number.isSafeInteger(frame.journal_seq) || frame.journal_seq < 0 ||
+        previous && frame.journal_seq !== previous.revision+1 || !previous && frame.journal_seq !== trace.binding.from_seq) throw new Error('The operation checkpoint is out of sequence.');
+    let state;
+    if (frame.state) { if (previous) throw new Error('A full operation checkpoint replaced its delta base.'); state = frame.state; }
+    else {
+      if (!previous || frame.base_state_sha256 !== previous.state_sha256 || !frame.state_delta?.set || !Array.isArray(frame.state_delta.remove)) throw new Error('The operation checkpoint has no exact delta base.');
+      state = {...previous,...frame.state_delta.set};
+      for (const field of frame.state_delta.remove) { if (typeof field !== 'string') throw new Error('The operation checkpoint removal is invalid.'); delete state[field]; }
+    }
+    const material = {...state}; delete material.state_sha256;
+    if (state.claim_id !== trace.binding.claim_id || state.revision !== frame.journal_seq || state.state_sha256 !== frame.state_sha256 ||
+        state.last_event_sha256 !== frame.event_sha256 || await digest(canonicalJSON(material)) !== state.state_sha256) throw new Error('The operation checkpoint failed its exact state hash.');
+    const priorEvents = previous ? trace.journal : trace.pinnedJournal.filter(event => event.seq < frame.journal_seq);
+    if (list(frame.events).length !== 1 || canonicalJSON(frame.events[0]) !== canonicalJSON(trace.pinnedJournal.find(event => event.seq === frame.journal_seq))) throw new Error('The operation checkpoint event differs from its verified saved history.');
+    const events = [...priorEvents,...list(frame.events)];
+    if (frame.journal_seq > 0) {
+      const event = events.at(-1), last = priorEvents.at(-1);
+      if (event?.event_sha256 !== frame.event_sha256 || event?.previous_event_sha256 !== (last?.event_sha256 || null)) throw new Error('The operation checkpoint broke its saved event chain.');
+    }
+    const incoming = readReplay({...frame,state,events,projection:frame.projection || {claim_id:state.claim_id,revision:state.revision,state_sha256:state.state_sha256},replay_only:true},trace.binding.claim_id,frame.journal_seq);
+    if (frame.current_revision !== trace.binding.current_revision || frame.current_state_sha256 !== trace.binding.current_state_sha256 || frame.current_event_sha256 !== trace.binding.current_event_sha256) throw new Error('The operation checkpoint changed its pinned saved head.');
+    trace.transportState = state; trace.journal = events;
+    return incoming;
   }
   async function checkedPreview(state, descriptor, response) {
     if (!response || response.preview_only !== true || response.evidence_admitted !== false || Object.prototype.hasOwnProperty.call(response,'receipt_sha256')) throw new Error('The source preview is not a read-only preview.');
@@ -1234,7 +1368,7 @@
     const mainTag = container.tagName === 'MAIN' ? 'div' : 'main';
     if (!fetcher) throw new Error('The autonomous API is unavailable.');
     let publicReadOnly = root.CASEPATH_PUBLIC_READ_ONLY === true;
-    let publicationAttention = null, inspectionHold = false;
+    let publicationAttention = null, inspectionHold = false, operationTrace = null, attentionMarker = null, attentionPosition = null, attentionAnimation = null;
     let disposed = false, epoch = 0, timer = null, selected = null, current = null, projection = {}, cursor = null, history = [], detail = 'step', view = 'work', disconnected = false, connectionFailed = false, busy = false, status = null, pendingIntake = null, pendingArrival = null, pendingControl = null, dialogReturn = null, recordReturn = null, recordSelection = null, sourceEpoch = 0, polling = null, claimRead = 0;
     let openingId = null, openingPreferences = {}, snapshotAvailable = null, presentationMode = 'saved', replayRecord = null, demoMode = 'reference', demoSession = null, demoTimer = null, pausedPresentation = null, pendingStart = null, nativeSourceURL = null;
     let evidenceContext = {}, selectionMotion = null, tetherGeometry = null, graphViewportWidth = null, interactionMotion = null, freshClaim = false, statusAuthority = null, readGeneration = 0;
@@ -1591,7 +1725,7 @@
       if (view === 'work') { const main = container.querySelector('.au-main'); collection.scrollTop = host.scrollTop || 0; collection.mainTop = main?.scrollTop || 0; collection.mainLeft = main?.scrollLeft || 0; collection.scrollX = root.scrollX || 0; collection.scrollY = root.scrollY || 0; }
       preserveClaimView();
     }
-    function setView(name) { view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
+    function setView(name) { if (name !== 'claim') { for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); } view = name; renderedClaimId = null; freshClaim = false; statusAuthority = null; host.setAttribute?.('data-au-view-state',name); host.removeAttribute?.('data-au-read-state'); }
     function revealGraphNode(node, center = false) {
       const viewport = host.querySelector('.au-graph-viewport');
       const area = viewport?.getBoundingClientRect?.(), bounds = node?.getBoundingClientRect?.();
@@ -1637,6 +1771,7 @@
       if (!current || view !== 'claim') return;
       if (doc.hidden) { claimRenderComplete = false; return; }
       evidenceContext = evidenceSelection(current,selected,evidenceContext);
+      if (operationTrace) { operationTrace.state = current; host.setAttribute?.('data-au-current-operation',operationTrace.current?.id || ''); host.setAttribute?.('data-au-operation-run-mode',operationTrace.savedFallback ? 'saved_result' : operationTrace.recorded ? 'recorded_operations' : operationTrace.binding?.mode || 'opening'); host.setAttribute?.('data-au-operation-presentation',operationTrace.finished ? 'completed' : pausedPresentation ? 'paused' : 'playing'); host.setAttribute?.('data-au-operation-result-available',String(operationTrace.finished || operationTrace.buffer?.result?.exact_output_verified === true && operationTrace.buffer.result.state_sha256 === operationTrace.binding?.current_state_sha256 && operationTrace.buffer.result.current_event_sha256 === operationTrace.binding?.current_event_sha256)); host.setAttribute?.('data-au-operation-result-verified',String(operationTrace.verifiedResult === true)); } else { for (const attribute of ['data-au-current-operation','data-au-operation-run-mode','data-au-operation-presentation','data-au-operation-result-available','data-au-operation-result-verified']) host.removeAttribute?.(attribute); }
       claimRenderComplete = false;
       motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); interactionMotion = null;
       const focused = doc.activeElement, focusKey = focusToken(focused), sources = sourceControls(host), objects = renderedClaimId === current.claim_id ? formingObjects(host) : new Map();
@@ -1649,7 +1784,7 @@
       const arrival = sameClaim && host.querySelector('[data-au-arrival]') || arrivalForms.get(current.claim_id), focusInArrival = arrival?.contains?.(focused);
       // Moving the original node keeps native FileList, entered text and retry state.
       arrival?.remove?.();
-      host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,readOnly:publicReadOnly,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
+      host.innerHTML = workMarkup(current,projection,selected,history,detail,evidenceContext,{mode:presentationMode,readOnly:publicReadOnly,replay:replayRecord,knowledge:knowledgeCache?.value,attention:publicationAttention || {},inspectionHold,pendingStart:Boolean(pendingStart),operations:operationTrace,playing:Boolean(demoSession),paused:Boolean(pausedPresentation),position:demoSession?.index,claims,writable:writable(status),status,availability:pendingStart ? {ready:true,reason:'The start response is unconfirmed. Retry uses the same request.'} : claimAvailability(status,current,projection)});
       reuseSourceControls(host,sources);
       reuseFormingObjects(host,objects);
       if (arrival) host.querySelector('[data-au-arrival]')?.replaceWith(arrival);
@@ -1663,7 +1798,7 @@
       if (navigation || !priorViewport && !host.querySelector('[data-au-forming="true"]')) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
       drawEdges(navigation);
       motion = animateTransition(host,changes,{hidden:doc.hidden,dialogOpen:dialog.open || recordDialog.open,reducedMotion:reduced?.matches,keyboard,inspecting:inspectionHold,activeElement:doc.activeElement,selected});
-      synchronizeAuthority(); synchronizeRecord(); rememberLastCase();
+      synchronizeAuthority(); synchronizeRecord(); rememberLastCase(); positionOperationAttention();
       claimRenderComplete = true; renderedClaimId = current.claim_id;
     }
     function setGraphExpanded(expanded) {
@@ -1837,7 +1972,7 @@
       if (!preferences.demo) stopPresentation();
       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
       leaveView(); route(claimFragment(id,preferences),writeHistory);
-      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
+      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); operationTrace = null; attentionMarker?.remove?.(); attentionPosition = null; current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
       claimRenderComplete = false;
       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
       const opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
@@ -1860,14 +1995,15 @@
         const previous = claimViews.get(id); selected = preferredNode(current,preferences.node || previous?.selected,history); evidenceContext = preferredEvidenceContext(current,selected,history,preferences,previous); detail = preferences.detail || previous?.detail || 'step';
         renderClaim(); notice(''); focusTitle();
         primeClaimReads(token,!claimsLoaded);
-        if (preferences.demo && demoSession?.mode === 'replay') {
+        if (preferences.demo && ['replay','operations'].includes(demoSession?.mode)) {
           const session = demoSession;
           session.replayHead = {claimId:id,revision:replayRecord.current_revision,state_sha256:replayRecord.current_state_sha256,event_sha256:replayRecord.current_event_sha256};
           session.referenceReady = Boolean(opening?.referenceReady);
           session.replayStart = through === 0 && session.collection !== 'legacy' ? incoming.replay.replay_start : null;
-          session.verifiedReplayStart = opening?.verifiedReplayStart || null;
+          session.verifiedReplayStart = opening?.verifiedReplayStart || null; session.verifiedJournal = opening?.verifiedJournal || null; session.referenceAsOf = opening?.referenceAsOf; session.operationBinding = opening?.operationBinding;
           session.preparing = null; session.displayedAt = Date.now(); session.motionDuration = motion?.duration || 0;
-          await startReplay(session,token);
+          if (session.mode === 'operations') startOperations(session,token);
+          else await startReplay(session,token);
         }
         return current;
       } catch (error) { if (!disposed && token === epoch) { if (session) presentationFailed(session,`Verified replay unavailable: ${error.message}`); else { notice(`Verified replay unavailable: ${error.message}`,true); host.innerHTML = button('Return to demonstration','data-au-nav="demonstration"'); stopPresentation(); } } }
@@ -2068,11 +2204,134 @@
       const chosen = claimFragment(demoCases(collection)[0].claim_id,{mode:'replay',collection,through:0,detail:'step'});
       route(chosen,writeHistory);
       if (!writeHistory && root.history?.replaceState && root.location?.hash !== chosen) { root.history.replaceState(null,'',root.location.pathname + root.location.search + chosen); routedFragment = chosen; }
-      demoSession = {mode:'replay',collection,index:0};
+      demoSession = {mode:collection === 'legacy' ? 'replay' : 'operations',collection,index:0};
       await openPresentationCase(demoSession,writeHistory);
     }
     function stopPresentation() {
+      const session = demoSession || pausedPresentation;
+      session?.operationController?.abort(); session?.operationWake?.();
+      attentionAnimation?.cancel();
       if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; demoSession = null; pausedPresentation = null; replayPrefixes.clear();
+    }
+    function positionOperationAttention() {
+      attentionAnimation?.cancel();
+      if (!operationTrace?.current || detail !== 'step' || doc.hidden || reduced?.matches || operationTrace.finished) { attentionMarker?.remove?.(); return; }
+      const operation = operationTrace.current, object = operation.object, canvas = host.querySelector('[data-au-canvas]');
+      if (!canvas?.getBoundingClientRect) return;
+      const nodes = [...host.querySelectorAll('[data-au-node]')], facts = [...host.querySelectorAll('[data-au-fact]')], documents = [...host.querySelectorAll('[data-au-obligation]')];
+      const factNodes = object.type === 'fact' ? list(current.obligations).filter(row => list(row.required_fact_ids).includes(object.id)).flatMap(row => list(row.node_ids).concat(row.node_id || row.decision_node_id || [])) : [];
+      const nodeId = object.node_id || operation.result?.node_id || operation.input?.node_id || factNodes[0] || (object.type === 'node' ? object.id : null);
+      const edge = object.type === 'edge' ? [...host.querySelectorAll('[data-au-edge]')].find(item => item.dataset.auEdge === object.id) : null;
+      const target = edge || (operation.kind === 'fact.extract' ? nodes.find(item => item.dataset.auNode === nodeId) :
+        operation.kind.startsWith('source.') || ['span.read','phrase.match'].includes(operation.kind) ? host.querySelector('[data-au-operation-span]') :
+        operation.kind.startsWith('document.') ? documents.find(item => item.dataset.auObligation === object.id || item.dataset.auDocument === (object.document_type || object.id)) :
+        operation.kind.startsWith('knowledge.') ? host.querySelector('[data-au-knowledge-use]') || host.querySelector('[data-au-knowledge-publication]') :
+        nodes.find(item => item.dataset.auNode === nodeId) || facts.find(item => item.dataset.auFact === object.id));
+      const destination = target || host.querySelector('[data-au-operation-object]');
+      if (!destination?.getBoundingClientRect) return;
+      attentionMarker ||= doc.createElement('div'); attentionMarker.className = 'au-operation-attention'; attentionMarker.setAttribute('aria-hidden','true'); attentionMarker.dataset.auOperationAttention = operation.id;
+      canvas.appendChild(attentionMarker);
+      const area = canvas.getBoundingClientRect(); let rect = destination.getBoundingClientRect();
+      const passage = destination.closest?.('.au-operation-passage');
+      if (passage) { const clip = passage.getBoundingClientRect(), left = Math.max(rect.left,clip.left), top = Math.max(rect.top,clip.top), right = Math.min(rect.right,clip.right), bottom = Math.min(rect.bottom,clip.bottom); rect = {left,top,width:Math.max(0,right-left),height:Math.max(0,bottom-top)}; }
+      const next = {x:rect.left-area.left+canvas.scrollLeft-5,y:rect.top-area.top+canvas.scrollTop-5,width:Math.max(12,rect.width+10),height:Math.max(12,rect.height+10)};
+      const transform = position => `translate(${position.x}px,${position.y}px)`;
+      attentionMarker.style.transform = transform(next); attentionMarker.style.width = `${next.width}px`; attentionMarker.style.height = `${next.height}px`;
+      if (attentionPosition && !inspectionHold && attentionMarker.animate) attentionAnimation = attentionMarker.animate([{transform:transform(attentionPosition),width:`${attentionPosition.width}px`,height:`${attentionPosition.height}px`},{transform:transform(next),width:`${next.width}px`,height:`${next.height}px`}],{duration:520,easing:'cubic-bezier(.2,.7,.2,1)',fill:'none'});
+      attentionPosition = next;
+    }
+    function operationActive(session, token) { return !disposed && token === epoch && !pendingRoute() && view === 'claim' && current?.claim_id === session.claimId && !session.operationController?.signal.aborted; }
+    async function operationGate(session, token, duration = 0) {
+      if (duration && !session.skip && !reduced?.matches && demoSession === session && !doc.hidden && !inspectionHold) await new Promise(resolve => { session.operationWake = resolve; demoTimer = root.setTimeout(() => { demoTimer = null; session.operationWake = null; resolve(); },duration); });
+      while (operationActive(session,token) && !session.skip && (demoSession !== session || doc.hidden || inspectionHold || dialog.open || recordDialog.open)) await new Promise(resolve => { session.operationWake = resolve; });
+      session.operationWake = null;
+      return operationActive(session,token);
+    }
+    function skipOperations() {
+      const session = demoSession?.mode === 'operations' ? demoSession : pausedPresentation?.mode === 'operations' ? pausedPresentation : null;
+      if (!session) return;
+      inspectionHold = false; pausedPresentation = null; demoSession = session; session.skip = true;
+      if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; session.operationWake?.();
+      attentionAnimation?.cancel(); attentionMarker?.remove?.();
+    }
+    async function fallbackOperations(session, token, reason) {
+      const response = await request(`/claims/${key(session.claimId)}/replay?through_seq=${session.replayHead.revision}`), incoming = readReplay(response,session.claimId,session.replayHead.revision);
+      checkedReplayHead(incoming,session);
+      if (!await operationGate(session,token)) return;
+      current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
+      if (operationTrace) { operationTrace.finished = true; operationTrace.current = null; operationTrace.savedFallback = true; }
+      stopPresentation(); renderClaim(); notice(`Live rules-based assessment unavailable: ${reason} Showing the verified saved result; its history remains available.`,true);
+    }
+    async function startOperations(session, token) {
+      if (!operationActive(session,token) || session.operationStarted) return;
+      session.operationStarted = true; session.operationController = new AbortController(); controllers.add(session.operationController);
+      const operationController = session.operationController;
+      operationTrace = {binding:null,rows:[],bytes:0,sources:new Map(),current:null,journal:[],pinnedJournal:session.verifiedJournal || [],transportState:null,finished:false,frameHashes:[],visibleResults:new Map()};
+      try {
+        if ((!session.referenceReady && !await verifyReferenceHead(session)) || !session.verifiedReplayStart) throw new Error('No current completed reference assessment is available.');
+        operationTrace.pinnedJournal = session.verifiedJournal || []; operationTrace.asOf = session.referenceAsOf;
+        if (!await operationGate(session,token)) return;
+        let response = await fetcher(base+`/claims/${key(session.claimId)}/operations?mode=${session.useRecorded ? 'recorded' : 'live'}`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:session.operationController.signal});
+        if (!response.ok && !session.useRecorded) {
+          response = await fetcher(base+`/claims/${key(session.claimId)}/operations?mode=recorded`,{method:'GET',headers:{Accept:'application/x-ndjson'},signal:session.operationController.signal});
+          if (!response.ok) throw new Error(`Live assessment and stored operation trace are unavailable (HTTP ${response.status}).`);
+          session.recorded = true; operationTrace.recorded = true;
+        }
+        if (!response.ok) throw new Error(`Stored operation trace unavailable (HTTP ${response.status}).`);
+        if (session.useRecorded) { session.recorded = true; operationTrace.recorded = true; }
+        const trace = operationTrace;
+        operationTrace.buffer = bufferedOperations(response,operationController.signal, result => {
+          if (operationActive(session,token) && operationTrace === trace && !doc.hidden && result.contract === OPERATIONS_CONTRACT && result.exact_output_verified === true && result.state_sha256 === session.replayHead.state_sha256 && result.current_event_sha256 === session.replayHead.event_sha256) host.setAttribute?.('data-au-operation-result-available','true');
+        });
+        for await (const frame of operationTrace.buffer) {
+          if (!await operationGate(session,token)) return;
+          if (frame.contract !== OPERATIONS_CONTRACT) throw new Error('The operation stream contract is unavailable.');
+          if (frame.type !== 'result') operationTrace.frameHashes.push(await digest(canonicalJSON(frame)));
+          if (frame.type === 'binding') {
+            if (operationTrace.binding) throw new Error('The stream repeated its operation binding.');
+            operationTrace.binding = checkedOperationBinding(frame,{...session.replayHead,...session.operationBinding},session.verifiedReplayStart); renderClaim();
+          } else if (frame.type === 'operation') {
+            const operation = await checkedOperation(frame,operationTrace,current);
+            if (!await operationGate(session,token)) return;
+            const identity = canonicalJSON({kind:operation.kind,object:operation.object,result:operation.result,source:operation.source});
+            const semanticKey = `${operation.kind}:${operation.object.type}:${operation.object.id}`;
+            const repeat = operationTrace.visibleResults.get(semanticKey) === identity;
+            if (!repeat && !session.skip && !reduced?.matches) {
+              operationTrace.visibleResults.set(semanticKey,identity); operationTrace.current = operation;
+              const nodeId = operation.object.node_id || operation.result?.node_id || (operation.object.type === 'node' ? operation.object.id : null);
+              if (nodeId && list(current.graph?.nodes).some(node => node.node_id === nodeId)) { selected = nodeId; evidenceContext = evidenceSelection(current,selected); }
+              detail = 'step'; renderClaim();
+              if (!await operationGate(session,token,['fact.extract','branch.activate','branch.drop','document.require','document.check','decision'].includes(operation.kind) ? 700 : operation.kind === 'phrase.match' ? 450 : 180)) return;
+            }
+          } else if (frame.type === 'checkpoint') {
+            const incoming = await checkedOperationCheckpoint(frame,operationTrace);
+            if (!await operationGate(session,token)) return;
+            current = incoming.state; projection = incoming.projection; cursor = incoming.accepted.cursor; history = incoming.accepted.events; replayRecord = incoming.replay;
+            selected = preferredNode(current,selected,history); evidenceContext = evidenceSelection(current,selected,evidenceContext);
+            if (!session.skip && !reduced?.matches) renderClaim();
+          } else if (frame.type === 'result') {
+            if (!operationTrace.binding || current.revision !== session.replayHead.revision || current.state_sha256 !== session.replayHead.state_sha256 ||
+                frame.state_sha256 !== current.state_sha256 || frame.operation_count !== operationTrace.rows.length || frame.operation_chain_sha256 !== operationTrace.rows.at(-1)?.operation_sha256 || frame.exact_output_verified !== true || frame.trace_sha256 !== await digest(canonicalJSON(operationTrace.frameHashes))) throw new Error('The operation result differs from its pinned saved result.');
+            operationTrace.finished = true; operationTrace.verifiedResult = true; operationTrace.current = null; selected = preferredNode(current,selected,history); renderClaim();
+            const next = demoCases(session.collection)[session.index+1];
+            if (next && !session.skip && !reduced?.matches) {
+              presentationOpening(session,next.claim_id);
+              if (!await operationGate(session,token,1000)) return;
+              session.operationStarted = false; session.useRecorded = false; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null;
+              await openPresentationCase(session,true,session.index+1); return;
+            }
+            stopPresentation(); renderClaim(); notice(session.recorded ? 'Recorded operation trace finished. No case or knowledge changes were saved.' : 'Rules-based assessment complete. Recomputed from the saved synthetic packet; no case or knowledge changes were saved.'); return;
+          } else if (frame.type === 'error') throw new Error(frame.message || frame.reason || frame.detail || 'The rules-based assessment stopped.');
+          else throw new Error('The operation stream contains an unknown frame.');
+        }
+        throw new Error('The operation stream ended without a verified result.');
+      } catch (error) {
+        if (operationActive(session,token)) {
+          if (!session.recorded && !session.useRecorded) { session.useRecorded = true; session.operationStarted = false; operationController.abort(); session.operationController = null; startOperations(session,token); return; }
+          try { await fallbackOperations(session,token,error.message); }
+          catch (fallback) { if (operationActive(session,token)) { stopPresentation(); renderClaim(); notice(`Assessment stopped: ${error.message} Saved result unavailable: ${fallback.message}`,true); } }
+        }
+      } finally { controllers.delete(operationController); }
     }
     function presentationFailed(session, message) {
       if (demoSession !== session) return;
@@ -2082,10 +2341,11 @@
     function pausePresentation() {
       if (!demoSession) return false;
       if (demoSession.mode === 'replay' && !demoSession.replayHead) { inspectionHold = true; return false; }
-      pausedPresentation = {...demoSession,preparing:null};
+      pausedPresentation = demoSession.mode === 'operations' ? demoSession : {...demoSession,preparing:null};
       if (demoTimer) root.clearTimeout(demoTimer);
-      demoTimer = null; demoSession = null; replayPrefixes.clear();
-      motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel();
+      demoTimer = null; demoSession = null; pausedPresentation.operationWake?.(); replayPrefixes.clear();
+      motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); attentionAnimation?.cancel();
+      if (pausedPresentation?.mode === 'operations') host.setAttribute?.('data-au-operation-presentation','paused');
       return true;
     }
     function pauseInspection() {
@@ -2099,7 +2359,8 @@
       const session = pausedPresentation;
       if (!session || disposed || pendingRoute() || doc.hidden || dialog.open || recordDialog.open || view !== 'claim' || !current || (session.mode === 'replay' ? session.replayHead?.claimId : session.claimId) !== current.claim_id) return;
       inspectionHold = false; pausedPresentation = null; demoSession = session; session.epoch = epoch; session.displayedAt = Date.now(); renderClaim();
-      if (session.mode === 'replay') startReplay(session,epoch);
+      if (session.mode === 'operations') session.operationWake?.();
+      else if (session.mode === 'replay') startReplay(session,epoch);
       else { resumeLivePresentation(); advanceLivePresentation(); }
     }
     async function beginPresentation() {
@@ -2154,7 +2415,7 @@
       if (demoSession !== session || disposed || pendingRoute() || doc.hidden && session.replayHead || session.preparing) return;
       if (index >= demoCases(session.collection).length) { stopPresentation(); detail = 'step'; selected = preferredNode(current,selected,history); evidenceContext = evidenceSelection(current,selected,evidenceContext); notice('Recorded playback finished.'); renderClaim(); return; }
       const id = demoCases(session.collection)[index].claim_id;
-      if (session.mode === 'replay' && current && replayRecord && id !== current.claim_id) {
+      if (['replay','operations'].includes(session.mode) && current && replayRecord && id !== current.claim_id) {
         const token = epoch, generation = readGeneration, priorId = current.claim_id, priorHash = current.state_sha256;
         session.preparing = token;
         try {
@@ -2168,7 +2429,7 @@
             if (demoSession !== session || disposed || token !== epoch || generation !== readGeneration || pendingRoute() || current?.claim_id !== priorId || current.state_sha256 !== priorHash || inspectionHold || doc.hidden || dialog.open || recordDialog.open) return;
           }
           session.verifiedOpening = opening;
-          const remaining = Math.max(0,4000 - (Date.now() - session.displayedAt));
+          const remaining = Math.max(0,(session.mode === 'operations' ? 1000 : 4000) - (Date.now() - session.displayedAt));
           if (remaining) { demoTimer = root.setTimeout(() => { demoTimer = null; openPresentationCase(session,writeHistory,index); },remaining); return; }
         } catch (error) {
           if (demoSession === session && token === epoch && !disposed && !pendingRoute()) presentationFailed(session,`Next case ${featuredCase(id)?.label || id} is unavailable: ${error.message} The last verified case remains visible.`);
@@ -2177,9 +2438,9 @@
         finally { if (session.preparing === token) session.preparing = null; }
       }
       session.index = index; session.claimId = id; session.startAttempted = false;
-      await openClaim(id,writeHistory,{mode:session.mode,collection:session.collection || 'reference',through:0,detail:'step',demo:true});
+      await openClaim(id,writeHistory,{mode:session.mode === 'operations' ? 'replay' : session.mode,collection:session.collection || 'reference',through:0,detail:'step',demo:true});
       if (demoSession !== session || !current || disposed || pendingRoute()) return;
-      if (session.mode === 'replay') {
+      if (['replay','operations'].includes(session.mode)) {
         if (!replayRecord.current_revision) { stopPresentation(); renderClaim(); notice('This original case has no recorded execution to replay. Its original sources remain available.'); return; }
       } else { resumeLivePresentation(); advanceLivePresentation(); }
     }
@@ -2194,7 +2455,7 @@
         const referenceReady = session.collection !== 'legacy' && !doc.hidden && await verifyReferenceHead(verification);
         if (session.collection !== 'legacy' && !doc.hidden && !referenceReady) throw new Error('No completed recorded reference assessment is available.');
         if (disposed || token !== epoch || generation !== readGeneration || demoSession !== session || pendingRoute()) throw new Error('The presentation changed while verifying the next case.');
-        return {claimId:id,generation,response,head,referenceReady,verifiedReplayStart:verification.verifiedReplayStart};
+        return {claimId:id,generation,response,head,referenceReady,verifiedReplayStart:verification.verifiedReplayStart,verifiedJournal:verification.verifiedJournal,referenceAsOf:verification.referenceAsOf,operationBinding:verification.operationBinding};
       })();
       replayPrefixes.set(identity,promise);
       while (replayPrefixes.size > 2) replayPrefixes.delete(replayPrefixes.keys().next().value);
@@ -2213,6 +2474,7 @@
       // Admission of playback does not paint the head or borrow its context
       // for an earlier prefix. The displayed prefix keeps its own identity.
       session.verifiedReplayStart = checkedReferenceReplayStart(session.replayStart,incoming);
+      session.verifiedJournal = incoming.accepted.events; session.referenceAsOf = referenceExecution(incoming.state)?.as_of; session.operationBinding = {source_roster_sha256:incoming.state.source_roster_sha256,rule_set_sha256:referenceExecution(incoming.state)?.rule_set_sha256};
       return Boolean(referenceExecution(incoming.state) && incoming.state.outcome?.assessment_status === 'complete' && replayCanAdvance(incoming.state));
     }
     function replayPrefix(id, through, session) {
@@ -2275,7 +2537,7 @@
         if (!replayCanAdvance(current)) { stopPresentation(); renderClaim(); notice('This recorded investigation has no settled operational outcome. Replay stopped at its saved head.',true); return; }
         const next = demoCases(session.collection)[session.index+1];
         if (next) presentationOpening(session,next.claim_id);
-        const remaining = Math.max(0,4000 - (Date.now() - session.displayedAt));
+        const remaining = Math.max(0,(session.mode === 'operations' ? 1000 : 4000) - (Date.now() - session.displayedAt));
         demoTimer = root.setTimeout(() => { demoTimer = null; if (!replayActive(session,token) || doc.hidden || dialog.open) return; openPresentationCase(session,true,session.index+1); },remaining);
         return;
       }
@@ -2556,11 +2818,11 @@
       if (!recordSelection) return;
       const {kind,id} = recordSelection, body = recordDialog.querySelector('[data-au-record-content]');
       if (kind === 'demo') {
-        const roster = (rows,collection) => DOMAINS.map(domain => `<section><h3>${h(domain.label)}</h3>${rows.filter(row => row.domain === domain.id).map(row => `<button type="button" class="au-demo-case-open" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="${collection}">${h(row.label)}</button>`).join('')}</section>`).join('');
-        body.innerHTML = `<div class="au-demo-picker"><h2>Recorded assessments</h2>${roster(REFERENCE_DEMO_CASES,'reference')}<details data-au-disclosure="earlier-recordings"><summary>Earlier recordings</summary><p class="au-meta">Original recorded histories retain their execution modes and receipts.</p>${roster(DEMO_CASES,'legacy')}</details></div>`;
+        const roster = (rows,collection) => DOMAINS.map(domain => `<section><h3>${h(domain.label)}</h3>${rows.filter(row => row.domain === domain.id).map(row => `<button type="button" class="au-demo-case-open" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="${collection}">${h(row.label)}</button>${collection === 'reference' ? `<button type="button" class="au-link" data-au-demo-case="${h(row.claim_id)}" data-au-demo-collection="reference" data-au-demo-saved="true">Saved history</button>` : ''}`).join('')}</section>`).join('');
+        body.innerHTML = `<div class="au-demo-picker"><h2>Demonstration cases</h2><p class="au-meta">Live rules-based assessments recompute saved synthetic source packets. Saved histories retain their original execution mode.</p>${roster(REFERENCE_DEMO_CASES,'reference')}<details data-au-disclosure="earlier-recordings"><summary>Earlier recordings</summary><p class="au-meta">Original recorded histories retain their execution modes and receipts.</p>${roster(DEMO_CASES,'legacy')}</details></div>`;
         return;
       }
-      const record = contextualRecord(current,projection,history,kind,id,knowledgeCache?.value || {},replayRecord);
+      const record = kind === 'operation' ? operationTrace?.rows.find(row => row.id === id) : contextualRecord(current,projection,history,kind,id,knowledgeCache?.value || {},replayRecord);
       if (!body.querySelector('pre')) body.innerHTML = '<pre class="au-record-body"></pre>';
       const pre = body.querySelector('pre'); pre.dataset.auRecordKind = kind; pre.dataset.auRecordId = id; pre.textContent = JSON.stringify(record ?? null,null,2);
     }
@@ -2589,13 +2851,14 @@
       else if (target.hasAttribute('data-au-return-case')) { if (!busy && lastCaseContext) openClaim(lastCaseContext.claim_id,true,{...lastCaseContext,detail:target.dataset.auReturnCase}); }
       else if (target.hasAttribute('data-au-knowledge-facet')) { if (view === 'knowledge' && ['process','facts','documents','exceptions','changes'].includes(target.dataset.auKnowledgeFacet) && knowledgeCache) { knowledgeFacet = target.dataset.auKnowledgeFacet; renderKnowledge(knowledgeCache.value,knowledgePin); host.querySelector(`[data-au-knowledge-facet="${knowledgeFacet}"]`)?.focus({preventScroll:true}); } }
       else if (target.hasAttribute('data-au-inspect')) openRecord(target);
-      else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const collection = target.dataset.auDemoCollection === 'legacy' ? 'legacy' : 'reference', index = demoCases(collection).findIndex(row => row.claim_id === id); if (index >= 0) { demoSession = {mode:'replay',collection,index}; openPresentationCase(demoSession); } }
+      else if (target.hasAttribute('data-au-demo-case')) { const id = target.dataset.auDemoCase; recordReturn = null; recordDialog.close(); stopPresentation(); demoMode = 'replay'; const collection = target.dataset.auDemoCollection === 'legacy' ? 'legacy' : 'reference', index = demoCases(collection).findIndex(row => row.claim_id === id); if (index >= 0) { demoSession = {mode:collection === 'legacy' || target.dataset.auDemoSaved === 'true' ? 'replay' : 'operations',collection,index}; openPresentationCase(demoSession); } }
       else if (target.hasAttribute('data-au-filter')) { collection.filter = target.dataset.auFilter; collection.page = 1; refreshCollection(); rememberCollectionRoute(true); for (const control of host.querySelectorAll('[data-au-filter]')) control.setAttribute('aria-pressed',String(control.dataset.auFilter === collection.filter)); }
       else if (target.hasAttribute('data-au-page')) { if (view === 'work' && !target.disabled) { collection.page = Number(target.dataset.auPage); refreshCollection(); rememberCollectionRoute(true); host.querySelector('[data-au-claims]')?.scrollIntoView?.({block:'start',behavior:'instant'}); } }
       else if (target.hasAttribute('data-au-nav')) { if (busy) return; target.dataset.auNav === 'knowledge' ? showKnowledge() : target.dataset.auNav === 'intake' ? showIntake() : target.dataset.auNav === 'demonstration' ? showDemonstration() : showWork(); }
       else if (target.hasAttribute('data-au-claim')) { if (!busy) openClaim(target.dataset.auClaim); }
       else if (target.hasAttribute('data-au-demo-mode')) { demoMode = !publicReadOnly && target.dataset.auDemoMode === 'live' ? 'live' : 'replay'; refreshDemonstration(); route(`#autonomous/demonstration?mode=${demoMode}`); }
       else if (target.hasAttribute('data-au-demo-play')) beginPresentation();
+      else if (target.hasAttribute('data-au-operation-skip')) skipOperations();
       else if (target.hasAttribute('data-au-demo-stop')) { pausePresentation(); renderClaim(); }
       else if (target.hasAttribute('data-au-demo-resume')) resumePresentation();
       else if (target.hasAttribute('data-au-start')) startOriginal(target);
@@ -2683,6 +2946,7 @@
       if (doc.hidden) {
         cancelWarmReads();
         if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null;
+        if (demoSession?.mode === 'operations') { attentionAnimation?.cancel(); demoSession.operationWake?.(); }
         // Backgrounding suspends verified replay, not the user's inspection.
         // A live presentation cannot dispatch a new case on visibility restore.
         if (demoSession?.mode === 'live') stopPresentation();
@@ -2699,14 +2963,14 @@
           if (session) {
             if (session.failure) { presentationFailed(session,session.failure); return; }
             // Resume one full reading interval; hidden time never causes catch-up.
-            session.displayedAt = Date.now(); startReplay(session,epoch);
+            session.displayedAt = Date.now(); if (session.mode === 'operations') session.operationWake?.(); else startReplay(session,epoch);
           }
         } else { disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); }
       }
     }
     function keyboardInput(event) { if (event.isTrusted && (event.key === 'Tab' || event.key?.startsWith('Arrow'))) { keyboard=true;container.setAttribute('data-au-keyboard','true');pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     function pointerInput() { keyboard=false;container.removeAttribute('data-au-keyboard'); }
-    function motionPreference() { if (reduced?.matches) { motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
+    function motionPreference() { if (reduced?.matches) { skipOperations(); motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     doc.addEventListener('keydown',keyboardInput);container.addEventListener('pointerdown',pointerInput);reduced?.addEventListener?.('change',motionPreference);
     function geometryEvent(event) { if (event.type === 'toggle') { drawEdges(); if (event.target?.open) interact(event.target.querySelector(':scope > :not(summary)')); } else if (event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }
     container.addEventListener('scroll',geometryEvent,true);container.addEventListener('toggle',geometryEvent,true);
@@ -2716,7 +2980,7 @@
     function resized() {
       const area=host.querySelector('.au-graph-viewport')?.getBoundingClientRect?.();
       if (!host.querySelector('[data-au-forming="true"]') && area && graphViewportWidth !== null && area.width !== graphViewportWidth) revealGraphNode([...host.querySelectorAll('[data-au-node]')].find(element => element.dataset.auNode === selected));
-      drawEdges();
+      drawEdges(); positionOperationAttention();
     }
     const resize = root.ResizeObserver ? new root.ResizeObserver(resized) : null; resize?.observe(host); root.addEventListener?.('resize',resized);
     const controller = {openClaim,showWork,showIntake,showKnowledge,showDemonstration,refresh:poll,destroy() { if (disposed) return; disposed = true; epoch++; cancelWarmReads(); storageWrite++; cancelPoll(); stopPresentation(); clearNativeSource(); motion?.cancel(); selectionMotion?.cancel(); interactionMotion?.cancel(); snapshots.clear(); sourcePreviews.clear(); nativeBytes.clear(); replayPrefixes.clear(); inflightReads.clear();root.removeEventListener?.('resize',resized);root.removeEventListener?.('hashchange',routeChanged);root.removeEventListener?.('popstate',routeChanged);doc.removeEventListener('keydown',keyboardInput);container.removeEventListener('pointerdown',pointerInput);reduced?.removeEventListener?.('change',motionPreference); for (const controller of controllers) controller.abort(); resize?.disconnect();container.removeEventListener('scroll',geometryEvent,true);container.removeEventListener('toggle',geometryEvent,true); container.removeEventListener('click',click); container.removeEventListener('pointerover',claimWarmIntent); container.removeEventListener('focusin',claimWarmIntent); container.removeEventListener('submit',submit); container.removeEventListener('change',change); container.removeEventListener('input',input); dialog.removeEventListener('close',closed); recordDialog.removeEventListener('close',closedRecord); doc.removeEventListener('visibilitychange',visibility); if (dialog.open) dialog.close(); if (recordDialog.open) recordDialog.close(); mounts.delete(container); if (activeMount === controller) activeMount = null; container.innerHTML = ''; }};
@@ -2726,5 +2990,5 @@
     return controller;
   }
   function destroy(container) { (container ? mounts.get(container) : activeMount)?.destroy(); }
-  return {currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
+  return {operationFrames,bufferedOperations,checkedOperationBinding,checkedOperation,checkedOperationCheckpoint,operationReadingMarkup,operationHistoryMarkup,operationLabel,currentSourceSelection,checkedReferenceReplayStart,checkedReferenceReplayOpening,enteredRequirementContext,formingRequirements,conditionLabel,legalBasisMarkup,sourceExcerpt,referenceSourcePin,REFERENCE_DEMO_CASES,referenceExecution,claimStatusLabel,intakeGate,intakeEligible,intakeMarkup,sourceKind,claimAvailability,formingPublication,formingRelations,formingWork,formingMarkup,formingKnowledgeMarkup,knowledgeOriginMarkup,documentReviewMarkup,checkedSavedSnapshot,checkedReadCache,factCaseText,readKnowledge,readableSourceText,collectionPage,paginationMarkup,catalogPreviewMarkup,unknownClaimMarkup,historyLabel,actionLabel,procedureScope,knowledgeFacetMarkup,sourceObjectIdentity,consequentialEventNode,replayContentPacing,procedureLabel,acquiredContentMarkup,contextualRecord,recordButton,claimKnowledgeMarkup,openingContentMarkup,acceptedEventNode,acceptedEventContext,preferredEvidenceContext,claimHeadingMarkup,eventCueMarkup,readSkeletonMarkup,assessmentFreshness,assessmentFreshnessMarkup,semanticEventRecord,lastSemanticEvent,semanticEventMarkup,evidenceSelection,requirementIdentity,DEMO_CASES,DOMAINS,replayCanAdvance,demoItineraryMarkup,canonicalJSON,checkedPreview,readSnapshot,readReplay,demonstrationMarkup,liveAvailability,preferredNode,evidenceRelationships,evidencePathMarkup,knowledgeUses,edgeState,mount,destroy,demoAssetURL,checkedExamples,prefillExample,progressModel,progressMarkup,transitionPlan,animateTransition,mediaType,readState,layoutGraph,acceptEvents,eventIdentity,changedTargets,conditionFlags,checkedSource,graphMarkup,obligationMarkup,inspectorMarkup,workMarkup,knowledgeMarkup,claimsMarkup,collectionMarkup,matchingClaims,actionRows};
 });
