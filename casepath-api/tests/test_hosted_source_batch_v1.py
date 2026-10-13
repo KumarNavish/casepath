@@ -29,6 +29,17 @@ def receipt(server):
             "close": operations.count("close"), "batch": operations.count("batch")}
 
 
+def assert_source_pages_closed(server):
+    # Each bounded source SELECT now closes its Hrana stream in the same RPC.
+    for request in server.requests:
+        operations = request["requests"]
+        if any(operation["type"] == "execute" and
+               operation["stmt"]["sql"].startswith("SELECT sha256,chunk_index")
+               for operation in operations):
+            assert [operation["type"] for operation in operations] == ["execute", "close"]
+            assert "LIMIT 8" in operations[0]["stmt"]["sql"]
+
+
 def realistic_roster(remote):
     corpus, store = CanonicalCorpus(), new_store(remote)
     selected, needed = [], [3, 2, 2, 2, 2, 2, 2, 1, 1]
@@ -65,9 +76,12 @@ def test_real_31_source_collection_uses_bounded_batched_roundtrips(remote, cold)
     rows = store.list_summaries()
     measured = receipt(server)
     pages = ceil(chunks / 8) + (chunks % 8 == 0)
-    expected = {"http": 2 * pages + 4 if cold else pages + 3, "execute": 2 * pages + 1 if cold else pages + 1,
-                "close": 3 if cold else 2, "batch": 0}
+    source_pages = pages * (2 if cold else 1)
+    # The journal still uses one execute RPC and a separate close RPC.
+    expected = {"http": source_pages + 2, "execute": source_pages + 1,
+                "close": source_pages + 1, "batch": 0}
     assert measured == expected, measured
+    assert_source_pages_closed(server)
     assert len(rows) == 23 and len(digests) == 31 and server.open_streams == 0
     print("31-source " + ("cold" if cold else "warm") + " collection receipt:", measured)
 
@@ -81,8 +95,11 @@ def test_real_three_source_snapshot_batches_fresh_verification(remote, cold):
     server.requests.clear()
     snapshot = store.snapshot(claim_id)
     measured = receipt(server)
-    assert measured == {"http": 6 if cold else 4, "execute": 3 if cold else 2,
-                        "close": 3 if cold else 2, "batch": 0}, measured
+    # This three-source packet fits one page; cold reads prefetch it once too.
+    source_pages = 2 if cold else 1
+    assert measured == {"http": source_pages + 2, "execute": source_pages + 1,
+                        "close": source_pages + 1, "batch": 0}, measured
+    assert_source_pages_closed(server)
     assert len(snapshot["state"]["source_descriptors"]) == 3
     assert snapshot["events"][-1]["resulting_state_sha256"] == snapshot["current_state_sha256"]
     assert server.open_streams == 0
@@ -99,7 +116,8 @@ def test_chunk_page_boundaries_and_maximum_source_complete_verification(remote, 
     sources.verify_many([digest, digest])
     chunks = ceil(length / sources.CHUNK_BYTES)
     pages = ceil(chunks / 8) + (chunks % 8 == 0)
-    assert receipt(server) == {"http": pages + 1, "execute": pages, "close": 1, "batch": 0}
+    assert receipt(server) == {"http": pages, "execute": pages, "close": pages, "batch": 0}
+    assert_source_pages_closed(server)
     assert sources.read(digest) == raw
     selects = [operation for request in server.requests for operation in request["requests"]
                if operation["type"] == "execute"]
@@ -155,8 +173,11 @@ def test_digest_group_boundary_keeps_one_shared_connection(remote):
     server.requests.clear()
     sources.verify_many(reversed(digests))
     first_group_pages = sources.BATCH_DIGESTS // sources.PAGE_CHUNKS + 1
-    assert receipt(server) == {"http": first_group_pages + 2, "execute": first_group_pages + 1,
-                               "close": 1, "batch": 0}
+    pages = first_group_pages + 1
+    assert receipt(server) == {"http": pages, "execute": pages, "close": pages, "batch": 0}
+    assert_source_pages_closed(server)
+    assert [sources.read(digest) for digest in digests] == [
+        ("Original source " + str(index)).encode() for index in range(sources.BATCH_DIGESTS + 1)]
     assert server.open_streams == 0
 
 
