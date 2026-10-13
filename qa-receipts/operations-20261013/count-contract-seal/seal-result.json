@@ -1,0 +1,44 @@
+{
+  "base": "2f834c9b236233a758e3c9ef983fe44e844349fa",
+  "results": [
+    {
+      "phase": "artifacts",
+      "command": [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/generate_artifacts.py"
+      ],
+      "exit_code": 0,
+      "seconds": 1.6580405235290527
+    },
+    {
+      "phase": "photos",
+      "command": [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/replace_photographic_evidence.py",
+        "."
+      ],
+      "exit_code": 0,
+      "seconds": 0.3643343448638916
+    },
+    {
+      "phase": "static",
+      "command": [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath/tools/build_static_site.py",
+        "--require-known-commit"
+      ],
+      "exit_code": 0,
+      "seconds": 0.17157363891601562
+    },
+    {
+      "phase": "generate",
+      "command": [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath/tools/casepath_release.py",
+        "generate"
+      ],
+      "exit_code": 0,
+      "seconds": 1.7918694019317627
+    }
+  ]
+}

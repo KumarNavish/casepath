@@ -1,0 +1,53 @@
+{
+  "base": "2f834c9b236233a758e3c9ef983fe44e844349fa",
+  "repo": "/workspace/casepath-operation-count-repair-20261013",
+  "env": {
+    "HOME": "/workspace/casepath-operation-count-seal-evidence-20261013/home",
+    "TMPDIR": "/workspace/casepath-operation-count-seal-evidence-20261013/tmp",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-operation-count-seal-evidence-20261013/pycache",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/workspace/casepath-operation-count-repair-20261013/casepath-api",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_SOURCE_COMMIT": "2f834c9b236233a758e3c9ef983fe44e844349fa",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "PATH": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin:/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+  },
+  "commands": [
+    [
+      "artifacts",
+      [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/generate_artifacts.py"
+      ]
+    ],
+    [
+      "photos",
+      [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath-api/replace_photographic_evidence.py",
+        "."
+      ]
+    ],
+    [
+      "static",
+      [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath/tools/build_static_site.py",
+        "--require-known-commit"
+      ]
+    ],
+    [
+      "generate",
+      [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "casepath/tools/casepath_release.py",
+        "generate"
+      ]
+    ]
+  ],
+  "scope": "normal deterministic seal commands only; no full suite or deployment"
+}
