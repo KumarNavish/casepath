@@ -15,10 +15,10 @@ def corpus():
     return CanonicalCorpus()
 
 
-def service_at(path, corpus):
+def service_at(path, corpus, profile=None):
     policy = bounded_reference_policy(corpus._corpus.static_policy())
     store = AutonomousStore(path)
-    return AutonomousController(store, policy, reference_adapter=DeterministicReferenceAdapter(policy))
+    return AutonomousController(store, policy, reference_adapter=DeterministicReferenceAdapter(policy, profile))
 
 
 def admit(service, corpus, cid):
@@ -26,7 +26,7 @@ def admit(service, corpus, cid):
     service.store.admit_original(cid, packet, expected_revision=0, expected_state_sha256=packet['initial_state_sha256'],
                                  idempotency_key='original-' + cid)
     state = service.store.get(cid)
-    return service.store.add_sources(cid, ReferenceProfile().files(cid), expected_revision=state['revision'],
+    return service.store.add_sources(cid, service.reference_adapter.profile.files(cid), expected_revision=state['revision'],
                                     expected_state_sha256=state['state_sha256'], idempotency_key='supplement-' + cid)
 
 
@@ -57,6 +57,8 @@ def test_all_nine_actual_sources_complete_compiled_graph_learn_reuse_and_restart
             assert all(r['receipt']['proposal_receipt']['provider_calls'] == 0 for r in state['receipts']
                        if r['kind'] == 'interpretation.accepted')
             events = service.store.events(cid)
+            assert service.store.snapshot(cid)['replay_start'] is None
+            assert_exact_prefixes(service.store, cid)
             assert service.run(cid)['state_sha256'] == state['state_sha256']
             assert service.store.events(cid) == events
             assert AutonomousStore(tmp_path / 'claims.sqlite').get(cid)['state_sha256'] == state['state_sha256']
@@ -87,7 +89,7 @@ def test_incomplete_unknown_and_tampered_never_dispatch_or_write(tmp_path, corpu
         from casepath_api.autonomous_intake_gate_v1 import inspect_sources
         sources = inspect_sources(service.store, state)
         changed = deepcopy(sources)
-        supplement = next(s for s in changed if s['text'].startswith('SYNTHETIC'))
+        supplement = next(s for s in changed if s['text'].startswith('Synthetic demonstration document'))
         supplement['complete'] = False
         from casepath_api.autonomous_intake_gate_v1 import assess_intake
         assert not assess_intake(state, changed, service.policy, reference_policy=service.policy)['eligible']
@@ -339,5 +341,223 @@ def test_subject_only_and_ambiguous_intake_never_establish_eligibility(tmp_path,
         assert service.store.events(state['claim_id']) == before
         assert state['graph'] is None and state['outcome'] is None
         assert not any(r['kind'] == 'interpretation.accepted' for r in state['receipts'])
+    finally:
+        service.shutdown()
+
+
+def test_v2_profile_is_exact_cleanup_of_immutable_legacy():
+    from hashlib import sha256
+    from casepath_api.autonomous_reference_v1 import clean_reference_source
+    profile = ReferenceProfile()
+    legacy = ReferenceProfile.for_profile('synthetic-nine-v1')
+    assert profile.value['profile_id'] == 'synthetic-nine-v2'
+    assert legacy.sha256 == '15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7'
+    assert profile.value['supersedes'] == {'profile_id': legacy.value['profile_id'], 'profile_sha256': legacy.sha256}
+    assert profile.ids == legacy.ids
+    assert sum(len(profile.value['claims'][cid]['sources']) for cid in profile.ids) == 21
+    for cid in profile.ids:
+        for source, old in zip(profile.value['claims'][cid]['sources'], legacy.value['claims'][cid]['sources']):
+            old_raw = (legacy.root / cid / old['file_name']).read_bytes()
+            raw = (profile.root / cid / source['file_name']).read_bytes()
+            assert source['legacy_source'] == old
+            assert raw == clean_reference_source(old_raw)
+            assert sha256(raw).hexdigest() == source['sha256']
+            assert raw.startswith(b'Synthetic demonstration document (fictional)\n')
+            assert b'SHA256' not in raw and b'Fixture author' not in raw and b'Authored for' not in raw
+
+
+def test_unknown_profile_identity_hash_is_rejected(tmp_path):
+    import json
+    profile = ReferenceProfile()
+    value = deepcopy(profile.value)
+    value['authored_on'] = '2026-10-14'
+    (tmp_path / 'profile.json').write_text(json.dumps(value, sort_keys=True, indent=2) + '\n')
+    with pytest.raises(ValueError, match='profile bytes changed'):
+        ReferenceProfile(tmp_path)
+
+
+def assert_exact_prefixes(store, cid):
+    """Reduce every actual prefix once and verify citations against physical bytes."""
+    from hashlib import sha256
+    with store.journal.connect() as connection:
+        head, events, states = store._replay(store._rows(connection, cid), with_history=True)
+    sources = {s['artifact_id']: store.acquire(cid, s['artifact_id']) for s in head['source_descriptors']}
+    def inspect(value, allowed):
+        if isinstance(value, dict):
+            if {'artifact_id', 'quote', 'sha256', 'start_char', 'end_char', 'text_sha256'} <= value.keys():
+                assert value['artifact_id'] in allowed
+                source = sources[value['artifact_id']]
+                assert source['sha256'] == value['sha256']
+                assert source['text_sha256'] == value['text_sha256'] == sha256(source['text'].encode()).hexdigest()
+                assert source['text'][value['start_char']:value['end_char']] == value['quote']
+            for child in value.values():
+                inspect(child, allowed)
+        elif isinstance(value, list):
+            for child in value:
+                inspect(child, allowed)
+    for state, event in zip(states, events):
+        assert state['revision'] == event['sequence']
+        assert state['state_sha256'] == event['resulting_state_sha256']
+        inspect(state, {s['artifact_id'] for s in state['source_descriptors']})
+    return states
+
+
+@pytest.mark.parametrize('cid', ReferenceProfile().ids)
+def test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes(tmp_path, corpus, cid):
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from casepath_api.autonomous_api_v1 import create_autonomous_router
+    legacy = ReferenceProfile.for_profile('synthetic-nine-v1')
+    old = service_at(tmp_path / 'migration.sqlite', corpus, legacy)
+    try:
+        admit(old, corpus, cid)
+        previous = old.run(cid)
+        assert previous['outcome']['assessment_status'] == 'complete'
+        assert old.store.snapshot(cid)['replay_start'] is None
+        old_rows = old.store.events(cid)
+        old_prefixes = assert_exact_prefixes(old.store, cid)
+        original_policy = deepcopy(old.policy)
+    finally:
+        old.shutdown()
+    service = service_at(tmp_path / 'migration.sqlite', corpus)
+    try:
+        assert service.policy == original_policy
+        # A read can show the valid legacy assessment, while v2 execution needs
+        # the real v2 source arrival before any accepted work is appended.
+        assert service.intake_projection(previous, historical=True)['eligible']
+        assert not service.intake_projection(previous)['eligible']
+        with pytest.raises(AutonomousStoreError, match='intake incomplete'):
+            service.run(cid)
+        assert service.store.events(cid) == old_rows
+        state = service.store.add_sources(cid, service.reference_adapter.profile.files(cid),
+            expected_revision=previous['revision'], expected_state_sha256=previous['state_sha256'],
+            idempotency_key='cleaned-v2-' + cid)
+        state = service.run(cid)
+        assert state['outcome']['assessment_status'] == 'complete', state.get('deferral')
+        assert state['evaluation']['process_status'] == 'complete'
+        assert state['acquired_sources'][:len(previous['acquired_sources'])] == previous['acquired_sources']
+        assert state['actions'][:len(previous['actions'])] == previous['actions']
+        assert state['semantic_contexts'][previous['run_id']] == previous['semantic_contexts'][previous['run_id']]
+        assert service.store.events(cid)[:len(old_rows)] == old_rows
+        prefixes = assert_exact_prefixes(service.store, cid)
+        assert prefixes[:len(old_prefixes)] == old_prefixes
+        context = state['semantic_contexts'][state['run_id']]
+        provenance = context['reference_provenance']
+        active = [s['artifact_id'] for s in context['sources']]
+        assert active == provenance['source_artifact_ids'] and len(active) == len(set(active))
+        retired = {s['sha256'] for s in legacy.value['claims'][cid]['sources']}
+        assert not retired & {s['sha256'] for s in context['sources']}
+        assert len(provenance['superseded_sources']) == len(retired)
+        assert set(provenance['superseded_source_artifact_ids']) == {
+            s['artifact_id'] for s in state['acquired_sources'] if s['sha256'] in retired}
+        descriptor = service.store.snapshot(cid)['replay_start']
+        assert descriptor is not None
+        assert descriptor == {'contract': 'casepath.reference-replay-start/1.0.0', 'claim_id': cid,
+            'from_seq': descriptor['from_seq'], 'state_sha256': prefixes[descriptor['from_seq'] - 1]['state_sha256'],
+            'event_sha256': prefixes[descriptor['from_seq'] - 1]['last_event_sha256'],
+            'run_id': state['run_id'], 'profile_id': 'synthetic-nine-v2',
+            'profile_sha256': service.reference_adapter.profile.sha256, 'source_artifact_ids': active}
+        reset = prefixes[descriptor['from_seq'] - 1]
+        assert reset['graph']['family'] == 'incoming_packet'
+        assert reset['evaluation']['process_status'] != 'complete'
+        assert reset['outcome'] is None
+        assert reset['acquired_sources'] == previous['acquired_sources']
+        assert reset['actions'] == previous['actions']
+        assert {d['artifact_id'] for d in reset['graph']['document_catalog'][0]['held_files']} <= set(active)
+        rows = service.store.events(cid)
+        assert service.run(cid) == state and service.store.events(cid) == rows
+        if cid == 'clm_0f4f13b1e3e1328c':
+            from casepath_api.autonomous_reference_v1 import reference_replay_start
+            assert reference_replay_start(state, rows) == descriptor
+            for value in (None, [], 'foreign', {**provenance, 'unknown': True},
+                          {**provenance, 'source_artifact_ids': active + active[:1]}):
+                malformed = deepcopy(state)
+                malformed['semantic_contexts'][state['run_id']]['reference_provenance'] = value
+                assert reference_replay_start(malformed, rows) is None
+            foreign = deepcopy(state)
+            foreign['semantic_contexts'][state['run_id']]['claim_id'] = 'clm_foreign'
+            assert reference_replay_start(foreign, rows) is None
+            foreign_rows = deepcopy(rows)
+            next(e for e in foreign_rows if e['idempotency_key'] == state['run_id'] + '.prepare')['claim_id'] = 'clm_foreign'
+            assert reference_replay_start(state, foreign_rows) is None
+            incomplete = deepcopy(state)
+            incomplete['evaluation']['process_status'] = 'pending'
+            assert reference_replay_start(incomplete, rows) is None
+        app = FastAPI()
+        app.include_router(create_autonomous_router(lambda: service, corpus_getter=lambda: corpus, read_only=True))
+        prefix = '/api/claim-loops/v1/autonomous/claims/' + cid
+        # Replay already validates its whole head; no second snapshot read is
+        # needed to attach the current descriptor to an explicit old prefix.
+        snapshot = service.store.snapshot
+        with TestClient(app) as client:
+            response = client.get(prefix + '/snapshot?after=' + str(state['revision'])).json()
+            assert response['events'] == [] and response['replay_start'] == descriptor
+            service.store.snapshot = lambda *a, **k: pytest.fail('Replay performed a second head read')
+            response = client.get(prefix + '/replay?through_seq=' + str(previous['revision'])).json()
+            assert response['state'] == previous and response['replay_start'] == descriptor
+            assert response['projection']['intake']['provenance']['profile_id'] == 'synthetic-nine-v1'
+            service.store.snapshot = snapshot
+            response = client.get(prefix + '/replay?through_seq=0').json()
+            assert response['state'] == corpus.preview_state(cid)
+            assert response['replay_start'] == descriptor
+            reset_response = client.get(prefix + '/replay?through_seq=' + str(descriptor['from_seq'])).json()
+            assert reset_response['state'] == reset and reset_response['replay_start'] == descriptor
+            if cid == 'clm_0f4f13b1e3e1328c':
+                physical = service.store.source_root / next(iter(retired))
+                raw = physical.read_bytes()
+                try:
+                    physical.write_bytes(raw + b'changed retired bytes')
+                    for path in ('/snapshot', '/replay?through_seq=0', '/replay?through_seq=1'):
+                        assert client.get(prefix + path).status_code == 409
+                finally:
+                    physical.write_bytes(raw)
+        assert service.store.events(cid) == rows
+    finally:
+        service.shutdown()
+
+
+@pytest.mark.parametrize('extra', ['unknown', 'partial_legacy', 'foreign_legacy'])
+def test_v2_unknown_partial_and_foreign_physical_rosters_fail_closed_without_work(tmp_path, corpus, extra):
+    import base64
+    legacy = ReferenceProfile.for_profile('synthetic-nine-v1')
+    service = service_at(tmp_path / 'closed.sqlite', corpus)
+    try:
+        cid = 'clm_314f2d309fea25e6'
+        state = admit(service, corpus, cid)
+        files = (legacy.files(cid)[:1] if extra == 'partial_legacy' else legacy.files(legacy.ids[0]) if extra == 'foreign_legacy'
+                 else [{'file_name': 'adverse.txt', 'media_type': 'text/plain',
+                        'content_base64': base64.b64encode(b'The defect was repaired; new adverse evidence.').decode()}])
+        state = service.store.add_sources(cid, files, expected_revision=state['revision'],
+            expected_state_sha256=state['state_sha256'], idempotency_key='unexpected-' + extra)
+        rows = service.store.events(cid)
+        assert not service.intake_projection(state)['eligible']
+        assert not service.intake_projection(state, historical=True)['eligible']
+        with pytest.raises(AutonomousStoreError, match='intake incomplete'):
+            service.run(cid)
+        assert service.store.events(cid) == rows and service.store.get(cid) == state
+    finally:
+        service.shutdown()
+
+
+def test_unfinished_v1_frozen_context_retains_legacy_findings(tmp_path, corpus):
+    from casepath_api.autonomous_controller_v1 import SupersededWorkflow
+    from casepath_api.autonomous_reference_v1 import reference_findings
+    legacy = ReferenceProfile.for_profile('synthetic-nine-v1')
+    service = service_at(tmp_path / 'unfinished.sqlite', corpus, legacy)
+    try:
+        cid = 'clm_543f08f2415b2a33'
+        admit(service, corpus, cid)
+        apply = service._apply_verified
+        service._apply_verified = lambda *a, **k: (_ for _ in ()).throw(SupersededWorkflow('Accepted context left unfinished'))
+        unfinished = service.run(cid)
+        context = unfinished['semantic_contexts'][unfinished['run_id']]
+        expected, _ = reference_findings(service.policy, context['sources'])
+        assert 'A mechanical signature is permitted at this historical date' in expected['category']['summary']
+        service._apply_verified = apply
+        state = service.run(cid)
+        assert state['outcome']['summary'] == expected['category']['summary']
+        assert state['semantic_contexts'][state['run_id']] == context
+        assert state['outcome']['reference_provenance']['profile_id'] == 'synthetic-nine-v1'
+        assert service.store.snapshot(cid)['replay_start'] is None
     finally:
         service.shutdown()
