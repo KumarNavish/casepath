@@ -1,0 +1,150 @@
+{
+  "shard": 4,
+  "candidate": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "host": "656813ef2295",
+  "repo": "/workspace/casepath-release-ae0-shard4",
+  "artifact_directory": "/tmp/casepath-release-bc0-20261013/shard4",
+  "wrapper_command": "python /tmp/casepath-release-bc0-20261013/harness/run_shard.py run 4 > /tmp/casepath-release-bc0-20261013/shard4/runner.log 2>&1",
+  "wrapper_exit_code": 0,
+  "pytest_exit_code": 0,
+  "pytest_command": [
+    "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "--junitxml=/tmp/casepath-release-bc0-20261013/shard4/junit.xml",
+    "--durations=0",
+    "--basetemp=/tmp/casepath-release-bc0-20261013/shard4/pytest-tmp",
+    "@/tmp/casepath-release-bc0-20261013/shard4/pytest-arguments.txt"
+  ],
+  "started_utc": "2026-10-13T01:13:26.815115+00:00",
+  "finished_utc": "2026-10-13T01:19:34.104845+00:00",
+  "wrapper_duration_seconds": 367.2897298336029,
+  "junit_duration_seconds": 363.959,
+  "pytest_summary": "324 passed, 9 warnings in 363.96s (0:06:03)",
+  "coverage_verified": true,
+  "coverage": {
+    "assigned": {
+      "count": 324,
+      "unique": 324,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "prepared_ids": {
+      "count": 324,
+      "unique": 324,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "pytest_arguments": {
+      "count": 324,
+      "unique": 324,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "collected": {
+      "count": 324,
+      "unique": 324,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "junit": {
+      "count": 324,
+      "unique": 324,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "observer_setup": {
+      "count": 324,
+      "unique": 324,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "observer_call": {
+      "count": 324,
+      "unique": 324,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "observer_teardown": {
+      "count": 324,
+      "unique": 324,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    }
+  },
+  "junit_unresolved": [],
+  "junit_suite_attributes": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "324",
+      "time": "363.959",
+      "timestamp": "2026-10-13T01:13:28.586169+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "junit_outcomes": {
+    "passed": 324
+  },
+  "observer_phase_count": 972,
+  "observer_outcomes": {
+    "setup:passed": 324,
+    "call:passed": 324,
+    "teardown:passed": 324
+  },
+  "phase_duration_seconds": {
+    "setup": 22.715112155827228,
+    "call": 336.3404062280897,
+    "teardown": 0.3393095158971846
+  },
+  "failed_node_ids": [],
+  "slowest_call": {
+    "id": "casepath-api/tests/test_reference_admission_v1.py::test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry",
+    "when": "call",
+    "outcome": "passed",
+    "duration": 166.9280824419693,
+    "utc_epoch": 1791854283.5720837
+  },
+  "postrun_source": {
+    "head": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+    "status": "",
+    "manifest_sha256": "a7df9ddc28afd6f69b6a36e65ed5f2ac7d129648d64c01d4eea48c8b199386fd",
+    "seal_file_count": 1680,
+    "seal_mismatches": [],
+    "verified": true
+  },
+  "input_hashes": {
+    "/tmp/casepath-release-bc0-20261013/shard-map.json": "9dc8324c7e53a77ae790f871c3503ff3212aac0ebfd9414a8bca702b483997c3",
+    "/tmp/casepath-release-bc0-20261013/harness/run_shard.py": "fd2e68a254dd211d66f1a29926dd6bfcf4960b3ffe387197dac7105bd60fcf65",
+    "/tmp/casepath-release-bc0-20261013/harness/casepath_shard_observer.py": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30"
+  },
+  "stderr_capture": "pytest stdout and stderr merged in pytest.log; wrapper stdout and stderr merged in runner.log",
+  "stderr_observation": "9 deprecation warnings in pytest summary; one post-summary swigvarlink DeprecationWarning. No failed or error phases.",
+  "attempts": 1,
+  "retries": 0,
+  "passed": true
+}

@@ -1,0 +1,30 @@
+{
+  "assigned_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "attempts": 1,
+  "basis": "Explicit Mac integration owner attestation; raw Mac JUnit not Cloud-parsed",
+  "candidate": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "cloud_independent_reconciliation_pending": true,
+  "cloud_parsed_mac_junit": false,
+  "environment": "disposable clean deterministic_reference; no provider credentials",
+  "exit_code": 0,
+  "failed": 0,
+  "files": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6,
+    "casepath-api/tests/test_local_data_root.py": 52
+  },
+  "junit_sha256": "69c01cb15015f2aa0b2c85e3e8778f1a616fba8626e23aea02cb2fe316c30460",
+  "mac_independently_matched_collected_and_junit_ids": true,
+  "ordered_ids_sha256": "3c884c14f100b63a6fa3e0df749172cf960b0e664b4c5dc6bb6a866a22908b54",
+  "passed": 127,
+  "pytest_seconds": 151.32,
+  "raw_junit_retained_by_mac": true,
+  "skipped": 0,
+  "sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "source": "Mac integration owner attestation forwarded through source thread 01a115f5-6dce-7700-9751-e1dc804e9a1b; not Cloud-observed raw JUnit",
+  "source_capsule": "a7df9ddc28afd6f69b6a36e65ed5f2ac7d129648d64c01d4eea48c8b199386fd",
+  "source_commit": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "status": "passed",
+  "subprocess_seconds": 154.064,
+  "tests": 127
+}

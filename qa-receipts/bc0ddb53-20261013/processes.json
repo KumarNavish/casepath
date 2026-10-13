@@ -1,0 +1,148 @@
+{
+  "candidate": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "heavy_preparation_finished_before_parallel_runs": true,
+  "launch_schedule": "shard4 protected first; remaining5 after all serialprepares terminal, inparallel",
+  "observed_epoch": 1791854782.8159304,
+  "processes": {
+    "1": {
+      "assigned_ids": 242,
+      "attempts_launched": 1,
+      "command": [
+        "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "--junitxml=/tmp/casepath-release-bc0-20261013/shard1/junit.xml",
+        "--durations=0",
+        "--basetemp=/tmp/casepath-release-bc0-20261013/shard1/pytest-tmp",
+        "@/tmp/casepath-release-bc0-20261013/shard1/pytest-arguments.txt"
+      ],
+      "cwd": "/workspace/casepath-release-ae0-shard1",
+      "started_epoch": 1791854545.2467535,
+      "state": "running",
+      "tool_session": 84956
+    },
+    "2": {
+      "assigned_ids": 554,
+      "attempts_launched": 1,
+      "command": [
+        "/workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "--junitxml=/tmp/casepath-release-bc0-20261013/shard2/junit.xml",
+        "--durations=0",
+        "--basetemp=/tmp/casepath-release-bc0-20261013/shard2/pytest-tmp",
+        "@/tmp/casepath-release-bc0-20261013/shard2/pytest-arguments.txt"
+      ],
+      "cwd": "/workspace/casepath-release-ae0-shard2",
+      "started_epoch": 1791854554.7715993,
+      "state": "running",
+      "tool_session": 49023
+    },
+    "3": {
+      "assigned_ids": 229,
+      "attempts_launched": 1,
+      "command": [
+        "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "--junitxml=/tmp/casepath-release-bc0-20261013/shard3/junit.xml",
+        "--durations=0",
+        "--basetemp=/tmp/casepath-release-bc0-20261013/shard3/pytest-tmp",
+        "@/tmp/casepath-release-bc0-20261013/shard3/pytest-arguments.txt"
+      ],
+      "cwd": "/workspace/casepath-release-ae0-shard3",
+      "started_epoch": 1791854576.834099,
+      "state": "running",
+      "tool_session": 33497
+    },
+    "4": {
+      "assigned_ids": 324,
+      "attempts_launched": 1,
+      "command": [
+        "/workspace/casepath-release-ae0-shard4/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "--junitxml=/tmp/casepath-release-bc0-20261013/shard4/junit.xml",
+        "--durations=0",
+        "--basetemp=/tmp/casepath-release-bc0-20261013/shard4/pytest-tmp",
+        "@/tmp/casepath-release-bc0-20261013/shard4/pytest-arguments.txt"
+      ],
+      "cwd": "/workspace/casepath-release-ae0-shard4",
+      "started_epoch": 1791854006.8151147,
+      "state": "terminal",
+      "tool_session": 9165
+    },
+    "5": {
+      "assigned_ids": 563,
+      "attempts_launched": 1,
+      "command": [
+        "/workspace/casepath-release-ae0-shard5/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "--junitxml=/tmp/casepath-release-bc0-20261013/shard5/junit.xml",
+        "--durations=0",
+        "--basetemp=/tmp/casepath-release-bc0-20261013/shard5/pytest-tmp",
+        "@/tmp/casepath-release-bc0-20261013/shard5/pytest-arguments.txt"
+      ],
+      "cwd": "/workspace/casepath-release-ae0-shard5",
+      "started_epoch": 1791854575.1764777,
+      "state": "running",
+      "tool_session": 6945
+    },
+    "6": {
+      "assigned_ids": 478,
+      "attempts_launched": 1,
+      "command": [
+        "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "-p",
+        "casepath_shard_observer",
+        "--junitxml=/tmp/casepath-release-bc0-20261013/shard6/junit.xml",
+        "--durations=0",
+        "--basetemp=/tmp/casepath-release-bc0-20261013/shard6/pytest-tmp",
+        "@/tmp/casepath-release-bc0-20261013/shard6/pytest-arguments.txt"
+      ],
+      "cwd": "/workspace/casepath-release-ae0-shard6",
+      "started_epoch": 1791854583.4546218,
+      "state": "running",
+      "tool_session": 80994
+    }
+  },
+  "product_edits": false,
+  "source_tests_assertions_and_timeouts_unchanged": true
+}

@@ -1,0 +1,20 @@
+{
+  "host": "656813ef2295",
+  "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/#autonomous/demonstration?mode=replay",
+  "expected_commit": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "fresh_context": true,
+  "proxy_mode": "inherited managed HTTPS proxy",
+  "tls_verification": true,
+  "cookies_loaded": false,
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://casepath-autonomous.kumarnavish.chatgpt.site/"
+    }
+  ],
+  "responses": [],
+  "reachable": false,
+  "verified_commit": null,
+  "error": "page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://casepath-autonomous.kumarnavish.chatgpt.site/#autonomous/demonstration?mode=replay\nCall log:\n\u001b[2m  - navigating to \"https://casepath-autonomous.kumarnavish.chatgpt.site/#autonomous/demonstration?mode=replay\", waiting until \"domcontentloaded\"\u001b[22m",
+  "non_get_requests": 0
+}

@@ -1,0 +1,32 @@
+✔ Sites serves the autonomous entry with one preceding same-origin configuration (configured=false) (32.43605ms)
+✔ Sites serves the autonomous entry with one preceding same-origin configuration (configured=true) (1.339639ms)
+✔ public hosted index aliases always select passive autonomous inspection before legacy boot work (11.217993ms)
+✔ Sites rejects an index without its executable workspace entry (0.919168ms)
+✖ autonomous entry preserves the cached controller on persisted pagehide and destroys a departing page (2.219178ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 133.720613
+
+✖ failing tests:
+
+test at casepath-qa/sites-autonomous-entry.test.cjs:53:1
+✖ autonomous entry preserves the cached controller on persisted pagehide and destroys a departing page (2.219178ms)
+  AssertionError [ERR_ASSERTION]: a native back-forward cache entry retains its controller and verified view
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/workspace/casepath-replay-entry-session-20261013/casepath-qa/sites-autonomous-entry.test.cjs:60:54)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,49 @@
+{
+  "candidate": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "source_evidence_branch": "codex/casepath-release-gate-evidence-e104-20261013",
+  "source_evidence_commit": "05736422",
+  "files": [
+    {
+      "file": "casepath_shard_observer.py",
+      "source": "/tmp/casepath-release-e104-20261013/harness/casepath_shard_observer.py",
+      "source_sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+      "new_sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+      "adaptation": "frozen candidate and artifact root only"
+    },
+    {
+      "file": "prepare_checkouts.py",
+      "source": "/tmp/casepath-release-e104-20261013/harness/prepare_checkouts.py",
+      "source_sha256": "3b7ead1abc3f1cecde0820b9c0b50abe0f96ef5f53145a69caa6af0f02236534",
+      "new_sha256": "1781c31d93fe2fd3b1be8558a57256e3a02432f6c458d7785279d82edb6dc450",
+      "adaptation": "frozen candidate and artifact root; serial preparation with per-clone selection"
+    },
+    {
+      "file": "run_shard.py",
+      "source": "/tmp/casepath-release-e104-20261013/harness/run_shard.py",
+      "source_sha256": "6b6b0e64979f0fe6c7afa1533cf4aa9882efa00cf4e5b3497e1e5cdb9b4095b7",
+      "new_sha256": "fd2e68a254dd211d66f1a29926dd6bfcf4960b3ffe387197dac7105bd60fcf65",
+      "adaptation": "frozen candidate and artifact root only"
+    },
+    {
+      "file": "run_shard_serial.py",
+      "source": "/tmp/casepath-release-e104-20261013/harness/run_shard_serial.py",
+      "source_sha256": "ebb950991686bd84c33fcf42cc3e1036c1e93f44b4fc7ed78954fc03c22b506c",
+      "new_sha256": "ab4a795a16e0fe9d8d8342112a71f6b87f7eeef842934acc84ba11b4e3ef63ae",
+      "adaptation": "frozen candidate and artifact root only"
+    },
+    {
+      "file": "summarize_gate.py",
+      "source": "/tmp/casepath-release-e104-20261013/harness/summarize_gate.py",
+      "source_sha256": "f5cb7ceea33231d7181418872694dcaacb2e85083135448e88a92b5d8c04b1d2",
+      "new_sha256": "3575c419778a9ab9490e532adf1449aa61f628f2bc1a6192c408afcc7743315f",
+      "adaptation": "frozen candidate and artifact root only"
+    },
+    {
+      "file": "verify_prepared_capsules.py",
+      "source": "new preparation-only metadata verifier using existing static helpers and source capsule receipt contract",
+      "new_sha256": "a1ac2b8394cdef5781a96540f5525bcf59774e231d2fb98e9f5dc9d8bf2d2979",
+      "adaptation": "Read-only verification of source/artifact/static digest bindings and export of non-secret capsule receipts only"
+    }
+  ],
+  "created_epoch": 1791853764.7168107
+}

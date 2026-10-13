@@ -1,0 +1,136 @@
+{
+  "archive_branch": "codex/casepath-replay-entry-evidence-20261013",
+  "archive_execution": "No tests, browser probes or source generators were rerun to create this archive",
+  "checks": [
+    {
+      "command": "node --test casepath-qa/autonomous-workspace-v1.test.cjs",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 146,
+        "skipped": 0,
+        "tests": 146
+      },
+      "exit_code": 0,
+      "log": "writer/module-final.tap"
+    },
+    {
+      "command": "node --test casepath-qa/sites-autonomous-entry.test.cjs",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 5,
+        "skipped": 0,
+        "tests": 5
+      },
+      "exit_code": 0,
+      "log": "writer/entry-lifecycle-final.tap"
+    },
+    {
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json CASEPATH_FOCUSED_RECEIPTS=/tmp/casepath-replay-entry-session-20261013/receipts node --test --test-name-pattern='replay entry:' casepath-qa/unified-product-browser-v1.test.cjs",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 7,
+        "skipped": 0,
+        "tests": 7
+      },
+      "exit_code": 0,
+      "log": "writer/native-entry.tap"
+    },
+    {
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_FOCUSED_RECEIPTS=/tmp/casepath-replay-entry-session-20261013/receipts node --test --test-name-pattern='^replay lifecycle:' casepath-qa/unified-product-browser-v1.test.cjs",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 1,
+        "skipped": 0,
+        "tests": 1
+      },
+      "exit_code": 0,
+      "log": "writer/native-lifecycle.tap"
+    },
+    {
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json CASEPATH_FOCUSED_RECEIPTS=/tmp/casepath-replay-entry-session-20261013/focused-receipts node --test --test-name-pattern='reference native:|direct replay warmth:|timed replay|a replay control history|focused flow: actual accepted replay|focused flow: .* cancels replay|focused flow: manual .* inspection|quiet language: History|pending raw navigation|handoff|collection search|quiet work: initial' casepath-qa/unified-product-browser-v1.test.cjs",
+      "counts": {
+        "cancelled": 0,
+        "fail": 1,
+        "pass": 38,
+        "skipped": 0,
+        "tests": 39
+      },
+      "exit_code": 1,
+      "log": "writer/focused-browser.tap"
+    },
+    {
+      "command": "CASEPATH_BROWSER_JS_ASSET=/tmp/casepath-replay-entry-session-20261013/base-workspace.js CASEPATH_BROWSER_CSS_ASSET=/tmp/casepath-replay-entry-session-20261013/base-workspace.css CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json CASEPATH_BROWSER_DIAGNOSTICS=/tmp/casepath-replay-entry-session-20261013/outcome-base-diagnostics node --test --test-name-pattern='^a replay control history without' casepath-qa/unified-product-browser-v1.test.cjs",
+      "counts": {
+        "cancelled": 0,
+        "fail": 1,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 1
+      },
+      "exit_code": 1,
+      "log": "writer/outcome-base.tap"
+    },
+    {
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json node --test --test-name-pattern='^a replay control history without' casepath-qa/unified-product-browser-v1.test.cjs",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 1,
+        "skipped": 0,
+        "tests": 1
+      },
+      "exit_code": 0,
+      "log": "writer/outcome-final.tap"
+    },
+    {
+      "command": "CASEPATH_BROWSER_JS_ASSET=/tmp/casepath-replay-entry-session-20261013/base-workspace.js CASEPATH_BROWSER_CSS_ASSET=/tmp/casepath-replay-entry-session-20261013/base-workspace.css CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json node --test --test-name-pattern='replay entry: a legacy|replay entry: programmatic' casepath-qa/unified-product-browser-v1.test.cjs",
+      "counts": {
+        "cancelled": 0,
+        "fail": 2,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 2
+      },
+      "exit_code": 1,
+      "log": "writer/base-regression-exact.tap"
+    }
+  ],
+  "counts_not_summed": "Commands overlap; original failed focused run and isolated corrected outcome remain separate.",
+  "excluded": "Browser profile/cache/config/runtime files and all credential values",
+  "fixture_storage": "native and prior-assessment gzip copies are lossless; original fixture SHA receipts retained",
+  "full_gate": "Separate authorized bc0 gate in preparation; no results claimed here",
+  "independent_review": "approve",
+  "native_contexts": {
+    "owner": {
+      "handoffs": 8,
+      "method": "GET",
+      "prefixes": 218,
+      "requests": 233
+    },
+    "visitor": {
+      "handoffs": 8,
+      "method": "GET",
+      "prefixes": 218,
+      "requests": 241
+    }
+  },
+  "production_prefix_count": {
+    "authority": "Mac attestation, not Cloud observation",
+    "value": 223
+  },
+  "public_network_probe": {
+    "error": "ERR_TUNNEL_CONNECTION_FAILED",
+    "genuine_browser_started": true,
+    "live_commit_verified": false,
+    "methods": [
+      "GET"
+    ],
+    "requests": 1
+  },
+  "ready_commit": "b94700035db97d5944e28905bb87b1b302afc244",
+  "sealed_candidate": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114"
+}

@@ -1,0 +1,2392 @@
+[
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_autonomous_readiness_refuses_unverified_profile[missing_policy]",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_autonomous_readiness_refuses_unverified_profile[tokens]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_boot_from_another_commit_or_capsule_is_refused[execution_root-/another/capsule]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_capacity_cli_is_separate_explicit_operation_without_serving",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_capacity_preservation_floor_rejects_disappearance_or_usage_rollback[workflow_rollback]",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_capacity_readiness_rejects_unproved_or_inconsistent_extension[short_money]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_capacity_readiness_retains_verified_grant_and_usage_without_changing_base[18]",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_endpoint_snapshot_rejects_unroutable_request[malformed]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_endpoint_snapshot_rejects_unroutable_request[max_tokens]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_endpoint_snapshot_rejects_unroutable_request[price]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_endpoint_snapshot_rejects_unroutable_request[reasoning]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_endpoint_snapshot_rejects_unroutable_request[required]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_endpoint_snapshot_rejects_unroutable_request[status]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_extra_allowance_is_explicit_and_uses_no_credential_or_server",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_keychain_error_output_never_escapes",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_port_busy_fails_before_keychain_or_product_verification",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_prior_grant_and_autonomous_activation_cannot_disappear[activation]",
+    "outcome": "passed",
+    "duration_seconds": 0.184
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_readiness_refuses_misalignment_or_false_budget[cost]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_readiness_refuses_misalignment_or_false_budget[retry]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_release_verifier_loads_real_dependencies_in_isolated_pinned_python",
+    "outcome": "passed",
+    "duration_seconds": 0.635
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_serve_passes_shared_leases_and_socket_without_persisting_secret",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_shared_kernel_lease_blocks_second_process_entry",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_stale_or_unselected_catalogue_refused_without_download[-60-vendor/model]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_stale_or_unselected_catalogue_refused_without_download[0-openrouter/auto]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_agent_demo_launcher.py::test_symlink_and_external_hardlink_files_are_refused",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_agent_work_packet_identity.py::test_packet_identity_checks_current_binding_and_source_roster_without_loop_view",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_active_reset_guard_is_session_scoped_and_returns_bounded_409",
+    "outcome": "passed",
+    "duration_seconds": 0.038
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_environment_selected_model_mode_rejects_mismatched_compiled_profile",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_health_and_release_metadata_expose_semantic_identity",
+    "outcome": "passed",
+    "duration_seconds": 0.008
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_held_out_routing_is_zero_model_and_preserves_cross_pipeline_learning",
+    "outcome": "passed",
+    "duration_seconds": 0.442
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_learning_proof_requires_explicit_bound_run_ids",
+    "outcome": "passed",
+    "duration_seconds": 0.466
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_local_product_static_responses_are_never_reused_from_cache",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_model_ledger_endpoint_is_global_and_strictly_sanitized",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_model_ready_rejects_every_external_trace_alias[LANGCHAIN_TRACING]",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_model_ready_rejects_every_external_trace_alias[LANGCHAIN_TRACING_V2]",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_model_ready_rejects_every_external_trace_alias[LANGSMITH_TRACING]",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_model_ready_requires_exact_runtime_profile_and_secret_presence",
+    "outcome": "passed",
+    "duration_seconds": 0.007
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_mutation_and_session_state_endpoints_require_valid_session",
+    "outcome": "passed",
+    "duration_seconds": 0.013
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_production_frontend_origins_pass_cors_preflight[https://casepath-swiss-claim-lab.onrender.com]",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_production_frontend_origins_pass_cors_preflight[https://casepath.onrender.com]",
+    "outcome": "passed",
+    "duration_seconds": 0.03
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_public_artifact_extraction_does_not_expose_reference_fact_ids",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_public_knowledge_fails_closed_on_rehashed_authority_forgery[candidate]",
+    "outcome": "passed",
+    "duration_seconds": 0.154
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_public_knowledge_fails_closed_on_rehashed_authority_forgery[memory]",
+    "outcome": "passed",
+    "duration_seconds": 0.25
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_public_knowledge_projects_private_review_state",
+    "outcome": "passed",
+    "duration_seconds": 0.223
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_render_commit_is_authoritative_and_conflicts_fail_alignment",
+    "outcome": "passed",
+    "duration_seconds": 0.004
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_run_and_review_requests_are_typed_and_reject_unknown_values",
+    "outcome": "passed",
+    "duration_seconds": 0.123
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_storage_reset_rejects_active_runs_then_allows_terminal_reset",
+    "outcome": "passed",
+    "duration_seconds": 0.004
+  },
+  {
+    "id": "casepath-api/tests/test_app_v15.py::test_two_sessions_are_isolated_and_reset_preserves_other_session_and_global_ledger",
+    "outcome": "passed",
+    "duration_seconds": 0.303
+  },
+  {
+    "id": "casepath-api/tests/test_arena_v1.py::test_extended_evaluator_reproduces_frozen_e76_references_when_no_extension_is_used",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_arena_v1.py::test_generated_case_validates_and_activation_changes_reference",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_arena_v1.py::test_hearsay_receipt_metric_counts_unreturned_received_claims",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_a_credit_with_its_own_artifact_is_untouched",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_a_credit_without_its_own_artifact_is_reset",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_a_promised_delivery_downgrades_to_pending_not_missing",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_a_repair_never_requests_more_than_the_turn_budget",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_a_request_action_is_left_alone_when_readiness_was_never_claimed",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_a_withdrawal_repoints_a_proceed_at_the_reopened_documents",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_insufficient_is_also_a_credit_and_is_reset",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_readiness_is_withdrawn_only_when_a_credit_was_reset",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_the_gate_is_per_document_not_per_run",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_the_gate_uses_only_identities_already_in_the_actor",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_uncredited_states_are_never_touched[missing]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_uncredited_states_are_never_touched[not_required]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_artifact_gate_v1.py::test_uncredited_states_are_never_touched[pending]",
+    "outcome": "passed",
+    "duration_seconds": 0.013
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_abandon_cannot_release_unknown_call_cost_or_enable_resend",
+    "outcome": "passed",
+    "duration_seconds": 0.013
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_abandon_releases_only_unsent_remainder_and_prevents_late_verification",
+    "outcome": "passed",
+    "duration_seconds": 0.017
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_activation_requires_original_policy_exact_budget_and_no_pending_work",
+    "outcome": "passed",
+    "duration_seconds": 0.008
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_concurrent_policy_activation_is_exactly_once",
+    "outcome": "passed",
+    "duration_seconds": 0.008
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_global_dollar_reservation_prevents_parallel_workflow_overcommit",
+    "outcome": "passed",
+    "duration_seconds": 0.013
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_historical_nine_calls_four_runs_and_unknown_reserve_are_never_reset",
+    "outcome": "passed",
+    "duration_seconds": 0.09
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_old_provider_reservation_observes_new_global_pending_slot",
+    "outcome": "passed",
+    "duration_seconds": 0.013
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_provider_overrun_is_recorded_then_freezes_both_admission_paths",
+    "outcome": "passed",
+    "duration_seconds": 0.035
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_resealed_invalid_terminal_cannot_release_reserved_budget",
+    "outcome": "passed",
+    "duration_seconds": 0.008
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_tampered_sealed_records_cannot_expand_limits_or_change_cached_results[work_autonomous_calls-maximum_cost_usd]",
+    "outcome": "passed",
+    "duration_seconds": 0.008
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_tampered_sealed_records_cannot_expand_limits_or_change_cached_results[work_autonomous_outcomes-result]",
+    "outcome": "passed",
+    "duration_seconds": 0.008
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_tampered_sealed_records_cannot_expand_limits_or_change_cached_results[work_autonomous_policy-max_calls_per_workflow]",
+    "outcome": "passed",
+    "duration_seconds": 0.007
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_budget_v1.py::test_two_store_instances_do_not_send_the_same_pending_intent_twice",
+    "outcome": "passed",
+    "duration_seconds": 0.01
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_all_original_reads_have_no_events_or_dispatch",
+    "outcome": "passed",
+    "duration_seconds": 10.008
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_atomic_snapshot_and_legacy_events_never_mix_a_writer_head",
+    "outcome": "passed",
+    "duration_seconds": 0.024
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_bad_journal_never_falls_back_to_unprocessed_or_zero_replay",
+    "outcome": "passed",
+    "duration_seconds": 0.09
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_domain_browsing_is_exact_metadata_without_operational_labels",
+    "outcome": "passed",
+    "duration_seconds": 0.13
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_incomplete_hosted_start_cannot_park_or_retry_behind_busy_lease",
+    "outcome": "passed",
+    "duration_seconds": 0.246
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_incomplete_original_start_exact_retry_stale_and_unknown_fail_closed",
+    "outcome": "passed",
+    "duration_seconds": 0.408
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_installed_corpus_distinguishes_unknown_and_unprocessed_without_writes",
+    "outcome": "passed",
+    "duration_seconds": 0.186
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_original_source_preview_is_not_admission",
+    "outcome": "passed",
+    "duration_seconds": 0.309
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_paged_search_preserves_legacy_records_and_original_metadata",
+    "outcome": "passed",
+    "duration_seconds": 0.051
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_api_v1.py::test_verified_prefix_replay_is_read_only_and_keeps_live_head",
+    "outcome": "passed",
+    "duration_seconds": 0.141
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_all_150_original_bindings_admit_native_sources_without_processing",
+    "outcome": "passed",
+    "duration_seconds": 4.808
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_cached_collection_rejects_deleted_accepted_tail_or_stream[False]",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_cached_collection_rejects_deleted_accepted_tail_or_stream[True]",
+    "outcome": "passed",
+    "duration_seconds": 0.004
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_cached_collection_rejects_source_tampering",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_collection_cache_reuses_reducer_and_validates_entire_journal_and_sources",
+    "outcome": "passed",
+    "duration_seconds": 0.004
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_concurrent_canonical_admission_has_one_new_result[keys0]",
+    "outcome": "passed",
+    "duration_seconds": 0.027
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_concurrent_canonical_admission_has_one_new_result[keys1]",
+    "outcome": "passed",
+    "duration_seconds": 0.012
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_concurrent_collection_snapshots_do_not_misreport_new_stream_as_deleted",
+    "outcome": "passed",
+    "duration_seconds": 0.259
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_exact_original_retry_returns_persisted_admission_after_work_and_restart",
+    "outcome": "passed",
+    "duration_seconds": 0.007
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_failed_admission_transaction_never_returns_an_accepted_result[False]",
+    "outcome": "passed",
+    "duration_seconds": 0.025
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_failed_admission_transaction_never_returns_an_accepted_result[True]",
+    "outcome": "passed",
+    "duration_seconds": 0.015
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_hosted_canonical_admission_retry_summaries_and_prefix_use_remote_journal",
+    "outcome": "passed",
+    "duration_seconds": 0.02
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[bad_attachments]",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[bad_binding]",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[bad_bytes]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[bad_descriptor]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[bad_map]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[bad_original_claim]",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[bad_original_metadata]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[stale_hash]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_invalid_original_admission_fails_before_source_publication[stale_revision]",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_native_admission_preserves_identity_metadata_and_zero_acquisition",
+    "outcome": "passed",
+    "duration_seconds": 0.004
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_only_explicit_controller_acquisition_admits_native_sources",
+    "outcome": "passed",
+    "duration_seconds": 0.077
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_prefix_replay_preserves_recorded_state_validates_suffix_and_never_writes",
+    "outcome": "passed",
+    "duration_seconds": 0.008
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_snapshot_state_events_and_head_share_one_verified_read",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[changed_chunk-head]",
+    "outcome": "passed",
+    "duration_seconds": 0.012
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[changed_chunk-prefix]",
+    "outcome": "passed",
+    "duration_seconds": 0.031
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[changed_chunk-snapshot]",
+    "outcome": "passed",
+    "duration_seconds": 0.012
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[changed_chunk-summary]",
+    "outcome": "passed",
+    "duration_seconds": 0.011
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[extra_chunk-head]",
+    "outcome": "passed",
+    "duration_seconds": 0.012
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[extra_chunk-prefix]",
+    "outcome": "passed",
+    "duration_seconds": 0.013
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[extra_chunk-snapshot]",
+    "outcome": "passed",
+    "duration_seconds": 0.012
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_canonical_store_v1.py::test_warm_hosted_projection_revalidates_persisted_source_bytes[extra_chunk-summary]",
+    "outcome": "passed",
+    "duration_seconds": 0.038
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_authoritative_view_matches_summary_adapter_and_reduces_each_claim_only_once",
+    "outcome": "passed",
+    "duration_seconds": 36.949
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_compatible_selects_from_the_supplied_validated_view_without_another_read",
+    "outcome": "passed",
+    "duration_seconds": 2.164
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_controller_reads_one_view_for_all_families_before_interpretation",
+    "outcome": "passed",
+    "duration_seconds": 2.965
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_earlier_row_tampering_is_rejected_with_an_unchanged_head[created_at]",
+    "outcome": "passed",
+    "duration_seconds": 1.383
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_earlier_row_tampering_is_rejected_with_an_unchanged_head[event_json]",
+    "outcome": "passed",
+    "duration_seconds": 1.275
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[conflicting_definition]",
+    "outcome": "passed",
+    "duration_seconds": 0.518
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[parent_identity]",
+    "outcome": "passed",
+    "duration_seconds": 0.344
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages",
+    "outcome": "passed",
+    "duration_seconds": 10.954
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_first_page_rejects_malformed_namespace_and_sequence[--1]",
+    "outcome": "passed",
+    "duration_seconds": 0.177
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_first_page_rejects_malformed_namespace_and_sequence[-1]",
+    "outcome": "passed",
+    "duration_seconds": 0.169
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_first_page_rejects_malformed_namespace_and_sequence[autonomous.fixture--1]",
+    "outcome": "passed",
+    "duration_seconds": 0.132
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_journal_pages_keep_one_snapshot_while_a_peer_appends",
+    "outcome": "passed",
+    "duration_seconds": 0.167
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_paging_does_not_hide_a_later_sequence_gap",
+    "outcome": "passed",
+    "duration_seconds": 0.144
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[COMMIT]",
+    "outcome": "passed",
+    "duration_seconds": 0.107
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_unconfirmed_journal_page_or_commit_returns_no_projection[SELECT]",
+    "outcome": "passed",
+    "duration_seconds": 0.045
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_warm_knowledge_rechecks_cached_source_bytes[changed]",
+    "outcome": "passed",
+    "duration_seconds": 1.61
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_warm_knowledge_rechecks_cached_source_bytes[missing]",
+    "outcome": "passed",
+    "duration_seconds": 1.427
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_new_accepted_head_is_observed_by_a_warm_knowledge_read",
+    "outcome": "passed",
+    "duration_seconds": 3.014
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_returned_full_states_and_knowledge_cannot_mutate_shared_cached_authority",
+    "outcome": "passed",
+    "duration_seconds": 1.946
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[knowledge-changed]",
+    "outcome": "passed",
+    "duration_seconds": 1.699
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[knowledge-missing]",
+    "outcome": "passed",
+    "duration_seconds": 1.358
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[states-changed]",
+    "outcome": "passed",
+    "duration_seconds": 1.548
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[states-missing]",
+    "outcome": "passed",
+    "duration_seconds": 1.504
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[summaries-changed]",
+    "outcome": "passed",
+    "duration_seconds": 1.412
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_projections_revalidate_original_source_bytes[summaries-missing]",
+    "outcome": "passed",
+    "duration_seconds": 1.479
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_reads_reject_missing_accepted_claims_or_events[claim_deleted]",
+    "outcome": "passed",
+    "duration_seconds": 1.632
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_reads_reject_missing_accepted_claims_or_events[head_deleted]",
+    "outcome": "passed",
+    "duration_seconds": 1.29
+  },
+  {
+    "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_warm_reads_reject_missing_accepted_claims_or_events[later_sequence_deleted]",
+    "outcome": "passed",
+    "duration_seconds": 1.814
+  },
+  {
+    "id": "casepath-api/tests/test_build_paper_method_pack_v5.py::test_builder_emits_v5_runtime_contract_and_current_pointer",
+    "outcome": "passed",
+    "duration_seconds": 0.262
+  },
+  {
+    "id": "casepath-api/tests/test_case_interpreter_v3.py::test_each_guard_is_sent_in_an_independent_prompt",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_case_interpreter_v3.py::test_exclusive_true_guards_revert_as_a_group",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_case_interpreter_v3.py::test_non_verbatim_decision_reverts_to_unresolved",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_causal_confirmatory_analysis_v1.py::test_alternative_gold_route_gets_full_credit_without_rewarding_both",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_causal_confirmatory_analysis_v1.py::test_benchmark_binding_overrides_legacy_flattened_gold",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_causal_confirmatory_analysis_v1.py::test_exact_family_swap_uses_family_as_randomization_unit",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_causal_confirmatory_analysis_v1.py::test_holm_adjustment_is_monotone_in_sorted_order",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_causal_confirmatory_analysis_v1.py::test_signed_delta_scoring_is_symmetric",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_causal_confirmatory_analysis_v1.py::test_wrong_pairing_is_deterministic_for_equal_family_sizes",
+    "outcome": "passed",
+    "duration_seconds": 0.109
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality",
+    "outcome": "skipped",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_overlay_v1.py::test_active_rule_requests_requirement_without_macro_parent_gating",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_overlay_v1.py::test_false_rule_requests_nothing",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_overlay_v1.py::test_precomputed_guard_decision_requires_no_model_call",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_overlay_v1.py::test_unresolved_rule_requests_only_state_resolver",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v1.py::test_verifier_accepts_guarded_rule_and_augment",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v1.py::test_verifier_rejects_silent_omission",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2.py::test_non_evidentiary_audit_converts_material_item_to_rule",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2.py::test_non_evidentiary_audit_rejects_unknown_subsuming_rule",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2.py::test_v2_accepts_condition_as_evidence_requirement",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2.py::test_v2_repair_closes_missing_propositions_without_cases",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2.py::test_v2_repair_fails_closed_if_repair_omits_any_missing_proposition",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2.py::test_v2_requires_every_proposition_accounted",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2_batched.py::test_apply_audit_assigns_stable_unique_rule_id",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2_batched.py::test_batched_audit_merges_exact_rosters_and_new_rule",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2_batched.py::test_batched_roster_mismatch_fails_closed",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2_batched.py::test_malformed_audit_fails_closed_without_exception",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_refinement_v2_normalize.py::test_remove_unbacked_condition_preserves_requirement_and_records_repair",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_apply_then_validate_is_reciprocal",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_existing_but_wrong_node_or_path_value_fails_closed[current_path-False]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_existing_but_wrong_node_or_path_value_fails_closed[node_id-tenant_use]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_existing_but_wrong_node_or_path_value_fails_closed[node_ids-replacement0]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_governed_checklist_order_is_claim_specific_and_fail_closed",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_invalid_process_requirement_authority_fails_closed[<lambda>0]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_invalid_process_requirement_authority_fails_closed[<lambda>1]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_invalid_process_requirement_authority_fails_closed[<lambda>2]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_invalid_process_requirement_authority_fails_closed[<lambda>3]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_missing_reverse_requirement_fails_closed",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_relations_preserve_all_consuming_nodes_and_recompute_path_membership",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidence_relations_v15.py::test_unowned_item_fails_closed",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_agent_work.py::test_channel_is_fixed_by_extraction_not_by_content",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_agent_work.py::test_identical_content_from_two_channels_yields_different_support",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_agent_work.py::test_non_receipt_classes_are_never_capped",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_agent_work.py::test_receipt_supported_by_an_attachment_is_kept",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_agent_work.py::test_receipt_supported_only_by_the_customer_message_is_lowered",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_agent_work.py::test_receipt_with_no_supporting_span_is_lowered",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_requirement_scope.py::test_a_class_that_was_never_a_receipt_is_untouched",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_requirement_scope.py::test_a_requirement_supported_by_its_own_returned_artifact_is_admitted",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_requirement_scope.py::test_a_requirement_supported_only_by_a_party_report_is_capped",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_requirement_scope.py::test_a_requirement_with_no_spans_at_all_is_capped",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_requirement_scope.py::test_an_unrelated_artifact_elsewhere_in_the_claim_does_not_admit_a_party_report",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_requirement_scope.py::test_two_requirements_in_one_claim_get_independent_answers",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_ablation_without_channel_cap_declares_hearsay_readiness",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_invalid_atoms_are_dropped_conservatively_not_fatal",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_party_report_cannot_satisfy_requirement_but_steers_request",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_promise_in_returned_partial_waits_but_hearsay_promise_does_not",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_returned_readable_artifact_satisfies_requirement",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_single_document_cover_is_hedged_with_a_disjoint_alternative_route",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_unknown_document_ids_make_a_requirement_unsatisfiable_not_fatal",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_unknown_refs_are_dropped_and_never_grant_support",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_evidential_channel_v1.py::test_unreadable_return_is_insufficient_and_rerequested",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]",
+    "outcome": "passed",
+    "duration_seconds": 0.804
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]",
+    "outcome": "passed",
+    "duration_seconds": 0.068
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]",
+    "outcome": "passed",
+    "duration_seconds": 0.088
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_digest_group_boundary_keeps_one_shared_connection",
+    "outcome": "passed",
+    "duration_seconds": 0.251
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_empty_invalid_and_missing_batches_do_not_return_false_verification",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_final_boundary_rechecks_bytes_changed_after_cold_prefetch",
+    "outcome": "passed",
+    "duration_seconds": 2.219
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+    "outcome": "passed",
+    "duration_seconds": 1.993
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]",
+    "outcome": "passed",
+    "duration_seconds": 2.338
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]",
+    "outcome": "passed",
+    "duration_seconds": 2.222
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[True]",
+    "outcome": "passed",
+    "duration_seconds": 2.432
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_transport_failure_on_later_chunk_page_never_acknowledges_verification",
+    "outcome": "passed",
+    "duration_seconds": 0.098
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[changed_later_chunk]",
+    "outcome": "passed",
+    "duration_seconds": 0.095
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[extra_empty_chunk]",
+    "outcome": "passed",
+    "duration_seconds": 0.092
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[gap_later_page]",
+    "outcome": "passed",
+    "duration_seconds": 0.087
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[missing_later_chunk]",
+    "outcome": "passed",
+    "duration_seconds": 0.129
+  },
+  {
+    "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_warm_batch_checks_later_pages_and_exact_complete_chunk_inventory[oversize_chunk]",
+    "outcome": "passed",
+    "duration_seconds": 0.121
+  },
+  {
+    "id": "casepath-api/tests/test_interrupted_review_setup.py::test_a_checkpoint_without_its_events_is_not_treated_as_a_new_claim",
+    "outcome": "passed",
+    "duration_seconds": 1.751
+  },
+  {
+    "id": "casepath-api/tests/test_interrupted_review_setup.py::test_review_setup_can_be_resumed_before_the_evidence_loop_exists",
+    "outcome": "passed",
+    "duration_seconds": 1.735
+  },
+  {
+    "id": "casepath-api/tests/test_law_registry_v15.py::test_legal_context_returns_an_isolated_serializable_contract",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_law_registry_v15.py::test_legal_questions_are_explicit_reciprocal_joins_not_position_zipped",
+    "outcome": "passed",
+    "duration_seconds": 0.001
+  },
+  {
+    "id": "casepath-api/tests/test_law_registry_v15.py::test_official_law_registry_has_reproducible_passages_and_snapshots",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_live_events_v15.py::test_fact_trace_owns_assertion_and_materializes_controlling_meaning",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_live_events_v15.py::test_hybrid_semantic_events_split_model_fields_from_app_structures",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_live_events_v15.py::test_memory_transformed_events_bind_to_memory_receipt_not_old_model_calls",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_live_events_v15.py::test_outbox_wakes_waiters_and_terminal_is_idempotent",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_live_events_v15.py::test_process_and_evidence_projection_follow_verification_gate",
+    "outcome": "passed",
+    "duration_seconds": 0.146
+  },
+  {
+    "id": "casepath-api/tests/test_live_events_v15.py::test_semantic_execution_trace_separates_model_replay_from_tools",
+    "outcome": "passed",
+    "duration_seconds": 0.101
+  },
+  {
+    "id": "casepath-api/tests/test_live_events_v15.py::test_stream_replay_after_cursor_and_session_isolation",
+    "outcome": "passed",
+    "duration_seconds": 0.099
+  },
+  {
+    "id": "casepath-api/tests/test_live_events_v15.py::test_stream_replays_exact_audit_and_semantic_events_then_closes",
+    "outcome": "passed",
+    "duration_seconds": 0.147
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_changed_source_prefix_is_rejected_even_with_updated_file_receipt",
+    "outcome": "passed",
+    "duration_seconds": 0.108
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_duplicate_dispatch_is_idempotent_only_for_same_transport_key",
+    "outcome": "passed",
+    "duration_seconds": 0.093
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_manifest_relative_fixture_runs_from_an_isolated_copy",
+    "outcome": "passed",
+    "duration_seconds": 0.2
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_missing_native_image_fails_before_any_saved_output",
+    "outcome": "passed",
+    "duration_seconds": 0.008
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_mounted_recorded_entry_preserves_native_provenance_and_scoped_state",
+    "outcome": "passed",
+    "duration_seconds": 0.272
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_public_corpus_fixture_substitution_is_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.011
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_request_and_correction_target_divergence_are_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.209
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_route_is_hidden_without_explicit_research_mode",
+    "outcome": "passed",
+    "duration_seconds": 0.004
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_same_key_resumes_after_correction_commit_before_provider_receipt",
+    "outcome": "passed",
+    "duration_seconds": 0.249
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_same_key_resumes_after_response_commit_before_provider_receipt",
+    "outcome": "passed",
+    "duration_seconds": 0.32
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_stale_model_prior_is_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.125
+  },
+  {
+    "id": "casepath-api/tests/test_native_workspace_inquiry_v1.py::test_stale_state_cannot_advance_response",
+    "outcome": "passed",
+    "duration_seconds": 0.098
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_alias_formula_keeps_custom_boolean_choices",
+    "outcome": "passed",
+    "duration_seconds": 0.063
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_all_arms_share_source_packet",
+    "outcome": "passed",
+    "duration_seconds": 0.013
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_bad_index_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.004
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_cache_categories_not_added",
+    "outcome": "passed",
+    "duration_seconds": 0.019
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_cannot_drop_arm",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_cannot_drop_families",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_capability_legend_is_common_to_every_arm_and_stage",
+    "outcome": "passed",
+    "duration_seconds": 0.031
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_case_source_rejected_in_preparation",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_compilation_never_reads_case",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_confidence_roundtrip",
+    "outcome": "passed",
+    "duration_seconds": 0.006
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_config_no_purchase_or_send",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_context_bound_includes_worst_future_draft",
+    "outcome": "passed",
+    "duration_seconds": 0.012
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_context_capacity_not_used_as_token_count",
+    "outcome": "passed",
+    "duration_seconds": 0.013
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_decided_without_quote_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_display_expression_identities_only",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_document_mode_explicit",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_document_state_change_roundtrip",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_duplicate_quote_exact_unicode_offsets",
+    "outcome": "passed",
+    "duration_seconds": 0.004
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_empty_provenance_preserved",
+    "outcome": "passed",
+    "duration_seconds": 0.006
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_envelopes_do_not_truncate",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_fact_labels_are_not_capability_or_route_indices",
+    "outcome": "passed",
+    "duration_seconds": 0.02
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_full_native_representation_size",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_guarded_runner_and_shared_product_no_network",
+    "outcome": "passed",
+    "duration_seconds": 0.14
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_incomplete_state_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_literal_field_expressions_select_exact_original",
+    "outcome": "passed",
+    "duration_seconds": 0.009
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_minimal_quote_form_all_document_slots",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_native_all_objects_roundtrip",
+    "outcome": "passed",
+    "duration_seconds": 0.033
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_native_expression_parser_unchanged",
+    "outcome": "passed",
+    "duration_seconds": 0.009
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_no_auto_inclusion",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_no_fabricated_parent",
+    "outcome": "passed",
+    "duration_seconds": 0.017
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_no_preparation_requests",
+    "outcome": "passed",
+    "duration_seconds": 0.017
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_nonstandard_literal_native_object_preserved",
+    "outcome": "passed",
+    "duration_seconds": 0.011
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_parent_id_hash_uses_original_raw",
+    "outcome": "passed",
+    "duration_seconds": 0.043
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_preserves_model_route_sample_count",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_public_compilation_zero_calls",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_quote_end_bound",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_reference_index_boolean_not_integer",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_same_complete_output_caps_all_arms",
+    "outcome": "passed",
+    "duration_seconds": 0.012
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_shared_source_text_is_recoverable_exactly",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_source_formulas_are_available_in_prompt",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_source_symbols_not_claim_family",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_source_views_preserve_material_text",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_state_roundtrip_all_truths",
+    "outcome": "passed",
+    "duration_seconds": 0.003
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_temporal_edges_do_not_become_acquisition_guards",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_terminal_alias",
+    "outcome": "passed",
+    "duration_seconds": 0.006
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_three_templates_required",
+    "outcome": "passed",
+    "duration_seconds": 0.005
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_unbound_literal_locator_preserved_for_original_scorer",
+    "outcome": "passed",
+    "duration_seconds": 0.007
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_whitespace_dedup_preserves_json",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_wire_json_duplicate_key_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.002
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_wrong_alias_formula_index_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.007
+  },
+  {
+    "id": "casepath-api/tests/test_obligation_compact_v3.py::CompactTests::test_wrong_edge_not_silently_corrected",
+    "outcome": "passed",
+    "duration_seconds": 0.006
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_additive_epoch_preserves_old_rows_and_admits_only_eighteen_calls",
+    "outcome": "passed",
+    "duration_seconds": 2.052
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_changed_stage_schema_is_refused_before_any_new_reservation",
+    "outcome": "passed",
+    "duration_seconds": 0.845
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_empty_preflight_cannot_apply_an_allowance",
+    "outcome": "passed",
+    "duration_seconds": 0.254
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_exact_nine_midpoint_blocks_fresh_workflow_but_allows_verifier_and_replay",
+    "outcome": "passed",
+    "duration_seconds": 0.951
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_existing_dollar_option_stops_truthfully_at_full_workflow_reservation",
+    "outcome": "passed",
+    "duration_seconds": 0.891
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[DELETE FROM work_original_nine_grant]",
+    "outcome": "passed",
+    "duration_seconds": 0.816
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[INSERT OR REPLACE INTO work_original_nine_grant SELECT * FROM work_original_nine_grant]",
+    "outcome": "passed",
+    "duration_seconds": 0.639
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_grant_immutable_at_sql_boundary[UPDATE work_original_nine_grant SET record_sha256='changed']",
+    "outcome": "passed",
+    "duration_seconds": 0.717
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_launcher_readback_partitions_old_and_new_receipt_counters",
+    "outcome": "passed",
+    "duration_seconds": 0.83
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_missing_or_resealed_invalid_prior_epoch_fails_closed",
+    "outcome": "passed",
+    "duration_seconds": 0.706
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_missing_runtime_source_identity_cannot_create_new_exact_nine_intent",
+    "outcome": "passed",
+    "duration_seconds": 0.773
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_pending_serial_slot_unknown_and_rejection_consume_original_slots",
+    "outcome": "passed",
+    "duration_seconds": 0.739
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_preserved_legacy_bytes_have_same_seal_under_reversed_sql_traversal",
+    "outcome": "passed",
+    "duration_seconds": 0.202
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_prior_epoch_approval_identity_cannot_be_reused",
+    "outcome": "passed",
+    "duration_seconds": 0.596
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_resealed_wrong_schema_intent_is_rejected_during_readback",
+    "outcome": "passed",
+    "duration_seconds": 0.648
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[9999999999999999999999999999999999999999]",
+    "outcome": "passed",
+    "duration_seconds": 0.78
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[None]",
+    "outcome": "passed",
+    "duration_seconds": 0.669
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_runtime_source_mismatch_blocks_new_intents_but_preserves_exact_outcome_replay[unknown]",
+    "outcome": "passed",
+    "duration_seconds": 0.971
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_same_approval_concurrent_application_is_one_immutable_receipt",
+    "outcome": "passed",
+    "duration_seconds": 0.63
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[ack]",
+    "outcome": "passed",
+    "duration_seconds": 0.655
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[actor]",
+    "outcome": "passed",
+    "duration_seconds": 0.64
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[approval]",
+    "outcome": "passed",
+    "duration_seconds": 0.778
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[budget]",
+    "outcome": "passed",
+    "duration_seconds": 0.671
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[key]",
+    "outcome": "passed",
+    "duration_seconds": 0.722
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[option]",
+    "outcome": "passed",
+    "duration_seconds": 0.693
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_stale_or_different_approval_never_replaces_grant[preflight]",
+    "outcome": "passed",
+    "duration_seconds": 0.798
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[binding]",
+    "outcome": "passed",
+    "duration_seconds": 0.801
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[claim]",
+    "outcome": "passed",
+    "duration_seconds": 0.857
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[corpus]",
+    "outcome": "passed",
+    "duration_seconds": 0.854
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[model]",
+    "outcome": "passed",
+    "duration_seconds": 0.805
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[price]",
+    "outcome": "passed",
+    "duration_seconds": 0.667
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[rules]",
+    "outcome": "passed",
+    "duration_seconds": 0.721
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[sources]",
+    "outcome": "passed",
+    "duration_seconds": 0.728
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_budget_v1.py::test_wrong_original_identity_or_config_is_denied_before_reservation[workflow]",
+    "outcome": "passed",
+    "duration_seconds": 0.727
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_exact_nine_adapter_sends_eighteen_mock_requests_and_replays_without_more",
+    "outcome": "passed",
+    "duration_seconds": 32.081
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_hosted_composition_binds_validated_source_without_model_or_provider",
+    "outcome": "passed",
+    "duration_seconds": 0.705
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_hosted_generation_fence_prevents_grant_and_reservation_writes",
+    "outcome": "passed",
+    "duration_seconds": 0.937
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_lost_grant_commit_readback_replays_exact_approval_without_send",
+    "outcome": "passed",
+    "duration_seconds": 0.709
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_lost_reservation_acknowledgement_sends_zero_and_new_key_cannot_resend",
+    "outcome": "passed",
+    "duration_seconds": 3.247
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_remote_midpoint_restart_blocks_another_workflow_and_changed_source",
+    "outcome": "passed",
+    "duration_seconds": 0.939
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[acquire-error]",
+    "outcome": "passed",
+    "duration_seconds": 8.049
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[apply-error]",
+    "outcome": "passed",
+    "duration_seconds": 7.527
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[release-error]",
+    "outcome": "passed",
+    "duration_seconds": 8.727
+  },
+  {
+    "id": "casepath-api/tests/test_original_nine_hosted_v1.py::test_whole_apply_cli_gates_mocked_remote_and_replays_one_receipt[success]",
+    "outcome": "passed",
+    "duration_seconds": 5.842
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_all_model_visible_subjects_and_filenames_are_neutral",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_atomic_learning_bundle_rolls_back_on_candidate_failure",
+    "outcome": "passed",
+    "duration_seconds": 0.075
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_canonical_paid_failure_emits_joinable_safe_agent_receipt",
+    "outcome": "passed",
+    "duration_seconds": 0.057
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_canonical_provider_concurrency_block_is_truthful_zero_call_receipt",
+    "outcome": "passed",
+    "duration_seconds": 0.028
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_canonical_root_blocked_receipt_has_explicit_safe_invariant",
+    "outcome": "passed",
+    "duration_seconds": 0.06
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_canonical_upstream_rejection_receipt_exposes_only_bounded_status",
+    "outcome": "passed",
+    "duration_seconds": 0.034
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_duplicate_review_is_idempotent_or_rejected",
+    "outcome": "passed",
+    "duration_seconds": 0.15
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_flagship_fact_contract_fits_single_bounded_model_response",
+    "outcome": "passed",
+    "duration_seconds": 0.055
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_forged_memory_fails_current_run_closed",
+    "outcome": "passed",
+    "duration_seconds": 0.174
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_grounding_rejects_fake_image_quote_invalid_region_and_metadata_mismatch",
+    "outcome": "passed",
+    "duration_seconds": 0.074
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_hybrid_rejected_controlling_fact_fails_without_oracle_fallback",
+    "outcome": "passed",
+    "duration_seconds": 0.144
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_late_specialist_failure_keeps_bounded_partial_truth_and_no_final_result",
+    "outcome": "passed",
+    "duration_seconds": 0.234
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_later_claim_is_in_scope_and_reaches_causation_from_attachments",
+    "outcome": "passed",
+    "duration_seconds": 0.072
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_later_claim_retrieves_memory_without_promoting_shared_rule",
+    "outcome": "passed",
+    "duration_seconds": 0.267
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_binds_candidate_to_its_governed_origin",
+    "outcome": "passed",
+    "duration_seconds": 0.581
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_binds_full_before_hashes_to_pre_transform_boundary",
+    "outcome": "passed",
+    "duration_seconds": 0.33
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_cross_binds_before_hashes_to_persisted_event",
+    "outcome": "passed",
+    "duration_seconds": 0.275
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_is_bound_to_completed_later_runs",
+    "outcome": "passed",
+    "duration_seconds": 0.327
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_is_not_ready_without_a_nonzero_memory_delta",
+    "outcome": "passed",
+    "duration_seconds": 0.147
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_recomputes_candidate_governance_reports",
+    "outcome": "passed",
+    "duration_seconds": 0.347
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_recomputes_canonical_hash_from_returned_facts",
+    "outcome": "passed",
+    "duration_seconds": 0.3
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_rejects_baseline_created_before_learning_freeze",
+    "outcome": "passed",
+    "duration_seconds": 0.266
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_rejects_current_run_started_before_baseline_completed",
+    "outcome": "passed",
+    "duration_seconds": 0.239
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_rejects_memory_tampered_after_application",
+    "outcome": "passed",
+    "duration_seconds": 0.365
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_rejects_rebound_receipt_with_recomputed_hash",
+    "outcome": "passed",
+    "duration_seconds": 0.446
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_replay_binds_operation_before_fragments",
+    "outcome": "passed",
+    "duration_seconds": 0.302
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_replay_rejects_rehashed_semantic_tamper",
+    "outcome": "passed",
+    "duration_seconds": 0.275
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_requires_both_bound_playbooks_to_remain_accepted[baseline]",
+    "outcome": "passed",
+    "duration_seconds": 0.298
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_requires_both_bound_playbooks_to_remain_accepted[later]",
+    "outcome": "passed",
+    "duration_seconds": 0.296
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_requires_matching_canonical_category",
+    "outcome": "passed",
+    "duration_seconds": 0.492
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_revalidates_bound_playbook_content[law]",
+    "outcome": "passed",
+    "duration_seconds": 0.271
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_learning_proof_revalidates_bound_playbook_content[precedent]",
+    "outcome": "passed",
+    "duration_seconds": 0.299
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_memory_eligibility_and_transform_are_claim_and_fact_id_agnostic",
+    "outcome": "passed",
+    "duration_seconds": 0.144
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_model_final_result_consumes_only_matching_final_brief_route",
+    "outcome": "passed",
+    "duration_seconds": 0.092
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_model_mode_retains_process_owned_visual_locator_and_passes_grounding",
+    "outcome": "passed",
+    "duration_seconds": 0.304
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_observable_envelope_does_not_disclose_category_or_causation_shortcut[DEF-027-E0-DEMO]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_observable_envelope_does_not_disclose_category_or_causation_shortcut[DEMO-MOULD-002]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_observable_package_excludes_hidden_generation_fields",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_one_review_creates_memory_and_quarantined_candidate",
+    "outcome": "passed",
+    "duration_seconds": 0.108
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_pipeline_events_disclose_deterministic_vs_model_identity",
+    "outcome": "passed",
+    "duration_seconds": 0.088
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_post_review_result_is_recomputed_and_reverified",
+    "outcome": "passed",
+    "duration_seconds": 0.091
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_primary_scope_dispute_and_notification_propositions_have_sufficient_exact_refs",
+    "outcome": "passed",
+    "duration_seconds": 0.092
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_production_shaped_missing_grounding_fails_closed_without_projection",
+    "outcome": "passed",
+    "duration_seconds": 0.105
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_rehashed_memory_must_match_the_separately_persisted_review",
+    "outcome": "passed",
+    "duration_seconds": 0.199
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_rehashed_memory_result_hashes_are_origin_bound[reviewed_result_hash]",
+    "outcome": "passed",
+    "duration_seconds": 0.184
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_rehashed_memory_result_hashes_are_origin_bound[source_result_hash]",
+    "outcome": "passed",
+    "duration_seconds": 0.146
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_rehashed_required_now_memory_cannot_grant_reusable_authority",
+    "outcome": "passed",
+    "duration_seconds": 0.188
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_reject_cannot_create_memory_or_activate_knowledge",
+    "outcome": "passed",
+    "duration_seconds": 0.087
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_required_now_does_not_release_conditional_rule",
+    "outcome": "passed",
+    "duration_seconds": 0.101
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_required_now_memory_is_valid_but_ineligible_for_later_claim",
+    "outcome": "passed",
+    "duration_seconds": 0.182
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_second_flagship_review_versions_the_same_case_memory",
+    "outcome": "passed",
+    "duration_seconds": 0.267
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_source_artifacts_are_real_files",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_static_precedents_are_generated_reference_not_expert_reviewed",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[causation-building-cause_building-causation-building_defect]",
+    "outcome": "passed",
+    "duration_seconds": 0.052
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[dispute-absent-no_dispute-dispute-no_dispute]",
+    "outcome": "passed",
+    "duration_seconds": 0.066
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[notification-unverified-notification_unverified-notification-formal_notice]",
+    "outcome": "passed",
+    "duration_seconds": 0.052
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[recurrence-unverified-recurrence_unverified-defect-defect]",
+    "outcome": "passed",
+    "duration_seconds": 0.06
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[scope-supported_out_of_scope-out_of_scope-scope-out_of_scope]",
+    "outcome": "passed",
+    "duration_seconds": 0.088
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_typed_fact_decisions_own_process_and_evidence_projection[urgency-urgent-urgent-urgency-urgent_escalation]",
+    "outcome": "passed",
+    "duration_seconds": 0.071
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_v15_completed_outputs_have_no_dangling_contract_refs[DEF-027-E0-DEMO]",
+    "outcome": "passed",
+    "duration_seconds": 0.052
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_v15_completed_outputs_have_no_dangling_contract_refs[DEMO-MOULD-002]",
+    "outcome": "passed",
+    "duration_seconds": 0.069
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_verifier_rejects_provided_evidence_not_linked_to_fact_source",
+    "outcome": "passed",
+    "duration_seconds": 0.095
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_verifier_rejects_unknown_fact_and_evidence_ids",
+    "outcome": "passed",
+    "duration_seconds": 0.058
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_verifier_rejects_unknown_source_and_precedent_provenance",
+    "outcome": "passed",
+    "duration_seconds": 0.086
+  },
+  {
+    "id": "casepath-api/tests/test_pipeline.py::test_whole_playbook_validation_binds_exact_projection_and_checklist_derivations",
+    "outcome": "passed",
+    "duration_seconds": 0.095
+  },
+  {
+    "id": "casepath-api/tests/test_process_induction_v3.py::test_form_noun_phrase_is_admitted_as_operational_obligation",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_process_induction_v3.py::test_non_verbatim_form_claim_is_dropped",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_process_induction_v3.py::test_threshold_and_alternative_proof_are_preserved",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_state_refinement_v1.py::test_verified_state_rule_augments_graph_and_compiled_fact",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_state_refinement_v1.py::test_verify_requires_all_target_propositions",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v3.py::test_exact_family_swap_uses_family_as_unit",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v3.py::test_symmetric_delta_score",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v4.py::test_best_realization_accepts_either_route_but_penalizes_both",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v4.py::test_chain_metrics_use_selected_acceptable_route",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v4.py::test_exact_family_swap_uses_route_aware_pair_f1",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v4.py::test_route_aware_micro_score_and_exact_rate",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py::test_best_realization_accepts_either_route_but_penalizes_both",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py::test_chain_metrics_use_selected_acceptable_route",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py::test_exact_family_swap_uses_route_aware_pair_f1",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_theft_confirmatory_analysis_v5.py::test_route_aware_micro_score_and_exact_rate",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_two_tier_planner_v1.py::test_false_requests_neither_branch_resolver_nor_requirement",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_two_tier_planner_v1.py::test_true_requests_active_requirement_not_resolver",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_two_tier_planner_v1.py::test_unresolved_requests_branch_resolver_only",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_forged_reference_annotation_fails_closed[annotation_contract-forged]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_forged_reference_annotation_fails_closed[annotation_version-forged]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_forged_reference_annotation_fails_closed[authority-qualified_expert_reviewed]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_forged_reference_annotation_fails_closed[image_sha256-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_forged_reference_annotation_fails_closed[observation-]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_forged_reference_annotation_fails_closed[producer-Visual Evidence Agent]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_forged_reference_annotation_fails_closed[region-replacement5]",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_reference_annotation_is_explicitly_non_agent_and_byte_bound",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_swapped_or_modified_image_invalidates_reference_annotation",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_visual_annotations_v15.py::test_unallowlisted_annotation_field_fails_closed",
+    "outcome": "passed",
+    "duration_seconds": 0.0
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_handler_condition_note_is_recorded_withdrawn_and_replayed",
+    "outcome": "passed",
+    "duration_seconds": 5.692
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_normal_loop_append_invalidates_an_operational_queue_cursor",
+    "outcome": "passed",
+    "duration_seconds": 3.811
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_observed_attempt_bound_is_strict_and_legacy_omission_is_unchanged",
+    "outcome": "passed",
+    "duration_seconds": 1.331
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_queue_and_workbench_share_the_live_claim_journal",
+    "outcome": "passed",
+    "duration_seconds": 4.02
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_queue_cache_never_hides_historical_journal_tamper",
+    "outcome": "passed",
+    "duration_seconds": 2.622
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_queue_waits_for_a_stable_read_beyond_three_commits",
+    "outcome": "passed",
+    "duration_seconds": 1.012
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_rebuild_discards_derived_cache_and_binds_both_journals",
+    "outcome": "passed",
+    "duration_seconds": 2.58
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_operational_rebuild_rejects_incomplete_or_foreign_authority_rosters",
+    "outcome": "passed",
+    "duration_seconds": 5.845
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_queue_write_reuses_unchanged_claim_loop_replays",
+    "outcome": "passed",
+    "duration_seconds": 7.315
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_selected_pdf_end_date_advances_without_accepting_unresolved_message",
+    "outcome": "passed",
+    "duration_seconds": 6.213
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_what_if_is_read_only_across_workspace_and_loop_journals",
+    "outcome": "passed",
+    "duration_seconds": 2.314
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_claim_loop_replans_real_claim_and_replays_exactly",
+    "outcome": "passed",
+    "duration_seconds": 4.664
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_correction_adapter_rejects_forged_authority",
+    "outcome": "passed",
+    "duration_seconds": 2.852
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_dispatch_view_is_processing_and_not_interactive",
+    "outcome": "passed",
+    "duration_seconds": 4.195
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_ensure_crash_after_selection_cannot_migrate_to_later_action",
+    "outcome": "passed",
+    "duration_seconds": 3.888
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_facade_precheck_tail_race_terminalizes_stably",
+    "outcome": "passed",
+    "duration_seconds": 3.769
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_http_ensure_replays_exact_original_response_after_tail_and_restart",
+    "outcome": "passed",
+    "duration_seconds": 3.814
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_http_stage_replay_and_restart_use_one_journal",
+    "outcome": "passed",
+    "duration_seconds": 12.911
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_invalid_correction_preview_is_stable_terminal_conflict",
+    "outcome": "passed",
+    "duration_seconds": 4.182
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_scoped_correction_preview_apply_and_reload_are_exact",
+    "outcome": "passed",
+    "duration_seconds": 8.925
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_sigkill_after_durable_artifact_recovers_without_redispatch",
+    "outcome": "passed",
+    "duration_seconds": 5.267
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_source_election_is_unique_under_concurrency",
+    "outcome": "passed",
+    "duration_seconds": 2.356
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[action_sha256]",
+    "outcome": "passed",
+    "duration_seconds": 2.08
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[loop_id]",
+    "outcome": "passed",
+    "duration_seconds": 2.443
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[parent_revision]",
+    "outcome": "passed",
+    "duration_seconds": 2.323
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_stage_lookup_rejects_rehashed_coordinate_tamper[session_id]",
+    "outcome": "passed",
+    "duration_seconds": 2.054
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[extra]",
+    "outcome": "passed",
+    "duration_seconds": 0.945
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[in_place]",
+    "outcome": "passed",
+    "duration_seconds": 0.984
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[remove]",
+    "outcome": "passed",
+    "duration_seconds": 0.868
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[replace]",
+    "outcome": "passed",
+    "duration_seconds": 0.931
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_state_cache_fails_closed_on_corpus_inventory_drift[symlink]",
+    "outcome": "passed",
+    "duration_seconds": 0.8
+  },
+  {
+    "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_store_reexecutes_configured_correction_authority",
+    "outcome": "passed",
+    "duration_seconds": 4.236
+  }
+]

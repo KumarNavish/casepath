@@ -1,0 +1,66 @@
+✔ causal formation native: next case handoff retains verified content through none (18724.369461ms)
+✔ causal formation native: next case handoff retains verified content through pause (17921.326995ms)
+✔ causal formation native: next case handoff retains verified content through navigation (14868.851455ms)
+✔ causal formation native: next case handoff retains verified content through unstarted (15672.319356ms)
+✔ causal formation native: next case handoff retains verified content through pause-head (13559.555687ms)
+✔ causal formation native: next case handoff retains verified content through navigation-head (13171.885693ms)
+✔ causal formation native: next case handoff retains verified content through changed-head (13795.68186ms)
+✔ causal formation native: next case handoff retains verified content through missing (13425.859613ms)
+✔ replay entry: fresh owner consumes all 218 reference prefixes and eight native handoffs (21780.648967ms)
+✔ replay entry: fresh public visitor consumes all 218 reference prefixes and eight native handoffs (24455.791344ms)
+✔ reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes (16679.627545ms)
+✔ reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion false (21572.896332ms)
+✔ reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion true (16375.650918ms)
+✔ reference native: unavailable recordings retain actual unprocessed intake and its source-backed missing list read-only (11617.167088ms)
+✔ reference native: an earlier ordinary canonical prefix keeps its mode and context before reference admission (4471.547201ms)
+✔ reference native: public entry omits creation and forged flag status and controls cannot reopen writes (1568.453249ms)
+✔ reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access (13194.279257ms)
+✔ timed replay presentation inspects all nine canonical cases with modal and hidden pauses, then cancels on navigation (2788.622466ms)
+✖ a replay control history without an accepted operational outcome stops honestly at its exact saved head (6671.886302ms)
+✔ collection search retains a persistent input affordance and visible focus while filtering exact case IDs (2639.399334ms)
+✔ pending raw navigation blocks original admission, timed advancement and delayed replay before route events dispatch (4377.860063ms)
+✔ direct replay warmth: cold accepted entry primes real Cases and Knowledge without replacing its prefix or source inspection (13657.351934ms)
+▶ direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission
+  ✔ hidden (12347.251544ms)
+  ✔ navigation (12517.941881ms)
+✔ direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission (24866.236464ms)
+✔ direct replay warmth: canceled Knowledge and snapshot fallback cannot drain or seed a later entry (13276.576103ms)
+▶ direct replay warmth: metadata failures stay silent and explicit navigation recovers
+  ✔ collection (12326.817486ms)
+  ✔ knowledge (12937.680511ms)
+✔ direct replay warmth: metadata failures stay silent and explicit navigation recovers (25265.196308ms)
+✔ quiet language: History pauses the real replay immediately and exposes exact Playback details before Resume consumes only its next prefix (8061.452464ms)
+✔ focused flow: actual accepted replay prefixes stay immutable with 0ms GET latency and bounded prefetch (33896.70677ms)
+✔ focused flow: actual accepted replay prefixes stay immutable with 120ms GET latency and bounded prefetch (34057.609937ms)
+✔ focused flow: source cancels replay with a prefetched accepted response in flight (8246.113023ms)
+✔ focused flow: hidden cancels replay with a prefetched accepted response in flight (7815.347955ms)
+✔ focused flow: navigation cancels replay with a prefetched accepted response in flight (8280.539256ms)
+✔ focused flow: manual node inspection pauses the same accepted journal until deliberate Resume (8503.427917ms)
+✔ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (7895.146479ms)
+✔ focused flow: manual document inspection pauses the same accepted journal until deliberate Resume (8028.400013ms)
+✔ quiet work: initial and reconnect navigation settle immediately while rapid routes, keyboard and reduced motion preserve authority (1389.257309ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 38
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 473231.755867
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1415:1
+✖ a replay control history without an accepted operational outcome stops honestly at its exact saved head (6671.886302ms)
+  AssertionError [ERR_ASSERTION]: the authored history without an outcome did not stop
+      at eventually (/workspace/casepath-replay-entry-session-20261013/casepath-qa/unified-product-browser-v1.test.cjs:501:10)
+      at async TestContext.<anonymous> (/workspace/casepath-replay-entry-session-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1421:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }

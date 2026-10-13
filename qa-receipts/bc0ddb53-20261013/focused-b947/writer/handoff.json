@@ -1,0 +1,155 @@
+{
+  "commit": "b94700035db97d5944e28905bb87b1b302afc244",
+  "base": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "branch": "codex/casepath-replay-entry-session-20261013",
+  "host": "656813ef2295",
+  "pushed": true,
+  "status_clean": true,
+  "files": [
+    "casepath-qa/autonomous-workspace-v1.test.cjs",
+    "casepath-qa/sites-autonomous-entry.test.cjs",
+    "casepath-qa/unified-product-browser-v1.test.cjs",
+    "casepath/assets/autonomous-entry-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js"
+  ],
+  "sha256": {
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "5443e6b30ce7b68cc5e6d0afe5d2f38863bb0494a645674d7246bf54bcea9bc3",
+    "casepath-qa/sites-autonomous-entry.test.cjs": "493fcbd0a5b8623e516c39bb1487f1ccf06682f10833690cb5d3b96caac2fb0c",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "9dfae93e1369bb775445dc1df4128ed90eb0c64b7efb54a4487a6080ef5fe8cf",
+    "casepath/assets/autonomous-entry-v1.js": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+    "casepath/assets/autonomous-workspace-v1.css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+    "casepath/assets/autonomous-workspace-v1.js": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+  },
+  "checks": [
+    {
+      "log": "/tmp/casepath-replay-entry-session-20261013/module-final.tap",
+      "command": "node --test casepath-qa/autonomous-workspace-v1.test.cjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 146,
+        "pass": 146,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "/tmp/casepath-replay-entry-session-20261013/entry-lifecycle-final.tap",
+      "command": "node --test casepath-qa/sites-autonomous-entry.test.cjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "/tmp/casepath-replay-entry-session-20261013/native-entry.tap",
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json CASEPATH_FOCUSED_RECEIPTS=/tmp/casepath-replay-entry-session-20261013/receipts node --test --test-name-pattern='replay entry:' casepath-qa/unified-product-browser-v1.test.cjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 7,
+        "pass": 7,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "/tmp/casepath-replay-entry-session-20261013/native-lifecycle.tap",
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_FOCUSED_RECEIPTS=/tmp/casepath-replay-entry-session-20261013/receipts node --test --test-name-pattern='^replay lifecycle:' casepath-qa/unified-product-browser-v1.test.cjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "/tmp/casepath-replay-entry-session-20261013/focused-browser.tap",
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json CASEPATH_FOCUSED_RECEIPTS=/tmp/casepath-replay-entry-session-20261013/focused-receipts node --test --test-name-pattern='reference native:|direct replay warmth:|timed replay|a replay control history|focused flow: actual accepted replay|focused flow: .* cancels replay|focused flow: manual .* inspection|quiet language: History|pending raw navigation|handoff|collection search|quiet work: initial' casepath-qa/unified-product-browser-v1.test.cjs",
+      "exit_code": 1,
+      "counts": {
+        "tests": 39,
+        "pass": 38,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "/tmp/casepath-replay-entry-session-20261013/outcome-base.tap",
+      "command": "CASEPATH_BROWSER_JS_ASSET=/tmp/casepath-replay-entry-session-20261013/base-workspace.js CASEPATH_BROWSER_CSS_ASSET=/tmp/casepath-replay-entry-session-20261013/base-workspace.css CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json CASEPATH_BROWSER_DIAGNOSTICS=/tmp/casepath-replay-entry-session-20261013/outcome-base-diagnostics node --test --test-name-pattern='^a replay control history without' casepath-qa/unified-product-browser-v1.test.cjs",
+      "exit_code": 1,
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "/tmp/casepath-replay-entry-session-20261013/outcome-final.tap",
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json node --test --test-name-pattern='^a replay control history without' casepath-qa/unified-product-browser-v1.test.cjs",
+      "exit_code": 0,
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "log": "/tmp/casepath-replay-entry-session-20261013/base-regression-exact.tap",
+      "command": "CASEPATH_BROWSER_JS_ASSET=/tmp/casepath-replay-entry-session-20261013/base-workspace.js CASEPATH_BROWSER_CSS_ASSET=/tmp/casepath-replay-entry-session-20261013/base-workspace.css CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json node --test --test-name-pattern='replay entry: a legacy|replay entry: programmatic' casepath-qa/unified-product-browser-v1.test.cjs",
+      "exit_code": 1,
+      "counts": {
+        "tests": 2,
+        "pass": 0,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "native_reference": {
+    "fixture": "/tmp/casepath-reference-native-85a-fixture.json",
+    "prefixes_per_fresh_context": 218,
+    "handoffs_per_context": 8,
+    "owner_requests": 233,
+    "visitor_requests": 241,
+    "methods": [
+      "GET"
+    ],
+    "accepted_state_projection_every_prefix": true,
+    "native_visibility_BFCache": true,
+    "clock": "Playwright virtual clock; genuine browser DOM, click, keyboard, reload and persisted BFCache events"
+  },
+  "failures_resolved": [
+    "Exact base replay link without collection: native Play did not advance the legacy prefix; direct replay highlighted Cases.",
+    "Exact base initial title focus matched focus-visible and produced a solid outline.",
+    "Exact base unconditional pagehide destruction left the genuine native BFCache page empty on Back.",
+    "Initial controller module run failed 71 tests because its minimal DOM mock lacked the new standard container attribute methods; mock corrected and all 146 passed.",
+    "Existing no-outcome regression failed after 700ms on both current and exact base assets, with the actual rendered state still at prefix 1. Base graph content pacing requires a 3500ms reading interval. Only QA changed to reach and assert head 2 within a bounded 6s before checking the unchanged outcome gate. Isolated final test passed."
+  ],
+  "limitations": [
+    "No backend/API/profile/corpus/journal/ledger/provider or production mutation; no model or paid calls.",
+    "No full suite, source seal or index asset hash rewrite; Mac owns integration asset sealing and publication.",
+    "Fixture acceptance is 218 real native deterministic prefixes. The Mac-reported production histories contain 223 prefixes including nine zero prefixes; production prefixes were not exercised here.",
+    "Published-site native capability probe by coordinator failed ERR_TUNNEL_CONNECTION_FAILED through inherited managed proxy. No live published commit or behavior verified from Cloud.",
+    "No end-user recording was produced; Mac owns real published silent recording after release gates."
+  ],
+  "independent_review_evidence": "/tmp/casepath-replay-entry-independent-review-20261013/actual-index-bfcache-fixed.json",
+  "receipt_paths": [
+    "/tmp/casepath-replay-entry-session-20261013/receipts/native-entry-bfcache.json",
+    "/tmp/casepath-replay-entry-session-20261013/receipts/replay-entry-all218-visitor.json",
+    "/tmp/casepath-replay-entry-session-20261013/receipts/replay-entry-all218-owner.json"
+  ]
+}

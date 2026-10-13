@@ -1,0 +1,10 @@
+All seven normal clones are clean at bc0; every prepare is terminal exit0.
+Protected shard4 completed before phase2 preparation.
+Launch the following independently in parallel:
+python /tmp/casepath-release-bc0-20261013/harness/run_shard.py run 1
+python /tmp/casepath-release-bc0-20261013/harness/run_shard.py run 2
+python /tmp/casepath-release-bc0-20261013/harness/run_shard.py run 3
+python /tmp/casepath-release-bc0-20261013/harness/run_shard.py run 5
+python /tmp/casepath-release-bc0-20261013/harness/run_shard.py run 6
+
+Counts1..6:242,554,229,324,563,478.

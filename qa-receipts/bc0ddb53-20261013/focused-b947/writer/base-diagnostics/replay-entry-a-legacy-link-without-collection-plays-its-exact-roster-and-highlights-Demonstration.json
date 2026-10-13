@@ -1,0 +1,27 @@
+{
+  "url": "http://localhost:41999/#autonomous/claim/clm_e262801f9368bc12?mode=replay&through=0",
+  "text": "CasePath\nEvidence into action\nNew claim ↗\nCases\nDemonstration\nKnowledge\n\nCases / Synthetic claim / Recorded investigation\n\nRecurring leak and a received image\n\nNot started.\n\nPlay\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\nOriginal message\nGuten Tag\n\nAus meiner Sicht gehört dazu: Die Verwaltung hat das Leck unter der Spüle per E-Mail bestätigt; Trotz unserer schriftlichen Frist tritt dort wieder Wasser aus; Wir möchten wissen, welche Unterlagen für eine amtliche Hinterlegung noch fehlen; so erinnere ich den Ablauf.\n\nZum Anliegen «bestätigtes wiederkehrendes Wasserleck nach abgelaufener Reparaturfrist», für diese Meldung gilt: wie lange der Wasseraustritt genau angedauert hat ist noch ungeklärt; für «Unterlagen und Schutzschritte für eine amtliche Mietzinshinterlegung prüfen»: alle derzeit verfügbaren Angaben sind beigefügt; bei «bestätigtes wiederkehrendes Wasserleck nach abgelaufener Reparaturfrist»: ich möchte vor dem Handeln Klarheit; wann die Reparatur tatsächlich abgeschlossen wurde bleibt ebenfalls offen; diesen Stand möchte ich prüfen lassen.\n\nJetzt benötige ich: Unterlagen und Schutzschritte für eine amtliche Mietzinshinterlegung prüfen; insbesondere brauche ich Klarheit darüber, wann die Reparatur tatsächlich abgeschlossen wurde, und darüber, ob die Unterlagen für eine erste Prüfung reichen.\n\nDanke für Ihre Rückmeldung; Bitte klären Sie, wie lange der Wasseraustritt genau angedauert hat; danach kann ich sinnvoll weitergehen.\n\nSoweit ich mich erinnere, begann es um den 30.04.2025.\n\nFreundliche Grüsse\nBitte-um-Pruefung-bestaetigtes-wiederkehrendes-Wasserleck-nach-abgelaufener-Reparaturfrist_2025-05-24_1300_f8bea1.txt\nIMG_19650627.jpg",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<h1 class=\"au-page-heading \" id=\"auClaimTitle\" data-au-claim-title=\"\" tabindex=\"-1\">Recurring leak and a received image</h1>",
+  "revision": "0",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_e262801f9368bc12/replay?through_seq=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

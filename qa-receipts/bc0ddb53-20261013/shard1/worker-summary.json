@@ -1,0 +1,195 @@
+{
+  "shard": 1,
+  "candidate": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "host": "656813ef2295",
+  "repo": "/workspace/casepath-release-ae0-shard1",
+  "artifact_directory": "/tmp/casepath-release-bc0-20261013/shard1",
+  "wrapper_command": "python /tmp/casepath-release-bc0-20261013/harness/run_shard.py run 1 > /tmp/casepath-release-bc0-20261013/shard1/runner.log 2>&1",
+  "wrapper_exit_code": 0,
+  "pytest_exit_code": 0,
+  "pytest_command": [
+    "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "--junitxml=/tmp/casepath-release-bc0-20261013/shard1/junit.xml",
+    "--durations=0",
+    "--basetemp=/tmp/casepath-release-bc0-20261013/shard1/pytest-tmp",
+    "@/tmp/casepath-release-bc0-20261013/shard1/pytest-arguments.txt"
+  ],
+  "started_utc": "2026-10-13T01:22:25.246753+00:00",
+  "finished_utc": "2026-10-13T01:30:00.130079+00:00",
+  "wrapper_duration_seconds": 454.8833255767822,
+  "junit_duration_seconds": 452.042,
+  "pytest_summary": "242 passed, 5 warnings in 452.04s (0:07:32)",
+  "coverage_verified": true,
+  "coverage": {
+    "assigned": {
+      "count": 242,
+      "unique": 242,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "prepared_ids": {
+      "count": 242,
+      "unique": 242,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "pytest_arguments": {
+      "count": 242,
+      "unique": 242,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "collected": {
+      "count": 242,
+      "unique": 242,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "junit": {
+      "count": 242,
+      "unique": 242,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "observer_setup": {
+      "count": 242,
+      "unique": 242,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "observer_call": {
+      "count": 242,
+      "unique": 242,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    },
+    "observer_teardown": {
+      "count": 242,
+      "unique": 242,
+      "gaps": [],
+      "extras": [],
+      "duplicates": {},
+      "sequence_matches_assigned": true
+    }
+  },
+  "junit_unresolved": [],
+  "junit_suite_attributes": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "242",
+      "time": "452.042",
+      "timestamp": "2026-10-13T01:22:26.983984+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "junit_outcomes": {
+    "passed": 242
+  },
+  "observer_phase_count": 726,
+  "observer_outcomes": {
+    "setup:passed": 242,
+    "call:passed": 242,
+    "teardown:passed": 242
+  },
+  "observer_junit_outcome_mismatches": [],
+  "phase_duration_seconds": {
+    "setup": 19.001463562482968,
+    "call": 364.3199310245691,
+    "teardown": 66.11312630778411
+  },
+  "failed_node_ids": [],
+  "skips": [],
+  "expected_skips": [],
+  "known_skips_exact_id_phase_line_reason_match": true,
+  "mac127_overlap": [],
+  "slowest_call": {
+    "id": "casepath-api/tests/test_agent_desk_v1.py::test_native_reopen_clears_inconsistent_completion_and_replays_one_real_continuation",
+    "when": "call",
+    "outcome": "passed",
+    "duration": 31.19874926598277,
+    "utc_epoch": 1791854862.1219153
+  },
+  "postrun_source": {
+    "head": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+    "status": "",
+    "normal_clone": true,
+    "manifest_sha256": "a7df9ddc28afd6f69b6a36e65ed5f2ac7d129648d64c01d4eea48c8b199386fd",
+    "seal_file_count": 1680,
+    "seal_mismatches": [],
+    "verified": true
+  },
+  "postrun_capsule": {
+    "root": "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/source-capsules/a7df9ddc28afd6f69b6a36e65ed5f2ac7d129648d64c01d4eea48c8b199386fd",
+    "receipt_file_sha256": "5aa7ea9fb5d633da0e12aa3bf9acb1daefe03df105b83f78b748eb22aaa76c98",
+    "receipt": {
+      "artifact_file_count": 25,
+      "artifact_manifest_file_sha256": "5a8eb4d760fd2d1f82c86233d498870bfd15bb5e9fd6d04ceb626d4460ec28d2",
+      "contract": "casepath.sealed-source-capsule/1.0.0",
+      "receipt_sha256": "7f8cd56d7e1fd5a6f75fea83dbf733aab3f94065113ae6e8e96ab07b9c33f28b",
+      "source_file_count": 1680,
+      "source_manifest_file_sha256": "a7df9ddc28afd6f69b6a36e65ed5f2ac7d129648d64c01d4eea48c8b199386fd",
+      "source_roster_sha256": "239d0a80b429732d584132d68ea386c7fd5bebb1895b86540689aa860ae60ffb",
+      "static_file_count": 37,
+      "static_inventory_sha256": "7c73b830d0d6c018d7d7c5f968e89d7ba124c27d7579a6241c1780b80889e3d5"
+    },
+    "receipt_verified": true,
+    "manifest_equal": true,
+    "artifact_manifest_equal": true,
+    "source_mismatches": [],
+    "artifact_mismatches": [],
+    "capsule_artifact_mismatches": [],
+    "static_mismatches": [],
+    "static_issues": [],
+    "metadata_issues": [],
+    "roster_gaps": [],
+    "roster_extras": [],
+    "verified": true
+  },
+  "input_hashes": {
+    "/tmp/casepath-release-bc0-20261013/shard-map.json": "9dc8324c7e53a77ae790f871c3503ff3212aac0ebfd9414a8bca702b483997c3",
+    "/tmp/casepath-release-bc0-20261013/harness/run_shard.py": "fd2e68a254dd211d66f1a29926dd6bfcf4960b3ffe387197dac7105bd60fcf65",
+    "/tmp/casepath-release-bc0-20261013/harness/casepath_shard_observer.py": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+    "/tmp/casepath-release-bc0-20261013/harness-provenance.json": "5dfe60990c1c975a16621698a9a62b2dfb7aab5d39eeca571f0b8af984bd3cc5"
+  },
+  "harness_hashes_match_provenance": true,
+  "raw_logs": {
+    "runner.log": "/tmp/casepath-release-bc0-20261013/shard1/runner.log",
+    "pytest.log": "/tmp/casepath-release-bc0-20261013/shard1/pytest.log",
+    "command.json": "/tmp/casepath-release-bc0-20261013/shard1/command.json",
+    "result.json": "/tmp/casepath-release-bc0-20261013/shard1/result.json",
+    "collected.json": "/tmp/casepath-release-bc0-20261013/shard1/collected.json",
+    "reports.jsonl": "/tmp/casepath-release-bc0-20261013/shard1/reports.jsonl",
+    "junit.xml": "/tmp/casepath-release-bc0-20261013/shard1/junit.xml"
+  },
+  "stderr_capture": "pytest stdout and stderr merged in pytest.log; wrapper stdout and stderr merged in runner.log",
+  "stderr_observation": "5 deprecation warnings in pytest summary; one post-summary swigvarlink DeprecationWarning. No failed or error phases.",
+  "attempts": 1,
+  "retries": 0,
+  "source_edits": false,
+  "passed": true
+}
