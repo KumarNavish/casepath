@@ -1,0 +1,27 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "provenance": "Verbatim root-relayed Mac FINAL68383 attestation",
+  "verbatim_attestation": "MAC ATTESTATION receivedexact68383faf:127passed0skip/fail,pytest596.28s,observer127uniqueIDs passedallsetup/call/teardown,wrapperexit0,cleanunchangedsource1706bytesbeforeafter,manifest142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a. RawMaclocalF9/gate;sortedIDhashsamee0689250...7a8 fixed69CLI/52local/6restart. NoMacJUnitfile/hashsentyet;doNOTinvent. IncludeMac-attestedinaggregate+verbatimattestationartifact;Cloudrawunionmustdisjoint+fullexact2571. SourceMacpackagedNOTdeployed. FinalgatepushASAPaftergreen rootwillrawreconcile.",
+  "tests": 127,
+  "passed": 127,
+  "failed": 0,
+  "skipped": 0,
+  "pytest_seconds": 596.28,
+  "observer_unique_ids": 127,
+  "observer_setup_call_teardown_all_passed": true,
+  "wrapper_exit_code": 0,
+  "source_before_after_unchanged": true,
+  "source_file_count": 1706,
+  "manifest_sha256": "142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a",
+  "sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "counts_by_file": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_local_data_root.py": 52,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6
+  },
+  "raw_evidence_location": "Mac-local F9/gate",
+  "mac_junit_path_provided": false,
+  "mac_junit_hash_provided": false,
+  "cloud_mac_junit_created": false,
+  "received_epoch": 1791896372.1699762
+}

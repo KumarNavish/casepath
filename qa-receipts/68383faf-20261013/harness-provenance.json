@@ -1,0 +1,23 @@
+[
+  {
+    "source": "/tmp/casepath-release-2af5-20261013/harness/casepath_shard_observer.py",
+    "source_sha256": "20beba3456634cd03787485568c05a5690414cab926c7336e8dbd4a7890fba30",
+    "destination": "/workspace/casepath-operation-gate-68383faf-20261013/harness/casepath_shard_observer.py",
+    "destination_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+    "adaptation": "Frozen identities/rostercounts/outputpaths; freshbeforeafter destinations; singleattemptlatch; standardfailed temporary-fixture retention policy; observer unchanged. Mark pytest temporary-fixture call retention as failed when setup fails, preserving setup-failure artifacts; no outcome/selection/assertion changes."
+  },
+  {
+    "source": "/tmp/casepath-release-2af5-20261013/harness/run_shard.py",
+    "source_sha256": "dba07189d2e1ef395f0b137b9fa351423b553888d68c456ae1cbd38276d08206",
+    "destination": "/workspace/casepath-operation-gate-68383faf-20261013/harness/run_shard.py",
+    "destination_sha256": "816a1ff96b29924356a7ebd1e38113cf82aa5877d14608074193eae2e769e689",
+    "adaptation": "Frozen identities/rostercounts/outputpaths; freshbeforeafter destinations; singleattemptlatch; standardfailed temporary-fixture retention policy; observer unchanged."
+  },
+  {
+    "source": "/tmp/casepath-release-2af5-20261013/harness/verify_prepared_capsules.py",
+    "source_sha256": "4b84196b5a51f42cd825d39c39fd6b430a8ad0d3f247ca80b97aa39d98f91fd1",
+    "destination": "/workspace/casepath-operation-gate-68383faf-20261013/harness/verify_prepared_capsules.py",
+    "destination_sha256": "791d0768e5b73c5cab568b5197754b747c173cf0ccdc39605526c9b0f23b0211",
+    "adaptation": "Frozen identities/rostercounts/outputpaths; freshbeforeafter destinations; singleattemptlatch; standardfailed temporary-fixture retention policy; observer unchanged."
+  }
+]

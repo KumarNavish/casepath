@@ -1,0 +1,32 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "inventory": 2571,
+  "cloud": 2444,
+  "mac": 127,
+  "counts": {
+    "1": 307,
+    "2": 347,
+    "3": 347,
+    "4": 740,
+    "5": 352,
+    "6": 351
+  },
+  "shard4prepared_and_capsuleverified": true,
+  "other_shards_prepare_continuing": false,
+  "execution_order": "4alone thenfiveconcurrent",
+  "created_epoch": 1791895791.4248066,
+  "all_six_prepared_and_before_verified": true,
+  "prepared_source_counts": [
+    1706,
+    25,
+    37
+  ],
+  "phase2_owner_map": {
+    "1": "/root/operation_runtime",
+    "2": "/root/operation_frontend",
+    "3": "/root/operation_review",
+    "5": "/root/polish_gate_inventory/ce0a_shard5",
+    "6": "/root/polish_gate_inventory/ce0a_shard6"
+  },
+  "workspace_free_bytes": 1148657664
+}

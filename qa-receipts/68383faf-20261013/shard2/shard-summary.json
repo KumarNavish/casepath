@@ -1,0 +1,51 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "shard": 2,
+  "attempts": 1,
+  "exit_code": 0,
+  "duration_seconds": 726.6870405673981,
+  "assigned_ids": 347,
+  "executed_call_ids": 347,
+  "all_assigned_executed_exactly": true,
+  "unrun_ids": [],
+  "extra_ids": [],
+  "phase_counts": {
+    "setup": {
+      "passed": 347
+    },
+    "call": {
+      "passed": 347
+    },
+    "teardown": {
+      "passed": 347
+    }
+  },
+  "junit": {
+    "tests": 347,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "warnings": 9,
+  "after_head": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "after_status": "",
+  "capsule_before_after_equal": true,
+  "capsule_receipt_file_sha256": "ef4673bd7a31a238215fdd5864bcdd2fe4eba8dd6e623b6c89d2dfc499ab0b83",
+  "manifest_sha256": "142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a",
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "capsule_verification_after_exit_code": 0,
+  "evidence": {
+    "command_env": "command.json",
+    "reports": "reports.jsonl",
+    "junit": "junit.xml",
+    "durations_log": "pytest.log",
+    "runner_terminal": "runner-terminal.log",
+    "before": "source-before/capsule-verification.json",
+    "after": "source-after/capsule-verification.json",
+    "after_log": "capsule-verification-after.log"
+  }
+}

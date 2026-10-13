@@ -1,0 +1,172 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "original_attempts": 6,
+  "retries": 0,
+  "failed_call_ids": 8,
+  "failure_type": "Existing request-count expectations differ from per-source-page execute_read_once execute+close RPC shape",
+  "diagnosis_provenance": "Raw original observer/JUnit failure traces plus read-only source review; root separately authorized test-only contract repair",
+  "product_source_changed_during_gate": false,
+  "later_exact_byte_LIMIT_zero_stream_assertions_unverified_in_failed_cases": true,
+  "failures": [
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]",
+      "shard": 1,
+      "phase": "call",
+      "expected_receipt": {
+        "http": 3,
+        "execute": 2,
+        "close": 1,
+        "batch": 0
+      },
+      "actual_receipt": {
+        "http": 2,
+        "execute": 2,
+        "close": 2,
+        "batch": 0
+      },
+      "raw_report_file": "shard1/reports.jsonl",
+      "assertion_reached": "transport receipt counter assertion",
+      "later_assertions_reached": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+      "shard": 3,
+      "phase": "call",
+      "expected_receipt": {
+        "http": 8,
+        "execute": 6,
+        "close": 2,
+        "batch": 0
+      },
+      "actual_receipt": {
+        "http": 7,
+        "execute": 6,
+        "close": 6,
+        "batch": 0
+      },
+      "raw_report_file": "shard3/reports.jsonl",
+      "assertion_reached": "transport receipt counter assertion",
+      "later_assertions_reached": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]",
+      "shard": 3,
+      "phase": "call",
+      "expected_receipt": {
+        "http": 14,
+        "execute": 11,
+        "close": 3,
+        "batch": 0
+      },
+      "actual_receipt": {
+        "http": 12,
+        "execute": 11,
+        "close": 11,
+        "batch": 0
+      },
+      "raw_report_file": "shard3/reports.jsonl",
+      "assertion_reached": "transport receipt counter assertion",
+      "later_assertions_reached": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]",
+      "shard": 5,
+      "phase": "call",
+      "expected_receipt": {
+        "http": 4,
+        "execute": 2,
+        "close": 2,
+        "batch": 0
+      },
+      "actual_receipt": {
+        "http": 3,
+        "execute": 2,
+        "close": 2,
+        "batch": 0
+      },
+      "raw_report_file": "shard5/reports.jsonl",
+      "assertion_reached": "transport receipt counter assertion",
+      "later_assertions_reached": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[True]",
+      "shard": 5,
+      "phase": "call",
+      "expected_receipt": {
+        "http": 6,
+        "execute": 3,
+        "close": 3,
+        "batch": 0
+      },
+      "actual_receipt": {
+        "http": 4,
+        "execute": 3,
+        "close": 3,
+        "batch": 0
+      },
+      "raw_report_file": "shard5/reports.jsonl",
+      "assertion_reached": "transport receipt counter assertion",
+      "later_assertions_reached": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]",
+      "shard": 6,
+      "phase": "call",
+      "expected_receipt": {
+        "http": 10,
+        "execute": 9,
+        "close": 1,
+        "batch": 0
+      },
+      "actual_receipt": {
+        "http": 9,
+        "execute": 9,
+        "close": 9,
+        "batch": 0
+      },
+      "raw_report_file": "shard6/reports.jsonl",
+      "assertion_reached": "transport receipt counter assertion",
+      "later_assertions_reached": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]",
+      "shard": 6,
+      "phase": "call",
+      "expected_receipt": {
+        "http": 3,
+        "execute": 2,
+        "close": 1,
+        "batch": 0
+      },
+      "actual_receipt": {
+        "http": 2,
+        "execute": 2,
+        "close": 2,
+        "batch": 0
+      },
+      "raw_report_file": "shard6/reports.jsonl",
+      "assertion_reached": "transport receipt counter assertion",
+      "later_assertions_reached": false
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_digest_group_boundary_keeps_one_shared_connection",
+      "shard": 6,
+      "phase": "call",
+      "expected_receipt": {
+        "http": 19,
+        "execute": 18,
+        "close": 1,
+        "batch": 0
+      },
+      "actual_receipt": {
+        "http": 18,
+        "execute": 18,
+        "close": 18,
+        "batch": 0
+      },
+      "raw_report_file": "shard6/reports.jsonl",
+      "assertion_reached": "transport receipt counter assertion",
+      "later_assertions_reached": false
+    }
+  ]
+}

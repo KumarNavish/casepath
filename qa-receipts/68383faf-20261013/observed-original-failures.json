@@ -1,0 +1,79 @@
+{
+  "candidate_sha": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "original_attempts_only": true,
+  "automatic_retries": 0,
+  "failures": [
+    {
+      "shard": 1,
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 0.1117151280050166,
+      "utc_epoch": 1791896577.1728177,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f36bcc78c50>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f36be074940>)\nlength = 2097152\n\n    @pytest.mark.parametrize(\"length\", [8 * HostedSources.CHUNK_BYTES, 8 * HostedSources.CHUNK_BYTES + 1, MAX_FILE_BYTES])\n    def test_chunk_page_boundaries_and_maximum_source_complete_verification(remote, length):\n        server, _ = remote\n        sources = HostedSources(server.connection)\n        raw = (bytes(range(256)) * ceil(length / 256))[:length]\n        digest = sources.publish(raw)\n        server.requests.clear()\n        sources.verify_many([digest, digest])\n        chunks = ceil(length / sources.CHUNK_BYTES)\n        pages = ceil(chunks / 8) + (chunks % 8 == 0)\n>       assert receipt(server) == {\"http\": pages + 1, \"execute\": pages, \"close\": 1, \"batch\": 0}\nE       AssertionError: assert {'batch': 0, ... 2, 'http': 2} == {'batch': 0, ... 2, 'http': 3}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 2} != {'close': 1}\nE         {'http': 2} != {'http': 3}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:102: AssertionError"
+    },
+    {
+      "shard": 3,
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 2.7949171389918774,
+      "utc_epoch": 1791896807.4158466,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f3bee6dc3e0>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f3bf39ca580>)\ncold = False\n\n    @pytest.mark.parametrize(\"cold\", [False, True])\n    def test_real_31_source_collection_uses_bounded_batched_roundtrips(remote, cold):\n        store, _, digests, chunks = realistic_roster(remote)\n        if cold:\n            store = new_store(remote)\n        server, _ = remote\n        server.requests.clear()\n        rows = store.list_summaries()\n        measured = receipt(server)\n        pages = ceil(chunks / 8) + (chunks % 8 == 0)\n        expected = {\"http\": 2 * pages + 4 if cold else pages + 3, \"execute\": 2 * pages + 1 if cold else pages + 1,\n                    \"close\": 3 if cold else 2, \"batch\": 0}\n>       assert measured == expected, measured\nE       AssertionError: {'batch': 0, 'close': 6, 'execute': 6, 'http': 7}\nE       assert {'batch': 0, ... 6, 'http': 7} == {'batch': 0, ... 6, 'http': 8}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 6} != {'close': 2}\nE         {'http': 7} != {'http': 8}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:70: AssertionError"
+    },
+    {
+      "shard": 3,
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 3.0572486870223656,
+      "utc_epoch": 1791896810.4858878,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f3beec2ef90>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f3bf012e7a0>)\ncold = True\n\n    @pytest.mark.parametrize(\"cold\", [False, True])\n    def test_real_31_source_collection_uses_bounded_batched_roundtrips(remote, cold):\n        store, _, digests, chunks = realistic_roster(remote)\n        if cold:\n            store = new_store(remote)\n        server, _ = remote\n        server.requests.clear()\n        rows = store.list_summaries()\n        measured = receipt(server)\n        pages = ceil(chunks / 8) + (chunks % 8 == 0)\n        expected = {\"http\": 2 * pages + 4 if cold else pages + 3, \"execute\": 2 * pages + 1 if cold else pages + 1,\n                    \"close\": 3 if cold else 2, \"batch\": 0}\n>       assert measured == expected, measured\nE       AssertionError: {'batch': 0, 'close': 11, 'execute': 11, 'http': 12}\nE       assert {'batch': 0, ...1, 'http': 12} == {'batch': 0, ...1, 'http': 14}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 11} != {'close': 3}\nE         {'http': 12} != {'http': 14}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:70: AssertionError"
+    },
+    {
+      "shard": 5,
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 2.8661711019813083,
+      "utc_epoch": 1791896910.5131671,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f706a8e59b0>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f706a9eb450>)\ncold = False\n\n    @pytest.mark.parametrize(\"cold\", [False, True])\n    def test_real_three_source_snapshot_batches_fresh_verification(remote, cold):\n        store, claim_id, _, _ = realistic_roster(remote)\n        if cold:\n            store = new_store(remote)\n        server, _ = remote\n        server.requests.clear()\n        snapshot = store.snapshot(claim_id)\n        measured = receipt(server)\n>       assert measured == {\"http\": 6 if cold else 4, \"execute\": 3 if cold else 2,\n                            \"close\": 3 if cold else 2, \"batch\": 0}, measured\nE       AssertionError: {'batch': 0, 'close': 2, 'execute': 2, 'http': 3}\nE       assert {'batch': 0, ... 2, 'http': 3} == {'batch': 0, ... 2, 'http': 4}\nE         \nE         Omitting 3 identical items, use -vv to show\nE         Differing items:\nE         {'http': 3} != {'http': 4}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:84: AssertionError"
+    },
+    {
+      "shard": 5,
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[True]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 2.899683903029654,
+      "utc_epoch": 1791896913.4257388,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f706bb9b770>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f706b967350>)\ncold = True\n\n    @pytest.mark.parametrize(\"cold\", [False, True])\n    def test_real_three_source_snapshot_batches_fresh_verification(remote, cold):\n        store, claim_id, _, _ = realistic_roster(remote)\n        if cold:\n            store = new_store(remote)\n        server, _ = remote\n        server.requests.clear()\n        snapshot = store.snapshot(claim_id)\n        measured = receipt(server)\n>       assert measured == {\"http\": 6 if cold else 4, \"execute\": 3 if cold else 2,\n                            \"close\": 3 if cold else 2, \"batch\": 0}, measured\nE       AssertionError: {'batch': 0, 'close': 3, 'execute': 3, 'http': 4}\nE       assert {'batch': 0, ... 3, 'http': 4} == {'batch': 0, ... 3, 'http': 6}\nE         \nE         Omitting 3 identical items, use -vv to show\nE         Differing items:\nE         {'http': 4} != {'http': 6}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:84: AssertionError"
+    },
+    {
+      "shard": 6,
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 1.0380746200098656,
+      "utc_epoch": 1791896963.9648108,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f63dabcdc70>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f63dd3bb930>)\nlength = 16777216\n\n    @pytest.mark.parametrize(\"length\", [8 * HostedSources.CHUNK_BYTES, 8 * HostedSources.CHUNK_BYTES + 1, MAX_FILE_BYTES])\n    def test_chunk_page_boundaries_and_maximum_source_complete_verification(remote, length):\n        server, _ = remote\n        sources = HostedSources(server.connection)\n        raw = (bytes(range(256)) * ceil(length / 256))[:length]\n        digest = sources.publish(raw)\n        server.requests.clear()\n        sources.verify_many([digest, digest])\n        chunks = ceil(length / sources.CHUNK_BYTES)\n        pages = ceil(chunks / 8) + (chunks % 8 == 0)\n>       assert receipt(server) == {\"http\": pages + 1, \"execute\": pages, \"close\": 1, \"batch\": 0}\nE       AssertionError: assert {'batch': 0, ... 9, 'http': 9} == {'batch': 0, ...9, 'http': 10}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 9} != {'close': 1}\nE         {'http': 9} != {'http': 10}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:102: AssertionError"
+    },
+    {
+      "shard": 6,
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 0.11600466497475281,
+      "utc_epoch": 1791896964.0907822,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f63da402190>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f63dcb7b050>)\nlength = 2097153\n\n    @pytest.mark.parametrize(\"length\", [8 * HostedSources.CHUNK_BYTES, 8 * HostedSources.CHUNK_BYTES + 1, MAX_FILE_BYTES])\n    def test_chunk_page_boundaries_and_maximum_source_complete_verification(remote, length):\n        server, _ = remote\n        sources = HostedSources(server.connection)\n        raw = (bytes(range(256)) * ceil(length / 256))[:length]\n        digest = sources.publish(raw)\n        server.requests.clear()\n        sources.verify_many([digest, digest])\n        chunks = ceil(length / sources.CHUNK_BYTES)\n        pages = ceil(chunks / 8) + (chunks % 8 == 0)\n>       assert receipt(server) == {\"http\": pages + 1, \"execute\": pages, \"close\": 1, \"batch\": 0}\nE       AssertionError: assert {'batch': 0, ... 2, 'http': 2} == {'batch': 0, ... 2, 'http': 3}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 2} != {'close': 1}\nE         {'http': 2} != {'http': 3}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:102: AssertionError"
+    },
+    {
+      "shard": 6,
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_digest_group_boundary_keeps_one_shared_connection",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 0.48079768696334213,
+      "utc_epoch": 1791896964.5822473,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f63e2c07150>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f63da4a1cd0>)\n\n    def test_digest_group_boundary_keeps_one_shared_connection(remote):\n        server, _ = remote\n        sources = HostedSources(server.connection)\n        digests = [sources.publish((\"Original source \" + str(index)).encode())\n                   for index in range(sources.BATCH_DIGESTS + 1)]\n        server.requests.clear()\n        sources.verify_many(reversed(digests))\n        first_group_pages = sources.BATCH_DIGESTS // sources.PAGE_CHUNKS + 1\n>       assert receipt(server) == {\"http\": first_group_pages + 2, \"execute\": first_group_pages + 1,\n                                   \"close\": 1, \"batch\": 0}\nE       AssertionError: assert {'batch': 0, ...8, 'http': 18} == {'batch': 0, ...8, 'http': 19}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 18} != {'close': 1}\nE         {'http': 18} != {'http': 19}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:158: AssertionError"
+    }
+  ]
+}

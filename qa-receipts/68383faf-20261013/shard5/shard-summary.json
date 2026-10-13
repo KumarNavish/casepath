@@ -1,0 +1,122 @@
+{
+  "after_head": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "after_status": "",
+  "artifacts": {
+    "attempt_latch": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/ATTEMPT_STARTED.json",
+    "capsule_after_log": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/capsule-verification-after.log",
+    "capsule_after_result": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/capsule-verification-after-result.json",
+    "capsule_before_log": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/capsule-verification-before.log",
+    "collected_ids": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/collected.json",
+    "command_and_env": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/command.json",
+    "failed_fixtures": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/pytest-tmp",
+    "junit": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/junit.xml",
+    "pytest_arguments": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/pytest-arguments.txt",
+    "pytest_log": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/pytest.log",
+    "raw_phase_reports": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/reports.jsonl",
+    "runner_result": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/result.json",
+    "runner_terminal_log": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/runner-terminal.log",
+    "runner_wrapper_result": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/runner-wrapper-result.json"
+  },
+  "assigned_vs_collected": {
+    "all_collected_have_passed_teardown": true,
+    "assigned_count": 352,
+    "assigned_unique_count": 352,
+    "collected_count": 352,
+    "collected_unique_count": 352,
+    "missing_assigned_ids": [],
+    "missing_report_ids": [],
+    "report_unique_ids": 352,
+    "same_ids_and_order": true,
+    "unexpected_collected_ids": [],
+    "unexpected_report_ids": []
+  },
+  "attempts": 1,
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "counts": {
+    "failed": 2,
+    "passed": 350,
+    "skipped": 0,
+    "unresolved": 0,
+    "unrun_assigned": 0
+  },
+  "duration_seconds": 685.281135559082,
+  "exit_code": 1,
+  "expected_counts": {
+    "failed": 0,
+    "passed": 352,
+    "skipped": 0,
+    "unresolved": 0,
+    "unrun_assigned": 0
+  },
+  "expected_counts_match": false,
+  "failed_phases": [
+    {
+      "duration": 2.8661711019813083,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f706a8e59b0>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f706a9eb450>)\ncold = False\n\n    @pytest.mark.parametrize(\"cold\", [False, True])\n    def test_real_three_source_snapshot_batches_fresh_verification(remote, cold):\n        store, claim_id, _, _ = realistic_roster(remote)\n        if cold:\n            store = new_store(remote)\n        server, _ = remote\n        server.requests.clear()\n        snapshot = store.snapshot(claim_id)\n        measured = receipt(server)\n>       assert measured == {\"http\": 6 if cold else 4, \"execute\": 3 if cold else 2,\n                            \"close\": 3 if cold else 2, \"batch\": 0}, measured\nE       AssertionError: {'batch': 0, 'close': 2, 'execute': 2, 'http': 3}\nE       assert {'batch': 0, ... 2, 'http': 3} == {'batch': 0, ... 2, 'http': 4}\nE         \nE         Omitting 3 identical items, use -vv to show\nE         Differing items:\nE         {'http': 3} != {'http': 4}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:84: AssertionError",
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[False]",
+      "outcome": "failed",
+      "utc_epoch": 1791896910.5131671,
+      "when": "call"
+    },
+    {
+      "duration": 2.899683903029654,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f706bb9b770>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f706b967350>)\ncold = True\n\n    @pytest.mark.parametrize(\"cold\", [False, True])\n    def test_real_three_source_snapshot_batches_fresh_verification(remote, cold):\n        store, claim_id, _, _ = realistic_roster(remote)\n        if cold:\n            store = new_store(remote)\n        server, _ = remote\n        server.requests.clear()\n        snapshot = store.snapshot(claim_id)\n        measured = receipt(server)\n>       assert measured == {\"http\": 6 if cold else 4, \"execute\": 3 if cold else 2,\n                            \"close\": 3 if cold else 2, \"batch\": 0}, measured\nE       AssertionError: {'batch': 0, 'close': 3, 'execute': 3, 'http': 4}\nE       assert {'batch': 0, ... 3, 'http': 4} == {'batch': 0, ... 3, 'http': 6}\nE         \nE         Omitting 3 identical items, use -vv to show\nE         Differing items:\nE         {'http': 4} != {'http': 6}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:84: AssertionError",
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_three_source_snapshot_batches_fresh_verification[True]",
+      "outcome": "failed",
+      "utc_epoch": 1791896913.4257388,
+      "when": "call"
+    }
+  ],
+  "finished_epoch": 1791897156.7608755,
+  "junit_counts": {
+    "duration_seconds": 681.23,
+    "errors": 0,
+    "failures": 2,
+    "passed": 350,
+    "skipped": 0,
+    "tests": 352
+  },
+  "known_skip_comparison": {
+    "assigned_known_skip_ids": [],
+    "exact_expected_ids": true,
+    "global_known_skip_count": 10,
+    "missing_known_skipped_ids": [],
+    "observed_count": 0,
+    "observed_skipped_ids": [],
+    "records": [],
+    "reference_known_skips_path": "/workspace/casepath-operation-gate-68383faf-20261013/known-skips.json",
+    "unexpected_skipped_ids": []
+  },
+  "phase_counts": {
+    "call:failed": 2,
+    "call:passed": 350,
+    "setup:passed": 352,
+    "teardown:passed": 352
+  },
+  "phase_record_count": 1056,
+  "reports_match_junit": true,
+  "retries": 0,
+  "retry_allowed": false,
+  "shard": 5,
+  "source_capsule_before_after": {
+    "after_path": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/source-after/capsule-verification.json",
+    "after_verifier_attempts": 1,
+    "after_verifier_exit_code": 0,
+    "before_after_identity_equal": true,
+    "before_path": "/workspace/casepath-operation-gate-68383faf-20261013/shard5/source-before/capsule-verification.json",
+    "capsule_receipt_file_sha256": "ef4673bd7a31a238215fdd5864bcdd2fe4eba8dd6e623b6c89d2dfc499ab0b83",
+    "head": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+    "manifest_sha256": "142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a",
+    "source_artifact_static_bindings_verified_after": true,
+    "source_artifact_static_bindings_verified_before": true,
+    "source_artifact_static_counts": [
+      1706,
+      25,
+      37
+    ],
+    "status": ""
+  },
+  "started_epoch": 1791896471.47974,
+  "tmp_path_retention_policy": "failed",
+  "wrapper_exit_code": 1
+}

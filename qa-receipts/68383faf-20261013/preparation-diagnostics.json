@@ -1,0 +1,11 @@
+{
+  "transport_tool_error": "exec-server transport disconnected during first preparation call; tool returned no session",
+  "durable_recovery": "Read-only inspection showed completedprepare4and1 despite tool error. Resumed only missing steps; no testattempt existed before recovery.",
+  "completed_steps_not_repeated": [
+    "shard4prepare",
+    "shard4capsulebefore",
+    "shard1prepare"
+  ],
+  "fixture_retention": "Standardpytestfailed policy plus observer retains tmp_path on setupfailure via pytest retention stash. Call failures naturally retain fixtures. No source/security/assertion/deadline edits.",
+  "created_epoch": 1791895737.8012307
+}

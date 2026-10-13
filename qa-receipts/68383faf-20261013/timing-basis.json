@@ -1,0 +1,35 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "ce0a_actual_junit_count": 2411,
+  "ce0a_actual_junit_seconds": 3281.233,
+  "storage_actual_junit_count": 11,
+  "storage_actual_junit_seconds": 17.989,
+  "new_runtime_sql_estimated_count": 22,
+  "focused_observed_group_seconds": 17.98,
+  "estimate_method": "Equal allocation of prior22-test log aggregate; per-case timing not recorded",
+  "current_candidate_test_execution": false,
+  "sources": [
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/per-test-durations.json",
+      "sha256": "a1f3715a17c8d2a19f5f385f93b9da6427adc3ea610addc12826e4438a24b9c8"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-planning-20261013/timing-inputs/storage-1.1-junit.xml",
+      "sha256": "b6ecf998091153a30b957f7e88464103b49454e32ae3b1d46010011c9715b94f"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-planning-20261013/timing-inputs/final-backend-tests.log",
+      "sha256": "18ba659aa7e7ee693d15d2bfcef20445d9d24e231c65142abe6dd19b29e83f61"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-planning-20261013/timing-inputs/final-e2e222c-source-receipt.json",
+      "sha256": "1efffc67d6b612f1ed0ce9c43fa9b09b310119313b4d11e4304c97b94b271964"
+    }
+  ],
+  "current_candidate_tests_executed": 0,
+  "new_current_candidate_durations_observed": 0,
+  "new_current_candidate_duration_estimates": 33,
+  "historical_storage_junit_used_as_current_estimates": true,
+  "planning_candidate": "e2e222c3d53749c876bda71970eb21f52298a318",
+  "fresh_sealed_inventory_verified": true
+}

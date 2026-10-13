@@ -1,0 +1,22 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "started_epoch": 1791896441.3166952,
+  "command": [
+    "/workspace/casepath-release-ae0-shard1/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "casepath_shard_observer",
+    "-o",
+    "tmp_path_retention_policy=failed",
+    "--junitxml=/workspace/casepath-operation-gate-68383faf-20261013/shard1/junit.xml",
+    "--durations=0",
+    "--basetemp=/workspace/casepath-operation-gate-68383faf-20261013/shard1/pytest-tmp",
+    "@/workspace/casepath-operation-gate-68383faf-20261013/shard1/pytest-arguments.txt"
+  ],
+  "retry_allowed": false
+}

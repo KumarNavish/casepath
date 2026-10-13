@@ -1,0 +1,147 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "shard": 3,
+  "exit_code": 1,
+  "duration_seconds": 783.5778534412384,
+  "assigned_count": 347,
+  "collected_count": 347,
+  "assigned_collected_exact_ids_match": true,
+  "assigned_collected_order_match": true,
+  "terminal_unique_ids": 347,
+  "passed": 345,
+  "failed": 2,
+  "errors": 0,
+  "skipped": 0,
+  "phase_counts": {
+    "setup": {
+      "passed": 347,
+      "failed": 0,
+      "skipped": 0
+    },
+    "call": {
+      "passed": 345,
+      "failed": 2,
+      "skipped": 0
+    },
+    "teardown": {
+      "passed": 347,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "failed_ids": [
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]"
+  ],
+  "failure_reports": [
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[False]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 2.7949171389918774,
+      "utc_epoch": 1791896807.4158466,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f3bee6dc3e0>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f3bf39ca580>)\ncold = False\n\n    @pytest.mark.parametrize(\"cold\", [False, True])\n    def test_real_31_source_collection_uses_bounded_batched_roundtrips(remote, cold):\n        store, _, digests, chunks = realistic_roster(remote)\n        if cold:\n            store = new_store(remote)\n        server, _ = remote\n        server.requests.clear()\n        rows = store.list_summaries()\n        measured = receipt(server)\n        pages = ceil(chunks / 8) + (chunks % 8 == 0)\n        expected = {\"http\": 2 * pages + 4 if cold else pages + 3, \"execute\": 2 * pages + 1 if cold else pages + 1,\n                    \"close\": 3 if cold else 2, \"batch\": 0}\n>       assert measured == expected, measured\nE       AssertionError: {'batch': 0, 'close': 6, 'execute': 6, 'http': 7}\nE       assert {'batch': 0, ... 6, 'http': 7} == {'batch': 0, ... 6, 'http': 8}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 6} != {'close': 2}\nE         {'http': 7} != {'http': 8}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:70: AssertionError"
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_real_31_source_collection_uses_bounded_batched_roundtrips[True]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 3.0572486870223656,
+      "utc_epoch": 1791896810.4858878,
+      "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f3beec2ef90>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f3bf012e7a0>)\ncold = True\n\n    @pytest.mark.parametrize(\"cold\", [False, True])\n    def test_real_31_source_collection_uses_bounded_batched_roundtrips(remote, cold):\n        store, _, digests, chunks = realistic_roster(remote)\n        if cold:\n            store = new_store(remote)\n        server, _ = remote\n        server.requests.clear()\n        rows = store.list_summaries()\n        measured = receipt(server)\n        pages = ceil(chunks / 8) + (chunks % 8 == 0)\n        expected = {\"http\": 2 * pages + 4 if cold else pages + 3, \"execute\": 2 * pages + 1 if cold else pages + 1,\n                    \"close\": 3 if cold else 2, \"batch\": 0}\n>       assert measured == expected, measured\nE       AssertionError: {'batch': 0, 'close': 11, 'execute': 11, 'http': 12}\nE       assert {'batch': 0, ...1, 'http': 12} == {'batch': 0, ...1, 'http': 14}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 11} != {'close': 3}\nE         {'http': 12} != {'http': 14}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:70: AssertionError"
+    }
+  ],
+  "attempts": 1,
+  "retries": 0,
+  "no_unrun_ids": true,
+  "after_head": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "after_status": "",
+  "after_verifier_exit_code": 0,
+  "after_verifier_duration_seconds": 0.47405409812927246,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "manifest_sha256": "142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a",
+  "capsule_receipt_file_sha256": "ef4673bd7a31a238215fdd5864bcdd2fe4eba8dd6e623b6c89d2dfc499ab0b83",
+  "before_after_bindings_unchanged": true,
+  "failed_fixture_retention_policy": "failed",
+  "artifacts": {
+    "command.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/command.json",
+      "sha256": "de5a5fd845d1ab3c694c6fb48856cb66b82239dd37e8679b49d44fc20d980c6d",
+      "bytes": 2435
+    },
+    "runner-launch.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/runner-launch.json",
+      "sha256": "188bb1aec9b41eeb7e2aed58eabb5a1531ff0320d7e715032ac601c1b3f24ec2",
+      "bytes": 1473
+    },
+    "runner-terminal.log": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/runner-terminal.log",
+      "sha256": "94b8ff39f2050f835a0106de2596d211b5ebaeb5e4eea1f4944e8510acbd8e19",
+      "bytes": 114
+    },
+    "pytest.log": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/pytest.log",
+      "sha256": "63d935341eaf764f7c0b1a9d4bfe9696af4e71a681edd16299b5f406652f0426",
+      "bytes": 46836
+    },
+    "junit.xml": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/junit.xml",
+      "sha256": "ee66f87d161ef120ee38c88803efd0a6bc3400075e54eb164cfdca0c27449e1d",
+      "bytes": 54176
+    },
+    "reports.jsonl": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/reports.jsonl",
+      "sha256": "10694f674b83a6257ab0e43bb53d118e6fa8c3276ccb08afeb8f55d3ac2a56f9",
+      "bytes": 249277
+    },
+    "collected.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/collected.json",
+      "sha256": "2361262db5bb95c1304ab4341d962fb58d7fbe33448127e5b5053ec5d0d9fe5e",
+      "bytes": 116029
+    },
+    "ids.txt": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/ids.txt",
+      "sha256": "fa157d7c6f391d81eadf8810e490c27da2ae8e572ed85add3d8ce6083ee7d471",
+      "bytes": 42004
+    },
+    "result.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/result.json",
+      "sha256": "3bfa5c3a2c9e2589696ab5fb5470fc71441260c31d7054b7475ceafe323413e4",
+      "bytes": 2616
+    },
+    "ATTEMPT_STARTED.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/ATTEMPT_STARTED.json",
+      "sha256": "ab8db3e27ae4ea2b579ae7344e591c9f95a16af4c4faac7a2b6b3bde66cecc00",
+      "bytes": 687
+    },
+    "capsule-after-command.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/capsule-after-command.json",
+      "sha256": "ad57c3deb2f80e143edc996cecd4db201fef250b624e3550024de0e69b738b7c",
+      "bytes": 1418
+    },
+    "capsule-after-result.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/capsule-after-result.json",
+      "sha256": "33d796b83b0236c3f5cb8dcf47e37723fe1edd650f6ac5458d483e1d4106f0c4",
+      "bytes": 1520
+    },
+    "capsule-verification-after.log": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/capsule-verification-after.log",
+      "sha256": "27a533a4e1aad0feab17c89a53534befac87949425facfa41cd7acf779b8314c",
+      "bytes": 160
+    },
+    "source-before/capsule-verification.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/source-before/capsule-verification.json",
+      "sha256": "648abeea7735f5f488296329d9f699e9d351d03feb19dc3a875fe257db473708",
+      "bytes": 1759
+    },
+    "source-after/capsule-verification.json": {
+      "path": "/workspace/casepath-operation-gate-68383faf-20261013/shard3/source-after/capsule-verification.json",
+      "sha256": "48caf1d30a0c0ced2a8690ff321e65024f0936d3f546c2e4981b59dbcfad2b14",
+      "bytes": 1759
+    }
+  }
+}

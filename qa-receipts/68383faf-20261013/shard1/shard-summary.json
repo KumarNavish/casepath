@@ -1,0 +1,61 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "shard": 1,
+  "assigned_count": 307,
+  "collected_count": 307,
+  "assigned_ids_exactly_collected": true,
+  "all_assigned_ids_have_reports": true,
+  "exit_code": 1,
+  "duration_seconds": 741.4240853786469,
+  "passed": 306,
+  "failed": 1,
+  "skipped": 0,
+  "errors": 0,
+  "phase_counts": {
+    "setup": {
+      "passed": 307
+    },
+    "call": {
+      "passed": 306,
+      "failed": 1
+    },
+    "teardown": {
+      "passed": 307
+    }
+  },
+  "junit": {
+    "tests": 307,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "attempts": 1,
+  "retries": 0,
+  "failed_ids": [
+    "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]"
+  ],
+  "failure_classification": "Existing assertion expects source pages plus a separate final-close HTTP request; current terminal-page reads perform one execute+close HTTP request per page. Original expected http=3/execute=2/close=1; actual http=2/execute=2/close=2. No hash/source/timeout failure in original traceback.",
+  "source_clean_after": true,
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "source_manifest_sha256": "142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a",
+  "capsule_receipt_file_sha256": "ef4673bd7a31a238215fdd5864bcdd2fe4eba8dd6e623b6c89d2dfc499ab0b83",
+  "after_verifier_exit_code": 0,
+  "evidence": {
+    "command.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/command.json",
+    "result.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/result.json",
+    "ATTEMPT_STARTED.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/ATTEMPT_STARTED.json",
+    "collected.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/collected.json",
+    "reports.jsonl": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/reports.jsonl",
+    "junit.xml": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/junit.xml",
+    "pytest.log": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/pytest.log",
+    "runner-terminal.log": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/runner-terminal.log",
+    "capsule-verification-after.log": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/capsule-verification-after.log",
+    "source-before/capsule-verification.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/source-before/capsule-verification.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/source-after/capsule-verification.json"
+  },
+  "failed_fixtures_root": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/pytest-tmp"
+}

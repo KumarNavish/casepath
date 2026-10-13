@@ -1,0 +1,93 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "verifier": "root independent raw JUnit+observer reconciliation",
+  "full_collected": 2571,
+  "cloud_executed": 2444,
+  "mac_assigned_attested_passed": 127,
+  "cloud_outcomes": {
+    "passed": 2426,
+    "failed": 8,
+    "skipped": 10
+  },
+  "combined_outcomes_mac_attested": {
+    "passed": 2553,
+    "failed": 8,
+    "skipped": 10
+  },
+  "exact_disjoint_union": true,
+  "missing": [],
+  "duplicates": [],
+  "new_skips": [],
+  "skip_id_lines_reasons_equal_known": true,
+  "shards": [
+    {
+      "shard": 1,
+      "items": 307,
+      "outcomes": {
+        "passed": 306,
+        "failed": 1
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true
+    },
+    {
+      "shard": 2,
+      "items": 347,
+      "outcomes": {
+        "passed": 347
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true
+    },
+    {
+      "shard": 3,
+      "items": 347,
+      "outcomes": {
+        "passed": 345,
+        "failed": 2
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true
+    },
+    {
+      "shard": 4,
+      "items": 740,
+      "outcomes": {
+        "passed": 730,
+        "skipped": 10
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true
+    },
+    {
+      "shard": 5,
+      "items": 352,
+      "outcomes": {
+        "passed": 350,
+        "failed": 2
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true
+    },
+    {
+      "shard": 6,
+      "items": 351,
+      "outcomes": {
+        "passed": 348,
+        "failed": 3
+      },
+      "exact_assigned_collected_junit_phase_ids": true,
+      "all_applicable_phases_unique": true,
+      "source_after_clean": true
+    }
+  ],
+  "attempts_per_shard": 1,
+  "retries": 0,
+  "all_frozen_source_after_proofs_valid": true,
+  "repair_is_separate_and_not_applied_to_original_runs": true
+}

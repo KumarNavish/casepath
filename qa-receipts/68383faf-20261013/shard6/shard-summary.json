@@ -1,0 +1,107 @@
+{
+  "shard": 6,
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "attempts": 1,
+  "retries": 0,
+  "runner_exit_code": 1,
+  "wrapper_exit_code": 1,
+  "duration_seconds": 707.6302018165588,
+  "pytest_duration_seconds": 702.398,
+  "counts": {
+    "assigned": 351,
+    "collected": 351,
+    "passed": 348,
+    "failed": 3,
+    "errors": 0,
+    "skipped": 0,
+    "failed_phases": 3,
+    "skipped_phases": 0,
+    "junit_tests": 351
+  },
+  "phase_counts": {
+    "setup:passed": 351,
+    "call:passed": 348,
+    "teardown:passed": 351,
+    "call:failed": 3
+  },
+  "failed_phases": [
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[16777216]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 1.0380746200098656,
+      "utc_epoch": 1791896963.9648108
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097153]",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 0.11600466497475281,
+      "utc_epoch": 1791896964.0907822
+    },
+    {
+      "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_digest_group_boundary_keeps_one_shared_connection",
+      "when": "call",
+      "outcome": "failed",
+      "duration": 0.48079768696334213,
+      "utc_epoch": 1791896964.5822473
+    }
+  ],
+  "exact_failures_raw_file": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/reports.jsonl",
+  "skipped_phases": [],
+  "assigned_vs_collected": {
+    "same_order": true,
+    "same_ids": true,
+    "missing_ids": [],
+    "unexpected_ids": [],
+    "duplicate_collected_ids": []
+  },
+  "completed_call_vs_collected": {
+    "same_ids": true,
+    "missing_ids": [],
+    "duplicate_call_ids": []
+  },
+  "source_capsule_before_after": {
+    "before_verified": true,
+    "after_verified": true,
+    "after_verifier_exit_code": 0,
+    "head_unchanged": true,
+    "clean_after": true,
+    "manifest_sha256": "142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a",
+    "manifest_matches_expected_before_after": true,
+    "capsule_receipt_file_sha256": "ef4673bd7a31a238215fdd5864bcdd2fe4eba8dd6e623b6c89d2dfc499ab0b83",
+    "receipt_matches_expected_before_after": true,
+    "capsule_receipt_equal": true,
+    "source_artifact_static_counts": [
+      1706,
+      25,
+      37
+    ]
+  },
+  "failed_fixture_directories_preserved": [
+    "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest-tmp/test_chunk_page_boundaries_and0",
+    "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest-tmp/test_chunk_page_boundaries_and1",
+    "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest-tmp/test_digest_group_boundary_kee0"
+  ],
+  "artifacts": {
+    "ATTEMPT_STARTED.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/ATTEMPT_STARTED.json",
+    "prepare.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/prepare.json",
+    "command.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/command.json",
+    "ids.txt": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/ids.txt",
+    "pytest-arguments.txt": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest-arguments.txt",
+    "collected.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/collected.json",
+    "reports.jsonl": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/reports.jsonl",
+    "junit.xml": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/junit.xml",
+    "pytest.log": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest.log",
+    "runner-terminal.log": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/runner-terminal.log",
+    "result.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/result.json",
+    "runner-wrapper-result.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/runner-wrapper-result.json",
+    "source-before/capsule-verification.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/source-before/capsule-verification.json",
+    "source-before/CAPSULE_RECEIPT.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/source-before/CAPSULE_RECEIPT.json",
+    "source-after/capsule-verification.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/source-after/capsule-verification.json",
+    "source-after/CAPSULE_RECEIPT.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/source-after/CAPSULE_RECEIPT.json",
+    "capsule-verification-after.log": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/capsule-verification-after.log",
+    "capsule-verification-after-result.json": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/capsule-verification-after-result.json",
+    "pytest-tmp": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pytest-tmp"
+  }
+}

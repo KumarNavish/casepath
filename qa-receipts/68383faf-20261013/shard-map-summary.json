@@ -1,0 +1,76 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "provisional": false,
+  "sealed_sha": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "collected": 2571,
+  "cloud": 2444,
+  "mac": 127,
+  "mac_by_file": {
+    "casepath-api/tests/test_cli_v1.py": 69,
+    "casepath-api/tests/test_journal_corpus_restart.py": 6,
+    "casepath-api/tests/test_local_data_root.py": 52
+  },
+  "full_sorted_sha256": "4ab5398dd5969ac3267ca0c5146d9f2bc5b3bb90125236161db59467abcb6761",
+  "cloud_sorted_sha256": "b3852753031b295c88a0059048233f8600d3e45dc0ace5f9a83b3127dc5a0467",
+  "mac_sorted_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "new_ids_vs_ce0a": 33,
+  "removed_ids_vs_ce0a": 0,
+  "new_ids_by_file": {
+    "casepath-api/tests/test_autonomous_operations_v1.py": 18,
+    "casepath-api/tests/test_hosted_sql_v1.py": 4,
+    "casepath-api/tests/test_operation_trace_storage_v1.py": 11
+  },
+  "shards": {
+    "1": {
+      "count": 307,
+      "predicted_seconds": 552.8670909090896,
+      "ids_sha256": "fbaeda664f762ff91feb683b19922162b685748c78cf73a26f04cefc7429bfd1",
+      "new_ids": 6
+    },
+    "2": {
+      "count": 347,
+      "predicted_seconds": 552.8670909090906,
+      "ids_sha256": "fe6ef39b4fbcfcb0897001dd0abc0e666e5c043ab9567257fca08f64f9688216",
+      "new_ids": 5
+    },
+    "3": {
+      "count": 347,
+      "predicted_seconds": 552.8670909090889,
+      "ids_sha256": "fa157d7c6f391d81eadf8810e490c27da2ae8e572ed85add3d8ce6083ee7d471",
+      "new_ids": 7
+    },
+    "4": {
+      "count": 740,
+      "predicted_seconds": 552.8668181818166,
+      "ids_sha256": "62da7be4560e3068a8998160a71bd7430bd266bf9a51aa13a8a5a189c8a2679d",
+      "new_ids": 5
+    },
+    "5": {
+      "count": 352,
+      "predicted_seconds": 552.8670909090891,
+      "ids_sha256": "9b35246aa57d172a57c795181c6a0f4ef6bb787624bbf91d1a457bf219f6d629",
+      "new_ids": 5
+    },
+    "6": {
+      "count": 351,
+      "predicted_seconds": 552.8668181818169,
+      "ids_sha256": "1bd596538cfd7f334a8c6b2d37200aad8e3c49a5354bf2940d289bc6fc2a1986",
+      "new_ids": 5
+    }
+  },
+  "missing": 0,
+  "duplicates": 0,
+  "extra": 0,
+  "overlap": 0,
+  "exact_union": true,
+  "assignment_basis": "Longest-duration-first:2411ce0a actual JUnit testcase timings +11priorstorage focused JUnit timings +22explicit group estimates; pendingNode testexcluded.",
+  "launcher_serialization_required": false,
+  "planned_python_schedule": "Shard4alonefirst, then1/2/3/5/6concurrent; separate normalclones and HOME/TMP/DB/registry/locks",
+  "execution_launched": true,
+  "frozen_source_collect_required_later": false,
+  "created_epoch": 1791893701.9361513,
+  "launch_order": "shard4alonefirst then1/2/3/5/6concurrentonce",
+  "fresh_final_inventory_equal_plan": true,
+  "source_sealed": true,
+  "final_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4"
+}

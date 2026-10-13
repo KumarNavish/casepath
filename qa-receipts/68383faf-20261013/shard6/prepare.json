@@ -1,0 +1,55 @@
+{
+  "repo": "/workspace/casepath-release-ae0-shard6",
+  "old_head": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+  "before_status": "",
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "canonical_url": "https://github.com/KumarNavish/casepath.git",
+  "branch": "codex/casepath-causal-experience-integration-20261009",
+  "started_epoch": 1791895927.4493465,
+  "host": "656813ef2295",
+  "fetch_command": [
+    "git",
+    "-c",
+    "credential.helper=!gh auth git-credential",
+    "fetch",
+    "https://github.com/KumarNavish/casepath.git",
+    "codex/casepath-causal-experience-integration-20261009"
+  ],
+  "fetch_exit_code": 0,
+  "canonical_fetched_head": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/home",
+    "TMPDIR": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/tmp",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/uv-cache",
+    "UV_LINK_MODE": "copy",
+    "PYTHONHASHSEED": "0",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-operation-gate-68383faf-20261013/shard6/pycache"
+  },
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ],
+  "exit_code": 0,
+  "after_head": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "after_status": "",
+  "finished_epoch": 1791895935.3452897,
+  "duration_seconds": 7.8959431648254395,
+  "source_manifest_sha256": "142d429983bdea2eb0765eaea789db2a76c0c32f4f6897e016d6c299c49e632a"
+}

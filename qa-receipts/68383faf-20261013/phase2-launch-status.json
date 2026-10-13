@@ -1,0 +1,68 @@
+{
+  "candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "five_shards_actually_started": true,
+  "all_starts_after_shard4_terminal": true,
+  "owner_and_start_records": {
+    "1": {
+      "owner": "/root/operation_runtime",
+      "started_epoch": 1791896441.3166952,
+      "elapsed_seconds": 147.69898009300232,
+      "calls_passed": 222,
+      "failed_phases": [
+        {
+          "id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]",
+          "when": "call",
+          "outcome": "failed",
+          "duration": 0.1117151280050166,
+          "utc_epoch": 1791896577.1728177,
+          "failure": "remote = (<hosted_hrana_fixture.MockHrana object at 0x7f36bcc78c50>, <casepath_api.hosted_storage_v1.HostedJournal object at 0x7f36be074940>)\nlength = 2097152\n\n    @pytest.mark.parametrize(\"length\", [8 * HostedSources.CHUNK_BYTES, 8 * HostedSources.CHUNK_BYTES + 1, MAX_FILE_BYTES])\n    def test_chunk_page_boundaries_and_maximum_source_complete_verification(remote, length):\n        server, _ = remote\n        sources = HostedSources(server.connection)\n        raw = (bytes(range(256)) * ceil(length / 256))[:length]\n        digest = sources.publish(raw)\n        server.requests.clear()\n        sources.verify_many([digest, digest])\n        chunks = ceil(length / sources.CHUNK_BYTES)\n        pages = ceil(chunks / 8) + (chunks % 8 == 0)\n>       assert receipt(server) == {\"http\": pages + 1, \"execute\": pages, \"close\": 1, \"batch\": 0}\nE       AssertionError: assert {'batch': 0, ... 2, 'http': 2} == {'batch': 0, ... 2, 'http': 3}\nE         \nE         Omitting 2 identical items, use -vv to show\nE         Differing items:\nE         {'close': 2} != {'close': 1}\nE         {'http': 2} != {'http': 3}\nE         Use -v to get more diff\n\ncasepath-api/tests/test_hosted_source_batch_v1.py:102: AssertionError"
+        }
+      ],
+      "skip_count": 0,
+      "terminal": false,
+      "last_id": "casepath-api/tests/test_obligation_study_v1.py::StudyTests::test_unicode_count_is_byte_bound_not_chars_div_four"
+    },
+    "2": {
+      "owner": "/root/operation_frontend",
+      "started_epoch": 1791896473.231122,
+      "elapsed_seconds": 115.78502011299133,
+      "calls_passed": 27,
+      "failed_phases": [],
+      "skip_count": 0,
+      "terminal": false,
+      "last_id": "casepath-api/tests/test_agent_desk_v1.py::test_reference_pause_then_resume_preserves_the_run_and_completed_calls"
+    },
+    "3": {
+      "owner": "/root/operation_review",
+      "started_epoch": 1791896482.020511,
+      "elapsed_seconds": 106.99586534500122,
+      "calls_passed": 23,
+      "failed_phases": [],
+      "skip_count": 0,
+      "terminal": false,
+      "last_id": "casepath-api/tests/test_agent_desk_v1.py::test_routes_reject_invented_authority_and_require_idempotency"
+    },
+    "5": {
+      "owner": "/root/polish_gate_inventory/ce0a_shard5",
+      "started_epoch": 1791896471.47974,
+      "elapsed_seconds": 117.53686308860779,
+      "calls_passed": 26,
+      "failed_phases": [],
+      "skip_count": 0,
+      "terminal": false,
+      "last_id": "casepath-api/tests/test_agent_live_projection.py::test_live_projection_is_sealed_with_actual_completed_reference_work"
+    },
+    "6": {
+      "owner": "/root/polish_gate_inventory/ce0a_shard6",
+      "started_epoch": 1791896483.1481597,
+      "elapsed_seconds": 105.87268328666687,
+      "calls_passed": 20,
+      "failed_phases": [],
+      "skip_count": 0,
+      "terminal": false,
+      "last_id": "casepath-api/tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[process]"
+    }
+  },
+  "models": "gpt-6.1-sol/xhigh as root assignments and explicit reused-child workers",
+  "created_epoch": 1791896589.0233297
+}
