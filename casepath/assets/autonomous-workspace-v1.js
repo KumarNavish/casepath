@@ -1116,7 +1116,8 @@
     const state = incoming.state, reference = referenceExecution(state), event = incoming.accepted.events.find(row => row.seq === start.from_seq);
     const context = state.semantic_contexts?.[state.run_id];
     const sources = list(start.source_artifact_ids), expected = list(context?.sources).map(row => row.artifact_id);
-    if (!Number.isSafeInteger(start.from_seq) || start.from_seq < 1 || start.from_seq >= state.revision ||
+    if (start.contract !== 'casepath.reference-replay-start/1.0.0' || start.claim_id !== state.claim_id ||
+        !Number.isSafeInteger(start.from_seq) || start.from_seq < 1 || start.from_seq >= state.revision ||
         !isHash(start.state_sha256) || !isHash(start.event_sha256) || !isHash(start.profile_sha256) ||
         start.run_id !== state.run_id || start.profile_id !== 'synthetic-nine-v2' ||
         start.profile_id !== reference?.profile_id || start.profile_sha256 !== reference?.profile_sha256 ||
