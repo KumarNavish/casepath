@@ -1,0 +1,50 @@
+{
+  "source_commit": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "test_id": "casepath-api/tests/test_hosted_source_batch_v1.py::test_chunk_page_boundaries_and_maximum_source_complete_verification[2097152]",
+  "diagnostic_scope": "read-only existing failed fixture; no test or product execution repeated",
+  "fixture_path": "/workspace/casepath-operation-gate-68383faf-20261013/shard1/pytest-tmp/test_chunk_page_boundaries_and0/source-batches.sqlite3",
+  "fixture_bytes": 2129920,
+  "fixture_sha256": "e69548b8890dd80d6dfa27e83e24255ceac9218efcd2977eeb1d009b1bbd2cea",
+  "source_chunks": 8,
+  "source_bytes": 2097152,
+  "stored_source_sha256": "91d3beb88a9b2f778a6c44a1c53b63d3c79931845a9aef84b3fb414610bd1938",
+  "reconstructed_source_sha256": "91d3beb88a9b2f778a6c44a1c53b63d3c79931845a9aef84b3fb414610bd1938",
+  "equals_deterministic_test_bytes": true,
+  "chunk_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "chunk_sizes": [
+    262144,
+    262144,
+    262144,
+    262144,
+    262144,
+    262144,
+    262144,
+    262144
+  ],
+  "call_seconds": 0.1117151280050166,
+  "failure_type": "transport receipt expectation mismatch at line102",
+  "expected_receipt": {
+    "http": 3,
+    "execute": 2,
+    "close": 1,
+    "batch": 0
+  },
+  "actual_receipt": {
+    "http": 2,
+    "execute": 2,
+    "close": 2,
+    "batch": 0
+  },
+  "limit_failure_observed": false,
+  "later_assertions_reached": false,
+  "diagnostic_first_attempt": "sqlite3 URI lacked uri=True; unable-to-open setup error before any database read, corrected for read-only inspection only"
+}

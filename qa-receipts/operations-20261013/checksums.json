@@ -2,6 +2,7 @@
   "contract": "casepath.qa-checksums/1.0.0",
   "source_commit": "4ddf4f46f0f8d34b3c971f0249245bd7d10b325d",
   "frozen_candidate": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "repair_commit": "2f834c9b236233a758e3c9ef983fe44e844349fa",
   "files": [
     {
       "path": "browser/check.cjs",
@@ -387,6 +388,56 @@
       "path": "commands.json",
       "bytes": 8865,
       "sha256": "49369dd019fc3617ef175b9232ce329fcee0ac10aeec96933cfd68f6c2c6720b"
+    },
+    {
+      "path": "count-contract-repair/first-attempt-failures.json",
+      "bytes": 12290,
+      "sha256": "ac7daad54ee1a1296ab3adcae230197347a4f03e6c030007ad6b7e0afb44effa"
+    },
+    {
+      "path": "count-contract-repair/fixture-inspection-first-attempt.log",
+      "bytes": 271,
+      "sha256": "611b84493cc4c1fba9265f4ceabc7c9f5c4a1e4b617fb6b5662c96eba24f7259"
+    },
+    {
+      "path": "count-contract-repair/focused-command.json",
+      "bytes": 1516,
+      "sha256": "d380ef3efe4f7fbdb63158349d97bf5d36955fdaadcc34a8bbc1bcccd6067c20"
+    },
+    {
+      "path": "count-contract-repair/focused-junit.xml",
+      "bytes": 2708,
+      "sha256": "a7ded92cdd9cb4e4fa17237af2f339ed715708da7fb4b58e9cc6a17dbc5da358"
+    },
+    {
+      "path": "count-contract-repair/focused-result.json",
+      "bytes": 1616,
+      "sha256": "33fafca0931a83d09047c1765d22b47dc57e62a2fbccdc780caa2eb46fb3410c"
+    },
+    {
+      "path": "count-contract-repair/focused.log",
+      "bytes": 3410,
+      "sha256": "2af003255c0601e83fbbcde2f1e09cff3c516d56eef323c08799f0eddcd460e2"
+    },
+    {
+      "path": "count-contract-repair/review-receipt.json",
+      "bytes": 1621,
+      "sha256": "3eaeb4c9dc1e514a65db5aeb2556c17e49bdae4885a0434e0fc4254ee1a18a00"
+    },
+    {
+      "path": "count-contract-repair/reviewed.diff",
+      "bytes": 4225,
+      "sha256": "0f84bca956b3f2d3c6ffb56672c8f3b916c275e49ae7cacd9d89aca7ebd1a702"
+    },
+    {
+      "path": "count-contract-repair/shard1-chunk-2m-fixture.json",
+      "bytes": 1578,
+      "sha256": "3a1ecba578b37812d742d6550646488061544c29b2c9fd247f22796eef33fc42"
+    },
+    {
+      "path": "count-contract-repair/source-receipt.json",
+      "bytes": 620,
+      "sha256": "f1c05d94acd81f91b9f2ab4f3059078bbe0081baa46868fc74ea400a466e3fe3"
     },
     {
       "path": "delta-receipt.json",

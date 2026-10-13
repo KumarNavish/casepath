@@ -1,0 +1,5 @@
+Read-only forensic setup attempt, not a test rerun.
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+sqlite3.OperationalError: unable to open database file
+Cause: sqlite3.connect URI string without uri=True; no database read or mutation occurred.

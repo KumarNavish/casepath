@@ -1,0 +1,32 @@
+{
+  "schema": "casepath-test-only-review-v1",
+  "reviewed_epoch": 1791897120.667359,
+  "repository": "/workspace/casepath-operation-count-repair-20261013",
+  "base_sha": "68383fafc7e7282256f268fc7a20b9da1d12f6b4",
+  "changed_files": [
+    "casepath-api/tests/test_hosted_source_batch_v1.py"
+  ],
+  "reviewed_file_sha256": "324e4b0cb68cdaa0a91bbf7d358e669b7ebc61f735a50bd2d5dcd33b2014a4ce",
+  "diff_sha256": "0f84bca956b3f2d3c6ffb56672c8f3b916c275e49ae7cacd9d89aca7ebd1a702",
+  "reviewer": "polish_gate_inventory (independent of author root)",
+  "method": "read-only source/diff/AST review; no tests executed by reviewer",
+  "approval": true,
+  "findings": [],
+  "verified": {
+    "only_test_file_changed": true,
+    "test_names_and_parametrization_unchanged": true,
+    "diff_check_exit_code": 0,
+    "page_counts_match_execute_read_once_contract": true,
+    "every_recorded_source_SELECT_requires_execute_then_close_in_same_RPC": true,
+    "bounded_source_query_requires_LIMIT_8": true,
+    "existing_exact_bytes_corruption_failure_and_zero_stream_assertions_retained": true,
+    "cross_digest_exact_byte_equality_added": true,
+    "source_per_page_HTTP_execute_close_counts_equal": true,
+    "journal_read_separate_close_counts_preserved": true
+  },
+  "scope_limits": [
+    "This is static approval of the separate test-only repair; it does not change or erase eight original frozen-gate failures.",
+    "Original failing cases stopped at old count assertions; their later exact-byte/LIMIT/open-stream assertions were not reached.",
+    "Author owns focused execution separately; this review ran no test bodies."
+  ]
+}

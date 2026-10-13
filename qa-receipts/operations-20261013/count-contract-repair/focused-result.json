@@ -1,0 +1,38 @@
+{
+  "cwd": "/workspace/casepath-operation-count-repair-20261013",
+  "command": [
+    "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "/workspace/casepath-operation-count-repair-20261013/casepath-api/tests/test_hosted_source_batch_v1.py",
+    "--junitxml=/workspace/casepath-operation-count-repair-evidence-20261013/focused-junit.xml",
+    "--durations=0",
+    "--basetemp=/workspace/casepath-operation-count-repair-evidence-20261013/pytest-tmp"
+  ],
+  "env": {
+    "HOME": "/workspace/casepath-operation-count-repair-evidence-20261013/home",
+    "TMPDIR": "/workspace/casepath-operation-count-repair-evidence-20261013/tmp",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-operation-count-repair-evidence-20261013/pycache",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "/workspace/casepath-operation-count-repair-20261013/casepath-api",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_DB_PATH": "/workspace/casepath-operation-count-repair-evidence-20261013/casepath.db"
+  },
+  "started_epoch": 1791897072.465886,
+  "gate_attempt": false,
+  "scope": "authorized test-only correction; entire affected file once",
+  "exit_code": 0,
+  "finished_epoch": 1791897098.9713614,
+  "duration_seconds": 26.505475282669067
+}
