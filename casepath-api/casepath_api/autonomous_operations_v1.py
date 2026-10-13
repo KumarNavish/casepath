@@ -9,12 +9,14 @@ from copy import deepcopy
 from hashlib import sha256
 import base64
 import json
+import re
 from threading import Event, Lock, RLock
 from time import monotonic
 
 from .workspace_corpus import canonical_json_bytes, digest_value
 
 CONTRACT = 'casepath.operations-stream/1.0.0'
+INSTRUMENTATION_ID = 'casepath.reference-operations/1.0.0'
 BUNDLE_CONTRACT = 'casepath.operation-inputs/1.0.0'
 SIDECAR_CONTRACT = 'casepath.operation-sidecar/1.0.0'
 MAX_SECONDS = 10.0
@@ -22,6 +24,7 @@ MAX_INPUT_BYTES = 16 * 1024 * 1024
 MAX_OUTPUT_BYTES = 24 * 1024 * 1024
 MAX_OPERATIONS = 10_000
 MAX_EVENTS = 256
+MAX_KNOWLEDGE_HISTORIES = 12
 _SINK = ContextVar('casepath_engine_operation_sink', default=None)
 
 
@@ -165,6 +168,36 @@ def _memory_store(blobs, check=lambda: None):
     return store
 
 
+def _missing_knowledge_lineage(required, available):
+    pending = list(required)
+    while pending:
+        digest = pending.pop()
+        version = available.get(digest)
+        parent = version.get('parent_knowledge_sha256') if version and version.get('version', 0) > 1 else None
+        if parent and parent not in required:
+            required.add(parent)
+            pending.append(parent)
+        if len(required) > MAX_EVENTS:
+            raise OperationsUnavailable('Historical knowledge lineage exceeds its bound.')
+    return required - available.keys()
+
+
+def _required_knowledge_hashes(context, family, workflow, events):
+    required = {pin['knowledge_sha256'] for pin in context.get('compatible_knowledge', [])
+                if pin.get('family') == family and pin.get('knowledge_sha256')}
+    # Qualification may need an incompatible previous rule version that was
+    # not a reuse candidate. Its exact accepted parent remains a dependency.
+    required.update(event['payload']['knowledge']['parent_knowledge_sha256'] for event in events
+                    if event['kind'] == 'knowledge.published' and event['idempotency_key'].startswith(workflow + '.knowledge')
+                    and event['payload']['knowledge'].get('family') == family
+                    and event['payload']['knowledge'].get('parent_knowledge_sha256'))
+    return required
+
+
+def _knowledge_origin(claim_id):
+    return isinstance(claim_id, str) and re.fullmatch(r'(?:auto_[a-f0-9]{24}|clm_[a-f0-9]{16})', claim_id) is not None
+
+
 def capture_operation_inputs(store, claim_id, policy, *, check=lambda: None):
     """Freeze one journal read snapshot and its exact immutable bytes in memory."""
     from .autonomous_reference_v1 import ReferenceProfile
@@ -230,31 +263,54 @@ def capture_operation_inputs(store, claim_id, policy, *, check=lambda: None):
     blobs = capture_blobs(rows, claim_id)
     bundle = {'contract': BUNDLE_CONTRACT, 'claim_id': claim_id, 'rows': rows,
               'sources_base64': blobs, 'policy': deepcopy(policy), 'knowledge_histories': []}
-    contexts = [json.loads(row['event_json'])['payload']['context'] for row in rows
-                if json.loads(row['event_json'])['kind'] == 'work.context']
-    pinned = {value['knowledge_sha256'] for context in contexts[-1:]
-              for value in context.get('compatible_knowledge', []) if value.get('knowledge_sha256')}
-    own = {json.loads(row['event_json'])['payload']['knowledge'].get('knowledge_sha256') for row in rows
-           if json.loads(row['event_json'])['kind'] == 'knowledge.published'}
-    missing = pinned - own
+    decoded = [json.loads(row['event_json']) for row in rows]
+    context_event = next((event for event in reversed(decoded) if event['kind'] == 'work.context'), None)
+    accepted = next((event for event in reversed(decoded) if context_event and event['kind'] == 'interpretation.accepted'
+                     and event['idempotency_key'] == context_event['payload']['workflow_id'] + '.interpretation'), None)
+    if accepted is None:
+        raise OperationsUnavailable('A current accepted reference family is required.')
+    # This raw family is only an I/O hint. Native whole-head validation and the
+    # fresh reference category must agree before any definition is consumed.
+    family = accepted['payload']['graph']['family']
+    context = context_event['payload']['context']
+    required = _required_knowledge_hashes(context, family, context_event['payload']['workflow_id'], decoded)
+    available = {event['payload']['knowledge'].get('knowledge_sha256'): event['payload']['knowledge']
+                 for event in decoded if event['kind'] == 'knowledge.published'}
+
+    missing = _missing_knowledge_lineage(required, available)
     # Resolve only exact pinned definitions; peer journals are frozen too and
     # natively replayed, never replaced with today's latest knowledge version.
-    for peer in ReferenceProfile().ids:
-        if not missing or peer == claim_id:
-            continue
+    captured = {claim_id}
+    while missing:
         check()
         with store.journal.connect() as connection:
-            peer_rows = bounded_rows(connection, peer)
-        peer_versions = {json.loads(row['event_json'])['payload']['knowledge'].get('knowledge_sha256')
-                         for row in peer_rows if json.loads(row['event_json'])['kind'] == 'knowledge.published'}
-        if not peer_versions & missing:
-            continue
-        reserve(len(canonical_json_bytes(peer_rows)))
-        peer_blobs = capture_blobs(peer_rows, peer)
-        bundle['knowledge_histories'].append({'claim_id': peer, 'rows': peer_rows, 'sources_base64': peer_blobs})
-        missing -= peer_versions
-    if missing:
-        raise OperationsUnavailable('Exact historical knowledge version is unavailable.')
+            from .autonomous_store_v1 import SESSION_ID
+            remaining = MAX_KNOWLEDGE_HISTORIES - len(bundle['knowledge_histories'])
+            if remaining <= 0:
+                raise OperationsUnavailable('Exact historical knowledge version is unavailable.')
+            publishers = connection.execute(
+                'SELECT DISTINCT loop_id FROM claim_loop_events WHERE session_id=? '
+                "AND (loop_id GLOB 'autonomous.auto_*' OR loop_id GLOB 'autonomous.clm_*') AND json_valid(event_json) "
+                "AND json_extract(event_json,'$.kind')='knowledge.published' "
+                "AND json_extract(event_json,'$.payload.knowledge.knowledge_sha256') IN ("
+                + ','.join('?' for _ in missing) + ') ORDER BY loop_id LIMIT ?',
+                (SESSION_ID, *sorted(missing), remaining + 1)).fetchall()
+        if not publishers or len(publishers) > remaining:
+            raise OperationsUnavailable('Exact historical knowledge version is unavailable.')
+        for publisher in publishers:
+            peer = publisher['loop_id'].removeprefix('autonomous.')
+            if not _knowledge_origin(peer) or peer in captured:
+                raise OperationsUnavailable('Historical knowledge publisher is outside the admitted namespace.')
+            check()
+            with store.journal.connect() as connection:
+                peer_rows = bounded_rows(connection, peer)
+            reserve(len(canonical_json_bytes(peer_rows)))
+            peer_blobs = capture_blobs(peer_rows, peer)
+            bundle['knowledge_histories'].append({'claim_id': peer, 'rows': peer_rows, 'sources_base64': peer_blobs})
+            captured.add(peer)
+            available.update({event['payload']['knowledge'].get('knowledge_sha256'): event['payload']['knowledge']
+                              for row in peer_rows if (event := json.loads(row['event_json']))['kind'] == 'knowledge.published'})
+        missing = _missing_knowledge_lineage(required, available)
     if len(canonical_json_bytes(bundle)) > MAX_INPUT_BYTES:
         raise OperationsUnavailable('Snapshot exceeds the input bound.')
     return bundle
@@ -264,7 +320,7 @@ def operation_inputs_from_export(snapshot, raw_sources, policy, *, knowledge_sna
     """Freeze authorized API exports without opening or modifying a journal.
 
     ``raw_sources`` maps ``claim_id/artifact_id`` to canonical base64 bytes.
-    ``knowledge_snapshots`` supplies other authorized nine-claim snapshots when
+    ``knowledge_snapshots`` supplies exact authorized historical publishers when
     the selected context pins a procedure published by another claim.
     """
     event_fields = {'contract', 'session_id', 'claim_id', 'kind', 'payload', 'expected_revision',
@@ -283,16 +339,27 @@ def operation_inputs_from_export(snapshot, raw_sources, policy, *, knowledge_sna
                     blobs[descriptor['sha256']] = raw_sources[cid + '/' + descriptor['artifact_id']]
         return {'claim_id': cid, 'rows': rows, 'sources_base64': blobs}
     main = convert(snapshot)
-    pinned = {pin.get('knowledge_sha256') for pin in snapshot['state']['semantic_contexts'][snapshot['state']['run_id']].get('compatible_knowledge', [])}
-    own = {value.get('knowledge_sha256') for value in snapshot['state']['knowledge_published']}
-    peers = []
-    for value in knowledge_snapshots:
-        if value['state']['claim_id'] == main['claim_id']:
-            continue
-        published = {version.get('knowledge_sha256') for version in value['state']['knowledge_published']}
-        if published & (pinned - own):
-            peers.append(convert(value))
-            own |= published
+    state = snapshot['state']
+    required = _required_knowledge_hashes(state['semantic_contexts'][state['run_id']], state['graph']['family'], state['run_id'], snapshot['events'])
+    available = {value.get('knowledge_sha256'): value for value in snapshot['state']['knowledge_published']}
+    peers, captured, candidates = [], {main['claim_id']}, tuple(knowledge_snapshots)
+    missing = _missing_knowledge_lineage(required, available)
+    while missing:
+        found = False
+        for value in candidates:
+            if value['state']['claim_id'] in captured:
+                continue
+            published = {version.get('knowledge_sha256'): version for version in value['state']['knowledge_published']}
+            if published.keys() & missing:
+                if not _knowledge_origin(value['state']['claim_id']) or len(peers) >= MAX_KNOWLEDGE_HISTORIES:
+                    raise OperationsUnavailable('Historical knowledge publisher exceeds its namespace or count bound.')
+                peers.append(convert(value))
+                available.update(published)
+                captured.add(value['state']['claim_id'])
+                found = True
+        if not found:
+            raise OperationsUnavailable('Exact historical knowledge version is unavailable.')
+        missing = _missing_knowledge_lineage(required, available)
     bundle = {'contract': BUNDLE_CONTRACT, **main, 'policy': deepcopy(policy), 'knowledge_histories': peers}
     if len(canonical_json_bytes(bundle)) > MAX_INPUT_BYTES:
         raise OperationsUnavailable('Authorized export exceeds the input bound.')
@@ -323,19 +390,38 @@ def _validated(bundle, sink):
         raise OperationsUnavailable('Snapshot rule identity differs.')
     knowledge = [row['payload']['knowledge'] for row in events
                  if row['kind'] == 'knowledge.published' and row['sequence'] < start['from_seq']]
-    for peer in bundle.get('knowledge_histories', []):
-        if (peer['claim_id'] not in ReferenceProfile().ids or peer['claim_id'] == bundle['claim_id']
-                or not 0 < len(peer['rows']) <= MAX_EVENTS):
-            raise OperationsUnavailable('Historical knowledge snapshot is outside the allowlist.')
-        peer_blobs = {digest: base64.b64decode(value, validate=True) for digest, value in peer['sources_base64'].items()}
-        if any(sha256(raw).hexdigest() != digest for digest, raw in peer_blobs.items()):
-            raise OperationsUnavailable('Historical knowledge bytes differ.')
-        peer_head, _, _ = _memory_store(peer_blobs, sink.check)._replay(peer['rows'])
-        if peer_head['claim_id'] != peer['claim_id']:
-            raise OperationsUnavailable('Historical knowledge snapshot belongs to another claim.')
-        knowledge.extend(peer_head['knowledge_published'])
+    required = _required_knowledge_hashes(context, head['graph']['family'], start['run_id'], events)
+    available = {version.get('knowledge_sha256'): version for version in knowledge}
+    pending = list(bundle.get('knowledge_histories', []))
+    if len(pending) > MAX_KNOWLEDGE_HISTORIES or len({peer['claim_id'] for peer in pending}) != len(pending):
+        raise OperationsUnavailable('Historical knowledge publisher count or identity differs.')
+    while pending:
+        missing = _missing_knowledge_lineage(required, available)
+        matching = []
+        for peer in pending:
+            if (not _knowledge_origin(peer['claim_id']) or peer['claim_id'] == bundle['claim_id']
+                    or not 0 < len(peer['rows']) <= MAX_EVENTS):
+                raise OperationsUnavailable('Historical knowledge snapshot is outside the admitted namespace.')
+            supplied = {event['payload']['knowledge'].get('knowledge_sha256') for row in peer['rows']
+                        if (event := json.loads(row['event_json']))['kind'] == 'knowledge.published'}
+            if supplied & missing:
+                matching.append(peer)
+        if not matching:
+            raise OperationsUnavailable('Historical knowledge snapshot is unrelated to the exact required lineage.')
+        for peer in matching:
+            peer_blobs = {digest: base64.b64decode(value, validate=True) for digest, value in peer['sources_base64'].items()}
+            if any(sha256(raw).hexdigest() != digest for digest, raw in peer_blobs.items()):
+                raise OperationsUnavailable('Historical knowledge bytes differ.')
+            # No observations or model/controller execution exists for an
+            # ancestor. Only the native journal and immutable bytes are checked.
+            peer_head, _, _ = _memory_store(peer_blobs, sink.check)._replay(peer['rows'])
+            if peer_head['claim_id'] != peer['claim_id']:
+                raise OperationsUnavailable('Historical knowledge snapshot belongs to another claim.')
+            knowledge.extend(peer_head['knowledge_published'])
+            available.update({version.get('knowledge_sha256'): version for version in peer_head['knowledge_published']})
+            pending.remove(peer)
     from .autonomous_knowledge_v1 import _definition
-    pinned = context.get('compatible_knowledge', [])
+    pinned = [pin for pin in context.get('compatible_knowledge', []) if pin.get('family') == head['graph']['family']]
     for pin in pinned:
         versions = [version for version in knowledge if version.get('knowledge_id') == pin['knowledge_id']
                     and version.get('version') == pin['version'] and version.get('knowledge_sha256') == pin['knowledge_sha256']]
@@ -344,9 +430,13 @@ def _validated(bundle, sink):
         _definition(versions[0])
         if any(versions[0].get(key) != pin.get(key) for key in ('family', 'rule_pack_sha256', 'evidence_recipes', 'knowledge_sha256')):
             raise OperationsUnavailable('Pinned knowledge metadata differs from its exact definition.')
-    ceilings = {pin['knowledge_id']: pin['version'] for pin in pinned}
-    knowledge = [version for version in knowledge if version.get('qualification', {}).get('status') == 'qualified'
-                 and version.get('knowledge_id') in ceilings and version.get('version', 0) <= ceilings[version['knowledge_id']]]
+    required = _required_knowledge_hashes(context, head['graph']['family'], start['run_id'], events)
+    available = {version.get('knowledge_sha256'): version for version in knowledge}
+    if _missing_knowledge_lineage(required, available):
+        raise OperationsUnavailable('Exact historical knowledge parent is unavailable.')
+    knowledge = [version for version in knowledge if version.get('knowledge_sha256') in required]
+    for version in knowledge:
+        _definition(version)
     return store, head, events, states, start, context, knowledge
 
 
@@ -359,7 +449,7 @@ def recompute_operations(bundle, *, send=None, cancellation=None, deadline=None)
     sink = OperationSink(send, cancellation=cancellation, deadline=deadline)
     store, head, events, states, start, context, versions = _validated(deepcopy(bundle), sink)
     binding = {'claim_id': head['claim_id'], 'run_id': start['run_id'], 'mode': 'historical_recomputed',
-               'newly_recomputed': True, 'input_sha256': digest_value(bundle),
+               'newly_recomputed': True, 'instrumentation_id': INSTRUMENTATION_ID, 'input_sha256': digest_value(bundle),
                'profile_id': start['profile_id'], 'profile_sha256': start['profile_sha256'],
                'source_roster_sha256': head['source_roster_sha256'], 'rule_set_sha256': digest_value(bundle['policy']),
                'from_seq': start['from_seq'], 'current_revision': head['revision'],
@@ -453,6 +543,8 @@ def recompute_operations(bundle, *, send=None, cancellation=None, deadline=None)
         verifier = adapter.verify_reference(context, proposal['result'], identity)
         compiled, compilation = compile_verification_proposal(context, proposal['result'])
         verified = validate_interpretation(bundle['policy'], memory.state['acquired_sources'], compiled, verifier['result'])
+    if verified['category']['family'] != head['graph']['family'] or verified['category']['family'] != accepted['payload']['graph']['family']:
+        raise OperationsUnavailable('Fresh reference category differs from the selected historical family.')
     receipt = accepted['payload']['receipt']
     if (proposal['receipt'] != receipt['proposal_receipt'] or verifier['receipt'] != receipt['verifier_receipt']
             or digest_value(proposal['result']) != receipt['proposal_sha256']
