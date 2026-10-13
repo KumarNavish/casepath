@@ -1,0 +1,39 @@
+{
+  "host": "656813ef2295",
+  "base_sha": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "branch": "codex/casepath-reference-polish-admission-20261013",
+  "origin": "https://github.com/KumarNavish/casepath.git",
+  "python": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+  "allowed_authored_paths": [
+    "casepath-api/tools/admit_reference.py",
+    "casepath-api/tests/test_reference_admission_v1.py"
+  ],
+  "instructions_read": [
+    "AGENTS.md",
+    "docs/HYBRID_DEVELOPMENT.md",
+    "CONTRIBUTING.md",
+    "README.md",
+    "docs/PRO_HANDOFF.md",
+    "docs/architecture-authority.md"
+  ],
+  "baseline_test": {
+    "command": [
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "casepath-api/tests/test_reference_admission_v1.py::test_operator_pins_current_profile_and_both_immutable_source_histories"
+    ],
+    "exit_code": 1,
+    "log": "/tmp/casepath-reference-polish-admission-20261013/baseline-profile.log",
+    "expected_failure": "KeyError: '_current_profile'"
+  },
+  "scope_limits": [
+    "No full suite",
+    "No source seal edits",
+    "No hosted database",
+    "No provider calls",
+    "No credential reads",
+    "No deploy"
+  ]
+}

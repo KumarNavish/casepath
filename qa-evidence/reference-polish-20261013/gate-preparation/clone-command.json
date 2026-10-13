@@ -1,0 +1,72 @@
+{
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--no-hardlinks",
+        "--no-checkout",
+        "/workspace/casepath-reference-polish-native-qa-20261013",
+        "/workspace/casepath-polish-gate-inventory-20261013"
+      ],
+      "cwd": "/workspace",
+      "exit_code": 0,
+      "started_epoch": 1791866486.106381,
+      "finished_epoch": 1791866486.384347
+    },
+    {
+      "command": [
+        "git",
+        "remote",
+        "set-url",
+        "origin",
+        "https://github.com/KumarNavish/casepath.git"
+      ],
+      "cwd": "/workspace/casepath-polish-gate-inventory-20261013",
+      "exit_code": 0,
+      "started_epoch": 1791866486.384675,
+      "finished_epoch": 1791866486.3868034
+    },
+    {
+      "command": [
+        "git",
+        "-c",
+        "credential.helper=!gh auth git-credential",
+        "fetch",
+        "origin",
+        "codex/casepath-causal-experience-integration-20261009"
+      ],
+      "cwd": "/workspace/casepath-polish-gate-inventory-20261013",
+      "exit_code": 0,
+      "started_epoch": 1791866486.38713,
+      "finished_epoch": 1791866486.6703682
+    },
+    {
+      "command": [
+        "git",
+        "switch",
+        "-c",
+        "codex/casepath-polish-gate-map-20261013",
+        "c52d2c6d18d74a3b7c584b185080f9200e38fee3"
+      ],
+      "cwd": "/workspace/casepath-polish-gate-inventory-20261013",
+      "exit_code": 0,
+      "started_epoch": 1791866486.670719,
+      "finished_epoch": 1791866487.3651316
+    }
+  ],
+  "host": "656813ef2295",
+  "candidate": "c52d2c6d18d74a3b7c584b185080f9200e38fee3",
+  "env_overrides": {
+    "HOME": "/workspace/casepath-polish-gate-preparation-20261013/home",
+    "TMPDIR": "/workspace/casepath-polish-gate-preparation-20261013/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "inherited_transport_variable_names": [
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "NO_PROXY",
+    "SSL_CERT_FILE",
+    "REQUESTS_CA_BUNDLE"
+  ]
+}

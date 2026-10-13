@@ -1,0 +1,11 @@
+{
+  "worker": "/root/ui_observation",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort": "xhigh",
+  "fork_turns": "none",
+  "context": "Only four neutral image paths and the following prompt; no CasePath history or brief",
+  "prompt": "Inspect only these four screenshots, in order: /workspace/ui-observation-20261013/01.png, /workspace/ui-observation-20261013/02.png, /workspace/ui-observation-20261013/03.png, /workspace/ui-observation-20261013/04.png. Describe in plain language what appears to happen, what the final screen concludes, and what remains uncertain. Base your answer only on visible information. Do not browse the repository or other files, infer unseen actions, or run tests. Use view_image to see the files. Return a concise observation; no edits.",
+  "response": "The sequence shows a read-only CasePath demonstration moving from an unassessed heating complaint, to the supplied source text, to a completed assessment. The complaint reports low temperatures, heating that briefly restarts, and three repair calls. The completed view cites a calibrated temperature reading and a faulty circulation pump, and marks tenancy terms, landlord knowledge, and technical evidence as established.\n\nThe final screen opens the fictional heating-service report, with a highlighted passage labeled \u201cSource text verified \u00b7 exact cited span verified.\u201d The assessment behind it concludes that the sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. It says no external action was taken.\n\nRepair, the reduction amount, and any award remain undetermined. The banner still says new sources await review. The screenshots do not show the intervening interactions, and the opened report is partly clipped.",
+  "actions": "view_image only; no tests or edits",
+  "limits": "Static isolated native-fixture frames, not actual hosted recording; frame02 retains Sources panel instead of graph/document formation. Viewer noted final banner and clipped document. No claims about unseen interactions."
+}

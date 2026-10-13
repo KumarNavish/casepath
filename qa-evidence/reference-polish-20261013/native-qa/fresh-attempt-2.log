@@ -1,0 +1,130 @@
+✔ replay entry: a legacy link without collection plays its exact roster and highlights Demonstration (2156.604768ms)
+✔ replay entry: programmatic titles stay quiet while native keyboard focus remains visible (60020.682867ms)
+✖ replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs (20833.114593ms)
+✖ replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions (17772.89623ms)
+▶ replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play
+  ✔ reference (12833.604385ms)
+  ✔ legacy (12391.089829ms)
+✔ replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play (25226.363878ms)
+✔ replay visibility: initial hidden preserves the first accepted reference prefix before exact continuation (12569.842465ms)
+✔ replay visibility: trusted initial Tab preserves the first accepted reference prefix before exact continuation (13130.126965ms)
+✔ replay visibility: hidden reentry preserves the first accepted reference prefix before exact continuation (12400.991495ms)
+✔ replay lifecycle: actual index restores native back-forward autoplay and keeps manual inspected prefixes held (2409.69624ms)
+✖ reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes (11998.358095ms)
+✖ reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion false (11544.504866ms)
+✖ reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion true (115.434045ms)
+✖ reference native: unavailable recordings retain actual unprocessed intake and its source-backed missing list read-only (0.889102ms)
+✖ reference native: an earlier ordinary canonical prefix keeps its mode and context before reference admission (1.249935ms)
+✖ reference native: public entry omits creation and forged flag status and controls cannot reopen writes (0.650199ms)
+✖ reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access (0.734083ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 9
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 190640.769942
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1016:77
+✖ replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs (20833.114593ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(paint.route.startsWith(`#autonomous/claim/${prefix.state.claim_id}?collection=reference&mode=replay&through=${prefix.through_seq}`))
+  
+      at TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1064:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1016:77
+✖ replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions (17772.89623ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(paint.route.startsWith(`#autonomous/claim/${prefix.state.claim_id}?collection=reference&mode=replay&through=${prefix.through_seq}`))
+  
+      at TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1064:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1242:1
+✖ reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes (11998.358095ms)
+  locator.count: Target crashed 
+      at /workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:794:64
+      at eventually (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:517:15)
+      at mountFixture (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:794:11)
+      at async fixturePage (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:566:3)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1243:40) {
+    name: 'Error',
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1297:35
+✖ reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion false (11544.504866ms)
+  locator.count: Target crashed 
+      at /workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:794:64
+      at eventually (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:517:15)
+      at mountFixture (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:794:11)
+      at async fixturePage (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:566:3)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1298:59) {
+    name: 'Error',
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1297:35
+✖ reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion true (115.434045ms)
+  page.goto: Target page, context or browser has been closed
+  Call log:
+  [2m  - navigating to "http://localhost:41999/", waiting until "load"[22m
+  
+      at fixturePage (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:560:14)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1298:59) {
+    log: [ '  - navigating to "http://localhost:41999/", waiting until "load"' ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1316:1
+✖ reference native: unavailable recordings retain actual unprocessed intake and its source-backed missing list read-only (0.889102ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1317:59) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1326:1
+✖ reference native: an earlier ordinary canonical prefix keeps its mode and context before reference admission (1.249935ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1327:98) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1343:1
+✖ reference native: public entry omits creation and forged flag status and controls cannot reopen writes (0.650199ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1344:13) {
+    log: []
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1358:1
+✖ reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access (0.734083ms)
+  browser.newContext: Target page, context or browser has been closed
+      at async fixturePage (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:524:19)
+      at async TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1359:282) {
+    log: []
+  }

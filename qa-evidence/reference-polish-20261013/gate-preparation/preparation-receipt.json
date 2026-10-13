@@ -1,0 +1,64 @@
+{
+  "candidate": "c52d2c6d18d74a3b7c584b185080f9200e38fee3",
+  "status": "prepared_provisional_collection_and_map_only",
+  "host": "656813ef2295",
+  "repo": "/workspace/casepath-polish-gate-inventory-20261013",
+  "worker_branch": "codex/casepath-polish-gate-map-20261013",
+  "source_status": "",
+  "canonical_collected": 2538,
+  "cloud_assigned": 2411,
+  "mac_assigned": 127,
+  "shards": {
+    "1": {
+      "count": 274,
+      "predicted_seconds": 485.2115130666405
+    },
+    "2": {
+      "count": 289,
+      "predicted_seconds": 485.2115955700597
+    },
+    "3": {
+      "count": 293,
+      "predicted_seconds": 485.21142785150295
+    },
+    "4": {
+      "count": 595,
+      "predicted_seconds": 485.2120256533312
+    },
+    "5": {
+      "count": 667,
+      "predicted_seconds": 485.2110829833688
+    },
+    "6": {
+      "count": 293,
+      "predicted_seconds": 485.21135487509224
+    }
+  },
+  "new_ids_vs_2af5": 21,
+  "removed_ids_vs_2af5": 0,
+  "known_skip_ids": 10,
+  "full_sorted_ids_sha256": "2a3e5b4f3d419c7041a5dac8979ed99a1db3bd189d0ad73e51ba804f49d0804e",
+  "cloud_sorted_ids_sha256": "133ce41dcb59f264a0c6bc77fd23362ec54662f0ab3d86c360d3334e8440c2eb",
+  "mac_sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+  "collection_exit_code": 0,
+  "collection_seconds": 11.492904901504517,
+  "test_execution": false,
+  "seal_performed": false,
+  "suite_launch": false,
+  "provisional": true,
+  "sealed_sha": null,
+  "required_next_step": "Root refreshes/rebinds after Mac final SEALED_SHA; eventual shard4 alone then remaining five parallel",
+  "timing_limit": "Reference runtime 37-test log has no individual durations; additions use explicit estimated allocation over its 183.92s aggregate. No current candidate test bodies executed.",
+  "evidence_branch_owner": "root only: codex/casepath-reference-polish-native-evidence-20261013",
+  "created_epoch": 1791866806.2875774,
+  "disk": {
+    "/workspace": {
+      "free": 7672889344,
+      "used": 24362541056
+    },
+    "/tmp": {
+      "free": 218431488,
+      "used": 17653460992
+    }
+  }
+}

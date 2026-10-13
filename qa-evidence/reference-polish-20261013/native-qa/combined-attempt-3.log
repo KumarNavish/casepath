@@ -1,0 +1,639 @@
+TAP version 13
+# Subtest: replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+not ok 1 - replay entry: fresh v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 102.050483
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1016:77'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 2 - replay entry: fresh v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 0.857926
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1016:77'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+not ok 3 - replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 0.116972
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1016:77'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 4 - replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 0.046909
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1016:77'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: replay lifecycle: actual index restores native back-forward autoplay and keeps manual inspected prefixes held
+not ok 5 - replay lifecycle: actual index restores native back-forward autoplay and keeps manual inspected prefixes held
+  ---
+  duration_ms: 0.062542
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1126:1'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference migration native: exact current starts retain original zero and earlier documents beside the selected v2 investigation
+not ok 6 - reference migration native: exact current starts retain original zero and earlier documents beside the selected v2 investigation
+  ---
+  duration_ms: 0.035062
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1187:1'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference migration native: unknown or stale current source selection renders all retained documents and readable passages
+not ok 7 - reference migration native: unknown or stale current source selection renders all retained documents and readable passages
+  ---
+  duration_ms: 0.050074
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1217:1'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference migration native: trusted Pause holds the accepted baseline through hide show until exact next-prefix Resume
+not ok 8 - reference migration native: trusted Pause holds the accepted baseline through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 0.045387
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1234:54'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference migration native: trusted History holds the accepted baseline through hide show until exact next-prefix Resume
+not ok 9 - reference migration native: trusted History holds the accepted baseline through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 0.275176
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1234:54'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference migration native: trusted source holds the accepted baseline through hide show until exact next-prefix Resume
+not ok 10 - reference migration native: trusted source holds the accepted baseline through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 0.077094
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1234:54'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes
+not ok 11 - reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes
+  ---
+  duration_ms: 0.042092
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1245:1'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion false
+not ok 12 - reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion false
+  ---
+  duration_ms: 0.028483
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1300:35'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion true
+not ok 13 - reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion true
+  ---
+  duration_ms: 0.056383
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1300:35'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference native: unavailable recordings retain actual unprocessed intake and its source-backed missing list read-only
+not ok 14 - reference native: unavailable recordings retain actual unprocessed intake and its source-backed missing list read-only
+  ---
+  duration_ms: 0.059568
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1319:1'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference native: an earlier ordinary canonical prefix keeps its mode and context before reference admission
+not ok 15 - reference native: an earlier ordinary canonical prefix keeps its mode and context before reference admission
+  ---
+  duration_ms: 0.0273
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1329:1'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference native: public entry omits creation and forged flag status and controls cannot reopen writes
+not ok 16 - reference native: public entry omits creation and forged flag status and controls cannot reopen writes
+  ---
+  duration_ms: 0.023435
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1346:1'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+# Subtest: reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access
+not ok 17 - reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access
+  ---
+  duration_ms: 0.04717
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1361:1'
+  failureType: 'hookFailed'
+  error: |-
+    browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+    
+    <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window
+    <launched> pid=556953
+    [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)
+    [pid=556953][err] chrome_crashpad_handler: --database is required
+    [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.
+    [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.
+    Call log:
+    [2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --user-data-dir=/workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/playwright_chromiumdev_profile-L4i67N --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=556953[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.938120:ERROR:third_party/crashpad/crashpad/util/file/filesystem_posix.cc:63] mkdir : No such file or directory (2)[22m
+    [2m  - [pid=556953][err] chrome_crashpad_handler: --database is required[22m
+    [2m  - [pid=556953][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+    [2m  - [pid=556953][err] [556953:556953:1013/043147.974887:FATAL:chrome/browser/process_singleton_posix.cc:313] Socket path too long: /workspace/casepath-reference-polish-native-qa-evidence-20261013/tmp/org.chromium.Chromium.fUigWp/SingletonSocket.[22m
+    [2m  - [pid=556953] <gracefully close start>[22m
+    [2m  - [pid=556953] <kill>[22m
+    [2m  - [pid=556953] <will force kill>[22m
+    [2m  - [pid=556953] <process did exit: exitCode=null, signal=SIGABRT>[22m
+    [2m  - [pid=556953] starting temporary directories cleanup[22m
+    [2m  - [pid=556953] finished temporary directories cleanup[22m
+    [2m  - [pid=556953] <gracefully close end>[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:507:28)
+    Object.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:506:6)
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 0
+# fail 17
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 514.270597

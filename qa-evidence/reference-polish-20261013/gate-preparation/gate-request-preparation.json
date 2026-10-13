@@ -1,0 +1,18 @@
+{
+  "candidate": "c52d2c6d18d74a3b7c584b185080f9200e38fee3",
+  "host": "656813ef2295",
+  "targets": [
+    "casepath-api/tests",
+    "casepath/tools/test_build_deployment_identity.py",
+    "casepath/tools/test_casepath_release.py"
+  ],
+  "authorization": "Parent assigned canonical full-suite collection and six-shard map only; no test execution or seal",
+  "source_edits": false,
+  "test_execution": false,
+  "source_seal": false,
+  "suite_launch": false,
+  "provisional": true,
+  "sealed_sha": null,
+  "required_launch_gate": "Mac final SEALED_SHA; root refreshes and binds candidate and canonical IDs before any full suite",
+  "created_epoch": 1791866727.3226829
+}

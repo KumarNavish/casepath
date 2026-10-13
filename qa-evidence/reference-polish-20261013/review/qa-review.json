@@ -1,0 +1,135 @@
+{
+  "changed_files": [
+    "casepath-qa/unified-product-browser-v1.test.cjs"
+  ],
+  "checkout_clean": true,
+  "commit": "9c45f7514f33ef291ae11d9759054048ec1abc8d",
+  "evidence": {
+    "assets_match_pinned_parent": {
+      "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "javascript": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d"
+    },
+    "final_receipts_test_hash_matches_commit": true,
+    "final_two_tests": [
+      "replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions",
+      "reference migration native: exact current starts retain original zero and earlier documents beside the selected v2 investigation"
+    ],
+    "javascript_errors": [],
+    "prior_green_receipt_test_hash": "4644cb52d060b45b1aa181ad881554af1f3e289245b192b9ff105dcb62c571f9",
+    "receipt_checkout_commit_is_precommit_parent": "7edfc686850d5cc5a278ef15bdb9830470b01eab",
+    "receipts": {
+      "receipts/combined-attempt-5/replay-entry-current-migrated-owner.json": "2a95b49b62a971cb17756551e3fdd8d1256c80b66a9eccf03fa82b88ea449320",
+      "receipts/combined-attempt-6/reference-migration-current-and-earlier.json": "b627914db6b9365ce4be9dc499cc61bebd0d321afb04462d54d67623f6f4d3c3",
+      "receipts/combined-attempt-6/replay-entry-current-migrated-visitor.json": "0a3f062c3cb34d06a7f5b24ac479d5c4c530991cc85d5d97584bfaf81a14deed"
+    },
+    "requests_methods": [
+      "GET"
+    ],
+    "trusted_visitor_inputs": []
+  },
+  "excluded": "Still-frame attempt 7 and Mac visual/release validation are outside this bounded review.",
+  "host": "656813ef2295",
+  "initial_review_scope": "Targeted controls and recorded external-fixture runs; the default generated migrated fixture path was not exercised.",
+  "kind": "bounded-independent-qa-review",
+  "open_findings": [],
+  "parent": "7edfc686850d5cc5a278ef15bdb9830470b01eab",
+  "post_review_findings": [
+    {
+      "evidence_source": "Concrete Mac finding reported by root after the initial review; reviewer did not execute the generator.",
+      "finding": "Default migrated fixture generation exceeds the execFileSync output buffer.",
+      "initial_verdict_scope": "The original no-open-finding verdict remains limited to the reviewed targeted controls.",
+      "location": "casepath-qa/unified-product-browser-v1.test.cjs:referenceFixture(migrated)",
+      "max_buffer_bytes": 134217728,
+      "pending_verification": {
+        "check": "Run the default generator without an external fixture and verify its exact output bytes.",
+        "owner": "root"
+      },
+      "planned_correction": {
+        "fresh_max_buffer_bytes": 134217728,
+        "migrated_max_buffer_bytes": 268435456,
+        "owner": "Mac",
+        "scope": "Change only the migrated buffer limit."
+      },
+      "reason_unexercised": "Focused migrated runs supplied an external fixture, bypassing execFileSync generation and its maxBuffer limit.",
+      "reported_actual_migrated_stdout_bytes": 211642108,
+      "status": "open; Mac correction and root verification pending"
+    }
+  ],
+  "raw_runs": {
+    "5": {
+      "exit_code": 1,
+      "failed_tests": [
+        "replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions",
+        "reference migration native: exact current starts retain original zero and earlier documents beside the selected v2 investigation"
+      ],
+      "log_sha256": "fb3bd5a95a322fc2dfc56c05386467374e3e0e4537f2d795d01760dc90d0a479",
+      "summary": {
+        "cancelled": 0,
+        "fail": 2,
+        "pass": 15,
+        "skipped": 0,
+        "tests": 17,
+        "todo": 0
+      }
+    },
+    "6": {
+      "exit_code": 0,
+      "failed_tests": [],
+      "log_sha256": "ffea737bd4b2d7118332fc5a0e5378268a2621768f33aa370916c6b0c6b4139a",
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 2,
+        "skipped": 0,
+        "tests": 2,
+        "todo": 0
+      }
+    }
+  },
+  "review": {
+    "assertions_retained": [
+      "exact accepted state/projection for owner",
+      "graph/document review and forming identities",
+      "source hash and active current roster",
+      "exact citations and immutable Knowledge pins",
+      "accepted outcome",
+      "route and Demonstration navigation",
+      "GET-only and no browser API network writes",
+      "trusted hold, hide/show and exact next-prefix Resume"
+    ],
+    "complete_history_DTOs": 393,
+    "complete_history_transfer_hashes_match_across_runs": true,
+    "derived_thresholds": [
+      5,
+      34,
+      85,
+      153
+    ],
+    "exact_sequence_and_hashes_verified": true,
+    "four_interruptions_required": true,
+    "handoffs": 8,
+    "history_click_selector": "[data-au-source-origin=\"history:<artifact_id>\"]",
+    "migrated_expected_prefixes": 171,
+    "observed_visitor_interruptions": [
+      5,
+      35,
+      87,
+      153
+    ],
+    "painted_prefixes": {
+      "owner": 171,
+      "visitor": 171
+    },
+    "production_files_changed": false,
+    "threshold_basis": "current accepted native prefix roster, fractions 0.03/0.2/0.5/0.9"
+  },
+  "reviewer_actions": {
+    "frontend_edits": 0,
+    "remote_actions": 0,
+    "repository_edits": 0,
+    "test_reruns": 0
+  },
+  "scope_statement": "Attempt 5 has 15 passing tests and two preserved failures; attempt 6 reruns those exact two failures and passes both on committed QA bytes. No broad all-green final rerun is claimed.",
+  "test_file_sha256": "d8f91ff92d5baf325e89d75b34b596fafc0d39a2db4e27a10d342a416f86ca21",
+  "verdict": "no open concrete findings"
+}

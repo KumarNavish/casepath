@@ -1,0 +1,104 @@
+{
+  "base_sha": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "host": "656813ef2295",
+  "inspection": {
+    "admission": "same staged operation sequence in prepare and verification; full snapshot CAS, lease fence, ledger checks and exact retry remain intact",
+    "citations": "Existing exact source hash, text hash and character-span validation unchanged; writer tests inspect actual v2 and every retained v1 prefix against physical bytes.",
+    "finding_copy": "two sentences preserve heating remedy/amount/award, termination court/deadline, and rent excessiveness/amount/deadline limits",
+    "packaging": "existing reference_profiles/**/* package rule includes the additive v2 files",
+    "replay": "same verified head supplies baseline event/state hashes, current run/profile and active source IDs without another SQL or remote read",
+    "roster": "originals plus complete v2, optionally complete exact registered v1; partial, foreign and unknown extras rejected",
+    "upgrade": "ordinary append-only controller prepares a real incoming_packet reset; previous events, source bytes, actions and contexts retained"
+  },
+  "kind": "independent-source-review",
+  "limits": {
+    "frontend_visual_review_and_final_seal": "Mac owner",
+    "full_suite": "not run per scope",
+    "provider_production_remote_actions_by_reviewer": 0,
+    "repository_edits_by_reviewer": 0,
+    "setup": "Writer restored absent ignored PDF/JPEG artifacts with repository scripts; separate from product failures"
+  },
+  "open_findings": [],
+  "resolved_review_observations": [
+    "Gate provenance rule_set_sha256 comparison previously suppressed valid replay_start; corrected and preserved failing/passing evidence.",
+    "Malformed provenance/context now returns no descriptor; active source_artifact_ids match the run context and provenance.",
+    "Unprocessed snapshot includes replay_start:null; incomplete heads and graph changes after the accepted outcome suppress the descriptor."
+  ],
+  "reviewed_commits": {
+    "operator": "cbf7a454d2c607d6cc4157633bba8340c765c3c3",
+    "operator_parent": "56ca8f1a183dd073e1ee1061d70fac1913355a6b",
+    "runtime": "56ca8f1a183dd073e1ee1061d70fac1913355a6b"
+  },
+  "source_identity": {
+    "both_checkouts_clean": true,
+    "immutable_v1_files_verified": 23,
+    "legacy_profile_sha256": "15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7",
+    "operator_contains_exact_runtime_bytes": true,
+    "operator_files": {
+      "casepath-api/tests/test_reference_admission_v1.py": {
+        "committed_sha256": "2babec7e2e79d9a5b53b150bd1751945b48a3ec3b9aa633d3f71ca2c9aca61c9",
+        "tested_sha256": "2babec7e2e79d9a5b53b150bd1751945b48a3ec3b9aa633d3f71ca2c9aca61c9",
+        "working_sha256": "2babec7e2e79d9a5b53b150bd1751945b48a3ec3b9aa633d3f71ca2c9aca61c9"
+      },
+      "casepath-api/tools/admit_reference.py": {
+        "committed_sha256": "0f34cad742b99fad318a3afa06476aef4a062034245ed79dc17ad7ed836642f6",
+        "tested_sha256": "0f34cad742b99fad318a3afa06476aef4a062034245ed79dc17ad7ed836642f6",
+        "working_sha256": "0f34cad742b99fad318a3afa06476aef4a062034245ed79dc17ad7ed836642f6"
+      }
+    },
+    "operator_tested_committed_working_bytes_match": true,
+    "original_corpora_legal_policy_reducer_lease_storage_diff": "none",
+    "runtime_changed_files": 28,
+    "runtime_changed_files_sha256": "d6e631182e8ea4cccd15cafe85bb47d2236776671e69fce91730ff880c3ed8d7",
+    "v2_profile_sha256": "18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869"
+  },
+  "validation_evidence": {
+    "admission_writer": {
+      "command": [
+        "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+        "-P",
+        "-m",
+        "pytest",
+        "-vv",
+        "-p",
+        "no:cacheprovider",
+        "--durations=10",
+        "--basetemp=/tmp/casepath-reference-polish-admission-20261013/pytest-tmp",
+        "--junitxml=/tmp/casepath-reference-polish-admission-20261013/junit.xml",
+        "casepath-api/tests/test_reference_admission_v1.py"
+      ],
+      "command_artifact": "/tmp/casepath-reference-polish-admission-20261013/focused-command.json",
+      "command_artifact_sha256": "0f898cc3ba213a878dd08b7dd9c6d96867ae34e25d24c30f7777f6d624766b8b",
+      "cwd": "/workspace/casepath-reference-polish-admission-20261013",
+      "exit_code": 0,
+      "junit_artifact": "/tmp/casepath-reference-polish-admission-20261013/junit.xml",
+      "junit_sha256": "c42b64f5d7c4ff8032a99b4079b5d3d2c86026ddcb0c6c19dc11e87b22ed6af6",
+      "pytest_seconds": 510.83,
+      "raw_junit": {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests": 9
+      },
+      "raw_junit_case_count": 9,
+      "result_artifact": "/tmp/casepath-reference-polish-admission-20261013/focused-result.json",
+      "result_artifact_sha256": "f8c34fa277d33adb5e4fef1e6c40a189570017a7f11e00714f5aad096738f752",
+      "runtime_sha": "56ca8f1a183dd073e1ee1061d70fac1913355a6b",
+      "wrapper_seconds": 511.88429689902114
+    },
+    "reviewer_tests_executed": 0,
+    "runtime_writer": {
+      "command_record": "/tmp/casepath-reference-polish-20261013/runtime-commands.txt",
+      "final_smoke_deselected": 35,
+      "final_smoke_passed": 3,
+      "final_smoke_seconds": 12.01,
+      "focused_passed": 37,
+      "focused_seconds": 183.92,
+      "logs": [
+        "/tmp/casepath-reference-polish-20261013/runtime-focused.log",
+        "/tmp/casepath-reference-polish-20261013/runtime-final-smoke.log"
+      ]
+    }
+  },
+  "verdict": "no open concrete findings in the bounded runtime and private admission changes"
+}

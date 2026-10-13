@@ -1,0 +1,122 @@
+{
+  "candidate": "c52d2c6d18d74a3b7c584b185080f9200e38fee3",
+  "reference": "/tmp/casepath-release-2af5-20261013/known-skips.json",
+  "reference_sha256": "b6b60871f4720951677196a0e28176ce4acfa86bfb2c4e38628c06460ea6fcf7",
+  "count": 10,
+  "known_records_preserved_exactly": true,
+  "all_ids_collected_and_assigned": true,
+  "records": [
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v1.py::test_frozen_base27_prefix_replay_reproduces_all_six_workflows",
+      "phase": "call",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v1.py",
+      "line": 605,
+      "reason": "Skipped: frozen independent-transition packet is not available",
+      "candidate_source_line_text": "        pytest.skip(\"frozen independent-transition packet is not available\")",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "4028bb2f83e673173793c07be4205c284799c34bff641e72d28f412225714105",
+      "reference_source_sha256": "4028bb2f83e673173793c07be4205c284799c34bff641e72d28f412225714105"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_binary_cannot_be_declared_as_text",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 579,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_binary_cannot_be_declared_as_text(replay: dict[str, Any]) -> None:",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_cross_parent_view_swap_is_rejected",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 559,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_cross_parent_view_swap_is_rejected(replay: dict[str, Any]) -> None:",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_future_artifact_is_rejected",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 636,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_future_artifact_is_rejected(replay: dict[str, Any]) -> None:",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 696,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_issued_history_accepts_delayed_delivery_and_supersession_reopens_request(",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_model_reported_complete_does_not_become_accepted_complete",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 646,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_model_reported_complete_does_not_become_accepted_complete(",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_one_byte_mutation_is_rejected",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 548,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_one_byte_mutation_is_rejected(replay: dict[str, Any]) -> None:",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_parent_continuity_and_duplicate_event_replay_are_rejected",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 592,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_parent_continuity_and_duplicate_event_replay_are_rejected(",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_reordered_state_and_backdated_event_are_rejected",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 610,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_reordered_state_and_backdated_event_are_rejected(replay: dict[str, Any]) -> None:",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    },
+    {
+      "id": "casepath-api/tests/test_document_lifecycle_shadow_v2.py::test_saved_source041_native_replay_preserves_provenance_and_locality",
+      "phase": "setup",
+      "source": "casepath-api/tests/test_document_lifecycle_shadow_v2.py",
+      "line": 457,
+      "reason": "Skipped: saved native source-binding run is unavailable",
+      "candidate_source_line_text": "def test_saved_source041_native_replay_preserves_provenance_and_locality(",
+      "exact_source_bytes_unchanged": true,
+      "candidate_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85",
+      "reference_source_sha256": "0f01d49f3b867e6d36f2056ad7bef84e1492a13d0d53c3c78dcb3cd494a7dc85"
+    }
+  ],
+  "added_skip_or_deselection_directives_in_changed_test_sources": [],
+  "current_execution_comparison": "Not run; collection only; known skip sources, lines and prior reasons preserved"
+}

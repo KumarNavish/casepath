@@ -1,0 +1,13 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+____ test_operator_pins_current_profile_and_both_immutable_source_histories ____
+
+    def test_operator_pins_current_profile_and_both_immutable_source_histories():
+>       profile = operator['_current_profile']()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: '_current_profile'
+
+casepath-api/tests/test_reference_admission_v1.py:21: KeyError
+=========================== short test summary info ============================
+FAILED casepath-api/tests/test_reference_admission_v1.py::test_operator_pins_current_profile_and_both_immutable_source_histories
+1 failed in 0.16s

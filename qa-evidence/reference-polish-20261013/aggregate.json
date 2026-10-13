@@ -1,0 +1,67 @@
+{
+  "phase": "focused checkpoints; full gate not started",
+  "host": "656813ef2295",
+  "runtime_commit": "56ca8f1a183dd073e1ee1061d70fac1913355a6b",
+  "operator_commit": "cbf7a454d2c607d6cc4157633bba8340c765c3c3",
+  "qa_commit": "9c45f7514f33ef291ae11d9759054048ec1abc8d",
+  "mac_default_buffer_correction": "b7358d033baf86e885b52bb14e20f11aff88f0e4",
+  "frozen_commit": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "focused": {
+    "runtime_pre_final_guard_tests": {
+      "passed": 37,
+      "seconds": 183.92
+    },
+    "runtime_final_smoke": {
+      "passed": 3,
+      "deselected": 35,
+      "note": "Selected focused checks; final source did not rerun all37."
+    },
+    "operator": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 511.88429689902114
+    },
+    "native_unique_incremental": {
+      "passed": 25,
+      "note": "Selected passing attempts, not one broad all-green rerun; raw failures retained."
+    },
+    "latest_two_corrections": {
+      "passed": 2,
+      "failed": 0,
+      "seconds": 104.028304102
+    },
+    "stills_capture": {
+      "passed": 1,
+      "failed": 0,
+      "seconds": 54.697083982
+    }
+  },
+  "native_fixture": {
+    "claims": 9,
+    "retained_prefixes": 393,
+    "current_migrated_paints": 171,
+    "sources": 57,
+    "gzip_sha256": "5864980a9016bd332dd63537fb86b3ba0bcbbd2f74c98b2541177c078971cfe8"
+  },
+  "default_generator": "Running with no external fixture input at b735; no success claim yet",
+  "cold_read": "Full text and original image hashes retained under cold-read; static frame02 retained Sources, so graph/document formation perception is not established by these four stills. No claim of hosted recording.",
+  "gate_preparation": {
+    "collected": 2538,
+    "cloud": 2411,
+    "mac": 127,
+    "provisional": true,
+    "suite_started": false
+  },
+  "mac_attestation": {
+    "source": "Mac integration owner delegated message",
+    "commit": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+    "passed": 127,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 130.305,
+    "sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "raw_artifacts": "Mac-local F8 gate; not present in Cloud payload"
+  },
+  "no_provider_calls_or_real_hosted_writes": true
+}

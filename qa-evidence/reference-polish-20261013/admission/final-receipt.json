@@ -1,0 +1,79 @@
+{
+  "commit": "cbf7a454d2c607d6cc4157633bba8340c765c3c3",
+  "parent_runtime_commit": "56ca8f1a183dd073e1ee1061d70fac1913355a6b",
+  "original_base_commit": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "changed_files": [
+    "casepath-api/tests/test_reference_admission_v1.py",
+    "casepath-api/tools/admit_reference.py"
+  ],
+  "authored_files_match_tested_bytes": true,
+  "clean_checkout": true,
+  "test_summary": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 5,
+    "exit_code": 0,
+    "duration_seconds": 511.88429689902114
+  },
+  "tests": [
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_operator_pins_current_profile_and_both_immutable_source_histories",
+      "time": "0.006",
+      "result": "passed"
+    },
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_mock_hrana_complete_v1_readmission_appends_exact_v2_and_preserves_every_old_prefix",
+      "time": "340.581",
+      "result": "passed"
+    },
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[unknown]",
+      "time": "0.737",
+      "result": "passed"
+    },
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[adverse]",
+      "time": "0.728",
+      "result": "passed"
+    },
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[partial_legacy]",
+      "time": "0.732",
+      "result": "passed"
+    },
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_mock_hrana_v2_prepare_rejects_unsafe_source_roster_or_foreign_policy_read_only[foreign_policy]",
+      "time": "0.738",
+      "result": "passed"
+    },
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_mock_hrana_prepare_apply_all_nine_preserves_old_rows_budget_restart_and_exact_retry",
+      "time": "166.407",
+      "result": "passed"
+    },
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_selected_rejected_provider_stage_and_global_unknown_outcome_refuse_read_only",
+      "time": "0.221",
+      "result": "passed"
+    },
+    {
+      "classname": "tests.test_reference_admission_v1",
+      "name": "test_hosted_canonical_draft_submit_run_startup_recovery_never_calls_model_or_writes",
+      "time": "0.499",
+      "result": "passed"
+    }
+  ],
+  "source_seal": "Mac integration owner",
+  "full_suite": "not run per scope",
+  "provider_calls": 0,
+  "hosted_connections": 0
+}

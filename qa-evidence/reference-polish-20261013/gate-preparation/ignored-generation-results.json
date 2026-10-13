@@ -1,0 +1,77 @@
+[
+  {
+    "command": [
+      "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+      "casepath-api/generate_artifacts.py"
+    ],
+    "cwd": "/workspace/casepath-polish-gate-inventory-20261013",
+    "env": {
+      "HOME": "/workspace/casepath-polish-gate-preparation-20261013/home",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+      "PYTHONHASHSEED": "0",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONSAFEPATH": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONPYCACHEPREFIX": "/workspace/casepath-polish-gate-preparation-20261013/pycache",
+      "PYTHONPATH": "/workspace/casepath-polish-gate-preparation-20261013/harness:/workspace/casepath-polish-gate-inventory-20261013/casepath-api",
+      "SOURCE_DATE_EPOCH": "1786406400",
+      "TMPDIR": "/workspace/casepath-polish-gate-preparation-20261013/tmp",
+      "TZ": "UTC",
+      "CASEPATH_MODEL_MODE": "deterministic_reference",
+      "CASEPATH_SOURCE_COMMIT": "c52d2c6d18d74a3b7c584b185080f9200e38fee3",
+      "CASEPATH_DB_PATH": "/workspace/casepath-polish-gate-preparation-20261013/casepath.db",
+      "CASEPATH_ARTIFACT_REGISTRY_PATH": "/workspace/casepath-polish-gate-preparation-20261013/artifact-registry",
+      "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+      "CASEPATH_ENV_LOCK_HELD": "",
+      "CASEPATH_ENV_READY": "",
+      "UV_CACHE_DIR": "/workspace/casepath-polish-gate-preparation-20261013/uv-cache",
+      "UV_LINK_MODE": "copy",
+      "CASEPATH_QA_REPOSITORY": "/workspace/casepath-polish-gate-inventory-20261013",
+      "CASEPATH_QA_ARTIFACTS": "/workspace/casepath-polish-gate-preparation-20261013/inventory"
+    },
+    "started_epoch": 1791866530.6704497,
+    "finished_epoch": 1791866532.2975147,
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+      "casepath-api/replace_photographic_evidence.py",
+      "."
+    ],
+    "cwd": "/workspace/casepath-polish-gate-inventory-20261013",
+    "env": {
+      "HOME": "/workspace/casepath-polish-gate-preparation-20261013/home",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+      "PYTHONHASHSEED": "0",
+      "PYTHONNOUSERSITE": "1",
+      "PYTHONSAFEPATH": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHONPYCACHEPREFIX": "/workspace/casepath-polish-gate-preparation-20261013/pycache",
+      "PYTHONPATH": "/workspace/casepath-polish-gate-preparation-20261013/harness:/workspace/casepath-polish-gate-inventory-20261013/casepath-api",
+      "SOURCE_DATE_EPOCH": "1786406400",
+      "TMPDIR": "/workspace/casepath-polish-gate-preparation-20261013/tmp",
+      "TZ": "UTC",
+      "CASEPATH_MODEL_MODE": "deterministic_reference",
+      "CASEPATH_SOURCE_COMMIT": "c52d2c6d18d74a3b7c584b185080f9200e38fee3",
+      "CASEPATH_DB_PATH": "/workspace/casepath-polish-gate-preparation-20261013/casepath.db",
+      "CASEPATH_ARTIFACT_REGISTRY_PATH": "/workspace/casepath-polish-gate-preparation-20261013/artifact-registry",
+      "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+      "CASEPATH_ENV_LOCK_HELD": "",
+      "CASEPATH_ENV_READY": "",
+      "UV_CACHE_DIR": "/workspace/casepath-polish-gate-preparation-20261013/uv-cache",
+      "UV_LINK_MODE": "copy",
+      "CASEPATH_QA_REPOSITORY": "/workspace/casepath-polish-gate-inventory-20261013",
+      "CASEPATH_QA_ARTIFACTS": "/workspace/casepath-polish-gate-preparation-20261013/inventory"
+    },
+    "started_epoch": 1791866532.297824,
+    "finished_epoch": 1791866532.6598897,
+    "exit_code": 0
+  }
+]

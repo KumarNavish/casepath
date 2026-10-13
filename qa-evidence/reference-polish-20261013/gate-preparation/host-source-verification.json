@@ -1,0 +1,53 @@
+{
+  "candidate": "c52d2c6d18d74a3b7c584b185080f9200e38fee3",
+  "head": "c52d2c6d18d74a3b7c584b185080f9200e38fee3",
+  "status": "",
+  "host": "656813ef2295",
+  "uname": "Linux 656813ef2295 6.18.44 #1 SMP Sat Sep 26 20:02:31 UTC 2026 x86_64 GNU/Linux",
+  "disk": {
+    "/workspace": {
+      "total": 33770192896,
+      "used": 24404373504,
+      "free": 7631056896
+    },
+    "/tmp": {
+      "total": 17871892480,
+      "used": 17653493760,
+      "free": 218398720
+    }
+  },
+  "instructions": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "44b8b4833d25bdf153d3978bb7c9fa6d920daec3caffa8d9fc5434e0b40c49a1",
+      "read": true
+    },
+    {
+      "path": "docs/HYBRID_DEVELOPMENT.md",
+      "sha256": "0190e252e3958670bc76886cea78ef76dd48dae404a855abaebd66b12b0edd67",
+      "read": true
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "cbac312085c0d90537e0b68a23c5373f2d2817282bde7278fa897ad53cb41076",
+      "read": true
+    },
+    {
+      "path": "README.md",
+      "sha256": "6680935297ee1f180df592bd95fe195deb66dea14deedbef8928f1e760d55fcd",
+      "read": true
+    },
+    {
+      "path": "docs/PRO_HANDOFF.md",
+      "sha256": "ae061cc8ed93883c8b0af13320f23b16803abb2cff5251a554a718dd5b64e7ae",
+      "read": true
+    }
+  ],
+  "python": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+  "python_version": "Python 3.13.9",
+  "node_version": "v24.19.0",
+  "source_manifest_sha256": "1f37661214132ef087290204376cdf4b535f4c5f8a05daf995c768db72622e06",
+  "sealed_candidate": false,
+  "seal_action_performed": false,
+  "full_suite_launch_authorized": false
+}

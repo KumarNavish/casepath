@@ -1,0 +1,51 @@
+{
+  "host": "656813ef2295",
+  "qa_commit": "9c45f7514f33ef291ae11d9759054048ec1abc8d",
+  "canonical_preseal_commit": "d0732829e39c8a6d38177e53cd3d007358e0b4cd",
+  "assets": {
+    "casepath/assets/autonomous-workspace-v1.js": {
+      "tested_qa_commit_sha256": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
+      "canonical_sha256": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
+      "equal": true
+    },
+    "casepath/assets/autonomous-workspace-v1.css": {
+      "tested_qa_commit_sha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "canonical_sha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+      "equal": true
+    },
+    "casepath/assets/autonomous-entry-v1.js": {
+      "tested_qa_commit_sha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "canonical_sha256": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+      "equal": true
+    },
+    "casepath/index.html": {
+      "tested_qa_commit_sha256": "636a54756a45039a2af3dd700f30c7be549a1d0f11a8d28d5b8d8f6a9a86925c",
+      "canonical_sha256": "64460f2b1ba14764f9130873549ef17e777229c5b19debf0a3866116255ccf96",
+      "equal": false
+    }
+  },
+  "qa_sha256": "d8f91ff92d5baf325e89d75b34b596fafc0d39a2db4e27a10d342a416f86ca21",
+  "qa_changed_files": [
+    "casepath-qa/unified-product-browser-v1.test.cjs"
+  ],
+  "refs": {
+    "56ca8f1a183dd073e1ee1061d70fac1913355a6b": {
+      "subject": "Add immutable v2 reference sources and append-only reassessment replay"
+    },
+    "cbf7a454d2c607d6cc4157633bba8340c765c3c3": {
+      "subject": "Pin private reference admission to synthetic-nine-v2"
+    },
+    "9c45f7514f33ef291ae11d9759054048ec1abc8d": {
+      "subject": "test(reference): verify migrated native replay and retained sources"
+    },
+    "d0732829e39c8a6d38177e53cd3d007358e0b4cd": {
+      "subject": "chore(release): bind the polished workspace asset"
+    }
+  },
+  "index_only_hash_query_change_not_retested": true,
+  "full_gate": "held pending Mac sealed SHA",
+  "packaging_corrections": [
+    "First binding command referenced nonexistent workspace-entry-v1.js and exited1 without mutation; corrected to existing autonomous-entry-v1.js.",
+    "Second command found operator commit absent from this clone; fetched existing local normal operator clone. No test or source changed."
+  ]
+}

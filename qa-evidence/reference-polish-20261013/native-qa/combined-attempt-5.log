@@ -1,0 +1,148 @@
+TAP version 13
+# Subtest: replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+ok 1 - replay entry: migrated v1 to v2 owner consumes every accepted current reference prefix and eight native handoffs
+  ---
+  duration_ms: 62397.296113
+  type: 'test'
+  ...
+# Subtest: replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+not ok 2 - replay entry: migrated v1 to v2 public visitor consumes every accepted current reference prefix and eight native handoffs with visibility and programmatic focus interruptions
+  ---
+  duration_ms: 48069.874857
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1030:77'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    3 !== 4
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 4
+  actual: 3
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1064:9)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play
+    # Subtest: reference
+    ok 1 - reference
+      ---
+      duration_ms: 12348.911574
+      type: 'test'
+      ...
+    # Subtest: legacy
+    ok 2 - legacy
+      ---
+      duration_ms: 12567.880897
+      type: 'test'
+      ...
+    1..2
+ok 3 - replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play
+  ---
+  duration_ms: 25142.216136
+  type: 'test'
+  ...
+# Subtest: reference migration native: exact current starts retain original zero and earlier documents beside the selected v2 investigation
+not ok 4 - reference migration native: exact current starts retain original zero and earlier documents beside the selected v2 investigation
+  ---
+  duration_ms: 45516.457791
+  type: 'test'
+  location: '/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1201:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.click: Error: strict mode violation: locator('[data-au-source="src_75472589f7c0e2b444f884f3000845b2"]') resolved to 8 elements:
+        1) <button type="button" class="au-secondary" data-au-source="src_75472589f7c0e2b444f884f3000845b2" data-au-source-origin="history:src_75472589f7c0e2b444f884f3000845b2">01-customer-and-tenancy-clarification.txt</button> aka getByRole('button', { name: '01-customer-and-tenancy-clarification.txt', exact: true })
+        2) <button type="button" class="au-source-link" data-au-source="src_75472589f7c0e2b444f884f3000845b2" data-au-source-origin="action:review:tenancy_terms_evidence:src_75472589f7c0e2b444f884f3000845b2:receipt:774bbdd6cc3f4373d02f5dee916e9abe1517e50e08671f74808d111b4c47d226" data-au-citation="{"artifact_id":"src_75472589f7c0e2b444f884f3000845b2","end_char":978,"quote":"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The lan…>…</button> aka getByRole('button', { name: '01-customer-and-tenancy-' }).nth(1)
+        3) <button type="button" class="au-source-link" data-au-source="src_75472589f7c0e2b444f884f3000845b2" data-au-source-origin="action:assessment:dh_intake:receipt:426f815ba3718c4f5548f8a45579b244b6bdc57acdebac17249265750adf0103" data-au-citation="{"artifact_id":"src_75472589f7c0e2b444f884f3000845b2","end_char":978,"quote":"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Syntheti…>…</button> aka getByRole('button', { name: '01-customer-and-tenancy-' }).nth(2)
+        4) <button type="button" class="au-source-link" data-au-source="src_75472589f7c0e2b444f884f3000845b2" data-au-source-origin="action:assessment:dh_scope:receipt:5fbdebae5f0b08ec766b6e326b44662ec66320084f82f0c9e81cc650f7df572d" data-au-citation="{"artifact_id":"src_75472589f7c0e2b444f884f3000845b2","end_char":978,"quote":"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Synthetis…>…</button> aka getByRole('button', { name: '01-customer-and-tenancy-' }).nth(3)
+        5) <button type="button" class="au-source-link" data-au-source="src_75472589f7c0e2b444f884f3000845b2" data-au-source-origin="action:assessment:dh_notice:receipt:5e1ebfbe29ffbbaf75f8d39b00e444cdbfc82131b013574faff32845df6316d5" data-au-citation="{"artifact_id":"src_75472589f7c0e2b444f884f3000845b2","end_char":978,"quote":"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Syntheti…>…</button> aka getByRole('button', { name: '01-customer-and-tenancy-' }).nth(4)
+        6) <button type="button" class="au-source-link" data-au-source="src_75472589f7c0e2b444f884f3000845b2" data-au-source-origin="action:assessment:dh_cause:receipt:ad5f206fbd6ae252da13f99c8601847652187d1f79dcceba1c0e11e156402d56" data-au-citation="{"artifact_id":"src_75472589f7c0e2b444f884f3000845b2","end_char":978,"quote":"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Synthetis…>…</button> aka getByRole('button', { name: '01-customer-and-tenancy-' }).nth(5)
+        7) <button type="button" class="au-source-link" data-au-source="src_75472589f7c0e2b444f884f3000845b2" data-au-source-origin="action:assessment:dh_evidence:receipt:1649d9ff38fb6b720d0ee1e976496cd76f6f0eecca6df11af3a21751d8c57ebe" data-au-citation="{"artifact_id":"src_75472589f7c0e2b444f884f3000845b2","end_char":978,"quote":"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Synthe…>…</button> aka getByRole('button', { name: '-customer-and-tenancy-clarification.txt I, Riley Foster, am the tenant under an' }).nth(5)
+        8) <button type="button" class="au-source-link" data-au-source="src_75472589f7c0e2b444f884f3000845b2" data-au-source-origin="action:assessment:dh_response:receipt:5b1b70d2630be7ca2bc9167060cf3cf052b4554ad9af914261d4b9136d7b8f33" data-au-citation="{"artifact_id":"src_75472589f7c0e2b444f884f3000845b2","end_char":978,"quote":"I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Synthe…>…</button> aka locator('article:nth-child(10) > button').first()
+    
+    Call log:
+    [2m  - waiting for locator('[data-au-source="src_75472589f7c0e2b444f884f3000845b2"]')[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    TestContext.<anonymous> (/workspace/casepath-reference-polish-native-qa-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1222:66)
+  ...
+# Subtest: reference migration native: unknown or stale current source selection renders all retained documents and readable passages
+ok 5 - reference migration native: unknown or stale current source selection renders all retained documents and readable passages
+  ---
+  duration_ms: 44696.731139
+  type: 'test'
+  ...
+# Subtest: reference migration native: trusted Pause holds the accepted baseline through hide show until exact next-prefix Resume
+ok 6 - reference migration native: trusted Pause holds the accepted baseline through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 43455.750954
+  type: 'test'
+  ...
+# Subtest: reference migration native: trusted History holds the accepted baseline through hide show until exact next-prefix Resume
+ok 7 - reference migration native: trusted History holds the accepted baseline through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 44283.55972
+  type: 'test'
+  ...
+# Subtest: reference migration native: trusted source holds the accepted baseline through hide show until exact next-prefix Resume
+ok 8 - reference migration native: trusted source holds the accepted baseline through hide show until exact next-prefix Resume
+  ---
+  duration_ms: 44778.214423
+  type: 'test'
+  ...
+# Subtest: reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes
+ok 9 - reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes
+  ---
+  duration_ms: 16544.408775
+  type: 'test'
+  ...
+# Subtest: reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion false
+ok 10 - reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion false
+  ---
+  duration_ms: 17238.681412
+  type: 'test'
+  ...
+# Subtest: reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion true
+ok 11 - reference native: default playback shows only accepted prefix mode and holds exact inspection with reduced motion true
+  ---
+  duration_ms: 15416.148631
+  type: 'test'
+  ...
+# Subtest: reference native: unavailable recordings retain actual unprocessed intake and its source-backed missing list read-only
+ok 12 - reference native: unavailable recordings retain actual unprocessed intake and its source-backed missing list read-only
+  ---
+  duration_ms: 10712.532908
+  type: 'test'
+  ...
+# Subtest: reference native: an earlier ordinary canonical prefix keeps its mode and context before reference admission
+ok 13 - reference native: an earlier ordinary canonical prefix keeps its mode and context before reference admission
+  ---
+  duration_ms: 3936.613099
+  type: 'test'
+  ...
+# Subtest: reference native: public entry omits creation and forged flag status and controls cannot reopen writes
+ok 14 - reference native: public entry omits creation and forged flag status and controls cannot reopen writes
+  ---
+  duration_ms: 1230.384488
+  type: 'test'
+  ...
+# Subtest: reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access
+ok 15 - reference native: acquired pinned supplements show their actual body before accepted context and preserve exact source access
+  ---
+  duration_ms: 12684.111257
+  type: 'test'
+  ...
+1..15
+# tests 17
+# suites 0
+# pass 15
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 436789.564649

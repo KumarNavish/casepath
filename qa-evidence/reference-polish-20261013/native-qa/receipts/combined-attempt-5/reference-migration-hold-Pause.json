@@ -1,0 +1,156 @@
+{
+  "claim_id": "clm_314f2d309fea25e6",
+  "start": {
+    "claim_id": "clm_314f2d309fea25e6",
+    "contract": "casepath.reference-replay-start/1.0.0",
+    "event_sha256": "25135a6cdda00756ad791e897bb01e22be07a7f1dc70e9b2b2af676d6b8be9ff",
+    "from_seq": 28,
+    "profile_id": "synthetic-nine-v2",
+    "profile_sha256": "18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869",
+    "run_id": "autonomy.afefba81a4e2f2fca03d8ded",
+    "source_artifact_ids": [
+      "src_c8b880d7429b1879b9ae483029facd97",
+      "src_106168f9c33152b3d88f02469ad57782",
+      "src_000ccf161644df9e82d29a8595b7b727",
+      "src_c57d943a64c85cf37369ccbf747b6e3f"
+    ],
+    "state_sha256": "045c9ef199827900d660380f3de0b7e4781b3c3626494d6e4c07f03ade6e848e"
+  },
+  "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=28&detail=step&node=investigate_packet",
+  "before": {
+    "revision": 28,
+    "state_sha256": "045c9ef199827900d660380f3de0b7e4781b3c3626494d6e4c07f03ade6e848e",
+    "event_sha256": "25135a6cdda00756ad791e897bb01e22be07a7f1dc70e9b2b2af676d6b8be9ff"
+  },
+  "after": {
+    "revision": 29,
+    "state_sha256": "93b603c1ab0bb1b5d1c708865b796c4f32b7cf76a815edec8497d0b9ff8d232e",
+    "event_sha256": "75e60275a82f0a01e172e160553faa2c5d93fb5f872a2b88bc3c5f1bbc5b3546"
+  },
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=28",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=29",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=30",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=29",
+      "method": "GET",
+      "time": 15000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=30",
+      "method": "GET",
+      "time": 15000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=31",
+      "method": "GET",
+      "time": 15300,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "checkoutCommit": "7edfc686850d5cc5a278ef15bdb9830470b01eab",
+  "testSha256": "4644cb52d060b45b1aa181ad881554af1f3e289245b192b9ff105dcb62c571f9",
+  "prefixTransfers": [
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "prefixes": 49,
+      "sha256": "c98901d129696f723cf84f2d63855401345c7ba1ce39e08342d1c6a6ad0388c1"
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "prefixes": 49,
+      "sha256": "3b69a2346de3b988ae5c56711e8d4c6d1672ad0509a374ce4d7a32759e178c5f"
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "prefixes": 49,
+      "sha256": "6cf210a45efbd9bc0e0528ea3c6b04ab063bee816d46421d69822ee6c3f0f0c2"
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "prefixes": 40,
+      "sha256": "a45697c0eabf1792d20589f301d1b796d6fc829371f8eca3a0bdec0a18050606"
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "prefixes": 40,
+      "sha256": "a4f6de9fb31eaa308f0f3a3ba078f3d476dec7e1e45216dcb00f6a4a956091e9"
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "prefixes": 40,
+      "sha256": "64cbc5ea14595d42d9a0cbc4017712885f42dbcc5645ffe0f5747d997d0ec6b5"
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "prefixes": 42,
+      "sha256": "a92b99f939816b33369704e324cdd2d79b4d0f805a2717de4ea9d29810100b0c"
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "prefixes": 42,
+      "sha256": "3324004eb96348659ad32a78205edb2043feac4b3c6c8d1588a0f045b42a5408"
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "prefixes": 42,
+      "sha256": "8d8919218a609f0d2020ae6110fce11c1fc71dd5330e5788de72f29c50918066"
+    }
+  ],
+  "browserRequests": [
+    {
+      "url": "http://localhost:41999/",
+      "method": "GET"
+    }
+  ],
+  "javascriptErrors": [],
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "injectedAssets": {
+    "javascript": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "assets": {
+    "javascript": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "command": [
+    "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "-m",
+    "pytest",
+    "-vv",
+    "-p",
+    "no:cacheprovider",
+    "--durations=10",
+    "--basetemp=/tmp/casepath-reference-polish-admission-20261013/pytest-tmp",
+    "--junitxml=/tmp/casepath-reference-polish-admission-20261013/junit.xml",
+    "casepath-api/tests/test_reference_admission_v1.py"
+  ],
+  "cwd": "/workspace/casepath-reference-polish-admission-20261013",
+  "env": {
+    "HOME": "/tmp/casepath-reference-polish-admission-20261013/home",
+    "TMPDIR": "/tmp/casepath-reference-polish-admission-20261013/tmp",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONHASHSEED": "0",
+    "PYTHONPATH": "/workspace/casepath-reference-polish-admission-20261013/casepath-api",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_SOURCE_COMMIT": "56ca8f1a183dd073e1ee1061d70fac1913355a6b",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "TZ": "UTC",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8"
+  },
+  "runtime_sha": "56ca8f1a183dd073e1ee1061d70fac1913355a6b",
+  "authored_files_sha256": {
+    "casepath-api/tools/admit_reference.py": "0f34cad742b99fad318a3afa06476aef4a062034245ed79dc17ad7ed836642f6",
+    "casepath-api/tests/test_reference_admission_v1.py": "2babec7e2e79d9a5b53b150bd1751945b48a3ec3b9aa633d3f71ca2c9aca61c9"
+  },
+  "exit_code": 0,
+  "duration_seconds": 511.88429689902114
+}

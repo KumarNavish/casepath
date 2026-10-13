@@ -1,0 +1,204 @@
+{
+  "candidate_base": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "host": "656813ef2295",
+  "base_head": "2af5e4897284b0b1eab7a82a4e98273ae481b77b",
+  "profile_sha256": "15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7",
+  "claims": 9,
+  "supplements": 21,
+  "immutable_legacy_files": {
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_0f4f13b1e3e1328c/01-sole-packet-and-tenant-clarification.txt": "2b6c2af230dd69c31e489417b0919fa037b54c723aa2a1e8fa8c7f4c789b496a",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_0f4f13b1e3e1328c/02-issuer-authority-and-complete-channel-archive.txt": "ab1656712239715a823aa3914f848ab5ad60f89459ff8510be53958df8576b5d",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_2c55cdd816b1d0e8/01-ordinary-tenancy-and-original-notification-packet.txt": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_2c55cdd816b1d0e8/02-later-email-and-original-absence-of-reasons.txt": "8aedc3bb9a05121b997bfc95377bb8777220f3c309920a1f17cbc95b4072fbca",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_314f2d309fea25e6/01-customer-and-tenancy-clarification.txt": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_314f2d309fea25e6/02-heating-service-observation.txt": "ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_314f2d309fea25e6/03-landlord-knowledge-and-repair-status.txt": "ae66233b1e2853056ced10f26ebe615adef8fb17bf18293a94b93a984825576c",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_393285577dcb12c4/01-sole-packet-and-tenant-clarification.txt": "1ea667571e687cbdde5a46cf23881a344a6bdc81102af4117f4e043de2731c0f",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_393285577dcb12c4/02-issuer-authority-and-complete-channel-archive.txt": "d495fb2fbaad0407cf328270fa2cc4dc756ad8d5ede146182f3f56558467ad12",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_4a07dbbbd859a3ce/01-customer-and-tenancy-clarification.txt": "d9213612a2520302fae228d7a55fb528d8b048d9a27b8a782de9f794a1b3e3d6",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_4a07dbbbd859a3ce/02-heating-service-observation.txt": "6f652c1a6009110df6409cdf97523eb0f9f6f92c082070ed60e3a25f96ef2799",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_4a07dbbbd859a3ce/03-landlord-knowledge-and-repair-status.txt": "83ef327660e21416f13fd18f13e65ab07d8f26f9aaef7b00faae337283f3d944",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_4a53299cfe619303/01-sole-packet-and-tenant-clarification.txt": "f6b6cc35bf071f6d5542ba76ab089750b79cc97edbe5677ef639992d6ec41603",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_4a53299cfe619303/02-issuer-authority-and-complete-channel-archive.txt": "2dfec10653acc05e4b89e54cec1b46953000c666f80dd22c55c87e75013f50ec",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_543f08f2415b2a33/01-ordinary-tenancy-and-original-notification-packet.txt": "705cd05ebb5339923465044dfeef60d709429d981f108adae796fbcd7e1479e7",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_543f08f2415b2a33/02-later-email-and-original-absence-of-reasons.txt": "04c3678309ed91f649b57a43e1170861912c57f43e58419ee682a9cbc171fee8",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_7dbd7c7d1c4ddf90/01-ordinary-tenancy-and-original-notification-packet.txt": "3500967baad9f6dd0e660029c9d5005cb18504489bf2cc7300ad6db2a25cd00b",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_7dbd7c7d1c4ddf90/02-later-email-and-original-absence-of-reasons.txt": "b01980493eed20fc1175a3a1f58623c68808201defcd02f84009f1eac9e91f04",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_95d08975bc575592/01-customer-and-tenancy-clarification.txt": "d48757b482b2a3ec0bb4f2d00ffb12666b43dd760f0b2fdc1b251234c36a1cf3",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_95d08975bc575592/02-heating-service-observation.txt": "041454c7dde48e8830af80dd1d6c76c0fef404618730d8f1708dda4c3677ff83",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/clm_95d08975bc575592/03-landlord-knowledge-and-repair-status.txt": "031355f0b396e375ab6d71e57d235f3f80f4cae298070b2438ff1c2398d22937",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/normative_sources.json": "57686c1be8943715f6b93893ba31579c3cf5dca623837a56241114902f0fb2a0",
+    "casepath-api/casepath_api/reference_profiles/synthetic-nine-v1/profile.json": "15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7"
+  },
+  "source_rows": [
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "file_name": "01-sole-packet-and-tenant-clarification.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "2b6c2af230dd69c31e489417b0919fa037b54c723aa2a1e8fa8c7f4c789b496a",
+      "size_bytes": 1701,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "file_name": "02-issuer-authority-and-complete-channel-archive.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "ab1656712239715a823aa3914f848ab5ad60f89459ff8510be53958df8576b5d",
+      "size_bytes": 1443,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "file_name": "01-ordinary-tenancy-and-original-notification-packet.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+      "size_bytes": 2074,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "file_name": "02-later-email-and-original-absence-of-reasons.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "8aedc3bb9a05121b997bfc95377bb8777220f3c309920a1f17cbc95b4072fbca",
+      "size_bytes": 1452,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "file_name": "01-customer-and-tenancy-clarification.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615",
+      "size_bytes": 1353,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "file_name": "02-heating-service-observation.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3",
+      "size_bytes": 1744,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "file_name": "03-landlord-knowledge-and-repair-status.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "ae66233b1e2853056ced10f26ebe615adef8fb17bf18293a94b93a984825576c",
+      "size_bytes": 1334,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "file_name": "01-sole-packet-and-tenant-clarification.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "1ea667571e687cbdde5a46cf23881a344a6bdc81102af4117f4e043de2731c0f",
+      "size_bytes": 1712,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "file_name": "02-issuer-authority-and-complete-channel-archive.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "d495fb2fbaad0407cf328270fa2cc4dc756ad8d5ede146182f3f56558467ad12",
+      "size_bytes": 1453,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "file_name": "01-customer-and-tenancy-clarification.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "d9213612a2520302fae228d7a55fb528d8b048d9a27b8a782de9f794a1b3e3d6",
+      "size_bytes": 1353,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "file_name": "02-heating-service-observation.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "6f652c1a6009110df6409cdf97523eb0f9f6f92c082070ed60e3a25f96ef2799",
+      "size_bytes": 1744,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "file_name": "03-landlord-knowledge-and-repair-status.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "83ef327660e21416f13fd18f13e65ab07d8f26f9aaef7b00faae337283f3d944",
+      "size_bytes": 1334,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "file_name": "01-sole-packet-and-tenant-clarification.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "f6b6cc35bf071f6d5542ba76ab089750b79cc97edbe5677ef639992d6ec41603",
+      "size_bytes": 1705,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "file_name": "02-issuer-authority-and-complete-channel-archive.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "2dfec10653acc05e4b89e54cec1b46953000c666f80dd22c55c87e75013f50ec",
+      "size_bytes": 1450,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "file_name": "01-ordinary-tenancy-and-original-notification-packet.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "705cd05ebb5339923465044dfeef60d709429d981f108adae796fbcd7e1479e7",
+      "size_bytes": 2075,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "file_name": "02-later-email-and-original-absence-of-reasons.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "04c3678309ed91f649b57a43e1170861912c57f43e58419ee682a9cbc171fee8",
+      "size_bytes": 1447,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "file_name": "01-ordinary-tenancy-and-original-notification-packet.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "3500967baad9f6dd0e660029c9d5005cb18504489bf2cc7300ad6db2a25cd00b",
+      "size_bytes": 2068,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "file_name": "02-later-email-and-original-absence-of-reasons.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "b01980493eed20fc1175a3a1f58623c68808201defcd02f84009f1eac9e91f04",
+      "size_bytes": 1442,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "file_name": "01-customer-and-tenancy-clarification.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "d48757b482b2a3ec0bb4f2d00ffb12666b43dd760f0b2fdc1b251234c36a1cf3",
+      "size_bytes": 1350,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "file_name": "02-heating-service-observation.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "041454c7dde48e8830af80dd1d6c76c0fef404618730d8f1708dda4c3677ff83",
+      "size_bytes": 1744,
+      "verified": true
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "file_name": "03-landlord-knowledge-and-repair-status.txt",
+      "media_type": "text/plain; charset=utf-8",
+      "sha256": "031355f0b396e375ab6d71e57d235f3f80f4cae298070b2438ff1c2398d22937",
+      "size_bytes": 1331,
+      "verified": true
+    }
+  ],
+  "source_edits": false
+}
