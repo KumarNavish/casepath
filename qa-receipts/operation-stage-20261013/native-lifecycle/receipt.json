@@ -1,0 +1,408 @@
+{
+  "disclosure": "Local native 1.1 sidecar fixture only; not published head verification.",
+  "first_six": [
+    {
+      "index": 0,
+      "operation": {
+        "cause_ids": [],
+        "contract": "casepath.operations-stream/1.0.0",
+        "id": "op_e76f03a89a4e79fc04557a5037485cb5",
+        "input": {
+          "conditions_override": null,
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29"
+        },
+        "input_sha256": "2ec64c3ff0644e55e553b649fab1da6f7b141a5eb16cfc8fee25ee8ca0163be9",
+        "journal_seq": 28,
+        "kind": "process.inspect",
+        "object": {
+          "id": "clm_314f2d309fea25e6",
+          "type": "process"
+        },
+        "operation_sha256": "deb02db3770b4c970e37069d03b339f9e6836ab2492d40b756c14a0ce109c3a0",
+        "previous_operation_sha256": null,
+        "result": {
+          "effective_conditions": {},
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph": {
+            "claim_id": "clm_314f2d309fea25e6",
+            "conditions": {},
+            "contract": "casepath.causal-process/1.0.0",
+            "document_catalog": [
+              {
+                "authority": null,
+                "condition": {
+                  "const": "true"
+                },
+                "condition_flag": null,
+                "document_type": "incoming_0",
+                "held_files": [],
+                "label": "01-customer-and-tenancy-clarification.txt",
+                "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+                "requirement_class": "mandatory"
+              },
+              {
+                "authority": null,
+                "condition": {
+                  "const": "true"
+                },
+                "condition_flag": null,
+                "document_type": "incoming_1",
+                "held_files": [],
+                "label": "02-heating-service-observation.txt",
+                "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+                "requirement_class": "mandatory"
+              },
+              {
+                "authority": null,
+                "condition": {
+                  "const": "true"
+                },
+                "condition_flag": null,
+                "document_type": "incoming_2",
+                "held_files": [],
+                "label": "03-landlord-knowledge-and-repair-status.txt",
+                "reason": "Inspect supplied supporting bytes before interpreting the incoming claim.",
+                "requirement_class": "mandatory"
+              }
+            ],
+            "edges": [],
+            "family": "incoming_packet",
+            "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+            "nodes": [
+              {
+                "authority": null,
+                "completed": false,
+                "condition": {
+                  "const": "true"
+                },
+                "document_types": [
+                  "incoming_0",
+                  "incoming_1",
+                  "incoming_2"
+                ],
+                "entry": true,
+                "kind": "action",
+                "label": "Investigate incoming evidence",
+                "meaning": "Investigate incoming evidence",
+                "node_id": "investigate_packet",
+                "provenance": {
+                  "kind": "operational_policy",
+                  "source": "casepath.autonomous-local/1.0.0"
+                },
+                "responsibility": "source_agent",
+                "terminal": false,
+                "validation": {
+                  "status": "unvalidated"
+                }
+              }
+            ],
+            "revision": 0
+          },
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "phase": "provisional"
+        },
+        "result_sha256": "63e45b78d4dcc047b45ca1d3ac54e94b9e8d9aa7419ec1e1f1eb2f7a59013bcc",
+        "seq": 1,
+        "stage": "native_reducer",
+        "type": "operation"
+      },
+      "revision": "0",
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "index": 1,
+      "operation": {
+        "cause_ids": [
+          "op_e76f03a89a4e79fc04557a5037485cb5"
+        ],
+        "contract": "casepath.operations-stream/1.0.0",
+        "id": "op_de8cbd2b31c193ff1bcb18c10dabf1aa",
+        "input": {
+          "conditions": {},
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "expression": {
+            "const": "true"
+          },
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29"
+        },
+        "input_sha256": "bea39bb9aecfbe9a66f4d622eb28c87ccd98b3b8b51191cac3bd077efeee623a",
+        "journal_seq": 28,
+        "kind": "condition.evaluate",
+        "object": {
+          "id": "investigate_packet",
+          "type": "node"
+        },
+        "operation_sha256": "f5e87ad6d758df58f3b3d185ff3be458e233d26a7e4ef8fc0387da20f6437abf",
+        "previous_operation_sha256": "deb02db3770b4c970e37069d03b339f9e6836ab2492d40b756c14a0ce109c3a0",
+        "result": {
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "phase": "provisional",
+          "verdict": "true"
+        },
+        "result_sha256": "650455d20df21719995e057811627c68fd9dfd757683c47dcef6c0b58a5ee303",
+        "seq": 2,
+        "stage": "native_reducer",
+        "type": "operation"
+      },
+      "revision": "0",
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "index": 2,
+      "operation": {
+        "cause_ids": [
+          "op_e76f03a89a4e79fc04557a5037485cb5",
+          "op_de8cbd2b31c193ff1bcb18c10dabf1aa"
+        ],
+        "contract": "casepath.operations-stream/1.0.0",
+        "id": "op_bef6a6a6351ed04b39fa6bfd466ce260",
+        "input": {
+          "condition_verdict": "true",
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "path": "true",
+          "suppressing_edge_ids": []
+        },
+        "input_sha256": "82510959a009dea3143744117d2db081ca5e2f823c7780c95f859fa218745dac",
+        "journal_seq": 28,
+        "kind": "node.evaluate",
+        "object": {
+          "id": "investigate_packet",
+          "type": "node"
+        },
+        "operation_sha256": "1190021309ee5df7ac41b65b3d64cfe91acc61d5ba2fe7e6764cf238aab73a05",
+        "previous_operation_sha256": "f5e87ad6d758df58f3b3d185ff3be458e233d26a7e4ef8fc0387da20f6437abf",
+        "result": {
+          "activation": "true",
+          "blocked_by": [],
+          "effective_completed": false,
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "execution_state": "ready",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "inconsistent_completion": false,
+          "missing_document_types": [
+            "incoming_0",
+            "incoming_1",
+            "incoming_2"
+          ],
+          "phase": "provisional",
+          "unresolved_dependencies": []
+        },
+        "result_sha256": "793cd1086550053dafa98e53949f5e0426af3bd7220eadd3a6b5d472df396b29",
+        "seq": 3,
+        "stage": "native_reducer",
+        "type": "operation"
+      },
+      "revision": "0",
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "index": 3,
+      "operation": {
+        "cause_ids": [
+          "op_e76f03a89a4e79fc04557a5037485cb5"
+        ],
+        "contract": "casepath.operations-stream/1.0.0",
+        "id": "op_0134dd4557c1ce926529517ca7598a15",
+        "input": {
+          "condition": {
+            "const": "true"
+          },
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "node_activations": {
+            "investigate_packet": "true"
+          },
+          "required_at_node_ids": [
+            "investigate_packet"
+          ]
+        },
+        "input_sha256": "a02802608e6ea284f7ccc0a67df7133ef5734f09354c64893e71197d5ba66f72",
+        "journal_seq": 28,
+        "kind": "document.require",
+        "object": {
+          "id": "incoming_0",
+          "type": "document"
+        },
+        "operation_sha256": "1a343d0711db1554e09c4ec5d572d5cf087f39ead2c88ae7edc022b256a5235f",
+        "previous_operation_sha256": "1190021309ee5df7ac41b65b3d64cfe91acc61d5ba2fe7e6764cf238aab73a05",
+        "result": {
+          "activation": "true",
+          "active_node_ids": [
+            "investigate_packet"
+          ],
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "phase": "provisional",
+          "request": true,
+          "required_at_node_ids": [
+            "investigate_packet"
+          ],
+          "review_state": "missing",
+          "route_state": "needed_now"
+        },
+        "result_sha256": "15fbf7bc5c659d1fd05277a4b61893ddb0f65abd9eb77f5aa390241fdf26dc23",
+        "seq": 4,
+        "stage": "native_reducer",
+        "type": "operation"
+      },
+      "revision": "0",
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "index": 4,
+      "operation": {
+        "cause_ids": [
+          "op_e76f03a89a4e79fc04557a5037485cb5"
+        ],
+        "contract": "casepath.operations-stream/1.0.0",
+        "id": "op_62045b88acf140a887396636d3a12eef",
+        "input": {
+          "condition": {
+            "const": "true"
+          },
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "node_activations": {
+            "investigate_packet": "true"
+          },
+          "required_at_node_ids": [
+            "investigate_packet"
+          ]
+        },
+        "input_sha256": "a02802608e6ea284f7ccc0a67df7133ef5734f09354c64893e71197d5ba66f72",
+        "journal_seq": 28,
+        "kind": "document.require",
+        "object": {
+          "id": "incoming_1",
+          "type": "document"
+        },
+        "operation_sha256": "b0ceaba6f614c0ce7c7f03237023e9970e43b770dee74d5722ac8f1e1eb87a76",
+        "previous_operation_sha256": "1a343d0711db1554e09c4ec5d572d5cf087f39ead2c88ae7edc022b256a5235f",
+        "result": {
+          "activation": "true",
+          "active_node_ids": [
+            "investigate_packet"
+          ],
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "phase": "provisional",
+          "request": true,
+          "required_at_node_ids": [
+            "investigate_packet"
+          ],
+          "review_state": "missing",
+          "route_state": "needed_now"
+        },
+        "result_sha256": "15fbf7bc5c659d1fd05277a4b61893ddb0f65abd9eb77f5aa390241fdf26dc23",
+        "seq": 5,
+        "stage": "native_reducer",
+        "type": "operation"
+      },
+      "revision": "0",
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    },
+    {
+      "index": 5,
+      "operation": {
+        "cause_ids": [
+          "op_e76f03a89a4e79fc04557a5037485cb5"
+        ],
+        "contract": "casepath.operations-stream/1.0.0",
+        "id": "op_c2f3141c71dee252e3f1b32954675af3",
+        "input": {
+          "condition": {
+            "const": "true"
+          },
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "node_activations": {
+            "investigate_packet": "true"
+          },
+          "required_at_node_ids": [
+            "investigate_packet"
+          ]
+        },
+        "input_sha256": "a02802608e6ea284f7ccc0a67df7133ef5734f09354c64893e71197d5ba66f72",
+        "journal_seq": 28,
+        "kind": "document.require",
+        "object": {
+          "id": "incoming_2",
+          "type": "document"
+        },
+        "operation_sha256": "377410036f25b8d4b49cbe9df4b6b317a2a16a7112caebb7ea29440c0da57a7b",
+        "previous_operation_sha256": "b0ceaba6f614c0ce7c7f03237023e9970e43b770dee74d5722ac8f1e1eb87a76",
+        "result": {
+          "activation": "true",
+          "active_node_ids": [
+            "investigate_packet"
+          ],
+          "evaluation_sha256": "e41571f085099e79d7c9259d8313708955d5d78efed78084a70f946fa63968f3",
+          "graph_sha256": "d3321f13ba52b3e37ac790923d9a81bb23161ad120bcfaa6198c0d1684b3ff29",
+          "phase": "provisional",
+          "request": true,
+          "required_at_node_ids": [
+            "investigate_packet"
+          ],
+          "review_state": "missing",
+          "route_state": "needed_now"
+        },
+        "result_sha256": "15fbf7bc5c659d1fd05277a4b61893ddb0f65abd9eb77f5aa390241fdf26dc23",
+        "seq": 6,
+        "stage": "native_reducer",
+        "type": "operation"
+      },
+      "revision": "0",
+      "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0"
+    }
+  ],
+  "errors": [],
+  "writes": [],
+  "future_clamp": {
+    "operation_id": "op_d5939b2d68c20a2636fe628befc35784",
+    "mode": "paused",
+    "runmode": "operation_history",
+    "revision": "35",
+    "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+    "verified": "false",
+    "counter": "7 / 824",
+    "slider": {
+      "value": "6",
+      "max": "823"
+    },
+    "checked": 0,
+    "completed": 0,
+    "stage": 1,
+    "animations": 0,
+    "text": "Cases\n\nRepeated heating failure and reported repair calls\n\nHistory · operation 7 · accepted revision 35 · Synthetic sources · No external action · as of 2025-02-21\n\nChoose case\nHistory\nCustomer and tenancy clarification\nSynthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nI, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\n\nMy active request is removal of the continuing heating defect and assessment of proportional rent-reduction eligibility from the landlord's first knowledge until remedy. I report no incurred monetary loss, no health-compensation claim, no self-help expense and no deposit/withholding request. The repair is not complete; no reduction percentage or award has been agreed.\n\nPlay\nInspect operation\n7 / 824\nSkip to result"
+  },
+  "skip_ms": 440,
+  "final": {
+    "operation_id": "",
+    "mode": "completed",
+    "runmode": "historical_recomputed",
+    "revision": "48",
+    "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "verified": "true",
+    "counter": "824 / 824",
+    "slider": {
+      "value": "823",
+      "max": "823"
+    },
+    "checked": 3,
+    "completed": 6,
+    "stage": 1,
+    "animations": 0,
+    "text": "Cases\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · Synthetic sources · No external action · as of 2025-02-21\n\nChoose case\nHistory\n✓\nCapture the reported defect\n✓\nEstablish relevant tenancy terms\nCHF1800\nRelevant tenancy terms\nCHF1800\n✓\n✓\nEstablish landlord knowledge\nthree heating-failure reports\nLandlord knowledge and continuing repair status\nthree heating-failure reports\n✓\n✓\nAssess supported cause\n✓\nAssess objective defect evidence\n15.8C\nDated technical defect observation\n15.8C\n✓\n✓\nRecord repair and rent reduction eligibility\n\nThe sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.\n\nLegal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)\n\nProcedure reused · Defects and repairs · Version 1\n\nInspect operation\n824 / 824"
+  },
+  "reduced_mobile": {
+    "sha": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+    "overflow": false,
+    "animations": 0,
+    "nodes": 6,
+    "slots": 3,
+    "text": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1"
+  }
+}

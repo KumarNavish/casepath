@@ -1,0 +1,417 @@
+[
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_9e9742927fbe93326e40ca91fca44697",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+    "short": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_738c6edbf49f1185ff6208ba1d753719",
+    "stage": "interpret_reference",
+    "source_quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+    "short": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:received_termination_packet",
+    "operation_id": "op_81ffbeab590e657a64331b7b8b607339",
+    "stage": "interpret_reference",
+    "result_summary": "The actual received letter is readable for form assessment; this does not authenticate an approved form or valid termination.",
+    "source_quote": "Termination of tenancy\nRental property: Dwelling under the existing tenancy agreement\nSeefeldstrasse 28, 8008 Zürich\nDear tenant\nWe hereby terminate the existing tenancy at the next contractual termination date.\nNotice period\nthree months after receipt",
+    "short": "Termination of tenancy\nRental property: Dwelling under the existing tenancy agreement\nSeefeldstrasse 28, 8008 Zürich\nDear tenant\nWe hereby terminate the",
+    "instances": 4
+  },
+  {
+    "fact_id": "fact:original_notification_context",
+    "operation_id": "op_09b3b4aa2cc9461efac0e42127a42e2b",
+    "stage": "interpret_reference",
+    "result_summary": "The issuance archive establishes issuer authority and the actual delivery context.",
+    "source_quote": "Issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich. On2026-05-08T10:30:00+02:00 we transmitted the sole plain termination PDF identified above toTaylor Miller's current email account, and the email delivery/open record confirms receipt at that time.",
+    "short": "Issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich.",
+    "instances": 4
+  },
+  {
+    "fact_id": "issuer_authority_and_received_packet",
+    "operation_id": "op_36e3af600fd2086cfd880bc8e232e14c",
+    "stage": "interpret_reference",
+    "source_quote": "Issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich. On2026-05-08T10:30:00+02:00 we transmitted the sole plain termination PDF identified above toTaylor Miller's current email account, and the email delivery/open record confirms receipt at that time.",
+    "short": "Issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich.",
+    "instances": 3
+  },
+  {
+    "fact_id": "complete_channel_archive",
+    "operation_id": "op_503dce30c43d20b8e0e6a5eb50a3c0ed",
+    "stage": "interpret_reference",
+    "source_quote": "No other attachment, approved form, separate notice, post to the old or current address, portal notice, replacement or correction was issued up to the review as-of date.",
+    "short": "No other attachment, approved form, separate notice, post to the old or current address, portal notice, replacement or correction was issued up to the review",
+    "instances": 9
+  },
+  {
+    "fact_id": "canton_approved_form",
+    "operation_id": "op_37584ffd7dc0c57f38ccb3af7d1cebec",
+    "stage": "interpret_reference",
+    "source_quote": "It was a plain letter, not a canton-approved termination form.",
+    "short": "It was a plain letter, not a canton-approved termination form.",
+    "instances": 9
+  },
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_b3dfef33455eb07e3f004119783363bb",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+    "short": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_85fffff5513bc34016bfbcc3f8b3fb11",
+    "stage": "interpret_reference",
+    "source_quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+    "short": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:received_rent_increase_packet",
+    "operation_id": "op_5b5a4efd0ecef54b9b6290a99c58b97f",
+    "stage": "interpret_reference",
+    "result_summary": "The received original form permits a bounded assessment of its uncompleted reasons field; lawful reasons are not claimed established.",
+    "source_quote": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+    "short": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+    "instances": 12
+  },
+  {
+    "fact_id": "fact:original_notification_context",
+    "operation_id": "op_661db1521cec1f71eb3985644abd1496",
+    "stage": "interpret_reference",
+    "result_summary": "The authorized issuer confirms the complete original notification and absence of contemporaneous reasons.",
+    "source_quote": "The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.",
+    "short": "The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the",
+    "instances": 12
+  },
+  {
+    "fact_id": "ordinary_non269c_tenancy",
+    "operation_id": "op_73eb77b635d1b5f51abc3d68a3d95edc",
+    "stage": "interpret_reference",
+    "source_quote": "The rent is not indexed or stepped, and there is no Article269c agreed increase.",
+    "short": "The rent is not indexed or stepped, and there is no Article269c agreed increase.",
+    "instances": 9
+  },
+  {
+    "fact_id": "issuer_authority_and_complete_packet",
+    "operation_id": "op_bc9e545a79d21177a860ad929db4713e",
+    "stage": "interpret_reference",
+    "source_quote": "The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.",
+    "short": "The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the",
+    "instances": 9
+  },
+  {
+    "fact_id": "contemporaneous_substantive_reasons",
+    "operation_id": "op_818f8620be003d6f3fc0288b9c90e4fd",
+    "stage": "interpret_reference",
+    "source_quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+    "short": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+    "instances": 9
+  },
+  {
+    "fact_id": "later_email_is_not_original_reasons",
+    "operation_id": "op_73111da96359c0f9643a9cd2fedf5431",
+    "stage": "interpret_reference",
+    "source_quote": "This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication.",
+    "short": "This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication.",
+    "instances": 9
+  },
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_1715b98c5f009b94cad03526c1c661be",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "short": "monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+    "stage": "interpret_reference",
+    "source_quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "short": "monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:objective_defect_observation",
+    "operation_id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+    "stage": "interpret_reference",
+    "result_summary": "The dated calibrated observation identifies the fixed-pump fault and its causal limits.",
+    "source_quote": "On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+    "short": "measured the living room at15.8C after overnight normal operation.",
+    "instances": 4
+  },
+  {
+    "fact_id": "fact:landlord_knowledge_evidence",
+    "operation_id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+    "stage": "interpret_reference",
+    "result_summary": "The landlord acknowledgment records first knowledge of the reported continuing defect.",
+    "source_quote": "Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.",
+    "short": "call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17.",
+    "instances": 4
+  },
+  {
+    "fact_id": "objective_use_impairment",
+    "operation_id": "op_4f935af1785d232600fc72be1eebcab3",
+    "stage": "interpret_reference",
+    "source_quote": "The defect persists at this report's as-of time; no lasting pump repair or replacement has been completed. Heating is inadequate for the contracted winter residential use of the principal living rooms.",
+    "short": "The defect persists at this report's as-of time; no lasting pump repair or replacement has been completed.",
+    "instances": 9
+  },
+  {
+    "fact_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+    "operation_id": "op_a677aec77b40589e0d0580e3dc6d5677",
+    "stage": "interpret_reference",
+    "source_quote": "On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+    "short": "measured the living room at15.8C after overnight normal operation.",
+    "instances": 3
+  },
+  {
+    "fact_id": "landlord_first_knowledge",
+    "operation_id": "op_14f9eb670b91d7289150ef3a51717af4",
+    "stage": "interpret_reference",
+    "source_quote": "Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.",
+    "short": "call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17.",
+    "instances": 3
+  },
+  {
+    "fact_id": "continuing_defect_without_remedy",
+    "operation_id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+    "stage": "interpret_reference",
+    "source_quote": "We confirm the tenant was using the heating normally and did not cause this pump failure. Repeated resets did not remove the continuing defect. We acknowledge the dated service observation and remain responsible for arranging pump repair; no lasting repair has yet occurred as of this acknowledgment.",
+    "short": "We confirm the tenant was using the heating normally and did not cause this pump failure.",
+    "instances": 9
+  },
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_ce19d2515ba2eb4ee58b947c0f05c6b6",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich. Limmat Verwaltungs GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+    "short": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_bdfbf403dcc3f636fbf62068f877b142",
+    "stage": "interpret_reference",
+    "source_quote": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich. Limmat Verwaltungs GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+    "short": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:received_termination_packet",
+    "operation_id": "op_f94a58a86deee2d5591d69273c987c19",
+    "stage": "interpret_reference",
+    "result_summary": "The actual received letter is readable for form assessment; this does not authenticate an approved form or valid termination.",
+    "source_quote": "Kündigung des Mietverhältnisses\nMietobjekt: Wohnung gemäss bestehendem Mietvertrag\nZollikerstrasse 67, 8008 Zürich\nGuten Tag\nHiermit kündigen wir das bestehende Mietverhältnis auf den nächstmöglichen\nvertraglichen Termin.\nKündigungsfrist\ndrei Monate nach Zugang",
+    "short": "Kündigung des Mietverhältnisses\nMietobjekt: Wohnung gemäss bestehendem Mietvertrag\nZollikerstrasse 67, 8008 Zürich\nGuten Tag\nHiermit kündigen wir das",
+    "instances": 4
+  },
+  {
+    "fact_id": "fact:original_notification_context",
+    "operation_id": "op_09f96c26143b14ef732f10e9d79538e4",
+    "stage": "interpret_reference",
+    "result_summary": "The issuance archive establishes issuer authority and the actual delivery context.",
+    "source_quote": "Issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich. On2026-05-04T11:00:00+02:00 we transmitted the sole plain termination PDF identified above toSimon Steiner's current email account, and the email delivery/open record confirms receipt at that time.",
+    "short": "Issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich.",
+    "instances": 4
+  },
+  {
+    "fact_id": "issuer_authority_and_received_packet",
+    "operation_id": "op_ecf55e9b1ba9348cd39e03791ca0abd2",
+    "stage": "interpret_reference",
+    "source_quote": "Issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich. On2026-05-04T11:00:00+02:00 we transmitted the sole plain termination PDF identified above toSimon Steiner's current email account, and the email delivery/open record confirms receipt at that time.",
+    "short": "Issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_5846d9183aaf7f4f51ccd5f147660dc1",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Nina Steiner, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 48, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "short": "monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_a33751e35229db2cf34d9dfa0d61f714",
+    "stage": "interpret_reference",
+    "source_quote": "I, Nina Steiner, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 48, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "short": "monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:objective_defect_observation",
+    "operation_id": "op_5c078da8e21de24f2c57085fd55e343c",
+    "stage": "interpret_reference",
+    "result_summary": "The dated calibrated observation identifies the fixed-pump fault and its causal limits.",
+    "source_quote": "On 2025-01-30 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at16.1C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+    "short": "measured the living room at16.1C after overnight normal operation.",
+    "instances": 4
+  },
+  {
+    "fact_id": "fact:landlord_knowledge_evidence",
+    "operation_id": "op_ebbf461f5b8213267fe0a83675a92a8b",
+    "stage": "interpret_reference",
+    "result_summary": "The landlord acknowledgment records first knowledge of the reported continuing defect.",
+    "source_quote": "Our call log records Nina Steiner's three heating-failure reports on 2025-01-21, 2025-01-24, 2025-01-28. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-21; this is the landlord's first documented knowledge of the defect.",
+    "short": "call log records Nina Steiner's three heating-failure reports on 2025-01-21, 2025-01-24, 2025-01-28.",
+    "instances": 4
+  },
+  {
+    "fact_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+    "operation_id": "op_6ac21d032eaeb977895cbc6e1187c158",
+    "stage": "interpret_reference",
+    "source_quote": "On 2025-01-30 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at16.1C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+    "short": "measured the living room at16.1C after overnight normal operation.",
+    "instances": 3
+  },
+  {
+    "fact_id": "landlord_first_knowledge",
+    "operation_id": "op_ff59a76cd8d8cdb2333e7008a421b749",
+    "stage": "interpret_reference",
+    "source_quote": "Our call log records Nina Steiner's three heating-failure reports on 2025-01-21, 2025-01-24, 2025-01-28. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-21; this is the landlord's first documented knowledge of the defect.",
+    "short": "call log records Nina Steiner's three heating-failure reports on 2025-01-21, 2025-01-24, 2025-01-28.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_1bf277da5cd81137ff2dd5d5a5f1485e",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich. Riva Hausverwaltung GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+    "short": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_4e4ff4f0b60fc3c469eb066638efbae2",
+    "stage": "interpret_reference",
+    "source_quote": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich. Riva Hausverwaltung GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+    "short": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:received_termination_packet",
+    "operation_id": "op_d6728e5dc31d333efea476c3e5b59d00",
+    "stage": "interpret_reference",
+    "result_summary": "The actual received letter is readable for form assessment; this does not authenticate an approved form or valid termination.",
+    "source_quote": "Kündigung des Mietverhältnisses\nMietobjekt: Wohnung gemäss bestehendem Mietvertrag\nZollikerstrasse 58, 8008 Zürich\nGuten Tag\nHiermit kündigen wir das bestehende Mietverhältnis auf den nächstmöglichen\nvertraglichen Termin.\nKündigungsfrist\ndrei Monate nach Zugang",
+    "short": "Kündigung des Mietverhältnisses\nMietobjekt: Wohnung gemäss bestehendem Mietvertrag\nZollikerstrasse 58, 8008 Zürich\nGuten Tag\nHiermit kündigen wir das",
+    "instances": 4
+  },
+  {
+    "fact_id": "fact:original_notification_context",
+    "operation_id": "op_0833cf7a3b93ac1412f0f59a9f2902be",
+    "stage": "interpret_reference",
+    "result_summary": "The issuance archive establishes issuer authority and the actual delivery context.",
+    "source_quote": "Issuance archive of Riva Hausverwaltung GmbH: we were authorized to issue landlord communications forZollikerstrasse 58, 8008 Zurich. On2026-05-08T10:00:00+02:00 we transmitted the sole plain termination PDF identified above toLea Meier's current email account, and the email delivery/open record confirms receipt at that time.",
+    "short": "Issuance archive of Riva Hausverwaltung GmbH: we were authorized to issue landlord communications forZollikerstrasse 58, 8008 Zurich.",
+    "instances": 4
+  },
+  {
+    "fact_id": "issuer_authority_and_received_packet",
+    "operation_id": "op_ed9a62d9f534fd360b92556eca3deda0",
+    "stage": "interpret_reference",
+    "source_quote": "Issuance archive of Riva Hausverwaltung GmbH: we were authorized to issue landlord communications forZollikerstrasse 58, 8008 Zurich. On2026-05-08T10:00:00+02:00 we transmitted the sole plain termination PDF identified above toLea Meier's current email account, and the email delivery/open record confirms receipt at that time.",
+    "short": "Issuance archive of Riva Hausverwaltung GmbH: we were authorized to issue landlord communications forZollikerstrasse 58, 8008 Zurich.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_6746b263c89eb93156a176abf440a869",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+    "short": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_c297e6ac874e92f464e929e6dfbd45fa",
+    "stage": "interpret_reference",
+    "source_quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+    "short": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_5b1812743e3f12634d66102f463b1384",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Drew Shaw, rent the dwelling atZollikerstrasse 11, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+    "short": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_7dea15301766c27f927f51426425b3ce",
+    "stage": "interpret_reference",
+    "source_quote": "I, Drew Shaw, rent the dwelling atZollikerstrasse 11, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+    "short": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:tenancy_terms_evidence",
+    "operation_id": "op_3d30f9e13eb94e18f1ee1bca99922a9a",
+    "stage": "interpret_reference",
+    "result_summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+    "source_quote": "I, Nina Frei, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 88, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1920; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "short": "monthly net rent is CHF1920; the landlord maintains the fixed central heating and circulation pump.",
+    "instances": 4
+  },
+  {
+    "fact_id": "residential_tenancy_scope",
+    "operation_id": "op_1fdc2353d4e83427d20db456459c37f6",
+    "stage": "interpret_reference",
+    "source_quote": "I, Nina Frei, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 88, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1920; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "short": "monthly net rent is CHF1920; the landlord maintains the fixed central heating and circulation pump.",
+    "instances": 3
+  },
+  {
+    "fact_id": "fact:objective_defect_observation",
+    "operation_id": "op_789d0d0d9ae59832a068a0ee6963943f",
+    "stage": "interpret_reference",
+    "result_summary": "The dated calibrated observation identifies the fixed-pump fault and its causal limits.",
+    "source_quote": "On 2025-02-06 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.9C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+    "short": "measured the living room at15.9C after overnight normal operation.",
+    "instances": 4
+  },
+  {
+    "fact_id": "fact:landlord_knowledge_evidence",
+    "operation_id": "op_bb59e8c5e177592228a013151e875827",
+    "stage": "interpret_reference",
+    "result_summary": "The landlord acknowledgment records first knowledge of the reported continuing defect.",
+    "source_quote": "Our call log records Nina Frei's three heating-failure reports on 2025-01-17, 2025-01-24, 2025-02-02. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-17; this is the landlord's first documented knowledge of the defect.",
+    "short": "call log records Nina Frei's three heating-failure reports on 2025-01-17, 2025-01-24, 2025-02-02.",
+    "instances": 4
+  },
+  {
+    "fact_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+    "operation_id": "op_4dc6c54c774965a557f9ad0fa2cab5e2",
+    "stage": "interpret_reference",
+    "source_quote": "On 2025-02-06 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.9C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+    "short": "measured the living room at15.9C after overnight normal operation.",
+    "instances": 3
+  },
+  {
+    "fact_id": "landlord_first_knowledge",
+    "operation_id": "op_3c344ec19376fff41f2c90baee362599",
+    "stage": "interpret_reference",
+    "source_quote": "Our call log records Nina Frei's three heating-failure reports on 2025-01-17, 2025-01-24, 2025-02-02. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-17; this is the landlord's first documented knowledge of the defect.",
+    "short": "call log records Nina Frei's three heating-failure reports on 2025-01-17, 2025-01-24, 2025-02-02.",
+    "instances": 3
+  }
+]

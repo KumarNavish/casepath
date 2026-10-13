@@ -1,0 +1,192 @@
+{
+  "source_sha256": "7efe0fd1559017de4b0d9a3ffbb792b8d2edb8f2b126135cb7629271384def81",
+  "native_fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+  "cases": [
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "sidecar_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+      "operations": 824,
+      "checkpoints": 21,
+      "shown": 53,
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "sidecar_sha256": "a662a31277efb72a100e2f8f74097d8fbd76512a62623199f13306a2e8f0e2b2",
+      "operations": 824,
+      "checkpoints": 21,
+      "shown": 53,
+      "state_sha256": "eff31299580845d4eba45c8be9f52beaf0a4264d8cedf0b66418a1076e37d2a2"
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "sidecar_sha256": "bc81515a65477b6189948a50e59113cbad54c2dff9e1f77cc45e27c8dccc3b39",
+      "operations": 824,
+      "checkpoints": 21,
+      "shown": 53,
+      "state_sha256": "35f3f3d9160f5797d14d5db70f62159eebe11811f77f21510a7c94a541e0c773"
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "sidecar_sha256": "acf2c23ba0c179e4e550cae971f00513742cb789b6cb19e59eaac05d5398e8f1",
+      "operations": 299,
+      "checkpoints": 16,
+      "shown": 46,
+      "state_sha256": "6d3f6e70336e298d5c2fb58b74f86dc4e3f62750e866b7eef5086dd2721dc341"
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "sidecar_sha256": "843997a854d85ba5754f8260f7dc72bc5fbd5b99ccef00a22a10922ba8b0bf34",
+      "operations": 299,
+      "checkpoints": 16,
+      "shown": 46,
+      "state_sha256": "b47bac740be8259d59d0cca2c26090f9e3ddf1e3750a63ec93580f7e02a108f9"
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "sidecar_sha256": "df8af707afe3f1ac002e8ea543583b123c4ec21723b9dda3359f39d70bef4833",
+      "operations": 299,
+      "checkpoints": 16,
+      "shown": 46,
+      "state_sha256": "ee76c765353f769bc7cd3a9ee379dde144261abda26da095b0f57dd3b1ee35e3"
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "sidecar_sha256": "5556f3224c0e814cd54acd9ae6a7ea8708853aa6808da36de911194fce6026b3",
+      "operations": 428,
+      "checkpoints": 17,
+      "shown": 51,
+      "state_sha256": "baa0f5411c59a2a5236a51a8f2c1d171a1fcb0c39ce569cd7911cfe43e7fd264"
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "sidecar_sha256": "dc0bf763e2c58ecc47a12dc650c5697aa6cdccbefa88f81e50e7fef966fac6ec",
+      "operations": 428,
+      "checkpoints": 17,
+      "shown": 51,
+      "state_sha256": "7ede99e3c0e05d97269b7bd7b3af68360d3834691322b56a7f0145da1c2416f9"
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "sidecar_sha256": "44d7b0d5413959d59718fb2a16a6fbb98919633c6075efa6e5b0b12dfd9420bb",
+      "operations": 428,
+      "checkpoints": 17,
+      "shown": 51,
+      "state_sha256": "d038830491e99a6b3ec35d04957bf95db861f3b074b5f312b13b6e49dbfd1a9b"
+    }
+  ],
+  "totals": {
+    "operations": 4653,
+    "checkpoints": 162,
+    "shown": 450,
+    "subspans": 351,
+    "retainedInkQuiet": 3030,
+    "forbiddenAria": 423
+  },
+  "examples": {
+    "retainedInkQuiet": [
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "shownKind": "fact.extract",
+        "consumed": "op_ce068b13152f1443991c11931b3fdc9f",
+        "consumedKind": "source.open",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_7eb3aa88db8ffa97ede5a9a122c8583c",
+        "shownKind": "phrase.match",
+        "consumed": "op_94a25603227acacba75c8e22c1c505f6",
+        "consumedKind": "fact.extract",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_7eb3aa88db8ffa97ede5a9a122c8583c",
+        "shownKind": "phrase.match",
+        "consumed": "op_e0c2b39b2cc10c2e5bf25d1eebf0aa61",
+        "consumedKind": "fact.extract",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_7eb3aa88db8ffa97ede5a9a122c8583c",
+        "shownKind": "phrase.match",
+        "consumed": "op_6542bbd8b30212ff096c6344f0948996",
+        "consumedKind": "source.open",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_3d609d09e99538af4c0f45815615058b",
+        "shownKind": "phrase.match",
+        "consumed": "op_278dee2d9e8dcc8da175eb91370dc172",
+        "consumedKind": "source.open",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_d818a3f8459d4df4d71fa0f23c9a5e45",
+        "shownKind": "phrase.match",
+        "consumed": "op_2349bb7aa13de009b9cd255e554064e8",
+        "consumedKind": "fact.extract",
+        "consumedStage": "verify_reference"
+      }
+    ],
+    "forbiddenAria": [
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "id": "op_414de1779028325a5495983616033cc2",
+        "kind": "process.inspect",
+        "aria": [
+          "Capture the reported defect. Provisional working step; not yet evaluated",
+          "Establish relevant tenancy terms. Provisional working step; not yet evaluated. After Capture the reported defect",
+          "Establish landlord knowledge. Provisional working step; not yet evaluated. After Establish relevant tenancy terms",
+          "Assess supported cause. Provisional working step; not yet evaluated. After Establish landlord knowledge",
+          "Assess objective defect evidence. Provisional working step; not yet evaluated. After Assess supported cause",
+          "Record repair and rent reduction eligibility. Provisional working step; not yet evaluated. After Assess objective defect evidence"
+        ]
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "id": "op_a925ebc42ebd1e45369b1fd831c2e892",
+        "kind": "document.require",
+        "aria": [
+          "Capture the reported defect. Provisional applicability: Applies",
+          "Establish relevant tenancy terms. Provisional applicability: Applies. Execution · Waiting for Capture the reported defect. After Capture the reported defect",
+          "Establish landlord knowledge. Provisional applicability: Applies. After Establish relevant tenancy terms",
+          "Assess supported cause. Provisional applicability: Applies. After Establish landlord knowledge",
+          "Assess objective defect evidence. Provisional applicability: Applies. After Assess supported cause",
+          "Record repair and rent reduction eligibility. Provisional applicability: Applies. After Assess objective defect evidence"
+        ]
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "id": "op_a27125056f62822ff135ae04b870f1d1",
+        "kind": "document.require",
+        "aria": [
+          "Capture the reported defect. Provisional applicability: Applies",
+          "Establish relevant tenancy terms. Provisional applicability: Applies. After Capture the reported defect",
+          "Establish landlord knowledge. Provisional applicability: Applies. Execution · Waiting for Establish relevant tenancy terms. After Establish relevant tenancy terms",
+          "Assess supported cause. Provisional applicability: Applies. After Establish landlord knowledge",
+          "Assess objective defect evidence. Provisional applicability: Applies. After Assess supported cause",
+          "Record repair and rent reduction eligibility. Provisional applicability: Applies. After Assess objective defect evidence"
+        ]
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "id": "op_f4ed2cf2597364996fc8cf479c4578e3",
+        "kind": "document.require",
+        "aria": [
+          "Capture the reported defect. Provisional applicability: Applies",
+          "Establish relevant tenancy terms. Provisional applicability: Applies. After Capture the reported defect",
+          "Establish landlord knowledge. Provisional applicability: Applies. After Establish relevant tenancy terms",
+          "Assess supported cause. Provisional applicability: Applies. After Establish landlord knowledge",
+          "Assess objective defect evidence. Provisional applicability: Applies. Execution · Waiting for Assess supported cause. After Assess supported cause",
+          "Record repair and rent reduction eligibility. Provisional applicability: Applies. After Assess objective defect evidence"
+        ]
+      }
+    ]
+  }
+}

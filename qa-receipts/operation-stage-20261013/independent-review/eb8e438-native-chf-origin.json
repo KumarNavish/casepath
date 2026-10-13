@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "commit": "eb8e438574ae3be48ad1a4a5b9a5d6a9482d9496",
+  "js_sha256": "88c4fae87429252edd0221664d21858dcc42b5726874f446b5ef2bce838841a4",
+  "sidecar_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+  "claim_id": "clm_314f2d309fea25e6",
+  "operation_id": "op_d867690b64a42823c40957aa759afb0a",
+  "source_artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+  "source_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+  "source_text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+  "marked_span": {
+    "start_char": 298,
+    "end_char": 305,
+    "quote": "CHF1800"
+  },
+  "flight_span": {
+    "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+    "end_char": 305,
+    "offset_unit": "unicode_code_point",
+    "quote": "CHF1800",
+    "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+    "start_char": 298,
+    "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+  },
+  "full_native_pin": {
+    "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+    "end_char": 434,
+    "offset_unit": "unicode_code_point",
+    "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+    "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+    "start_char": 95,
+    "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+  },
+  "full_pin_identity_preserved": true,
+  "basis": "Narrow pure rendering-helper reproduction using the unchanged native op/source. Actual DOM motion capture belongs to frontend owner; no full native consumer or engine replay repeated."
+}

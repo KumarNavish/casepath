@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-name-pattern=^(compact unknown findings use|an actually checked stage document receives)",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "cwd": "/workspace/casepath-operations-frontend-20261013",
+  "exit_code": 0,
+  "duration_s": 0.13178125000558794,
+  "log": "/workspace/op-stage-review-20261013/targeted-ccef214-presentation-tests.log"
+}

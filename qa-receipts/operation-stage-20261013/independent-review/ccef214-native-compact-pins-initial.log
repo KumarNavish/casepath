@@ -1,0 +1,27 @@
+node:assert:152
+  throw new AssertionError(obj);
+  ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'acf2c23ba0c179e4e550cae971f00513742cb789b6cb19e59eaac05d5398e8f1'
+- '143271871abff08d6ebea2f148b0e04dfc7a33e706b7f267e1ab94d1aa135e7a'
+
+    at Object.<anonymous> (/workspace/op-stage-review-20261013/ccef214-native-compact-pins.cjs:6:70)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 'acf2c23ba0c179e4e550cae971f00513742cb789b6cb19e59eaac05d5398e8f1',
+  expected: '143271871abff08d6ebea2f148b0e04dfc7a33e706b7f267e1ab94d1aa135e7a',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

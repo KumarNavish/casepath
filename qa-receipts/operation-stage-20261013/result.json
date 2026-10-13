@@ -1,0 +1,122 @@
+{
+  "candidate": "eb8e438574ae3be48ad1a4a5b9a5d6a9482d9496",
+  "source_clean": true,
+  "module_final": {
+    "passed": 173,
+    "failed": 0,
+    "skipped": 0,
+    "log": "raw-attempts/op-frontend-stage-origin-module-second.log"
+  },
+  "focused_ccef": {
+    "passed": 200,
+    "failed": 0,
+    "skipped": 0,
+    "log": "raw-attempts/op-frontend-stage-ink-three-file-first.log",
+    "binding": "Only final compact active fact mark changed after this run; new regression/native witness checked that change."
+  },
+  "nine_browser_ccef": {
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "log": "raw-attempts/op-frontend-stage-ink-existing-reference.log"
+  },
+  "native_integrity_833": {
+    "operations": 4653,
+    "checkpoints": 162,
+    "fixture_heads": 9,
+    "log": "raw-attempts/stage-ready-native9.log",
+    "binding": "Native integrity functions and fixture data unchanged afterward; display subspan pairs were independently checked."
+  },
+  "native_final": {
+    "elapsed_ms": 48535,
+    "errors": [],
+    "methods": [
+      "GET"
+    ],
+    "geometry": {
+      "scrollY": 0,
+      "viewport": {
+        "width": 1360,
+        "height": 900
+      },
+      "stage": {
+        "x": 36,
+        "y": 203.4375,
+        "width": 1288,
+        "height": 607.921875,
+        "top": 203.4375,
+        "right": 1324,
+        "bottom": 811.359375,
+        "left": 36
+      },
+      "outcome": {
+        "x": 240,
+        "y": 603,
+        "width": 880,
+        "height": 208.359375,
+        "top": 603,
+        "right": 1120,
+        "bottom": 811.359375,
+        "left": 240
+      },
+      "reuse": {
+        "x": 240,
+        "y": 769.359375,
+        "width": 880,
+        "height": 42,
+        "top": 769.359375,
+        "right": 1120,
+        "bottom": 811.359375,
+        "left": 240
+      },
+      "transport": {
+        "x": 350,
+        "y": 829.359375,
+        "width": 660,
+        "height": 68,
+        "top": 829.359375,
+        "right": 1010,
+        "bottom": 897.359375,
+        "left": 350
+      }
+    },
+    "playing_performance": {
+      "longtasks": [
+        {
+          "at": 539.5,
+          "ms": 101
+        },
+        {
+          "at": 32674.600000023842,
+          "ms": 94
+        }
+      ],
+      "frames": 2911,
+      "median_ms": 16.69999999999709,
+      "p95_ms": 16.700000000004366,
+      "longtask_count": 2,
+      "max_longtask_ms": 101
+    },
+    "static_performance": {
+      "longtasks": [],
+      "frames": 181,
+      "median_ms": 16.69999999999709,
+      "p95_ms": 16.799999999995634,
+      "longtask_count": 0,
+      "max_longtask_ms": 0
+    },
+    "conditions": [
+      0.26,
+      0.21,
+      0.16
+    ],
+    "receipt": "native-final-frames/receipt.json"
+  },
+  "review": "independent-review/final-eb8e438-review-receipt.json",
+  "known_limits": [
+    "Four existing ordinary forming-browser geometry assertions failed unchanged at 833: expected44px nodes; unchanged71 source rendered36px in paired exact-asset1440x900 diagnosis. Assertions unchanged; failure evidence preserved.",
+    "Initial browser setup lacked ignored PDF fixture; recovered existing native fixture before affected checks.",
+    "Extra833 document polling capture did not reach a document check before its own bound; finalnative witness covers actualdocument transfer.",
+    "Earlier833/ccef visual and origin findings preserved. Mac owns fresh actual-history film/coldread, source seal and full release gate."
+  ]
+}

@@ -1,0 +1,16 @@
+✔ operation source spans preserve Python codepoints, exact original/text hashes and provisional authority (14.966666ms)
+✔ compact operation checkpoints reconstruct only the exact pinned native journal and head (2.930894ms)
+✔ actual working graphs and applicability stay separately inspectable without advancing accepted execution (3.711476ms)
+✔ stage source context retires active ink on an unrelated operation while preserving exact historical span identity (2.601388ms)
+✔ stage clauses retain Unicode offsets and match their factual meaning rather than a nearby convenient number (1.178389ms)
+✔ stage attention coalesces calculation churn and identical cited reads without dropping or reordering History (0.307253ms)
+✔ operation scrubbing uses only the preceding verified checkpoint and exact prior evaluation scope (2.102733ms)
+✔ stage opening keeps a known original quiet and its complete map preserves accepted completion only on exact graph identity (1.956316ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 124.28275

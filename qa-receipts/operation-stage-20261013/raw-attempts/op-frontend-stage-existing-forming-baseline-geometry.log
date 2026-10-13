@@ -1,0 +1,25 @@
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (12704.28168ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13297.571159
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2547:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (12704.28168ms)
+  AssertionError [ERR_ASSERTION]: actual nodes retain readable labels and native short-desktop or mobile target sizes: {"through":9,"width":1440,"height":900,"nodes":[{"id":"lt_intake","rect":{"x":432,"y":343.484375,"width":604,"height":36,"top":343.484375,"right":1036,"bottom":379.484375,"left":432},"rank":{"x":432,"y":343.484375,"width":604,"height":36,"top":343.484375,"right":1036,"bottom":379.484375,"left":432},"title":{"x":452,"y":346.484375,"width":583,"height":18.890625,"top":346.484375,"right":1035,"bottom":365.375,"left":452},"titleFontSize":14,"titleClientWidth":583,"titleScrollWidth":583},{"id":"lt_form","rect":{"x":432,"y":466.859375,"width":604,"height":36,"top":466.859375,"right":1036,"bottom":502.859375,"left":432},"rank":{"x":432,"y":466.859375,"width":604,"height":36,"top":466.859375,"right":1036,"bottom":502.859375,"left":432},"title":{"x":452,"y":469.859375,"width":583,"height":18.890625,"top":469.859375,"right":1035,"bottom":488.75,"left":452},"titleFontSize":14,"titleClientWidth":583,"titleScrollWidth":583},{"id":"lt_type","rect":{"x":432,"y":514.859375,"width":604,"height":36,"top":514.859375,"right":1036,"bottom":550.859375,"left":432},"rank":{"x":432,"y":514.859375,"width":604,"height":36,"top":514.859375,"right":1036,"bottom":550.859375,"left":432},"title":{"x":452,"y":517.859375,"width":583,"height":18.890625,"top":517.859375,"right":1035,"bottom":536.75,"left":452},"titleFontSize":14,"titleClientWidth":583,"titleScrollWidth":583},{"id":"lt_resolution","rect":{"x":432,"y":795.171875,"width":604,"height":36,"top":795.171875,"right":1036,"bottom":831.171875,"left":432},"rank":{"x":432,"y":795.171875,"width":604,"height":36,"top":795.171875,"right":1036,"bottom":831.171875,"left":432},"title":{"x":452,"y":798.171875,"width":583,"height":18.890625,"top":798.171875,"right":1035,"bottom":817.0625,"left":452},"titleFontSize":14,"titleClientWidth":583,"titleScrollWidth":583},{"id":"lt_close","rect":{"x":432,"y":843.171875,"width":604,"height":36,"top":843.171875,"right":1036,"bottom":879.171875,"left":432},"rank":{"x":432,"y":843.171875,"width":604,"height":36,"top":843.171875,"right":1036,"bottom":879.171875,"left":432},"title":{"x":452,"y":846.171875,"width":583,"height":18.890625,"top":846.171875,"right":1035,"bottom":865.0625,"left":452},"titleFontSize":14,"titleClientWidth":583,"titleScrollWidth":583}],"assets":{"javascript":"7b8ed58ee5aac3b354e87d8c062e9ed0d8ba8d4ba2da07185c9a7b8c1def0887","css":"8aa1ffec12e2ece0fbfc277c6eedffc47f760336b26e77e28e6aac87f5da0320"}}
+      at TestContext.<anonymous> (/workspace/casepath-operations-frontend-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2555:206)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

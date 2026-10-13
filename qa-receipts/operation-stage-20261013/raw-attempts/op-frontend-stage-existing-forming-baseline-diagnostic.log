@@ -1,0 +1,25 @@
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (9086.624407ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9616.555023
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2545:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (9086.624407ms)
+  AssertionError [ERR_ASSERTION]: actual nodes retain readable labels and native short-desktop or mobile target sizes
+      at TestContext.<anonymous> (/workspace/casepath-release-ae0-shard2/casepath-qa/unified-product-browser-v1.test.cjs:2553:206)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

@@ -1,0 +1,292 @@
+{
+  "source_sha256": "7efe0fd1559017de4b0d9a3ffbb792b8d2edb8f2b126135cb7629271384def81",
+  "native_fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+  "cases": [
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "sidecar_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+      "operations": 824,
+      "checkpoints": 21,
+      "shown": 53,
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"
+    }
+  ],
+  "totals": {
+    "operations": 824,
+    "checkpoints": 21,
+    "shown": 53,
+    "subspans": 42,
+    "retainedInkQuiet": 641,
+    "forbiddenAria": 78
+  },
+  "examples": {
+    "retainedInkQuiet": [
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+        "shownKind": "fact.extract",
+        "consumed": "op_ce068b13152f1443991c11931b3fdc9f",
+        "consumedKind": "source.open",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_7eb3aa88db8ffa97ede5a9a122c8583c",
+        "shownKind": "phrase.match",
+        "consumed": "op_94a25603227acacba75c8e22c1c505f6",
+        "consumedKind": "fact.extract",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_7eb3aa88db8ffa97ede5a9a122c8583c",
+        "shownKind": "phrase.match",
+        "consumed": "op_e0c2b39b2cc10c2e5bf25d1eebf0aa61",
+        "consumedKind": "fact.extract",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_7eb3aa88db8ffa97ede5a9a122c8583c",
+        "shownKind": "phrase.match",
+        "consumed": "op_6542bbd8b30212ff096c6344f0948996",
+        "consumedKind": "source.open",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_3d609d09e99538af4c0f45815615058b",
+        "shownKind": "phrase.match",
+        "consumed": "op_278dee2d9e8dcc8da175eb91370dc172",
+        "consumedKind": "source.open",
+        "consumedStage": "verify_reference"
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "shown": "op_d818a3f8459d4df4d71fa0f23c9a5e45",
+        "shownKind": "phrase.match",
+        "consumed": "op_2349bb7aa13de009b9cd255e554064e8",
+        "consumedKind": "fact.extract",
+        "consumedStage": "verify_reference"
+      }
+    ],
+    "forbiddenAria": [
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "id": "op_414de1779028325a5495983616033cc2",
+        "kind": "process.inspect",
+        "aria": [
+          "Capture the reported defect. Provisional working step; not yet evaluated",
+          "Establish relevant tenancy terms. Provisional working step; not yet evaluated. After Capture the reported defect",
+          "Establish landlord knowledge. Provisional working step; not yet evaluated. After Establish relevant tenancy terms",
+          "Assess supported cause. Provisional working step; not yet evaluated. After Establish landlord knowledge",
+          "Assess objective defect evidence. Provisional working step; not yet evaluated. After Assess supported cause",
+          "Record repair and rent reduction eligibility. Provisional working step; not yet evaluated. After Assess objective defect evidence"
+        ]
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "id": "op_a925ebc42ebd1e45369b1fd831c2e892",
+        "kind": "document.require",
+        "aria": [
+          "Capture the reported defect. Provisional applicability: Applies",
+          "Establish relevant tenancy terms. Provisional applicability: Applies. Execution · Waiting for Capture the reported defect. After Capture the reported defect",
+          "Establish landlord knowledge. Provisional applicability: Applies. After Establish relevant tenancy terms",
+          "Assess supported cause. Provisional applicability: Applies. After Establish landlord knowledge",
+          "Assess objective defect evidence. Provisional applicability: Applies. After Assess supported cause",
+          "Record repair and rent reduction eligibility. Provisional applicability: Applies. After Assess objective defect evidence"
+        ]
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "id": "op_a27125056f62822ff135ae04b870f1d1",
+        "kind": "document.require",
+        "aria": [
+          "Capture the reported defect. Provisional applicability: Applies",
+          "Establish relevant tenancy terms. Provisional applicability: Applies. After Capture the reported defect",
+          "Establish landlord knowledge. Provisional applicability: Applies. Execution · Waiting for Establish relevant tenancy terms. After Establish relevant tenancy terms",
+          "Assess supported cause. Provisional applicability: Applies. After Establish landlord knowledge",
+          "Assess objective defect evidence. Provisional applicability: Applies. After Assess supported cause",
+          "Record repair and rent reduction eligibility. Provisional applicability: Applies. After Assess objective defect evidence"
+        ]
+      },
+      {
+        "claim": "clm_314f2d309fea25e6",
+        "id": "op_f4ed2cf2597364996fc8cf479c4578e3",
+        "kind": "document.require",
+        "aria": [
+          "Capture the reported defect. Provisional applicability: Applies",
+          "Establish relevant tenancy terms. Provisional applicability: Applies. After Capture the reported defect",
+          "Establish landlord knowledge. Provisional applicability: Applies. After Establish relevant tenancy terms",
+          "Assess supported cause. Provisional applicability: Applies. After Establish landlord knowledge",
+          "Assess objective defect evidence. Provisional applicability: Applies. Execution · Waiting for Assess supported cause. After Assess supported cause",
+          "Record repair and rent reduction eligibility. Provisional applicability: Applies. After Assess objective defect evidence"
+        ]
+      }
+    ]
+  },
+  "regressions": [
+    {
+      "operation_id": "op_a61d7689dbb82e9114bdf476b338ef07",
+      "kind": "phrase.match",
+      "operation_seq": 765,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    },
+    {
+      "operation_id": "op_32297434f43355d03d35d33b50a7ddf8",
+      "kind": "phrase.match",
+      "operation_seq": 767,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    },
+    {
+      "operation_id": "op_1016690703de933a0b04832bac53f789",
+      "kind": "fact.extract",
+      "operation_seq": 768,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    },
+    {
+      "operation_id": "op_4bf53334a477e6f5cf84e312257cc813",
+      "kind": "phrase.match",
+      "operation_seq": 774,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    },
+    {
+      "operation_id": "op_6b07dd761f620bb24213bcf03c0d67ec",
+      "kind": "phrase.match",
+      "operation_seq": 778,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    },
+    {
+      "operation_id": "op_6da92e84a5c851d95d598921bc445360",
+      "kind": "phrase.match",
+      "operation_seq": 785,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    },
+    {
+      "operation_id": "op_51768030809c14d5c3a8021528b9bc0c",
+      "kind": "phrase.match",
+      "operation_seq": 791,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    },
+    {
+      "operation_id": "op_03eef83c6c3a9802747b15ceafb63226",
+      "kind": "fact.extract",
+      "operation_seq": 792,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    },
+    {
+      "operation_id": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+      "kind": "fact.extract",
+      "operation_seq": 793,
+      "accepted_revision": 47,
+      "accepted_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "display_graph_sha256": "90d1c01487f5794c896cf6c98411cc31d90b69ff225e54333f0136f794a649f0",
+      "completed_node_ids": [
+        "dh_intake",
+        "dh_scope",
+        "dh_notice",
+        "dh_cause",
+        "dh_evidence",
+        "dh_response"
+      ],
+      "rendered_completed_count": 0,
+      "working_inspect_id": "op_4aa6e149b5b516806fbdbee403c2116e"
+    }
+  ]
+}

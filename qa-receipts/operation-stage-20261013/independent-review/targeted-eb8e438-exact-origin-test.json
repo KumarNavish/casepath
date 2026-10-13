@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "--test-name-pattern=^a stage fact lifts the same exact compact Unicode subspan",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "cwd": "/workspace/casepath-operations-frontend-20261013",
+  "exit_code": 0,
+  "duration_s": 0.14250489400001243,
+  "log": "/workspace/op-stage-review-20261013/targeted-eb8e438-exact-origin-test.log"
+}

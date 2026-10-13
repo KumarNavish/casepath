@@ -1,0 +1,250 @@
+{
+  "reviewed_commit": "ccef2141066e9766f1c0b3cffce6a2021e915f64",
+  "against_commit": "833f357d9075ef67ee59d5824d22120eabd90866",
+  "timestamp_utc": "2026-10-13T17:16:33.372331+00:00",
+  "source_receipt": {
+    "time": "2026-10-13T17:09:56.076881+00:00",
+    "host": "656813ef2295",
+    "base": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+    "previous": "833f357d9075ef67ee59d5824d22120eabd90866",
+    "commit": "ccef2141066e9766f1c0b3cffce6a2021e915f64",
+    "head": "ccef2141066e9766f1c0b3cffce6a2021e915f64",
+    "status": "",
+    "files": {
+      "casepath/assets/autonomous-workspace-v1.js": {
+        "sha256": "f81486ddff3d349ca9503c7bb52995f1203bb37ac822f82a94ee35f0ccf8c958",
+        "bytes": 394780
+      },
+      "casepath/assets/autonomous-workspace-v1.css": {
+        "sha256": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "bytes": 221080
+      },
+      "casepath-qa/autonomous-workspace-v1.test.cjs": {
+        "sha256": "e3b886397ebd477c8bfe72563f1a8d9b9a6b526e7b870f14a4bc4d2577f07008",
+        "bytes": 287503
+      }
+    },
+    "delta_sha256": "c6b288821ead555556eb0fe3a02e6740123f38775a08d6191482520da561c9eb"
+  },
+  "scope": "Read-only independent delta review: literal compact fact span, current cited underline, actual named document-source/check card in reserved landing, hidden exact transport counts. No engine/provider/production requests or broad suite. No product source edits.",
+  "decision": "BLOCKED on one definite source-to-word lift-origin mismatch; other new paths pass bounded review.",
+  "findings": [
+    {
+      "kind": "reachable_source_chip_origin_mismatch",
+      "source": "casepath-site/autonomous-workspace-v1.js:1375,2486,2495",
+      "operation_id": "op_d867690b64a42823c40957aa759afb0a",
+      "active_mark": {
+        "start_char": 278,
+        "end_char": 377,
+        "quote": "monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump."
+      },
+      "flight": {
+        "start_char": 298,
+        "end_char": 305,
+        "quote": "CHF1800"
+      },
+      "cause": "Active stage fact markup uses noncompact stageFactSpan; flight uses compact span but starts at full mark first client rect.",
+      "minimal_correction": "For active stage fact.extract only, use the compact span for ink; preserve full native source pin in citation/History and other read operations.",
+      "reported_to": [
+        "/root",
+        "/root/operation_frontend"
+      ]
+    }
+  ],
+  "passed": [
+    "2 new selected QA tests pass with zero skips",
+    "49 unique native fact/pin pairs preserve exact Unicode-code-point slices; compact <=48 CP; known semantic shorteners unchanged; unknown full pin retained for source/inspection",
+    "Named checked source requires an actual sufficient document.check plus accepted sufficient review; actual document.require active_node_ids and graph document_types select existing slot",
+    "Cancellation, trusted-input holds, opening anchor, read-only authority boundaries, and native-consumer helpers unchanged",
+    "Underline reads current active mark rectangles, skips inactive/metadata reads, uses one cancelable transform/opacity actor; no RAF polling",
+    "Source-phase landing contains source card in normal flow; final map does not acquire 180px sizing"
+  ],
+  "focused_tests": {
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=^(compact unknown findings use|an actually checked stage document receives)",
+      "casepath-qa/autonomous-workspace-v1.test.cjs"
+    ],
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "exit_code": 0,
+    "duration_s": 0.13178125000558794,
+    "log": "/workspace/op-stage-review-20261013/targeted-ccef214-presentation-tests.log"
+  },
+  "compact_pair_counts": {
+    "cases": 9,
+    "unique_fact_pin_pairs": 49,
+    "fact_extract_instances": 234,
+    "full_pin_preserved_instances": 123
+  },
+  "compact_pair_receipt": "/workspace/op-stage-review-20261013/ccef214-native-compact-pins.json",
+  "evidence_checksum_note": "Initial scratch validator incorrectly treated index.sidecar_sha256 as the file-byte digest. All nine actual files are unchanged from prior independent native validation; corrected scratch validator binds those raw byte hashes. Initial script/log preserved. No product failure suppressed.",
+  "browser_basis": {
+    "owner_witness": "/workspace/op-browser/stage-ink/receipt.json",
+    "sha256": "6ef6bf1c5f726450c20043f1f044669f210dc2e683af2ee4783f26b5d9f47352",
+    "selected_frames": {
+      "fact_docking": {
+        "ink": {
+          "operation_id": "op_d867690b64a42823c40957aa759afb0a",
+          "start_char": 278,
+          "end_char": 377,
+          "quote": "monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+          "rect": {
+            "x": 165,
+            "y": 406.4375,
+            "width": 735.078125,
+            "height": 59,
+            "right": 900.078125,
+            "bottom": 465.4375
+          }
+        },
+        "token": {
+          "operation_id": "op_d867690b64a42823c40957aa759afb0a",
+          "text": "CHF1800",
+          "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+          "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+          "start_char": 298,
+          "end_char": 305,
+          "opacity": "1",
+          "rect": {
+            "x": 1126.496337890625,
+            "y": 353.0897216796875,
+            "width": 112.609375,
+            "height": 53,
+            "right": 1239.105712890625,
+            "bottom": 406.0897216796875
+          },
+          "animations": [
+            {
+              "playState": "running",
+              "currentTime": 283.3650000001313
+            }
+          ]
+        },
+        "actual_operation": {
+          "cause_ids": [
+            "op_239fff8e940e09cd50d910cbaff753b7",
+            "op_7eb3aa88db8ffa97ede5a9a122c8583c"
+          ],
+          "contract": "casepath.operations-stream/1.0.0",
+          "id": "op_d867690b64a42823c40957aa759afb0a",
+          "input": {
+            "document_type": "tenancy_terms_evidence"
+          },
+          "input_sha256": "c46f234b0859fb7f40c8dc6a04b3c79a3689a922fe79c3b53c0739db6e3bb5f5",
+          "journal_seq": 39,
+          "kind": "fact.extract",
+          "object": {
+            "id": "fact:tenancy_terms_evidence",
+            "type": "fact"
+          },
+          "operation_sha256": "c20d88e94b8c8217d196b736f4b6a50197f73937858ac744c354cd1a756ca3bc",
+          "previous_operation_sha256": "b95e399e6d7690e7e35bb0e7a9520f5785b4b3c4e2ce2d90ac6419e0f1491bc2",
+          "result": {
+            "status": "established",
+            "summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+            "verification_required": false
+          },
+          "result_sha256": "035f82220318afa1cbe283f594c2badabce0f554771e88bcc929c3feaf598539",
+          "seq": 169,
+          "source": {
+            "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+            "end_char": 434,
+            "offset_unit": "unicode_code_point",
+            "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+            "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+            "start_char": 95,
+            "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+          },
+          "stage": "native_execution",
+          "type": "operation"
+        }
+      },
+      "document_docking": {
+        "ink": {
+          "operation_id": "op_239fff8e940e09cd50d910cbaff753b7",
+          "start_char": 278,
+          "end_char": 377,
+          "quote": "monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+          "rect": {
+            "x": 165,
+            "y": 406.4375,
+            "width": 735.078125,
+            "height": 59,
+            "right": 900.078125,
+            "bottom": 465.4375
+          }
+        },
+        "token": {
+          "operation_id": "op_239fff8e940e09cd50d910cbaff753b7",
+          "text": "Customer and tenancy clarificationCHF1800✓",
+          "document_transfer": "op_239fff8e940e09cd50d910cbaff753b7",
+          "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+          "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+          "start_char": 298,
+          "end_char": 305,
+          "opacity": "1",
+          "rect": {
+            "x": 1140.35205078125,
+            "y": 422.1700439453125,
+            "width": 169,
+            "height": 130.75,
+            "right": 1309.35205078125,
+            "bottom": 552.9200439453125
+          },
+          "animations": [
+            {
+              "playState": "running",
+              "currentTime": 249.91299999999228
+            }
+          ]
+        },
+        "actual_operation": {
+          "cause_ids": [
+            "op_7eb3aa88db8ffa97ede5a9a122c8583c"
+          ],
+          "contract": "casepath.operations-stream/1.0.0",
+          "id": "op_239fff8e940e09cd50d910cbaff753b7",
+          "input": {
+            "independently_verified": true,
+            "required_fields": [
+              "contracting_parties",
+              "property",
+              "tenancy_terms"
+            ],
+            "route_activation": "true"
+          },
+          "input_sha256": "ba64029d92a313c55483e5b9d7b4ed99dcf941dd92e300d2945d0abdb873774a",
+          "journal_seq": 39,
+          "kind": "document.check",
+          "object": {
+            "id": "tenancy_terms_evidence",
+            "type": "document"
+          },
+          "operation_sha256": "b95e399e6d7690e7e35bb0e7a9520f5785b4b3c4e2ce2d90ac6419e0f1491bc2",
+          "previous_operation_sha256": "e99482e9f2fccf4619f026b7134708c8764bcc92c65be365fd673fe523799ac2",
+          "result": {
+            "action_id": "review:tenancy_terms_evidence:src_106168f9c33152b3d88f02469ad57782",
+            "assessment": "sufficient",
+            "review_scope": "supplied_file_assessment",
+            "status": "accepted_historical_command"
+          },
+          "result_sha256": "c20184c7ad0c185de6bd2d551d1c063957c063bea8cd9888dc4dcad80fd65ed4",
+          "seq": 168,
+          "source": {
+            "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+            "end_char": 434,
+            "offset_unit": "unicode_code_point",
+            "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+            "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+            "start_char": 95,
+            "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+          },
+          "stage": "native_execution",
+          "type": "operation"
+        }
+      }
+    }
+  },
+  "limits": "This is code/native-slice review. Browser frame aesthetics, distinct caret/underline recognition, film acceptance, final frame choice, and fresh-reader visual acceptance remain with parent/Mac. No full4,653-operation consumer rerun; original native-head and opening-anchor proofs retained."
+}

@@ -1,0 +1,422 @@
+{
+  "schema": "casepath-prefreeze-gate-preparation-v1",
+  "snapshot_epoch": 1791910497.8299675,
+  "host": "656813ef2295",
+  "source_repo_read_only": "/workspace/casepath-operations-frontend-20261013",
+  "source_branch": "codex/casepath-operation-stage-20261013",
+  "snapshot_HEAD": "833f357d9075ef67ee59d5824d22120eabd90866",
+  "snapshot_after_HEAD": "833f357d9075ef67ee59d5824d22120eabd90866",
+  "writer_active_source_not_frozen": true,
+  "base_gate_SHA": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "test_execution": false,
+  "full_collection_executed": false,
+  "source_edits": [],
+  "deleted_paths": [],
+  "chmod_paths": [],
+  "capacity": {
+    "/workspace": {
+      "total": 33770192896,
+      "used": 30591852544,
+      "free": 1443577856
+    },
+    "/tmp": {
+      "total": 17871892480,
+      "used": 17653534720,
+      "free": 218357760
+    }
+  },
+  "cleanup_candidates": [
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard1/uv-cache",
+      "bytes": 17846453,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard2/uv-cache",
+      "bytes": 17846457,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard3/uv-cache",
+      "bytes": 17846457,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard4/uv-cache",
+      "bytes": 17846457,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard5/uv-cache",
+      "bytes": 17846457,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-ce0a-20261013/shard6/uv-cache",
+      "bytes": 17846453,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard1/uv-cache",
+      "bytes": 17846453,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard2/uv-cache",
+      "bytes": 17846457,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard3/uv-cache",
+      "bytes": 17846457,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard4/uv-cache",
+      "bytes": 17846457,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard5/uv-cache",
+      "bytes": 17846457,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-reference-polish-gate-b3e93-20261013/shard6/uv-cache",
+      "bytes": 17846453,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/uv-cache",
+      "bytes": 17847053,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard1/pytest-tmp",
+      "bytes": 6804173,
+      "kind": "Completed green gate session/factory fixtures",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "original_exit_code": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "e267650bce09d20db53e579a392ce1e8d6537ff2110238a0288894534b2180f1"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard2/uv-cache",
+      "bytes": 17847057,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard2/pytest-tmp",
+      "bytes": 6550221,
+      "kind": "Completed green gate session/factory fixtures",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "original_exit_code": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "3779977478c10d186f550613e8c421d7c6ca29611666040e88190d4e953b4fca"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/uv-cache",
+      "bytes": 17847057,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard3/pytest-tmp",
+      "bytes": 8516788,
+      "kind": "Completed green gate session/factory fixtures",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "original_exit_code": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "4b0264307564f321d731263841612ec5825e05998cc3671416d251473d649b27"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard4/uv-cache",
+      "bytes": 17847057,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard4/pytest-tmp",
+      "bytes": 8516788,
+      "kind": "Completed green gate session/factory fixtures",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "original_exit_code": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "8995c5cb0b12e18080ba31f26164387e06564150c5838b9b6d7b229fbf4fed2a"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard5/uv-cache",
+      "bytes": 17847057,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard5/pytest-tmp",
+      "bytes": 8516788,
+      "kind": "Completed green gate session/factory fixtures",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "original_exit_code": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "b60921eefa986a07ab9a80c67ce9ece397db38299ee5c4cc2bd8484af4863b0c"
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/uv-cache",
+      "bytes": 17847053,
+      "kind": "Reproducible uv dependency cache",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true
+    },
+    {
+      "path": "/workspace/casepath-operation-gate-71bbe856-20261013/shard6/pytest-tmp",
+      "bytes": 6550221,
+      "kind": "Completed green gate session/factory fixtures",
+      "not_in_raw_evidence_bundle": true,
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "original_exit_code": 0,
+      "failures": 0,
+      "errors": 0,
+      "junit_sha256": "a4ad35eb8c79ad0984447ccd6dd8a86622b1a35fbec5d3f437a3a9f33afcd627"
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard1/casepath-public",
+      "bytes": 3042439,
+      "kind": "Ignored generated static site",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard1/casepath-api/artifacts",
+      "bytes": 1200908,
+      "kind": "Ignored generated API artifacts",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard2/casepath-public",
+      "bytes": 3042439,
+      "kind": "Ignored generated static site",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard2/casepath-api/artifacts",
+      "bytes": 1200908,
+      "kind": "Ignored generated API artifacts",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard3/casepath-public",
+      "bytes": 3042439,
+      "kind": "Ignored generated static site",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard3/casepath-api/artifacts",
+      "bytes": 1200908,
+      "kind": "Ignored generated API artifacts",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard4/casepath-public",
+      "bytes": 3042439,
+      "kind": "Ignored generated static site",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard4/casepath-api/artifacts",
+      "bytes": 1200908,
+      "kind": "Ignored generated API artifacts",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard5/casepath-public",
+      "bytes": 3042439,
+      "kind": "Ignored generated static site",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard5/casepath-api/artifacts",
+      "bytes": 1200908,
+      "kind": "Ignored generated API artifacts",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard6/casepath-public",
+      "bytes": 3042439,
+      "kind": "Ignored generated static site",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    },
+    {
+      "path": "/workspace/casepath-release-ae0-shard6/casepath-api/artifacts",
+      "bytes": 1200908,
+      "kind": "Ignored generated API artifacts",
+      "regeneration": "Next normal ./bin/casepath prepare",
+      "cleanup_now": false,
+      "safe_only_if_needed_and_explicitly_authorized": true,
+      "runtime_temporarily_unready_if_removed": true
+    }
+  ],
+  "candidate_total_bytes": 392154863,
+  "candidate_totals_by_kind": {
+    "Completed green gate session/factory fixtures": 45454979,
+    "Ignored generated API artifacts": 7205448,
+    "Ignored generated static site": 18254634,
+    "Reproducible uv dependency cache": 321239802
+  },
+  "protected": "All raw evidence/logs/JUnits/source/history; ALL immutable capsules; all683 failed-gate caches/tmp/failedfixtures; six reusable normal clones and venvs; active frontend writer and unrelated jobs",
+  "expected_python_inventory": {
+    "delta": 0,
+    "full": 2571,
+    "cloud": 2444,
+    "Mac_excluded": 127,
+    "basis": "No changes to any Python suite source in observed stage diff; final exact frozen SHA still requires fresh collection",
+    "same_Mac_files_counts": {
+      "casepath-api/tests/test_cli_v1.py": 69,
+      "casepath-api/tests/test_local_data_root.py": 52,
+      "casepath-api/tests/test_journal_corpus_restart.py": 6
+    },
+    "Mac_sorted_ID_hash": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
+    "known_skips": 10,
+    "known_skip_source_bytes_lines_reasons_unchanged": true
+  },
+  "Node_static_declaration_delta": [
+    {
+      "file": "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "baseline_literal_declarations": 148,
+      "snapshot_literal_declarations": 155,
+      "added_titles": [
+        "stage source context retires active ink on an unrelated operation while preserving exact historical span identity",
+        "stage clauses retain Unicode offsets and match their factual meaning rather than a nearby convenient number",
+        "stage attention coalesces calculation churn and identical cited reads without dropping or reordering History",
+        "operation scrubbing uses only the preceding verified checkpoint and exact prior evaluation scope",
+        "stage opening keeps a known original quiet and its complete map preserves accepted completion only on exact graph identity",
+        "stage transport uses a bound total without granting access to future unverified operations",
+        "stage source body anchors retain every original Unicode character and accepted fact labels use the actual document role"
+      ],
+      "removed_titles": [],
+      "file_sha256": "576fabd44dc0156bd992df455f34a0587a945002ff7c6409a776715a02fe0f8f",
+      "runtime_expanded_count_collected": false
+    },
+    {
+      "file": "casepath-qa/unified-product-browser-v1.test.cjs",
+      "baseline_literal_declarations": 81,
+      "snapshot_literal_declarations": 81,
+      "added_titles": [],
+      "removed_titles": [],
+      "file_sha256": "612e7c5af986be7dd99bc01641333953026c123924c6b9d893bb8b642662df4e",
+      "runtime_expanded_count_collected": false
+    }
+  ],
+  "ready_reuse_paths": {
+    "map": "/workspace/casepath-operation-gate-71bbe856-20261013/shard-map.json",
+    "actual_per_test_durations": "/workspace/casepath-operation-gate-71bbe856-20261013/per-test-durations.json",
+    "actual_per_file_durations": "/workspace/casepath-operation-gate-71bbe856-20261013/per-file-durations.json",
+    "Mac_IDs": "/workspace/casepath-operation-gate-71bbe856-20261013/mac-ids.txt",
+    "known_skips": "/workspace/casepath-operation-gate-71bbe856-20261013/known-skip-observed-comparison.json",
+    "harness": "/workspace/casepath-operation-gate-71bbe856-20261013/harness"
+  },
+  "partitions": [
+    307,
+    347,
+    347,
+    740,
+    352,
+    351
+  ],
+  "future_schedule": "shard4alone first then1/2/3/5/6concurrent after standard preparation and fresh frozen collection; no execution authorized in this preparation task"
+}

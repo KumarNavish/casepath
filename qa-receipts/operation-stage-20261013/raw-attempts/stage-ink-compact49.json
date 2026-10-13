@@ -1,0 +1,1577 @@
+{
+  "disclosure": "Actual local native sidecar pinned source variants; no production head verification.",
+  "source_commit": "ccef2141066e9766f1c0b3cffce6a2021e915f64",
+  "count": 49,
+  "fact_ids": 18,
+  "cases": 9,
+  "rows": [
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "operation_id": "op_9e9742927fbe93326e40ca91fca44697",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_b0416aadee21ef0f183f518a23e2d3d0",
+        "end_char": 393,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e",
+        "start_char": 95,
+        "text_sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e"
+      },
+      "compact": {
+        "artifact_id": "src_b0416aadee21ef0f183f518a23e2d3d0",
+        "end_char": 130,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Taylor Miller, rent the dwelling",
+        "sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e",
+        "start_char": 95,
+        "text_sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e"
+      },
+      "inspection": {
+        "artifact_id": "src_b0416aadee21ef0f183f518a23e2d3d0",
+        "end_char": 393,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e",
+        "start_char": 95,
+        "text_sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e"
+      }
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "operation_id": "op_738c6edbf49f1185ff6208ba1d753719",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_b0416aadee21ef0f183f518a23e2d3d0",
+        "end_char": 393,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e",
+        "start_char": 95,
+        "text_sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e"
+      },
+      "compact": {
+        "artifact_id": "src_b0416aadee21ef0f183f518a23e2d3d0",
+        "end_char": 130,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Taylor Miller, rent the dwelling",
+        "sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e",
+        "start_char": 95,
+        "text_sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e"
+      },
+      "inspection": {
+        "artifact_id": "src_b0416aadee21ef0f183f518a23e2d3d0",
+        "end_char": 219,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+        "sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e",
+        "start_char": 95,
+        "text_sha256": "5804ca68605622d5e1f004a8a956c2b00c6308943ea375511d833e5abb1ba50e"
+      }
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "operation_id": "op_81ffbeab590e657a64331b7b8b607339",
+      "fact_id": "fact:received_termination_packet",
+      "source": {
+        "artifact_id": "src_6773fe78e05454274bd6e195781dee0d",
+        "end_char": 393,
+        "offset_unit": "unicode_code_point",
+        "quote": "Termination of tenancy\nRental property: Dwelling under the existing tenancy agreement\nSeefeldstrasse 28, 8008 Zürich\nDear tenant\nWe hereby terminate the existing tenancy at the next contractual termination date.\nNotice period\nthree months after receipt",
+        "sha256": "64ffbb0b41618812efbd33e5665e065adecc8e123caf385e8b6246eb9ca05237",
+        "start_char": 141,
+        "text_sha256": "f297bc71ac79cd6f4b3cc1b9c7396264458cd3f9426ad8960346d0e8a3ded078"
+      },
+      "compact": {
+        "artifact_id": "src_6773fe78e05454274bd6e195781dee0d",
+        "end_char": 180,
+        "offset_unit": "unicode_code_point",
+        "quote": "Termination of tenancy\nRental property:",
+        "sha256": "64ffbb0b41618812efbd33e5665e065adecc8e123caf385e8b6246eb9ca05237",
+        "start_char": 141,
+        "text_sha256": "f297bc71ac79cd6f4b3cc1b9c7396264458cd3f9426ad8960346d0e8a3ded078"
+      },
+      "inspection": {
+        "artifact_id": "src_6773fe78e05454274bd6e195781dee0d",
+        "end_char": 393,
+        "offset_unit": "unicode_code_point",
+        "quote": "Termination of tenancy\nRental property: Dwelling under the existing tenancy agreement\nSeefeldstrasse 28, 8008 Zürich\nDear tenant\nWe hereby terminate the existing tenancy at the next contractual termination date.\nNotice period\nthree months after receipt",
+        "sha256": "64ffbb0b41618812efbd33e5665e065adecc8e123caf385e8b6246eb9ca05237",
+        "start_char": 141,
+        "text_sha256": "f297bc71ac79cd6f4b3cc1b9c7396264458cd3f9426ad8960346d0e8a3ded078"
+      }
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "operation_id": "op_09b3b4aa2cc9461efac0e42127a42e2b",
+      "fact_id": "fact:original_notification_context",
+      "source": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 414,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich. On2026-05-08T10:30:00+02:00 we transmitted the sole plain termination PDF identified above toTaylor Miller's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 95,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      },
+      "compact": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 137,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Nova Régie SA: we were",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 95,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      },
+      "inspection": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 414,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich. On2026-05-08T10:30:00+02:00 we transmitted the sole plain termination PDF identified above toTaylor Miller's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 95,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      }
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "operation_id": "op_36e3af600fd2086cfd880bc8e232e14c",
+      "fact_id": "issuer_authority_and_received_packet",
+      "source": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 414,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich. On2026-05-08T10:30:00+02:00 we transmitted the sole plain termination PDF identified above toTaylor Miller's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 95,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      },
+      "compact": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 137,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Nova Régie SA: we were",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 95,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      },
+      "inspection": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 414,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich. On2026-05-08T10:30:00+02:00 we transmitted the sole plain termination PDF identified above toTaylor Miller's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 95,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      }
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "operation_id": "op_503dce30c43d20b8e0e6a5eb50a3c0ed",
+      "fact_id": "complete_channel_archive",
+      "source": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 798,
+        "offset_unit": "unicode_code_point",
+        "quote": "No other attachment, approved form, separate notice, post to the old or current address, portal notice, replacement or correction was issued up to the review as-of date.",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 629,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      },
+      "compact": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 673,
+        "offset_unit": "unicode_code_point",
+        "quote": "No other attachment, approved form, separate",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 629,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      },
+      "inspection": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 798,
+        "offset_unit": "unicode_code_point",
+        "quote": "No other attachment, approved form, separate notice, post to the old or current address, portal notice, replacement or correction was issued up to the review as-of date.",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 629,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      }
+    },
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "operation_id": "op_37584ffd7dc0c57f38ccb3af7d1cebec",
+      "fact_id": "canton_approved_form",
+      "source": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 628,
+        "offset_unit": "unicode_code_point",
+        "quote": "It was a plain letter, not a canton-approved termination form.",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 566,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      },
+      "compact": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 610,
+        "offset_unit": "unicode_code_point",
+        "quote": "It was a plain letter, not a canton-approved",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 566,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      },
+      "inspection": {
+        "artifact_id": "src_92c11d41231a40d9f8e9b93661774e37",
+        "end_char": 628,
+        "offset_unit": "unicode_code_point",
+        "quote": "It was a plain letter, not a canton-approved termination form.",
+        "sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660",
+        "start_char": 566,
+        "text_sha256": "e067ac002b3782f410b25c0c8ebe8732247b05a7f1bc5845aab2101d76ad4660"
+      }
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "operation_id": "op_b3dfef33455eb07e3f004119783363bb",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 502,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 95,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      },
+      "compact": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 338,
+        "offset_unit": "unicode_code_point",
+        "quote": "CHF1850",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 331,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      },
+      "inspection": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 420,
+        "offset_unit": "unicode_code_point",
+        "quote": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 303,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      }
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "operation_id": "op_85fffff5513bc34016bfbcc3f8b3fb11",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 502,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 95,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      },
+      "compact": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 140,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Noah Frei, rent the dwelling atBergstrasse",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 95,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      },
+      "inspection": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 221,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich.",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 95,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      }
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "operation_id": "op_5b5a4efd0ecef54b9b6290a99c58b97f",
+      "fact_id": "fact:received_rent_increase_packet",
+      "source": {
+        "artifact_id": "src_b53f735cfd01a992a90c6771bcd2d0d4",
+        "end_char": 770,
+        "offset_unit": "unicode_code_point",
+        "quote": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+        "sha256": "d48b447e1619953f5dda38c43ec659283d50f717a839c6952c1beca46c92d89e",
+        "start_char": 700,
+        "text_sha256": "016d20902db95aa9a25e1d2b3af2508ef32bcd859d60b78b5ab594405f3e5dcd"
+      },
+      "compact": {
+        "artifact_id": "src_b53f735cfd01a992a90c6771bcd2d0d4",
+        "end_char": 742,
+        "offset_unit": "unicode_code_point",
+        "quote": "Begründung der Erhöhung:\nBegründung gemäss",
+        "sha256": "d48b447e1619953f5dda38c43ec659283d50f717a839c6952c1beca46c92d89e",
+        "start_char": 700,
+        "text_sha256": "016d20902db95aa9a25e1d2b3af2508ef32bcd859d60b78b5ab594405f3e5dcd"
+      },
+      "inspection": {
+        "artifact_id": "src_b53f735cfd01a992a90c6771bcd2d0d4",
+        "end_char": 770,
+        "offset_unit": "unicode_code_point",
+        "quote": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+        "sha256": "d48b447e1619953f5dda38c43ec659283d50f717a839c6952c1beca46c92d89e",
+        "start_char": 700,
+        "text_sha256": "016d20902db95aa9a25e1d2b3af2508ef32bcd859d60b78b5ab594405f3e5dcd"
+      }
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "operation_id": "op_661db1521cec1f71eb3985644abd1496",
+      "fact_id": "fact:original_notification_context",
+      "source": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 728,
+        "offset_unit": "unicode_code_point",
+        "quote": "The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 484,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      },
+      "compact": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 529,
+        "offset_unit": "unicode_code_point",
+        "quote": "The managing agent confirms it was authorized",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 484,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      },
+      "inspection": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 728,
+        "offset_unit": "unicode_code_point",
+        "quote": "The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 484,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      }
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "operation_id": "op_73eb77b635d1b5f51abc3d68a3d95edc",
+      "fact_id": "ordinary_non269c_tenancy",
+      "source": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 302,
+        "offset_unit": "unicode_code_point",
+        "quote": "The rent is not indexed or stepped, and there is no Article269c agreed increase.",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 222,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      },
+      "compact": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 267,
+        "offset_unit": "unicode_code_point",
+        "quote": "The rent is not indexed or stepped, and there",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 222,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      },
+      "inspection": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 302,
+        "offset_unit": "unicode_code_point",
+        "quote": "The rent is not indexed or stepped, and there is no Article269c agreed increase.",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 222,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      }
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "operation_id": "op_bc9e545a79d21177a860ad929db4713e",
+      "fact_id": "issuer_authority_and_complete_packet",
+      "source": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 728,
+        "offset_unit": "unicode_code_point",
+        "quote": "The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 484,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      },
+      "compact": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 529,
+        "offset_unit": "unicode_code_point",
+        "quote": "The managing agent confirms it was authorized",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 484,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      },
+      "inspection": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 728,
+        "offset_unit": "unicode_code_point",
+        "quote": "The managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 484,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      }
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "operation_id": "op_818f8620be003d6f3fc0288b9c90e4fd",
+      "fact_id": "contemporaneous_substantive_reasons",
+      "source": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 951,
+        "offset_unit": "unicode_code_point",
+        "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 809,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      },
+      "compact": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 855,
+        "offset_unit": "unicode_code_point",
+        "quote": "No contemporaneous accompanying reason letter,",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 809,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      },
+      "inspection": {
+        "artifact_id": "src_c90c3ed9ee79c5cce8d8f1aac8e1cc06",
+        "end_char": 951,
+        "offset_unit": "unicode_code_point",
+        "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received.",
+        "sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2",
+        "start_char": 809,
+        "text_sha256": "4e6fecbdbbb64c17b54fc0add7cea5ab447a0cd92daa95e9b62c520c21d6c6a2"
+      }
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "operation_id": "op_73111da96359c0f9643a9cd2fedf5431",
+      "fact_id": "later_email_is_not_original_reasons",
+      "source": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 482,
+        "offset_unit": "unicode_code_point",
+        "quote": "This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication.",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 356,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      },
+      "compact": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 398,
+        "offset_unit": "unicode_code_point",
+        "quote": "This reply was sent after the tenant asked",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 356,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      },
+      "inspection": {
+        "artifact_id": "src_5e4785afc64c7db0114f0cd3d3533f5f",
+        "end_char": 482,
+        "offset_unit": "unicode_code_point",
+        "quote": "This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication.",
+        "sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28",
+        "start_char": 356,
+        "text_sha256": "4da12b6a6c5006bcaeddb0399fc4b64a49a86637a9dd66d18014a9bd93e4cd28"
+      }
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "operation_id": "op_1715b98c5f009b94cad03526c1c661be",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "end_char": 434,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 95,
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+      },
+      "compact": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "end_char": 305,
+        "offset_unit": "unicode_code_point",
+        "quote": "CHF1800",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 298,
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+      },
+      "inspection": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "end_char": 377,
+        "offset_unit": "unicode_code_point",
+        "quote": "monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 278,
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+      }
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "operation_id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "end_char": 434,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 95,
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+      },
+      "compact": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "end_char": 134,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Riley Foster, am the tenant under an",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 95,
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+      },
+      "inspection": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "end_char": 227,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich.",
+        "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "start_char": 95,
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+      }
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "operation_id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+      "fact_id": "fact:objective_defect_observation",
+      "source": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 199,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      },
+      "compact": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 334,
+        "offset_unit": "unicode_code_point",
+        "quote": "15.8C",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 329,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      },
+      "inspection": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 368,
+        "offset_unit": "unicode_code_point",
+        "quote": "measured the living room at15.8C after overnight normal operation.",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 302,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      }
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "operation_id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+      "fact_id": "fact:landlord_knowledge_evidence",
+      "source": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 494,
+        "offset_unit": "unicode_code_point",
+        "quote": "Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 193,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      },
+      "compact": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 258,
+        "offset_unit": "unicode_code_point",
+        "quote": "three heating-failure reports",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 229,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      },
+      "inspection": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 297,
+        "offset_unit": "unicode_code_point",
+        "quote": "call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17.",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 197,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      }
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "operation_id": "op_4f935af1785d232600fc72be1eebcab3",
+      "fact_id": "objective_use_impairment",
+      "source": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 967,
+        "offset_unit": "unicode_code_point",
+        "quote": "The defect persists at this report's as-of time; no lasting pump repair or replacement has been completed. Heating is inadequate for the contracted winter residential use of the principal living rooms.",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 766,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      },
+      "compact": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 920,
+        "offset_unit": "unicode_code_point",
+        "quote": "Heating is inadequate for the contracted winter",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 873,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      },
+      "inspection": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 967,
+        "offset_unit": "unicode_code_point",
+        "quote": "Heating is inadequate for the contracted winter residential use of the principal living rooms.",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 873,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      }
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "operation_id": "op_a677aec77b40589e0d0580e3dc6d5677",
+      "fact_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+      "source": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 199,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      },
+      "compact": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 650,
+        "offset_unit": "unicode_code_point",
+        "quote": "outside ordinary small tenant maintenance.",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 608,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      },
+      "inspection": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "start_char": 608,
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+      }
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "operation_id": "op_14f9eb670b91d7289150ef3a51717af4",
+      "fact_id": "landlord_first_knowledge",
+      "source": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 494,
+        "offset_unit": "unicode_code_point",
+        "quote": "Our call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 193,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      },
+      "compact": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 434,
+        "offset_unit": "unicode_code_point",
+        "quote": "We received the first report on2025-02-01; this",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 387,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      },
+      "inspection": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 494,
+        "offset_unit": "unicode_code_point",
+        "quote": "We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 387,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      }
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "operation_id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+      "fact_id": "continuing_defect_without_remedy",
+      "source": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 796,
+        "offset_unit": "unicode_code_point",
+        "quote": "We confirm the tenant was using the heating normally and did not cause this pump failure. Repeated resets did not remove the continuing defect. We acknowledge the dated service observation and remain responsible for arranging pump repair; no lasting repair has yet occurred as of this acknowledgment.",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 496,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      },
+      "compact": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 780,
+        "offset_unit": "unicode_code_point",
+        "quote": "no lasting repair has yet occurred as of this",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 735,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      },
+      "inspection": {
+        "artifact_id": "src_c57d943a64c85cf37369ccbf747b6e3f",
+        "end_char": 796,
+        "offset_unit": "unicode_code_point",
+        "quote": "no lasting repair has yet occurred as of this acknowledgment.",
+        "sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569",
+        "start_char": 735,
+        "text_sha256": "1b19130a0ec03df636b69a63aedd84c36c00b5601b65bd347532b487ec824569"
+      }
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "operation_id": "op_ce19d2515ba2eb4ee58b947c0f05c6b6",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_e65264b00881dccc76c70808609be6c5",
+        "end_char": 404,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich. Limmat Verwaltungs GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e",
+        "start_char": 95,
+        "text_sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"
+      },
+      "compact": {
+        "artifact_id": "src_e65264b00881dccc76c70808609be6c5",
+        "end_char": 130,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Simon Steiner, rent the dwelling",
+        "sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e",
+        "start_char": 95,
+        "text_sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"
+      },
+      "inspection": {
+        "artifact_id": "src_e65264b00881dccc76c70808609be6c5",
+        "end_char": 404,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich. Limmat Verwaltungs GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e",
+        "start_char": 95,
+        "text_sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"
+      }
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "operation_id": "op_bdfbf403dcc3f636fbf62068f877b142",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_e65264b00881dccc76c70808609be6c5",
+        "end_char": 404,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich. Limmat Verwaltungs GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e",
+        "start_char": 95,
+        "text_sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"
+      },
+      "compact": {
+        "artifact_id": "src_e65264b00881dccc76c70808609be6c5",
+        "end_char": 130,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Simon Steiner, rent the dwelling",
+        "sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e",
+        "start_char": 95,
+        "text_sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"
+      },
+      "inspection": {
+        "artifact_id": "src_e65264b00881dccc76c70808609be6c5",
+        "end_char": 220,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Simon Steiner, rent the dwelling atZollikerstrasse 67, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+        "sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e",
+        "start_char": 95,
+        "text_sha256": "d419f3707d18b2b07b84a8ff88c347d77662bfb90d76898aa50ac15e9ec0143e"
+      }
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "operation_id": "op_f94a58a86deee2d5591d69273c987c19",
+      "fact_id": "fact:received_termination_packet",
+      "source": {
+        "artifact_id": "src_28cb9cfe735d80bc39e8165731b769a5",
+        "end_char": 423,
+        "offset_unit": "unicode_code_point",
+        "quote": "Kündigung des Mietverhältnisses\nMietobjekt: Wohnung gemäss bestehendem Mietvertrag\nZollikerstrasse 67, 8008 Zürich\nGuten Tag\nHiermit kündigen wir das bestehende Mietverhältnis auf den nächstmöglichen\nvertraglichen Termin.\nKündigungsfrist\ndrei Monate nach Zugang",
+        "sha256": "dcce8ab16b65340dc19ee110648685a22880473019f38b912f2f2e370a8dde14",
+        "start_char": 162,
+        "text_sha256": "70b91bd20ac115c19aac3a0fcbf1e1f2863dad5383b712e106ecf087c7ec93e5"
+      },
+      "compact": {
+        "artifact_id": "src_28cb9cfe735d80bc39e8165731b769a5",
+        "end_char": 205,
+        "offset_unit": "unicode_code_point",
+        "quote": "Kündigung des Mietverhältnisses\nMietobjekt:",
+        "sha256": "dcce8ab16b65340dc19ee110648685a22880473019f38b912f2f2e370a8dde14",
+        "start_char": 162,
+        "text_sha256": "70b91bd20ac115c19aac3a0fcbf1e1f2863dad5383b712e106ecf087c7ec93e5"
+      },
+      "inspection": {
+        "artifact_id": "src_28cb9cfe735d80bc39e8165731b769a5",
+        "end_char": 423,
+        "offset_unit": "unicode_code_point",
+        "quote": "Kündigung des Mietverhältnisses\nMietobjekt: Wohnung gemäss bestehendem Mietvertrag\nZollikerstrasse 67, 8008 Zürich\nGuten Tag\nHiermit kündigen wir das bestehende Mietverhältnis auf den nächstmöglichen\nvertraglichen Termin.\nKündigungsfrist\ndrei Monate nach Zugang",
+        "sha256": "dcce8ab16b65340dc19ee110648685a22880473019f38b912f2f2e370a8dde14",
+        "start_char": 162,
+        "text_sha256": "70b91bd20ac115c19aac3a0fcbf1e1f2863dad5383b712e106ecf087c7ec93e5"
+      }
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "operation_id": "op_09f96c26143b14ef732f10e9d79538e4",
+      "fact_id": "fact:original_notification_context",
+      "source": {
+        "artifact_id": "src_96bc67f0bfcc8663acf4aa2f86bf10a4",
+        "end_char": 425,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich. On2026-05-04T11:00:00+02:00 we transmitted the sole plain termination PDF identified above toSimon Steiner's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469",
+        "start_char": 95,
+        "text_sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469"
+      },
+      "compact": {
+        "artifact_id": "src_96bc67f0bfcc8663acf4aa2f86bf10a4",
+        "end_char": 142,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Limmat Verwaltungs GmbH: we",
+        "sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469",
+        "start_char": 95,
+        "text_sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469"
+      },
+      "inspection": {
+        "artifact_id": "src_96bc67f0bfcc8663acf4aa2f86bf10a4",
+        "end_char": 425,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich. On2026-05-04T11:00:00+02:00 we transmitted the sole plain termination PDF identified above toSimon Steiner's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469",
+        "start_char": 95,
+        "text_sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469"
+      }
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "operation_id": "op_ecf55e9b1ba9348cd39e03791ca0abd2",
+      "fact_id": "issuer_authority_and_received_packet",
+      "source": {
+        "artifact_id": "src_96bc67f0bfcc8663acf4aa2f86bf10a4",
+        "end_char": 425,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich. On2026-05-04T11:00:00+02:00 we transmitted the sole plain termination PDF identified above toSimon Steiner's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469",
+        "start_char": 95,
+        "text_sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469"
+      },
+      "compact": {
+        "artifact_id": "src_96bc67f0bfcc8663acf4aa2f86bf10a4",
+        "end_char": 142,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Limmat Verwaltungs GmbH: we",
+        "sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469",
+        "start_char": 95,
+        "text_sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469"
+      },
+      "inspection": {
+        "artifact_id": "src_96bc67f0bfcc8663acf4aa2f86bf10a4",
+        "end_char": 425,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Limmat Verwaltungs GmbH: we were authorized to issue landlord communications forZollikerstrasse 67, 8008 Zurich. On2026-05-04T11:00:00+02:00 we transmitted the sole plain termination PDF identified above toSimon Steiner's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469",
+        "start_char": 95,
+        "text_sha256": "af3b5810dc9ba67ca288c4542732046b96641a76e84179ba942eee0214cef469"
+      }
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "operation_id": "op_5846d9183aaf7f4f51ccd5f147660dc1",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_5d8ceb740a1e48c3148d148dffd96bdf",
+        "end_char": 434,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Nina Steiner, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 48, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+        "sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0",
+        "start_char": 95,
+        "text_sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0"
+      },
+      "compact": {
+        "artifact_id": "src_5d8ceb740a1e48c3148d148dffd96bdf",
+        "end_char": 305,
+        "offset_unit": "unicode_code_point",
+        "quote": "CHF1650",
+        "sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0",
+        "start_char": 298,
+        "text_sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0"
+      },
+      "inspection": {
+        "artifact_id": "src_5d8ceb740a1e48c3148d148dffd96bdf",
+        "end_char": 377,
+        "offset_unit": "unicode_code_point",
+        "quote": "monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump.",
+        "sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0",
+        "start_char": 278,
+        "text_sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0"
+      }
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "operation_id": "op_a33751e35229db2cf34d9dfa0d61f714",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_5d8ceb740a1e48c3148d148dffd96bdf",
+        "end_char": 434,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Nina Steiner, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 48, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1650; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+        "sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0",
+        "start_char": 95,
+        "text_sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0"
+      },
+      "compact": {
+        "artifact_id": "src_5d8ceb740a1e48c3148d148dffd96bdf",
+        "end_char": 134,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Nina Steiner, am the tenant under an",
+        "sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0",
+        "start_char": 95,
+        "text_sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0"
+      },
+      "inspection": {
+        "artifact_id": "src_5d8ceb740a1e48c3148d148dffd96bdf",
+        "end_char": 227,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Nina Steiner, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 48, 8008 Zurich, canton Zurich.",
+        "sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0",
+        "start_char": 95,
+        "text_sha256": "3589eeb27828e5e11a952f81c67f869024e31e66ddf7b3e907214711930ffca0"
+      }
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "operation_id": "op_5c078da8e21de24f2c57085fd55e343c",
+      "fact_id": "fact:objective_defect_observation",
+      "source": {
+        "artifact_id": "src_6bb5911281fe0fabdace6c41e247b25e",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "On 2025-01-30 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at16.1C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a",
+        "start_char": 199,
+        "text_sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a"
+      },
+      "compact": {
+        "artifact_id": "src_6bb5911281fe0fabdace6c41e247b25e",
+        "end_char": 334,
+        "offset_unit": "unicode_code_point",
+        "quote": "16.1C",
+        "sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a",
+        "start_char": 329,
+        "text_sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a"
+      },
+      "inspection": {
+        "artifact_id": "src_6bb5911281fe0fabdace6c41e247b25e",
+        "end_char": 368,
+        "offset_unit": "unicode_code_point",
+        "quote": "measured the living room at16.1C after overnight normal operation.",
+        "sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a",
+        "start_char": 302,
+        "text_sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a"
+      }
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "operation_id": "op_ebbf461f5b8213267fe0a83675a92a8b",
+      "fact_id": "fact:landlord_knowledge_evidence",
+      "source": {
+        "artifact_id": "src_74fde318eb71f96b9cef43a0538a581b",
+        "end_char": 494,
+        "offset_unit": "unicode_code_point",
+        "quote": "Our call log records Nina Steiner's three heating-failure reports on 2025-01-21, 2025-01-24, 2025-01-28. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-21; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916",
+        "start_char": 193,
+        "text_sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916"
+      },
+      "compact": {
+        "artifact_id": "src_74fde318eb71f96b9cef43a0538a581b",
+        "end_char": 258,
+        "offset_unit": "unicode_code_point",
+        "quote": "three heating-failure reports",
+        "sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916",
+        "start_char": 229,
+        "text_sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916"
+      },
+      "inspection": {
+        "artifact_id": "src_74fde318eb71f96b9cef43a0538a581b",
+        "end_char": 297,
+        "offset_unit": "unicode_code_point",
+        "quote": "call log records Nina Steiner's three heating-failure reports on 2025-01-21, 2025-01-24, 2025-01-28.",
+        "sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916",
+        "start_char": 197,
+        "text_sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916"
+      }
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "operation_id": "op_6ac21d032eaeb977895cbc6e1187c158",
+      "fact_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+      "source": {
+        "artifact_id": "src_6bb5911281fe0fabdace6c41e247b25e",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "On 2025-01-30 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at16.1C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a",
+        "start_char": 199,
+        "text_sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a"
+      },
+      "compact": {
+        "artifact_id": "src_6bb5911281fe0fabdace6c41e247b25e",
+        "end_char": 650,
+        "offset_unit": "unicode_code_point",
+        "quote": "outside ordinary small tenant maintenance.",
+        "sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a",
+        "start_char": 608,
+        "text_sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a"
+      },
+      "inspection": {
+        "artifact_id": "src_6bb5911281fe0fabdace6c41e247b25e",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a",
+        "start_char": 608,
+        "text_sha256": "6124624a08dcc04ec83492b11790c02429065890815d894bd851766c325afb8a"
+      }
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "operation_id": "op_ff59a76cd8d8cdb2333e7008a421b749",
+      "fact_id": "landlord_first_knowledge",
+      "source": {
+        "artifact_id": "src_74fde318eb71f96b9cef43a0538a581b",
+        "end_char": 494,
+        "offset_unit": "unicode_code_point",
+        "quote": "Our call log records Nina Steiner's three heating-failure reports on 2025-01-21, 2025-01-24, 2025-01-28. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-21; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916",
+        "start_char": 193,
+        "text_sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916"
+      },
+      "compact": {
+        "artifact_id": "src_74fde318eb71f96b9cef43a0538a581b",
+        "end_char": 434,
+        "offset_unit": "unicode_code_point",
+        "quote": "We received the first report on2025-01-21; this",
+        "sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916",
+        "start_char": 387,
+        "text_sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916"
+      },
+      "inspection": {
+        "artifact_id": "src_74fde318eb71f96b9cef43a0538a581b",
+        "end_char": 494,
+        "offset_unit": "unicode_code_point",
+        "quote": "We received the first report on2025-01-21; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916",
+        "start_char": 387,
+        "text_sha256": "691c9cd457b5f4d11106706eea705cd9d0c1c5186eadaa3e1dcd3660b702c916"
+      }
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "operation_id": "op_1bf277da5cd81137ff2dd5d5a5f1485e",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_df3bf789ae620637c09bda3631df9c10",
+        "end_char": 401,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich. Riva Hausverwaltung GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96",
+        "start_char": 95,
+        "text_sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96"
+      },
+      "compact": {
+        "artifact_id": "src_df3bf789ae620637c09bda3631df9c10",
+        "end_char": 126,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Lea Meier, rent the dwelling",
+        "sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96",
+        "start_char": 95,
+        "text_sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96"
+      },
+      "inspection": {
+        "artifact_id": "src_df3bf789ae620637c09bda3631df9c10",
+        "end_char": 401,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich. Riva Hausverwaltung GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96",
+        "start_char": 95,
+        "text_sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96"
+      }
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "operation_id": "op_4e4ff4f0b60fc3c469eb066638efbae2",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_df3bf789ae620637c09bda3631df9c10",
+        "end_char": 401,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich. Riva Hausverwaltung GmbH is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+        "sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96",
+        "start_char": 95,
+        "text_sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96"
+      },
+      "compact": {
+        "artifact_id": "src_df3bf789ae620637c09bda3631df9c10",
+        "end_char": 126,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Lea Meier, rent the dwelling",
+        "sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96",
+        "start_char": 95,
+        "text_sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96"
+      },
+      "inspection": {
+        "artifact_id": "src_df3bf789ae620637c09bda3631df9c10",
+        "end_char": 216,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Lea Meier, rent the dwelling atZollikerstrasse 58, 8008 Zurich under an indefinite residential lease in canton Zurich.",
+        "sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96",
+        "start_char": 95,
+        "text_sha256": "6dd6527016eec947a221797264e2a043fd62b8a3d6fad1a3882a2c8df0eceb96"
+      }
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "operation_id": "op_d6728e5dc31d333efea476c3e5b59d00",
+      "fact_id": "fact:received_termination_packet",
+      "source": {
+        "artifact_id": "src_c894adfee47806baef0349399b34ff1d",
+        "end_char": 421,
+        "offset_unit": "unicode_code_point",
+        "quote": "Kündigung des Mietverhältnisses\nMietobjekt: Wohnung gemäss bestehendem Mietvertrag\nZollikerstrasse 58, 8008 Zürich\nGuten Tag\nHiermit kündigen wir das bestehende Mietverhältnis auf den nächstmöglichen\nvertraglichen Termin.\nKündigungsfrist\ndrei Monate nach Zugang",
+        "sha256": "5f45d2478ce71ac4085e07b45b081a623850cc157e9ca58bd48a5725cb586566",
+        "start_char": 160,
+        "text_sha256": "4160f2130f59393d5da39cd53201e225374da95dc4e2364c57d5e8d14fd401d1"
+      },
+      "compact": {
+        "artifact_id": "src_c894adfee47806baef0349399b34ff1d",
+        "end_char": 203,
+        "offset_unit": "unicode_code_point",
+        "quote": "Kündigung des Mietverhältnisses\nMietobjekt:",
+        "sha256": "5f45d2478ce71ac4085e07b45b081a623850cc157e9ca58bd48a5725cb586566",
+        "start_char": 160,
+        "text_sha256": "4160f2130f59393d5da39cd53201e225374da95dc4e2364c57d5e8d14fd401d1"
+      },
+      "inspection": {
+        "artifact_id": "src_c894adfee47806baef0349399b34ff1d",
+        "end_char": 421,
+        "offset_unit": "unicode_code_point",
+        "quote": "Kündigung des Mietverhältnisses\nMietobjekt: Wohnung gemäss bestehendem Mietvertrag\nZollikerstrasse 58, 8008 Zürich\nGuten Tag\nHiermit kündigen wir das bestehende Mietverhältnis auf den nächstmöglichen\nvertraglichen Termin.\nKündigungsfrist\ndrei Monate nach Zugang",
+        "sha256": "5f45d2478ce71ac4085e07b45b081a623850cc157e9ca58bd48a5725cb586566",
+        "start_char": 160,
+        "text_sha256": "4160f2130f59393d5da39cd53201e225374da95dc4e2364c57d5e8d14fd401d1"
+      }
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "operation_id": "op_0833cf7a3b93ac1412f0f59a9f2902be",
+      "fact_id": "fact:original_notification_context",
+      "source": {
+        "artifact_id": "src_13243f1c138a292bbd285f401adf25ce",
+        "end_char": 422,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Riva Hausverwaltung GmbH: we were authorized to issue landlord communications forZollikerstrasse 58, 8008 Zurich. On2026-05-08T10:00:00+02:00 we transmitted the sole plain termination PDF identified above toLea Meier's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff",
+        "start_char": 95,
+        "text_sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff"
+      },
+      "compact": {
+        "artifact_id": "src_13243f1c138a292bbd285f401adf25ce",
+        "end_char": 140,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Riva Hausverwaltung GmbH:",
+        "sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff",
+        "start_char": 95,
+        "text_sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff"
+      },
+      "inspection": {
+        "artifact_id": "src_13243f1c138a292bbd285f401adf25ce",
+        "end_char": 422,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Riva Hausverwaltung GmbH: we were authorized to issue landlord communications forZollikerstrasse 58, 8008 Zurich. On2026-05-08T10:00:00+02:00 we transmitted the sole plain termination PDF identified above toLea Meier's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff",
+        "start_char": 95,
+        "text_sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff"
+      }
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "operation_id": "op_ed9a62d9f534fd360b92556eca3deda0",
+      "fact_id": "issuer_authority_and_received_packet",
+      "source": {
+        "artifact_id": "src_13243f1c138a292bbd285f401adf25ce",
+        "end_char": 422,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Riva Hausverwaltung GmbH: we were authorized to issue landlord communications forZollikerstrasse 58, 8008 Zurich. On2026-05-08T10:00:00+02:00 we transmitted the sole plain termination PDF identified above toLea Meier's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff",
+        "start_char": 95,
+        "text_sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff"
+      },
+      "compact": {
+        "artifact_id": "src_13243f1c138a292bbd285f401adf25ce",
+        "end_char": 140,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Riva Hausverwaltung GmbH:",
+        "sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff",
+        "start_char": 95,
+        "text_sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff"
+      },
+      "inspection": {
+        "artifact_id": "src_13243f1c138a292bbd285f401adf25ce",
+        "end_char": 422,
+        "offset_unit": "unicode_code_point",
+        "quote": "Issuance archive of Riva Hausverwaltung GmbH: we were authorized to issue landlord communications forZollikerstrasse 58, 8008 Zurich. On2026-05-08T10:00:00+02:00 we transmitted the sole plain termination PDF identified above toLea Meier's current email account, and the email delivery/open record confirms receipt at that time.",
+        "sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff",
+        "start_char": 95,
+        "text_sha256": "b11a21b5c48097e59520fa7ed8f425c23f0bf43afe39c45377104264871f31ff"
+      }
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "operation_id": "op_6746b263c89eb93156a176abf440a869",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+        "end_char": 508,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+        "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+        "start_char": 95,
+        "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+      },
+      "compact": {
+        "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+        "end_char": 344,
+        "offset_unit": "unicode_code_point",
+        "quote": "CHF1850",
+        "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+        "start_char": 337,
+        "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+      },
+      "inspection": {
+        "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+        "end_char": 426,
+        "offset_unit": "unicode_code_point",
+        "quote": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+        "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+        "start_char": 309,
+        "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+      }
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "operation_id": "op_c297e6ac874e92f464e929e6dfbd45fa",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+        "end_char": 508,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+        "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+        "start_char": 95,
+        "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+      },
+      "compact": {
+        "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+        "end_char": 129,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Elin Ziegler, rent the dwelling",
+        "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+        "start_char": 95,
+        "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+      },
+      "inspection": {
+        "artifact_id": "src_9d46c7702b4a255f2586f0564986e880",
+        "end_char": 227,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Elin Ziegler, rent the dwelling atSeefeldstrasse 67, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich.",
+        "sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f",
+        "start_char": 95,
+        "text_sha256": "9f2cb4a761da63dbed499d207f25fd7778f3b1e4a7bd890492786da7e974735f"
+      }
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "operation_id": "op_5b1812743e3f12634d66102f463b1384",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c",
+        "end_char": 506,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Drew Shaw, rent the dwelling atZollikerstrasse 11, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+        "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+        "start_char": 95,
+        "text_sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"
+      },
+      "compact": {
+        "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c",
+        "end_char": 342,
+        "offset_unit": "unicode_code_point",
+        "quote": "CHF1850",
+        "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+        "start_char": 335,
+        "text_sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"
+      },
+      "inspection": {
+        "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c",
+        "end_char": 424,
+        "offset_unit": "unicode_code_point",
+        "quote": "Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090.",
+        "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+        "start_char": 307,
+        "text_sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"
+      }
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "operation_id": "op_7dea15301766c27f927f51426425b3ce",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c",
+        "end_char": 506,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Drew Shaw, rent the dwelling atZollikerstrasse 11, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+        "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+        "start_char": 95,
+        "text_sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"
+      },
+      "compact": {
+        "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c",
+        "end_char": 126,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Drew Shaw, rent the dwelling",
+        "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+        "start_char": 95,
+        "text_sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"
+      },
+      "inspection": {
+        "artifact_id": "src_7cc0cf1a55319c24ca61d6fab075aa4c",
+        "end_char": 225,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Drew Shaw, rent the dwelling atZollikerstrasse 11, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich.",
+        "sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4",
+        "start_char": 95,
+        "text_sha256": "a80464834b0af6f726ffaacd28409cbe37d5ec6b8d21fe3be925ccb55252d9d4"
+      }
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "operation_id": "op_3d30f9e13eb94e18f1ee1bca99922a9a",
+      "fact_id": "fact:tenancy_terms_evidence",
+      "source": {
+        "artifact_id": "src_d29e2ebfb060212c953ddb46c1a7ed94",
+        "end_char": 431,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Nina Frei, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 88, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1920; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+        "sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317",
+        "start_char": 95,
+        "text_sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317"
+      },
+      "compact": {
+        "artifact_id": "src_d29e2ebfb060212c953ddb46c1a7ed94",
+        "end_char": 302,
+        "offset_unit": "unicode_code_point",
+        "quote": "CHF1920",
+        "sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317",
+        "start_char": 295,
+        "text_sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317"
+      },
+      "inspection": {
+        "artifact_id": "src_d29e2ebfb060212c953ddb46c1a7ed94",
+        "end_char": 374,
+        "offset_unit": "unicode_code_point",
+        "quote": "monthly net rent is CHF1920; the landlord maintains the fixed central heating and circulation pump.",
+        "sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317",
+        "start_char": 275,
+        "text_sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317"
+      }
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "operation_id": "op_1fdc2353d4e83427d20db456459c37f6",
+      "fact_id": "residential_tenancy_scope",
+      "source": {
+        "artifact_id": "src_d29e2ebfb060212c953ddb46c1a7ed94",
+        "end_char": 431,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Nina Frei, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 88, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1920; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+        "sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317",
+        "start_char": 95,
+        "text_sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317"
+      },
+      "compact": {
+        "artifact_id": "src_d29e2ebfb060212c953ddb46c1a7ed94",
+        "end_char": 142,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Nina Frei, am the tenant under an indefinite",
+        "sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317",
+        "start_char": 95,
+        "text_sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317"
+      },
+      "inspection": {
+        "artifact_id": "src_d29e2ebfb060212c953ddb46c1a7ed94",
+        "end_char": 224,
+        "offset_unit": "unicode_code_point",
+        "quote": "I, Nina Frei, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 88, 8008 Zurich, canton Zurich.",
+        "sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317",
+        "start_char": 95,
+        "text_sha256": "3d0bbab0966ae98a55c50e444c4700db6b2e6c99666be6ac40de96854aae4317"
+      }
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "operation_id": "op_789d0d0d9ae59832a068a0ee6963943f",
+      "fact_id": "fact:objective_defect_observation",
+      "source": {
+        "artifact_id": "src_cd4f4e11498b632a198f90b0f5a2c210",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "On 2025-02-06 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.9C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8",
+        "start_char": 199,
+        "text_sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8"
+      },
+      "compact": {
+        "artifact_id": "src_cd4f4e11498b632a198f90b0f5a2c210",
+        "end_char": 334,
+        "offset_unit": "unicode_code_point",
+        "quote": "15.9C",
+        "sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8",
+        "start_char": 329,
+        "text_sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8"
+      },
+      "inspection": {
+        "artifact_id": "src_cd4f4e11498b632a198f90b0f5a2c210",
+        "end_char": 368,
+        "offset_unit": "unicode_code_point",
+        "quote": "measured the living room at15.9C after overnight normal operation.",
+        "sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8",
+        "start_char": 302,
+        "text_sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8"
+      }
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "operation_id": "op_bb59e8c5e177592228a013151e875827",
+      "fact_id": "fact:landlord_knowledge_evidence",
+      "source": {
+        "artifact_id": "src_7b01d66be013d290ccb13b4d54ad4f0e",
+        "end_char": 491,
+        "offset_unit": "unicode_code_point",
+        "quote": "Our call log records Nina Frei's three heating-failure reports on 2025-01-17, 2025-01-24, 2025-02-02. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-17; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761",
+        "start_char": 193,
+        "text_sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761"
+      },
+      "compact": {
+        "artifact_id": "src_7b01d66be013d290ccb13b4d54ad4f0e",
+        "end_char": 255,
+        "offset_unit": "unicode_code_point",
+        "quote": "three heating-failure reports",
+        "sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761",
+        "start_char": 226,
+        "text_sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761"
+      },
+      "inspection": {
+        "artifact_id": "src_7b01d66be013d290ccb13b4d54ad4f0e",
+        "end_char": 294,
+        "offset_unit": "unicode_code_point",
+        "quote": "call log records Nina Frei's three heating-failure reports on 2025-01-17, 2025-01-24, 2025-02-02.",
+        "sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761",
+        "start_char": 197,
+        "text_sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761"
+      }
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "operation_id": "op_4dc6c54c774965a557f9ad0fa2cab5e2",
+      "fact_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+      "source": {
+        "artifact_id": "src_cd4f4e11498b632a198f90b0f5a2c210",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "On 2025-02-06 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.9C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8",
+        "start_char": 199,
+        "text_sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8"
+      },
+      "compact": {
+        "artifact_id": "src_cd4f4e11498b632a198f90b0f5a2c210",
+        "end_char": 650,
+        "offset_unit": "unicode_code_point",
+        "quote": "outside ordinary small tenant maintenance.",
+        "sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8",
+        "start_char": 608,
+        "text_sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8"
+      },
+      "inspection": {
+        "artifact_id": "src_cd4f4e11498b632a198f90b0f5a2c210",
+        "end_char": 764,
+        "offset_unit": "unicode_code_point",
+        "quote": "outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+        "sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8",
+        "start_char": 608,
+        "text_sha256": "f3a6ac61d2a261e5ce8c4681784eef8a343297ed474f0ffada8d904c1beac2b8"
+      }
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "operation_id": "op_3c344ec19376fff41f2c90baee362599",
+      "fact_id": "landlord_first_knowledge",
+      "source": {
+        "artifact_id": "src_7b01d66be013d290ccb13b4d54ad4f0e",
+        "end_char": 491,
+        "offset_unit": "unicode_code_point",
+        "quote": "Our call log records Nina Frei's three heating-failure reports on 2025-01-17, 2025-01-24, 2025-02-02. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-01-17; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761",
+        "start_char": 193,
+        "text_sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761"
+      },
+      "compact": {
+        "artifact_id": "src_7b01d66be013d290ccb13b4d54ad4f0e",
+        "end_char": 431,
+        "offset_unit": "unicode_code_point",
+        "quote": "We received the first report on2025-01-17; this",
+        "sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761",
+        "start_char": 384,
+        "text_sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761"
+      },
+      "inspection": {
+        "artifact_id": "src_7b01d66be013d290ccb13b4d54ad4f0e",
+        "end_char": 491,
+        "offset_unit": "unicode_code_point",
+        "quote": "We received the first report on2025-01-17; this is the landlord's first documented knowledge of the defect.",
+        "sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761",
+        "start_char": 384,
+        "text_sha256": "a09b657cef7653c9df2239ce4df5b41c6dd7d532348297daa3e56de8512fa761"
+      }
+    }
+  ]
+}

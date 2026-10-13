@@ -1,0 +1,21 @@
+{
+  "base": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "candidate": "eb8e438574ae3be48ad1a4a5b9a5d6a9482d9496",
+  "branch": "codex/casepath-operation-stage-20261013",
+  "hostname": "656813ef2295",
+  "worker_model": "gpt-6.1-sol",
+  "reasoning_effort": "xhigh",
+  "changed_files": [
+    "casepath-qa/autonomous-workspace-v1.test.cjs",
+    "casepath-qa/unified-product-browser-v1.test.cjs",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js"
+  ],
+  "source_sha256": {
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "0b7214fd3f374c07d20b2ec144fdc06a9c5604203c44e4f7b8da2fa0e1a73665",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "612e7c5af986be7dd99bc01641333953026c123924c6b9d893bb8b642662df4e",
+    "casepath/assets/autonomous-workspace-v1.css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+    "casepath/assets/autonomous-workspace-v1.js": "88c4fae87429252edd0221664d21858dcc42b5726874f446b5ef2bce838841a4"
+  },
+  "disclosure": "Cloud deterministic native fixtures; not production-head/browser verification. Index query hashes and source seal remain Mac-owned. No full suite or deployment."
+}

@@ -1,0 +1,70 @@
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x1000 (9546.700425ms)
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (7485.648763ms)
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1280x800 (7741.051272ms)
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 390x844 (7465.098007ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 32737.642671
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2545:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x1000 (9546.700425ms)
+  AssertionError [ERR_ASSERTION]: actual nodes retain readable labels and native short-desktop or mobile target sizes
+      at TestContext.<anonymous> (/workspace/casepath-operations-frontend-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2553:206)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2545:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (7485.648763ms)
+  AssertionError [ERR_ASSERTION]: actual nodes retain readable labels and native short-desktop or mobile target sizes
+      at TestContext.<anonymous> (/workspace/casepath-operations-frontend-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2553:206)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2545:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1280x800 (7741.051272ms)
+  AssertionError [ERR_ASSERTION]: every actual node is readable within the initial desktop viewport
+      at TestContext.<anonymous> (/workspace/casepath-operations-frontend-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2553:843)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2545:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 390x844 (7465.098007ms)
+  AssertionError [ERR_ASSERTION]: actual nodes retain readable labels and native short-desktop or mobile target sizes
+      at TestContext.<anonymous> (/workspace/casepath-operations-frontend-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2553:206)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

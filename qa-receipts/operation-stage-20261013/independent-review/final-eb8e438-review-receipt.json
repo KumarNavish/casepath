@@ -1,0 +1,102 @@
+{
+  "reviewed_commit": "eb8e438574ae3be48ad1a4a5b9a5d6a9482d9496",
+  "against_commit": "ccef2141066e9766f1c0b3cffce6a2021e915f64",
+  "timestamp_utc": "2026-10-13T17:19:43.908240+00:00",
+  "decision": "APPROVED for the bounded code/native rendering review; ccef sole blocker corrected.",
+  "scope": "One production JS line selecting compact active-stage fact ink and one added existing-module regression. CSS, source/consumer/authority/checkpoint/cancellation/anchor paths unchanged.",
+  "source_receipt": {
+    "commit": "eb8e438574ae3be48ad1a4a5b9a5d6a9482d9496",
+    "base": "ccef2141066e9766f1c0b3cffce6a2021e915f64",
+    "timestamp_utc": "2026-10-13T17:18:15.699377+00:00",
+    "host": "656813ef2295",
+    "branch": "codex/casepath-operation-stage-20261013",
+    "observed_head": "eb8e438574ae3be48ad1a4a5b9a5d6a9482d9496",
+    "tracked_status": "",
+    "changed_paths": [
+      "casepath-qa/autonomous-workspace-v1.test.cjs",
+      "casepath/assets/autonomous-workspace-v1.js"
+    ],
+    "files": [
+      {
+        "path": "casepath/assets/autonomous-workspace-v1.js",
+        "bytes": 394814,
+        "sha256": "88c4fae87429252edd0221664d21858dcc42b5726874f446b5ef2bce838841a4",
+        "snapshot": "/workspace/op-stage-review-20261013/eb8e438-autonomous-workspace-v1.js"
+      },
+      {
+        "path": "casepath/assets/autonomous-workspace-v1.css",
+        "bytes": 221080,
+        "sha256": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "snapshot": "/workspace/op-stage-review-20261013/eb8e438-autonomous-workspace-v1.css"
+      },
+      {
+        "path": "casepath-qa/autonomous-workspace-v1.test.cjs",
+        "bytes": 289060,
+        "sha256": "0b7214fd3f374c07d20b2ec144fdc06a9c5604203c44e4f7b8da2fa0e1a73665",
+        "snapshot": "/workspace/op-stage-review-20261013/eb8e438-autonomous-workspace-v1.test.cjs"
+      }
+    ],
+    "diff_sha256": "99ab2a75b111b5caab60c85ec9fb4610801dcabc6a3783e7e8ea05cf621aa0c6",
+    "receipt_correction": "Initial attempted immutable source capture used a mistaken casepath-site prefix. Corrected paths are casepath/assets, read via git-show; initial incomplete receipt retained. No source edits or source changes."
+  },
+  "resolved_finding": {
+    "previous_receipt": "/workspace/op-stage-review-20261013/ccef214-review-receipt.json",
+    "correction": "Active stage fact.extract ink uses the same compact stageFactSpan as the flight. Other read kinds and full native citation/History remain unchanged.",
+    "correct_source_path": "casepath/assets/autonomous-workspace-v1.js:1375",
+    "previous_receipt_path_note": "Earlier ccef finding used casepath-site as a mistaken path prefix; the line and behavioral finding refer to casepath/assets."
+  },
+  "targeted_test": {
+    "command": [
+      "node",
+      "--test",
+      "--test-name-pattern=^a stage fact lifts the same exact compact Unicode subspan",
+      "casepath-qa/autonomous-workspace-v1.test.cjs"
+    ],
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "exit_code": 0,
+    "duration_s": 0.14250489400001243,
+    "log": "/workspace/op-stage-review-20261013/targeted-eb8e438-exact-origin-test.log"
+  },
+  "native_chf_origin": {
+    "status": "passed",
+    "commit": "eb8e438574ae3be48ad1a4a5b9a5d6a9482d9496",
+    "js_sha256": "88c4fae87429252edd0221664d21858dcc42b5726874f446b5ef2bce838841a4",
+    "sidecar_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+    "claim_id": "clm_314f2d309fea25e6",
+    "operation_id": "op_d867690b64a42823c40957aa759afb0a",
+    "source_artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+    "source_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+    "source_text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+    "marked_span": {
+      "start_char": 298,
+      "end_char": 305,
+      "quote": "CHF1800"
+    },
+    "flight_span": {
+      "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+      "end_char": 305,
+      "offset_unit": "unicode_code_point",
+      "quote": "CHF1800",
+      "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+      "start_char": 298,
+      "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+    },
+    "full_native_pin": {
+      "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+      "end_char": 434,
+      "offset_unit": "unicode_code_point",
+      "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+      "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+      "start_char": 95,
+      "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+    },
+    "full_pin_identity_preserved": true,
+    "basis": "Narrow pure rendering-helper reproduction using the unchanged native op/source. Actual DOM motion capture belongs to frontend owner; no full native consumer or engine replay repeated."
+  },
+  "retained_proofs": [
+    "/workspace/op-stage-review-20261013/ccef214-native-compact-pins.json",
+    "/workspace/op-stage-review-20261013/native-86dbcd0-opening-anchor-review.log",
+    "/workspace/op-stage-review-20261013/native-2edecab-stage-review.json"
+  ],
+  "limits": "No repeated49-pair or full4653-operation audit. No full suite, providers, production, source edits or visual acceptance claimed. Actual browser motion/body-hash witness, film, frame choice and fresh-reader acceptance belong to frontend owner/parent/Mac."
+}

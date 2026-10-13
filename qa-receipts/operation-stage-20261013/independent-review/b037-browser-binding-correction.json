@@ -1,0 +1,9 @@
+{
+  "time": "2026-10-13T15:56:50.289371+00:00",
+  "corrects": "b037-review-receipt.json limits[1] and reviewer collaboration messages about differing served assets",
+  "observation": "First browser requests include JS7b8ed58/CSS8aa1ffec URL query hashes; these are not fetched body digests.",
+  "classification": "first-browser-response-body-binding-absent-unverified",
+  "conclusion": "No claim that served source bytes differed from committed b037. Visible stage proves new stage markup, but exact response-body binding is absent in first receipt. Old index hash query is expected until Mac sealing.",
+  "final_requirement": "Final browser evidence computes SHA256 fetched JS/CSS response bodies equal frozen committed bytes.",
+  "preservation": "Original first-frame receipt and original independent review receipt retained unchanged."
+}

@@ -1,0 +1,79 @@
+{
+  "time": "2026-10-13T16:39:41.602727+00:00",
+  "commit": "2edecab0884b1f800c7b2a324519d6d49c44f605",
+  "base": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "verdict": "changes_required_first_six_scrub_positions",
+  "source_receipt": "2edecab-source-receipt.json",
+  "targeted_tests": {
+    "command": "node --test --test-name-pattern='^(operation source spans preserve|compact operation checkpoints reconstruct|actual working graphs and applicability|stage source context retires|stage clauses retain Unicode|stage attention coalesces|operation scrubbing uses|stage opening keeps)' casepath-qa/autonomous-workspace-v1.test.cjs",
+    "cwd": "/workspace/casepath-operations-frontend-20261013",
+    "exit_code": 0,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "duration_ms": 124.28275
+  },
+  "native_audit": {
+    "command": "REVIEW_JS=/workspace/op-stage-review-20261013/2edecab-autonomous-workspace-v1.js node /workspace/op-stage-review-20261013/native-final-stage-review.cjs",
+    "exit_code": 1,
+    "totals": {
+      "operations": 4653,
+      "checkpoints": 162,
+      "shown": 321,
+      "reading_subspans": 249,
+      "accepted_fills_retained": 99,
+      "peek_checked": 4599
+    },
+    "exact_native_heads": 9,
+    "fact_id_pin_pairs": 49,
+    "uninspectable": 54,
+    "defect": "actual startOperations lacks opening checkpoint; first stored stream checkpoint after_operation6 leaves actual indices0..5 without history inspection anchor; manually seeded module fixture does not cover composition"
+  },
+  "resolved_prior_findings": [
+    "exact source subspan meaning for all18 native fact IDs and49 id/pin variants",
+    "stage forbidden accessible terms",
+    "settled map node selection retains stage",
+    "meaningful transport type18px;14px stage inspect control removed",
+    "source-active metadata reuse",
+    "quiet unrelated-operation source ink retirement without repaint",
+    "historical inspection graph geometry from historical state/trace",
+    "99 displayed accepted completed-node fills retained on exact graph identity",
+    "incoming packet opening quiet and original-message context retained"
+  ],
+  "remaining_limits": [
+    "Native response-body-bound browser frame/input proof belongs to frontend owner and remains pending; no independent visual acceptance claimed.",
+    "No product/test-source edits, providers, production requests, seal or full suite by reviewer.",
+    "Original b037 receipts and URL-query/body-hash correction retained unchanged.",
+    "Original2ed native failure retained; only diagnosed first-operation anchor will be rechecked after a source change."
+  ],
+  "artifacts": {
+    "2edecab-source-receipt.json": {
+      "sha256": "d8f8b4e958239a448383a94220f4fac22feb0503d477c0ace2962c97a01b1890",
+      "bytes": 1044
+    },
+    "2edecab-base-stage.diff": {
+      "sha256": "3e4b79cddfdbb4ea839d41b32883fe4cf242b795b96dae1a067529039169fba1",
+      "bytes": 137955
+    },
+    "2edecab-followup.diff": {
+      "sha256": "2e654a5175a82bb97ac80141d9717023ac2d7948b1cf6156a3ffc8702b203bb4",
+      "bytes": 106251
+    },
+    "targeted-2edecab-stage-tests.log": {
+      "sha256": "c99b137ca15df3639daea65ffccca28c5527268e3ab934b769e3aa5427a7bffb",
+      "bytes": 1099
+    },
+    "native-final-stage-review.cjs": {
+      "sha256": "0f2b600e34e47da8efe44d46f34288315e99dae6771786f75a5b547139107b88",
+      "bytes": 7695
+    },
+    "native-2edecab-stage-review.log": {
+      "sha256": "4eff15758445cabf809de353d31f56e2717e4ca79689ac3a4937cbd3d7bb2aac",
+      "bytes": 74802
+    },
+    "native-2edecab-stage-review.json": {
+      "sha256": "b8d921f8d49a8e4aa28135335177780778f490d48f5d67e9c1667121339e2d87",
+      "bytes": 75074
+    }
+  }
+}

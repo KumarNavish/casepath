@@ -1,0 +1,26 @@
+diff --git a/casepath-qa/autonomous-workspace-v1.test.cjs b/casepath-qa/autonomous-workspace-v1.test.cjs
+index 5b49d95..f29174d 100644
+--- a/casepath-qa/autonomous-workspace-v1.test.cjs
++++ b/casepath-qa/autonomous-workspace-v1.test.cjs
+@@ -1910,3 +1910,8 @@ test('an actually checked stage document receives a named source card inside its
+  const state={...f.baseline,evaluation:{...f.baseline.evaluation,documents:[{document_type:'notice',review_state:'sufficient'}]},obligations:[{document_type:'notice',required_fact_ids:[]}]},node={node_id:'branch',document_types:['notice']},trace={rows:[required,check],current:check,sources:new Map([[source.artifact_id,source]])};const html=ui.stageNodeContents(node,state,trace,null,false);assert.match(html,/au-stage-landing/);assert.match(html,/au-stage-source-name">Delivery attestation/);assert.match(html,/data-au-check-operation="actual-check"/);assert.match(html,/data-au-document-checked="true"/);assert.match(html,/Source checked/);
+  assert.doesNotMatch(ui.stageNodeContents(node,state,{...trace,rows:[required]},null,false),/au-stage-source-name|data-au-check-operation/,'accepted sufficiency cannot replace an absent observed check in operation delivery');assert.equal(ui.stageNodeContents(node,state,{...trace,rows:[check]},null,false),'','a check cannot invent an unobserved requirement slot');
+ });
++
++test('a stage fact lifts the same exact compact Unicode subspan that carries its source ink',()=>{
++ const quote='I, Riley Foster, am the tenant under an indefinite ordinary residential lease. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.',source={artifact_id:'checked-source',file_name:'01-tenancy-clarification.txt',text:'😀 '+quote},pin={artifact_id:source.artifact_id,start_char:2,end_char:2+Array.from(quote).length,quote},op={id:'native-tenancy-fact',kind:'fact.extract',object:{type:'fact',id:'fact:tenancy_terms_evidence'},source:pin,result:{verification_required:false},cause_ids:[]},trace={current:op,rows:[op],sources:new Map([[source.artifact_id,source]])},compact=ui.stageFactSpan(op,true),html=ui.operationReadingMarkup(trace,true);assert.equal(compact.quote,'CHF1800');assert.match(html,new RegExp(`data-au-operation-start-char="${compact.start_char}" data-au-operation-end-char="${compact.end_char}"`));assert.match(html,/>CHF1800<\/mark>/);assert.equal(Array.from(source.text).slice(compact.start_char,compact.end_char).join(''),compact.quote);assert.equal(ui.operationReading(trace).pin,pin,'the full native inspection citation remains unchanged');
++ trace.current={...op,id:'native-matched-phrase',kind:'phrase.match',result:{matched:true}};assert.match(ui.operationReadingMarkup(trace,true),/>monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.<\/mark>/,'ordinary cited reading retains its longer native meaning clause');
++});
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index d38839e..cac8435 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -1372,7 +1372,7 @@
+     const objectLabel = operation.object.label || name(list(trace.working?.graph?.nodes).find(row => row.node_id === operation.object.id)) || name(list(trace.working?.graph?.document_catalog).find(row => row.document_type === operation.object.id)) || name(list(trace.state?.graph?.nodes).find(row => row.node_id === operation.object.id)) || name(list(trace.state?.facts).find(row => row.fact_id === operation.object.id)) || name(list(trace.state?.obligations).find(row => row.obligation_id === operation.object.id || row.document_type === operation.object.id)) || name(list(trace.state?.graph?.document_catalog).find(row => row.document_type === operation.object.id)) || '';
+     const summary = operation.result?.summary || operation.result?.reason || (typeof operation.result?.matched === 'boolean' ? operation.result.matched ? 'Phrase found' : 'Phrase absent' : '');
+     const sourceHTML = value => h(value).replace(/\r/g,'&#13;');
+-    const inkPin = pin ? stage && reading?.active ? stageFactSpan({...operation,source:pin}) : pin : stage && operation.kind === 'source.open' && source ? sourceBodySpan(source) : null;
++    const inkPin = pin ? stage && reading?.active ? stageFactSpan({...operation,source:pin},operation.kind === 'fact.extract') : pin : stage && operation.kind === 'source.open' && source ? sourceBodySpan(source) : null;
+     const body = stage && source && sourceBodySpan(source);
+     const section = (start,end) => body && body.start_char >= start && body.start_char < end ? `${sourceHTML(chars.slice(start,body.start_char).join(''))}<span data-au-source-body-anchor></span>${sourceHTML(chars.slice(body.start_char,end).join(''))}` : sourceHTML(chars.slice(start,end).join(''));
+     const passage = chars ? inkPin ? `${section(0,inkPin.start_char)}<${reading.active ? 'mark' : 'span'} ${reading.active ? 'data-au-operation-span' : 'data-au-operation-read-context'}="${h(reading.id)}" data-au-operation-start-char="${inkPin.start_char}" data-au-operation-end-char="${inkPin.end_char}">${section(inkPin.start_char,inkPin.end_char)}</${reading.active ? 'mark' : 'span'}>${section(inkPin.end_char,chars.length)}` : section(0,chars.length) : '';

@@ -1,0 +1,65 @@
+{
+  "time": "2026-10-13T15:55:30.616617+00:00",
+  "commit": "b037d742fd89cebe71bbe929a85c6c7f081b676f",
+  "base": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "mode": "independent_read_only_source_and_actual_native_consumer",
+  "source_receipt": "b037-source-receipt.json",
+  "command": "REVIEW_JS=/workspace/op-stage-review-20261013/b037-autonomous-workspace-v1.js node /workspace/op-stage-review-20261013/native-stage-review.cjs > /workspace/op-stage-review-20261013/native-b037-stage-review.log 2>&1",
+  "exit_code": 0,
+  "totals": {
+    "operations": 4653,
+    "checkpoints": 162,
+    "shown": 450,
+    "subspans": 351,
+    "retainedInkQuiet": 3030,
+    "forbiddenAria": 423
+  },
+  "findings": [
+    {
+      "id": "stage-aria-terms",
+      "status": "confirmed_sent_writer",
+      "basis": "actual native consumer produced423 forbidden stage aria labels; graphMarkup options.stage suppresses text spans but retains working aria terminology",
+      "source_line": 672
+    },
+    {
+      "id": "stage-type-floor",
+      "status": "confirmed_sent_writer",
+      "basis": "meaningful stage inspect/transport/scrubber fonts14/15/13px",
+      "source": "casepath/assets/autonomous-workspace-v1.css"
+    },
+    {
+      "id": "settled-node-replaces-stage",
+      "status": "confirmed_source_path_sent_writer",
+      "basis": "settled data-au-forming=false bypasses renderSelection forming-only guard; accepted node click replaces whole stage panel with inspectorMarkup",
+      "source_line": 1991
+    },
+    {
+      "id": "quiet-source-ink",
+      "status": "bounded_source_observation_sent_writer_no_visual_stall_claim",
+      "basis": "3030 quiet actual native operations retain last shown active reading; semantically shown non-source operations clear ink; assess no-repaint clearing before unrelated work"
+    }
+  ],
+  "limits": [
+    "No source edits, providers, production requests, seal, full suite or browser acceptance performed.",
+    "Native browser frame proof belongs to frontend worker and has different served asset hashes from exact committed b037; this receipt claims only independent committed-source consumer verification.",
+    "Final candidate must be re-bound after writer refinement."
+  ],
+  "artifacts": {
+    "b037-stage.diff": {
+      "sha256": "f58da6816be0e157b27b0ea3c870b3e285a2900b8b53c20654bd0672b4115751",
+      "bytes": 103755
+    },
+    "b037-source-receipt.json": {
+      "sha256": "0f2cbcf73f644cc3a98f8b70beabdf785491478036d5d90ccb914ae17e69f7d5",
+      "bytes": 713
+    },
+    "native-stage-review.cjs": {
+      "sha256": "13faa4e2b8cb91156635cf8d83ef60a972334834c63ba258d55b363b43f62140",
+      "bytes": 4543
+    },
+    "native-b037-stage-review.log": {
+      "sha256": "604617090de482447dce443057f9f79ef484a6315e16ce288a1dacbd4bb77590",
+      "bytes": 8525
+    }
+  }
+}

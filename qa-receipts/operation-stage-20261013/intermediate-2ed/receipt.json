@@ -1,0 +1,954 @@
+{
+  "commit": "2edecab0884b1f800c7b2a324519d6d49c44f605",
+  "disclosure": "Actual native sidecar fixture, source71-derived new stage, native real-time Chromium, no virtual timers; not published acceptance.",
+  "frames": {
+    "reading": {
+      "operation_id": "op_404355207219891af3593ad08dac2d46",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+      "presentation": "playing",
+      "result_verified": "false",
+      "result_available": "true",
+      "phase": "source",
+      "source": {
+        "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+        "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+        "scroll_top": 286,
+        "text": "Synthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nService author: Mira Keller, building-heating technician.\nProperty: Synthetic Rosenweg 33, 8008 Zurich\n\nOn 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.\n\nThe defect persists at this report's as-of time; no lasting pump repair or replacement has been completed. Heating is inadequate for the contracted winter residential use of the principal living rooms. The proposed remedy is a landlord-arranged pump repair/replacement, with temporary heat while pending. This service finding makes no legal decision and awards no compensation.\n",
+        "rect": {
+          "x": 132,
+          "y": 255.4375,
+          "width": 820,
+          "height": 490,
+          "right": 952,
+          "bottom": 745.4375
+        }
+      },
+      "ink": {
+        "operation_id": "op_404355207219891af3593ad08dac2d46",
+        "start_char": 302,
+        "end_char": 368,
+        "quote": "measured the living room at15.8C after overnight normal operation.",
+        "rect": {
+          "x": 165,
+          "y": 283.4375,
+          "width": 714.875,
+          "height": 59,
+          "right": 879.875,
+          "bottom": 342.4375
+        }
+      },
+      "token": null,
+      "nodes": [],
+      "documents": [],
+      "text": "Cases / Synthetic claim\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · Synthetic sources · No external action · as of 2025-02-21\n\nChoose case\nHistory\nHeating service observation\nSynthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nService author: Mira Keller, building-heating technician.\nProperty: Synthetic Rosenweg 33, 8008 Zurich\n\nOn 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.\n\nThe defect persists at this report's as-of time; no lasting pump repair or replacement has been completed. Heating is inadequate for the contracted winter residential use of the principal living rooms. The proposed remedy is a landlord-arranged pump repair/replacement, with temporary heat while pending. This service finding makes no legal decision and awards no compensation.\n\nPause\nInspect operation\n18 / 18\nSkip to result",
+      "actual_operation": {
+        "cause_ids": [
+          "op_930d99ab94f2ad62bfc4e7d23b6fdcc1"
+        ],
+        "contract": "casepath.operations-stream/1.0.0",
+        "id": "op_404355207219891af3593ad08dac2d46",
+        "input": {
+          "flags": [
+            "DOTALL"
+          ],
+          "pattern": "On [^\\n]+?no tenant alteration or misuse explains the failure\\."
+        },
+        "input_sha256": "3e4acf1d7e05bb7772e55361c95cc5c674e72fee30ada454dec1496d06cfef1d",
+        "journal_seq": 37,
+        "kind": "phrase.match",
+        "object": {
+          "id": "src_000ccf161644df9e82d29a8595b7b727",
+          "type": "source"
+        },
+        "operation_sha256": "61d9b11a0bc5d790d7f9d3010cc52026b91484e9f9c60832761669a72b4d0e77",
+        "previous_operation_sha256": "da214b63240fd832691b8c647de5086bf40254060c8ec3113f0fc961779adddf",
+        "result": {
+          "admissible_length": true,
+          "matched": true
+        },
+        "result_sha256": "c040d7130212810a6d036625f6b7da73e318236f57c52e4815c0a039460d5673",
+        "seq": 18,
+        "source": {
+          "artifact_id": "src_000ccf161644df9e82d29a8595b7b727",
+          "end_char": 764,
+          "offset_unit": "unicode_code_point",
+          "quote": "On 2025-02-21 at07:30, a calibrated digital instrument (calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+          "sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c",
+          "start_char": 199,
+          "text_sha256": "a5e40553523e2dcee2df0f7f1acf40f8743fd93ff0260cf81ee3004ff78e8e1c"
+        },
+        "stage": "interpret_reference",
+        "type": "operation"
+      }
+    },
+    "fact_docking": {
+      "operation_id": "op_d867690b64a42823c40957aa759afb0a",
+      "revision": "39",
+      "state_sha256": "b38be34be9a5d7a4ae5acfed0ba24414c71354d909fc935136670e3a97dfd9b7",
+      "presentation": "playing",
+      "result_verified": "false",
+      "result_available": "true",
+      "phase": "source",
+      "source": {
+        "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+        "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+        "scroll_top": 93,
+        "text": "Synthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nI, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\n\nMy active request is removal of the continuing heating defect and assessment of proportional rent-reduction eligibility from the landlord's first knowledge until remedy. I report no incurred monetary loss, no health-compensation claim, no self-help expense and no deposit/withholding request. The repair is not complete; no reduction percentage or award has been agreed.\n",
+        "rect": {
+          "x": 132,
+          "y": 255.4375,
+          "width": 820,
+          "height": 490,
+          "right": 952,
+          "bottom": 745.4375
+        }
+      },
+      "ink": {
+        "operation_id": "op_d867690b64a42823c40957aa759afb0a",
+        "start_char": 278,
+        "end_char": 377,
+        "quote": "monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+        "rect": {
+          "x": 165,
+          "y": 406.4375,
+          "width": 735.078125,
+          "height": 59,
+          "right": 900.078125,
+          "bottom": 465.4375
+        }
+      },
+      "token": {
+        "operation_id": "op_d867690b64a42823c40957aa759afb0a",
+        "text": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract\nmonthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+        "rect": {
+          "x": 1127.3499755859375,
+          "y": 336.5774841308594,
+          "width": 195,
+          "height": 350.0000305175781,
+          "right": 1322.3499755859375,
+          "bottom": 686.5775146484375
+        },
+        "animations": [
+          {
+            "playState": "running",
+            "currentTime": 249.98299997234597
+          }
+        ]
+      },
+      "nodes": [
+        {
+          "id": "dh_intake",
+          "status": "ready",
+          "rect": {
+            "x": 1094,
+            "y": 180.4375,
+            "width": 224,
+            "height": 66.375,
+            "right": 1318,
+            "bottom": 246.8125
+          }
+        },
+        {
+          "id": "dh_scope",
+          "status": "blocked",
+          "rect": {
+            "x": 1094,
+            "y": 264.8125,
+            "width": 224,
+            "height": 66.375,
+            "right": 1318,
+            "bottom": 331.1875
+          }
+        },
+        {
+          "id": "dh_notice",
+          "status": "blocked",
+          "rect": {
+            "x": 1094,
+            "y": 889.78125,
+            "width": 224,
+            "height": 66.375,
+            "right": 1318,
+            "bottom": 956.15625
+          }
+        },
+        {
+          "id": "dh_cause",
+          "status": "blocked",
+          "rect": {
+            "x": 1094,
+            "y": 1089.046875,
+            "width": 224,
+            "height": 66.375,
+            "right": 1318,
+            "bottom": 1155.421875
+          }
+        },
+        {
+          "id": "dh_evidence",
+          "status": "blocked",
+          "rect": {
+            "x": 1094,
+            "y": 1173.421875,
+            "width": 224,
+            "height": 66.375,
+            "right": 1318,
+            "bottom": 1239.796875
+          }
+        },
+        {
+          "id": "dh_response",
+          "status": "blocked",
+          "rect": {
+            "x": 1094,
+            "y": 1348.390625,
+            "width": 224,
+            "height": 66.375,
+            "right": 1318,
+            "bottom": 1414.765625
+          }
+        }
+      ],
+      "documents": [
+        {
+          "id": "tenancy_terms_evidence",
+          "checked": "true",
+          "operation_id": "op_2143ecba4bff46e544618baae0470bc3"
+        },
+        {
+          "id": "landlord_knowledge_evidence",
+          "checked": "false",
+          "operation_id": "op_9fa27339c317a5a2558a8ff44f45a77f"
+        },
+        {
+          "id": "objective_defect_observation",
+          "checked": "false",
+          "operation_id": "op_7380a292ec1d090124d29b76ff775ce6"
+        }
+      ],
+      "text": "Cases / Synthetic claim\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · Synthetic sources · No external action · as of 2025-02-21\n\nChoose case\nHistory\nCustomer and tenancy clarification\nSynthetic demonstration document (fictional)\nSource date: 2025-02-21\nReview as-of: 2025-02-21\n\nI, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.\n\nMy active request is removal of the continuing heating defect and assessment of proportional rent-reduction eligibility from the landlord's first knowledge until remedy. I report no incurred monetary loss, no health-compensation claim, no self-help expense and no deposit/withholding request. The repair is not complete; no reduction percentage or award has been agreed.\n\n·\nCapture the reported defect\n·\nEstablish relevant tenancy terms\nRelevant residential tenancy terms, parties and dwelling; this is not a complete lease contract\nmonthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.\nRelevant tenancy terms\nmonthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.\n✓\n·\nEstablish landlord knowledge\nLandlord knowledge and continuing repair status\n·\nAssess supported cause\n·\nAssess objective defect evidence\nDated technical defect observation\n·\nRecord repair and rent reduction eligibility\nPause\nInspect operation\n169 / 169\nSkip to result\nRelevant residential tenancy terms, parties and dwelling; this is not a complete lease contract monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump.",
+      "actual_operation": {
+        "cause_ids": [
+          "op_239fff8e940e09cd50d910cbaff753b7",
+          "op_7eb3aa88db8ffa97ede5a9a122c8583c"
+        ],
+        "contract": "casepath.operations-stream/1.0.0",
+        "id": "op_d867690b64a42823c40957aa759afb0a",
+        "input": {
+          "document_type": "tenancy_terms_evidence"
+        },
+        "input_sha256": "c46f234b0859fb7f40c8dc6a04b3c79a3689a922fe79c3b53c0739db6e3bb5f5",
+        "journal_seq": 39,
+        "kind": "fact.extract",
+        "object": {
+          "id": "fact:tenancy_terms_evidence",
+          "type": "fact"
+        },
+        "operation_sha256": "c20d88e94b8c8217d196b736f4b6a50197f73937858ac744c354cd1a756ca3bc",
+        "previous_operation_sha256": "b95e399e6d7690e7e35bb0e7a9520f5785b4b3c4e2ce2d90ac6419e0f1491bc2",
+        "result": {
+          "status": "established",
+          "summary": "Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.",
+          "verification_required": false
+        },
+        "result_sha256": "035f82220318afa1cbe283f594c2badabce0f554771e88bcc929c3feaf598539",
+        "seq": 169,
+        "source": {
+          "artifact_id": "src_106168f9c33152b3d88f02469ad57782",
+          "end_char": 434,
+          "offset_unit": "unicode_code_point",
+          "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+          "sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9",
+          "start_char": 95,
+          "text_sha256": "b43fd882524544b4b860f54eedfe4f1b76fa12b0c7af6502c02b089030d699b9"
+        },
+        "stage": "native_execution",
+        "type": "operation"
+      }
+    },
+    "final_map": {
+      "operation_id": "",
+      "revision": "48",
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "presentation": "completed",
+      "result_verified": "true",
+      "result_available": "true",
+      "phase": "map",
+      "source": null,
+      "ink": null,
+      "token": null,
+      "nodes": [
+        {
+          "id": "dh_intake",
+          "status": "completed",
+          "rect": {
+            "x": 48,
+            "y": 247.4375,
+            "width": 194,
+            "height": 66.375,
+            "right": 242,
+            "bottom": 313.8125
+          }
+        },
+        {
+          "id": "dh_scope",
+          "status": "completed",
+          "rect": {
+            "x": 262,
+            "y": 247.4375,
+            "width": 194,
+            "height": 66.375,
+            "right": 456,
+            "bottom": 313.8125
+          }
+        },
+        {
+          "id": "dh_notice",
+          "status": "completed",
+          "rect": {
+            "x": 476,
+            "y": 247.4375,
+            "width": 194,
+            "height": 66.375,
+            "right": 670,
+            "bottom": 313.8125
+          }
+        },
+        {
+          "id": "dh_cause",
+          "status": "completed",
+          "rect": {
+            "x": 690,
+            "y": 247.4375,
+            "width": 194,
+            "height": 66.375,
+            "right": 884,
+            "bottom": 313.8125
+          }
+        },
+        {
+          "id": "dh_evidence",
+          "status": "completed",
+          "rect": {
+            "x": 904,
+            "y": 247.4375,
+            "width": 194,
+            "height": 66.375,
+            "right": 1098,
+            "bottom": 313.8125
+          }
+        },
+        {
+          "id": "dh_response",
+          "status": "completed",
+          "rect": {
+            "x": 1118,
+            "y": 247.4375,
+            "width": 194,
+            "height": 91.5625,
+            "right": 1312,
+            "bottom": 339
+          }
+        }
+      ],
+      "documents": [
+        {
+          "id": "tenancy_terms_evidence",
+          "checked": "true",
+          "operation_id": "op_2bf563e599103380765889700261280a"
+        },
+        {
+          "id": "landlord_knowledge_evidence",
+          "checked": "true",
+          "operation_id": "op_6f683d47136598efb9d26e69aa4f7b0b"
+        },
+        {
+          "id": "objective_defect_observation",
+          "checked": "true",
+          "operation_id": "op_c380dbf6df838cadfc8261066016a12b"
+        }
+      ],
+      "text": "Cases / Synthetic claim\n\nRepeated heating failure and reported repair calls\n\nLive rules-based check · Synthetic sources · No external action · as of 2025-02-21\n\nChoose case\nHistory\n✓\nCapture the reported defect\n✓\nEstablish relevant tenancy terms\nCHF1800\nRelevant tenancy terms\nCHF1800\n✓\n✓\nEstablish landlord knowledge\nthree heating-failure reports\nLandlord knowledge and continuing repair status\nthree heating-failure reports\n✓\n✓\nAssess supported cause\n✓\nAssess objective defect evidence\n15.8C\nDated technical defect observation\n15.8C\n✓\n✓\nRecord repair and rent reduction eligibility\n\nThe sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.\n\nLegal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)\n\nProcedure reused · Defects and repairs · Version 1\n\nPlay\nInspect operation\n824 / 824"
+    }
+  },
+  "displayed_operations": [
+    {
+      "at_ms": 497,
+      "id": "op_d5939b2d68c20a2636fe628befc35784",
+      "kind": "source.open",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 843,
+      "id": "op_1b1fed6e2f9699e382b607e9c0f1596b",
+      "kind": "phrase.match",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 3517,
+      "id": "op_19abd93d275e383573caedd41b821225",
+      "kind": "phrase.match",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 6264,
+      "id": "op_1715b98c5f009b94cad03526c1c661be",
+      "kind": "fact.extract",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 7535,
+      "id": "op_71551c6b86a6ffc9d77423b4ef842dea",
+      "kind": "fact.extract",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 8878,
+      "id": "op_b13a3045a34649de925f1e9ccfd57e0d",
+      "kind": "source.open",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 9278,
+      "id": "op_404355207219891af3593ad08dac2d46",
+      "kind": "phrase.match",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 11215,
+      "id": "op_e09ce37007c0543df7cfaf665abce94d",
+      "kind": "phrase.match",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 15253,
+      "id": "op_2049d0a24629fa4a659b417200b67353",
+      "kind": "source.open",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 15663,
+      "id": "op_a9a96b57d945731735e03dec7e05f71e",
+      "kind": "phrase.match",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 18429,
+      "id": "op_0f70d11251821b4fe926a0c076df31c1",
+      "kind": "phrase.match",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 22569,
+      "id": "op_12368bafbf1e6c58a43a2a13af446bcb",
+      "kind": "fact.extract",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 23843,
+      "id": "op_31bcd3404de1cb6592883fb7509d9cfc",
+      "kind": "fact.extract",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 25191,
+      "id": "op_4f935af1785d232600fc72be1eebcab3",
+      "kind": "fact.extract",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 26470,
+      "id": "op_a677aec77b40589e0d0580e3dc6d5677",
+      "kind": "fact.extract",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 27813,
+      "id": "op_14f9eb670b91d7289150ef3a51717af4",
+      "kind": "fact.extract",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 29088,
+      "id": "op_4077bd06a9be4f0b500bdf0f5388fc32",
+      "kind": "fact.extract",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 30384,
+      "id": "op_f6b46b23e3dc17f0d7f6792b48713b2f",
+      "kind": "knowledge.reuse",
+      "revision": "35",
+      "state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1"
+    },
+    {
+      "at_ms": 30797,
+      "id": "op_414de1779028325a5495983616033cc2",
+      "kind": "process.inspect",
+      "revision": "36",
+      "state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b"
+    },
+    {
+      "at_ms": 31217,
+      "id": "op_a925ebc42ebd1e45369b1fd831c2e892",
+      "kind": "document.require",
+      "revision": "36",
+      "state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b"
+    },
+    {
+      "at_ms": 31625,
+      "id": "op_a27125056f62822ff135ae04b870f1d1",
+      "kind": "document.require",
+      "revision": "36",
+      "state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b"
+    },
+    {
+      "at_ms": 32036,
+      "id": "op_f4ed2cf2597364996fc8cf479c4578e3",
+      "kind": "document.require",
+      "revision": "36",
+      "state_sha256": "86b0103a0c17495ec75dfd635aec05449fe601d3691e6fc593913425413fc81b"
+    },
+    {
+      "at_ms": 32505,
+      "id": "op_239fff8e940e09cd50d910cbaff753b7",
+      "kind": "document.check",
+      "revision": "39",
+      "state_sha256": "b38be34be9a5d7a4ae5acfed0ba24414c71354d909fc935136670e3a97dfd9b7"
+    },
+    {
+      "at_ms": 33809,
+      "id": "op_d867690b64a42823c40957aa759afb0a",
+      "kind": "fact.extract",
+      "revision": "39",
+      "state_sha256": "b38be34be9a5d7a4ae5acfed0ba24414c71354d909fc935136670e3a97dfd9b7"
+    },
+    {
+      "at_ms": 35150,
+      "id": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "kind": "document.check",
+      "revision": "40",
+      "state_sha256": "5b920f1b2c8dd33007541cf2f49e5b43f379f439a9655418fe7cb38afb6cd2e4"
+    },
+    {
+      "at_ms": 36454,
+      "id": "op_96409d828972027728b45b12bb6b9ea1",
+      "kind": "fact.extract",
+      "revision": "40",
+      "state_sha256": "5b920f1b2c8dd33007541cf2f49e5b43f379f439a9655418fe7cb38afb6cd2e4"
+    },
+    {
+      "at_ms": 37812,
+      "id": "op_96acd4eb60e2706174feaa5552f164f8",
+      "kind": "document.check",
+      "revision": "41",
+      "state_sha256": "f3091864c78fd679bf950c025d03d1bee1dfd83a7b71b57425c9fe1affee8072"
+    },
+    {
+      "at_ms": 39118,
+      "id": "op_47a62a5a6f4bfa647becfd5dba1c73f0",
+      "kind": "fact.extract",
+      "revision": "41",
+      "state_sha256": "f3091864c78fd679bf950c025d03d1bee1dfd83a7b71b57425c9fe1affee8072"
+    },
+    {
+      "at_ms": 40443,
+      "id": "op_78ab34b7521d5c694813a76224b5975a",
+      "kind": "step.complete",
+      "revision": "42",
+      "state_sha256": "4889061dfa4ebb99b008243883c3029ff5e3cd5319239ef917b95dae190d7595"
+    },
+    {
+      "at_ms": 40877,
+      "id": "op_ba68a476ea8289e87f3074c010784f55",
+      "kind": "step.complete",
+      "revision": "43",
+      "state_sha256": "6a553311e7a821edbd221b4a9b87f9ab96d94246d5e04f256dac903e237ab863"
+    },
+    {
+      "at_ms": 41318,
+      "id": "op_a63efa92ca7029d17a2bd137f122033c",
+      "kind": "step.complete",
+      "revision": "44",
+      "state_sha256": "d9dac922539b1d9e632f9b46d26a09d9ed66289571952e05867478890122fee9"
+    },
+    {
+      "at_ms": 41770,
+      "id": "op_7f7670daeba32b3f9ade2b8c9997d4de",
+      "kind": "step.complete",
+      "revision": "45",
+      "state_sha256": "4cd26cfb3fce91924db3cb64e43d22ac33534eaeb716644f89c412e60244de9c"
+    },
+    {
+      "at_ms": 42213,
+      "id": "op_c1e8fd3ffdd4c265f8852ddf98f6662f",
+      "kind": "step.complete",
+      "revision": "46",
+      "state_sha256": "4fe8630377fadc3959c3c451d9c83873c3c317c23ae35f789549342ddefa54c8"
+    },
+    {
+      "at_ms": 42660,
+      "id": "op_193bef006745abf6a81e5adde872cadc",
+      "kind": "step.complete",
+      "revision": "47",
+      "state_sha256": "ca80bd5f3e86d9adf2b1bb8b80dff10cfb323fe4f02d7209d816deb34a2f12b1"
+    },
+    {
+      "at_ms": 43090,
+      "id": "op_1016690703de933a0b04832bac53f789",
+      "kind": "fact.extract",
+      "revision": "47",
+      "state_sha256": "ca80bd5f3e86d9adf2b1bb8b80dff10cfb323fe4f02d7209d816deb34a2f12b1"
+    },
+    {
+      "at_ms": 44395,
+      "id": "op_03eef83c6c3a9802747b15ceafb63226",
+      "kind": "fact.extract",
+      "revision": "47",
+      "state_sha256": "ca80bd5f3e86d9adf2b1bb8b80dff10cfb323fe4f02d7209d816deb34a2f12b1"
+    },
+    {
+      "at_ms": 45703,
+      "id": "op_f8f5acf0c9a4e131811f4d75dc13a351",
+      "kind": "fact.extract",
+      "revision": "47",
+      "state_sha256": "ca80bd5f3e86d9adf2b1bb8b80dff10cfb323fe4f02d7209d816deb34a2f12b1"
+    },
+    {
+      "at_ms": 47055,
+      "id": "op_568943696026415fa063d190086424ee",
+      "kind": "decision",
+      "revision": "48",
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"
+    }
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/?journey=autonomous"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/fonts/Merriweather-Light.ttf"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.css?sha256=8aa1ffec12e2ece0fbfc277c6eedffc47f760336b26e77e28e6aac87f5da0320"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=7b8ed58ee5aac3b354e87d8c062e9ed0d8ba8d4ba2da07185c9a7b8c1def0887"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/knowledge"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/operations?mode=live"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_95d08975bc575592/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_0f4f13b1e3e1328c/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_393285577dcb12c4/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a53299cfe619303/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_2c55cdd816b1d0e8/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_543f08f2415b2a33/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_7dbd7c7d1c4ddf90/snapshot?after=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:4189/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=48"
+    }
+  ],
+  "elapsed_ms": 48452,
+  "animations": [
+    {
+      "operation": "op_239fff8e940e09cd50d910cbaff753b7",
+      "frames": [
+        {
+          "transform": "translate(342.984375px,207px)",
+          "opacity": 0.3
+        },
+        {
+          "transform": "translate(1105px,25.34375px)",
+          "opacity": 1,
+          "offset": 0.78
+        },
+        {
+          "transform": "translate(1100px,28.34375px)",
+          "opacity": 1
+        }
+      ],
+      "options": {
+        "duration": 850,
+        "easing": "cubic-bezier(.18,.8,.25,1)",
+        "fill": "none"
+      },
+      "started_at": 32916
+    },
+    {
+      "operation": "op_d867690b64a42823c40957aa759afb0a",
+      "frames": [
+        {
+          "transform": "translate(342.984375px,207px)",
+          "opacity": 0.3
+        },
+        {
+          "transform": "translate(1092px,132.75px)",
+          "opacity": 1,
+          "offset": 0.78
+        },
+        {
+          "transform": "translate(1087px,135.75px)",
+          "opacity": 1
+        }
+      ],
+      "options": {
+        "duration": 850,
+        "easing": "cubic-bezier(.18,.8,.25,1)",
+        "fill": "none"
+      },
+      "started_at": 34228.40000003576
+    },
+    {
+      "operation": "op_1b4045f495bd7c43aee1c82408feaba3",
+      "frames": [
+        {
+          "transform": "translate(319.671875px,84px)",
+          "opacity": 0.3
+        },
+        {
+          "transform": "translate(1105px,395.953125px)",
+          "opacity": 1,
+          "offset": 0.78
+        },
+        {
+          "transform": "translate(1100px,398.953125px)",
+          "opacity": 1
+        }
+      ],
+      "options": {
+        "duration": 850,
+        "easing": "cubic-bezier(.18,.8,.25,1)",
+        "fill": "none"
+      },
+      "started_at": 35567.40000003576
+    },
+    {
+      "operation": "op_96409d828972027728b45b12bb6b9ea1",
+      "frames": [
+        {
+          "transform": "translate(319.671875px,85px)",
+          "opacity": 0.3
+        },
+        {
+          "transform": "translate(1092px,336.359375px)",
+          "opacity": 1,
+          "offset": 0.78
+        },
+        {
+          "transform": "translate(1087px,339.359375px)",
+          "opacity": 1
+        }
+      ],
+      "options": {
+        "duration": 850,
+        "easing": "cubic-bezier(.18,.8,.25,1)",
+        "fill": "none"
+      },
+      "started_at": 36877.30000001192
+    },
+    {
+      "operation": "op_96acd4eb60e2706174feaa5552f164f8",
+      "frames": [
+        {
+          "transform": "translate(160.921875px,207px)",
+          "opacity": 0.3
+        },
+        {
+          "transform": "translate(1105px,136.609375px)",
+          "opacity": 1,
+          "offset": 0.78
+        },
+        {
+          "transform": "translate(1100px,139.609375px)",
+          "opacity": 1
+        }
+      ],
+      "options": {
+        "duration": 850,
+        "easing": "cubic-bezier(.18,.8,.25,1)",
+        "fill": "none"
+      },
+      "started_at": 38210.5
+    },
+    {
+      "operation": "op_47a62a5a6f4bfa647becfd5dba1c73f0",
+      "frames": [
+        {
+          "transform": "translate(160.921875px,207px)",
+          "opacity": 0.3
+        },
+        {
+          "transform": "translate(1092px,52.71875px)",
+          "opacity": 1,
+          "offset": 0.78
+        },
+        {
+          "transform": "translate(1087px,55.71875px)",
+          "opacity": 1
+        }
+      ],
+      "options": {
+        "duration": 850,
+        "easing": "cubic-bezier(.18,.8,.25,1)",
+        "fill": "none"
+      },
+      "started_at": 39519.30000001192
+    }
+  ],
+  "actual_served_assets": {
+    "css": {
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.css?sha256=8aa1ffec12e2ece0fbfc277c6eedffc47f760336b26e77e28e6aac87f5da0320",
+      "sha256": "3f53bf49a7335fdb3933d822315f777f2ba8d07f2d53b096c971f310c40408ac",
+      "bytes": 219747
+    },
+    "js": {
+      "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=7b8ed58ee5aac3b354e87d8c062e9ed0d8ba8d4ba2da07185c9a7b8c1def0887",
+      "sha256": "4f5d04eef836b617ec8acc2056c2b5d479580760c9dc64fd36fb111a1690c232",
+      "bytes": 391559
+    }
+  },
+  "final_geometry": {
+    "scrollY": 0,
+    "viewport": {
+      "width": 1360,
+      "height": 900
+    },
+    "stage": {
+      "x": 36,
+      "y": 203.4375,
+      "width": 1288,
+      "height": 655.921875,
+      "top": 203.4375,
+      "right": 1324,
+      "bottom": 859.359375,
+      "left": 36
+    },
+    "outcome": {
+      "x": 240,
+      "y": 651,
+      "width": 880,
+      "height": 208.359375,
+      "top": 651,
+      "right": 1120,
+      "bottom": 859.359375,
+      "left": 240
+    },
+    "transport": {
+      "x": 350,
+      "y": 832,
+      "width": 660,
+      "height": 68,
+      "top": 832,
+      "right": 1010,
+      "bottom": 900,
+      "left": 350
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "disclosure": "Local deterministic native fixture histories, not production heads. Native consumer verified each checkpoint, source span, operation chain and exact saved head.",
+  "fixture_sha256": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce",
+  "sidecars": [
+    {
+      "claim_id": "clm_0f4f13b1e3e1328c",
+      "sidecar_sha256": "acf2c23ba0c179e4e550cae971f00513742cb789b6cb19e59eaac05d5398e8f1",
+      "operations": 299,
+      "checkpoints": 16,
+      "state_sha256": "6d3f6e70336e298d5c2fb58b74f86dc4e3f62750e866b7eef5086dd2721dc341",
+      "event_sha256": "36a29c5c18d775653e7473669e3884fb63f68d22a4f2d78a36f1140b8971e5db",
+      "input_sha256": "fe18c0ff89e2fca3402f65dcf79c49fa8c32cf3359cf59ec3593d98616bceeec"
+    },
+    {
+      "claim_id": "clm_2c55cdd816b1d0e8",
+      "sidecar_sha256": "5556f3224c0e814cd54acd9ae6a7ea8708853aa6808da36de911194fce6026b3",
+      "operations": 428,
+      "checkpoints": 17,
+      "state_sha256": "baa0f5411c59a2a5236a51a8f2c1d171a1fcb0c39ce569cd7911cfe43e7fd264",
+      "event_sha256": "aa132e7f9bda483529853975291eb13d02c1281875f8645b97c2b49ac5a0cc68",
+      "input_sha256": "8232b707669fad7a506e9f1a721813d2ad69c5318004dadc405dd2a24c0d925b"
+    },
+    {
+      "claim_id": "clm_314f2d309fea25e6",
+      "sidecar_sha256": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5",
+      "operations": 824,
+      "checkpoints": 21,
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "event_sha256": "3d69e3ccd0519765d200fbb86e0ce9b4b05d33fe98c32188d184cdce6340e802",
+      "input_sha256": "b29cebaf24af70ec4145077e52073856d84689cfc0f1db0c9ad17e53a4fefc3a"
+    },
+    {
+      "claim_id": "clm_393285577dcb12c4",
+      "sidecar_sha256": "843997a854d85ba5754f8260f7dc72bc5fbd5b99ccef00a22a10922ba8b0bf34",
+      "operations": 299,
+      "checkpoints": 16,
+      "state_sha256": "b47bac740be8259d59d0cca2c26090f9e3ddf1e3750a63ec93580f7e02a108f9",
+      "event_sha256": "e87244b9b4e078a5b1d5b2bc65d2890a76e6f41d0d582f306b6eab729da2a794",
+      "input_sha256": "6a9c07487185c588234e9b30bcb30068183ff7a8796414ad8c04e338a19a8cb5"
+    },
+    {
+      "claim_id": "clm_4a07dbbbd859a3ce",
+      "sidecar_sha256": "a662a31277efb72a100e2f8f74097d8fbd76512a62623199f13306a2e8f0e2b2",
+      "operations": 824,
+      "checkpoints": 21,
+      "state_sha256": "eff31299580845d4eba45c8be9f52beaf0a4264d8cedf0b66418a1076e37d2a2",
+      "event_sha256": "01a58a2c72e3eb87079c05d72260c5a8181076157e944c2d746bee5ddeb3dbc9",
+      "input_sha256": "20c461ddb7f8de0b40ccb4042f4c0b5fcfab4d5ad215e686d449ea920ffb8678"
+    },
+    {
+      "claim_id": "clm_4a53299cfe619303",
+      "sidecar_sha256": "df8af707afe3f1ac002e8ea543583b123c4ec21723b9dda3359f39d70bef4833",
+      "operations": 299,
+      "checkpoints": 16,
+      "state_sha256": "ee76c765353f769bc7cd3a9ee379dde144261abda26da095b0f57dd3b1ee35e3",
+      "event_sha256": "fd1c798e910feadcf005ef3bbbd317c26ccb69d98973619284bb54d9bb2021ed",
+      "input_sha256": "c484f7b459aecfcc9d867d24c0759278030f939c46bf9e6620d2318da28ac95b"
+    },
+    {
+      "claim_id": "clm_543f08f2415b2a33",
+      "sidecar_sha256": "dc0bf763e2c58ecc47a12dc650c5697aa6cdccbefa88f81e50e7fef966fac6ec",
+      "operations": 428,
+      "checkpoints": 17,
+      "state_sha256": "7ede99e3c0e05d97269b7bd7b3af68360d3834691322b56a7f0145da1c2416f9",
+      "event_sha256": "a5aff5b2faa12b6641c1c996408130db8ec5f62296c49e9305a2f51768c91d5d",
+      "input_sha256": "7dd4a9ef7cc9c1d4ce06545efcc3d2a30e104b278c8686cc29f502b55fd086b0"
+    },
+    {
+      "claim_id": "clm_7dbd7c7d1c4ddf90",
+      "sidecar_sha256": "44d7b0d5413959d59718fb2a16a6fbb98919633c6075efa6e5b0b12dfd9420bb",
+      "operations": 428,
+      "checkpoints": 17,
+      "state_sha256": "d038830491e99a6b3ec35d04957bf95db861f3b074b5f312b13b6e49dbfd1a9b",
+      "event_sha256": "d587367be7253c70a9414b2503b426b1308ee4b36ae0f92962074d3faa50bd74",
+      "input_sha256": "742d47e565d5a8b4ad9bf750e32f71e5e0d10dc5a99655bdfe7e6069a631d52c"
+    },
+    {
+      "claim_id": "clm_95d08975bc575592",
+      "sidecar_sha256": "bc81515a65477b6189948a50e59113cbad54c2dff9e1f77cc45e27c8dccc3b39",
+      "operations": 824,
+      "checkpoints": 21,
+      "state_sha256": "35f3f3d9160f5797d14d5db70f62159eebe11811f77f21510a7c94a541e0c773",
+      "event_sha256": "8f5c3bc497a5afe4afee891b10d87e9f14c3f76070e66c502f2756f29bd5321f",
+      "input_sha256": "ea7a8c202d67d8d3114a8202af3a4de27c8ab8ae55f93fc75c8714310734d188"
+    }
+  ]
+}

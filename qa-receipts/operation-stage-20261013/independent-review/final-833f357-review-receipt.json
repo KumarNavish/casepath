@@ -1,0 +1,122 @@
+{
+  "time": "2026-10-13T16:59:20.245524+00:00",
+  "verdict": "approved_within_independent_read_only_source_native_trace_scope",
+  "blocking_findings": [],
+  "commit": "833f357d9075ef67ee59d5824d22120eabd90866",
+  "base": "71bbe856a022252e9b3f327aa9e41de28d51ab04",
+  "host": "656813ef2295",
+  "files": {
+    "casepath/assets/autonomous-workspace-v1.js": {
+      "sha256": "b2aec598c6c3197eb5ffd56f5894ee69860fefc7388c2c3f9a60ea389cfd0579",
+      "bytes": 394106
+    },
+    "casepath/assets/autonomous-workspace-v1.css": {
+      "sha256": "2ab254855d19e88c7b5acd10f2887956533e24f0a0c21b596c4849594923c945",
+      "bytes": 220221
+    },
+    "casepath-qa/autonomous-workspace-v1.test.cjs": {
+      "sha256": "576fabd44dc0156bd992df455f34a0587a945002ff7c6409a776715a02fe0f8f",
+      "bytes": 285070
+    }
+  },
+  "final_delta_sha256": "2fb369daaf251a5d5215f91d37c759825e33f6e02712bcdb52f5b2c3e469ba22",
+  "scope": "JS/CSS/existing module QA only; final transfer/body delta compared86dbcd0, opening-anchor correction retained; no runtime/backend edits",
+  "basis": {
+    "2edecab_native_checked_once": {
+      "operations": 4653,
+      "streamed_checkpoints": 162,
+      "exact_heads": 9,
+      "fact_meaning_pin_variants": 49,
+      "native_fact_ids": 18,
+      "exact_shown_reading_subspans": 249,
+      "accepted_fills_retained": 99,
+      "historical_positions_passed": 4599,
+      "original_positions_failed": 54,
+      "original_failure_preserved": true
+    },
+    "86dbcd0_diagnosed_recheck_only": {
+      "positions_passed": 54,
+      "cases": 9,
+      "checked_zero_preview_hashes": true,
+      "state_projection_event_refs_preserved": true,
+      "no_future_fills_or_authoritative_mutation": true,
+      "recorded_retry_anchor_retained": true,
+      "handoff_reset_and_claim_id_binding": true
+    },
+    "final_targeted_existing_QA": {
+      "command": "node --test --test-name-pattern='^(stage transport uses a bound total|stage source body anchors retain)' casepath-qa/autonomous-workspace-v1.test.cjs",
+      "cwd": "/workspace/casepath-operations-frontend-20261013",
+      "exit_code": 0,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 99.89866
+    }
+  },
+  "final_delta_findings": [
+    "Opacity1 and opaque paper background on moving token; existing single-token branch removes reading actor and restores hidden dock on finish/cancellation.",
+    "Document card is created only for actual document.check with sufficient source result and accepted document review_state=sufficient; existing source/graph pins and current operation remain unchanged.",
+    "Source body anchoring retains every original character through Unicode codepoint slices; document.require has no added metadata reset.",
+    "Bounded delivered total only changes range/counter metadata; trusted range input clamps to verified received rows.",
+    "Accepted graph/facts/knowledge outputs are not edited by display projection; node fills derive from actual accepted completion on exact graph identity.",
+    "Source fact wording remains tied to native matching clause; unknown/compound facts retain complete native pin, not a convenient unrelated number."
+  ],
+  "withdrawn_observations": [
+    {
+      "id": "first-browser-asset-query",
+      "resolution": "URL hash parameters were not response-body digests; no differing-served-byte claim. Correction receipt preserved."
+    },
+    {
+      "id": "ninth-summary-midword",
+      "resolution": "Current accepted native summary complete254codepoints/bytes; root/Mac withdrew apparent truncation as snapshot issue. No outcome copy edit."
+    }
+  ],
+  "limits": [
+    "This is independent code/native-consumer review, not visual film acceptance.",
+    "Frontend owner current170/198 module and native browser results are separately reported owner evidence; final response-body-bound film/fresh-viewer acceptance belongs to Mac.",
+    "No production requests, provider calls, product/test-source edits, seal or full-suite execution in this stage review.",
+    "Original2ed failure and manually anchored8selected-QA green receipts remain preserved; unchanged full native audit was not rerun after anchor fix."
+  ],
+  "artifacts": {
+    "833f357-source-receipt.json": {
+      "sha256": "f9896d05eea041b9193eecb27b9c049676c3c0a2e5dded70c2afd4de5b457ab1",
+      "bytes": 856
+    },
+    "833f357-final-transfer.diff": {
+      "sha256": "2fb369daaf251a5d5215f91d37c759825e33f6e02712bcdb52f5b2c3e469ba22",
+      "bytes": 15211
+    },
+    "targeted-833f357-body-transport-tests.log": {
+      "sha256": "cdb73ac2a1d51f54ddb32be2b66244972aca0ad6500500dc4e4000f9c9e5b5b0",
+      "bytes": 358
+    },
+    "86dbcd0-source-receipt.json": {
+      "sha256": "00693e494b1f2078f64925bfefa1f9ee9144c65673759418c954904d226a02d1",
+      "bytes": 856
+    },
+    "native-86dbcd0-opening-anchor-review.log": {
+      "sha256": "1a504e66ae0d3c952026006a9bbdf31928993de8271b548ec7577146421f77f0",
+      "bytes": 9570
+    },
+    "2edecab-review-receipt.json": {
+      "sha256": "744bab66897ebf22a887b438e9ddbbf55c70ea55b16429e229fea36037bdaa0c",
+      "bytes": 3694
+    },
+    "native-2edecab-stage-review.log": {
+      "sha256": "4eff15758445cabf809de353d31f56e2717e4ca79689ac3a4937cbd3d7bb2aac",
+      "bytes": 74802
+    },
+    "native-2edecab-stage-review.json": {
+      "sha256": "b8d921f8d49a8e4aa28135335177780778f490d48f5d67e9c1667121339e2d87",
+      "bytes": 75074
+    },
+    "b037-browser-binding-correction.json": {
+      "sha256": "fd5e970961994c3a0672350edf3ccf34f0c488a9bb9bcfdbfdceab7af6df686f",
+      "bytes": 841
+    },
+    "ninth-accepted-summary-native-fields.json": {
+      "sha256": "be936799be78f4cbe9f9e713f06cbe72e1244b49bfeaf58cf754d10de87c4943",
+      "bytes": 844
+    }
+  }
+}

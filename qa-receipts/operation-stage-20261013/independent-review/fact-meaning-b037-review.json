@@ -1,0 +1,27 @@
+{
+  "time": "2026-10-13T16:03:08.926963+00:00",
+  "commit": "b037d742fd89cebe71bbe929a85c6c7f081b676f",
+  "fact_id_count": 18,
+  "unique_id_pin_count": 49,
+  "classification": "semantic_shortening_review_beyond_byte_slice_verification",
+  "expected_contribution": {
+    "residential_tenancy_scope": "residential-tenancy clause, not amount",
+    "outside_small_tenant_maintenance_and_no_tenant_cause": "fixed pump/internal failure, landlord maintenance, outside ordinary tenant maintenance, no tenant alteration/misuse",
+    "objective_use_impairment": "inadequate heating for contracted winter residential use",
+    "landlord_first_knowledge": "explicit receipt of first report and first documented knowledge",
+    "continuing_defect_without_remedy": "resets did not remove continuing defect and/or no lasting repair as of acknowledgment",
+    "issuer_authority_and_received_packet": "authorized issuer plus actual transmission/receipt context; full pin if no compact contiguous clause supports both",
+    "issuer_authority_and_complete_packet": "authorized notifier plus complete original three-page packet and no communicated substantive reason; full pin preferred",
+    "fact:original_notification_context": "actual original delivery/context supported, not just issuer identity; full pin preferred",
+    "complete_channel_archive": "negative complete channel archive bounded by review as-of date"
+  },
+  "known_correct_negative_contributions": [
+    "canton_approved_form",
+    "ordinary_non269c_tenancy",
+    "contemporaneous_substantive_reasons",
+    "later_email_is_not_original_reasons"
+  ],
+  "document_facts_note": "Attestation of relevant tenancy terms is not receipt of a whole lease; CHF/maintenance clause is a legitimate document-fact excerpt but not residential_tenancy_scope itself.",
+  "audit_artifact": "fact-span-b037-audit.json",
+  "status": "sent_root_and_writer_final_mapping_pending"
+}

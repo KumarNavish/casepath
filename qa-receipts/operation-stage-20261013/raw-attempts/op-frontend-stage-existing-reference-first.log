@@ -1,0 +1,30 @@
+✖ reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes (16384.557757ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16942.515057
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1274:1
+✖ reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes (16384.557757ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7'
+  - '18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869'
+  
+      at TestContext.<anonymous> (/workspace/casepath-operations-frontend-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1276:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7',
+    expected: '18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
