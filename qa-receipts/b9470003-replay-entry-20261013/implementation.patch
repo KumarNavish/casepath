@@ -1,0 +1,280 @@
+diff --git a/casepath-qa/autonomous-workspace-v1.test.cjs b/casepath-qa/autonomous-workspace-v1.test.cjs
+index 1848453..45ae870 100644
+--- a/casepath-qa/autonomous-workspace-v1.test.cjs
++++ b/casepath-qa/autonomous-workspace-v1.test.cjs
+@@ -595,7 +595,8 @@ function dom() {
+  const recordCallbacks=new Map(),recordTitle={textContent:''},recordPre={dataset:{},textContent:''};let recordHTML='';
+  const recordBody={get innerHTML(){return recordHTML;},set innerHTML(value){recordHTML=value;},querySelector:selector=>selector==='pre'&&recordHTML.includes('<pre')?recordPre:null};
+  const recordDialog={open:false,addEventListener(type,fn){recordCallbacks.set(type,fn);},removeEventListener(type){recordCallbacks.delete(type);},showModal(){this.open=true;},close(){this.open=false;recordCallbacks.get('close')?.();},querySelector:selector=>selector==='[data-au-record-content]'?recordBody:selector==='#auRecordTitle'?recordTitle:null};
+- const container={ownerDocument:doc,classList:{add(){}},innerHTML:'',querySelector(s){return {'[data-au-view]':host,'.au-global-status':status,dialog,'.au-source-dialog':dialog,'.au-record-dialog':recordDialog}[s];},querySelectorAll:()=>[],addEventListener(type,fn){listeners.set(type,fn);},removeEventListener(type){listeners.delete(type);},contains:()=>true};
++ const containerAttributes=new Map();
++ const container={ownerDocument:doc,classList:{add(){}},setAttribute(name,value){containerAttributes.set(name,value);},removeAttribute(name){containerAttributes.delete(name);},innerHTML:'',querySelector(s){return {'[data-au-view]':host,'.au-global-status':status,dialog,'.au-source-dialog':dialog,'.au-record-dialog':recordDialog}[s];},querySelectorAll:()=>[],addEventListener(type,fn){listeners.set(type,fn);},removeEventListener(type){listeners.delete(type);},contains:()=>true};
+  return {container,host,form,fields,message,submit,status,listeners,dialog,recordDialog,recordBody,recordPre};
+ }
+ const settle=()=>new Promise(resolve=>setImmediate(resolve));
+diff --git a/casepath-qa/sites-autonomous-entry.test.cjs b/casepath-qa/sites-autonomous-entry.test.cjs
+index 3bff39f..69080b7 100644
+--- a/casepath-qa/sites-autonomous-entry.test.cjs
++++ b/casepath-qa/sites-autonomous-entry.test.cjs
+@@ -49,3 +49,14 @@ test('Sites rejects an index without its executable workspace entry', async () =
+   });
+   assert.equal(response.status, 500);
+ });
++
++test('autonomous entry preserves the cached controller on persisted pagehide and destroys a departing page',async()=>{
++  const {runInNewContext}=require('node:vm'),listeners=new Map(),workspace={innerHTML:'verified prefix'},loaded=[];
++  let mounts=0,destroys=0;
++  const window={CasePathAutonomous:{mount(container){assert.equal(container,workspace);mounts++;},destroy(){destroys++;workspace.innerHTML='';}},addEventListener(type,listener){listeners.set(type,listener);}};
++  const document={documentElement:{dataset:{autonomousWorkspace:'true'}},createElement:()=>({}),querySelector:()=>({content:'verified-workspace.js'}),getElementById:()=>workspace,body:{append(script){loaded.push(script.src);script.onload();}}};
++  await runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),{window,document,location:new URL('https://casepath.invalid/')});
++  assert.equal(mounts,1);assert.deepEqual(loaded,['verified-workspace.js']);
++  listeners.get('pagehide')({persisted:true});assert.equal(destroys,0,'a native back-forward cache entry retains its controller and verified view');assert.equal(workspace.innerHTML,'verified prefix');
++  listeners.get('pagehide')({persisted:false});assert.equal(destroys,1);assert.equal(workspace.innerHTML,'');
++});
+diff --git a/casepath-qa/unified-product-browser-v1.test.cjs b/casepath-qa/unified-product-browser-v1.test.cjs
+index 744acea..c0d41d4 100644
+--- a/casepath-qa/unified-product-browser-v1.test.cjs
++++ b/casepath-qa/unified-product-browser-v1.test.cjs
+@@ -765,7 +765,7 @@ async function mountFixture(page, config = {}) {
+     window.__controller = window.CasePathAutonomous.mount(document.querySelector('#workspace'), {fetch});
+   }, {data: fixtureData(config), config, base});
+   const hash = new URL(page.url()).hash;
+-  if (hash.startsWith('#autonomous/claim/')) {
++  if (hash.startsWith('#autonomous/claim/') || hash.startsWith('#autonomous/demonstration')) {
+     if(config.allowHeldPreview){const id=decodeURIComponent(hash.slice('#autonomous/claim/'.length).split('?')[0]);await eventually(()=>page.locator(`[data-au-preview="catalog"][data-au-preview-claim="${id}"], [data-au-preview="unknown"]`).count().then(count=>count===1),'the held uncached reload did not retain an opening view without accepted content');}
+     else await eventually(() => page.locator('[data-au-claim-title]').count().then(count => count === 1), 'the reloaded claim did not render');
+   }
+@@ -955,6 +955,134 @@ for(const interruption of ['none','pause','navigation','unstarted','pause-head',
+  await focusedReceipt(page,`causal-native-handoff-${interruption}`,{prior:id,next,interruption,paints:await page.evaluate(()=>window.__handoffPaints)});
+ });
+ 
++test('replay entry: a legacy link without collection plays its exact roster and highlights Demonstration',async t=>{
++ const id=demoIds[0],page=await fixturePage(t,{presentationSuite:'replay',initialFragment:`#autonomous/claim/${id}?mode=replay&through=0`});
++ await title(page,id);
++ assert.equal(await page.locator('[data-au-demo-play]').count(),1,'a direct replay stays still until Play');
++ const before=await visibleRecord(page);await page.clock.runFor(7000);assert.deepEqual(await visibleRecord(page),before);
++ await page.locator('[data-au-demo-play]').click();await page.clock.runFor(1600);
++ assert.ok(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))>0,'Play must consume a real legacy prefix');
++ assert.equal(await page.locator('.au-nav [aria-current="page"]').getAttribute('data-au-nav'),'demonstration');
++ assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),'legacy');
++ await page.locator('.au-nav [data-au-nav="work"]').click();
++});
++
++test('replay entry: programmatic titles stay quiet while native keyboard focus remains visible',async t=>{
++ const id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,initialFragment:`#autonomous/claim/${id}?mode=replay&through=0`});
++ const heading=page.locator('h1');
++ const focus=await heading.evaluate(element=>({active:document.activeElement===element,visible:element.matches(':focus-visible'),outline:getComputedStyle(element).outlineStyle}));
++ assert.equal(focus.active,true);assert.equal(focus.outline,'none','the initial programmatic title focus must not add a red rectangle');
++ await page.keyboard.press('Tab');const active=await page.evaluate(()=>({tag:document.activeElement.tagName,visible:document.activeElement.matches(':focus-visible'),outline:getComputedStyle(document.activeElement).outlineStyle}));
++ assert.equal(active.tag,'BUTTON');assert.equal(active.visible,true);assert.equal(active.outline,'solid');
++ await heading.focus();assert.equal(await heading.evaluate(element=>getComputedStyle(element).outlineStyle),'solid','keyboard modality retains heading focus indication');
++});
++
++for(const publicReadOnly of [false,true])test(`replay entry: fresh ${publicReadOnly?'public visitor':'owner'} consumes all 218 reference prefixes and eight native handoffs`,async t=>{
++ const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly,providerReady:!publicReadOnly,initialFragment:publicReadOnly?'#autonomous/demonstration?mode=replay':'#autonomous'});
++ if(!publicReadOnly)await page.locator('.au-nav [data-au-nav="demonstration"]').click();
++ await eventually(()=>page.locator('[data-au-revision="0"]').count().then(count=>count===1),'fresh Demonstration must begin at reference intake prefix zero');
++ assert.ok(new URL(page.url()).hash.startsWith(`#autonomous/claim/${id}?collection=reference&mode=replay&through=0`));
++ assert.equal(await page.locator('[data-au-node],[data-au-reference-mode]').count(),0,'the verified head cannot paint into prefix zero');
++ await title(page,id);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});
++ await page.evaluate(()=>{
++  window.__referencePaints=[];
++  const capture=()=>{
++   const pre=document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]'),surface=document.querySelector('[data-au-revision]');
++   if(!pre||!surface)return;const record=JSON.parse(pre.textContent);if(!record?.state)return;
++   const identity=`${record.state.claim_id}:${record.state.revision}:${record.state.state_sha256}`;
++   if(window.__referencePaints.at(-1)?.identity===identity)return;
++   window.__referencePaints.push({identity,record,revision:surface.dataset.auRevision,state_sha256:surface.dataset.auStateSha,route:location.hash,nav:document.querySelector('.au-nav [aria-current="page"]')?.dataset.auNav,nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),requirements:[...surface.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation)});
++  };
++  capture();window.__referenceObserver=new MutationObserver(capture);window.__referenceObserver.observe(document.querySelector('#workspace'),{subtree:true,childList:true});
++ });
++ for(let tick=0;tick<1000&&await page.locator('[data-au-demo-stop]').count();tick++)await page.clock.runFor(1600);
++ assert.match(await page.locator('.au-global-status').innerText(),/Recorded playback finished/);
++ const paints=await page.evaluate(()=>{window.__referenceObserver.disconnect();return window.__referencePaints;});
++ const expected=referenceIds.flatMap(claim=>Object.values(fixture.prefixes[claim]));assert.equal(expected.length,218);assert.equal(paints.length,218,'no real accepted prefix may disappear during playback or case handoff');
++ for(let index=0;index<expected.length;index++){
++  const paint=paints[index],prefix=expected[index];assert.deepEqual(paint.record,{state:prefix.state,projection:prefix.projection},`native paint ${index} retains the complete accepted prefix`);
++  assert.equal(paint.revision,String(prefix.through_seq));assert.equal(paint.state_sha256,prefix.state.state_sha256);assert.equal(paint.nav,'demonstration');
++  assert.ok(paint.route.startsWith(`#autonomous/claim/${prefix.state.claim_id}?collection=reference&mode=replay&through=${prefix.through_seq}`));
++  assert.deepEqual(sorted(paint.nodes),sorted((prefix.state.graph?.nodes||[]).map(row=>row.node_id)),`native paint ${index} keeps its own recorded graph`);
++  assert.ok(paint.requirements.every(identity=>prefix.state.obligations.some(row=>row.obligation_id===identity)),`native paint ${index} requirements belong to this accepted prefix`);
++ }
++ assert.deepEqual([...new Set(paints.map(row=>row.record.state.claim_id))],referenceIds);assert.equal(paints.filter((row,index)=>index&&row.record.state.claim_id!==paints[index-1].record.state.claim_id).length,8);
++ assert.deepEqual(await visibleRecord(page),{state:fixture.snapshots[referenceIds.at(-1)].state,projection:fixture.snapshots[referenceIds.at(-1)].projection});
++ assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
++ await focusedReceipt(page,`replay-entry-all218-${publicReadOnly?'visitor':'owner'}`,{prefixes:paints.map(({record,...paint})=>({...paint,claim_id:record.state.claim_id})),handoffs:8,requests:await page.evaluate(()=>window.__fixture.calls)});
++});
++
++test('replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play',async t=>{
++ const fixture=referenceFixture(),shared='clm_7dbd7c7d1c4ddf90';
++ for(const [id,query,collection]of [[shared,'','reference'],[demoIds[0],'&collection=legacy','legacy']])await t.test(collection,async t=>{
++  const page=await fixturePage(t,{referenceFixture:true,presentationSuite:'replay',publicReadOnly:true,initialFragment:`#autonomous/claim/${id}?mode=replay&through=0&detail=sources${query}`});
++  await title(page,id);const before=await visibleRecord(page);await page.clock.runFor(8000);assert.deepEqual(await visibleRecord(page),before);assert.equal(await page.locator('[data-au-demo-play]').count(),1);assert.equal(await page.locator('.au-nav [aria-current="page"]').getAttribute('data-au-nav'),'demonstration');
++  assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),collection);
++  if(collection==='reference')assert.deepEqual(before,{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});
++  await page.locator('[data-au-demo-play]').focus();await page.keyboard.press('Enter');await page.clock.runFor(1600);assert.ok(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))>0);
++  await page.locator('.au-nav [data-au-nav="work"]').click();
++ });
++});
++
++test('replay lifecycle: actual index retains a native back-forward cached prefix and resumes only by intent',async()=>{
++ const fixture=referenceFixture(),id=referenceIds[0],assets=new Map([
++  ['casepath/index.html',fs.readFileSync(path.join(root,'casepath/index.html'))],
++  ['casepath/assets/autonomous-entry-v1.js',fs.readFileSync(process.env.CASEPATH_BROWSER_ENTRY_ASSET || path.join(root,'casepath/assets/autonomous-entry-v1.js'))],
++  ['casepath/assets/autonomous-workspace-v1.js',fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'))],
++  ['casepath/assets/autonomous-workspace-v1.css',fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css'))]
++ ]),evidence={assets:Object.fromEntries([...assets].map(([file,bytes])=>[file,sha(bytes)])),runs:[]};
++ // Playwright normally disables BFCache. This separate browser exercises a
++ // genuine persisted pageshow without changing other tests' browser policy.
++ const cachedBrowser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH || '/usr/bin/chromium',headless:true,args:['--no-sandbox'],ignoreDefaultArgs:['--disable-back-forward-cache']});
++ try {
++  for(const fragment of [`#autonomous/claim/${id}?collection=reference&mode=replay&through=18&detail=sources`,'#autonomous/demonstration?mode=replay']){
++   const context=await cachedBrowser.newContext({serviceWorkers:'block'}),page=await context.newPage(),requests=[],errors=[],shows=[],served={};
++   page.on('pageerror',error=>errors.push(error.message));
++   await page.exposeFunction('observePageShow',row=>shows.push(row));
++   await page.addInitScript(()=>addEventListener('pageshow',event=>void window.observePageShow({persisted:event.persisted,path:location.pathname})));
++   const time=new Date('2026-10-13T12:00:00Z');await page.clock.install({time});await page.clock.pauseAt(time);
++   await page.route('**/*',async route=>{
++    const request=route.request(),url=new URL(request.url()),name=decodeURIComponent(url.pathname);requests.push({path:name+url.search,method:request.method()});
++    assert.equal(url.origin,'http://native-entry.invalid','every request remains in the local native fixture');assert.equal(request.method(),'GET');
++    if(name==='/away')return route.fulfill({status:200,contentType:'text/html',body:'<!doctype html><title>Away</title><p>Away</p>'});
++    if(name.startsWith(base)){
++     const suffix=name.slice(base.length),match=suffix.match(/^\/claims\/([^/]+)(?:\/(snapshot|replay|events))?$/);
++     const data=suffix==='/claims'?{claims:Object.values(fixture.snapshots).map(row=>({...row.state,origin:'canonical_original'})),total:9}:suffix==='/knowledge'?fixture.knowledge:suffix==='/status'?{enabled:true,provider_ready:false,read_only:true,writable:false,limits:{}}:match?match[2]==='replay'?fixture.prefixes[match[1]]?.[Number(url.searchParams.get('through_seq')||0)]:fixture.snapshots[match[1]]:null;
++     return route.fulfill({status:data?200:404,contentType:'application/json',body:JSON.stringify(data||{detail:'Synthetic GET unavailable'})});
++    }
++    const file='casepath/'+(name==='/'?'index.html':name.slice(1));let body=assets.get(file);
++    if(!body&&!file.includes('..')&&fs.existsSync(path.join(root,file)))body=fs.readFileSync(path.join(root,file));
++    if(!body)return route.fulfill({status:404,body:'Unavailable'});
++    served[file]=sha(body);
++    if(file==='casepath/index.html')body=Buffer.from(body.toString().replace('<head>','<head><script>window.CASEPATH_PUBLIC_READ_ONLY=true;window.CASEPATH_HOSTED_AUTONOMOUS=true;</script>'));
++    return route.fulfill({status:200,contentType:{'.html':'text/html','.js':'application/javascript','.css':'text/css','.ttf':'font/ttf','.json':'application/json'}[path.extname(file)]||'application/octet-stream',body});
++   });
++   await page.goto('http://native-entry.invalid/'+fragment);await page.locator('[data-au-revision]').waitFor();
++   const sample=()=>page.evaluate(()=>({hash:location.hash,revision:Number(document.querySelector('[data-au-revision]')?.dataset.auRevision),state_sha256:document.querySelector('[data-au-state-sha]')?.dataset.auStateSha,nav:document.querySelector('.au-nav [aria-current]')?.dataset.auNav,panel:document.querySelector('[data-au-context]')?.dataset.auContext,play:!!document.querySelector('[data-au-demo-play]'),resume:!!document.querySelector('[data-au-demo-resume]'),workspaceLength:document.querySelector('#autonomousWorkspace').innerHTML.length,hidden:document.hidden}));
++   const autoplay=fragment.startsWith('#autonomous/demonstration');
++   if(autoplay){await page.clock.runFor(4100);await eventually(async()=>(await sample()).revision>0,'actual entry did not autoplay its recorded prefixes');}
++   const before=await sample();assert.equal(before.nav,'demonstration');assert.equal(before.state_sha256,fixture.prefixes[id][before.revision].state.state_sha256);
++   await page.evaluate(()=>addEventListener('pagehide',event=>sessionStorage.setItem('casepath-qa-lifecycle',JSON.stringify({persisted:event.persisted,workspaceLength:document.querySelector('#autonomousWorkspace')?.innerHTML.length}))));
++   await page.goto('http://native-entry.invalid/away');await page.goBack({waitUntil:'commit',timeout:3000});
++   await eventually(()=>shows.some(row=>row.path==='/'&&row.persisted===true),'Back did not restore a genuine native cached page');
++   const restored=await sample();for(const field of ['revision','state_sha256','hash','nav','panel'])assert.equal(restored[field],before[field],`native cached Back must retain its exact ${field}`);assert.ok(restored.workspaceLength>0);
++   const persistedHide=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('casepath-qa-lifecycle')));assert.equal(persistedHide.persisted,true);
++   await page.clock.runFor(9000);const held=await sample();assert.equal(held.revision,before.revision,'native visibility restoration must hold the inspected recorded prefix');
++   if(autoplay){
++    assert.equal(restored.resume,true);await page.locator('[data-au-demo-resume]').click();
++    for(let tick=0;(await sample()).revision===held.revision&&tick<300;tick++)await page.clock.runFor(20);
++    const resumed=await sample();assert.equal(resumed.revision,held.revision+1);assert.equal(resumed.state_sha256,fixture.prefixes[id][resumed.revision].state.state_sha256);
++   }
++   await page.reload();await page.locator('[data-au-revision]').waitFor();
++   const departure=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('casepath-qa-lifecycle'))),reloaded=await sample();assert.equal(departure.persisted,false);assert.equal(departure.workspaceLength,0);assert.equal(reloaded.nav,'demonstration');assert.equal(reloaded.play,true,'a normal reload preserves the recorded route for deliberate Play');
++   for(const [file,hash]of Object.entries(evidence.assets))assert.equal(served[file],hash,'the actual native loader serves the current selected asset bytes');
++   assert.deepEqual(errors,[]);assert.equal(requests.some(row=>row.method!=='GET'||row.path==='/api/demo'),false);
++   evidence.runs.push({fragment,before,shows,persistedHide,restored,held,departure,reloaded,requests});await context.close();
++  }
++ }finally{await cachedBrowser.close();}
++ if(focusedReceiptRoot){fs.mkdirSync(focusedReceiptRoot,{recursive:true});fs.writeFileSync(path.join(focusedReceiptRoot,'native-entry-bfcache.json'),JSON.stringify(evidence,null,2));}
++});
++
+ test('reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes',async t=>{
+  const fixture=referenceFixture(),page=await fixturePage(t,{referenceFixture:true,readOnlyStatus:true});
+  assert.equal(fixture.profile_sha256,'15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7');
+@@ -1348,7 +1476,10 @@ test('a replay control history without an accepted operational outcome stops hon
+   await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
+   await playIfPaused(page);
+   await title(page, demoIds[0]);
+-  await page.clock.runFor(700);
++  // The first accepted graph has its own reading interval. Reach the actual
++  // saved head before checking its outcome gate, rather than assuming 700ms.
++  for(let tick=0;Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<2&&tick<300;tick++)await page.clock.runFor(20);
++  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'2');
+   await eventually(() => page.locator('.au-global-status').innerText().then(text => /no settled operational outcome/i.test(text)), 'the authored history without an outcome did not stop');
+   const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent());
+   const expected = await page.evaluate(id => window.__fixture.acceptedHistories[id][2], demoIds[0]);
+diff --git a/casepath/assets/autonomous-entry-v1.js b/casepath/assets/autonomous-entry-v1.js
+index 4e09a3f..6946cb8 100644
+--- a/casepath/assets/autonomous-entry-v1.js
++++ b/casepath/assets/autonomous-entry-v1.js
+@@ -18,7 +18,7 @@
+     if (document.documentElement.dataset.autonomousWorkspace === 'true') {
+       await load('casepath-autonomous-script');
+       window.CasePathAutonomous.mount(document.getElementById('autonomousWorkspace'));
+-      window.addEventListener('pagehide', () => window.CasePathAutonomous.destroy());
++      window.addEventListener('pagehide', event => { if (!event.persisted) window.CasePathAutonomous.destroy(); });
+     } else {
+       await load('casepath-review-workspace-script');
+       await load('casepath-review-desk-script');
+diff --git a/casepath/assets/autonomous-workspace-v1.css b/casepath/assets/autonomous-workspace-v1.css
+index 6569ebe..0c332a5 100644
+--- a/casepath/assets/autonomous-workspace-v1.css
++++ b/casepath/assets/autonomous-workspace-v1.css
+@@ -121,6 +121,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
+ .au-workspace :is(button,input,textarea,select):disabled { cursor:default; opacity:.6; }
+ .au-workspace :is(button,a,input,textarea,select,summary,[tabindex]):focus-visible { outline:2px solid var(--au-accent); outline-offset:4px; }
+ .au-workspace :is(h1,h2,h3,[data-au-inspector-heading]):focus:not(:focus-visible) { outline:none; }
++.au-workspace:not([data-au-keyboard="true"]) :is(h1,h2)[tabindex="-1"]:focus { outline:none; }
+ .au-workspace a { color:inherit; text-underline-offset:4px; text-decoration-thickness:1px; }
+ .au-workspace :is(a,.au-link):hover { color:var(--au-accent); }
+ .au-workspace :is(input,textarea)::placeholder { color:var(--au-muted); opacity:1; }
+diff --git a/casepath/assets/autonomous-workspace-v1.js b/casepath/assets/autonomous-workspace-v1.js
+index 465c159..824f8ef 100644
+--- a/casepath/assets/autonomous-workspace-v1.js
++++ b/casepath/assets/autonomous-workspace-v1.js
+@@ -42,6 +42,7 @@
+   ].map(Object.freeze));
+   const featuredCase = id => REFERENCE_DEMO_CASES.find(row => row.claim_id === id) || DEMO_CASES.find(row => row.claim_id === id);
+   const demoCases = collection => collection === 'legacy' ? DEMO_CASES : REFERENCE_DEMO_CASES;
++  const replayCollection = (id, collection) => ['reference','legacy'].includes(collection) ? collection : REFERENCE_DEMO_CASES.some(row => row.claim_id === id) ? 'reference' : DEMO_CASES.some(row => row.claim_id === id) ? 'legacy' : 'reference';
+   const mounts = new WeakMap();
+   let activeMount = null;
+   const h = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
+@@ -1213,6 +1214,7 @@
+     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
+     const collection = {search:'',filter:'all',domain:'all',scope:'originals',page:1};
+     container.classList.add('au-workspace');
++    container.removeAttribute('data-au-keyboard');
+     container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Evidence into action</span></a>${publicReadOnly ? '' : '<button type="button" class="au-header-new" data-au-nav="intake">New claim <span aria-hidden="true">↗</span></button>'}<span class="au-access-label" data-au-public-access${publicReadOnly ? '' : ' hidden'}>Read-only</span><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main"><div class="au-global-status" role="status" aria-live="polite"></div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Record</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
+     const host = container.querySelector('[data-au-view]'), globalStatus = container.querySelector('.au-global-status'), dialog = container.querySelector('.au-source-dialog'), recordDialog = container.querySelector('.au-record-dialog');
+     function notice(message, error = false) { globalStatus.textContent = message; globalStatus.classList.toggle('au-error', error); }
+@@ -1230,7 +1232,7 @@
+       if (fragment === '#autonomous/knowledge') showKnowledge(false);
+       else if (fragment.startsWith('#autonomous/knowledge?')) { const params = new URLSearchParams(fragment.slice(fragment.indexOf('?')+1)); showKnowledge(false,{knowledge_id:params.get('knowledge'),version:params.get('version'),knowledge_sha256:params.get('sha256'),definition_sha256:params.get('definition')}); }
+       else if (fragment.startsWith('#autonomous/claim/')) {
+-        try { const [encoded,query = ''] = fragment.slice('#autonomous/claim/'.length).split('?'), params = new URLSearchParams(query), id = decodeURIComponent(encoded); id ? openClaim(id,false,{mode:params.get('mode') === 'replay' ? 'replay' : 'saved',through:Number(params.get('through') || 0),collection:params.get('collection') === 'legacy' ? 'legacy' : 'reference',detail:params.get('detail'),node:params.get('node'),document:params.get('document'),obligation:params.get('obligation'),fact:params.get('fact'),trace:params.get('trace') === '1'}) : showWork(false); }
++        try { const [encoded,query = ''] = fragment.slice('#autonomous/claim/'.length).split('?'), params = new URLSearchParams(query), id = decodeURIComponent(encoded); id ? openClaim(id,false,{mode:params.get('mode') === 'replay' ? 'replay' : 'saved',through:Number(params.get('through') || 0),collection:params.get('collection'),detail:params.get('detail'),node:params.get('node'),document:params.get('document'),obligation:params.get('obligation'),fact:params.get('fact'),trace:params.get('trace') === '1'}) : showWork(false); }
+         catch (_) { showWork(false); }
+       } else if (fragment.startsWith('#autonomous/demonstration')) { const params = new URLSearchParams(fragment.split('?')[1] || ''); showDemonstration(false,params.get('collection') === 'legacy' ? 'legacy' : 'reference'); }
+       else if (fragment.startsWith('#autonomous/cases?') || fragment.startsWith('#autonomous/work?')) {
+@@ -1794,10 +1796,11 @@
+       return true;
+     }
+     async function openClaim(id, writeHistory = true, preferences = {}) {
++      if (preferences.mode === 'replay') preferences = {...preferences,collection:replayCollection(id,preferences.collection)};
+       if (!preferences.demo) stopPresentation();
+       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
+       leaveView(); route(claimFragment(id,preferences),writeHistory);
+-      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo ? 'demonstration' : 'work'); notice('');
++      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
+       claimRenderComplete = false;
+       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
+       const opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
+@@ -2059,7 +2062,7 @@
+       if (pausedPresentation) { resumePresentation(); return; }
+       const collection = openingPreferences.collection || (REFERENCE_DEMO_CASES.some(row => row.claim_id === current.claim_id) ? 'reference' : 'legacy');
+       const index = demoCases(collection).findIndex(row => row.claim_id === current.claim_id);
+-      if (index < 0) return;
++      if (index < 0) { notice('This recorded case is outside the selected demonstration collection. Its verified history remains available for inspection.'); return; }
+       inspectionHold = false;
+       if (replayRecord.through_seq >= replayRecord.current_revision) {
+         demoSession = {mode:'replay',collection,index}; await openPresentationCase(demoSession); return;
+@@ -2596,8 +2599,8 @@
+         if (presentationMode !== 'replay') { disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); }
+       }
+     }
+-    function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
+-    function pointerInput() { keyboard=false; }
++    function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;container.setAttribute('data-au-keyboard','true');pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
++    function pointerInput() { keyboard=false;container.removeAttribute('data-au-keyboard'); }
+     function motionPreference() { if (reduced?.matches) { motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
+     doc.addEventListener('keydown',keyboardInput);container.addEventListener('pointerdown',pointerInput);reduced?.addEventListener?.('change',motionPreference);
+     function geometryEvent(event) { if (event.type === 'toggle') { drawEdges(); if (event.target?.open) interact(event.target.querySelector(':scope > :not(summary)')); } else if (event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }

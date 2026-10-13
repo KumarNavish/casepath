@@ -1,0 +1,2352 @@
+{
+  "cases": {
+    "rows": 20,
+    "skeleton": 0
+  },
+  "knowledge": {
+    "identities": 1,
+    "read": "refreshing",
+    "skeleton": 0
+  },
+  "recordedKnowledge": {
+    "quarantined": [],
+    "uses": [
+      {
+        "applicability": "same_verified_family_and_rule_version",
+        "avoided_rule_compilations": 1,
+        "claim_id": "clm_393285577dcb12c4",
+        "definition_sha256": "ddac1b2007e67c0e903b6394e085ef90d5e5183b06ccb0329c6baf0560a3c431",
+        "knowledge_id": "procedure.lease_termination_dispute",
+        "reused_evidence_recipes": 3,
+        "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+        "version": 1,
+        "workflow_id": "autonomy.6aeeda2905f238d316b58d73"
+      },
+      {
+        "applicability": "same_verified_family_and_rule_version",
+        "avoided_rule_compilations": 1,
+        "claim_id": "clm_4a07dbbbd859a3ce",
+        "definition_sha256": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5",
+        "knowledge_id": "procedure.defect_mold_heating",
+        "reused_evidence_recipes": 3,
+        "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+        "version": 1,
+        "workflow_id": "autonomy.57b3c8f398bc871016fc2905"
+      },
+      {
+        "applicability": "same_verified_family_and_rule_version",
+        "avoided_rule_compilations": 1,
+        "claim_id": "clm_4a53299cfe619303",
+        "definition_sha256": "ddac1b2007e67c0e903b6394e085ef90d5e5183b06ccb0329c6baf0560a3c431",
+        "knowledge_id": "procedure.lease_termination_dispute",
+        "reused_evidence_recipes": 3,
+        "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+        "version": 1,
+        "workflow_id": "autonomy.1538a6e164de1e9467c96eff"
+      },
+      {
+        "applicability": "same_verified_family_and_rule_version",
+        "avoided_rule_compilations": 1,
+        "claim_id": "clm_543f08f2415b2a33",
+        "definition_sha256": "53c708285ee8d8accd5ea416ea1536614e20169c4e386c25de55c1a1d26771ba",
+        "knowledge_id": "procedure.rent_increase_dispute",
+        "reused_evidence_recipes": 3,
+        "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+        "version": 1,
+        "workflow_id": "autonomy.236f15a81d3f0b34cde32080"
+      },
+      {
+        "applicability": "same_verified_family_and_rule_version",
+        "avoided_rule_compilations": 1,
+        "claim_id": "clm_7dbd7c7d1c4ddf90",
+        "definition_sha256": "53c708285ee8d8accd5ea416ea1536614e20169c4e386c25de55c1a1d26771ba",
+        "knowledge_id": "procedure.rent_increase_dispute",
+        "reused_evidence_recipes": 3,
+        "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+        "version": 1,
+        "workflow_id": "autonomy.e2e1e277b3749c10cee67397"
+      },
+      {
+        "applicability": "same_verified_family_and_rule_version",
+        "avoided_rule_compilations": 1,
+        "claim_id": "clm_95d08975bc575592",
+        "definition_sha256": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5",
+        "knowledge_id": "procedure.defect_mold_heating",
+        "reused_evidence_recipes": 3,
+        "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+        "version": 1,
+        "workflow_id": "autonomy.fdd67064d861b90d1618b6af"
+      }
+    ],
+    "versions": [
+      {
+        "added_document_types": [
+          "landlord_knowledge_evidence",
+          "objective_defect_observation",
+          "tenancy_terms_evidence"
+        ],
+        "category": "defect_mold_heating",
+        "change_reason": "Initial qualification with 3 observed evidence recipes.",
+        "created_at": "2026-10-11T12:00:00+00:00",
+        "evidence_recipes": [
+          {
+            "document_type": "landlord_knowledge_evidence",
+            "required_fields": [
+              "recipient",
+              "reported_defect",
+              "first_knowledge_date",
+              "repair_status"
+            ],
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "summary": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility."
+          },
+          {
+            "document_type": "objective_defect_observation",
+            "required_fields": [
+              "location",
+              "observation_date",
+              "observed_fault",
+              "causal_limits"
+            ],
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "summary": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility."
+          },
+          {
+            "document_type": "tenancy_terms_evidence",
+            "required_fields": [
+              "contracting_parties",
+              "property",
+              "tenancy_terms"
+            ],
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "summary": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility."
+          }
+        ],
+        "facts": [
+          {
+            "citations": [],
+            "fact_id": "fact:tenancy_terms_evidence",
+            "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "fact:landlord_knowledge_evidence",
+            "label": "Landlord knowledge of the reported defect and continuing repair status",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "fact:objective_defect_observation",
+            "label": "Dated objective defect observations and limits of causal attribution",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:health_effects",
+            "label": "health effects",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:mold",
+            "label": "mold",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:heating",
+            "label": "heating",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:specialist_needed",
+            "label": "specialist needed",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:deposit_considered",
+            "label": "deposit considered",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          }
+        ],
+        "family": "defect_mold_heating",
+        "graph": {
+          "assessment_context": {
+            "facts": [
+              {
+                "citations": [],
+                "fact_id": "fact:tenancy_terms_evidence",
+                "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "fact:landlord_knowledge_evidence",
+                "label": "Landlord knowledge of the reported defect and continuing repair status",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "fact:objective_defect_observation",
+                "label": "Dated objective defect observations and limits of causal attribution",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:health_effects",
+                "label": "health effects",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:mold",
+                "label": "mold",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:heating",
+                "label": "heating",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:specialist_needed",
+                "label": "specialist needed",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:deposit_considered",
+                "label": "deposit considered",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              }
+            ],
+            "obligations": [
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "dh_scope",
+                "document_type": "tenancy_terms_evidence",
+                "label": "Relevant tenancy terms",
+                "node_id": "dh_scope",
+                "obligation_id": "obligation:dh_scope:tenancy_terms_evidence",
+                "reason": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility.",
+                "required_fact_ids": [
+                  "fact:tenancy_terms_evidence"
+                ],
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              },
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "dh_notice",
+                "document_type": "landlord_knowledge_evidence",
+                "label": "Landlord knowledge and continuing repair status",
+                "node_id": "dh_notice",
+                "obligation_id": "obligation:dh_notice:landlord_knowledge_evidence",
+                "reason": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility.",
+                "required_fact_ids": [
+                  "fact:landlord_knowledge_evidence"
+                ],
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              },
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "dh_evidence",
+                "document_type": "objective_defect_observation",
+                "label": "Dated technical defect observation",
+                "node_id": "dh_evidence",
+                "obligation_id": "obligation:dh_evidence:objective_defect_observation",
+                "reason": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility.",
+                "required_fact_ids": [
+                  "fact:objective_defect_observation"
+                ],
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "rule_refs": [
+                  "policy-defect_mold_heating-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              }
+            ],
+            "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+            "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+            "summary": "Reusable source-grounded evidence routing."
+          },
+          "claim_id": "reusable-procedure",
+          "conditions": {
+            "deposit_considered": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "health_effects": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "heating": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "mold": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "specialist_needed": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            }
+          },
+          "contract": "casepath.causal-process/1.0.0",
+          "document_catalog": [
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "tenancy_terms_evidence",
+              "held_files": [],
+              "label": "Relevant tenancy terms",
+              "reason": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility.",
+              "requirement_class": "mandatory"
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "landlord_knowledge_evidence",
+              "held_files": [],
+              "label": "Landlord knowledge and continuing repair status",
+              "reason": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility.",
+              "requirement_class": "mandatory"
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "objective_defect_observation",
+              "held_files": [],
+              "label": "Dated technical defect observation",
+              "reason": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility.",
+              "requirement_class": "mandatory"
+            }
+          ],
+          "edges": [
+            {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "reference_defect_mold_heating_0",
+              "label": "assessment recorded",
+              "provenance": {
+                "assertion": "The preceding source-backed internal assessment must be recorded first.",
+                "kind": "inferred",
+                "source": "static_policy"
+              },
+              "relation": "enables",
+              "source_node_id": "dh_intake",
+              "target_node_id": "dh_scope",
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "reference_defect_mold_heating_1",
+              "label": "assessment recorded",
+              "provenance": {
+                "assertion": "The preceding source-backed internal assessment must be recorded first.",
+                "kind": "inferred",
+                "source": "static_policy"
+              },
+              "relation": "enables",
+              "source_node_id": "dh_scope",
+              "target_node_id": "dh_notice",
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "reference_defect_mold_heating_2",
+              "label": "assessment recorded",
+              "provenance": {
+                "assertion": "The preceding source-backed internal assessment must be recorded first.",
+                "kind": "inferred",
+                "source": "static_policy"
+              },
+              "relation": "enables",
+              "source_node_id": "dh_notice",
+              "target_node_id": "dh_cause",
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "reference_defect_mold_heating_3",
+              "label": "assessment recorded",
+              "provenance": {
+                "assertion": "The preceding source-backed internal assessment must be recorded first.",
+                "kind": "inferred",
+                "source": "static_policy"
+              },
+              "relation": "enables",
+              "source_node_id": "dh_cause",
+              "target_node_id": "dh_evidence",
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "reference_defect_mold_heating_4",
+              "label": "assessment recorded",
+              "provenance": {
+                "assertion": "The preceding source-backed internal assessment must be recorded first.",
+                "kind": "inferred",
+                "source": "static_policy"
+              },
+              "relation": "enables",
+              "source_node_id": "dh_evidence",
+              "target_node_id": "dh_response",
+              "validation": {
+                "status": "unvalidated"
+              }
+            }
+          ],
+          "family": "defect_mold_heating",
+          "graph_sha256": "238afcda48c13d501a1398fd5b6bcd57920ae9a4e507d8eae70b24946d82c5c7",
+          "history": [],
+          "nodes": [
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Capture the reported defect', an internal assessment only.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [],
+              "entry": true,
+              "kind": "action",
+              "label": "Capture the reported defect",
+              "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Capture the reported defect', an internal assessment only.",
+              "node_id": "dh_intake",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Establish relevant tenancy terms', an internal assessment only.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [
+                "tenancy_terms_evidence"
+              ],
+              "entry": false,
+              "kind": "action",
+              "label": "Establish relevant tenancy terms",
+              "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Establish relevant tenancy terms', an internal assessment only.",
+              "node_id": "dh_scope",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Establish landlord knowledge', an internal assessment only.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [
+                "landlord_knowledge_evidence"
+              ],
+              "entry": false,
+              "kind": "action",
+              "label": "Establish landlord knowledge",
+              "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Establish landlord knowledge', an internal assessment only.",
+              "node_id": "dh_notice",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Assess supported cause', an internal assessment only.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [],
+              "entry": false,
+              "kind": "action",
+              "label": "Assess supported cause",
+              "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Assess supported cause', an internal assessment only.",
+              "node_id": "dh_cause",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Assess objective defect evidence', an internal assessment only.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [
+                "objective_defect_observation"
+              ],
+              "entry": false,
+              "kind": "action",
+              "label": "Assess objective defect evidence",
+              "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Assess objective defect evidence', an internal assessment only.",
+              "node_id": "dh_evidence",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Record repair and rent reduction eligibility', an internal assessment only.",
+                "sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source_id": "policy-defect_mold_heating-v1.bounded-reference-v1",
+                "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [],
+              "entry": false,
+              "kind": "outcome",
+              "label": "Record repair and rent reduction eligibility",
+              "meaning": "The bounded defect_removal_and_reduction_eligibility assessment includes 'Record repair and rent reduction eligibility', an internal assessment only.",
+              "node_id": "dh_response",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+                "source": "policy-defect_mold_heating-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": true,
+              "validation": {
+                "status": "unvalidated"
+              }
+            }
+          ],
+          "revision": 0
+        },
+        "knowledge_id": "procedure.defect_mold_heating",
+        "knowledge_sha256": "d8c5d9bde122f9ec081615e212af0ae2fb22e1fa5df08f39d9c28b491ac6b1eb",
+        "obligations": [
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "dh_scope",
+            "document_type": "tenancy_terms_evidence",
+            "label": "Relevant tenancy terms",
+            "node_id": "dh_scope",
+            "obligation_id": "obligation:dh_scope:tenancy_terms_evidence",
+            "reason": "'Relevant tenancy terms' is required to assess dh_scope within defect_removal_and_reduction_eligibility.",
+            "required_fact_ids": [
+              "fact:tenancy_terms_evidence"
+            ],
+            "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          },
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "dh_notice",
+            "document_type": "landlord_knowledge_evidence",
+            "label": "Landlord knowledge and continuing repair status",
+            "node_id": "dh_notice",
+            "obligation_id": "obligation:dh_notice:landlord_knowledge_evidence",
+            "reason": "'Landlord knowledge and continuing repair status' is required to assess dh_notice within defect_removal_and_reduction_eligibility.",
+            "required_fact_ids": [
+              "fact:landlord_knowledge_evidence"
+            ],
+            "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          },
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "dh_evidence",
+            "document_type": "objective_defect_observation",
+            "label": "Dated technical defect observation",
+            "node_id": "dh_evidence",
+            "obligation_id": "obligation:dh_evidence:objective_defect_observation",
+            "reason": "'Dated technical defect observation' is required to assess dh_evidence within defect_removal_and_reduction_eligibility.",
+            "required_fact_ids": [
+              "fact:objective_defect_observation"
+            ],
+            "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+            "rule_refs": [
+              "policy-defect_mold_heating-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          }
+        ],
+        "parent_definition_sha256": null,
+        "parent_knowledge_sha256": null,
+        "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+        "qualification": {
+          "checks": [
+            "admitted_rule_identity",
+            "no_case_values_or_files",
+            "all_ternary_branch_assignments",
+            "graph_and_checklist_equivalence",
+            "source_bound_proposer_and_verifier",
+            "exact_required_evidence_fields",
+            "verified_sufficient_source_binding"
+          ],
+          "definition_sha256": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5",
+          "evidence_recipe_count": 3,
+          "recipe_coverage_document_types": [
+            "landlord_knowledge_evidence",
+            "objective_defect_observation",
+            "tenancy_terms_evidence"
+          ],
+          "regression_cases": 243,
+          "status": "qualified"
+        },
+        "rule_pack_sha256": "79821663ef817d4885d450dbae5e361a41311d396989cd452a9a3006d4a96831",
+        "source_claim_id": "clm_314f2d309fea25e6",
+        "source_evidence": [
+          {
+            "citations": [
+              {
+                "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+                "end_char": 1029,
+                "quote": "Our fictional call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect.",
+                "sha256": "ae66233b1e2853056ced10f26ebe615adef8fb17bf18293a94b93a984825576c",
+                "start_char": 718,
+                "text_sha256": "ae66233b1e2853056ced10f26ebe615adef8fb17bf18293a94b93a984825576c"
+              }
+            ],
+            "document_type": "landlord_knowledge_evidence",
+            "interpretation_receipt_sha256": "9fd6f8cdab0c825bacdb1e3669dc1fab0b1cc96130ed40964fb38ce23c429ca3",
+            "proposed_summary": "Read a complete original supporting file for: Landlord knowledge of the reported defect and continuing repair status."
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+                "end_char": 1309,
+                "quote": "On 2025-02-21 at07:30, a calibrated digital instrument (fictional calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure.",
+                "sha256": "ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3",
+                "start_char": 734,
+                "text_sha256": "ad1d46adcf2f5cff2e4be0b9db7bbc5fdd07577badbea246604470f38bcf9fa3"
+              }
+            ],
+            "document_type": "objective_defect_observation",
+            "interpretation_receipt_sha256": "9fd6f8cdab0c825bacdb1e3669dc1fab0b1cc96130ed40964fb38ce23c429ca3",
+            "proposed_summary": "Read a complete original supporting file for: Dated objective defect observations and limits of causal attribution."
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+                "end_char": 978,
+                "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter.",
+                "sha256": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615",
+                "start_char": 610,
+                "text_sha256": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615"
+              }
+            ],
+            "document_type": "tenancy_terms_evidence",
+            "interpretation_receipt_sha256": "9fd6f8cdab0c825bacdb1e3669dc1fab0b1cc96130ed40964fb38ce23c429ca3",
+            "proposed_summary": "Read a complete original supporting file for: Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract."
+          }
+        ],
+        "source_outcome": {
+          "assessment_scope": "defect_removal_and_reduction_eligibility",
+          "assessment_status": "complete",
+          "authority_limits": [
+            "No repair, rent quantum, verified filing deadline, communication, filing or court outcome was performed."
+          ],
+          "citations": [
+            {
+              "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+              "end_char": 1099,
+              "quote": "removal of the continuing heating defect and assessment of proportional rent-reduction eligibility",
+              "sha256": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615",
+              "start_char": 1001,
+              "text_sha256": "b6059e7a5d663f6263675c100f3bc5c399341ad57108a6730b10171a4db10615"
+            }
+          ],
+          "issues": [],
+          "legal_predicates": [
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_75472589f7c0e2b444f884f3000845b2",
+                  "quote": "I, Riley Foster, am the tenant under an indefinite ordinary residential lease for Synthetic Rosenweg 33, 8008 Zurich, canton Zurich. The landlord in this fictional supplement is Synthetische Wohnraum AG. Current monthly net rent is CHF1800; the landlord maintains the fixed central heating and circulation pump. The lease requires usable heated living rooms in winter."
+                }
+              ],
+              "predicate_id": "residential_tenancy_scope",
+              "rule_refs": [
+                "CO:259",
+                "CO:259a",
+                "CO:259d"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+                  "quote": "The defect persists at this report's as-of time; no lasting pump repair or replacement has been completed. Heating is inadequate for the contracted winter residential use of the principal living rooms."
+                }
+              ],
+              "predicate_id": "objective_use_impairment",
+              "rule_refs": [
+                "CO:259a",
+                "CO:259d"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_3fa6e00ca8e24d41c3af7915f43a21bd",
+                  "quote": "On 2025-02-21 at07:30, a calibrated digital instrument (fictional calibration check2024-12-15, uncertainty±0.2C) measured the living room at15.8C after overnight normal operation. Main living rooms stayed15.5–16.3C in the seven-day logger record. Resets restore heat briefly; the pump cuts out repeatedly. The fixed circulation pump has an internal bearing/control failure; it is part of landlord-maintained equipment, outside ordinary small tenant maintenance. Normal ventilation and unobstructed radiators were observed; no tenant alteration or misuse explains the failure."
+                }
+              ],
+              "predicate_id": "outside_small_tenant_maintenance_and_no_tenant_cause",
+              "rule_refs": [
+                "CO:259",
+                "CO:259a"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+                  "quote": "Our fictional call log records Riley Foster's three heating-failure reports on 2025-02-01, 2025-02-08, 2025-02-17. Each report identified the same rented flat and recurrent stoppage of the fixed heating. We received the first report on2025-02-01; this is the landlord's first documented knowledge of the defect."
+                }
+              ],
+              "predicate_id": "landlord_first_knowledge",
+              "rule_refs": [
+                "CO:259d"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_6c895ee56c7a6b33aaeebe06d530eb4b",
+                  "quote": "We confirm the tenant was using the heating normally and did not cause this pump failure. Repeated resets did not remove the continuing defect. We acknowledge the dated service observation and remain responsible for arranging pump repair; no lasting repair has yet occurred as of this acknowledgment."
+                }
+              ],
+              "predicate_id": "continuing_defect_without_remedy",
+              "rule_refs": [
+                "CO:259a",
+                "CO:259d"
+              ],
+              "status": "supported"
+            }
+          ],
+          "missing_evidence": [],
+          "next_action": "Inspect the recorded historical synthetic assessment; any real action needs its own current authority.",
+          "reference_provenance": {
+            "as_of": "2025-02-21",
+            "contract": "casepath.deterministic-reference/1.0.0",
+            "mode": "deterministic_reference",
+            "profile_id": "synthetic-nine-v1",
+            "profile_sha256": "15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7",
+            "rule_set_sha256": "919645ab51b74ccc4ad01ba9d06148af08b28ccd6c9a3f67b19284feb9646056",
+            "source_roster_sha256": "6960ba3cded89b5634c6219f1509002bc96892d7596d6a3c7768dfb72cee9e17",
+            "synthetic": true
+          },
+          "request_draft": {
+            "body": "The fictional source packet supports defect removal and proportional reduction eligibility from documented landlord knowledge until remedy. The reduction amount, repair itself and any award remain undetermined.",
+            "status": "prepared_not_sent",
+            "subject": "Bounded historical synthetic assessment"
+          },
+          "status": "deferred",
+          "summary": "The fictional source packet supports defect removal and proportional reduction eligibility from documented landlord knowledge until remedy. The reduction amount, repair itself and any award remain undetermined.",
+          "title": "Bounded synthetic reference assessment recorded",
+          "unresolved_facts": []
+        },
+        "source_state_sha256": "aacf8ab4a8f7b9128915963924cc68d25d8824958fe1ce25da500d1ea5461b5c",
+        "title": "Generic defect, moisture, mould, and heating workflow — bounded synthetic reference assessment",
+        "version": 1
+      },
+      {
+        "added_document_types": [
+          "original_notification_context",
+          "received_termination_packet",
+          "tenancy_terms_evidence"
+        ],
+        "category": "lease_termination_dispute",
+        "change_reason": "Initial qualification with 3 observed evidence recipes.",
+        "created_at": "2026-10-11T12:00:00+00:00",
+        "evidence_recipes": [
+          {
+            "document_type": "original_notification_context",
+            "required_fields": [
+              "issuer_authority",
+              "packet_completeness",
+              "contemporaneous_contents"
+            ],
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "summary": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment."
+          },
+          {
+            "document_type": "received_termination_packet",
+            "required_fields": [
+              "issuer",
+              "addressee",
+              "received_contents"
+            ],
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "summary": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment."
+          },
+          {
+            "document_type": "tenancy_terms_evidence",
+            "required_fields": [
+              "contracting_parties",
+              "property",
+              "tenancy_terms"
+            ],
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "summary": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment."
+          }
+        ],
+        "facts": [
+          {
+            "citations": [],
+            "fact_id": "fact:tenancy_terms_evidence",
+            "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "fact:received_termination_packet",
+            "label": "The actual received termination letter contents, without asserting lawful approved form",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "fact:original_notification_context",
+            "label": "Issuer authority and complete contemporaneous notification packet",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:termination_received",
+            "label": "termination received",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:family_home",
+            "label": "family home",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:arrears",
+            "label": "arrears",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:retaliation_screen",
+            "label": "retaliation screen",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:extension_relevant",
+            "label": "extension relevant",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          }
+        ],
+        "family": "lease_termination_dispute",
+        "graph": {
+          "assessment_context": {
+            "facts": [
+              {
+                "citations": [],
+                "fact_id": "fact:tenancy_terms_evidence",
+                "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "fact:received_termination_packet",
+                "label": "The actual received termination letter contents, without asserting lawful approved form",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "fact:original_notification_context",
+                "label": "Issuer authority and complete contemporaneous notification packet",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:termination_received",
+                "label": "termination received",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:family_home",
+                "label": "family home",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:arrears",
+                "label": "arrears",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:retaliation_screen",
+                "label": "retaliation screen",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:extension_relevant",
+                "label": "extension relevant",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              }
+            ],
+            "obligations": [
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "lt_form",
+                "document_type": "tenancy_terms_evidence",
+                "label": "Relevant tenancy terms",
+                "node_id": "lt_form",
+                "obligation_id": "obligation:lt_form:tenancy_terms_evidence",
+                "reason": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment.",
+                "required_fact_ids": [
+                  "fact:tenancy_terms_evidence"
+                ],
+                "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              },
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "lt_form",
+                "document_type": "received_termination_packet",
+                "label": "Received termination notice",
+                "node_id": "lt_form",
+                "obligation_id": "obligation:lt_form:received_termination_packet",
+                "reason": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment.",
+                "required_fact_ids": [
+                  "fact:received_termination_packet"
+                ],
+                "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              },
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "lt_form",
+                "document_type": "original_notification_context",
+                "label": "Who sent the notice and how it arrived",
+                "node_id": "lt_form",
+                "obligation_id": "obligation:lt_form:original_notification_context",
+                "reason": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment.",
+                "required_fact_ids": [
+                  "fact:original_notification_context"
+                ],
+                "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "rule_refs": [
+                  "policy-lease_termination_dispute-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              }
+            ],
+            "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+            "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+            "summary": "Reusable source-grounded evidence routing."
+          },
+          "claim_id": "reusable-procedure",
+          "conditions": {
+            "arrears": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "extension_relevant": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "family_home": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "retaliation_screen": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "termination_received": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            }
+          },
+          "contract": "casepath.causal-process/1.0.0",
+          "document_catalog": [
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment.",
+                "sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "source_id": "policy-lease_termination_dispute-v1.bounded-reference-v1",
+                "title": "Generic lease-termination dispute workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "tenancy_terms_evidence",
+              "held_files": [],
+              "label": "Relevant tenancy terms",
+              "reason": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment.",
+              "requirement_class": "mandatory"
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment.",
+                "sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "source_id": "policy-lease_termination_dispute-v1.bounded-reference-v1",
+                "title": "Generic lease-termination dispute workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "received_termination_packet",
+              "held_files": [],
+              "label": "Received termination notice",
+              "reason": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment.",
+              "requirement_class": "mandatory"
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment.",
+                "sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "source_id": "policy-lease_termination_dispute-v1.bounded-reference-v1",
+                "title": "Generic lease-termination dispute workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "original_notification_context",
+              "held_files": [],
+              "label": "Who sent the notice and how it arrived",
+              "reason": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment.",
+              "requirement_class": "mandatory"
+            }
+          ],
+          "edges": [
+            {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "reference_lease_termination_dispute_0",
+              "label": "assessment recorded",
+              "provenance": {
+                "assertion": "The preceding source-backed internal assessment must be recorded first.",
+                "kind": "inferred",
+                "source": "static_policy"
+              },
+              "relation": "enables",
+              "source_node_id": "lt_intake",
+              "target_node_id": "lt_form",
+              "validation": {
+                "status": "unvalidated"
+              }
+            }
+          ],
+          "family": "lease_termination_dispute",
+          "graph_sha256": "cb19734371b02039e3c0d4676fa6a11e04f15d449790463f0c62e4015e30eca4",
+          "history": [],
+          "nodes": [
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded termination_form_nullity_assessment assessment includes 'Capture the received termination packet', an internal assessment only.",
+                "sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "source_id": "policy-lease_termination_dispute-v1.bounded-reference-v1",
+                "title": "Generic lease-termination dispute workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [],
+              "entry": true,
+              "kind": "action",
+              "label": "Capture the received termination packet",
+              "meaning": "The bounded termination_form_nullity_assessment assessment includes 'Capture the received termination packet', an internal assessment only.",
+              "node_id": "lt_intake",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "source": "policy-lease_termination_dispute-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded termination_form_nullity_assessment assessment includes 'Assess whether the termination notice is valid', an internal assessment only.",
+                "sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "source_id": "policy-lease_termination_dispute-v1.bounded-reference-v1",
+                "title": "Generic lease-termination dispute workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [
+                "tenancy_terms_evidence",
+                "received_termination_packet",
+                "original_notification_context"
+              ],
+              "entry": false,
+              "kind": "outcome",
+              "label": "Assess whether the termination notice is valid",
+              "meaning": "The bounded termination_form_nullity_assessment assessment includes 'Assess whether the termination notice is valid', an internal assessment only.",
+              "node_id": "lt_form",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+                "source": "policy-lease_termination_dispute-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": true,
+              "validation": {
+                "status": "unvalidated"
+              }
+            }
+          ],
+          "revision": 0
+        },
+        "knowledge_id": "procedure.lease_termination_dispute",
+        "knowledge_sha256": "0ec65b213a12c34dd0500d3d6b6c8ad501808f1fd6780062e856a5e6c9f8ad7e",
+        "obligations": [
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "lt_form",
+            "document_type": "tenancy_terms_evidence",
+            "label": "Relevant tenancy terms",
+            "node_id": "lt_form",
+            "obligation_id": "obligation:lt_form:tenancy_terms_evidence",
+            "reason": "'Relevant tenancy terms' is required to assess lt_form within termination_form_nullity_assessment.",
+            "required_fact_ids": [
+              "fact:tenancy_terms_evidence"
+            ],
+            "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          },
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "lt_form",
+            "document_type": "received_termination_packet",
+            "label": "Received termination notice",
+            "node_id": "lt_form",
+            "obligation_id": "obligation:lt_form:received_termination_packet",
+            "reason": "'Received termination notice' is required to assess lt_form within termination_form_nullity_assessment.",
+            "required_fact_ids": [
+              "fact:received_termination_packet"
+            ],
+            "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          },
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "lt_form",
+            "document_type": "original_notification_context",
+            "label": "Who sent the notice and how it arrived",
+            "node_id": "lt_form",
+            "obligation_id": "obligation:lt_form:original_notification_context",
+            "reason": "'Who sent the notice and how it arrived' is required to assess lt_form within termination_form_nullity_assessment.",
+            "required_fact_ids": [
+              "fact:original_notification_context"
+            ],
+            "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+            "rule_refs": [
+              "policy-lease_termination_dispute-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          }
+        ],
+        "parent_definition_sha256": null,
+        "parent_knowledge_sha256": null,
+        "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+        "qualification": {
+          "checks": [
+            "admitted_rule_identity",
+            "no_case_values_or_files",
+            "all_ternary_branch_assignments",
+            "graph_and_checklist_equivalence",
+            "source_bound_proposer_and_verifier",
+            "exact_required_evidence_fields",
+            "verified_sufficient_source_binding"
+          ],
+          "definition_sha256": "ddac1b2007e67c0e903b6394e085ef90d5e5183b06ccb0329c6baf0560a3c431",
+          "evidence_recipe_count": 3,
+          "recipe_coverage_document_types": [
+            "original_notification_context",
+            "received_termination_packet",
+            "tenancy_terms_evidence"
+          ],
+          "regression_cases": 243,
+          "status": "qualified"
+        },
+        "rule_pack_sha256": "0fa0e683f84e09bd3fd7b30c1d9d26621ba4652e1b04cdb71282dc810b88f297",
+        "source_claim_id": "clm_0f4f13b1e3e1328c",
+        "source_evidence": [
+          {
+            "citations": [
+              {
+                "artifact_id": "src_e9b3ac291f74f1a1a1dea231ac89c933",
+                "end_char": 939,
+                "quote": "Fictional issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich. On2026-05-08T10:30:00+02:00 we transmitted the sole plain termination PDF identified above toTaylor Miller's current email account, and the email delivery/open record confirms receipt at that time.",
+                "sha256": "ab1656712239715a823aa3914f848ab5ad60f89459ff8510be53958df8576b5d",
+                "start_char": 610,
+                "text_sha256": "ab1656712239715a823aa3914f848ab5ad60f89459ff8510be53958df8576b5d"
+              }
+            ],
+            "document_type": "original_notification_context",
+            "interpretation_receipt_sha256": "84df7d177c3a11c2aef5a0019a5be24bd21843c27eea9e0dddee9d4317a0bea8",
+            "proposed_summary": "Read a complete original supporting file for: Issuer authority and complete contemporaneous notification packet."
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_6773fe78e05454274bd6e195781dee0d",
+                "end_char": 393,
+                "quote": "Termination of tenancy\nRental property: Dwelling under the existing tenancy agreement\nSeefeldstrasse 28, 8008 Zürich\nDear tenant\nWe hereby terminate the existing tenancy at the next contractual termination date.\nNotice period\nthree months after receipt",
+                "sha256": "64ffbb0b41618812efbd33e5665e065adecc8e123caf385e8b6246eb9ca05237",
+                "start_char": 141,
+                "text_sha256": "f297bc71ac79cd6f4b3cc1b9c7396264458cd3f9426ad8960346d0e8a3ded078"
+              }
+            ],
+            "document_type": "received_termination_packet",
+            "interpretation_receipt_sha256": "84df7d177c3a11c2aef5a0019a5be24bd21843c27eea9e0dddee9d4317a0bea8",
+            "proposed_summary": "Read a complete original supporting file for: The actual received termination letter contents, without asserting lawful approved form."
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_7be4eb7b8bf9a9e333a95ff55601b418",
+                "end_char": 908,
+                "quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home.",
+                "sha256": "2b6c2af230dd69c31e489417b0919fa037b54c723aa2a1e8fa8c7f4c789b496a",
+                "start_char": 610,
+                "text_sha256": "2b6c2af230dd69c31e489417b0919fa037b54c723aa2a1e8fa8c7f4c789b496a"
+              }
+            ],
+            "document_type": "tenancy_terms_evidence",
+            "interpretation_receipt_sha256": "84df7d177c3a11c2aef5a0019a5be24bd21843c27eea9e0dddee9d4317a0bea8",
+            "proposed_summary": "Read a complete original supporting file for: Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract."
+          }
+        ],
+        "source_outcome": {
+          "assessment_scope": "termination_form_nullity_assessment",
+          "assessment_status": "complete",
+          "authority_limits": [
+            "No repair, rent quantum, verified filing deadline, communication, filing or court outcome was performed."
+          ],
+          "citations": [
+            {
+              "artifact_id": "src_7be4eb7b8bf9a9e333a95ff55601b418",
+              "end_char": 1479,
+              "quote": "assessment of the received landlord notice's approved-form/nullity defect",
+              "sha256": "2b6c2af230dd69c31e489417b0919fa037b54c723aa2a1e8fa8c7f4c789b496a",
+              "start_char": 1406,
+              "text_sha256": "2b6c2af230dd69c31e489417b0919fa037b54c723aa2a1e8fa8c7f4c789b496a"
+            }
+          ],
+          "issues": [],
+          "legal_predicates": [
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_7be4eb7b8bf9a9e333a95ff55601b418",
+                  "quote": "I, Taylor Miller, rent the dwelling atSeefeldstrasse 28, 8008 Zurich under an indefinite residential lease in canton Zurich. Nova Régie SA is the authorized landlord's managing agent for this flat. I live alone, am unmarried and have no registered partner; the rented dwelling is not a family home."
+                }
+              ],
+              "predicate_id": "residential_tenancy_scope",
+              "rule_refs": [
+                "CO:266l",
+                "CO:266o"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_e9b3ac291f74f1a1a1dea231ac89c933",
+                  "quote": "Fictional issuance archive of Nova Régie SA: we were authorized to issue landlord communications forSeefeldstrasse 28, 8008 Zurich. On2026-05-08T10:30:00+02:00 we transmitted the sole plain termination PDF identified above toTaylor Miller's current email account, and the email delivery/open record confirms receipt at that time."
+                }
+              ],
+              "predicate_id": "issuer_authority_and_received_packet",
+              "rule_refs": [
+                "CO:266l"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_e9b3ac291f74f1a1a1dea231ac89c933",
+                  "quote": "No other attachment, approved form, separate notice, post to the old or current address, portal notice, replacement or correction was issued up to the fictional review as-of date."
+                }
+              ],
+              "predicate_id": "complete_channel_archive",
+              "rule_refs": [
+                "CO:266l",
+                "CO:266o"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_e9b3ac291f74f1a1a1dea231ac89c933",
+                  "quote": "It was a plain letter, not a canton-approved termination form."
+                }
+              ],
+              "predicate_id": "canton_approved_form",
+              "rule_refs": [
+                "CO:266l",
+                "CO:266o"
+              ],
+              "status": "failed"
+            }
+          ],
+          "missing_evidence": [],
+          "next_action": "Inspect the recorded historical synthetic assessment; any real action needs its own current authority.",
+          "reference_provenance": {
+            "as_of": "2026-05-10",
+            "contract": "casepath.deterministic-reference/1.0.0",
+            "mode": "deterministic_reference",
+            "profile_id": "synthetic-nine-v1",
+            "profile_sha256": "15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7",
+            "rule_set_sha256": "919645ab51b74ccc4ad01ba9d06148af08b28ccd6c9a3f67b19284feb9646056",
+            "source_roster_sha256": "940340401e68c898c91029c7ede9a522faecd5f5d76c4bcc978c061915e47d29",
+            "synthetic": true
+          },
+          "request_draft": {
+            "body": "The fictional complete received packet lacks a canton-approved termination form, supporting a finding that the notice is invalid under CO 266l/266o. No challenge was filed and no court outcome or verified filing deadline is recorded.",
+            "status": "prepared_not_sent",
+            "subject": "Bounded historical synthetic assessment"
+          },
+          "status": "deferred",
+          "summary": "The fictional complete received packet lacks a canton-approved termination form, supporting a finding that the notice is invalid under CO 266l/266o. No challenge was filed and no court outcome or verified filing deadline is recorded.",
+          "title": "Bounded synthetic reference assessment recorded",
+          "unresolved_facts": []
+        },
+        "source_state_sha256": "7bd14f08797172384eb659dbb561fc572c84772000a1717ec68e3fcec9154473",
+        "title": "Generic lease-termination dispute workflow — bounded synthetic reference assessment",
+        "version": 1
+      },
+      {
+        "added_document_types": [
+          "original_notification_context",
+          "received_rent_increase_packet",
+          "tenancy_terms_evidence"
+        ],
+        "category": "rent_increase_dispute",
+        "change_reason": "Initial qualification with 3 observed evidence recipes.",
+        "created_at": "2026-10-11T12:00:00+00:00",
+        "evidence_recipes": [
+          {
+            "document_type": "original_notification_context",
+            "required_fields": [
+              "issuer_authority",
+              "packet_completeness",
+              "contemporaneous_contents"
+            ],
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "summary": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment."
+          },
+          {
+            "document_type": "received_rent_increase_packet",
+            "required_fields": [
+              "notified_amount",
+              "effective_date",
+              "addressee",
+              "form_contents"
+            ],
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "summary": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+          },
+          {
+            "document_type": "tenancy_terms_evidence",
+            "required_fields": [
+              "contracting_parties",
+              "property",
+              "tenancy_terms"
+            ],
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "summary": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment."
+          }
+        ],
+        "facts": [
+          {
+            "citations": [],
+            "fact_id": "fact:tenancy_terms_evidence",
+            "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "fact:received_rent_increase_packet",
+            "label": "The actual received increase notification contents, without asserting lawful reasons",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "fact:original_notification_context",
+            "label": "Issuer authority and complete contemporaneous notification packet",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "This fact has not yet been established by a sufficient source."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:claim_received",
+            "label": "claim received",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:reference_rate",
+            "label": "reference rate",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          },
+          {
+            "citations": [],
+            "fact_id": "condition:renovation",
+            "label": "renovation",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1"
+            ],
+            "status": "unresolved",
+            "summary": "The supplied evidence has not established this condition."
+          }
+        ],
+        "family": "rent_increase_dispute",
+        "graph": {
+          "assessment_context": {
+            "facts": [
+              {
+                "citations": [],
+                "fact_id": "fact:tenancy_terms_evidence",
+                "label": "Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "fact:received_rent_increase_packet",
+                "label": "The actual received increase notification contents, without asserting lawful reasons",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "fact:original_notification_context",
+                "label": "Issuer authority and complete contemporaneous notification packet",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "This fact has not yet been established by a sufficient source."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:claim_received",
+                "label": "claim received",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:reference_rate",
+                "label": "reference rate",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              },
+              {
+                "citations": [],
+                "fact_id": "condition:renovation",
+                "label": "renovation",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1"
+                ],
+                "status": "unresolved",
+                "summary": "The supplied evidence has not established this condition."
+              }
+            ],
+            "obligations": [
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "ri_form",
+                "document_type": "tenancy_terms_evidence",
+                "label": "Relevant ordinary tenancy terms",
+                "node_id": "ri_form",
+                "obligation_id": "obligation:ri_form:tenancy_terms_evidence",
+                "reason": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment.",
+                "required_fact_ids": [
+                  "fact:tenancy_terms_evidence"
+                ],
+                "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              },
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "ri_form",
+                "document_type": "received_rent_increase_packet",
+                "label": "Received rent increase notice",
+                "node_id": "ri_form",
+                "obligation_id": "obligation:ri_form:received_rent_increase_packet",
+                "reason": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment.",
+                "required_fact_ids": [
+                  "fact:received_rent_increase_packet"
+                ],
+                "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              },
+              {
+                "capability_id": "local_inbox.read",
+                "decision_node_id": "ri_reason",
+                "document_type": "original_notification_context",
+                "label": "Reasons supplied with the increase notice",
+                "node_id": "ri_reason",
+                "obligation_id": "obligation:ri_reason:original_notification_context",
+                "reason": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment.",
+                "required_fact_ids": [
+                  "fact:original_notification_context"
+                ],
+                "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "rule_refs": [
+                  "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                  "casepath.bounded-reference-assessment/1.0.0"
+                ]
+              }
+            ],
+            "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+            "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+            "summary": "Reusable source-grounded evidence routing."
+          },
+          "claim_id": "reusable-procedure",
+          "conditions": {
+            "claim_received": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "reference_rate": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            },
+            "renovation": {
+              "citations": [],
+              "summary": "The supplied evidence has not established this condition.",
+              "verdict": "unresolved",
+              "worker": "autonomous_verification"
+            }
+          },
+          "contract": "casepath.causal-process/1.0.0",
+          "document_catalog": [
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment.",
+                "sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source_id": "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                "title": "Generic rent-increase dispute workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "tenancy_terms_evidence",
+              "held_files": [],
+              "label": "Relevant ordinary tenancy terms",
+              "reason": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment.",
+              "requirement_class": "mandatory"
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment.",
+                "sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source_id": "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                "title": "Generic rent-increase dispute workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "received_rent_increase_packet",
+              "held_files": [],
+              "label": "Received rent increase notice",
+              "reason": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment.",
+              "requirement_class": "mandatory"
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment.",
+                "sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source_id": "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                "title": "Generic rent-increase dispute workflow — bounded synthetic reference assessment"
+              },
+              "condition": {
+                "const": "true"
+              },
+              "condition_flag": null,
+              "document_type": "original_notification_context",
+              "held_files": [],
+              "label": "Reasons supplied with the increase notice",
+              "reason": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment.",
+              "requirement_class": "mandatory"
+            }
+          ],
+          "edges": [
+            {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "reference_rent_increase_dispute_0",
+              "label": "assessment recorded",
+              "provenance": {
+                "assertion": "The preceding source-backed internal assessment must be recorded first.",
+                "kind": "inferred",
+                "source": "static_policy"
+              },
+              "relation": "enables",
+              "source_node_id": "ri_intake",
+              "target_node_id": "ri_form",
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "condition": {
+                "const": "true"
+              },
+              "edge_id": "reference_rent_increase_dispute_1",
+              "label": "assessment recorded",
+              "provenance": {
+                "assertion": "The preceding source-backed internal assessment must be recorded first.",
+                "kind": "inferred",
+                "source": "static_policy"
+              },
+              "relation": "enables",
+              "source_node_id": "ri_form",
+              "target_node_id": "ri_reason",
+              "validation": {
+                "status": "unvalidated"
+              }
+            }
+          ],
+          "family": "rent_increase_dispute",
+          "graph_sha256": "6dee53a59b1c3430d977e988ae9d5d2b6f63fe022349cf64541965e297cfafd9",
+          "history": [],
+          "nodes": [
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded rent_increase_reasons_nullity_assessment assessment includes 'Capture the original increase packet', an internal assessment only.",
+                "sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source_id": "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                "title": "Generic rent-increase dispute workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [],
+              "entry": true,
+              "kind": "action",
+              "label": "Capture the original increase packet",
+              "meaning": "The bounded rent_increase_reasons_nullity_assessment assessment includes 'Capture the original increase packet', an internal assessment only.",
+              "node_id": "ri_intake",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source": "policy-rent_increase_dispute-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded rent_increase_reasons_nullity_assessment assessment includes 'Assess notification context', an internal assessment only.",
+                "sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source_id": "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                "title": "Generic rent-increase dispute workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [
+                "tenancy_terms_evidence",
+                "received_rent_increase_packet"
+              ],
+              "entry": false,
+              "kind": "action",
+              "label": "Assess notification context",
+              "meaning": "The bounded rent_increase_reasons_nullity_assessment assessment includes 'Assess notification context', an internal assessment only.",
+              "node_id": "ri_form",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source": "policy-rent_increase_dispute-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": false,
+              "validation": {
+                "status": "unvalidated"
+              }
+            },
+            {
+              "authority": {
+                "kind": "operational_rule",
+                "quote": "The bounded rent_increase_reasons_nullity_assessment assessment includes 'Assess whether the increase notice is valid', an internal assessment only.",
+                "sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source_id": "policy-rent_increase_dispute-v1.bounded-reference-v1",
+                "title": "Generic rent-increase dispute workflow — bounded synthetic reference assessment"
+              },
+              "completed": false,
+              "condition": {
+                "const": "true"
+              },
+              "document_types": [
+                "original_notification_context"
+              ],
+              "entry": false,
+              "kind": "outcome",
+              "label": "Assess whether the increase notice is valid",
+              "meaning": "The bounded rent_increase_reasons_nullity_assessment assessment includes 'Assess whether the increase notice is valid', an internal assessment only.",
+              "node_id": "ri_reason",
+              "provenance": {
+                "kind": "machine_validated",
+                "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+                "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+                "source": "policy-rent_increase_dispute-v1.bounded-reference-v1"
+              },
+              "responsibility": "claim_handler",
+              "terminal": true,
+              "validation": {
+                "status": "unvalidated"
+              }
+            }
+          ],
+          "revision": 0
+        },
+        "knowledge_id": "procedure.rent_increase_dispute",
+        "knowledge_sha256": "d999636dcf44b99f8976f435e43eff6ca97172d0aab1224e091d06a65c9af548",
+        "obligations": [
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "ri_form",
+            "document_type": "tenancy_terms_evidence",
+            "label": "Relevant ordinary tenancy terms",
+            "node_id": "ri_form",
+            "obligation_id": "obligation:ri_form:tenancy_terms_evidence",
+            "reason": "'Relevant ordinary tenancy terms' is required to assess ri_form within rent_increase_reasons_nullity_assessment.",
+            "required_fact_ids": [
+              "fact:tenancy_terms_evidence"
+            ],
+            "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          },
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "ri_form",
+            "document_type": "received_rent_increase_packet",
+            "label": "Received rent increase notice",
+            "node_id": "ri_form",
+            "obligation_id": "obligation:ri_form:received_rent_increase_packet",
+            "reason": "'Received rent increase notice' is required to assess ri_form within rent_increase_reasons_nullity_assessment.",
+            "required_fact_ids": [
+              "fact:received_rent_increase_packet"
+            ],
+            "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          },
+          {
+            "capability_id": "local_inbox.read",
+            "decision_node_id": "ri_reason",
+            "document_type": "original_notification_context",
+            "label": "Reasons supplied with the increase notice",
+            "node_id": "ri_reason",
+            "obligation_id": "obligation:ri_reason:original_notification_context",
+            "reason": "'Reasons supplied with the increase notice' is required to assess ri_reason within rent_increase_reasons_nullity_assessment.",
+            "required_fact_ids": [
+              "fact:original_notification_context"
+            ],
+            "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+            "rule_refs": [
+              "policy-rent_increase_dispute-v1.bounded-reference-v1",
+              "casepath.bounded-reference-assessment/1.0.0"
+            ]
+          }
+        ],
+        "parent_definition_sha256": null,
+        "parent_knowledge_sha256": null,
+        "policy_id": "casepath.bounded-reference-assessment/1.0.0",
+        "qualification": {
+          "checks": [
+            "admitted_rule_identity",
+            "no_case_values_or_files",
+            "all_ternary_branch_assignments",
+            "graph_and_checklist_equivalence",
+            "source_bound_proposer_and_verifier",
+            "exact_required_evidence_fields",
+            "verified_sufficient_source_binding"
+          ],
+          "definition_sha256": "53c708285ee8d8accd5ea416ea1536614e20169c4e386c25de55c1a1d26771ba",
+          "evidence_recipe_count": 3,
+          "recipe_coverage_document_types": [
+            "original_notification_context",
+            "received_rent_increase_packet",
+            "tenancy_terms_evidence"
+          ],
+          "regression_cases": 27,
+          "status": "qualified"
+        },
+        "rule_pack_sha256": "3dbf27c3327ee1059ca729e7c632f455baeb76543e6afb84940ea607b9b7c8a1",
+        "source_claim_id": "clm_2c55cdd816b1d0e8",
+        "source_evidence": [
+          {
+            "citations": [
+              {
+                "artifact_id": "src_008668f49cb3e3c352d7d6d70c6a7b32",
+                "end_char": 1263,
+                "quote": "The fictional managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification.",
+                "sha256": "8aedc3bb9a05121b997bfc95377bb8777220f3c309920a1f17cbc95b4072fbca",
+                "start_char": 1009,
+                "text_sha256": "8aedc3bb9a05121b997bfc95377bb8777220f3c309920a1f17cbc95b4072fbca"
+              }
+            ],
+            "document_type": "original_notification_context",
+            "interpretation_receipt_sha256": "8aca66fe3c2f22c5148738ea2fcf5df045e1f33e5b98093f9e217d4e1be89bee",
+            "proposed_summary": "Read a complete original supporting file for: Issuer authority and complete contemporaneous notification packet."
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_b53f735cfd01a992a90c6771bcd2d0d4",
+                "end_char": 770,
+                "quote": "Begründung der Erhöhung:\nBegründung gemäss separatem Begleitschreiben1",
+                "sha256": "d48b447e1619953f5dda38c43ec659283d50f717a839c6952c1beca46c92d89e",
+                "start_char": 700,
+                "text_sha256": "016d20902db95aa9a25e1d2b3af2508ef32bcd859d60b78b5ab594405f3e5dcd"
+              }
+            ],
+            "document_type": "received_rent_increase_packet",
+            "interpretation_receipt_sha256": "8aca66fe3c2f22c5148738ea2fcf5df045e1f33e5b98093f9e217d4e1be89bee",
+            "proposed_summary": "Read a complete original supporting file for: The actual received increase notification contents, without asserting lawful reasons."
+          },
+          {
+            "citations": [
+              {
+                "artifact_id": "src_1d1891048908248523ab07c0824d8f51",
+                "end_char": 1017,
+                "quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice.",
+                "sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+                "start_char": 610,
+                "text_sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2"
+              }
+            ],
+            "document_type": "tenancy_terms_evidence",
+            "interpretation_receipt_sha256": "8aca66fe3c2f22c5148738ea2fcf5df045e1f33e5b98093f9e217d4e1be89bee",
+            "proposed_summary": "Read a complete original supporting file for: Relevant residential tenancy terms, parties and dwelling; this is not a complete lease contract."
+          }
+        ],
+        "source_outcome": {
+          "assessment_scope": "rent_increase_reasons_nullity_assessment",
+          "assessment_status": "complete",
+          "authority_limits": [
+            "No repair, rent quantum, verified filing deadline, communication, filing or court outcome was performed."
+          ],
+          "citations": [
+            {
+              "artifact_id": "src_1d1891048908248523ab07c0824d8f51",
+              "end_char": 1741,
+              "quote": "assessment of the original notice's missing-reasons/nullity ground",
+              "sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2",
+              "start_char": 1675,
+              "text_sha256": "94fe9b03ad3ddb65e6d2a91b3ec0194268ead2bcb1032a40d290901b72245ed2"
+            }
+          ],
+          "issues": [],
+          "legal_predicates": [
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_1d1891048908248523ab07c0824d8f51",
+                  "quote": "I, Noah Frei, rent the dwelling atBergstrasse 27, 8008 Zurich under an indefinite ordinary residential lease in canton Zurich. The rent is not indexed or stepped, and there is no Article269c agreed increase. Current binding net rent is CHF1850 plus heating/warm-water advanceCHF180 and water/other advanceCHF60, grossCHF2090. The next ordinary lease termination date is31March2026 with three months' notice."
+                }
+              ],
+              "predicate_id": "residential_tenancy_scope",
+              "rule_refs": [
+                "CO:269d"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_1d1891048908248523ab07c0824d8f51",
+                  "quote": "The rent is not indexed or stepped, and there is no Article269c agreed increase."
+                }
+              ],
+              "predicate_id": "ordinary_non269c_tenancy",
+              "rule_refs": [
+                "CO:269d"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_008668f49cb3e3c352d7d6d70c6a7b32",
+                  "quote": "The fictional managing agent confirms it was authorized to notify the increase for this dwelling, that the complete original notification packet contained only the three-page form, and that no substantive reason was communicated at original notification."
+                }
+              ],
+              "predicate_id": "issuer_authority_and_complete_packet",
+              "rule_refs": [
+                "CO:269d"
+              ],
+              "status": "supported"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_1d1891048908248523ab07c0824d8f51",
+                  "quote": "No contemporaneous accompanying reason letter, email reason, calculation sheet, or earlier advance reason notification was issued or received."
+                }
+              ],
+              "predicate_id": "contemporaneous_substantive_reasons",
+              "rule_refs": [
+                "CO:269d"
+              ],
+              "status": "failed"
+            },
+            {
+              "citations": [
+                {
+                  "artifact_id": "src_008668f49cb3e3c352d7d6d70c6a7b32",
+                  "quote": "This reply was sent after the tenant asked about the already received notice; it did not accompany the original communication."
+                }
+              ],
+              "predicate_id": "later_email_is_not_original_reasons",
+              "rule_refs": [
+                "CO:269d"
+              ],
+              "status": "supported"
+            }
+          ],
+          "missing_evidence": [],
+          "next_action": "Inspect the recorded historical synthetic assessment; any real action needs its own current authority.",
+          "reference_provenance": {
+            "as_of": "2025-11-24",
+            "contract": "casepath.deterministic-reference/1.0.0",
+            "mode": "deterministic_reference",
+            "profile_id": "synthetic-nine-v1",
+            "profile_sha256": "15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7",
+            "rule_set_sha256": "919645ab51b74ccc4ad01ba9d06148af08b28ccd6c9a3f67b19284feb9646056",
+            "source_roster_sha256": "aee5b159b1256f1710b4a0e5f1bd9a325f91c13f503368ab0a5c74bdd23f5f75",
+            "synthetic": true
+          },
+          "request_draft": {
+            "body": "The fictional complete original increase packet omitted substantive reasons, supporting a finding that the increase notice is invalid under CO 269d(2)(b). The later market reply is contextual evidence. A mechanical signature is permitted at this historical date; whether the rent is excessive, the disputed amount and filing deadlines remain undetermined.",
+            "status": "prepared_not_sent",
+            "subject": "Bounded historical synthetic assessment"
+          },
+          "status": "deferred",
+          "summary": "The fictional complete original increase packet omitted substantive reasons, supporting a finding that the increase notice is invalid under CO 269d(2)(b). The later market reply is contextual evidence. A mechanical signature is permitted at this historical date; whether the rent is excessive, the disputed amount and filing deadlines remain undetermined.",
+          "title": "Bounded synthetic reference assessment recorded",
+          "unresolved_facts": []
+        },
+        "source_state_sha256": "d47a90f1673e17042b11c0d7f039d9a5dcbb2145e4ad03b574aea1996d0982e9",
+        "title": "Generic rent-increase dispute workflow — bounded synthetic reference assessment",
+        "version": 1
+      }
+    ]
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "injectedAssets": {
+    "javascript": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "assets": {
+    "javascript": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  }
+}

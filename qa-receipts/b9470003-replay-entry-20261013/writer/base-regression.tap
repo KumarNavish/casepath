@@ -1,0 +1,48 @@
+✖ replay entry: a legacy link without collection plays its exact roster and highlights Demonstration (1833.576809ms)
+✖ replay entry: programmatic titles stay quiet while native keyboard focus remains visible (12972.623465ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15273.084642
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:958:1
+✖ replay entry: a legacy link without collection plays its exact roster and highlights Demonstration (1833.576809ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'work'
+  - 'demonstration'
+  
+      at TestContext.<anonymous> (/workspace/casepath-replay-entry-session-20261013/casepath-qa/unified-product-browser-v1.test.cjs:960:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'work',
+    expected: 'demonstration',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:969:1
+✖ replay entry: programmatic titles stay quiet while native keyboard focus remains visible (12972.623465ms)
+  AssertionError [ERR_ASSERTION]: the initial programmatic title focus must not add a red rectangle
+  
+  'solid' !== 'none'
+  
+      at TestContext.<anonymous> (/workspace/casepath-replay-entry-session-20261013/casepath-qa/unified-product-browser-v1.test.cjs:973:41)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'solid',
+    expected: 'none',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

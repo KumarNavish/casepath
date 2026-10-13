@@ -1,0 +1,121 @@
+TAP version 13
+# Subtest: replay entry: a legacy link without collection plays its exact roster and highlights Demonstration
+ok 1 - replay entry: a legacy link without collection plays its exact roster and highlights Demonstration
+  ---
+  duration_ms: 2130.656531
+  type: 'test'
+  ...
+# Subtest: replay entry: programmatic titles stay quiet while native keyboard focus remains visible
+ok 2 - replay entry: programmatic titles stay quiet while native keyboard focus remains visible
+  ---
+  duration_ms: 12682.601771
+  type: 'test'
+  ...
+# Subtest: replay entry: fresh owner consumes all 218 reference prefixes and eight native handoffs
+ok 3 - replay entry: fresh owner consumes all 218 reference prefixes and eight native handoffs
+  ---
+  duration_ms: 22244.885256
+  type: 'test'
+  ...
+# Subtest: replay entry: fresh public visitor consumes all 218 reference prefixes and eight native handoffs
+ok 4 - replay entry: fresh public visitor consumes all 218 reference prefixes and eight native handoffs
+  ---
+  duration_ms: 21820.384515
+  type: 'test'
+  ...
+# Subtest: replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play
+    # Subtest: reference
+    ok 1 - reference
+      ---
+      duration_ms: 13262.655996
+      type: 'test'
+      ...
+    # Subtest: legacy
+    ok 2 - legacy
+      ---
+      duration_ms: 15427.454393
+      type: 'test'
+      ...
+    1..2
+ok 5 - replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play
+  ---
+  duration_ms: 28691.216494
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: cold accepted entry primes real Cases and Knowledge without replacing its prefix or source inspection
+ok 6 - direct replay warmth: cold accepted entry primes real Cases and Knowledge without replacing its prefix or source inspection
+  ---
+  duration_ms: 13850.783388
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission
+    # Subtest: hidden
+    ok 1 - hidden
+      ---
+      duration_ms: 13950.568935
+      type: 'test'
+      ...
+    # Subtest: navigation
+    ok 2 - navigation
+      ---
+      duration_ms: 17415.525016
+      type: 'test'
+      ...
+    1..2
+ok 7 - direct replay warmth: hidden cycles and navigation cancel quiet collection pagination and cache admission
+  ---
+  duration_ms: 31366.874825
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: canceled Knowledge and snapshot fallback cannot drain or seed a later entry
+ok 8 - direct replay warmth: canceled Knowledge and snapshot fallback cannot drain or seed a later entry
+  ---
+  duration_ms: 13323.494468
+  type: 'test'
+  ...
+# Subtest: direct replay warmth: metadata failures stay silent and explicit navigation recovers
+    # Subtest: collection
+    ok 1 - collection
+      ---
+      duration_ms: 13078.480724
+      type: 'test'
+      ...
+    # Subtest: knowledge
+    ok 2 - knowledge
+      ---
+      duration_ms: 14664.105772
+      type: 'test'
+      ...
+    1..2
+ok 9 - direct replay warmth: metadata failures stay silent and explicit navigation recovers
+  ---
+  duration_ms: 27743.995286
+  type: 'test'
+  ...
+# Subtest: focused flow: source cancels replay with a prefetched accepted response in flight
+ok 10 - focused flow: source cancels replay with a prefetched accepted response in flight
+  ---
+  duration_ms: 8518.552269
+  type: 'test'
+  ...
+# Subtest: focused flow: hidden cancels replay with a prefetched accepted response in flight
+ok 11 - focused flow: hidden cancels replay with a prefetched accepted response in flight
+  ---
+  duration_ms: 8661.879909
+  type: 'test'
+  ...
+# Subtest: focused flow: navigation cancels replay with a prefetched accepted response in flight
+ok 12 - focused flow: navigation cancels replay with a prefetched accepted response in flight
+  ---
+  duration_ms: 8590.24632
+  type: 'test'
+  ...
+1..12
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 200271.120203

@@ -1,0 +1,47 @@
+{
+  "api_tree": {
+    "b94700035db97d5944e28905bb87b1b302afc244": "3570309d8b23f0786d1be8b3b7947cd032882a61",
+    "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079": "3570309d8b23f0786d1be8b3b7947cd032882a61"
+  },
+  "base": "e104c2d3e6ea85993249dfaf38b0e5f70cdbd079",
+  "files": [
+    "casepath-qa/autonomous-workspace-v1.test.cjs",
+    "casepath-qa/sites-autonomous-entry.test.cjs",
+    "casepath-qa/unified-product-browser-v1.test.cjs",
+    "casepath/assets/autonomous-entry-v1.js",
+    "casepath/assets/autonomous-workspace-v1.css",
+    "casepath/assets/autonomous-workspace-v1.js"
+  ],
+  "implementation_branch": "codex/casepath-replay-entry-session-20261013",
+  "index_asset_queries_and_source_seal": "Mac-owned pending final integration",
+  "native_fixture_heads": {
+    "clm_0f4f13b1e3e1328c": 21,
+    "clm_2c55cdd816b1d0e8": 22,
+    "clm_314f2d309fea25e6": 25,
+    "clm_393285577dcb12c4": 21,
+    "clm_4a07dbbbd859a3ce": 25,
+    "clm_4a53299cfe619303": 21,
+    "clm_543f08f2415b2a33": 22,
+    "clm_7dbd7c7d1c4ddf90": 27,
+    "clm_95d08975bc575592": 25
+  },
+  "native_fixture_prefixes": 218,
+  "native_fixture_sha256": "a66971bd77e81be67be1815e2d46ee97d4e18c18dce657816f01b9bd7aa38b6b",
+  "patch_sha256": "ed38ca05254a417c094b7e80b76e0ac93f20891705ef89b52495edff84963797",
+  "product_checkout_untouched": true,
+  "production_prefixes": {
+    "count": 223,
+    "nonzero": 214,
+    "source": "Mac attestation, not Cloud observed"
+  },
+  "ready_commit": "b94700035db97d5944e28905bb87b1b302afc244",
+  "saved_failure_comparisons_preserved": true,
+  "sha256": {
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "5443e6b30ce7b68cc5e6d0afe5d2f38863bb0494a645674d7246bf54bcea9bc3",
+    "casepath-qa/sites-autonomous-entry.test.cjs": "493fcbd0a5b8623e516c39bb1487f1ccf06682f10833690cb5d3b96caac2fb0c",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "9dfae93e1369bb775445dc1df4128ed90eb0c64b7efb54a4487a6080ef5fe8cf",
+    "casepath/assets/autonomous-entry-v1.js": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+    "casepath/assets/autonomous-workspace-v1.css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+    "casepath/assets/autonomous-workspace-v1.js": "2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea"
+  }
+}

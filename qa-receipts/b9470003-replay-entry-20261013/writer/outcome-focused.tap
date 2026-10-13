@@ -1,0 +1,26 @@
+✖ a replay control history without an accepted operational outcome stops honestly at its exact saved head (7295.872248ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7886.980152
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:1415:1
+✖ a replay control history without an accepted operational outcome stops honestly at its exact saved head (7295.872248ms)
+  AssertionError [ERR_ASSERTION]: the authored history without an outcome did not stop
+      at eventually (/workspace/casepath-replay-entry-session-20261013/casepath-qa/unified-product-browser-v1.test.cjs:501:10)
+      at async TestContext.<anonymous> (/workspace/casepath-replay-entry-session-20261013/casepath-qa/unified-product-browser-v1.test.cjs:1421:3)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }

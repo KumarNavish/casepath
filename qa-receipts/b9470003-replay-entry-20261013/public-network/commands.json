@@ -1,0 +1,29 @@
+{
+  "commands": [
+    {
+      "artifact": "../writer/public-network-capability-initial-runtime-path.json",
+      "browser_launched": false,
+      "command": "node (heredoc content in initial-runtime-path.cjs)",
+      "exit_code": 0
+    },
+    {
+      "artifact": "../writer/public-network-capability.json",
+      "browser_launched": true,
+      "command": "node (heredoc content in managed-proxy-probe.cjs)",
+      "error": "ERR_TUNNEL_CONNECTION_FAILED",
+      "exit_code": 0,
+      "live_identity_verified": false,
+      "methods": [
+        "GET"
+      ],
+      "network_requests": 1
+    }
+  ],
+  "cwd": "/workspace",
+  "environment": {
+    "HTTPS_PROXY": "inherited value; not archived",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+  },
+  "provenance": "Scripts reconstructed verbatim from recorded functions.exec tool-input heredocs; archived without re-execution.",
+  "scripts_not_rerun_for_archive": true
+}
