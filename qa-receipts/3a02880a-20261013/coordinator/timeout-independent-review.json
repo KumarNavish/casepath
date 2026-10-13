@@ -1,0 +1,177 @@
+{
+  "review": "bounded independent read-only timeout diagnosis; no tests, profiles, DB opens, source edits or clone mutation",
+  "reviewer": "stage_acceptance",
+  "observed_utc": "2026-10-13T22:27:23.511726+00:00",
+  "host": "656813ef2295",
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "prior": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "checkout_clean": true,
+  "recommendation": {
+    "decision": "one_full_same_shard_resource_isolated_diagnostic_retry_warranted",
+    "conditional_authorization": "Parent reports Mac explicitly authorized one timing recheck after ALL original six shards finish; parent alone dispatches.",
+    "conditions": [
+      "Wait for every original shard to reach terminal status; do not interrupt originals.",
+      "Keep exact sealed source, all 338 collected shard6 cases, prepared dependencies, deterministic mode, 15-second await timeout and every assertion unchanged.",
+      "Use fresh isolated HOME/TMP/TEMP/database/artifact paths and preserve every original failure/fixture/log; do not reuse or mutate the failed fixture.",
+      "Run this shard alone without competing test/browser/profile work; retain existing command, source before/after and terminal raw receipts."
+    ],
+    "pass_interpretation": "A pass is a resource-isolated diagnostic result compatible with a timing-sensitive timeout. It does not erase the original failed full gate or prove contention as root cause.",
+    "repeat_failure_interpretation": "Stop retries. Preserve the second failure and investigate scheduling/locking/replay/publication correctness under the unchanged source. Any needed source correction requires a new seal and matching verification; do not raise timeout or weaken assertions.",
+    "new_seal_warranted_now": false,
+    "reason": "Original native journal completed reassessment and qualified latest-workflow publication; unchanged backend/test bytes and plausible shared resource pressure support a discriminating concurrency-only experiment, not a proven persistent logic defect."
+  },
+  "original_result": {
+    "shard6_terminal": true,
+    "exit_code": 1,
+    "passed": 337,
+    "failed": 1,
+    "collected": 338,
+    "pytest_seconds": 778.93,
+    "process_seconds": 783.1037006378174,
+    "failed_test": "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication",
+    "call_seconds": 19.15883806301281,
+    "original_full_gate_remains_failed": true
+  },
+  "independent_raw_failure_check": {
+    "trace_sha256": "cfda4ad8f882a5a0c6361c1942942378c27567af6a515f450d8cdc48a1437e2e",
+    "revision": 26,
+    "state_sha256": "005b7d637ad2a9b6eebf09b4d715686ff52ba2bcfe9b1bc5e162931cd232bd18",
+    "source_roster_equals_acquired": true,
+    "source_count": 3,
+    "outcome_present": true,
+    "deferral": null,
+    "knowledge_count": 0
+  },
+  "eventual_native_replay_receipt_review": {
+    "event_count": 27,
+    "revision": 27,
+    "state_sha256": "31355a877e7ea1440b2574a5ec62f0f468fae86ad5519977b4f6a46d496330c8",
+    "latest_workflow": "autonomy.f281fe90af8c1f3cf33555ae",
+    "accepted_interpretations": 2,
+    "knowledge_publications": 1,
+    "qualified": true,
+    "publication_from_latest_workflow": true,
+    "arrival_utc": "2026-10-13T22:15:25.161368+00:00",
+    "publication_utc": "2026-10-13T22:15:41.800650+00:00",
+    "wall_seconds_arrival_to_publication": 16.639282,
+    "native_replay_rerun_by_reviewer": false
+  },
+  "source_comparison": [
+    {
+      "path": "casepath-api/tests/test_autonomous_adversarial_v1.py",
+      "sha256": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b",
+      "prior_candidate_checkout_bytes_equal": true
+    },
+    {
+      "path": "casepath-api/tests/test_autonomous_controller_v1.py",
+      "sha256": "dcb20393a833e6a7c6c48be3d6b31c4f88a48031d3d5e698908d7a9015b027a7",
+      "prior_candidate_checkout_bytes_equal": true
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_controller_v1.py",
+      "sha256": "1ae1a98e5902657df317681431cd03580478b32714650c9c28b053bd58ab1868",
+      "prior_candidate_checkout_bytes_equal": true
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_store_v1.py",
+      "sha256": "27917c8761c24f22099261ead96ae32bf92102c13a6f184d27cfb4b8cd2b18b2",
+      "prior_candidate_checkout_bytes_equal": true
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_api_v1.py",
+      "sha256": "48e0078dde68360ed7fdf4fec008253bf3e22d469b5dfaa8fe2710f431f10b0d",
+      "prior_candidate_checkout_bytes_equal": true
+    }
+  ],
+  "entire_casepath_api_prior_candidate_diff_empty": true,
+  "resource_evidence": {
+    "snapshot_utc": "2026-10-13T22:18:54Z",
+    "snapshot_after_failure": true,
+    "cpu_quota_cores": 4,
+    "load_1m": 5.78,
+    "effective_cpuset": "0-4",
+    "cpu_pressure_available": false,
+    "throttle_counters_cumulative_only": true,
+    "contemporaneous_contention_proven": false
+  },
+  "sqlite_preservation": {
+    "reviewer_opened_sqlite": false,
+    "empty_wal_verified_from_file_stat": true,
+    "final_immutable_helper_reviewed": true,
+    "uses_mode_ro_immutable_and_query_only": true,
+    "native_replay_checks_event_state_source_hashes": true,
+    "fixture_byte_and_mtime_checks": [
+      {
+        "path": "claims.sqlite3-wal",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 0,
+        "mtime_ns": 1791929902605864194,
+        "matches_final_immutable_receipt": true
+      },
+      {
+        "path": "claims.sqlite3",
+        "sha256": "8901d840d213c6b26f7dd1a8fa58b957c18125c4716bbe429eaec2dfe2dcd352",
+        "size_bytes": 593920,
+        "mtime_ns": 1791929763890699257,
+        "matches_final_immutable_receipt": true
+      },
+      {
+        "path": "claims.sqlite3-shm",
+        "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "size_bytes": 32768,
+        "mtime_ns": 1791930001866739107,
+        "matches_final_immutable_receipt": true
+      },
+      {
+        "path": "autonomous-sources-v1/5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+        "sha256": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+        "size_bytes": 68,
+        "mtime_ns": 1791929723312935833,
+        "matches_final_immutable_receipt": true
+      },
+      {
+        "path": "autonomous-sources-v1/8e1d5a29208bdaee62f26b508eb71250f9359ca1e03c0fc2b25f801810711766",
+        "sha256": "8e1d5a29208bdaee62f26b508eb71250f9359ca1e03c0fc2b25f801810711766",
+        "size_bytes": 43,
+        "mtime_ns": 1791929725011041672,
+        "matches_final_immutable_receipt": true
+      },
+      {
+        "path": "autonomous-sources-v1/2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea",
+        "sha256": "2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea",
+        "size_bytes": 90,
+        "mtime_ns": 1791929723311850613,
+        "matches_final_immutable_receipt": true
+      }
+    ],
+    "journal_sha256_matches_before_first_inspection": true,
+    "earlier_side_effects_preserved": "Initial mode=ro connections created an empty WAL and touched SHM metadata. Those changes are disclosed and retained; final immutable inspection and this byte/stat-only review do not alter journal/source/sidecar bytes or mtime."
+  },
+  "limits": [
+    "Exact monotonic await start/deadline/raise timestamps are uninstrumented; call duration includes first-outcome setup and shutdown wait.",
+    "Failure snapshot and journal do not persist future.done(), _pending, or in-memory model.calls; full test post-await model/publication assertions were not reached.",
+    "Event created_at is wall time, not direct monotonic deadline evidence. Eventual revision27 publication alone cannot establish exact future completion timing.",
+    "No contemporaneous CPU/cgroup throttle/pressure deltas; later snapshot cannot establish root cause.",
+    "Unchanged code and eventual admitted result do not exclude preexisting intermittent scheduling, polling, lock or correctness issues.",
+    "One conditional retry is diagnostic; this review does not declare a green full gate or authorize publication."
+  ],
+  "evidence_sha256": {
+    "shard6/failure-readonly-diagnosis.json": "ed55d0fdd994d01a8eab9da3ef4273316fdd1d38899a5d2cca4fc7763978ebc9",
+    "shard6/resource-pressure-snapshot.json": "507720f5546cdc164d34b2f7783b17f1c52e48ac69783dfcf333477411b169b3",
+    "shard6/failure-readonly-diagnosis.py": "e336ff6e3dabf5ab834dd17a5c5dc02fa17c455d2245019fdc54af4170820a32",
+    "shard6/reports.jsonl": "c3abd76bf96cfea513877ca4e1b76e8c950eb6d907f1e7f8e93799a60a674ac9",
+    "shard6/pytest.log": "4e8556da8b418de9a68b3bd6af37a891d8afc76e25a1302fb079062caa4d1580",
+    "shard6/result.json": "2d8bd15bf0d61cf029618c08eabbe080af8e8ecf23d8c7de7bb2ebbadce79c4f",
+    "shard6/command.json": "0e0fded11cf876dc3305e1205cf927ac76a0beeae39d4b91fbd7121c15fb12e5",
+    "shard6/collected.json": "cd5e1f6d9979f55ebc695b6eeb5497375f11015e058c975d87d1a576487a193a",
+    "shard6/pytest-arguments.txt": "32f08b20f6afe7e35506950df38d3cc82901d10170734b8527d85b5e605211c3",
+    "coordinator/failed-case-source-comparison.json": "f4eb988945ef25f9b428d83b326ce6e9fcaa32dbb0273f7566897c6aa443e7be"
+  },
+  "safe_review_environment": {
+    "HOME": "/workspace/rv-home",
+    "TMPDIR": "/workspace/rv-tmp",
+    "TMP": "/workspace/rv-tmp",
+    "TEMP": "/workspace/rv-tmp",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  }
+}

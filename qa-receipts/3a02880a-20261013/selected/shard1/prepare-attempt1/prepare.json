@@ -1,0 +1,43 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "cwd": "/workspace/casepath-release-ae0-shard1",
+  "command": [
+    "./bin/casepath",
+    "prepare"
+  ],
+  "env": {
+    "HOME": "/workspace/g3ah1",
+    "TMPDIR": "/workspace/g3at1",
+    "TMP": "/workspace/g3at1",
+    "TEMP": "/workspace/g3at1",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "TZ": "UTC",
+    "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "PYTHONHASHSEED": "0",
+    "PYTHONNOUSERSITE": "1",
+    "PYTHONSAFEPATH": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPYCACHEPREFIX": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/shard1/pycache",
+    "SOURCE_DATE_EPOCH": "1786406400",
+    "CASEPATH_MODEL_MODE": "deterministic_reference",
+    "CASEPATH_SOURCE_COMMIT": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+    "CASEPATH_UV": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/uv",
+    "UV_CACHE_DIR": "/workspace/.cache/uv",
+    "UV_LINK_MODE": "copy"
+  },
+  "started_epoch": 1791929092.4938288,
+  "before_head": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "before_status": "",
+  "manifest_sha256": "ead2ad3ddd10000737985f7db5d704b5e7366da72b54e371624f1a0709ac5c39",
+  "canonical_fetched_head": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "canonical_fetch_source": "/workspace/casepath-operations-coordinator-20261013",
+  "original_origin_fetch_failure_log": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/shard1/fetch.log",
+  "internal_launcher_env_contract": "Exact source preserved: stdlib env-i probes omit temp aliases; locked/product env-i uses controlled runtime TMPDIR only.",
+  "exit_code": 2,
+  "finished_epoch": 1791929150.5165575,
+  "after_head": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "after_status": "",
+  "duration_seconds": 58.02272868156433
+}

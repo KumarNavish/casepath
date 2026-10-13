@@ -1,0 +1,83 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "original_cloud": {
+    "passed": 2433,
+    "failed": 1,
+    "skipped": 10
+  },
+  "mac_attested_passed": 127,
+  "combined_original_passed": 2560,
+  "original_gate_passed": false,
+  "all_original_attempts_terminal": true,
+  "shards": [
+    {
+      "shard": 1,
+      "assigned": 293,
+      "passed": 293,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_seconds": 751.2747497558594,
+      "failed_ids": [],
+      "collection_phase_roster_exact": true
+    },
+    {
+      "shard": 2,
+      "assigned": 330,
+      "passed": 330,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_seconds": 844.7860727310181,
+      "failed_ids": [],
+      "collection_phase_roster_exact": true
+    },
+    {
+      "shard": 3,
+      "assigned": 334,
+      "passed": 334,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_seconds": 850.8225667476654,
+      "failed_ids": [],
+      "collection_phase_roster_exact": true
+    },
+    {
+      "shard": 4,
+      "assigned": 814,
+      "passed": 804,
+      "failed": 0,
+      "skipped": 10,
+      "exit_code": 0,
+      "duration_seconds": 804.0701792240143,
+      "failed_ids": [],
+      "collection_phase_roster_exact": true
+    },
+    {
+      "shard": 5,
+      "assigned": 335,
+      "passed": 335,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "duration_seconds": 753.5040912628174,
+      "failed_ids": [],
+      "collection_phase_roster_exact": true
+    },
+    {
+      "shard": 6,
+      "assigned": 338,
+      "passed": 337,
+      "failed": 1,
+      "skipped": 0,
+      "exit_code": 1,
+      "duration_seconds": 783.1037006378174,
+      "failed_ids": [
+        "casepath-api/tests/test_autonomous_adversarial_v1.py::test_submit_reassesses_arrival_after_outcome_before_knowledge_publication"
+      ],
+      "collection_phase_roster_exact": true
+    }
+  ],
+  "followup": "Exactlyoneconditionallyauthorized fullshard6 resourceisolated diagnosticrecheck underway; originalfailure retained."
+}

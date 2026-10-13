@@ -1,0 +1,23 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "authored_candidate": "2f9f2255467024a5a3cae366674bc81f65c27401",
+  "hostname": "656813ef2295",
+  "timestamp": 1791929042.011007,
+  "difference": [
+    "casepath/index.html",
+    "casepath/source-manifest.json"
+  ],
+  "sha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+    "casepath/assets/autonomous-workspace-v1.css": "ef5772e708fa5913edfb917610e0dd6da9842b92e40d1ca491083552be88d41d",
+    "casepath/source-manifest.json": "ead2ad3ddd10000737985f7db5d704b5e7366da72b54e371624f1a0709ac5c39"
+  },
+  "coordinator_environment": {
+    "HOME": "/workspace/g3aroot-home",
+    "TMPDIR": "/workspace/g3aroot",
+    "TMP": "/workspace/g3aroot",
+    "TEMP": "/workspace/g3aroot"
+  },
+  "disk_preflight": "Filesystem       1B-blocks        Used  Available Use% Mounted on\noverlay        33770192896 26999406592 5036023808  85% /workspace\nnone           17871892480 17653477376  218415104  99% /tmp\n",
+  "scope": "Full deterministic gate only. No product edits, production access, providers, paid inference, deployment or new profiling. Mac127 partition excluded from Cloud execution."
+}

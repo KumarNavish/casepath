@@ -1,0 +1,54 @@
+{
+  "captured_epoch": 1791930128.715404,
+  "known_gate_processes": "    PID    PPID S ELAPSED COMMAND\n 706623  706622 S     739 python\n 706634  706623 R     739 python\n 706715  706714 S     718 python\n 706726  706715 R     718 python\n 706769  706768 S     704 python\n 706778  706769 R     704 python\n 706918  706917 S     687 python\n 706930  706918 R     687 python\n 707038  707037 S     678 python\n 707049  707038 R     677 python\n",
+  "status": [
+    {
+      "shard": 1,
+      "elapsed_s": 770,
+      "calls_passed": 293,
+      "failed_phases": 0,
+      "skip_phases": 0,
+      "exit_code": 0
+    },
+    {
+      "shard": 2,
+      "elapsed_s": 740,
+      "calls_passed": 282,
+      "failed_phases": 0,
+      "skip_phases": 0,
+      "exit_code": null
+    },
+    {
+      "shard": 3,
+      "elapsed_s": 719,
+      "calls_passed": 266,
+      "failed_phases": 0,
+      "skip_phases": 0,
+      "exit_code": null
+    },
+    {
+      "shard": 4,
+      "elapsed_s": 705,
+      "calls_passed": 619,
+      "failed_phases": 0,
+      "skip_phases": 10,
+      "exit_code": null
+    },
+    {
+      "shard": 5,
+      "elapsed_s": 678,
+      "calls_passed": 245,
+      "failed_phases": 0,
+      "skip_phases": 0,
+      "exit_code": null
+    },
+    {
+      "shard": 6,
+      "elapsed_s": 688,
+      "calls_passed": 253,
+      "failed_phases": 1,
+      "skip_phases": 0,
+      "exit_code": null
+    }
+  ]
+}

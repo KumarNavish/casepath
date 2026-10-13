@@ -1,0 +1,22 @@
+{
+  "observed_utc": "2026-10-13T22:18:54Z",
+  "relation_to_failure": "Snapshot taken after failure; cumulative counters do not prove pressure at the timeout.",
+  "command": [
+    "date -u '+%Y-%m-%dT%H:%M:%SZ'",
+    "cat /proc/loadavg",
+    "cat /proc/pressure/cpu",
+    "cat /sys/fs/cgroup/cpu.stat",
+    "cat /sys/fs/cgroup/cpu.max",
+    "cat /sys/fs/cgroup/cpuset.cpus.effective"
+  ],
+  "raw_result": {
+    "chunk_id": "c6a8d3",
+    "wall_time_seconds": 0.000035778,
+    "exit_code": 0,
+    "original_token_count": 72,
+    "output": "2026-10-13T22:18:54Z\n5.78 4.39 2.52 6/2059 709217\ncat: /proc/pressure/cpu: No such file or directory\nusage_usec 69287795826\nuser_usec 61549167866\nsystem_usec 7738627960\nnice_usec 0\nnr_periods 987228\nnr_throttled 76841\nthrottled_usec 6637417299\nnr_bursts 0\nburst_usec 0\n400000 100000\n0-4\n"
+  },
+  "cpu_pressure_available": false,
+  "cpu_quota_cores": 4,
+  "effective_cpuset": "0-4"
+}

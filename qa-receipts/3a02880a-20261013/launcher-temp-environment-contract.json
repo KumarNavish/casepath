@@ -1,0 +1,20 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "sealed_launcher_unchanged": true,
+  "outer_prepare_coordinator_inventory_test_env": {
+    "HOME": "own short/workspace/g3ahN",
+    "TMPDIR": "own short/workspace/g3atN",
+    "TMP": "same as TMPDIR",
+    "TEMP": "same as TMPDIR"
+  },
+  "launcher_stdlib_probes": {
+    "contract": "run_clean_stdlib_python uses env -i and intentionally omits TMPDIR/TMP/TEMP",
+    "tempfile_module_or_api_used_in_launcher_stdlib_prepare_probes": false,
+    "capsule_staging_path": "explicit runtime/source-capsules/.<manifest>.<pid>.<uuid>.tmp; no /tmp creation"
+  },
+  "launcher_locked_repository_scripts": {
+    "contract": "run_clean_locked_python uses env -i and TMPDIR=runtime/tmp only, without TMP/TEMP",
+    "tempfile_preference": "explicit TMPDIR under each normalclone/workspace path"
+  },
+  "scope": "Exact source preserved; no shim, no launcher changes, no migration-audit weakening. Transport values not saved; only names/presence recorded for setup."
+}

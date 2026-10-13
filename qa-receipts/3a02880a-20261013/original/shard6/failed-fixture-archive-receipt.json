@@ -1,0 +1,39 @@
+{
+  "source_directory": "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/shard6/pytest-tmp/test_submit_reassesses_arrival0",
+  "raw_files": [
+    {
+      "path": "autonomous-sources-v1/2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea",
+      "sha256": "2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea",
+      "size_bytes": 90
+    },
+    {
+      "path": "autonomous-sources-v1/5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+      "sha256": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+      "size_bytes": 68
+    },
+    {
+      "path": "autonomous-sources-v1/8e1d5a29208bdaee62f26b508eb71250f9359ca1e03c0fc2b25f801810711766",
+      "sha256": "8e1d5a29208bdaee62f26b508eb71250f9359ca1e03c0fc2b25f801810711766",
+      "size_bytes": 43
+    },
+    {
+      "path": "claims.sqlite3",
+      "sha256": "8901d840d213c6b26f7dd1a8fa58b957c18125c4716bbe429eaec2dfe2dcd352",
+      "size_bytes": 593920
+    },
+    {
+      "path": "claims.sqlite3-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "size_bytes": 32768
+    },
+    {
+      "path": "claims.sqlite3-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    }
+  ],
+  "archive_sha256": "ed310b158951c732525a95cf2b45da762b8844b88fbab5590c8225aab203b9eb",
+  "archive_size_bytes": 64109,
+  "raw_originals_retained": true,
+  "note": "SQLite sidecar diagnostic creation preserved and disclosed in failure-readonly-diagnosis; journal/source bytes remain first-inspection baseline."
+}

@@ -1,0 +1,48 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "execution_owner": "root",
+  "root_reported_exec_session_id": 19484,
+  "observed_harness_pid": 712028,
+  "observed_pytest_pid": 712049,
+  "latch": {
+    "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+    "started_epoch": 1791930480.820019,
+    "command": [
+      "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+      "-P",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "-p",
+      "casepath_shard_observer",
+      "-o",
+      "tmp_path_retention_policy=failed",
+      "--junitxml=/workspace/casepath-smooth-stage-gate-3a02880a-20261013/attempt2-shard6/junit.xml",
+      "--durations=0",
+      "--basetemp=/workspace/casepath-smooth-stage-gate-3a02880a-20261013/attempt2-shard6/pytest-tmp",
+      "@/workspace/casepath-smooth-stage-gate-3a02880a-20261013/attempt2-shard6/pytest-arguments.txt"
+    ],
+    "retry_allowed": false,
+    "attempt_number": 2,
+    "prior_original_attempt_preserved": true,
+    "one_resource_isolated_recheck_authorized": true
+  },
+  "worker_launched_tests": false,
+  "worker_polled_root_session": false,
+  "original_raw_evidence_sha256": {
+    "result.json": "2d8bd15bf0d61cf029618c08eabbe080af8e8ecf23d8c7de7bb2ebbadce79c4f",
+    "command.json": "0e0fded11cf876dc3305e1205cf927ac76a0beeae39d4b91fbd7121c15fb12e5",
+    "ATTEMPT_STARTED.json": "b5626b0fa7a11fe1e0b5d07bec07027d8519aacf07baa948bf0c601a5f8c037e",
+    "pytest.log": "4e8556da8b418de9a68b3bd6af37a891d8afc76e25a1302fb079062caa4d1580",
+    "junit.xml": "de91ee45c99111f9e6d280ec6b357742b0ce4546518ab601885564c89fe2cdde",
+    "reports.jsonl": "c3abd76bf96cfea513877ca4e1b76e8c950eb6d907f1e7f8e93799a60a674ac9",
+    "collected.json": "cd5e1f6d9979f55ebc695b6eeb5497375f11015e058c975d87d1a576487a193a",
+    "pytest-arguments.txt": "32f08b20f6afe7e35506950df38d3cc82901d10170734b8527d85b5e605211c3",
+    "worker-terminal-proof.json": "9e6d7227ad077b33137a47c2dd09e7a1003093973e52502da7279a90e57a495d",
+    "failure-readonly-diagnosis.json": "ed55d0fdd994d01a8eab9da3ef4273316fdd1d38899a5d2cca4fc7763978ebc9",
+    "resource-pressure-snapshot.json": "507720f5546cdc164d34b2f7783b17f1c52e48ac69783dfcf333477411b169b3"
+  },
+  "recorded_epoch": 1791930592.2761464
+}

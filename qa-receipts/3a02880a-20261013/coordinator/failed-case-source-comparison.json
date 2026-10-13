@@ -1,0 +1,28 @@
+{
+  "from_candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "to_candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "casepath_api_changed_files": [],
+  "files": [
+    {
+      "path": "casepath-api/tests/test_autonomous_adversarial_v1.py",
+      "unchanged": true,
+      "sha256": "1bb9abf36c41e195ec0c7bfafbc43b02cd26f62b0214ba8e888bf79434d6ba9b"
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_controller_v1.py",
+      "unchanged": true,
+      "sha256": "1ae1a98e5902657df317681431cd03580478b32714650c9c28b053bd58ab1868"
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_store_v1.py",
+      "unchanged": true,
+      "sha256": "27917c8761c24f22099261ead96ae32bf92102c13a6f184d27cfb4b8cd2b18b2"
+    },
+    {
+      "path": "casepath-api/casepath_api/autonomous_api_v1.py",
+      "unchanged": true,
+      "sha256": "48e0078dde68360ed7fdf4fec008253bf3e22d469b5dfaa8fe2710f431f10b0d"
+    }
+  ],
+  "classification_limit": "Unchanged backend/test bytes alone do not establish resource contention; retained fixture/journal timing is being examined. No retry."
+}

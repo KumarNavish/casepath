@@ -1,0 +1,20 @@
+{
+  "files": {
+    "run_shard.py": {
+      "origin": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/harness/run_shard.py",
+      "origin_sha256": "f655e5e917adc18cbb0a29a8304ba445b1811081a1b910fead72afb0a3b1fe36",
+      "current_sha256": "72e352782865fea734add5cba01e3e1ffb8b66692c3409fcd7fe15b91d5becb2"
+    },
+    "casepath_shard_observer.py": {
+      "origin": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/harness/casepath_shard_observer.py",
+      "origin_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3",
+      "current_sha256": "63d2d1143d9210ae67575115baad50fd99dfacad5643672d3ccbce777fa9c0b3"
+    },
+    "verify_prepared_capsules.py": {
+      "origin": "/workspace/casepath-quiet-completion-gate-0d9f9e22-20261013/harness/verify_prepared_capsules.py",
+      "origin_sha256": "4c6e76cca6df77447744f438ee66d1f91f1f94f599ed71ce94ea9aa973c32f9f",
+      "current_sha256": "9e0bf25b4cc3438d0a7dd8a383591d8d702995941ae9471a9e1d6fdf5524bd5c"
+    }
+  },
+  "changes": "Normal harness candidate/output/manifest/collect repo paths and short HOME/TMPDIR/TMP/TEMP only; observer bytes unchanged; verifier per-name phases only."
+}

@@ -1,0 +1,112 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "shard": 5,
+  "verified_epoch": 1791930269.6359425,
+  "counts": {
+    "assigned": 335,
+    "collected": 335,
+    "junit": 335,
+    "raw_rows": 1005,
+    "passed": 335,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "raw_phase_outcomes": {
+      "setup:passed": 335,
+      "call:passed": 335,
+      "teardown:passed": 335
+    }
+  },
+  "checks": {
+    "assigned_unique": true,
+    "collected_exact": true,
+    "junit_exact": true,
+    "junit_unique": true,
+    "raw_ids_exact": true,
+    "raw_setup_call_teardown_exact": true,
+    "no_deselections": true,
+    "known_fixture_skips_only": true,
+    "clean_exact_source_after": true
+  },
+  "all_checks_pass": true,
+  "missing_collected": [],
+  "extra_collected": [],
+  "missing_junit": [],
+  "unmatched_junit": [],
+  "missing_raw_ids": [],
+  "extra_raw_ids": [],
+  "raw_phase_anomalies": [],
+  "failure_nodeids": [],
+  "failures": [],
+  "skips": [],
+  "known_fixture_skip_nodeids_assigned": [],
+  "junit_mapping": "pytest collected nodeid via _pytest.junitxml.mangle_test_address and bin_xml_escape",
+  "supersedes_evidence_mapper_only": "worker-reconciliation.json",
+  "runner_exit_code": 0,
+  "runner_duration_seconds": 753.5040912628174,
+  "junit_suite_attributes": [
+    {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "335",
+      "time": "748.854",
+      "timestamp": "2026-10-13T22:10:53.272370+00:00",
+      "hostname": "656813ef2295"
+    }
+  ],
+  "raw_total_duration_seconds": 737.5056471803691,
+  "slowest_cases": [
+    {
+      "id": "casepath-api/tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_95d08975bc575592]",
+      "outcome": "passed",
+      "duration_seconds": 40.488
+    },
+    {
+      "id": "casepath-api/tests/test_agent_live_projection.py::test_live_projection_is_sealed_with_actual_completed_reference_work",
+      "outcome": "passed",
+      "duration_seconds": 38.992
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_full_state_and_summary_adapters_preserve_immutable_quarantine_rules[conflicting_definition]",
+      "outcome": "passed",
+      "duration_seconds": 37.734
+    },
+    {
+      "id": "casepath-api/tests/test_complete_reference_intake_v1.py::test_all_nine_actual_sources_complete_compiled_graph_learn_reuse_and_restart",
+      "outcome": "passed",
+      "duration_seconds": 37.545
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_rapid_process_edits_cancel_at_checkpoint_then_review_only_latest_context[False]",
+      "outcome": "passed",
+      "duration_seconds": 34.033
+    },
+    {
+      "id": "casepath-api/tests/test_causal_workspace_v1.py::test_agent_snapshot_and_source_acquisition_follow_current_process",
+      "outcome": "passed",
+      "duration_seconds": 32.977
+    },
+    {
+      "id": "casepath-api/tests/test_pace_core_v1.py::test_m0_packet_span_must_match_the_external_source_roster",
+      "outcome": "passed",
+      "duration_seconds": 24.021
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_operations_v1.py::test_capture_fetches_only_exact_selected_family_publisher",
+      "outcome": "passed",
+      "duration_seconds": 22.28
+    },
+    {
+      "id": "casepath-api/tests/test_complete_reference_intake_v1.py::test_completed_v1_reassesses_v2_append_only_with_real_reset_and_all_exact_prefixes[clm_543f08f2415b2a33]",
+      "outcome": "passed",
+      "duration_seconds": 20.965
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_protocol_transition_election_barrier_matrix[NONE-AFTER_STATUS_BEFORE_OUTCOME_CAS-None-0-duplicate]",
+      "outcome": "passed",
+      "duration_seconds": 16.787
+    }
+  ]
+}

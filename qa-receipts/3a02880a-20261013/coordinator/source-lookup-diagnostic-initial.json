@@ -1,0 +1,7 @@
+{
+  "attempt": "read-only source comparison",
+  "error": "git show failed because diagnostic used nonexistent autonomous_v1.py filename",
+  "git_exit_code": 128,
+  "correction": "Use actual autonomous_controller_v1.py",
+  "test_rerun": false
+}

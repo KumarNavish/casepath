@@ -1,0 +1,26 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "manifest_sha256": "ead2ad3ddd10000737985f7db5d704b5e7366da72b54e371624f1a0709ac5c39",
+  "selected_layout": "selected/shard1..6",
+  "original_layout": "original/shard1..6",
+  "recheck_layout": "attempt2-shard6",
+  "selected_attempts": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    2
+  ],
+  "known_skip_count": 10,
+  "full_inventory": 2571,
+  "cloud_ids_sha256": "b3852753031b295c88a0059048233f8600d3e45dc0ace5f9a83b3127dc5a0467",
+  "mac_attestation_path": "coordinator/mac-attestation.json",
+  "mac_raw_receipts_status": "Retained on Mac; Cloud aggregate explicitly uses owner attestation.",
+  "targeted_evidence_path": "../smooth-operation-stage-20261013",
+  "targeted_evidence_commit": "4c84ee8deaba0df41b05de9450401bb628981f22",
+  "historical_failure": "Initial15s timeout; originalnativejournal laterqualified publication; fullsame-SHAresource-isolatedshard6 passed; rootcausenotconclusivelyestablished.",
+  "protected_fixture_archive": "original/shard6/failed-fixture.tar.gz",
+  "production_access_or_deployment": false,
+  "source_edits": false
+}

@@ -1,0 +1,60 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "shard": 6,
+  "exec_session_id": 47343,
+  "harness_pid": 706918,
+  "pytest_pid": 706930,
+  "pid_observation": "ps -eo pid,ppid,etime,comm,args; python process matched exact shard6 venv path",
+  "attempt_started": {
+    "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+    "started_epoch": 1791929440.9575613,
+    "command": [
+      "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+      "-P",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "-p",
+      "casepath_shard_observer",
+      "-o",
+      "tmp_path_retention_policy=failed",
+      "--junitxml=/workspace/casepath-smooth-stage-gate-3a02880a-20261013/shard6/junit.xml",
+      "--durations=0",
+      "--basetemp=/workspace/casepath-smooth-stage-gate-3a02880a-20261013/shard6/pytest-tmp",
+      "@/workspace/casepath-smooth-stage-gate-3a02880a-20261013/shard6/pytest-arguments.txt"
+    ],
+    "retry_allowed": false
+  },
+  "outer_command": [
+    "env",
+    "-i",
+    "HOME=/workspace/g3ah6",
+    "TMPDIR=/workspace/g3at6",
+    "TMP=/workspace/g3at6",
+    "TEMP=/workspace/g3at6",
+    "PATH=/usr/bin:/bin",
+    "LANG=C.UTF-8",
+    "LC_ALL=C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv/bin/python",
+    "-P",
+    "/workspace/casepath-smooth-stage-gate-3a02880a-20261013/harness/run_shard.py",
+    "run",
+    "6"
+  ],
+  "outer_env": {
+    "HOME": "/workspace/g3ah6",
+    "TMPDIR": "/workspace/g3at6",
+    "TMP": "/workspace/g3at6",
+    "TEMP": "/workspace/g3at6",
+    "PATH": "/usr/bin:/bin",
+    "LANG": "C.UTF-8",
+    "LC_ALL": "C.UTF-8",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "attempts_launched_by_worker": 1,
+  "retry_allowed": false,
+  "recorded_epoch": 1791929640.3713446
+}

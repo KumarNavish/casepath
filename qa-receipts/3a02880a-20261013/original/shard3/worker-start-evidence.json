@@ -1,0 +1,15 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "shard": 3,
+  "managed_cloud_host_observed": "656813ef2295",
+  "exec_session_id": 35942,
+  "runner_pid_observed": 706715,
+  "pytest_pid_observed": 706726,
+  "process_start_utc_observed": "2026-10-13 22:10:08 UTC",
+  "attempt_started_epoch": 1791929409.7406259,
+  "attempt_marker": "ATTEMPT_STARTED.json",
+  "retry_allowed": false,
+  "home_at_startup": "/workspace/g3ah3",
+  "tmpdir_at_startup": "/workspace/g3at3",
+  "pid_evidence": "ps -eo pid,ppid,lstart,args observed runner PID 706715 and child PID 706726 after the attempt marker was created"
+}

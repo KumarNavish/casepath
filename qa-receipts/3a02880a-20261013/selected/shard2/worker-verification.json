@@ -1,0 +1,116 @@
+{
+  "candidate": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "shard": 2,
+  "host": "656813ef2295",
+  "runner_pid": 706623,
+  "pytest_pid": 706634,
+  "exec_session_id": 52221,
+  "exactly_once_attempt": true,
+  "reruns": 0,
+  "assigned": 330,
+  "collected": 330,
+  "junit_testcases": 330,
+  "raw_phase_reports": 990,
+  "assigned_collected_junit_order_exact": true,
+  "phase_ids_and_order_exact": true,
+  "unique_ids": true,
+  "mac_file_intersection": [],
+  "counts": {
+    "passed": 330,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "phases": {
+    "setup:passed": 330,
+    "call:passed": 330,
+    "teardown:passed": 330
+  },
+  "failures": [],
+  "errors": [],
+  "skips": [],
+  "expected_known_skips": [],
+  "exit_code": 0,
+  "duration_seconds": 844.7860727310181,
+  "started_epoch": 1791929388.803382,
+  "finished_epoch": 1791930233.5894547,
+  "started_utc": "2026-10-13T22:09:48.803382+00:00",
+  "finished_utc": "2026-10-13T22:23:53.589455+00:00",
+  "junit_suite": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "330",
+    "time": "841.466",
+    "timestamp": "2026-10-13T22:09:50.647809+00:00",
+    "hostname": "656813ef2295"
+  },
+  "pytest_summary": "330 passed, 9 warnings in 841.48s (0:14:01)",
+  "warning_categories": [
+    "SWIG builtin types missing __module__ attributes",
+    "FastAPI on_event deprecation"
+  ],
+  "after_head": "3a02880abc3f824e06e5e31a888dc91edf1bcb9d",
+  "after_status": "",
+  "source_after_exit_code": 0,
+  "source_before_after_receipt_equal": true,
+  "capsule_receipt_file_sha256": "a8d41bc2bad8c93dfdd51601056d2b073b14b3d613aa70fa7bf6b4d299338a0b",
+  "source_artifact_static_counts": [
+    1706,
+    25,
+    37
+  ],
+  "source_after_command": "env -i HOME=/workspace/g3ah2 TMPDIR=/workspace/g3at2 TMP=/workspace/g3at2 TEMP=/workspace/g3at2 PATH=/usr/bin:/bin LANG=C.UTF-8 LC_ALL=C.UTF-8 PYTHONDONTWRITEBYTECODE=1 CASEPATH_SOURCE_COMMIT=3a02880abc3f824e06e5e31a888dc91edf1bcb9d /workspace/casepath-release-ae0-shard2/.runtime/casepath-dev-v2/venv/bin/python -P /workspace/casepath-smooth-stage-gate-3a02880a-20261013/harness/verify_prepared_capsules.py shard2 after",
+  "slowest_phase_total_tests": [
+    {
+      "id": "casepath-api/tests/test_workspace_corpus_150.py::test_all_150_original_claims_enter_the_same_workflow_without_accepting_evidence",
+      "phase_total_seconds": 248.83782666409388
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_knowledge_reads_v1.py::test_hosted_18_claim_cold_and_warm_views_use_bounded_read_only_pages",
+      "phase_total_seconds": 47.64419161999831
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_reference_pause_then_resume_preserves_the_run_and_completed_calls",
+      "phase_total_seconds": 28.388335341005586
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_pause_idempotency_stale_revision_and_restart",
+      "phase_total_seconds": 23.76053797401255
+    },
+    {
+      "id": "casepath-api/tests/test_claim_loop_v1.py::test_safe_correction_reuse_requires_matching_same_session_state",
+      "phase_total_seconds": 22.224162143073045
+    },
+    {
+      "id": "casepath-api/tests/test_agent_desk_v1.py::test_desk_equivalence_allows_only_verified_automatic_draft_suffix[manual_draft]",
+      "phase_total_seconds": 21.108713995025028
+    },
+    {
+      "id": "casepath-api/tests/test_claim_loop_v1.py::test_fastapi_raw_replays_are_stable_after_tail_and_restart",
+      "phase_total_seconds": 20.55394944094587
+    },
+    {
+      "id": "casepath-api/tests/test_workspace_claim_loop_v1.py::test_workspace_scoped_correction_preview_apply_and_reload_are_exact",
+      "phase_total_seconds": 18.612507468962576
+    },
+    {
+      "id": "casepath-api/tests/test_insurance_protocol_v1.py::test_concurrent_callers_before_execution_marker_share_one_lineage",
+      "phase_total_seconds": 17.128868748026434
+    },
+    {
+      "id": "casepath-api/tests/test_autonomous_operations_v1.py::test_any_snapshot_damage_fails_closed[historical_event]",
+      "phase_total_seconds": 16.785457192978356
+    }
+  ],
+  "receipt_sha256": {
+    "ATTEMPT_STARTED.json": "c5bbd31e80f6db8dd5c25c6ffe9906a97d7c85a8959ca1dc0d1f82c89836c8c3",
+    "command.json": "3db9ee8efd19cb628344bcbd02a40268cad699eebf0c195fd73266aec6ceee56",
+    "result.json": "9ec6a886e85eb7edd570523b724862b7e101258e71a5f904ad82bd3e11e2ef6b",
+    "collected.json": "63d348467c37ec785a56af3444cb8f5546941a97c0b2c28c06c818ff5645d675",
+    "junit.xml": "3e1059d8595629c7e7461bff9476cce2806006eadea115725dc693645cba61a4",
+    "reports.jsonl": "fa876dd1cd57a6adf653615d62c7d0d6bc3251886c9486988399fcc8b15f3ecd",
+    "pytest.log": "b70e52aacf7e544a65000c6347bfeeae9ca0b459d397be9089db17e137343531"
+  }
+}
