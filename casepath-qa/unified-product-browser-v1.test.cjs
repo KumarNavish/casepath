@@ -278,7 +278,7 @@ with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temp
     const input = migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE : process.env.CASEPATH_REFERENCE_FIXTURE;
     const output = migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE_OUTPUT : process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT;
     const encoded = input
-      ? fs.readFileSync(input,'utf8')
+      ? (input.endsWith('.gz') ? gunzipSync(fs.readFileSync(input)).toString('utf8') : fs.readFileSync(input,'utf8'))
       : execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python', ['-c',script,JSON.stringify(referenceIds),migrated?'migration':'fresh'],
         {cwd:root,encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:(migrated?256:128)*1024*1024});
     fixture = JSON.parse(encoded);
@@ -1283,25 +1283,27 @@ test('reference native: exact nine actual accepted assessments retain graph docu
  for(const id of referenceIds){
   await open(page,id);await title(page,id);const record=await visibleRecord(page),expected=fixture.snapshots[id];
   assert.deepEqual(record.state,expected.state);assert.deepEqual(record.projection,expected.projection);
-  assert.equal(await page.locator('[data-au-settled="true"]').count(),1);
-  assert.deepEqual(sorted(await page.locator('.au-forming-documents [data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(expected.state.obligations.map(row=>row.obligation_id)));
-  assert.equal(await page.locator('.au-forming-documents [data-au-review="sufficient"]').count(),expected.state.obligations.length);
-  assert.equal(await page.locator('.au-forming-documents [data-au-source][data-au-citation]').count(),expected.state.obligations.length);
-  for(const use of expected.state.knowledge_uses)assert.equal(await page.locator(`[data-au-knowledge-use="${use.knowledge_sha256||use.knowledge_id||use.version_id}"] [data-au-version="${use.version}"]`).count(),1);
-  for(const publication of expected.state.knowledge_published)assert.equal(await page.locator(`[data-au-knowledge-publication="${publication.knowledge_sha256}"] [data-au-version="${publication.version}"]`).count(),1);
+  assert.equal(await page.locator('[data-au-stage-phase="map"]').count(),1);
+  assert.deepEqual(sorted(await page.locator('[data-au-stage-document]').evaluateAll(rows=>rows.map(row=>row.dataset.auStageDocument))),sorted(expected.state.obligations.map(row=>row.document_type)));
+  assert.equal(await page.locator('[data-au-stage-document][data-au-document-checked="true"]').count(),expected.state.obligations.length);
+  assert.equal(await page.locator('.au-stage-slot [data-au-source][data-au-citation]').count(),expected.state.obligations.length);
+  const reused=expected.state.knowledge_uses.at(-1);if(reused){assert.equal(await page.locator(`.au-stage-reuse [data-au-version="${reused.version}"]`).count(),1);assert.equal(await page.locator('.au-stage-reuse [data-au-knowledge]').getAttribute('data-au-knowledge'),reused.knowledge_id);}
 
   assert.equal(expected.state.status,'deferred');assert.equal(expected.state.outcome.status,'deferred');assert.equal(expected.state.outcome.assessment_status,'complete');
-  assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based`);
+  assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based · No external action`);
   assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/Assessment only; no external action taken/);
-  assert.equal(await page.locator('.au-assessment-conclusion > p').first().textContent(),expected.state.outcome.summary);
+  assert.equal(await page.locator('.au-stage-outcome > p').first().textContent(),expected.state.outcome.summary);
   assert.equal([...new Intl.Segmenter('en',{granularity:'sentence'}).segment(expected.state.outcome.summary)].length,2,'the accepted outcome remains two readable sentences');
-  assert.equal((await page.locator('.au-quiet-claim').innerText()).match(/no external action taken/gi)?.length,1);
+  assert.equal((await page.locator('.au-quiet-claim').innerText()).match(/no external action/gi)?.length,1);
   for (const comparison of await page.locator('[data-au-law-comparison]').all()) assert.match(await comparison.innerText(),/^Earlier law text \(\d{4}-\d{2}-\d{2}\)$/);
   const context=expected.state.semantic_contexts[expected.state.run_id],authority=context.rule_packs.find(row=>row.family===expected.state.graph.family).legal_authority;
   const articles=[...new Set(expected.state.outcome.legal_predicates.flatMap(row=>row.rule_refs).map(ref=>/^CO:(\d+[a-z]?)$/.exec(ref)?.[1]).filter(Boolean))];
   assert.deepEqual(sorted(await page.locator('[data-au-law-article]').evaluateAll(rows=>rows.map(row=>row.dataset.auLawArticle))),sorted(articles));
   for(const article of articles)assert.equal(await page.locator(`[data-au-law-article="${article}"]`).getAttribute('href'),authority.find(row=>row.article===article).source.publisher_url);
   assert.deepEqual(sorted(await page.locator('[data-au-node]').evaluateAll(rows=>rows.map(row=>row.dataset.auNode))),sorted(expected.state.graph.nodes.map(row=>row.node_id)));
+  await page.locator('.au-work-head [data-au-detail="activity"]').click();await page.locator('.au-context-nav [data-au-detail="knowledge"]').click();
+  for(const use of expected.state.knowledge_uses)assert.equal(await page.locator(`[data-au-knowledge-use="${use.knowledge_sha256||use.knowledge_id||use.version_id}"] [data-au-version="${use.version}"]`).count(),1);
+  for(const publication of expected.state.knowledge_published)assert.equal(await page.locator(`[data-au-knowledge-publication="${publication.knowledge_sha256}"] [data-au-version="${publication.version}"]`).count(),1);
   await page.locator('.au-context-nav [data-au-detail="documents"]').click();
   assert.deepEqual(sorted(await page.locator('[data-au-obligation]').evaluateAll(rows=>rows.map(row=>row.dataset.auObligation))),sorted(expected.state.obligations.map(row=>row.obligation_id)));
   await page.locator('.au-context-nav [data-au-detail="sources"]').click();
@@ -2550,7 +2552,7 @@ for(const [width,height]of [[1440,1000],[1440,900],[1280,800],[390,844]])test(`f
     const reads=(await calls(page,`/claims/${id}/snapshot`)).length;await page.evaluate(seq=>window.__fixture.loadAccepted(seq),through);await page.evaluate(()=>window.__controller.refresh());
     assert.ok((await calls(page,`/claims/${id}/snapshot`)).length>reads,'each accepted live update passes through its independent fresh GET');
     const expected=fixture.prefixes[through];assert.deepEqual(await visibleRecord(page),{state:expected.state,projection:expected.projection});const proof=await formingSnapshot(page,expected.state);assert.equal(proof.nodes.length,11);assert.equal(proof.edges.length,13);
-    if(through===9){assert.equal(await page.locator('.au-forming-documents .au-document-review').count(),0,'missing review is expressed once for the rail rather than repeated on every requirement');assert.ok(proof.geometry.nodes.every(node=>node.rect.height>=(width>1000&&height<=850?36:44)&&node.titleFontSize>=14&&node.titleScrollWidth<=node.titleClientWidth+1),'actual nodes retain readable labels and native short-desktop or mobile target sizes');if(width>1000){assert.ok(proof.geometry.reading.x<proof.geometry.process.x&&proof.geometry.process.x<proof.geometry.documents.x,'original evidence precedes the central process and its document rail');assert.ok(proof.geometry.process.width>proof.geometry.reading.width&&proof.geometry.process.width>proof.geometry.documents.width,'the whole accepted process owns the dominant center');assert.ok(proof.geometry.nodes.every(node=>node.rect.y>=proof.geometry.graph.rect.y-1&&node.rect.y+node.rect.height<=height+1),'every actual node is readable within the initial desktop viewport');assert.ok(proof.geometry.graph.scrollHeight<=proof.geometry.graph.clientHeight+1,'the accepted eleven-node graph fits without forced desktop scrolling');}}
+    if(through===9){assert.equal(await page.locator('.au-forming-documents .au-document-review').count(),0,'missing review is expressed once for the rail rather than repeated on every requirement');assert.ok(proof.geometry.nodes.every(node=>node.rect.height>=(width>1000&&height<=850?36:44)&&node.titleFontSize>=14&&node.titleScrollWidth<=node.titleClientWidth+1),'actual nodes retain readable labels and native short-desktop or mobile target sizes: '+JSON.stringify({through,width,height,nodes:proof.geometry.nodes.filter(node=>node.rect.height<(width>1000&&height<=850?36:44)||node.titleFontSize<14||node.titleScrollWidth>node.titleClientWidth+1),assets:await page.evaluate(()=>window.__injectedAssets)}));if(width>1000){assert.ok(proof.geometry.reading.x<proof.geometry.process.x&&proof.geometry.process.x<proof.geometry.documents.x,'original evidence precedes the central process and its document rail');assert.ok(proof.geometry.process.width>proof.geometry.reading.width&&proof.geometry.process.width>proof.geometry.documents.width,'the whole accepted process owns the dominant center');assert.ok(proof.geometry.nodes.every(node=>node.rect.y>=proof.geometry.graph.rect.y-1&&node.rect.y+node.rect.height<=height+1),'every actual node is readable within the initial desktop viewport');assert.ok(proof.geometry.graph.scrollHeight<=proof.geometry.graph.clientHeight+1,'the accepted eleven-node graph fits without forced desktop scrolling');}}
     if(through===9)await page.evaluate(()=>{window.__formingObjects={nodes:[...document.querySelectorAll('.au-forming-process [data-au-node]')],edges:[...document.querySelectorAll('.au-forming-process [data-au-edge]')],rows:[...document.querySelectorAll('.au-forming-documents .au-obligation')],choices:[...document.querySelectorAll('.au-forming-documents .au-document-choice')]};});
     if(through===11)assert.equal(await page.evaluate(()=>Object.values(window.__formingObjects).flat().every(element=>element.isConnected)),true,'unchanged accepted graph and requirement identities retain their original native nodes and buttons');
     if(through===11){
