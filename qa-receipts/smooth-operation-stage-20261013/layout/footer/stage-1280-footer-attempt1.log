@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: complete procedure access stays above the fixed playback transport
+    at /workspace/casepath-smooth-layout-20261013-evidence/layout/footer/stage-1280-footer.cjs:9:1508 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

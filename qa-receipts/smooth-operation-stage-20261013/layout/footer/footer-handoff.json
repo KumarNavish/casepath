@@ -1,0 +1,79 @@
+{
+  "commit": "a92f98ca438e2d1d766b75457de2da3e6aea9f51",
+  "delta_base": "eecdd63ebe8794f68da60fad2adc740a9c6c3ac6",
+  "combined_js_candidate": "5690a114fe0c838b514f7369493c940af949c6f2",
+  "css_sha256": "ef5772e708fa5913edfb917610e0dd6da9842b92e40d1ca491083552be88d41d",
+  "combined_js_sha256": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+  "scope": {
+    "file": "casepath/assets/autonomous-workspace-v1.css",
+    "added_lines": 2,
+    "selector": ".au-workspace [data-au-operation-presentation=completed] .au-stage-transport",
+    "property": "position:static",
+    "original_margins_fonts_controls_unchanged": true,
+    "playing_paused_transport": "Original sticky bottom0 rule remains; completed selector does not match playing or paused."
+  },
+  "validation": {
+    "affected1280x800": {
+      "exit_status": 0,
+      "source_map_semantic_leaf_font_min": 18,
+      "transport_controls_max": 3,
+      "real_source_ink_hash_and_unicode_pin": "pass",
+      "source_history_holds": "pass",
+      "reuse_rect": {
+        "x": 200,
+        "y": 739.359375,
+        "width": 880,
+        "height": 42,
+        "top": 739.359375,
+        "right": 1080,
+        "bottom": 781.359375,
+        "left": 200
+      },
+      "transport_rect": {
+        "x": 310,
+        "y": 799.359375,
+        "width": 660,
+        "height": 44,
+        "top": 799.359375,
+        "right": 970,
+        "bottom": 843.359375,
+        "left": 310
+      },
+      "center_hit": {
+        "rect": {
+          "x": 356.578125,
+          "y": 739.359375,
+          "width": 241.796875,
+          "height": 42,
+          "top": 739.359375,
+          "right": 598.375,
+          "bottom": 781.359375,
+          "left": 356.578125
+        },
+        "center": {
+          "x": 477.4765625,
+          "y": 760.359375
+        },
+        "hit": "<button type=\"button\" class=\"au-secondary\" data-au-knowledge=\"procedure.defect_mold_heating\" data-au-version=\"1\" data-au-knowledge-sha=\"\" data-au-definition-sha=\"cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5\">Defects and repairs \u00b7 Version 1</button>",
+        "receives_center": true
+      },
+      "genuine_procedure_click": {
+        "id": "procedure.defect_mold_heating",
+        "version": "1",
+        "sha256": "",
+        "definition": "cf4829a27d8fcf110b72f0cf2f56a011ff8380deda4d4bdd45de9b2bbb77b0a5"
+      },
+      "gap_between_reuse_and_transport": 18.0,
+      "raw_log": "stage-1280-footer-attempt4.log",
+      "receipt": "attempt4/stage-1280-hit-test-stage.json"
+    },
+    "legacy_geometry_six": "Previously passed; the added selector only matches completed operation hosts, and does not match the legacy forming surface. No geometry expectations changed.",
+    "all_nine_and_five_sizes": "Assigned independent reviewer checks pending before CSS freeze."
+  },
+  "failures_preserved": {
+    "original_sticky_overlap": "../../review/stage-1280-procedure-hit-test.json",
+    "first_margin_candidate": "stage-1280-footer-attempt1.log",
+    "temporary_helper_assumptions": "stage-1280-footer-attempt2.log and stage-1280-footer-attempt3.log; source-pin URL intentionally retains empty sha256 for definition-only use."
+  },
+  "limitations": "Local read-only native1.1 fixture only; protected HTTP4189 server unchanged, asset routes override from scoped checkouts. No full gate, profile, final seal or publishing."
+}

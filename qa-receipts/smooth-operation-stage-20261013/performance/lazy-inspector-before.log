@@ -1,0 +1,41 @@
+✖ closed History keeps its snapshot quiet and reopening reads the newest exact case record (17.572083ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 92.331299
+
+✖ failing tests:
+
+test at casepath-qa/autonomous-workspace-v1.test.cjs:1648:1
+✖ closed History keeps its snapshot quiet and reopening reads the newest exact case record (17.572083ms)
+  AssertionError [ERR_ASSERTION]: closed inspectors must not serialize new accepted state during presentation
+  + actual - expected
+  
+    '{\n' +
+      '  "state": {\n' +
+      '    "claim_id": "claim-a",\n' +
+      '    "title": "Original incoming claim",\n' +
+  +   '    "revision": 4,\n' +
+  +   '    "state_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",\n' +
+  -   '    "revision": 3,\n' +
+  -   '    "state_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",\n' +
+      '    "status": "running",\n' +
+      '    "graph": {\n' +
+      '      "claim_id": "claim-a",\n' +
+      '      "graph_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",\n' +
+      '      "nodes": [\n' +
+  
+      at TestContext.<anonymous> (/workspace/casepath-operations-frontend-20261013/casepath-qa/autonomous-workspace-v1.test.cjs:1654:9)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: '{\n  "state": {\n    "claim_id": "claim-a",\n    "title": "Original incoming claim",\n    "revision": 4,\n    "state_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",\n    "status": "running",\n    "graph": {\n      "claim_id": "claim-a",\n      "graph_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",\n      "nodes": [\n        {\n          "node_id": "start",\n          "label": "Inspect message",\n          "entry": true\n        },\n        {\n          "node_id": "branch",\n          "label": "Check separate service",\n          "condition": {\n            "flag": "family_home"\n          }\n        }\n      ],\n      "edges": [\n        {\n          "edge_id": "next",\n          "source_node_id": "start",\n          "target_node_id": "branch"\n        }\n      ]\n    },\n    "evaluation": {\n      "nodes": [\n        {\n          "node_id": "start",\n          "activation": "true",\n          "execution_state": "completed"\n        },\n        {\n          "node_id": "branch",\n          "activation": "true",\n          "execution_state": "ready"\n        }\n      ],\n      "documents": [\n        {\n          "document_type": "notice",\n          "activation": "true",\n          "route_state": "needed_now",\n          "review_state": "unreviewed"\n        }\n      ]\n    },\n    "facts": [\n      {\n        "fact_id": "condition:family_home",\n        "label": "Family home",\n        "status": "true",\n        "summary": "The customer reports a family home.",\n        "citations": []\n      },\n      {\n        "fact_id": "fact:notice",\n        "label": "Separate notice",\n        "status": "unresolved",\n        "summary": "A separate notice is required."\n      }\n    ],\n    "obligations": [\n      {\n        "obligation_id": "obligation:branch:notice",\n        "node_id": "branch",\n        "decision_node_id": "branch",\n        "required_fact_ids": [\n          "fact:notice"\n        ],\n        "document_type": "notice",\n        "label": "Separate notice",\n        "reason": "Service depends on the family-home condition.",\n        "rule_refs": [\n          "tenancy.v1"\n        ],\n        "capability_id": "local_inbox.read"\n      }\n    ],\n    "actions": [\n      {\n        "result": {\n          "action_id": "review:notice:original",\n          "type": "document_review",\n          "node_ids": [\n            "branch"\n          ],\n          "status": "completed",\n          "summary": "Original notice inspected."\n        },\n        "receipt": {\n          "receipt_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"\n        }\n      }\n    ],\n    "source_descriptors": [\n      {\n        "claim_id": "claim-a",\n        "artifact_id": "original",\n        "file_name": "message.txt",\n        "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"\n      }\n    ],\n    "acquired_sources": [],\n    "knowledge_uses": []\n  },\n  "projection": {}\n}',
+    expected: '{\n  "state": {\n    "claim_id": "claim-a",\n    "title": "Original incoming claim",\n    "revision": 3,\n    "state_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",\n    "status": "running",\n    "graph": {\n      "claim_id": "claim-a",\n      "graph_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",\n      "nodes": [\n        {\n          "node_id": "start",\n          "label": "Inspect message",\n          "entry": true\n        },\n        {\n          "node_id": "branch",\n          "label": "Check separate service",\n          "condition": {\n            "flag": "family_home"\n          }\n        }\n      ],\n      "edges": [\n        {\n          "edge_id": "next",\n          "source_node_id": "start",\n          "target_node_id": "branch"\n        }\n      ]\n    },\n    "evaluation": {\n      "nodes": [\n        {\n          "node_id": "start",\n          "activation": "true",\n          "execution_state": "completed"\n        },\n        {\n          "node_id": "branch",\n          "activation": "true",\n          "execution_state": "ready"\n        }\n      ],\n      "documents": [\n        {\n          "document_type": "notice",\n          "activation": "true",\n          "route_state": "needed_now",\n          "review_state": "unreviewed"\n        }\n      ]\n    },\n    "facts": [\n      {\n        "fact_id": "condition:family_home",\n        "label": "Family home",\n        "status": "true",\n        "summary": "The customer reports a family home.",\n        "citations": []\n      },\n      {\n        "fact_id": "fact:notice",\n        "label": "Separate notice",\n        "status": "unresolved",\n        "summary": "A separate notice is required."\n      }\n    ],\n    "obligations": [\n      {\n        "obligation_id": "obligation:branch:notice",\n        "node_id": "branch",\n        "decision_node_id": "branch",\n        "required_fact_ids": [\n          "fact:notice"\n        ],\n        "document_type": "notice",\n        "label": "Separate notice",\n        "reason": "Service depends on the family-home condition.",\n        "rule_refs": [\n          "tenancy.v1"\n        ],\n        "capability_id": "local_inbox.read"\n      }\n    ],\n    "actions": [\n      {\n        "result": {\n          "action_id": "review:notice:original",\n          "type": "document_review",\n          "node_ids": [\n            "branch"\n          ],\n          "status": "completed",\n          "summary": "Original notice inspected."\n        },\n        "receipt": {\n          "receipt_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"\n        }\n      }\n    ],\n    "source_descriptors": [\n      {\n        "claim_id": "claim-a",\n        "artifact_id": "original",\n        "file_name": "message.txt",\n        "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"\n      }\n    ],\n    "acquired_sources": [],\n    "knowledge_uses": []\n  },\n  "projection": {}\n}',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,19 @@
+{
+  "host": "656813ef2295",
+  "base": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "branch": "codex/casepath-stage-layout-20261013",
+  "disclosure": "CSS-only authorized worker; no source sealing or publication. Existing preserved tests and read-only native fixtures. Browser plugin not available; Playwright/Chromium fallback.",
+  "assets": {
+    "casepath/assets/autonomous-workspace-v1.css": "c02cb4f8b312c4b6bac92706b3c21354d5d803df25a5f3c20963007fd5190f38",
+    "casepath/assets/autonomous-workspace-v1.js": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+    "casepath-qa/unified-product-browser-v1.test.cjs": "612e7c5af986be7dd99bc01641333953026c123924c6b9d893bb8b642662df4e"
+  },
+  "isolation": {
+    "HOME": "/workspace/casepath-smooth-layout-20261013-evidence/layout/home",
+    "TMPDIR": "/workspace/casepath-smooth-layout-20261013-evidence/layout/tmp",
+    "TMP": "/workspace/casepath-smooth-layout-20261013-evidence/layout/tmp",
+    "TEMP": "/workspace/casepath-smooth-layout-20261013-evidence/layout/tmp",
+    "db_root": "/workspace/casepath-smooth-layout-20261013-evidence/layout/db"
+  },
+  "disk": "Filesystem      Size  Used Avail Use% Mounted on\noverlay          32G   25G  5.1G  84% /workspace\nnone             17G   17G  209M  99% /tmp\n"
+}

@@ -1,0 +1,10 @@
+page.waitForSelector: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('[data-au-state-sha="ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"]') to be visible[22m
+
+    at /workspace/casepath-smooth-layout-20261013-evidence/review/all-nine-knowledge.cjs:9:589 {
+  log: [
+    `  - waiting for locator('[data-au-state-sha="ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d"]') to be visible`
+  ],
+  name: 'TimeoutError'
+}

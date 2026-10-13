@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: actual transport bounds {"id":"clm_0f4f13b1e3e1328c","hit":{"tag":"INPUT","rect":{"x":320,"y":784.25,"width":640,"height":16,"top":784.25,"right":960,"bottom":800.25,"left":320},"receives_center":true,"focused":true}}
+    at /workspace/casepath-smooth-layout-20261013-evidence/review/termination-control-diagnostic.cjs:7:639 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: a definition-only procedure use cannot invent a knowledge hash
+
+true !== false
+
+    at /workspace/casepath-smooth-layout-20261013-evidence/layout/footer/stage-1280-footer-attempt2.cjs:13:1137 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

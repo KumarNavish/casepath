@@ -1,0 +1,91 @@
+{
+  "rate_equal": true,
+  "fixture_hash_equal": true,
+  "head_equal": true,
+  "css_hash_equal": true,
+  "animation_records_equal": true,
+  "visible_operation_ids_equal": true,
+  "write_requests": {
+    "baseline": [],
+    "after": []
+  },
+  "completed": {
+    "baseline": {
+      "at": 55161.69999998808,
+      "revision": "48",
+      "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis \u00b7 CO 259 \u00b7 CO 259a \u00b7 CO 259d \u00b7 Earlier law text (2024-01-01)Procedure reused \u00b7 Defects and repairs \u00b7 Version 1",
+      "operation_count": 824,
+      "checked": 3
+    },
+    "after": {
+      "at": 52501.10000002384,
+      "revision": "48",
+      "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis \u00b7 CO 259 \u00b7 CO 259a \u00b7 CO 259d \u00b7 Earlier law text (2024-01-01)Procedure reused \u00b7 Defects and repairs \u00b7 Version 1",
+      "operation_count": 824,
+      "checked": 3
+    }
+  },
+  "metrics": {
+    "TaskDuration": {
+      "baseline": 14.643879,
+      "after": 10.077493,
+      "delta_percent": -31.182899011935294
+    },
+    "ScriptDuration": {
+      "baseline": 1.072799,
+      "after": 0.768356,
+      "delta_percent": -28.37838215732863
+    },
+    "LayoutDuration": {
+      "baseline": 0.558118,
+      "after": 0.532581,
+      "delta_percent": -4.575555706857692
+    },
+    "RecalcStyleDuration": {
+      "baseline": 1.552073,
+      "after": 1.241844,
+      "delta_percent": -19.988041799580316
+    }
+  },
+  "longtasks": {
+    "baseline": {
+      "count": 38,
+      "max": 606,
+      "total": 6631
+    },
+    "after": {
+      "count": 21,
+      "max": 507,
+      "total": 3544
+    }
+  },
+  "wall_ms": {
+    "baseline": 54278,
+    "after": 51516
+  },
+  "frame": {
+    "baseline": {
+      "count": 2877,
+      "p50": 16.69999999999709,
+      "p95": 16.799999999999272,
+      "p99": 66.70000000000005
+    },
+    "after": {
+      "count": 2883,
+      "p50": 16.69999999999709,
+      "p95": 16.799999999999272,
+      "p99": 16.80000000000291
+    }
+  },
+  "scope": "Native first-heating local fixture. Baseline and candidate JS; same pinned clean-base CSS. Exact matched warm4x workload deliberately opens/closes actual Playback details before replay. CPU samples have self/inclusive overlap; percentages here use CDP TaskDuration delta, not summed inclusive samples.",
+  "cache_labels_equal": true,
+  "raw_cache_labels": {
+    "baseline": "warm after closed Playback details",
+    "after": "warm after closed Playback details"
+  },
+  "script_sha256_at_review": "0377a5ba447db11036d357f21bbaf5a5cf0177f087881dcc54a2b0eea75c42d5",
+  "cache_equal": true,
+  "warm_mode_evidence": "Both raw receipts label the same warm after closed Playback details workload. Harness first opens the accepted head, deliberately opens/closes actual Playback details, then resets counters and enters Demonstration."
+}

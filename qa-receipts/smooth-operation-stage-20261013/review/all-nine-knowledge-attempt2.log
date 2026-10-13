@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(hit.rect.top>=0&&hit.rect.bottom<=800)
+
+    at /workspace/casepath-smooth-layout-20261013-evidence/review/all-nine-knowledge.cjs:7:639 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

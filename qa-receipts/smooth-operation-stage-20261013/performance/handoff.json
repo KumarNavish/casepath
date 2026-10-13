@@ -1,0 +1,466 @@
+{
+  "status": "Frozen implementation; pushed; parent integrated byte-identical authored JavaScript. No further tests/profiles planned.",
+  "repository": "KumarNavish/casepath",
+  "host": "656813ef2295",
+  "base": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "branch": "codex/casepath-stage-performance-20261013",
+  "commit": "864f6f260faf7a4e5788ed994d8173cf43dc165b",
+  "tracked_files": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "commit_normalization": "Conventional-commit normalization left to final root/Mac squash. Mac owns asset-query/source-manifest sealing and publication.",
+  "changes": [
+    "Defer public-record serialization while its dialog is closed; opening and open-dialog refresh retain exact latest DTO.",
+    "Complete DOM reuse before source-scroll geometry reads; old process bounds are read only for the actual source-to-map camera transition.",
+    "Skip unchanged retained attributes/children; preserve source panes, controls and focus identities.",
+    "Reuse append-only document presentation indexes, source Unicode codepoints and current working presentation model; validation/canonical hashing and all pacing/motion durations remain unchanged."
+  ],
+  "verification": {
+    "module": {
+      "command": "HOME=/workspace/pf-home TMPDIR=/workspace/pf-tmp TMP=/workspace/pf-tmp TEMP=/workspace/pf-tmp node --test casepath-qa/autonomous-workspace-v1.test.cjs",
+      "exit": 0,
+      "tests": 175,
+      "pass": 175,
+      "fail": 0,
+      "skip": 0,
+      "log": "targeted-attempt3.log"
+    },
+    "exact_first_heating": {
+      "operations": 824,
+      "checkpoints": 21,
+      "visible_attention": 38,
+      "animation_records": 37,
+      "attention_and_animation_sequences_exact_all_eight_runs": true,
+      "revision": 48,
+      "state_sha256": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+      "operation_chain_sha256": "ba61ea3ea1ff03faa1002af2b1e85671448e31a3922b11024f5603151b784561",
+      "trace_sha256": "2839da7e334a4f2086fd91cf18b525cdc64c9dbc98d60ac6ac71df62840b850e",
+      "checked_documents": 3
+    },
+    "native_inventory": {
+      "operations": 4653,
+      "checkpoints": 162,
+      "process_inspect": 87,
+      "unchanged_local_fixtures": true,
+      "worker_helper_result": "PASS nine exact native heads/checkpoints/chains/source spans 4653 3043134 87",
+      "worker_helper_log": "native-nine-validation.log",
+      "independent_final_owner": "stage_acceptance expanded cryptographic index/material verifier"
+    },
+    "negative_attempts": [
+      {
+        "file": "baseline-1x-cold.log",
+        "exit": 1,
+        "reason": "Chromium socket path too long under the original long TMPDIR; fixed with short /workspace/pf-tmp."
+      },
+      {
+        "file": "baseline-warm-attempt1.log",
+        "exit": 1,
+        "reason": "Temporary harness close-selector typo; corrected selector and retained failure."
+      },
+      {
+        "file": "lazy-inspector-before.log",
+        "exit": 1,
+        "reason": "New invariant failed on baseline because closed History was serialized on refresh."
+      },
+      {
+        "file": "targeted-attempt1.log",
+        "exit": 1,
+        "reason": "Five old replay tests relied on closed-dialog serialization; new prefix fixture omitted native cause_ids."
+      },
+      {
+        "file": "targeted-attempt2.log",
+        "exit": 1,
+        "reason": "Opening/resuming History on every playback prefix added verification reads, violating retained exact read-count assertion. Moved open-inspector DTO checks after uninterrupted playback; kept read-count/progression/geometry/DTO/write assertions."
+      }
+    ]
+  },
+  "profiles": {
+    "disclosure": "Local immutable native fixture; JS-only attribution with baselineCSS. Real wall timers, no virtualclock. rAF intervals do not measure compositorcadence. Initialcoldprofiles did notcaptureCSSresponsebody/CDPTaskmetrics; GETreadback aftercold matched unchanged0d9CSS and pairedwarmprofiles capturebothassets+Taskmetrics. Inclusive functiontimes overlap acrossdifferentfunctions andmust notbe summed.",
+    "commands": [
+      {
+        "command": "HOME=/workspace/pf-home TMPDIR=/workspace/pf-tmp node /workspace/casepath-smooth-layout-20261013-evidence/performance/profile.cjs baseline 1,4,6",
+        "script_snapshot": "profile-attempt2.cjs",
+        "exit": 0,
+        "log": "baseline-attempt2.log"
+      },
+      {
+        "command": "HOME=/workspace/pf-home TMPDIR=/workspace/pf-tmp TMP=/workspace/pf-tmp TEMP=/workspace/pf-tmp node /workspace/casepath-smooth-layout-20261013-evidence/performance/profile.cjs baseline 4 warm",
+        "exit": 0,
+        "log": "baseline-warm-attempt2.log"
+      },
+      {
+        "command": "HOME=/workspace/pf-home TMPDIR=/workspace/pf-tmp TMP=/workspace/pf-tmp TEMP=/workspace/pf-tmp node /workspace/casepath-smooth-layout-20261013-evidence/performance/profile.cjs after 1,4,6",
+        "exit": 0,
+        "log": "after-cold.log"
+      },
+      {
+        "command": "HOME=/workspace/pf-home TMPDIR=/workspace/pf-tmp TMP=/workspace/pf-tmp TEMP=/workspace/pf-tmp node /workspace/casepath-smooth-layout-20261013-evidence/performance/profile.cjs after 4 warm",
+        "exit": 0,
+        "log": "after-warm.log"
+      }
+    ],
+    "sampling_method": "Full raw samples: same-function inclusive totals count each function once per sampled stack across all contexts; renderClaim has no recursive ancestor. Different functions overlap and must not be summed.",
+    "primary_warm_4x_result": {
+      "task_seconds_before": 14.643879,
+      "task_seconds_after": 10.077493,
+      "task_reduction_percent": 31.182899011935294,
+      "renderClaim_full_inclusive_ms_before": 4101.378,
+      "renderClaim_full_inclusive_ms_after": 1755.109,
+      "closed_record_full_self_ms_before": 2175.091,
+      "closed_record_after": "No sampled cost",
+      "longtask_total_ms_before": 6631,
+      "longtask_total_ms_after": 3544
+    },
+    "limits": [
+      "Cold comparisons cover 1x/4x/6x; the measured closed-History warm variant covers 4x only.",
+      "Initial cold baseline did not capture CSS response bodies or CDP Task metrics; unchanged baseline CSS was subsequently read back byte-identically. Warm baseline and all after runs pin and hash both actual asset responses.",
+      "6x cold is mixed: long-task count45→48, total7951→7741ms, max833→683ms; rAFp99 unchanged83.3ms.",
+      "JS-only attribution uses pinned baselineCSS; final combinedCSS has separate parent-owned acceptance."
+    ],
+    "pairs": [
+      {
+        "cache": "cold",
+        "rate": 1,
+        "before": {
+          "wall_ms": 49324,
+          "raf_ms": {
+            "count": 2861,
+            "p50": 16.69999999999709,
+            "p95": 16.799999999999272,
+            "p99": 16.80000000000291
+          },
+          "longtask": {
+            "count": 11,
+            "max": 336,
+            "total": 1360
+          },
+          "main_thread_seconds": null,
+          "renderClaim_full_sample": {
+            "self_ms": 178.38299999999998,
+            "total_ms": 410.79000000000065,
+            "recursive_samples": 0
+          },
+          "closed_record_full_sample": {
+            "self_ms": 0,
+            "total_ms": 0,
+            "recursive_samples": 0
+          }
+        },
+        "after": {
+          "wall_ms": 48383,
+          "raf_ms": {
+            "count": 2871,
+            "p50": 16.69999999999709,
+            "p95": 16.799999999995634,
+            "p99": 16.80000000000291
+          },
+          "longtask": {
+            "count": 3,
+            "max": 65,
+            "total": 168
+          },
+          "main_thread_seconds": {
+            "task_s": 2.522813,
+            "script_s": 0.220165,
+            "layout_s": 0.125409,
+            "style_s": 0.312918
+          },
+          "renderClaim_full_sample": {
+            "self_ms": 135.35199999999998,
+            "total_ms": 351.0280000000001,
+            "recursive_samples": 0
+          },
+          "closed_record_full_sample": {
+            "self_ms": 0,
+            "total_ms": 0,
+            "recursive_samples": 0
+          }
+        }
+      },
+      {
+        "cache": "cold",
+        "rate": 4,
+        "before": {
+          "wall_ms": 53131,
+          "raf_ms": {
+            "count": 2838,
+            "p50": 16.69999999999709,
+            "p95": 16.799999999999272,
+            "p99": 66.60000000000002
+          },
+          "longtask": {
+            "count": 32,
+            "max": 493,
+            "total": 5353
+          },
+          "main_thread_seconds": null,
+          "renderClaim_full_sample": {
+            "self_ms": 936.6540000000012,
+            "total_ms": 2185.089999999999,
+            "recursive_samples": 0
+          },
+          "closed_record_full_sample": {
+            "self_ms": 0,
+            "total_ms": 0,
+            "recursive_samples": 0
+          }
+        },
+        "after": {
+          "wall_ms": 52748,
+          "raf_ms": {
+            "count": 2859,
+            "p50": 16.69999999999709,
+            "p95": 16.799999999999272,
+            "p99": 50.099999999998545
+          },
+          "longtask": {
+            "count": 28,
+            "max": 474,
+            "total": 4493
+          },
+          "main_thread_seconds": {
+            "task_s": 11.051023,
+            "script_s": 0.775731,
+            "layout_s": 0.664104,
+            "style_s": 1.467242
+          },
+          "renderClaim_full_sample": {
+            "self_ms": 836.084,
+            "total_ms": 2032.2429999999997,
+            "recursive_samples": 0
+          },
+          "closed_record_full_sample": {
+            "self_ms": 0,
+            "total_ms": 0,
+            "recursive_samples": 0
+          }
+        }
+      },
+      {
+        "cache": "cold",
+        "rate": 6,
+        "before": {
+          "wall_ms": 55609,
+          "raf_ms": {
+            "count": 2816,
+            "p50": 16.69999999999709,
+            "p95": 16.799999999999272,
+            "p99": 83.29999999999973
+          },
+          "longtask": {
+            "count": 45,
+            "max": 833,
+            "total": 7951
+          },
+          "main_thread_seconds": null,
+          "renderClaim_full_sample": {
+            "self_ms": 1290.0720000000008,
+            "total_ms": 3019.6830000000064,
+            "recursive_samples": 0
+          },
+          "closed_record_full_sample": {
+            "self_ms": 0,
+            "total_ms": 0,
+            "recursive_samples": 0
+          }
+        },
+        "after": {
+          "wall_ms": 55430,
+          "raf_ms": {
+            "count": 2830,
+            "p50": 16.69999999999709,
+            "p95": 16.799999999999272,
+            "p99": 83.30000000000291
+          },
+          "longtask": {
+            "count": 48,
+            "max": 683,
+            "total": 7741
+          },
+          "main_thread_seconds": {
+            "task_s": 16.878512,
+            "script_s": 1.204621,
+            "layout_s": 1.001392,
+            "style_s": 2.196176
+          },
+          "renderClaim_full_sample": {
+            "self_ms": 1298.089999999998,
+            "total_ms": 3083.2470000000035,
+            "recursive_samples": 0
+          },
+          "closed_record_full_sample": {
+            "self_ms": 1.077,
+            "total_ms": 1.077,
+            "recursive_samples": 0
+          }
+        }
+      },
+      {
+        "cache": "warm",
+        "rate": 4,
+        "before": {
+          "wall_ms": 54278,
+          "raf_ms": {
+            "count": 2877,
+            "p50": 16.69999999999709,
+            "p95": 16.799999999999272,
+            "p99": 66.70000000000005
+          },
+          "longtask": {
+            "count": 38,
+            "max": 606,
+            "total": 6631
+          },
+          "main_thread_seconds": {
+            "task_s": 14.643879,
+            "script_s": 1.072799,
+            "layout_s": 0.558118,
+            "style_s": 1.552073
+          },
+          "renderClaim_full_sample": {
+            "self_ms": 654.2980000000003,
+            "total_ms": 4101.378000000004,
+            "recursive_samples": 0
+          },
+          "closed_record_full_sample": {
+            "self_ms": 2175.090999999999,
+            "total_ms": 2176.2869999999994,
+            "recursive_samples": 0
+          }
+        },
+        "after": {
+          "wall_ms": 51516,
+          "raf_ms": {
+            "count": 2883,
+            "p50": 16.69999999999709,
+            "p95": 16.799999999999272,
+            "p99": 16.80000000000291
+          },
+          "longtask": {
+            "count": 21,
+            "max": 507,
+            "total": 3544
+          },
+          "main_thread_seconds": {
+            "task_s": 10.077493,
+            "script_s": 0.768356,
+            "layout_s": 0.532581,
+            "style_s": 1.241844
+          },
+          "renderClaim_full_sample": {
+            "self_ms": 626.7640000000009,
+            "total_ms": 1755.1089999999988,
+            "recursive_samples": 0
+          },
+          "closed_record_full_sample": {
+            "self_ms": 0,
+            "total_ms": 0,
+            "recursive_samples": 0
+          }
+        }
+      }
+    ],
+    "asset_bindings": {
+      "baseline_js": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+      "candidate_js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+      "pinned_css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+      "immutable_native_sidecar": "9f3d927d82722d8e4049b2cf5a300f5a2e9d8c91873909e08619a4f1c1b70df5"
+    }
+  },
+  "compositor": {
+    "command": "HOME=/workspace/pf-home TMPDIR=/workspace/pf-tmp TMP=/workspace/pf-tmp TEMP=/workspace/pf-tmp node /workspace/casepath-smooth-layout-20261013-evidence/performance/frame-trace.cjs",
+    "exit": 0,
+    "log": "frame-trace.log",
+    "window": "One matched bounded 20-second real-wall capture for baseline and after at4x, starting at the identical first source operation.",
+    "disclosure": "Cadence between selected rawCDPevent timestamps byevent/thread. DrawFrame/BeginFrame eventcadence and rAF/main-thread timing are separateobservations; headlesscompositor events donotestablish foregroundMac presentationoruniversalFPS. Traceendsafter20-secondwait; finalstateisreadbackafterrawtracedrain.",
+    "rows": [
+      {
+        "label": "baseline",
+        "start_operation": "op_d5939b2d68c20a2636fe628befc35784",
+        "final_operation_after_drain": "op_0f70d11251821b4fe926a0c076df31c1",
+        "final_revision": "35",
+        "final_state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "observed_operations": 11,
+        "wall_ms": 21443,
+        "drawFrame_compositor": {
+          "event_and_thread": "DrawFrame:Compositor",
+          "count": 982,
+          "interval_ms": {
+            "p50": 16.674,
+            "p95": 17.947,
+            "p99": 91.502
+          }
+        }
+      },
+      {
+        "label": "after",
+        "start_operation": "op_d5939b2d68c20a2636fe628befc35784",
+        "final_operation_after_drain": "op_0f70d11251821b4fe926a0c076df31c1",
+        "final_revision": "35",
+        "final_state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+        "observed_operations": 11,
+        "wall_ms": 21393,
+        "drawFrame_compositor": {
+          "event_and_thread": "DrawFrame:Compositor",
+          "count": 985,
+          "interval_ms": {
+            "p50": 16.666,
+            "p95": 17.945,
+            "p99": 85.412
+          }
+        }
+      }
+    ],
+    "compression": [
+      {
+        "file": "baseline-4x-frame-trace.json",
+        "raw_bytes": 20431010,
+        "raw_sha256": "1e895d957e5c6ebd5e5fc92ecfe15a33807e69747ad7bf7e971d76efe761a7b0",
+        "gzip_file": "baseline-4x-frame-trace.json.gz",
+        "gzip_bytes": 1227204,
+        "gzip_sha256": "588f7ace6f208d38af79f2d79fbd3a86e61c823619046d771002928c26b63652",
+        "lossless_roundtrip": true,
+        "original_retained": true
+      },
+      {
+        "file": "after-4x-frame-trace.json",
+        "raw_bytes": 20451922,
+        "raw_sha256": "4efdcea7c526be57e65830d3c0f34b73c951e759af5fc4f13f20325775915103",
+        "gzip_file": "after-4x-frame-trace.json.gz",
+        "gzip_bytes": 1224974,
+        "gzip_sha256": "0e4ac9d891416ebf900e3f0be39b34cbbf68fb780a4495897cd0f4b90f51ea12",
+        "lossless_roundtrip": true,
+        "original_retained": true
+      }
+    ]
+  },
+  "environment": {
+    "HOME": "/workspace/pf-home",
+    "TMPDIR": "/workspace/pf-tmp",
+    "TMP": "/workspace/pf-tmp",
+    "TEMP": "/workspace/pf-tmp"
+  },
+  "evidence_transfer": {
+    "include": "Sanitized receipts/logs, baseline source/CSS captures, temporary profiling scripts, all raw .cpuprofile files, raw frame traces and lossless .gz/hash receipts.",
+    "exclude": [
+      "home/",
+      "tmp/",
+      "/workspace/pf-home/",
+      "/workspace/pf-tmp/",
+      "browser user data/process caches"
+    ]
+  },
+  "evidence_files": [
+    "comparison.json",
+    "function-costs-full.json",
+    "frame-cadence-summary.json",
+    "frame-trace-receipt.json",
+    "frame-trace-compression.json",
+    "commands-receipt.json",
+    "native-inventory.json",
+    "*.cpuprofile",
+    "baseline-4x-frame-trace.json.gz",
+    "after-4x-frame-trace.json.gz"
+  ]
+}

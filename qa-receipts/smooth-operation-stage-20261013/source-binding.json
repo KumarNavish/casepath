@@ -1,0 +1,35 @@
+{
+  "base_sha": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "candidate_sha": "b2936eaab993cfda87c1a5ff6f8d9403aceb2271",
+  "candidate_branch": "codex/casepath-smooth-operation-stage-20261013",
+  "hostname": "656813ef2295",
+  "execution": "Managed Codex Cloud; isolated native synthetic fixtures. No hosted-head verification, full release gate, deployment or production access in this round.",
+  "asset_sha256": {
+    "casepath/assets/autonomous-workspace-v1.js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+    "casepath/assets/autonomous-workspace-v1.css": "ef5772e708fa5913edfb917610e0dd6da9842b92e40d1ca491083552be88d41d",
+    "casepath-qa/autonomous-workspace-v1.test.cjs": "96945f335b34f0513bfbdd010848fdbf3c6e7b49ffde0a04ac5f80a0ac3a53c4"
+  },
+  "qa_status": "Final browser QA-only selector correction and targeted checks pending; independent product acceptance is green.",
+  "excluded_duplicate_inputs": [
+    {
+      "path": "performance/after-4x-frame-trace.json",
+      "size_bytes": 20451922,
+      "sha256": "4efdcea7c526be57e65830d3c0f34b73c951e759af5fc4f13f20325775915103",
+      "reason": "Raw original retained locally; lossless gzip shipped"
+    },
+    {
+      "path": "performance/baseline-4x-frame-trace.json",
+      "size_bytes": 20431010,
+      "sha256": "1e895d957e5c6ebd5e5fc92ecfe15a33807e69747ad7bf7e971d76efe761a7b0",
+      "reason": "Raw original retained locally; lossless gzip shipped"
+    },
+    {
+      "path": "layout/current-prior-fixture.json",
+      "size_bytes": 35270437,
+      "sha256": "ac2caaeb0bdd1c4dbaf4bbd7edbf1b716a457d8cde2728a871902682281634b5",
+      "reason": "Existing deterministic input retained locally; hash-bound here, no duplicate input export"
+    }
+  ],
+  "temp_policy": "All new browser/Python/Node children use isolated HOME/TMPDIR/TMP/TEMP under /workspace before initialization; /tmp remains separate low-capacity filesystem.",
+  "measurement_limits": "Serialized matched fixture comparisons, no universal 60fps claim. Cold 6x long-task count 45 to 48, total duration slightly improves; preserved mixed result. Fixture heads are not production heads."
+}

@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(final.reuse.bottom<=final.transport.top)
+
+    at /workspace/casepath-smooth-layout-20261013-evidence/review/stage-viewports.cjs:9:802 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

@@ -1,0 +1,48 @@
+{
+  "base": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "commit": "eecdd63ebe8794f68da60fad2adc740a9c6c3ac6",
+  "branch": "codex/casepath-stage-layout-20261013",
+  "host": "656813ef2295",
+  "changed_files": [
+    "casepath/assets/autonomous-workspace-v1.css"
+  ],
+  "css_sha256": "26915e7327cd553792d0f1f2513821dce0d5d04d247f47c78e2db80c282655ab",
+  "test_sha256": "612e7c5af986be7dd99bc01641333953026c123924c6b9d893bb8b642662df4e",
+  "runtime": {
+    "node": "v24.19.0",
+    "playwright": "1.62.1",
+    "chromium": "151.0.7922.173",
+    "browser_plugin": "Absent; existing Playwright/Chromium fallback"
+  },
+  "scope": "CSS-only code checkpoints; asset index and source manifest sealing belong to Mac integration owner. No new dependencies/server changes/backend/corpus/journal/publishing.",
+  "validation": {
+    "original_four_preserved_cases": {
+      "passed": 0,
+      "failed": 4,
+      "geometry_predicates": "all four pass through9; later prefix11 obsolete spouse row expectation fails identically",
+      "raw_log": "legacy-attempt1.log",
+      "fresh_fixture_identical_to_retained": true,
+      "fixture_sha256": "ac2caaeb0bdd1c4dbaf4bbd7edbf1b716a457d8cde2728a871902682281634b5"
+    },
+    "supplemental_exact_geometry": {
+      "passed_groups": 6,
+      "failed_groups": 0,
+      "exit_status": 0,
+      "raw_log": "legacy-geometry-proof-final.log",
+      "receipt": "legacy-geometry-proof-final.json",
+      "unchanged_native_geometry_predicates": true,
+      "publication_full_graph_viewport": "799.234375<=801",
+      "added_fields_and_exact_procedure_hashes": "pass"
+    },
+    "git_diff_check": "pass"
+  },
+  "remaining": "Root-authorized narrow browser QA correction/full targeted four-case rerun and combined stage five-viewport acceptance belong to separate owners. Original assertions here unchanged. No full gate/Mac browser/final sealing/publishing performed.",
+  "isolated_environment": {
+    "HOME": "/workspace/casepath-smooth-layout-20261013-evidence/layout/home",
+    "TMPDIR": "/workspace/casepath-smooth-layout-20261013-evidence/layout/tmp",
+    "TMP": "/workspace/casepath-smooth-layout-20261013-evidence/layout/tmp",
+    "TEMP": "/workspace/casepath-smooth-layout-20261013-evidence/layout/tmp",
+    "db_root": "/workspace/casepath-smooth-layout-20261013-evidence/layout/db"
+  },
+  "disk": "Filesystem      Size  Used Avail Use% Mounted on\noverlay          32G   25G  5.0G  84% /workspace\nnone             17G   17G  209M  99% /tmp\n"
+}

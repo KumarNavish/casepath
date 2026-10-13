@@ -1,0 +1,14 @@
+AssertionError [ERR_ASSERTION]: genuine procedure click resolves the exact hash-bound qualified version
++ actual - expected
+
++ ''
+- '094b5f4f5ef9b625678a5725a875c53f1e0526a951180d8574d95ffaa7b7871d'
+
+    at /workspace/casepath-smooth-layout-20261013-evidence/layout/footer/stage-1280-footer-attempt3.cjs:13:1315 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '',
+  expected: '094b5f4f5ef9b625678a5725a875c53f1e0526a951180d8574d95ffaa7b7871d',
+  operator: 'strictEqual',
+  diff: 'simple'
+}

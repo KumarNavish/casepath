@@ -1,0 +1,159 @@
+{
+  "claim_id": "auto_a489b283495e7b03b5aab860",
+  "fixture_sha256": "ac2caaeb0bdd1c4dbaf4bbd7edbf1b716a457d8cde2728a871902682281634b5",
+  "prefix": 11,
+  "state_sha256": "b2e8ffa50ac42174298a4f8b1269afbc89ea6ea8c279d6d04575936bfa309152",
+  "source_test": "casepath-qa/unified-product-browser-v1.test.cjs:2559",
+  "literal_assertion": "const row=page.locator('.au-forming-documents [data-au-document=\"spouse_notice_copy\"]');assert.equal(await row.getAttribute('data-status'),'established');",
+  "requiring_node": {
+    "activation": "true",
+    "authority": {
+      "kind": "operational_rule",
+      "quote": "The lease_termination_dispute process includes the step 'Check separate family-home service' owned by claim_handler.",
+      "sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+      "source_id": "policy-lease_termination_dispute-v1",
+      "title": "Generic lease-termination dispute workflow"
+    },
+    "blocked_by": [
+      "lt_type"
+    ],
+    "completed": false,
+    "condition": {
+      "const": "true"
+    },
+    "condition_flags": [
+      "family_home",
+      "termination_received"
+    ],
+    "document_types": [
+      "spouse_notice_copy"
+    ],
+    "effective_completed": false,
+    "entry": false,
+    "execution_state": "blocked",
+    "inconsistent_completion": false,
+    "kind": "action",
+    "label": "Check separate family-home service",
+    "meaning": "The lease_termination_dispute process includes the step 'Check separate family-home service' owned by claim_handler.",
+    "missing_document_types": [],
+    "node_id": "lt_family",
+    "provenance": {
+      "kind": "machine_validated",
+      "policy_id": "casepath.autonomous-local/1.0.0",
+      "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+      "source": "policy-lease_termination_dispute-v1"
+    },
+    "responsibility": "claim_handler",
+    "terminal": false,
+    "unresolved_dependencies": [],
+    "validation": {
+      "status": "unvalidated"
+    }
+  },
+  "document_evaluation": {
+    "activation": "true",
+    "active_node_ids": [
+      "lt_family"
+    ],
+    "authority": {
+      "kind": "operational_rule",
+      "quote": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+      "sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+      "source_id": "policy-lease_termination_dispute-v1",
+      "title": "Generic lease-termination dispute workflow"
+    },
+    "condition": {
+      "flag": "family_home"
+    },
+    "condition_flag": "family_home",
+    "condition_flags": [
+      "family_home",
+      "termination_received"
+    ],
+    "document_type": "spouse_notice_copy",
+    "held_files": [
+      {
+        "artifact_id": "src_64ece0e388979b98a49f84fe98b993b2",
+        "citations": [
+          {
+            "artifact_id": "src_64ece0e388979b98a49f84fe98b993b2",
+            "end_char": 68,
+            "quote": "Separate termination addressed to spouse Alex. Delivered 2026-10-01.",
+            "sha256": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+            "start_char": 0,
+            "text_sha256": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3"
+          }
+        ],
+        "document_definition_sha256": "feeca5199aa838c56d401cf83febc239e77379390ca6834273733bfcfc6a45f5",
+        "file_name": "spouse-notice.txt",
+        "media_type": "text/plain",
+        "note": "Separate spouse notice is supplied.",
+        "review": "sufficient",
+        "reviewed_by": "independent_machine_verification",
+        "sha256": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+        "source_quote": "Separate termination addressed to spouse Alex. Delivered 2026-10-01."
+      }
+    ],
+    "label": "Separate spouse notice",
+    "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+    "request": false,
+    "required_at_node_ids": [
+      "lt_family"
+    ],
+    "requirement_class": "conditional",
+    "review_scope": "document_requirement",
+    "review_state": "sufficient",
+    "route_state": "established"
+  },
+  "obligation": {
+    "capability_id": "local_inbox.read",
+    "decision_node_id": "lt_family",
+    "document_type": "spouse_notice_copy",
+    "label": "Separate spouse notice",
+    "node_id": "lt_family",
+    "obligation_id": "obligation:lt_family:spouse_notice_copy",
+    "reason": "'Separate spouse notice' is a conditional evidence item when scenario flag 'family_home' is active for process step(s) lt_family.",
+    "required_fact_ids": [
+      "fact:spouse_notice_copy"
+    ],
+    "rule_pack_sha256": "db7ea6f9b7adc927d26d66963f142483f3ff2d4ed76c5b4c057f4000d8e7902a",
+    "rule_refs": [
+      "policy-lease_termination_dispute-v1",
+      "casepath.autonomous-local/1.0.0"
+    ]
+  },
+  "facts": [
+    {
+      "citations": [
+        {
+          "artifact_id": "src_64ece0e388979b98a49f84fe98b993b2",
+          "end_char": 68,
+          "quote": "Separate termination addressed to spouse Alex. Delivered 2026-10-01.",
+          "sha256": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+          "start_char": 0,
+          "text_sha256": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3"
+        }
+      ],
+      "fact_id": "fact:spouse_notice_copy",
+      "label": "The separate spouse addressee, notice contents and service evidence",
+      "rule_refs": [
+        "policy-lease_termination_dispute-v1"
+      ],
+      "status": "established",
+      "summary": "Separate spouse notice is supplied."
+    }
+  ],
+  "source_descriptors": [
+    {
+      "artifact_id": "src_64ece0e388979b98a49f84fe98b993b2",
+      "claim_id": "auto_a489b283495e7b03b5aab860",
+      "contract": "casepath.autonomous-source/1.0.0",
+      "descriptor_sha256": "4c79f2bcd08a5f06d54d5d4bb94c62accc414dd10af8e08b943b2c7cb53a434e",
+      "file_name": "spouse-notice.txt",
+      "media_type": "text/plain",
+      "role": "supporting_document",
+      "sha256": "5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3",
+      "size_bytes": 68
+    }
+  ]
+}

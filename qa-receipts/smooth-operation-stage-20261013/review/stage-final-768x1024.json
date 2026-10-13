@@ -1,0 +1,704 @@
+{
+  "url": "http://127.0.0.1:4189/?journey=autonomous#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0",
+  "title": "CasePath — Autonomous claims",
+  "scrollY": 0,
+  "documentWidth": 768,
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "phase": "map",
+  "revision": "48",
+  "stateSha": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+  "operation": "",
+  "stage": {
+    "x": 24,
+    "y": 197.4375,
+    "width": 720,
+    "height": 735.703125,
+    "top": 197.4375,
+    "right": 744,
+    "bottom": 933.140625,
+    "left": 24
+  },
+  "sourceOverflow": null,
+  "graph": {
+    "x": 24,
+    "y": 213.4375,
+    "width": 720,
+    "height": 491.34375,
+    "top": 213.4375,
+    "right": 744,
+    "bottom": 704.78125,
+    "left": 24
+  },
+  "nodes": [
+    {
+      "id": "dh_intake",
+      "rect": {
+        "x": 36,
+        "y": 225.4375,
+        "width": 140,
+        "height": 91.5625,
+        "top": 225.4375,
+        "right": 176,
+        "bottom": 317,
+        "left": 36
+      }
+    },
+    {
+      "id": "dh_scope",
+      "rect": {
+        "x": 196,
+        "y": 225.4375,
+        "width": 140,
+        "height": 116.75,
+        "top": 225.4375,
+        "right": 336,
+        "bottom": 342.1875,
+        "left": 196
+      }
+    },
+    {
+      "id": "dh_notice",
+      "rect": {
+        "x": 356,
+        "y": 225.4375,
+        "width": 140,
+        "height": 91.5625,
+        "top": 225.4375,
+        "right": 496,
+        "bottom": 317,
+        "left": 356
+      }
+    },
+    {
+      "id": "dh_cause",
+      "rect": {
+        "x": 516,
+        "y": 225.4375,
+        "width": 140,
+        "height": 91.5625,
+        "top": 225.4375,
+        "right": 656,
+        "bottom": 317,
+        "left": 516
+      }
+    },
+    {
+      "id": "dh_evidence",
+      "rect": {
+        "x": 676,
+        "y": 225.4375,
+        "width": 140,
+        "height": 116.75,
+        "top": 225.4375,
+        "right": 816,
+        "bottom": 342.1875,
+        "left": 676
+      }
+    },
+    {
+      "id": "dh_response",
+      "rect": {
+        "x": 836,
+        "y": 225.4375,
+        "width": 140,
+        "height": 141.9375,
+        "top": 225.4375,
+        "right": 976,
+        "bottom": 367.375,
+        "left": 836
+      }
+    }
+  ],
+  "outcome": {
+    "x": 24,
+    "y": 724.78125,
+    "width": 720,
+    "height": 208.359375,
+    "top": 724.78125,
+    "right": 744,
+    "bottom": 933.140625,
+    "left": 24
+  },
+  "reuse": {
+    "x": 24,
+    "y": 891.140625,
+    "width": 720,
+    "height": 42,
+    "top": 891.140625,
+    "right": 744,
+    "bottom": 933.140625,
+    "left": 24
+  },
+  "transport": {
+    "x": 54,
+    "y": 951.140625,
+    "width": 660,
+    "height": 44,
+    "top": 951.140625,
+    "right": 714,
+    "bottom": 995.140625,
+    "left": 54
+  },
+  "controls": [
+    {
+      "tag": "INPUT",
+      "text": "",
+      "rect": {
+        "x": 64,
+        "y": 965.140625,
+        "width": 640,
+        "height": 16,
+        "top": 965.140625,
+        "right": 704,
+        "bottom": 981.140625,
+        "left": 64
+      }
+    }
+  ],
+  "leaf": [
+    {
+      "tag": "SPAN",
+      "cls": "au-node-index au-evidence-junction",
+      "text": "✓",
+      "font": 12,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 36,
+        "y": 237.4375,
+        "width": 17,
+        "height": 17,
+        "top": 237.4375,
+        "right": 53,
+        "bottom": 254.4375,
+        "left": 36
+      }
+    },
+    {
+      "tag": "STRONG",
+      "cls": "au-node-title",
+      "text": "Capture the reported defect",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 65,
+        "y": 233.4375,
+        "width": 111,
+        "height": 75.5625,
+        "top": 233.4375,
+        "right": 176,
+        "bottom": 309,
+        "left": 65
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-node-index au-evidence-junction",
+      "text": "✓",
+      "font": 12,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 196,
+        "y": 237.4375,
+        "width": 17,
+        "height": 17,
+        "top": 237.4375,
+        "right": 213,
+        "bottom": 254.4375,
+        "left": 196
+      }
+    },
+    {
+      "tag": "STRONG",
+      "cls": "au-node-title",
+      "text": "Establish relevant tenancy terms",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 225,
+        "y": 233.4375,
+        "width": 111,
+        "height": 100.75,
+        "top": 233.4375,
+        "right": 336,
+        "bottom": 334.1875,
+        "left": 225
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "",
+      "text": "CHF1800",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 236,
+        "y": 360.1875,
+        "width": 78.609375,
+        "height": 27,
+        "top": 360.1875,
+        "right": 314.609375,
+        "bottom": 387.1875,
+        "left": 236
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "",
+      "text": "Relevant tenancy terms",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 236,
+        "y": 417.1875,
+        "width": 71.71875,
+        "height": 70.59375,
+        "top": 417.1875,
+        "right": 307.71875,
+        "bottom": 487.78125,
+        "left": 236
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-stage-paper",
+      "text": "CHF1800",
+      "font": 18,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 236,
+        "y": 497.078125,
+        "width": 89,
+        "height": 25.1875,
+        "top": 497.078125,
+        "right": 325,
+        "bottom": 522.265625,
+        "left": 236
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-stage-source-check",
+      "text": "✓",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 313.90625,
+        "y": 493.078125,
+        "width": 15.09375,
+        "height": 24.296875,
+        "top": 493.078125,
+        "right": 329,
+        "bottom": 517.375,
+        "left": 313.90625
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-node-index au-evidence-junction",
+      "text": "✓",
+      "font": 12,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 356,
+        "y": 237.4375,
+        "width": 17,
+        "height": 17,
+        "top": 237.4375,
+        "right": 373,
+        "bottom": 254.4375,
+        "left": 356
+      }
+    },
+    {
+      "tag": "STRONG",
+      "cls": "au-node-title",
+      "text": "Establish landlord knowledge",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 385,
+        "y": 233.4375,
+        "width": 111,
+        "height": 75.5625,
+        "top": 233.4375,
+        "right": 496,
+        "bottom": 309,
+        "left": 385
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "",
+      "text": "three heating-failure reports",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 396,
+        "y": 335,
+        "width": 89,
+        "height": 108,
+        "top": 335,
+        "right": 485,
+        "bottom": 443,
+        "left": 396
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "",
+      "text": "Landlord knowledge and continuing repair status",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 396,
+        "y": 473,
+        "width": 80.84375,
+        "height": 143.484375,
+        "top": 473,
+        "right": 476.84375,
+        "bottom": 616.484375,
+        "left": 396
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-stage-paper",
+      "text": "three heating-failure reports",
+      "font": 18,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 396,
+        "y": 625.78125,
+        "width": 89,
+        "height": 50,
+        "top": 625.78125,
+        "right": 485,
+        "bottom": 675.78125,
+        "left": 396
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-stage-source-check",
+      "text": "✓",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 473.90625,
+        "y": 621.78125,
+        "width": 15.09375,
+        "height": 24.296875,
+        "top": 621.78125,
+        "right": 489,
+        "bottom": 646.078125,
+        "left": 473.90625
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-node-index au-evidence-junction",
+      "text": "✓",
+      "font": 12,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 516,
+        "y": 237.4375,
+        "width": 17,
+        "height": 17,
+        "top": 237.4375,
+        "right": 533,
+        "bottom": 254.4375,
+        "left": 516
+      }
+    },
+    {
+      "tag": "STRONG",
+      "cls": "au-node-title",
+      "text": "Assess supported cause",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 545,
+        "y": 233.4375,
+        "width": 111,
+        "height": 75.5625,
+        "top": 233.4375,
+        "right": 656,
+        "bottom": 309,
+        "left": 545
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-node-index au-evidence-junction",
+      "text": "✓",
+      "font": 12,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 676,
+        "y": 237.4375,
+        "width": 17,
+        "height": 17,
+        "top": 237.4375,
+        "right": 693,
+        "bottom": 254.4375,
+        "left": 676
+      }
+    },
+    {
+      "tag": "STRONG",
+      "cls": "au-node-title",
+      "text": "Assess objective defect evidence",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 705,
+        "y": 233.4375,
+        "width": 111,
+        "height": 100.75,
+        "top": 233.4375,
+        "right": 816,
+        "bottom": 334.1875,
+        "left": 705
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "",
+      "text": "15.8C",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 716,
+        "y": 360.1875,
+        "width": 44.078125,
+        "height": 27,
+        "top": 360.1875,
+        "right": 760.078125,
+        "bottom": 387.1875,
+        "left": 716
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "",
+      "text": "Dated technical defect observation",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 716,
+        "y": 417.1875,
+        "width": 87.21875,
+        "height": 119.1875,
+        "top": 417.1875,
+        "right": 803.21875,
+        "bottom": 536.375,
+        "left": 716
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-stage-paper",
+      "text": "15.8C",
+      "font": 18,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 716,
+        "y": 545.671875,
+        "width": 89,
+        "height": 25.1875,
+        "top": 545.671875,
+        "right": 805,
+        "bottom": 570.859375,
+        "left": 716
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-stage-source-check",
+      "text": "✓",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 793.90625,
+        "y": 541.671875,
+        "width": 15.09375,
+        "height": 24.296875,
+        "top": 541.671875,
+        "right": 809,
+        "bottom": 565.96875,
+        "left": 793.90625
+      }
+    },
+    {
+      "tag": "SPAN",
+      "cls": "au-node-index au-evidence-junction",
+      "text": "✓",
+      "font": 12,
+      "decorative": true,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 836,
+        "y": 237.4375,
+        "width": 17,
+        "height": 17,
+        "top": 237.4375,
+        "right": 853,
+        "bottom": 254.4375,
+        "left": 836
+      }
+    },
+    {
+      "tag": "STRONG",
+      "cls": "au-node-title",
+      "text": "Record repair and rent reduction eligibility",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 865,
+        "y": 233.4375,
+        "width": 111,
+        "height": 125.9375,
+        "top": 233.4375,
+        "right": 976,
+        "bottom": 359.375,
+        "left": 865
+      }
+    },
+    {
+      "tag": "P",
+      "cls": "",
+      "text": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until ",
+      "font": 22,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 24,
+        "y": 724.78125,
+        "width": 720,
+        "height": 105.5625,
+        "top": 724.78125,
+        "right": 744,
+        "bottom": 830.34375,
+        "left": 24
+      }
+    },
+    {
+      "tag": "A",
+      "cls": "",
+      "text": "CO 259",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 123.34375,
+        "y": 845.34375,
+        "width": 62.109375,
+        "height": 22,
+        "top": 845.34375,
+        "right": 185.453125,
+        "bottom": 867.34375,
+        "left": 123.34375
+      }
+    },
+    {
+      "tag": "A",
+      "cls": "",
+      "text": "CO 259a",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 194.515625,
+        "y": 845.34375,
+        "width": 71.609375,
+        "height": 22,
+        "top": 845.34375,
+        "right": 266.125,
+        "bottom": 867.34375,
+        "left": 194.515625
+      }
+    },
+    {
+      "tag": "A",
+      "cls": "",
+      "text": "CO 259d",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 275.1875,
+        "y": 845.34375,
+        "width": 73.015625,
+        "height": 22,
+        "top": 845.34375,
+        "right": 348.203125,
+        "bottom": 867.34375,
+        "left": 275.1875
+      }
+    },
+    {
+      "tag": "A",
+      "cls": "",
+      "text": "Earlier law text (2024-01-01)",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 357.265625,
+        "y": 845.34375,
+        "width": 231.859375,
+        "height": 22,
+        "top": 845.34375,
+        "right": 589.125,
+        "bottom": 867.34375,
+        "left": 357.265625
+      }
+    },
+    {
+      "tag": "BUTTON",
+      "cls": "au-secondary",
+      "text": "Defects and repairs · Version 1",
+      "font": 18,
+      "decorative": false,
+      "peripheralInspect": false,
+      "rect": {
+        "x": 180.578125,
+        "y": 891.140625,
+        "width": 241.796875,
+        "height": 42,
+        "top": 891.140625,
+        "right": 422.375,
+        "bottom": 933.140625,
+        "left": 180.578125
+      }
+    }
+  ],
+  "dialogs": []
+}

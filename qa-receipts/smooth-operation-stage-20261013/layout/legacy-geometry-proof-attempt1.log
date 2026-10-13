@@ -1,0 +1,12 @@
+PASS exact through9 geometry 1440 1000
+PASS exact through9 geometry 1440 900
+PASS exact through9 geometry 1280 800
+AssertionError [ERR_ASSERTION]: the actual qualified publication keeps every node readable in the800px viewport
+    at /workspace/casepath-smooth-layout-20261013-evidence/layout/legacy-geometry-proof.cjs:6:903 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

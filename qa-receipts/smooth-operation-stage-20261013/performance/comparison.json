@@ -1,0 +1,444 @@
+{
+  "disclosure": "Local immutable native fixture; JS-only attribution with baselineCSS. Real wall timers, no virtualclock. rAF intervals do not measure compositorcadence. Initialcoldprofiles did notcaptureCSSresponsebody/CDPTaskmetrics; GETreadback aftercold matched unchanged0d9CSS and pairedwarmprofiles capturebothassets+Taskmetrics. Inclusive functiontimes overlap acrossdifferentfunctions andmust notbe summed.",
+  "base": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "candidate": "864f6f260faf7a4e5788ed994d8173cf43dc165b",
+  "attention_and_animation_sequences_exact": true,
+  "rows": [
+    {
+      "run": "baseline-1x-cold",
+      "wall_ms": 49324,
+      "frame": {
+        "count": 2861,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 16.80000000000291
+      },
+      "longtask": {
+        "count": 11,
+        "max": 336,
+        "total": 1360
+      },
+      "assets": {
+        "js": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+        "css": "not captured in initial cold response; identical0d9CSS GETreadback binds source"
+      },
+      "metrics": null,
+      "operations": 824,
+      "visible_attention": 38,
+      "animations": 37,
+      "result": {
+        "at": 49149.90000003576,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "functions": [
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1990,
+          "self_ms": 172.964,
+          "total_ms": 397.6989999999999
+        },
+        {
+          "function": "retainOperationSource",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2446,
+          "self_ms": 121.93199999999996,
+          "total_ms": 121.93199999999996
+        }
+      ]
+    },
+    {
+      "run": "baseline-4x-cold",
+      "wall_ms": 53131,
+      "frame": {
+        "count": 2838,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 66.60000000000002
+      },
+      "longtask": {
+        "count": 32,
+        "max": 493,
+        "total": 5353
+      },
+      "assets": {
+        "js": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+        "css": "not captured in initial cold response; identical0d9CSS GETreadback binds source"
+      },
+      "metrics": null,
+      "operations": 824,
+      "visible_attention": 38,
+      "animations": 37,
+      "result": {
+        "at": 52807,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "functions": [
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1990,
+          "self_ms": 903.8870000000009,
+          "total_ms": 2102.4880000000016
+        },
+        {
+          "function": "retainOperationSource",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2446,
+          "self_ms": 628.2780000000002,
+          "total_ms": 628.2780000000002
+        },
+        {
+          "function": "stageNodeContents",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1295,
+          "self_ms": 15.677,
+          "total_ms": 68.842
+        }
+      ]
+    },
+    {
+      "run": "baseline-6x-cold",
+      "wall_ms": 55609,
+      "frame": {
+        "count": 2816,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 83.29999999999973
+      },
+      "longtask": {
+        "count": 45,
+        "max": 833,
+        "total": 7951
+      },
+      "assets": {
+        "js": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+        "css": "not captured in initial cold response; identical0d9CSS GETreadback binds source"
+      },
+      "metrics": null,
+      "operations": 824,
+      "visible_attention": 38,
+      "animations": 37,
+      "result": {
+        "at": 55192.19999998808,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "functions": [
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1990,
+          "self_ms": 1240.647,
+          "total_ms": 2912.782000000002
+        },
+        {
+          "function": "retainOperationSource",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2446,
+          "self_ms": 856.6139999999999,
+          "total_ms": 856.6139999999999
+        },
+        {
+          "function": "stageNodeContents",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1295,
+          "self_ms": 15.950999999999999,
+          "total_ms": 84.88900000000002
+        }
+      ]
+    },
+    {
+      "run": "baseline-4x-warm",
+      "wall_ms": 54278,
+      "frame": {
+        "count": 2877,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 66.70000000000005
+      },
+      "longtask": {
+        "count": 38,
+        "max": 606,
+        "total": 6631
+      },
+      "assets": {
+        "css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "js": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8"
+      },
+      "metrics": {
+        "task_s": 14.643879,
+        "script_s": 1.072799,
+        "layout_s": 0.558118,
+        "style_s": 1.552073
+      },
+      "operations": 824,
+      "visible_attention": 38,
+      "animations": 37,
+      "result": {
+        "at": 55161.69999998808,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "functions": [
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1990,
+          "self_ms": 627.8190000000004,
+          "total_ms": 4000.8399999999974
+        },
+        {
+          "function": "synchronizeRecord",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 3114,
+          "self_ms": 2125.130999999998,
+          "total_ms": 2126.326999999998
+        },
+        {
+          "function": "retainOperationSource",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2446,
+          "self_ms": 521.7090000000001,
+          "total_ms": 541.76
+        },
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1990,
+          "self_ms": 22.792,
+          "total_ms": 78.81800000000001
+        },
+        {
+          "function": "stageNodeContents",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1295,
+          "self_ms": 11.921,
+          "total_ms": 51.67999999999999
+        }
+      ]
+    },
+    {
+      "run": "after-1x-cold",
+      "wall_ms": 48383,
+      "frame": {
+        "count": 2871,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999995634,
+        "p99": 16.80000000000291
+      },
+      "longtask": {
+        "count": 3,
+        "max": 65,
+        "total": 168
+      },
+      "assets": {
+        "css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+      },
+      "metrics": {
+        "task_s": 2.522813,
+        "script_s": 0.220165,
+        "layout_s": 0.125409,
+        "style_s": 0.312918
+      },
+      "operations": 824,
+      "visible_attention": 38,
+      "animations": 37,
+      "result": {
+        "at": 48251.5,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "functions": [
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2020,
+          "self_ms": 130.301,
+          "total_ms": 335.722
+        },
+        {
+          "function": "retainOperationSource",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2479,
+          "self_ms": 109.43699999999998,
+          "total_ms": 109.43699999999998
+        }
+      ]
+    },
+    {
+      "run": "after-4x-cold",
+      "wall_ms": 52748,
+      "frame": {
+        "count": 2859,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 50.099999999998545
+      },
+      "longtask": {
+        "count": 28,
+        "max": 474,
+        "total": 4493
+      },
+      "assets": {
+        "css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+      },
+      "metrics": {
+        "task_s": 11.051023,
+        "script_s": 0.775731,
+        "layout_s": 0.664104,
+        "style_s": 1.467242
+      },
+      "operations": 824,
+      "visible_attention": 38,
+      "animations": 37,
+      "result": {
+        "at": 52396.5,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "functions": [
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2020,
+          "self_ms": 800.099,
+          "total_ms": 1955.8119999999994
+        },
+        {
+          "function": "retainOperationSource",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2479,
+          "self_ms": 567.4029999999993,
+          "total_ms": 567.4029999999993
+        }
+      ]
+    },
+    {
+      "run": "after-6x-cold",
+      "wall_ms": 55430,
+      "frame": {
+        "count": 2830,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 83.30000000000291
+      },
+      "longtask": {
+        "count": 48,
+        "max": 683,
+        "total": 7741
+      },
+      "assets": {
+        "css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+      },
+      "metrics": {
+        "task_s": 16.878512,
+        "script_s": 1.204621,
+        "layout_s": 1.001392,
+        "style_s": 2.196176
+      },
+      "operations": 824,
+      "visible_attention": 38,
+      "animations": 37,
+      "result": {
+        "at": 55035.89999997616,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "functions": [
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2020,
+          "self_ms": 1255.7449999999983,
+          "total_ms": 2979.2350000000006
+        },
+        {
+          "function": "retainOperationSource",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2479,
+          "self_ms": 845.7209999999995,
+          "total_ms": 845.7209999999995
+        }
+      ]
+    },
+    {
+      "run": "after-4x-warm",
+      "wall_ms": 51516,
+      "frame": {
+        "count": 2883,
+        "p50": 16.69999999999709,
+        "p95": 16.799999999999272,
+        "p99": 16.80000000000291
+      },
+      "longtask": {
+        "count": 21,
+        "max": 507,
+        "total": 3544
+      },
+      "assets": {
+        "css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+      },
+      "metrics": {
+        "task_s": 10.077493,
+        "script_s": 0.768356,
+        "layout_s": 0.532581,
+        "style_s": 1.241844
+      },
+      "operations": 824,
+      "visible_attention": 38,
+      "animations": 37,
+      "result": {
+        "at": 52501.10000002384,
+        "revision": "48",
+        "state": "ceb64b6282749e60cbefd76263261f3d40fe99e5bfdc549cc96d3b81eaedd88d",
+        "outcome": "The sources support defect removal and proportional rent-reduction eligibility from documented landlord knowledge until remedy. Repair, the reduction amount and any award remain undetermined.Legal basis · CO 259 · CO 259a · CO 259d · Earlier law text (2024-01-01)Procedure reused · Defects and repairs · Version 1",
+        "operation_count": 824,
+        "checked": 3
+      },
+      "functions": [
+        {
+          "function": "renderClaim",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2020,
+          "self_ms": 608.877000000001,
+          "total_ms": 1712.6560000000006
+        },
+        {
+          "function": "retainOperationSource",
+          "url": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2479,
+          "self_ms": 493.31699999999955,
+          "total_ms": 496.02099999999956
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x1000 (23246.330532ms)
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (13171.354089ms)
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1280x800 (13349.050402ms)
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 390x844 (13405.097969ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63958.78318
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2547:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x1000 (23246.330532ms)
+  locator.getAttribute: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-documents [data-au-document="spouse_notice_copy"]')[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2559:118) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('.au-forming-documents [data-au-document="spouse_notice_copy"]')` ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2547:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1440x900 (13171.354089ms)
+  locator.getAttribute: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-documents [data-au-document="spouse_notice_copy"]')[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2559:118) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('.au-forming-documents [data-au-document="spouse_notice_copy"]')` ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2547:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 1280x800 (13349.050402ms)
+  locator.getAttribute: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-documents [data-au-document="spouse_notice_copy"]')[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2559:118) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('.au-forming-documents [data-au-document="spouse_notice_copy"]')` ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2547:74
+✖ forming work: live accepted sources, graph and conditional documents form one exact composition at 390x844 (13405.097969ms)
+  locator.getAttribute: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-documents [data-au-document="spouse_notice_copy"]')[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-operations-review-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2559:118) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('.au-forming-documents [data-au-document="spouse_notice_copy"]')` ]
+  }

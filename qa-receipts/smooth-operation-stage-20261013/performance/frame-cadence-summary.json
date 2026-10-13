@@ -1,0 +1,169 @@
+{
+  "disclosure": "Cadence between selected rawCDPevent timestamps byevent/thread. DrawFrame/BeginFrame eventcadence and rAF/main-thread timing are separateobservations; headlesscompositor events donotestablish foregroundMac presentationoruniversalFPS. Traceendsafter20-secondwait; finalstateisreadbackafterrawtracedrain.",
+  "rows": [
+    {
+      "label": "baseline",
+      "actual_assets": {
+        "css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "js": "1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8"
+      },
+      "start": {
+        "at": 1923,
+        "operation": "op_d5939b2d68c20a2636fe628befc35784"
+      },
+      "final_operation": "op_0f70d11251821b4fe926a0c076df31c1",
+      "final_revision": "35",
+      "final_state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+      "observed_operations": 11,
+      "wall_ms": 21443,
+      "trace_bytes": 20431010,
+      "cadence": [
+        {
+          "event_and_thread": "BeginMainThreadFrame:CrRendererMain",
+          "count": 165,
+          "interval_ms": {
+            "p50": 16.727,
+            "p95": 424.068,
+            "p99": 2349.835
+          }
+        },
+        {
+          "event_and_thread": "BeginFrame:Compositor",
+          "count": 1030,
+          "interval_ms": {
+            "p50": 16.666,
+            "p95": 16.666,
+            "p99": 16.666
+          }
+        },
+        {
+          "event_and_thread": "ActivateLayerTree:Compositor",
+          "count": 47,
+          "interval_ms": {
+            "p50": 72.19,
+            "p95": 2369.197,
+            "p99": 3650.315
+          }
+        },
+        {
+          "event_and_thread": "RequestMainThreadFrame:Compositor",
+          "count": 164,
+          "interval_ms": {
+            "p50": 16.682,
+            "p95": 398.977,
+            "p99": 2350.155
+          }
+        },
+        {
+          "event_and_thread": "DrawFrame:Compositor",
+          "count": 982,
+          "interval_ms": {
+            "p50": 16.674,
+            "p95": 17.947,
+            "p99": 91.502
+          }
+        },
+        {
+          "event_and_thread": "Commit:CrBrowserMain",
+          "count": 10,
+          "interval_ms": {
+            "p50": 0.187,
+            "p95": 1650.724,
+            "p99": 1650.724
+          }
+        },
+        {
+          "event_and_thread": "Commit:Compositor",
+          "count": 96,
+          "interval_ms": {
+            "p50": 0.304,
+            "p95": 1566.519,
+            "p99": 3650.215
+          }
+        }
+      ]
+    },
+    {
+      "label": "after",
+      "actual_assets": {
+        "css": "a446b4f9126418190bd769a263936a64ef43c1ab49f44622d1b534557745ddcc",
+        "js": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+      },
+      "start": {
+        "at": 1669.300000011921,
+        "operation": "op_d5939b2d68c20a2636fe628befc35784"
+      },
+      "final_operation": "op_0f70d11251821b4fe926a0c076df31c1",
+      "final_revision": "35",
+      "final_state_sha256": "077c48e9ea31853d84164165a8346d00be9e3f4f0bab467da241b56fed8b0da1",
+      "observed_operations": 11,
+      "wall_ms": 21393,
+      "trace_bytes": 20451922,
+      "cadence": [
+        {
+          "event_and_thread": "ActivateLayerTree:Compositor",
+          "count": 47,
+          "interval_ms": {
+            "p50": 78.014,
+            "p95": 2384.674,
+            "p99": 3669.433
+          }
+        },
+        {
+          "event_and_thread": "DrawFrame:Compositor",
+          "count": 985,
+          "interval_ms": {
+            "p50": 16.666,
+            "p95": 17.945,
+            "p99": 85.412
+          }
+        },
+        {
+          "event_and_thread": "RequestMainThreadFrame:Compositor",
+          "count": 169,
+          "interval_ms": {
+            "p50": 16.663,
+            "p95": 397.946,
+            "p99": 2350.269
+          }
+        },
+        {
+          "event_and_thread": "BeginMainThreadFrame:CrRendererMain",
+          "count": 169,
+          "interval_ms": {
+            "p50": 16.658,
+            "p95": 421.64,
+            "p99": 2350.399
+          }
+        },
+        {
+          "event_and_thread": "BeginFrame:Compositor",
+          "count": 1029,
+          "interval_ms": {
+            "p50": 16.666,
+            "p95": 16.666,
+            "p99": 33.332
+          }
+        },
+        {
+          "event_and_thread": "Commit:CrBrowserMain",
+          "count": 10,
+          "interval_ms": {
+            "p50": 0.119,
+            "p95": 1639.408,
+            "p99": 1639.408
+          }
+        },
+        {
+          "event_and_thread": "Commit:Compositor",
+          "count": 94,
+          "interval_ms": {
+            "p50": 0.255,
+            "p95": 1583.284,
+            "p99": 3669.283
+          }
+        }
+      ]
+    }
+  ]
+}

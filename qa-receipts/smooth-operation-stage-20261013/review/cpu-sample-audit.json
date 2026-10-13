@@ -1,0 +1,198 @@
+{
+  "scope": "Raw warm4x CPU samples. Self times sum to sampled elapsed; inclusive function times overlap and must never be added as total CPU. TaskDuration comparison is recorded separately. Missing synchronizeRecord samples means no sampled cost, not mathematically zero work.",
+  "rows": [
+    {
+      "label": "baseline",
+      "profiler_wall_ms": 54476.782,
+      "sample_delta_total_ms": 54474.532,
+      "self_sum_ms": 54474.53200000013,
+      "sample_count": 48389,
+      "functions": [
+        {
+          "name": "renderClaim",
+          "self_ms": 3.687,
+          "inclusive_ms": 21.720000000000006,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1990
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 0.0,
+          "inclusive_ms": 15.424000000000003,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1835
+        },
+        {
+          "name": "synchronizeRecord",
+          "self_ms": 1.094,
+          "inclusive_ms": 1.094,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 3114
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 2.316,
+          "inclusive_ms": 11.917,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1835
+        },
+        {
+          "name": "renderClaim",
+          "self_ms": 627.8190000000004,
+          "inclusive_ms": 4000.8399999999974,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1990
+        },
+        {
+          "name": "stageNodeContents",
+          "self_ms": 11.921,
+          "inclusive_ms": 51.67999999999999,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1295
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 14.643,
+          "inclusive_ms": 68.353,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1835
+        },
+        {
+          "name": "synchronizeRecord",
+          "self_ms": 2125.130999999998,
+          "inclusive_ms": 2126.326999999998,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 3114
+        },
+        {
+          "name": "retainOperationSource",
+          "self_ms": 521.7090000000001,
+          "inclusive_ms": 541.76,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2446
+        },
+        {
+          "name": "renderClaim",
+          "self_ms": 22.792,
+          "inclusive_ms": 78.81800000000001,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1990
+        },
+        {
+          "name": "stageNodeContents",
+          "self_ms": 0.0,
+          "inclusive_ms": 4.281,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1295
+        },
+        {
+          "name": "synchronizeRecord",
+          "self_ms": 48.86600000000001,
+          "inclusive_ms": 48.86600000000001,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 3114
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 4.77,
+          "inclusive_ms": 29.525000000000002,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1835
+        }
+      ]
+    },
+    {
+      "label": "after",
+      "profiler_wall_ms": 51695.27,
+      "sample_delta_total_ms": 51694.11,
+      "self_sum_ms": 51694.11000000056,
+      "sample_count": 46557,
+      "functions": [
+        {
+          "name": "renderClaim",
+          "self_ms": 4.037,
+          "inclusive_ms": 19.804999999999996,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2020
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 0.0,
+          "inclusive_ms": 12.711999999999998,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1864
+        },
+        {
+          "name": "renderClaim",
+          "self_ms": 608.877000000001,
+          "inclusive_ms": 1712.6560000000006,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2020
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 21.151,
+          "inclusive_ms": 63.301,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1864
+        },
+        {
+          "name": "stageNodeContents",
+          "self_ms": 6.088000000000001,
+          "inclusive_ms": 19.459,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1317
+        },
+        {
+          "name": "retainOperationSource",
+          "self_ms": 493.31699999999955,
+          "inclusive_ms": 496.02099999999956,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2479
+        },
+        {
+          "name": "positionOperationSource",
+          "self_ms": 4.966,
+          "inclusive_ms": 11.136000000000001,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2489
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 5.2749999999999995,
+          "inclusive_ms": 21.232000000000003,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1864
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 0.863,
+          "inclusive_ms": 10.117,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1864
+        },
+        {
+          "name": "renderClaim",
+          "self_ms": 13.849999999999998,
+          "inclusive_ms": 22.647999999999996,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 2020
+        },
+        {
+          "name": "stageNodeContents",
+          "self_ms": 0.0,
+          "inclusive_ms": 1.194,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1317
+        },
+        {
+          "name": "drawEdges",
+          "self_ms": 0.0,
+          "inclusive_ms": 0.873,
+          "source": "http://127.0.0.1:4189/assets/autonomous-workspace-v1.js?sha256=1730bb3c1d2c326841f1d6617e018bab60a3b58bc3e4c7cca7ea3487c94336f8",
+          "line": 1864
+        }
+      ]
+    }
+  ]
+}

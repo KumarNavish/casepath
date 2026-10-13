@@ -1,0 +1,43 @@
+{
+  "host": "656813ef2295",
+  "cwd": "/workspace/casepath-operations-frontend-20261013",
+  "base": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "candidate": "864f6f260faf7a4e5788ed994d8173cf43dc165b",
+  "environment": {
+    "HOME": "/workspace/pf-home",
+    "TMPDIR": "/workspace/pf-tmp",
+    "TMP": "/workspace/pf-tmp",
+    "TEMP": "/workspace/pf-tmp"
+  },
+  "initial_cold_environment_note": "Initial corrected cold baseline browser used HOME/TMPDIR at these paths; later browser/test processes explicitly set all four names. First long-path launch failure and warm-selector failure retained. Pure read-only metadata commands do not instantiate temporary helpers.",
+  "commands": [
+    "node profile-attempt2.cjs baseline 1,4,6",
+    "node profile.cjs baseline 4 warm",
+    "node profile.cjs after 1,4,6",
+    "node profile.cjs after 4 warm",
+    "node frame-trace.cjs",
+    "node --test casepath-qa/autonomous-workspace-v1.test.cjs"
+  ],
+  "temporary_scripts": [
+    {
+      "file": "profile.cjs",
+      "sha256": "0377a5ba447db11036d357f21bbaf5a5cf0177f087881dcc54a2b0eea75c42d5"
+    },
+    {
+      "file": "profile-attempt2.cjs",
+      "sha256": "39429579e8eb4d79f2de18e3f6561cb4d1b58f45c6ce2670d07a07629f350d25"
+    },
+    {
+      "file": "frame-trace.cjs",
+      "sha256": "6e362645e43a568d179661bf4b44c5f26e0c9745bbbfbcbdc2609f530dbc6126"
+    }
+  ],
+  "source_test_result": {
+    "tests": 175,
+    "pass": 175,
+    "fail": 0,
+    "skipped": 0,
+    "log": "targeted-attempt3.log"
+  },
+  "sealing": "Mac integration owns final asset query and source-manifest sealing; worker edited only two authorized tracked files."
+}

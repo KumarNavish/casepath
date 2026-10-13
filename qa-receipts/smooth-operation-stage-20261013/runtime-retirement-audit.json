@@ -1,0 +1,38 @@
+{
+  "candidate": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "host": "656813ef2295",
+  "before_free_bytes": 1345794048,
+  "candidates": [
+    {
+      "clone": "/workspace/casepath-release-ae0-shard3",
+      "path": "/workspace/casepath-release-ae0-shard3/.runtime/casepath-dev-v2/venv",
+      "git_normal": true,
+      "git_ignored": true,
+      "allocated_bytes": 183541760,
+      "files": 3799,
+      "active_uses": [],
+      "symlink": false
+    },
+    {
+      "clone": "/workspace/casepath-release-ae0-shard6",
+      "path": "/workspace/casepath-release-ae0-shard6/.runtime/casepath-dev-v2/venv",
+      "git_normal": true,
+      "git_ignored": true,
+      "allocated_bytes": 454844416,
+      "files": 7565,
+      "active_uses": [],
+      "symlink": false
+    },
+    {
+      "clone": "/workspace/casepath-release-ae0-inventory",
+      "path": "/workspace/casepath-release-ae0-inventory/.runtime/casepath-dev-v2/venv",
+      "git_normal": true,
+      "git_ignored": true,
+      "allocated_bytes": 183541760,
+      "files": 3799,
+      "active_uses": [],
+      "symlink": false
+    }
+  ],
+  "scope": "Only completed owned ignored venv directories; Git, source capsules, receipts, journals and all failed fixtures retained"
+}

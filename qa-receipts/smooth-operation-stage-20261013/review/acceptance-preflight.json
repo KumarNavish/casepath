@@ -1,0 +1,21 @@
+{
+  "candidate": "5690a114fe0c838b514f7369493c940af949c6f2",
+  "environment": {
+    "HOME": "/workspace/rv-home",
+    "TMPDIR": "/workspace/rv-tmp",
+    "TMP": "/workspace/rv-tmp",
+    "TEMP": "/workspace/rv-tmp"
+  },
+  "node_executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+  "filesystems": {
+    "/workspace": {
+      "free_bytes": 5302345728,
+      "device": 27
+    },
+    "/tmp": {
+      "free_bytes": 218353664,
+      "device": 34
+    }
+  },
+  "scope": "No writes under /tmp; all reviewer generated outputs, Chromium profiles and isolated HOME use /workspace. No protected HTTP4189 server mutation."
+}

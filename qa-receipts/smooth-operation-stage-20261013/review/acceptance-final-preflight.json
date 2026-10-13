@@ -1,0 +1,21 @@
+{
+  "candidate": "b2936eaab993cfda87c1a5ff6f8d9403aceb2271",
+  "environment": {
+    "HOME": "/workspace/rv-home",
+    "TMPDIR": "/workspace/rv-tmp",
+    "TMP": "/workspace/rv-tmp",
+    "TEMP": "/workspace/rv-tmp"
+  },
+  "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+  "filesystems": {
+    "/workspace": {
+      "free_bytes": 5023903744,
+      "device": 27
+    },
+    "/tmp": {
+      "free_bytes": 218386432,
+      "device": 34
+    }
+  },
+  "scope": "Final UI acceptance only; no repeat cryptographic validator or profiles; all temp/output writes under /workspace."
+}

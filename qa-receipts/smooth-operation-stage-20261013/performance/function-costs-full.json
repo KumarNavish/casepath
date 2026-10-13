@@ -1,0 +1,325 @@
+{
+  "method": "Selftime sums acrossallrawsamples; total time counts eachfunction onceper sampledstack, includingallcallcontexts. Inclusive costs of differentfunctions overlap. No top80 truncation.",
+  "aggregates": [
+    {
+      "run": "baseline-1x-cold",
+      "functions": {
+        "renderClaim": {
+          "self_ms": 178.38299999999998,
+          "total_ms": 410.79000000000065,
+          "recursive_samples": 0
+        },
+        "synchronizeRecord": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "retainOperationSource": {
+          "self_ms": 121.93199999999996,
+          "total_ms": 121.93199999999996,
+          "recursive_samples": 0
+        },
+        "positionOperationSource": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "stageNodeContents": {
+          "self_ms": 2.242,
+          "total_ms": 14.787999999999998,
+          "recursive_samples": 0
+        },
+        "workingProcessState": {
+          "self_ms": 2.279,
+          "total_ms": 2.279,
+          "recursive_samples": 0
+        },
+        "operationReading": {
+          "self_ms": 12.421000000000001,
+          "total_ms": 20.043,
+          "recursive_samples": 0
+        }
+      }
+    },
+    {
+      "run": "baseline-4x-cold",
+      "functions": {
+        "renderClaim": {
+          "self_ms": 936.6540000000012,
+          "total_ms": 2185.089999999999,
+          "recursive_samples": 0
+        },
+        "synchronizeRecord": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "retainOperationSource": {
+          "self_ms": 628.2780000000002,
+          "total_ms": 628.2780000000002,
+          "recursive_samples": 0
+        },
+        "positionOperationSource": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "stageNodeContents": {
+          "self_ms": 15.677,
+          "total_ms": 71.14899999999999,
+          "recursive_samples": 0
+        },
+        "workingProcessState": {
+          "self_ms": 4.286,
+          "total_ms": 7.508,
+          "recursive_samples": 0
+        },
+        "operationReading": {
+          "self_ms": 45.956,
+          "total_ms": 60.24800000000001,
+          "recursive_samples": 0
+        }
+      }
+    },
+    {
+      "run": "baseline-6x-cold",
+      "functions": {
+        "renderClaim": {
+          "self_ms": 1290.0720000000008,
+          "total_ms": 3019.6830000000064,
+          "recursive_samples": 0
+        },
+        "synchronizeRecord": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "retainOperationSource": {
+          "self_ms": 856.6139999999999,
+          "total_ms": 856.6139999999999,
+          "recursive_samples": 0
+        },
+        "positionOperationSource": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "stageNodeContents": {
+          "self_ms": 15.950999999999999,
+          "total_ms": 86.718,
+          "recursive_samples": 0
+        },
+        "workingProcessState": {
+          "self_ms": 13.366999999999999,
+          "total_ms": 16.619,
+          "recursive_samples": 0
+        },
+        "operationReading": {
+          "self_ms": 45.309999999999995,
+          "total_ms": 68.34499999999998,
+          "recursive_samples": 0
+        }
+      }
+    },
+    {
+      "run": "baseline-4x-warm",
+      "functions": {
+        "renderClaim": {
+          "self_ms": 654.2980000000003,
+          "total_ms": 4101.378000000004,
+          "recursive_samples": 0
+        },
+        "synchronizeRecord": {
+          "self_ms": 2175.090999999999,
+          "total_ms": 2176.2869999999994,
+          "recursive_samples": 0
+        },
+        "retainOperationSource": {
+          "self_ms": 521.7090000000001,
+          "total_ms": 541.7600000000001,
+          "recursive_samples": 0
+        },
+        "positionOperationSource": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "stageNodeContents": {
+          "self_ms": 11.921,
+          "total_ms": 55.96100000000001,
+          "recursive_samples": 0
+        },
+        "workingProcessState": {
+          "self_ms": 15.602,
+          "total_ms": 18.278000000000002,
+          "recursive_samples": 0
+        },
+        "operationReading": {
+          "self_ms": 50.98599999999998,
+          "total_ms": 68.61699999999998,
+          "recursive_samples": 0
+        }
+      }
+    },
+    {
+      "run": "after-1x-cold",
+      "functions": {
+        "renderClaim": {
+          "self_ms": 135.35199999999998,
+          "total_ms": 351.0280000000001,
+          "recursive_samples": 0
+        },
+        "synchronizeRecord": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "retainOperationSource": {
+          "self_ms": 109.43699999999998,
+          "total_ms": 109.43699999999998,
+          "recursive_samples": 0
+        },
+        "positionOperationSource": {
+          "self_ms": 2.141,
+          "total_ms": 2.141,
+          "recursive_samples": 0
+        },
+        "stageNodeContents": {
+          "self_ms": 2.137,
+          "total_ms": 2.137,
+          "recursive_samples": 0
+        },
+        "workingProcessState": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "operationReading": {
+          "self_ms": 4.6899999999999995,
+          "total_ms": 7.462,
+          "recursive_samples": 0
+        }
+      }
+    },
+    {
+      "run": "after-4x-cold",
+      "functions": {
+        "renderClaim": {
+          "self_ms": 836.084,
+          "total_ms": 2032.2429999999997,
+          "recursive_samples": 0
+        },
+        "synchronizeRecord": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "retainOperationSource": {
+          "self_ms": 567.4029999999993,
+          "total_ms": 567.4029999999993,
+          "recursive_samples": 0
+        },
+        "positionOperationSource": {
+          "self_ms": 15.323000000000002,
+          "total_ms": 15.323000000000002,
+          "recursive_samples": 0
+        },
+        "stageNodeContents": {
+          "self_ms": 5.452,
+          "total_ms": 30.304000000000006,
+          "recursive_samples": 0
+        },
+        "workingProcessState": {
+          "self_ms": 8.084000000000001,
+          "total_ms": 12.100000000000001,
+          "recursive_samples": 0
+        },
+        "operationReading": {
+          "self_ms": 12.795000000000002,
+          "total_ms": 33.752,
+          "recursive_samples": 0
+        }
+      }
+    },
+    {
+      "run": "after-6x-cold",
+      "functions": {
+        "renderClaim": {
+          "self_ms": 1298.089999999998,
+          "total_ms": 3083.2470000000035,
+          "recursive_samples": 0
+        },
+        "synchronizeRecord": {
+          "self_ms": 1.077,
+          "total_ms": 1.077,
+          "recursive_samples": 0
+        },
+        "retainOperationSource": {
+          "self_ms": 845.7209999999995,
+          "total_ms": 845.7209999999995,
+          "recursive_samples": 0
+        },
+        "positionOperationSource": {
+          "self_ms": 21.73,
+          "total_ms": 21.73,
+          "recursive_samples": 0
+        },
+        "stageNodeContents": {
+          "self_ms": 10.799999999999999,
+          "total_ms": 40.07699999999999,
+          "recursive_samples": 0
+        },
+        "workingProcessState": {
+          "self_ms": 13.222999999999999,
+          "total_ms": 16.039,
+          "recursive_samples": 0
+        },
+        "operationReading": {
+          "self_ms": 24.265999999999995,
+          "total_ms": 63.74100000000001,
+          "recursive_samples": 0
+        }
+      }
+    },
+    {
+      "run": "after-4x-warm",
+      "functions": {
+        "renderClaim": {
+          "self_ms": 626.7640000000009,
+          "total_ms": 1755.1089999999988,
+          "recursive_samples": 0
+        },
+        "synchronizeRecord": {
+          "self_ms": 0,
+          "total_ms": 0,
+          "recursive_samples": 0
+        },
+        "retainOperationSource": {
+          "self_ms": 493.31699999999955,
+          "total_ms": 496.0209999999996,
+          "recursive_samples": 0
+        },
+        "positionOperationSource": {
+          "self_ms": 4.966,
+          "total_ms": 11.136000000000001,
+          "recursive_samples": 0
+        },
+        "stageNodeContents": {
+          "self_ms": 6.088000000000001,
+          "total_ms": 20.652999999999995,
+          "recursive_samples": 0
+        },
+        "workingProcessState": {
+          "self_ms": 10.587,
+          "total_ms": 10.587,
+          "recursive_samples": 0
+        },
+        "operationReading": {
+          "self_ms": 12.482,
+          "total_ms": 23.168999999999997,
+          "recursive_samples": 0
+        }
+      }
+    }
+  ]
+}

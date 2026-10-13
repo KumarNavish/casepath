@@ -1,0 +1,88 @@
+{
+  "reviewed_ui_commit": "b2936eaab993cfda87c1a5ff6f8d9403aceb2271",
+  "source_at_receipt": "b2936eaab993cfda87c1a5ff6f8d9403aceb2271",
+  "host": "656813ef2295",
+  "assets": {
+    "javascript": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+    "css": "ef5772e708fa5913edfb917610e0dd6da9842b92e40d1ca491083552be88d41d"
+  },
+  "scope": "Independent read-only local synthetic fixture acceptance, no hosted/production-head verification; no provider calls, credentials, journal writes, source seals, publishing, full gate or further profiles.",
+  "results": {
+    "native_crypto": {
+      "exit_code": 0,
+      "claims": 9,
+      "operations": 4653,
+      "checkpoints": 162,
+      "process_inspects": 87,
+      "verified_commit": "5690a114fe0c838b514f7369493c940af949c6f2",
+      "unchanged_verified_javascript": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+    },
+    "all_nine_short_desktop_knowledge": {
+      "exit_code": 0,
+      "claims": 9,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "controls": "Present <=3; natural scroll, actual center hit and native focus; 1px geometry rounding tolerance. Exact Knowledge origin id/version/definition/source SHA, including empty definition-only SHA, and actual qualified catalog record checked. Back restores exact through0, followed deliberate native Choose-case re-entry."
+    },
+    "five_viewports": {
+      "exit_code": 0,
+      "viewports": [
+        {
+          "width": 390,
+          "height": 844
+        },
+        {
+          "width": 768,
+          "height": 1024
+        },
+        {
+          "width": 1280,
+          "height": 800
+        },
+        {
+          "width": 1360,
+          "height": 900
+        },
+        {
+          "width": 1440,
+          "height": 1000
+        }
+      ],
+      "checks": "Exact accepted synthetic head, six actual nodes, source full text/hash/Unicode span, >=18px semantic leaves (only aria-hidden decorations excluded), <=3 transport controls, no horizontal overflow, actual source/History dialog quote, body and origin focus."
+    },
+    "native_input_lifecycle": {
+      "exit_code": 0,
+      "opening_operations": 6,
+      "checks": "Untrusted focus/input cannot pause; actual Pause/Home/ArrowRight/End remain exact, future unverified positions clamp, actual operation History equals original DTO with native focus return, genuine Skip reaches exact head, reduced-motion mobile has zero running animation and correct six nodes/three source checks."
+    }
+  },
+  "commands": {
+    "environment": {
+      "HOME": "/workspace/rv-home",
+      "TMPDIR": "/workspace/rv-tmp",
+      "TMP": "/workspace/rv-tmp",
+      "TEMP": "/workspace/rv-tmp",
+      "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules"
+    },
+    "cwd": "/workspace/casepath-operations-coordinator-20261013",
+    "native_crypto": "CASEPATH_OPERATION_NATIVE_FIXTURE=/workspace/casepath-reference-polish-evidence-20261013/native-v1-v2-reference.json CASEPATH_OPERATION_NATIVE_SIDECARS=/workspace/operation-runtime-evidence/native-sidecars node /workspace/casepath-smooth-layout-20261013-evidence/review/native-nine-verifier.cjs",
+    "all_nine": "node /workspace/casepath-smooth-layout-20261013-evidence/review/all-nine-knowledge.cjs",
+    "five_viewports": "node /workspace/casepath-smooth-layout-20261013-evidence/review/stage-viewports.cjs",
+    "lifecycle": "node /workspace/casepath-smooth-layout-20261013-evidence/review/stage-lifecycle.cjs"
+  },
+  "preserved_failures": [
+    "stage-viewports-attempt1.log (missing assumed checkout Playwright; existing global resolver reused)",
+    "stage-viewports-attempt2.log/.json (reviewer selector incorrectly expected nested PRE; corrected to passage itself)",
+    "stage-viewports-attempt3.log/.json and stage-1280-procedure-hit-test.json/.png (real 1280 procedure occlusion repaired by completed-only normal-flow footer)",
+    "all-nine-knowledge-attempt1.log/.json (Back through0 + hidden metadata assumption)",
+    "all-nine-knowledge-attempt2.log/.json and termination-control-diagnostic.log/.json (0.25px fractional boundary; actual center hit/focus worked)"
+  ],
+  "limits": [
+    "QA-only writer final commit/diff review remains separate; final gate remains Mac-owned after frozen source.",
+    "Performance evidence attributes JavaScript with pinned clean-base CSS, while these UI checks bind final combined CSS.",
+    "Cold6x long-task count rose45->48 while total/max improved; no universal FPS or Mac compositor claim."
+  ],
+  "performance_audit": "performance-comparability-warm4x.json / cpu-sample-audit.json; exact matched warm4x CDPTask31.18% lower; exact animation37 and visible operation38 sequence; inclusive sample totals never added as CPU."
+}
