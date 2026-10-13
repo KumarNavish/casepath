@@ -2140,7 +2140,10 @@
           if (!replayActive(session,token) || doc.hidden || inspectionHold || dialog.open || recordDialog.open) return;
           session.verifiedOpening = {claimId:current.claim_id,generation:readGeneration,response,head:session.replayHead,referenceReady:true};
           session.preparing = null;
-          await openClaim(current.claim_id,false,{mode:'replay',collection:session.collection,through:start.from_seq,detail:'step',demo:true});
+          const preferences = {mode:'replay',collection:session.collection,through:start.from_seq,detail:'step',demo:true};
+          const fragment = claimFragment(current.claim_id,preferences);
+          if (root.history?.replaceState) { root.history.replaceState(null,'',root.location.pathname + root.location.search + fragment); routedFragment = fragment; }
+          await openClaim(current.claim_id,false,preferences);
         } catch (error) { if (replayActive(session,token)) presentationFailed(session,`Verified replay unavailable: ${error.message}`); }
         finally { if (session.preparing === token) session.preparing = null; }
         return;
