@@ -1780,10 +1780,18 @@ test('wire draining completes before paused application consumption and abort pr
 test('recorded delivery retains the captured binding while each visible mode keeps its historical as-of qualifier',()=>{
  const f=operationFixture(),bindingBefore=JSON.stringify(f.binding),replay={state:f.baseline,mode:'replay',replay_only:true,through_seq:3,current_revision:4,current_state_sha256:f.head.state_sha256,current_event_sha256:f.head.last_event_sha256};
  const render=delivery=>ui.workMarkup(f.baseline,{},'branch',f.journal.slice(0,3),'step',{}, {mode:'replay',replay,operations:{binding:f.binding,rows:[],sources:new Map(),asOf:'2025-02-21',...delivery}});
- const recorded=render({recorded:true});assert.match(recorded,/Recorded operation trace · historical synthetic packet · as of 2025-02-21/);assert.doesNotMatch(recorded,/Live rules-based check/);
- const live=render({});assert.match(live,/Live rules-based check · historical synthetic packet · as of 2025-02-21/);assert.equal((live.match(/as of 2025-02-21/g)||[]).length,1);
- const saved=render({savedFallback:true});assert.match(saved,/Saved result · historical synthetic packet/);assert.doesNotMatch(saved,/Live rules-based check/);assert.equal(JSON.stringify(f.binding),bindingBefore);
+ const recorded=render({recorded:true});assert.match(recorded,/Recorded operation trace · historical synthetic packet · as of 2025-02-21/);assert.doesNotMatch(recorded,/Live check from saved sources/);
+ const live=render({});assert.match(live,/Live check from saved sources · historical synthetic packet · as of 2025-02-21/);assert.equal((live.match(/as of 2025-02-21/g)||[]).length,1);assert.doesNotMatch(live,/Recorded investigation/);assert.match(live,/data-au-operation-skip/);assert.doesNotMatch(render({finished:true}),/data-au-operation-skip/);
+ const saved=render({savedFallback:true});assert.match(saved,/Saved result · historical synthetic packet/);assert.doesNotMatch(saved,/Live check from saved sources/);assert.equal(JSON.stringify(f.binding),bindingBefore);
  assert.equal(ui.operationLabel({kind:'node.evaluate'}),'Evaluate step');assert.equal(ui.operationLabel({kind:'dependency.evaluate'}),'Check dependency');assert.equal(ui.operationLabel({kind:'branch.activate',result:{activation:'unresolved'}}),'Evaluate unresolved branch');assert.equal(ui.operationLabel({kind:'fact.extract',result:{verification_required:false,status:'established'}}),'Inspect verified finding');
+});
+
+test('operation delivery names existing procedure reuse and its recorded origin without changing saved knowledge',()=>{
+ const use={knowledge_id:'procedure.defect_mold_heating',version:2,knowledge_sha256:sha('recorded procedure'),source_claim_id:'claim-a'},saved=state({knowledge_uses:[use]}),before=JSON.stringify(saved);
+ const ordinary=ui.formingKnowledgeMarkup(saved),delivered=ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true);
+ assert.match(ordinary,/Procedure used for this case · Version 2/);assert.match(ordinary,/From this case’s source evidence/);
+ assert.match(delivered,/Procedure reused · Version 2/);assert.match(delivered,/Recorded origin: this case’s source evidence/);assert.match(delivered,/data-au-knowledge="procedure.defect_mold_heating"/);assert.equal(ui.operationLabel({kind:'knowledge.reuse'}),'Procedure reused');assert.equal(JSON.stringify(saved),before);
+ saved.knowledge_uses=[{...use,source_claim_id:'earlier-source-case'}];assert.match(ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true),/Origin source case/);assert.match(ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true),/data-au-claim="earlier-source-case"/);
 });
 
 test('failed live operation records remain inspectable while recorded delivery opens and preserves same-ID attempts',async()=>{
