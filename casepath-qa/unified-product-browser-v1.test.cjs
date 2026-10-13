@@ -189,6 +189,7 @@ const referenceIds = [
   'clm_0f4f13b1e3e1328c','clm_393285577dcb12c4','clm_4a53299cfe619303',
   'clm_2c55cdd816b1d0e8','clm_543f08f2415b2a33','clm_7dbd7c7d1c4ddf90',
 ];
+const referenceV2Sha256 = '18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869';
 const processedId = historicalIds[3];
 const otherId = historicalIds[4];
 const unprocessedId = demoIds[3];
@@ -206,8 +207,10 @@ const canonical = value => Array.isArray(value)
 let acceptedFixture;
 let sourceDrawerFixture;
 let nativeReferenceFixture;
-function referenceFixture() {
-  if (!nativeReferenceFixture) {
+let nativeMigrationReferenceFixture;
+function referenceFixture(migrated = false) {
+  let fixture = migrated ? nativeMigrationReferenceFixture : nativeReferenceFixture;
+  if (!fixture) {
     // Run the native reference controller and GET router in a disposable DB.
     // No authored assessment, model response, provider or public write is used.
     const script = `
@@ -226,17 +229,27 @@ from importlib.util import spec_from_file_location,module_from_spec
 spec=spec_from_file_location('existing_clock',Path.cwd()/'casepath-qa/build-prior-assessment-fixture-v1.py')
 clock=module_from_spec(spec);spec.loader.exec_module(clock)
 with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temporary,patch('casepath_api.autonomous_store_v1.datetime',clock.FixtureClock):
- corpus=CanonicalCorpus();service=service_at(Path(temporary)/'claims.sqlite',corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus))
+ corpus=CanonicalCorpus();path=Path(temporary)/'claims.sqlite';ids=json.loads(sys.argv[1]);migrated=sys.argv[2]=='migration';before={}
+ if migrated:
+  previous=service_at(path,corpus,ReferenceProfile.for_profile('synthetic-nine-v1'))
+  try:
+   for cid in ids:
+    admit(previous,corpus,cid);before[cid]=previous.run(cid);assert before[cid]['outcome']['assessment_status']=='complete'
+  finally:previous.shutdown()
+ service=service_at(path,corpus);app=FastAPI();app.include_router(create_autonomous_router(lambda:service,corpus_getter=lambda:corpus,read_only=True))
  output={'snapshots':{},'prefixes':{},'unprocessed':{},'sources':{},'raw_sources':{},'knowledge':None,'profile_sha256':ReferenceProfile().sha256,'earlier_context':None}
+ if migrated:output['before_v1_snapshots']={}
  try:
   with TestClient(app) as client:
    base='/api/claim-loops/v1/autonomous'
    def get(path):
     response=client.get(base+path);response.raise_for_status();return response.json()
-   ids=json.loads(sys.argv[1])
    for cid in ids:
-    output['unprocessed'][cid]=get('/claims/'+cid+'/snapshot')
-    if cid=='clm_7dbd7c7d1c4ddf90':
+    if migrated:
+     output['before_v1_snapshots'][cid]=get('/claims/'+cid+'/snapshot')
+     previous=before[cid];service.store.add_sources(cid,ReferenceProfile().files(cid),expected_revision=previous['revision'],expected_state_sha256=previous['state_sha256'],idempotency_key='qa-v2-after-v1-'+cid)
+    else:output['unprocessed'][cid]=get('/claims/'+cid+'/snapshot')
+    if not migrated and cid=='clm_7dbd7c7d1c4ddf90':
      # An actual earlier ordinary engine context, stopped before any authored
      # model result. Reference admission must append and preserve its prefix.
      packet=corpus.packet(cid);service.store.admit_original(cid,packet,expected_revision=0,expected_state_sha256=packet['initial_state_sha256'],idempotency_key='qa-earlier-original')
@@ -247,11 +260,14 @@ with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temp
       earlier=previous.run(cid);output['earlier_context']={'claim_id':cid,'revision':earlier['revision'],'state_sha256':earlier['state_sha256']}
      finally:previous.shutdown()
      service.store.add_sources(cid,ReferenceProfile().files(cid),expected_revision=earlier['revision'],expected_state_sha256=earlier['state_sha256'],idempotency_key='qa-reference-after-earlier')
-    else:admit(service,corpus,cid)
+    elif not migrated:admit(service,corpus,cid)
     state=service.run(cid)
     assert state['outcome']['assessment_status']=='complete'
     output['snapshots'][cid]=get('/claims/'+cid+'/snapshot')
     output['prefixes'][cid]={str(seq):get('/claims/'+cid+'/replay?through_seq='+str(seq)) for seq in range(state['revision']+1)}
+    if migrated:
+     output['unprocessed'][cid]=output['prefixes'][cid]['0']
+     assert output['prefixes'][cid][str(before[cid]['revision'])]['state']==before[cid]
     for descriptor in state['source_descriptors']:
      identity=cid+'/'+descriptor['artifact_id'];output['sources'][identity]=get('/sources/'+identity+'/text')
      response=client.get(base+'/sources/'+identity);response.raise_for_status();output['raw_sources'][identity]=base64.b64encode(response.content).decode()
@@ -259,14 +275,17 @@ with tempfile.TemporaryDirectory(prefix='casepath-native-reference-qa-') as temp
   print(json.dumps(output,sort_keys=True))
  finally:service.shutdown()
 `;
-    const encoded = process.env.CASEPATH_REFERENCE_FIXTURE
-      ? fs.readFileSync(process.env.CASEPATH_REFERENCE_FIXTURE,'utf8')
-      : execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python', ['-c',script,JSON.stringify(referenceIds)],
+    const input = migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE : process.env.CASEPATH_REFERENCE_FIXTURE;
+    const output = migrated ? process.env.CASEPATH_REFERENCE_MIGRATION_FIXTURE_OUTPUT : process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT;
+    const encoded = input
+      ? fs.readFileSync(input,'utf8')
+      : execFileSync(process.env.CASEPATH_PYTHON || '/workspace/casepath/.runtime/casepath-dev-v2/venv/bin/python', ['-c',script,JSON.stringify(referenceIds),migrated?'migration':'fresh'],
         {cwd:root,encoding:'utf8',env:{...process.env,PYTHONDONTWRITEBYTECODE:'1'},maxBuffer:128*1024*1024});
-    nativeReferenceFixture = JSON.parse(encoded);
-    if (process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT) fs.writeFileSync(process.env.CASEPATH_REFERENCE_FIXTURE_OUTPUT,encoded);
+    fixture = JSON.parse(encoded);
+    if (migrated) nativeMigrationReferenceFixture = fixture; else nativeReferenceFixture = fixture;
+    if (output) fs.writeFileSync(output,encoded);
   }
-  return nativeReferenceFixture;
+  return fixture;
 }
 function pdfDrawerFixture() {
   if (!sourceDrawerFixture) {
@@ -458,7 +477,7 @@ function fixtureData(config = {}) {
     envelopes[accepted.claim_id] = {state: snapshot.state, projection: snapshot.projection};
     Object.assign(sources, accepted.sources);
   }
-  const reference = config.referenceFixture ? referenceFixture() : null;
+  const reference = config.referenceFixture || config.referenceMigrationFixture ? referenceFixture(Boolean(config.referenceMigrationFixture)) : null;
   if (reference) {
     for (const id of referenceIds) {
       const snapshot = clone(config.referenceUnprocessed || config.referenceUnprocessedIds?.includes(id) ? reference.unprocessed[id] : reference.snapshots[id]);
@@ -504,6 +523,7 @@ async function eventually(read, message, timeout = 5000) {
 async function fixturePage(t, config = {}) {
   const context = await browser.newContext({viewport: {width: config.width || 1440, height: config.height || 1000}, serviceWorkers: 'block'});
   const page = await context.newPage(), errors = [], network = [];
+  page.__casepathErrors=errors;page.__casepathNetwork=network;
   page.setDefaultTimeout(5000);
   page.on('pageerror', error => errors.push(error.message));
   t.after(async () => {
@@ -554,9 +574,23 @@ async function mountFixture(page, config = {}) {
   const injectedAssets={javascript:sha(await script.evaluate(element=>element.textContent)),css:sha(await style.evaluate(element=>element.textContent))};
   assert.deepEqual(injectedAssets,{javascript:sha(javascriptBytes),css:sha(cssBytes)},'the actual native DOM contains exactly the selected working asset bytes');
   await page.evaluate(assets=>window.__injectedAssets=assets,injectedAssets);
+  const data=fixtureData(config);
+  if(config.referenceMigrationFixture){
+    // The genuine retained v1+v2 history exceeds Chromium's 100 MB CDP message
+    // limit. Transfer complete claims separately without dropping any prefix.
+    const prefixes=data.reference.prefixes,transfers=[];data.reference={prefixes:{}};
+    await page.evaluate(()=>{window.__casepathNativePrefixes={};});
+    for(const [id,rows]of Object.entries(prefixes)){
+      const expected=sha(canonical(rows));
+      const actual=await page.evaluate(async({id,rows})=>{const bytes=new TextEncoder().encode(window.CasePathAutonomous.canonicalJSON(rows)),digest=await crypto.subtle.digest('SHA-256',bytes);window.__casepathNativePrefixes[id]=rows;return [...new Uint8Array(digest)].map(byte=>byte.toString(16).padStart(2,'0')).join('');},{id,rows});
+      assert.equal(actual,expected,'each complete native claim DTO retains its exact bytes across transfer');transfers.push({claim_id:id,prefixes:Object.keys(rows).length,sha256:actual});
+    }
+    await page.evaluate(transfers=>{window.__nativePrefixTransfers=transfers;},transfers);
+  }
   await page.evaluate(({data, config, base}) => {
     window.__fixture = {...data, ...config, calls: [], held: [], splitRevision: {}, startPosts: 0, startViolations: [], suitePosts: {}, suiteReads: {},activeSnapshotReads:0,peakSnapshotReads:0};
     const fixture = window.__fixture;
+    if(window.__casepathNativePrefixes){fixture.reference.prefixes=window.__casepathNativePrefixes;delete window.__casepathNativePrefixes;}
     const originalStart = fixture.originalStartId ? structuredClone(fixture.envelopes[fixture.originalStartId]) : null;
     const response = (status, body) => ({ok: status >= 200 && status < 300, status, json: async () => structuredClone(body)});
     const advance = id => {
@@ -763,7 +797,7 @@ async function mountFixture(page, config = {}) {
     if(config.storageQuota){const set=Storage.prototype.setItem;Storage.prototype.setItem=function(key,value){if(key==='casepath.read-cache/1')throw new DOMException('Isolated cache quota exceeded.','QuotaExceededError');return set.call(this,key,value);};}
     if(config.publicReadOnly)window.CASEPATH_PUBLIC_READ_ONLY=true;
     window.__controller = window.CasePathAutonomous.mount(document.querySelector('#workspace'), {fetch});
-  }, {data: fixtureData(config), config, base});
+  }, {data, config, base});
   const hash = new URL(page.url()).hash;
   if (hash.startsWith('#autonomous/claim/') || hash.startsWith('#autonomous/demonstration')) {
     if(config.allowHeldPreview){const id=decodeURIComponent(hash.slice('#autonomous/claim/'.length).split('?')[0]);await eventually(()=>page.locator(`[data-au-preview="catalog"][data-au-preview-claim="${id}"], [data-au-preview="unknown"]`).count().then(count=>count===1),'the held uncached reload did not retain an opening view without accepted content');}
@@ -993,13 +1027,14 @@ test('replay entry: programmatic titles stay quiet while native keyboard focus r
  await heading.focus();assert.equal(await heading.evaluate(element=>getComputedStyle(element).outlineStyle),'solid','keyboard modality retains heading focus indication');
 });
 
-for(const publicReadOnly of [false,true])test(`replay entry: fresh ${publicReadOnly?'public visitor':'owner'} consumes all 218 reference prefixes and eight native handoffs${publicReadOnly?' with visibility and programmatic focus interruptions':''}`,async t=>{
- const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly,providerReady:!publicReadOnly,initialFragment:publicReadOnly?'#autonomous/demonstration?mode=replay':'#autonomous'});
+for(const migrated of [false,true])for(const publicReadOnly of [false,true])test(`replay entry: ${migrated?'migrated v1 to v2':'fresh v2'} ${publicReadOnly?'public visitor':'owner'} consumes every accepted current reference prefix and eight native handoffs${publicReadOnly?' with visibility and programmatic focus interruptions':''}`,async t=>{
+ const fixture=referenceFixture(migrated),id=referenceIds[0],start=fixture.snapshots[id].replay_start,page=await fixturePage(t,{referenceFixture:true,referenceMigrationFixture:migrated,publicReadOnly,providerReady:!publicReadOnly,...migrated?{holdReplayId:id,holdReplayThrough:start.from_seq}:{},initialFragment:publicReadOnly?'#autonomous/demonstration?mode=replay':'#autonomous'});
  if(!publicReadOnly)await page.locator('.au-nav [data-au-nav="demonstration"]').click();
  await eventually(()=>page.locator('[data-au-revision="0"]').count().then(count=>count===1),'fresh Demonstration must begin at reference intake prefix zero');
  assert.ok(new URL(page.url()).hash.startsWith(`#autonomous/claim/${id}?collection=reference&mode=replay&through=0`));
  assert.equal(await page.locator('[data-au-node],[data-au-reference-mode]').count(),0,'the verified head cannot paint into prefix zero');
  if(!publicReadOnly){await title(page,id);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});}
+ const expected=referenceIds.flatMap(claim=>{const rows=Object.values(fixture.prefixes[claim]),start=fixture.snapshots[claim].replay_start;return start?[rows[0],...rows.filter(row=>row.through_seq>=start.from_seq)]:rows;}),thresholds=[0.03,0.2,0.5,0.9].map(fraction=>Math.max(1,Math.floor(expected.length*fraction)));
  await page.evaluate(publicReadOnly=>{
   window.__referencePaints=[];window.__referenceTrustedInputs=[];
   for(const type of ['click','pointerdown','keydown'])document.addEventListener(type,event=>{if(event.isTrusted)window.__referenceTrustedInputs.push(type);},true);
@@ -1008,13 +1043,14 @@ for(const publicReadOnly of [false,true])test(`replay entry: fresh ${publicReadO
    if(!surface||!publicReadOnly&&!pre)return;const record=pre?JSON.parse(pre.textContent):null,claim_id=decodeURIComponent(location.hash.split('?')[0].slice('#autonomous/claim/'.length));
    const identity=`${claim_id}:${surface.dataset.auRevision}:${surface.dataset.auStateSha}`;
    if(window.__referencePaints.at(-1)?.identity===identity)return;
-   window.__referencePaints.push({identity,claim_id,...record?{record}:{},revision:surface.dataset.auRevision,state_sha256:surface.dataset.auStateSha,route:location.hash,nav:document.querySelector('.au-nav [aria-current="page"]')?.dataset.auNav,nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),requirements:[...surface.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation),forming:[...surface.querySelectorAll('[data-au-forming-revision]')].map(row=>({revision:row.dataset.auFormingRevision,state_sha256:row.dataset.auFormingSha})),documents:[...surface.querySelectorAll('.au-forming-documents .au-obligation')].map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status,review:row.querySelector('[data-au-review]')?.dataset.auReview||null,checks:[...row.querySelectorAll('.au-document-review [aria-hidden="true"]')].map(mark=>mark.textContent)})),sources:[...surface.querySelectorAll('[data-au-source-identity]')].map(row=>row.dataset.auSourceIdentity),citations:[...surface.querySelectorAll('[data-au-citation]')].map(row=>JSON.parse(row.dataset.auCitation)),knowledge:[...surface.querySelectorAll('[data-au-knowledge][data-au-version]')].map(row=>({id:row.dataset.auKnowledge,version:row.dataset.auVersion,sha256:row.dataset.auKnowledgeSha})),outcome:surface.querySelector('.au-assessment-conclusion > p')?.textContent||null});
+   window.__referencePaints.push({identity,claim_id,...record?{record}:{},revision:surface.dataset.auRevision,state_sha256:surface.dataset.auStateSha,route:location.hash,nav:document.querySelector('.au-nav [aria-current="page"]')?.dataset.auNav,nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),requirements:[...surface.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation),forming:[...surface.querySelectorAll('[data-au-forming-revision]')].map(row=>({revision:row.dataset.auFormingRevision,state_sha256:row.dataset.auFormingSha})),documents:[...surface.querySelectorAll('.au-forming-documents .au-obligation')].map(row=>({id:row.dataset.auObligation,type:row.dataset.auDocument,status:row.dataset.status,review:row.querySelector('[data-au-review]')?.dataset.auReview||null,checks:[...row.querySelectorAll('.au-document-review [aria-hidden="true"]')].map(mark=>mark.textContent)})),sources:[...surface.querySelectorAll('[data-au-source-identity]')].map(row=>row.dataset.auSourceIdentity),passages:[...surface.querySelectorAll('.au-acquired-text')].map(row=>({artifact_id:row.closest('[data-au-source]')?.dataset.auSource,text:row.textContent})),citations:[...surface.querySelectorAll('[data-au-citation]')].map(row=>JSON.parse(row.dataset.auCitation)),knowledge:[...surface.querySelectorAll('[data-au-knowledge][data-au-version]')].map(row=>({id:row.dataset.auKnowledge,version:row.dataset.auVersion,sha256:row.dataset.auKnowledgeSha})),outcome:surface.querySelector('.au-assessment-conclusion > p')?.textContent||null});
   };
   capture();window.__referenceObserver=new MutationObserver(capture);window.__referenceObserver.observe(document.querySelector('#workspace'),{subtree:true,childList:true});
  },publicReadOnly);
+ if(migrated){await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='replay')),'verified v2 baseline was not requested');await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});}
  const interruptions=[];
  for(let tick=0;tick<1000&&await page.locator('[data-au-demo-stop]').count();tick++){
-  if(publicReadOnly&&interruptions.length<4&&(await page.evaluate(()=>window.__referencePaints.length))>=[5,35,100,180][interruptions.length]){
+  if(publicReadOnly&&interruptions.length<4&&(await page.evaluate(()=>window.__referencePaints.length))>=thresholds[interruptions.length]){
    const paint=await page.evaluate(()=>window.__referencePaints.at(-1)),paints=await page.evaluate(()=>window.__referencePaints.length);
    await page.evaluate(()=>{window.__fixture.hidden=true;Object.defineProperty(document,'hidden',{configurable:true,get:()=>window.__fixture.hidden});document.dispatchEvent(new Event('visibilitychange'));});
    const reads=(await page.evaluate(()=>window.__fixture.calls.filter(row=>row.url.includes('/replay?')))).length;
@@ -1026,20 +1062,28 @@ for(const publicReadOnly of [false,true])test(`replay entry: fresh ${publicReadO
   }
   await page.clock.runFor(1600);
  }
- assert.equal(interruptions.length,publicReadOnly?4:0);
  assert.match(await page.locator('.au-global-status').innerText(),/Recorded playback finished/);
  const paints=await page.evaluate(()=>{window.__referenceObserver.disconnect();return window.__referencePaints;});
- const expected=referenceIds.flatMap(claim=>Object.values(fixture.prefixes[claim]));assert.equal(expected.length,218);assert.equal(paints.length,218,'no real accepted prefix may disappear during playback or case handoff');
+ await focusedReceipt(page,`replay-entry-current-${migrated?'migrated':'fresh'}-${publicReadOnly?'visitor':'owner'}`,{fixtureSha256:sha(canonical(fixture)),profileSha256:fixture.profile_sha256,replayStarts:referenceIds.map(claim=>fixture.snapshots[claim].replay_start??null),expectedPrefixes:expected.map(row=>({claim_id:row.state.claim_id,through_seq:row.through_seq,state_sha256:row.state.state_sha256,event_sha256:row.state.last_event_sha256})),prefixes:paints.map(({record,...paint})=>paint),handoffs:8,interruptions,trustedInputs:await page.evaluate(()=>window.__referenceTrustedInputs),scope:publicReadOnly?'Public entry without trusted input; native DOM identities and accepted visible content.':'Existing History drawer instrumentation; complete accepted state and projection for all prefixes.'});
+ assert.equal(interruptions.length,publicReadOnly?4:0);
+ assert.equal(paints.length,expected.length,'no real accepted current prefix may disappear during playback or case handoff');
+ for(const claim of referenceIds){
+  const start=fixture.snapshots[claim].replay_start,queries=(await calls(page,`/claims/${claim}/replay`)).map(row=>Number(new URL(row.url,'http://fixture.invalid').searchParams.get('through_seq')));
+  if(start){assert.ok(start.from_seq>(migrated?fixture.before_v1_snapshots[claim].state.revision:fixture.earlier_context.revision));assert.deepEqual(queries.slice(0,3),[0,fixture.snapshots[claim].state.revision,start.from_seq]);assert.ok(queries.includes(start.from_seq+1));assert.equal(queries.some(seq=>seq>0&&seq<start.from_seq),false,'default v2 playback never consumes an earlier investigation');}
+  else{assert.equal(migrated,false);assert.notEqual(claim,fixture.earlier_context.claim_id);assert.equal(Object.values(fixture.prefixes[claim]).some(row=>row.replay_start!=null),false,'a fresh investigation retains ordinary prefix-zero playback');}
+ }
  for(let index=0;index<expected.length;index++){
   const paint=paints[index],prefix=expected[index];if(!publicReadOnly)assert.deepEqual(paint.record,{state:prefix.state,projection:prefix.projection},`native paint ${index} retains the complete accepted prefix`);
   assert.equal(paint.claim_id,prefix.state.claim_id);
   assert.equal(paint.revision,String(prefix.through_seq));assert.equal(paint.state_sha256,prefix.state.state_sha256);assert.equal(paint.nav,'demonstration');
-  assert.ok(paint.route.startsWith(`#autonomous/claim/${prefix.state.claim_id}?collection=reference&mode=replay&through=${prefix.through_seq}`));
+  const route=`#autonomous/claim/${prefix.state.claim_id}?collection=reference&mode=replay&through=${prefix.through_seq}`;assert.ok(paint.route.startsWith(route),`native paint ${index}: actual ${paint.route}; expected ${route}`);
   assert.deepEqual(sorted(paint.nodes),sorted((prefix.state.graph?.nodes||[]).map(row=>row.node_id)),`native paint ${index} keeps its own recorded graph`);
   assert.ok(paint.requirements.every(identity=>prefix.state.obligations.some(row=>row.obligation_id===identity)),`native paint ${index} requirements belong to this accepted prefix`);
   for(const forming of paint.forming){assert.equal(forming.revision,String(prefix.through_seq));assert.equal(forming.state_sha256,prefix.state.state_sha256);}
   for(const row of paint.documents){const obligation=prefix.state.obligations.find(item=>item.obligation_id===row.id),document=prefix.state.evaluation?.documents.find(item=>item.document_type===row.type);assert.ok(obligation);assert.equal(row.status,document?.route_state||obligation.status||'pending');if(row.review)assert.equal(row.review,document?.review_state);assert.deepEqual(row.checks,row.review==='sufficient'?['✓']:[],'only actual sufficient document review paints a checkmark');}
-  for(const identity of paint.sources){const descriptor=prefix.state.source_descriptors.find(row=>identity===`${prefix.state.claim_id}:${row.artifact_id}:${row.sha256}:${prefix.state.acquired_sources.find(source=>source.artifact_id===row.artifact_id)?.text_sha256||''}`);assert.ok(descriptor,'visible source identity keeps original bytes and accepted text hashes');}
+  const start=fixture.snapshots[prefix.state.claim_id].replay_start;
+  for(const identity of paint.sources){const descriptor=prefix.state.source_descriptors.find(row=>identity===`${prefix.state.claim_id}:${row.artifact_id}:${row.sha256}:${prefix.state.acquired_sources.find(source=>source.artifact_id===row.artifact_id)?.text_sha256||''}`);assert.ok(descriptor,'visible source identity keeps original bytes and accepted text hashes');if(start&&prefix.through_seq>=start.from_seq)assert.ok(start.source_artifact_ids.includes(descriptor.artifact_id),'the current baseline and later investigation never flash an earlier document');}
+  if(start&&prefix.through_seq>=start.from_seq)for(const passage of paint.passages){assert.ok(start.source_artifact_ids.includes(passage.artifact_id));assert.doesNotMatch(passage.text,/Original corpus manifest SHA256|Fixture author:|Authored for a synthetic CasePath candidate/);}
   const citations=prefix.state.facts.flatMap(row=>row.citations||[]).concat(prefix.state.actions.flatMap(row=>(row.result||row).citations||[]));for(const citation of paint.citations){assert.ok(citations.some(row=>canonical(row)===canonical(citation)),'visible citations retain exact accepted source passages');assert.equal(citation.sha256,prefix.state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id)?.sha256);}
   for(const pin of paint.knowledge)assert.ok([...prefix.state.knowledge_uses,...prefix.state.knowledge_published].some(row=>(row.knowledge_id||row.version_id)===pin.id&&String(row.version||row.version_id)===pin.version&&(row.knowledge_sha256||'')===pin.sha256),'visible procedure pins retain their own accepted immutable version');
   assert.equal(paint.outcome,prefix.state.outcome?.summary||null,'only the accepted outcome appears in the conclusion');
@@ -1048,7 +1092,6 @@ for(const publicReadOnly of [false,true])test(`replay entry: fresh ${publicReadO
  if(!publicReadOnly)assert.deepEqual(await visibleRecord(page),{state:fixture.snapshots[referenceIds.at(-1)].state,projection:fixture.snapshots[referenceIds.at(-1)].projection});
  if(publicReadOnly){assert.deepEqual(await page.evaluate(()=>window.__referenceTrustedInputs),[],'fresh public playback finishes without any trusted user input');assert.equal(await page.locator('[data-au-record-content] pre').count(),0,'the zero-input public run never opens History or Resume');}
  assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
- await focusedReceipt(page,`replay-entry-all218-${publicReadOnly?'visitor':'owner'}`,{prefixes:paints.map(({record,...paint})=>paint),handoffs:8,interruptions,trustedInputs:await page.evaluate(()=>window.__referenceTrustedInputs),scope:publicReadOnly?'Fresh public entry without trusted input; native DOM identities and accepted visible content.':'Existing History drawer instrumentation; complete accepted state and projection for all prefixes.',requests:await page.evaluate(()=>window.__fixture.calls)});
 });
 
 test('replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play',async t=>{
@@ -1058,7 +1101,7 @@ test('replay entry: shared reference identity and explicit legacy links keep man
   await title(page,id);const before=await visibleRecord(page);await page.clock.runFor(8000);assert.deepEqual(await visibleRecord(page),before);assert.equal(await page.locator('[data-au-demo-play]').count(),1);assert.equal(await page.locator('.au-nav [aria-current="page"]').getAttribute('data-au-nav'),'demonstration');
   assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),collection);
   if(collection==='reference')assert.deepEqual(before,{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});
-  await page.locator('[data-au-demo-play]').focus();await page.keyboard.press('Enter');await page.clock.runFor(1600);assert.ok(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))>0);
+  await page.locator('[data-au-demo-play]').focus();await page.keyboard.press('Enter');for(let tick=0;Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))===0&&tick<300;tick++)await page.clock.runFor(20);assert.equal(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision')),1,'manual Play follows its exact explicitly opened historical zero');if(collection==='reference')assert.deepEqual((await visibleRecord(page)).state,fixture.prefixes[id][1].state);
   await page.locator('.au-nav [data-au-nav="work"]').click();
  });
 });
@@ -1100,12 +1143,13 @@ test('replay lifecycle: actual index restores native back-forward autoplay and k
   ['casepath/assets/autonomous-entry-v1.js',fs.readFileSync(process.env.CASEPATH_BROWSER_ENTRY_ASSET || path.join(root,'casepath/assets/autonomous-entry-v1.js'))],
   ['casepath/assets/autonomous-workspace-v1.js',fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'))],
   ['casepath/assets/autonomous-workspace-v1.css',fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css'))]
- ]),evidence={assets:Object.fromEntries([...assets].map(([file,bytes])=>[file,sha(bytes)])),runs:[]};
+ ]),resetId=fixture.earlier_context.claim_id,resetThrough=fixture.snapshots[resetId].replay_start.from_seq,evidence={checkoutCommit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),testSha256:sha(fs.readFileSync(__filename)),assets:Object.fromEntries([...assets].map(([file,bytes])=>[file,sha(bytes)])),runs:[]};
  // Playwright normally disables BFCache. This separate browser exercises a
  // genuine persisted pageshow without changing other tests' browser policy.
  const cachedBrowser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH || '/usr/bin/chromium',headless:true,args:['--no-sandbox'],ignoreDefaultArgs:['--disable-back-forward-cache']});
  try {
-  for(const fragment of [`#autonomous/claim/${id}?collection=reference&mode=replay&through=18&detail=sources`,'#autonomous/demonstration?mode=replay']){
+  for(const fragment of [`#autonomous/claim/${id}?collection=reference&mode=replay&through=18&detail=sources`,'#autonomous/demonstration?mode=replay',`#autonomous/claim/${resetId}?collection=reference&mode=replay&through=${resetThrough}&detail=sources`]){
+   const claim=fragment.includes(resetId)?resetId:id;
    const context=await cachedBrowser.newContext({serviceWorkers:'block'}),page=await context.newPage(),requests=[],errors=[],shows=[],served={};
    page.on('pageerror',error=>errors.push(error.message));
    await page.exposeFunction('observePageShow',row=>shows.push(row));
@@ -1131,7 +1175,7 @@ test('replay lifecycle: actual index restores native back-forward autoplay and k
    const sample=()=>page.evaluate(()=>({hash:location.hash,revision:Number(document.querySelector('[data-au-revision]')?.dataset.auRevision),state_sha256:document.querySelector('[data-au-state-sha]')?.dataset.auStateSha,nav:document.querySelector('.au-nav [aria-current]')?.dataset.auNav,panel:document.querySelector('[data-au-context]')?.dataset.auContext,play:!!document.querySelector('[data-au-demo-play]'),resume:!!document.querySelector('[data-au-demo-resume]'),workspaceLength:document.querySelector('#autonomousWorkspace').innerHTML.length,hidden:document.hidden}));
    const autoplay=fragment.startsWith('#autonomous/demonstration');
    if(autoplay){await page.clock.runFor(4100);await eventually(async()=>(await sample()).revision>0,'actual entry did not autoplay its recorded prefixes');}
-   const before=await sample();assert.equal(before.nav,'demonstration');assert.equal(before.state_sha256,fixture.prefixes[id][before.revision].state.state_sha256);
+   const before=await sample();assert.equal(before.nav,'demonstration');assert.equal(before.state_sha256,fixture.prefixes[claim][before.revision].state.state_sha256);
    await page.evaluate(()=>addEventListener('pagehide',event=>sessionStorage.setItem('casepath-qa-lifecycle',JSON.stringify({persisted:event.persisted,workspaceLength:document.querySelector('#autonomousWorkspace')?.innerHTML.length}))));
    await page.goto('http://native-entry.invalid/away');await page.goBack({waitUntil:'commit',timeout:3000});
    await eventually(()=>shows.some(row=>row.path==='/'&&row.persisted===true),'Back did not restore a genuine native cached page');
@@ -1142,21 +1186,94 @@ test('replay lifecycle: actual index restores native back-forward autoplay and k
     assert.equal(restored.resume,false,'native cached autoplay resumes without an inspection control');
     await page.clock.runFor(100);assert.equal((await sample()).revision,before.revision,'cached restoration resets its reading interval');
     for(let tick=0;(await sample()).revision===before.revision&&tick<300;tick++)await page.clock.runFor(20);
-    held=await sample();assert.equal(held.revision,before.revision+1);assert.equal(held.state_sha256,fixture.prefixes[id][held.revision].state.state_sha256);
+    held=await sample();assert.equal(held.revision,before.revision+1);assert.equal(held.state_sha256,fixture.prefixes[claim][held.revision].state.state_sha256);
    }else{await page.clock.runFor(9000);held=await sample();assert.equal(held.revision,before.revision,'native restoration keeps a manually opened prefix held until Play');assert.equal(held.play,true);}
    await page.reload();await page.locator('[data-au-revision]').waitFor();
-   const departure=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('casepath-qa-lifecycle'))),reloaded=await sample();assert.equal(departure.persisted,false);assert.equal(departure.workspaceLength,0);assert.equal(reloaded.nav,'demonstration');assert.equal(reloaded.play,true,'a normal reload preserves the recorded route for deliberate Play');
+   const departure=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('casepath-qa-lifecycle'))),reloaded=await sample();assert.equal(departure.persisted,false);assert.equal(departure.workspaceLength,0);assert.equal(reloaded.nav,'demonstration');assert.equal(reloaded.play,true,'a normal reload preserves the recorded route for deliberate Play');assert.equal(reloaded.hash,held.hash);assert.equal(reloaded.revision,held.revision);assert.equal(reloaded.state_sha256,held.state_sha256);
    for(const [file,hash]of Object.entries(evidence.assets))assert.equal(served[file],hash,'the actual native loader serves the current selected asset bytes');
    assert.deepEqual(errors,[]);assert.equal(requests.some(row=>row.method!=='GET'||row.path==='/api/demo'),false);
-   evidence.runs.push({fragment,before,shows,persistedHide,restored,held,departure,reloaded,requests});await context.close();
+   evidence.runs.push({fragment,before,shows,persistedHide,restored,held,departure,reloaded,requests,javascriptErrors:errors});await context.close();
   }
  }finally{await cachedBrowser.close();}
  if(focusedReceiptRoot){fs.mkdirSync(focusedReceiptRoot,{recursive:true});fs.writeFileSync(path.join(focusedReceiptRoot,'native-entry-bfcache.json'),JSON.stringify(evidence,null,2));}
 });
 
+test('reference migration native: exact current starts retain original zero and earlier documents beside the selected v2 investigation',async t=>{
+ const fixture=referenceFixture(true),page=await fixturePage(t,{referenceMigrationFixture:true,publicReadOnly:true});
+ assert.equal(fixture.profile_sha256,referenceV2Sha256);
+ const receipts=[];
+ for(const id of referenceIds){
+  const saved=fixture.snapshots[id],state=saved.state,start=saved.replay_start,previous=fixture.before_v1_snapshots[id],prefixes=fixture.prefixes[id],context=state.semantic_contexts[state.run_id],provenance=context.reference_provenance,baseline=prefixes[start.from_seq],event=baseline.events.at(-1);
+  assert.deepEqual(start,{contract:'casepath.reference-replay-start/1.0.0',claim_id:id,from_seq:baseline.through_seq,state_sha256:baseline.state.state_sha256,event_sha256:event.event_sha256,run_id:state.run_id,profile_id:'synthetic-nine-v2',profile_sha256:referenceV2Sha256,source_artifact_ids:context.sources.map(row=>row.artifact_id)});
+  assert.equal(start.from_seq,event.seq);assert.equal(event.kind,'process.prepared');assert.equal(baseline.state.graph.family,'incoming_packet');assert.equal(baseline.state.outcome,null);assert.equal(baseline.state.run_id,start.run_id);assert.ok(start.from_seq>previous.state.revision);
+  assert.equal(provenance.profile_id,start.profile_id);assert.equal(provenance.profile_sha256,start.profile_sha256);assert.deepEqual(provenance.source_artifact_ids,start.source_artifact_ids);assert.equal(provenance.source_roster_sha256,state.source_roster_sha256);
+  assert.deepEqual(prefixes[previous.state.revision].state,previous.state);assert.deepEqual(prefixes[previous.state.revision].events,previous.events);
+  for(const prefix of Object.values(prefixes)){assert.deepEqual(prefix.replay_start,start);assert.equal(prefix.current_revision,state.revision);assert.equal(prefix.current_state_sha256,state.state_sha256);assert.equal(prefix.current_event_sha256,state.last_event_sha256);}
+  const originals=state.original_binding.source_map.map(row=>row.artifact_id),old=previous.state.source_descriptors.filter(row=>!originals.includes(row.artifact_id)),current=state.source_descriptors.filter(row=>start.source_artifact_ids.includes(row.artifact_id));
+  assert.ok(old.length);assert.equal(old.some(row=>start.source_artifact_ids.includes(row.artifact_id)),false);
+  for(const descriptor of state.source_descriptors){assert.equal(sha(Buffer.from(fixture.raw_sources[`${id}/${descriptor.artifact_id}`],'base64')),descriptor.sha256);if(originals.includes(descriptor.artifact_id)){const mapping=state.original_binding.source_map.find(row=>row.artifact_id===descriptor.artifact_id),original=corpusManifest.claims.find(row=>row.claim_id===id).observable_artifacts.find(row=>row.artifact_id===mapping.original_artifact_id);assert.equal(descriptor.sha256,original.sha256);}}
+  await page.evaluate(({id,through})=>window.__controller.openClaim(id,true,{mode:'replay',collection:'reference',through,detail:'sources'}),{id,through:0});await title(page,id);
+  assert.deepEqual(await visibleRecord(page),{state:prefixes[0].state,projection:prefixes[0].projection});assert.equal(await page.locator('[data-au-node],[data-au-reference-mode]').count(),0);assert.deepEqual(sorted(await page.locator('[data-au-panel="sources"] [data-au-source-arrival]').evaluateAll(rows=>rows.map(row=>row.dataset.auSourceArrival))),sorted(prefixes[0].state.source_descriptors.map(row=>row.artifact_id)));
+  const zero=await visibleRecord(page);await page.clock.runFor(7000);assert.deepEqual(await visibleRecord(page),zero,'explicit through zero remains an exact manual inspection');
+  await open(page,id);await title(page,id);assert.deepEqual(await visibleRecord(page),{state,projection:saved.projection});
+  await page.locator('.au-context-nav [data-au-detail="sources"]').click();assert.deepEqual(sorted(await page.locator('[data-au-panel="sources"] [data-au-source-arrival]').evaluateAll(rows=>rows.map(row=>row.dataset.auSourceArrival))),sorted(start.source_artifact_ids),'the active Sources panel uses the exact accepted current roster');
+  const readable=await page.evaluate(({state,projection})=>{const element=document.createElement('div');element.innerHTML=window.CasePathAutonomous.acquiredContentMarkup(state,projection);return [...element.querySelectorAll('[data-au-source-arrival]')].map(row=>row.dataset.auSourceArrival);},{state,projection:saved.projection});assert.ok(readable.length);assert.ok(readable.every(artifact=>start.source_artifact_ids.includes(artifact)));assert.equal(readable.some(artifact=>old.some(row=>row.artifact_id===artifact)),false);
+  await page.locator('.au-work-head [data-au-detail="activity"]').click();assert.deepEqual(sorted(await page.locator('.au-history-record [data-au-source-arrival]').evaluateAll(rows=>rows.map(row=>row.dataset.auSourceArrival))),sorted(old.map(row=>row.artifact_id)),'History retains every previous document hidden from current Sources');
+  await page.locator(`[data-au-source-origin="history:${old[0].artifact_id}"]`).click();await eventually(()=>page.locator('.au-source-body').count().then(count=>count===1),'the exact earlier source did not open');assert.equal(await page.locator('.au-source-body').textContent(),fixture.sources[`${id}/${old[0].artifact_id}`].source?.text||fixture.sources[`${id}/${old[0].artifact_id}`].text);await page.keyboard.press('Escape');assert.deepEqual((await visibleRecord(page)).state,state);
+  assert.equal(state.outcome.assessment_status,'complete');assert.equal(state.evaluation.documents.filter(row=>row.review_state==='sufficient').length,3);assert.ok(state.facts.some(row=>row.citations?.length));assert.ok(state.knowledge_uses.length||state.knowledge_published.length);
+  for(const descriptor of current.filter(row=>!originals.includes(row.artifact_id))){const text=fixture.sources[`${id}/${descriptor.artifact_id}`].source?.text||fixture.sources[`${id}/${descriptor.artifact_id}`].text;assert.ok(text.startsWith('Synthetic demonstration document (fictional)\n'));assert.doesNotMatch(text,/Original corpus manifest SHA256|Fixture author:|Authored for a synthetic CasePath candidate/);}
+  receipts.push({claim_id:id,originalPrefixSha256:prefixes[0].state.state_sha256,oldHead:{revision:previous.state.revision,state_sha256:previous.state.state_sha256,event_sha256:previous.state.last_event_sha256},head:{revision:state.revision,state_sha256:state.state_sha256,event_sha256:state.last_event_sha256},start,currentSources:current.map(row=>({artifact_id:row.artifact_id,sha256:row.sha256})),earlierSources:old.map(row=>({artifact_id:row.artifact_id,sha256:row.sha256}))});
+ }
+ assert.equal(originals.length,150);assert.equal(await page.evaluate(()=>window.__fixture.calls.some(row=>row.method!=='GET'||row.url==='/api/demo')),false);
+ await focusedReceipt(page,'reference-migration-current-and-earlier',{checkoutCommit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),fixtureSha256:sha(canonical(fixture)),claims:receipts,requests:await page.evaluate(()=>window.__fixture.calls)});
+});
+
+test('reference migration native: unknown or stale current source selection renders all retained documents and readable passages',async t=>{
+ const fixture=referenceFixture(true),id=referenceIds[0],saved=fixture.snapshots[id],page=await fixturePage(t,{referenceMigrationFixture:true,publicReadOnly:true});
+ const variants=await page.evaluate(saved=>{
+  const result=[];
+  for(const kind of ['unknown','stale','duplicate','missing-original']){
+   const state=structuredClone(saved.state),projection=structuredClone(saved.projection),context=state.semantic_contexts[state.run_id],pins=[context.reference_provenance,projection.intake?.provenance].filter(Boolean);
+   for(const pin of pins){if(kind==='unknown')pin.profile_id='unknown-profile';if(kind==='stale')pin.source_roster_sha256='0'.repeat(64);if(kind==='duplicate')pin.source_artifact_ids.push(pin.source_artifact_ids[0]);if(kind==='missing-original')pin.source_artifact_ids=pin.source_artifact_ids.filter(id=>id!==state.original_binding.source_map[0].artifact_id);}
+   const element=document.createElement('section');element.dataset.qaSourceSelection=kind;element.innerHTML=window.CasePathAutonomous.workMarkup(state,projection,null,[],'sources',{}, {readOnly:true})+window.CasePathAutonomous.acquiredContentMarkup(state,projection);document.querySelector('#workspace').append(element);
+   result.push({kind,selected:window.CasePathAutonomous.currentSourceSelection(state,projection).map(row=>row.artifact_id),sources:[...element.querySelectorAll('[data-au-panel="sources"] [data-au-source-arrival]')].map(row=>row.dataset.auSourceArrival),readable:[...element.querySelectorAll('.au-reading-acquisition [data-au-source-arrival]')].map(row=>row.dataset.auSourceArrival)});
+  }
+  return result;
+ },saved);
+ const all=saved.state.source_descriptors.map(row=>row.artifact_id),readable=saved.state.acquired_sources.filter(row=>row.text).map(row=>row.artifact_id);
+ for(const variant of variants){assert.deepEqual(sorted(variant.selected),sorted(all));assert.deepEqual(sorted(variant.sources),sorted(all));assert.deepEqual(sorted(variant.readable),sorted(readable),'an unverified selection cannot hide old readable documents');}
+ await focusedReceipt(page,'reference-migration-selection-fallback',{claim_id:id,variants,scope:'Production source renderers with copied unsupported provenance; accepted fixture state and journal are unchanged.'});await page.locator('[data-qa-source-selection]').evaluateAll(rows=>rows.forEach(row=>row.remove()));
+});
+
+for(const inspection of ['Pause','History','source'])test(`reference migration native: trusted ${inspection} holds the accepted baseline through hide show until exact next-prefix Resume`,async t=>{
+ const fixture=referenceFixture(true),id=referenceIds[0],start=fixture.snapshots[id].replay_start,prefix=fixture.prefixes[id][start.from_seq],stills=inspection==='source'?process.env.CASEPATH_NATIVE_STILL_FRAMES:null,page=await fixturePage(t,{referenceMigrationFixture:true,publicReadOnly:true,holdReplayId:id,holdReplayThrough:stills?start.from_seq:start.from_seq+1,initialFragment:stills?'#autonomous/demonstration?mode=replay':`#autonomous/claim/${id}?collection=reference&mode=replay&through=${start.from_seq}`});
+ if(stills){
+  assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'),fixture.prefixes[id][0].state.state_sha256);assert.equal(await page.locator('[data-au-node]').count(),0);
+  await eventually(()=>page.evaluate(through=>window.__fixture.held.some(row=>row.through===through),start.from_seq),'the automatic current recording did not request its real baseline');
+  await page.evaluate(through=>{window.__fixture.holdReplayThrough=through+1;for(const row of window.__fixture.held.splice(0))row.release();},start.from_seq);await eventually(()=>page.locator(`[data-au-revision="${start.from_seq}"]`).count().then(count=>count===1),'the real current baseline did not paint');
+ }
+ await title(page,id);assert.deepEqual(await visibleRecord(page),{state:prefix.state,projection:prefix.projection});
+ const frame=async(name,expected,source=null)=>{if(!stills)return;assert.deepEqual(await visibleRecord(page),{state:expected.state,projection:expected.projection});const route=new URL(page.url()).hash;assert.equal(Number(new URLSearchParams(route.split('?')[1]).get('through')),expected.through_seq);fs.mkdirSync(stills,{recursive:true});const filename=path.join(stills,name+'.png');await page.screenshot({path:filename,fullPage:false,animations:'disabled'});fs.writeFileSync(path.join(stills,name+'.json'),JSON.stringify({captured_at:new Date().toISOString(),image_sha256:sha(fs.readFileSync(filename)),checkoutCommit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),testSha256:sha(fs.readFileSync(__filename)),assets:await page.evaluate(()=>window.__injectedAssets),claim_id:id,route,through_seq:expected.through_seq,state_sha256:expected.state.state_sha256,event_sha256:expected.state.last_event_sha256,events:expected.events.map(row=>({seq:row.seq,kind:row.kind,state_sha256:row.state_sha256,event_sha256:row.event_sha256})),start,source,requests:await page.evaluate(()=>window.__fixture.calls),javascriptErrors:page.__casepathErrors},null,2));};
+ await frame('01',prefix);if(!stills)await page.locator('[data-au-demo-play]').click();await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='replay')),'the genuine next v2 prefix was not held');
+ if(inspection==='Pause')await page.locator('[data-au-demo-stop]').click();else if(inspection==='History')await page.locator('.au-work-head [data-au-detail="activity"]').click();else{await page.locator('.au-context-nav [data-au-detail="sources"]').click();await page.locator('[data-au-panel="sources"] [data-au-source]').first().click();await eventually(()=>page.locator('.au-source-dialog[open]').count().then(count=>count===1),'trusted source did not open');}
+ assert.equal(await page.locator('[data-au-demo-resume]').count(),1);const record=await visibleRecord(page),route=new URL(page.url()).hash;
+ await page.evaluate(()=>{window.__fixture.hidden=true;Object.defineProperty(document,'hidden',{configurable:true,get:()=>window.__fixture.hidden});document.dispatchEvent(new Event('visibilitychange'));window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});await page.clock.runFor(8000);assert.deepEqual(await visibleRecord(page),record);
+ await page.evaluate(()=>{window.__fixture.hidden=false;document.dispatchEvent(new Event('visibilitychange'));document.querySelector('h1').focus();});if(inspection==='source')await page.keyboard.press('Escape');const reads=(await calls(page,`/claims/${id}/replay`)).length;await page.clock.runFor(7000);assert.deepEqual(await visibleRecord(page),record);assert.equal(new URL(page.url()).hash,route);assert.equal((await calls(page,`/claims/${id}/replay`)).length,reads);
+ await page.locator('[data-au-demo-resume]').click();let resumed=await visibleRecord(page);for(let tick=0;resumed.state.revision===start.from_seq&&tick<300;tick++){await page.clock.runFor(20);resumed=await visibleRecord(page);}const next=fixture.prefixes[id][start.from_seq+1];assert.deepEqual(resumed,{state:next.state,projection:next.projection});
+ await focusedReceipt(page,`reference-migration-hold-${inspection}`,{claim_id:id,start,route,before:{revision:record.state.revision,state_sha256:record.state.state_sha256,event_sha256:record.state.last_event_sha256},after:{revision:resumed.state.revision,state_sha256:resumed.state.state_sha256,event_sha256:resumed.state.last_event_sha256},requests:await page.evaluate(()=>window.__fixture.calls)});
+ if(stills){
+  const advance=async expected=>{for(let tick=0;Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<expected.through_seq&&tick<6000;tick++)await page.clock.runFor(20);assert.equal(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision')),expected.through_seq);};
+  const forming=Object.values(fixture.prefixes[id]).find(row=>row.through_seq>start.from_seq+1&&row.state.graph?.family!=='incoming_packet'&&row.state.obligations.length===3&&!row.state.outcome);assert.ok(forming);await advance(forming);await frame('02',forming);
+  const final=fixture.prefixes[id][fixture.snapshots[id].state.revision];await advance(final);await frame('03',final);
+  const originals=new Set(final.state.original_binding.source_map.map(row=>row.artifact_id)),citation=await page.locator('[data-au-source][data-au-citation]').evaluateAll((rows,originals)=>{const row=rows.find(row=>!originals.includes(row.dataset.auSource));return row?JSON.parse(row.dataset.auCitation):null;},[...originals]);assert.ok(citation);assert.ok(start.source_artifact_ids.includes(citation.artifact_id));await page.locator(`[data-au-source="${citation.artifact_id}"][data-au-citation]`).first().click();await eventually(()=>page.locator('.au-source-dialog[open] mark').count().then(count=>count===1),'the exact current citation did not open');assert.equal(await page.locator('.au-source-dialog[open] mark').textContent(),citation.quote);
+  const descriptor=final.state.source_descriptors.find(row=>row.artifact_id===citation.artifact_id),body=await page.locator('.au-source-body').textContent();assert.equal(body,fixture.sources[`${id}/${descriptor.artifact_id}`].source?.text||fixture.sources[`${id}/${descriptor.artifact_id}`].text);assert.equal(sha(Buffer.from(fixture.raw_sources[`${id}/${descriptor.artifact_id}`],'base64')),descriptor.sha256);await frame('04',final,{...citation,body_sha256:sha(body),raw_sha256:descriptor.sha256});await page.keyboard.press('Escape');
+ }
+ await page.locator('.au-nav [data-au-nav="work"]').click();
+});
+
 test('reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes',async t=>{
  const fixture=referenceFixture(),page=await fixturePage(t,{referenceFixture:true,readOnlyStatus:true});
- assert.equal(fixture.profile_sha256,'15c44d004cc1a34b90e8662b3185deb63652ab066c7727b080dfc0987a648de7');
+ assert.equal(fixture.profile_sha256,referenceV2Sha256);
  assert.deepEqual(await page.evaluate(()=>window.CasePathAutonomous.REFERENCE_DEMO_CASES.map(row=>row.claim_id)),referenceIds);
  await page.locator('[data-au-filter="investigation_complete"]').click();
  assert.equal(await page.locator('[data-au-filter="investigation_complete"]').innerText(),'Assessment complete');
@@ -1177,6 +1294,7 @@ test('reference native: exact nine actual accepted assessments retain graph docu
   assert.equal(await page.locator('[data-au-reference-mode]').count(),1);assert.equal(await page.locator('[data-au-reference-mode]').innerText(),`Historical synthetic recording · as of ${expected.state.outcome.reference_provenance.as_of} · rules-based`);
   assert.match(await page.locator('[data-au-claim-status]').innerText(),/Assessment complete/);assert.match(await page.locator('.au-claim-constraint').first().innerText(),/Assessment only; no external action taken/);
   assert.equal(await page.locator('.au-assessment-conclusion > p').first().textContent(),expected.state.outcome.summary);
+  assert.equal([...new Intl.Segmenter('en',{granularity:'sentence'}).segment(expected.state.outcome.summary)].length,2,'the accepted outcome remains two readable sentences');
   assert.equal((await page.locator('.au-quiet-claim').innerText()).match(/no external action taken/gi)?.length,1);
   for (const comparison of await page.locator('[data-au-law-comparison]').all()) assert.match(await comparison.innerText(),/^Earlier law text \(\d{4}-\d{2}-\d{2}\)$/);
   const context=expected.state.semantic_contexts[expected.state.run_id],authority=context.rule_packs.find(row=>row.family===expected.state.graph.family).legal_authority;
@@ -2384,11 +2502,11 @@ async function focusedReceipt(page, name, measurements) {
   if (!focusedReceiptRoot) return;
   fs.mkdirSync(focusedReceiptRoot, {recursive: true});
   const injectedAssets=await page.evaluate(()=>window.__injectedAssets);assert.deepEqual(injectedAssets,{javascript:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'))),css:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css')))},'the receipt binds the actually injected current assets');
-  fs.writeFileSync(path.join(focusedReceiptRoot, `${name}.json`), JSON.stringify({...measurements,viewport:page.viewportSize(),injectedAssets,assets:{
+  fs.writeFileSync(path.join(focusedReceiptRoot, `${name}.json`), JSON.stringify({...measurements,checkoutCommit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),testSha256:sha(fs.readFileSync(__filename)),requests:await page.evaluate(()=>window.__fixture?.calls||[]),prefixTransfers:await page.evaluate(()=>window.__nativePrefixTransfers||[]),browserRequests:page.__casepathNetwork||[],javascriptErrors:page.__casepathErrors||[],viewport:page.viewportSize(),injectedAssets,assets:{
     javascript:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'))),
     css:sha(fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css'))),
   }}, null, 2));
-  await page.screenshot({path: path.join(focusedReceiptRoot, `${name}.png`), fullPage: true, animations:'disabled'});
+  if(!process.env.CASEPATH_RECEIPTS_JSON_ONLY)await page.screenshot({path: path.join(focusedReceiptRoot, `${name}.png`), fullPage: true, animations:'disabled'});
 }
 const visibleRecord = page => page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent().then(JSON.parse);
 const currentReadState = page => page.locator('[data-au-view]').getAttribute('data-au-read-state');
