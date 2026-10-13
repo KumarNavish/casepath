@@ -86,7 +86,7 @@ def test_real_callsite_trace_preserves_every_prefix_and_exact_final_output(migra
             if frame['kind'] == 'fact.extract' and frame['stage'] in {'interpret_reference', 'verify_reference'}:
                 assert frame['result']['status'] == 'provisional'
     assert {'source.open', 'span.read', 'phrase.match', 'fact.extract', 'verification.check',
-            'condition.evaluate', 'node.evaluate', 'dependency.evaluate', 'document.require', 'document.check', 'step.complete', 'decision', 'knowledge.reuse'} <= kinds
+            'process.inspect', 'condition.evaluate', 'node.evaluate', 'dependency.evaluate', 'document.require', 'document.check', 'step.complete', 'decision', 'knowledge.reuse'} <= kinds
     assert not any(kind.startswith('branch.') for kind in kinds)
     assert chain == result['operation_chain_sha256']
     assert state == head and service.store.events(cid) == original_events
@@ -232,7 +232,7 @@ def test_public_get_rejects_warm_cached_but_corrupt_persistent_sources(migrated,
         assert '"type":"binding"' not in response.text and '"type":"result"' not in response.text
         statements = [item['stmt']['sql'] for request in server.requests[baseline:] for item in request['requests']
                       if item['type'] == 'execute']
-        assert statements and all(sql.split()[0] in {'SELECT', 'BEGIN', 'COMMIT', 'ROLLBACK'} for sql in statements)
+        assert statements and all(sql.split()[0] == 'SELECT' for sql in statements)
         assert runtime.PUBLIC_LIMITS.active == 0 and server.open_streams == 0
     finally:
         server.close()
@@ -320,9 +320,11 @@ def test_capture_fetches_only_exact_selected_family_publisher(multi_family_histo
     bundle = runtime.capture_operation_inputs(service.store, cid, service.policy)
     peers = bundle['knowledge_histories']
     assert len(peers) == 1 and peers[0]['claim_id'] == ReferenceProfile().ids[0]
-    fetched = {params[1] for sql, params in statements if sql.startswith('SELECT * FROM claim_loop_events')}
+    journal_reads = [(sql, params) for sql, params in statements if '__max_count' in sql]
+    fetched = {value for _, params in journal_reads for value in params if isinstance(value, str) and value.startswith('autonomous.')}
     assert fetched == {'autonomous.' + cid, 'autonomous.' + peers[0]['claim_id']}
-    assert sum(sql.startswith('SELECT DISTINCT loop_id') for sql, _ in statements) == 1
+    assert len(journal_reads) == 2
+    assert len(statements) == 3 and all(sql.startswith('SELECT ') for sql, _ in statements)
     # The full frozen context still contains all three pins, unchanged.
     context = head['semantic_contexts'][head['run_id']]
     frozen = next(json.loads(row['event_json'])['payload']['context'] for row in reversed(bundle['rows'])
@@ -410,3 +412,94 @@ def test_own_pinned_version_reuses_exact_nonreference_ancestor(tmp_path):
             runtime.build_operation_sidecar(unrelated)
     finally:
         service.shutdown()
+
+
+def test_working_evaluation_is_exact_provisional_and_override_scoped():
+    definition = graph()
+    sink = runtime.OperationSink()
+    with sink.scope('native_execution', 2):
+        false_result = evaluate(definition, {'branch': 'false'})
+        true_result = evaluate(definition, {'branch': 'true'})
+        assert evaluate(definition, {'branch': 'true'}) == true_result
+    inspections = [frame for frame in sink.frames if frame.get('kind') == 'process.inspect']
+    assert len(inspections) == 2
+    assert len({frame['result']['evaluation_sha256'] for frame in inspections}) == 2
+    expected_graph = {key: definition[key] for key in ('contract', 'family', 'claim_id', 'revision', 'graph_sha256',
+                                                     'conditions', 'nodes', 'edges', 'document_catalog')}
+    assert all(frame['result']['graph'] == expected_graph for frame in inspections)
+    assert inspections[0]['result']['effective_conditions']['branch']['verdict'] == 'false'
+    assert inspections[1]['result']['effective_conditions']['branch']['verdict'] == 'true'
+    expected_by_evaluation = {inspections[0]['result']['evaluation_sha256']: false_result,
+                              inspections[1]['result']['evaluation_sha256']: true_result}
+    inspect_by_evaluation = {frame['result']['evaluation_sha256']: frame['id'] for frame in inspections}
+    for frame in sink.frames:
+        if frame.get('kind') not in {'node.evaluate', 'document.require', 'dependency.evaluate', 'branch.activate', 'branch.drop', 'branch.evaluate'}:
+            continue
+        result = frame['result']
+        evaluation = result['evaluation_sha256']
+        assert result['phase'] == 'provisional' and result['graph_sha256'] == definition['graph_sha256']
+        assert inspect_by_evaluation[evaluation] in frame['cause_ids']
+        if frame['kind'] == 'node.evaluate':
+            actual = next(node for node in expected_by_evaluation[evaluation]['nodes'] if node['node_id'] == frame['object']['id'])
+            for key in ('activation', 'execution_state', 'effective_completed', 'inconsistent_completion', 'blocked_by', 'unresolved_dependencies'):
+                assert result[key] == actual[key]
+        elif frame['kind'] == 'document.require':
+            actual = next(doc for doc in expected_by_evaluation[evaluation]['documents'] if doc['document_type'] == frame['object']['id'])
+            for key in ('activation', 'route_state', 'request', 'review_state', 'required_at_node_ids', 'active_node_ids'):
+                assert result[key] == actual[key]
+    blocked = [frame for frame in sink.frames if frame.get('kind') == 'node.evaluate'
+               and frame['object']['id'] == 'down' and frame['result']['evaluation_sha256'] == inspections[1]['result']['evaluation_sha256']]
+    assert blocked and all(frame['result']['activation'] == 'true' and frame['result']['execution_state'] == 'blocked'
+                           and frame['result']['blocked_by'] == ['left'] and not frame['result']['effective_completed'] for frame in blocked)
+
+
+def test_capture_sql_guards_oversized_wire_before_returning_bodies(migrated, monkeypatch):
+    service, _, cid, _, _ = migrated
+    original_connect = service.store.journal.connect
+    local = sqlite3.connect(':memory:')
+    local.row_factory = sqlite3.Row
+    local.execute('CREATE TABLE claim_loop_events AS SELECT NULL AS session_id,NULL AS loop_id,NULL AS sequence,NULL AS idempotency_key,NULL AS command_sha256,NULL AS event_sha256,NULL AS event_json,NULL AS created_at WHERE 0')
+    for row in migrated[-1]['rows']:
+        local.execute('INSERT INTO claim_loop_events VALUES (?,?,?,?,?,?,?,?)', tuple(row[key] for key in ('session_id','loop_id','sequence','idempotency_key','command_sha256','event_sha256','event_json','created_at')))
+    statements = []
+    class RestrictedConnection:
+        def __enter__(self):
+            self.connection = local
+            return self
+        def __exit__(self, *args):
+            return None
+        def execute(self, statement, params):
+            statements.append(statement)
+            # An authority column, not event_json, can alone exceed the
+            # conservative hosted wire budget. The guarded result omits all
+            # actual columns before the client receives them.
+            self.connection.execute('UPDATE claim_loop_events SET idempotency_key=? WHERE loop_id=? AND sequence=1',
+                                    ('é' * (3 * 1024 * 1024), 'autonomous.' + cid))
+            page = self.connection.execute(statement, params).fetchall()
+            assert page and page[0]['__wire'] > 32 * 1024 * 1024 - 65536
+            assert all(row['event_json'] is None and row['idempotency_key'] is None for row in page)
+            return SimpleNamespace(fetchall=lambda: page)
+    monkeypatch.setattr(service.store.journal, 'connect', RestrictedConnection)
+    monkeypatch.setattr(service.store, '_blob', lambda digest: (_ for _ in ()).throw(AssertionError('Source I/O before journal bound')))
+    try:
+        with pytest.raises(runtime.OperationsUnavailable, match='wire bound'):
+            runtime.capture_operation_inputs(service.store, cid, service.policy)
+    finally:
+        monkeypatch.setattr(service.store.journal, 'connect', original_connect)
+        local.close()
+    assert len(statements) == 1
+
+
+def test_capture_fresh_verifies_union_sources_once(multi_family_history, monkeypatch):
+    service, cid, head = multi_family_history
+    baseline = runtime.capture_operation_inputs(service.store, cid, service.policy)
+    cached = {digest: base64.b64decode(value) for snapshot in [baseline, *baseline['knowledge_histories']]
+              for digest, value in snapshot['sources_base64'].items()}
+    calls = []
+    def verify(digests):
+        calls.append(set(digests))
+    reader = SimpleNamespace(verify_many=verify, read=lambda digest: cached[digest])
+    monkeypatch.setattr(service.store, '_source_store', reader)
+    bundle = runtime.capture_operation_inputs(service.store, cid, service.policy)
+    assert calls == [set(cached)]
+    assert runtime.build_operation_sidecar(bundle)['frames'][-1]['state_sha256'] == head['state_sha256']
