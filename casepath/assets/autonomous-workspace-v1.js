@@ -2614,7 +2614,7 @@
               session.operationStarted = false; session.operationOpeningAnchor = null; session.previousAttempts = []; session.useRecorded = false; session.recorded = false; session.referenceReady = false; session.verifiedReplayStart = null;
               await openPresentationCase(session,true,session.index+1); return;
             }
-            stopPresentation(); renderClaim(); notice(session.recorded ? 'Recorded operation trace finished. No case or knowledge changes were saved.' : 'Rules-based assessment complete. Recomputed from the saved synthetic packet; no case or knowledge changes were saved.'); return;
+            stopPresentation(); renderClaim(); notice(''); return;
           } else if (frame.type === 'error') throw new Error(frame.message || frame.reason || frame.detail || 'The rules-based assessment stopped.');
           else throw new Error('The operation stream contains an unknown frame.');
         }
