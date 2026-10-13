@@ -142,7 +142,8 @@ class AutonomousController:
         if self.enforce_intake_gate:
             from .autonomous_intake_gate_v1 import require_complete
             self.assert_execution_policy(state)
-            require_complete(self.intake_projection(state))
+            gate = self.intake_projection(state)
+            require_complete(gate)
         source_identity = digest_value(state['source_descriptors'])
         workflow_material = {'claim': claim_id, 'sources': source_identity, 'policy': self.policy_id,
                              'rules': digest_value(self.policy)}
@@ -161,8 +162,11 @@ class AutonomousController:
             if self.model is not None and (self.store.get(claim_id).get('deferral') or {}).get('code') == 'model_unavailable':
                 self._once(claim_id, f'{workflow}.configured', 'work.started', {'run_id': workflow, 'policy_id': self.policy_id})
             state = self.store.get(claim_id)
-            if state['graph'] is None:
-                graph, facts, obligations = initial_process(claim_id, [d for d in state['source_descriptors'] if d['role'] != 'customer_message'])
+            if state['graph'] is None or (reference is not None and reference.profile.value['profile_id'] == 'synthetic-nine-v2'
+                                          and f'{workflow}.prepare' not in {e['idempotency_key'] for e in self.store.events(claim_id)}):
+                active_ids = set(gate['provenance']['source_artifact_ids']) if reference is not None and reference.profile.value['profile_id'] == 'synthetic-nine-v2' else None
+                graph, facts, obligations = initial_process(claim_id, [d for d in state['source_descriptors']
+                    if d['role'] != 'customer_message' and (active_ids is None or d['artifact_id'] in active_ids)])
                 self._once(claim_id, f'{workflow}.prepare', 'process.prepared', lambda s: {
                     'graph': graph, 'facts': facts, 'obligations': obligations,
                     'receipt': receipt(s, 'prepare_source_investigation', after_graph_sha256=graph['graph_sha256'])})
@@ -196,6 +200,7 @@ class AutonomousController:
                 for rule_pack, template in zip(context['rule_packs'], self.policy['templates']):
                     rule_pack['legal_authority'] = deepcopy(template['legal_authority'])
                 provenance = self.intake_projection(state)['provenance']
+                context['sources'] = reference.profile.active_sources(state, context['sources'])
                 context.update(reference_provenance=provenance,
                                normative_sources=self.policy['normative_sources'],
                                execution_mode='deterministic_reference')
@@ -243,11 +248,16 @@ class AutonomousController:
                 self.model.abandon(workflow, 'execution_deferred')
         return self.store.get(claim_id)
 
-    def intake_projection(self, state, *, sources=None, base_policy=None):
+    def intake_projection(self, state, *, sources=None, base_policy=None, historical=False):
         from .autonomous_intake_gate_v1 import assess_intake, inspect_sources
-        return assess_intake(state, sources if sources is not None else inspect_sources(self.store, state),
+        from .autonomous_reference_v1 import ReferenceProfile
+        sources = sources if sources is not None else inspect_sources(self.store, state)
+        profile = self.reference_adapter.profile if self.reference_adapter else None
+        if historical:
+            profile = ReferenceProfile.resolve(state, sources) or profile
+        return assess_intake(state, sources,
                              base_policy or self.policy, reference_policy=self.policy if self.reference_adapter else None,
-                             profile=self.reference_adapter.profile if self.reference_adapter else None)
+                             profile=profile)
 
     def assert_execution_policy(self, state):
         if not self.enforce_intake_gate:
@@ -416,6 +426,8 @@ class AutonomousController:
                            next_action='Inspect the recorded historical synthetic assessment; any real action needs its own current authority.',
                            unresolved_facts=[], missing_evidence=[], request_draft={'status': 'prepared_not_sent',
                                'subject': 'Bounded historical synthetic assessment', 'body': verified['category']['summary']})
+            if context['reference_provenance']['profile_id'] == 'synthetic-nine-v2':
+                outcome['next_action'] = 'Inspect the recorded assessment and its cited sources.'
         self._once(claim_id, f'{workflow}.outcome', 'outcome.recorded', lambda s: {
             'outcome': outcome, 'receipt': receipt(s, 'record_justified_deferral', **base_receipt,
                                                   graph_sha256=state['graph']['graph_sha256'])})

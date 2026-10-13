@@ -89,7 +89,7 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
         if originals() is not None or getattr(service, 'reference_adapter', None) is not None:
             sources = ([{**s, **corpus.source_preview(state['claim_id'], s['artifact_id'])}
                         for s in state['source_descriptors']] if state['revision'] == 0 else None)
-            result['intake'] = service.intake_projection(state, sources=sources)
+            result['intake'] = service.intake_projection(state, sources=sources, historical=True)
         return result
 
     def eligible(service, state, *, corpus=None):
@@ -125,7 +125,8 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                 raise AutonomousStoreError('event cursor exceeds current revision')
             state = corpus.preview_state(claim_id)
             result = {'state': state, 'events': [], 'current_revision': 0,
-                      'current_state_sha256': state['state_sha256'], 'current_event_sha256': None}
+                      'current_state_sha256': state['state_sha256'], 'current_event_sha256': None,
+                      'replay_start': None}
         if after > result['current_revision']:
             raise AutonomousStoreError('event cursor exceeds current revision')
         state = result['state']
@@ -245,6 +246,7 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                 result = {'state': state, 'events': [], 'through_seq': 0, 'replay_only': True,
                           'current_revision': head['current_revision'], 'current_state_sha256': head['current_state_sha256'],
                           'current_event_sha256': head['current_event_sha256'],
+                          'replay_start': head.get('replay_start'),
                           'provenance': {'source_roster_sha256': state['source_roster_sha256'],
                                          'original_binding_sha256': state['original_binding']['original_binding_sha256'],
                                          'policy_id': None, 'run_id': None, 'event_sha256': None}}

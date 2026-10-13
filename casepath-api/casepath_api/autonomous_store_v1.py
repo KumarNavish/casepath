@@ -866,8 +866,10 @@ class AutonomousStore:
             state, events, _ = self._replay(self._rows(connection, claim_id))
         if state is None:
             raise AutonomousStoreError("claim does not exist")
+        from .autonomous_reference_v1 import reference_replay_start
         return {"state": state, "events": events[after:], "current_revision": state["revision"],
-                "current_state_sha256": state["state_sha256"], "current_event_sha256": state["last_event_sha256"]}
+                "current_state_sha256": state["state_sha256"], "current_event_sha256": state["last_event_sha256"],
+                "replay_start": reference_replay_start(state, events)}
 
     def replay(self, claim_id, through_seq):
         """Return a recorded reducer prefix after validating the entire saved head."""
@@ -880,9 +882,11 @@ class AutonomousStore:
         if through_seq > head["revision"]:
             raise AutonomousStoreError("replay sequence exceeds current revision")
         state = states[through_seq - 1]
+        from .autonomous_reference_v1 import reference_replay_start
         return {"state": state, "events": events[:through_seq], "replay_only": True, "through_seq": through_seq,
                 "current_revision": head["revision"], "current_state_sha256": head["state_sha256"],
                 "current_event_sha256": head["last_event_sha256"],
+                "replay_start": reference_replay_start(head, events),
                 "current_head": {"revision": head["revision"], "state_sha256": head["state_sha256"],
                                  **self._provenance(head)}, "provenance": self._provenance(state)}
 
