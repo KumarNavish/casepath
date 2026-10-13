@@ -1,0 +1,153 @@
+{
+  "host": "656813ef2295",
+  "base": "0d9f9e225776195f47d335b38b4ca5244d8c555c",
+  "commit": "50bea2aebae4e3c60d2d803d92e030dff634e5a2",
+  "branch": "codex/casepath-stage-browser-qa-20261013",
+  "pushed": true,
+  "changed_files": [
+    "casepath-qa/unified-product-browser-v1.test.cjs"
+  ],
+  "test_sha256": "92ca22cdf7c366c082fb964dd2f056a141468dd2fb51d059942bd56e9a00c472",
+  "product_candidate": "b2936ea",
+  "frozen_assets": {
+    "javascript": {
+      "path": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/assets/final.js",
+      "sha256": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe"
+    },
+    "css": {
+      "path": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/assets/final.css",
+      "sha256": "ef5772e708fa5913edfb917610e0dd6da9842b92e40d1ca491083552be88d41d"
+    }
+  },
+  "fixtures": {
+    "/workspace/casepath-smooth-layout-20261013-evidence/layout/current-prior-fixture.json": "ac2caaeb0bdd1c4dbaf4bbd7edbf1b716a457d8cde2728a871902682281634b5",
+    "/workspace/casepath-reference-polish-native-qa-evidence-20261013/native-fresh-reference.json": "77c432ada8005142c06bf32730e654de0844bf7668784cb97d6dea5da937ab68",
+    "/workspace/casepath-reference-polish-evidence-20261013/native-v1-v2-reference.json": "ba3ddf796cb39489e47158ca6b69d53be1866e365afa0363a7b49665af7224ce"
+  },
+  "environment": {
+    "HOME": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/home",
+    "TMPDIR": "/workspace/bq-tmp",
+    "TMP": "/workspace/bq-tmp",
+    "TEMP": "/workspace/bq-tmp",
+    "temporary_alias_target": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/tmp"
+  },
+  "reusable_command": "bash /workspace/casepath-smooth-layout-20261013-evidence/browser-qa/run-focused.sh <label> <test-name-pattern>",
+  "patterns": {
+    "legacy-attempt3": "forming work: live accepted sources|forming work: a live terminal qualification",
+    "targeted-final1": "heating requirements|consumes every accepted current reference prefix|replay visibility: an in-flight|replay visibility: trusted (keyboard|Pause)|manual .* inspection pauses|cancels replay with",
+    "targeted-final2": "consumes every accepted current reference prefix|actual accepted replay prefixes stay immutable with 120ms|replay visibility: trusted (keyboard|Pause)",
+    "targeted-final3": "consumes every accepted current reference prefix|actual accepted replay prefixes stay immutable with 120ms|replay visibility: trusted (keyboard|Pause)"
+  },
+  "results": {
+    "legacy-attempt3": {
+      "exit": 0,
+      "passed": 5,
+      "failed": 0,
+      "canceled": 0,
+      "skipped": 0,
+      "note": "Four complete original legacy case IDs plus live terminal publication. Before later replay/helper corrections; geometry thresholds unchanged. No green rerun per coordinator scope."
+    },
+    "targeted-final1": {
+      "exit": 1,
+      "passed": 10,
+      "failed": 6,
+      "canceled": 0,
+      "skipped": 0,
+      "passed_groups": [
+        "3 native heating complete sizes",
+        "2 native prefix-eight visibility modes",
+        "2 source/navigation cancellation",
+        "3 manual node/fact/document inspections"
+      ],
+      "failed_groups": [
+        "4 all-nine obsolete during-playback outcome visibility predicate",
+        "2 trusted hidden History attempts"
+      ],
+      "resolved_by": "targeted-final3"
+    },
+    "targeted-final3": {
+      "exit": 0,
+      "passed": 7,
+      "failed": 0,
+      "canceled": 0,
+      "skipped": 0,
+      "duration_ms": 291654.12752,
+      "groups": [
+        "4 original all-nine case IDs, fresh/migrated x owner/public",
+        "28-prefix native 120ms playback and separate full DTO History inspection",
+        "trusted keyboard and Pause inspection holds through hide/show"
+      ]
+    },
+    "targeted-attempt2": {
+      "status": "interrupted",
+      "note": "Completed overlap, actual History pause/Resume and native zero-latency 28-prefix/DTO tests before blocked120ms deliberate historical opening. Do not treat later closed-browser outcomes as product failures."
+    },
+    "targeted-final2": {
+      "status": "interrupted",
+      "note": "Four all-nine traversal/owner DTO phases completed, then strict outcome selector matched summary plus legal/reuse paragraphs. Interrupted at frozen120ms Promise wait; trusted hidden cases did not execute normally. Exact selector and void callback fixed in final3."
+    }
+  },
+  "preserved_negative_attempts": {
+    "legacy-attempt1.log": "Chromium Unix socket path too long; browser bodies unexecuted. Short isolated temporary alias fixed launch.",
+    "legacy-attempt2.log": "3 complete legacy passes; 1280 publication focus failed because DTO History inspection created real hold before automatic publication. Inspection order corrected.",
+    "original-heating.log": "Untouched base QA fails obsolete completed .au-settled selector on unchanged intended operation stage.",
+    "replay-attempt1.log": "Interrupted after stale stage/source visibility/default Demonstration operation-vs-saved-history contracts. Default operation fixtures were absent; no actual API/provider calls.",
+    "targeted-attempt2.log": "Earlier diagnosed failures plus interrupted virtual-clock Promise wait.",
+    "targeted-final1.log": "Six diagnosed semantic observation failures, preserved terminal exit1 and all10 completed passes.",
+    "targeted-final2.log": "Strict summary-selector failure and virtual-clock wait; interruption preserved."
+  },
+  "limits": [
+    "No full suite or new profiling run.",
+    "Only QA source changed; integration owner owns final manifest/seal.",
+    "Default public operation autoplay is covered by independent coordinator/reviewer native acceptance; these all-nine QA cases disclose Saved history setup."
+  ],
+  "review_diff": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/candidate-review-push.diff",
+  "logs": {
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/legacy-attempt2.log": "3b0e426dfde28a50fedeb1f27ba7997d6045e15b62900936b19cfae30af9b5a4",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/replay-attempt1.log": "657147c05567444da5a163a8d67fd6c11ac11e10bc931c6f396a6e1e330e7b5e",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-final3.log": "2e4ae680d1e09e1d14574b418a2510068b3df55d5d0069382f117e4c5df2c1f1",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/legacy-attempt1.log": "704457727a0ea63c69fb9c6c865bbdd528e2637f8e6acb95e1b8f6025612d808",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-final2.log": "906cf6c76bc3edf8adba50a13f0bc2291889c82e0c612f689bd35734298a7fa9",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/original-heating.log": "53e7fc1f755f43ca7726c2c530fc2ea942a55aa216ebfa1ac8c99c1c625d0f13",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/legacy-attempt3.log": "2e0bba495e5aeafae40a065ff268852b58b798ecedcff42b3e95e44df67d245e",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-attempt2.log": "ecd1d4948d4ed72f99cb35cd8432b15f5e8e834c3119d65eb26b6798e7be7a06",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/junction-probe.log": "3fc9e0e2c2aaaf32f27c47db0b789585f43dfa70d1fcbffb825b3162882d862c",
+    "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-final1.log": "5b3d2721b6911cc30478a61a78a4032bd642e305638f88ca9862f20e45c25486"
+  },
+  "commands": {
+    "targeted-final1": "bash /workspace/casepath-smooth-layout-20261013-evidence/browser-qa/run-focused.sh targeted-final1 'heating requirements|consumes every accepted current reference prefix|replay visibility: an in-flight|replay visibility: trusted (keyboard|Pause)|manual .* inspection pauses|cancels replay with' > /workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-final1.log 2>&1",
+    "targeted-final2": "bash /workspace/casepath-smooth-layout-20261013-evidence/browser-qa/run-focused.sh targeted-final2 'consumes every accepted current reference prefix|actual accepted replay prefixes stay immutable with 120ms|replay visibility: trusted (keyboard|Pause)' > /workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-final2.log 2>&1",
+    "targeted-final3": "bash /workspace/casepath-smooth-layout-20261013-evidence/browser-qa/run-focused.sh targeted-final3 'consumes every accepted current reference prefix|actual accepted replay prefixes stay immutable with 120ms|replay visibility: trusted (keyboard|Pause)' > /workspace/casepath-smooth-layout-20261013-evidence/browser-qa/targeted-final3.log 2>&1",
+    "legacy-attempt3": {
+      "cwd": "/workspace/casepath-operation-count-repair-20261013",
+      "argv": [
+        "node",
+        "--test",
+        "--test-name-pattern=forming work: live accepted sources|forming work: a live terminal qualification",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "HOME": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/home",
+        "TMPDIR": "/workspace/bq-tmp",
+        "TMP": "/workspace/bq-tmp",
+        "TEMP": "/workspace/bq-tmp",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/workspace/casepath-smooth-layout-20261013-evidence/layout/current-prior-fixture.json",
+        "CASEPATH_BROWSER_JS_ASSET": "/workspace/casepath-operations-coordinator-20261013/casepath/assets/autonomous-workspace-v1.js",
+        "CASEPATH_BROWSER_CSS_ASSET": "/workspace/casepath-operations-review-20261013/casepath/assets/autonomous-workspace-v1.css",
+        "CASEPATH_FOCUSED_RECEIPTS": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/legacy-attempt3",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/legacy-attempt3",
+        "CASEPATH_RECEIPTS_JSON_ONLY": "1"
+      },
+      "observed_js_sha256": "72b65e0c40b52f8fe8b8651aaa99409801952fe1c0bd10917426c0fcdc0fe8fe",
+      "observed_css_sha256": "26915e7327cd553792d0f1f2513821dce0d5d04d247f47c78e2db80c282655ab",
+      "log": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/legacy-attempt3.log"
+    }
+  },
+  "original_contract_evidence": {
+    "spouse_fixture_preconditions": "/workspace/casepath-smooth-layout-20261013-evidence/review/spouse-prefix-proof.json",
+    "earlier_unchanged_QA_failure": "/workspace/casepath-smooth-layout-20261013-evidence/layout/latent-spouse-row-conflict.json",
+    "base_test_bytes": "/workspace/casepath-smooth-layout-20261013-evidence/browser-qa/original.test.cjs",
+    "base_test_sha256": "612e7c5af986be7dd99bc01641333953026c123924c6b9d893bb8b642662df4e"
+  },
+  "coordinator_combined_commit": "2f9f2255467024a5a3cae366674bc81f65c27401"
+}
