@@ -503,6 +503,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
   .au-workspace .au-forming-process:not(.au-stage-process) .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:6px; }
   .au-workspace .au-forming-process .au-graph-viewport[data-au-graph-overview=true] .au-node { min-height:36px; padding-top:0; padding-bottom:0; }
   .au-workspace .au-forming-publication-focus { margin:0 0 6px; padding:4px 12px; }
+  .au-workspace .au-main:has(.au-forming-publication-focus) { padding-top:8px; }
+  .au-workspace .au-evidence-stage:has(.au-forming-publication-focus) > .au-assessment-conclusion { margin-bottom:0; }
+  .au-workspace .au-forming-work:has(.au-forming-publication-focus) { padding-top:0; }
+  .au-workspace .au-forming-process:has(.au-forming-publication-focus) .au-graph-viewport[data-au-graph-overview=true] .au-graph { gap:3px; }
 }
 @media (max-width:1000px) {
   .au-workspace .au-forming-connections { display:none; }
