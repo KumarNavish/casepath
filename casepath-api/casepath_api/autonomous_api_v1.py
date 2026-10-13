@@ -255,7 +255,8 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
                         raise runtime.OperationsUnavailable('No recorded reference check is available.')
                     sidecar = OperationTraceStore(service.store.journal.connect).read(
                         claim_id, head_state_sha256=head['state_sha256'], head_event_sha256=head['last_event_sha256'],
-                        run_id=start['run_id'], profile_sha256=start['profile_sha256'], check=check)
+                        run_id=start['run_id'], profile_sha256=start['profile_sha256'],
+                        instrumentation_id=runtime.INSTRUMENTATION_ID, check=check)
                     if sidecar is None:
                         raise runtime.OperationsUnavailable('No recorded operation trace is available for this exact saved head.')
                     for frame in sidecar['frames']:

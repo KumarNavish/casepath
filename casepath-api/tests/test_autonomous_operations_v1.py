@@ -86,7 +86,8 @@ def test_real_callsite_trace_preserves_every_prefix_and_exact_final_output(migra
             if frame['kind'] == 'fact.extract' and frame['stage'] in {'interpret_reference', 'verify_reference'}:
                 assert frame['result']['status'] == 'provisional'
     assert {'source.open', 'span.read', 'phrase.match', 'fact.extract', 'verification.check',
-            'condition.evaluate', 'branch.activate', 'document.require', 'document.check', 'step.complete', 'decision', 'knowledge.reuse'} <= kinds
+            'condition.evaluate', 'node.evaluate', 'dependency.evaluate', 'document.require', 'document.check', 'step.complete', 'decision', 'knowledge.reuse'} <= kinds
+    assert not any(kind.startswith('branch.') for kind in kinds)
     assert chain == result['operation_chain_sha256']
     assert state == head and service.store.events(cid) == original_events
     assert len(canonical_json_bytes(sidecar)) < 8 * 1024 * 1024
@@ -118,6 +119,14 @@ def test_real_unicode_regex_offsets_and_causal_drop_come_from_execution():
     unresolved = [frame for frame in unknown.frames if frame.get('kind') == 'branch.evaluate']
     assert unresolved and all(frame['result']['activation'] == 'unresolved' for frame in unresolved)
     assert not any(frame.get('kind') == 'branch.activate' and frame['result']['activation'] != 'true' for frame in unknown.frames)
+    dependency_graph = deepcopy(graph())
+    dependency_graph['edges'][0]['relation'] = 'requires'
+    dependencies = runtime.OperationSink()
+    with dependencies.scope('native_execution', 4):
+        evaluate(dependency_graph, {'branch': 'false'})
+    left = [frame for frame in dependencies.frames if frame.get('object', {}).get('id') == 'left_path']
+    assert any(frame.get('kind') == 'dependency.evaluate' for frame in left)
+    assert not any(frame.get('kind', '').startswith('branch.') for frame in left)
 
 
 @pytest.mark.parametrize('damage', ['source', 'checkpoint', 'historical_event', 'policy'])
@@ -262,3 +271,142 @@ def test_recorded_get_requires_admitted_trace_and_never_recomputes(migrated, mon
         assert [json.loads(row) for row in response.text.splitlines()] == sidecar['frames']
         assert service.store.events(cid) == before and service.store.get(cid) == head
         assert runtime.PUBLIC_LIMITS.active == 0
+
+
+@pytest.fixture(scope='module')
+def multi_family_history(tmp_path_factory):
+    root = tmp_path_factory.mktemp('selected-knowledge-family')
+    corpus = CanonicalCorpus()
+    ids = ReferenceProfile().ids
+    old = service_at(root / 'journal.sqlite', corpus, ReferenceProfile.for_profile('synthetic-nine-v1'))
+    try:
+        # The first three pinned claims publish the three distinct procedures;
+        # the fourth receives the first family's exact historical definition.
+        for cid in ids[:4]:
+            admit(old, corpus, cid)
+            previous = old.run(cid)
+            assert previous['outcome']['assessment_status'] == 'complete'
+    finally:
+        old.shutdown()
+    service = service_at(root / 'journal.sqlite', corpus)
+    cid = ids[3]
+    service.store.add_sources(cid, service.reference_adapter.profile.files(cid), expected_revision=previous['revision'],
+                             expected_state_sha256=previous['state_sha256'], idempotency_key='selected-family-v2')
+    head = service.run(cid)
+    context = head['semantic_contexts'][head['run_id']]
+    assert len({pin['family'] for pin in context['compatible_knowledge']}) == 3
+    yield service, cid, head
+    service.shutdown()
+
+
+def test_capture_fetches_only_exact_selected_family_publisher(multi_family_history, monkeypatch):
+    service, cid, head = multi_family_history
+    statements = []
+    original_connect = service.store.journal.connect
+    class TrackedConnection:
+        def __init__(self):
+            self.connection = original_connect()
+        def __enter__(self):
+            self.connection.__enter__()
+            return self
+        def __exit__(self, *args):
+            return self.connection.__exit__(*args)
+        def __getattr__(self, name):
+            return getattr(self.connection, name)
+        def execute(self, sql, parameters=()):
+            statements.append((sql, parameters))
+            return self.connection.execute(sql, parameters)
+    monkeypatch.setattr(service.store.journal, 'connect', TrackedConnection)
+    bundle = runtime.capture_operation_inputs(service.store, cid, service.policy)
+    peers = bundle['knowledge_histories']
+    assert len(peers) == 1 and peers[0]['claim_id'] == ReferenceProfile().ids[0]
+    fetched = {params[1] for sql, params in statements if sql.startswith('SELECT * FROM claim_loop_events')}
+    assert fetched == {'autonomous.' + cid, 'autonomous.' + peers[0]['claim_id']}
+    assert sum(sql.startswith('SELECT DISTINCT loop_id') for sql, _ in statements) == 1
+    # The full frozen context still contains all three pins, unchanged.
+    context = head['semantic_contexts'][head['run_id']]
+    frozen = next(json.loads(row['event_json'])['payload']['context'] for row in reversed(bundle['rows'])
+                  if json.loads(row['event_json'])['kind'] == 'work.context')
+    assert frozen == context
+    sidecar = runtime.build_operation_sidecar(bundle)
+    assert sidecar['frames'][-1]['state_sha256'] == head['state_sha256']
+    assert not any(frame.get('kind', '').startswith('branch.') for frame in sidecar['frames'])
+
+
+def test_missing_or_tampered_relevant_pin_never_uses_another_version(multi_family_history):
+    service, cid, head = multi_family_history
+    bundle = runtime.capture_operation_inputs(service.store, cid, service.policy)
+    missing = deepcopy(bundle)
+    peer = missing['knowledge_histories'][0]
+    publication = next(index for index, row in enumerate(peer['rows']) if json.loads(row['event_json'])['kind'] == 'knowledge.published')
+    peer['rows'] = peer['rows'][:publication]
+    # This is a valid native prefix without the pinned publication, rather
+    # than a corrupt journal. A latest or other-family substitution must fail.
+    with pytest.raises(runtime.OperationsUnavailable, match='pinned knowledge definition|exact required lineage'):
+        runtime.build_operation_sidecar(missing)
+    damaged = deepcopy(bundle)
+    row = next(row for row in reversed(damaged['rows']) if json.loads(row['event_json'])['kind'] == 'work.context')
+    event = json.loads(row['event_json'])
+    pin = next(pin for pin in event['payload']['context']['compatible_knowledge'] if pin['family'] == head['graph']['family'])
+    pin['knowledge_sha256'] = '0' * 64
+    row['event_json'] = canonical_json_bytes(event).decode()
+    with pytest.raises(ValueError):
+        runtime.build_operation_sidecar(damaged)
+
+
+def test_own_pinned_version_reuses_exact_nonreference_ancestor(tmp_path):
+    from casepath_api.autonomous_knowledge_v1 import qualify, blank_interpretation
+    from casepath_api.autonomous_policy_v1 import compile_process, receipt
+    corpus = CanonicalCorpus()
+    old = service_at(tmp_path / 'foreign-ancestor.sqlite', corpus, ReferenceProfile.for_profile('synthetic-nine-v1'))
+    try:
+        store = old.store
+        historical = store.intake({'title': 'Historical admitted procedure', 'message': 'A legacy procedural qualification.', 'files': []},
+                                  'foreign-procedure-intake')
+        foreign_id = historical['claim_id']
+        workflow = 'autonomy.foreign-procedure'
+        def append(kind, payload, key):
+            state = store.get(foreign_id)
+            return store.append(foreign_id, kind, payload(state) if callable(payload) else payload,
+                                expected_revision=state['revision'], expected_state_sha256=state['state_sha256'], idempotency_key=key)
+        append('work.started', {'run_id': workflow, 'policy_id': old.policy_id}, workflow + '.start')
+        graph, facts, obligations = compile_process(old.policy, foreign_id, blank_interpretation('lease_termination_dispute'))
+        append('process.prepared', lambda state: {'graph': graph, 'facts': facts, 'obligations': obligations,
+               'receipt': receipt(state, 'historical_procedure', after_graph_sha256=graph['graph_sha256'])}, workflow + '.prepare')
+        historical = append('outcome.recorded', lambda state: {'outcome': {'status': 'deferred', 'summary': 'No case outcome is established.'},
+                            'receipt': receipt(state, 'historical_deferral')}, workflow + '.outcome')
+        version = qualify(old.policy, historical, candidates=[])
+        version['knowledge_sha256'] = digest_value(version)
+        append('knowledge.published', {'knowledge': version}, workflow + '.knowledge')
+        assert foreign_id not in ReferenceProfile().ids and version['version'] == 1 and not version['evidence_recipes']
+        cid = ReferenceProfile().ids[0]
+        admit(old, corpus, cid)
+        previous = old.run(cid)
+        version2 = previous['knowledge_published'][0]
+        assert version2['version'] == 2 and version2['parent_knowledge_sha256'] == version['knowledge_sha256']
+    finally:
+        old.shutdown()
+    service = service_at(tmp_path / 'foreign-ancestor.sqlite', corpus)
+    try:
+        service.store.add_sources(cid, service.reference_adapter.profile.files(cid), expected_revision=previous['revision'],
+                                 expected_state_sha256=previous['state_sha256'], idempotency_key='foreign-parent-cleaned-v2')
+        head = service.run(cid)
+        pin = next(pin for pin in head['semantic_contexts'][head['run_id']]['compatible_knowledge'] if pin['family'] == head['graph']['family'])
+        assert pin['version'] == 2 and pin['knowledge_sha256'] == version2['knowledge_sha256']
+        bundle = runtime.capture_operation_inputs(service.store, cid, service.policy)
+        assert [peer['claim_id'] for peer in bundle['knowledge_histories']] == [foreign_id]
+        sidecar = runtime.build_operation_sidecar(bundle)
+        assert sidecar['frames'][0]['instrumentation_id'] == runtime.INSTRUMENTATION_ID
+        assert sidecar['frames'][-1]['state_sha256'] == head['state_sha256']
+        reuse = next(frame for frame in sidecar['frames'] if frame.get('kind') == 'knowledge.reuse')
+        assert reuse['input']['version'] == 2 and reuse['input']['knowledge_sha256'] == version2['knowledge_sha256']
+        # Historical source/controller operations never appear in this trace.
+        assert all(frame.get('object', {}).get('id') != foreign_id for frame in sidecar['frames'])
+        unrelated = deepcopy(bundle)
+        unrelated['knowledge_histories'].append({'claim_id': 'auto_' + '0' * 24,
+                                                'rows': bundle['knowledge_histories'][0]['rows'],
+                                                'sources_base64': bundle['knowledge_histories'][0]['sources_base64']})
+        with pytest.raises(ValueError):
+            runtime.build_operation_sidecar(unrelated)
+    finally:
+        service.shutdown()
