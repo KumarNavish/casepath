@@ -709,6 +709,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace .au-stage-outcome .au-stage-reuse { margin-top:20px; font-size:18px; }
 .au-workspace .au-stage-reuse button { border:0; background:transparent; padding:0; color:var(--au-ink); font-size:18px; text-decoration:underline; text-underline-offset:4px; }
 .au-workspace .au-stage-transport { position:sticky; bottom:0; z-index:7; display:flex; align-items:center; justify-content:center; gap:20px; margin:18px auto 0; max-width:660px; padding:12px 8px; background:var(--au-field); }
+/* Completed playback follows the outcome in normal document flow. */
+.au-workspace [data-au-operation-presentation=completed] .au-stage-transport { position:static; }
 .au-workspace .au-stage-transport > button { min-width:64px; min-height:44px; padding:8px 12px; font-size:18px; }
 .au-workspace .au-stage-scrubber { display:flex; flex:1; align-items:center; gap:12px; color:var(--au-muted); font-size:18px; }
 .au-workspace .au-stage-scrubber input { width:100%; min-width:40px; accent-color:var(--au-ink); cursor:default; background:repeating-linear-gradient(to right,var(--au-line) 0 1px,transparent 1px calc(100% / var(--au-operation-ticks))); }
