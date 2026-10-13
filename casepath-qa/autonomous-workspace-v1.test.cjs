@@ -595,7 +595,8 @@ function dom() {
  const recordCallbacks=new Map(),recordTitle={textContent:''},recordPre={dataset:{},textContent:''};let recordHTML='';
  const recordBody={get innerHTML(){return recordHTML;},set innerHTML(value){recordHTML=value;},querySelector:selector=>selector==='pre'&&recordHTML.includes('<pre')?recordPre:null};
  const recordDialog={open:false,addEventListener(type,fn){recordCallbacks.set(type,fn);},removeEventListener(type){recordCallbacks.delete(type);},showModal(){this.open=true;},close(){this.open=false;recordCallbacks.get('close')?.();},querySelector:selector=>selector==='[data-au-record-content]'?recordBody:selector==='#auRecordTitle'?recordTitle:null};
- const container={ownerDocument:doc,classList:{add(){}},innerHTML:'',querySelector(s){return {'[data-au-view]':host,'.au-global-status':status,dialog,'.au-source-dialog':dialog,'.au-record-dialog':recordDialog}[s];},querySelectorAll:()=>[],addEventListener(type,fn){listeners.set(type,fn);},removeEventListener(type){listeners.delete(type);},contains:()=>true};
+ const containerAttributes=new Map();
+ const container={ownerDocument:doc,classList:{add(){}},setAttribute(name,value){containerAttributes.set(name,value);},removeAttribute(name){containerAttributes.delete(name);},innerHTML:'',querySelector(s){return {'[data-au-view]':host,'.au-global-status':status,dialog,'.au-source-dialog':dialog,'.au-record-dialog':recordDialog}[s];},querySelectorAll:()=>[],addEventListener(type,fn){listeners.set(type,fn);},removeEventListener(type){listeners.delete(type);},contains:()=>true};
  return {container,host,form,fields,message,submit,status,listeners,dialog,recordDialog,recordBody,recordPre};
 }
 const settle=()=>new Promise(resolve=>setImmediate(resolve));

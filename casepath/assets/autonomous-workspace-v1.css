@@ -121,6 +121,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .au-workspace :is(button,input,textarea,select):disabled { cursor:default; opacity:.6; }
 .au-workspace :is(button,a,input,textarea,select,summary,[tabindex]):focus-visible { outline:2px solid var(--au-accent); outline-offset:4px; }
 .au-workspace :is(h1,h2,h3,[data-au-inspector-heading]):focus:not(:focus-visible) { outline:none; }
+.au-workspace:not([data-au-keyboard="true"]) :is(h1,h2)[tabindex="-1"]:focus { outline:none; }
 .au-workspace a { color:inherit; text-underline-offset:4px; text-decoration-thickness:1px; }
 .au-workspace :is(a,.au-link):hover { color:var(--au-accent); }
 .au-workspace :is(input,textarea)::placeholder { color:var(--au-muted); opacity:1; }

@@ -765,7 +765,7 @@ async function mountFixture(page, config = {}) {
     window.__controller = window.CasePathAutonomous.mount(document.querySelector('#workspace'), {fetch});
   }, {data: fixtureData(config), config, base});
   const hash = new URL(page.url()).hash;
-  if (hash.startsWith('#autonomous/claim/')) {
+  if (hash.startsWith('#autonomous/claim/') || hash.startsWith('#autonomous/demonstration')) {
     if(config.allowHeldPreview){const id=decodeURIComponent(hash.slice('#autonomous/claim/'.length).split('?')[0]);await eventually(()=>page.locator(`[data-au-preview="catalog"][data-au-preview-claim="${id}"], [data-au-preview="unknown"]`).count().then(count=>count===1),'the held uncached reload did not retain an opening view without accepted content');}
     else await eventually(() => page.locator('[data-au-claim-title]').count().then(count => count === 1), 'the reloaded claim did not render');
   }
@@ -953,6 +953,134 @@ for(const interruption of ['none','pause','navigation','unstarted','pause-head',
  else {await page.clock.runFor(4100);await eventually(()=>page.evaluate(()=>window.__handoffPaints.some(row=>row.revision==='0')),'verified next prefix zero did not paint directly');assert.ok(new URL(page.url()).hash.includes(next));const opening=await page.evaluate(()=>window.__handoffPaints.find(row=>row.revision==='0'));assert.equal(opening.state_sha256,fixture.prefixes[next][0].state.state_sha256);assert.deepEqual(opening.nodes,[]);assert.deepEqual(opening.knowledge,[]);assert.equal(await page.locator('[data-au-node]').count(),0,'the next verified head never lends its process to intake prefix zero');}
  assert.equal(await page.evaluate(()=>window.__handoffPaints.some(row=>row.empty)),false,'no empty Choose a case interstitial is painted');assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
  await focusedReceipt(page,`causal-native-handoff-${interruption}`,{prior:id,next,interruption,paints:await page.evaluate(()=>window.__handoffPaints)});
+});
+
+test('replay entry: a legacy link without collection plays its exact roster and highlights Demonstration',async t=>{
+ const id=demoIds[0],page=await fixturePage(t,{presentationSuite:'replay',initialFragment:`#autonomous/claim/${id}?mode=replay&through=0`});
+ await title(page,id);
+ assert.equal(await page.locator('[data-au-demo-play]').count(),1,'a direct replay stays still until Play');
+ const before=await visibleRecord(page);await page.clock.runFor(7000);assert.deepEqual(await visibleRecord(page),before);
+ await page.locator('[data-au-demo-play]').click();await page.clock.runFor(1600);
+ assert.ok(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))>0,'Play must consume a real legacy prefix');
+ assert.equal(await page.locator('.au-nav [aria-current="page"]').getAttribute('data-au-nav'),'demonstration');
+ assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),'legacy');
+ await page.locator('.au-nav [data-au-nav="work"]').click();
+});
+
+test('replay entry: programmatic titles stay quiet while native keyboard focus remains visible',async t=>{
+ const id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly:true,initialFragment:`#autonomous/claim/${id}?mode=replay&through=0`});
+ const heading=page.locator('h1');
+ const focus=await heading.evaluate(element=>({active:document.activeElement===element,visible:element.matches(':focus-visible'),outline:getComputedStyle(element).outlineStyle}));
+ assert.equal(focus.active,true);assert.equal(focus.outline,'none','the initial programmatic title focus must not add a red rectangle');
+ await page.keyboard.press('Tab');const active=await page.evaluate(()=>({tag:document.activeElement.tagName,visible:document.activeElement.matches(':focus-visible'),outline:getComputedStyle(document.activeElement).outlineStyle}));
+ assert.equal(active.tag,'BUTTON');assert.equal(active.visible,true);assert.equal(active.outline,'solid');
+ await heading.focus();assert.equal(await heading.evaluate(element=>getComputedStyle(element).outlineStyle),'solid','keyboard modality retains heading focus indication');
+});
+
+for(const publicReadOnly of [false,true])test(`replay entry: fresh ${publicReadOnly?'public visitor':'owner'} consumes all 218 reference prefixes and eight native handoffs`,async t=>{
+ const fixture=referenceFixture(),id=referenceIds[0],page=await fixturePage(t,{referenceFixture:true,publicReadOnly,providerReady:!publicReadOnly,initialFragment:publicReadOnly?'#autonomous/demonstration?mode=replay':'#autonomous'});
+ if(!publicReadOnly)await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+ await eventually(()=>page.locator('[data-au-revision="0"]').count().then(count=>count===1),'fresh Demonstration must begin at reference intake prefix zero');
+ assert.ok(new URL(page.url()).hash.startsWith(`#autonomous/claim/${id}?collection=reference&mode=replay&through=0`));
+ assert.equal(await page.locator('[data-au-node],[data-au-reference-mode]').count(),0,'the verified head cannot paint into prefix zero');
+ await title(page,id);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});
+ await page.evaluate(()=>{
+  window.__referencePaints=[];
+  const capture=()=>{
+   const pre=document.querySelector('[data-au-record-content] > pre[data-au-record-kind="claim"]'),surface=document.querySelector('[data-au-revision]');
+   if(!pre||!surface)return;const record=JSON.parse(pre.textContent);if(!record?.state)return;
+   const identity=`${record.state.claim_id}:${record.state.revision}:${record.state.state_sha256}`;
+   if(window.__referencePaints.at(-1)?.identity===identity)return;
+   window.__referencePaints.push({identity,record,revision:surface.dataset.auRevision,state_sha256:surface.dataset.auStateSha,route:location.hash,nav:document.querySelector('.au-nav [aria-current="page"]')?.dataset.auNav,nodes:[...surface.querySelectorAll('[data-au-node]')].map(row=>row.dataset.auNode),requirements:[...surface.querySelectorAll('[data-au-obligation]')].map(row=>row.dataset.auObligation)});
+  };
+  capture();window.__referenceObserver=new MutationObserver(capture);window.__referenceObserver.observe(document.querySelector('#workspace'),{subtree:true,childList:true});
+ });
+ for(let tick=0;tick<1000&&await page.locator('[data-au-demo-stop]').count();tick++)await page.clock.runFor(1600);
+ assert.match(await page.locator('.au-global-status').innerText(),/Recorded playback finished/);
+ const paints=await page.evaluate(()=>{window.__referenceObserver.disconnect();return window.__referencePaints;});
+ const expected=referenceIds.flatMap(claim=>Object.values(fixture.prefixes[claim]));assert.equal(expected.length,218);assert.equal(paints.length,218,'no real accepted prefix may disappear during playback or case handoff');
+ for(let index=0;index<expected.length;index++){
+  const paint=paints[index],prefix=expected[index];assert.deepEqual(paint.record,{state:prefix.state,projection:prefix.projection},`native paint ${index} retains the complete accepted prefix`);
+  assert.equal(paint.revision,String(prefix.through_seq));assert.equal(paint.state_sha256,prefix.state.state_sha256);assert.equal(paint.nav,'demonstration');
+  assert.ok(paint.route.startsWith(`#autonomous/claim/${prefix.state.claim_id}?collection=reference&mode=replay&through=${prefix.through_seq}`));
+  assert.deepEqual(sorted(paint.nodes),sorted((prefix.state.graph?.nodes||[]).map(row=>row.node_id)),`native paint ${index} keeps its own recorded graph`);
+  assert.ok(paint.requirements.every(identity=>prefix.state.obligations.some(row=>row.obligation_id===identity)),`native paint ${index} requirements belong to this accepted prefix`);
+ }
+ assert.deepEqual([...new Set(paints.map(row=>row.record.state.claim_id))],referenceIds);assert.equal(paints.filter((row,index)=>index&&row.record.state.claim_id!==paints[index-1].record.state.claim_id).length,8);
+ assert.deepEqual(await visibleRecord(page),{state:fixture.snapshots[referenceIds.at(-1)].state,projection:fixture.snapshots[referenceIds.at(-1)].projection});
+ assert.equal(await page.evaluate(()=>window.__fixture.calls.some(call=>call.method!=='GET')),false);
+ await focusedReceipt(page,`replay-entry-all218-${publicReadOnly?'visitor':'owner'}`,{prefixes:paints.map(({record,...paint})=>({...paint,claim_id:record.state.claim_id})),handoffs:8,requests:await page.evaluate(()=>window.__fixture.calls)});
+});
+
+test('replay entry: shared reference identity and explicit legacy links keep manual past-state inspection until Play',async t=>{
+ const fixture=referenceFixture(),shared='clm_7dbd7c7d1c4ddf90';
+ for(const [id,query,collection]of [[shared,'','reference'],[demoIds[0],'&collection=legacy','legacy']])await t.test(collection,async t=>{
+  const page=await fixturePage(t,{referenceFixture:true,presentationSuite:'replay',publicReadOnly:true,initialFragment:`#autonomous/claim/${id}?mode=replay&through=0&detail=sources${query}`});
+  await title(page,id);const before=await visibleRecord(page);await page.clock.runFor(8000);assert.deepEqual(await visibleRecord(page),before);assert.equal(await page.locator('[data-au-demo-play]').count(),1);assert.equal(await page.locator('.au-nav [aria-current="page"]').getAttribute('data-au-nav'),'demonstration');
+  assert.equal(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('collection'),collection);
+  if(collection==='reference')assert.deepEqual(before,{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});
+  await page.locator('[data-au-demo-play]').focus();await page.keyboard.press('Enter');await page.clock.runFor(1600);assert.ok(Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))>0);
+  await page.locator('.au-nav [data-au-nav="work"]').click();
+ });
+});
+
+test('replay lifecycle: actual index retains a native back-forward cached prefix and resumes only by intent',async()=>{
+ const fixture=referenceFixture(),id=referenceIds[0],assets=new Map([
+  ['casepath/index.html',fs.readFileSync(path.join(root,'casepath/index.html'))],
+  ['casepath/assets/autonomous-entry-v1.js',fs.readFileSync(process.env.CASEPATH_BROWSER_ENTRY_ASSET || path.join(root,'casepath/assets/autonomous-entry-v1.js'))],
+  ['casepath/assets/autonomous-workspace-v1.js',fs.readFileSync(process.env.CASEPATH_BROWSER_JS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.js'))],
+  ['casepath/assets/autonomous-workspace-v1.css',fs.readFileSync(process.env.CASEPATH_BROWSER_CSS_ASSET || path.join(root,'casepath/assets/autonomous-workspace-v1.css'))]
+ ]),evidence={assets:Object.fromEntries([...assets].map(([file,bytes])=>[file,sha(bytes)])),runs:[]};
+ // Playwright normally disables BFCache. This separate browser exercises a
+ // genuine persisted pageshow without changing other tests' browser policy.
+ const cachedBrowser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_EXECUTABLE_PATH || '/usr/bin/chromium',headless:true,args:['--no-sandbox'],ignoreDefaultArgs:['--disable-back-forward-cache']});
+ try {
+  for(const fragment of [`#autonomous/claim/${id}?collection=reference&mode=replay&through=18&detail=sources`,'#autonomous/demonstration?mode=replay']){
+   const context=await cachedBrowser.newContext({serviceWorkers:'block'}),page=await context.newPage(),requests=[],errors=[],shows=[],served={};
+   page.on('pageerror',error=>errors.push(error.message));
+   await page.exposeFunction('observePageShow',row=>shows.push(row));
+   await page.addInitScript(()=>addEventListener('pageshow',event=>void window.observePageShow({persisted:event.persisted,path:location.pathname})));
+   const time=new Date('2026-10-13T12:00:00Z');await page.clock.install({time});await page.clock.pauseAt(time);
+   await page.route('**/*',async route=>{
+    const request=route.request(),url=new URL(request.url()),name=decodeURIComponent(url.pathname);requests.push({path:name+url.search,method:request.method()});
+    assert.equal(url.origin,'http://native-entry.invalid','every request remains in the local native fixture');assert.equal(request.method(),'GET');
+    if(name==='/away')return route.fulfill({status:200,contentType:'text/html',body:'<!doctype html><title>Away</title><p>Away</p>'});
+    if(name.startsWith(base)){
+     const suffix=name.slice(base.length),match=suffix.match(/^\/claims\/([^/]+)(?:\/(snapshot|replay|events))?$/);
+     const data=suffix==='/claims'?{claims:Object.values(fixture.snapshots).map(row=>({...row.state,origin:'canonical_original'})),total:9}:suffix==='/knowledge'?fixture.knowledge:suffix==='/status'?{enabled:true,provider_ready:false,read_only:true,writable:false,limits:{}}:match?match[2]==='replay'?fixture.prefixes[match[1]]?.[Number(url.searchParams.get('through_seq')||0)]:fixture.snapshots[match[1]]:null;
+     return route.fulfill({status:data?200:404,contentType:'application/json',body:JSON.stringify(data||{detail:'Synthetic GET unavailable'})});
+    }
+    const file='casepath/'+(name==='/'?'index.html':name.slice(1));let body=assets.get(file);
+    if(!body&&!file.includes('..')&&fs.existsSync(path.join(root,file)))body=fs.readFileSync(path.join(root,file));
+    if(!body)return route.fulfill({status:404,body:'Unavailable'});
+    served[file]=sha(body);
+    if(file==='casepath/index.html')body=Buffer.from(body.toString().replace('<head>','<head><script>window.CASEPATH_PUBLIC_READ_ONLY=true;window.CASEPATH_HOSTED_AUTONOMOUS=true;</script>'));
+    return route.fulfill({status:200,contentType:{'.html':'text/html','.js':'application/javascript','.css':'text/css','.ttf':'font/ttf','.json':'application/json'}[path.extname(file)]||'application/octet-stream',body});
+   });
+   await page.goto('http://native-entry.invalid/'+fragment);await page.locator('[data-au-revision]').waitFor();
+   const sample=()=>page.evaluate(()=>({hash:location.hash,revision:Number(document.querySelector('[data-au-revision]')?.dataset.auRevision),state_sha256:document.querySelector('[data-au-state-sha]')?.dataset.auStateSha,nav:document.querySelector('.au-nav [aria-current]')?.dataset.auNav,panel:document.querySelector('[data-au-context]')?.dataset.auContext,play:!!document.querySelector('[data-au-demo-play]'),resume:!!document.querySelector('[data-au-demo-resume]'),workspaceLength:document.querySelector('#autonomousWorkspace').innerHTML.length,hidden:document.hidden}));
+   const autoplay=fragment.startsWith('#autonomous/demonstration');
+   if(autoplay){await page.clock.runFor(4100);await eventually(async()=>(await sample()).revision>0,'actual entry did not autoplay its recorded prefixes');}
+   const before=await sample();assert.equal(before.nav,'demonstration');assert.equal(before.state_sha256,fixture.prefixes[id][before.revision].state.state_sha256);
+   await page.evaluate(()=>addEventListener('pagehide',event=>sessionStorage.setItem('casepath-qa-lifecycle',JSON.stringify({persisted:event.persisted,workspaceLength:document.querySelector('#autonomousWorkspace')?.innerHTML.length}))));
+   await page.goto('http://native-entry.invalid/away');await page.goBack({waitUntil:'commit',timeout:3000});
+   await eventually(()=>shows.some(row=>row.path==='/'&&row.persisted===true),'Back did not restore a genuine native cached page');
+   const restored=await sample();for(const field of ['revision','state_sha256','hash','nav','panel'])assert.equal(restored[field],before[field],`native cached Back must retain its exact ${field}`);assert.ok(restored.workspaceLength>0);
+   const persistedHide=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('casepath-qa-lifecycle')));assert.equal(persistedHide.persisted,true);
+   await page.clock.runFor(9000);const held=await sample();assert.equal(held.revision,before.revision,'native visibility restoration must hold the inspected recorded prefix');
+   if(autoplay){
+    assert.equal(restored.resume,true);await page.locator('[data-au-demo-resume]').click();
+    for(let tick=0;(await sample()).revision===held.revision&&tick<300;tick++)await page.clock.runFor(20);
+    const resumed=await sample();assert.equal(resumed.revision,held.revision+1);assert.equal(resumed.state_sha256,fixture.prefixes[id][resumed.revision].state.state_sha256);
+   }
+   await page.reload();await page.locator('[data-au-revision]').waitFor();
+   const departure=await page.evaluate(()=>JSON.parse(sessionStorage.getItem('casepath-qa-lifecycle'))),reloaded=await sample();assert.equal(departure.persisted,false);assert.equal(departure.workspaceLength,0);assert.equal(reloaded.nav,'demonstration');assert.equal(reloaded.play,true,'a normal reload preserves the recorded route for deliberate Play');
+   for(const [file,hash]of Object.entries(evidence.assets))assert.equal(served[file],hash,'the actual native loader serves the current selected asset bytes');
+   assert.deepEqual(errors,[]);assert.equal(requests.some(row=>row.method!=='GET'||row.path==='/api/demo'),false);
+   evidence.runs.push({fragment,before,shows,persistedHide,restored,held,departure,reloaded,requests});await context.close();
+  }
+ }finally{await cachedBrowser.close();}
+ if(focusedReceiptRoot){fs.mkdirSync(focusedReceiptRoot,{recursive:true});fs.writeFileSync(path.join(focusedReceiptRoot,'native-entry-bfcache.json'),JSON.stringify(evidence,null,2));}
 });
 
 test('reference native: exact nine actual accepted assessments retain graph documents Knowledge and source bytes',async t=>{
@@ -1348,7 +1476,10 @@ test('a replay control history without an accepted operational outcome stops hon
   await page.evaluate(()=>window.__controller.showDemonstration(true,'legacy'));
   await playIfPaused(page);
   await title(page, demoIds[0]);
-  await page.clock.runFor(700);
+  // The first accepted graph has its own reading interval. Reach the actual
+  // saved head before checking its outcome gate, rather than assuming 700ms.
+  for(let tick=0;Number(await page.locator('[data-au-revision]').getAttribute('data-au-revision'))<2&&tick<300;tick++)await page.clock.runFor(20);
+  assert.equal(await page.locator('[data-au-revision]').getAttribute('data-au-revision'),'2');
   await eventually(() => page.locator('.au-global-status').innerText().then(text => /no settled operational outcome/i.test(text)), 'the authored history without an outcome did not stop');
   const saved = JSON.parse(await page.locator('[data-au-record-content] > pre[data-au-record-kind="claim"]').textContent());
   const expected = await page.evaluate(id => window.__fixture.acceptedHistories[id][2], demoIds[0]);

@@ -18,7 +18,7 @@
     if (document.documentElement.dataset.autonomousWorkspace === 'true') {
       await load('casepath-autonomous-script');
       window.CasePathAutonomous.mount(document.getElementById('autonomousWorkspace'));
-      window.addEventListener('pagehide', () => window.CasePathAutonomous.destroy());
+      window.addEventListener('pagehide', event => { if (!event.persisted) window.CasePathAutonomous.destroy(); });
     } else {
       await load('casepath-review-workspace-script');
       await load('casepath-review-desk-script');

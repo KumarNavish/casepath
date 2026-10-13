@@ -42,6 +42,7 @@
   ].map(Object.freeze));
   const featuredCase = id => REFERENCE_DEMO_CASES.find(row => row.claim_id === id) || DEMO_CASES.find(row => row.claim_id === id);
   const demoCases = collection => collection === 'legacy' ? DEMO_CASES : REFERENCE_DEMO_CASES;
+  const replayCollection = (id, collection) => ['reference','legacy'].includes(collection) ? collection : REFERENCE_DEMO_CASES.some(row => row.claim_id === id) ? 'reference' : DEMO_CASES.some(row => row.claim_id === id) ? 'legacy' : 'reference';
   const mounts = new WeakMap();
   let activeMount = null;
   const h = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
@@ -1213,6 +1214,7 @@
     const claimViews = new Map(), arrivalForms = new Map(), arrivals = new Map(), controls = new Map(), starts = new Map();
     const collection = {search:'',filter:'all',domain:'all',scope:'originals',page:1};
     container.classList.add('au-workspace');
+    container.removeAttribute('data-au-keyboard');
     container.innerHTML = `<div class="au-shell au-identity-shell"><header class="au-identity-header"><a class="au-brand" href="#autonomous/cases">CasePath<span>Evidence into action</span></a>${publicReadOnly ? '' : '<button type="button" class="au-header-new" data-au-nav="intake">New claim <span aria-hidden="true">↗</span></button>'}<span class="au-access-label" data-au-public-access${publicReadOnly ? '' : ' hidden'}>Read-only</span><nav class="au-nav" aria-label="CasePath"><button type="button" data-au-nav="work" aria-current="page">Cases</button><button type="button" data-au-nav="demonstration">Demonstration</button><button type="button" data-au-nav="knowledge">Knowledge</button></nav><div class="au-case-return" data-au-case-return hidden></div></header><${mainTag} class="au-main"><div class="au-global-status" role="status" aria-live="polite"></div><div class="au-body" data-au-view data-au-view-state="work"></div></${mainTag}></div><dialog class="au-source-dialog" aria-labelledby="auSourceTitle"><header class="au-dialog-header"><div><p class="au-eyebrow">Original source</p><h2 id="auSourceTitle">Source</h2></div><button type="button" class="au-secondary" data-au-close>Close source</button></header><div data-au-source-content></div></dialog><dialog class="au-record-dialog" aria-labelledby="auRecordTitle"><header class="au-dialog-header"><h2 id="auRecordTitle">Record</h2><button type="button" class="au-secondary" data-au-close-record>Close</button></header><div data-au-record-content></div></dialog>`;
     const host = container.querySelector('[data-au-view]'), globalStatus = container.querySelector('.au-global-status'), dialog = container.querySelector('.au-source-dialog'), recordDialog = container.querySelector('.au-record-dialog');
     function notice(message, error = false) { globalStatus.textContent = message; globalStatus.classList.toggle('au-error', error); }
@@ -1230,7 +1232,7 @@
       if (fragment === '#autonomous/knowledge') showKnowledge(false);
       else if (fragment.startsWith('#autonomous/knowledge?')) { const params = new URLSearchParams(fragment.slice(fragment.indexOf('?')+1)); showKnowledge(false,{knowledge_id:params.get('knowledge'),version:params.get('version'),knowledge_sha256:params.get('sha256'),definition_sha256:params.get('definition')}); }
       else if (fragment.startsWith('#autonomous/claim/')) {
-        try { const [encoded,query = ''] = fragment.slice('#autonomous/claim/'.length).split('?'), params = new URLSearchParams(query), id = decodeURIComponent(encoded); id ? openClaim(id,false,{mode:params.get('mode') === 'replay' ? 'replay' : 'saved',through:Number(params.get('through') || 0),collection:params.get('collection') === 'legacy' ? 'legacy' : 'reference',detail:params.get('detail'),node:params.get('node'),document:params.get('document'),obligation:params.get('obligation'),fact:params.get('fact'),trace:params.get('trace') === '1'}) : showWork(false); }
+        try { const [encoded,query = ''] = fragment.slice('#autonomous/claim/'.length).split('?'), params = new URLSearchParams(query), id = decodeURIComponent(encoded); id ? openClaim(id,false,{mode:params.get('mode') === 'replay' ? 'replay' : 'saved',through:Number(params.get('through') || 0),collection:params.get('collection'),detail:params.get('detail'),node:params.get('node'),document:params.get('document'),obligation:params.get('obligation'),fact:params.get('fact'),trace:params.get('trace') === '1'}) : showWork(false); }
         catch (_) { showWork(false); }
       } else if (fragment.startsWith('#autonomous/demonstration')) { const params = new URLSearchParams(fragment.split('?')[1] || ''); showDemonstration(false,params.get('collection') === 'legacy' ? 'legacy' : 'reference'); }
       else if (fragment.startsWith('#autonomous/cases?') || fragment.startsWith('#autonomous/work?')) {
@@ -1794,10 +1796,11 @@
       return true;
     }
     async function openClaim(id, writeHistory = true, preferences = {}) {
+      if (preferences.mode === 'replay') preferences = {...preferences,collection:replayCollection(id,preferences.collection)};
       if (!preferences.demo) stopPresentation();
       else { if (demoTimer) root.clearTimeout(demoTimer); demoTimer = null; if (demoSession) demoSession.preparing = null; }
       leaveView(); route(claimFragment(id,preferences),writeHistory);
-      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo ? 'demonstration' : 'work'); notice('');
+      epoch++; const token = epoch; if (preferences.demo && demoSession) demoSession.epoch = token; cancelPoll(); motion?.cancel(); setView('claim'); publicationAttention = null; inspectionHold = Boolean(preferences.node || preferences.document || preferences.obligation || preferences.fact || ['sources','documents','knowledge','activity'].includes(preferences.detail)); current = null; openingId = id; openingPreferences = preferences; selected = null; cursor = null; history = []; disconnected = false; connectionFailed = false; pendingArrival = arrivals.get(id) || null; pendingControl = controls.get(id) || null; pendingStart = starts.get(id) || null; presentationMode = preferences.mode || 'saved'; replayRecord = null; nav(preferences.demo || presentationMode === 'replay' ? 'demonstration' : 'work'); notice('');
       claimRenderComplete = false;
       if (presentationMode !== 'replay') serviceStatus(token,true).catch(error => { if (!disposed && token === epoch) { statusAuthority = null; synchronizeAuthority(); notice(`Live availability unavailable: ${error.message}`,true); } });
       const opening = preferences.demo && demoSession?.verifiedOpening?.claimId === id && demoSession.verifiedOpening.generation === readGeneration ? demoSession.verifiedOpening : null;
@@ -2059,7 +2062,7 @@
       if (pausedPresentation) { resumePresentation(); return; }
       const collection = openingPreferences.collection || (REFERENCE_DEMO_CASES.some(row => row.claim_id === current.claim_id) ? 'reference' : 'legacy');
       const index = demoCases(collection).findIndex(row => row.claim_id === current.claim_id);
-      if (index < 0) return;
+      if (index < 0) { notice('This recorded case is outside the selected demonstration collection. Its verified history remains available for inspection.'); return; }
       inspectionHold = false;
       if (replayRecord.through_seq >= replayRecord.current_revision) {
         demoSession = {mode:'replay',collection,index}; await openPresentationCase(demoSession); return;
@@ -2596,8 +2599,8 @@
         if (presentationMode !== 'replay') { disconnected = true; cancelPoll(); serviceStatus(epoch,true).catch(() => {}); current ? poll() : openingId ? loadOpenedClaim(openingId,epoch) : schedule(); }
       }
     }
-    function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
-    function pointerInput() { keyboard=false; }
+    function keyboardInput(event) { if (event.key === 'Tab' || event.key?.startsWith('Arrow')) { keyboard=true;container.setAttribute('data-au-keyboard','true');pauseInspection();motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
+    function pointerInput() { keyboard=false;container.removeAttribute('data-au-keyboard'); }
     function motionPreference() { if (reduced?.matches) { motion?.cancel();selectionMotion?.cancel();interactionMotion?.cancel(); } }
     doc.addEventListener('keydown',keyboardInput);container.addEventListener('pointerdown',pointerInput);reduced?.addEventListener?.('change',motionPreference);
     function geometryEvent(event) { if (event.type === 'toggle') { drawEdges(); if (event.target?.open) interact(event.target.querySelector(':scope > :not(summary)')); } else if (event.target?.hasAttribute?.('data-au-graph-pan')) drawEdges(); }

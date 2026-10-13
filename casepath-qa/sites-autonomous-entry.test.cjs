@@ -49,3 +49,14 @@ test('Sites rejects an index without its executable workspace entry', async () =
   });
   assert.equal(response.status, 500);
 });
+
+test('autonomous entry preserves the cached controller on persisted pagehide and destroys a departing page',async()=>{
+  const {runInNewContext}=require('node:vm'),listeners=new Map(),workspace={innerHTML:'verified prefix'},loaded=[];
+  let mounts=0,destroys=0;
+  const window={CasePathAutonomous:{mount(container){assert.equal(container,workspace);mounts++;},destroy(){destroys++;workspace.innerHTML='';}},addEventListener(type,listener){listeners.set(type,listener);}};
+  const document={documentElement:{dataset:{autonomousWorkspace:'true'}},createElement:()=>({}),querySelector:()=>({content:'verified-workspace.js'}),getElementById:()=>workspace,body:{append(script){loaded.push(script.src);script.onload();}}};
+  await runInNewContext(readFileSync(resolve(__dirname,'../casepath/assets/autonomous-entry-v1.js'),'utf8'),{window,document,location:new URL('https://casepath.invalid/')});
+  assert.equal(mounts,1);assert.deepEqual(loaded,['verified-workspace.js']);
+  listeners.get('pagehide')({persisted:true});assert.equal(destroys,0,'a native back-forward cache entry retains its controller and verified view');assert.equal(workspace.innerHTML,'verified prefix');
+  listeners.get('pagehide')({persisted:false});assert.equal(destroys,1);assert.equal(workspace.innerHTML,'');
+});
