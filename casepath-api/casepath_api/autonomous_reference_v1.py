@@ -15,6 +15,7 @@ from .autonomous_policy_v1 import (INTERPRET_SCHEMA, VERIFY_SCHEMA, REQUIRED_FIE
                                   compile_verification_proposal, proposal_items)
 from .autonomous_reference_policy_v1 import PROFILE_ROOT, V2_PROFILE_ROOT, REFERENCE_POLICY_ID, SCOPES
 from .workspace_corpus import digest_value
+from .autonomous_operations_v1 import observe, citation_source, observing
 
 REFERENCE_CONTRACT = 'casepath.deterministic-reference/1.0.0'
 CLEANUP_CONTRACT = 'casepath.synthetic-reference-cleanup/2.0.0'
@@ -243,7 +244,23 @@ def _find(sources, pattern, *, role='supporting_document'):
     for source in sources:
         if source['role'] != role or source.get('complete') is not True:
             continue
+        opened = read = None
+        if observing():
+            opened = observe('source.open', 'source', source['artifact_id'],
+                             {'artifact_id': source['artifact_id'], 'sha256': source['sha256']},
+                             {'artifact_id': source['artifact_id'], 'sha256': source['sha256'],
+                              'text': source['text'], 'text_sha256': sha256(source['text'].encode()).hexdigest(),
+                              'complete': source['complete'], 'role': source['role'], 'file_name': source.get('file_name')})
+            examined = citation_source({'artifact_id': source['artifact_id'], 'quote': source['text'],
+                                        'start_char': 0, 'end_char': len(source['text'])}, sources)
+            read = observe('span.read', 'source', source['artifact_id'], {'pattern': pattern, 'flags': ['DOTALL']},
+                           {'characters_read': len(source['text'])}, source=examined, causes=[opened])
         match = re.search(pattern, source['text'], re.S)
+        matched_span = citation_source({'artifact_id': source['artifact_id'], 'quote': match.group(),
+                                       'start_char': match.start(), 'end_char': match.end()}, sources) if match else None
+        observe('phrase.match', 'source', source['artifact_id'], {'pattern': pattern, 'flags': ['DOTALL']},
+                {'matched': bool(match), 'admissible_length': bool(match and 0 < len(match.group()) <= 800)},
+                source=matched_span, causes=[read])
         if match and 0 < len(match.group()) <= 800:
             return {'artifact_id': source['artifact_id'], 'quote': match.group()}
     return None
@@ -277,11 +294,17 @@ def reference_findings(policy, sources):
         if citation:
             docs.append({'document_type': kind, 'artifact_id': citation['artifact_id'], 'assessment': 'sufficient',
                          'summary': summary, 'citations': [citation]})
+            observe('fact.extract', 'fact', 'fact:' + kind, {'document_type': kind},
+                    {'status': 'provisional', 'summary': summary, 'verification_required': True},
+                    source=citation_source(citation, sources))
 
     def predicate(name, citation, articles, *, failed=False):
         predicates.append({'predicate_id': name, 'status': 'unknown' if not citation else 'failed' if failed else 'supported',
                            'citations': [citation] if citation else [],
                            'rule_refs': ['CO:' + a for a in articles]})
+        observe('fact.extract', 'fact', name, {'rule_refs': ['CO:' + a for a in articles]},
+                {'status': 'provisional', 'proposed_status': predicates[-1]['status'], 'verification_required': True},
+                source=citation_source(citation, sources))
 
     document('tenancy_terms_evidence', terms, 'Source attestation establishes the relevant tenancy terms; no complete lease is claimed received.')
     predicate('residential_tenancy_scope', terms, SCOPES[family]['articles'])
@@ -375,6 +398,9 @@ class DeterministicReferenceAdapter:
                 valid = valid and row['required_fields'] == self.policy['required_fields_by_document'][kind]
             checks.append({'item_id': key, 'accepted': valid,
                            'reason': 'Recomputed bounded evidence rule and exact source span.' if valid else 'Source rule or item differs.'})
+            observe('verification.check', 'fact' if not key.startswith('document:') else 'document', key,
+                    {'candidate': row, 'expected': expected_items.get(key)}, checks[-1],
+                    source=citation_source(row.get('citations', [None])[0] if valid and row.get('citations') else None, context['sources']))
         result = {'family_supported': candidate['category']['family'] == expected['category']['family'], 'checks': checks,
                   'issues': [p['predicate_id'] + ' remains unknown' for p in predicates if p['status'] == 'unknown']}
         validate_result(result, VERIFY_SCHEMA)

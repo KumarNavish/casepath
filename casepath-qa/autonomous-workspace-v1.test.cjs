@@ -1726,3 +1726,135 @@ test('returning to intake updates its idle label and local validation restores t
  finishStatus(response(savedStatus));await settle();await f.listeners.get('submit')({target:form,preventDefault(){}});assert.equal(submit.textContent,'Save claim');assert.equal(submit.disabled,false);assert.equal(form.elements.title.disabled,false);assert.equal(form.elements.files.files,list);assert.equal(api.calls.filter(call=>call.init.method==='POST').length,0);
  savedStatus={enabled:true,provider_ready:true,limits:{}};now+=10001;navClick(f,'work');await settle();await newClaim(f);assert.equal(f.intake,form);assert.match(submit.textContent,/^Start autonomous work/);assert.equal(form.elements.files.files,list);assert.equal(statusReads,6);
 });
+
+const operationContract='casepath.operations-stream/1.0.0';
+function operationFixture() {
+ const sourceText='Before 😀\r\nA tenant reports a cold home. Zürich.',descriptor={artifact_id:'source',sha256:sha('original immutable bytes'),file_name:'source.txt'};
+ const baseline=state({source_descriptors:[descriptor],run_id:'reference-run',revision:3,last_event_sha256:sha('event-3')});delete baseline.state_sha256;baseline.state_sha256=sha(ui.canonicalJSON(baseline));
+ const head={...baseline,revision:4,last_event_sha256:sha('event-4'),status:'deferred',outcome:{assessment_status:'complete'}};delete head.state_sha256;head.state_sha256=sha(ui.canonicalJSON(head));
+ const start={claim_id:baseline.claim_id,from_seq:3,run_id:baseline.run_id,profile_id:'synthetic-nine-v2',profile_sha256:sha('profile')},binding={contract:operationContract,type:'binding',instrumentation_id:'casepath.reference-operations/1.1.0',...start,mode:'historical_recomputed',newly_recomputed:true,source_roster_sha256:sha('roster'),rule_set_sha256:sha('rules'),input_sha256:sha('input'),current_revision:4,current_state_sha256:head.state_sha256,current_event_sha256:head.last_event_sha256};
+ const journal=Array.from({length:4},(_,index)=>({claim_id:baseline.claim_id,seq:index+1,revision:index+1,kind:index===2?'process.prepared':'work.phase',event_sha256:sha(`event-${index+1}`),previous_event_sha256:index?sha(`event-${index}`):null,state_sha256:index===2?baseline.state_sha256:index===3?head.state_sha256:sha(`state-${index+1}`)}));
+ const trace={binding,rows:[],sources:new Map(),bytes:0,pinnedJournal:journal,journal:[],transportState:null};
+ const seal=(kind,object,result,source)=>{const input={source_artifact_id:descriptor.artifact_id},frame={contract:operationContract,type:'operation',seq:trace.rows.length+1,id:`real-${trace.rows.length+1}`,kind,object,input,result,cause_ids:trace.rows.length?[trace.rows.at(-1).id]:[],previous_operation_sha256:trace.rows.at(-1)?.operation_sha256||null,input_sha256:sha(ui.canonicalJSON(input)),result_sha256:sha(ui.canonicalJSON(result)),...source?{source}:{}};const material={...frame};delete material.contract;delete material.type;return {...frame,operation_sha256:sha(ui.canonicalJSON(material))};};
+ return {sourceText,descriptor,baseline,head,start,binding,journal,trace,seal};
+}
+test('operation source spans preserve Python codepoints, exact original/text hashes and provisional authority',async()=>{
+ const f=operationFixture(),prior=JSON.stringify(f.baseline);f.sourceText += '\n' + 'Deep original line.\n'.repeat(200);
+ const open=f.seal('source.open',{type:'source',id:'source'},{...f.descriptor,text:f.sourceText,text_sha256:sha(f.sourceText)});
+ await ui.checkedOperation(open,f.trace,f.baseline);
+ const chars=Array.from(f.sourceText),quote='A tenant reports a cold home.',start_char=chars.join('').indexOf('A tenant')-1,pin={artifact_id:'source',sha256:f.descriptor.sha256,text_sha256:sha(f.sourceText),offset_unit:'unicode_code_point',start_char,end_char:start_char+Array.from(quote).length,quote};
+ const span=f.seal('span.read',{type:'source',id:'source'},{read:true},pin);await ui.checkedOperation(span,f.trace,f.baseline);
+ f.trace.current=span;const reading=ui.operationReadingMarkup(f.trace);assert.match(reading,/<mark[^>]*>A tenant reports a cold home\.<\/mark>/);assert.ok(reading.includes('Before 😀&#13;\n'));assert.equal((reading.match(/Deep original line\./g)||[]).length,200,'the source pane retains the complete immutable text');
+ const extract=f.seal('fact.extract',{type:'fact',id:'condition:cold',node_id:'branch'},{status:'provisional'},pin);await ui.checkedOperation(extract,f.trace,f.baseline);f.trace.current=extract;assert.match(ui.operationReadingMarkup(f.trace),/Provisional finding/);
+ assert.equal(JSON.stringify(f.baseline),prior,'an operation cannot mutate accepted facts, nodes or document state');
+ const bad=f.seal('phrase.match',{type:'source',id:'source'},{matched:true},{...pin,start_char:pin.start_char+1,end_char:pin.end_char+1});await assert.rejects(ui.checkedOperation(bad,f.trace,f.baseline),/exact Unicode/);
+ const tampered={...f.seal('phrase.match',{type:'source',id:'source'},{matched:true},pin),result:{matched:false}};await assert.rejects(ui.checkedOperation(tampered,f.trace,f.baseline),/identity/);
+ assert.equal(f.trace.rows.length,3);assert.match(ui.operationHistoryMarkup(f.trace),/real-1/);assert.match(ui.operationHistoryMarkup(f.trace),/real-3/);
+});
+test('compact operation checkpoints reconstruct only the exact pinned native journal and head',async()=>{
+ const f=operationFixture(),head={claimId:f.binding.claim_id,revision:4,state_sha256:f.head.state_sha256,event_sha256:f.head.last_event_sha256};
+ assert.equal(ui.checkedOperationBinding(f.binding,head,f.start),f.binding);
+ for(const change of [{run_id:'older-run'},{profile_sha256:sha('wrong-profile')},{current_state_sha256:sha('wrong-head')},{mode:'invented-live'},{instrumentation_id:'unsupported-revision'}])assert.throws(()=>ui.checkedOperationBinding({...f.binding,...change},head,f.start),/binding/);
+ const frame=(s)=>({contract:operationContract,type:'checkpoint',verified:true,journal_seq:s.revision,event_sha256:s.last_event_sha256,state_sha256:s.state_sha256,events:[f.journal[s.revision-1]],mode:'replay',through_seq:s.revision,current_revision:4,current_state_sha256:f.head.state_sha256,current_event_sha256:f.head.last_event_sha256,cursor_sha256:s.last_event_sha256,provenance:{run_id:s.run_id,event_sha256:s.last_event_sha256}});
+ const first={...frame(f.baseline),state:f.baseline};assert.equal((await ui.checkedOperationCheckpoint(first,f.trace)).state,f.baseline);
+ const delta={...frame(f.head),base_state_sha256:f.baseline.state_sha256,state_delta:{set:{revision:4,last_event_sha256:f.head.last_event_sha256,state_sha256:f.head.state_sha256,status:f.head.status,outcome:f.head.outcome},remove:[]}};
+ await assert.rejects(ui.checkedOperationCheckpoint({...delta,state_delta:{...delta.state_delta,set:{...delta.state_delta.set,status:'completed'}}},f.trace),/exact state hash/);
+ const incoming=await ui.checkedOperationCheckpoint(delta,f.trace);assert.deepEqual(incoming.state,f.head);assert.deepEqual(incoming.accepted.events,f.journal);
+ await assert.rejects(ui.checkedOperationCheckpoint(delta,f.trace),/sequence/);
+});
+test('NDJSON operations decode fragmented Unicode and cancel without consuming another frame',async()=>{
+ const frames=[{contract:operationContract,type:'binding',label:'😀 Zürich'},{contract:operationContract,type:'error',message:'Exact stop'}],bytes=new TextEncoder().encode(frames.map(JSON.stringify).join('\n')+'\n');let cancelled=0,offset=0;
+ const response={body:{getReader(){return{async read(){if(offset===bytes.length)return{done:true};const value=bytes.slice(offset,offset+3);offset+=value.length;return{value,done:false};},async cancel(){cancelled++;},releaseLock(){}};}}};
+ const iterator=ui.operationFrames(response);assert.deepEqual((await iterator.next()).value,frames[0]);await iterator.return();assert.equal(cancelled,1);assert.ok(offset<bytes.length);
+ const huge={body:new ReadableStream({start(controller){controller.enqueue(new TextEncoder().encode('x'.repeat(2*1024*1024)));controller.close();}})};
+ await assert.rejects(async()=>{for await(const frame of ui.operationFrames(huge))void frame;},/bound/);
+});
+
+test('wire draining completes before paused application consumption and abort prevents the next frame',async()=>{
+ const frames=Array.from({length:12},(_,seq)=>({contract:operationContract,type:'operation',seq,label:'😀'})),controller=new AbortController();let pulls=0;
+ const body=new ReadableStream({pull(stream){pulls++;if(pulls<=frames.length)stream.enqueue(new TextEncoder().encode(JSON.stringify(frames[pulls-1])+'\n'));else stream.close();}}),buffer=ui.bufferedOperations({body},controller.signal);
+ await buffer.producer;assert.equal(pulls,frames.length+1,'the wire finishes independently of presentation');
+ assert.deepEqual((await buffer.next()).value,frames[0]);controller.abort();assert.deepEqual(await buffer.next(),{done:true});
+});
+
+test('recorded delivery retains the captured binding while each visible mode keeps its historical as-of qualifier',()=>{
+ const f=operationFixture(),bindingBefore=JSON.stringify(f.binding),replay={state:f.baseline,mode:'replay',replay_only:true,through_seq:3,current_revision:4,current_state_sha256:f.head.state_sha256,current_event_sha256:f.head.last_event_sha256};
+ const render=delivery=>ui.workMarkup(f.baseline,{},'branch',f.journal.slice(0,3),'step',{}, {mode:'replay',replay,operations:{binding:f.binding,rows:[],sources:new Map(),asOf:'2025-02-21',...delivery}});
+ const recorded=render({recorded:true});assert.match(recorded,/Recorded operation trace · historical synthetic packet · as of 2025-02-21/);assert.doesNotMatch(recorded,/Live check from saved sources/);
+ const live=render({});assert.match(live,/Live check from saved sources · historical synthetic packet · as of 2025-02-21/);assert.equal((live.match(/as of 2025-02-21/g)||[]).length,1);assert.doesNotMatch(live,/Recorded investigation/);assert.match(live,/data-au-operation-skip/);assert.doesNotMatch(render({finished:true}),/data-au-operation-skip/);
+ const saved=render({savedFallback:true});assert.match(saved,/Saved result · historical synthetic packet/);assert.doesNotMatch(saved,/Live check from saved sources/);assert.equal(JSON.stringify(f.binding),bindingBefore);
+ assert.equal(ui.operationLabel({kind:'node.evaluate'}),'Evaluate step');assert.equal(ui.operationLabel({kind:'dependency.evaluate'}),'Check dependency');assert.equal(ui.operationLabel({kind:'branch.activate',result:{activation:'unresolved'}}),'Evaluate unresolved branch');assert.equal(ui.operationLabel({kind:'fact.extract',result:{verification_required:false,status:'established'}}),'Inspect verified finding');
+});
+
+test('operation delivery names existing procedure reuse and its recorded origin without changing saved knowledge',()=>{
+ const use={knowledge_id:'procedure.defect_mold_heating',version:2,knowledge_sha256:sha('recorded procedure'),source_claim_id:'claim-a'},saved=state({knowledge_uses:[use]}),before=JSON.stringify(saved);
+ const ordinary=ui.formingKnowledgeMarkup(saved),delivered=ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true);
+ assert.match(ordinary,/Procedure used for this case · Version 2/);assert.match(ordinary,/From this case’s source evidence/);
+ assert.match(delivered,/Procedure reused · Version 2/);assert.match(delivered,/Recorded origin: this case’s source evidence/);assert.match(delivered,/data-au-knowledge="procedure.defect_mold_heating"/);assert.equal(ui.operationLabel({kind:'knowledge.reuse'}),'Procedure reused');assert.equal(JSON.stringify(saved),before);
+ saved.knowledge_uses=[{...use,source_claim_id:'earlier-source-case'}];assert.match(ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true),/Origin source case/);assert.match(ui.formingKnowledgeMarkup(saved,{},false,false,null,[],true),/data-au-claim="earlier-source-case"/);
+});
+
+test('failed live operation records remain inspectable while recorded delivery opens and preserves same-ID attempts',async()=>{
+ const f=operationFixture(),operation=f.seal('source.open',{type:'source',id:'source'},{...f.descriptor,text:f.sourceText,text_sha256:sha(f.sourceText)});await ui.checkedOperation(operation,f.trace,f.baseline);
+ const pending={binding:null,rows:[],previousAttempts:[{rows:f.trace.rows,bytes:f.trace.bytes,recorded:false,reason:'The stream ended before its verified result.'}]};
+ assert.equal(ui.operationRecord(pending,'operation',operation.id),operation);assert.match(ui.operationHistoryMarkup(pending),/Earlier live assessment stopped/);assert.match(ui.operationHistoryMarkup(pending),/Waiting for the stored operation trace/);
+ const delivered={...operation,operation_sha256:sha('same semantic object in another captured chain')};pending.rows=[delivered];
+ assert.equal(ui.operationRecord(pending,'operation',operation.id),delivered);assert.equal(ui.operationRecord(pending,'operation-attempt','0:'+operation.id),operation);assert.match(ui.operationHistoryMarkup(pending),new RegExp(`data-au-record-id="0:${operation.id}"`));
+});
+
+test('operation reading uses current case labels and source summaries without exposing raw routing or Boolean scalars',()=>{
+ const f=operationFixture(),raw={contract:operationContract,type:'operation',id:'observed-node',kind:'node.evaluate',object:{type:'node',id:'branch'},result:{verdict:true,activation:'true',route_state:'needed_later'}},trace={state:f.baseline,current:raw,rows:[raw],sources:new Map()};
+ const html=ui.operationReadingMarkup(trace);assert.match(html,/Check separate service/);assert.doesNotMatch(html,/needed_later|· true|· false|>true</);assert.deepEqual(ui.operationRecord(trace,'operation',raw.id),raw,'History retains exact machine fields');
+ trace.current={...raw,kind:'document.require',object:{type:'document',id:'notice'},result:{route_state:'needed_now'}};assert.match(ui.operationReadingMarkup(trace),/Separate notice/);assert.doesNotMatch(ui.operationReadingMarkup(trace),/needed_now/);
+ trace.current={...raw,result:{summary:'The actual source describes an uncertain service date.',verdict:'unresolved'}};assert.match(ui.operationReadingMarkup(trace),/The actual source describes an uncertain service date/);
+});
+
+test('restarting Demonstration opens its own first case after inspection of another case',async t=>{
+ const f=dom(),first=ui.DEMO_CASES[0].claim_id,second=ui.DEMO_CASES[1].claim_id;
+ const envelope=id=>{const saved=state({claim_id:id,title:id===first?'First original packet':'Earlier inspected packet',revision:0,state_sha256:sha(id),last_event_sha256:null,graph:null,evaluation:null,facts:[],obligations:[],actions:[],status:'not_started',mode:'unprocessed',phase:'not_run'});return {state:saved,projection:{revision:0,state_sha256:saved.state_sha256},events:[],cursor_sha256:null,mode:'replay',replay_only:true,through_seq:0,current_revision:0,current_state_sha256:saved.state_sha256,current_event_sha256:null,provenance:{event_sha256:null}};};
+ const api=fakeApi({handle:async path=>{const match=path.match(/\/claims\/([^/]+)\/replay\?through_seq=0$/);return match?response(envelope(match[1])):null;}}),controller=ui.mount(f.container,{fetch:api.fetch});t.after(()=>controller.destroy());await settle();
+ await controller.openClaim(second,true,{mode:'replay',collection:'legacy',through:0,detail:'activity'});assert.ok(f.host.innerHTML.includes(sha(second)));
+ await controller.showDemonstration(true,'legacy');assert.ok(f.host.innerHTML.includes(sha(first)));assert.ok(!f.host.innerHTML.includes(sha(second)));assert.equal(api.calls.filter(row=>row.init.method==='POST').length,0);
+});
+
+function workingFixture(){
+ const f=operationFixture(),graph={...f.baseline.graph,conditions:{family_home:{verdict:'true'}},document_catalog:[{document_type:'notice',label:'Separate notice'}],nodes:f.baseline.graph.nodes.map(node=>({...node,completed:true,document_types:node.node_id==='branch'?['notice']:[]}))};
+ const seal=(kind,object,input,result,causes=[],stage='interpretation')=>{const frame={...f.seal(kind,object,result),stage,input,cause_ids:causes,input_sha256:sha(ui.canonicalJSON(input))};const material={...frame};delete material.contract;delete material.type;delete material.operation_sha256;return {...frame,operation_sha256:sha(ui.canonicalJSON(material))};};
+ const inspect=(effective_conditions,conditions_override=null,stage='interpretation')=>{const evaluation_sha256=sha(ui.canonicalJSON({graph_sha256:graph.graph_sha256,conditions_override,effective_conditions}));return seal('process.inspect',{type:'process',id:f.baseline.claim_id},{graph_sha256:graph.graph_sha256,evaluation_sha256,conditions_override},{phase:'provisional',graph_sha256:graph.graph_sha256,evaluation_sha256,graph,effective_conditions},[],stage);};
+ return {...f,graph,seal,inspect};
+}
+test('actual working graphs and applicability stay separately inspectable without advancing accepted execution',async()=>{
+ const f=workingFixture(),original=structuredClone(f.baseline),inspect=f.inspect({family_home:{verdict:'false'}});await ui.checkedOperation(inspect,f.trace,f.baseline);ui.applyWorkingOperation(inspect,f.trace,f.baseline);
+ const scope={graph_sha256:f.graph.graph_sha256,evaluation_sha256:inspect.result.evaluation_sha256},node=f.seal('node.evaluate',{type:'node',id:'branch'},scope,{...scope,phase:'provisional',activation:'true',execution_state:'completed',effective_completed:true},[inspect.id]);await ui.checkedOperation(node,f.trace,f.baseline);ui.applyWorkingOperation(node,f.trace,f.baseline);f.trace.current=node;
+ const working=ui.workingProcessState(f.trace),markup=ui.formingMarkup(f.baseline,{},'start',[],{}, {},{},false,f.trace);
+ assert.equal(working.graph,f.graph);assert.deepEqual(working.conditions,inspect.result.effective_conditions);assert.deepEqual(f.baseline,original);assert.equal(f.trace.transportState,null);
+ assert.match(markup,/Working model · provisional/);assert.match(markup,/Applicability · Applies/);assert.doesNotMatch(markup,/data-status="completed"|>✓<|>Completed</);assert.match(markup,new RegExp(`data-au-working-scope="${inspect.id}"`));assert.match(markup,new RegExp(`data-au-record-id="${node.id}"`));assert.deepEqual(ui.operationRecord(f.trace,'operation',node.id),node,'raw actual execution result is inspectable');
+ f.trace.finished=true;assert.equal(ui.workingProcessState(f.trace),null);assert.match(ui.graphMarkup(f.baseline,'start'),/>✓</,'the accepted graph retains its existing recorded completion');
+});
+test('working evaluations cannot borrow a different graph, override condition scope, stage or target',async()=>{
+ const f=workingFixture(),inspect=f.inspect({family_home:{verdict:'false'}});await ui.checkedOperation(inspect,f.trace,f.baseline);ui.applyWorkingOperation(inspect,f.trace,f.baseline);
+ const scope={graph_sha256:f.graph.graph_sha256,evaluation_sha256:inspect.result.evaluation_sha256};
+ for(const change of [{graph_sha256:sha('other graph')},{evaluation_sha256:sha('other override')}]){const op=f.seal('node.evaluate',{type:'node',id:'branch'},{...scope,...change},{...scope,...change,phase:'provisional',activation:'false'},[inspect.id]);await assert.rejects(ui.checkedOperation(op,f.trace,f.baseline),/exact inspected process scope/);}
+ await assert.rejects(ui.checkedOperation(f.seal('node.evaluate',{type:'node',id:'future-step'},scope,{...scope,phase:'provisional',activation:'true'},[inspect.id]),f.trace,f.baseline),/different process object/);
+ await assert.rejects(ui.checkedOperation(f.seal('node.evaluate',{type:'node',id:'branch'},scope,{...scope,phase:'provisional',activation:'true'},[inspect.id],'verification'),f.trace,f.baseline),/exact inspected process scope/);
+ const wrong=f.inspect({family_home:{verdict:'true'}});wrong.result.evaluation_sha256=inspect.result.evaluation_sha256;wrong.input.evaluation_sha256=inspect.result.evaluation_sha256;wrong.result_sha256=sha(ui.canonicalJSON(wrong.result));wrong.input_sha256=sha(ui.canonicalJSON(wrong.input));const material={...wrong};delete material.type;delete material.contract;delete material.operation_sha256;wrong.operation_sha256=sha(ui.canonicalJSON(material));await assert.rejects(ui.checkedOperation(wrong,f.trace,f.baseline),/condition scope.*identity/);assert.equal(f.trace.rows.length,1);
+});
+test('same working graph with a different actual override retains independent scope and provisional document targets',async()=>{
+ const f=workingFixture(),first=f.inspect({family_home:{verdict:'false'}});await ui.checkedOperation(first,f.trace,f.baseline);ui.applyWorkingOperation(first,f.trace,f.baseline);
+ const second=f.inspect({family_home:{verdict:'true'}},{family_home:'true'});await ui.checkedOperation(second,f.trace,f.baseline);ui.applyWorkingOperation(second,f.trace,f.baseline);assert.notEqual(first.result.evaluation_sha256,second.result.evaluation_sha256);assert.equal(f.trace.workingScopes.size,2);
+ const scope={graph_sha256:f.graph.graph_sha256,evaluation_sha256:second.result.evaluation_sha256},document=f.seal('document.require',{type:'document',id:'notice'},{...scope,required_at_node_ids:['branch']},{...scope,phase:'provisional',activation:'true',route_state:'needed_later',review_state:'sufficient',required_at_node_ids:['branch']},[second.id]);await ui.checkedOperation(document,f.trace,f.baseline);ui.applyWorkingOperation(document,f.trace,f.baseline);f.trace.current=document;f.trace.state=f.baseline;
+ const markup=ui.formingMarkup(f.baseline,{},'start',[],{}, {},{},false,f.trace);assert.match(markup,/Requirement calculation · Separate notice/);assert.match(markup,/data-au-working-document="notice"/);assert.equal(ui.operationNodeId(document,f.graph,f.baseline),'branch');assert.doesNotMatch(ui.operationReadingMarkup(f.trace),/needed_later|sufficient/);assert.equal(f.trace.workingScopes.get(first.id).documents.size,0);assert.equal(f.baseline.evaluation.documents[0].review_state,'unreviewed');
+});
+test('source-to-working-step relationships use exact observed fact/document pins rather than retained reading state',async()=>{
+ const f=workingFixture(),inspect=f.inspect({});await ui.checkedOperation(inspect,f.trace,f.baseline);ui.applyWorkingOperation(inspect,f.trace,f.baseline);
+ const pin={artifact_id:'source',quote:'A tenant reports a cold home.',start_char:10,end_char:39},fact={id:'actual-fact',kind:'fact.extract',object:{type:'fact',id:'fact:notice'},input:{document_type:'notice'},result:{verification_required:true},source:pin};f.trace.current=fact;
+ assert.deepEqual(ui.operationRelationship(f.trace,f.baseline),{node:'branch',source:'source',pin,operation_id:'actual-fact',graph_sha256:f.graph.graph_sha256});
+ f.trace.displaySource={artifact_id:'source',pin};f.trace.current={...fact,source:undefined};assert.equal(ui.operationRelationship(f.trace,f.baseline),null,'retained source reading cannot invent an operation dependency');
+});
+
+test('selected provisional readiness explains the actual blocker independently of applicability',async()=>{
+ const f=workingFixture(),inspect=f.inspect({});await ui.checkedOperation(inspect,f.trace,f.baseline);ui.applyWorkingOperation(inspect,f.trace,f.baseline);
+ const scope={graph_sha256:f.graph.graph_sha256,evaluation_sha256:inspect.result.evaluation_sha256},result={...scope,phase:'provisional',activation:'true',execution_state:'blocked',blocked_by:['start'],unresolved_dependencies:[],missing_document_types:['notice']},op=f.seal('node.evaluate',{type:'node',id:'branch'},scope,result,[inspect.id]);await ui.checkedOperation(op,f.trace,f.baseline);ui.applyWorkingOperation(op,f.trace,f.baseline);f.trace.current=op;
+ const working=ui.workingProcessState(f.trace),html=ui.graphMarkup(working,'branch',{}, {overview:true,working:f.trace.working});assert.deepEqual(working.evaluation.nodes[0].blocked_by,['start']);assert.equal(working.evaluation.nodes[0].execution_state,'blocked');assert.match(html,/Applicability · Applies/);assert.match(html,/Execution · Waiting for Inspect message/);assert.doesNotMatch(html,/>✓<|data-status="completed"|>Ready to check</);assert.equal(f.baseline.evaluation.nodes[1].execution_state,'ready');
+ assert.match(ui.workingReadiness({...result,blocked_by:[],unresolved_dependencies:['start']},f.graph),/Unresolved prerequisite: Inspect message/);assert.match(ui.workingReadiness({...result,blocked_by:[]},f.graph),/Source support needed: Separate notice/);
+});

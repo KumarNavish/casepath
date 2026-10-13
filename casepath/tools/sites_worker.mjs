@@ -42,7 +42,8 @@ async function proxyApi(request, env, url) {
   try {
     const response = await fetch(new Request(new URL(`${url.pathname}${url.search}`, upstream), {
       method: request.method, headers,
-      duplex: "half", redirect: "manual", signal: AbortSignal.timeout(14000),
+      duplex: "half", redirect: "manual",
+      signal: AbortSignal.any([request.signal, AbortSignal.timeout(14000)]),
     }));
     const responseHeaders = new Headers(response.headers);
     responseHeaders.set("Cache-Control", "no-store");

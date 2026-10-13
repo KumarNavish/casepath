@@ -136,7 +136,13 @@ default demonstration starts at its verified preparation event, while History
 retains the earlier documents and explicit replay positions. The profile enables
 a deterministic assessment through the existing process and knowledge engine;
 it grants no provider calls, spending allowance, external communication or court
-action. The public service only reads the resulting history.
+action. The public service preserves the resulting history. Its nine demonstrations can
+recompute the same assessment in memory and stream source-bound operations.
+This GET-only check uses no provider, saves no case or knowledge changes, and
+is bounded to two concurrent checks, twelve starts per minute and ten seconds
+per check. An unavailable live check falls back to an explicitly labelled,
+immutable operation trace admitted by the private operator. History exposes
+the operations and the exact saved-state checkpoints they reproduce.
 
 From the same clean, committed checkout, an authorized Mac operator prepares a
 private plan with `casepath-api/tools/admit_reference.py dry-run --plan PATH`.

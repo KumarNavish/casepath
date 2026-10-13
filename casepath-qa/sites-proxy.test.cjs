@@ -86,6 +86,28 @@ test('Sites authenticates its upstream request without leaking browser credentia
   assert.equal(response.headers.get('cache-control'),'no-store');
 });
 
+test('Sites streams an operation before completion and cancels upstream when its reader leaves', async t => {
+  const worker = await load(), controller = new AbortController();
+  let upstream;
+  t.mock.method(globalThis, 'fetch', async request => {
+    upstream = request;
+    return new Response(new ReadableStream({start(stream) {
+      stream.enqueue(new TextEncoder().encode('{"type":"operation","kind":"source.open"}\n'));
+      request.signal.addEventListener('abort', () => stream.error(request.signal.reason), {once:true});
+    }}), {headers:{'Content-Type':'application/x-ndjson'}});
+  });
+  const response = await worker.fetch(new Request(origin+'/api/claim-loops/v1/autonomous/claims/example/operations?mode=live', {
+    signal:controller.signal, headers:{Accept:'application/x-ndjson'},
+  }), env);
+  assert.equal(response.headers.get('content-type'), 'application/x-ndjson');
+  assert.equal(response.headers.get('cache-control'), 'no-store');
+  const reader = response.body.getReader();
+  assert.match(new TextDecoder().decode((await reader.read()).value), /source.open/);
+  controller.abort();
+  assert.equal(upstream.signal.aborted, true);
+  await assert.rejects(reader.read(), {name:'AbortError'});
+});
+
 test('Sites refuses cross-origin mutations before calling the backend', async t => {
   const worker = await load();
   const fetch = t.mock.method(globalThis,'fetch',async()=>{throw Error('must not send');});

@@ -76,7 +76,7 @@ class HostedSources:
             values.add(digest)
         return sorted(values)
 
-    def _fetch_many(self, digests, *, return_digest=None):
+    def _fetch_many(self, digests, *, return_digest=None, check=lambda: None):
         """Read all requested chunks with bounded pages on one connection.
 
         Eight 256-KiB blobs cap a page at two MiB before wire encoding. Oversize
@@ -86,7 +86,9 @@ class HostedSources:
         """
         max_chunks = (MAX_FILE_BYTES + self.CHUNK_BYTES - 1) // self.CHUNK_BYTES
         result = None
+        check()
         with self.connect() as db:
+            execute = getattr(db, 'execute_read_once', db.execute)
             for start in range(0, len(digests), self.BATCH_DIGESTS):
                 batch = digests[start:start + self.BATCH_DIGESTS]
                 wanted, seen = set(batch), set()
@@ -114,7 +116,8 @@ class HostedSources:
                          'ORDER BY sha256,chunk_index LIMIT 8')
                 max_pages = (len(batch) * max_chunks + self.PAGE_CHUNKS - 1) // self.PAGE_CHUNKS + 1
                 for _ in range(max_pages):
-                    page = db.execute(query, (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index)).fetchall()
+                    check()
+                    page = execute(query, (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index)).fetchall()
                     if len(page) > self.PAGE_CHUNKS:
                         raise AutonomousStoreError('Persistent source page exceeds its bound.')
                     for row in page:
@@ -200,7 +203,7 @@ class HostedSources:
             raise AutonomousStoreError('Persistent source publication differs.')
         return digest
 
-    def verify_many(self, digests):
+    def verify_many(self, digests, *, check=lambda: None):
         """Freshly hash-check persisted bytes once per result source roster.
 
         A cached blob accelerates repeated reducer reads but cannot establish
@@ -215,7 +218,7 @@ class HostedSources:
                 if cached is not None:
                     self._size -= len(cached)
             if values:
-                self._fetch_many(values)
+                self._fetch_many(values, check=check)
 
 
 class HostedAutonomousStore(AutonomousStore):

@@ -289,6 +289,17 @@ class LibsqlConnection:
             self._in_transaction = False
         return _Cursor(result)
 
+    def execute_read_once(self, sql, parameters=()):
+        """Complete one SELECT and close its Hrana stream in one request."""
+        self._usable()
+        statement, _, kind = self._statement(sql, parameters)
+        if kind != 'SELECT' or self._in_transaction or self._baton is not None:
+            raise HostedStorageError('A one-shot read requires one SELECT on a fresh connection.')
+        response = self._send([{'type': 'execute', 'stmt': statement}, {'type': 'close'}], ending=True)
+        if self._baton is not None:
+            self._uncertain()
+        return _Cursor(self._result(response[0].get('result')))
+
     def prefetch(self, queries):
         """Cache (SELECT SQL, positional parameters) pairs within this transaction."""
         self._usable()
