@@ -1,0 +1,148 @@
+{
+  "url": "http://localhost:41999/#autonomous/claim/auto_a489b283495e7b03b5aab860?collection=reference&mode=replay&through=2&detail=sources",
+  "text": "CasePath\nEvidence into action\nNew claim ↗\nCases\nDemonstration\nKnowledge\n\nCases / Recorded investigation\n\nNew incoming termination\n\nWorking.\n\nPause\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\nSources\n\nNew incoming termination\n\nI received a termination of our family home. No arrears, retaliation or extension request.\ncustomer-message.txt\nspouse-notice.txt",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<body><main id=\"workspace\" class=\"au-workspace\"><div class=\"au-shell au-identity-shell\"><header class=\"au-identity-header\"><a class=\"au-brand\" href=\"#autonomous/cases\">CasePath<span>Evidence into action</span></a><button type=\"button\" class=\"au-header-new\" data-au-nav=\"intake\">New claim <span aria-hidden=\"true\">↗</span></button><span class=\"au-access-label\" data-au-public-access=\"\" hidden=\"\">Read-only</span><nav class=\"au-nav\" aria-label=\"CasePath\"><button type=\"button\" data-au-nav=\"work\">Cases</button><button type=\"button\" data-au-nav=\"demonstration\" aria-current=\"page\">Demonstration</button><button type=\"button\" data-au-nav=\"knowledge\">Knowledge</button></nav><div class=\"au-case-return\" data-au-case-return=\"\" hidden=\"\"><span class=\"au-case-return-label\">Recurring leak and a received image</span><button type=\"button\" class=\"au-link\" data-au-return-case=\"step\">Process</button><button type=\"button\" class=\"au-link\" data-au-return-case=\"documents\">Documents</button></div></header><div class=\"au-main\"><div class=\"au-global-status\" role=\"status\" aria-live=\"polite\"></div><div class=\"au-body\" data-au-view=\"\" data-au-view-state=\"claim\" data-au-read-state=\"verified\"><section class=\"au-quiet-claim\" data-au-revision=\"2\" data-au-state-sha=\"0b4ddbbc059ed44812bb364f6d269c1c60c37ca4d48068a62de858764f099bc1\"><header class=\"au-work-head au-focused-claim-head\"><div><p class=\"au-eyebrow\"><button type=\"button\" class=\"au-back-work\" data-au-nav=\"work\">Cases</button> / Recorded investigation</p><h1 class=\"au-page-heading \" id=\"auClaimTitle\" data-au-claim-title=\"\" tabindex=\"-1\">New incoming termination</h1><p class=\"au-claim-constraint\"><span data-au-claim-status=\"\">Working.</span> <span class=\"au-read-state\" data-au-read-state-label=\"\"></span></p></div><div class=\"au-work-controls\"><button type=\"button\" class=\"au-secondary\" data-au-demo-stop=\"\">Pause</button><button type=\"button\" class=\"au-link au-record-link\" data-au-inspect=\"demo\" data-au-record-id=\"\">Choose case</button><button type=\"button\" class=\"au-link\" data-au-detail=\"activity\" aria-pressed=\"false\" aria-controls=\"auPanel-activity\">History</button></div></header><section class=\"au-evidence-canvas\" data-au-canvas=\"\"><nav class=\"au-context-nav\" aria-label=\"Case views\"><button type=\"button\" data-au-detail=\"step\" aria-pressed=\"false\" aria-controls=\"auPanel-step\">Process</button><button type=\"button\" data-au-detail=\"documents\" aria-pressed=\"false\" aria-controls=\"auPanel-documents\">Documents</button><button type=\"button\" data-au-detail=\"knowledge\" aria-pressed=\"false\" aria-controls=\"auPanel-knowledge\">Knowledge</button><button type=\"button\" class=\"au-context-utility\" data-au-detail=\"sources\" aria-pressed=\"true\" aria-controls=\"auPanel-sources\">Sources</button></nav><div class=\"au-evidence-stage\" data-au-evidence-stage=\"\"><div class=\"au-context-body\" data-au-context=\"sources\"><section class=\"au-context-view\" id=\"auPanel-sources\" data-au-panel=\"sources\"><section class=\"au-supporting au-originals\"><h2>Sources</h2><p class=\"au-original-title\">New incoming termination</p><pre class=\"au-original-message\">I received a termination of our family home. No arrears, retaliation or extension request.</pre><ul class=\"au-source-list\"><li data-au-source-arrival=\"src_ea78ae672a9d443b4bc44664c71efd4b\"><button type=\"button\" class=\"au-secondary\" data-au-source=\"src_ea78ae672a9d443b4bc44664c71efd4b\" data-au-source-origin=\"originals:src_ea78ae672a9d443b4bc44664c71efd4b\">customer-message.txt</button></li><li data-au-source-arrival=\"src_64ece0e388979b98a49f84fe98b993b2\"><button type=\"button\" class=\"au-secondary\" data-au-source=\"src_64ece0e388979b98a49f84fe98b993b2\" data-au-source-origin=\"originals:src_64ece0e388979b98a49f84fe98b993b2\">spouse-notice.txt</button></li></ul></section></section></div></div></section></section></div></div></div><dialog class=\"au-source-dialog\" aria-labelledby=\"auSourceTitle\"><header class=\"au-dialog-header\"><div><p class=\"au-eyebrow\">Original source</p><h2 id=\"auSourceTitle\">customer-message.txt</h2></div><button type=\"button\" class=\"au-secondary\" data-au-close=\"\">Close source</button></header><div data-au-source-content=\"\"><div class=\"au-source-meta\"><span>Source text verified</span><span>Extracted text</span><a href=\"/api/claim-loops/v1/autonomous/sources/auto_a489b283495e7b03b5aab860/src_ea78ae672a9d443b4bc44664c71efd4b\" download=\"customer-message.txt\">Download original</a></div><pre class=\"au-source-body\">I received a termination of our family home. No arrears, retaliation or extension request.</pre><details class=\"au-source-identity\"><summary>Source identity and extraction</summary><p class=\"au-meta\">Source text verified · Extracted text</p><dl class=\"au-chain\"><div><dt>Original filename</dt><dd>customer-message.txt</dd></div><div><dt>Media type</dt><dd>text/plain</dd></div><div><dt>Original bytes · SHA-256</dt><dd class=\"au-hash\">2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea</dd></div><div><dt>Extracted text · SHA-256</dt><dd class=\"au-hash\">2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea</dd></div></dl><pre class=\"au-record-body\">{\n  \"descriptor\": {\n    \"artifact_id\": \"src_ea78ae672a9d443b4bc44664c71efd4b\",\n    \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n    \"contract\": \"casepath.autonomous-source/1.0.0\",\n    \"descriptor_sha256\": \"2860432a3e69703be5ae7be4853da9c679010ee0c4f621186289f4a5bbf85365\",\n    \"file_name\": \"customer-message.txt\",\n    \"media_type\": \"text/plain\",\n    \"role\": \"customer_message\",\n    \"sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\",\n    \"size_bytes\": 90\n  },\n  \"receipt_sha256\": \"5420902ee218eb983fd881d04f7ef9d7b1fe7933fa326d239ada397aa65ebea8\",\n  \"extraction\": \"utf8\",\n  \"complete\": true,\n  \"coverage\": {\n    \"characters_read\": 90,\n    \"characters_total\": 90,\n    \"full_text_sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\",\n    \"visual_interpretation_performed\": false\n  }\n}</pre></details></div></dialog><dialog class=\"au-record-dialog\" aria-labelledby=\"auRecordTitle\"><header class=\"au-dialog-header\"><h2 id=\"auRecordTitle\">Case details</h2><button type=\"button\" class=\"au-secondary\" data-au-close-record=\"\">Close</button></header><div data-au-record-content=\"\"><pre class=\"au-record-body\" data-au-record-kind=\"claim\" data-au-record-id=\"\">{\n  \"state\": {\n    \"acquired_sources\": [\n      {\n        \"artifact_id\": \"src_ea78ae672a9d443b4bc44664c71efd4b\",\n        \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n        \"complete\": true,\n        \"contract\": \"casepath.autonomous-source/1.0.0\",\n        \"coverage\": {\n          \"characters_read\": 90,\n          \"characters_total\": 90,\n          \"full_text_sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\",\n          \"visual_interpretation_performed\": false\n        },\n        \"descriptor_sha256\": \"2860432a3e69703be5ae7be4853da9c679010ee0c4f621186289f4a5bbf85365\",\n        \"extraction\": \"utf8\",\n        \"file_name\": \"customer-message.txt\",\n        \"media_type\": \"text/plain\",\n        \"reader_id\": \"casepath.operational-source-reader/1.0.0\",\n        \"receipt_sha256\": \"5420902ee218eb983fd881d04f7ef9d7b1fe7933fa326d239ada397aa65ebea8\",\n        \"role\": \"customer_message\",\n        \"sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\",\n        \"size_bytes\": 90,\n        \"text\": \"I received a termination of our family home. No arrears, retaliation or extension request.\",\n        \"text_sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\"\n      }\n    ],\n    \"actions\": [],\n    \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n    \"contract\": \"casepath.autonomous-claim/1.0.0\",\n    \"deferral\": null,\n    \"evaluation\": null,\n    \"events\": [\n      {\n        \"created_at\": \"2026-10-11T12:00:00+00:00\",\n        \"event_sha256\": \"1c1010e4c4043a37e9fbe17df1121c706b168f332b19a71f4ff92c5626d266ff\",\n        \"kind\": \"intake\",\n        \"sequence\": 1\n      },\n      {\n        \"created_at\": \"2026-10-11T12:00:00+00:00\",\n        \"event_sha256\": \"0a610d768a404ae710e119d4f7bca29008936b7c426c1dc2259c629fde0c37b5\",\n        \"kind\": \"work.started\",\n        \"sequence\": 2\n      }\n    ],\n    \"facts\": [],\n    \"graph\": null,\n    \"intake_receipt\": {\n      \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n      \"packet_sha256\": \"f7e3bec7b1578514ecc9fcc32576d4d289186603c6e791798e94cd446b342fa8\",\n      \"receipt_sha256\": \"da3b715597e6150e7bd9870593ab35f1dec3dabec9a47a4f9a1aa937c22112f6\",\n      \"source_roster_sha256\": \"8806fea53a2bb10dae64865c194e712381effbe4e721e946ff3ece1ac32a93ce\"\n    },\n    \"knowledge_published\": [],\n    \"knowledge_uses\": [],\n    \"last_event_sha256\": \"0a610d768a404ae710e119d4f7bca29008936b7c426c1dc2259c629fde0c37b5\",\n    \"message\": \"I received a termination of our family home. No arrears, retaliation or extension request.\",\n    \"obligations\": [],\n    \"outcome\": null,\n    \"phase\": \"received\",\n    \"policy_id\": \"casepath.autonomous-local/1.0.0\",\n    \"receipts\": [],\n    \"results\": [],\n    \"revision\": 2,\n    \"run_id\": \"autonomy.db92e60642bc4aa8a2418050\",\n    \"source_descriptors\": [\n      {\n        \"artifact_id\": \"src_ea78ae672a9d443b4bc44664c71efd4b\",\n        \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n        \"contract\": \"casepath.autonomous-source/1.0.0\",\n        \"descriptor_sha256\": \"2860432a3e69703be5ae7be4853da9c679010ee0c4f621186289f4a5bbf85365\",\n        \"file_name\": \"customer-message.txt\",\n        \"media_type\": \"text/plain\",\n        \"role\": \"customer_message\",\n        \"sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\",\n        \"size_bytes\": 90\n      },\n      {\n        \"artifact_id\": \"src_64ece0e388979b98a49f84fe98b993b2\",\n        \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n        \"contract\": \"casepath.autonomous-source/1.0.0\",\n        \"descriptor_sha256\": \"4c79f2bcd08a5f06d54d5d4bb94c62accc414dd10af8e08b943b2c7cb53a434e\",\n        \"file_name\": \"spouse-notice.txt\",\n        \"media_type\": \"text/plain\",\n        \"role\": \"supporting_document\",\n        \"sha256\": \"5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3\",\n        \"size_bytes\": 68\n      }\n    ],\n    \"source_roster_sha256\": \"8806fea53a2bb10dae64865c194e712381effbe4e721e946ff3ece1ac32a93ce\",\n    \"state_sha256\": \"0b4ddbbc059ed44812bb364f6d269c1c60c37ca4d48068a62de858764f099bc1\",\n    \"status\": \"running\",\n    \"title\": \"New incoming termination\",\n    \"updated_at\": \"2026-10-11T12:00:00+00:00\"\n  },\n  \"projection\": {\n    \"node_capabilities\": {},\n    \"revision\": 2,\n    \"state_sha256\": \"0b4ddbbc059ed44812bb364f6d269c1c60c37ca4d48068a62de858764f099bc1\"\n  }\n}</pre></div></dialog></main></body>",
+  "revision": "2",
+  "record": "{\n  \"state\": {\n    \"acquired_sources\": [\n      {\n        \"artifact_id\": \"src_ea78ae672a9d443b4bc44664c71efd4b\",\n        \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n        \"complete\": true,\n        \"contract\": \"casepath.autonomous-source/1.0.0\",\n        \"coverage\": {\n          \"characters_read\": 90,\n          \"characters_total\": 90,\n          \"full_text_sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\",\n          \"visual_interpretation_performed\": false\n        },\n        \"descriptor_sha256\": \"2860432a3e69703be5ae7be4853da9c679010ee0c4f621186289f4a5bbf85365\",\n        \"extraction\": \"utf8\",\n        \"file_name\": \"customer-message.txt\",\n        \"media_type\": \"text/plain\",\n        \"reader_id\": \"casepath.operational-source-reader/1.0.0\",\n        \"receipt_sha256\": \"5420902ee218eb983fd881d04f7ef9d7b1fe7933fa326d239ada397aa65ebea8\",\n        \"role\": \"customer_message\",\n        \"sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\",\n        \"size_bytes\": 90,\n        \"text\": \"I received a termination of our family home. No arrears, retaliation or extension request.\",\n        \"text_sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\"\n      }\n    ],\n    \"actions\": [],\n    \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n    \"contract\": \"casepath.autonomous-claim/1.0.0\",\n    \"deferral\": null,\n    \"evaluation\": null,\n    \"events\": [\n      {\n        \"created_at\": \"2026-10-11T12:00:00+00:00\",\n        \"event_sha256\": \"1c1010e4c4043a37e9fbe17df1121c706b168f332b19a71f4ff92c5626d266ff\",\n        \"kind\": \"intake\",\n        \"sequence\": 1\n      },\n      {\n        \"created_at\": \"2026-10-11T12:00:00+00:00\",\n        \"event_sha256\": \"0a610d768a404ae710e119d4f7bca29008936b7c426c1dc2259c629fde0c37b5\",\n        \"kind\": \"work.started\",\n        \"sequence\": 2\n      }\n    ],\n    \"facts\": [],\n    \"graph\": null,\n    \"intake_receipt\": {\n      \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n      \"packet_sha256\": \"f7e3bec7b1578514ecc9fcc32576d4d289186603c6e791798e94cd446b342fa8\",\n      \"receipt_sha256\": \"da3b715597e6150e7bd9870593ab35f1dec3dabec9a47a4f9a1aa937c22112f6\",\n      \"source_roster_sha256\": \"8806fea53a2bb10dae64865c194e712381effbe4e721e946ff3ece1ac32a93ce\"\n    },\n    \"knowledge_published\": [],\n    \"knowledge_uses\": [],\n    \"last_event_sha256\": \"0a610d768a404ae710e119d4f7bca29008936b7c426c1dc2259c629fde0c37b5\",\n    \"message\": \"I received a termination of our family home. No arrears, retaliation or extension request.\",\n    \"obligations\": [],\n    \"outcome\": null,\n    \"phase\": \"received\",\n    \"policy_id\": \"casepath.autonomous-local/1.0.0\",\n    \"receipts\": [],\n    \"results\": [],\n    \"revision\": 2,\n    \"run_id\": \"autonomy.db92e60642bc4aa8a2418050\",\n    \"source_descriptors\": [\n      {\n        \"artifact_id\": \"src_ea78ae672a9d443b4bc44664c71efd4b\",\n        \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n        \"contract\": \"casepath.autonomous-source/1.0.0\",\n        \"descriptor_sha256\": \"2860432a3e69703be5ae7be4853da9c679010ee0c4f621186289f4a5bbf85365\",\n        \"file_name\": \"customer-message.txt\",\n        \"media_type\": \"text/plain\",\n        \"role\": \"customer_message\",\n        \"sha256\": \"2ff4f709cd9fa9468b58988c5e71bed3d189b5448874d3d8a4e011ea90a1a7ea\",\n        \"size_bytes\": 90\n      },\n      {\n        \"artifact_id\": \"src_64ece0e388979b98a49f84fe98b993b2\",\n        \"claim_id\": \"auto_a489b283495e7b03b5aab860\",\n        \"contract\": \"casepath.autonomous-source/1.0.0\",\n        \"descriptor_sha256\": \"4c79f2bcd08a5f06d54d5d4bb94c62accc414dd10af8e08b943b2c7cb53a434e\",\n        \"file_name\": \"spouse-notice.txt\",\n        \"media_type\": \"text/plain\",\n        \"role\": \"supporting_document\",\n        \"sha256\": \"5b3ad573b51e18ca7ad51ed396f7aca7a078feb0cf99628f8e4af9c1ad8f43e3\",\n        \"size_bytes\": 68\n      }\n    ],\n    \"source_roster_sha256\": \"8806fea53a2bb10dae64865c194e712381effbe4e721e946ff3ece1ac32a93ce\",\n    \"state_sha256\": \"0b4ddbbc059ed44812bb364f6d269c1c60c37ca4d48068a62de858764f099bc1\",\n    \"status\": \"running\",\n    \"title\": \"New incoming termination\",\n    \"updated_at\": \"2026-10-11T12:00:00+00:00\"\n  },\n  \"projection\": {\n    \"node_capabilities\": {},\n    \"revision\": 2,\n    \"state_sha256\": \"0b4ddbbc059ed44812bb364f6d269c1c60c37ca4d48068a62de858764f099bc1\"\n  }\n}",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_e262801f9368bc12/replay?through_seq=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_e262801f9368bc12/replay?through_seq=1",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_e262801f9368bc12/replay?through_seq=2",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_e262801f9368bc12/replay?through_seq=1",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_e262801f9368bc12/replay?through_seq=2",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=1",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=2",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=3",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/sources/auto_a489b283495e7b03b5aab860/src_ea78ae672a9d443b4bc44664c71efd4b/text",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=2",
+      "method": "GET",
+      "time": 12000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=3",
+      "method": "GET",
+      "time": 12000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/auto_a489b283495e7b03b5aab860/replay?through_seq=4",
+      "method": "GET",
+      "time": 12300,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

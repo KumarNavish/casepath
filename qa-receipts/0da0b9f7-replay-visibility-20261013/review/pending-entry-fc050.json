@@ -1,0 +1,31 @@
+{
+  "assets": {
+    "javascript": "fc0500d7a386ffa34ade4aa4c524f19ca8cf1a5f74ed8a0c52e56d8d1a7a3c30",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "first": "clm_314f2d309fea25e6",
+  "previous": "clm_4a07dbbbd859a3ce",
+  "url": "http://localhost:41999/#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0",
+  "visibleTitle": "Heating resets and an uncertain onset date",
+  "visibleHash": "34cb6397ffbd77b995ba438e17de9d64bc9b6954f473ab73d1a1061d139ef111",
+  "expectedFirstHash": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+  "status": "This synthetic reference assessment has no completed recorded history available.",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ]
+}

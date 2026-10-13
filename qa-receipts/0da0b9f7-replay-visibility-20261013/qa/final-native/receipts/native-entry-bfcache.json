@@ -1,0 +1,412 @@
+{
+  "assets": {
+    "casepath/index.html": "4f1afa9c7bba6cb7ff01a6bd8f359afe0eca45985395938bec5a1ba93d64fa2d",
+    "casepath/assets/autonomous-entry-v1.js": "297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+    "casepath/assets/autonomous-workspace-v1.js": "fc0500d7a386ffa34ade4aa4c524f19ca8cf1a5f74ed8a0c52e56d8d1a7a3c30",
+    "casepath/assets/autonomous-workspace-v1.css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "runs": [
+    {
+      "fragment": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources",
+      "before": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources",
+        "revision": 18,
+        "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037",
+        "nav": "demonstration",
+        "panel": "sources",
+        "play": true,
+        "resume": false,
+        "workspaceLength": 5802,
+        "hidden": false
+      },
+      "shows": [
+        {
+          "persisted": false,
+          "path": "/"
+        },
+        {
+          "persisted": false,
+          "path": "/away"
+        },
+        {
+          "persisted": true,
+          "path": "/"
+        },
+        {
+          "persisted": false,
+          "path": "/"
+        }
+      ],
+      "persistedHide": {
+        "persisted": true,
+        "workspaceLength": 5802
+      },
+      "restored": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources",
+        "revision": 18,
+        "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037",
+        "nav": "demonstration",
+        "panel": "sources",
+        "play": true,
+        "resume": false,
+        "workspaceLength": 5802,
+        "hidden": false
+      },
+      "held": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources",
+        "revision": 18,
+        "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037",
+        "nav": "demonstration",
+        "panel": "sources",
+        "play": true,
+        "resume": false,
+        "workspaceLength": 5802,
+        "hidden": false
+      },
+      "departure": {
+        "persisted": false,
+        "workspaceLength": 0
+      },
+      "reloaded": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=18&detail=sources",
+        "revision": 18,
+        "state_sha256": "d4c5671883f08cdec853390809f3ef37566913659bc5bde1d75692e1144aa037",
+        "nav": "demonstration",
+        "panel": "sources",
+        "play": true,
+        "resume": false,
+        "workspaceLength": 5802,
+        "hidden": false
+      },
+      "requests": [
+        {
+          "path": "/",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/fonts/Merriweather-Light.ttf",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=18",
+          "method": "GET"
+        },
+        {
+          "path": "/away",
+          "method": "GET"
+        },
+        {
+          "path": "/",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/fonts/Merriweather-Light.ttf",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=18",
+          "method": "GET"
+        }
+      ]
+    },
+    {
+      "fragment": "#autonomous/demonstration?mode=replay",
+      "before": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=2",
+        "revision": 2,
+        "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "nav": "demonstration",
+        "panel": "step",
+        "play": false,
+        "resume": false,
+        "workspaceLength": 7625,
+        "hidden": false
+      },
+      "shows": [
+        {
+          "persisted": false,
+          "path": "/"
+        },
+        {
+          "persisted": false,
+          "path": "/away"
+        },
+        {
+          "persisted": true,
+          "path": "/"
+        },
+        {
+          "persisted": false,
+          "path": "/"
+        }
+      ],
+      "persistedHide": {
+        "persisted": true,
+        "workspaceLength": 7625
+      },
+      "restored": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=2",
+        "revision": 2,
+        "state_sha256": "a7f51b9c95e6b8fe952e684dd312623b452a395205d3cb19630b88fe927fe80b",
+        "nav": "demonstration",
+        "panel": "step",
+        "play": false,
+        "resume": false,
+        "workspaceLength": 7625,
+        "hidden": false
+      },
+      "held": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=3",
+        "revision": 3,
+        "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+        "nav": "demonstration",
+        "panel": "step",
+        "play": false,
+        "resume": false,
+        "workspaceLength": 7727,
+        "hidden": false
+      },
+      "departure": {
+        "persisted": false,
+        "workspaceLength": 0
+      },
+      "reloaded": {
+        "hash": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=3",
+        "revision": 3,
+        "state_sha256": "6d6f349f7b307f0a993feda496714e502a659815cd4f1d53d4ba8512ac72b5c2",
+        "nav": "demonstration",
+        "panel": "step",
+        "play": true,
+        "resume": false,
+        "workspaceLength": 7726,
+        "hidden": false
+      },
+      "requests": [
+        {
+          "path": "/",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/fonts/Merriweather-Light.ttf",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=1",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=2",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=3",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=4",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/knowledge",
+          "method": "GET"
+        },
+        {
+          "path": "/away",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=5",
+          "method": "GET"
+        },
+        {
+          "path": "/",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/fonts/Merriweather-Light.ttf",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/fonts/OpenSans-VariableFont_wdth-wght.ttf",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/claims-workspace-v1.css?sha256=4b1135cede87e59cb5346e1a556e84386c6f32ef18167386f87046c652c00a14",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/causal-process-v1.css?sha256=46a3c1d93592afcd5e54d8b9cb5c58e7343b06228aaf547d39efb0aea56ac5ed",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/claims-workspace-presentation-v1.css?sha256=54faa971a7d789373f1b2e90f606f56dedcf05d9dfca777320461b77ecbbc557",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/agent-work-v1.css?sha256=8c8f34396bf77d0dc6214780da65e1eacbc83b083e793a0a70a2c2d5be2fecd9",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/process-evidence-v2.css?sha256=453d00ef9e99479c8a2eed8cf855c1a102dcd17fd74e66d0ad1f9a7552a27a22",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/agent-native-v2.css?sha256=ffc03582240768210e7ec161623543a92a69123ffaa12612271ebcc222d893cb",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-workspace-v1.css?sha256=dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-entry-v1.js?sha256=297350135d60467afc7bdeff0f9389594014549d6acbe5b4b940211cd81223b8",
+          "method": "GET"
+        },
+        {
+          "path": "/assets/autonomous-workspace-v1.js?sha256=2672ee416edb88ccbff7cd41619899f91b8a9c9d4a0ebdf175dfbfb6a53e36ea",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=3",
+          "method": "GET"
+        },
+        {
+          "path": "/api/claim-loops/v1/autonomous/claims",
+          "method": "GET"
+        }
+      ]
+    }
+  ]
+}

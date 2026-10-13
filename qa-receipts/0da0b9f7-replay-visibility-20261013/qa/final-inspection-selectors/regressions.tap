@@ -1,0 +1,23 @@
+✖ forming work: native source inspection preserves its exact replay composition (13351.3156ms)
+✔ forming work: native document inspection preserves its exact replay composition (8396.077377ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22213.201762
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2955:66
+✖ forming work: native source inspection preserves its exact replay composition (13351.3156ms)
+  locator.getAttribute: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-reading [data-au-source][data-au-citation]').first()[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2958:154) {
+    name: 'TimeoutError',
+    log: [ "  - waiting for locator('.au-forming-reading [data-au-source][data-au-citation]').first()" ]
+  }

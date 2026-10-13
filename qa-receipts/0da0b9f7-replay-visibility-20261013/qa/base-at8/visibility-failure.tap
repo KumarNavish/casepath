@@ -1,0 +1,46 @@
+✖ replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion false (13261.36025ms)
+✖ replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion true (10696.187872ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24825.434144
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3163:38
+✖ replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion false (13261.36025ms)
+  AssertionError [ERR_ASSERTION]: visibility and untrusted focus or keyboard events cannot create an inspection hold
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3199:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:3163:38
+✖ replay visibility: an in-flight next prefix survives hide show and programmatic focus at prefix eight with reduced motion true (10696.187872ms)
+  AssertionError [ERR_ASSERTION]: visibility and untrusted focus or keyboard events cannot create an inspection hold
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:3199:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

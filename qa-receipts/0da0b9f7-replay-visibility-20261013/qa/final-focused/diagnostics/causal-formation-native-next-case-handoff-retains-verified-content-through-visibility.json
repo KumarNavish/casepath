@@ -1,0 +1,107 @@
+{
+  "url": "http://localhost:41999/#autonomous/claim/clm_4a07dbbbd859a3ce?collection=reference&mode=replay&through=0",
+  "text": "CasePath\nEvidence into action\nRead-only\nCases\nDemonstration\nKnowledge\n\nCases / Synthetic claim / Recorded investigation\n\nHeating resets and an uncertain onset date\n\nNot started.\n\nPause\nChoose case\nHistory\nProcess\nDocuments\nKnowledge\nSources\nOriginal message\nGrüezi\n\nVor einer sicheren Einordnung: Im Wohnzimmer sind es morgens nur etwa 16 Grad; Nach einem Neustart geht die Heizung kurz, dann wieder nicht; Ich habe dreimal angerufen; mehr kann ich nicht sicher sagen.\n\nZum Anliegen «wiederholter Heizungsausfall», heute reiche ich Folgendes ein: welche Temperatur mit einem kalibrierten Gerät gemessen wurde ist noch ungeklärt; für «dauerhafte Reparatur und Prüfung weiterer Ansprüche»: die Angaben wirken klar, lassen aber Kernfragen offen; bei «wiederholter Heizungsausfall»: ich möchte eine nachvollziehbare Prüfung; welche technische Ursache der Servicedienst festgestellt hat bleibt ebenfalls offen; dazu brauche ich eine fachliche Einordnung.\n\nDaraus ergibt sich meine Bitte: dauerhafte Reparatur und Prüfung weiterer Ansprüche; insbesondere brauche ich Klarheit darüber, welche technische Ursache der Servicedienst festgestellt hat, und darüber, welche Angabe vor der Einordnung bestätigt werden muss.\n\nVor dem nächsten Schritt; Ich muss noch verstehen, welche Temperatur mit einem kalibrierten Gerät gemessen wurde; damit kann ich meine Unterlagen ergänzen.\n\nEin genaues Anfangsdatum kann ich im Moment nicht sicher nennen.\n\nJe peux aussi répondre en français si nécessaire.\n\nBeste Grüsse\nMehrere-Angaben-sind-unklar-wiederholter-Heizungsausfall_2025-01-29_1200_0b5656.txt\nIntake incomplete\nDetails\nRelevant tenancy terms\nNot established\nLandlord knowledge and continuing repair status\nNot established\nDated technical defect observation\nNot established",
+  "dialogs": [
+    {
+      "class": "au-source-dialog",
+      "open": false
+    },
+    {
+      "class": "au-record-dialog",
+      "open": false
+    }
+  ],
+  "active": "<h1 class=\"au-page-heading \" id=\"auClaimTitle\" data-au-claim-title=\"\" tabindex=\"-1\">Heating resets and an uncertain onset date</h1>",
+  "revision": "0",
+  "calls": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/status",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims?limit=200&offset=50",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/knowledge",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=24",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=25",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=0",
+      "method": "GET",
+      "time": 4000,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=25",
+      "method": "GET",
+      "time": 20500,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=1",
+      "method": "GET",
+      "time": 20500,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_4a07dbbbd859a3ce/replay?through_seq=2",
+      "method": "GET",
+      "time": 20500,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "errors": []
+}

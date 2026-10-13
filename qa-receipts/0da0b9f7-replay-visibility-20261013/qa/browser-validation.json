@@ -1,0 +1,322 @@
+{
+  "base_commit": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "allowed_edited_file": "casepath-qa/unified-product-browser-v1.test.cjs",
+  "final_qa_sha256": "b1892a7a8d076c28add980805f3a78cb548d5e697b08f1fa6a7970c813267d67",
+  "final_javascript_sha256": "fc0500d7a386ffa34ade4aa4c524f19ca8cf1a5f74ed8a0c52e56d8d1a7a3c30",
+  "cwd": "/workspace/casepath-replay-visibility-20261013",
+  "common_environment": {
+    "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+    "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+    "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json"
+  },
+  "current_distinct_passed_cases": 31,
+  "current_case_accounting": "11 retained final-focused +2 final-at8 +10 final-native passing controls/subtests +8 helper consumers (6 final-inspection +1 corrected document +1 corrected source). Two superseded prefix1 variants excluded.",
+  "source_frozen": true,
+  "no_provider_production_network_or_full_suite_used": true,
+  "runs": [
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/base/visibility-failure.tap",
+      "log_sha256": "5ae160d96147ce70ca7ceb2dd4b7ed1f4ee4ab41ba9e620fbe52b8bd2014ad56",
+      "exit_status": 1,
+      "tests": 2,
+      "pass": 0,
+      "fail": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^replay visibility:",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_JS_ASSET": "/tmp/casepath-replay-visibility-20261013/qa/base/autonomous-workspace-v1.js",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/base/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/base/receipts"
+      },
+      "classification": "Exact base implementation; original prefix1 hide/show false Resume regression, 2 expected failures.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/base/visibility-failure.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/focused/regressions.tap",
+      "log_sha256": "f205bb21b4d4b1294a01a895e872b20ad1707f9d6cb186fb488ee67890c098d7",
+      "exit_status": 1,
+      "tests": 8,
+      "pass": 6,
+      "fail": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^replay visibility:|^focused flow: (source|navigation) cancels replay|^causal formation native: next case handoff retains verified content through visibility",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/focused/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/focused/receipts"
+      },
+      "classification": "Initial fixed-source run: 6 passed; 2 delayed-handoff checks failed because technical drawer was never initialized. Replaced with direct visible identity sampling.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/focused/regressions.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/native/all218-bfcache.tap",
+      "log_sha256": "c069d527601ebcc1c5d6747c19d431f789ecde11a798ea024fddac4b4baadf3a",
+      "exit_status": 0,
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^replay entry: fresh .* consumes all 218|^replay lifecycle:",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/native/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/native/receipts"
+      },
+      "classification": "Initial native run before final source guard: 3 passed; visitor still used the original initial History drawer instrumentation.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/native/all218-bfcache.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/final-focused/regressions.tap",
+      "log_sha256": "cfeef38c18a126c75f5365d0e3a82428b13b477724e550916ac43d8c0fced347",
+      "exit_status": 0,
+      "tests": 13,
+      "pass": 13,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^replay visibility:|^focused flow: (source|navigation) cancels replay|^causal formation native: next case handoff retains verified content through visibility|^focused flow: a corrupted prefetched",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/final-focused/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/final-focused/receipts"
+      },
+      "classification": "Frozen final JS: 13 passed. Two prefix1 hide/show variants superseded by exact prefix8/next9 variants below; other 11 retained.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/final-focused/regressions.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/final-native/all218-controls.tap",
+      "log_sha256": "700dd9c4aa1f0b9fc32870e6a0ccd57c1872e2e6fefde0a153082954b9c48850",
+      "exit_status": 1,
+      "tests": 13,
+      "pass": 10,
+      "fail": 3,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^replay entry: fresh .* consumes all 218|^replay lifecycle:|^replay entry: shared reference identity|^replay entry: a legacy link|^timed replay presentation|^focused flow: actual accepted replay prefixes|^focused flow: manual .* inspection pauses",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/final-native/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/final-native/receipts"
+      },
+      "classification": "Frozen final JS: 10 passed including zero-trusted-input visitor218, full DTO owner218, BFCache, links, timed-modal controls and 28-prefix pacing at0/120ms. Three manual cases failed stale helper expectation that explicit selected-node context autoplays without Resume.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/final-native/all218-controls.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/base-at8/visibility-failure.tap",
+      "log_sha256": "f015d175fb51ea6029f69a59b2ec840800cb1ac02c31bbd6661fa42119bfa41b",
+      "exit_status": 1,
+      "tests": 2,
+      "pass": 0,
+      "fail": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^replay visibility: an in-flight .* at prefix eight",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_JS_ASSET": "/tmp/casepath-replay-visibility-20261013/qa/base/autonomous-workspace-v1.js",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/base-at8/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/base-at8/receipts"
+      },
+      "classification": "Exact base implementation: both exact prefix8/next9 visibility regressions fail false Resume1 !==0.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/base-at8/visibility-failure.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/final-at8/regressions.tap",
+      "log_sha256": "4ebc71b6a561159477de289c17846d38065b8eeb3dc0fad1076412655e461f2a",
+      "exit_status": 0,
+      "tests": 2,
+      "pass": 2,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^replay visibility: an in-flight .* at prefix eight",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/final-at8/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/final-at8/receipts"
+      },
+      "classification": "Frozen final JS: both exact prefix8/next9 variants pass. Prefixes1..8 autoplay;9 held in flight; hidden8s/release/show; no false Resume or burst; exact9 follows.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/final-at8/regressions.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection/regressions.tap",
+      "log_sha256": "74cfd575a5a3654a6a7ae5ebaa6962ff68c543e10d45f9afe280342428c2172c",
+      "exit_status": 1,
+      "tests": 8,
+      "pass": 6,
+      "fail": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^focused flow: manual .* inspection pauses|^forming work: native .* inspection preserves|^quiet language: History pauses the real replay",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection/receipts"
+      },
+      "classification": "Explicit selected-node autoplay setup now deliberately resumes. Six affected controls pass; original forming source/document selectors fail because a future requirement is absent from the active rail.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection/regressions.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/base-inspection/selector-failure.tap",
+      "log_sha256": "8813208f73651d7b659766b851cc7d5e4e1872714ee0e26847a182cc241f33c4",
+      "exit_status": 1,
+      "tests": 2,
+      "pass": 0,
+      "fail": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^forming work: native (source|document) inspection preserves",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_JS_ASSET": "/tmp/casepath-replay-visibility-20261013/qa/base/autonomous-workspace-v1.js",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/base-inspection/diagnostics"
+      },
+      "classification": "Both original active-rail selector failures reproduce against the exact base JS; pre-existing stale expectations.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/base-inspection/selector-failure.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection-selectors/regressions.tap",
+      "log_sha256": "5e7687bb1cca4a5244a81ff3231389eb279167419a6b3fd7cf4bc705bfe7f9b7",
+      "exit_status": 1,
+      "tests": 2,
+      "pass": 1,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^forming work: native (source|document) inspection preserves",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection-selectors/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection-selectors/receipts"
+      },
+      "classification": "Document control passes after opening exact full checklist requirement and asserting node/type/obligation. Source selector on selected lt_form still fails: both relevant accepted facts have no citations at11.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection-selectors/regressions.tap"
+    },
+    {
+      "log": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection-source/regressions.tap",
+      "log_sha256": "4c07c1944827d2cd8af4e36bbd2cc541d7d572e994a89a17013562d8e8d35327",
+      "exit_status": 0,
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-name-pattern=^forming work: native source inspection preserves",
+        "casepath-qa/unified-product-browser-v1.test.cjs"
+      ],
+      "environment": {
+        "NODE_PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules",
+        "CASEPATH_PRIOR_ASSESSMENT_FIXTURE": "/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json",
+        "CASEPATH_REFERENCE_FIXTURE": "/tmp/casepath-reference-native-85a-fixture.json",
+        "CASEPATH_BROWSER_DIAGNOSTICS": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection-source/diagnostics",
+        "CASEPATH_FOCUSED_RECEIPTS": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection-source/receipts"
+      },
+      "classification": "Source fixture selects lt_family, whose exact prefix11 has an actual accepted cited question. Exact cited quote, trusted inspection hold, Escape origin, immutable prefix and deliberate next12 Resume pass.",
+      "stdout_stderr_log": "/tmp/casepath-replay-visibility-20261013/qa/final-inspection-source/regressions.tap"
+    }
+  ],
+  "zero_input_public_native_run": {
+    "prefixes": 218,
+    "handoffs": 8,
+    "visibility_focus_interruptions": 4,
+    "trusted_inputs": [],
+    "source_identities": 378,
+    "citations": 192,
+    "sufficient_checkmarks": 120,
+    "knowledge_pins": 67,
+    "outcome_prefixes": 12
+  },
+  "original_prefix1_regression_snapshot": {
+    "suite": "/tmp/casepath-replay-visibility-20261013/qa/base/browser-through1-regression.test.cjs",
+    "unchanged_original_regression_block": "/tmp/casepath-replay-visibility-20261013/qa/base/through1-regression-source.cjs",
+    "note": "Saved before replacing only the two original prefix1-hide through8 cases with exact prefix8-hide/next9 cases. Original baseline log retained separately."
+  }
+}

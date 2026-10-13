@@ -1,0 +1,40 @@
+✖ forming work: native source inspection preserves its exact replay composition (13318.342777ms)
+✖ forming work: native document inspection preserves its exact replay composition (12392.822271ms)
+✔ forming work: native node inspection preserves its exact replay composition (8087.562718ms)
+✔ forming work: native knowledge inspection preserves its exact replay composition (8052.404019ms)
+✔ quiet language: History pauses the real replay immediately and exposes exact Playback details before Resume consumes only its next prefix (8028.280329ms)
+✔ focused flow: manual node inspection pauses the same accepted journal until deliberate Resume (7495.624883ms)
+✔ focused flow: manual fact inspection pauses the same accepted journal until deliberate Resume (7467.222399ms)
+✔ focused flow: manual document inspection pauses the same accepted journal until deliberate Resume (7931.289907ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 6
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 73450.620933
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2955:66
+✖ forming work: native source inspection preserves its exact replay composition (13318.342777ms)
+  locator.focus: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-documents [data-au-source][data-au-citation]').first()[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2958:130) {
+    name: 'TimeoutError',
+    log: [ "  - waiting for locator('.au-forming-documents [data-au-source][data-au-citation]').first()" ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:2955:66
+✖ forming work: native document inspection preserves its exact replay composition (12392.822271ms)
+  locator.click: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('.au-forming-documents [data-au-select-obligation="obligation:lt_form:termination_notice"]')[22m
+  
+      at TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2959:260) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('.au-forming-documents [data-au-select-obligation="obligation:lt_form:termination_notice"]')` ]
+  }

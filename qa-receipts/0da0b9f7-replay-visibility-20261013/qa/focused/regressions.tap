@@ -1,0 +1,42 @@
+✖ causal formation native: next case handoff retains verified content through visibility (18619.996932ms)
+✖ causal formation native: next case handoff retains verified content through visibility-head (18461.074051ms)
+✔ replay visibility: an in-flight next prefix survives hide show and programmatic focus through eight with reduced motion false (10089.777246ms)
+✔ replay visibility: an in-flight next prefix survives hide show and programmatic focus through eight with reduced motion true (10690.407934ms)
+✔ replay visibility: trusted keyboard retains an inspection hold through hide show until exact next-prefix Resume (7741.50324ms)
+✔ replay visibility: trusted Pause retains an inspection hold through hide show until exact next-prefix Resume (7907.79269ms)
+✔ focused flow: source cancels replay with a prefetched accepted response in flight (7709.023698ms)
+✔ focused flow: navigation cancels replay with a prefetched accepted response in flight (7585.327594ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 6
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 89355.115406
+
+✖ failing tests:
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:940:156
+✖ causal formation native: next case handoff retains verified content through visibility (18619.996932ms)
+  locator.textContent: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('[data-au-record-content] > pre[data-au-record-kind="claim"]')[22m
+  
+      at visibleRecord (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2341:107)
+      at TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:954:56) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('[data-au-record-content] > pre[data-au-record-kind="claim"]')` ]
+  }
+
+test at casepath-qa/unified-product-browser-v1.test.cjs:940:156
+✖ causal formation native: next case handoff retains verified content through visibility-head (18461.074051ms)
+  locator.textContent: Timeout 5000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('[data-au-record-content] > pre[data-au-record-kind="claim"]')[22m
+  
+      at visibleRecord (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:2341:107)
+      at TestContext.<anonymous> (/workspace/casepath-replay-visibility-20261013/casepath-qa/unified-product-browser-v1.test.cjs:954:56) {
+    name: 'TimeoutError',
+    log: [ `  - waiting for locator('[data-au-record-content] > pre[data-au-record-kind="claim"]')` ]
+  }

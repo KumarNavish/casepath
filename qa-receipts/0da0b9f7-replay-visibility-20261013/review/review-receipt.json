@@ -1,0 +1,106 @@
+{
+  "review": "Focused independent read-only visibility/replay patch review",
+  "base": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "branch": "codex/casepath-replay-visibility-20261013",
+  "final_js_sha256": "8818482c2a05aee88ea36a5dc387d1629653cd0dad7e06686d16d37638e95ca3",
+  "result": "No remaining blockers in focused source and QA helper/selector review",
+  "tests": [
+    {
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json node --test --test-name-pattern='independent visibility review' /tmp/casepath-replay-visibility-20261013/review/independent-probes.cjs",
+      "exit_status": 0,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "js_sha256": "f3868802766bbdd96de98651d94e3fb527f8b4ba8d713efb73084e774287e6b3",
+      "log": "/tmp/casepath-replay-visibility-20261013/review/independent-probes-final.log"
+    },
+    {
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json node --test --test-name-pattern='independent final visibility review' /tmp/casepath-replay-visibility-20261013/review/independent-probes.cjs",
+      "exit_status": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "js_sha256": "fc0500d7a386ffa34ade4aa4c524f19ca8cf1a5f74ed8a0c52e56d8d1a7a3c30",
+      "log": "/tmp/casepath-replay-visibility-20261013/review/abandoned-hash-final.log"
+    },
+    {
+      "command": "git diff --check",
+      "exit_status": 0
+    },
+    {
+      "command": "CASEPATH_REFERENCE_FIXTURE=/tmp/casepath-reference-native-85a-fixture.json CASEPATH_PRIOR_ASSESSMENT_FIXTURE=/tmp/casepath-quiet-work-qa-20261012/prior-assessment.json node --test --test-name-pattern='independent pending entry visibility review' /tmp/casepath-replay-visibility-20261013/review/independent-probes.cjs",
+      "exit_status": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "js_sha256": "8818482c2a05aee88ea36a5dc387d1629653cd0dad7e06686d16d37638e95ca3",
+      "log": "/tmp/casepath-replay-visibility-20261013/review/pending-entry-881848.log"
+    }
+  ],
+  "test_byte_binding": "Three initial probes used f386880 asset; targeted abandoned-route probe used fc0500 asset; targeted different-prior-claim hidden initial-admission probe used final 881848 asset and asserted the injected digest exactly. Earlier passing probes were not repeated after these narrow visible guards. Separate QA owns native final-source revalidation.",
+  "early_attempt": {
+    "log": "/tmp/casepath-replay-visibility-20261013/review/handoff-visible-before-release.log",
+    "exit_status": 1,
+    "reason": "Fixture setup attempted generation from this worker clone and failed on missing ignored casepath-api/artifacts/lease-agreement.pdf before browser assertions. Retried using existing verified fixture paths; no setup/source changes made."
+  },
+  "scope_limits": [
+    "No source writes by reviewer",
+    "No full suite",
+    "No production/provider/deployment/network work",
+    "No application service started",
+    "Source review of live auto-restart guards; independent browser probes cover replay only"
+  ],
+  "artifacts": [
+    "/tmp/casepath-replay-visibility-20261013/review/baseline-audit.md",
+    "/tmp/casepath-replay-visibility-20261013/review/final-source.diff",
+    "/tmp/casepath-replay-visibility-20261013/review/independent-probes.cjs",
+    "/tmp/casepath-replay-visibility-20261013/review/handoff-visible-before-release.json",
+    "/tmp/casepath-replay-visibility-20261013/review/abandoned-hash-final.json"
+  ],
+  "qa_test_source_review": {
+    "sha256": "3781ae2d36123f993763a678f97778129cd179e51dd36dedf741b6afef7fa105",
+    "method": "Read-only inspection; these repository tests were executed by the separate QA worker, not this reviewer.",
+    "visitor_scope": "Fresh public-mode deterministic fixture entry with no trusted user input or History drawer. Exactly 218 native DOM prefix identities and 8 handoffs; four hide/show intervals; graph and visible source/citation/document/Knowledge/outcome consistency. It does not compare the full state DTO for every visitor prefix.",
+    "owner_scope": "Existing History drawer initialization and complete accepted state/projection equality for all 218 prefixes. This owner-mode fixture journey is instrumented, not zero-input.",
+    "prefix_eight_scope": "Two normal/reduced-motion tests consume exact prefixes 1 through 8, hold prefix 9 in flight, hide at exact 8, release while hidden, restore with no Resume, retain 8 at 100ms, then consume exact 9 and assert all paint order 1 through 9.",
+    "result": "No remaining test truth-scope blocker"
+  },
+  "qa_helper_repair_review": {
+    "qa_sha256": "abed0a2b56513e1f83443760c4cec8eabde62626e01a289f2171705382adeec5",
+    "js_sha256": "fc0500d7a386ffa34ade4aa4c524f19ca8cf1a5f74ed8a0c52e56d8d1a7a3c30",
+    "change": "actualJournalPresentation calls existing playIfPaused after exact title admission only when config.startNode is supplied.",
+    "classification": "Narrow test setup repair for explicit autoplay helper intent; a node deep-link correctly sets persistent inspectionHold in production until deliberate Play/Resume. No production behavior or paused deep-link assertions changed.",
+    "original_failures": "Three manual node/fact/document tests failed at the held-next-prefix setup assertion before performing their inspection. Original output retained at /tmp/casepath-replay-visibility-20261013/qa/final-native/all218-controls.tap.",
+    "consumer_scope": "All eight affected variants were executed by QA: six passed after the helper repair; original source/document selectors failed on exact base as well, then each corrected real UI path passed in a targeted rerun.",
+    "checks_by_reviewer": "Read-only helper diff, callsite and failure-output inspection; JS digest unchanged; git diff --check passed. No new tests or source writes by reviewer.",
+    "result": "No remaining semantic classification or helper-diff blocker; bounded rerun outcome is owned by QA worker."
+  },
+  "pending_entry_followup": {
+    "js_sha256": "fc0500d7a386ffa34ade4aa4c524f19ca8cf1a5f74ed8a0c52e56d8d1a7a3c30",
+    "test_count": 1,
+    "pass": 0,
+    "fail": 1,
+    "exit_status": 1,
+    "previous_claim": "clm_4a07dbbbd859a3ce",
+    "chosen_demo_claim": "clm_314f2d309fea25e6",
+    "finding": "New Demo entry initiated while hidden with prior different replay current retains the old claim and stops on show instead of completing first admission.",
+    "log": "/tmp/casepath-replay-visibility-20261013/review/pending-entry-fc050.log",
+    "observations": "/tmp/casepath-replay-visibility-20261013/review/pending-entry-fc050.json",
+    "owner": "Resolved by root; independently verified by this reviewer.",
+    "resolution": "Root added a visible admission guard for active replay session with no replayHead, no preparing work and no pending route; reenters openPresentationCase before considering old current. Targeted same-page probe now passes exact chosen prefix zero then automatic exact prefix one.",
+    "final_js_sha256": "8818482c2a05aee88ea36a5dc387d1629653cd0dad7e06686d16d37638e95ca3",
+    "final_log": "/tmp/casepath-replay-visibility-20261013/review/pending-entry-881848.log",
+    "final_observations": "/tmp/casepath-replay-visibility-20261013/review/pending-entry-final.json",
+    "final_exit_status": 0,
+    "final_passed": 1,
+    "final_failed": 0
+  },
+  "qa_selector_repair_review": {
+    "qa_sha256": "b1892a7a8d076c28add980805f3a78cb548d5e697b08f1fa6a7970c813267d67",
+    "source": "At exact prefix 11 the source variant selects lt_family, where accepted family/spouse fact citations are actually visible; it opens the current native reading citation, compares exact marked quote, retains Escape origin, holds exact prefix 11, and consumes exact 12 only after Resume. lt_form contains no corresponding citations at this prefix.",
+    "document": "Asserts the contextual future requirement is absent from the active rail, opens the actual All recorded requirements checklist, selects its exact obligation and asserts route obligation/document/node; existing held-prefix and Resume assertions remain.",
+    "classification": "Narrow tests of existing visible UI paths. No production/source JS changes, assertions weakened, fixture data changes or network/provider access.",
+    "baseline": "Old active-rail source and contextual document selectors both failed on exact bc0 base; subsequent guessed lt_form reading citation also failed and was retained.",
+    "qa_reported_outcome": "31 distinct current browser cases passed (11 focused, 2 at exact 8, 10 native, 8 affected inspection); execution owned by QA worker."
+  }
+}

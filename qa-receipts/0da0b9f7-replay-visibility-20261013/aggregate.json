@@ -1,0 +1,75 @@
+{
+  "status": "review_ready",
+  "implementation_commit": "0da0b9f784ddc662990035ba52a97834609075ac",
+  "implementation_branch": "codex/casepath-replay-visibility-20261013",
+  "base": "bc0ddb5340e4251360ee0f4dcb960ddb190a4114",
+  "host": "656813ef2295",
+  "managed_provider": "cloud",
+  "worker_model": "gpt-6.1-sol",
+  "worker_reasoning": "xhigh",
+  "changed_paths": [
+    "casepath/assets/autonomous-workspace-v1.js",
+    "casepath-qa/unified-product-browser-v1.test.cjs"
+  ],
+  "root_cause": "visibilitychange hidden called pauseInspection, set inspectionHold, copied session to pausedPresentation then nulled demoSession. Visible replay had no active scheduler to restart. Synthetic Tab/Arrow also created holds without isTrusted.",
+  "behavior": "Hidden cancels timer and animations without clearing verified replay session or prefix promises. Visible verifies/resumes exact next prefix with a fresh reading interval, never a burst. Real inspection/Pause remains held. Initial and next-case admission retain head, epoch, generation and route checks; late hidden failures remain fail-closed.",
+  "final_byte_results": {
+    "module": {
+      "command": "node --test casepath-qa/autonomous-workspace-v1.test.cjs",
+      "passed": 146,
+      "failed": 0,
+      "skipped": 0,
+      "exit_status": 0,
+      "log": "root/module-release.tap"
+    },
+    "browser": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "exit_status": 0,
+      "receipt": "qa/browser-final-admission-validation.json",
+      "cases": [
+        "owner native218/8handoffs (History/DTO instrumentation)",
+        "public visitor native218/8handoffs/4visibility-focus interruptions with zero trusted input",
+        "hidden re-entry from different reference claim",
+        "exact8 with9inflight normal motion",
+        "exact8 with9inflight reduced motion"
+      ]
+    },
+    "independent_final_source_probe": {
+      "passed": 1,
+      "failed": 0,
+      "receipt": "review/review-receipt.json"
+    }
+  },
+  "prior_regression_coverage": {
+    "passed_distinct_browser_cases": 31,
+    "javascript_sha256": "fc0500d7a386ffa34ade4aa4c524f19ca8cf1a5f74ed8a0c52e56d8d1a7a3c30",
+    "receipt": "qa/browser-validation.json",
+    "binding": "Pre-final no-head admission guard; the 5 final-byte cases above recheck all9, exact8 and the new entry path. No claim that all31 were rerun on finalbytes."
+  },
+  "cumulative_distinct_browser_cases": 32,
+  "failures_preserved": [
+    "Exactbc0 original1\u21922 visibility regression2 failures",
+    "Exactbc0 at8\u21929 regression2 failures",
+    "Interim handoff harness failures: technical record drawer was not initialized",
+    "Manual3 helper expected autoplay despite requested node inspection; deliberate Play/Resume added to helper, genuine holds preserved",
+    "Old source/document active-rail selectors failed on exactbc0; future rows correctly absent. Full checklist exactidentity and actual cited lt_family source replace stale selectors. Guessed uncited lt_form source attempt preserved.",
+    "Independent probe setup initially lacked ignored artifacts; reused existing verified fixtures without changing source",
+    "Independent fc050 hidden reentry failed with wrong prior claim; final881848 guard passed"
+  ],
+  "asset_sha256": {
+    "workspace_js": "8818482c2a05aee88ea36a5dc387d1629653cd0dad7e06686d16d37638e95ca3",
+    "browser_qa": "3e6bf7b57668803e3cf6f73e8e717b523e3075a50a66c0ba2176c9d8afeb7620"
+  },
+  "review": "No remaining blockers; independent model gpt-6.1-sol/xhigh; source, helper, selector and state/pacing races reviewed",
+  "limits": [
+    "Isolated in-memory synthetic browser fixtures, not published authenticated/visitor recordings.",
+    "Virtual clock scheduler checks do not measure hosted network speed.",
+    "Owner all218 run uses trusted History instrumentation; only public visitor run is zero trusted input from entry.",
+    "No full suite, source seal, deployment, paid inference, production read/write, data/profile/journal/budget changes.",
+    "Index/CSS/entry bytes unchanged; Mac must update asset query and source seal before release.",
+    "Public read-only boundary unchanged; hiding an active live presentation removes its frontend auto-dispatch session so visibility restoration cannot authorize a new Start."
+  ],
+  "stopped_after_targeted_verification": true
+}
