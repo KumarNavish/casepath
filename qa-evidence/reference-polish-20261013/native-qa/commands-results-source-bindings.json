@@ -55,7 +55,6 @@
       "failed": 14,
       "exit": 1,
       "elapsedMs": 27437.825419,
-      "logSha": "5a33e102567a6c38d361cf36c87d1ff3de7e1f46d986e1bb1f2d024845432ad7",
       "diagnosis": "Fourteen selected checks failed importing the native fixture because the ignored casepath-api/artifacts/lease-agreement.pdf had not been generated. Two other checks passed.",
       "environmentOverrides": {
         "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin",
@@ -75,7 +74,8 @@
         "testSha256": "4e70595f881c85ee9706f4d29ea75e47da62eae1cc83daa4f2858b76dba18568",
         "javascriptSha256": "c091660934e98e26dc8a823e9eb0bbbc1d4e077d211245ddfa6a5421d23699f6",
         "cssSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
-      }
+      },
+      "logSha256": "5a33e102567a6c38d361cf36c87d1ff3de7e1f46d986e1bb1f2d024845432ad7"
     },
     {
       "label": "fresh-attempt-2",
@@ -84,7 +84,6 @@
       "failed": 9,
       "exit": 1,
       "elapsedMs": 190640.769942,
-      "logSha": "57f436de5e0d5a88fe3e4b0fc4a429c89fe10ca6ac5bc37a5bc8ebb562cceb22",
       "diagnosis": "Two all-prefix checks failed their route predicate. The failed route strings were not persisted; source inspection identified the baseline openClaim(...,false) route update omission, subsequently fixed by Mac commit c52d2c6. Seven further checks failed with Chromium Target crashed/closed. A full /tmp and concurrent exporter OSError 28 were observed, but each individual Chromium crash cause was not independently established.",
       "environmentOverrides": {
         "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin",
@@ -104,7 +103,8 @@
         "testSha256": "4e70595f881c85ee9706f4d29ea75e47da62eae1cc83daa4f2858b76dba18568",
         "javascriptSha256": "c091660934e98e26dc8a823e9eb0bbbc1d4e077d211245ddfa6a5421d23699f6",
         "cssSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
-      }
+      },
+      "logSha256": "57f436de5e0d5a88fe3e4b0fc4a429c89fe10ca6ac5bc37a5bc8ebb562cceb22"
     },
     {
       "label": "combined-attempt-3",
@@ -113,7 +113,6 @@
       "failed": 17,
       "exit": 1,
       "elapsedMs": 514.270597,
-      "logSha": "2c4e885af780c56bd47daea0d3a2296dbfe9592769794b7a0cfcc2a0c407f7e5",
       "diagnosis": "Browser launch hook failed before application tests executed: workspace TMPDIR made Chromium's UNIX SingletonSocket path exceed its limit. No application behavior was validated.",
       "environmentOverrides": {
         "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin",
@@ -134,7 +133,8 @@
         "testSha256": "be7c5e1f7cc74a62edf75a22af72978fa11806ece86cc7b02ff2e44e3eb4501f",
         "javascriptSha256": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
         "cssSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
-      }
+      },
+      "logSha256": "2c4e885af780c56bd47daea0d3a2296dbfe9592769794b7a0cfcc2a0c407f7e5"
     },
     {
       "label": "combined-attempt-4",
@@ -143,7 +143,6 @@
       "failed": 14,
       "exit": 1,
       "elapsedMs": 166063.273903,
-      "logSha": "7b12923f005e5651e3097f98639cbedbc47e3e5e51e3bfd1be58b43f8b9519cc",
       "diagnosis": "Fresh owner/public all-prefix replays and extended native BFCache/reload baseline check passed. One 211 MB migration fixture transfer exceeded Chromium CDP's explicit 104857600-byte message capacity; fourteen migration/remaining checks failed or cascaded with the closed browser. After all results were emitted, only this run's child Node PID 556999 was terminated because teardown hung; runner completed its TAP summary and exited 1.",
       "environmentOverrides": {
         "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin",
@@ -164,7 +163,8 @@
         "testSha256": "be7c5e1f7cc74a62edf75a22af72978fa11806ece86cc7b02ff2e44e3eb4501f",
         "javascriptSha256": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
         "cssSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
-      }
+      },
+      "logSha256": "7b12923f005e5651e3097f98639cbedbc47e3e5e51e3bfd1be58b43f8b9519cc"
     },
     {
       "label": "combined-attempt-5",
@@ -172,7 +172,6 @@
       "passed": 15,
       "failed": 2,
       "exit": 1,
-      "logSha": "fb3bd5a95a322fc2dfc56c05386467374e3e0e4537f2d795d01760dc90d0a479",
       "diagnosis": "Native migration transfer, owner replay and controls passed. Public replay's historical fourth threshold 180 was outside the actual 171 visible prefixes (3 versus 4 interruptions). Earlier-document test's broad artifact selector matched eight legitimate History/action buttons. Both were QA selector/control issues; assertions were retained and corrected.",
       "environmentOverrides": {
         "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin",
@@ -193,7 +192,9 @@
         "testSha256": "4644cb52d060b45b1aa181ad881554af1f3e289245b192b9ff105dcb62c571f9",
         "javascriptSha256": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
         "cssSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
-      }
+      },
+      "logSha256": "fb3bd5a95a322fc2dfc56c05386467374e3e0e4537f2d795d01760dc90d0a479",
+      "elapsedMs": 436789.564649
     },
     {
       "label": "combined-attempt-6",
@@ -202,7 +203,6 @@
       "failed": 0,
       "exit": 0,
       "elapsedMs": 104028.304102,
-      "logSha": "ffea737bd4b2d7118332fc5a0e5378268a2621768f33aa370916c6b0c6b4139a",
       "diagnosis": "Only the two affected checks reran: four data-derived visibility interruptions plus exact 171 public current prefixes; all-nine current/earlier sources, original zero, descriptor schema, native old-document viewing and physical source hashes.",
       "environmentOverrides": {
         "PATH": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin:/usr/local/bin:/usr/bin:/bin",
@@ -223,7 +223,8 @@
         "testSha256": "d8f91ff92d5baf325e89d75b34b596fafc0d39a2db4e27a10d342a416f86ca21",
         "javascriptSha256": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
         "cssSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
-      }
+      },
+      "logSha256": "ffea737bd4b2d7118332fc5a0e5378268a2621768f33aa370916c6b0c6b4139a"
     },
     {
       "label": "stills-attempt-7",
@@ -254,7 +255,8 @@
         "testSha256": "d8f91ff92d5baf325e89d75b34b596fafc0d39a2db4e27a10d342a416f86ca21",
         "javascriptSha256": "d7b927c75c479c6d602ea062d24d06f03220c54e3cf8de7df4d8e229f6a24a8d",
         "cssSha256": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
-      }
+      },
+      "logSha256": "4827c5eadf4e82a2f23e2efe68897f28454dfbdb625a4917ccc7e21bc218c6f0"
     }
   ],
   "latestUniquePassingSelections": {

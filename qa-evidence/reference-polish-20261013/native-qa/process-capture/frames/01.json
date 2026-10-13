@@ -1,0 +1,66 @@
+{
+  "captured_at": "2026-10-13T05:23:24.468Z",
+  "image_sha256": "f59327daeeb320dd10711409e19966e3017fe9a9f4c0395ba7866a90b180ed0b",
+  "checkoutCommit": "d63bc966d7a0d209a64ecb447362cbc2b4ecf1d5",
+  "originalTestSha256": "af597075c700e07c7cef59f9caf40540fc390d31660352440f6330d35677e57e",
+  "instrumentationSha256": "41f7d8783efd7a158b7456b634f83df8c702bc5f57029ae5085e0df8d8f7a23a",
+  "assets": {
+    "javascript": "375fc7cbe4b3002e934d6526c0ee3aeeb2f1ee203a91b33a5e18f8b0f4e6a401",
+    "css": "dce83453e21eddd70eb9471083343a86579f87a195b224a872252ab9a650740f"
+  },
+  "claim_id": "clm_314f2d309fea25e6",
+  "route": "#autonomous/claim/clm_314f2d309fea25e6?collection=reference&mode=replay&through=0",
+  "through_seq": 0,
+  "state_sha256": "d0a4e62df8aacd495151883b911ea05c6cfe89710852821991a9d1f9e096bdd0",
+  "event_sha256": null,
+  "dto_sha256": "b725580c4e48e05301ff6be4846f64d665793935eaea0a564d2606247a49e147",
+  "graph_nodes": [],
+  "documents": [],
+  "knowledge": [],
+  "outcome": null,
+  "events": [],
+  "replay_start": {
+    "claim_id": "clm_314f2d309fea25e6",
+    "contract": "casepath.reference-replay-start/1.0.0",
+    "event_sha256": "25135a6cdda00756ad791e897bb01e22be07a7f1dc70e9b2b2af676d6b8be9ff",
+    "from_seq": 28,
+    "profile_id": "synthetic-nine-v2",
+    "profile_sha256": "18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869",
+    "run_id": "autonomy.afefba81a4e2f2fca03d8ded",
+    "source_artifact_ids": [
+      "src_c8b880d7429b1879b9ae483029facd97",
+      "src_106168f9c33152b3d88f02469ad57782",
+      "src_000ccf161644df9e82d29a8595b7b727",
+      "src_c57d943a64c85cf37369ccbf747b6e3f"
+    ],
+    "state_sha256": "045c9ef199827900d660380f3de0b7e4781b3c3626494d6e4c07f03ade6e848e"
+  },
+  "trustedInputs": [],
+  "requests": [
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=0",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=48",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "url": "/api/claim-loops/v1/autonomous/claims/clm_314f2d309fea25e6/replay?through_seq=28",
+      "method": "GET",
+      "time": 0,
+      "headers": {
+        "Accept": "application/json"
+      }
+    }
+  ],
+  "javascriptErrors": []
+}

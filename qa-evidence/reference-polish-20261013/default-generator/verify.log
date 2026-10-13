@@ -1,0 +1,71 @@
+node:assert:152
+  throw new AssertionError(obj);
+  ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+... Skipped lines
+
+  {
+    claim_id: 'clm_314f2d309fea25e6',
+    contract: 'casepath.reference-replay-start/1.0.0',
++   event_sha256: '4cb5bc0a62dee5bc1c195263db3898d22dcdc8eb5f9a9efffb332f4242ffe0db',
+-   event_sha256: '25135a6cdda00756ad791e897bb01e22be07a7f1dc70e9b2b2af676d6b8be9ff',
+    from_seq: 28,
+    profile_id: 'synthetic-nine-v2',
+    profile_sha256: '18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869',
+    run_id: 'autonomy.afefba81a4e2f2fca03d8ded',
+    source_artifact_ids: [
+...
+    ],
++   state_sha256: '9e0a9070351377f55d39056ca93c8a08e7e7a3ea1ef1e403e3128429d4a797ac'
+-   state_sha256: '045c9ef199827900d660380f3de0b7e4781b3c3626494d6e4c07f03ade6e848e'
+  }
+
+    at Object.<anonymous> (/workspace/casepath-reference-polish-default-generator-20261013/verify-default-generator.cjs:29:10)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14)
+    at Object..js (node:internal/modules/cjs/loader:2003:10)
+    at Module.load (node:internal/modules/cjs/loader:1594:32)
+    at Module._load (node:internal/modules/cjs/loader:1396:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    claim_id: 'clm_314f2d309fea25e6',
+    contract: 'casepath.reference-replay-start/1.0.0',
+    event_sha256: '4cb5bc0a62dee5bc1c195263db3898d22dcdc8eb5f9a9efffb332f4242ffe0db',
+    from_seq: 28,
+    profile_id: 'synthetic-nine-v2',
+    profile_sha256: '18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869',
+    run_id: 'autonomy.afefba81a4e2f2fca03d8ded',
+    source_artifact_ids: [
+      'src_c8b880d7429b1879b9ae483029facd97',
+      'src_106168f9c33152b3d88f02469ad57782',
+      'src_000ccf161644df9e82d29a8595b7b727',
+      'src_c57d943a64c85cf37369ccbf747b6e3f'
+    ],
+    state_sha256: '9e0a9070351377f55d39056ca93c8a08e7e7a3ea1ef1e403e3128429d4a797ac'
+  },
+  expected: {
+    claim_id: 'clm_314f2d309fea25e6',
+    contract: 'casepath.reference-replay-start/1.0.0',
+    event_sha256: '25135a6cdda00756ad791e897bb01e22be07a7f1dc70e9b2b2af676d6b8be9ff',
+    from_seq: 28,
+    profile_id: 'synthetic-nine-v2',
+    profile_sha256: '18c2ff55eb39324fee225b2b44330079715d1de11234d2367a2ed172b59c0869',
+    run_id: 'autonomy.afefba81a4e2f2fca03d8ded',
+    source_artifact_ids: [
+      'src_c8b880d7429b1879b9ae483029facd97',
+      'src_106168f9c33152b3d88f02469ad57782',
+      'src_000ccf161644df9e82d29a8595b7b727',
+      'src_c57d943a64c85cf37369ccbf747b6e3f'
+    ],
+    state_sha256: '045c9ef199827900d660380f3de0b7e4781b3c3626494d6e4c07f03ade6e848e'
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.19.0

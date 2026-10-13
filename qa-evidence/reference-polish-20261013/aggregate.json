@@ -1,11 +1,11 @@
 {
-  "phase": "focused checkpoints; full gate not started",
+  "phase": "Focused verification complete; final ce0a full Cloud gate in progress",
   "host": "656813ef2295",
   "runtime_commit": "56ca8f1a183dd073e1ee1061d70fac1913355a6b",
   "operator_commit": "cbf7a454d2c607d6cc4157633bba8340c765c3c3",
   "qa_commit": "9c45f7514f33ef291ae11d9759054048ec1abc8d",
   "mac_default_buffer_correction": "b7358d033baf86e885b52bb14e20f11aff88f0e4",
-  "frozen_commit": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+  "frozen_commit": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
   "focused": {
     "runtime_pre_final_guard_tests": {
       "passed": 37,
@@ -44,7 +44,17 @@
     "sources": 57,
     "gzip_sha256": "5864980a9016bd332dd63537fb86b3ba0bcbbd2f74c98b2541177c078971cfe8"
   },
-  "default_generator": "Running with no external fixture input at b735; no success claim yet",
+  "default_generator": {
+    "status": "passed own generated-state validation without input override",
+    "commit": "b7358d033baf86e885b52bb14e20f11aff88f0e4",
+    "bytes": 211037428,
+    "prefixes": 393,
+    "source_bodies": 57,
+    "event_hash_checks": 8451,
+    "original_wrapper_exit": 1,
+    "reason": "Overstrict comparison against differently ordered authentic export; original failure retained. Generation itself completed; no generator rerun.",
+    "validation_exit": 0
+  },
   "cold_read": "Full text and original image hashes retained under cold-read; static frame02 retained Sources, so graph/document formation perception is not established by these four stills. No claim of hosted recording.",
   "gate_preparation": {
     "collected": 2538,
@@ -54,14 +64,54 @@
     "suite_started": false
   },
   "mac_attestation": {
-    "source": "Mac integration owner delegated message",
-    "commit": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+    "source": "Mac integration owner delegated message; raw artifacts Mac-local only",
+    "commit": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
     "passed": 127,
     "failed": 0,
     "skipped": 0,
-    "seconds": 130.305,
-    "sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8",
-    "raw_artifacts": "Mac-local F8 gate; not present in Cloud payload"
+    "pytest_seconds": 289.5,
+    "wall_seconds": 312.775,
+    "sorted_ids_sha256": "e0689250a44b228a378ae46b3b320e03cc5c879453d69cd255ad0f48e402a7a8"
   },
-  "no_provider_calls_or_real_hosted_writes": true
+  "no_provider_calls_or_real_hosted_writes": true,
+  "current_release_hold": "Final ce0a Cloud gate running; b3e93 had zero Cloud test bodies and is superseded.",
+  "freshness_correction": {
+    "commit": "ba61bbeea82835e3858b86c1fdf37e6c5a05ea96",
+    "js_sha256": "375fc7cbe4b3002e934d6526c0ee3aeeb2f1ee203a91b33a5e18f8b0f4e6a401",
+    "mac_module_attestation": 149,
+    "native_current_nine_target": {
+      "passed": 1,
+      "failed": 0,
+      "seconds": 53.463209273
+    }
+  },
+  "uninterrupted_process_capture": {
+    "passed": 1,
+    "failed": 0,
+    "seconds": 66.909197677,
+    "current_prefixes": 171,
+    "handoffs": 8,
+    "trusted_inputs": 0,
+    "javascript_errors": 0,
+    "api_gets": 192,
+    "frame_sequences": [
+      0,
+      28,
+      37,
+      42,
+      43,
+      45,
+      48
+    ],
+    "frame_document_counts": [
+      0,
+      0,
+      0,
+      1,
+      2,
+      3,
+      3
+    ],
+    "instrumentation": "Temporary evidence-only copy; exact script/diff/hash retained, tracked QA unchanged, four visibility interruptions occurred after first heating case."
+  }
 }

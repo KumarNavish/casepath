@@ -33,6 +33,137 @@
   "kind": "bounded-independent-qa-review",
   "open_findings": [],
   "parent": "7edfc686850d5cc5a278ef15bdb9830470b01eab",
+  "post_fix_freshness_review": {
+    "authority_distinction": "The mutated local copies retain original hash fields and do not constitute hash-valid authoritative states. No reachable journal/admission corruption is demonstrated; backend journal validation and read-cache envelope integrity remain separate authority checks.",
+    "bounded_verdict": "Sound on the actual server-validated accepted-state path; the retained malformed in-memory probe is an architecture/display-helper limit with no production reproduction.",
+    "commit": "ba61bbeea82835e3858b86c1fdf37e6c5a05ea96",
+    "execution_path_review": {
+      "commit": "ce0a7d5ad32437c10c4388d94443c415c634bf6f",
+      "evidence": [
+        {
+          "finding": "Strict public request bodies forbid extra provenance/context fields; no work.context HTTP admission route exists and public reads reject writes.",
+          "lines": "17-52,67-73",
+          "path": "casepath-api/casepath_api/autonomous_api_v1.py"
+        },
+        {
+          "finding": "Registered v2 profile bytes are pinned; source cleanup equivalence and original bindings/physical rosters are checked, then exact profile/equivalence provenance is generated.",
+          "lines": "61-95,131-167",
+          "path": "casepath-api/casepath_api/autonomous_reference_v1.py"
+        },
+        {
+          "finding": "Reference context provenance comes from server intake projection; active sources are checked against the profile and the context is frozen in the journal.",
+          "lines": "199-214",
+          "path": "casepath-api/casepath_api/autonomous_controller_v1.py"
+        },
+        {
+          "finding": "Replay validates command/event chain identity and the resulting reduced state hash before exposure.",
+          "lines": "818-842",
+          "path": "casepath-api/casepath_api/autonomous_store_v1.py"
+        },
+        {
+          "finding": "The replay-start metadata compares registered profile match, exact provenance/config, accepted/outcome receipts, normative bytes and current workflow identity.",
+          "lines": "203-234",
+          "path": "casepath-api/casepath_api/autonomous_reference_v1.py"
+        },
+        {
+          "finding": "Private plan verification compares every planned payload/command hash with actual deterministic execution before acceptance.",
+          "lines": "473-489",
+          "path": "casepath-api/tools/admit_reference.py"
+        }
+      ],
+      "method": "Immutable code review only; no fixture generation, admission, paid/private activity or test rerun.",
+      "result": "No actual upstream accepted altered-profile/equivalence metadata path found in the bounded immutable execution path. The retained JSON-copy mutation cannot establish production corruption.",
+      "scope": "currentSourceSelection presents server-validated accepted state/intake; it does not repeat source admission."
+    },
+    "helper_probe_classification": "closed as architecture/display-helper limitation; no authoritative accepted altered-metadata path established",
+    "javascript_sha256": "375fc7cbe4b3002e934d6526c0ee3aeeb2f1ee203a91b33a5e18f8b0f4e6a401",
+    "limitation": "currentSourceSelection does not inspect profile_sha256 or cleanup-equivalence hashes. Direct display helpers keep4/7 sources and current freshness for those malformed local copies; checkedSavedSnapshot also accepts them. The replay-start check rejects a profile-hash mismatch but accepts an equivalence-only mismatch.",
+    "local_helper_reproduction": {
+      "authorized_by_root": true,
+      "claim_id": "clm_314f2d309fea25e6",
+      "fixture": "/workspace/casepath-reference-polish-default-generator-20261013/native-default-generated.json",
+      "method": "Immutable JS evaluated in a local VM; only current context profile_sha256 and/or one superseded cleanup_equivalence_sha256 changed on in-memory copies of the actual completed DTO.",
+      "original_DTO_unchanged": true,
+      "revision": 48,
+      "rows": [
+        {
+          "checkedReferenceReplayStart": "accepted",
+          "checkedSavedSnapshot": "accepted",
+          "freshness": "current",
+          "kind": "baseline",
+          "original_state_hash_field_and_event_bodies_unchanged": true,
+          "selected_sources": 4,
+          "total_sources": 7
+        },
+        {
+          "checkedReferenceReplayStart": "rejected",
+          "checkedSavedSnapshot": "accepted",
+          "freshness": "current",
+          "kind": "profile_sha256",
+          "original_state_hash_field_and_event_bodies_unchanged": true,
+          "selected_sources": 4,
+          "total_sources": 7
+        },
+        {
+          "checkedReferenceReplayStart": "accepted",
+          "checkedSavedSnapshot": "accepted",
+          "freshness": "current",
+          "kind": "cleanup_equivalence_sha256",
+          "original_state_hash_field_and_event_bodies_unchanged": true,
+          "selected_sources": 4,
+          "total_sources": 7
+        },
+        {
+          "checkedReferenceReplayStart": "rejected",
+          "checkedSavedSnapshot": "accepted",
+          "freshness": "current",
+          "kind": "both",
+          "original_state_hash_field_and_event_bodies_unchanged": true,
+          "selected_sources": 4,
+          "total_sources": 7
+        }
+      ],
+      "source_event_or_DTO_files_written": false
+    },
+    "module_evidence": "Mac149 module pass remains root/Mac-attested; reviewer did not inspect its raw log or execute the suite.",
+    "native_banner_result": {
+      "all_nine_claims_asserted": 9,
+      "checkout_commit": "c1425622393882a986a248edc8a9be923e999d9d",
+      "duration_seconds": 53.463209273,
+      "exit_code": 0,
+      "failed": 0,
+      "javascript_errors": [],
+      "javascript_matches_ba61_and_frozen_ce0a": true,
+      "javascript_sha256": "375fc7cbe4b3002e934d6526c0ee3aeeb2f1ee203a91b33a5e18f8b0f4e6a401",
+      "log": "/workspace/casepath-reference-polish-native-qa-evidence-20261013/freshness-attempt-8.log",
+      "log_sha256": "ef1a10319ad053f5ab9153505230747742b6e01665ef977a08b9e6f92e39909f",
+      "passed": 1,
+      "receipt": "/workspace/casepath-reference-polish-native-qa-evidence-20261013/receipts/freshness-attempt-8/reference-migration-current-and-earlier.json",
+      "receipt_sha256": "f28c45e9548adf107b201154ea0ecb9735b9c0276ebfe9d77a269e5b60c4a295",
+      "request_methods": [
+        "GET"
+      ],
+      "reviewer_test_reruns": 0,
+      "skipped": 0,
+      "status": "passed, terminal raw log inspected",
+      "test_count": 1,
+      "test_hash_matches_frozen_ce0a_blob": true,
+      "test_sha256": "af597075c700e07c7cef59f9caf40540fc390d31660352440f6330d35677e57e"
+    },
+    "parent": "b3e93a3aaf7938967ff60f63f338c89f0aebe18b",
+    "prior_bounded_verdict": "Sound for the accepted current context; broader provenance-hash fallback cannot be affirmed.",
+    "prior_native_banner_result": "pending; no result claimed before raw logs",
+    "production_diff": "assessmentFreshness line754 now calls currentSourceSelection(state) instead of using all physical descriptors; no event/state mutation added.",
+    "retained_fallback_guards": "Unknown profile ID, stale roster, unknown/duplicate source IDs and omitted originals return all physical sources under the unchanged selector.",
+    "reviewer_source_edits": 0,
+    "reviewer_test_reruns": 0,
+    "source_lines": {
+      "assessmentFreshness": "749-759",
+      "checkedReferenceReplayStart": "1114-1128",
+      "checkedSavedSnapshot": "1180-1211",
+      "currentSourceSelection": "109-118"
+    }
+  },
   "post_review_findings": [
     {
       "evidence_source": "Concrete Mac finding reported by root after the initial review; reviewer did not execute the generator.",
@@ -50,9 +181,38 @@
         "owner": "Mac",
         "scope": "Change only the migrated buffer limit."
       },
+      "prior_status": "open; Mac correction and root verification pending",
       "reason_unexercised": "Focused migrated runs supplied an external fixture, bypassing execFileSync generation and its maxBuffer limit.",
       "reported_actual_migrated_stdout_bytes": 211642108,
-      "status": "open; Mac correction and root verification pending"
+      "resolution": {
+        "actual_output_bytes": 211037428,
+        "actual_output_sha256": "d88a81358afd05f8f30878d6ca94a68ce3f99f8515521aaa02e8f2d3334185f6",
+        "captured_python_script_matches_immutable_source": true,
+        "external_fixture_input_absent": true,
+        "fresh_max_buffer_bytes": 134217728,
+        "generator_function_sha256": "b1ff198c99852e705b181f88eb63dea836a6418a85f120e4863e70533fd1d213",
+        "initial_cross_export_comparison_exit": 1,
+        "initial_failure_preserved": "/workspace/casepath-reference-polish-default-generator-20261013/verify.log",
+        "initial_failure_sha256": "87279d054565e3b3f553122a1102105c730695e30369b1d2571660e612f2b067",
+        "migrated_max_buffer_bytes": 268435456,
+        "ordering_diagnostic": "/workspace/casepath-reference-polish-default-generator-20261013/first-prefix-difference.json",
+        "ordering_diagnostic_sha256": "15d9fbbeacef1cbcce3f1f867f133e781bfefdec70d675fc85ddc4662a7a4bfa",
+        "ordering_explanation": "The prior exporter sorted profile IDs; the default helper uses heating-first referenceIds. At sequence11 compatible_knowledge has count0 versus2, so valid recorded state/event hashes differ. Root validated the same saved output; no regeneration.",
+        "root_validation": {
+          "claims": 9,
+          "event_hash_checks": 8451,
+          "exit_code": 0,
+          "physical_sources": 57,
+          "replay_start_metadata_and_old_v1_preservation": true,
+          "state_hashes": 393
+        },
+        "saved_output_size_and_hash_independently_verified": true,
+        "source_commit": "b7358d033baf86e885b52bb14e20f11aff88f0e4",
+        "source_qa_sha256": "b398e1d3456513531e88aa3cae5e3ef3708c387fef10e044ed5ee3b41b079d61",
+        "validated_receipt": "/workspace/casepath-reference-polish-default-generator-20261013/validated-receipt.json",
+        "validated_receipt_sha256": "825ce0d7cd6ca9845a455ee9576c8680d7e6cca17acd640aaafe2a79bcb89473"
+      },
+      "status": "resolved by immutable migrated-only buffer fix and saved default-generator proof"
     }
   ],
   "raw_runs": {

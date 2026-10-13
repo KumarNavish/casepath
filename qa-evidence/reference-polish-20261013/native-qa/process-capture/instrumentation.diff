@@ -1,0 +1,65 @@
+--- casepath-qa/unified-product-browser-v1.test.cjs
++++ /workspace/casepath-reference-polish-native-qa-evidence-20261013/process-capture/public-replay-instrumented.cjs
+@@ -10,7 +10,7 @@
+ const {execFileSync} = require('node:child_process');
+ const {chromium} = require('playwright');
+ 
+-const root = path.resolve(__dirname, '..');
++const root = '/workspace/casepath-reference-polish-native-qa-20261013';
+ const base = '/api/claim-loops/v1/autonomous';
+ const captured = JSON.parse(gunzipSync(fs.readFileSync(path.join(root, 'design/evidence-path/recorded-fixtures.json.gz')))).responses;
+ const historicalIds = captured[`${base}/claims`].claims.map(row => row.claim_id);
+@@ -1027,14 +1027,42 @@
+  await heading.focus();assert.equal(await heading.evaluate(element=>getComputedStyle(element).outlineStyle),'solid','keyboard modality retains heading focus indication');
+ });
+ 
++
++// Temporary screenshot instrumentation of the existing independent public replay.
++async function captureUninterruptedProcessFrame(page,fixture,id,directory,name){
++ const paint=await page.evaluate(()=>window.__referencePaints.at(-1)),prefix=fixture.prefixes[id][paint.revision];
++ assert.equal(paint.claim_id,id);assert.ok(prefix);assert.equal(paint.state_sha256,prefix.state.state_sha256);
++ assert.equal(await page.locator('[data-au-panel]').getAttribute('data-au-panel'),'step');
++ assert.equal(await page.locator('[data-au-state-sha]').getAttribute('data-au-state-sha'),prefix.state.state_sha256);
++ assert.equal(Number(new URLSearchParams(new URL(page.url()).hash.split('?')[1]).get('through')),prefix.through_seq);
++ assert.deepEqual(sorted(paint.nodes),sorted((prefix.state.graph?.nodes||[]).map(row=>row.node_id)));
++ assert.deepEqual(await page.evaluate(()=>window.__referenceTrustedInputs),[]);assert.equal(await page.locator('[data-au-record-content] pre').count(),0);
++ fs.mkdirSync(directory,{recursive:true});const filename=path.join(directory,name+'.png');await page.screenshot({path:filename,fullPage:false,animations:'disabled'});
++ fs.writeFileSync(path.join(directory,name+'.json'),JSON.stringify({captured_at:new Date().toISOString(),image_sha256:sha(fs.readFileSync(filename)),checkoutCommit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),originalTestSha256:sha(fs.readFileSync(path.join(root,'casepath-qa/unified-product-browser-v1.test.cjs'))),instrumentationSha256:sha(fs.readFileSync(__filename)),assets:await page.evaluate(()=>window.__injectedAssets),claim_id:id,route:new URL(page.url()).hash,through_seq:prefix.through_seq,state_sha256:prefix.state.state_sha256,event_sha256:prefix.state.last_event_sha256,dto_sha256:sha(canonical(prefix)),graph_nodes:paint.nodes,documents:paint.documents.map(row=>({...row,requiring_node:prefix.state.obligations.find(item=>item.obligation_id===row.id)?.node_id})),knowledge:paint.knowledge,outcome:paint.outcome,events:prefix.events.map(row=>({seq:row.seq,kind:row.kind,state_sha256:row.state_sha256,event_sha256:row.event_sha256})),replay_start:fixture.snapshots[id].replay_start,trustedInputs:await page.evaluate(()=>window.__referenceTrustedInputs),requests:await page.evaluate(()=>window.__fixture.calls),javascriptErrors:page.__casepathErrors},null,2));
++}
++async function captureUninterruptedProcessSequence(page,fixture,id,directory){
++ const start=fixture.snapshots[id].replay_start,head=fixture.snapshots[id].state.revision,seen=new Set();
++ for(let tick=0;tick<6000&&!seen.has('final');tick++){
++  const paint=await page.evaluate(()=>window.__referencePaints.at(-1));assert.equal(paint.claim_id,id,'capture must finish before the next actual case');
++  const seq=Number(paint.revision),docs=paint.documents.length;
++  if(seq===start.from_seq&&!seen.has('prepared')){await captureUninterruptedProcessFrame(page,fixture,id,directory,'02');seen.add('prepared');}
++  if(paint.nodes.length>1&&docs===0&&!seen.has('graph')){await captureUninterruptedProcessFrame(page,fixture,id,directory,'03');seen.add('graph');}
++  for(const count of [1,2,3])if(docs===count&&!seen.has('documents'+count)){await captureUninterruptedProcessFrame(page,fixture,id,directory,String(count+3).padStart(2,'0'));seen.add('documents'+count);}
++  if(seq===head){assert.ok(paint.outcome);assert.ok(paint.knowledge.length);await captureUninterruptedProcessFrame(page,fixture,id,directory,'07');seen.add('final');break;}
++  await page.clock.runFor(20);
++ }
++ assert.deepEqual([...seen].sort(),['prepared','graph','documents1','documents2','documents3','final'].sort());
++}
++
+ for(const migrated of [false,true])for(const publicReadOnly of [false,true])test(`replay entry: ${migrated?'migrated v1 to v2':'fresh v2'} ${publicReadOnly?'public visitor':'owner'} consumes every accepted current reference prefix and eight native handoffs${publicReadOnly?' with visibility and programmatic focus interruptions':''}`,async t=>{
+  const fixture=referenceFixture(migrated),id=referenceIds[0],start=fixture.snapshots[id].replay_start,page=await fixturePage(t,{referenceFixture:true,referenceMigrationFixture:migrated,publicReadOnly,providerReady:!publicReadOnly,...migrated?{holdReplayId:id,holdReplayThrough:start.from_seq}:{},initialFragment:publicReadOnly?'#autonomous/demonstration?mode=replay':'#autonomous'});
++ const processStills=migrated&&publicReadOnly?process.env.CASEPATH_PROCESS_STILL_FRAMES:null;
+  if(!publicReadOnly)await page.locator('.au-nav [data-au-nav="demonstration"]').click();
+  await eventually(()=>page.locator('[data-au-revision="0"]').count().then(count=>count===1),'fresh Demonstration must begin at reference intake prefix zero');
+  assert.ok(new URL(page.url()).hash.startsWith(`#autonomous/claim/${id}?collection=reference&mode=replay&through=0`));
+  assert.equal(await page.locator('[data-au-node],[data-au-reference-mode]').count(),0,'the verified head cannot paint into prefix zero');
+  if(!publicReadOnly){await title(page,id);assert.deepEqual(await visibleRecord(page),{state:fixture.prefixes[id][0].state,projection:fixture.prefixes[id][0].projection});}
+- const expected=referenceIds.flatMap(claim=>{const rows=Object.values(fixture.prefixes[claim]),start=fixture.snapshots[claim].replay_start;return start?[rows[0],...rows.filter(row=>row.through_seq>=start.from_seq)]:rows;}),thresholds=[0.03,0.2,0.5,0.9].map(fraction=>Math.max(1,Math.floor(expected.length*fraction)));
++ const expected=referenceIds.flatMap(claim=>{const rows=Object.values(fixture.prefixes[claim]),start=fixture.snapshots[claim].replay_start;return start?[rows[0],...rows.filter(row=>row.through_seq>=start.from_seq)]:rows;}),firstCasePrefixes=expected.filter(row=>row.state.claim_id===id).length,offset=processStills?firstCasePrefixes:0,thresholds=[0.03,0.2,0.5,0.9].map(fraction=>offset+Math.max(1,Math.floor((expected.length-offset)*fraction)));
+  await page.evaluate(publicReadOnly=>{
+   window.__referencePaints=[];window.__referenceTrustedInputs=[];
+   for(const type of ['click','pointerdown','keydown'])document.addEventListener(type,event=>{if(event.isTrusted)window.__referenceTrustedInputs.push(type);},true);
+@@ -1047,7 +1075,9 @@
+   };
+   capture();window.__referenceObserver=new MutationObserver(capture);window.__referenceObserver.observe(document.querySelector('#workspace'),{subtree:true,childList:true});
+  },publicReadOnly);
++ if(processStills)await captureUninterruptedProcessFrame(page,fixture,id,processStills,'01');
+  if(migrated){await eventually(()=>page.evaluate(()=>window.__fixture.held.some(row=>row.kind==='replay')),'verified v2 baseline was not requested');await page.evaluate(()=>{window.__fixture.holdReplayId=null;for(const row of window.__fixture.held.splice(0))row.release();});}
++ if(processStills)await captureUninterruptedProcessSequence(page,fixture,id,processStills);
+  const interruptions=[];
+  for(let tick=0;tick<1000&&await page.locator('[data-au-demo-stop]').count();tick++){
+   if(publicReadOnly&&interruptions.length<4&&(await page.evaluate(()=>window.__referencePaints.length))>=thresholds[interruptions.length]){
