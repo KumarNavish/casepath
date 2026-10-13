@@ -751,7 +751,7 @@
     const context = receipt?.workflow_id && state.semantic_contexts?.[receipt.workflow_id];
     if (!receipt || !isHash(receipt.receipt_sha256) || !context || context.claim_id !== state.claim_id || !Array.isArray(context.sources)) return {status:'unavailable',sources:[]};
     const valid = sources => sources.every(source => typeof source.artifact_id === 'string' && isHash(source.sha256)) && new Set(sources.map(source => source.artifact_id)).size === sources.length;
-    const current = list(state.source_descriptors);
+    const current = currentSourceSelection(state);
     if (!valid(context.sources) || !valid(current)) return {status:'unavailable',sources:[]};
     const accepted = new Map(context.sources.map(source => [source.artifact_id,source.sha256]));
     const sources = current.filter(source => accepted.get(source.artifact_id) !== source.sha256);

@@ -95,6 +95,18 @@ test('current regenerated documents stay in Sources and exact earlier documents 
  assert.equal(JSON.stringify(s),before);
 });
 
+test('a current reassessment does not treat its superseded documents as new evidence',()=>{
+ const sources=['original','earlier','cleaned'].map((artifact_id,index)=>({artifact_id,sha256:hash(String(index+1)),file_name:artifact_id+'.txt',role:index?'supporting_document':'customer_message'}));
+ const provenance={mode:'deterministic_reference',synthetic:true,profile_id:'synthetic-nine-v2',source_roster_sha256:hash('4'),source_artifact_ids:['original','cleaned']};
+ const s=state({run_id:'current',source_roster_sha256:hash('4'),source_descriptors:sources,original_binding:{source_map:[sources[0]]},semantic_contexts:{current:{claim_id:'claim-a',reference_provenance:provenance,sources:[sources[0],sources[2]]}},receipts:[{kind:'interpretation.accepted',receipt:{workflow_id:'current',receipt_sha256:hash('5')}}]}),before=JSON.stringify(s);
+ assert.equal(ui.assessmentFreshness(s).status,'current');assert.deepEqual(ui.assessmentFreshness(s).sources,[]);
+ assert.doesNotMatch(ui.workMarkup(s,{},'branch',[]),/new sources await review/);
+ const late={artifact_id:'later',sha256:hash('6'),file_name:'later.txt'},arrived={...s,source_descriptors:[...sources,late],source_roster_sha256:hash('7')};
+ assert.equal(ui.assessmentFreshness(arrived).status,'prior');assert.ok(ui.assessmentFreshness(arrived).sources.some(row=>row.artifact_id==='later'));
+ const unknown=structuredClone(s);unknown.semantic_contexts.current.reference_provenance.profile_id='unknown';assert.equal(ui.assessmentFreshness(unknown).status,'prior');
+ assert.equal(JSON.stringify(s),before);
+});
+
 test('a reassessment replay start must bind to the accepted run, source selection and prepared prefix',()=>{
  const start={contract:'casepath.reference-replay-start/1.0.0',claim_id:'claim-a',from_seq:4,state_sha256:hash('4'),event_sha256:hash('5'),run_id:'current-run',profile_id:'synthetic-nine-v2',profile_sha256:hash('6'),source_artifact_ids:['original','cleaned']};
  const provenance={mode:'deterministic_reference',synthetic:true,as_of:'2025-02-21',profile_id:start.profile_id,profile_sha256:start.profile_sha256};
