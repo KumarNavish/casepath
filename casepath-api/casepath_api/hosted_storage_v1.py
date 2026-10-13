@@ -88,6 +88,7 @@ class HostedSources:
         result = None
         check()
         with self.connect() as db:
+            execute = getattr(db, 'execute_read_once', db.execute)
             for start in range(0, len(digests), self.BATCH_DIGESTS):
                 batch = digests[start:start + self.BATCH_DIGESTS]
                 wanted, seen = set(batch), set()
@@ -116,7 +117,7 @@ class HostedSources:
                 max_pages = (len(batch) * max_chunks + self.PAGE_CHUNKS - 1) // self.PAGE_CHUNKS + 1
                 for _ in range(max_pages):
                     check()
-                    page = db.execute(query, (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index)).fetchall()
+                    page = execute(query, (self.CHUNK_BYTES, *batch, after_digest, after_digest, after_index)).fetchall()
                     if len(page) > self.PAGE_CHUNKS:
                         raise AutonomousStoreError('Persistent source page exceeds its bound.')
                     for row in page:
