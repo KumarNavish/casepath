@@ -365,6 +365,7 @@ def refresh_document(graph: Mapping[str, Any], document_type: str, receipt: Mapp
 def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = None) -> dict[str, Any]:
     """Derive applicability, execution readiness, questions and document routes."""
     graph = seal_graph(graph)
+    from .autonomous_operations_v1 import observe
     flags = deepcopy(graph["conditions"])
     if conditions is not None:
         if set(conditions) - set(flags):
@@ -380,6 +381,8 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
     incoming = {key: [] for key in nodes}
     for edge in edges:
         edge["condition_verdict"] = _verdict(edge["condition"], flags)
+        observe('condition.evaluate', 'edge', edge['edge_id'], {'expression': edge['condition'], 'conditions': flags},
+                {'verdict': edge['condition_verdict']})
         incoming[edge["target_node_id"]].append(edge)
     for key in _topological(graph):
         node, path, ready_paths = nodes[key], "false", []
@@ -398,6 +401,10 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
             if relation in {"causes", "completes"}:
                 active = _and(active, "true" if source["effective_completed"] and not source["inconsistent_completion"] else "false")
             edge["activation"] = active
+            observe('branch.drop' if active == 'false' else 'branch.activate' if active == 'true' else 'branch.evaluate', 'edge', edge['edge_id'],
+                    {'source_node_id': source['node_id'], 'source_activation': source['activation'],
+                     'condition_verdict': edge['condition_verdict'], 'relation': relation, 'rejected': rejected},
+                    {'activation': active, 'target_node_id': key})
             if relation in FLOW:
                 path = _or(path, active)
                 if active == "true":
@@ -413,7 +420,10 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
                 blocked.append(source["node_id"])
             if relation in {"blocks", "invalidates", "supersedes"} and active == "unresolved":
                 unresolved.append(source["node_id"])
-        activation = _and(path, _verdict(node["condition"], flags))
+        verdict = _verdict(node["condition"], flags)
+        condition_operation = observe('condition.evaluate', 'node', key,
+                                      {'expression': node['condition'], 'conditions': flags}, {'verdict': verdict})
+        activation = _and(path, verdict)
         if node["validation"]["status"] == "rejected":
             activation = "false"
         suppressors = [edge for edge in incoming[key] if edge["relation"] in {"invalidates", "supersedes"}
@@ -442,6 +452,11 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
                     inconsistent_completion=inconsistent, blocked_by=list(dict.fromkeys(blocked)),
                     unresolved_dependencies=list(dict.fromkeys(unresolved)), condition_flags=sorted(dependencies),
                     missing_document_types=missing_documents)
+        observe('branch.drop' if activation == 'false' else 'branch.activate' if activation == 'true' else 'branch.evaluate', 'node', key,
+                {'path': path, 'condition_verdict': verdict, 'blocked_by': blocked,
+                 'suppressing_edge_ids': [edge['edge_id'] for edge in suppressors]},
+                {'activation': activation, 'execution_state': state, 'missing_document_types': missing_documents},
+                causes=[condition_operation])
         if state == "blocked" and not blocked:
             node["blocked_by"] = [edge["source_node_id"] for edge in incoming[key]
                                   if edge["relation"] in FLOW and edge["activation"] != "false"
@@ -481,6 +496,11 @@ def evaluate(graph: Mapping[str, Any], conditions: Mapping[str, Any] | None = No
                           "reason": definition["reason"] if applicability == "true" else
                           "The process condition is unresolved." if applicability == "unresolved" else
                           "No applicable process step requires this document."})
+        observe('document.require', 'document', definition['document_type'],
+                {'condition': definition['condition'], 'required_at_node_ids': [node['node_id'] for node in linked],
+                 'node_activations': {node['node_id']: node['activation'] for node in linked}},
+                {'activation': applicability, 'route_state': route, 'request': route in {'needed_now', 'needed_later'},
+                 'review_state': review_state})
     unresolved_flags = set()
     for row in ordered + edges + documents:
         if row.get("activation") == "unresolved":

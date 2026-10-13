@@ -13,6 +13,7 @@ from .autonomous_policy_v1 import (
 )
 from .causal_process_v1 import evaluate, seal_graph, _document_definition_sha256
 from .workspace_corpus import digest_value
+from .autonomous_operations_v1 import observe, citation_source
 
 
 class SupersededWorkflow(RuntimeError):
@@ -368,6 +369,18 @@ class AutonomousController:
             self._once(claim_id, f"{workflow}.document.{document['document_type']}.{source['artifact_id']}", 'action.completed', lambda s: {
                 'graph': graph, 'result': result, 'receipt': receipt(s, 'record_verified_document_review', **base_receipt,
                                                                  after_graph_sha256=graph['graph_sha256'])})
+            checked = observe('document.check', 'document', document['document_type'],
+                              {'required_fields': self.policy.get('required_fields_by_document', REQUIRED_FIELDS)[document['document_type']],
+                               'independently_verified': document.get('independently_verified'), 'route_activation': route['activation']},
+                              {'assessment': document['assessment'], 'review_scope': result.get('review_scope'),
+                               'status': 'accepted_historical_command', 'action_id': result['action_id']},
+                              source=citation_source(document['citations'][0] if document['citations'] else None, state['acquired_sources']))
+            for fact in graph['assessment_context']['facts']:
+                if fact['fact_id'] == f"fact:{document['document_type']}":
+                    observe('fact.extract', 'fact', fact['fact_id'], {'document_type': document['document_type']},
+                            {'status': fact['status'], 'summary': fact['summary'], 'verification_required': False},
+                            source=citation_source(fact['citations'][0] if fact['citations'] else None, state['acquired_sources']),
+                            causes=[checked])
 
     def _steps(self, claim_id, workflow, verified, base_receipt):
         findings = {row['node_id']: row for row in verified['steps']}
@@ -394,6 +407,10 @@ class AutonomousController:
             self._once(claim_id, f"{workflow}.step.{ready['node_id']}", 'action.completed', lambda s: {
                 'graph': graph, 'result': result, 'receipt': receipt(s, 'record_verified_internal_assessment', **base_receipt,
                                                                  after_graph_sha256=graph['graph_sha256'])})
+            observe('step.complete', 'node', ready['node_id'],
+                    {'execution_state': ready['execution_state'], 'missing_document_types': ready['missing_document_types'],
+                     'capability': execution_capability(ready['node_id']), 'finding_status': finding['status']},
+                    result, source=citation_source(finding['citations'][0] if finding['citations'] else None, state['acquired_sources']))
         raise ValueError('autonomous process exceeded its acyclic step bound')
 
     def _outcome(self, claim_id, workflow, verified, base_receipt):
@@ -431,6 +448,10 @@ class AutonomousController:
         self._once(claim_id, f'{workflow}.outcome', 'outcome.recorded', lambda s: {
             'outcome': outcome, 'receipt': receipt(s, 'record_justified_deferral', **base_receipt,
                                                   graph_sha256=state['graph']['graph_sha256'])})
+        observe('decision', 'decision', workflow + '.outcome',
+                {'process_status': view['process_status'], 'graph_sha256': state['graph']['graph_sha256'],
+                 'rule_pack_sha256': verified['rule_pack_sha256']}, outcome,
+                source=citation_source(outcome['citations'][0] if outcome['citations'] else None, state['acquired_sources']))
 
     def _learn(self, claim_id, workflow):
         with self._lock:
@@ -457,3 +478,7 @@ class AutonomousController:
             knowledge = {'knowledge_id': 'quarantine.' + workflow, 'qualification': {'status': 'quarantined', 'reason': str(error)},
                          'source_claim_id': claim_id, 'source_state_sha256': state['state_sha256']}
         self._once(claim_id, f'{workflow}.knowledge', 'knowledge.published', {'knowledge': knowledge})
+        observe('knowledge.add', 'knowledge', knowledge['knowledge_id'],
+                {'workflow_id': workflow, 'source_state_sha256': state['state_sha256']},
+                {'status': 'historical', 'version': knowledge.get('version'),
+                 'knowledge_sha256': knowledge.get('knowledge_sha256'), 'qualification': knowledge['qualification']})

@@ -1,10 +1,15 @@
 """Same-origin operational intake and read-only autonomous projections."""
 from functools import lru_cache
+import asyncio
+import json
 import os
+from queue import Empty, Full, Queue
+from threading import Event, Thread, Lock
+from time import monotonic
 from urllib.parse import quote, urlsplit
 
 from fastapi import APIRouter, HTTPException, Query, Request
-from fastapi.responses import Response
+from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 
 from .autonomous_controller_v1 import AutonomousController, execution_capability
@@ -198,6 +203,148 @@ def create_autonomous_router(service_getter, budget_getter=lambda: None, *, corp
     @router.get('/claims/{claim_id}/snapshot')
     def claim_snapshot(claim_id: str, after: int = Query(0, ge=0)):
         return invoke(lambda service: snapshot(service, claim_id, after))
+
+    @router.get('/claims/{claim_id}/operations')
+    async def operations(claim_id: str, request: Request, mode: str = Query('live', pattern='^(live|recorded)$')):
+        from . import autonomous_operations_v1 as runtime
+        from .autonomous_reference_v1 import ReferenceProfile
+        from .autonomous_reference_policy_v1 import bounded_reference_policy, REFERENCE_POLICY_ID
+        from .workspace_corpus import canonical_json_bytes
+        # Identity-independent admission precedes saved reads or execution.
+        if claim_id not in ReferenceProfile().ids:
+            raise HTTPException(403, 'Only the nine synthetic reference claims support this check.')
+        if not runtime.PUBLIC_LIMITS.acquire():
+            raise HTTPException(429, 'The shared check limit is busy. Retry shortly.', headers={'Retry-After': '60'})
+        cancellation, finished = Event(), Event()
+        deadline = monotonic() + runtime.MAX_SECONDS
+        # A count bound plus a byte bound prevents large checkpoint frames from
+        # defeating backpressure. At most 2 MiB of encoded frames can queue.
+        queue, queued_bytes, byte_lock = Queue(maxsize=8), [0], Lock()
+
+        def check():
+            if cancellation.is_set() or monotonic() >= deadline:
+                raise runtime.OperationCancelled('The check stopped before completion.')
+
+        def send(frame):
+            encoded = canonical_json_bytes(frame) + b'\n'
+            if len(encoded) > 2 * 1024 * 1024:
+                raise runtime.OperationCancelled('A check frame exceeds the streaming bound.')
+            while True:
+                check()
+                with byte_lock:
+                    if queued_bytes[0] + len(encoded) <= 2 * 1024 * 1024:
+                        try:
+                            queue.put_nowait(encoded)
+                        except Full:
+                            pass
+                        else:
+                            queued_bytes[0] += len(encoded)
+                            return
+                # Event wait is cancellation-responsive backpressure; no engine
+                # or presentation delay is introduced when the consumer reads.
+                cancellation.wait(0.01)
+
+        def work():
+            try:
+                service = service_getter()
+                if mode == 'recorded':
+                    from .autonomous_operation_trace_store_v1 import OperationTraceStore
+                    saved = service.store.snapshot(claim_id)
+                    head, start = saved['state'], saved['replay_start']
+                    if start is None:
+                        raise runtime.OperationsUnavailable('No recorded reference check is available.')
+                    sidecar = OperationTraceStore(service.store.journal.connect).read(
+                        claim_id, head_state_sha256=head['state_sha256'], head_event_sha256=head['last_event_sha256'],
+                        run_id=start['run_id'], profile_sha256=start['profile_sha256'], check=check)
+                    if sidecar is None:
+                        raise runtime.OperationsUnavailable('No recorded operation trace is available for this exact saved head.')
+                    for frame in sidecar['frames']:
+                        check()
+                        send(frame)
+                else:
+                    policy = service.policy
+                    if policy.get('policy_id') != REFERENCE_POLICY_ID:
+                        policy = bounded_reference_policy(policy)
+                    bundle = runtime.capture_operation_inputs(service.store, claim_id, policy, check=check)
+                    runtime.recompute_operations(bundle, send=send, cancellation=cancellation, deadline=deadline)
+            except Exception as error:
+                if not cancellation.is_set() and monotonic() < deadline:
+                    try:
+                        send({'contract': runtime.CONTRACT, 'type': 'error', 'code': 'recomputation_unavailable',
+                              'detail': str(error) if isinstance(error, ValueError) else 'The saved check is unavailable.'})
+                    except runtime.OperationCancelled:
+                        pass
+            finally:
+                finished.set()
+                # Keep concurrency owned until the actual worker exits, even
+                # when a visitor disconnects while a bounded read is pending.
+                runtime.PUBLIC_LIMITS.release()
+
+        thread = Thread(target=work, name='casepath-read-only-operations', daemon=True)
+        try:
+            thread.start()
+        except BaseException:
+            runtime.PUBLIC_LIMITS.release()
+            raise
+        # Return an ordinary rejection before opening a stream when immutable
+        # inputs or an admitted recorded sidecar are unavailable.
+        async def first_chunk():
+            while True:
+                if await request.is_disconnected() or monotonic() >= deadline:
+                    raise HTTPException(408, 'The bounded check stopped before its saved inputs were verified.')
+                try:
+                    chunk = queue.get_nowait()
+                except Empty:
+                    if finished.is_set():
+                        raise HTTPException(409, 'No verified operation trace is available.')
+                    await asyncio.sleep(0.005)
+                else:
+                    with byte_lock:
+                        queued_bytes[0] -= len(chunk)
+                    return chunk
+        try:
+            first = await first_chunk()
+        except BaseException:
+            cancellation.set()
+            raise
+        first_frame = json.loads(first)
+        if first_frame['type'] == 'error':
+            cancellation.set()
+            raise HTTPException(409, first_frame['detail'])
+
+        async def stream():
+            try:
+                yield first
+                while True:
+                    if await request.is_disconnected():
+                        break
+                    if monotonic() >= deadline:
+                        yield canonical_json_bytes({'contract': runtime.CONTRACT, 'type': 'error', 'code': 'deadline',
+                                                    'detail': 'The bounded check stopped. The saved assessment remains available.'}) + b'\n'
+                        break
+                    try:
+                        chunk = queue.get_nowait()
+                    except Empty:
+                        if finished.is_set():
+                            break
+                        await asyncio.sleep(0.005)
+                    else:
+                        with byte_lock:
+                            queued_bytes[0] -= len(chunk)
+                        yield chunk
+            finally:
+                cancellation.set()
+                with byte_lock:
+                    while not queue.empty():
+                        try:
+                            queue.get_nowait()
+                        except Empty:
+                            break
+                    queued_bytes[0] = 0
+
+        return StreamingResponse(stream(), media_type='application/x-ndjson', headers={
+            'Cache-Control': 'no-store', 'X-Accel-Buffering': 'no', 'X-Content-Type-Options': 'nosniff',
+            'X-CasePath-Operation-Mode': mode})
 
     @router.get('/claims/{claim_id}/events')
     def events(claim_id: str, after: int = Query(0, ge=0)):

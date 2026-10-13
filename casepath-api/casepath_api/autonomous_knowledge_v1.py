@@ -5,6 +5,7 @@ from itertools import product
 from .autonomous_policy_v1 import POLICY_ID, REQUIRED_FIELDS, compile_process
 from .causal_process_v1 import evaluate, seal_graph
 from .workspace_corpus import digest_value
+from .autonomous_operations_v1 import observe, suspend_observations
 
 
 DEFINITION_KEYS = ('family', 'rule_pack_sha256', 'graph', 'facts', 'obligations', 'policy_id', 'evidence_recipes')
@@ -126,7 +127,10 @@ def blank_interpretation(family):
 
 
 def _routing(graph, conditions):
-    view = evaluate(graph, conditions)
+    # Qualification's exhaustive counterfactual assignments are regression
+    # checks, not the receiving claim's active execution trace.
+    with suspend_observations():
+        view = evaluate(graph, conditions)
     return {'nodes': [(r['node_id'], r['activation'], r['execution_state']) for r in view['nodes']],
             'documents': [(r['document_type'], r['activation'], r['route_state'], r['required_at_node_ids']) for r in view['documents']]}
 
@@ -277,4 +281,11 @@ class AutonomousKnowledge:
                 condition = graph['conditions'][fact['fact_id'].split(':', 1)[1]]
                 fact.update(status=condition['verdict'], summary=condition['summary'], citations=condition['citations'])
         graph['assessment_context'].update(facts=facts, obligations=obligations, summary=verified['category']['summary'])
-        return seal_graph(graph), facts, obligations
+        result = seal_graph(graph), facts, obligations
+        observe('knowledge.reuse', 'knowledge', version['knowledge_id'],
+                {'version': version['version'], 'knowledge_sha256': version.get('knowledge_sha256'),
+                 'definition_sha256': version['qualification']['definition_sha256'], 'receiving_claim_id': claim_id,
+                 'rule_pack_sha256': version['rule_pack_sha256']},
+                {'graph_sha256': result[0]['graph_sha256'], 'reused_evidence_recipes': len(version['evidence_recipes']),
+                 'case_facts_reassessed': True})
+        return result
